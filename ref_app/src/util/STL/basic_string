@@ -1,0 +1,6 @@
+#ifndef _BASIC_STRING_N_2010_02_23_
+  #define _BASIC_STRING_N_2010_02_23_
+
+  #include "impl/basic_string_impl.h"
+
+#endif // _BASIC_STRING_N_2010_02_23_

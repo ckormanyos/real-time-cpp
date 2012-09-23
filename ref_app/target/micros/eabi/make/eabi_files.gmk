@@ -1,0 +1,14 @@
+# ------------------------------------------------------------------------------
+# File list of the ARM files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_TGT)/startup/crt0                         \
+             $(PATH_TGT)/startup/crt0_init_ram                \
+             $(PATH_TGT)/startup/crt1                         \
+             $(PATH_TGT)/startup/gcc_patch                    \
+             $(PATH_TGT)/startup/int_vect
+
+FILES_CRT =  $(PATH_TGT)/startup/crt0                         \
+             $(PATH_TGT)/startup/crt0_init_ram                \
+             $(PATH_TGT)/startup/crt1                         \
+             $(PATH_TGT)/startup/int_vect

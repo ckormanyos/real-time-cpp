@@ -1,0 +1,6 @@
+#ifndef _ARRAY_2010_02_23_
+  #define _ARRAY_2010_02_23_
+
+  #include "impl/array_impl.h"
+
+#endif // _ARRAY_2010_02_23_

@@ -1,0 +1,6 @@
+#ifndef _LIMITS_2010_02_23_
+  #define _LIMITS_2010_02_23_
+
+  #include "impl/limits_impl.h"
+
+#endif // _LIMITS_2010_02_23_

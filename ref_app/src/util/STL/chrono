@@ -1,0 +1,6 @@
+#ifndef _CHRONO_2012_06_01_
+  #define _CHRONO_2012_06_01_
+
+  #include "impl/chrono_impl.h"
+
+#endif // _CHRONO_2012_06_01_

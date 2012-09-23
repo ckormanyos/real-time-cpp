@@ -1,0 +1,6 @@
+#ifndef _INITIALIZER_LIST_2012_02_14_H_
+  #define _INITIALIZER_LIST_2012_02_14_H_
+
+  #include "impl/initializer_list_impl.h"
+
+#endif // _INITIALIZER_LIST_2012_02_14_H_

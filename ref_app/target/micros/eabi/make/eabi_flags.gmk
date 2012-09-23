@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION = 4.7.0
+GCC_TARGET  = arm-none-eabi
+
+TGTFLAGS    = -mcpu=cortex-m3 -mthumb -mtune=cortex-m3 -mfloat-abi=soft
+AFLAGS      = -x assembler -fno-use-cxa-atexit
+LFLAGS_WL   =
+
+# To configure GMP
+# ../gmp-5.0.2/configure --build=i686-pc-mingw32 --enable-cxx --disable-static --enable-shared CPPFLAGS="-fexceptions"
+# To configure MPFR
+# ../mpfr-3.0.1/configure --build=i686-pc-mingw32 --disable-static --enable-shared --with-gmp=/usr/local
+# To configure MPC
+# ../mpc-0.8.2/configure --build=i686-pc-mingw32 --disable-static --enable-shared --with-gmp=/usr/local --with-mpfr=/usr/local
+# To configure PPL
+# ../ppl-0.11.2/configure --build=i686-pc-mingw32 --disable-static --enable-shared CPPFLAGS="-fexceptions" --with-gmp-prefix=/usr/local
+
+# To configure binutils without exceptions and without POSIX threads.
+# ../binutils-2.22.52/configure --prefix=/usr/local/gcc-4.7.0-arm-none-eabi --target=arm-none-eabi --build=i686-pc-mingw32 --disable-__cxa_atexit --disable-nls --disable-threads --disable-shared --enable-static --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local
+# To configure GCC without exceptions and without POSIX threads.
+# ../gcc-4.7.0/configure --prefix=/usr/local/gcc-4.7.0-arm-none-eabi --target=arm-none-eabi --build=i686-pc-mingw32 --enable-languages=c,c++ --with-newlib --disable-__cxa_atexit --disable-nls --disable-threads --disable-shared --enable-static --disable-fixed-point --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local
+
+# To configure binutils with exceptions and with POSIX threads.
+# ../binutils-2.22.52/configure --prefix=/usr/local/gcc-4.7.0-arm-none-eabi --target=arm-none-eabi --build=i686-pc-mingw32 --disable-nls --enable-threads=posix --disable-shared --enable-static --disable-win32-registry --enable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local
+# To configure GCC with exceptions and with POSIX threads.
+# ../gcc-4.7.0/configure --prefix=/usr/local/gcc-4.7.0-arm-none-eabi --target=arm-none-eabi --build=i686-pc-mingw32 --enable-languages=c,c++ --with-newlib --disable-nls --enable-threads=posix --disable-shared --enable-static --disable-fixed-point --disable-win32-registry --enable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local

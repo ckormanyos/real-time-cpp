@@ -1,0 +1,6 @@
+#ifndef _CMATH_2010_02_23_
+  #define _CMATH_2010_02_23_
+
+  #include "impl/cmath_impl.h"
+
+#endif // _CMATH_2010_02_23_
