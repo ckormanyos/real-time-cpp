@@ -1,0 +1,6 @@
+#ifndef _COMPLEX_2012_02_20_
+  #define _COMPLEX_2012_02_20_
+
+  #include "impl/complex_impl.h"
+
+#endif // _COMPLEX_2012_02_20_

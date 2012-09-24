@@ -1,0 +1,6 @@
+#ifndef _ALGORITHM_2010_02_23_
+  #define _ALGORITHM_2010_02_23_
+
+  #include "impl/algorithm_impl.h"
+
+#endif // _ALGORITHM_2010_02_23_

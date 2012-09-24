@@ -1,0 +1,6 @@
+#ifndef _CSTDDEF_2010_02_23_
+  #define _CSTDDEF_2010_02_23_
+
+  #include "impl/cstddef_impl.h"
+
+#endif // _CSTDDEF_2010_02_23_

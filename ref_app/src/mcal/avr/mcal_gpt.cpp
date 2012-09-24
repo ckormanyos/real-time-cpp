@@ -44,9 +44,9 @@ mcal::gpt::value_type mcal::gpt::get_time_elapsed()
   return static_cast<mcal::gpt::value_type>(elapsed.count());
 }
 
-extern "C" void __vector_timer0_cmp_a_irq() __attribute__((signal, used, externally_visible));
+extern "C" void __vector_14() __attribute__((signal));
 
-void __vector_timer0_cmp_a_irq()
+void __vector_14()
 {
   // This interrupt occurs every 128us.
   // Increment the 32-bit system tick by 128.
