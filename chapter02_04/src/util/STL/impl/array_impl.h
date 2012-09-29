@@ -29,23 +29,23 @@
 
       static constexpr size_type static_size = N;
 
-      iterator begin(void) { return elems; }
-      iterator end  (void) { return elems + N; }
+      iterator begin() { return elems; }
+      iterator end  () { return elems + N; }
 
-      const_iterator begin(void) const { return elems; }
-      const_iterator end  (void) const { return elems + N; }
+      const_iterator begin() const { return elems; }
+      const_iterator end  () const { return elems + N; }
 
-      const_iterator cbegin(void) const { return elems; }
-      const_iterator cend  (void) const { return elems + N; }
+      const_iterator cbegin() const { return elems; }
+      const_iterator cend  () const { return elems + N; }
 
-      reverse_iterator rbegin(void) { return reverse_iterator(elems + N); }
-      reverse_iterator rend  (void) { return reverse_iterator(elems); }
+      reverse_iterator rbegin() { return reverse_iterator(elems + N); }
+      reverse_iterator rend  () { return reverse_iterator(elems); }
 
-      const_reverse_iterator rbegin(void) const { return const_reverse_iterator(elems + N); }
-      const_reverse_iterator rend  (void) const { return const_reverse_iterator(elems); }
+      const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + N); }
+      const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
 
-      const_reverse_iterator crbegin(void) const { return const_reverse_iterator(elems + N); }
-      const_reverse_iterator crend  (void) const { return const_reverse_iterator(elems); }
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(elems + N); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
       reference operator[](const size_type i)             { return elems[i]; }
       const_reference operator[](const size_type i) const { return elems[i]; }
@@ -53,15 +53,15 @@
       reference at(const size_type i)             { rangecheck(i); return elems[i]; }
       const_reference at(const size_type i) const { rangecheck(i); return elems[i]; }
 
-      reference front(void)             { return elems[0U]; }
-      const_reference front(void) const { return elems[0U]; }
+      reference front()             { return elems[0U]; }
+      const_reference front() const { return elems[0U]; }
 
-      reference back(void)             { return elems[N - 1U]; }
-      const_reference back(void) const { return elems[N - 1U]; }
+      reference back()             { return elems[N - 1U]; }
+      const_reference back() const { return elems[N - 1U]; }
 
-      static size_type size(void)     { return N; }
-      static bool empty(void)         { return false; }
-      static size_type max_size(void) { return N; }
+      static size_type size()     { return N; }
+      static bool empty()         { return false; }
+      static size_type max_size() { return N; }
 
       template<typename T2>
       void swap(array<T2, N>& y)
@@ -69,10 +69,10 @@
         xalgorithm::xswap_ranges(begin(), end(), y.begin());
       }
 
-      const_pointer data(void) const { return elems; }
-      pointer data(void)             { return elems; }
+      const_pointer data() const { return elems; }
+      pointer data()             { return elems; }
 
-      pointer c_array(void) { return elems; }
+      pointer c_array() { return elems; }
 
       template<typename T2>
       array& operator=(const array<T2, N>& y)

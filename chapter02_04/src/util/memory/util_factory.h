@@ -12,7 +12,7 @@
     public:
       virtual ~factory_product() { }
 
-      virtual void init(void) { }
+      virtual void init() { }
 
     protected:
       factory_product() { }
@@ -28,24 +28,24 @@
       typedef Alloc allocator_type;
 
       template<typename function_type>
-      static pointer_type make(function_type func)
+      static pointer_type make(function_type function)
       {
         pointer_type p = new(allocate()) value_type;
-        func(p);
+        function(p);
         return p;
       }
 
       template<typename function_type,
                typename... parameters>
-      static pointer_type make(function_type func, parameters... params)
+      static pointer_type make(function_type function, parameters... params)
       {
         pointer_type p = new(allocate()) value_type(params...);
-        func(p);
+        function(p);
         return p;
       }
 
     private:
-      static void* allocate(void)
+      static void* allocate()
       {
         return allocator_type().allocate(1U);
       }

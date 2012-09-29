@@ -17,23 +17,23 @@
   namespace std
   {
     template<typename T,
-             typename Traits = std::char_traits<T>,
-             typename Allocator = std::allocator<T> >
+             typename traits_type = std::char_traits<T>,
+             typename alloc = std::allocator<T> >
     class basic_string
     {
     public:
-      typedef std::size_t                           size_type;
-      typedef std::ptrdiff_t                        difference_type;
-      typedef T                                     value_type;
-      typedef typename Allocator::pointer           pointer;
-      typedef typename Allocator::const_pointer     const_pointer;
-      typedef typename Allocator::reference         reference;
-      typedef typename Allocator::const_reference   const_reference;
-      typedef pointer                               iterator;
-      typedef const_pointer                         const_iterator;
-      typedef std::reverse_iterator<iterator>       reverse_iterator;
-      typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-      typedef Allocator                             allocator_type;
+      typedef alloc                                    allocator_type;
+      typedef std::size_t                              size_type;
+      typedef std::ptrdiff_t                           difference_type;
+      typedef T                                        value_type;
+      typedef typename allocator_type::pointer         pointer;
+      typedef typename allocator_type::const_pointer   const_pointer;
+      typedef typename allocator_type::reference       reference;
+      typedef typename allocator_type::const_reference const_reference;
+      typedef pointer                                  iterator;
+      typedef const_pointer                            const_iterator;
+      typedef std::reverse_iterator<iterator>          reverse_iterator;
+      typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
       static constexpr size_type npos = static_cast<size_type>(-1);
 
@@ -59,7 +59,7 @@
 
       basic_string(const_pointer p)
       {
-        const size_type count = Traits::length(p);
+        const size_type count = traits_type::length(p);
         my_first = allocator_type().allocate(count + 1U);
         my_last = my_first + count;
         xalgorithm::xcopy(p, p + count, my_first);
@@ -93,9 +93,9 @@
         *my_last = static_cast<value_type>(0);
       }
 
-      template<class InputIterator>
-      basic_string(InputIterator first,
-                   InputIterator last,
+      template<class input_iterator>
+      basic_string(input_iterator first,
+                   input_iterator last,
                    const allocator_type& a = allocator_type())
       {
         const size_type sz = (size_type) (last - first);
@@ -148,7 +148,7 @@
 
       basic_string& operator=(const_pointer p)
       {
-        const size_type sz = Traits::length(p);
+        const size_type sz = traits_type::length(p);
 
         if(length() != sz)
         {
@@ -184,23 +184,23 @@
         return *this;
       }
 
-      iterator begin(void) { return my_first; }
-      iterator end  (void) { return my_last; }
+      iterator begin() { return my_first; }
+      iterator end  () { return my_last; }
 
-      const_iterator begin(void) const { return my_first; }
-      const_iterator end  (void) const { return my_last; }
+      const_iterator begin() const { return my_first; }
+      const_iterator end  () const { return my_last; }
 
-      const_iterator cbegin(void) const { return my_first; }
-      const_iterator cend  (void) const { return my_last; }
+      const_iterator cbegin() const { return my_first; }
+      const_iterator cend  () const { return my_last; }
 
-      reverse_iterator rbegin(void) { return reverse_iterator(my_last); }
-      reverse_iterator rend  (void) { return reverse_iterator(my_first); }
+      reverse_iterator rbegin() { return reverse_iterator(my_last); }
+      reverse_iterator rend  () { return reverse_iterator(my_first); }
 
-      const_reverse_iterator rbegin(void) const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator rend  (void) const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator rbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator rend  () const { return const_reverse_iterator(my_first); }
 
-      const_reverse_iterator crbegin(void) const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator crend  (void) const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(my_first); }
 
       reference operator[](const size_type i)             { return my_first[i]; }
       const_reference operator[](const size_type i) const { return my_first[i]; }
@@ -208,10 +208,10 @@
       reference at(const size_type i)             { return my_first[i]; }
       const_reference at(const size_type i) const { return my_first[i]; }
 
-      bool empty(void) const { return (my_first == my_last); }
-      size_type length(void) const { return (size_type) (my_last - my_first); }
+      bool empty() const { return (my_first == my_last); }
+      size_type length() const { return (size_type) (my_last - my_first); }
 
-      const_pointer c_str(void) const { return my_first; }
+      const_pointer c_str() const { return my_first; }
 
       allocator_type get_allocator() const { return allocator_type(); }
 

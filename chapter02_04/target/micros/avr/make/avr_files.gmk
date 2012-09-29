@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------------------
+# File list of the AVR files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_TGT)/startup/crt0               \
+             $(PATH_TGT)/startup/crt0_init4         \
+             $(PATH_TGT)/startup/crt1               \
+             $(PATH_TGT)/startup/gcc_patch          \
+             $(PATH_TGT)/startup/int_vect           \
+             $(PATH_APP)/util/STL/impl/memory_impl
+
+FILES_CRT =  $(PATH_TGT)/startup/crt0               \
+             $(PATH_TGT)/startup/crt0_init4         \
+             $(PATH_TGT)/startup/crt1               \
+             $(PATH_TGT)/startup/int_vect

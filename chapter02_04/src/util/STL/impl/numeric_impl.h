@@ -7,16 +7,24 @@
 
   namespace std
   {
-    template<typename InputIterator, typename T>
-    T accumulate(InputIterator first, InputIterator last, T val)
+    template<typename input_iterator, typename T>
+    T accumulate(input_iterator first, input_iterator last, T val)
     {
       return xnumeric::xaccumulate(first, last, val);
     }
 
-    template<typename InputIterator, typename T, typename Function>
-    T accumulate(InputIterator first, InputIterator last, T val, Function func)
+    template<typename input_iterator, typename T, typename function_type>
+    T accumulate(input_iterator first, input_iterator last, T val, function_type function)
     {
-      return xnumeric::xaccumulate(first, last, val, func);
+      return xnumeric::xaccumulate(first, last, val, function);
+    }
+
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename T>
+    inline T inner_product(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, T val)
+    {
+      return xnumeric::xinner_product(first1, last1, first2, val);
     }
   }
 

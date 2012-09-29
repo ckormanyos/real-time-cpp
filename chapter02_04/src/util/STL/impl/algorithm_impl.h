@@ -15,10 +15,10 @@
       return xalgorithm::xmax(a, b);
     }
 
-    template<typename T, typename BinaryPredicate>
-    inline const T& (max)(const T& a, const T& b, BinaryPredicate pred)
+    template<typename T, typename binary_predicate>
+    inline const T& (max)(const T& a, const T& b, binary_predicate predicate)
     {
-      return pred(a, b);
+      return predicate(a, b);
     }
 
     template<typename T>
@@ -27,92 +27,92 @@
       return xalgorithm::xmin(a, b);
     }
 
-    template<typename T, typename BinaryPredicate>
-    inline const T& (min)(const T& a, const T& b, BinaryPredicate pred)
+    template<typename T, typename binary_predicate>
+    inline const T& (min)(const T& a, const T& b, binary_predicate predicate)
     {
-      return pred(a, b);
+      return predicate(a, b);
     }
 
-    template<typename InputIterator, typename OutputIterator>
-    inline OutputIterator copy(InputIterator first, InputIterator last, OutputIterator result)
+    template<typename input_iterator, typename output_iterator>
+    inline output_iterator copy(input_iterator first, input_iterator last, output_iterator result)
     {
       return xalgorithm::xcopy(first, last, result);
     }
 
-    template<typename ForwardIterator, typename T>
-    inline void fill(ForwardIterator first, ForwardIterator last, const T& value)
+    template<typename forward_iterator, typename T>
+    inline void fill(forward_iterator first, forward_iterator last, const T& value)
     {
       xalgorithm::xfill(first, last, value);
     }
 
-    template<typename OutputIterator, typename Size, typename T>
-    inline void fill_n(OutputIterator first, Size n, const T& value)
+    template<typename output_iterator, typename difference_type, typename T>
+    inline void fill_n(output_iterator first, difference_type n, const T& value)
     {
       xalgorithm::xfill(first, first + n, value);
     }
 
-    template<typename InputIterator1, typename InputIterator2>
-    inline bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+    template<typename input_iterator1, typename input_iterator2>
+    inline bool equal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
       return xalgorithm::xequal(first1, last1, first2);
     }
 
-    template<typename Iterator, typename Func>
-    inline bool all_of(Iterator first, Iterator last, Func func)
+    template<typename iterator_type, typename function_type>
+    inline bool all_of(iterator_type first, iterator_type last, function_type function)
     {
-      return xalgorithm::xall_of(first, last, func);
+      return xalgorithm::xall_of(first, last, function);
     }
 
-    template<typename Iterator, typename Func>
-    inline bool any_of(Iterator first, Iterator last, Func func)
+    template<typename iterator_type, typename function_type>
+    inline bool any_of(iterator_type first, iterator_type last, function_type function)
     {
-      return xalgorithm::xany_of(first, last, func);
+      return xalgorithm::xany_of(first, last, function);
     }
 
-    template<typename Iterator, typename Func>
-    inline bool none_of(Iterator first, Iterator last, Func func)
+    template<typename iterator_type, typename function_type>
+    inline bool none_of(iterator_type first, iterator_type last, function_type function)
     {
-      return xalgorithm::xnone_of(first, last, func);
+      return xalgorithm::xnone_of(first, last, function);
     }
 
-    template<typename Iterator, typename Func>
-    inline Func for_each(Iterator first, Iterator last, Func func)
+    template<typename iterator_type, typename function_type>
+    inline function_type for_each(iterator_type first, iterator_type last, function_type function)
     {
-      return xalgorithm::xfor_each(first, last, func);
+      return xalgorithm::xfor_each(first, last, function);
     }
 
-    template<typename InputIterator, typename Predicate>
-    inline InputIterator find_if(InputIterator first, InputIterator last, Predicate pred)
+    template<typename input_iterator, typename predicate_type>
+    inline input_iterator find_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
-      return xalgorithm::xfind_if(first, last, pred);
+      return xalgorithm::xfind_if(first, last, predicate);
     }
 
-    template<typename InputIterator, typename Predicate>
-    inline InputIterator find_if_not(InputIterator first, InputIterator last, Predicate pred)
+    template<typename input_iterator, typename predicate_type>
+    inline input_iterator find_if_not(input_iterator first, input_iterator last, predicate_type predicate)
     {
-      return xalgorithm::xfind_if_not(first, last, pred);
+      return xalgorithm::xfind_if_not(first, last, predicate);
     }
 
-    template<typename InputIterator, typename T>
-    typename iterator_traits<InputIterator>::difference_type count(InputIterator first, InputIterator last, const T& value)
+    template<typename input_iterator, typename T>
+    typename iterator_traits<input_iterator>::difference_type count(input_iterator first, input_iterator last, const T& value)
     {
       return xalgorithm::xcount(first, last, value);
     }
 
-    template<class InputIterator, class Predicate>
-    typename iterator_traits<InputIterator>::difference_type count_if(InputIterator first, InputIterator last, Predicate pred)
+    template<class input_iterator, class predicate_type>
+    typename iterator_traits<input_iterator>::difference_type count_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
-      return xcount_if(first, last, pred);
+      return xcount_if(first, last, predicate);
     }
 
-    template<typename ForwardIterator1, typename ForwardIterator2>
-    inline void iter_swap(ForwardIterator1 left, ForwardIterator2 right)
+    template<typename forward_iterator1, typename forward_iterator2>
+    inline void iter_swap(forward_iterator1 left, forward_iterator2 right)
     {
       xalgorithm::xiter_swap(left, right);
     }
 
-    template<typename ForwardIterator1, typename ForwardIterator2>
-    inline ForwardIterator2 swap_ranges(ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2)
+    template<typename forward_iterator1, typename forward_iterator2>
+    inline forward_iterator2 swap_ranges(forward_iterator1 first1, forward_iterator1 last1, forward_iterator2 first2)
     {
       return xalgorithm::xswap_ranges(first1, last1, first2);
     }

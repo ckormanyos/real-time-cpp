@@ -31,8 +31,8 @@
     template<typename atomic_integral_type>
     friend void std::atomic_store(volatile atomic_integral_type*, atomic_integral_type);
 
-    static void enable_all_interrupts (void) { asm volatile ("sei"); }
-    static void disable_all_interrupts(void) { asm volatile ("cli"); }
+    static void enable_all_interrupts () { asm volatile ("sei"); }
+    static void disable_all_interrupts() { asm volatile ("cli"); }
   };
 
 #endif // _ATOMIC_2012_01_09_H_

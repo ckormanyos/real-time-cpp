@@ -52,8 +52,8 @@
       template<typename X>
       complex(const complex<X>& x) : re(x.real), im(x.imag) { }
 
-      value_type real(void) const { return re; }
-      value_type imag(void) const { return im; }
+      value_type real() const { return re; }
+      value_type imag() const { return im; }
       void real(value_type v) { re = v; }
       void imag(value_type v) { im = v; }
 
@@ -146,8 +146,8 @@
       explicit complex(const complex<double>& d);
       explicit complex(const complex<long double>& ld);
 
-      value_type real(void) const { return re; }
-      value_type imag(void) const { return im; }
+      value_type real() const { return re; }
+      value_type imag() const { return im; }
       void real(value_type v) { re = v; }
       void imag(value_type v) { im = v; }
 
@@ -240,8 +240,8 @@
       explicit complex(const complex<float>& d) : re(value_type( d.real())), im(value_type( d.imag())) { }
       explicit complex(const complex<long double>& ld);
 
-      value_type real(void) const { return re; }
-      value_type imag(void) const { return im; }
+      value_type real() const { return re; }
+      value_type imag() const { return im; }
       void real(value_type v) { re = v; }
       void imag(value_type v) { im = v; }
 
@@ -334,8 +334,8 @@
       explicit complex(const complex<float>&  f) : re(value_type(f.real())), im(value_type(f.imag())) { }
       explicit complex(const complex<double>& d) : re(value_type(d.real())), im(value_type(d.imag())) { }
 
-      value_type real(void) const { return re; }
-      value_type imag(void) const { return im; }
+      value_type real() const { return re; }
+      value_type imag() const { return im; }
       void real(value_type v) { re = v; }
       void imag(value_type v) { im = v; }
 

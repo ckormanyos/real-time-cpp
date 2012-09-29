@@ -11,8 +11,8 @@
 
   namespace xallocator
   {
-    template<typename Iterator, typename Allocator>
-    inline void xdestroy_range(Iterator first, Iterator last, Allocator a)
+    template<typename iterator_type, typename allocator_type>
+    inline void xdestroy_range(iterator_type first, iterator_type last, allocator_type a)
     {
       while(first != last)
       {
@@ -21,8 +21,8 @@
       }
     }
 
-    template<typename Iterator, typename Allocator>
-    inline void xdeallocate_range(Iterator first, Iterator last, Allocator a)
+    template<typename iterator_type, typename allocator_type>
+    inline void xdeallocate_range(iterator_type first, iterator_type last, allocator_type a)
     {
       a.deallocate(first, (std::size_t) (last - first));
     }

@@ -30,12 +30,12 @@
       }
 
       pointer operator->() const { return my_ptr(); }
-      pointer get(void) { return my_ptr(); }
+      pointer get() { return my_ptr(); }
 
     private:
       std::uint8_t my_buf[sizeof(T)];
 
-      pointer my_ptr(void) const
+      pointer my_ptr() const
       {
         return reinterpret_cast<pointer>(const_cast<void*>(static_cast<const void*>(my_buf)));
       }

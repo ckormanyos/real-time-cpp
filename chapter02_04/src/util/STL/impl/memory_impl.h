@@ -4,10 +4,11 @@
   #include "cstddef_impl.h"
   #include "cstdint_impl.h"
 
-  // Default placement versions of operator new.
+  // Provide the default placement versions of operator new.
   inline void* operator new  (size_t, void* my_p) throw() { return my_p; }
   inline void* operator new[](size_t, void* my_p) throw() { return my_p; }
 
+  // Implement the standard allocator (std::allocator).
   namespace std
   {
     class allocator_base
@@ -23,9 +24,6 @@
 
       // The allocator's memory allocation.
       static void* do_allocate(const size_type size);
-
-      static std::uint8_t  buffer[buffer_size];
-      static std::uint8_t* get_ptr;
     };
 
     inline bool operator==(const allocator_base&,
@@ -76,7 +74,7 @@
       template<class U> 
       struct rebind { typedef allocator<U> other; };
 
-      size_type max_size(void) const throw()
+      size_type max_size() const throw()
       {
         return buffer_size / sizeof(value_type);
       }

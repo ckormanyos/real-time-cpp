@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION = 4.6.2
+GCC_TARGET  = avr
+
+TGTFLAGS    = -mmcu=atmega328p -I$(PATH_APP)/util/STL -fsigned-char
+AFLAGS      = -mmcu=atmega328p -x assembler -fno-use-cxa-atexit
+LFLAGS_WL   =
+
+# To configure GMP
+# ../gmp-5.0.5/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static --enable-cxx CPPFLAGS="-fexceptions"
+# To configure MPFR
+# ../mpfr-3.1.1/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static --with-gmp=/usr/local
+# To configure MPC
+# ../mpc-0.9/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static --with-gmp=/usr/local --with-mpfr=/usr/local
+# To configure PPL
+# ../ppl-0.12.1/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static CPPFLAGS="-fexceptions" --with-gmp=/usr/local
+
+# To configure binutils.
+# ../binutils-2.22/configure --prefix=/usr/local/gcc-4.6.2-avr-unknown-elf --target=avr-unknown-elf --build=i686-pc-mingw32 --disable-__cxa_atexit --disable-nls --disable-threads --disable-shared --enable-static --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local
+
+# To copy the newlib sources to the GCC source tree.
+# cp -r newlib libgloss ../gcc-4.6.2
+
+# To configure GCC.
+# ../gcc-4.6.2/configure --prefix=/usr/local/gcc-4.6.2-avr-unknown-elf --target=avr-unknown-elf --build=i686-pc-mingw32 --enable-languages=c,c++ --with-newlib --disable-__cxa_atexit --disable-nls --disable-threads --disable-shared --enable-static --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local

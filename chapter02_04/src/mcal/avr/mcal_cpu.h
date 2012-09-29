@@ -5,7 +5,7 @@
   {
     namespace cpu
     {
-      inline void nop(void) { asm volatile("nop"); }
+      inline void nop() { asm volatile("nop"); }
     }
   }
 

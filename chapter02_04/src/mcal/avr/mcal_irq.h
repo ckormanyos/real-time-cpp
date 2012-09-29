@@ -5,8 +5,12 @@
   {
     namespace irq
     {
-      inline void enable_all (void) { asm volatile ("sei"); }
-      inline void disable_all(void) { asm volatile ("cli"); }
+      typedef void config_type;
+
+      void init(const config_type*);
+
+      inline void enable_all () { asm volatile ("sei"); }
+      inline void disable_all() { asm volatile ("cli"); }
     }
   }
 

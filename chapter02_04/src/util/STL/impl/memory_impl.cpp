@@ -1,15 +1,15 @@
 #include "memory_impl.h"
 
-std::uint8_t  std::allocator_base::buffer[buffer_size];
-std::uint8_t* std::allocator_base::get_ptr = buffer;
-
 void* std::allocator_base::do_allocate(const size_type size)
 {
+  static std::uint8_t  buffer[buffer_size];
+  static std::uint8_t* get_ptr = buffer;
+
   // Does the allocation wraparound the buffer?
-  const bool is_wraparound = ((get_ptr + size) >= (buffer + buffer_size));
+  const bool is_wrap = ((get_ptr + size) >= (buffer + buffer_size));
 
   // Get the newly allocated pointer.
-  std::uint8_t* p = (is_wraparound ? buffer : get_ptr);
+  std::uint8_t* p = (is_wrap ? buffer : get_ptr);
 
   // Increment the pointer for next time.
   get_ptr = p + size;

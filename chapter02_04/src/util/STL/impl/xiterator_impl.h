@@ -17,15 +17,15 @@
     class xbidirectional_iterator_tag : public xforward_iterator_tag {};
     class xrandom_access_iterator_tag : public xbidirectional_iterator_tag {};
 
-    template<typename Iterator>
+    template<typename iterator_type>
     class xiterator_traits
     {
     public:
-      typedef typename Iterator::difference_type   difference_type;
-      typedef typename Iterator::value_type        value_type;
-      typedef typename Iterator::pointer           pointer;
-      typedef typename Iterator::reference         reference;
-      typedef typename Iterator::iterator_category iterator_category;
+      typedef typename iterator_type::difference_type   difference_type;
+      typedef typename iterator_type::value_type        value_type;
+      typedef typename iterator_type::pointer           pointer;
+      typedef typename iterator_type::reference         reference;
+      typedef typename iterator_type::iterator_category iterator_category;
     };
 
     template<typename T>

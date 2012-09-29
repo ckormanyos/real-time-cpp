@@ -40,7 +40,7 @@
     class numeric_limits_base
     {
     public:
-      static constexpr long long LONG_LONG_MAX = 0x7FFFFFFFFFFFFFFFLL;
+      static const long long MY_LONG_LONG_MAX = 0x7FFFFFFFFFFFFFFFLL;
 
       // These are designed to produce a linker error when using float.
       static float my_value_that_needs_to_be_provided_float_infinity();
@@ -54,44 +54,44 @@
       static double my_value_that_needs_to_be_provided_double_signaling_NaN();
       static double my_value_that_needs_to_be_provided_double_denorm_min();
 
-      static constexpr bool is_specialized = false;
-      static constexpr int digits = 0;
-      static constexpr int digits10 = 0;
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = false;
-      static constexpr bool is_exact = false;
-      static constexpr int radix = 0;
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = false;
-      static constexpr bool is_modulo = false;
-      static constexpr bool traps = false;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = float_round_style::round_toward_zero;
+      static const bool is_specialized = false;
+      static const int digits = 0;
+      static const int digits10 = 0;
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = false;
+      static const bool is_exact = false;
+      static const int radix = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = false;
+      static const bool is_modulo = false;
+      static const bool traps = false;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     template<typename T>
     class numeric_limits : public numeric_limits_base
     {
     public:
-      static T min(void) throw()           { return static_cast<T>(0); }
-      static T max(void) throw()           { return static_cast<T>(0); }
-      static T lowest(void) throw()        { return static_cast<T>(0); }
-      static T epsilon(void) throw()       { return static_cast<T>(0); }
-      static T round_error(void) throw()   { return static_cast<T>(0); }
-      static T infinity(void) throw()      { return static_cast<T>(0); }
-      static T quiet_NaN(void) throw()     { return static_cast<T>(0); }
-      static T signaling_NaN(void) throw() { return static_cast<T>(0); }
-      static T denorm_min(void) throw()    { return static_cast<T>(0); }
+      static T min() throw()           { return static_cast<T>(0); }
+      static T max() throw()           { return static_cast<T>(0); }
+      static T lowest() throw()        { return static_cast<T>(0); }
+      static T epsilon() throw()       { return static_cast<T>(0); }
+      static T round_error() throw()   { return static_cast<T>(0); }
+      static T infinity() throw()      { return static_cast<T>(0); }
+      static T quiet_NaN() throw()     { return static_cast<T>(0); }
+      static T signaling_NaN() throw() { return static_cast<T>(0); }
+      static T denorm_min() throw()    { return static_cast<T>(0); }
     };
 
     // Specialization for bool.
@@ -99,46 +99,46 @@
     class numeric_limits<bool>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
-      static bool min(void) throw()    { return false; }
-      static bool max(void) throw()    { return true; }
-      static bool lowest(void) throw() { return min(); }
+      static bool min() throw()    { return false; }
+      static bool max() throw()    { return true; }
+      static bool lowest() throw() { return min(); }
 
-      static constexpr int digits = 1;
-      static constexpr int digits10 = 0;
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = 1;
+      static const int digits10 = 0;
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
-      static bool epsilon(void) throw()     { return false; }
-      static bool round_error(void) throw() { return false; }
+      static bool epsilon() throw()     { return false; }
+      static bool round_error() throw() { return false; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
 
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
-      static bool infinity(void) throw()      { return false; }
-      static bool quiet_NaN(void) throw()     { return false; }
-      static bool signaling_NaN(void) throw() { return false; }
-      static bool denorm_min(void) throw()    { return false; }
+      static bool infinity() throw()      { return false; }
+      static bool quiet_NaN() throw()     { return false; }
+      static bool signaling_NaN() throw() { return false; }
+      static bool denorm_min() throw()    { return false; }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = false;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = false;
 
-      static constexpr bool traps = true;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool traps = true;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for char.
@@ -146,44 +146,44 @@
     class numeric_limits<char>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static char min() throw()    { return CHAR_MIN; }
       static char max() throw()    { return CHAR_MAX; }
       static char lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(char);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(char);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = CONCEPT_FROM_GLIBCXX_IS_SIGNED(char);
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(char);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(char);
+      static const int max_digits10 = 0;
+      static const bool is_signed = CONCEPT_FROM_GLIBCXX_IS_SIGNED(char);
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static char epsilon() throw()     { return 0; }
       static char round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static char infinity() throw()      { return char(); }
       static char quiet_NaN() throw()     { return char(); }
       static char signaling_NaN() throw() { return char(); }
       static char denorm_min() throw()    { return static_cast<char>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for signed char.
@@ -191,45 +191,45 @@
     class numeric_limits<signed char>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static signed char min() throw()    { return -SCHAR_MAX - 1; }
       static signed char max() throw()    { return  SCHAR_MAX; }
       static signed char lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(signed char);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(signed char);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(signed char);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(signed char);
+      static const int max_digits10 = 0;
+      static const bool is_signed = true;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static signed char epsilon() throw()     { return 0; }
       static signed char round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
 
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static signed char infinity() throw()      { return static_cast<signed char>(0); }
       static signed char quiet_NaN() throw()     { return static_cast<signed char>(0); }
       static signed char signaling_NaN() throw() { return static_cast<signed char>(0); }
       static signed char denorm_min() throw()    { return static_cast<signed char>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for unsigned char.
@@ -237,46 +237,46 @@
     class numeric_limits<unsigned char>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static unsigned char min() throw()    { return 0; }
       static unsigned char max() throw()    { return (SCHAR_MAX * 2U) + 1; }
       static unsigned char lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned char);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned char);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned char);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned char);
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static unsigned char epsilon() throw()     { return 0; }
       static unsigned char round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
 
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static unsigned char infinity() throw()      { return static_cast<unsigned char>(0); }
       static unsigned char quiet_NaN() throw()     { return static_cast<unsigned char>(0); }
       static unsigned char signaling_NaN() throw() { return static_cast<unsigned char>(0); }
       static unsigned char denorm_min() throw()    { return static_cast<unsigned char>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
 
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
 
@@ -285,45 +285,45 @@
     class numeric_limits<short>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static short min() throw()    { return -SHRT_MAX - 1; }
       static short max() throw()    { return  SHRT_MAX; }
       static short lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(short);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(short);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(short);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(short);
+      static const int max_digits10 = 0;
+      static const bool is_signed = true;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static short epsilon() throw()     { return 0; }
       static short round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
 
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static short infinity() throw()      { return short(); }
       static short quiet_NaN() throw()     { return short(); }
       static short signaling_NaN() throw() { return short(); }
       static short denorm_min() throw()    { return short(); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for unsigned short.
@@ -331,44 +331,44 @@
     class numeric_limits<unsigned short>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static unsigned short min() throw()    { return 0; }
       static unsigned short max() throw()    { return (SHRT_MAX * 2U) + 1; }
       static unsigned short lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned short);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned short);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned short);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned short);
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static unsigned short epsilon() throw()     { return 0; }
       static unsigned short round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static unsigned short infinity() throw()      { return static_cast<unsigned short>(0); }
       static unsigned short quiet_NaN() throw()     { return static_cast<unsigned short>(0); }
       static unsigned short signaling_NaN() throw() { return static_cast<unsigned short>(0); }
       static unsigned short denorm_min() throw()    { return static_cast<unsigned short>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for int.
@@ -376,44 +376,44 @@
     class numeric_limits<int>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static int min() throw()    { return -INT_MAX - 1; }
       static int max() throw()    { return INT_MAX; }
       static int lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(int);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(int);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(int);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(int);
+      static const int max_digits10 = 0;
+      static const bool is_signed = true;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static int epsilon() throw()     { return 0; }
       static int round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static int infinity() throw()      { return static_cast<int>(0); }
       static int quiet_NaN() throw()     { return static_cast<int>(0); }
       static int signaling_NaN() throw() { return static_cast<int>(0); }
       static int denorm_min() throw()    { return static_cast<int>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for unsigned int.
@@ -421,45 +421,45 @@
     class numeric_limits<unsigned int>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static unsigned int min() throw()    { return 0; }
       static unsigned int max() throw()    { return (INT_MAX * 2U) + 1; }
       static unsigned int lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned int);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned int);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned int);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned int);
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static unsigned int epsilon() throw()     { return 0; }
       static unsigned int round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
 
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static unsigned int infinity() throw()      { return static_cast<unsigned int>(0); }
       static unsigned int quiet_NaN() throw()     { return static_cast<unsigned int>(0); }
       static unsigned int signaling_NaN() throw() { return static_cast<unsigned int>(0); }
       static unsigned int denorm_min() throw()    { return static_cast<unsigned int>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for long.
@@ -467,44 +467,44 @@
     class numeric_limits<long>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static long min() throw()    { return -LONG_MAX - 1; }
       static long max() throw()    { return LONG_MAX; }
       static long lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(long);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(long);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(long);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(long);
+      static const int max_digits10 = 0;
+      static const bool is_signed = true;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static long epsilon() throw()     { return 0; }
       static long round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static long infinity() throw()      { return static_cast<long>(0); }
       static long quiet_NaN() throw()     { return static_cast<long>(0); }
       static long signaling_NaN() throw() { return static_cast<long>(0); }
       static long denorm_min() throw()    { return static_cast<long>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for unsigned long.
@@ -512,44 +512,44 @@
     class numeric_limits<unsigned long>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static unsigned long min() throw()    { return 0; }
       static unsigned long max() throw()    { return (LONG_MAX * 2UL) + 1; }
       static unsigned long lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned long);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned long);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned long);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned long);
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static unsigned long epsilon() throw()     { return 0; }
       static unsigned long round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static unsigned long infinity() throw()      { return static_cast<unsigned long>(0); }
       static unsigned long quiet_NaN() throw()     { return static_cast<unsigned long>(0); }
       static unsigned long signaling_NaN() throw() { return static_cast<unsigned long>(0); }
       static unsigned long denorm_min() throw()    { return static_cast<unsigned long>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for long long.
@@ -557,44 +557,44 @@
     class numeric_limits<long long>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
-      static long long min() throw()    { return -numeric_limits_base::LONG_LONG_MAX - 1; }
-      static long long max() throw()    { return  numeric_limits_base::LONG_LONG_MAX; }
+      static long long min() throw()    { return -numeric_limits_base::MY_LONG_LONG_MAX - 1; }
+      static long long max() throw()    { return  numeric_limits_base::MY_LONG_LONG_MAX; }
       static long long lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(long long);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(long long);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(long long);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(long long);
+      static const int max_digits10 = 0;
+      static const bool is_signed = true;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static long long epsilon() throw()     { return 0; }
       static long long round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static long long infinity() throw()      { return static_cast<long long>(0); }
       static long long quiet_NaN() throw()     { return static_cast<long long>(0); }
       static long long signaling_NaN() throw() { return static_cast<long long>(0); }
       static long long denorm_min() throw()    { return static_cast<long long>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for unsigned long long.
@@ -602,44 +602,44 @@
     class numeric_limits<unsigned long long>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static unsigned long long min() throw()    { return 0; }
-      static unsigned long long max() throw()    { return (numeric_limits_base::LONG_LONG_MAX * 2ULL) + 1; }
+      static unsigned long long max() throw()    { return (numeric_limits_base::MY_LONG_LONG_MAX * 2ULL) + 1; }
       static unsigned long long lowest() throw() { return min(); }
 
-      static constexpr int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned long long);
-      static constexpr int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned long long);
-      static constexpr int max_digits10 = 0;
-      static constexpr bool is_signed = false;
-      static constexpr bool is_integer = true;
-      static constexpr bool is_exact = true;
-      static constexpr int radix = 2;
+      static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned long long);
+      static const int digits10 = CONCEPT_FROM_GLIBCXX_DIGITS10(unsigned long long);
+      static const int max_digits10 = 0;
+      static const bool is_signed = false;
+      static const bool is_integer = true;
+      static const bool is_exact = true;
+      static const int radix = 2;
 
       static unsigned long long epsilon() throw()     { return 0; }
       static unsigned long long round_error() throw() { return 0; }
 
-      static constexpr int min_exponent = 0;
-      static constexpr int min_exponent10 = 0;
-      static constexpr int max_exponent = 0;
-      static constexpr int max_exponent10 = 0;
-      static constexpr bool has_infinity = false;
-      static constexpr bool has_quiet_NaN = false;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr float_denorm_style has_denorm = denorm_absent;
-      static constexpr bool has_denorm_loss = false;
+      static const int min_exponent = 0;
+      static const int min_exponent10 = 0;
+      static const int max_exponent = 0;
+      static const int max_exponent10 = 0;
+      static const bool has_infinity = false;
+      static const bool has_quiet_NaN = false;
+      static const bool has_signaling_NaN = false;
+      static const float_denorm_style has_denorm = denorm_absent;
+      static const bool has_denorm_loss = false;
 
       static unsigned long long infinity() throw()      { return static_cast<unsigned long long>(0); }
       static unsigned long long quiet_NaN() throw()     { return static_cast<unsigned long long>(0); }
       static unsigned long long signaling_NaN() throw() { return static_cast<unsigned long long>(0); }
       static unsigned long long denorm_min() throw()    { return static_cast<unsigned long long>(0); }
 
-      static constexpr bool is_iec559 = false;
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = true;
-      static constexpr bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_toward_zero;
+      static const bool is_iec559 = false;
+      static const bool is_bounded = true;
+      static const bool is_modulo = true;
+      static const bool traps = CONCEPT_FROM_GLIBCXX_INTEGRAL_TRAPS;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_toward_zero;
     };
 
     // Specialization for float.
@@ -647,46 +647,46 @@
     class numeric_limits<float>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static float min() throw()    { return  FLT_MIN; }
       static float max() throw()    { return  FLT_MAX; }
       static float lowest() throw() { return -FLT_MAX; }
 
-      static constexpr int digits = FLT_MANT_DIG;
-      static constexpr int digits10 = FLT_DIG;
-      static constexpr int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(FLT_MANT_DIG);
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = false;
-      static constexpr bool is_exact = false;
-      static constexpr int radix = FLT_RADIX;
+      static const int digits = FLT_MANT_DIG;
+      static const int digits10 = FLT_DIG;
+      static const int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(FLT_MANT_DIG);
+      static const bool is_signed = true;
+      static const bool is_integer = false;
+      static const bool is_exact = false;
+      static const int radix = FLT_RADIX;
 
       static float epsilon() throw()     { return FLT_EPSILON; }
       static float round_error() throw() { return 0.5F; }
 
-      static constexpr int min_exponent = FLT_MIN_EXP;
-      static constexpr int min_exponent10 = FLT_MIN_10_EXP;
-      static constexpr int max_exponent = FLT_MAX_EXP;
-      static constexpr int max_exponent10 = FLT_MAX_10_EXP;
+      static const int min_exponent = FLT_MIN_EXP;
+      static const int min_exponent10 = FLT_MIN_10_EXP;
+      static const int max_exponent = FLT_MAX_EXP;
+      static const int max_exponent10 = FLT_MAX_10_EXP;
 
-      static constexpr bool has_infinity = true;
-      static constexpr bool has_quiet_NaN = true;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr bool has_denorm = true;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = true;
+      static const bool has_quiet_NaN = true;
+      static const bool has_signaling_NaN = false;
+      static const bool has_denorm = true;
+      static const bool has_denorm_loss = false;
 
       static float infinity() throw()      { return numeric_limits_base::my_value_that_needs_to_be_provided_float_infinity(); }
       static float quiet_NaN() throw()     { return numeric_limits_base::my_value_that_needs_to_be_provided_float_quiet_NaN(); }
       static float signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_float_signaling_NaN(); }
       static float denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_float_denorm_min(); }
 
-      static constexpr bool is_iec559 = ((has_infinity && has_quiet_NaN) && (has_denorm == denorm_present));
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = false;
+      static const bool is_iec559 = ((has_infinity && has_quiet_NaN) && (has_denorm == denorm_present));
+      static const bool is_bounded = true;
+      static const bool is_modulo = false;
 
-      static constexpr bool traps = false;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_to_nearest;
+      static const bool traps = false;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_to_nearest;
     };
 
     // Specialization for double.
@@ -694,46 +694,46 @@
     class numeric_limits<double>
     {
     public:
-      static constexpr bool is_specialized = true;
+      static const bool is_specialized = true;
 
       static double min() throw()    { return  DBL_MIN; }
       static double max() throw()    { return  DBL_MAX; }
       static double lowest() throw() { return -DBL_MAX; }
 
-      static constexpr int digits = DBL_MANT_DIG;
-      static constexpr int digits10 = DBL_DIG;
-      static constexpr int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(DBL_MANT_DIG);
-      static constexpr bool is_signed = true;
-      static constexpr bool is_integer = false;
-      static constexpr bool is_exact = false;
-      static constexpr int radix = 2; // DBL_RADIX;
+      static const int digits = DBL_MANT_DIG;
+      static const int digits10 = DBL_DIG;
+      static const int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(DBL_MANT_DIG);
+      static const bool is_signed = true;
+      static const bool is_integer = false;
+      static const bool is_exact = false;
+      static const int radix = 2; // DBL_RADIX;
 
       static double epsilon() throw()     { return DBL_EPSILON; }
       static double round_error() throw() { return 0.5; }
 
-      static constexpr int min_exponent = DBL_MIN_EXP;
-      static constexpr int min_exponent10 = DBL_MIN_10_EXP;
-      static constexpr int max_exponent = DBL_MAX_EXP;
-      static constexpr int max_exponent10 = DBL_MAX_10_EXP;
+      static const int min_exponent = DBL_MIN_EXP;
+      static const int min_exponent10 = DBL_MIN_10_EXP;
+      static const int max_exponent = DBL_MAX_EXP;
+      static const int max_exponent10 = DBL_MAX_10_EXP;
 
-      static constexpr bool has_infinity = true;
-      static constexpr bool has_quiet_NaN = true;
-      static constexpr bool has_signaling_NaN = false;
-      static constexpr bool has_denorm = true;
-      static constexpr bool has_denorm_loss = false;
+      static const bool has_infinity = true;
+      static const bool has_quiet_NaN = true;
+      static const bool has_signaling_NaN = false;
+      static const bool has_denorm = true;
+      static const bool has_denorm_loss = false;
 
       static double infinity() throw()      { return numeric_limits_base::my_value_that_needs_to_be_provided_double_infinity(); }
       static double quiet_NaN() throw()     { return numeric_limits_base::my_value_that_needs_to_be_provided_double_quiet_NaN(); }
       static double signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_double_signaling_NaN(); }
       static double denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_double_denorm_min(); }
 
-      static constexpr bool is_iec559 = false; // double is only four bytes for AVR!
-      static constexpr bool is_bounded = true;
-      static constexpr bool is_modulo = false;
+      static const bool is_iec559 = false; // double is only four bytes for AVR!
+      static const bool is_bounded = true;
+      static const bool is_modulo = false;
 
-      static constexpr bool traps = false;
-      static constexpr bool tinyness_before = false;
-      static constexpr float_round_style round_style = round_to_nearest;
+      static const bool traps = false;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_to_nearest;
     };
   }
 

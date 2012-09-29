@@ -6,36 +6,36 @@
   namespace xnumeric
   {
     // Compute the sum of the elements in the range [first, last).
-    template<typename InputIterator, typename value_type>
-    inline value_type xaccumulate(InputIterator first, InputIterator last, value_type val)
+    template<typename input_iterator, typename value_type>
+    inline value_type xaccumulate(input_iterator first, input_iterator last, value_type val)
     {
       for( ; first != last; ++first)
       {
-        val = (value_type) (val + *first);
+        val += *first;
       }
 
       return val;
     }
 
-    // Compute the sum of the elements in the range [first, last) using func.
-    template<typename InputIterator, typename value_type, typename Function>
-    inline value_type xaccumulate(InputIterator first, InputIterator last, value_type val, Function func)
+    // Compute the sum of the elements in the range [first, last) using function.
+    template<typename input_iterator, typename value_type, typename function_type>
+    inline value_type xaccumulate(input_iterator first, input_iterator last, value_type val, function_type function)
     {
       for( ; first != last; ++first)
       {
-        val = func(val, *first);
+        val = function(val, *first);
       }
       return val;
     }
 
-    template<typename InputIterator1,
-             typename InputIterator2,
+    template<typename input_iterator1,
+             typename input_iterator2,
              typename value_type>
-    inline value_type xinner_product(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, value_type val)
+    inline value_type xinner_product(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, value_type val)
     {
       for( ; first1 != last1; ++first1, ++first2)
       {
-        val = (value_type) (val + (*first1 * (*first2)));
+        val += *first1 * (*first2);
       }
       return val;
     }

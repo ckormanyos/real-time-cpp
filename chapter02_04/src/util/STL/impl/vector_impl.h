@@ -12,22 +12,22 @@
   namespace std
   {
     template<typename T,
-             typename Allocator = std::allocator<T> >
+             typename alloc = std::allocator<T> >
     class vector
     {
     public:
-      typedef std::size_t                           size_type;
-      typedef std::ptrdiff_t                        difference_type;
-      typedef T                                     value_type;
-      typedef typename Allocator::pointer           pointer;
-      typedef typename Allocator::const_pointer     const_pointer;
-      typedef typename Allocator::reference         reference;
-      typedef typename Allocator::const_reference   const_reference;
-      typedef pointer                               iterator;
-      typedef const_pointer                         const_iterator;
-      typedef std::reverse_iterator<iterator>       reverse_iterator;
-      typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-      typedef Allocator                             allocator_type;
+      typedef alloc                                    allocator_type;
+      typedef std::size_t                              size_type;
+      typedef std::ptrdiff_t                           difference_type;
+      typedef T                                        value_type;
+      typedef typename allocator_type::pointer         pointer;
+      typedef typename allocator_type::const_pointer   const_pointer;
+      typedef typename allocator_type::reference       reference;
+      typedef typename allocator_type::const_reference const_reference;
+      typedef pointer                                  iterator;
+      typedef const_pointer                            const_iterator;
+      typedef std::reverse_iterator<iterator>          reverse_iterator;
+      typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
       vector() : my_first(iterator(0U)),
                  my_last (iterator(0U)),
@@ -56,9 +56,9 @@
         xalgorithm::xfill(my_first, my_last, value);
       }
 
-      template<class InputIterator>
-      vector(InputIterator first,
-             InputIterator last,
+      template<class input_iterator>
+      vector(input_iterator first,
+             input_iterator last,
              const allocator_type& a = allocator_type()) : my_first(a.allocate(last - first)),
                                                            my_last (my_first + (last - first)),
                                                            my_end  (my_last)
@@ -121,42 +121,42 @@
         return *this;
       }
 
-      iterator begin(void) { return my_first; }
-      iterator end  (void) { return my_last; }
+      iterator begin() { return my_first; }
+      iterator end  () { return my_last; }
 
-      const_iterator begin(void) const { return my_first; }
-      const_iterator end  (void) const { return my_last; }
+      const_iterator begin() const { return my_first; }
+      const_iterator end  () const { return my_last; }
 
-      const_iterator cbegin(void) const { return my_first; }
-      const_iterator cend  (void) const { return my_last; }
+      const_iterator cbegin() const { return my_first; }
+      const_iterator cend  () const { return my_last; }
 
-      reverse_iterator rbegin(void) { return reverse_iterator(my_last); }
-      reverse_iterator rend  (void) { return reverse_iterator(my_first); }
+      reverse_iterator rbegin() { return reverse_iterator(my_last); }
+      reverse_iterator rend  () { return reverse_iterator(my_first); }
 
-      const_reverse_iterator rbegin(void) const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator rend  (void) const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator rbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator rend  () const { return const_reverse_iterator(my_first); }
 
-      const_reverse_iterator crbegin(void) const { return const_reverse_iterator(my_last); }
-      const_reverse_iterator crend  (void) const { return const_reverse_iterator(my_first); }
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(my_first); }
 
       reference       operator[](const size_type i)       { return my_first[i]; }
       const_reference operator[](const size_type i) const { return my_first[i]; }
 
-      const_pointer data(void) const { return my_first; }
-      pointer       data(void)       { return my_first; }
+      const_pointer data() const { return my_first; }
+      pointer       data()       { return my_first; }
 
       reference       at(const size_type i)       { return my_first[i]; }
       const_reference at(const size_type i) const { return my_first[i]; }
 
-      reference       front(void)       { return *my_first; }
-      const_reference front(void) const { return *my_first; }
+      reference       front()       { return *my_first; }
+      const_reference front() const { return *my_first; }
 
-      reference       back(void)       { return *(my_last - 1U); }
-      const_reference back(void) const { return *(my_last - 1U); }
+      reference       back()       { return *(my_last - 1U); }
+      const_reference back() const { return *(my_last - 1U); }
 
-      bool empty(void) const { return (my_first == my_last); }
-      size_type size(void) const { return (size_type) (my_last - my_first); }
-      size_type capacity(void) const { return (size_type) (my_end - my_first); }
+      bool empty() const { return (my_first == my_last); }
+      size_type size() const { return (size_type) (my_last - my_first); }
+      size_type capacity() const { return (size_type) (my_end - my_first); }
 
       void reserve(size_type count)
       {
@@ -200,8 +200,8 @@
         xalgorithm::xfill(my_first, my_last, value);
       }
 
-      template<typename InputIterator>
-      void assign(InputIterator first, InputIterator last)
+      template<typename input_iterator>
+      void assign(input_iterator first, input_iterator last)
       {
         resize((size_type) (last - first));
         xalgorithm::xcopy(first, last, my_first);
@@ -221,7 +221,7 @@
         ++my_last;
       }
 
-      void clear(void)
+      void clear()
       {
         xallocator::xdestroy_range(my_first, my_last, allocator_type());
         xallocator::xdeallocate_range(my_first, my_last, allocator_type());
@@ -233,7 +233,7 @@
       iterator my_last;  // end()
       iterator my_end;   // capacity()
 
-      static allocator_type get_allocator(void) { return allocator_type(); }
+      static allocator_type get_allocator() { return allocator_type(); }
     };
   }
 

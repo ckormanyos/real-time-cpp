@@ -8,14 +8,12 @@
     namespace gpt
     {
       typedef void          config_type;
-      typedef std::uint16_t value_type;
+      typedef std::uint32_t value_type;
 
-      void init(const config_type* config);
+      void init(const config_type*);
 
-      value_type get_time_elapsed(void);
-
-      template<typename T>
-      inline T my_msec(const T& t) { return static_cast<T>(static_cast<T>(2UL) * t); }
+      // Elapsed time in microseconds.
+      value_type get_time_elapsed();
     }
   }
 

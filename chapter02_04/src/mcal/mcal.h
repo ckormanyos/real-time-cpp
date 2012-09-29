@@ -9,7 +9,7 @@
 
   namespace mcal
   {
-    void init(void);
+    void init();
   }
 
 #endif // _MCAL_2011_10_20_H_

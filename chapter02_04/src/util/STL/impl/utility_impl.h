@@ -37,7 +37,7 @@
     };
 
     template<typename T1, typename T2>
-    class tuple_size<pair<T1, T2> >
+    class tuple_size<std::pair<T1, T2> >
     {
     public:
       static const unsigned int value = 2;

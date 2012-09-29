@@ -5,21 +5,22 @@
 
   namespace util
   {
-    namespace noncopyable_space // protection from unintended ADL
+    class noncopyable
     {
-      class noncopyable
-      {
-      protected:
-        noncopyable() {}
-        ~noncopyable() {}
+    protected:
+      noncopyable() {}
+      ~noncopyable() {}
 
-     private:  // emphasize the following members are private
-        noncopyable( const noncopyable& );
-        const noncopyable& operator=( const noncopyable& );
-      };
-    }
-
-    typedef noncopyable_space::noncopyable noncopyable;
+   // Emphasize: The following members are private.
+   private:
+#if defined(_MSC_VER) && (_MSC_VER <= 1600)
+      noncopyable(const noncopyable&);
+      const noncopyable& operator=(const noncopyable&);
+#else
+      noncopyable(const noncopyable&) = delete;
+      const noncopyable& operator=(const noncopyable&) = delete;
+#endif
+    };
   }
 
 #endif // _UTIL_NONCOPYABLE_2008_12_16_H_

@@ -1,50 +1,95 @@
+#include <atomic>
+#include <chrono>
 #include <mcal_gpt.h>
+
 #include <mcal_reg_access.h>
-#include <util/utility/util_two_part_data_manipulation.h>
 
 namespace
 {
   // The one (and only one) system tick.
   volatile mcal::gpt::value_type system_tick;
+
+  mcal::gpt::value_type consistent_microsecond_tick()
+  {
+    // Return the system tick using a multiple read to ensure
+    // data consistency of the high-byte of the system tick.
+
+    // Do the first read of the timer0 counter register.
+    const std::uint8_t tim0_cnt_0 = mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::tcnt0>::reg_get();
+
+    // Read the system tick.
+    const mcal::gpt::value_type sys_tick_0 = system_tick;
+
+    // Do the second read of the timer0 counter register.
+    const std::uint8_t tim0_cnt_1 = mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::tcnt0>::reg_get();
+
+    // Perform the consistency check and return the consistent microsecond tick.
+    return ((tim0_cnt_1 >= tim0_cnt_0) ? static_cast<mcal::gpt::value_type>(sys_tick_0  | (static_cast<std::uint16_t>(tim0_cnt_0 + 1U) >> 1))
+                                       : static_cast<mcal::gpt::value_type>(system_tick | (static_cast<std::uint16_t>(tim0_cnt_1 + 1U) >> 1)));
+  }
 }
 
-mcal::gpt::value_type mcal::gpt::get_time_elapsed(void)
+mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 {
-  // Return the system tick using a multiple read to ensure data consistency
-  // of the high-byte of the system tick.
-  // Avoid disabling the interrupts here (i.e., with std::atomic_load)
-  // because this subroutine is called very often in the inner-loop of
-  // the multitasking scheduler.
+  // Get the time-point of now.
+  const auto time_point_now = std::chrono::high_resolution_clock::now();
 
-  const value_type tick0 = system_tick;
-  const value_type tick1 = system_tick;
+  // Get the initial time-point of (time = zero).
+  decltype(time_point_now) time_point_zero;
 
-  const bool tick0_is_consistent = (util::hi_part<std::uint8_t>(tick0) == util::hi_part<std::uint8_t>(tick1));
+  // Compute the elapsed time from now and the initial zero time.
+  const auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_point_now - time_point_zero);
 
-  return (tick0_is_consistent ? tick0 : system_tick);
+  // Return the elapsed time.
+  return static_cast<mcal::gpt::value_type>(elapsed.count());
 }
 
-extern "C" void __vector_14(void) __attribute__((signal, used, externally_visible));
-void __vector_14(void)
+extern "C" void __vector_14() __attribute__((signal));
+
+void __vector_14()
 {
-  // Increment the system tick in the timer interrupt.
-  ++::system_tick;
+  // This interrupt occurs every 128us.
+  // Increment the 32-bit system tick by 128.
+  system_tick += 0x80U;
 }
 
-void mcal::gpt::init(const mcal::gpt::config_type*)
+void mcal::gpt::init(const config_type*)
 {
   // Clear Timer0 Overflow Flag.
-  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::registers::REG_TIFR0, 0x02U>::fixed_reg_set();
+  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x02U>::reg_set();
 
   // Enable Compare Match A Interrupt.
-  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::registers::REG_TIMSK0, 0x02U>::fixed_reg_set();
+  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::timsk0, 0x02U>::reg_set();
 
-  // Set CTC mode 2.
-  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::registers::REG_TCCR0A, 0x02U>::fixed_reg_set();
+  // Set ctc mode 2 for counter timer0 compare.
+  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::tccr0a, 0x02U>::reg_set();
 
-  // Set clock to 16MHz/64 = 250kHz.
-  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::registers::REG_TCCR0B, 0x03U>::fixed_reg_set();
+  // Set the compare match a value to 255.
+  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::ocr0a, 0xFFU>::reg_set();
 
-  // Set Compare Match A value for 0.5ms (= 125 ticks).
-  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::registers::REG_OCR0A, 125U - 1U>::fixed_reg_set();
+  // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
+  mcal::reg_access<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
+}
+
+// Implement std::chrono::high_resolution_clock::now()
+// for the standard library high-resolution clock.
+namespace std
+{
+  namespace chrono
+  {
+    high_resolution_clock::time_point high_resolution_clock::now()
+    {
+      // The source of the high-resolution clock is from microseconds.
+      typedef std::chrono::time_point<high_resolution_clock, microseconds> from_type;
+
+      // Get the consistent tick in units of microseconds.
+      const auto microsecond_tick = consistent_microsecond_tick();
+
+      // Now obtain a time-point in microseconds.
+      auto from_micro = from_type(microseconds(microsecond_tick));
+
+      // And return the corresponding duration in microseconds.
+      return time_point_cast<duration>(from_micro);
+    }
+  }
 }
