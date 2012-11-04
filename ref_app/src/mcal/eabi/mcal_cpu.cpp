@@ -4,6 +4,8 @@
 #include <mcal_reg_access.h>
 #include <mcal_wdg.h>
 
+extern "C" void mcal_cpu_init() { }
+
 void mcal::cpu::init()
 {
   // Power management: Enable power for I/O porta and portc.
