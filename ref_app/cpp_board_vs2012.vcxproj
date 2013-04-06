@@ -326,7 +326,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\util\utility\util_time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h" />

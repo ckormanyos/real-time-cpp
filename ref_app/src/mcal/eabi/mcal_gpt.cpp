@@ -12,11 +12,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  mcal::gpt::value_type& system_tick()
-  {
-    static mcal::gpt::value_type the_tick;
-    return the_tick;
-  }
+  volatile mcal::gpt::value_type system_tick;
 
   mcal::gpt::value_type consistent_microsecond_tick()
   {
@@ -28,11 +24,11 @@ namespace
 
     // Do the first read of the timer4 counter and the system tick.
     const timer_register_type   tim4_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick();
+    const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the timer4 counter and the system tick.
     const timer_register_type   tim4_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick();
+    const mcal::gpt::value_type sys_tick_2 = system_tick;
 
     // Perform the consistency check and return the consistent microsecond tick.
     return ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | tim4_cnt_1)
@@ -71,7 +67,7 @@ extern "C" void timer4_irq_handler()
   mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
 
   // Increment the second word of the 64-bit system tick by 1.
-  system_tick() += 0x10000U;
+  system_tick += 0x10000U;
 }
 
 void mcal::gpt::init(const config_type*)
@@ -123,6 +119,11 @@ void mcal::gpt::init(const config_type*)
 
   // Re-initialize the counter and generate an update of the registers.
   mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
+}
+
+mcal::gpt::value_type mcal::gpt::get_time_elapsed()
+{
+  return consistent_microsecond_tick();
 }
 
 // Implement std::chrono::high_resolution_clock::now()

@@ -14,16 +14,8 @@
 
   namespace util
   {
-    class timer_base
-    {
-    protected:
-      timer_base() { }
-
-      static mcal::gpt::value_type my_now();
-    };
-
     template<typename unsigned_tick>
-    class timer : public timer_base
+    class timer
     {
     public:
 
@@ -83,6 +75,8 @@
 
     private:
       tick_type my_tick;
+
+      static mcal::gpt::value_type my_now() { return static_cast<mcal::gpt::value_type>(mcal::gpt::get_time_elapsed()); }
     };
   }
 

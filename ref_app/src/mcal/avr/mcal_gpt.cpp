@@ -12,11 +12,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  mcal::gpt::value_type& system_tick()
-  {
-    static mcal::gpt::value_type the_tick;
-    return the_tick;
-  }
+  volatile mcal::gpt::value_type system_tick;
 
   mcal::gpt::value_type consistent_microsecond_tick()
   {
@@ -28,11 +24,11 @@ namespace
 
     // Do the first read of the timer0 counter and the system tick.
     const timer_register_type   tim0_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick();
+    const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the timer0 counter and the system tick.
     const timer_register_type   tim0_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick();
+    const mcal::gpt::value_type sys_tick_2 = system_tick;
 
     // Perform the consistency check and return the consistent microsecond tick.
     return ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
@@ -46,7 +42,7 @@ void __vector_timer0_cmp_a_irq()
 {
   // This interrupt occurs every 128us.
   // Increment the 32-bit system tick by 128.
-  system_tick() += std::uint8_t(0x80U);
+  system_tick += std::uint8_t(0x80U);
 }
 
 void mcal::gpt::init(const config_type*)
@@ -65,6 +61,11 @@ void mcal::gpt::init(const config_type*)
 
   // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
   mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
+}
+
+mcal::gpt::value_type mcal::gpt::get_time_elapsed()
+{
+  return consistent_microsecond_tick();
 }
 
 // Implement std::chrono::high_resolution_clock::now()

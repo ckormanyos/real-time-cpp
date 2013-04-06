@@ -232,9 +232,6 @@
     <ClCompile Include="src\mcal\mips\mcal_wdg.cpp">
       <Filter>src\mcal\mips</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\utility\util_time.cpp">
-      <Filter>src\util\utility</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
