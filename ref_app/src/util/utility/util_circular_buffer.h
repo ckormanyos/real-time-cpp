@@ -5,8 +5,7 @@
 
   namespace util
   {
-    template<typename T,
-             const std::size_t N>
+    template<typename T, const std::size_t N>
     class circular_buffer
     {
     public:
@@ -25,8 +24,8 @@
       {
         const bool is_wrap = (in_ptr >= out_ptr);
 
-        return (is_wrap ? in_ptr - out_ptr
-                        : size() - (out_ptr - in_ptr));
+        return (is_wrap ? size_type(in_ptr - out_ptr)
+                        : size() - size_type(out_ptr - in_ptr));
       }
 
       void flush()
@@ -50,7 +49,7 @@
       {
         if(empty())
         {
-          return static_cast<value_type>(0);
+          return value_type(0);
         }
         else
         {

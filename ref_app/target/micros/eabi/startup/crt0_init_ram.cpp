@@ -19,15 +19,15 @@ namespace crt
 void crt::init_ram()
 {
   // Copy the data segment initializers from ROM to RAM.
-  const std::size_t count =   static_cast<const std::uintptr_t*>(&_data_end)
-                            - static_cast<const std::uintptr_t*>(&_data_begin);
+  const std::size_t size = std::size_t(  static_cast<const std::uint8_t*>(static_cast<const void*>(&_data_end))
+                                       - static_cast<const std::uint8_t*>(static_cast<const void*>(&_data_begin)));
 
-  std::copy(static_cast<const std::uintptr_t*>(&_rom_data_begin),
-            static_cast<const std::uintptr_t*>(&_rom_data_begin) + count,
-            static_cast<      std::uintptr_t*>(&_data_begin));
+  std::copy(static_cast<const std::uint8_t*>(static_cast<const void*>(&_rom_data_begin)),
+            static_cast<const std::uint8_t*>(static_cast<const void*>(&_rom_data_begin)) + size,
+            static_cast<      std::uint8_t*>(static_cast<      void*>(&_data_begin)));
 
   // Clear the bss segment.
-  std::fill(static_cast<std::uintptr_t*>(&_bss_begin),
-            static_cast<std::uintptr_t*>(&_bss_end),
-            static_cast<std::uintptr_t>(0uL));
+  std::fill(static_cast<std::uint8_t*>(static_cast<void*>(&_bss_begin)),
+            static_cast<std::uint8_t*>(static_cast<void*>(&_bss_end)),
+            static_cast<std::uint8_t>(0U));
 }

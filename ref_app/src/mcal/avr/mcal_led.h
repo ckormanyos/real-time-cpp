@@ -34,8 +34,8 @@
       private:
         static constexpr addr_type pdir = port - 1U;
 
-        typedef mcal::reg_access<addr_type, reg_type, port, bpos> port_pin_type;
-        typedef mcal::reg_access<addr_type, reg_type, pdir, bpos> pdir_pin_type;
+        typedef mcal::reg::access<addr_type, reg_type, port, bpos> port_pin_type;
+        typedef mcal::reg::access<addr_type, reg_type, pdir, bpos> pdir_pin_type;
       };
 
       extern const led_type<std::uint8_t,

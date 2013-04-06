@@ -41,12 +41,12 @@
   #include <cstddef>
   #include <array>
 
-  std::array<std::uint8_t, 16U> md5(const std::uint8_t* buffer, const std::size_t byte_count);
+  std::array<std::uint8_t, 16U> md5(const std::uint8_t* buffer, const std::size_t count);
 
-  inline std::array<std::uint8_t, 16U> md5(const char* str, const std::size_t len)
+  inline std::array<std::uint8_t, 16U> md5(const char* str, const std::size_t count)
   {
     const std::uint8_t* buffer = static_cast<const std::uint8_t*>(static_cast<const void*>(str));
-    return md5(buffer, len);
+    return md5(buffer, count);
   }
 
 #endif // _MD5_2012_01_13_H_

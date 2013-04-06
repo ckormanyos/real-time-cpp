@@ -1,7 +1,8 @@
 
+.extern mcal_cpu_init
+.extern mcal_wdg_trigger
 .extern __do_clear_bss
 .extern __do_global_ctors
-.extern mcal_wdg_trigger
 .extern main
 
 .equ RAMEND, 0x800800
@@ -22,16 +23,20 @@ startup:
   out  0x3E, r29        ; SPH
   out  0x3D, r28        ; SPL
 
-  ; Initialize the ROM-to-RAM data.
+  ; Initialize the chip: Watchdog, port, oscillator
+  call mcal_cpu_init
+
+  ; Initialize data
   call __do_copy_data
 
-  ; Zero-clear the bss section.
+  ; Clear bss
+  call mcal_wdg_trigger
   call __do_clear_bss
 
-  ; Call static constructors.
+  call mcal_wdg_trigger
   call __do_global_ctors
 
-  ; Jump to main, and never return.
+  call mcal_wdg_trigger
   call main
 
   ; Catch an unexpected return from main

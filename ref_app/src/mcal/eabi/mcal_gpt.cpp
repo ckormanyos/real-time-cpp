@@ -5,23 +5,31 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
+  mcal::gpt::value_type& system_tick()
+  {
+    static mcal::gpt::value_type the_tick;
+    return the_tick;
+  }
 
   mcal::gpt::value_type consistent_microsecond_tick()
   {
     // Return the system tick using a multiple read to ensure
     // data consistency of the high-byte of the system tick.
 
-    // Do the first read of the timer4 counter.
-    const std::uint16_t         tim4_cnt_0 = mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_0 = system_tick;
+    typedef std::uint32_t timer_address_type;
+    typedef std::uint16_t timer_register_type;
 
-    // Do the second read of the timer4 counter.
-    const std::uint16_t tim4_cnt_1 = mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cnt>::reg_get();
+    // Do the first read of the timer4 counter and the system tick.
+    const timer_register_type   tim4_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
+    const mcal::gpt::value_type sys_tick_1 = system_tick();
+
+    // Do the second read of the timer4 counter and the system tick.
+    const timer_register_type   tim4_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
+    const mcal::gpt::value_type sys_tick_2 = system_tick();
 
     // Perform the consistency check and return the consistent microsecond tick.
-    return ((tim4_cnt_1 >= tim4_cnt_0) ? static_cast<mcal::gpt::value_type>(sys_tick_0  | tim4_cnt_0)
-                                       : static_cast<mcal::gpt::value_type>(system_tick | tim4_cnt_1));
+    return ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | tim4_cnt_1)
+                                       : mcal::gpt::value_type(sys_tick_2 | tim4_cnt_2));
   }
 
   // Define a memory-mapped structure for manipulating
@@ -47,28 +55,16 @@ namespace
   nvic_type;
 }
 
+// TBD: Do we really need interrupt attributes here?
+extern "C" void timer4_irq_handler() __attribute__((interrupt));
+
 extern "C" void timer4_irq_handler()
 {
   // Clear the interrupt request bit.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
 
   // Increment the second word of the 64-bit system tick by 1.
-  system_tick += 0x10000U;
-}
-
-mcal::gpt::value_type mcal::gpt::get_time_elapsed()
-{
-  // Get the time-point of now.
-  const auto time_point_now = std::chrono::high_resolution_clock::now();
-
-  // Get the initial time-point of (time = zero).
-  decltype(time_point_now) time_point_zero;
-
-  // Compute the elapsed time from now and the initial zero time.
-  const auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(time_point_now - time_point_zero);
-
-  // Return the elapsed time.
-  return static_cast<mcal::gpt::value_type>(elapsed.count());
+  system_tick() += 0x10000U;
 }
 
 void mcal::gpt::init(const config_type*)
@@ -77,10 +73,10 @@ void mcal::gpt::init(const config_type*)
   // on the free-running 16-bit timer4 with a frequency of 1MHz.
 
   // Power management: Enable the power for timer4.
-  mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb1enr, 0x00000004UL>::reg_or();
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb1enr, 0x00000004UL>::reg_or();
 
   // Compute the timer4 interrupt priority.
-  const std::uint32_t aircr_value = mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::aircr>::reg_get();
+  const std::uint32_t aircr_value = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::aircr>::reg_get();
 
   // This following code sequence has been inspired by
   // parts of the STM32 peripheral library.
@@ -104,22 +100,22 @@ void mcal::gpt::init(const config_type*)
   nvic->iser[timer4_irq_n >> 0x05] = static_cast<std::uint32_t>(1UL) << (timer4_irq_n & 0x1FU);
 
   // Clear the interrupt request bit.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
 
   // Enable the update interrupt.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, 0x0001U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, 0x0001U>::reg_set();
 
   // Set the timer prescaler to 24 resulting in a 1MHz frequency.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, 24U - 1U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, 24U - 1U>::reg_set();
 
   // Set the auto-reload register for the entire 16-bit period of the timer.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_arr, 0xFFFFU>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_arr, 0xFFFFU>::reg_set();
 
   // Set the counter direction to counting-up and enable the counter.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cr1, 0x0001U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cr1, 0x0001U>::reg_set();
 
   // Re-initialize the counter and generate an update of the registers.
-  mcal::reg_access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
 }
 
 // Implement std::chrono::high_resolution_clock::now()
@@ -130,17 +126,14 @@ namespace std
   {
     high_resolution_clock::time_point high_resolution_clock::now()
     {
-      // The source of the high-resolution clock is from microseconds.
-      typedef std::chrono::time_point<high_resolution_clock, microseconds> from_type;
+      // The source of the high-resolution clock is microseconds.
+      typedef std::chrono::time_point<high_resolution_clock, microseconds> microseconds_type;
 
-      // Get the consistent tick in units of microseconds.
-      const auto microsecond_tick = consistent_microsecond_tick();
+      // Obtain a time-point from the consistent tick in units of microseconds.
+      const microseconds_type my_now(std::chrono::microseconds(::consistent_microsecond_tick()));
 
-      // Now obtain a time-point in microseconds.
-      auto from_micro = from_type(microseconds(microsecond_tick));
-
-      // And return the corresponding duration in microseconds.
-      return time_point_cast<duration>(from_micro);
+      // Return the corresponding duration in microseconds.
+      return std::chrono::high_resolution_clock::time_point(my_now);
     }
   }
 }

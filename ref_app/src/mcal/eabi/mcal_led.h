@@ -25,7 +25,7 @@
         void toggle() const
         {
           // Toggle the LED.
-          mcal::reg_access<addr_type, reg_type, port, bpos>::bit_not();
+          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_not();
         }
       };
 

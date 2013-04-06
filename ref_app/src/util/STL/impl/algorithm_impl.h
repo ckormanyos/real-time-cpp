@@ -105,6 +105,30 @@
       return xcount_if(first, last, predicate);
     }
 
+    template<typename forward_iterator1,
+              typename difference2,
+              typename value_type>
+    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                       forward_iterator1 last1,
+                                       difference2 count_value,
+                                       const value_type& search_value)
+    {
+      return xalgorithm::xsearch_n(first1, last1, count_value, search_value);
+    }
+
+    template<typename forward_iterator1,
+             typename difference2,
+             typename value_type,
+             typename predicate_type>
+    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                       forward_iterator1 last1,
+                                       difference2 count_value,
+                                       const value_type& search_value,
+                                       predicate_type predicate)
+    {
+      return xalgorithm::xsearch_n(first1, last1, count_value, search_value, predicate);
+    }
+
     template<typename forward_iterator1, typename forward_iterator2>
     inline void iter_swap(forward_iterator1 left, forward_iterator2 right)
     {

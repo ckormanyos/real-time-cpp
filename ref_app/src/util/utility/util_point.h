@@ -13,7 +13,7 @@
 
       point(const x_type& x_ = x_type(),
             const y_type& y_ = y_type()) : x(x_),
-                                            y(y_) { }
+                                           y(y_) { }
 
       bool operator<(const point& other) const
       {

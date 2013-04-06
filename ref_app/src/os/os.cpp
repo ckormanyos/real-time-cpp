@@ -1,9 +1,10 @@
 #include <array>
 #include <algorithm>
 
-#include <util/utility/util_time.h>
+#include <mcal_gpt.h>
 #include <os/os.h>
 #include <os/os_cfg.h>
+#include <util/utility/util_time.h>
 
 namespace os
 {
@@ -93,3 +94,4 @@ void os::schedule()
     }
   }
 }
+

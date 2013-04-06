@@ -22,37 +22,37 @@
         static void set_direction_output()
         {
           // Set the port pin direction to output.
-          mcal::reg_access<addr_type, reg_type, pdir, bpos>::bit_set();
+          mcal::reg::access<addr_type, reg_type, pdir, bpos>::bit_set();
         }
 
         static void set_direction_input()
         {
           // Set the port pin direction to input.
-          mcal::reg_access<addr_type, reg_type, pdir, bpos>::bit_clr();
+          mcal::reg::access<addr_type, reg_type, pdir, bpos>::bit_clr();
         }
 
         static void set_pin_high()
         {
           // Set the port high.
-          mcal::reg_access<addr_type, reg_type, port, bpos>::bit_set();
+          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_set();
         }
 
         static void set_pin_low()
         {
           // Set the port low.
-          mcal::reg_access<addr_type, reg_type, port, bpos>::bit_clr();
+          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_clr();
         }
 
         static bool read_pin_value()
         {
           // Read the port value.
-          return mcal::reg_access<addr_type, reg_type, port, bpos>::bit_get();
+          return mcal::reg::access<addr_type, reg_type, port, bpos>::bit_get();
         }
 
         static void toggle_pin()
         {
           // Toggle the port.
-          mcal::reg_access<addr_type, reg_type, port, bpos>::bit_not();
+          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_not();
         }
 
       private:

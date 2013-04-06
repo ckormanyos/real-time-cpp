@@ -1,6 +1,6 @@
 /* Linker script for STM32F103x Cortex-M3 ARM MCU */
 
-INPUT(libc.a libg.a libm.a libgcc.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
@@ -20,7 +20,7 @@ SECTIONS
 {
   . = 0x08000000;
 
-  /* Program code, read-only data and static ctors */
+  /* Program code (text), ISR vectors, read-only data and static ctors */
   .text :
   {
     . = ALIGN(4);
@@ -29,6 +29,7 @@ SECTIONS
     *(.text.*)
     *(.rodata)
     *(.rodata*)
+    . = ALIGN(4);
     _ctors_begin = .;
     KEEP (*(SORT(.init_array.*)))
     KEEP (*(.init_array))

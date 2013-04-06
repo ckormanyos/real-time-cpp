@@ -19,7 +19,7 @@
         return y_type();
       }
       else if(   (x <= pts_begin->x)
-              || (pts_begin + 1U == pts_end))
+              || ((pts_begin + 1U) == pts_end))
       {
         // We are beneath the lower x-range or there
         // is only one data point to interpolate.
@@ -33,10 +33,9 @@
       else
       {
         // Find interpolation pair with binary search.
-        point_iterator it
-          = std::lower_bound(pts_begin,
-                              pts_end,
-                              point<x_type>(x));
+        point_iterator it = std::lower_bound(pts_begin,
+                                             pts_end,
+                                             point<x_type>(x));
 
         // Do the linear interpolation.
         const x_type xn       = (it - 1U)->x;
@@ -45,8 +44,7 @@
         const y_type yn       = (it - 1U)->y;
         const y_type delta_yn = it->y - yn;
 
-        const y_type delta_y
-          = (delta_x * delta_yn) / delta_xn;
+        const y_type delta_y = (delta_x * delta_yn) / delta_xn;
 
         return (yn + delta_y) + offset;
       }

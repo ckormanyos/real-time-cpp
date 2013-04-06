@@ -2,7 +2,7 @@
 # 
 # Makefile
 #
-# Build file for the Cpp_Board application (app) using the GNU tools
+# Build file for the cpp_board application using the GNU tools
 #
 # Based on GNU Make 3.81
 #
@@ -14,7 +14,7 @@
 # ------------------------------------------------------------------------------
 # compiler location, build from GCC version and GCC target
 # ------------------------------------------------------------------------------
-COMPILER = gcc-$(GCC_VERSION)-$(GCC_TARGET)
+COMPILER_DIRECTORY = gcc-$(GCC_VERSION)-$(GCC_TARGET)
 
 
 # ------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ PATH_TOOLS           = tools
 PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
 PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\MinGW\msys\1.0
 PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\$(COMPILER)\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\$(COMPILER_DIRECTORY)\bin
 
 PATH_APP       = src
 PATH_TGT       = target/micros/$(TGT)
@@ -46,7 +46,7 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 
 
 # ------------------------------------------------------------------------------
-# application
+# the application
 # ------------------------------------------------------------------------------
 APP = $(PATH_BIN)/app
 
@@ -55,8 +55,12 @@ APP = $(PATH_BIN)/app
 # ------------------------------------------------------------------------------
 FILES_TMP   = $(FILES_CPP) $(FILES_TGT)
 FILES_O     = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_TMP))))
-FILE_LDEF   = $(PATH_TGT_MAKE)/$(TGT).ld
-FILES_CRT_O = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_CRT))))
+
+
+# ------------------------------------------------------------------------------
+# linker definition file
+# ------------------------------------------------------------------------------
+LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -75,18 +79,20 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # Development tools
 # ------------------------------------------------------------------------------
 AR        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-ar.exe
-CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
+AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
+CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
+CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
+NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
 OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objdump.exe
 OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objcopy.exe
-NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
-CPPFILT   = $(PATH_TOOLS_MINGW_BIN)\c++filt.exe
 READELF   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-readelf.exe
 SIZE      = $(PATH_TOOLS_CC)\$(GCC_TARGET)-size.exe
-HEX_MANIP = $(PATH_TOOLS)\AL\HexTools\ALHexManip
+
 ECHO      = $(PATH_TOOLS_MINGW_BIN)\echo.exe
 MAKE      = $(PATH_TOOLS_MINGW_BIN)\make.exe
 MKDIR     = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
+RM        = $(PATH_TOOLS_MINGW_BIN)\rm.exe
 SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
 
 
@@ -99,12 +105,44 @@ HEX_MANIP_SCRIPT_FILE = $(PATH_TGT_MAKE)/$(TGT)_hex_manip_script.hxm
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
-C_INCLUDES = -I$(PATH_APP) -I$(PATH_APP)/mcal/$(TGT)
-GCCFLAGS   = $(C_INCLUDES) $(TGTFLAGS) -Wall -Wextra -pedantic -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-enforce-eh-specs -O3 -finline-functions -finline-limit=64
-CFLAGS     = $(GCCFLAGS) -x c
-CPPFLAGS   = $(GCCFLAGS) -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-LFLAGS     = $(GCCFLAGS) -x none -nostartfiles -nostdlib
+C_INCLUDES = -I$(PATH_APP)                      \
+             -I$(PATH_APP)/mcal/$(TGT)
 
+GCCFLAGS    = $(C_INCLUDES)                     \
+              $(TGTFLAGS)                       \
+              -Wall                             \
+              -Wextra                           \
+              -pedantic                         \
+              -gdwarf-2                         \
+              -fno-exceptions                   \
+              -O3                               \
+              -finline-functions                \
+              -finline-limit=64
+
+CFLAGS      = $(GCCFLAGS)                       \
+              -x c                              \
+              -std=c99
+
+CPPFLAGS    = $(GCCFLAGS)                       \
+              -x c++                            \
+              -std=c++11                        \
+              -Wzero-as-null-pointer-constant   \
+              -Wsign-conversion                 \
+              -fno-rtti                         \
+              -fstrict-enums                    \
+              -fno-use-cxa-atexit               \
+              -fno-use-cxa-get-exception-ptr    \
+              -fno-nonansi-builtins             \
+              -fno-threadsafe-statics           \
+              -fno-enforce-eh-specs
+
+AFLAGS      = $(GCCFLAGS)                       \
+              -x assembler
+
+LFLAGS      = $(GCCFLAGS)                       \
+              -x none                           \
+              -nostartfiles                     \
+              -nostdlib
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -130,7 +168,8 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_SRC)
-	@if exist $(PATH_BIN)/*.*   del /Q /S $(subst /,\,$(PATH_BIN)/*.*)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(MKDIR) -p $(PATH_BIN)
 
 
 # ------------------------------------------------------------------------------
@@ -139,10 +178,15 @@ clean_prj:
 .PHONY: clean_all
 clean_all:
 	@-$(ECHO) +++ cleaning all
-	@if exist $(PATH_OBJ)/*.*   del /Q /S $(subst /,\,$(PATH_OBJ)/*.*)   > NUL  2> NUL
-	@if exist $(PATH_ERR)/*.*   del /Q /S $(subst /,\,$(PATH_ERR)/*.*)   > NUL  2> NUL
-	@if exist $(PATH_SRC)/*.*   del /Q /S $(subst /,\,$(PATH_SRC)/*.*)   > NUL  2> NUL
-	@if exist $(PATH_BIN)/*.*   del /Q /S $(subst /,\,$(PATH_BIN)/*.*)   > NUL  2> NUL
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
+	@-$(MKDIR) -p $(PATH_ERR)
+	@-$(MKDIR) -p $(PATH_SRC)
+	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_SRC)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(MKDIR) -p $(PATH_BIN)
 
 
 # ------------------------------------------------------------------------------
@@ -160,11 +204,9 @@ version:
 # ------------------------------------------------------------------------------
 # link/locate application
 # ------------------------------------------------------------------------------
-$(APP).elf : $(FILE_LDEF) $(FILES_O)
+$(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(FILE_LDEF),-Map,$(APP).map$(LFLAGS_WL) -o $(APP).elf
-#	@-$(ECHO) +++ creating crt archive: libcrt$(GCC_TARGET).a
-#	@-$(AR) cr $(PATH_BIN)/libcrt$(GCC_TARGET).a $(FILES_CRT_O)
+	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map,--gc-sections -o $(APP).elf
 
 
 # ------------------------------------------------------------------------------
@@ -188,7 +230,6 @@ $(APP)_flash.hex : $(APP).elf
 	@-$(ECHO) +++ creating hex module: $(APP)_flash.hex
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
 	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
-	@-$(HEX_MANIP) outFile=$(APP)_flash.hex binFile=$(APP)_flash.bin outFileMot=$(APP)_flash.mot inFile=$(APP).hex elfFile=$(APP).elf $(HEX_MANIP_SCRIPT_FILE)
 
 
 # ------------------------------------------------------------------------------
@@ -198,11 +239,11 @@ $(APP)_flash.hex : $(APP).elf
 # If the files do not exist then the includes will be ignored.
 # ------------------------------------------------------------------------------
 ifneq ($(MAKECMDGOALS),rebuild)
--include $(subst .o,.d,$(FILES_O))       # for example Tmp/obj/SysStart.d, Tmp/obj/Hal.d, etc
+-include $(subst .o,.d,$(FILES_O))       # for example tmp/obj/sys_start.d, tmp/obj/mcal_cpu.d, etc
 endif
 
 
 # ------------------------------------------------------------------------------
-# include rules
+# include the pattern build rules
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_rules.gmk

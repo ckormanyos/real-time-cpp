@@ -3,7 +3,7 @@
 
   #include <memory>
   #include <iterator>
-  #include <initializer_list>
+//  #include <initializer_list>
   #include <algorithm>
 
   namespace util
@@ -52,13 +52,13 @@
       {
         std::copy(first, last, begin());
       }
-*/
 
       dynamic_array(std::initializer_list<T> lst) : N(lst.size()),
                                                     elems(allocator_type().allocate(N))
       {
         std::copy(lst.begin(), lst.end(), begin());
       }
+*/
 
       // Destructor:
       ~dynamic_array()

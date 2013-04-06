@@ -1,0 +1,7 @@
+NEW_BUFFER     Buf_9D000000_to_9D001000   FROM_FILE      inFile     -useAreas={{0x9D000000, 0x1000}} -setByteOrder=BigEndian
+NEW_BUFFER     Buf_BFC00000_to_BFC00200   FROM_FILE      inFile     -useAreas={{0xBFC00000, 0x0200}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_9D000000_to_9D001000   WITH_FILLER    { 0xFF }
+FILL_BUFFER    Buf_BFC00000_to_BFC00200   WITH_FILLER    { 0xFF }
+
+WRITE_FILE     outFile            WITH_BUFFERS   {Buf_9D000000_to_9D001000,
+                                                  Buf_BFC00000_to_BFC00200}  -setFormat=IntelHexExtended

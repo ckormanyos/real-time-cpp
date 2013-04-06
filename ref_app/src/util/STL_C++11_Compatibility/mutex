@@ -1,0 +1,210 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \author (c) Marco Paland (info@paland.com)
+///             2011-2012, PALANDesign Hannover, Germany
+///
+/// \license LGPLv3
+/// mutex is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU Lesser Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// mutex is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+/// GNU Lesser Public License for more details.
+/// You should have received a copy of the GNU Lesser Public License
+/// along with mutex. If not, see <http://www.gnu.org/licenses/>.
+///
+///
+/// \brief <mutex> implementation of C++11 on Windows(tm)
+///
+/// This class implements the basic <mutex> class of C++11 for compilers
+/// which do not support this standard.
+///
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef _STD_MUTEX_WIN_
+#define _STD_MUTEX_WIN_
+
+#include <windows.h>
+#include <algorithm>  // for std::swap
+
+
+namespace std {
+
+class mutex
+{
+  mutex(mutex const&);            // non-copyable
+  mutex& operator=(mutex const&); // non-assignable
+
+public:
+  // defines the implementation specific handle type
+  typedef CRITICAL_SECTION native_handle_type;
+
+  mutex()
+  {
+    ::InitializeCriticalSection(&cs_);
+  }
+
+  ~mutex()
+  {
+    ::LeaveCriticalSection(&cs_);
+    ::DeleteCriticalSection(&cs_);
+  }
+
+  __inline void lock()
+  {
+    ::EnterCriticalSection(&cs_);
+  }
+
+  __inline void unlock()
+  {
+    ::LeaveCriticalSection(&cs_);
+  }
+
+  // returns true if lock was successful
+  __inline bool try_lock()
+  {
+    return ::TryEnterCriticalSection(&cs_) != FALSE;
+  }
+
+  __inline native_handle_type native_handle()
+  {
+    return cs_;
+  }
+
+private:
+  native_handle_type cs_;
+};
+
+// lock guard
+template<typename Mutex>
+class lock_guard
+{
+  explicit lock_guard(lock_guard&);
+  lock_guard& operator=(lock_guard&);
+
+public:
+  explicit lock_guard(Mutex& m)
+   : mutex_(m)
+  {
+    mutex_.lock();
+  }
+
+  ~lock_guard()
+  {
+    mutex_.unlock();
+  }
+
+private:
+  Mutex& mutex_;
+};
+
+
+struct defer_lock_t { };
+struct try_to_lock_t { };
+struct adopt_lock_t { };
+
+extern const defer_lock_t  defer_lock;
+extern const try_to_lock_t try_to_lock;
+extern const adopt_lock_t  adopt_lock;
+
+
+// unique lock
+template<typename Mutex>
+class unique_lock
+{
+  Mutex* device_;
+  bool   is_locked_;
+
+  unique_lock(const unique_lock&);
+  unique_lock& operator=(const unique_lock&);
+
+public:
+  typedef Mutex mutex_type;
+
+  unique_lock()
+   : device_(0)
+   , is_locked_(false)
+  { }
+
+  explicit unique_lock(mutex_type& m)
+   : device_(&m)
+   , is_locked_(false)
+  {
+    lock();
+  }
+
+  unique_lock(mutex_type& m, defer_lock_t)
+   : device_(&m)
+   , is_locked_(false)
+  { }
+
+  unique_lock(mutex_type& m, adopt_lock_t)
+   : device_(&m)
+   , is_locked_(true)
+  { }
+
+  unique_lock(mutex_type& m, try_to_lock_t)
+   : device_(&m)
+   , is_locked_(device_->try_lock())
+  { }
+
+  ~unique_lock()
+  {
+    if (is_locked_) {
+      unlock();
+    }
+  }
+
+  __inline void lock()
+  {
+    if (device_ && !is_locked_) {
+      device_->lock();
+      is_locked_ = true;
+    }
+  }
+
+  __inline bool try_lock()
+  {
+    if (device_ && !is_locked_) {
+      is_locked_ = device_->try_lock();
+      return is_locked_;
+    }
+  }
+
+  __inline void unlock()
+  {
+    if (is_locked_ && device_) {
+      device_->unlock();
+      is_locked_ = false;
+    }
+  }
+
+  void swap(unique_lock& other)
+  {
+    std::swap(device_, other.device_);
+    std::swap(is_locked_, other.is_locked_);
+  }
+
+  mutex_type* release()
+  {
+    mutex_type* ret = device_;
+    device_    = 0;
+    is_locked_ = false;
+    return ret;
+  }
+
+  bool owns_lock() const
+  {
+    return is_locked_;
+  }
+
+  mutex_type* mutex() const
+  {
+    return device_;
+  }
+};
+
+} // namespace std
+
+#endif // _STD_MUTEX_WIN_

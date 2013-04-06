@@ -169,6 +169,143 @@
       return cnt;
     }
 
+    template<typename forward_iterator1,
+              typename difference2,
+              typename value_type>
+    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                       forward_iterator1 last1,
+                                       difference2 count_value,
+                                       const value_type& search_value)
+    {
+      // Find the first count_value * search_value match.
+      // Use random-access iterators.
+
+      if(count_value <= 0)
+      {
+        return (first1);
+      }
+
+      forward_iterator1 old_first1 = first1;
+
+      for(difference2 inc = 0; count_value <= last1 - old_first1; )
+      {
+        // There is enough room. Look for a match
+        first1 = old_first1 + inc;
+
+        if (*first1 == search_value)
+        {
+          // Found part of a possible match. Test for a match.
+          difference2 count1 = count_value;
+          forward_iterator1 mid1 = first1;
+
+          for( ; (old_first1 != first1) && (first1[-1] == search_value); --first1)
+          {
+            // Back up over any skipped prefix.
+            --count1;
+          }
+
+          if(count1 <= last1 - mid1)
+          {
+            // There is enough left. Test the suffix.
+            for (;;)
+            {
+              if(--count1 == 0)
+              {
+                // Found the rest of match. Report it.
+                return (first1);
+              }
+              else if(!(*++mid1 == search_value))
+              {
+                // Short match not at end.
+                break;
+              }
+            }
+          }
+
+          // Failed to match. Take a small jump.
+          old_first1 = ++mid1;
+          inc = 0;
+        }
+        else
+        {
+          // No match. Take a big jump and back up as needed.
+          old_first1 = first1 + 1;
+          inc = count_value - 1;
+        }
+      }
+
+      return (last1);
+    }
+
+    template<typename forward_iterator1,
+             typename difference2,
+             typename value_type,
+             typename predicate_type>
+    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                       forward_iterator1 last1,
+                                       difference2 count_value,
+                                       const value_type& search_value,
+                                       predicate_type predicate)
+    {
+      // Find the first count_value * search_value that satisfies the predicate.
+      // Use random-access iterators.
+
+      if (count_value <= 0)
+      {
+        return (first1);
+      }
+
+      forward_iterator1 old_first1 = first1;
+
+      for( ; count_value <= (last1 - old_first1); )
+      {
+        // There is enough room. Look for a match
+        // enough room, look for a match
+        if(predicate(*first1, search_value))
+        {
+          // Found part of a possible match. Test for a match.
+          difference2 count1 = count_value;
+          forward_iterator1 mid1 = first1;
+
+          for( ; (old_first1 != first1) && predicate(first1[-1], search_value); --first1)
+          {
+            // Back up over any skipped prefix.
+            --count1;
+          }
+
+          if(count1 <= last1 - mid1)
+          {
+            // There is enough left. Test the suffix.
+            for(;;)
+            {
+              if(--count1 == 0)
+              {
+                // Found the rest of match. Report it.
+                return (first1);
+              }
+              else if(!predicate(*++mid1, search_value))
+              {
+                // Short match not at end.
+                break;
+              }
+            }
+          }
+
+          // Failed to match. Take a small jump.
+          old_first1 = ++mid1;
+          first1 = old_first1;
+        }
+        else
+        {
+          // No match. Take a big jump and back up as needed.
+          old_first1 = first1 + 1;
+          first1 += count_value;
+        }
+      }
+
+      return (last1);
+    }
+
     template<typename T>
     inline void xswap(T& left, T& right)
     {

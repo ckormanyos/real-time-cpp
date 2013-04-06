@@ -13,7 +13,7 @@
 
    // Emphasize: The following members are private.
    private:
-#if defined(_MSC_VER) && (_MSC_VER <= 1600)
+#if defined(_MSC_VER) //&& (_MSC_VER <= 1600)
       noncopyable(const noncopyable&);
       const noncopyable& operator=(const noncopyable&);
 #else

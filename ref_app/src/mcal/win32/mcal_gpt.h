@@ -11,9 +11,6 @@
       typedef std::uint32_t value_type;
 
       void init(const config_type*);
-
-      // Elapsed time in microseconds.
-      value_type get_time_elapsed();
     }
   }
 

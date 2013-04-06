@@ -1,7 +1,6 @@
 #ifndef _UTIL_FACTORY_2012_02_19_H_
   #define _UTIL_FACTORY_2012_02_19_H_
 
-  #include <cstdint>
   #include <memory>
   #include <util/utility/util_noncopyable.h>
 
@@ -12,7 +11,7 @@
     public:
       virtual ~factory_product() { }
 
-      virtual void init() { }
+      virtual void init() = 0;
 
     protected:
       factory_product() { }
@@ -27,20 +26,18 @@
       typedef T*    pointer_type;
       typedef Alloc allocator_type;
 
-      template<typename function_type>
-      static pointer_type make(function_type function)
+      static pointer_type make()
       {
-        pointer_type p = new(allocate()) value_type;
-        function(p);
+        pointer_type p = new(allocate()) value_type();
+        static_cast<factory_product*>(p)->init();
         return p;
       }
 
-      template<typename function_type,
-               typename... parameters>
-      static pointer_type make(function_type function, parameters... params)
+      template<typename... parameters>
+      static pointer_type make(parameters... params)
       {
         pointer_type p = new(allocate()) value_type(params...);
-        function(p);
+        static_cast<factory_product*>(p)->init();
         return p;
       }
 
@@ -62,18 +59,25 @@ class something : public util::factory_product
 public:
   something() { }
   virtual ~something() { }
+
+private:
+  virtual void init() { }
 };
 
 class another : public util::factory_product
 {
 public:
-  another(const int N) : n(N) { }
+  another(const int m_, const int n_) : m(m_),
+                                        n(n_) { }
   virtual ~another() { }
 
 private:
-  int n;
+  const int m;
+  const int n;
+
+  virtual void init() { }
 };
 
-something* p_something = util::factory<something>::make([](something* ps){ ps->init(); });
-another*   p_another   = util::factory<another>::make([](another* pa){ pa->init(); }, 123);
+something* p_something = util::factory<something>::make();
+another*   p_another   = util::factory<another>::make(123, 456);
 */

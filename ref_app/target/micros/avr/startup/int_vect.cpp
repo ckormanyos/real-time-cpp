@@ -2,9 +2,9 @@
 #include <mcal_cpu.h>
 
 extern "C" void startup();
-extern "C" void __vector_unused_irq() __attribute__((signal));
-extern "C" void __vector_14() __attribute__((signal));
-extern "C" void __vector_17() __attribute__((signal));
+extern "C" void __vector_unused_irq      () __attribute__((signal, used, externally_visible));
+extern "C" void __vector_timer0_cmp_a_irq() __attribute__((signal, used, externally_visible));
+extern "C" void __vector_spi_rx_tx_irq   () __attribute__((signal, used, externally_visible));
 
 extern "C" void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
@@ -18,10 +18,10 @@ typedef struct struct_isr_type
 isr_type;
 
 extern "C"
-const volatile isr_type isr_vectors[26U] __attribute__ ((section(".isr_vectors")));
+const volatile isr_type isr_vector[26U] __attribute__ ((section(".isr_vector")));
 
 extern "C"
-const volatile isr_type isr_vectors[26U] =
+const volatile isr_type isr_vector[26U] =
 {
                                             // Vector No.  Program Address  Source Interrupt Definition
   {{0x0C, 0x94}, startup },                 //  1 reset
@@ -38,10 +38,10 @@ const volatile isr_type isr_vectors[26U] =
   {{0x0C, 0x94}, __vector_unused_irq},      // 12 timer1 cmp a
   {{0x0C, 0x94}, __vector_unused_irq},      // 13 timer1 cmp b
   {{0x0C, 0x94}, __vector_unused_irq},      // 14 timer1 ovf
-  {{0x0C, 0x94}, __vector_14},              // 15 timer0 cmp a
+  {{0x0C, 0x94}, __vector_timer0_cmp_a_irq},// 15 timer0 cmp a
   {{0x0C, 0x94}, __vector_unused_irq},      // 16 timer0 cmp b
   {{0x0C, 0x94}, __vector_unused_irq},      // 17 timer0 ovf
-  {{0x0C, 0x94}, __vector_17},              // 18 spi(TM)
+  {{0x0C, 0x94}, __vector_spi_rx_tx_irq},   // 18 spi(TM)
   {{0x0C, 0x94}, __vector_unused_irq},      // 19 usart rx
   {{0x0C, 0x94}, __vector_unused_irq},      // 20 usart err
   {{0x0C, 0x94}, __vector_unused_irq},      // 21 usart rx

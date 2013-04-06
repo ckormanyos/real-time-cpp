@@ -25,6 +25,7 @@
       {
         val = function(val, *first);
       }
+
       return val;
     }
 
@@ -35,8 +36,9 @@
     {
       for( ; first1 != last1; ++first1, ++first2)
       {
-        val += *first1 * (*first2);
+        val += (*first1) * (*first2);
       }
+
       return val;
     }
   }

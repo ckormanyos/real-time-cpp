@@ -6,8 +6,8 @@
   #define OS_TASK_IDLE() sys::idle::task_func()
 
   // Declare all of the tasks and their initialization functions.
-  namespace app { namespace led  { void task_init(); void task_func(); } }
-  namespace sys { namespace mon  { void task_init(); void task_func(); } }
+  namespace app { namespace led { void task_init(); void task_func(); } }
+  namespace sys { namespace mon { void task_init(); void task_func(); } }
 
   // Configure the operating system tasks.
   #define OS_TASK_COUNT 2U

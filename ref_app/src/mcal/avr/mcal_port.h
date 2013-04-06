@@ -22,55 +22,55 @@
         static void set_direction_output()
         {
           // Set the port pin's direction to output.
-          reg_access<addr_type,
-                     reg_type,
-                     pdir,
-                     bpos>::bit_set();
+          mcal::reg::access<addr_type,
+                            reg_type,
+                            pdir,
+                            bpos>::bit_set();
         }
 
         static void set_direction_input()
         {
           // Set the port pin's direction to input.
-          reg_access<addr_type,
-                     reg_type,
-                     pdir,
-                     bpos>::bit_clr();
+          mcal::reg::access<addr_type,
+                            reg_type,
+                            pdir,
+                            bpos>::bit_clr();
         }
 
         static void set_pin_high()
         {
           // Set the port output value to high.
-          reg_access<addr_type,
-                     reg_type,
-                     port,
-                     bpos>::bit_set();
+          mcal::reg::access<addr_type,
+                            reg_type,
+                            port,
+                            bpos>::bit_set();
         }
 
         static void set_pin_low()
         {
           // Set the port output value to low.
-          reg_access<addr_type,
-                     reg_type,
-                     port,
-                     bpos>::bit_clr();
+          mcal::reg::access<addr_type,
+                            reg_type,
+                            port,
+                            bpos>::bit_clr();
         }
 
         static bool read_input_value()
         {
           // Read the port input value.
-          return reg_access<addr_type,
-                            reg_type,
-                            pinp,
-                            bpos>::bit_get();
+          return mcal::reg::access<addr_type,
+                                   reg_type,
+                                   pinp,
+                                   bpos>::bit_get();
         }
 
         static void toggle()
         {
           // Toggle the port output value.
-          reg_access<addr_type,
-                     reg_type,
-                     port,
-                     bpos>::bit_not();
+          mcal::reg::access<addr_type,
+                            reg_type,
+                            port,
+                            bpos>::bit_not();
         }
 
       private:

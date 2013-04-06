@@ -1,0 +1,17 @@
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION = 4.6.3
+GCC_TARGET  = mips-sde-elf
+
+TGTFLAGS    = -mips16                           \
+              -mno-gpopt                        \
+              -msoft-float                      \
+              -mno-dsp                          \
+              -mno-dspr2
+
+# To configure binutils without exceptions and without POSIX threads.
+# ../binutils-2.23/configure --prefix=/usr/local/gcc-4.7.2-mips-unknown-elf --target=mips-unknown-elf --build=i686-pc-mingw32 --disable-__cxa_atexit --disable-nls --disable-threads --enable-static --disable-shared --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --enable-sgxx-sde-multilibs --enable-poison-system-directories --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local
+# To configure GCC without exceptions and without POSIX threads.
+# ../gcc-4.7.2/configure --prefix=/usr/local/gcc-4.7.2-mips-unknown-elf --target=mips-unknown-elf --build=i686-pc-mingw32 --disable-threads --disable-libmudflap --disable-libssp --disable-libstdcxx-pch --enable-sgxx-sde-multilibs --disable-threads --disable-sim --disable-__cxa_atexit --disable-libfortran --enable-languages=c,c++ --disable-shared --enable-static --with-newlib --disable-nls --disable-libgomp --disable-libffi --enable-poison-system-directories --with-dwarf2 --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-fixed-point --disable-sjlj-exceptions --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-ppl=/usr/local

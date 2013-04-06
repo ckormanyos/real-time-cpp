@@ -5,7 +5,7 @@
   #include <util/utility/util_communication.h>
   #include <util/utility/util_circular_buffer.h>
 
-  extern "C" void __vector_17() __attribute__((signal));
+  extern "C" void __vector_spi_rx_tx_irq() __attribute__((signal, used, externally_visible));
 
   namespace mcal
   {
@@ -36,7 +36,7 @@
         util::circular_buffer<std::uint8_t, 16U> recv_buffer;
         std::uint8_t channel;
 
-        friend void ::__vector_17();
+        friend void ::__vector_spi_rx_tx_irq();
       };
 
       extern spi_communication the_spi;

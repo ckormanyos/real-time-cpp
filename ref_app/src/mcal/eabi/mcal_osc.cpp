@@ -8,7 +8,7 @@ namespace
     // Configure the system clock for 24MHz using the PLL.
 
     // Enable the HSE.
-    mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x00010083UL>::reg_set();
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x00010083UL>::reg_set();
 
     constexpr std::uint32_t max_counter = 500000UL;
 
@@ -17,7 +17,7 @@ namespace
     // Wait until the HSE is ready or exit if timeout occurs.
     for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
     {
-      const std::uint32_t tmp = mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
+      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
 
       if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x00020000UL)) != static_cast<std::uint32_t>(0UL))
       {
@@ -35,15 +35,15 @@ namespace
     }
 
     // The PLL configuration is: = (HSE / 2) * 6 = 24 MHz.
-    mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130000UL>::reg_set();
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130000UL>::reg_set();
 
     // Enable the PLL.
-    mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x01010083UL>::reg_set();
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x01010083UL>::reg_set();
 
     // Wait until the PLL is locked.
     for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
     {
-      const std::uint32_t tmp = mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
+      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
 
       if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x00020000UL)) != static_cast<std::uint32_t>(0UL))
       {
@@ -61,12 +61,12 @@ namespace
     }
 
     // Select the PLL as the system clock source.
-    mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130002UL>::reg_set();
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130002UL>::reg_set();
 
     // Wait until the PLL latched as the system clock source.
     for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
     {
-      const std::uint32_t tmp = mcal::reg_access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr>::reg_get();
+      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr>::reg_get();
 
       if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x0CUL)) == static_cast<std::uint32_t>(0x08UL))
       {
