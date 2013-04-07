@@ -34,15 +34,21 @@ GCC ports for the microcontroller solutions
 are available in the directory:
   ref_app/tools/Util/MinGW/msys/1.0/local/*
 
+The following compilers are available:
+  GCC 4.7.2 for avr-unknown-elf, for ATMEL(R) AVR(R)
+  GCC 4.7.2 for arm-unknown-eabi, for ARM(R) Cortex(TM)-M3
+
+
 These compilers have been built in MinGW and
 moved to the solution.
 
 Details on the Reference Project
 --------------------------------
 
-The reference project boots with a small startup
+The reference project boots via a small startup
 code and subsequently initializes a skinny
 microcontroller abstraction layer (MCAL).
 Control is then passed to a simple multitasking
 scheduler which schedules the LED application
-and an (empty) system task.
+and an (empty) system task. The LED application
+toggles the LED with a frequency of 1/2 Hz.
