@@ -15,9 +15,11 @@
     namespace gpt
     {
       typedef void          config_type;
-      typedef std::uint32_t value_type;
+      typedef std::uint64_t value_type;
 
       void init(const config_type*);
+
+      value_type get_time_elapsed();
     }
   }
 
