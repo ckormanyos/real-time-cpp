@@ -12,13 +12,13 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C8B59726-9319-45C3-8F11-F9F388FB6A2C}</ProjectGuid>
-    <RootNamespace>Cpp_Board</RootNamespace>
+    <RootNamespace>ref_app</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <SccProjectName>Rational ClearCase</SccProjectName>
     <SccAuxPath>Rational ClearCase</SccAuxPath>
     <SccLocalPath>Rational ClearCase</SccLocalPath>
     <SccProvider>Rational ClearCase</SccProvider>
-    <ProjectName>cpp_board</ProjectName>
+    <ProjectName>ref_app</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

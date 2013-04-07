@@ -36,5 +36,7 @@ mcal::gpt::value_type mcal::gpt::get_time_elapsed()
   LARGE_INTEGER tick;
   ::QueryPerformanceCounter(&tick);
 
-  return mcal::gpt::value_type((double(tick.QuadPart) / double(frequency.QuadPart)) * 1000000.0);
+  const std::uint64_t elapsed = static_cast<std::uint64_t>(tick.QuadPart - start_time.QuadPart);
+
+  return mcal::gpt::value_type((double(elapsed) / double(frequency.QuadPart)) * 1000000.0);
 }
