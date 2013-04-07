@@ -1,8 +1,8 @@
 Companion Code for Real-Time C++.
 
 The reference project supports:
-  ATMEL(R) AVR(R) Atmega328P,
-  Win32 in Release and Debug
+  ATMEL(R) AVR(R) Atmega328P
+  Win32 in Release and Debug modes
   ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
 
 Cross-development is used in combination with
