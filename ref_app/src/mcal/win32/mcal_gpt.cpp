@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <chrono>
+#include <windows.h>
 #include <mcal_gpt.h>
 
 void mcal::gpt::init(const config_type*)
@@ -14,10 +14,27 @@ void mcal::gpt::init(const config_type*)
 
 mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 {
-  typedef std::chrono::high_resolution_clock clock_type;
+  // Sleep in order to reduce the load on a Win32 simulated target.
+  static std::uint_least16_t prescale;
+  ++prescale;
 
-  static clock_type::time_point time_start = clock_type::now();
+  ::Sleep((std::uint_least16_t(prescale % 4096U) == std::uint_least16_t(0U)) ? 3U : 0U);
 
-  // Return the elapsed time count computed from now() and the initial zero time.
-  return std::uint32_t(std::chrono::duration_cast<std::chrono::microseconds>(clock_type::now() - time_start).count());
+  static bool is_initialized;
+
+  static LARGE_INTEGER start_time;
+  static LARGE_INTEGER frequency;
+
+  if(is_initialized == false)
+  {
+    is_initialized = true;
+
+    ::QueryPerformanceFrequency(&frequency);
+    ::QueryPerformanceCounter(&start_time);
+  }
+
+  LARGE_INTEGER tick;
+  ::QueryPerformanceCounter(&tick);
+
+  return mcal::gpt::value_type((double(tick.QuadPart) / double(frequency.QuadPart)) * 1000000.0);
 }
