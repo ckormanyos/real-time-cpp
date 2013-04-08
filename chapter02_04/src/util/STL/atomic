@@ -1,6 +1,0 @@
-#ifndef _ATOMIC_2012_01_09_
-  #define _ATOMIC_2012_01_09_
-
-  #include "impl/atomic_impl.h"
-
-#endif // _ATOMIC_2012_01_09_

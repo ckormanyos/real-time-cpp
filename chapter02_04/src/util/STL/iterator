@@ -1,6 +1,0 @@
-#ifndef _ITERATOR_2010_02_23_
-  #define _ITERATOR_2010_02_23_
-
-  #include "impl/iterator_impl.h"
-
-#endif // _ITERATOR_2010_02_23_

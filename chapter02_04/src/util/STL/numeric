@@ -1,6 +1,0 @@
-#ifndef _NUMERIC_2010_02_23_
-  #define _NUMERIC_2010_02_23_
-
-  #include "impl/numeric_impl.h"
-
-#endif // _NUMERIC_2010_02_23_

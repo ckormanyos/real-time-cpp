@@ -1,0 +1,115 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef _ATOMIC_IMPL_2012_01_09_H_
+  #define _ATOMIC_IMPL_2012_01_09_H_
+
+  // Implement just a little bit of the atomic library.
+
+  #include <stdint.h>
+  #include <stddef.h>
+  #include "./avr/avr_atomic.h"
+
+  namespace std
+  {
+    typedef char                atomic_char;
+    typedef signed char         atomic_schar;
+    typedef unsigned char       atomic_uchar;
+    typedef short               atomic_short;
+    typedef unsigned short      atomic_ushort;
+    typedef int                 atomic_int;
+    typedef unsigned int        atomic_uint;
+    typedef long                atomic_long;
+    typedef unsigned long       atomic_ulong;
+    typedef long long           atomic_llong;
+    typedef unsigned long long  atomic_ullong;
+    typedef wchar_t             atomic_wchar_t;
+
+    typedef ::int_least8_t   atomic_int_least8_t;
+    typedef ::uint_least8_t  atomic_uint_least8_t;
+    typedef ::int_least16_t  atomic_int_least16_t;
+    typedef ::uint_least16_t atomic_uint_least16_t;
+    typedef ::int_least32_t  atomic_int_least32_t;
+    typedef ::uint_least32_t atomic_uint_least32_t;
+    typedef ::int_least64_t  atomic_int_least64_t;
+    typedef ::uint_least64_t atomic_uint_least64_t;
+    typedef ::int_fast8_t    atomic_int_fast8_t;
+    typedef ::uint_fast8_t   atomic_uint_fast8_t;
+    typedef ::int_fast16_t   atomic_int_fast16_t;
+    typedef ::uint_fast16_t  atomic_uint_fast16_t;
+    typedef ::int_fast32_t   atomic_int_fast32_t;
+    typedef ::uint_fast32_t  atomic_uint_fast32_t;
+    typedef ::int_fast64_t   atomic_int_fast64_t;
+    typedef ::uint_fast64_t  atomic_uint_fast64_t;
+    typedef ::intptr_t       atomic_intptr_t;
+    typedef ::uintptr_t      atomic_uintptr_t;
+    typedef ::size_t         atomic_size_t;
+    typedef ::ptrdiff_t      atomic_ptrdiff_t;
+    typedef ::intmax_t       atomic_intmax_t;
+    typedef ::uintmax_t      atomic_uintmax_t;
+
+    template<typename atomic_integral_type>
+    inline atomic_integral_type atomic_load(const atomic_integral_type* addr)
+    {
+      atomic_helper::disable_all_interrupts();
+      const volatile atomic_integral_type val = static_cast<const volatile atomic_integral_type>(*addr);
+      atomic_helper::enable_all_interrupts();
+      return val;
+    }
+
+    template<> inline atomic_char  atomic_load(const atomic_char*   addr) { return *addr; }
+    template<> inline atomic_schar atomic_load(const atomic_schar*  addr) { return *addr; }
+    template<> inline atomic_uchar atomic_load(const atomic_uchar*  addr) { return *addr; }
+
+    template<typename atomic_integral_type>
+    inline atomic_integral_type atomic_load(const volatile atomic_integral_type* addr)
+    {
+      atomic_helper::disable_all_interrupts();
+      const volatile atomic_integral_type val = *addr;
+      atomic_helper::enable_all_interrupts();
+      return val;
+    }
+
+    template<> inline atomic_char  atomic_load(const volatile atomic_char*   addr) { return *addr; }
+    template<> inline atomic_schar atomic_load(const volatile atomic_schar*  addr) { return *addr; }
+    template<> inline atomic_uchar atomic_load(const volatile atomic_uchar*  addr) { return *addr; }
+
+    template<typename atomic_integral_type>
+    inline void atomic_store(atomic_integral_type* addr, atomic_integral_type val)
+    {
+      atomic_helper::disable_all_interrupts();
+      *addr = val;
+      atomic_helper::enable_all_interrupts();
+    }
+
+    template<> inline void atomic_store(atomic_char*   addr, atomic_char   val) { *addr = val; }
+    template<> inline void atomic_store(atomic_schar*  addr, atomic_schar  val) { *addr = val; }
+    template<> inline void atomic_store(atomic_uchar*  addr, atomic_uchar  val) { *addr = val; }
+    template<> inline void atomic_store(atomic_short*  addr, atomic_short  val) { *addr = val; }
+    template<> inline void atomic_store(atomic_ushort* addr, atomic_ushort val) { *addr = val; }
+    template<> inline void atomic_store(atomic_int*    addr, atomic_int    val) { *addr = val; }
+    template<> inline void atomic_store(atomic_uint*   addr, atomic_uint   val) { *addr = val; }
+
+
+    template<typename atomic_integral_type>
+    inline void atomic_store(volatile atomic_integral_type* addr, atomic_integral_type val)
+    {
+      atomic_helper::disable_all_interrupts();
+      *addr = val;
+      atomic_helper::enable_all_interrupts();
+    }
+
+    template<> inline void atomic_store(volatile atomic_char*   addr, atomic_char   val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_schar*  addr, atomic_schar  val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_uchar*  addr, atomic_uchar  val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_short*  addr, atomic_short  val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_ushort* addr, atomic_ushort val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_int*    addr, atomic_int    val) { *addr = val; }
+    template<> inline void atomic_store(volatile atomic_uint*   addr, atomic_uint   val) { *addr = val; }
+  }
+
+#endif // _ATOMIC_IMPL_2012_01_09_H_

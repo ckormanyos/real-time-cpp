@@ -1,6 +1,0 @@
-#ifndef _VECTOR_2010_02_23_
-  #define _VECTOR_2010_02_23_
-
-  #include "impl/vector_impl.h"
-
-#endif // _VECTOR_2010_02_23_

@@ -1,6 +1,0 @@
-#ifndef _UTILITY_2010_02_23_
-  #define _UTILITY_2010_02_23_
-
-  #include "impl/utility_impl.h"
-
-#endif // _UTILITY_2010_02_23_

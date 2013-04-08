@@ -1,6 +1,0 @@
-#ifndef _MEMORY_2010_02_23_
-  #define _MEMORY_2010_02_23_
-
-  #include "impl/memory_impl.h"
-
-#endif // _MEMORY_2010_02_23_

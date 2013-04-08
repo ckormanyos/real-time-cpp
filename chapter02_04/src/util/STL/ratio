@@ -1,6 +1,0 @@
-#ifndef _RATIO_2012_06_01_
-  #define _RATIO_2012_06_01_
-
-  #include "impl/ratio_impl.h"
-
-#endif // _RATIO_2012_06_01_

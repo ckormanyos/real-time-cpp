@@ -1,6 +1,0 @@
-#ifndef _CSTDINT_2010_02_23_
-  #define _CSTDINT_2010_02_23_
-
-  #include "impl/cstdint_impl.h"
-
-#endif // _CSTDINT_2010_02_23_
