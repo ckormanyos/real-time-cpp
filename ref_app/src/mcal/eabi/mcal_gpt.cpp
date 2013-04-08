@@ -14,6 +14,13 @@ namespace
   // The one (and only one) system tick.
   volatile mcal::gpt::value_type system_tick;
 
+  bool& gpt_is_initialized()
+  {
+    static bool is_init;
+
+    return is_init;
+  }
+
   mcal::gpt::value_type consistent_microsecond_tick()
   {
     // Return the system tick using a multiple read to ensure
@@ -119,11 +126,14 @@ void mcal::gpt::init(const config_type*)
 
   // Re-initialize the counter and generate an update of the registers.
   mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
+
+  gpt_is_initialized() = true;
 }
 
 mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 {
-  return consistent_microsecond_tick();
+  return (gpt_is_initialized() ? consistent_microsecond_tick()
+                               : mcal::gpt::value_type(0U));
 }
 
 // Implement std::chrono::high_resolution_clock::now()

@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+/*
 #include "crc.h"
 
 // CRC-8-ATM (polynomial 0x07: x^8 + x^2 + x + 1)
@@ -322,3 +323,4 @@ crc_64_ecma182_type::table
   0x5DEDC41A34BBEEB2ULL, 0x1F1D25F19D51D821ULL,
   0xD80C07CD676F8394ULL, 0x9AFCE626CE85B507ULL
 }};
+*/

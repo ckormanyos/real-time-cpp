@@ -33,6 +33,7 @@
  documentation and/or software.
 */
 
+/*
 #include <cstddef>
 #include <algorithm>
 #include "md5.h"
@@ -361,3 +362,4 @@ std::array<std::uint8_t, 16U> md5(const std::uint8_t* buffer, const std::size_t 
 
   return digest;
 }
+*/

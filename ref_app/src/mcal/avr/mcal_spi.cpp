@@ -194,7 +194,7 @@ bool mcal::spi::spi_communication::select_channel(const std::uint8_t ch)
   }
 }
 
-void __vector_spi_rx_tx_irq()
+void __vector_17()
 {
 /*
   // The SPI(TM) interrupt is on end-of-transmission.

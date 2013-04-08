@@ -11,25 +11,25 @@
   template<typename T>
   constexpr inline T const_sqrt2()
   {
-    return T(1.4142135623730950488016887242096980785697);
+    return T(1.4142135623730950488016887242096980785697L);
   }
 
   template<typename T>
   constexpr inline T const_pi()
   {
-    return T(3.1415926535897932384626433832795028841972);
+    return T(3.1415926535897932384626433832795028841972L);
   }
 
   template<typename T>
   constexpr inline T const_sqrt_pi()
   {
-    return T(1.7724538509055160272981674833411451827975);
+    return T(1.7724538509055160272981674833411451827975L);
   }
 
   template<typename T>
   constexpr inline T const_ln2()
   {
-    return T(0.6931471805599453094172321214581765680755);
+    return T(0.6931471805599453094172321214581765680755L);
   }
 
   template<typename T>

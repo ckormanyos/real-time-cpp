@@ -9,9 +9,9 @@
 #include "../cmath_impl.h"
 #include "../limits_impl.h"
 
-// The acosh function is implemented here for the AVR.
-// This provides an example of a special function calculation.
-// Note that double is the same as float for AVR.
+// The acosh function is implemented here for the AVR(R).
+// This provides an example of a transcendental function calculation.
+// Note that double is the same as float for this compier.
 
 float acosh(float x)
 {

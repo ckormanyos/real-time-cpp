@@ -9,3 +9,7 @@
 extern "C" void __cxa_pure_virtual() { }
 
 void operator delete(void*) { }
+
+extern "C" void exit(int) __attribute__((noreturn));
+
+void exit(int) { while(1) { ; } }

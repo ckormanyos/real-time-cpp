@@ -16,9 +16,8 @@
                typename reg_type,
                const addr_type addr,
                const reg_type val = static_cast<reg_type>(0)>
-      class access
+      struct access
       {
-      public:
         static void     reg_set() { *reinterpret_cast<volatile reg_type*>(addr)  = val; }
         static void     reg_and() { *reinterpret_cast<volatile reg_type*>(addr) &= val; }
         static void     reg_or () { *reinterpret_cast<volatile reg_type*>(addr) |= val; }
