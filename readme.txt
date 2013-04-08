@@ -22,8 +22,9 @@ Getting Started
 ---------------
 
 To get started, start Visual Studio(R) 2012 and
-open the solution ref_app.sln. Select the desired
-configuration and then rebuild the entire solution.
+open the solution ref_app_vs2012.sln. Select the
+desired configuration and then rebuild the
+entire solution.
 
 Upon successful build, the build results (such as
 the HEX-file, etc.) should apear in the bin
@@ -32,6 +33,18 @@ directory.
 There is also a workspace solution for
 ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
+
+The Targets
+-----------------
+
+The ATMEL(R) AVR(R) configuration runs on
+an Arduino(R) compatible board. It toggles
+the yellow LED on portb.5.
+
+The ARM(R) Cortex(TM)-M3 configuration runs
+on the STM32VLDISCOVERY board available from
+ST Microelectronics(R). It toggles the blue
+LED on portc.8.
 
 The GNU Compilers
 -----------------
@@ -43,7 +56,6 @@ are available in the directory:
 The following compilers are available:
   GCC 4.7.2 for avr-unknown-elf, for ATMEL(R) AVR(R)
   GCC 4.7.2 for arm-unknown-eabi, for ARM(R) Cortex(TM)-M3
-
 
 These compilers have been built in MinGW and
 moved to the solution.
