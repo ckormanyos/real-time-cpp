@@ -24,14 +24,10 @@
   class fir_order_n
   {
   public:
-    static_assert((order > 0U) && (order < 48U),
-                 "error: FIR filter order must be from 1 to 48");
-
     fir_order_n() { }
 
     explicit fir_order_n(const sample_t&) { }
 
-    template<typename... dummy_parameters>
     void new_sample(const sample_t&) { }
 
     result_t get_result() const { return result_t(0); }

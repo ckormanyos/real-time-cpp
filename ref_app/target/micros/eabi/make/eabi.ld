@@ -6,7 +6,7 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for STM32F103x Cortex-M3 ARM MCU */
+/* Linker script for STM32F103x ARM(R) Cortex(TM)-M3 MCU */
 
 INPUT(libc.a libm.a libgcc.a)
 
