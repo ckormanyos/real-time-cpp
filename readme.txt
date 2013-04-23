@@ -1,10 +1,8 @@
-Companion Code for Real-Time C++.
+Companion Code for "Real-Time C++".
 
 See the book:
-C.M. Kormanyos, Real-Time C++: Efficient
-Object-Oriented and Template Microcontroller
-Programming (Springer, Heidelberg, 2013).
-
+C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
+Template Microcontroller Programming (Springer, Heidelberg, 2013).
 
 The Reference Project
 ---------------------

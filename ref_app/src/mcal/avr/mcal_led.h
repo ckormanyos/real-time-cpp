@@ -20,10 +20,10 @@
                typename reg_type,
                const addr_type port,
                const reg_type bpos>
-      class led_type : private util::noncopyable
+      class led : private util::noncopyable
       {
       public:
-        led_type()
+        led()
         {
           // Set the port pin value to low.
           port_pin_type::bit_clr();
@@ -45,10 +45,12 @@
         typedef mcal::reg::access<addr_type, reg_type, pdir, bpos> pdir_pin_type;
       };
 
-      extern const led_type<std::uint8_t,
-                            std::uint8_t,
-                            mcal::reg::portb,
-                            5U> led0;
+      typedef led<std::uint8_t,
+                  std::uint8_t,
+                  mcal::reg::portb,
+                  5U> led_type;
+
+      extern const led_type led0;
     }
   }
 

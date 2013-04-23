@@ -16,7 +16,7 @@ namespace mcal
   }
 }
 
-void mcal::led::led_type::toggle() const
+void mcal::led::led::toggle() const
 {
   // Toggle the LED state.
   is_on = (!is_on);

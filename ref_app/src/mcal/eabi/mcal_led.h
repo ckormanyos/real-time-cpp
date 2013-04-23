@@ -20,10 +20,10 @@
                typename reg_type,
                const addr_type port,
                const reg_type bpos>
-      class led_type : private util::noncopyable
+      class led : private util::noncopyable
       {
       public:
-        led_type()
+        led()
         {
           // The ports have already been initialized.
           // TBD: Implement the proper LED encapsulation.
@@ -36,16 +36,12 @@
         }
       };
 
-      extern const led_type<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::gpioc_odr,
-                            8U> led0;
-/*
-      extern const led_type<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::gpioa_odr,
-                            2U> led0;
-*/
+      typedef led<std::uint32_t,
+                  std::uint32_t,
+                  mcal::reg::gpioc_odr,
+                  8U> led_type;
+
+      extern const led_type led0;
     }
   }
 

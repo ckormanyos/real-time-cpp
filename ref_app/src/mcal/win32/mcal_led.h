@@ -14,16 +14,18 @@
   {
     namespace led
     {
-      class led_type : private util::noncopyable
+      class led : private util::noncopyable
       {
       public:
-        led_type() : is_on(false) { }
+        led() : is_on(false) { }
 
         void toggle() const;
 
       private:
         mutable bool is_on;
       };
+
+      typedef led led_type;
 
       extern const led_type led0;
     }
