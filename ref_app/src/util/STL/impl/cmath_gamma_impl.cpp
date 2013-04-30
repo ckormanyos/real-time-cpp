@@ -5,11 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-/*
-#include "../cstdint_impl.h"
-#include "../cmath_impl.h"
-#include "../limits_impl.h"
-#include "avr_cmath_constants.h"
+#include <cstdint>
+#include <cmath>
+#include <limits>
+#include "cmath_constants_impl.h"
 
 // The tgamma function is implemented here for the AVR.
 // This provides an example of a special function calculation.
@@ -58,12 +57,6 @@ namespace
 
 float tgamma(float x)
 {
-  // Is the argument a sub-normal?
-  if(!isfinite(x))
-  {
-    return x;
-  }
-
   // Check for pure zero argument.
   if(0 == x)
   {
@@ -113,9 +106,3 @@ float tgamma(float x)
     return -const_pi<float>() / ((x * g) * sin_pi_x);
   }
 }
-
-double tgamma(double x)
-{
-  return static_cast<double>(tgamma(static_cast<float>(x)));
-}
-*/

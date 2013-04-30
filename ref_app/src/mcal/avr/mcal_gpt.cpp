@@ -30,16 +30,17 @@ namespace
     typedef std::uint8_t timer_register_type;
 
     // Do the first read of the timer0 counter and the system tick.
-    const timer_register_type   tim0_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+    const timer_register_type tim0_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+
+    // Read the system tick.
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the timer0 counter and the system tick.
-    const timer_register_type   tim0_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick;
+    const timer_register_type tim0_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
 
     // Perform the consistency check and return the consistent microsecond tick.
-    return ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
-                                       : mcal::gpt::value_type(sys_tick_2 | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
+    return ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
+                                       : mcal::gpt::value_type(system_tick | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
   }
 }
 
@@ -54,10 +55,10 @@ void __vector_14()
 
 void mcal::gpt::init(const config_type*)
 {
-  // Clear Timer0 Overflow Flag.
+  // Clear the timer0 overflow flag.
   mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x02U>::reg_set();
 
-  // Enable Compare Match A Interrupt.
+  // Enable the compare match a interrupt.
   mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::timsk0, 0x02U>::reg_set();
 
   // Set ctc mode 2 for counter timer0 compare.
@@ -69,6 +70,7 @@ void mcal::gpt::init(const config_type*)
   // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
   mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
 
+  // Set the is-initialized indication flag.
   gpt_is_initialized() = true;
 }
 

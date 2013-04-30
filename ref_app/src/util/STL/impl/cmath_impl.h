@@ -25,19 +25,29 @@
   {
     template<typename T> inline T abs(T t) { return ((t < T(0)) ? -t : t); }
 
-    float sin (float  x) { return ::sinf(x); }
-    float cos (float  x) { return ::cosf(x); }
-    float tan (float  x) { return ::tanf(x); }
-    float sinh(float  x) { return ::sinhf(x); }
-    float cosh(float  x) { return ::coshf(x); }
-    float tanh(float  x) { return ::tanhf(x); }
+    inline float sin (float  x) { return ::sinf(x); }
+    inline float cos (float  x) { return ::cosf(x); }
+    inline float tan (float  x) { return ::tanf(x); }
+    inline float asin(float  x) { return ::asinf(x); }
+    inline float acos(float  x) { return ::acosf(x); }
+    inline float atan(float  x) { return ::atanf(x); }
+    inline float sinh(float  x) { return ::sinhf(x); }
+    inline float cosh(float  x) { return ::coshf(x); }
+    inline float tanh(float  x) { return ::tanhf(x); }
+    inline float exp (float  x) { return ::expf(x); }
+    inline float log (float  x) { return ::logf(x); }
 
-    double sin (double x) { return ::sin(x); }
-    double cos (double x) { return ::cos(x); }
-    double tan (double x) { return ::tan(x); }
-    double sinh(double x) { return ::sinh(x); }
-    double cosh(double x) { return ::cosh(x); }
-    double tanh(double x) { return ::tanh(x); }
+    inline double sin (double x) { return ::sin(x); }
+    inline double cos (double x) { return ::cos(x); }
+    inline double tan (double x) { return ::tan(x); }
+    inline double asin(double x) { return ::asin(x); }
+    inline double acos(double x) { return ::acos(x); }
+    inline double atan(double x) { return ::atan(x); }
+    inline double sinh(double x) { return ::sinh(x); }
+    inline double cosh(double x) { return ::cosh(x); }
+    inline double tanh(double x) { return ::tanh(x); }
+    inline double exp (double x) { return ::exp(x); }
+    inline double log (double x) { return ::log(x); }
   }
 
 #endif // _CMATH_IMPL_2010_02_23_H_

@@ -13,7 +13,9 @@ FILES_TGT  = $(PATH_TGT)/startup/crt0                         \
              $(PATH_TGT)/startup/crt0_init_ram                \
              $(PATH_TGT)/startup/crt1                         \
              $(PATH_TGT)/startup/gcc_patch                    \
-             $(PATH_TGT)/startup/int_vect
+             $(PATH_TGT)/startup/int_vect                     \
+             $(PATH_APP)/util/STL/impl/cmath_acosh_impl       \
+             $(PATH_APP)/util/STL/impl/cmath_gamma_impl
 
 FILES_CRT =  $(PATH_TGT)/startup/crt0                         \
              $(PATH_TGT)/startup/crt0_init_ram                \

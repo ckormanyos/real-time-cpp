@@ -30,7 +30,7 @@
       value_type sum(0);
       for(std::uint_fast8_t j = 1U; j <= n; j++)
       {
-        sum += function(result_type(a + (value_type((j * 2) - 1) * h)));
+        sum += function(value_type(a + (value_type((j * 2) - 1) * h)));
       }
 
       const value_type I0 = I;

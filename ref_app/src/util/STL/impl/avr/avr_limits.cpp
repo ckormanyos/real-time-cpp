@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-/*
 #include "../limits_impl.h"
 
 namespace
@@ -38,4 +37,3 @@ namespace std
     return ::avr_inf_double;
   }
 }
-*/
