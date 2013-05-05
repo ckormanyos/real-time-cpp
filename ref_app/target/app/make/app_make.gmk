@@ -144,7 +144,7 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-enforce-eh-specs
 
 AFLAGS      = $(GCCFLAGS)                       \
-              -x assembler
+              -x assembler-with-cpp
 
 LFLAGS      = $(GCCFLAGS)                       \
               -x none                           \
