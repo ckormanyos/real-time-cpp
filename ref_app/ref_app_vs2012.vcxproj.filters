@@ -232,6 +232,9 @@
     <ClCompile Include="src\util\STL\impl\cmath_acosh_impl.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\utility\util_communication.cpp">
+      <Filter>src\util\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">

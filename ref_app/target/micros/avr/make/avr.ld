@@ -29,34 +29,32 @@ SECTIONS
     . = ALIGN(2);
     __ctors_start = . ;
      *(.ctors)
+    KEEP(*(.ctors))
     __ctors_end = . ;
     . = ALIGN(2);
     __dtors_start = . ;
     *(.dtors)
+    KEEP(*(.dtors))
     __dtors_end = . ;
-    KEEP(SORT(*)(.ctors))
-    KEEP(SORT(*)(.dtors))
 
-    /* From this point on, we don't bother about wether the insns are
-       below or above the 16 bits boundary. */
+    . = ALIGN(2);
     *(.init0)            /* Start here after reset. */
-
     KEEP (*(.init0))
+    . = ALIGN(2);
     *(.init4)            /* Initialize data and BSS. */
     KEEP (*(.init4))
+    . = ALIGN(2);
     *(.init6)            /* C++ constructors. */
     KEEP (*(.init6))
     *(.text)
     . = ALIGN(2);
     *(.text.*)
-    . = ALIGN(2);
-    *(.fini6)            /* C++ destructors. */
-    KEEP (*(.fini6))
      _etext = . ;
   } > text
 
   .data : AT(ADDR (.text) + SIZEOF (.text))
   {
+    . = ALIGN(2);
     PROVIDE(__data_start = .);
     *(.data)
     *(.data*)
@@ -69,6 +67,7 @@ SECTIONS
 
   .bss : AT(ADDR (.bss))
   {
+    . = ALIGN(2);
     PROVIDE(__bss_start = .);
     *(.bss)
     *(.bss*)

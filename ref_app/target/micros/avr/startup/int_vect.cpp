@@ -11,7 +11,6 @@
 extern "C" void startup();
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
-extern "C" void __vector_17        () __attribute__((signal, used, externally_visible));
 
 extern "C" void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
@@ -48,7 +47,7 @@ const volatile isr_type isr_vector[26U] =
   {{0x0C, 0x94}, __vector_unused_irq},      // 14 timer0 cmp a
   {{0x0C, 0x94}, __vector_unused_irq},      // 15 timer0 cmp b
   {{0x0C, 0x94}, __vector_16},              // 16 timer0 ovf
-  {{0x0C, 0x94}, __vector_17},              // 17 spi(TM)
+  {{0x0C, 0x94}, __vector_unused_irq},      // 17 spi(TM)
   {{0x0C, 0x94}, __vector_unused_irq},      // 18 usart rx
   {{0x0C, 0x94}, __vector_unused_irq},      // 19 usart err
   {{0x0C, 0x94}, __vector_unused_irq},      // 20 usart rx

@@ -20,7 +20,7 @@
     public:
       typedef dynamic_array<std::uint8_t, util::ring_allocator<std::uint8_t> > data_type;
 
-      virtual ~communication() { }
+      virtual ~communication();
 
       virtual bool send(const std::uint8_t) = 0;
       virtual bool send(const data_type&) = 0;
