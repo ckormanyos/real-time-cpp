@@ -9,8 +9,6 @@
   #define _MCAL_SPI_2012_05_24_H_
 
   #include <util/utility/util_type.h>
-  #include <util/utility/util_communication.h>
-  #include <util/utility/util_circular_buffer.h>
 
   namespace mcal
   {
@@ -19,13 +17,6 @@
       typedef void config_type;
 
       void init(const config_type*);
-
-      class spi_communication : public util::communication
-      {
-      public:
-        spi_communication() { }
-        virtual ~spi_communication();
-      };
     }
   }
 
