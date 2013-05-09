@@ -46,10 +46,12 @@ SECTIONS
     . = ALIGN(2);
     *(.init6)            /* C++ constructors. */
     KEEP (*(.init6))
+    . = ALIGN(2);
     *(.text)
+    KEEP (*(.text))
     . = ALIGN(2);
     *(.text.*)
-     _etext = . ;
+    KEEP (*(.text.*))
   } > text
 
   .data : AT(ADDR (.text) + SIZEOF (.text))
@@ -58,10 +60,9 @@ SECTIONS
     PROVIDE(__data_start = .);
     *(.data)
     *(.data*)
-    *(.rodata)           /* We need to include .rodata here if gcc is used */
-    *(.rodata*)          /* with -fdata-sections. */
+    *(.rodata)
+    *(.rodata*)
     . = ALIGN(2);
-    _edata = . ;
     PROVIDE(__data_end = .);
   } > data
 
