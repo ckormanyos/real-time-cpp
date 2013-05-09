@@ -16,13 +16,17 @@
     <RootNamespace>ref_app</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
-      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
-      <ToolName xmlns="">AVR Simulator</ToolName>
-      <ToolNumber xmlns="">
+      <ToolType>com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolName>AVR Simulator</ToolName>
+      <ToolNumber>
       </ToolNumber>
-      <Channel xmlns="">
+      <KeepTimersRunning>true</KeepTimersRunning>
+      <OverrideVtor>false</OverrideVtor>
+      <OverrideVtorValue>
+      </OverrideVtorValue>
+      <Channel>
         <host>127.0.0.1</host>
-        <port>54605</port>
+        <port>50406</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -61,7 +65,6 @@
       <Value>m</Value>
     </ListValues>
   </avrgcccpp.linker.libraries.Libraries>
-  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
 </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
@@ -70,30 +73,30 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>../src</Value>
-      <Value>../src/util/STL</Value>
-      <Value>../src/Mcal/AVR</Value>
-    </ListValues>
-  </avrgcccpp.compiler.directories.IncludePaths>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
-  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.libraries.Libraries>
-    <ListValues>
-      <Value>m</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.Libraries>
-  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-</AvrGccCpp>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>../src</Value>
+            <Value>../src/util/STL</Value>
+            <Value>../src/Mcal/AVR</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>m</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
@@ -262,13 +265,7 @@
     <Compile Include="src\util\memory\util_placed_pointer.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\memory\util_ring_allocator.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\memory\util_ring_allocator.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_static_allocator.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\memory\util_static_allocator.h">
@@ -286,9 +283,6 @@
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_limits.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\STL\impl\basic_string_impl.h">
       <SubType>compile</SubType>
     </Compile>
@@ -296,15 +290,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\chrono_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cmath_acosh_impl.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cmath_constants_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cmath_gamma_impl.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\cmath_impl.h">
@@ -329,9 +314,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\limits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\memory_impl.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\memory_impl.h">
@@ -373,6 +355,9 @@
     <Compile Include="src\util\utility\util_bit_mask.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_circular_buffer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_compiler.h">
       <SubType>compile</SubType>
     </Compile>
@@ -382,6 +367,9 @@
     <Compile Include="src\util\utility\util_language.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_noncopyable.h">
       <SubType>compile</SubType>
     </Compile>
@@ -389,6 +377,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_null_ptr_workaround.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_point.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_time.h">
