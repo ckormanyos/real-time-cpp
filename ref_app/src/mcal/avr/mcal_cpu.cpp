@@ -5,11 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_wdg.h>
 
-extern "C" void mcal_cpu_init()
+void mcal::cpu::init()
 {
   mcal::port::init(nullptr);
   mcal::wdg::init(nullptr);

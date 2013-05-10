@@ -12,6 +12,8 @@ OUTPUT_ARCH(avr:5)
 
 INPUT(libc.a)
 
+__stack = 0x800800;
+
 MEMORY
 {
   text (rx)   : ORIGIN = 0, LENGTH = 32K
@@ -68,10 +70,13 @@ SECTIONS
 
   .bss : AT(ADDR (.bss))
   {
-    . = ALIGN(2);
     PROVIDE(__bss_start = .);
+    . = ALIGN(2);
     *(.bss)
+    KEEP (*(.bss.))
+    . = ALIGN(2);
     *(.bss*)
+    KEEP (*(.bss.*))
     PROVIDE(__bss_end = .);
   } > data
 

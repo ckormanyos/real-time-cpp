@@ -12,6 +12,8 @@
   {
     namespace cpu
     {
+      void init();
+
       inline void nop() { asm volatile("nop"); }
     }
   }

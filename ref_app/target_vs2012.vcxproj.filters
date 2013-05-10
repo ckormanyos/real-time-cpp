@@ -45,9 +45,6 @@
     <None Include="Target\Micros\AVR\Startup\crt1.s">
       <Filter>micros\avr\startup</Filter>
     </None>
-    <None Include="Target\Micros\AVR\Startup\crt0.s">
-      <Filter>micros\avr\startup</Filter>
-    </None>
     <None Include="Target\Micros\AVR\Startup\crt0_init4.s">
       <Filter>micros\avr\startup</Filter>
     </None>
@@ -104,6 +101,9 @@
     </None>
     <None Include="target\micros\mips\startup\regs.s">
       <Filter>micros\mips\startup</Filter>
+    </None>
+    <None Include="Target\Micros\AVR\Startup\crt0.cpp">
+      <Filter>micros\avr\startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

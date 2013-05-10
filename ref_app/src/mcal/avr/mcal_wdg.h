@@ -18,7 +18,7 @@
 
       void init(const config_type*);
 
-      inline void trigger() { ::mcal_wdg_trigger(); }
+      void trigger();
     }
   }
 
