@@ -43,6 +43,7 @@
 
     typedef  ::intmax_t   intmax_t;
     typedef ::uintmax_t  uintmax_t;
+    typedef ::uintptr_t  uintptr_t;
   }
 
 #endif // _CSTDINT_IMPL_2010_02_23_H_

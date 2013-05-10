@@ -12,11 +12,11 @@ OUTPUT_ARCH(avr:5)
 
 INPUT(libc.a)
 
-__stack = 0x800800;
+__stack = 0x800400;
 
 MEMORY
 {
-  text (rx)   : ORIGIN = 0, LENGTH = 32K
+  text (rx)   : ORIGIN = 0, LENGTH = 16K
   data (rw!x) : ORIGIN = 0x800060, LENGTH = 1K - 60
 }
 
@@ -29,15 +29,15 @@ SECTIONS
     KEEP(*(.isr_vector))
 
     . = ALIGN(2);
-    __ctors_start = . ;
+    _ctors_begin = . ;
      *(.ctors)
     KEEP(*(.ctors))
-    __ctors_end = . ;
+    _ctors_end = . ;
     . = ALIGN(2);
-    __dtors_start = . ;
+    _dtors_begin = . ;
     *(.dtors)
     KEEP(*(.dtors))
-    __dtors_end = . ;
+    _dtors_end = . ;
 
     . = ALIGN(2);
     *(.init0)            /* Start here after reset. */
@@ -59,27 +59,26 @@ SECTIONS
   .data : AT(ADDR (.text) + SIZEOF (.text))
   {
     . = ALIGN(2);
-    PROVIDE(__data_start = .);
+    PROVIDE(_data_begin = .);
     *(.data)
     *(.data*)
     *(.rodata)
     *(.rodata*)
     . = ALIGN(2);
-    PROVIDE(__data_end = .);
+    PROVIDE(_data_end = .);
   } > data
 
   .bss : AT(ADDR (.bss))
   {
-    PROVIDE(__bss_start = .);
+    PROVIDE(_bss_begin = .);
     . = ALIGN(2);
     *(.bss)
     KEEP (*(.bss.))
     . = ALIGN(2);
     *(.bss*)
     KEEP (*(.bss.*))
-    PROVIDE(__bss_end = .);
+    PROVIDE(_bss_end = .);
   } > data
 
-  __data_load_start = LOADADDR(.data);
-  __data_load_end   = __data_load_start + SIZEOF(.data);
+  _rom_data_begin = LOADADDR(.data);
 }

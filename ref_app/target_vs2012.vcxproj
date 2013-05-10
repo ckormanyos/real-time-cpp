@@ -174,8 +174,8 @@
     <None Include="target\micros\avr\make\avr_files.gmk" />
     <None Include="target\micros\avr\make\avr_flags.gmk" />
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
-    <None Include="Target\Micros\AVR\Startup\crt0_init4.s" />
-    <None Include="Target\Micros\AVR\Startup\crt1.s" />
+    <None Include="Target\Micros\AVR\Startup\crt0_init4.cpp" />
+    <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
     <None Include="target\micros\eabi\make\eabi.ld" />
     <None Include="target\micros\eabi\make\eabi_files.gmk" />
     <None Include="target\micros\eabi\make\eabi_flags.gmk" />
