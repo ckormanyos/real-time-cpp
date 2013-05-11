@@ -213,7 +213,7 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map,--gc-sections -o $(APP).elf
 
 
 # ------------------------------------------------------------------------------

@@ -6,18 +6,20 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
+/* Linker script for ATMEL(R) AVR(R) Atmega16 */
+
+INPUT(libc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
-INPUT(libc.a)
-
+/* The end of the 1K RAM stack */
 __stack = 0x800400;
 
 MEMORY
 {
-  text (rx)   : ORIGIN = 0, LENGTH = 16K
-  data (rw!x) : ORIGIN = 0x800060, LENGTH = 1K - 60
+  ROM(rx)   : ORIGIN = 0, LENGTH = 16K
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 1K - 100
 }
 
 SECTIONS
@@ -31,7 +33,7 @@ SECTIONS
     . = ALIGN(2);
     _ctors_begin = . ;
      *(.ctors)
-    KEEP(*(.ctors))
+    KEEP(*(SORT(.ctors)))
     _ctors_end = . ;
     . = ALIGN(2);
     _dtors_begin = . ;
@@ -43,42 +45,46 @@ SECTIONS
     *(.init0)            /* Start here after reset. */
     KEEP (*(.init0))
     . = ALIGN(2);
-    *(.init4)            /* Initialize data and BSS. */
+    *(.init4)            /* Initializion of the data and BSS. */
     KEEP (*(.init4))
     . = ALIGN(2);
-    *(.init6)            /* C++ constructors. */
+    *(.init6)            /* Initializion of the C++ constructors. */
     KEEP (*(.init6))
     . = ALIGN(2);
     *(.text)
-    KEEP (*(.text))
     . = ALIGN(2);
-    *(.text.*)
-    KEEP (*(.text.*))
-  } > text
-
-  .data : AT(ADDR (.text) + SIZEOF (.text))
-  {
+    *(.text*)
     . = ALIGN(2);
-    PROVIDE(_data_begin = .);
-    *(.data)
-    *(.data*)
     *(.rodata)
+    . = ALIGN(2);
     *(.rodata*)
-    . = ALIGN(2);
-    PROVIDE(_data_end = .);
-  } > data
+  } > ROM
 
-  .bss : AT(ADDR (.bss))
+  /* The ROM-to-RAM initialized data section */
+  .data :
   {
-    PROVIDE(_bss_begin = .);
     . = ALIGN(2);
+    _data_begin = .;
+    *(.data)
+    KEEP (*(.data))
+    . = ALIGN(2);
+    *(.data*)
+    KEEP (*(.data*))
+    _data_end = .;
+  } > RAM AT > ROM
+
+  /* The uninitialized (zero-cleared) data section */
+  .bss :
+  {
+    . = ALIGN(2);
+    _bss_begin = .;
     *(.bss)
-    KEEP (*(.bss.))
+    KEEP (*(.bss))
     . = ALIGN(2);
     *(.bss*)
     KEEP (*(.bss.*))
-    PROVIDE(_bss_end = .);
-  } > data
+    _bss_end = .;
+  } > RAM
 
   _rom_data_begin = LOADADDR(.data);
 }

@@ -7,9 +7,11 @@
 
 #include <mcal/mcal.h>
 
-extern "C" void __do_copy_data();
-extern "C" void __do_clear_bss();
-extern "C" void __do_global_ctors();
+namespace crt
+{
+  void init_ram()   __attribute__ ((section(".init4")));
+  void init_ctors() __attribute__ ((section(".init6")));
+}
 
 extern "C" void startup() __attribute__ ((section(".init0")));
 
@@ -34,15 +36,12 @@ extern "C" void startup()
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
-  __do_copy_data();
-  mcal::wdg::trigger();
-
   // Zero-clear non-initialized static RAM.
-  __do_clear_bss();
+  crt::init_ram();
   mcal::wdg::trigger();
 
   // Call all ctor initializations.
-  __do_global_ctors();
+  crt::init_ctors();
   mcal::wdg::trigger();
 
   // Call main (and never return).

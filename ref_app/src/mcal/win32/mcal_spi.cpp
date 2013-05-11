@@ -5,41 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_spi.h>
+#ifndef _MCAL_SPI_2012_05_24_H_
+  #define _MCAL_SPI_2012_05_24_H_
 
-mcal::spi::spi_communication mcal::spi::the_spi;
+  namespace mcal
+  {
+    namespace spi
+    {
+      typedef void config_type;
 
+      void init(const config_type*);
+    }
+  }
 
-mcal::spi::spi_communication::spi_communication()
-{
-}
-
-bool mcal::spi::spi_communication::send(const std::uint8_t)
-{
-  return false;
-}
-
-bool mcal::spi::spi_communication::send(const data_type&)
-{
-  return false;
-}
-
-bool mcal::spi::spi_communication::recv(std::uint8_t&)
-{
-  return false;
-}
-
-bool mcal::spi::spi_communication::recv(data_type& rsp)
-{
-  return false;
-}
-
-std::size_t mcal::spi::spi_communication::recv_ready() const
-{
-  return 0U;
-}
-
-bool mcal::spi::spi_communication::idle() const
-{
-  return true;
-}
+#endif // _MCAL_SPI_2012_05_24_H_

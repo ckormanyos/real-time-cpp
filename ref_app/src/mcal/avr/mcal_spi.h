@@ -8,8 +8,6 @@
 #ifndef _MCAL_SPI_2012_05_24_H_
   #define _MCAL_SPI_2012_05_24_H_
 
-  #include <util/utility/util_type.h>
-
   namespace mcal
   {
     namespace spi

@@ -8,7 +8,7 @@
 
 /* Linker script for STM32F103x ARM(R) Cortex(TM)-M3 MCU */
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libc.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
@@ -32,16 +32,25 @@ SECTIONS
   .text :
   {
     . = ALIGN(4);
+    *(.isr_vector)
     KEEP(*(.isr_vector))
-    *(.text)
-    *(.text.*)
-    *(.rodata)
-    *(.rodata*)
+
     . = ALIGN(4);
     _ctors_begin = .;
-    KEEP (*(SORT(.init_array.*)))
-    KEEP (*(.init_array))
+    *(.init_array)
+    KEEP (*(SORT(.init_array)))
+    . = ALIGN(4);
+    *(.init_array*)
+    KEEP (*(SORT(.init_array*)))
     _ctors_end = .;
+    . = ALIGN(4);
+    *(.text)
+    . = ALIGN(4);
+    *(.text*)
+    . = ALIGN(4);
+    *(.rodata)
+    . = ALIGN(4);
+    *(.rodata*)
   } > ROM
 
   _rom_data_begin = .;
@@ -52,10 +61,13 @@ SECTIONS
   .data :
   {
     . = ALIGN(4);
-    _data_begin = . ;
+    _data_begin = .;
     *(.data)
-    *(.data.*)
-    _data_end = . ;
+    KEEP (*(.data))
+    . = ALIGN(4);
+    *(.data*)
+    KEEP (*(.data*))
+    _data_end = .;
   } > RAM AT > ROM
 
   /* The uninitialized (zero-cleared) data section */
@@ -64,7 +76,10 @@ SECTIONS
     . = ALIGN(4);
     _bss_begin = .;
     *(.bss)
+    KEEP (*(.bss))
+    . = ALIGN(4);
     *(.bss*)
-    _bss_end = . ;
+    KEEP (*(.bss.*))
+    _bss_end = .;
   } > RAM
 }
