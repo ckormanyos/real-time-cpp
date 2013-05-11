@@ -5,8 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-asm volatile (".extern __tablejump__");
-
+asm volatile (".extern call_ctor_table_entry");
 asm volatile (".extern _ctors_begin");
 asm volatile (".extern _ctors_end");
 
@@ -26,7 +25,7 @@ namespace
 
     asm volatile ("sbiw  r28, 0x02");
     asm volatile ("movw  r30, r28");
-    asm volatile ("call __tablejump__");
+    asm volatile ("call call_ctor_table_entry");
 
     asm volatile (".L__do_global_ctors_start:");
 
@@ -34,16 +33,6 @@ namespace
     asm volatile ("cpc r29, r17");
     asm volatile ("brne .L__do_global_ctors_loop");
   }
-}
-
-extern "C" void __tablejump__() __attribute__ ((section(".text")));
-
-void __tablejump__()
-{
-  asm volatile ("lpm r0, Z+");
-  asm volatile ("lpm r31, Z");
-  asm volatile ("mov r30, r0");
-  asm volatile ("ijmp");
 }
 
 namespace crt
@@ -56,3 +45,12 @@ namespace crt
   }
 }
 
+asm volatile (".section .text");
+
+asm volatile (".func call_ctor_table_entry");
+asm volatile ("call_ctor_table_entry:");
+  asm volatile ("lpm  r0, Z+");
+  asm volatile ("lpm  r31, Z");
+  asm volatile ("mov  r30, r0");
+  asm volatile ("ijmp");
+asm volatile (".endfunc");

@@ -26,7 +26,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>50406</port>
+        <port>49342</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -47,8 +47,10 @@
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.compiler.optimization.level>Optimize most (-O3)</avrgcc.compiler.optimization.level>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
   <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99</avrgcc.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../src</Value>
@@ -60,11 +62,8 @@
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.libraries.Libraries>
-    <ListValues>
-      <Value>m</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+  <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -nostartfiles -nostdlib -Wl,-T"../target/micros/avr/make/avr.ld"</avrgcccpp.linker.miscellaneous.LinkerFlags>
 </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
@@ -78,6 +77,7 @@
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
   <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99</avrgcc.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../src</Value>
@@ -85,15 +85,12 @@
       <Value>../src/Mcal/AVR</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
   <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.libraries.Libraries>
-    <ListValues>
-      <Value>m</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -nostartfiles -nostdlib -Wl,-T"../target/micros/avr/make/avr.ld"</avrgcccpp.linker.miscellaneous.LinkerFlags>
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
@@ -126,6 +123,7 @@
     <Folder Include="src\util\utility" />
     <Folder Include="target\micros" />
     <Folder Include="target\micros\avr" />
+    <Folder Include="target\micros\avr\make" />
     <Folder Include="target\micros\avr\startup" />
   </ItemGroup>
   <ItemGroup>
@@ -393,7 +391,19 @@
     <Compile Include="src\util\utility\util_utype_helper.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="target\micros\avr\startup\crt0.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\crt0_init_ram.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\crt1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="target\micros\avr\startup\gcc_patch.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\int_vect.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
@@ -456,6 +466,9 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="target\micros\avr\make\avr.ld">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>
