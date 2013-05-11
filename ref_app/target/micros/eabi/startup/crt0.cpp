@@ -18,7 +18,7 @@ namespace crt
 
 extern "C" void startup()
 {
-  // Set the stack pointers.
+  // Load the stack pointer.
   asm volatile("movs r1, #0");
 
   // Chip init: Port, oscillator and watchdog.

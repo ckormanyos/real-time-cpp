@@ -5,6 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// ATMEL(R) AVR(R) startup code.
+// Switched to C++ and modified for STM32F103x by Chris.
+
 #include <mcal/mcal.h>
 
 namespace crt
@@ -21,8 +24,7 @@ extern "C" void startup()
   asm volatile ("eor  r1, r1");
   asm volatile ("out  0x3F, r1");
 
-  // Load the stack pointer.
-  // Note that __stack is defined in the linker definition file.
+  // Set the stack pointer.
   asm volatile ("ldi r28, lo8(__stack)");
   asm volatile ("ldi r29, hi8(__stack)");
 
