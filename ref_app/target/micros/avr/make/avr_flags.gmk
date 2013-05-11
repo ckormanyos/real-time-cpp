@@ -16,6 +16,8 @@ TGTFLAGS    = -mmcu=atmega328p                  \
               -fsigned-char                     \
               -I$(PATH_APP)/util/STL
 
+TGTLFLAGS   = -mrelax
+
 # To configure GMP
 # ../gmp-5.0.5/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static --enable-cxx CPPFLAGS="-fexceptions"
 # To configure MPFR

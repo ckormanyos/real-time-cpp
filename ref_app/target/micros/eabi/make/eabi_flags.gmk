@@ -17,6 +17,8 @@ TGTFLAGS    = -mcpu=cortex-m3                   \
               -mtune=cortex-m3                  \
               -mfloat-abi=soft
 
+TGTLFLAGS   =
+
 # To configure GMP
 # ../gmp-5.0.2/configure --build=i686-pc-mingw32 --enable-cxx --enable-static --disable-shared CPPFLAGS="-fexceptions"
 # To configure MPFR

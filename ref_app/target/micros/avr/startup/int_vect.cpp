@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <mcal_cpu.h>
 
-extern "C" void startup();
+extern "C" void my_startup();
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 
@@ -30,7 +30,7 @@ extern "C"
 const volatile isr_type isr_vector[26U] =
 {
                                             // Vector No.  Program Address  Source Interrupt Definition
-  {{0x0C, 0x94}, startup },                 //  0 reset
+  {{0x0C, 0x94}, my_startup },              //  0 reset
   {{0x0C, 0x94}, __vector_unused_irq},      //  1 ext0
   {{0x0C, 0x94}, __vector_unused_irq},      //  2 ext1
   {{0x0C, 0x94}, __vector_unused_irq},      //  3 pin0

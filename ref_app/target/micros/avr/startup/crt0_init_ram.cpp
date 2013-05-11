@@ -63,3 +63,6 @@ namespace crt
     do_clear_bss();
   }
 }
+
+extern "C" void __do_copy_data() { }
+extern "C" void __do_clear_bss() { }

@@ -16,9 +16,9 @@ namespace crt
   void init_ctors() __attribute__ ((section(".init6")));
 }
 
-extern "C" void startup() __attribute__ ((section(".init0")));
+extern "C" void my_startup() __attribute__ ((section(".init0")));
 
-extern "C" void startup()
+extern "C" void my_startup()
 {
   // Load the SREG register.
   asm volatile ("eor  r1, r1");
