@@ -13,6 +13,6 @@ extern "C" int main()
   // Initialize the Microcontroller Abstraction Layer.
   mcal::init();
 
-  // Start the multitasking scheduler (and never return!).
+  // Start the multitasking scheduler (and never return).
   os::schedule();
 }

@@ -8,8 +8,6 @@
 #ifndef _MCAL_PORT_2012_06_27_H_
   #define _MCAL_PORT_2012_06_27_H_
 
-  #include <util/utility/util_type.h>
-  #include <util/utility/util_noncopyable.h>
   #include <mcal_reg_access.h>
 
   namespace mcal
@@ -23,7 +21,7 @@
                typename reg_type,
                const addr_type port,
                const reg_type bpos>
-      class port_pin : private util::noncopyable
+      class port_pin
       {
       public:
         static void set_direction_output()
@@ -63,7 +61,7 @@
         }
 
       private:
-        static constexpr addr_type pdir = port - 1U;
+        static constexpr addr_type pdir = port + 8U;
       };
     }
   }

@@ -1,4 +1,8 @@
 /* MD5
+
+ This work is derived from the RSA Data Security, Inc.
+ MD5 Message-Digest Algorithm. See text below.
+
  January 2012:
  Modified by Christopher Kormanyos
  for C++2011 and port to microcontrollers
