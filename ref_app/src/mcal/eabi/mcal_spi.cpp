@@ -5,8 +5,3 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_spi.h>
-
-void mcal::spi::init(const config_type*)
-{
-}

@@ -55,8 +55,8 @@ asm volatile ("call_ctor_table_entry:");
   asm volatile ("ijmp");
 asm volatile (".endfunc");
 
-extern "C" void __do_global_ctors() __attribute__ ((section(".init4")));
-extern "C" void __do_global_dtors() __attribute__ ((section(".init4")));
+extern "C" void __do_global_ctors() __attribute__ ((section(".init6")));
+extern "C" void __do_global_dtors() __attribute__ ((section(".fini6")));
 
 void __do_global_ctors() { }
 void __do_global_dtors() { }

@@ -42,14 +42,16 @@ SECTIONS
     _dtors_end = . ;
 
     . = ALIGN(2);
-    *(.init0)            /* Start here after reset. */
+    *(.init0)       /* Start here after reset. */
     KEEP (*(.init0))
     . = ALIGN(2);
-    *(.init4)            /* Initializion of the data and BSS. */
+    *(.init4)       /* Initializion of the data and BSS. */
     KEEP (*(.init4))
     . = ALIGN(2);
-    *(.init6)            /* Initializion of the C++ constructors. */
+    *(.init6)       /* Initializion of the C++ constructors. */
     KEEP (*(.init6))
+    . = ALIGN(2);
+    *(.fini6)       /* Call the C++ destructors (this is an empty function for us). */
     . = ALIGN(2);
     *(.text)
     . = ALIGN(2);

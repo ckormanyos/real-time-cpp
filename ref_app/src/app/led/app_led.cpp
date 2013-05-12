@@ -20,13 +20,11 @@ namespace app
 namespace
 {
   typedef util::timer<std::uint32_t> timer_type;
-  timer_type app_led_timer;
+  timer_type app_led_timer(timer_type::seconds(1U));
 }
 
 void app::led::task_init()
 {
-  app_led_timer.start_interval(timer_type::seconds(1U));
-
   mcal::led::led0.toggle();
 }
 
