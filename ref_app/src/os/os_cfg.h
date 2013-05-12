@@ -10,7 +10,11 @@
 
   // Declare and define the idle task.
   namespace sys { namespace idle { void task_init(); void task_func(); } }
-  #define OS_TASK_IDLE() sys::idle::task_func()
+  namespace os
+  {
+    inline void idle_task_init() { sys::idle::task_init(); }
+    inline void idle_task_func() { sys::idle::task_func(); }
+  }
 
   // Declare all of the tasks and their initialization functions.
   namespace app { namespace led { void task_init(); void task_func(); } }
@@ -29,7 +33,7 @@
     task_control_block ( sys::mon::task_init,                                    \
                          sys::mon::task_func,                                    \
                          task_control_block::timer_type::microseconds(10000U),   \
-                         task_control_block::timer_type::microseconds(  113U) ), \
+                         task_control_block::timer_type::microseconds(  419U) ), \
     }                                                                            \
   }
 

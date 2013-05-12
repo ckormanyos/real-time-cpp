@@ -74,7 +74,7 @@ namespace os
 void os::schedule()
 {
   // Initialize the idle task.
-  sys::idle::task_init();
+  os::idle_task_init();
 
   // Initialize each task.
   std::for_each(os::task_list.begin(),
@@ -97,7 +97,7 @@ void os::schedule()
     if(os::task_list.end() == it_task)
     {
       // If no ready-task was found, then service the idle task.
-      OS_TASK_IDLE();
+      os::idle_task_func();
     }
   }
 }
