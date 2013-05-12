@@ -53,8 +53,6 @@ SECTIONS
     *(.rodata*)
   } > ROM
 
-  _rom_data_begin = .;
-
   . = 0x20000000;
 
   /* The ROM-to-RAM initialized data section */
@@ -79,7 +77,9 @@ SECTIONS
     KEEP (*(.bss))
     . = ALIGN(4);
     *(.bss*)
-    KEEP (*(.bss.*))
+    KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
+
+  _rom_data_begin = LOADADDR(.data);
 }
