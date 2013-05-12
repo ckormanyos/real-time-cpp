@@ -48,6 +48,7 @@
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
   <avrgcc.compiler.optimization.level>Optimize most (-O3)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
   <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
   <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99</avrgcc.compiler.miscellaneous.OtherFlags>
@@ -59,6 +60,7 @@
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize most (-O3)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
@@ -73,27 +75,27 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
-  <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99</avrgcc.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>../src</Value>
-      <Value>../src/util/STL</Value>
-      <Value>../src/Mcal/AVR</Value>
-    </ListValues>
-  </avrgcccpp.compiler.directories.IncludePaths>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
-  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
-  <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -nostartfiles -nostdlib -Wl,-T"../target/micros/avr/make/avr.ld"</avrgcccpp.linker.miscellaneous.LinkerFlags>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-</AvrGccCpp>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+        <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99</avrgcc.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>../src</Value>
+            <Value>../src/util/STL</Value>
+            <Value>../src/Mcal/AVR</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
+        <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -nostartfiles -nostdlib -Wl,-T"../target/micros/avr/make/avr.ld"</avrgcccpp.linker.miscellaneous.LinkerFlags>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
 #include <mcal_cpu.h>
 
 extern "C" void _estack();
-extern "C" void startup();
+extern "C" void my_startup();
 
 extern "C" void unused_irq_handler ();
 extern "C" void nmi_handler        ();
@@ -39,10 +39,10 @@ struct isr
 };
 
 extern "C"
-const volatile isr::function_type __vectors[116U] __attribute__ ((section(".isr_vector"))) =
+const volatile isr::function_type __vectors[116U] __attribute__((section(".isr_vector"))) =
 {
   _estack,                             // 0x0000, Initial stack pointer
-  startup,                             // 0x0004, Reset handler
+  my_startup,                          // 0x0004, Reset handler
   nmi_handler,                         // 0x0008, NMIException
   hard_fault_handler,                  // 0x000C, HardFaultException
   mem_manage_handler,                  // 0x0010, MemManageException

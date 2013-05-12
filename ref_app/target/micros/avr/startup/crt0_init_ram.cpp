@@ -20,8 +20,8 @@ extern "C"
 
 namespace
 {
-  void do_copy_data() __attribute__ ((section(".init4")));
-  void do_clear_bss() __attribute__ ((section(".init4")));
+  void do_copy_data() __attribute__((section(".init4")));
+  void do_clear_bss() __attribute__((section(".init4")));
 
   void do_copy_data()
   {
@@ -63,6 +63,3 @@ namespace crt
     do_clear_bss();
   }
 }
-
-extern "C" void __do_copy_data() { }
-extern "C" void __do_clear_bss() { }

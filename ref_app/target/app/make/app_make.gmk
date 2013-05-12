@@ -124,7 +124,8 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -fno-exceptions                   \
               -O3                               \
               -finline-functions                \
-              -finline-limit=64
+              -finline-limit=64                 \
+              -ffunction-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               -x c                              \

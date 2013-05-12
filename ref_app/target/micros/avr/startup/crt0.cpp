@@ -12,11 +12,11 @@
 
 namespace crt
 {
-  void init_ram()   __attribute__ ((section(".init4")));
-  void init_ctors() __attribute__ ((section(".init6")));
+  void init_ram()   __attribute__((section(".init4")));
+  void init_ctors() __attribute__((section(".init6")));
 }
 
-extern "C" void my_startup() __attribute__ ((section(".init0")));
+extern "C" void my_startup() __attribute__((section(".init0")));
 
 extern "C" void my_startup()
 {
@@ -56,3 +56,10 @@ extern "C" void my_startup()
     mcal::wdg::trigger();
   }
 }
+
+// Do not remove these dummy stubs!
+// The AtmelStudio(R) project needs them.
+extern "C" void __do_global_ctors() { }
+extern "C" void __do_global_dtors() { }
+extern "C" void __do_copy_data   () { }
+extern "C" void __do_clear_bss   () { }
