@@ -11,9 +11,15 @@ The reference project supports:
   Win32 in both Release and Debug modes
   ATMEL(R) AVR(R) Atmega328P
   ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
+  Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
+  Under construction: Beagle Bone with ARM(R) A8
 
 The reference project uses cross-development based on *nix-like make tools
-in combination with Microsoft(R) Visual Studio(R) 2012.
+in combination with Microsoft(R) Visual Studio(R) 2012. The *nix-like
+make tools have been built in MinGW.
+
+The ATMEL(R) AVR(R) Atmega328P configuration in the reference project
+also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
 
 Getting Started
 ---------------
