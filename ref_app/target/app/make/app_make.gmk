@@ -9,7 +9,7 @@
 # 
 # Makefile
 #
-# Build file for the cpp_board application using the GNU tools
+# Build file for the reference application using the GNU tools
 #
 # Based on GNU Make 3.81
 #
@@ -101,12 +101,6 @@ MAKE      = $(PATH_TOOLS_MINGW_BIN)\make.exe
 MKDIR     = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
 RM        = $(PATH_TOOLS_MINGW_BIN)\rm.exe
 SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
-
-
-# ------------------------------------------------------------------------------
-# temporary files / helpers
-# ------------------------------------------------------------------------------
-HEX_MANIP_SCRIPT_FILE = $(PATH_TGT_MAKE)/$(TGT)_hex_manip_script.hxm
 
 
 # ------------------------------------------------------------------------------
@@ -211,7 +205,7 @@ version:
 
 
 # ------------------------------------------------------------------------------
-# link/locate application and create a list file
+# link/locate application and generate an assembly list file
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application: $(APP).elf
@@ -221,7 +215,7 @@ $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 
 
 # ------------------------------------------------------------------------------
-# parse object files for symbols
+# parse the object files to obtain symbol information, and create a size summary
 # ------------------------------------------------------------------------------
 $(APP)_nm.txt : $(APP).elf
 	@-$(ECHO) +++ parsing symbols with nm: $(APP)_nm.txt

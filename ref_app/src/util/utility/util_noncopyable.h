@@ -8,7 +8,7 @@
 #ifndef _UTIL_NONCOPYABLE_2008_12_16_H_
   #define _UTIL_NONCOPYABLE_2008_12_16_H_
 
-  // A non-copyable base class, taken from boost::noncopyable.
+  // A non-copyable base class, based on boost::noncopyable.
 
   namespace util
   {
@@ -20,13 +20,13 @@
 
    // Emphasize: The following members are private.
    private:
-#if defined(_MSC_VER)
-      noncopyable(const noncopyable&);
-      const noncopyable& operator=(const noncopyable&);
-#else
-      noncopyable(const noncopyable&) = delete;
-      const noncopyable& operator=(const noncopyable&) = delete;
-#endif
+   #if defined(_MSC_VER)
+     noncopyable(const noncopyable&);
+     const noncopyable& operator=(const noncopyable&);
+   #else
+     noncopyable(const noncopyable&) = delete;
+     const noncopyable& operator=(const noncopyable&) = delete;
+   #endif
     };
   }
 
