@@ -14,20 +14,29 @@
   {
     namespace pwm
     {
+      typedef void config_type;
+
+      inline void init(const config_type*) { }
+
       class pwm_type
       {
       public:
-        explicit pwm_type(const std::uint8_t = 0U) { }
+        typedef std::uint8_t duty_type;
 
-        void set_duty(const uint8_t) { }
+        explicit pwm_type(const duty_type = 0U) { }
 
-        std::uint8_t get_duty() const { return 0U; }
+        void set_duty(const duty_type) { }
+
+        duty_type get_duty() const { return 0U; }
 
         void service() { }
       };
 
-      extern pwm_type pwm0;
-      extern pwm_type pwm1;
+      typedef pwm_type pwm0_type;
+      typedef pwm_type pwm1_type;
+
+      extern pwm0_type pwm0;
+      extern pwm1_type pwm1;
     }
   }
 

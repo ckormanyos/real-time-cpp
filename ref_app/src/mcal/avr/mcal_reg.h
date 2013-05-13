@@ -27,10 +27,13 @@
       constexpr std::uint8_t bval7  = 1U << 7U;
 
       // Port registers
+      constexpr std::uint8_t pinb   = 0x03U + sfr_offset;
       constexpr std::uint8_t ddrb   = 0x04U + sfr_offset;
       constexpr std::uint8_t portb  = 0x05U + sfr_offset;
+      constexpr std::uint8_t pinc   = 0x06U + sfr_offset;
       constexpr std::uint8_t ddrc   = 0x07U + sfr_offset;
       constexpr std::uint8_t portc  = 0x08U + sfr_offset;
+      constexpr std::uint8_t pind   = 0x09U + sfr_offset;
       constexpr std::uint8_t ddrd   = 0x0AU + sfr_offset;
       constexpr std::uint8_t portd  = 0x0BU + sfr_offset;
       constexpr std::uint8_t ddre   = 0x0DU + sfr_offset;
@@ -43,6 +46,13 @@
       constexpr std::uint8_t tcnt0  = 0x26U + sfr_offset;
       constexpr std::uint8_t ocr0a  = 0x27U + sfr_offset;
       constexpr std::uint8_t timsk0 = 0x6EU;
+
+      constexpr std::uint8_t tifr2  = 0x17U + sfr_offset;
+      constexpr std::uint8_t tccr2a = 0xB0U;
+      constexpr std::uint8_t tccr2b = 0xB1U;
+      constexpr std::uint8_t tcnt2  = 0xB2U;
+      constexpr std::uint8_t ocr2a  = 0xB3U;
+      constexpr std::uint8_t timsk2 = 0x70U;
 
       // SPI(TM) registers.
       constexpr std::uint8_t spcr = 0x2CU + sfr_offset;

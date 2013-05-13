@@ -12,11 +12,15 @@
 GCC_VERSION = 4.7.2
 GCC_TARGET  = avr-unknown-elf
 
-TGTFLAGS    = -mmcu=atmega328p                  \
-              -fsigned-char                     \
-              -I$(PATH_APP)/util/STL
+TGT_CFLAGS    = -mmcu=atmega328p                  \
+                -fsigned-char                     \
+                -I$(PATH_APP)/util/STL
 
-TGTLFLAGS   = -mrelax
+TGT_CPPFLAGS  = -std=c++11                        \
+                -Wzero-as-null-pointer-constant   \
+                -I$(PATH_APP)/util/STL
+
+TGT_LFLAGS    = -mrelax
 
 # To configure GMP
 # ../gmp-5.0.5/configure --prefix=/usr/local --build=i686-pc-mingw32 --disable-shared --enable-static --enable-cxx CPPFLAGS="-fexceptions"

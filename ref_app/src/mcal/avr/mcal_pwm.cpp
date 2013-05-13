@@ -7,5 +7,5 @@
 
 #include <mcal_pwm.h>
 
-//mcal::pwm::pwm_b0_type pwm0;
-//mcal::pwm::pwm_b1_type pwm1;
+//mcal::pwm::pwm0_type mcal::pwm::pwm0;
+//mcal::pwm::pwm1_type mcal::pwm::pwm1;

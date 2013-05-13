@@ -21,8 +21,8 @@ extern "C" void my_startup() __attribute__((section(".init0")));
 extern "C" void my_startup()
 {
   // Load the SREG register.
-  asm volatile ("eor  r1, r1");
-  asm volatile ("out  0x3F, r1");
+  asm volatile ("eor r1, r1");
+  asm volatile ("out 0x3F, r1");
 
   // Set the stack pointer.
   asm volatile ("ldi r28, lo8(__stack)");

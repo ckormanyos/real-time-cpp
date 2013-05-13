@@ -23,8 +23,8 @@ namespace
 
     asm volatile (".L__do_global_ctors_loop:");
 
-    asm volatile ("sbiw  r28, 0x02");
-    asm volatile ("movw  r30, r28");
+    asm volatile ("sbiw r28, 0x02");
+    asm volatile ("movw r30, r28");
     asm volatile ("call call_ctor_table_entry");
 
     asm volatile (".L__do_global_ctors_start:");
@@ -49,8 +49,8 @@ asm volatile (".section .text");
 
 asm volatile (".func call_ctor_table_entry");
 asm volatile ("call_ctor_table_entry:");
-  asm volatile ("lpm  r0, Z+");
-  asm volatile ("lpm  r31, Z");
-  asm volatile ("mov  r30, r0");
+  asm volatile ("lpm r0, Z+");
+  asm volatile ("lpm r31, Z");
+  asm volatile ("mov r30, r0");
   asm volatile ("ijmp");
 asm volatile (".endfunc");

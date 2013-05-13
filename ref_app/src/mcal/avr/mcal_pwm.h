@@ -19,6 +19,10 @@
   {
     namespace pwm
     {
+      typedef void config_type;
+
+      inline void init(const config_type*) { }
+
       // A software PWM template for a pin at address addr and
       // bit-position bpos. The default resolution is 100 ticks.
       // These values can be changed as needed.
@@ -31,22 +35,24 @@
       class pwm_type
       {
       public:
-        pwm_type(const std::uint8_t duty = 0U) : counter(0U),
-                                                 duty_cycle(duty),
-                                                 shadow(duty)
+        typedef std::uint8_t duty_type;
+
+        pwm_type(const duty_type duty = 0U) : counter(0U),
+                                              duty_cycle(duty),
+                                              shadow(duty)
         {
           // Set the port pin to output with logic level low.
           port_pin_type::set_pin_low();
           port_pin_type::set_direction_output();
         }
 
-        void set_duty(const uint8_t duty)
+        void set_duty(const duty_type duty)
         {
           // Set a new duty cycle in the shadow register.
-          std::atomic_store(&shadow, (std::max)(duty, resol));
+          std::atomic_store(&shadow, (std::min)(duty, resol));
         }
 
-        std::uint8_t get_duty(void) const
+        duty_type get_duty(void) const
         {
           // Retrieve the duty cycle.
           return std::atomic_load(&duty_cycle);
@@ -79,9 +85,9 @@
         }
 
       private:
-        std::uint8_t counter;
-        volatile std::uint8_t duty_cycle;
-        std::uint8_t shadow;
+        duty_type counter;
+        volatile duty_type duty_cycle;
+        duty_type shadow;
 
         // Define the type for the PWM port pin.
         typedef mcal::port::port_pin<addr_type,
@@ -97,15 +103,12 @@
       typedef pwm_type<std::uint8_t,
                        std::uint8_t,
                        mcal::reg::portb,
-                       0U> pwm_b0_type;
+                       0U> pwm0_type;
 
       typedef pwm_type<std::uint8_t,
                        std::uint8_t,
                        mcal::reg::portb,
-                       1U> pwm_b1_type;
-
-      extern pwm_b0_type pwm0;
-      extern pwm_b1_type pwm1;
+                       1U> pwm1_type;
     }
   }
 

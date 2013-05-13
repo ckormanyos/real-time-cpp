@@ -14,6 +14,10 @@
   {
     namespace pwm
     {
+      typedef void config_type;
+
+      inline void init(const config_type*) { }
+
       class pwm_type
       {
       public:

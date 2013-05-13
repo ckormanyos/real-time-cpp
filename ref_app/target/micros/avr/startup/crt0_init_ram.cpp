@@ -26,32 +26,33 @@ namespace
   void do_copy_data()
   {
     // Copy the data segment initializers from ROM to RAM.
-    asm volatile ("ldi  r17, hi8(_data_end)");
-    asm volatile ("ldi  r26, lo8(_data_begin)");
-    asm volatile ("ldi  r27, hi8(_data_begin)");
-    asm volatile ("ldi  r30, lo8(_rom_data_begin)");
-    asm volatile ("ldi  r31, hi8(_rom_data_begin)");
+    asm volatile ("ldi r17, hi8(_data_end)");
+    asm volatile ("ldi r26, lo8(_data_begin)");
+    asm volatile ("ldi r27, hi8(_data_begin)");
+    asm volatile ("ldi r30, lo8(_rom_data_begin)");
+    asm volatile ("ldi r31, hi8(_rom_data_begin)");
 
-    asm volatile ("rjmp  .L__do_copy_data_start");
+    asm volatile ("rjmp .L__do_copy_data_start");
 
     asm volatile (".L__do_copy_data_loop:");
 
-    asm volatile ("lpm  r0, Z+");
-    asm volatile ("st  X+, r0");
+    asm volatile ("lpm r0, Z+");
+    asm volatile ("st X+, r0");
 
     asm volatile (".L__do_copy_data_start:");
 
-    asm volatile ("cpi  r26, lo8(_data_end)");
-    asm volatile ("cpc  r27, r17");
-    asm volatile ("brne  .L__do_copy_data_loop");
+    asm volatile ("cpi r26, lo8(_data_end)");
+    asm volatile ("cpc r27, r17");
+    asm volatile ("brne .L__do_copy_data_loop");
   }
 
   void do_clear_bss()
   {
     // Clear the bss segment.
-    std::fill(static_cast<std::uint8_t*>(static_cast<void*>(&_bss_begin)),
-              static_cast<std::uint8_t*>(static_cast<void*>(&_bss_end)),
-              static_cast<std::uint8_t>(0U));
+    // Note that the bss segment is aligned by 2.
+    std::fill(static_cast<std::uint16_t*>(static_cast<void*>(&_bss_begin)),
+              static_cast<std::uint16_t*>(static_cast<void*>(&_bss_end)),
+              static_cast<std::uint16_t>(0U));
   }
 }
 

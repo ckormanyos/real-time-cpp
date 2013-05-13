@@ -15,4 +15,5 @@ void mcal::init()
   mcal::gpt::init(nullptr);
   mcal::ser::init(nullptr);
   mcal::spi::init(nullptr);
+  mcal::pwm::init(nullptr);
 }

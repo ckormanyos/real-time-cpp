@@ -116,7 +116,7 @@ C_INCLUDES = -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
 GCCFLAGS    = $(C_INCLUDES)                     \
-              $(TGTFLAGS)                       \
+              $(TGT_CFLAGS)                     \
               -Wall                             \
               -Wextra                           \
               -pedantic                         \
@@ -132,9 +132,8 @@ CFLAGS      = $(GCCFLAGS)                       \
               -std=c99
 
 CPPFLAGS    = $(GCCFLAGS)                       \
+              $(TGT_CPPFLAGS)                   \
               -x c++                            \
-              -std=c++11                        \
-              -Wzero-as-null-pointer-constant   \
               -Wsign-conversion                 \
               -fno-rtti                         \
               -fstrict-enums                    \
@@ -148,7 +147,7 @@ AFLAGS      = $(GCCFLAGS)                       \
               -x assembler-with-cpp
 
 LFLAGS      = $(GCCFLAGS)                       \
-              $(TGTLFLAGS)                      \
+              $(TGT_LFLAGS)                     \
               -x none                           \
               -nostartfiles                     \
               -nostdlib                         \
@@ -217,6 +216,7 @@ version:
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application: $(APP).elf
 	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
 
 
