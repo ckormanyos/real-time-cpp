@@ -18,14 +18,10 @@
     class timer
     {
     public:
-
-      #if defined(_MSC_VER) && (_MSC_VER <= 1600)
-      #else
-        static_assert(false == std::numeric_limits<unsigned_tick>::is_signed,
-                      "error: the type of unsigned_tick must be unsigned!");
-      #endif
-
       typedef unsigned_tick tick_type;
+
+      static_assert(std::numeric_limits<tick_type>::is_signed == false,
+                    "the timer tick type must be unsigned");
 
       template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }
       template<typename other_tick_type> static tick_type milliseconds(const other_tick_type& value_milliseconds) { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }

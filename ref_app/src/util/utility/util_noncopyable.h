@@ -20,13 +20,8 @@
 
    // Emphasize: The following members are private.
    private:
-   #if defined(_MSC_VER)
      noncopyable(const noncopyable&);
      const noncopyable& operator=(const noncopyable&);
-   #else
-     noncopyable(const noncopyable&) = delete;
-     const noncopyable& operator=(const noncopyable&) = delete;
-   #endif
     };
   }
 

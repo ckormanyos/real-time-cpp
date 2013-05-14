@@ -9,11 +9,17 @@
   #define _UTIL_UTYPE_HELPER_2012_01_23_H_
 
   #include <cstdint>
-  #include <cstddef>
 
   namespace util
   {
-    template<const std::size_t> struct utype_helper { typedef std::uint64_t exact; };
+    template<const unsigned utype_bit_count> struct utype_helper
+    {
+      static_assert(bit_count <= 64U,
+                    "the bit count of the unsigned type can not exceed 64");
+
+      typedef unsigned exact;
+    };
+
     template<> struct utype_helper<0U> { typedef std::uint8_t exact; };
     template<> struct utype_helper<1U> { typedef std::uint8_t exact; };
     template<> struct utype_helper<2U> { typedef std::uint8_t exact; };

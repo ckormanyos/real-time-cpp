@@ -5,10 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cstdint>
 #include <array>
 #include <algorithm>
 
-#include <mcal_gpt.h>
 #include <os/os.h>
 #include <os/os_cfg.h>
 #include <util/utility/util_time.h>
@@ -20,8 +20,8 @@ namespace os
   public:
     typedef void (*function_type)();
 
-    typedef util::timer<mcal::gpt::value_type> timer_type;
-    typedef timer_type::tick_type              tick_type;
+    typedef util::timer<std::uint32_t> timer_type;
+    typedef timer_type::tick_type      tick_type;
 
     task_control_block(const function_type i,
                        const function_type f,
@@ -32,8 +32,6 @@ namespace os
                                                                          timer(o) { }
 
     task_control_block(const task_control_block& tcb);
-
-    ~task_control_block() { }
 
     void initialize() const { init(); }
 
@@ -65,6 +63,8 @@ namespace os
     task_control_block();
     const task_control_block& operator=(const task_control_block&);
   };
+
+  static_assert(OS_TASK_COUNT > 0U, "the task count must exceed zero");
 
   typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 

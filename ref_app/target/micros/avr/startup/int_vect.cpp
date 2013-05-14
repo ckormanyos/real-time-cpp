@@ -20,14 +20,17 @@ extern "C" void __vector_unused_irq()
   }
 }
 
-typedef struct struct_isr_type
+namespace
 {
-  typedef void(*function_type)();
+  typedef struct struct_isr_type
+  {
+    typedef void(*function_type)();
 
-  std::uint8_t  jmp[2]; // JMP instruction (0x940C): 0x0C = low byte, 0x94 = high byte.
-  function_type func;   // The interrupt service routine.
+    std::uint8_t  jmp[2]; // JMP instruction (0x940C): 0x0C = low byte, 0x94 = high byte.
+    function_type func;   // The interrupt service routine.
+  }
+  isr_type;
 }
-isr_type;
 
 extern "C"
 const volatile isr_type isr_vector[26U] __attribute__((section(".isr_vector")));

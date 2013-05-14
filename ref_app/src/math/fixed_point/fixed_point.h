@@ -48,7 +48,7 @@
 
     // Ensure that the underlying integer type of the fixed_point class is signed.
     static_assert(std::numeric_limits<signed_value_type>::is_signed == true,
-                  "error: fixed_point::signed_value_type must be signed");
+                  "the fixed point signed_value_type must be signed");
 
     // Another template kind of this class itself is a friend.
     // This is needed for the copy ctor and operator=().

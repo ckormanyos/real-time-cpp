@@ -79,55 +79,58 @@ extern "C" void timer4_irq_handler()
 
 void mcal::gpt::init(const config_type*)
 {
-  // Set up an interrupt on timer4 for a system tick based
-  // on the free-running 16-bit timer4 with a frequency of 1MHz.
+  if(gpt_is_initialized() == false)
+  {
+    // Set up an interrupt on timer4 for a system tick based
+    // on the free-running 16-bit timer4 with a frequency of 1MHz.
 
-  // Power management: Enable the power for timer4.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb1enr, 0x00000004UL>::reg_or();
+    // Power management: Enable the power for timer4.
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb1enr, 0x00000004UL>::reg_or();
 
-  // Compute the timer4 interrupt priority.
-  const std::uint32_t aircr_value = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::aircr>::reg_get();
+    // Compute the timer4 interrupt priority.
+    const std::uint32_t aircr_value = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::aircr>::reg_get();
 
-  // This following code sequence has been inspired by
-  // parts of the STM32 peripheral library.
-  const std::uint32_t tmp_prio = (0x700UL - (aircr_value & 0x700UL)) >> 0x08;
-  const std::uint32_t tmp_pre  = (0x04UL - tmp_prio);
-  const std::uint32_t tmp_sub  =  0x0FUL >> tmp_prio;
+    // This following code sequence has been inspired by
+    // parts of the STM32 peripheral library.
+    const std::uint32_t tmp_prio = (0x700UL - (aircr_value & 0x700UL)) >> 0x08;
+    const std::uint32_t tmp_pre  = (0x04UL - tmp_prio);
+    const std::uint32_t tmp_sub  =  0x0FUL >> tmp_prio;
 
-  constexpr std::uint32_t timer4_nvic_irq_preemption_prio = 0x0FUL;
-  constexpr std::uint32_t timer4_nvic_irq_sub_prio        = 0x0FUL;
+    constexpr std::uint32_t timer4_nvic_irq_preemption_prio = 0x0FUL;
+    constexpr std::uint32_t timer4_nvic_irq_sub_prio        = 0x0FUL;
 
-  constexpr std::size_t timer4_irq_n = 30UL;
+    constexpr std::size_t timer4_irq_n = 30UL;
 
-  // Place the memory-mapped NVIC configuration structure.
-  constexpr nvic_type* nvic = reinterpret_cast<nvic_type*>(0xE000E100UL);
+    // Place the memory-mapped NVIC configuration structure.
+    constexpr nvic_type* nvic = reinterpret_cast<nvic_type*>(0xE000E100UL);
 
-  // Set the timer4 interrupt priority.
-  nvic->ip  [timer4_irq_n] = (  static_cast<std::uint32_t>(timer4_nvic_irq_preemption_prio << tmp_pre)
-                              | static_cast<std::uint32_t>(timer4_nvic_irq_sub_prio & tmp_sub)
-                             ) << 0x04;
+    // Set the timer4 interrupt priority.
+    nvic->ip  [timer4_irq_n] = (  static_cast<std::uint32_t>(timer4_nvic_irq_preemption_prio << tmp_pre)
+                                | static_cast<std::uint32_t>(timer4_nvic_irq_sub_prio & tmp_sub)
+                               ) << 0x04;
 
-  nvic->iser[timer4_irq_n >> 0x05] = static_cast<std::uint32_t>(1UL) << (timer4_irq_n & 0x1FU);
+    nvic->iser[timer4_irq_n >> 0x05] = static_cast<std::uint32_t>(1UL) << (timer4_irq_n & 0x1FU);
 
-  // Clear the interrupt request bit.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
+    // Clear the interrupt request bit.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
 
-  // Enable the update interrupt.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, 0x0001U>::reg_set();
+    // Enable the update interrupt.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, 0x0001U>::reg_set();
 
-  // Set the timer prescaler to 24 resulting in a 1MHz frequency.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, 24U - 1U>::reg_set();
+    // Set the timer prescaler to 24 resulting in a 1MHz frequency.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, 24U - 1U>::reg_set();
 
-  // Set the auto-reload register for the entire 16-bit period of the timer.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_arr, 0xFFFFU>::reg_set();
+    // Set the auto-reload register for the entire 16-bit period of the timer.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_arr, 0xFFFFU>::reg_set();
 
-  // Set the counter direction to counting-up and enable the counter.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cr1, 0x0001U>::reg_set();
+    // Set the counter direction to counting-up and enable the counter.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_cr1, 0x0001U>::reg_set();
 
-  // Re-initialize the counter and generate an update of the registers.
-  mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
+    // Re-initialize the counter and generate an update of the registers.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_egr, 0x0001U>::reg_set();
 
-  gpt_is_initialized() = true;
+    gpt_is_initialized() = true;
+  }
 }
 
 mcal::gpt::value_type mcal::gpt::get_time_elapsed()

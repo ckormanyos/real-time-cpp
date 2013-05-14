@@ -60,26 +60,20 @@ mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 
 void mcal::gpt::init(const config_type*)
 {
-  // Clear the timer0 overflow flag.
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::tifr0,
-                    0x01U>::reg_set();
+  if(gpt_is_initialized() == false)
+  {
+    // Clear the timer0 overflow flag.
+    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x01U>::reg_set();
 
-  // Enable the timer0 overflow interrupt.
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::timsk0,
-                    0x01U>::reg_set();
+    // Enable the timer0 overflow interrupt.
+    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::timsk0, 0x01U>::reg_set();
 
-  // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::tccr0b,
-                    0x02U>::reg_set();
+    // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
+    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
 
-  // Set the is-initialized indication flag.
-  gpt_is_initialized() = true;
+    // Set the is-initialized indication flag.
+    gpt_is_initialized() = true;
+  }
 }
 
 // Implement std::chrono::high_resolution_clock::now()
