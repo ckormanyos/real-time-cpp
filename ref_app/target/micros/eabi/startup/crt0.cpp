@@ -16,7 +16,7 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void my_startup()
+extern "C" void __my_startup()
 {
   // Load the stack pointer.
   asm volatile("movs r1, #0");

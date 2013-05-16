@@ -20,6 +20,8 @@ extern "C"
 
 namespace
 {
+  typedef std::uint16_t memory_aligned_type;
+
   void do_copy_data() __attribute__((section(".init4")));
   void do_clear_bss() __attribute__((section(".init4")));
 
@@ -50,9 +52,9 @@ namespace
   {
     // Clear the bss segment.
     // Note that the bss segment is aligned by 2.
-    std::fill(static_cast<std::uint16_t*>(static_cast<void*>(&_bss_begin)),
-              static_cast<std::uint16_t*>(static_cast<void*>(&_bss_end)),
-              static_cast<std::uint16_t>(0U));
+    std::fill(static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_begin)),
+              static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_end)),
+              static_cast<memory_aligned_type>(0U));
   }
 }
 

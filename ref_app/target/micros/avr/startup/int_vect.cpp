@@ -6,19 +6,14 @@
 //
 
 #include <cstdint>
+#include <array>
 #include <mcal_cpu.h>
 
-extern "C" void my_startup();
+extern "C" void __my_startup();
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 
-extern "C" void __vector_unused_irq()
-{
-  for(;;)
-  {
-    mcal::cpu::nop();
-  }
-}
+extern "C" void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
@@ -33,13 +28,13 @@ namespace
 }
 
 extern "C"
-const volatile isr_type isr_vector[26U] __attribute__((section(".isr_vector")));
+const volatile std::array<isr_type, 26U> isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile isr_type isr_vector[26U] =
-{
-                                              // Nr.  Interrupt source
-  { {0x0C, 0x94}, my_startup },               //  0,  reset
+const volatile std::array<isr_type, 26U> isr_vector =
+{{
+                                              // Nr.  interrupt source
+  { {0x0C, 0x94}, __my_startup },             //  0,  reset
   { {0x0C, 0x94}, __vector_unused_irq },      //  1,  ext0
   { {0x0C, 0x94}, __vector_unused_irq },      //  2,  ext1
   { {0x0C, 0x94}, __vector_unused_irq },      //  3,  pin0
@@ -65,4 +60,4 @@ const volatile isr_type isr_vector[26U] =
   { {0x0C, 0x94}, __vector_unused_irq },      // 23,  comparator
   { {0x0C, 0x94}, __vector_unused_irq },      // 24,  two-wire
   { {0x0C, 0x94}, __vector_unused_irq }       // 25,  spm
-};
+}};

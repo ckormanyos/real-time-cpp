@@ -14,7 +14,7 @@ OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
 /* The end of the 1K RAM stack */
-__stack = 0x800400;
+__initial_stack_pointer = 0x800400;
 
 MEMORY
 {

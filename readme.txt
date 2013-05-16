@@ -1,18 +1,30 @@
-Companion Code for "Real-Time C++".
+
+This is the companion code for "Real-Time C++".
 
 See the book:
 C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
 Template Microcontroller Programming (Springer, Heidelberg, 2013).
 
-The Reference Project
----------------------
+Details on the Reference Project
+--------------------------------
 
-The reference project supports:
-  Win32 in both Release and Debug modes
-  ATMEL(R) AVR(R) Atmega328P
-  ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
-  Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
-  Under construction: Beagle Bone with ARM(R) A8
+The reference project boots via a small startup code and subsequently initializes
+a skinny microcontroller abstraction layer (MCAL). Control is then passed to a
+simple multitasking scheduler which schedules the LED application and an (empty)
+system task. The LED application toggles the LED with a frequency of 1/2 Hz.
+
+Supported Targets in the Reference Project
+------------------------------------------
+
+The reference project supports the following targets:
+  * Win32 in both Release and Debug modes
+  * ATMEL(R) AVR(R) Atmega328P
+  * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
+  * Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
+  * Under construction: Beagle Bone with ARM(R) A8
+
+Cross Development in the Reference Project
+------------------------------------------
 
 The reference project uses cross-development based on *nix-like make tools
 in combination with Microsoft(R) Visual Studio(R) 2012. The *nix-like
@@ -33,7 +45,7 @@ in the bin directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
 
-The Targets
+Target Details
 -----------------
 
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board. It toggles
@@ -53,11 +65,3 @@ The following compilers are available:
   GCC 4.7.2 for arm-unknown-eabi, for ARM(R) Cortex(TM)-M3
 
 These compilers have been built in MinGW and moved to the solution.
-
-Details on the Reference Project
---------------------------------
-
-The reference project boots via a small startup code and subsequently initializes
-a skinny microcontroller abstraction layer (MCAL). Control is then passed to a
-simple multitasking scheduler which schedules the LED application and an (empty)
-system task. The LED application toggles the LED with a frequency of 1/2 Hz.

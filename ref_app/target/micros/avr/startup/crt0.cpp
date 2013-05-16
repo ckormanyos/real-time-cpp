@@ -6,9 +6,11 @@
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Switched to C++ and modified for STM32F103x by Chris.
+// Switched to C++ and modified for Atmega168P by Chris.
 
 #include <mcal/mcal.h>
+
+asm volatile (".extern __initial_stack_pointer");
 
 namespace crt
 {
@@ -16,17 +18,17 @@ namespace crt
   void init_ctors() __attribute__((section(".init6")));
 }
 
-extern "C" void my_startup() __attribute__((section(".init0")));
+extern "C" void __my_startup() __attribute__((section(".init0")));
 
-extern "C" void my_startup()
+extern "C" void __my_startup()
 {
   // Load the SREG register.
   asm volatile ("eor r1, r1");
   asm volatile ("out 0x3F, r1");
 
   // Set the stack pointer.
-  asm volatile ("ldi r28, lo8(__stack)");
-  asm volatile ("ldi r29, hi8(__stack)");
+  asm volatile ("ldi r28, lo8(__initial_stack_pointer)");
+  asm volatile ("ldi r29, hi8(__initial_stack_pointer)");
 
   // Load the SPH register (stack pointer high).
   asm volatile ("out 0x3E, r29");

@@ -66,14 +66,14 @@ namespace
 }
 
 // TBD: Do we really need interrupt attributes here?
-extern "C" void timer4_irq_handler() __attribute__((interrupt));
+extern "C" void __timer4_irq_handler() __attribute__((interrupt));
 
-extern "C" void timer4_irq_handler()
+extern "C" void __timer4_irq_handler()
 {
   // Clear the interrupt request bit.
   mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();
 
-  // Increment the second word of the 64-bit system tick by 1.
+  // Increment the 64-bit system tick by 0x10000.
   system_tick += 0x10000U;
 }
 

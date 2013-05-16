@@ -14,7 +14,7 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The end of the 8K RAM stack */
-_estack = 0x20002000;
+__initial_stack_pointer = 0x20002000;
 
 MEMORY
 {
