@@ -14,7 +14,7 @@
   {
     template<typename short_type,
              typename long_type>
-    inline long_type make_long(const short_type& lo, const short_type& hi)
+    inline long_type make_long(short_type lo, short_type hi)
     {
       // Ensure that the long_type has exactly twice the digits as the short_type.
       static_assert((std::numeric_limits<short_type>::digits * 2) == std::numeric_limits<long_type>::digits,
@@ -32,7 +32,7 @@
 
     template<typename short_type,
              typename long_type>
-    inline short_type lo_part(const long_type& val)
+    inline short_type lo_part(long_type val)
     {
       // Ensure that the long_type has exactly twice the digits as the short_type.
       static_assert((std::numeric_limits<short_type>::digits * 2) == std::numeric_limits<long_type>::digits,
@@ -50,7 +50,7 @@
 
     template<typename short_type,
              typename long_type>
-    inline short_type hi_part(const long_type& val)
+    inline short_type hi_part(long_type val)
     {
       // Ensure that the long_type has exactly twice the digits as the short_type.
       static_assert((std::numeric_limits<short_type>::digits * 2) == std::numeric_limits<long_type>::digits,

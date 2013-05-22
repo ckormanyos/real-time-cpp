@@ -36,6 +36,7 @@
       constexpr std::uint8_t pind   = 0x09U + sfr_offset;
       constexpr std::uint8_t ddrd   = 0x0AU + sfr_offset;
       constexpr std::uint8_t portd  = 0x0BU + sfr_offset;
+      constexpr std::uint8_t pine   = 0x0CU + sfr_offset;
       constexpr std::uint8_t ddre   = 0x0DU + sfr_offset;
       constexpr std::uint8_t porte  = 0x0EU + sfr_offset;
 

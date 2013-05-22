@@ -22,9 +22,11 @@
         static void set_direction_input() { }
         static void set_pin_high() { }
         static void set_pin_low() { }
-        static bool read_pin_value() { }
+        static bool read_input_value() { return false; }
         static void toggle_pin() { }
       };
+
+      typedef port_pin port_rdm_type;
     }
   }
 

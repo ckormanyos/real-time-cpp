@@ -38,11 +38,11 @@ namespace
 namespace crt
 {
   void init_ctors() __attribute__((section(".init6")));
+}
 
-  void init_ctors()
-  {
-    do_global_ctors();
-  }
+void crt::init_ctors()
+{
+  do_global_ctors();
 }
 
 asm volatile (".section .text");

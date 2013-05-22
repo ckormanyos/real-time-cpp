@@ -23,48 +23,18 @@
                typename reg_type,
                const addr_type port,
                const reg_type bpos>
-      class port_pin : private util::noncopyable
+      class port_pin
       {
       public:
-        static void set_direction_output()
-        {
-          // Set the port pin direction to output.
-          mcal::reg::access<addr_type, reg_type, pdir, bpos>::bit_set();
-        }
-
-        static void set_direction_input()
-        {
-          // Set the port pin direction to input.
-          mcal::reg::access<addr_type, reg_type, pdir, bpos>::bit_clr();
-        }
-
-        static void set_pin_high()
-        {
-          // Set the port high.
-          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_set();
-        }
-
-        static void set_pin_low()
-        {
-          // Set the port low.
-          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_clr();
-        }
-
-        static bool read_pin_value()
-        {
-          // Read the port value.
-          return mcal::reg::access<addr_type, reg_type, port, bpos>::bit_get();
-        }
-
-        static void toggle_pin()
-        {
-          // Toggle the port.
-          mcal::reg::access<addr_type, reg_type, port, bpos>::bit_not();
-        }
-
-      private:
-        static constexpr addr_type pdir = port - 1U;
+        static void set_direction_output() { }
+        static void set_direction_input() { }
+        static void set_pin_high() { }
+        static void set_pin_low() { }
+        static bool read_input_value() { return false; }
+        static void toggle_pin() { }
       };
+
+      typedef port_pin<std::uint32_t, std::uint32_t, 0U, 0U> port_rdm_type;
     }
   }
 

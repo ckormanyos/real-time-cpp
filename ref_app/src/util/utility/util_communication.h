@@ -27,7 +27,7 @@
       virtual bool recv(std::uint8_t&) = 0;
       virtual bool recv(data_type&) = 0;
       virtual std::size_t recv_ready() const = 0;
-      virtual bool idle(void) const = 0;
+      virtual bool idle() const = 0;
 
     protected:
       communication() { }

@@ -28,10 +28,10 @@ namespace
 }
 
 extern "C"
-const volatile std::array<isr_type, 26U> isr_vector __attribute__((section(".isr_vector")));
+const volatile std::array<isr_type, 26U> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_type, 26U> isr_vector =
+const volatile std::array<isr_type, 26U> __isr_vector =
 {{
                                               // Nr.  interrupt source
   { {0x0C, 0x94}, __my_startup },             //  0,  reset

@@ -17,23 +17,28 @@
   }
 
   // Declare all of the tasks and their initialization functions.
+  namespace sys { namespace rdm { void task_init(); void task_func(); } }
   namespace app { namespace led { void task_init(); void task_func(); } }
   namespace sys { namespace mon { void task_init(); void task_func(); } }
 
   // Configure the operating system tasks.
-  #define OS_TASK_COUNT 2U
+  #define OS_TASK_COUNT 3U
 
   #define OS_TASK_LIST                                                           \
   {                                                                              \
     {                                                                            \
+    task_control_block ( sys::rdm::task_init,                                    \
+                         sys::rdm::task_func,                                    \
+                         task_control_block::timer_type::microseconds( 1000U),   \
+                         task_control_block::timer_type::microseconds(    0U)),  \
     task_control_block ( app::led::task_init,                                    \
                          app::led::task_func,                                    \
-                         task_control_block::timer_type::microseconds( 2000U),   \
-                         task_control_block::timer_type::microseconds(    0U) ), \
+                         task_control_block::timer_type::microseconds(10000U),   \
+                         task_control_block::timer_type::microseconds(  117U)),  \
     task_control_block ( sys::mon::task_init,                                    \
                          sys::mon::task_func,                                    \
-                         task_control_block::timer_type::microseconds(10000U),   \
-                         task_control_block::timer_type::microseconds(  419U) ), \
+                         task_control_block::timer_type::microseconds(20000U),   \
+                         task_control_block::timer_type::microseconds(  419U)),  \
     }                                                                            \
   }
 

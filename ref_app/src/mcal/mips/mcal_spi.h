@@ -30,7 +30,7 @@
         virtual bool recv(std::uint8_t& byte_to_recv);
         virtual bool recv(data_type& data_to_recv);
         virtual std::size_t recv_ready() const;
-        virtual bool idle(void) const;
+        virtual bool idle() const;
       };
 
       extern spi_communication the_spi;

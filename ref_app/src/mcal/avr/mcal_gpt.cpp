@@ -46,7 +46,7 @@ namespace
 
 extern "C" void __vector_16() __attribute__((signal, used, externally_visible));
 
-void __vector_16(void)
+void __vector_16()
 {
   // Increment the software system tick.
   system_tick += static_cast<std::uint8_t>(0x80U);

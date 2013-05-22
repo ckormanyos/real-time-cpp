@@ -18,6 +18,11 @@ extern "C"
   extern std::uintptr_t _bss_end;         // End address for the .bss section.
 }
 
+namespace crt
+{
+  void init_ram();
+}
+
 namespace
 {
   typedef std::uint16_t memory_aligned_type;
@@ -58,11 +63,8 @@ namespace
   }
 }
 
-namespace crt
+void crt::init_ram()
 {
-  void init_ram()
-  {
-    do_copy_data();
-    do_clear_bss();
-  }
+  do_copy_data();
+  do_clear_bss();
 }

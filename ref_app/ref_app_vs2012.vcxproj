@@ -308,6 +308,7 @@
     <ClCompile Include="src\os\os.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
+    <ClCompile Include="src\sys\rdm\sys_rdm.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
     <ClCompile Include="src\util\memory\util_ring_allocator.cpp" />
     <ClCompile Include="src\util\memory\util_static_allocator.cpp" />
@@ -512,6 +513,8 @@
     <ClInclude Include="src\util\memory\util_placed_pointer.h" />
     <ClInclude Include="src\util\memory\util_ring_allocator.h" />
     <ClInclude Include="src\util\memory\util_static_allocator.h" />
+    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor.h" />
+    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor_base.h" />
     <ClInclude Include="src\util\STL\impl\algorithm_impl.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

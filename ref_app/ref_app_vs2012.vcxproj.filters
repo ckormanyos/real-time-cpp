@@ -86,6 +86,12 @@
     <Filter Include="src\util\STL_C++11_Compatibility">
       <UniqueIdentifier>{20982b03-2390-4ddf-906f-bbc52686ae17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\monitor">
+      <UniqueIdentifier>{2612fe47-889a-4ed8-934e-5f34a57797d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sys\rdm">
+      <UniqueIdentifier>{2696f37d-c606-4ccd-b420-a61361e29241}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -234,6 +240,9 @@
     </ClCompile>
     <ClCompile Include="src\util\utility\util_communication.cpp">
       <Filter>src\util\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\rdm\sys_rdm.cpp">
+      <Filter>src\sys\rdm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,6 +569,12 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\cmath_constants_impl.h">
       <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor.h">
+      <Filter>src\util\monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor_base.h">
+      <Filter>src\util\monitor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

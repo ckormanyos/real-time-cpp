@@ -52,13 +52,13 @@
           std::atomic_store(&shadow, (std::min)(duty, resol));
         }
 
-        duty_type get_duty(void) const
+        duty_type get_duty() const
         {
           // Retrieve the duty cycle.
           return std::atomic_load(&duty_cycle);
         }
 
-        void service(void)
+        void service()
         {
           // Increment the counter.
           ++counter;

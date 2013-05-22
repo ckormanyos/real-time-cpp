@@ -9,8 +9,8 @@
 #include <mcal_cpu.h>
 
 extern "C" void __initial_stack_pointer();
-extern "C" void __my_startup();
 
+extern "C" void __my_startup();
 extern "C" void __vector_unused_irq();
 extern "C" void __nmi_handler        ();
 extern "C" void __hard_fault_handler ();
@@ -40,10 +40,10 @@ namespace
 }
 
 extern "C"
-const volatile std::array<isr_type, 116U> isr_vector __attribute__((section(".isr_vector")));
+const volatile std::array<isr_type, 116U> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_type, 116U> isr_vector =
+const volatile std::array<isr_type, 116U> __isr_vector =
 {{
   __initial_stack_pointer,   // 0x0000, initial stack pointer
   __my_startup,              // 0x0004, reset

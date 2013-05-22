@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <algorithm>
-#include <cstddef>
 #include <cstdint>
+#include <cstddef>
+#include <algorithm>
 
 extern "C"
 {
