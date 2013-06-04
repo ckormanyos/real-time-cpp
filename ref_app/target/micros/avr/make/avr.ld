@@ -6,7 +6,7 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for ATMEL(R) AVR(R) Atmega16 */
+/* Linker script for ATMEL(R) AVR(R) ATmega16/32, etc. */
 
 INPUT(libc.a libgcc.a)
 
