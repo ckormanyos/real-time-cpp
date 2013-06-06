@@ -33,13 +33,13 @@ SECTIONS
     . = ALIGN(2);
     _ctors_begin = . ;
      *(.ctors)
-    KEEP(*(SORT(.ctors)))
     _ctors_end = . ;
     . = ALIGN(2);
     _dtors_begin = . ;
     *(.dtors)
-    KEEP(*(.dtors))
     _dtors_end = . ;
+    KEEP(SORT(*)(.ctors))
+    KEEP(SORT(*)(.dtors))
 
     . = ALIGN(2);
     *(.init0)       /* Start here after reset. */
@@ -51,15 +51,9 @@ SECTIONS
     *(.init6)       /* Initializion of the C++ constructors. */
     KEEP (*(.init6))
     . = ALIGN(2);
-    *(.fini6)       /* Call the C++ destructors (this is an empty function for us). */
-    . = ALIGN(2);
     *(.text)
     . = ALIGN(2);
     *(.text*)
-    . = ALIGN(2);
-    *(.rodata)
-    . = ALIGN(2);
-    *(.rodata*)
   } > ROM
 
   /* The ROM-to-RAM initialized data section */
@@ -72,6 +66,10 @@ SECTIONS
     . = ALIGN(2);
     *(.data*)
     KEEP (*(.data*))
+    . = ALIGN(2);
+    *(.rodata)
+    . = ALIGN(2);
+    *(.rodata*)
     _data_end = .;
   } > RAM AT > ROM
 
