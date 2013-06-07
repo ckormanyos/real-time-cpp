@@ -119,7 +119,8 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -O3                               \
               -finline-functions                \
               -finline-limit=32                 \
-              -ffunction-sections
+              -ffunction-sections               \
+              -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               -x c                              \

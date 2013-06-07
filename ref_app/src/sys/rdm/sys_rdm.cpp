@@ -6,6 +6,7 @@
 //
 
 #include <mcal_port.h>
+#include <mcal_rdm.h>
 #include <util/monitor/util_single_pin_debug_monitor.h>
 
 namespace
@@ -31,5 +32,5 @@ void sys::rdm::task_init()
 void sys::rdm::task_func()
 {
   rdm_debug_monitor.driver_task();
-  rdm_debug_monitor.protocol_task<std::uint16_t, 0U>();
+  rdm_debug_monitor.protocol_task<mcal::rdm::address_type, mcal::rdm::address_offset>();
 }

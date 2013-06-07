@@ -13,9 +13,6 @@
 
 void mcal::cpu::init()
 {
-  // Power management: Enable power for I/O porta and portc.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb2enr, 0x00000014UL>::reg_or();
-
   // Disable all interrupts and clear pending bits.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cir, 0x009F0000UL>::reg_set();
 

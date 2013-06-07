@@ -26,62 +26,62 @@ SECTIONS
 {
   .text :
   {
-    . = ALIGN(2);
     *(.isr_vector)
     KEEP(*(.isr_vector))
-
     . = ALIGN(2);
+
     _ctors_begin = . ;
      *(.ctors)
-    _ctors_end = . ;
     . = ALIGN(2);
+    _ctors_end = . ;
     _dtors_begin = . ;
     *(.dtors)
+    . = ALIGN(2);
     _dtors_end = . ;
-    KEEP(SORT(*)(.ctors))
-    KEEP(SORT(*)(.dtors))
 
-    . = ALIGN(2);
+    KEEP(SORT(*)(.ctors))
+
     *(.init0)       /* Start here after reset. */
+    . = ALIGN(2);
     KEEP (*(.init0))
-    . = ALIGN(2);
     *(.init4)       /* Initializion of the data and BSS. */
+    . = ALIGN(2);
     KEEP (*(.init4))
-    . = ALIGN(2);
     *(.init6)       /* Initializion of the C++ constructors. */
-    KEEP (*(.init6))
     . = ALIGN(2);
+    KEEP (*(.init6))
     *(.text)
     . = ALIGN(2);
     *(.text*)
+    . = ALIGN(2);
   } > ROM
 
   /* The ROM-to-RAM initialized data section */
   .data :
   {
-    . = ALIGN(2);
     _data_begin = .;
     *(.data)
+    . = ALIGN(2);
     KEEP (*(.data))
-    . = ALIGN(2);
     *(.data*)
-    KEEP (*(.data*))
     . = ALIGN(2);
+    KEEP (*(.data*))
     *(.rodata)
     . = ALIGN(2);
     *(.rodata*)
+    . = ALIGN(2);
     _data_end = .;
   } > RAM AT > ROM
 
   /* The uninitialized (zero-cleared) data section */
   .bss :
   {
-    . = ALIGN(2);
     _bss_begin = .;
     *(.bss)
-    KEEP (*(.bss))
     . = ALIGN(2);
+    KEEP (*(.bss))
     *(.bss*)
+    . = ALIGN(2);
     KEEP (*(.bss.*))
     _bss_end = .;
   } > RAM

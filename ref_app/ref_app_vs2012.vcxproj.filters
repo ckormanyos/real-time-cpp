@@ -576,6 +576,18 @@
     <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor_base.h">
       <Filter>src\util\monitor</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_rdm.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\eabi\mcal_rdm.h">
+      <Filter>src\mcal\eabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mips\mcal_rdm.h">
+      <Filter>src\mcal\mips</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_rdm.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

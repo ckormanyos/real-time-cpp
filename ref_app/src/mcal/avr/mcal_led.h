@@ -10,7 +10,7 @@
 
   #include <util/utility/util_type.h>
   #include <util/utility/util_noncopyable.h>
-  #include <mcal_reg_access.h>
+  #include <mcal_port.h>
 
   namespace mcal
   {
@@ -26,23 +26,23 @@
         led()
         {
           // Set the port pin value to low.
-          port_pin_type::bit_clr();
+          port_pin_type::set_pin_low();
 
           // Set the port pin direction to output.
-          pdir_pin_type::bit_set();
+          port_pin_type::set_direction_output();
         }
 
-        void toggle() const
+        static void toggle()
         {
           // Toggle the LED.
-          port_pin_type::bit_not();
+          port_pin_type::toggle();
         }
 
       private:
-        static constexpr addr_type pdir = port - 1U;
-
-        typedef mcal::reg::access<addr_type, reg_type, port, bpos> port_pin_type;
-        typedef mcal::reg::access<addr_type, reg_type, pdir, bpos> pdir_pin_type;
+        typedef mcal::port::port_pin<addr_type,
+                                     reg_type,
+                                     port,
+                                     bpos> port_pin_type;
       };
 
       typedef led<std::uint8_t,

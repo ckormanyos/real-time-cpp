@@ -29,19 +29,18 @@ SECTIONS
   /* Program code (text), ISR vectors, read-only data and static ctors */
   .text :
   {
-    . = ALIGN(4);
     *(.isr_vector)
+    . = ALIGN(4);
     KEEP(*(.isr_vector))
 
-    . = ALIGN(4);
     _ctors_begin = .;
     *(.init_array)
-    KEEP (*(SORT(.init_array)))
     . = ALIGN(4);
+    KEEP (*(SORT(.init_array)))
     *(.init_array*)
+    . = ALIGN(4);
     KEEP (*(SORT(.init_array*)))
     _ctors_end = .;
-    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -49,6 +48,7 @@ SECTIONS
     *(.rodata)
     . = ALIGN(4);
     *(.rodata*)
+    . = ALIGN(4);
   } > ROM
 
   . = 0x20000000;
@@ -56,12 +56,12 @@ SECTIONS
   /* The ROM-to-RAM initialized data section */
   .data :
   {
-    . = ALIGN(4);
     _data_begin = .;
     *(.data)
-    KEEP (*(.data))
     . = ALIGN(4);
+    KEEP (*(.data))
     *(.data*)
+    . = ALIGN(4);
     KEEP (*(.data*))
     _data_end = .;
   } > RAM AT > ROM
@@ -69,12 +69,12 @@ SECTIONS
   /* The uninitialized (zero-cleared) data section */
   .bss :
   {
-    . = ALIGN(4);
     _bss_begin = .;
     *(.bss)
-    KEEP (*(.bss))
     . = ALIGN(4);
+    KEEP (*(.bss))
     *(.bss*)
+    . = ALIGN(4);
     KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
