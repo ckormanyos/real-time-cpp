@@ -27,7 +27,7 @@
 
     protected:
       // Set up the driver buffer.
-      static const std::uint_least8_t driver_buffer_size = 8U;
+      static const std::uint_fast8_t driver_buffer_size = std::uint_fast8_t(8U);
       typedef std::array<std::uint8_t, driver_buffer_size> driver_buffer_type;
 
       typedef enum enum_driver_transmit_state_type
@@ -44,17 +44,17 @@
       }
       driver_transmit_state_type;
 
-      driver_buffer_type          driver_buffer;
-      std::uint_least8_t          driver_buffer_length;
-      bool                        driver_is_in_send_mode;
-      std::uint_least8_t          driver_current_byte_value_or_position;
-      std::uint_least8_t          driver_received_nothing_counter;
-      driver_transmit_state_type  driver_transmit_state;
+      driver_buffer_type         driver_buffer;
+      std::uint_fast8_t          driver_buffer_length;
+      bool                       driver_is_in_send_mode;
+      std::uint_fast8_t          driver_current_byte_value;
+      std::uint_fast8_t          driver_received_nothing_counter;
+      driver_transmit_state_type driver_transmit_state;
 
       single_pin_debug_monitor_base() : driver_buffer(),
                                         driver_buffer_length(0U),
                                         driver_is_in_send_mode(false),
-                                        driver_current_byte_value_or_position(0U),
+                                        driver_current_byte_value(0U),
                                         driver_received_nothing_counter(0U),
                                         driver_transmit_state(recieve_start_bit)
       {
@@ -63,14 +63,14 @@
 
       void driver_send_buffer()
       {
-        driver_is_in_send_mode                = true;
-        driver_transmit_state                 = send_start_bit;
-        driver_current_byte_value_or_position = 0U;
+        driver_is_in_send_mode    = true;
+        driver_transmit_state     = send_start_bit;
+        driver_current_byte_value = std::uint_fast8_t(0U);
       }
 
       void driver_flush_buffer()
       {
-        driver_buffer_length  = 0U;
+        driver_buffer_length  = std::uint_fast8_t(0U);
         driver_transmit_state = recieve_start_bit;
         std::fill(driver_buffer.begin(), driver_buffer.end(), driver_buffer_type::value_type(0U));
       }
@@ -98,43 +98,47 @@
       // The volatile qualification reduces the risk of the memory access
       // code being optimized away entirely.
 
-      volatile std::uint_least8_t data_elements;
-      volatile std::uint_least8_t service_id;
+      volatile std::uint_fast8_t data_elements;
+      volatile std::uint_fast8_t service_id;
 
       // Obtain the service ID for a read or write command,
       // and set the number of data elements in the command.
 
       switch(driver_buffer[0U])
       {
-        default:
         case 0x62:  // 'b'
-          service_id    = 1U;
-          data_elements = 1U;
+          service_id    = std::uint_fast8_t(1U);
+          data_elements = std::uint_fast8_t(1U);
           break;
 
         case 0x77:  // 'w'
-          service_id    = 1U;
-          data_elements = 2U;
+          service_id    = std::uint_fast8_t(1U);
+          data_elements = std::uint_fast8_t(2U);
           break;
 
         case 0x64:  // 'd'
-          service_id    = 1U;
-          data_elements = 4U;
+          service_id    = std::uint_fast8_t(1U);
+          data_elements = std::uint_fast8_t(4U);
           break;
 
         case 0x42:  // 'B'
-          service_id    = 2U;
-          data_elements = 1U;
+          service_id    = std::uint_fast8_t(2U);
+          data_elements = std::uint_fast8_t(1U);
           break;
 
         case 0x57:  // 'W'
-          service_id    = 2U;
-          data_elements = 2U;
+          service_id    = std::uint_fast8_t(2U);
+          data_elements = std::uint_fast8_t(2U);
           break;
 
         case 0x44:  // 'D'
-          service_id    = 2U;
-          data_elements = 4U;
+          service_id    = std::uint_fast8_t(2U);
+          data_elements = std::uint_fast8_t(4U);
+          break;
+
+        default:    // undefined
+          service_id    = std::uint_fast8_t(0U);
+          data_elements = std::uint_fast8_t(0U);
           break;
       }
 
@@ -146,9 +150,9 @@
                                                                 driver_buffer[2U]));
 
       // Evaluate the service ID and issue the read or write command.
-      if(service_id == 1U)
+      if(service_id == std::uint_fast8_t(1U))
       {
-        if(driver_buffer_length == 3U)
+        if(driver_buffer_length == std::uint_fast8_t(3U))
         {
           switch(data_elements)
           {
@@ -191,9 +195,9 @@
           driver_send_buffer();
         }
       }
-      else if(service_id == 2U)
+      else if(service_id == std::uint_fast8_t(2U))
       {
-        if(driver_buffer_length == (data_elements + 3U))
+        if(driver_buffer_length == std::uint_fast8_t(data_elements + std::uint_fast8_t(3U)))
         {
           switch(data_elements)
           {

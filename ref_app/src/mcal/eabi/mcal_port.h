@@ -29,10 +29,9 @@
           // Read the value of the port direction register.
           // Clear all the port pin control bits in the new register value.
           // Set the port pin control bits for output, push-pull, 50MHz in the new register value.
-          const reg_type new_pdir_value = reg_type(( mcal::reg::access<addr_type, reg_type, pdir>::reg_get()
-                                                    & reg_type(~(reg_type(0xFUL) << pdir_shift_offset))
-                                                   )
-                                                   | (reg_type(0x3UL) << pdir_shift_offset));
+          reg_type new_pdir_value = mcal::reg::access<addr_type, reg_type, pdir>::reg_get();
+          new_pdir_value &= reg_type(~(reg_type(0xFUL) << pdir_shift_offset));
+          new_pdir_value |= (reg_type(0x3UL) << pdir_shift_offset);
 
           // Set the port for digital output.
           mcal::reg::access<addr_type, reg_type, pdir>::reg_set(new_pdir_value);
@@ -43,10 +42,9 @@
           // Read the value of the port direction register.
           // Clear all the port pin control bits in the new register value.
           // Set the port pin control bits for input in the new register value.
-          const reg_type new_pdir_value = reg_type(( mcal::reg::access<addr_type, reg_type, pdir>::reg_get()
-                                                    & reg_type(~(reg_type(0xFUL) << pdir_shift_offset))
-                                                   )
-                                                   | (reg_type(0x4UL) << pdir_shift_offset));
+          reg_type new_pdir_value = mcal::reg::access<addr_type, reg_type, pdir>::reg_get();
+          new_pdir_value &= reg_type(~(reg_type(0xFUL) << pdir_shift_offset));
+          new_pdir_value |= (reg_type(0x4UL) << pdir_shift_offset);
 
           // Set the port for digital input.
           mcal::reg::access<addr_type, reg_type, pdir>::reg_set(new_pdir_value);

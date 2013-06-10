@@ -5,6 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_wdg.h>
+
 namespace sys
 {
   namespace idle
@@ -20,4 +22,5 @@ void sys::idle::task_init()
 
 void sys::idle::task_func()
 {
+  mcal::wdg::trigger();
 }

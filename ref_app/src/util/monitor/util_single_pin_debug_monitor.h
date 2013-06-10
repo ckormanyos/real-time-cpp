@@ -30,13 +30,13 @@
 
       // * The single-bit timeout is set to 5% less than four poll times.
       // * The receiver automatically resets if it is idle for 12 bit times or more.
-      static const std::uint_least16_t bit_time_microseconds = 950U * 4U;
-      static const std::uint_least8_t  receive_reset_limit   =  12U * 4U;
+      static const std::uint_fast16_t bit_time_microseconds = 950U * 4U;
+      static const std::uint_fast8_t  receive_reset_limit   =  12U * 4U;
 
-      typedef util::timer<std::uint16_t> timer_type;
+      typedef util::timer<std::uint_fast16_t> timer_type;
 
-      timer_type         driver_wait;
-      std::uint_least8_t driver_current_bit_position;
+      timer_type        driver_wait;
+      std::uint_fast8_t driver_current_bit_position;
 
       static void driver_init_port(const bool set_direction_to_output);
       static void port_pin_send(const bool set_value_to_high);
@@ -67,15 +67,15 @@
         {
           ++driver_received_nothing_counter;
 
-          if(driver_received_nothing_counter > receive_reset_limit)
+          if(driver_received_nothing_counter >= receive_reset_limit)
           {
             driver_flush_buffer();
-            driver_received_nothing_counter = 0U;
+            driver_received_nothing_counter = std::uint_fast8_t(0U);
           }
         }
         else
         {
-          driver_received_nothing_counter = 0U;
+          driver_received_nothing_counter = std::uint_fast8_t(0U);
         }
 
         driver_port_receive();
@@ -106,14 +106,14 @@
     {
       // Send the buffer contents over the port pin.
       // Use the UART physical layer protocol.
-      if(driver_current_byte_value_or_position < driver_buffer_length)
+      if(driver_current_byte_value < driver_buffer_length)
       {
         switch(driver_transmit_state)
         {
           case send_start_bit:
             driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
 
-            if(driver_current_byte_value_or_position == 0U)
+            if(driver_current_byte_value == std::uint_fast8_t(0U))
             {
               driver_init_port(true);
             }
@@ -128,7 +128,7 @@
               driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
 
               // Send a single data bit.
-              const bool bit_is_high = static_cast<std::uint_fast8_t>(driver_buffer[driver_current_byte_value_or_position] & std::uint8_t(1U << driver_current_bit_position)) != static_cast<std::uint_fast8_t>(0U);
+              const bool bit_is_high = (uint_fast8_t(std::uint_fast8_t(driver_buffer[driver_current_byte_value]) & std::uint_fast8_t(1U << driver_current_bit_position)) != std::uint_fast8_t(0U));
 
               port_pin_send(bit_is_high);
 
@@ -153,11 +153,11 @@
           case send_pause_for_next_byte:
             if(driver_wait.timeout())
             {
-              ++driver_current_byte_value_or_position;
+              ++driver_current_byte_value;
 
               driver_transmit_state = send_start_bit;
 
-              if(driver_current_byte_value_or_position >= driver_buffer_length)
+              if(driver_current_byte_value >= driver_buffer_length)
               {
                 driver_is_in_send_mode = false;
                 driver_flush_buffer();
@@ -192,9 +192,9 @@
             if((!port_pin_receive()))
             {
               driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
-              driver_current_bit_position           = 0U;
-              driver_current_byte_value_or_position = 0U;
-              driver_transmit_state                 = recieve_data_bits;
+              driver_current_bit_position = std::uint_fast8_t(0U);
+              driver_current_byte_value   = std::uint_fast8_t(0U);
+              driver_transmit_state       = recieve_data_bits;
             }
             else
             {
@@ -212,12 +212,12 @@
               // Append the bit value to the current byte value.
               if(port_pin_receive())
               {
-                driver_current_byte_value_or_position |= static_cast<std::uint8_t>(std::uint_least8_t(1U) << driver_current_bit_position);
+                driver_current_byte_value |= std::uint_fast8_t(std::uint_fast8_t(1U) << driver_current_bit_position);
               }
 
               ++driver_current_bit_position;
 
-              if(driver_current_bit_position >= 8U)
+              if(driver_current_bit_position >= std::uint_fast8_t(8U))
               {
                 driver_transmit_state = recieve_stop_bit;
               }
@@ -229,7 +229,7 @@
             {
               if(port_pin_receive())
               {
-                driver_buffer[driver_buffer_length] = driver_current_byte_value_or_position;
+                driver_buffer[driver_buffer_length] = std::uint8_t(driver_current_byte_value);
 
                 ++driver_buffer_length;
               }

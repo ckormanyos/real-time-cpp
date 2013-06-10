@@ -33,8 +33,8 @@
                          task_control_block::timer_type::microseconds(    0U)),  \
     task_control_block ( app::led::task_init,                                    \
                          app::led::task_func,                                    \
-                         task_control_block::timer_type::microseconds(10000U),   \
-                         task_control_block::timer_type::microseconds(  117U)),  \
+                         task_control_block::timer_type::microseconds( 2000U),   \
+                         task_control_block::timer_type::microseconds(  211U)),  \
     task_control_block ( sys::mon::task_init,                                    \
                          sys::mon::task_func,                                    \
                          task_control_block::timer_type::microseconds(20000U),   \

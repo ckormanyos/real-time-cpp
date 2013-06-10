@@ -26,7 +26,10 @@
       constexpr std::uint8_t bval6  = 1U << 6U;
       constexpr std::uint8_t bval7  = 1U << 7U;
 
-      // Port registers
+      // System registers.
+      constexpr std::uint8_t mcusr  = 0x14U + sfr_offset;
+
+      // Port registers.
       constexpr std::uint8_t pinb   = 0x03U + sfr_offset;
       constexpr std::uint8_t ddrb   = 0x04U + sfr_offset;
       constexpr std::uint8_t portb  = 0x05U + sfr_offset;
@@ -59,6 +62,9 @@
       constexpr std::uint8_t spcr = 0x2CU + sfr_offset;
       constexpr std::uint8_t spsr = 0x2DU + sfr_offset;
       constexpr std::uint8_t spdr = 0x2EU + sfr_offset;
+
+      // Watchdog registers
+      constexpr std::uint8_t wdtcsr = 0x60U;
     }
   }
 #endif // _MCAL_REG_2010_04_10_H_
