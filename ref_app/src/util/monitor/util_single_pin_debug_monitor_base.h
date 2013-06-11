@@ -15,6 +15,24 @@
   #include <util/utility/util_noncopyable.h>
   #include <util/utility/util_two_part_data_manipulation.h>
 
+  // Here, we are implementing a single-pin debug monituor.
+  // It uses a UART emulated in software on a digitial I/O port
+  // using a baud rate of 250 bits-per-second. A driver task
+  // in the derived class implements the UART physical layer.
+
+  // A skinny protocol called "BWD" is built on top of the
+  // UART in order to support read/write of byte, word
+  // and dword sized variables and data chunks. A protocol
+  // task in the base class implements the BWD protocol.
+
+  // Description of the BWD protocol:
+  // 'b' means read a byte.
+  // 'w' means read a word.
+  // 'd' means read a dword.
+  // 'B' means write a byte.
+  // 'W' means write a word.
+  // 'D' means write a dword.
+
   namespace util
   {
     class single_pin_debug_monitor_base : private util::noncopyable
@@ -22,6 +40,7 @@
     public:
       virtual ~single_pin_debug_monitor_base() { }
 
+      // Forward declaration of the protocol task.
       template<typename addr_type, const addr_type addr_offset>
       void protocol_task();
 
@@ -80,12 +99,6 @@
     void single_pin_debug_monitor_base::protocol_task()
     {
       // This protocol task embodies the "BWD" protocol.
-      // 'b' means read a byte.
-      // 'w' means read a word.
-      // 'd' means read a dword.
-      // 'B' means write a byte.
-      // 'W' means write a word.
-      // 'D' means write a dword.
 
       if(driver_is_in_send_mode)
       {
@@ -142,12 +155,16 @@
           break;
       }
 
-      // Create the total address using the offset.
-      // The width of this address might exceed 16 bits.
-      const addr_type address = 
-         addr_offset
-       + addr_type(util::make_long<std::uint8_t, std::uint16_t>(driver_buffer[1U],
-                                                                driver_buffer[2U]));
+      // Create the total address using the address offset combined
+      // with the address obtained from the communication buffer.
+      // The width of this address is of type addr_type, which may
+      // exceed 16 bits based on the memory characteristics of the
+      // target system.
+
+      const std::uint_least16_t address_from_buffer =
+        std::uint_least16_t(util::make_long<std::uint8_t, std::uint16_t>(driver_buffer[1U], driver_buffer[2U]));
+
+      const addr_type address = addr_type(addr_offset + address_from_buffer);
 
       // Evaluate the service ID and issue the read or write command.
       if(service_id == std::uint_fast8_t(1U))

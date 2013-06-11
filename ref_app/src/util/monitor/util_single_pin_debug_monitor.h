@@ -23,10 +23,10 @@
 
     private:
       // Set up the port driver timing.
-      // Here, we are implementing a software UART signal with 250 bits-per-second.
-      // This corresponds to a time of approximately four milliseconds per bit.
-      // The polling period is one millisecond, such that the
-      // driver polls up to four times per bit.
+
+      // The 250 baud corresponds to a bit-time of approximately 4ms
+      // per bit. The polling period is 1ms, such that the driver
+      // polls up to four times per bit.
 
       // * The single-bit timeout is set to 5% less than four poll times.
       // * The receiver automatically resets if it is idle for 12 bit times or more.
