@@ -40,6 +40,15 @@
     <Filter Include="micros\mips\startup">
       <UniqueIdentifier>{233d3e07-73e6-456c-ad85-eee1754c294b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\am335x">
+      <UniqueIdentifier>{9b8f3b1f-73a5-4635-92f1-d96e7a0dc318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am335x\make">
+      <UniqueIdentifier>{a2bf7b3d-0b77-4ed2-9531-d7b905d99449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am335x\startup">
+      <UniqueIdentifier>{5448ad0f-89af-4486-b7b5-acbbd7097fc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Target\Micros\EABI\Startup\crt0.cpp">
@@ -105,6 +114,24 @@
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp">
       <Filter>micros\avr\startup</Filter>
     </None>
+    <None Include="target\micros\am335x\startup\exceptionhandler.s">
+      <Filter>micros\am335x\startup</Filter>
+    </None>
+    <None Include="target\micros\am335x\startup\init.s">
+      <Filter>micros\am335x\startup</Filter>
+    </None>
+    <None Include="target\micros\am335x\make\am335x_files.gmk">
+      <Filter>micros\am335x\make</Filter>
+    </None>
+    <None Include="target\micros\am335x\make\am335x_flags.gmk">
+      <Filter>micros\am335x\make</Filter>
+    </None>
+    <None Include="target\micros\am335x\make\am335x_hex_manip_script.hxm">
+      <Filter>micros\am335x\make</Filter>
+    </None>
+    <None Include="target\micros\am335x\make\am335x.ld">
+      <Filter>micros\am335x\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\gcc_patch.cpp">
@@ -124,6 +151,24 @@
     </ClCompile>
     <ClCompile Include="Target\Micros\EABI\Startup\int_vect.cpp">
       <Filter>micros\eabi\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\interrupt.c">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\startup.c">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\gcc_patch.cpp">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\clock.c">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\cp15.c">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\cpu.c">
+      <Filter>micros\am335x\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

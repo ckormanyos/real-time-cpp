@@ -20,6 +20,8 @@ TGT_CFLAGS    = -mcpu=cortex-m3                   \
 TGT_CPPFLAGS  = -std=c++11                        \
                 -Wzero-as-null-pointer-constant
 
+TGT_AFLAGS    =
+
 TGT_LFLAGS    =
 
 # To configure GMP

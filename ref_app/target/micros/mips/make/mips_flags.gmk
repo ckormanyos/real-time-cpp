@@ -20,6 +20,8 @@ TGT_CFLAGS    = -mips16                           \
 
 TGT_CPPFLAGS  = -std=c++0x
 
+TGT_AFLAGS    =
+
 TGT_LFLAGS    =
 
 # To configure binutils without exceptions and without POSIX threads.

@@ -8,9 +8,9 @@
 
 /* Linker script for STM32F103x ARM(R) Cortex(TM)-M3 MCU */
 
-INPUT(libc.a)
+INPUT(libc.a libm.a)
 
-OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The end of the 8K RAM stack */

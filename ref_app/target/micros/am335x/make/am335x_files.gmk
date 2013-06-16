@@ -1,0 +1,20 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# File list of the ARM files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_APP)/src/mcal/am335x/bfx                  \
+             $(PATH_TGT)/startup/clock                        \
+             $(PATH_TGT)/startup/cp15                         \
+             $(PATH_TGT)/startup/cpu                          \
+             $(PATH_TGT)/startup/exceptionhandler             \
+             $(PATH_TGT)/startup/gcc_patch                    \
+             $(PATH_TGT)/startup/init                         \
+             $(PATH_TGT)/startup/interrupt                    \
+             $(PATH_TGT)/startup/startup

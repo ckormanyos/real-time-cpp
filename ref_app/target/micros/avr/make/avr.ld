@@ -8,7 +8,7 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega16/32, etc. */
 
-INPUT(libc.a libgcc.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
