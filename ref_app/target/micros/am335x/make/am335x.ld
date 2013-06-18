@@ -1,36 +1,58 @@
+
 /*
-*  Copyright (C) 2010 Texas Instruments Incorporated. - http://www.ti.com/
-*  All rights reserved.
+ Copyright Christopher Kormanyos 2007 - 2013.
+ Distributed under the Boost Software License,
+ Version 1.0. (See accompanying file LICENSE_1_0.txt
+ or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/*
- * ld script for SitaraWare AM335x
- */
-
-/*
- * The starting address of DDR2 SDRAM is 0x80000000.
- * Though the DDR size is >128 MB, we keep the top of the stack at
- * 128 MB. Assumed that the (application + stack depth) < 128 MB
- * The Decremeting Stack top address = 0x87FFFFF8.
- */
+/* Linker script for SitaraWare AM335x ARM(R) A8 MCU */
 
 INPUT(libc.a libm.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
+/* The end of the 8K RAM stack */
+__initial_stack_pointer = 0x4030A000;
+
+MEMORY
+{
+  ROM(rx)   : ORIGIN = 0x402F0400, LENGTH = 48K - 0x400
+  RAM(rwx)  : ORIGIN = 0x402FC000, LENGTH = 16K
+}
+
+
 SECTIONS
 {
   . = 0x402F0400;
   . = ALIGN(4);
 
-  .startcode     :
+  /* Entry code. This is where the program starts. */
+  .entry_code :
   {
-    *init.o      (.text)
-  }
-  . = ALIGN(4);
+    *(.entry_code)
+    . = ALIGN(0x100);
+    KEEP(*(.entry_code))
+  } > ROM = 0x5555
 
-  .text      :
+  /* Startup code. This the remaining startup code before the jump to main. */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x100);
+    KEEP(*(.startup))
+  } > ROM = 0x5555
+
+  /* Program code (text), ISR vectors, read-only data and static ctors */
+  .isr_vector_rom_copy :
+  {
+    *(.isr_vector_rom_copy)
+    . = ALIGN(0x100);
+    KEEP(*(.isr_vector_rom_copy))
+  } > ROM = 0xAAAA
+
+  .text :
   {
     _ctors_begin = .;
     *(.init_array)
@@ -47,13 +69,16 @@ SECTIONS
     *(.rodata)
     . = ALIGN(4);
     *(.rodata*)
-    . = ALIGN(4);
-  }
+    . = ALIGN(0x200);
+  } > ROM = 0xAAAA
+
+  . = 0x402FC000;
   . = ALIGN(4);
 
+  /* The ROM-to-RAM initialized data section */
   .data :
   {
-    _data_start = .;
+    _data_begin = .;
     *(.data)
     . = ALIGN(4);
     KEEP (*(.data))
@@ -61,12 +86,12 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.data*))
     _data_end = .;
-  }
-  . = ALIGN(4);
+  } > RAM AT > ROM
 
+  /* The uninitialized (zero-cleared) data section */
   .bss :
   {
-    _bss_start = .;
+    _bss_begin = .;
     *(.bss)
     . = ALIGN(4);
     KEEP (*(.bss))
@@ -74,11 +99,8 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.bss*))
     _bss_end = .;
-  }
-  . = ALIGN(4);
+  } > RAM
 
-  _bss_end = .;
-
-  __initial_stack_pointer = 0x4030A000;
+  _rom_data_begin = LOADADDR(.data);
 }
 

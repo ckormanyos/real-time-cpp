@@ -19,7 +19,7 @@
         .global SVCHandler
         .global UndefInstHandler
         .global CPUAbortHandler
-        .global fnRAMVectors       
+        .global fnRAMVectors
 
         .set INTC_SIR_IRQ_ACTIVEIRQ, 0x0000007F
         .set INTC_CONTROL_NEWIRQAGR, 0x00000001
@@ -132,7 +132,7 @@ UndefInstHandler:
 @ Go to infinite loop if returned from C handler
 @
 loop0:
-        B       loop0                      
+        B       loop0
 
 @*****************************************************************************
 @

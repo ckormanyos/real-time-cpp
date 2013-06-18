@@ -53,8 +53,8 @@ SECTIONS
     *(.text)
     . = ALIGN(2);
     *(.text*)
-    . = ALIGN(2);
-  } > ROM
+    . = ALIGN(0x200);
+  } > ROM = 0xAAAA
 
   /* The ROM-to-RAM initialized data section */
   .data :

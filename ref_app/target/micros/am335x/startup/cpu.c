@@ -32,7 +32,7 @@
  **/
 void CPUSwitchToPrivilegedMode(void)
 {
-    __asm__ volatile ("    SWI   458752");
+    __asm__ volatile ("SWI 458752");
 }
 
 /**
@@ -51,20 +51,20 @@ void CPUSwitchToPrivilegedMode(void)
  **/
 void CPUSwitchToUserMode(void)
 {
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    bic     r0, #0x0F\n\t"
-                      "    orr     r0, #0x10\n\t "
-                      "    msr     CPSR, r0");
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    bic     r0, #0x0F\n\t"
+                    "    orr     r0, #0x10\n\t "
+                    "    msr     CPSR, r0");
 }
 
 unsigned int CPUReadDFSR(void)
 {
-    unsigned int stat;
+  unsigned int stat;
 
-    /* IRQ and FIQ in CPSR */
-    __asm__ volatile ("    mrc p15, #0, %[result], c5, c0, #0\n\t" : [result] "=r" (stat));
+  /* IRQ and FIQ in CPSR */
+  __asm__ volatile ("    mrc p15, #0, %[result], c5, c0, #0\n\t" : [result] "=r" (stat));
 
-    return stat;
+  return stat;
 }
 
 unsigned int CPUReadDFAR(void)
@@ -94,11 +94,11 @@ char bufStr[64];
  **/
 void CPUAbortHandler(void)
 {
-	uint32_t faulttype = CPUReadDFSR();
-	// uint32 faultadr = CPUReadDFAR();
-//	GPIO1->SETDATAOUT   = 0x00200000u;
-	GPIO1->CLEARDATAOUT = 0x01E00000u;
-	GPIO1->SETDATAOUT   = (faulttype & 0x0Fu) << 21u;
+  uint32_t faulttype = CPUReadDFSR();
+  // uint32 faultadr = CPUReadDFAR();
+//  GPIO1->SETDATAOUT   = 0x00200000u;
+  GPIO1->CLEARDATAOUT = 0x01E00000u;
+  GPIO1->SETDATAOUT   = (faulttype & 0x0Fu) << 21u;
 
 //    uint32 lcrRegValue = UART0->LCR;
 //    UART0->LCR = 0;
@@ -113,8 +113,8 @@ void CPUAbortHandler(void)
 //
 //    int count;
 //    for (count = 0; count < sizeof(buf); count++) {
-//    	while ((UART0->LSR_XON2ADDR & 0x60u) != 0x60u);
-//    	UART0->RHR_THR_DLL = buf[count];
+//      while ((UART0->LSR_XON2ADDR & 0x60u) != 0x60u);
+//      UART0->RHR_THR_DLL = buf[count];
 //    }
       /* ; Perform Nothing */
 }
@@ -126,13 +126,13 @@ void CPUAbortHandler(void)
 */
 unsigned int CPUIntStatus(void)
 {
-    unsigned int stat;
+  unsigned int stat;
 
-    /* IRQ and FIQ in CPSR */
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    and     %[result], r0, #0xC0" : [result] "=r" (stat));
+  /* IRQ and FIQ in CPSR */
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    and     %[result], r0, #0xC0" : [result] "=r" (stat));
 
-    return stat;
+  return stat;
 }
 
 /*
@@ -142,10 +142,10 @@ unsigned int CPUIntStatus(void)
 */
 void CPUirqd(void)
 {
-    /* Disable IRQ in CPSR */
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    orr     r0, #0x80\n\t"
-                      "    msr     CPSR, r0");
+  /* Disable IRQ in CPSR */
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    orr     r0, #0x80\n\t"
+                    "    msr     CPSR, r0");
 }
 
 /*
@@ -155,10 +155,10 @@ void CPUirqd(void)
 */
 void CPUirqe(void)
 {
-    /* Enable IRQ in CPSR */
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    bic     r0, #0x80\n\t"
-                      "    msr     CPSR, r0");
+  /* Enable IRQ in CPSR */
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    bic     r0, #0x80\n\t"
+                    "    msr     CPSR, r0");
 }
 
 /*
@@ -168,10 +168,10 @@ void CPUirqe(void)
 */
 void CPUfiqd(void)
 {
-    /* Disable FIQ in CPSR */
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    orr     r0, #0x40\n\t"
-                      "    msr     CPSR, r0");
+  /* Disable FIQ in CPSR */
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    orr     r0, #0x40\n\t"
+                    "    msr     CPSR, r0");
 }
 
 /*
@@ -181,10 +181,10 @@ void CPUfiqd(void)
 */
 void CPUfiqe(void)
 {
-    /* Enable FIQ in CPSR */
-    __asm__ volatile ("    mrs     r0, CPSR\n\t"
-                      "    bic     r0, #0x40\n\t"
-                      "    msr     CPSR, r0");
+  /* Enable FIQ in CPSR */
+  __asm__ volatile ("    mrs     r0, CPSR\n\t"
+                    "    bic     r0, #0x40\n\t"
+                    "    msr     CPSR, r0");
 }
 
 /**************************** End Of File ************************************/

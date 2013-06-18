@@ -14,13 +14,13 @@ asm volatile (".extern __initial_stack_pointer");
 
 namespace crt
 {
-  void init_ram()   __attribute__((section(".init4")));
+  void init_ram  () __attribute__((section(".init4")));
   void init_ctors() __attribute__((section(".init6")));
 }
 
-extern "C" void __my_startup() __attribute__((section(".init0")));
+extern "C" void __my_startup() __attribute__((section(".init0"), naked));
 
-extern "C" void __my_startup()
+void __my_startup()
 {
   // Load the SREG register.
   asm volatile ("eor r1, r1");

@@ -12,11 +12,13 @@
 
 namespace crt
 {
-  void init_ram();
-  void init_ctors();
+  void init_ram  () __attribute__((section(".startup")));
+  void init_ctors() __attribute__((section(".startup")));
 }
 
-extern "C" void __my_startup()
+extern "C" void __my_startup() __attribute__((section(".startup"), naked));
+
+void __my_startup()
 {
   // Load the stack pointer.
   asm volatile("movs r1, #0");

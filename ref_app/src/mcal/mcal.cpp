@@ -14,7 +14,6 @@ static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
 
 void mcal::init()
 {
-  mcal::port::init(nullptr);
   mcal::irq::init(nullptr);
   mcal::mcu::init(nullptr);
   mcal::gpt::init(nullptr);

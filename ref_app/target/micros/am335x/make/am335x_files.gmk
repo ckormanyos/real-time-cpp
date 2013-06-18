@@ -6,15 +6,17 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the ARM files in the project
+# File list of the AM335x ARM(R) A8 files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/src/mcal/am335x/bfx                  \
              $(PATH_TGT)/startup/clock                        \
              $(PATH_TGT)/startup/cp15                         \
              $(PATH_TGT)/startup/cpu                          \
+             $(PATH_TGT)/startup/crt0                         \
+             $(PATH_TGT)/startup/crt0_init_ram                \
+             $(PATH_TGT)/startup/crt1                         \
              $(PATH_TGT)/startup/exceptionhandler             \
              $(PATH_TGT)/startup/gcc_patch                    \
-             $(PATH_TGT)/startup/init                         \
-             $(PATH_TGT)/startup/interrupt                    \
-             $(PATH_TGT)/startup/startup
+             $(PATH_TGT)/startup/int_vect                     \
+             $(PATH_TGT)/startup/interrupt

@@ -5,7 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-extern "C" void __cxa_pure_virtual() { }
+extern "C" void __cxa_pure_virtual();
+
+void __cxa_pure_virtual() { }
 
 void operator delete(void*) { }
 
@@ -19,10 +21,7 @@ namespace std
 {
   struct ios_base
   {
-    struct Init
-    {
-      Init();
-    };
+    struct Init { Init(); };
   };
 
   ios_base::Init::Init() { }

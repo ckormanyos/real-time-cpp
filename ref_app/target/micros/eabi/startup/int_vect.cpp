@@ -40,10 +40,10 @@ namespace
 }
 
 extern "C"
-const volatile std::array<isr_type, 116U> __isr_vector __attribute__((section(".isr_vector")));
+const volatile std::array<isr_type, 128U> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_type, 116U> __isr_vector =
+const volatile std::array<isr_type, 128U> __isr_vector =
 {{
   __initial_stack_pointer,   // 0x0000, initial stack pointer
   __my_startup,              // 0x0004, reset
@@ -160,5 +160,17 @@ const volatile std::array<isr_type, 116U> __isr_vector =
   __vector_unused_irq,       // 0x01C0, Unused
   __vector_unused_irq,       // 0x01C4, Unused
   __vector_unused_irq,       // 0x01C8, Unused
-  __vector_unused_irq        // 0x01CC, Unused
+  __vector_unused_irq,       // 0x01CC, Unused
+  nullptr,                   // 0x01D0, Dummy
+  nullptr,                   // 0x01D4, Dummy
+  nullptr,                   // 0x01D8, Dummy
+  nullptr,                   // 0x01DC, Dummy
+  nullptr,                   // 0x01E0, Dummy
+  nullptr,                   // 0x01E4, Dummy
+  nullptr,                   // 0x01E8, Dummy
+  nullptr,                   // 0x01EC, Dummy
+  nullptr,                   // 0x01F0, Dummy
+  nullptr,                   // 0x01F4, Dummy
+  nullptr,                   // 0x01F8, Dummy
+  nullptr                    // 0x01FC, Dummy
 }};

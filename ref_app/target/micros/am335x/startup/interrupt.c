@@ -26,7 +26,7 @@
 /**************** *************************************************************
 **                 STATIC VARIABLE DEFINITIONS
 ******************************************************************************/
-void (*fnRAMVectors2[NUM_INTERRUPTS])(void);
+void (*fnRAMVectors[NUM_INTERRUPTS])(void);
 
 /******************************************************************************
 **                STATIC FUNCTION DECLARATIONS
@@ -72,7 +72,7 @@ static void IntDefaultHandler(void)
 void IntRegister(unsigned int intrNum, void (*fnHandler)(void))
 {
   /* Assign ISR */
-  fnRAMVectors2[intrNum] = fnHandler;
+  fnRAMVectors[intrNum] = fnHandler;
 }
 
 /**
@@ -88,7 +88,7 @@ void IntRegister(unsigned int intrNum, void (*fnHandler)(void))
 void IntUnRegister(unsigned int intrNum)
 {
   /* Assign default ISR */
-  fnRAMVectors2[intrNum] = IntDefaultHandler;
+  fnRAMVectors[intrNum] = IntDefaultHandler;
 }
 
 /**
@@ -589,6 +589,6 @@ void IntEnable(unsigned char  status)
 {
   if((status & 0x80) == 0) 
   {
-      IntMasterIRQEnable();
+    IntMasterIRQEnable();
   }
 }

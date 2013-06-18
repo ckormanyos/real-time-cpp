@@ -171,14 +171,16 @@
       {
         if(driver_buffer_length == std::uint_fast8_t(3U))
         {
+          std::fill(driver_buffer.begin(),
+                    driver_buffer.begin() + 4U,
+                    std::uint8_t(0U));
+
           switch(data_elements)
           {
             case 1U:
             default:
-              {
-                // Read a byte with the command 'b'.
-                driver_buffer[0U] = *reinterpret_cast<volatile std::uint8_t*>(address);
-              }
+              // Read a byte with the command 'b'.
+              driver_buffer[0U] = *reinterpret_cast<volatile std::uint8_t*>(address);
               break;
 
             case 2U:
@@ -220,10 +222,8 @@
           {
             case 1U:
             default:
-              {
-                // Write a byte with the command 'B'.
-                *reinterpret_cast<std::uint8_t*>(address) = driver_buffer[3U];
-              }
+              // Write a byte with the command 'B'.
+              *reinterpret_cast<std::uint8_t*>(address) = driver_buffer[3U];
               break;
 
             case 2U:

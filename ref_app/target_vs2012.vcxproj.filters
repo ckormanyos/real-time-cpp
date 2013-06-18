@@ -117,9 +117,6 @@
     <None Include="target\micros\am335x\startup\exceptionhandler.s">
       <Filter>micros\am335x\startup</Filter>
     </None>
-    <None Include="target\micros\am335x\startup\init.s">
-      <Filter>micros\am335x\startup</Filter>
-    </None>
     <None Include="target\micros\am335x\make\am335x_files.gmk">
       <Filter>micros\am335x\make</Filter>
     </None>
@@ -155,9 +152,6 @@
     <ClCompile Include="target\micros\am335x\startup\interrupt.c">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\am335x\startup\startup.c">
-      <Filter>micros\am335x\startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\am335x\startup\gcc_patch.cpp">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
@@ -168,6 +162,18 @@
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\am335x\startup\cpu.c">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\crt0.cpp">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\int_vect.cpp">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\crt0_init_ram.cpp">
+      <Filter>micros\am335x\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\am335x\startup\crt1.cpp">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
   </ItemGroup>
