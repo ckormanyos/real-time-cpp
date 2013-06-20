@@ -131,12 +131,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Target\Micros\AVR\Startup\gcc_patch.cpp">
-      <Filter>micros\avr\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="Target\Micros\EABI\Startup\gcc_patch.cpp">
-      <Filter>micros\eabi\startup</Filter>
-    </ClCompile>
     <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp">
       <Filter>micros\eabi\startup</Filter>
     </ClCompile>
@@ -150,9 +144,6 @@
       <Filter>micros\eabi\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\am335x\startup\interrupt.c">
-      <Filter>micros\am335x\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\am335x\startup\gcc_patch.cpp">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\am335x\startup\clock.c">

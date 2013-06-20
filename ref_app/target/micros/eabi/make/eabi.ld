@@ -27,30 +27,29 @@ SECTIONS
   . = 0x08000000;
   . = ALIGN(4);
 
-  /* Program code (text), ISR vectors, read-only data and static ctors */
+  /* ISR vectors */
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(0x100);
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0x5555
+  } > ROM = 0xAAAA
 
+  /* Startup code */
   .startup :
   {
     *(.startup)
-    . = ALIGN(0x100);
+    . = ALIGN(0x10);
     KEEP(*(.startup))
-  } > ROM = 0x5555
+  } > ROM = 0xAAAA
 
+  /* Program code (text), read-only data and static ctors */
   .text :
   {
     _ctors_begin = .;
     *(.init_array)
     . = ALIGN(4);
     KEEP (*(SORT(.init_array)))
-    *(.init_array*)
-    . = ALIGN(4);
-    KEEP (*(SORT(.init_array*)))
     _ctors_end = .;
     *(.text)
     . = ALIGN(4);
@@ -59,7 +58,12 @@ SECTIONS
     *(.rodata)
     . = ALIGN(4);
     *(.rodata*)
-    . = ALIGN(0x200);
+    . = ALIGN(4);
+  } > ROM
+
+  .text :
+  {
+    . = ALIGN(0x400);
   } > ROM = 0xAAAA
 
   . = 0x20000000;

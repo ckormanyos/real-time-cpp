@@ -22,7 +22,6 @@ MEMORY
   RAM(rwx)  : ORIGIN = 0x402FC000, LENGTH = 16K
 }
 
-
 SECTIONS
 {
   . = 0x402F0400;
@@ -32,35 +31,33 @@ SECTIONS
   .entry_code :
   {
     *(.entry_code)
-    . = ALIGN(0x100);
+    . = ALIGN(0x10);
     KEEP(*(.entry_code))
-  } > ROM = 0x5555
+  } > ROM = 0xAAAA
 
-  /* Startup code. This the remaining startup code before the jump to main. */
+  /* Startup code */
   .startup :
   {
     *(.startup)
-    . = ALIGN(0x100);
+    . = ALIGN(0x10);
     KEEP(*(.startup))
-  } > ROM = 0x5555
+  } > ROM = 0xAAAA
 
-  /* Program code (text), ISR vectors, read-only data and static ctors */
+  /* ISR vectors (ROM copy) */
   .isr_vector_rom_copy :
   {
     *(.isr_vector_rom_copy)
-    . = ALIGN(0x100);
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector_rom_copy))
   } > ROM = 0xAAAA
 
+  /* Program code (text), read-only data and static ctors */
   .text :
   {
     _ctors_begin = .;
     *(.init_array)
     . = ALIGN(4);
     KEEP (*(SORT(.init_array)))
-    *(.init_array*)
-    . = ALIGN(4);
-    KEEP (*(SORT(.init_array*)))
     _ctors_end = .;
     *(.text)
     . = ALIGN(4);
@@ -69,7 +66,12 @@ SECTIONS
     *(.rodata)
     . = ALIGN(4);
     *(.rodata*)
-    . = ALIGN(0x200);
+    . = ALIGN(4);
+  } > ROM
+
+  .text :
+  {
+    . = ALIGN(0x400);
   } > ROM = 0xAAAA
 
   . = 0x402FC000;

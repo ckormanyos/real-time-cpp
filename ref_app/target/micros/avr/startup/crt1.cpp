@@ -11,7 +11,7 @@ asm volatile (".extern _ctors_end");
 
 namespace
 {
-  void do_global_ctors() __attribute__((section(".init6")));
+  void do_global_ctors() __attribute__((section(".startup")));
 
   void do_global_ctors()
   {
@@ -37,7 +37,7 @@ namespace
 
 namespace crt
 {
-  void init_ctors() __attribute__((section(".init6")));
+  void init_ctors() __attribute__((section(".startup")));
 }
 
 void crt::init_ctors()

@@ -70,7 +70,7 @@ void Entry()
   asm volatile("MOV   sp,r0");                         // @ write the stack pointer
   asm volatile("SUB   r0,r0, #SVC_STACK_SIZE");        // @ give stack space
 
-  // Set up the Stack for USer/System mode
+  // Set up the Stack for User/System mode
   asm volatile("MSR   cpsr_c, #MODE_SYS|I_F_BIT");     // @ change to system mode
   asm volatile("MOV   sp,r0");                         // @ write the stack pointer
 

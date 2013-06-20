@@ -9,5 +9,4 @@
 # File list of the ARM files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_TGT)/startup/crt0                         \
-             $(PATH_TGT)/startup/gcc_patch
+FILES_TGT  = $(PATH_TGT)/startup/crt0

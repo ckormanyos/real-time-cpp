@@ -17,6 +17,5 @@ FILES_TGT  = $(PATH_APP)/src/mcal/am335x/bfx                  \
              $(PATH_TGT)/startup/crt0_init_ram                \
              $(PATH_TGT)/startup/crt1                         \
              $(PATH_TGT)/startup/exceptionhandler             \
-             $(PATH_TGT)/startup/gcc_patch                    \
              $(PATH_TGT)/startup/int_vect                     \
              $(PATH_TGT)/startup/interrupt

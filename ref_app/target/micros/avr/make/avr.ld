@@ -8,7 +8,7 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega16/32, etc. */
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libc.a libm.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
@@ -24,37 +24,50 @@ MEMORY
 
 SECTIONS
 {
-  .text :
+  . = 0x0;
+  . = ALIGN(2);
+
+  /* ISR vectors */
+  .isr_vector :
   {
     *(.isr_vector)
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-    . = ALIGN(2);
+  } > ROM = 0xAAAA
 
-    _ctors_begin = . ;
-     *(.ctors)
-    . = ALIGN(2);
-    _ctors_end = . ;
-    _dtors_begin = . ;
-    *(.dtors)
-    . = ALIGN(2);
-    _dtors_end = . ;
+  /* Startup code */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0xAAAA
 
-    KEEP(SORT(*)(.ctors))
-
-    *(.init0)       /* Start here after reset. */
+  /* Program code (text), read-only data and static ctors */
+  .text :
+  {
+    _ctors_begin = .;
+    *(.ctors)
     . = ALIGN(2);
-    KEEP (*(.init0))
-    *(.init4)       /* Initializion of the data and BSS. */
-    . = ALIGN(2);
-    KEEP (*(.init4))
-    *(.init6)       /* Initializion of the C++ constructors. */
-    . = ALIGN(2);
-    KEEP (*(.init6))
+    KEEP (*(SORT(.ctors)))
+    _ctors_end = .;
     *(.text)
     . = ALIGN(2);
     *(.text*)
-    . = ALIGN(0x200);
+    . = ALIGN(2);
+    *(.rodata)
+    . = ALIGN(2);
+    *(.rodata*)
+    . = ALIGN(2);
+  } > ROM
+
+  .text :
+  {
+    . = ALIGN(0x400);
   } > ROM = 0xAAAA
+
+  .= 0x800100;
+  . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */
   .data :
@@ -66,10 +79,6 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
-    *(.rodata)
-    . = ALIGN(2);
-    *(.rodata*)
-    . = ALIGN(2);
     _data_end = .;
   } > RAM AT > ROM
 
@@ -82,9 +91,10 @@ SECTIONS
     KEEP (*(.bss))
     *(.bss*)
     . = ALIGN(2);
-    KEEP (*(.bss.*))
+    KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
 
   _rom_data_begin = LOADADDR(.data);
 }
+

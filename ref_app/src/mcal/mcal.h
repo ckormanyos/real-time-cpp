@@ -13,7 +13,6 @@
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
   #include <mcal_led.h>
-  #include <mcal_mcu.h>
   #include <mcal_port.h>
   #include <mcal_pwm.h>
   #include <mcal_ser.h>

@@ -27,8 +27,8 @@ namespace
 {
   typedef std::uint16_t memory_aligned_type;
 
-  void do_copy_data() __attribute__((section(".init4")));
-  void do_clear_bss() __attribute__((section(".init4")));
+  void do_copy_data() __attribute__((section(".startup")));
+  void do_clear_bss() __attribute__((section(".startup")));
 
   void do_copy_data()
   {

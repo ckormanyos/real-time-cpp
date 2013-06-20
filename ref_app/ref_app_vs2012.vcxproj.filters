@@ -280,6 +280,9 @@
     <ClCompile Include="src\mcal\am335x\bfx.c">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <Filter>src\mcal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -313,9 +316,6 @@
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_mcu.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_pwm.h">
@@ -378,9 +378,6 @@
     <ClInclude Include="src\mcal\win32\mcal_led.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_mcu.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_pwm.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
@@ -406,9 +403,6 @@
       <Filter>src\mcal\eabi</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\eabi\mcal_led.h">
-      <Filter>src\mcal\eabi</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_mcu.h">
       <Filter>src\mcal\eabi</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\eabi\mcal_pwm.h">
@@ -574,9 +568,6 @@
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\mips\mcal_led.h">
-      <Filter>src\mcal\mips</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mips\mcal_mcu.h">
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\mips\mcal_osc.h">

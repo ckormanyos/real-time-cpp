@@ -6,7 +6,13 @@
 //
 
 #include <mcal_cpu.h>
+#include <mcal_osc.h>
+#include <mcal_port.h>
+#include <mcal_wdg.h>
 
 void mcal::cpu::init()
 {
+  mcal::port::init(nullptr);
+  mcal::wdg::init(nullptr);
+  mcal::osc::init(nullptr);
 }

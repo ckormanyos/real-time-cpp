@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <chrono>
 #include <mcal_gpt.h>
 #include <mcal_reg_access.h>
 
@@ -19,27 +18,6 @@ namespace
     static bool is_init;
 
     return is_init;
-  }
-
-  mcal::gpt::value_type consistent_microsecond_tick()
-  {
-    // Return the system tick using a multiple read to ensure
-    // data consistency of the high-byte of the system tick.
-
-    typedef std::uint32_t timer_address_type;
-    typedef std::uint16_t timer_register_type;
-
-    // Do the first read of the timer4 counter and the system tick.
-    const timer_register_type   tim4_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick;
-
-    // Do the second read of the timer4 counter and the system tick.
-    const timer_register_type   tim4_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick;
-
-    // Perform the consistency check and return the consistent microsecond tick.
-    return ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | tim4_cnt_1)
-                                       : mcal::gpt::value_type(sys_tick_2 | tim4_cnt_2));
   }
 
   // Define a memory-mapped structure for manipulating
@@ -63,6 +41,27 @@ namespace
     volatile std::uint32_t stir;            // Offset: 0xE00  Software Trigger Interrupt Register.
   }
   nvic_type;
+}
+
+mcal::gpt::value_type consistent_microsecond_tick()
+{
+  // Return the system tick using a multiple read to ensure
+  // data consistency of the high-byte of the system tick.
+
+  typedef std::uint32_t timer_address_type;
+  typedef std::uint16_t timer_register_type;
+
+  // Do the first read of the timer4 counter and the system tick.
+  const timer_register_type   tim4_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
+  const mcal::gpt::value_type sys_tick_1 = system_tick;
+
+  // Do the second read of the timer4 counter and the system tick.
+  const timer_register_type   tim4_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
+  const mcal::gpt::value_type sys_tick_2 = system_tick;
+
+  // Perform the consistency check and return the consistent microsecond tick.
+  return ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | tim4_cnt_1)
+                                     : mcal::gpt::value_type(sys_tick_2 | tim4_cnt_2));
 }
 
 // TBD: Do we really need interrupt attributes here?
@@ -137,24 +136,4 @@ mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 {
   return (gpt_is_initialized() ? consistent_microsecond_tick()
                                : mcal::gpt::value_type(0U));
-}
-
-// Implement std::chrono::high_resolution_clock::now()
-// for the standard library high-resolution clock.
-namespace std
-{
-  namespace chrono
-  {
-    high_resolution_clock::time_point high_resolution_clock::now()
-    {
-      // The source of the high-resolution clock is microseconds.
-      typedef std::chrono::time_point<high_resolution_clock, microseconds> microseconds_type;
-
-      // Obtain a time-point from the consistent tick in units of microseconds.
-      const microseconds_type my_now(std::chrono::microseconds(::consistent_microsecond_tick()));
-
-      // Return the corresponding duration in microseconds.
-      return std::chrono::high_resolution_clock::time_point(my_now);
-    }
-  }
 }

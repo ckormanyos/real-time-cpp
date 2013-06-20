@@ -14,10 +14,17 @@ static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
 
 void mcal::init()
 {
-  mcal::irq::init(nullptr);
-  mcal::mcu::init(nullptr);
-  mcal::gpt::init(nullptr);
-  mcal::ser::init(nullptr);
-  mcal::spi::init(nullptr);
-  mcal::pwm::init(nullptr);
+  // Initialize the microcontroller abstraction layer.
+
+  // Note: mcal::cpu::init() is called from the startup code.
+  // This subsequently calls:
+  //   mcal::port::init(nullptr);
+  //   mcal::wdg::init(nullptr);
+  //   mcal::osc::init(nullptr);
+
+  mcal::irq::init (nullptr);
+  mcal::gpt::init (nullptr);
+  mcal::ser::init (nullptr);
+  mcal::spi::init (nullptr);
+  mcal::pwm::init (nullptr);
 }

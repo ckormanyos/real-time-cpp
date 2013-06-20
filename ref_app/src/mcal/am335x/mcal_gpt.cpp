@@ -8,6 +8,10 @@
 #include <mcal_gpt.h>
 #include <mcal_reg_access.h>
 
+mcal::gpt::value_type consistent_microsecond_tick()
+{
+  return mcal::gpt::value_type(0U);
+}
 
 mcal::gpt::value_type mcal::gpt::get_time_elapsed()
 {

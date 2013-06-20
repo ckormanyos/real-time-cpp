@@ -14,11 +14,11 @@ asm volatile (".extern __initial_stack_pointer");
 
 namespace crt
 {
-  void init_ram  () __attribute__((section(".init4")));
-  void init_ctors() __attribute__((section(".init6")));
+  void init_ram  () __attribute__((section(".startup")));
+  void init_ctors() __attribute__((section(".startup")));
 }
 
-extern "C" void __my_startup() __attribute__((section(".init0"), naked));
+extern "C" void __my_startup() __attribute__((section(".startup"), naked));
 
 void __my_startup()
 {

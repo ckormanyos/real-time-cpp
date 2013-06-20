@@ -229,14 +229,11 @@
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\am335x\startup\gcc_patch.cpp" />
     <ClCompile Include="target\micros\am335x\startup\interrupt.c" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
-    <ClCompile Include="Target\Micros\AVR\Startup\gcc_patch.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\crt0_init_ram.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp" />
-    <ClCompile Include="Target\Micros\EABI\Startup\gcc_patch.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\int_vect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
