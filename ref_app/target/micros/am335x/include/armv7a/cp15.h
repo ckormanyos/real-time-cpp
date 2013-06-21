@@ -1,42 +1,25 @@
-/*
- *  \file   cp15.h
- *
- *  \brief  CP15 related function prototypes
- *
- *  This file contains the API prototypes for configuring CP15
-*/
 
-/* Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
- * ALL RIGHTS RESERVED
- */
-#ifndef __CP15_H
-#define __CP15_H
+#ifndef _CP15_2013_06_21_H_
+  #define _CP15_2013_06_21_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/*****************************************************************************
-**                           FUNCTION PROTOTYPES
-*****************************************************************************/
-extern void CP15DCacheCleanBuff(unsigned int bufPtr, unsigned int size);
-extern void CP15ICacheFlushBuff(unsigned int bufPtr, unsigned int size);
-extern void CP15ICacheDisable(void);
-extern void CP15DCacheDisable(void);
-extern void CP15ICacheEnable(void);
-extern void CP15DCacheEnable(void);
-extern void CP15DCacheCleanFlush(void);
-extern void CP15ICacheFlush(void);
-extern void CP15Ttb0Set(unsigned int ttb);
-extern void CP15TlbInvalidate(void);
-extern void CP15MMUDisable(void);
-extern void CP15MMUEnable(void);
-extern void CP15VectorBaseAddrSet(unsigned int addr);
-extern void CP15BranchPredictorInvalidate(void);
-extern void CP15BranchPredictionEnable(void);
-extern void CP15BranchPredictionDisable(void);
-extern void CP15DomainAccessClientSet(void);
+  #include <cstdint>
 
-#ifdef __cplusplus
-}
-#endif
-#endif /* __CP15_H__ */
+  extern "C" void CP15DCacheCleanBuff(std::uint32_t bufPtr, std::uint32_t size);
+  extern "C" void CP15ICacheFlushBuff(std::uint32_t bufPtr, std::uint32_t size);
+  extern "C" void CP15ICacheDisable();
+  extern "C" void CP15DCacheDisable();
+  extern "C" void CP15ICacheEnable();
+  extern "C" void CP15DCacheEnable();
+  extern "C" void CP15DCacheCleanFlush();
+  extern "C" void CP15ICacheFlush();
+  extern "C" void CP15Ttb0Set(std::uint32_t ttb);
+  extern "C" void CP15TlbInvalidate();
+  extern "C" void CP15MMUDisable();
+  extern "C" void CP15MMUEnable();
+  extern "C" void CP15VectorBaseAddrSet(std::uint32_t addr);
+  extern "C" void CP15BranchPredictorInvalidate();
+  extern "C" void CP15BranchPredictionEnable();
+  extern "C" void CP15BranchPredictionDisable();
+  extern "C" void CP15DomainAccessClientSet();
+
+#endif // _CP15_2013_06_21_H_

@@ -63,7 +63,7 @@ SECTIONS
 
   .text :
   {
-    . = ALIGN(0x400);
+    . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
   .= 0x800100;

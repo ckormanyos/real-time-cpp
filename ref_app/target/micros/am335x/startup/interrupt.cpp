@@ -31,7 +31,7 @@ void (*fnRAMVectors[NUM_INTERRUPTS])(void);
 /******************************************************************************
 **                STATIC FUNCTION DECLARATIONS
 ******************************************************************************/
-static void IntDefaultHandler(void);
+extern "C" void IntDefaultHandler(void);
 
 /******************************************************************************
 **                     API FUNCTION DEFINITIONS
@@ -48,7 +48,7 @@ static void IntDefaultHandler(void);
  *
  *
  **/
-static void IntDefaultHandler(void)
+extern "C" void IntDefaultHandler(void)
 {
   /* Go into an infinite loop.*/
   while(1)
@@ -69,7 +69,7 @@ static void IntDefaultHandler(void)
  * 
  * \return      None.
  **/
-void IntRegister(unsigned int intrNum, void (*fnHandler)(void))
+extern "C" void IntRegister(std::uint32_t intrNum, void (*fnHandler)(void))
 {
   /* Assign ISR */
   fnRAMVectors[intrNum] = fnHandler;
@@ -85,7 +85,7 @@ void IntRegister(unsigned int intrNum, void (*fnHandler)(void))
  * 
  * \return      None.
  **/
-void IntUnRegister(unsigned int intrNum)
+extern "C" void IntUnRegister(std::uint32_t intrNum)
 {
   /* Assign default ISR */
   fnRAMVectors[intrNum] = IntDefaultHandler;
@@ -100,17 +100,17 @@ void IntUnRegister(unsigned int intrNum)
  * \return  None.
  *
  **/
-void IntAINTCInit(void)
+extern "C" void IntAINTCInit(void)
 {
   /* Reset the ARM interrupt controller */
-  HWREG(SOC_AINTC_REGS + INTC_SYSCONFIG) = INTC_SYSCONFIG_SOFTRESET;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SYSCONFIG) = INTC_SYSCONFIG_SOFTRESET;
 
   /* Wait for the reset to complete */
-  while((HWREG(SOC_AINTC_REGS + INTC_SYSSTATUS) 
+  while((*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SYSSTATUS) 
         & INTC_SYSSTATUS_RESETDONE) != INTC_SYSSTATUS_RESETDONE);    
 
   /* Enable any interrupt generation by setting priority threshold */ 
-  HWREG(SOC_AINTC_REGS + INTC_THRESHOLD) = INTC_THRESHOLD_PRIORITYTHRESHOLD;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_THRESHOLD) = INTC_THRESHOLD_PRIORITYTHRESHOLD;
 }
 
 /**
@@ -132,10 +132,10 @@ void IntAINTCInit(void)
  * \return  None.
  *
  **/
-void IntPrioritySet(unsigned int intrNum, unsigned int priority,
-                    unsigned int hostIntRoute)
+extern "C" void IntPrioritySet(std::uint32_t intrNum, std::uint32_t priority,
+                    std::uint32_t hostIntRoute)
 {
-  HWREG(SOC_AINTC_REGS + INTC_ILR(intrNum)) =
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_ILR(intrNum)) =
                                ((priority << INTC_ILR_PRIORITY_SHIFT)
                                  & INTC_ILR_PRIORITY)
                                | hostIntRoute ;
@@ -151,10 +151,10 @@ void IntPrioritySet(unsigned int intrNum, unsigned int priority,
  * \return  None.
  *
  **/
-void IntSystemEnable(unsigned int intrNum)
+extern "C" void IntSystemEnable(std::uint32_t intrNum)
 {
   /* Disable the system interrupt in the corresponding MIR_CLEAR register */
-  HWREG(SOC_AINTC_REGS + INTC_MIR_CLEAR(intrNum >> REG_IDX_SHIFT)) = (0x01 << (intrNum & REG_BIT_MASK));
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_MIR_CLEAR(intrNum >> REG_IDX_SHIFT)) = (0x01UL << (intrNum & REG_BIT_MASK));
 }
 
 /**
@@ -165,10 +165,10 @@ void IntSystemEnable(unsigned int intrNum)
  * \return  None.
  *
  **/
-void IntSystemDisable(unsigned int intrNum)
+extern "C" void IntSystemDisable(std::uint32_t intrNum)
 {
   /* Enable the system interrupt in the corresponding MIR_SET register */
-  HWREG(SOC_AINTC_REGS + INTC_MIR_SET(intrNum >> REG_IDX_SHIFT)) = (0x01 << (intrNum & REG_BIT_MASK));
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_MIR_SET(intrNum >> REG_IDX_SHIFT)) = (0x01UL << (intrNum & REG_BIT_MASK));
 }
 
 /**
@@ -179,9 +179,9 @@ void IntSystemDisable(unsigned int intrNum)
  * \return  None.
  *
  **/
-void IntIfClkFreeRunSet(void)
+extern "C" void IntIfClkFreeRunSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_SYSCONFIG)&= ~INTC_SYSCONFIG_AUTOIDLE; 
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SYSCONFIG)&= ~INTC_SYSCONFIG_AUTOIDLE; 
 }
 
 /**
@@ -193,9 +193,9 @@ void IntIfClkFreeRunSet(void)
  * \return  None.
  *
  **/
-void IntIfClkAutoGateSet(void)
+extern "C" void IntIfClkAutoGateSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_SYSCONFIG) |= INTC_SYSCONFIG_AUTOIDLE; 
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SYSCONFIG) |= INTC_SYSCONFIG_AUTOIDLE; 
 }
 
 /**
@@ -206,9 +206,9 @@ void IntIfClkAutoGateSet(void)
  * \return  Active IRQ number.
  *
  **/
-unsigned int IntActiveIrqNumGet(void)
+extern "C" std::uint32_t IntActiveIrqNumGet(void)
 {
-  return (HWREG(SOC_AINTC_REGS + INTC_SIR_IRQ) &  INTC_SIR_IRQ_ACTIVEIRQ);
+  return (*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SIR_IRQ) &  INTC_SIR_IRQ_ACTIVEIRQ);
 }
 
 /**
@@ -219,9 +219,9 @@ unsigned int IntActiveIrqNumGet(void)
  * \return  Active FIQ number.
  *
  **/
-unsigned int IntActiveFiqNumGet(void)
+extern "C" std::uint32_t IntActiveFiqNumGet(void)
 {
-  return (HWREG(SOC_AINTC_REGS + INTC_SIR_FIQ) &  INTC_SIR_FIQ_ACTIVEFIQ);
+  return (*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SIR_FIQ) &  INTC_SIR_FIQ_ACTIVEFIQ);
 }
 
 /**
@@ -233,9 +233,9 @@ unsigned int IntActiveFiqNumGet(void)
  * \return  Spurious IRQ Flag.
  *
  **/
-unsigned int IntSpurIrqFlagGet(void)
+extern "C" std::uint32_t IntSpurIrqFlagGet(void)
 {
-  return ((HWREG(SOC_AINTC_REGS + INTC_SIR_IRQ) 
+  return ((*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SIR_IRQ) 
            & INTC_SIR_IRQ_SPURIOUSIRQ) 
           >> INTC_SIR_IRQ_SPURIOUSIRQ_SHIFT);
 }
@@ -249,9 +249,9 @@ unsigned int IntSpurIrqFlagGet(void)
  * \return  Spurious IRQ Flag.
  *
  **/
-unsigned int IntSpurFiqFlagGet(void)
+extern "C" std::uint32_t IntSpurFiqFlagGet(void)
 {
-  return ((HWREG(SOC_AINTC_REGS + INTC_SIR_FIQ) 
+  return ((*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_SIR_FIQ) 
            & INTC_SIR_FIQ_SPURIOUSFIQ) 
           >> INTC_SIR_FIQ_SPURIOUSFIQ_SHIFT);
 }
@@ -266,9 +266,9 @@ unsigned int IntSpurFiqFlagGet(void)
  * \return  None
  *
  **/
-void IntProtectionEnable(void)
+extern "C" void IntProtectionEnable(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_PROTECTION) = INTC_PROTECTION_PROTECTION;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_PROTECTION) = INTC_PROTECTION_PROTECTION;
 }
 
 /**
@@ -281,9 +281,9 @@ void IntProtectionEnable(void)
  * \return  None
  *
  **/
-void IntProtectionDisable(void)
+extern "C" void IntProtectionDisable(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_PROTECTION) &= ~INTC_PROTECTION_PROTECTION;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_PROTECTION) &= ~INTC_PROTECTION_PROTECTION;
 }
 
 /**
@@ -294,9 +294,9 @@ void IntProtectionDisable(void)
  * \return  None
  *
  **/
-void IntSyncClkFreeRunSet(void)
+extern "C" void IntSyncClkFreeRunSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_IDLE) &= ~INTC_IDLE_TURBO;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_IDLE) &= ~INTC_IDLE_TURBO;
 }
 
 /**
@@ -308,9 +308,9 @@ void IntSyncClkFreeRunSet(void)
  * \return  None
  *
  **/
-void IntSyncClkAutoGateSet(void)
+extern "C" void IntSyncClkAutoGateSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_IDLE) |= INTC_IDLE_TURBO;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_IDLE) |= INTC_IDLE_TURBO;
 }
 
 /**
@@ -321,9 +321,9 @@ void IntSyncClkAutoGateSet(void)
  * \return  None
  *
  **/
-void IntFuncClkFreeRunSet(void)
+extern "C" void IntFuncClkFreeRunSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_IDLE) |= INTC_IDLE_FUNCIDLE;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_IDLE) |= INTC_IDLE_FUNCIDLE;
 }
 
 /**
@@ -335,9 +335,9 @@ void IntFuncClkFreeRunSet(void)
  * \return  None
  *
  **/
-void IntFuncClkAutoGateSet(void)
+extern "C" void IntFuncClkAutoGateSet(void)
 {
-  HWREG(SOC_AINTC_REGS + INTC_IDLE) &= ~INTC_IDLE_FUNCIDLE;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_IDLE) &= ~INTC_IDLE_FUNCIDLE;
 }
 
 /**
@@ -348,9 +348,9 @@ void IntFuncClkAutoGateSet(void)
  * \return  Current IRQ priority 
  *
  **/
-unsigned int IntCurrIrqPriorityGet(void)
+extern "C" std::uint32_t IntCurrIrqPriorityGet(void)
 {
-  return (HWREG(SOC_AINTC_REGS + INTC_IRQ_PRIORITY) & INTC_IRQ_PRIORITY_IRQPRIORITY);
+  return (*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_IRQ_PRIORITY) & INTC_IRQ_PRIORITY_IRQPRIORITY);
 }
 
 /**
@@ -361,9 +361,9 @@ unsigned int IntCurrIrqPriorityGet(void)
  * \return  Current FIQ priority
  *
  **/
-unsigned int IntCurrFiqPriorityGet(void)
+extern "C" std::uint32_t IntCurrFiqPriorityGet(void)
 {
-  return (HWREG(SOC_AINTC_REGS + INTC_FIQ_PRIORITY) & INTC_FIQ_PRIORITY_FIQPRIORITY);
+  return (*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_FIQ_PRIORITY) & INTC_FIQ_PRIORITY_FIQPRIORITY);
 }
 
 /**
@@ -374,9 +374,9 @@ unsigned int IntCurrFiqPriorityGet(void)
  * \return  Priority threshold value.
  *
  **/
-unsigned int IntPriorityThresholdGet(void)
+extern "C" std::uint32_t IntPriorityThresholdGet(void)
 {
-  return (HWREG(SOC_AINTC_REGS + INTC_THRESHOLD) & INTC_THRESHOLD_PRIORITYTHRESHOLD);
+  return (*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_THRESHOLD) & INTC_THRESHOLD_PRIORITYTHRESHOLD);
 }
 
 /**
@@ -390,9 +390,9 @@ unsigned int IntPriorityThresholdGet(void)
  * \return  None.
  *
  **/
-void IntPriorityThresholdSet(unsigned int threshold)
+extern "C" void IntPriorityThresholdSet(std::uint32_t threshold)
 {
-  HWREG(SOC_AINTC_REGS + INTC_THRESHOLD) = threshold & INTC_THRESHOLD_PRIORITYTHRESHOLD;
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_THRESHOLD) = threshold & INTC_THRESHOLD_PRIORITYTHRESHOLD;
 }
 
 /**
@@ -404,9 +404,9 @@ void IntPriorityThresholdSet(unsigned int threshold)
  *          FALSE - if the raw status is not set.   
  *
  **/
-unsigned int IntRawStatusGet(unsigned int intrNum)
+extern "C" std::uint32_t IntRawStatusGet(std::uint32_t intrNum)
 {
-  return ((0 == ((HWREG(SOC_AINTC_REGS + INTC_ITR(intrNum >> REG_IDX_SHIFT))
+  return ((0 == ((*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_ITR(intrNum >> REG_IDX_SHIFT))
                   >> (intrNum & REG_BIT_MASK))& 0x01)) ? FALSE : TRUE);
 }
 
@@ -419,10 +419,10 @@ unsigned int IntRawStatusGet(unsigned int intrNum)
  * \return  None
  *
  **/
-void IntSoftwareIntSet(unsigned int intrNum)
+extern "C" void IntSoftwareIntSet(std::uint32_t intrNum)
 {
   /* Enable the software interrupt in the corresponding ISR_SET register */
-  HWREG(SOC_AINTC_REGS + INTC_ISR_SET(intrNum >> REG_IDX_SHIFT)) = (0x01 << (intrNum & REG_BIT_MASK));
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_ISR_SET(intrNum >> REG_IDX_SHIFT)) = (0x01UL << (intrNum & REG_BIT_MASK));
 }
 
 /**
@@ -434,10 +434,10 @@ void IntSoftwareIntSet(unsigned int intrNum)
  * \return  None
  *
  **/
-void IntSoftwareIntClear(unsigned int intrNum)
+extern "C" void IntSoftwareIntClear(std::uint32_t intrNum)
 {
   /* Disable the software interrupt in the corresponding ISR_CLEAR register */
-  HWREG(SOC_AINTC_REGS + INTC_ISR_CLEAR(intrNum >> REG_IDX_SHIFT)) = (0x01 << (intrNum & REG_BIT_MASK));
+  *reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_ISR_CLEAR(intrNum >> REG_IDX_SHIFT)) = (0x01UL << (intrNum & REG_BIT_MASK));
 }
 
 /**
@@ -449,9 +449,9 @@ void IntSoftwareIntClear(unsigned int intrNum)
  *          FALSE - in no interrupt is pending
  *
  **/
-unsigned int IntPendingIrqMaskedStatusGet(unsigned int intrNum)
+extern "C" std::uint32_t IntPendingIrqMaskedStatusGet(std::uint32_t intrNum)
 {
-  return ((0 ==(HWREG(SOC_AINTC_REGS + INTC_PENDING_IRQ(intrNum >> REG_IDX_SHIFT))
+  return ((0 ==(*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_PENDING_IRQ(intrNum >> REG_IDX_SHIFT))
                 >> (((intrNum & REG_BIT_MASK)) & 0x01))) ? FALSE : TRUE);
 }
 
@@ -464,9 +464,9 @@ unsigned int IntPendingIrqMaskedStatusGet(unsigned int intrNum)
  *          FALSE - in no interrupt is pending
  *
  **/
-unsigned int IntPendingFiqMaskedStatusGet(unsigned int intrNum)
+extern "C" std::uint32_t IntPendingFiqMaskedStatusGet(std::uint32_t intrNum)
 {
-  return ((0 ==(HWREG(SOC_AINTC_REGS + INTC_PENDING_FIQ(intrNum >> REG_IDX_SHIFT))
+  return ((0 ==(*reinterpret_cast<volatile std::uint32_t*>(SOC_AINTC_REGS + INTC_PENDING_FIQ(intrNum >> REG_IDX_SHIFT))
                 >> (((intrNum & REG_BIT_MASK)) & 0x01))) ? FALSE : TRUE);
 }
 
@@ -481,7 +481,7 @@ unsigned int IntPendingFiqMaskedStatusGet(unsigned int intrNum)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-void IntMasterIRQEnable(void)
+extern "C" void IntMasterIRQEnable(void)
 {
   /* Enable IRQ in CPSR.*/
   CPUirqe();
@@ -498,7 +498,7 @@ void IntMasterIRQEnable(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-void IntMasterIRQDisable(void)
+extern "C" void IntMasterIRQDisable(void)
 {
   /* Disable IRQ in CPSR.*/
   CPUirqd();
@@ -515,7 +515,7 @@ void IntMasterIRQDisable(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-void IntMasterFIQEnable(void)
+extern "C" void IntMasterFIQEnable(void)
 {
   /* Enable FIQ in CPSR.*/
   CPUfiqe();
@@ -532,7 +532,7 @@ void IntMasterFIQEnable(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-void IntMasterFIQDisable(void)
+extern "C" void IntMasterFIQDisable(void)
 {
   /* Disable FIQ in CPSR.*/
   CPUfiqd();
@@ -547,7 +547,7 @@ void IntMasterFIQDisable(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-unsigned int IntMasterStatusGet(void)
+extern "C" std::uint32_t IntMasterStatusGet(void)
 {
   return CPUIntStatus();
 }
@@ -562,7 +562,7 @@ unsigned int IntMasterStatusGet(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-unsigned char IntDisable(void)
+extern "C" unsigned char IntDisable(void)
 {
   unsigned char status;
 
@@ -585,7 +585,7 @@ unsigned char IntDisable(void)
  *
  *  Note: This function call shall be done only in previleged mode of ARM
  **/
-void IntEnable(unsigned char  status)
+extern "C" void IntEnable(unsigned char status)
 {
   if((status & 0x80) == 0) 
   {

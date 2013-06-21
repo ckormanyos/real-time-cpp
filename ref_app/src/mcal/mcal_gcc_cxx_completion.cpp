@@ -30,6 +30,8 @@ namespace std
   }
 }
 
+void operator delete(void*) { }
+
 namespace std
 {
   struct ios_base
@@ -40,14 +42,16 @@ namespace std
   ios_base::Init::Init() { }
 }
 
-extern "C" void __cxa_pure_virtual();
+extern "C"
+{
+  void __cxa_pure_virtual() { }
 
-void __cxa_pure_virtual() { }
+  int __errno;
 
-void operator delete(void*) { }
+  void exit(int) __attribute__((noreturn));
 
-int __errno;
-
-extern "C" void exit(int) __attribute__((noreturn));
-
-void exit(int) { while(1) { ; } }
+  void exit(int)
+  {
+    while(1) { ; }
+  }
+}

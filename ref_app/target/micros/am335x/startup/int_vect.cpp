@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <algorithm>
-#include <cp15.h>
 
 extern "C" void Entry           ();
 extern "C" void UndefInstHandler();
@@ -21,6 +20,11 @@ namespace
 {
   constexpr std::uint32_t am335x_vector_base = 0x4030FC00UL;
   constexpr std::size_t   am335x_vector_size = 14U;
+
+  inline void CP15VectorBaseAddrSet(std::uint32_t addr)
+  {
+    asm("mcr p15, #0, %[value], c12, c0, 0":: [value] "r" (addr));
+  }
 }
 
 extern "C"

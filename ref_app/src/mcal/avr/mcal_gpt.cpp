@@ -40,7 +40,7 @@ mcal::gpt::value_type consistent_microsecond_tick()
 
   // Perform the consistency check and return the consistent microsecond tick.
   return ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
-                                      : mcal::gpt::value_type(system_tick | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
+                                     : mcal::gpt::value_type(system_tick | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
 }
 
 extern "C" void __vector_16() __attribute__((signal, used, externally_visible));

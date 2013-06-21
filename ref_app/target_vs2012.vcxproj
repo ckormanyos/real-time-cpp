@@ -223,13 +223,11 @@
     <None Include="target\micros\mips\startup\regs.s" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="target\micros\am335x\startup\clock.c" />
-    <ClCompile Include="target\micros\am335x\startup\cp15.c" />
-    <ClCompile Include="target\micros\am335x\startup\cpu.c" />
+    <ClCompile Include="target\micros\am335x\startup\cpu.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\am335x\startup\interrupt.c" />
+    <ClCompile Include="target\micros\am335x\startup\interrupt.cpp" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\crt0_init_ram.cpp" />

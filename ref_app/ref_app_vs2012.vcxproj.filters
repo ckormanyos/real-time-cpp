@@ -277,9 +277,6 @@
     <ClCompile Include="src\mcal\am335x\mcal_wdg.cpp">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\am335x\bfx.c">
-      <Filter>src\mcal\am335x</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <Filter>src\mcal</Filter>
     </ClCompile>
@@ -625,9 +622,6 @@
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_led.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_mcu.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_osc.h">

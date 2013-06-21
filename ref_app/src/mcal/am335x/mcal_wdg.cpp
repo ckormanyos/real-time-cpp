@@ -9,6 +9,8 @@
 
 void mcal::wdg::init(const config_type*)
 {
+  // TBD: Stop the watchdog
+  // Wdg_Stop();
 }
 
 void mcal::wdg::trigger()

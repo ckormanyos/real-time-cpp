@@ -1,38 +1,20 @@
-/*
- *  \file   cpu.h
- *
- *  \brief  CPU related function prototypes
- *
- *  This file contains the API prototypes for configuring CPU
-*/
+#ifndef _CPU_2013_06_21_H_
+  #define _CPU_2013_06_21_H_
 
-/* Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
- * ALL RIGHTS RESERVED
- */
-#ifndef __CPU_H
-#define __CPU_H
+  #include <cstdint>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/*****************************************************************************
-**                           FUNCTION PROTOTYPES
-*****************************************************************************/
-extern void CPUSwitchToUserMode(void);
-extern void CPUSwitchToPrivilegedMode(void);
+  extern "C" void CPUSwitchToUserMode();
+  extern "C" void CPUSwitchToPrivilegedMode();
 
-/****************************************************************************/
-/*
-** Functions used internally
-*/
-extern void CPUAbortHandler(void);
-extern void CPUirqd(void);
-extern void CPUirqe(void);
-extern void CPUfiqd(void);
-extern void CPUfiqe(void);
-extern unsigned int CPUIntStatus(void);
+  /****************************************************************************/
+  /*
+  ** Functions used internally
+  */
+  extern "C" void CPUAbortHandler();
+  extern "C" void CPUirqd();
+  extern "C" void CPUirqe();
+  extern "C" void CPUfiqd();
+  extern "C" void CPUfiqe();
+  extern "C" std::uint32_t CPUIntStatus();
 
-#ifdef __cplusplus
-}
-#endif
-#endif /* __CPU_H__ */
+#endif // _CPU_2013_06_21_H_
