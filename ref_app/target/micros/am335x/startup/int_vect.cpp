@@ -55,10 +55,10 @@ const volatile std::uint32_t __isr_vector_rom_copy[am335x_vector_size] =
 
 namespace crt
 {
-  void init_isr_vectors() __attribute__((section(".startup")));
+  void init_isr_system_vectors() __attribute__((section(".startup")));
 }
 
-void crt::init_isr_vectors()
+void crt::init_isr_system_vectors()
 {
   mcal::irq::vector_base_address_set(am335x_vector_base);
 

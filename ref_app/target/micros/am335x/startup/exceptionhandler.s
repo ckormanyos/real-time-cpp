@@ -19,7 +19,7 @@
         .global SVCHandler
         .global UndefInstHandler
         .global CPUAbortHandler
-        .global fnRAMVectors
+        .global isr_ram_vectors
 
         .set INTC_SIR_IRQ_ACTIVEIRQ, 0x0000007F
         .set INTC_CONTROL_NEWIRQAGR, 0x00000001
@@ -78,12 +78,12 @@ IRQHandler:
         LDR      r0, =ADDR_SIR_IRQ        @ Get the Active IRQ
         LDR      r1, [r0]
         AND      r1, r1, #MASK_ACTIVE_IRQ @ Mask the Active IRQ number
-        LDR      r0, =fnRAMVectors        @ Load the base of the vector table
+        LDR      r0, =isr_ram_vectors     @ Load the base of the vector table
         ADD      r14, pc, #0              @ Save return address in LR 
         LDR      pc, [r0, r1, lsl #2]     @ Jump to the ISR
         MOV      r0, #NEWIRQAGR           @ Acknowledge the current IRQ 
-        LDR      r1, =ADDR_CONTROL        
-        STR      r0, [r1]                 
+        LDR      r1, =ADDR_CONTROL
+        STR      r0, [r1]
         DMB                               @ Barrier to complete the data write
         LDMFD    r13!, {r0-r3, r12, r14}  @ Restore registers from IRQ stack
         SUBS     pc, r14, #0x4            @ Return to program before IRQ
@@ -100,7 +100,7 @@ FIQHandler:
         LDR      r0, =ADDR_SIR_FIQ        @ Get the Active FIQ
         LDR      r1, [r0]
         AND      r1, r1, #MASK_ACTIVE_FIQ @ Mask the Active IRQ number
-        LDR      r0, =fnRAMVectors        @ Load the base of the vector table
+        LDR      r0, =isr_ram_vectors     @ Load the base of the vector table
         ADD      r14, pc, #0              @ Save return address in LR
         LDR      pc, [r0, r1, lsl #2]     @ Jump to the ISR
         MOV      r0, #NEWFIQAGR           @ Acknowledge the current FIQ

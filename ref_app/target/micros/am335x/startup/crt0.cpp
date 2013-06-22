@@ -13,9 +13,9 @@
 
 namespace crt
 {
-  void init_ram        () __attribute__((section(".startup")));
-  void init_ctors      () __attribute__((section(".startup")));
-  void init_isr_vectors() __attribute__((section(".startup")));
+  void init_ram               () __attribute__((section(".startup")));
+  void init_ctors             () __attribute__((section(".startup")));
+  void init_isr_system_vectors() __attribute__((section(".startup")));
 }
 
 asm volatile(".global __initial_stack_pointer");
@@ -75,7 +75,7 @@ void Entry()
   asm volatile("MOV   sp,r0");                         // @ write the stack pointer
 
   // Copy the interrupt vector table from ROM to RAM.
-  crt::init_isr_vectors();
+  crt::init_isr_system_vectors();
 
   // Chip init: Port, oscillator and watchdog.
   mcal::cpu::init();
