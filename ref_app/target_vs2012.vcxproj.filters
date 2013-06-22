@@ -155,11 +155,5 @@
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\am335x\startup\cpu.cpp">
-      <Filter>micros\am335x\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\am335x\startup\interrupt.cpp">
-      <Filter>micros\am335x\startup</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

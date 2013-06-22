@@ -15,8 +15,8 @@
       typedef void config_type;
       void init(const config_type*);
 
-      inline void enable_all () { }
-      inline void disable_all() { }
+      void enable_all ();
+      void disable_all();
     }
   }
 

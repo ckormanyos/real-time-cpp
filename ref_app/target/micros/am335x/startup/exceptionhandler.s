@@ -1,6 +1,6 @@
 @******************************************************************************
 @
-@ exceptionhandler.S - Definitions of exception handlers
+@ exceptionhandler.s - Definitions of exception handlers
 @
 @ Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/  
 @ All rights reserved.
@@ -48,7 +48,7 @@
         .code 32
 @******************************************************************************
 @*                  Function Definition of SWI Handler
-@******************************************************************************    
+@******************************************************************************
 @
 @ The SVC Handler switches to system mode if the SVC number is 458752. If the
 @ SVC number is different, no mode switching will be done. No other SVC are 
@@ -68,7 +68,7 @@ SVCHandler:
 
 @******************************************************************************
 @*                  Function Definition of IRQ Handler
-@******************************************************************************    
+@******************************************************************************
 @
 @ The IRQ handler jumps to the ISR of highest priority pending IRQ. 
 @ This handler doesnot support nesting.
@@ -90,7 +90,7 @@ IRQHandler:
         
 @******************************************************************************
 @*                  Function Definition of FIQ Handler
-@******************************************************************************    
+@******************************************************************************
 @
 @ The FIQ Handler jumps to the ISR of the highest priority pending FIQ. The
 @ pending FIQ. This handler doesnot support nesting
@@ -112,7 +112,7 @@ FIQHandler:
 
 @******************************************************************************
 @*             Function Definition of Abort/Undef Handler
-@******************************************************************************    
+@******************************************************************************
 @
 @ The Abort handler goes to the C handler of abort mode. Note that the undefined
 @ instruction is not handled separately.
@@ -124,7 +124,7 @@ UndefInstHandler:
 @ Disable all the interrupts
 @
         MRS     r0, cpsr                  @ Read from CPSR
-        ORR     r0, r0, #0xC0             @ Clear the IRQ and FIQ bits    
+        ORR     r0, r0, #0xC0             @ Clear the IRQ and FIQ bits
         MSR     cpsr, r0                  @ Write to CPSR
         ADD     r14, pc, #0               @ Store the return address
         LDR     pc, =CPUAbortHandler      @ Go to C handler

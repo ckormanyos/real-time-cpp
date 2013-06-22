@@ -21,9 +21,13 @@ namespace
   constexpr std::uint32_t am335x_vector_base = 0x4030FC00UL;
   constexpr std::size_t   am335x_vector_size = 14U;
 
-  inline void CP15VectorBaseAddrSet(std::uint32_t addr)
+}
+
+namespace mcal
+{
+  namespace irq
   {
-    asm("mcr p15, #0, %[value], c12, c0, 0":: [value] "r" (addr));
+    void vector_base_address_set(const std::uint32_t addr);
   }
 }
 
@@ -56,7 +60,7 @@ namespace crt
 
 void crt::init_isr_vectors()
 {
-  CP15VectorBaseAddrSet(am335x_vector_base);
+  mcal::irq::vector_base_address_set(am335x_vector_base);
 
   std::copy(__isr_vector_rom_copy,
             __isr_vector_rom_copy + am335x_vector_size,
