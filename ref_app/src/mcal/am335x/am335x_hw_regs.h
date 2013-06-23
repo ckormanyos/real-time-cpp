@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
 #ifndef _AM335X_HW_REGS_2013_06_22_H_
   #define _AM335X_HW_REGS_2013_06_22_H_
@@ -62,46 +68,6 @@
     __IO uint32_t TOCR;
     __IO uint32_t TOWR;
   } DMTIMER_1MS_TypeDef;
-
-  /**
-    * @brief UART
-    */
-  typedef struct
-  {
-    __IO uint32_t RHR_THR_DLL;       // 0x000
-    __IO uint32_t IER_DLH;
-    __IO uint32_t IIR_FCR_EFR;
-    __IO uint32_t LCR;
-    __IO uint32_t MCR_XON1ADDR;      // 0x010
-    __IO uint32_t LSR_XON2ADDR;
-    __IO uint32_t MSR_TCT_XOFF1TCR;
-    __IO uint32_t SPR_TLR_XOFF2TLR;
-    __IO uint32_t MDR1;              // 0x020
-    __IO uint32_t MDR2;
-    __IO uint32_t SFLSR_TXFLL;
-    __IO uint32_t RESUME_TXFLH;
-    __IO uint32_t SFREGL_RXFLL;      // 0x030
-    __IO uint32_t SFREGH_TXFLH;
-    __IO uint32_t BKR_UASR;
-    __IO uint32_t ACREG;
-    __IO uint32_t SCR;               // 0x040
-    __IO uint32_t SSR;
-    __IO uint32_t EBLR;
-    uint32_t  RESERVED0[1];          // 0x04c
-    __IO uint32_t MVR;               // 0x050
-    __IO uint32_t SYSC;
-    __IO uint32_t SYSS;
-    __IO uint32_t WER;
-    __IO uint32_t CFPS;              // 0x060
-    __IO uint32_t RXFIFO_LVL;
-    __IO uint32_t TXFIFO_LVL;
-    __IO uint32_t IER2;
-    __IO uint32_t ISR2;              // 0x070
-    __IO uint32_t FREQ_SEL;
-    uint32_t  RESERVED1[2];          // 0x078
-    __IO uint32_t MDR3;              // 0x080
-    __IO uint32_t TXDMA;
-  } UART_TypeDef;
 
   /**
     * @brief WDT

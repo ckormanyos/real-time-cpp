@@ -13,12 +13,12 @@
 #include "soc_AM335x.h"
 
 @************************** Global symbols ************************************
-        .global IRQHandler
-        .global FIQHandler
-        .global AbortHandler
-        .global SVCHandler
-        .global UndefInstHandler
-        .global CPUAbortHandler
+        .global irq_handler
+        .global fiq_handler
+        .global abort_handler
+        .global svc_handler
+        .global undefined_instruction_handler
+        .global cpu_abort_handler
         .global isr_ram_vectors
 
         .set INTC_SIR_IRQ_ACTIVEIRQ, 0x0000007F
@@ -54,7 +54,7 @@
 @ SVC number is different, no mode switching will be done. No other SVC are 
 @ handled here
 @
-SVCHandler:
+svc_handler:
         STMFD    r13!, {r0-r1, r14}       @ Save context in SVC stack
         SUB      r13, r13, #0x4           @ Adjust the stack pointer
         LDR      r0, [r14, #-4]           @ R0 points to SWI instruction
@@ -73,7 +73,7 @@ SVCHandler:
 @ The IRQ handler jumps to the ISR of highest priority pending IRQ. 
 @ This handler doesnot support nesting.
 @
-IRQHandler:
+irq_handler:
         STMFD    r13!, {r0-r3, r12, r14}  @ Save context in IRQ stack
         LDR      r0, =ADDR_SIR_IRQ        @ Get the Active IRQ
         LDR      r1, [r0]
@@ -95,7 +95,7 @@ IRQHandler:
 @ The FIQ Handler jumps to the ISR of the highest priority pending FIQ. The
 @ pending FIQ. This handler doesnot support nesting
 @
-FIQHandler:
+fiq_handler:
         STMFD    r13!, {r0-r3, r12, r14}  @ Save context in FIQ stack
         LDR      r0, =ADDR_SIR_FIQ        @ Get the Active FIQ
         LDR      r1, [r0]
@@ -118,8 +118,8 @@ FIQHandler:
 @ instruction is not handled separately.
 @ if nothing is done in the abort mode, the execution enters infinite loop.
 @
-AbortHandler:
-UndefInstHandler:
+abort_handler:
+undefined_instruction_handler:
 @
 @ Disable all the interrupts
 @
@@ -127,7 +127,7 @@ UndefInstHandler:
         ORR     r0, r0, #0xC0             @ Clear the IRQ and FIQ bits
         MSR     cpsr, r0                  @ Write to CPSR
         ADD     r14, pc, #0               @ Store the return address
-        LDR     pc, =CPUAbortHandler      @ Go to C handler
+        LDR     pc, =cpu_abort_handler    @ Go to C handler
 @
 @ Go to infinite loop if returned from C handler
 @

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2013.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,12 +10,6 @@
 #include <bfx.h>
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
-
-// *****************************************************************************
-// constants
-// *****************************************************************************
-#define VECT_TAB_OFFSET  0x0 /*!< Vector Table base offset field.
-                                  This value must be a multiple of 0x200. */
 
 constexpr std::uint32_t DPLL_MN_BYP_MODE = 0x04UL;
 constexpr std::uint32_t DPLL_LP_BYP_MODE = 0x05UL;

@@ -5,3 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_irq.h>
+
+void mcal::irq::init(const config_type*)
+{
+  mcal::irq::enable_all();
+}

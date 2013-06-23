@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2013.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -59,7 +59,7 @@ std::uint32_t mcal::cpu::read_dfar()
   return stat;
 }
 
-extern "C" void CPUAbortHandler()
+extern "C" void cpu_abort_handler()
 {
   // This API is called when the CPU is aborted or during execution
   // of any undefined instruction. Both IRQ and FIQ will be disabled
@@ -80,26 +80,6 @@ std::uint32_t mcal::cpu::int_status()
                "and %[result], r0, #0xC0" : [result] "=r" (stat));
 
   return stat;
-}
-
-void mcal::cpu::irqd()
-{
-  // Wrapper function for the IRQ disable function
-
-  // Disable IRQ in CPSR
-  asm volatile("mrs r0, CPSR");
-  asm volatile("orr r0, #0x80");
-  asm volatile("msr CPSR, r0");
-}
-
-void mcal::cpu::irqe()
-{
-  // Wrapper function for the IRQ enable function
-
-  // Enable IRQ in CPSR
-  asm volatile("mrs r0, CPSR");
-  asm volatile("bic r0, #0x80");
-  asm volatile("msr CPSR, r0");
 }
 
 void mcal::cpu::fiqd()
