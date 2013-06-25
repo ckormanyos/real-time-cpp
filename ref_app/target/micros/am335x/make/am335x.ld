@@ -43,12 +43,20 @@ SECTIONS
     KEEP(*(.startup))
   } > ROM = 0xAAAA
 
-  /* ISR vectors (ROM copy) */
+  /* ISR vectors (ROM copy of system vectors) */
   .isr_vector_rom_copy :
   {
     *(.isr_vector_rom_copy)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector_rom_copy))
+  } > ROM = 0xAAAA
+
+  /* ISR vectors (ROM user vectors) */
+  .isr_vector :
+  {
+    *(.isr_vector)
+    . = ALIGN(0x10);
+    KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */

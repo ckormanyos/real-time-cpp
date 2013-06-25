@@ -13,7 +13,7 @@ extern "C" void __my_startup();
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 
-extern "C" void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
+void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
