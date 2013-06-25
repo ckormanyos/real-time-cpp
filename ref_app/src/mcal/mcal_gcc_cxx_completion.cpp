@@ -6,6 +6,7 @@
 //
 
 #include <chrono>
+#include <mcal_cpu.h>
 #include <mcal_gpt.h>
 
 extern mcal::gpt::value_type consistent_microsecond_tick();
@@ -36,10 +37,15 @@ namespace std
 {
   struct ios_base
   {
-    struct Init { Init(); };
+    struct Init
+    {
+      Init();
+      ~Init();
+    };
   };
 
   ios_base::Init::Init() { }
+  ios_base::Init::~Init() { }
 }
 
 extern "C"
@@ -52,6 +58,6 @@ extern "C"
 
   void exit(int)
   {
-    while(1) { ; }
+    while(1) { mcal::cpu::nop(); }
   }
 }

@@ -6,7 +6,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// SitaraWare AM335x ARM(R) A8 startup code
+// AM335x ARM(R) A8 startup code
 // Switched to C++ and re-written for BeagleBone by Chris.
 
 #include <mcal/mcal.h>
@@ -19,24 +19,23 @@ namespace crt
 }
 
 asm volatile(".extern __initial_stack_pointer");
+asm volatile(".extern main");
 
-asm volatile(".set  UND_STACK_SIZE, 0x8");
-asm volatile(".set  ABT_STACK_SIZE, 0x8");
-asm volatile(".set  FIQ_STACK_SIZE, 0x8");
-asm volatile(".set  IRQ_STACK_SIZE, 0x800");
-asm volatile(".set  SVC_STACK_SIZE, 0x8");
+asm volatile(".set UND_STACK_SIZE, 0x8");
+asm volatile(".set ABT_STACK_SIZE, 0x8");
+asm volatile(".set FIQ_STACK_SIZE, 0x8");
+asm volatile(".set IRQ_STACK_SIZE, 0x800");
+asm volatile(".set SVC_STACK_SIZE, 0x8");
 
-// to set the mode bits in CPSR for different modes
+asm volatile(".set MODE_USR, 0x10");
+asm volatile(".set MODE_FIQ, 0x11");
+asm volatile(".set MODE_IRQ, 0x12");
+asm volatile(".set MODE_SVC, 0x13");
+asm volatile(".set MODE_ABT, 0x17");
+asm volatile(".set MODE_UND, 0x1B");
+asm volatile(".set MODE_SYS, 0x1F");
 
-asm volatile(".set  MODE_USR, 0x10");
-asm volatile(".set  MODE_FIQ, 0x11");
-asm volatile(".set  MODE_IRQ, 0x12");
-asm volatile(".set  MODE_SVC, 0x13");
-asm volatile(".set  MODE_ABT, 0x17");
-asm volatile(".set  MODE_UND, 0x1B");
-asm volatile(".set  MODE_SYS, 0x1F");
-
-asm volatile(".equ  I_F_BIT, 0xC0");
+asm volatile(".equ I_F_BIT, 0xC0");
 
 extern "C" void __my_startup() __attribute__((section(".entry_code"), naked));
 
@@ -54,23 +53,23 @@ void __my_startup()
   asm volatile("sub r0,r0, #ABT_STACK_SIZE");          // Provide stack space.
 
   // Setup the Stack for FIQ mode
-  asm volatile("msr cpsr_c, #MODE_FIQ | I_F_BIT");     // Switch to FIQ mode.
-  asm volatile("mov sp,r0");                           // Set the stack pointer.
-  asm volatile("sub r0,r0, #FIQ_STACK_SIZE");          // Provide stack space.
+  asm volatile("msr cpsr_c, #MODE_FIQ | I_F_BIT");      // Switch to FIQ mode.
+  asm volatile("mov sp, r0");                           // Set the stack pointer.
+  asm volatile("sub r0, r0, #FIQ_STACK_SIZE");          // Provide stack space.
 
   // Setup the Stack for IRQ mode
-  asm volatile("msr cpsr_c, #MODE_IRQ | I_F_BIT");     // Switch to IRQ mode.
-  asm volatile("mov sp,r0");                           // Set the stack pointer.
-  asm volatile("sub r0,r0, #IRQ_STACK_SIZE");          // Provide stack space.
+  asm volatile("msr cpsr_c, #MODE_IRQ | I_F_BIT");      // Switch to IRQ mode.
+  asm volatile("mov sp, r0");                           // Set the stack pointer.
+  asm volatile("sub r0, r0, #IRQ_STACK_SIZE");          // Provide stack space.
 
   // Setup the Stack for SVC mode
-  asm volatile("msr cpsr_c, #MODE_SVC | I_F_BIT");     // Switch to SVC mode.
-  asm volatile("mov sp,r0");                           // Set the stack pointer.
-  asm volatile("sub r0,r0, #SVC_STACK_SIZE");          // Provide stack space.
+  asm volatile("msr cpsr_c, #MODE_SVC | I_F_BIT");      // Switch to SVC mode.
+  asm volatile("mov sp, r0");                           // Set the stack pointer.
+  asm volatile("sub r0, r0, #SVC_STACK_SIZE");          // Provide stack space.
 
   // Setup the Stack for User/System mode
-  asm volatile("msr cpsr_c, #MODE_SYS | I_F_BIT");     // Switch to system mode.
-  asm volatile("mov sp,r0");                           // Set the stack pointer.
+  asm volatile("msr cpsr_c, #MODE_SYS | I_F_BIT");      // Switch to system mode.
+  asm volatile("mov sp, r0");                           // Set the stack pointer.
 
   // Copy the system interrupt vector table from ROM to RAM.
   crt::init_system_interrupt_vectors();
@@ -88,9 +87,9 @@ void __my_startup()
   mcal::wdg::trigger();
 
   // Call main (and never return).
-  asm volatile("ldr r10,=main");
-  asm volatile("mov lr,pc");
-  asm volatile("bx  r10");
+  asm volatile("ldr r10, =main");
+  asm volatile("mov lr, pc");
+  asm volatile("bx r10");
 
   // Catch an unexpected return from main.
   for(;;)

@@ -12,335 +12,348 @@
 #include <am335x_hw_regs.h>
 #include <bfx.h>
 
-constexpr std::uint32_t DPLL_MN_BYP_MODE          =      0x04UL;
-constexpr std::uint32_t DPLL_LP_BYP_MODE          =      0x05UL;
-constexpr std::uint32_t DPLL_FR_BYP_MODE          =      0x06UL;
-constexpr std::uint32_t DPLL_LOCK_MODE            =      0x07UL;
+constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
 
-constexpr std::uint32_t ST_MN_BYPASS              =     0x100UL;
-constexpr std::uint32_t ST_DPLL_CLK               =       0x1UL;
+constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
+constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
 
-constexpr std::uint32_t MODULEMODE_ENABLE         =      0x02UL;
-constexpr std::uint32_t MODULEMODE_DISABLE        =      0x00UL;
-constexpr std::uint32_t MODULEMODE_MASK           =      0x03UL;
+constexpr unsigned st_dpll_clk_bpos       =           0U;
+constexpr unsigned st_mn_bypass_bpos      =           8U;
 
-constexpr std::uint32_t IDLEST_FUNC               = 0x00000000UL;
-constexpr std::uint32_t IDLEST_TRANS              = 0x00010000UL;
-constexpr std::uint32_t IDLEST_IDLE               = 0x00020000UL;
-constexpr std::uint32_t IDLEST_DISABLE            = 0x00030000UL;
-constexpr std::uint32_t IDLEST_MASK               = 0x00030000UL;
+constexpr std::uint32_t modulemode_enable =       0x02UL;
+constexpr std::uint32_t modulemode_mask   =       0x03UL;
 
-constexpr std::uint32_t CLKTRCTRL_NO_SLEEP        =        0x0UL;
-constexpr std::uint32_t CLKTRCTRL_SW_SLEEP        =        0x1UL;
-constexpr std::uint32_t CLKTRCTRL_SW_WKUP         =        0x2UL;
-constexpr std::uint32_t CLKTRCTRL_HW_AUTO         =        0x3UL;
-constexpr std::uint32_t CLKTRCTRL_MASK            =        0x3UL;
-
-constexpr std::uint32_t CLKACTIVITY_EMIF_GCLK     = 0x00000004UL;
-constexpr std::uint32_t CLKACTIVITY_GPIO_1_GDBCLK = 0x00080000UL;
-constexpr std::uint32_t CLKACTIVITY_GPIO_2_GDBCLK = 0x00100000UL;
-constexpr std::uint32_t CLKACTIVITY_GPIO_3_GDBCLK = 0x00200000UL;
-constexpr std::uint32_t CLKACTIVITY_TIMER1_GCLK   = 0x00002000UL;
-constexpr std::uint32_t CLKACTIVITY_TIMER7_GCLK   = 0x00002000UL;
-constexpr std::uint32_t OPTFCLKEN_GPIO_1_GDBCLK   = 0x00040000UL;
-
-constexpr std::uint32_t CLKSEL_CLK_M_OSC          =           1UL;
-constexpr std::uint32_t CLKSEL_CLK_32KHZ          =           2UL;
-
-constexpr std::uint32_t MCU_CLK_SETTING_HSI_PLL = 0x00UL;  // Internal oscillator with PLL
-constexpr std::uint32_t MCU_CLK_SETTING_HSE_PLL = 0x01UL;  // External oscillator with PLL
-constexpr std::uint32_t MCU_CLK_SETTING_HSI     = 0x02UL;  // Internal oscillator without PLL
-constexpr std::uint32_t MCU_CLK_SETTING_HSE     = 0x03UL;  // External oscillator without PLL
-constexpr std::uint32_t MCU_MODE_RUN            = 0x00UL;  // Normal run at full speed
-constexpr std::uint32_t MCU_MODE_SLOW           = 0x01UL;  // Reduced speed mode running on internal 8MHz oscillator
-constexpr std::uint32_t MCU_MODE_SLEEP          = 0x02UL;  // No cpu clock, peripherals running
-constexpr std::uint32_t MCU_MODE_STOP           = 0x03UL;  // All clocks off, SRAM powered
-constexpr std::uint32_t MCU_MODE_HALT           = 0x04UL;  // Only backup domain powered (RTC, LSE osc, BKP registers)
-
-// CLKINP = 24MHz
-// Setting MPU clock to 600MHz
-// CLKOUT = [M / (N+1)] * CLKINP * [1/M2] = 600
-constexpr std::uint32_t MCU_CLKINP      =    24UL;
-constexpr std::uint32_t MCU_MPU_PLL_M   =   600UL;
-constexpr std::uint32_t MCU_MPU_PLL_N   =    23UL;
-constexpr std::uint32_t MCU_MPU_PLL_M2  =     1UL;
-
-// CLKINP = 24MHz
-// CLKDCOLDO = 2 * [M / (N+1)] * CLKINP = 2000
-// CLKOUTM4 =  CLKDCOLDO / M4 = 200
-// CLKOUTM5 =  CLKDCOLDO / M5 = 250
-// CLKOUTM6 =  CLKDCOLDO / M6 = 500
-constexpr std::uint32_t MCU_CORE_PLL_M  =  1000UL;
-constexpr std::uint32_t MCU_CORE_PLL_N  =    23UL;
-constexpr std::uint32_t MCU_CORE_PLL_M4 =    10UL;
-constexpr std::uint32_t MCU_CORE_PLL_M5 =     8UL;
-constexpr std::uint32_t MCU_CORE_PLL_M6 =     4UL;
-
-// Setting Peripheral clock to 960MHz
-// CLKINP = 24MHz
-// CLKOUT    = (M / (N+1))*CLKINP*(1/M2) = 192
-// CLKDCOLDO = (M / (N+1))*CLKINP = 960
-constexpr std::uint32_t MCU_PER_PLL_M  =   960UL;
-constexpr std::uint32_t MCU_PER_PLL_N  =    23UL;
-constexpr std::uint32_t MCU_PER_PLL_M2 =     5UL;
-constexpr std::uint32_t MCU_PER_PLL_SD =   (((MCU_PER_PLL_M/(MCU_PER_PLL_N + 1UL) * MCU_CLKINP) + 249UL) / 250UL);
-
-// Setting DDR clock to 266
-constexpr std::uint32_t MCU_DDR_PLL_M  =   266UL;
-constexpr std::uint32_t MCU_DDR_PLL_N  =    23UL;
-constexpr std::uint32_t MCU_DDR_PLL_M2 =     1UL;
+constexpr std::uint32_t idlest_func       = 0x00000000UL;
+constexpr std::uint32_t idlest_mask       = 0x00030000UL;
 
 void mpu_pll_init()
 {
-  /* Put the PLL in bypass mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_MPU,
-                             DPLL_MN_BYP_MODE,
-                             (std::uint32_t) 0x07UL);
+  // Set the MPU clock to 600MHz.
 
-  /* Wait for DPLL to go in to bypass mode */
-  while(!(CM_WKUP->IDLEST_DPLL_MPU & ST_MN_BYPASS));
+  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 600
+  constexpr std::uint32_t mcu_mpu_pll_m  = 600UL;
+  constexpr std::uint32_t mcu_mpu_pll_n  =  23UL;
+  constexpr std::uint32_t mcu_mpu_pll_m2 =   1UL;
 
-  /* Set the multiplier and divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKSEL_DPLL_MPU,
-                             std::uint32_t((MCU_MPU_PLL_M << 8) | (MCU_MPU_PLL_N)),
-                             std::uint32_t(0x0007FF7FUL));
+  // Put the PLL in bypass mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_mpu,
+                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
 
-  /* Set the M2 divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M2_DPLL_MPU,
-                             MCU_MPU_PLL_M2,
-                             0x0000003FUL);
+  // Wait for DPLL to go into bypass mode.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
-  /* Enable the PLL in lock mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_MPU,
-                             DPLL_LOCK_MODE,
-                             0x07UL);
+  // Set the multiplier and divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clksel_dpll_mpu,
+                    (mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n)>::reg_msk<0x0007FF7FUL>();
 
-  /* Wait for lock */
-  while(!(CM_WKUP->IDLEST_DPLL_MPU & ST_DPLL_CLK)) { mcal::cpu::nop(); }
+  // Set the M2 divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m2_dpll_mpu,
+                    mcu_mpu_pll_m2>::reg_msk<0x0000003FUL>();
+
+  // Enable the PLL in lock mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_mpu,
+                    dpll_lock_mode>::reg_msk<0x07UL>();
+
+  // Wait for lock.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-/* Enable the Core PLL */
-void core_pll_init(void)
+void core_pll_init()
 {
-  /* Put the PLL in bypass mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_CORE,
-                             DPLL_MN_BYP_MODE,
-                             0x07UL);
+  // Enable the Core PLL.
 
-  /* Wait for DPLL to go in to bypass mode */
-  while(!(CM_WKUP->IDLEST_DPLL_CORE & ST_MN_BYPASS)) { mcal::cpu::nop(); }
+  // clkinp = 24MHz
+  // clkdcoldo = 2 * [m / (n + 1)] * clkinp = 2000
+  // clkoutm4  = clkdcoldo / m4 = 200
+  // clkoutm5  = clkdcoldo / m5 = 250
+  // clkoutm6  = clkdcoldo / m6 = 500
+  constexpr std::uint32_t mcu_core_pll_m  =  1000UL;
+  constexpr std::uint32_t mcu_core_pll_n  =    23UL;
+  constexpr std::uint32_t mcu_core_pll_m4 =    10UL;
+  constexpr std::uint32_t mcu_core_pll_m5 =     8UL;
+  constexpr std::uint32_t mcu_core_pll_m6 =     4UL;
 
-  /* Set the multiplier and divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKSEL_DPLL_CORE,
-                             std::uint32_t((MCU_CORE_PLL_M << 8) | (MCU_CORE_PLL_N)),
-                             std::uint32_t(0x0007FF7FUL));
+  // Put the PLL in bypass mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_core,
+                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
 
-  /* Configure the High speed dividers */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M4_DPLL_CORE,
-                             std::uint32_t(MCU_CORE_PLL_M4),
-                             0x0000001FUL);
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M5_DPLL_CORE,
-                             std::uint32_t(MCU_CORE_PLL_M5),
-                             0x0000001FUL);
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M6_DPLL_CORE,
-                             std::uint32_t(MCU_CORE_PLL_M6),
-                             0x0000001FUL);
+  // Wait for DPLL to go into bypass mode.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
-  /* Enable the PLL in lock mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_CORE,
-                  std::uint32_t(DPLL_LOCK_MODE),
-                  0x07UL);
+  // Set the multiplier and divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clksel_dpll_core,
+                    (mcu_core_pll_m << 8) | (mcu_core_pll_n)>::reg_msk<0x0007ff7FUL>();
 
-  /* Wait for lock */
-  while(!(CM_WKUP->IDLEST_DPLL_CORE & ST_DPLL_CLK)) { mcal::cpu::nop(); }
+  // Configure the high speed dividers.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m4_dpll_core,
+                    mcu_core_pll_m4>::reg_msk<0x0000001FUL>();
+
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m5_dpll_core,
+                    mcu_core_pll_m5>::reg_msk<0x0000001FUL>();
+
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m6_dpll_core,
+                    mcu_core_pll_m6>::reg_msk<0x0000001FUL>();
+
+  // Enable the PLL in lock mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_core,
+                    dpll_lock_mode>::reg_msk<0x07UL>();
+
+  // Wait for lock.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void peripheral_pll_init(void)
+void peripheral_pll_init()
 {
-  /* Put the PLL in bypass mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_PER,
-                             std::uint32_t(DPLL_MN_BYP_MODE),
-                             0x07UL);
+  // Set the Peripheral clock to 960MHz
+  // clkinp = 24MHz
+  // clkout    = (m / (n + 1)) * clkinp * (1 / m2) = 192
+  // clkdcoldo = (m / (n + 1)) * clkinp            = 960
+  constexpr std::uint32_t mcu_per_pll_m  =   960UL;
+  constexpr std::uint32_t mcu_per_pll_n  =    23UL;
+  constexpr std::uint32_t mcu_per_pll_m2 =     5UL;
+  constexpr std::uint32_t mcu_per_pll_sd =   (((mcu_per_pll_m / (mcu_per_pll_n + 1UL) * mcu_clkinp) + 249UL) / 250UL);
 
-  /* Wait for DPLL to go in to bypass mode */
-  while(!(CM_WKUP->IDLEST_DPLL_PER & ST_MN_BYPASS)) { mcal::cpu::nop(); }
+  // Put the PLL in bypass mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_per,
+                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
 
-  /* Set the multiplier and divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKSEL_DPLL_PERIPH,
-                             std::uint32_t((MCU_PER_PLL_SD << 24) | (MCU_PER_PLL_M << 8) | MCU_PER_PLL_N),
-                             0xFF0FFFFFUL);
+  // Wait for DPLL to go into bypass mode.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
-  /* Set the M2 divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M2_DPLL_PER,
-                             std::uint32_t(MCU_PER_PLL_M2),
-                             0x0000003FUL);
+  // Set the multiplier and divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clksel_dpll_periph,
+                    (mcu_per_pll_sd << 24) | (mcu_per_pll_m << 8) | mcu_per_pll_n>::reg_msk<0xFF0FFFFFUL>();
 
-  /* Enable the PLL in lock mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_PER,
-                             std::uint32_t(DPLL_LOCK_MODE),
-                             0x07UL);
+  // Set the M2 divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m2_dpll_per,
+                    mcu_per_pll_m2>::reg_msk<0x0000003FUL>();
 
-  /* Wait for lock */
-  while(!(CM_WKUP->IDLEST_DPLL_PER & ST_DPLL_CLK)) { mcal::cpu::nop(); }
+  // Enable the PLL in lock mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_per,
+                    dpll_lock_mode>::reg_msk<0x07UL>();
+
+  // Wait for lock.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void ddr_pll_init(void)
+void ddr_pll_init()
 {
-  /* Put the PLL in bypass mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_DDR,
-                             std::uint32_t(DPLL_MN_BYP_MODE),
-                             0x07UL);
+  // Setting DDR clock to 266
+  constexpr std::uint32_t mcu_ddr_pll_m  = 266UL;
+  constexpr std::uint32_t mcu_ddr_pll_n  =  23UL;
+  constexpr std::uint32_t mcu_ddr_pll_m2 =   1UL;
 
-  /* Wait for DPLL to go in to bypass mode */
-  while(!(CM_WKUP->IDLEST_DPLL_DDR & ST_MN_BYPASS)) { mcal::cpu::nop(); }
+  // Put the PLL in bypass mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_ddr,
+                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
 
-  /* Set the multiplier and divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKSEL_DPLL_DDR,
-                             std::uint32_t((MCU_DDR_PLL_M << 8) | MCU_DDR_PLL_N),
-                             0x0007FF7FUL);
+  // Wait for DPLL to go into bypass mode.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
-  /* Set the M2 divider values for the PLL */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->DIV_M2_DPLL_DDR,
-                             std::uint32_t(MCU_DDR_PLL_M2),
-                             0x0000003FUL);
+  // Set the multiplier and divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clksel_dpll_ddr,
+                    (mcu_ddr_pll_m << 8) | mcu_ddr_pll_n>::reg_msk<0x0007FF7FUL>();
 
-  /* Enable the PLL in lock mode */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKMODE_DPLL_DDR,
-                             std::uint32_t(DPLL_LOCK_MODE),
-                             0x07UL);
+  // Set the m2 divider values for the PLL.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::div_m2_dpll_ddr,
+                    mcu_ddr_pll_m2>::reg_msk<0x0000003FUL>();
 
-  /* Wait for lock */
-  while(!(CM_WKUP->IDLEST_DPLL_DDR & ST_DPLL_CLK)) { mcal::cpu::nop(); }
+  // Enable the PLL in lock mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkmode_dpll_ddr,
+                    dpll_lock_mode>::reg_msk<0x07UL>();
+
+  // Wait for lock.
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void interface_clock_init(void)
+void interface_clock_init()
 {
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L3_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L3_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l3_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L4LS_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L4LS_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l4ls_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L4FW_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L4FW_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l4fw_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4fw_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  // TODO: delete this, read-only register
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->L4WKUP_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_WKUP->L4WKUP_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  // TBD: delete this: It seems to be a read-only register?
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::l4wkup_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::l4wkup_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L3_INSTR_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L3_INSTR_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l3_instr_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_instr_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L4HS_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L4HS_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l4hs_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 }
 
-void power_domain_transition_init(void)
+void power_domain_transition_init()
 {
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L3_CLKSTCTRL,
-                             CLKTRCTRL_SW_WKUP,
-                             CLKTRCTRL_MASK);
-  while((CM_PER->L3_CLKSTCTRL & CLKTRCTRL_MASK) != CLKTRCTRL_SW_WKUP) { mcal::cpu::nop(); }
+  constexpr std::uint32_t clktrctrl_sw_wkup = 0x2ul;
+  constexpr std::uint32_t clktrctrl_mask    = 0x3ul;
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L4LS_CLKSTCTRL,
-                             CLKTRCTRL_SW_WKUP,
-                             CLKTRCTRL_MASK);
-  while((CM_PER->L4LS_CLKSTCTRL & CLKTRCTRL_MASK) != CLKTRCTRL_SW_WKUP) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l3_clkstctrl,
+                    clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CLKSTCTRL,
-                             CLKTRCTRL_SW_WKUP,
-                             CLKTRCTRL_MASK);
-  while((CM_WKUP->CLKSTCTRL & CLKTRCTRL_MASK) != CLKTRCTRL_SW_WKUP) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l4ls_clkstctrl,
+                    clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
-  // TODO: register doesn't exist in TRM
-  // bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L4FW_CLKSTCTRL, CLKTRCTRL_SW_WKUP, CLKTRCTRL_MASK);
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::clkstctrl,
+                    clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->L3S_CLKSTCTRL,
-                             CLKTRCTRL_SW_WKUP,
-                             CLKTRCTRL_MASK);
-  while((CM_PER->L3S_CLKSTCTRL & CLKTRCTRL_MASK) != CLKTRCTRL_SW_WKUP) { mcal::cpu::nop(); }
+  // TBD: This register does not exist in trm.
+  // bfx_clear_and_set_bit_mask(mcal::reg::cm_per::l4fw_clkstctrl, clktrctrl_sw_wkup, clktrctrl_mask);
+
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::l3s_clkstctrl,
+                    clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 }
 
-void emif_init(void)
+void emif_init()
 {
-  /* Enable the clocks for EMIF */
-  // TODO: register doesn't exist in TRM
-  // bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->EMIF_FW_CLKCTRL, MODULEMODE_ENABLE, MODULEMODE_MASK);
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->EMIF_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_PER->L3_CLKSTCTRL & CLKACTIVITY_EMIF_GCLK) != CLKACTIVITY_EMIF_GCLK) { mcal::cpu::nop(); }
+  constexpr std::uint32_t clkactivity_emif_gclk = 0x00000004UL;
+
+  // Enable the clocks for EMIF.
+  // TBD: This register does not seem to exist in TRM.
+  // bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->EMIF_FW_CLKCTRL, modulemode_enable, modulemode_mask);
+
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::emif_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::cpu::nop(); }
 }
 
-void gpio1_clock_config(void)
+void gpio1_clock_init()
 {
-  /* Writing to MODULEMODE field of CM_PER_GPIO1_CLKCTRL register. */
+  constexpr std::uint32_t MODULEMODE_ENABLE         =      0x02UL;
+  constexpr std::uint32_t MODULEMODE_MASK           =      0x03UL;
+
+  constexpr std::uint32_t OPTFCLKEN_GPIO_1_GDBCLK   = 0x00040000UL;
+
+  constexpr std::uint32_t optfclken_gpio_1_gdbclk   = 0x00040000UL;
+  constexpr std::uint32_t clkactivity_gpio_1_gdbclk = 0x00080000UL;
+
+  // Set the module field of the cm_per::gpio1_clkctrl register.
   bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->GPIO1_CLKCTRL,
                              MODULEMODE_ENABLE,
                              MODULEMODE_MASK);
-  while((CM_PER->GPIO1_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+/*
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::gpio1_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+*/
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  /* Enable optional function clock */
+  // Enable the optional function clock.
   bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->GPIO1_CLKCTRL,
                              OPTFCLKEN_GPIO_1_GDBCLK,
                              OPTFCLKEN_GPIO_1_GDBCLK);
-  // TODO: ist OPTFCLKEN_GPIO_1_GDBCLK ein Statusregister?
+/*
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::gpio1_clkctrl,
+                    optfclken_gpio_1_gdbclk>::reg_msk<optfclken_gpio_1_gdbclk>();
+*/
+  // TBD: ist optfclken_gpio_1_gdbclk ein Statusregister?
 
-  while(OPTFCLKEN_GPIO_1_GDBCLK != (CM_PER->GPIO1_CLKCTRL & OPTFCLKEN_GPIO_1_GDBCLK)) { mcal::cpu::nop(); }
-  while(IDLEST_FUNC != (CM_PER->GPIO1_CLKCTRL & IDLEST_MASK)) { mcal::cpu::nop(); }
-  while(CLKACTIVITY_GPIO_1_GDBCLK !=   (CM_PER->L4LS_CLKSTCTRL & CLKACTIVITY_GPIO_1_GDBCLK)) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk  ) != optfclken_gpio_1_gdbclk  ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & idlest_mask              ) != idlest_func              ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_gpio_1_gdbclk) != clkactivity_gpio_1_gdbclk) { mcal::cpu::nop(); }
 }
 
-void Mcu_DMTimer1ClkConfig(void)
+void dm_timer7_clock_init()
 {
-  /* Select the clock source CLK_32KHZ for the Timer1 instance. */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_DPLL->CLKSEL_TIMER1MS_CLK,
-                             std::uint32_t(1UL),
-                             0x07UL);
+  constexpr std::uint32_t clksel_clk_m_osc        = 1UL;
+  constexpr std::uint32_t clkactivity_timer7_gclk = 0x00002000UL;
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->TIMER1_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-  while((CM_WKUP->TIMER1_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
+  // Select the clock source clksel_clk_m_osc for timer7.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_dpll::clksel_timer7_clk,
+                    clksel_clk_m_osc>::reg_msk<0x3UL>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & 0x3UL) != clksel_clk_m_osc) { mcal::cpu::nop(); }
 
-  while(IDLEST_FUNC != (CM_WKUP->TIMER1_CLKCTRL & IDLEST_MASK)) { mcal::cpu::nop(); }
-  while(CLKACTIVITY_TIMER1_GCLK != (CM_WKUP->CLKSTCTRL & CLKACTIVITY_TIMER1_GCLK)) { mcal::cpu::nop(); }
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_per::timer7_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
+
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & modulemode_mask        ) != modulemode_enable      ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & idlest_mask            ) != idlest_func            ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_timer7_gclk) != clkactivity_timer7_gclk) { mcal::cpu::nop(); }
 }
 
-void dm_timer7_clock_config(void)
+void mcal::osc::init(const config_type*)
 {
-  /* Select the clock source CLKSEL_CLK_M_OSC for the Timer7 instance. */
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_DPLL->CLKSEL_TIMER7_CLK,
-                             std::uint32_t(CLKSEL_CLK_M_OSC),
-                             std::uint32_t(0x3UL));
-  while((CM_DPLL->CLKSEL_TIMER7_CLK & 0x3u) != CLKSEL_CLK_M_OSC) { mcal::cpu::nop(); }
-
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->TIMER7_CLKCTRL,
-                             std::uint32_t(MODULEMODE_ENABLE),
-                             std::uint32_t(MODULEMODE_MASK));
-  while((CM_PER->TIMER7_CLKCTRL & MODULEMODE_MASK) != MODULEMODE_ENABLE) { mcal::cpu::nop(); }
-
-  while(IDLEST_FUNC != (CM_PER->TIMER7_CLKCTRL & IDLEST_MASK)) { mcal::cpu::nop(); }
-  while(CLKACTIVITY_TIMER7_GCLK != (CM_PER->L4LS_CLKSTCTRL & CLKACTIVITY_TIMER7_GCLK)) { mcal::cpu::nop(); }
-}
-
-
-void Mcu_Init()
-{
-  // Set up clock, PLL and RAM.
-
+  // Setup the clocks, PLL and RAM.
   mpu_pll_init();
   core_pll_init();
   peripheral_pll_init();
@@ -348,18 +361,13 @@ void Mcu_Init()
   interface_clock_init();
   power_domain_transition_init();
 
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_WKUP->CONTROL_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::cm_wkup::control_clkctrl,
+                    modulemode_enable>::reg_msk<modulemode_mask>();
 
   emif_init();
 
-  gpio1_clock_config();
-  dm_timer7_clock_config();
-}
-
-
-void mcal::osc::init(const config_type*)
-{
-  Mcu_Init();
+  gpio1_clock_init();
+  dm_timer7_clock_init();
 }
