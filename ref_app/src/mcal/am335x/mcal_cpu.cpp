@@ -33,30 +33,30 @@ void mcal::cpu::switch_to_user_mode()
   // to operate in non-privileged mode, until any exception occurs.
   // After the exception is serviced, execution will continue in user
   // mode.
-  asm volatile("mrs r0, CPSR");
+  asm volatile("mrs r0, cpsr");
   asm volatile("bic r0, #0x0F");
   asm volatile("orr r0, #0x10");
-  asm volatile("msr CPSR, r0");
+  asm volatile("msr cpsr, r0");
 }
 
 std::uint32_t mcal::cpu::read_dfsr()
 {
-  std::uint32_t stat;
+  std::uint32_t status;
 
   // IRQ and FIQ in CPSR
-  asm volatile("mrc p15, #0, %[result], c5, c0, #0\n\t" : [result] "=r" (stat));
+  asm volatile("mrc p15, #0, %[result], c5, c0, #0\n\t" : [result] "=r" (status));
 
-  return stat;
+  return status;
 }
 
 std::uint32_t mcal::cpu::read_dfar()
 {
-  std::uint32_t stat;
+  std::uint32_t status;
 
-  // IRQ and FIQ in CPSR
-  asm volatile("mrc p15, #0, %[result], c6, c0, #0\n\t" : [result] "=r" (stat));
+  // IRQ and FIQ in CPSR.
+  asm volatile("mrc p15, #0, %[result], c6, c0, #0\n\t" : [result] "=r" (status));
 
-  return stat;
+  return status;
 }
 
 extern "C" void cpu_abort_handler()
@@ -72,32 +72,32 @@ extern "C" void cpu_abort_handler()
 
 std::uint32_t mcal::cpu::int_status()
 {
-  // Wrapper function for the IRQ status
-  std::uint32_t stat;
+  // Wrapper function for the IRQ status.
+  std::uint32_t status;
 
   // IRQ and FIQ in CPSR
-  asm volatile("mrs r0, CPSR\n\t"
-               "and %[result], r0, #0xC0" : [result] "=r" (stat));
+  asm volatile("mrs r0, cpsr\n\t"
+               "and %[result], r0, #0xC0" : [result] "=r" (status));
 
-  return stat;
+  return status;
 }
 
 void mcal::cpu::fiqd()
 {
-  // Wrapper function for the FIQ disable function
+  // Wrapper function for the FIQ disable function.
 
   // Disable FIQ in CPSR
-  asm volatile("mrs r0, CPSR");
+  asm volatile("mrs r0, cpsr");
   asm volatile("orr r0, #0x40");
-  asm volatile("msr CPSR, r0");
+  asm volatile("msr cpsr, r0");
 }
 
 void mcal::cpu::fiqe()
 {
-  // Wrapper function for the FIQ enable function
+  // Wrapper function for the FIQ enable function.
 
   // Enable FIQ in CPSR
-  asm volatile("mrs r0, CPSR");
+  asm volatile("mrs r0, cpsr");
   asm volatile("bic r0, #0x40");
-  asm volatile("msr CPSR, r0");
+  asm volatile("msr cpsr, r0");
 }
