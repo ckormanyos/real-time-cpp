@@ -41,8 +41,8 @@ mcal::gpt::value_type consistent_microsecond_tick()
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
   // Perform the consistency check and return the consistent microsecond tick.
-  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | std::uint32_t(std::uint32_t(tim7_cnt_1 + 12UL) / 24U))
-                                     : mcal::gpt::value_type(sys_tick_2 | std::uint32_t(std::uint32_t(tim7_cnt_2 + 12UL) / 24U)));
+  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(std::uint32_t(tim7_cnt_1 + 12UL) / 24U))
+                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(std::uint32_t(tim7_cnt_2 + 12UL) / 24U)));
 }
 
 // TBD: Do we really need interrupt attributes here?
@@ -75,10 +75,9 @@ void mcal::gpt::init(const config_type*)
 
     // Register the timer7 interrupt, including priority, routing, etc.
     const mcal::irq::interrupt_descriptor t7_isr_desc(mcal::irq::interrupt_descriptor::isr_id_tint7,
-                                                      mcal::irq::interrupt_descriptor::priority_type(0U),
-                                                      mcal::irq::interrupt_descriptor::route_to_irq);
+                                                      mcal::irq::interrupt_descriptor::priority_type(0U));
 
-    mcal::irq::register_interrupt(t7_isr_desc);
+    mcal::irq::interrupt_descriptor::register_interrupt(t7_isr_desc);
 
     // Enable the timer7 overflow interrupt.
     bfx_clear_and_set_bit_mask((std::uint32_t*) &DMTIMER7->IRQENABLE_SET,

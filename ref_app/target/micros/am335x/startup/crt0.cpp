@@ -91,6 +91,10 @@ void __my_startup()
   asm volatile("mov lr, pc");
   asm volatile("bx r10");
 
+  // TBD: Consider this alternative call to main().
+//  asm volatile("ldr r3, =main");
+//  asm volatile("blx r3");
+
   // Catch an unexpected return from main.
   for(;;)
   {

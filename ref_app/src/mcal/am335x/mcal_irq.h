@@ -10,6 +10,7 @@
 
   #include <cstdint>
   #include <cstddef>
+  #include <util/utility/util_noncopyable.h>
 
   namespace mcal
   {
@@ -35,7 +36,7 @@
         asm volatile("msr cpsr, r0");
       }
 
-      struct interrupt_descriptor
+      struct interrupt_descriptor : private util::noncopyable
       {
         typedef enum enum_routing_type
         {
@@ -53,9 +54,11 @@
 
         interrupt_descriptor(const number_type   num,
                              const priority_type prio,
-                             const routing_type  route) : number  (num),
-                                                          priority(prio),
-                                                          routing (route) { }
+                             const routing_type  route = route_to_irq) : number  (num),
+                                                                         priority(prio),
+                                                                         routing (route) { }
+
+        static void register_interrupt(const interrupt_descriptor& isr_descriptor);
 
         static constexpr std::size_t isr_id_emuint             =   0U;
         static constexpr std::size_t isr_id_commtx             =   1U;
@@ -167,10 +170,8 @@
         static constexpr std::size_t isr_id_dma_intr_pin1      = 124U;
         static constexpr std::size_t isr_id_spi1int            = 125U;
 
-        static constexpr std::size_t number_of_interrupts         = 128U;
+        static constexpr std::size_t number_of_interrupts      = 128U;
       };
-
-      void register_interrupt(const interrupt_descriptor& isr_descriptor);
     }
   }
 
