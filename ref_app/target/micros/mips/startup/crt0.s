@@ -170,19 +170,6 @@ _reset:
 _startup:
 
   ##################################################################
-  # If entered because of an NMI, jump to the NMI handler.
-  ##################################################################
-  mfc0    $26,$12
-  ext     $26,$26,19,1          # Extract NMI bit
-  beqz    $26,_no_nmi
-  nop
-  la      $26,_nmi_handler
-  jr      $26
-  nop
-
-_no_nmi:
-
-  ##################################################################
   # Initialize Stack Pointer
   #   _stack is initialized by the linker script to point to the
   #    starting location of the stack in DRM

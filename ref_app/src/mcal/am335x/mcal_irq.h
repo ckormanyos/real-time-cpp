@@ -169,7 +169,8 @@
         static constexpr std::size_t isr_id_dma_intr_pin0      = 123U;
         static constexpr std::size_t isr_id_dma_intr_pin1      = 124U;
         static constexpr std::size_t isr_id_spi1int            = 125U;
-
+        static constexpr std::size_t isr_id_unused_126         = 126U;
+        static constexpr std::size_t isr_id_unused_127         = 127U;
         static constexpr std::size_t number_of_interrupts      = 128U;
       };
     }
