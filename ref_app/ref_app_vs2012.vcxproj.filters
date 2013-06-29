@@ -657,6 +657,12 @@
     <ClInclude Include="src\mcal\am335x\bfx.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\am335x\dio.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am335x\dio_cfg.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
