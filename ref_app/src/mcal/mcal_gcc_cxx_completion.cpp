@@ -46,21 +46,6 @@ namespace std
 
 void operator delete(void*) { }
 
-namespace std
-{
-  struct ios_base
-  {
-    struct Init
-    {
-      Init();
-      ~Init();
-    };
-  };
-
-  ios_base::Init::Init() { }
-  ios_base::Init::~Init() { }
-}
-
 extern "C"
 {
   void __cxa_pure_virtual() { }

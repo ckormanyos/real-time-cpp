@@ -19,11 +19,7 @@
       public:
         led() : is_on(false) { }
 
-        void toggle() const
-        {
-          // Toggle the LED state.
-          is_on = (!is_on);
-        }
+        void toggle() const;
 
       private:
         mutable bool is_on;
