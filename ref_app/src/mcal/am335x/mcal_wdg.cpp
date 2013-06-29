@@ -14,10 +14,10 @@ namespace
   void wdg_stop()
   {
     WDT1->WSPR = 0xAAAAu;
-    while((WDT1->WWPS & 0x3Fu) != 0x00) { mcal::cpu::nop(); }
+    while(std::uint32_t(WDT1->WWPS & 0x3FU) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
 
     WDT1->WSPR = 0x5555u;
-    while((WDT1->WWPS & 0x3Fu) != 0x00) { mcal::cpu::nop(); }
+    while(std::uint32_t(WDT1->WWPS & 0x3FU) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
   }
 }
 

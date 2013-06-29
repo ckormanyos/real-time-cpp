@@ -1,5 +1,8 @@
-NEW_BUFFER   Buf_8000000_to_801FFFF  FROM_FILE     inFile -useAreas={{0x8000000, 0x20000}}  -setByteOrder=LittleEndian
-FILL_BUFFER  Buf_8000000_to_801FFFF  WITH_FILLER   { 0xFF }
 
-WRITE_FILE   outFile  WITH_BUFFERS  {Buf_8000000_to_801FFFF}  -setFormat=IntelHexExtended
-WRITE_FILE   binFile  WITH_BUFFERS  {Buf_8000000_to_801FFFF}  -setFormat=RawBinary
+// Program code.
+NEW_BUFFER   Buf_8000000_to_8003FFF  FROM_FILE     inFile -useAreas={{0x8000000, 0x4000}}  -setByteOrder=LittleEndian
+FILL_BUFFER  Buf_8000000_to_8003FFF  WITH_FILLER   { 0xFF }
+
+// Create the output hex and binary files.
+WRITE_FILE   outFile  WITH_BUFFERS  {Buf_8000000_to_8003FFF}  -setFormat=IntelHexExtended
+WRITE_FILE   binFile  WITH_BUFFERS  {Buf_8000000_to_8003FFF}  -setFormat=RawBinary

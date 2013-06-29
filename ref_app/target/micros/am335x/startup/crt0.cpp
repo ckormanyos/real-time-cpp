@@ -71,11 +71,11 @@ void __my_startup()
   asm volatile("msr cpsr_c, #MODE_SYS | I_F_BIT");      // Switch to system mode.
   asm volatile("mov sp, r0");                           // Set the stack pointer.
 
-  // Copy the system interrupt vector table from ROM to RAM.
-  crt::init_system_interrupt_vectors();
-
   // Chip init: Port, oscillator and watchdog.
   mcal::cpu::init();
+
+  // Copy the system interrupt vector table from ROM to RAM.
+  crt::init_system_interrupt_vectors();
 
   // Initialize statics from ROM to RAM.
   // Zero-clear non-initialized static RAM.
@@ -87,13 +87,13 @@ void __my_startup()
   mcal::wdg::trigger();
 
   // Call main (and never return).
-  asm volatile("ldr r10, =main");
+  asm volatile("ldr r3, =main");
   asm volatile("mov lr, pc");
-  asm volatile("bx r10");
-
-  // TBD: Consider this alternative call to main().
-//  asm volatile("ldr r3, =main");
-//  asm volatile("blx r3");
+  asm volatile("bx r3");
+/*
+  asm volatile("ldr r3, =main");
+  asm volatile("blx r3");
+*/
 
   // Catch an unexpected return from main.
   for(;;)

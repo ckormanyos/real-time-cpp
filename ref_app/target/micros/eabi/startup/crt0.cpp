@@ -36,7 +36,9 @@ void __my_startup()
   mcal::wdg::trigger();
 
   // Call main (and never return).
-  asm volatile("bl main");
+  asm volatile("ldr r3, =main");
+  asm volatile("mov lr, pc");
+  asm volatile("bx r3");
 
   // Catch an unexpected return from main.
   for(;;)
