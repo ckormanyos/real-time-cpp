@@ -12,11 +12,6 @@
   #include <cstddef>
   #include <util/utility/util_noncopyable.h>
 
-  extern "C"
-  {
-    typedef void(*isr_vector_type)();
-  }
-
   namespace mcal
   {
     namespace irq
@@ -53,18 +48,15 @@
         typedef std::uint32_t priority_type;
         typedef std::size_t   number_type;
 
-        const number_type      number;
-        const isr_vector_type isr_function;
-        const priority_type   priority;
-        const routing_type    routing;
+        const number_type   number;
+        const priority_type priority;
+        const routing_type  routing;
 
-        interrupt_descriptor(const number_type     num,
-                             const isr_vector_type isr,
-                             const priority_type   prio,
-                             const routing_type    route = route_to_irq) : number      (num),
-                                                                           isr_function(isr),
-                                                                           priority    (prio),
-                                                                           routing     (route) { }
+        interrupt_descriptor(const number_type   num,
+                             const priority_type prio,
+                             const routing_type  route = route_to_irq) : number  (num),
+                                                                         priority(prio),
+                                                                         routing (route) { }
 
         static void register_interrupt(const interrupt_descriptor& isr_descriptor);
 
@@ -103,6 +95,7 @@
         static constexpr std::size_t isr_id_gpioint2a          =  32U;
         static constexpr std::size_t isr_id_gpioint2b          =  33U;
         static constexpr std::size_t isr_id_usbwakeup          =  34U;
+        //                           dummy                        35U
         static constexpr std::size_t isr_id_lcdcint            =  36U;
         static constexpr std::size_t isr_id_gfxint             =  37U;
         static constexpr std::size_t isr_id_2dhwaint           =  38U;
@@ -115,6 +108,10 @@
         static constexpr std::size_t isr_id_uart4int           =  45U;
         static constexpr std::size_t isr_id_uart5int           =  46U;
         static constexpr std::size_t isr_id_ecap1int           =  47U;
+        //                           dummy                        48U
+        //                           dummy                        49U
+        //                           dummy                        50U
+        //                           dummy                        51U
         static constexpr std::size_t isr_id_dcan0_int0         =  52U;
         static constexpr std::size_t isr_id_dcan0_int1         =  53U;
         static constexpr std::size_t isr_id_dcan0_parity       =  54U;
@@ -147,6 +144,8 @@
         static constexpr std::size_t isr_id_mcarxint0          =  81U;
         static constexpr std::size_t isr_id_mcatxint1          =  82U;
         static constexpr std::size_t isr_id_mcarxint1          =  83U;
+        //                           dummy                        84U
+        //                           dummy                        85U
         static constexpr std::size_t isr_id_epwm0int           =  86U;
         static constexpr std::size_t isr_id_epwm1int           =  87U;
         static constexpr std::size_t isr_id_eqep1int           =  88U;
@@ -165,6 +164,10 @@
         static constexpr std::size_t isr_id_ddrerr0            = 101U;
         static constexpr std::size_t isr_id_aes0_irq_s         = 102U;
         static constexpr std::size_t isr_id_aes0_irq_p         = 103U;
+        //                           dummy                       104U
+        //                           dummy                       105U
+        //                           dummy                       106U
+        //                           dummy                       107U
         static constexpr std::size_t isr_id_sha_irq_s          = 108U;
         static constexpr std::size_t isr_id_sha_irq_p          = 109U;
         static constexpr std::size_t isr_id_fpka_sintrequest_s = 110U;
@@ -172,8 +175,14 @@
         static constexpr std::size_t isr_id_tcerrint0          = 112U;
         static constexpr std::size_t isr_id_tcerrint1          = 113U;
         static constexpr std::size_t isr_id_tcerrint2          = 114U;
+        //                           dummy                       115U
+        //                           dummy                       116U
+        //                           dummy                       117U
+        //                           dummy                       118U
+        //                           dummy                       119U
         static constexpr std::size_t isr_id_smrflx_sabertooth  = 120U;
         static constexpr std::size_t isr_id_smrflx_core        = 121U;
+        //                           dummy                       122U
         static constexpr std::size_t isr_id_dma_intr_pin0      = 123U;
         static constexpr std::size_t isr_id_dma_intr_pin1      = 124U;
         static constexpr std::size_t isr_id_spi1int            = 125U;

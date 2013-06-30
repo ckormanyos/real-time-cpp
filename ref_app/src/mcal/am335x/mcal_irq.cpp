@@ -10,17 +10,10 @@
 #include <mcal_irq.h>
 #include <am335x_hw_regs.h>
 
-extern "C"
-{
-  extern std::array<isr_vector_type, mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector;
-}
-
 void mcal::irq::interrupt_descriptor::register_interrupt(const mcal::irq::interrupt_descriptor& isr_descriptor)
 {
-  if(isr_descriptor.number < __isr_vector.size())
+  if(isr_descriptor.number < mcal::irq::interrupt_descriptor::number_of_interrupts)
   {
-    __isr_vector[isr_descriptor.number] = isr_descriptor.isr_function;
-
     const bool isr_routing_is_irq = (isr_descriptor.routing == interrupt_descriptor::route_to_irq);
 
     INTC->ILR[isr_descriptor.number] = std::uint32_t(  std::uint32_t(std::uint32_t(isr_descriptor.priority << std::uint32_t(2UL)) & std::uint32_t(0x01FCUL))

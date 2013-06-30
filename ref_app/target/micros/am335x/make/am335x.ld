@@ -13,7 +13,7 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/* The end of the 8K RAM stack */
+/* The end of the stack */
 __initial_stack_pointer = 0x4030A000;
 
 MEMORY
@@ -41,6 +41,14 @@ SECTIONS
     *(.startup)
     . = ALIGN(0x10);
     KEEP(*(.startup))
+  } > ROM = 0xAAAA
+
+  /* ISR vectors */
+  .isr_vector :
+  {
+    *(.isr_vector)
+    . = ALIGN(4);
+    KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
   /* ISR vectors (ROM copy of system vectors) */
@@ -76,14 +84,6 @@ SECTIONS
 
   . = 0x402FC000;
   . = ALIGN(4);
-
-  /* ISR vectors (non-initialized, since they are initialized at run-time) */
-  .isr_vector :
-  {
-    *(.isr_vector)
-    . = ALIGN(4);
-    KEEP(*(.isr_vector))
-  } > RAM = 0xAAAA
 
   /* The ROM-to-RAM initialized data section */
   .data :

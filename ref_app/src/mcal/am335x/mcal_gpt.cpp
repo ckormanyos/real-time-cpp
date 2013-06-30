@@ -74,7 +74,6 @@ void mcal::gpt::init(const config_type*)
 
     // Register the timer7 interrupt, including priority, routing, etc.
     const mcal::irq::interrupt_descriptor t7_isr_desc(mcal::irq::interrupt_descriptor::isr_id_tint7,
-                                                      __vector_timer7,
                                                       mcal::irq::interrupt_descriptor::priority_type(0U));
 
     mcal::irq::interrupt_descriptor::register_interrupt(t7_isr_desc);
