@@ -87,7 +87,7 @@ irq_handler:
         DMB                               @ Barrier to complete the data write
         LDMFD    r13!, {r0-r3, r12, r14}  @ Restore registers from IRQ stack
         SUBS     pc, r14, #0x4            @ Return to program before IRQ
-        
+
 @******************************************************************************
 @*                  Function Definition of FIQ Handler
 @******************************************************************************

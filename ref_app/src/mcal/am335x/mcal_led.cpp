@@ -58,6 +58,12 @@ void mcal::led::led::toggle() const
   // Toggle the LED state.
   is_on = (!is_on);
 
-  (is_on ? Dio_WriteChannel(Do_LED3, STD_HIGH)
-         : Dio_WriteChannel(Do_LED3, STD_LOW));
+  (is_on ? Dio_WriteChannel(Do_LED1, STD_HIGH)
+         : Dio_WriteChannel(Do_LED1, STD_LOW));
+}
+
+void dummy()
+{
+  Dio_WriteChannel(Do_LED3, STD_HIGH);
+  Dio_WriteChannel(Do_LED3, STD_LOW);
 }

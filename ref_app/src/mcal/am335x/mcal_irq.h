@@ -48,15 +48,18 @@
         typedef std::uint32_t priority_type;
         typedef std::size_t   number_type;
 
-        const number_type     number;
-        const priority_type   priority;
-        const routing_type    routing;
+        const number_type   number;
+        void(*irq_handle)();
+        const priority_type priority;
+        const routing_type  routing;
 
         interrupt_descriptor(const number_type   num,
+                             void(*handle)(),
                              const priority_type prio,
-                             const routing_type  route = route_to_irq) : number  (num),
-                                                                         priority(prio),
-                                                                         routing (route) { }
+                             const routing_type  route = route_to_irq) : number    (num),
+                                                                         irq_handle(handle),
+                                                                         priority  (prio),
+                                                                         routing   (route) { }
 
         static void register_interrupt(const interrupt_descriptor& isr_descriptor);
 
