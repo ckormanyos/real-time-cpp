@@ -13,9 +13,9 @@
 
 void mcal::cpu::init()
 {
-  mcal::port::init(nullptr);
-  mcal::wdg::init(nullptr);
   mcal::osc::init(nullptr);
+  mcal::wdg::init(nullptr);
+  mcal::port::init(nullptr);
 }
 
 void mcal::cpu::switch_to_privileged_mode()
