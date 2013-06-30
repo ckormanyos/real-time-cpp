@@ -9,8 +9,11 @@
 #include <mcal_led.h>
 #include <am335x_hw_regs.h>
 
-#define  GetGroupNr(x) (((x) >> 5) & 0x07U)
-#define  GetPortNr(x)  ((x)  &  0x1FU)
+namespace
+{
+  inline Dio_ChannelType GetGroupNr(Dio_ChannelType x) { return Dio_ChannelType(Dio_ChannelType(x >> 5U) & Dio_ChannelType(0x07UL)); }
+  inline Dio_ChannelType GetPortNr (Dio_ChannelType x) { return Dio_ChannelType(x & Dio_ChannelType(0x1FUL)); }
+}
 
 void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
 {
@@ -60,10 +63,4 @@ void mcal::led::led::toggle() const
 
   (is_on ? Dio_WriteChannel(Do_LED1, STD_HIGH)
          : Dio_WriteChannel(Do_LED1, STD_LOW));
-}
-
-void dummy()
-{
-  Dio_WriteChannel(Do_LED3, STD_HIGH);
-  Dio_WriteChannel(Do_LED3, STD_LOW);
 }

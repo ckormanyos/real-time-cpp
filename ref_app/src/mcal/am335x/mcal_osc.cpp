@@ -244,8 +244,8 @@ void interface_clock_init()
 
 void power_domain_transition_init()
 {
-  constexpr std::uint32_t clktrctrl_sw_wkup = 0x2ul;
-  constexpr std::uint32_t clktrctrl_mask    = 0x3ul;
+  constexpr std::uint32_t clktrctrl_sw_wkup = 0x2UL;
+  constexpr std::uint32_t clktrctrl_mask    = 0x3UL;
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,

@@ -6,6 +6,7 @@
 //
 
 #include <cstdint>
+#include <mcal_cpu.h>
 #include <mcal_port.h>
 #include <mcal_reg_access.h>
 #include <am335x_hw_regs.h>
@@ -41,9 +42,9 @@ void mcal::port::init(const config_type*)
   // Wait until the GPIO Module is reset.
   while((GPIO1->SYSSTATUS & 1U) == 0U)
   {
-    ;
+    mcal::cpu::nop();
   }
 
-  GPIO1->OE = Port1_OE;
+  GPIO1->OE      = Port1_OE;
   GPIO1->DATAOUT = Port1_InitValue;
 }
