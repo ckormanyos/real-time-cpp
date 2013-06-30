@@ -12,6 +12,11 @@
   #include <cstddef>
   #include <util/utility/util_noncopyable.h>
 
+  extern "C"
+  {
+    typedef void(*isr_vector_type)();
+  }
+
   namespace mcal
   {
     namespace irq
@@ -48,18 +53,18 @@
         typedef std::uint32_t priority_type;
         typedef std::size_t   number_type;
 
-        const number_type   number;
-        void(*irq_handle)();
-        const priority_type priority;
-        const routing_type  routing;
+        const number_type      number;
+        const isr_vector_type isr_function;
+        const priority_type   priority;
+        const routing_type    routing;
 
-        interrupt_descriptor(const number_type   num,
-                             void(*handle)(),
-                             const priority_type prio,
-                             const routing_type  route = route_to_irq) : number    (num),
-                                                                         irq_handle(handle),
-                                                                         priority  (prio),
-                                                                         routing   (route) { }
+        interrupt_descriptor(const number_type     num,
+                             const isr_vector_type isr,
+                             const priority_type   prio,
+                             const routing_type    route = route_to_irq) : number      (num),
+                                                                           isr_function(isr),
+                                                                           priority    (prio),
+                                                                           routing     (route) { }
 
         static void register_interrupt(const interrupt_descriptor& isr_descriptor);
 

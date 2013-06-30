@@ -62,7 +62,7 @@ extern "C"
     }
   }
 
-  void(*__isr_vector[128U])();
+  std::array<isr_vector_type, mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
 }
 
 namespace crt
@@ -77,8 +77,8 @@ namespace crt
               __isr_vector_rom_copy + am335x_vector_size,
               reinterpret_cast<std::uint32_t*>(am335x_vector_base));
 
-    std::fill(__isr_vector,
-              __isr_vector + 128U,
+    std::fill(__isr_vector.begin(),
+              __isr_vector.end(),
               __vector_unused_irq);
   }
 }

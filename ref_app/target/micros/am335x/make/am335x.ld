@@ -77,6 +77,14 @@ SECTIONS
   . = 0x402FC000;
   . = ALIGN(4);
 
+  /* ISR vectors (non-initialized, since they are initialized at run-time) */
+  .isr_vector :
+  {
+    *(.isr_vector)
+    . = ALIGN(4);
+    KEEP(*(.isr_vector))
+  } > RAM = 0xAAAA
+
   /* The ROM-to-RAM initialized data section */
   .data :
   {
