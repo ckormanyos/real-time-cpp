@@ -13,7 +13,7 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/* The end of the 8K RAM stack */
+/* The end of the stack */
 __initial_stack_pointer = 0x20002000;
 
 MEMORY
@@ -33,14 +33,6 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
-
-  /* Startup code */
-  .startup :
-  {
-    *(.startup)
-    . = ALIGN(0x10);
-    KEEP(*(.startup))
   } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */

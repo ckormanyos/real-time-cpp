@@ -24,44 +24,40 @@ namespace
   constexpr std::uint32_t am335x_vector_base = 0x4030FC00UL;
   constexpr std::size_t   am335x_vector_size = 14U;
 
+  constexpr std::array<std::uint32_t, am335x_vector_size> system_isr_vectors =
+  {{
+    std::uint32_t(0xE59FF018UL),
+    std::uint32_t(0xE59FF018UL),
+    std::uint32_t(0xE59FF018UL),
+    std::uint32_t(0xE59FF018UL),
+    std::uint32_t(0xE59FF014UL),
+    std::uint32_t(0xE24FF008UL),
+    std::uint32_t(0xE59FF010UL),
+    std::uint32_t(0xE59FF010UL),
+    reinterpret_cast<std::uint32_t>(__my_startup),
+    reinterpret_cast<std::uint32_t>(undefined_instruction_handler),
+    reinterpret_cast<std::uint32_t>(svc_handler),
+    reinterpret_cast<std::uint32_t>(abort_handler),
+    reinterpret_cast<std::uint32_t>(irq_handler),
+    reinterpret_cast<std::uint32_t>(fiq_handler)
+  }};
+
   void vector_base_address_set(const std::uint32_t addr)
   {
     asm("mcr p15, #0, %[value], c12, c0, 0":: [value] "r" (addr));
   }
 }
 
-extern "C"
-const volatile std::uint32_t __isr_vector_rom_copy[am335x_vector_size] __attribute__((section(".isr_vector_rom_copy")));
-
-extern "C"
-const volatile std::uint32_t __isr_vector_rom_copy[am335x_vector_size] =
-{
-  0xE59FF018UL,
-  0xE59FF018UL,
-  0xE59FF018UL,
-  0xE59FF018UL,
-  0xE59FF014UL,
-  0xE24FF008UL,
-  0xE59FF010UL,
-  0xE59FF010UL,
-  reinterpret_cast<std::uint32_t>(__my_startup),
-  reinterpret_cast<std::uint32_t>(undefined_instruction_handler),
-  reinterpret_cast<std::uint32_t>(svc_handler),
-  reinterpret_cast<std::uint32_t>(abort_handler),
-  reinterpret_cast<std::uint32_t>(irq_handler),
-  reinterpret_cast<std::uint32_t>(fiq_handler)
-};
-
 namespace crt
 {
-  void init_system_interrupt_vectors() __attribute__((section(".startup")));
+  void init_system_interrupt_vectors();
 
   void init_system_interrupt_vectors()
   {
     vector_base_address_set(am335x_vector_base);
 
-    std::copy(__isr_vector_rom_copy,
-              __isr_vector_rom_copy + am335x_vector_size,
+    std::copy(system_isr_vectors.begin(),
+              system_isr_vectors.end(),
               reinterpret_cast<std::uint32_t*>(am335x_vector_base));
   }
 }
@@ -72,15 +68,10 @@ extern "C" void __vector_timer7    () __attribute__((interrupt));
 void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
 extern "C"
-{
-  typedef void(*isr_vector_type)();
-}
+const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_vector_type, mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
-
-extern "C"
-const volatile std::array<isr_vector_type, mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector =
+const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector =
 {{
   __vector_unused_irq, // emuint            :   0
   __vector_unused_irq, // commtx            :   1

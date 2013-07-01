@@ -13,9 +13,9 @@
 
 namespace crt
 {
-  void init_ram()                      __attribute__((section(".startup")));
-  void init_ctors()                    __attribute__((section(".startup")));
-  void init_system_interrupt_vectors() __attribute__((section(".startup")));
+  void init_ram();
+  void init_ctors();
+  void init_system_interrupt_vectors();
 }
 
 asm volatile(".extern __initial_stack_pointer");
@@ -37,7 +37,7 @@ asm volatile(".set MODE_SYS, 0x1F");
 
 asm volatile(".equ I_F_BIT, 0xC0");
 
-extern "C" void __my_startup() __attribute__((section(".entry_code"), naked));
+extern "C" void __my_startup() __attribute__((section(".startup"), naked));
 
 void __my_startup()
 {
@@ -71,11 +71,11 @@ void __my_startup()
   asm volatile("msr cpsr_c, #MODE_SYS | I_F_BIT");      // Switch to system mode.
   asm volatile("mov sp, r0");                           // Set the stack pointer.
 
-  // Chip init: Port, oscillator and watchdog.
-  mcal::cpu::init();
-
   // Copy the system interrupt vector table from ROM to RAM.
   crt::init_system_interrupt_vectors();
+
+  // Chip init: Port, oscillator and watchdog.
+  mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
   // Zero-clear non-initialized static RAM.
@@ -88,12 +88,7 @@ void __my_startup()
 
   // Call main (and never return).
   asm volatile("ldr r3, =main");
-  asm volatile("mov lr, pc");
-  asm volatile("bx r3");
-/*
-  asm volatile("ldr r3, =main");
   asm volatile("blx r3");
-*/
 
   // Catch an unexpected return from main.
   for(;;)

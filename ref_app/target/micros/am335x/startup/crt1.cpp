@@ -22,7 +22,7 @@ extern "C"
 
 namespace crt
 {
-  void init_ctors() __attribute__((section(".startup")));
+  void init_ctors();
 }
 
 void crt::init_ctors()

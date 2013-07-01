@@ -12,11 +12,11 @@
 
 namespace crt
 {
-  void init_ram  () __attribute__((section(".startup")));
-  void init_ctors() __attribute__((section(".startup")));
+  void init_ram();
+  void init_ctors();
 }
 
-extern "C" void __my_startup() __attribute__((section(".startup"), naked));
+extern "C" void __my_startup() __attribute__((naked));
 
 void __my_startup()
 {
@@ -37,8 +37,7 @@ void __my_startup()
 
   // Call main (and never return).
   asm volatile("ldr r3, =main");
-  asm volatile("mov lr, pc");
-  asm volatile("bx r3");
+  asm volatile("blx r3");
 
   // Catch an unexpected return from main.
   for(;;)

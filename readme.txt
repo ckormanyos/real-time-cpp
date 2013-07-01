@@ -20,8 +20,8 @@ The reference project supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
-  * Under construction: BeagleBone with ARM(R) A8
-  * Considered: Microchip(R) PIC(R)32, aka MIPS(R)
+  * BeagleBone with ARM(R) A8
+  * Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
 
 Cross Development in the Reference Project
 ------------------------------------------

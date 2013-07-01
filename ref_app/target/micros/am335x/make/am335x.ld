@@ -28,14 +28,6 @@ SECTIONS
   . = ALIGN(4);
 
   /* Entry code. This is where the program starts. */
-  .entry_code :
-  {
-    *(.entry_code)
-    . = ALIGN(0x10);
-    KEEP(*(.entry_code))
-  } > ROM = 0xAAAA
-
-  /* Startup code */
   .startup :
   {
     *(.startup)
@@ -47,16 +39,8 @@ SECTIONS
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(4);
-    KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
-
-  /* ISR vectors (ROM copy of system vectors) */
-  .isr_vector_rom_copy :
-  {
-    *(.isr_vector_rom_copy)
     . = ALIGN(0x10);
-    KEEP(*(.isr_vector_rom_copy))
+    KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */
