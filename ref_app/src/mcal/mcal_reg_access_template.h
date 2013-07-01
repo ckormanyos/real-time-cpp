@@ -21,6 +21,7 @@
         static void     reg_set() { *reinterpret_cast<volatile reg_type*>(addr)  = val; }
         static void     reg_and() { *reinterpret_cast<volatile reg_type*>(addr) &= val; }
         static void     reg_or () { *reinterpret_cast<volatile reg_type*>(addr) |= val; }
+        static void     reg_not() { *reinterpret_cast<volatile reg_type*>(addr) &= reg_type(~val); }
         static reg_type reg_get() { return *reinterpret_cast<volatile reg_type*>(addr); }
 
         template<const reg_type mask_value>

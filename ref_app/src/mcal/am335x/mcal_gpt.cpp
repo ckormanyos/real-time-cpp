@@ -9,8 +9,6 @@
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
 #include <mcal_reg_access.h>
-#include <am335x_hw_regs.h>
-#include <bfx.h>
 
 namespace
 {
@@ -33,11 +31,11 @@ mcal::gpt::value_type consistent_microsecond_tick()
   typedef std::uint32_t timer_register_type;
 
   // Do the first read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_1 = timer_register_type(DMTIMER7->TCRR + 24002UL);
+  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
   // Do the second read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_2 = timer_register_type(DMTIMER7->TCRR + 24002UL);
+  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
   // Perform the consistency check and return the consistent microsecond tick.
@@ -50,27 +48,30 @@ extern "C" void __vector_timer7();
 void __vector_timer7()
 {
   // Disable the DMTimer interrupts.
-  DMTIMER7->IRQENABLE_CLR = std::uint32_t(7UL);
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_clr, 7UL>::reg_set();
 
   // Clear the status of the interrupt flags.
-  DMTIMER7->IRQSTATUS = std::uint32_t(7UL);
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqstatus, 7UL>::reg_set();
 
   // Increment the 64-bit system tick by 1000, representing 1000us.
   system_tick += 1000U;
 
   // Notify end of interrupt.
-  DMTIMER7->IRQ_EOI &= std::uint32_t(~std::uint32_t(1UL));
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irq_eoi, 1UL>::reg_not();
 
   // Re-enable the DMTimer interrupts.
-  DMTIMER7->IRQENABLE_SET = std::uint32_t(2UL);
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, 2UL>::reg_set();
 }
 
 void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
-    DMTIMER7->TSICR = std::uint32_t(6UL);
-    while(std::uint32_t(DMTIMER7->TIOCP_CFG & std::uint32_t(1UL)) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tsicr, 6UL>::reg_set();
+    while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tiocp_cfg>::reg_get() & std::uint32_t(1UL)) != std::uint32_t(0UL))
+    {
+      mcal::cpu::nop();
+    }
 
     // Register the timer7 interrupt, including priority, routing, etc.
     const mcal::irq::interrupt_descriptor t7_isr_desc(mcal::irq::interrupt_descriptor::isr_id_tint7,
@@ -79,20 +80,24 @@ void mcal::gpt::init(const config_type*)
     mcal::irq::interrupt_descriptor::register_interrupt(t7_isr_desc);
 
     // Enable the timer7 overflow interrupt.
-    bfx_clear_and_set_bit_mask((std::uint32_t*) &DMTIMER7->IRQENABLE_SET,
-                               std::uint32_t(2UL),
-                               0x7UL);
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, 2UL>::reg_msk<7UL>();
 
     // Set the timer7 counter register.
-    while(DMTIMER7->TWPS != std::uint32_t(0UL)) { mcal::cpu::nop(); }
-    DMTIMER7->TCRR = std::uint32_t(0xFFFFFFFEUL - 24000UL);
+    while(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps>::reg_get() != std::uint32_t(0UL))
+    {
+      mcal::cpu::nop();
+    }
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr, 0xFFFFFFFEUL - 24000UL>::reg_set();
 
     // Set the timer7 reload register.
-    while(DMTIMER7->TWPS != std::uint32_t(0UL)) { mcal::cpu::nop(); }
-    DMTIMER7->TLDR = std::uint32_t(0xFFFFFFFEUL - 24000UL);
+    while(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps>::reg_get() != std::uint32_t(0UL))
+    {
+      mcal::cpu::nop();
+    }
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tldr, 0xFFFFFFFEUL - 24000UL>::reg_set();
 
     // Set auto reload mode and start timer (no prescaler).
-    DMTIMER7->TCLR = std::uint32_t(3UL);
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tclr, 3UL>::reg_set();
 
     gpt_is_initialized() = true;
   }

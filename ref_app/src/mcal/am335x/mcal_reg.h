@@ -15,11 +15,13 @@
     namespace reg
     {
       // Base addresses.
-      constexpr std::uint32_t l4_wkup_base            = std::uint32_t(0x44C00000UL);                // Peripheral base address in the alias region.
+      constexpr std::uint32_t l4_wkup_base          = std::uint32_t(0x44C00000UL);
+      constexpr std::uint32_t l4_per_base           = std::uint32_t(0x48000000UL);
 
-      constexpr std::uint32_t cm_per_base             = std::uint32_t(l4_wkup_base + 0x200000UL);   // Clock module peripheral base.
-      constexpr std::uint32_t cm_wkup_base            = std::uint32_t(l4_wkup_base + 0x200400UL);   // Clock module wakup base.
-      constexpr std::uint32_t cm_dpll_base            = std::uint32_t(l4_wkup_base + 0x200500UL);   // Clock module DPLL base.
+      constexpr std::uint32_t cm_per_base           = std::uint32_t(l4_wkup_base + 0x200000UL);   // Clock module peripheral base.
+      constexpr std::uint32_t cm_wkup_base          = std::uint32_t(l4_wkup_base + 0x200400UL);   // Clock module wakup base.
+      constexpr std::uint32_t cm_dpll_base          = std::uint32_t(l4_wkup_base + 0x200500UL);   // Clock module DPLL base.
+      constexpr std::uint32_t dmtimer7_base         = std::uint32_t(l4_per_base  + 0x04A000UL);   // DM Timer7 base.
 
       // Clock module registers.
       namespace cm_per
@@ -195,8 +197,35 @@
       // Port registers.
 
       // Timer registers.
+      namespace dmtimer7
+      {
+        constexpr std::uint32_t tidr          = std::uint32_t(dmtimer7_base + 0x000UL);  // 0x000
+        constexpr std::uint32_t reserved0_0   = std::uint32_t(dmtimer7_base + 0x004UL);  // 0x004
+        constexpr std::uint32_t reserved0_1   = std::uint32_t(dmtimer7_base + 0x008UL);  // 0x008
+        constexpr std::uint32_t reserved0_2   = std::uint32_t(dmtimer7_base + 0x00CUL);  // 0x00C
+        constexpr std::uint32_t tiocp_cfg     = std::uint32_t(dmtimer7_base + 0x010UL);  // 0x010
+        constexpr std::uint32_t reserved1_0   = std::uint32_t(dmtimer7_base + 0x014UL);  // 0x014
+        constexpr std::uint32_t reserved1_1   = std::uint32_t(dmtimer7_base + 0x018UL);  // 0x018
+        constexpr std::uint32_t reserved1_2   = std::uint32_t(dmtimer7_base + 0x01CUL);  // 0x01C
+        constexpr std::uint32_t irq_eoi       = std::uint32_t(dmtimer7_base + 0x020UL);  // 0x020
+        constexpr std::uint32_t irqstatus_raw = std::uint32_t(dmtimer7_base + 0x024UL);  // 0x024
+        constexpr std::uint32_t irqstatus     = std::uint32_t(dmtimer7_base + 0x028UL);  // 0x028
+        constexpr std::uint32_t irqenable_set = std::uint32_t(dmtimer7_base + 0x02CUL);  // 0x02C
+        constexpr std::uint32_t irqenable_clr = std::uint32_t(dmtimer7_base + 0x030UL);  // 0x030
+        constexpr std::uint32_t irqwakeen     = std::uint32_t(dmtimer7_base + 0x034UL);  // 0x034
+        constexpr std::uint32_t tclr          = std::uint32_t(dmtimer7_base + 0x038UL);  // 0x038
+        constexpr std::uint32_t tcrr          = std::uint32_t(dmtimer7_base + 0x03CUL);  // 0x03C
+        constexpr std::uint32_t tldr          = std::uint32_t(dmtimer7_base + 0x040UL);  // 0x040
+        constexpr std::uint32_t ttgr          = std::uint32_t(dmtimer7_base + 0x044UL);  // 0x044
+        constexpr std::uint32_t twps          = std::uint32_t(dmtimer7_base + 0x048UL);  // 0x048
+        constexpr std::uint32_t tmar          = std::uint32_t(dmtimer7_base + 0x04CUL);  // 0x04C
+        constexpr std::uint32_t tcar1         = std::uint32_t(dmtimer7_base + 0x050UL);  // 0x050
+        constexpr std::uint32_t tsicr         = std::uint32_t(dmtimer7_base + 0x054UL);  // 0x054
+        constexpr std::uint32_t tcar2         = std::uint32_t(dmtimer7_base + 0x058UL);  // 0x058
+      }
 
       // Power management registers.
     }
   }
+
 #endif // _MCAL_REG_2010_04_10_H_
