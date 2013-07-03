@@ -12,17 +12,24 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
-extern "C" void __my_startup();
-extern "C" void undefined_instruction_handler();
-extern "C" void svc_handler();
-extern "C" void abort_handler();
-extern "C" void irq_handler();
-extern "C" void fiq_handler();
+extern "C" void __my_startup         ();
+extern "C" void __undef_instr_handler();
+extern "C" void __pend_sv_handler    ();
+extern "C" void __abort_handler      ();
+extern "C" void __irq_handler        () __attribute__((naked));
+extern "C" void __fiq_handler        () __attribute__((naked));
+extern "C" void __vector_unused_irq  ();
+extern "C" void __vector_timer7      ();
+
+void __undef_instr_handler() { for(;;) { mcal::cpu::nop(); } }
+void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
+void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
+void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
-  constexpr std::uint32_t am335x_vector_base = 0x4030FC00UL;
-  constexpr std::size_t   am335x_vector_size = 14U;
+  constexpr std::uintptr_t am335x_vector_base = 0x4030FC00UL;
+  constexpr std::size_t    am335x_vector_size = 14U;
 
   constexpr std::array<std::uint32_t, am335x_vector_size> system_isr_vectors =
   {{
@@ -35,11 +42,11 @@ namespace
     std::uint32_t(0xE59FF010UL),
     std::uint32_t(0xE59FF010UL),
     reinterpret_cast<std::uint32_t>(__my_startup),
-    reinterpret_cast<std::uint32_t>(undefined_instruction_handler),
-    reinterpret_cast<std::uint32_t>(svc_handler),
-    reinterpret_cast<std::uint32_t>(abort_handler),
-    reinterpret_cast<std::uint32_t>(irq_handler),
-    reinterpret_cast<std::uint32_t>(fiq_handler)
+    reinterpret_cast<std::uint32_t>(__undef_instr_handler),
+    reinterpret_cast<std::uint32_t>(__pend_sv_handler),
+    reinterpret_cast<std::uint32_t>(__abort_handler),
+    reinterpret_cast<std::uint32_t>(__irq_handler),
+    reinterpret_cast<std::uint32_t>(__fiq_handler)
   }};
 
   void vector_base_address_set(const std::uint32_t addr)
@@ -61,11 +68,6 @@ namespace crt
               reinterpret_cast<std::uint32_t*>(am335x_vector_base));
   }
 }
-
-extern "C" void __vector_unused_irq() __attribute__((interrupt));
-extern "C" void __vector_timer7    () __attribute__((interrupt));
-
-void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
 extern "C"
 const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
@@ -108,7 +110,7 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq, // gpioint2a         :  32
   __vector_unused_irq, // gpioint2b         :  33
   __vector_unused_irq, // usbwakeup         :  34
-  __vector_unused_irq, // dummy35           :  35
+  __vector_unused_irq, // unused35          :  35
   __vector_unused_irq, // lcdcint           :  36
   __vector_unused_irq, // gfxint            :  37
   __vector_unused_irq, // 2dhwaint          :  38
@@ -121,10 +123,10 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq, // uart4int          :  45
   __vector_unused_irq, // uart5int          :  46
   __vector_unused_irq, // ecap1int          :  47
-  __vector_unused_irq, // dummy48           :  48
-  __vector_unused_irq, // dummy49           :  49
-  __vector_unused_irq, // dummy50           :  50
-  __vector_unused_irq, // dummy51           :  51
+  __vector_unused_irq, // unused48          :  48
+  __vector_unused_irq, // unused49          :  49
+  __vector_unused_irq, // unused50          :  50
+  __vector_unused_irq, // unused51          :  51
   __vector_unused_irq, // dcan0_int0        :  52
   __vector_unused_irq, // dcan0_int1        :  53
   __vector_unused_irq, // dcan0_parity      :  54
@@ -177,10 +179,10 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq, // ddrerr0           : 101
   __vector_unused_irq, // aes0_irq_s        : 102
   __vector_unused_irq, // aes0_irq_p        : 103
-  __vector_unused_irq, // dummy104          : 104
-  __vector_unused_irq, // dummy105          : 105
-  __vector_unused_irq, // dummy106          : 106
-  __vector_unused_irq, // dummy107          : 107
+  __vector_unused_irq, // unused104         : 104
+  __vector_unused_irq, // unused105         : 105
+  __vector_unused_irq, // unused106         : 106
+  __vector_unused_irq, // unused107         : 107
   __vector_unused_irq, // sha_irq_s         : 108
   __vector_unused_irq, // sha_irq_p         : 109
   __vector_unused_irq, // fpka_sintrequest_s: 110
@@ -188,17 +190,17 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq, // tcerrint0         : 112
   __vector_unused_irq, // tcerrint1         : 113
   __vector_unused_irq, // tcerrint2         : 114
-  __vector_unused_irq, // dummy115          : 115
-  __vector_unused_irq, // dummy116          : 116
-  __vector_unused_irq, // dummy117          : 117
-  __vector_unused_irq, // dummy118          : 118
-  __vector_unused_irq, // dummy119          : 119
+  __vector_unused_irq, // unused115         : 115
+  __vector_unused_irq, // unused116         : 116
+  __vector_unused_irq, // unused117         : 117
+  __vector_unused_irq, // unused118         : 118
+  __vector_unused_irq, // unused119         : 119
   __vector_unused_irq, // smrflx_sabertooth : 120
   __vector_unused_irq, // smrflx_core       : 121
-  __vector_unused_irq, // dummy122          : 122
+  __vector_unused_irq, // unused122         : 122
   __vector_unused_irq, // dma_intr_pin0     : 123
   __vector_unused_irq, // dma_intr_pin1     : 124
   __vector_unused_irq, // spi1int           : 125
-  __vector_unused_irq, // unused            : 126
-  __vector_unused_irq  // unused            : 127
+  __vector_unused_irq, // unused126         : 126
+  __vector_unused_irq  // unused127         : 127
 }};

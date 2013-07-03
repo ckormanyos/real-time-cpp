@@ -59,16 +59,6 @@ std::uint32_t mcal::cpu::read_dfar()
   return status;
 }
 
-extern "C" void cpu_abort_handler()
-{
-  // This API is called when the CPU is aborted or during execution
-  // of any undefined instruction. Both IRQ and FIQ will be disabled
-  // when the CPU gets an abort and calls this API. 
-  const std::uint32_t fault_type = mcal::cpu::read_dfsr();
-
-  GPIO1->CLEARDATAOUT = std::uint32_t(0x01E00000UL);
-  GPIO1->SETDATAOUT   = std::uint32_t(std::uint32_t(fault_type & std::uint32_t(0x0FUL)) << 21U);
-}
 
 std::uint32_t mcal::cpu::int_status()
 {

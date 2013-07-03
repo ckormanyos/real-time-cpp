@@ -14,12 +14,12 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The end of the stack */
-__initial_stack_pointer = 0x4030A000;
+__initial_stack_pointer = 0x40300000;
 
 MEMORY
 {
   ROM(rx)   : ORIGIN = 0x402F0400, LENGTH = 48K - 0x400
-  RAM(rwx)  : ORIGIN = 0x402FC000, LENGTH = 16K
+  RAM(rwx)  : ORIGIN = 0x402FC000, LENGTH = 8K
 }
 
 SECTIONS

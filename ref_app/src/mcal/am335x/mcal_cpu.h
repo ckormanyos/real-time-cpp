@@ -28,6 +28,4 @@
     }
   }
 
-  extern "C" void cpu_abort_handler();
-
 #endif // _MCAL_CPU_2009_02_14_H_
