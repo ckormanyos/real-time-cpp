@@ -9,85 +9,10 @@
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_wdg.h>
-#include <am335x_hw_regs.h>
 
 void mcal::cpu::init()
 {
   mcal::osc::init(nullptr);
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
-}
-
-void mcal::cpu::switch_to_privileged_mode()
-{
-  // This API can be used to switch from user mode to privileged mode
-  // The priviledge mode will be system mode. System mode will share 
-  // the same resources as user mode, but with privileges.
-  asm volatile("swi 458752");
-}
-
-void mcal::cpu::switch_to_user_mode()
-{
-  // This API can be used to switch from any previleged mode of ARM to 
-  // user mode. After this API is called, the program will continue
-  // to operate in non-privileged mode, until any exception occurs.
-  // After the exception is serviced, execution will continue in user
-  // mode.
-  asm volatile("mrs r0, cpsr");
-  asm volatile("bic r0, #0x0F");
-  asm volatile("orr r0, #0x10");
-  asm volatile("msr cpsr, r0");
-}
-
-std::uint32_t mcal::cpu::read_dfsr()
-{
-  std::uint32_t status;
-
-  // IRQ and FIQ in CPSR
-  asm volatile("mrc p15, #0, %[result], c5, c0, #0\n\t" : [result] "=r" (status));
-
-  return status;
-}
-
-std::uint32_t mcal::cpu::read_dfar()
-{
-  std::uint32_t status;
-
-  // IRQ and FIQ in CPSR.
-  asm volatile("mrc p15, #0, %[result], c6, c0, #0\n\t" : [result] "=r" (status));
-
-  return status;
-}
-
-
-std::uint32_t mcal::cpu::int_status()
-{
-  // Wrapper function for the IRQ status.
-  std::uint32_t status;
-
-  // IRQ and FIQ in CPSR
-  asm volatile("mrs r0, cpsr\n\t"
-               "and %[result], r0, #0xC0" : [result] "=r" (status));
-
-  return status;
-}
-
-void mcal::cpu::fiqd()
-{
-  // Wrapper function for the FIQ disable function.
-
-  // Disable FIQ in CPSR
-  asm volatile("mrs r0, cpsr");
-  asm volatile("orr r0, #0x40");
-  asm volatile("msr cpsr, r0");
-}
-
-void mcal::cpu::fiqe()
-{
-  // Wrapper function for the FIQ enable function.
-
-  // Enable FIQ in CPSR
-  asm volatile("mrs r0, cpsr");
-  asm volatile("bic r0, #0x40");
-  asm volatile("msr cpsr, r0");
 }

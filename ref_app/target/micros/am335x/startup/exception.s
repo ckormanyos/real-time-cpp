@@ -24,8 +24,6 @@
 .equ newirqagr, intc_control_newirqagr
 .equ newfiqagr, intc_control_newfiqagr
 
-@.equ mask_svc_num, 0xFF000000
-
 .text
 
 .code 32

@@ -23,6 +23,7 @@
       constexpr std::uint32_t cm_dpll_base          = std::uint32_t(l4_wkup_base + 0x200500UL);   // Clock module DPLL base.
       constexpr std::uint32_t control_base          = std::uint32_t(l4_wkup_base + 0x210000UL);   // System control base.
       constexpr std::uint32_t dmtimer7_base         = std::uint32_t(l4_per_base  + 0x04A000UL);   // DM Timer7 base.
+      constexpr std::uint32_t gpio1_base            = std::uint32_t(l4_per_base  + 0x04C000UL);   // GPIO1 base.
 
       // Clock module registers.
       namespace cm_per
@@ -529,6 +530,38 @@
       // Interrupt registers.
 
       // Port registers.
+      namespace gpio1
+      {
+        constexpr std::uint32_t revision            = std::uint32_t(gpio1_base + 0x000UL);  // 0x000
+        constexpr std::uint32_t reserved0_0x03      = std::uint32_t(gpio1_base + 0x004UL);  // 0x004
+        constexpr std::uint32_t sysconfig           = std::uint32_t(gpio1_base + 0x010UL);  // 0x010
+        constexpr std::uint32_t reserved1_0x03      = std::uint32_t(gpio1_base + 0x014UL);  // 0x014
+        constexpr std::uint32_t eoi                 = std::uint32_t(gpio1_base + 0x020UL);  // 0x020
+        constexpr std::uint32_t irqstatus_RAW_0     = std::uint32_t(gpio1_base + 0x024UL);  // 0x024
+        constexpr std::uint32_t irqstatus_RAW_1     = std::uint32_t(gpio1_base + 0x028UL);  // 0x028
+        constexpr std::uint32_t irqstatus_0         = std::uint32_t(gpio1_base + 0x02CUL);  // 0x02C
+        constexpr std::uint32_t irqstatus_1         = std::uint32_t(gpio1_base + 0x030UL);  // 0x030
+        constexpr std::uint32_t irqstatus_SET_0     = std::uint32_t(gpio1_base + 0x034UL);  // 0x034
+        constexpr std::uint32_t irqstatus_SET_1     = std::uint32_t(gpio1_base + 0x038UL);  // 0x038
+        constexpr std::uint32_t irqstatus_CLR_0     = std::uint32_t(gpio1_base + 0x03CUL);  // 0x03C
+        constexpr std::uint32_t irqstatus_CLR_1     = std::uint32_t(gpio1_base + 0x040UL);  // 0x040
+        constexpr std::uint32_t reserved2_0x34      = std::uint32_t(gpio1_base + 0x044UL);  // 0x044
+        constexpr std::uint32_t sysstatus           = std::uint32_t(gpio1_base + 0x114UL);  // 0x114
+        constexpr std::uint32_t reserved3_0x06      = std::uint32_t(gpio1_base + 0x118UL);  // 0x118
+        constexpr std::uint32_t ctrl                = std::uint32_t(gpio1_base + 0x130UL);  // 0x130
+        constexpr std::uint32_t oe                  = std::uint32_t(gpio1_base + 0x134UL);  // 0x134
+        constexpr std::uint32_t datain              = std::uint32_t(gpio1_base + 0x138UL);  // 0x138
+        constexpr std::uint32_t dataout             = std::uint32_t(gpio1_base + 0x13CUL);  // 0x13C
+        constexpr std::uint32_t leveldetect0        = std::uint32_t(gpio1_base + 0x140UL);  // 0x140
+        constexpr std::uint32_t leveldetect1        = std::uint32_t(gpio1_base + 0x144UL);  // 0x144
+        constexpr std::uint32_t risingdetect        = std::uint32_t(gpio1_base + 0x148UL);  // 0x148
+        constexpr std::uint32_t fallingdetect       = std::uint32_t(gpio1_base + 0x14CUL);  // 0x14C
+        constexpr std::uint32_t debouncenable       = std::uint32_t(gpio1_base + 0x150UL);  // 0x150
+        constexpr std::uint32_t debouncingtime      = std::uint32_t(gpio1_base + 0x154UL);  // 0x154
+        constexpr std::uint32_t reserved4_0x0e      = std::uint32_t(gpio1_base + 0x158UL);  // 0x158
+        constexpr std::uint32_t cleardataout        = std::uint32_t(gpio1_base + 0x190UL);  // 0x190
+        constexpr std::uint32_t setdataout          = std::uint32_t(gpio1_base + 0x194UL);  // 0x194
+      }
 
       // Timer registers.
       namespace dmtimer7

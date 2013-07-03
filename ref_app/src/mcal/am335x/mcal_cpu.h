@@ -17,14 +17,6 @@
       void init();
 
       inline void nop() { asm volatile("nop"); }
-
-      void          fiqe();
-      void          fiqd();
-      std::uint32_t int_status();
-      std::uint32_t read_dfar();
-      std::uint32_t read_dfsr();
-      void          switch_to_user_mode();
-      void          switch_to_privileged_mode();
     }
   }
 

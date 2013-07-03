@@ -9,8 +9,6 @@
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
-#include <am335x_hw_regs.h>
-#include <bfx.h>
 
 constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
 
@@ -265,9 +263,6 @@ void power_domain_transition_init()
                     clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
-  // TBD: This register does not exist in trm.
-  // bfx_clear_and_set_bit_mask(mcal::reg::cm_per::l4fw_clkstctrl, clktrctrl_sw_wkup, clktrctrl_mask);
-
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l3s_clkstctrl,
@@ -279,9 +274,7 @@ void emif_init()
 {
   constexpr std::uint32_t clkactivity_emif_gclk = 0x00000004UL;
 
-  // Enable the clocks for EMIF.
-  // TBD: This register does not seem to exist in TRM.
-  // bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->EMIF_FW_CLKCTRL, modulemode_enable, modulemode_mask);
+  // Enable the clocks for the emif.
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
@@ -292,37 +285,21 @@ void emif_init()
 
 void gpio1_clock_init()
 {
-  constexpr std::uint32_t MODULEMODE_ENABLE         =      0x02UL;
-  constexpr std::uint32_t MODULEMODE_MASK           =      0x03UL;
-
-  constexpr std::uint32_t OPTFCLKEN_GPIO_1_GDBCLK   = 0x00040000UL;
-
   constexpr std::uint32_t optfclken_gpio_1_gdbclk   = 0x00040000UL;
   constexpr std::uint32_t clkactivity_gpio_1_gdbclk = 0x00080000UL;
 
   // Set the module field of the cm_per::gpio1_clkctrl register.
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->GPIO1_CLKCTRL,
-                             MODULEMODE_ENABLE,
-                             MODULEMODE_MASK);
-/*
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::gpio1_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-*/
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   // Enable the optional function clock.
-  bfx_clear_and_set_bit_mask((std::uint32_t*) &CM_PER->GPIO1_CLKCTRL,
-                             OPTFCLKEN_GPIO_1_GDBCLK,
-                             OPTFCLKEN_GPIO_1_GDBCLK);
-/*
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::gpio1_clkctrl,
                     optfclken_gpio_1_gdbclk>::reg_msk<optfclken_gpio_1_gdbclk>();
-*/
-  // TBD: ist optfclken_gpio_1_gdbclk ein Statusregister?
 
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk  ) != optfclken_gpio_1_gdbclk  ) { mcal::cpu::nop(); }
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & idlest_mask              ) != idlest_func              ) { mcal::cpu::nop(); }
