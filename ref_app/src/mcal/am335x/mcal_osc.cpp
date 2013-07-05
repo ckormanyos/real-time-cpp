@@ -10,21 +10,43 @@
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
 
-constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
+namespace
+{
+  constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
 
-constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
-constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
+  constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
+  constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
 
-constexpr unsigned st_dpll_clk_bpos       =           0U;
-constexpr unsigned st_mn_bypass_bpos      =           8U;
+  constexpr unsigned st_dpll_clk_bpos       =           0U;
+  constexpr unsigned st_mn_bypass_bpos      =           8U;
 
-constexpr std::uint32_t modulemode_enable =       0x02UL;
-constexpr std::uint32_t modulemode_mask   =       0x03UL;
+  constexpr std::uint32_t modulemode_enable =       0x02UL;
+  constexpr std::uint32_t modulemode_mask   =       0x03UL;
 
-constexpr std::uint32_t idlest_func       = 0x00000000UL;
-constexpr std::uint32_t idlest_mask       = 0x00030000UL;
+  constexpr std::uint32_t idlest_func       = 0x00000000UL;
+  constexpr std::uint32_t idlest_mask       = 0x00030000UL;
+}
 
-void mpu_pll_init()
+namespace mcal
+{
+  namespace osc
+  {
+    namespace detail
+    {
+      void mpu_pll_init                ();
+      void core_pll_init               ();
+      void peripheral_pll_init         ();
+      void ddr_pll_init                ();
+      void interface_clock_init        ();
+      void power_domain_transition_init();
+      void emif_init                   ();
+      void gpio1_clock_init            ();
+      void dm_timer7_clock_init        ();
+    }
+  }
+}
+
+void mcal::osc::detail::mpu_pll_init()
 {
   // Set the MPU clock to 600MHz.
 
@@ -64,7 +86,7 @@ void mpu_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void core_pll_init()
+void mcal::osc::detail::core_pll_init()
 {
   // Enable the Core PLL.
 
@@ -120,7 +142,7 @@ void core_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void peripheral_pll_init()
+void mcal::osc::detail::peripheral_pll_init()
 {
   // Set the Peripheral clock to 960MHz
   // clkinp = 24MHz
@@ -144,7 +166,7 @@ void peripheral_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_periph,
-                    (mcu_per_pll_sd << 24) | (mcu_per_pll_m << 8) | mcu_per_pll_n>::reg_msk<0xFF0FFFFFUL>();
+                    (mcu_per_pll_sd << 24U) | (mcu_per_pll_m << 8U) | mcu_per_pll_n>::reg_msk<0xFF0FFFFFUL>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -162,7 +184,7 @@ void peripheral_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void ddr_pll_init()
+void mcal::osc::detail::ddr_pll_init()
 {
   // Setting DDR clock to 266
   constexpr std::uint32_t mcu_ddr_pll_m  = 266UL;
@@ -200,7 +222,7 @@ void ddr_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
-void interface_clock_init()
+void mcal::osc::detail::interface_clock_init()
 {
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
@@ -240,7 +262,7 @@ void interface_clock_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 }
 
-void power_domain_transition_init()
+void mcal::osc::detail::power_domain_transition_init()
 {
   constexpr std::uint32_t clktrctrl_sw_wkup = 0x2UL;
   constexpr std::uint32_t clktrctrl_mask    = 0x3UL;
@@ -270,7 +292,7 @@ void power_domain_transition_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 }
 
-void emif_init()
+void mcal::osc::detail::emif_init()
 {
   constexpr std::uint32_t clkactivity_emif_gclk = 0x00000004UL;
 
@@ -283,7 +305,7 @@ void emif_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::cpu::nop(); }
 }
 
-void gpio1_clock_init()
+void mcal::osc::detail::gpio1_clock_init()
 {
   constexpr std::uint32_t optfclken_gpio_1_gdbclk   = 0x00040000UL;
   constexpr std::uint32_t clkactivity_gpio_1_gdbclk = 0x00080000UL;
@@ -306,7 +328,7 @@ void gpio1_clock_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_gpio_1_gdbclk) != clkactivity_gpio_1_gdbclk) { mcal::cpu::nop(); }
 }
 
-void dm_timer7_clock_init()
+void mcal::osc::detail::dm_timer7_clock_init()
 {
   constexpr std::uint32_t clksel_clk_m_osc        = 1UL;
   constexpr std::uint32_t clkactivity_timer7_gclk = 0x00002000UL;
@@ -330,21 +352,22 @@ void dm_timer7_clock_init()
 
 void mcal::osc::init(const config_type*)
 {
-  // Setup the clocks, PLL and RAM.
-  mpu_pll_init();
-  core_pll_init();
-  peripheral_pll_init();
-  ddr_pll_init();
-  interface_clock_init();
-  power_domain_transition_init();
+  // Setup the clocksfor oscillator, PLL, RAM, I/O ports, and peripherals.
+
+  detail::mpu_pll_init();
+  detail::core_pll_init();
+  detail::peripheral_pll_init();
+  detail::ddr_pll_init();
+  detail::interface_clock_init();
+  detail::power_domain_transition_init();
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::control_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
 
-  emif_init();
+  detail::emif_init();
 
-  gpio1_clock_init();
-  dm_timer7_clock_init();
+  detail::gpio1_clock_init();
+  detail::dm_timer7_clock_init();
 }

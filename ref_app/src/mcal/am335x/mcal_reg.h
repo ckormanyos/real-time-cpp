@@ -15,15 +15,25 @@
     namespace reg
     {
       // Base addresses.
-      constexpr std::uint32_t l4_wkup_base          = std::uint32_t(0x44C00000UL);
-      constexpr std::uint32_t l4_per_base           = std::uint32_t(0x48000000UL);
+      constexpr std::uint32_t l4_wkup_base          = std::uint32_t(0x44C00000UL);                // Wakeup register area base address.
+      constexpr std::uint32_t l4_per_base           = std::uint32_t(0x48000000UL);                // Peripheral register area base address.
 
-      constexpr std::uint32_t cm_per_base           = std::uint32_t(l4_wkup_base + 0x200000UL);   // Clock module peripheral base.
-      constexpr std::uint32_t cm_wkup_base          = std::uint32_t(l4_wkup_base + 0x200400UL);   // Clock module wakup base.
-      constexpr std::uint32_t cm_dpll_base          = std::uint32_t(l4_wkup_base + 0x200500UL);   // Clock module DPLL base.
-      constexpr std::uint32_t control_base          = std::uint32_t(l4_wkup_base + 0x210000UL);   // System control base.
-      constexpr std::uint32_t dmtimer7_base         = std::uint32_t(l4_per_base  + 0x04A000UL);   // DM Timer7 base.
-      constexpr std::uint32_t gpio1_base            = std::uint32_t(l4_per_base  + 0x04C000UL);   // GPIO1 base.
+      constexpr std::uint32_t cm_per_base           = std::uint32_t(l4_wkup_base + 0x200000UL);   // Clock module peripheral base address.
+      constexpr std::uint32_t cm_wkup_base          = std::uint32_t(l4_wkup_base + 0x200400UL);   // Clock module wakup base address.
+      constexpr std::uint32_t cm_dpll_base          = std::uint32_t(l4_wkup_base + 0x200500UL);   // Clock module DPLL base address.
+
+      constexpr std::uint32_t control_base          = std::uint32_t(l4_wkup_base + 0x210000UL);   // System control base address.
+
+      constexpr std::uint32_t dmtimer7_base         = std::uint32_t(l4_per_base  + 0x04A000UL);   // DM Timer7 base address.
+
+      constexpr std::uint32_t gpio0_base            = std::uint32_t(l4_wkup_base + 0x207000UL);   // GPIO0 base address.
+      constexpr std::uint32_t gpio1_base            = std::uint32_t(l4_per_base  + 0x04C000UL);   // GPIO1 base address.
+      constexpr std::uint32_t gpio2_base            = std::uint32_t(l4_per_base  + 0x1AC000UL);   // GPIO2 base address.
+      constexpr std::uint32_t gpio3_base            = std::uint32_t(l4_per_base  + 0x1AE000UL);   // GPIO3 base address.
+
+      constexpr std::uint32_t wdt1_base             = std::uint32_t(l4_wkup_base + 0x235000UL);   // Watchdog 1 base address.
+
+      constexpr std::uint32_t intc_base             = std::uint32_t(l4_per_base  + 0x200000UL);   // Interrupt controller base address.
 
       // Clock module registers.
       namespace cm_per
@@ -527,40 +537,72 @@
         constexpr std::uint32_t ddr_data1_ioctrl       = std::uint32_t(control_base + 0x1444UL);  // 0x1444
       }
 
-      // Interrupt registers.
+      // Interrupt control registers.
+      namespace intc
+      {
+        namespace sys
+        {
+          constexpr std::uint32_t itr         = std::uint32_t(0x000UL);  // 0x000
+          constexpr std::uint32_t mir         = std::uint32_t(0x004UL);  // 0x004
+          constexpr std::uint32_t mir_clear   = std::uint32_t(0x008UL);  // 0x008
+          constexpr std::uint32_t mir_set     = std::uint32_t(0x00CUL);  // 0x00C
+          constexpr std::uint32_t isr_set     = std::uint32_t(0x010UL);  // 0x010
+          constexpr std::uint32_t isr_clear   = std::uint32_t(0x014UL);  // 0x014
+          constexpr std::uint32_t pending_irq = std::uint32_t(0x018UL);  // 0x018
+          constexpr std::uint32_t pending_fiq = std::uint32_t(0x01CUL);  // 0x01C
+        }
+
+        constexpr std::uint32_t revision        = std::uint32_t(intc_base + 0x000UL);  // 0x000
+        constexpr std::uint32_t reserved0_0x03  = std::uint32_t(intc_base + 0x004UL);  // 0x004
+        constexpr std::uint32_t sysconfig       = std::uint32_t(intc_base + 0x010UL);  // 0x010
+        constexpr std::uint32_t sysstatus       = std::uint32_t(intc_base + 0x014UL);  // 0x014
+        constexpr std::uint32_t reserved1_0x0a  = std::uint32_t(intc_base + 0x018UL);  // 0x018
+        constexpr std::uint32_t sir_irq         = std::uint32_t(intc_base + 0x040UL);  // 0x040
+        constexpr std::uint32_t sir_fiq         = std::uint32_t(intc_base + 0x044UL);  // 0x044
+        constexpr std::uint32_t control         = std::uint32_t(intc_base + 0x048UL);  // 0x048
+        constexpr std::uint32_t protection      = std::uint32_t(intc_base + 0x04CUL);  // 0x04C
+        constexpr std::uint32_t idle            = std::uint32_t(intc_base + 0x050UL);  // 0x050
+        constexpr std::uint32_t reserved2_0x03  = std::uint32_t(intc_base + 0x054UL);  // 0x054
+        constexpr std::uint32_t irq_priority    = std::uint32_t(intc_base + 0x060UL);  // 0x060
+        constexpr std::uint32_t fiq_priority    = std::uint32_t(intc_base + 0x064UL);  // 0x064
+        constexpr std::uint32_t threshold       = std::uint32_t(intc_base + 0x068UL);  // 0x068
+        constexpr std::uint32_t reserved3_0x05  = std::uint32_t(intc_base + 0x06CUL);  // 0x06C
+        constexpr std::uint32_t sys_base_0x04   = std::uint32_t(intc_base + 0x080UL);  // 0x080
+        constexpr std::uint32_t ilr_base_0x80   = std::uint32_t(intc_base + 0x100UL);  // 0x100
+      }
 
       // Port registers.
-      namespace gpio1
+      namespace gpiox
       {
-        constexpr std::uint32_t revision            = std::uint32_t(gpio1_base + 0x000UL);  // 0x000
-        constexpr std::uint32_t reserved0_0x03      = std::uint32_t(gpio1_base + 0x004UL);  // 0x004
-        constexpr std::uint32_t sysconfig           = std::uint32_t(gpio1_base + 0x010UL);  // 0x010
-        constexpr std::uint32_t reserved1_0x03      = std::uint32_t(gpio1_base + 0x014UL);  // 0x014
-        constexpr std::uint32_t eoi                 = std::uint32_t(gpio1_base + 0x020UL);  // 0x020
-        constexpr std::uint32_t irqstatus_RAW_0     = std::uint32_t(gpio1_base + 0x024UL);  // 0x024
-        constexpr std::uint32_t irqstatus_RAW_1     = std::uint32_t(gpio1_base + 0x028UL);  // 0x028
-        constexpr std::uint32_t irqstatus_0         = std::uint32_t(gpio1_base + 0x02CUL);  // 0x02C
-        constexpr std::uint32_t irqstatus_1         = std::uint32_t(gpio1_base + 0x030UL);  // 0x030
-        constexpr std::uint32_t irqstatus_SET_0     = std::uint32_t(gpio1_base + 0x034UL);  // 0x034
-        constexpr std::uint32_t irqstatus_SET_1     = std::uint32_t(gpio1_base + 0x038UL);  // 0x038
-        constexpr std::uint32_t irqstatus_CLR_0     = std::uint32_t(gpio1_base + 0x03CUL);  // 0x03C
-        constexpr std::uint32_t irqstatus_CLR_1     = std::uint32_t(gpio1_base + 0x040UL);  // 0x040
-        constexpr std::uint32_t reserved2_0x34      = std::uint32_t(gpio1_base + 0x044UL);  // 0x044
-        constexpr std::uint32_t sysstatus           = std::uint32_t(gpio1_base + 0x114UL);  // 0x114
-        constexpr std::uint32_t reserved3_0x06      = std::uint32_t(gpio1_base + 0x118UL);  // 0x118
-        constexpr std::uint32_t ctrl                = std::uint32_t(gpio1_base + 0x130UL);  // 0x130
-        constexpr std::uint32_t oe                  = std::uint32_t(gpio1_base + 0x134UL);  // 0x134
-        constexpr std::uint32_t datain              = std::uint32_t(gpio1_base + 0x138UL);  // 0x138
-        constexpr std::uint32_t dataout             = std::uint32_t(gpio1_base + 0x13CUL);  // 0x13C
-        constexpr std::uint32_t leveldetect0        = std::uint32_t(gpio1_base + 0x140UL);  // 0x140
-        constexpr std::uint32_t leveldetect1        = std::uint32_t(gpio1_base + 0x144UL);  // 0x144
-        constexpr std::uint32_t risingdetect        = std::uint32_t(gpio1_base + 0x148UL);  // 0x148
-        constexpr std::uint32_t fallingdetect       = std::uint32_t(gpio1_base + 0x14CUL);  // 0x14C
-        constexpr std::uint32_t debouncenable       = std::uint32_t(gpio1_base + 0x150UL);  // 0x150
-        constexpr std::uint32_t debouncingtime      = std::uint32_t(gpio1_base + 0x154UL);  // 0x154
-        constexpr std::uint32_t reserved4_0x0e      = std::uint32_t(gpio1_base + 0x158UL);  // 0x158
-        constexpr std::uint32_t cleardataout        = std::uint32_t(gpio1_base + 0x190UL);  // 0x190
-        constexpr std::uint32_t setdataout          = std::uint32_t(gpio1_base + 0x194UL);  // 0x194
+        constexpr std::uint32_t revision            = std::uint32_t(0x000UL);  // 0x000
+        constexpr std::uint32_t reserved0_0x03      = std::uint32_t(0x004UL);  // 0x004
+        constexpr std::uint32_t sysconfig           = std::uint32_t(0x010UL);  // 0x010
+        constexpr std::uint32_t reserved1_0x03      = std::uint32_t(0x014UL);  // 0x014
+        constexpr std::uint32_t eoi                 = std::uint32_t(0x020UL);  // 0x020
+        constexpr std::uint32_t irqstatus_RAW_0     = std::uint32_t(0x024UL);  // 0x024
+        constexpr std::uint32_t irqstatus_RAW_1     = std::uint32_t(0x028UL);  // 0x028
+        constexpr std::uint32_t irqstatus_0         = std::uint32_t(0x02CUL);  // 0x02C
+        constexpr std::uint32_t irqstatus_1         = std::uint32_t(0x030UL);  // 0x030
+        constexpr std::uint32_t irqstatus_SET_0     = std::uint32_t(0x034UL);  // 0x034
+        constexpr std::uint32_t irqstatus_SET_1     = std::uint32_t(0x038UL);  // 0x038
+        constexpr std::uint32_t irqstatus_CLR_0     = std::uint32_t(0x03CUL);  // 0x03C
+        constexpr std::uint32_t irqstatus_CLR_1     = std::uint32_t(0x040UL);  // 0x040
+        constexpr std::uint32_t reserved2_0x34      = std::uint32_t(0x044UL);  // 0x044
+        constexpr std::uint32_t sysstatus           = std::uint32_t(0x114UL);  // 0x114
+        constexpr std::uint32_t reserved3_0x06      = std::uint32_t(0x118UL);  // 0x118
+        constexpr std::uint32_t ctrl                = std::uint32_t(0x130UL);  // 0x130
+        constexpr std::uint32_t oe                  = std::uint32_t(0x134UL);  // 0x134
+        constexpr std::uint32_t datain              = std::uint32_t(0x138UL);  // 0x138
+        constexpr std::uint32_t dataout             = std::uint32_t(0x13CUL);  // 0x13C
+        constexpr std::uint32_t leveldetect0        = std::uint32_t(0x140UL);  // 0x140
+        constexpr std::uint32_t leveldetect1        = std::uint32_t(0x144UL);  // 0x144
+        constexpr std::uint32_t risingdetect        = std::uint32_t(0x148UL);  // 0x148
+        constexpr std::uint32_t fallingdetect       = std::uint32_t(0x14CUL);  // 0x14C
+        constexpr std::uint32_t debouncenable       = std::uint32_t(0x150UL);  // 0x150
+        constexpr std::uint32_t debouncingtime      = std::uint32_t(0x154UL);  // 0x154
+        constexpr std::uint32_t reserved4_0x0e      = std::uint32_t(0x158UL);  // 0x158
+        constexpr std::uint32_t cleardataout        = std::uint32_t(0x190UL);  // 0x190
+        constexpr std::uint32_t setdataout          = std::uint32_t(0x194UL);  // 0x194
       }
 
       // Timer registers.
@@ -591,7 +633,30 @@
         constexpr std::uint32_t tcar2         = std::uint32_t(dmtimer7_base + 0x058UL);  // 0x058
       }
 
-      // Power management registers.
+      // Watchdog registers.
+      namespace wdt1
+      {
+        static constexpr std::uint32_t widr           = std::uint32_t(wdt1_base + 0x000UL);  // 0x000
+        static constexpr std::uint32_t reserved0_0x03 = std::uint32_t(wdt1_base + 0x004UL);  // 0x004
+        static constexpr std::uint32_t wdsc           = std::uint32_t(wdt1_base + 0x010UL);  // 0x010
+        static constexpr std::uint32_t wdst           = std::uint32_t(wdt1_base + 0x014UL);  // 0x014
+        static constexpr std::uint32_t wisr           = std::uint32_t(wdt1_base + 0x018UL);  // 0x018
+        static constexpr std::uint32_t wier           = std::uint32_t(wdt1_base + 0x01CUL);  // 0x01C
+        static constexpr std::uint32_t reserved1      = std::uint32_t(wdt1_base + 0x020UL);  // 0x020
+        static constexpr std::uint32_t wclr           = std::uint32_t(wdt1_base + 0x024UL);  // 0x024
+        static constexpr std::uint32_t wcrr           = std::uint32_t(wdt1_base + 0x028UL);  // 0x028
+        static constexpr std::uint32_t wldr           = std::uint32_t(wdt1_base + 0x02CUL);  // 0x02C
+        static constexpr std::uint32_t wtgr           = std::uint32_t(wdt1_base + 0x030UL);  // 0x030
+        static constexpr std::uint32_t wwps           = std::uint32_t(wdt1_base + 0x034UL);  // 0x034
+        static constexpr std::uint32_t reserved2_0x03 = std::uint32_t(wdt1_base + 0x038UL);  // 0x038
+        static constexpr std::uint32_t wdly           = std::uint32_t(wdt1_base + 0x044UL);  // 0x044
+        static constexpr std::uint32_t wspr           = std::uint32_t(wdt1_base + 0x048UL);  // 0x048
+        static constexpr std::uint32_t reserved3_0x02 = std::uint32_t(wdt1_base + 0x04CUL);  // 0x04C
+        static constexpr std::uint32_t wirqstatraw    = std::uint32_t(wdt1_base + 0x054UL);  // 0x054
+        static constexpr std::uint32_t wirqstat       = std::uint32_t(wdt1_base + 0x058UL);  // 0x058
+        static constexpr std::uint32_t wirqenset      = std::uint32_t(wdt1_base + 0x05CUL);  // 0x05C
+        static constexpr std::uint32_t wirqenclr      = std::uint32_t(wdt1_base + 0x060UL);  // 0x060
+      }
     }
   }
 

@@ -8,35 +8,21 @@
 #include <array>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
-#include <am335x_hw_regs.h>
-
-void mcal::irq::interrupt_descriptor::register_interrupt(const mcal::irq::interrupt_descriptor& isr_descriptor)
-{
-  if(isr_descriptor.number < mcal::irq::interrupt_descriptor::number_of_interrupts)
-  {
-    const bool isr_routing_is_irq = (isr_descriptor.routing == interrupt_descriptor::route_to_irq);
-
-    INTC->ILR[isr_descriptor.number] = std::uint32_t(  std::uint32_t(std::uint32_t(isr_descriptor.priority << std::uint32_t(2UL)) & std::uint32_t(0x01FCUL))
-                                                     | std::uint32_t(isr_routing_is_irq ? 0UL : 1UL));
-
-    // Enable the system interrupt in the corresponding MIR_CLEAR register.
-    INTC->REG[std::size_t(std::size_t(isr_descriptor.number >> 5U) & std::size_t(3UL))].MIR_CLEAR = std::uint32_t(1UL << (isr_descriptor.number & std::size_t(0x01FUL)));
-  }
-}
 
 void mcal::irq::init(const config_type*)
 {
   // Reset the ARM interrupt controller.
-  INTC->SYSCONFIG = std::uint32_t(2UL);
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysconfig, 2UL>::reg_set();
 
   // Wait for the interrupt reset to finish.
-  while(std::uint32_t(INTC->SYSSTATUS & std::uint32_t(1UL)) != std::uint32_t(1UL))
+  while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysstatus>::reg_get() & std::uint32_t(1UL)) != std::uint32_t(1UL))
   {
     mcal::cpu::nop();
   }
 
-  // Enable all interrupt generation by setting the priority threshold appropriately.
-  INTC->THRESHOLD = std::uint32_t(0xFFUL);
+  // Enable the generation of all interrupts by setting the
+  // priority threshold appropriately.
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::threshold, 0xFFUL>::reg_set();
 
   // Enable all global interrupts.
   mcal::irq::enable_all();

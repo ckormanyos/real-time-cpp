@@ -74,10 +74,8 @@ void mcal::gpt::init(const config_type*)
     }
 
     // Register the timer7 interrupt, including priority, routing, etc.
-    const mcal::irq::interrupt_descriptor t7_isr_desc(mcal::irq::interrupt_descriptor::isr_id_tint7,
-                                                      mcal::irq::interrupt_descriptor::priority_type(0U));
-
-    mcal::irq::interrupt_descriptor::register_interrupt(t7_isr_desc);
+    mcal::irq::interrupt_descriptor::register_interrupt<mcal::irq::interrupt_descriptor::isr_id_tint7,
+                                                        mcal::irq::interrupt_descriptor::priority_type(0U)>();
 
     // Enable the timer7 overflow interrupt.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, 2UL>::reg_msk<7UL>();

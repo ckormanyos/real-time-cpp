@@ -54,7 +54,7 @@
           return mcal::reg::access<addr_type, reg_type, pinp, bpos>::bit_get();
         }
 
-        static void toggle()
+        static void toggle_pin()
         {
           // Toggle the port output value.
           mcal::reg::access<addr_type, reg_type, port, bpos>::bit_not();

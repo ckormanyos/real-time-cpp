@@ -7,17 +7,17 @@
 
 #include <mcal_cpu.h>
 #include <mcal_wdg.h>
-#include <am335x_hw_regs.h>
+#include <mcal_reg_access.h>
 
 namespace
 {
   void wdg_stop()
   {
-    WDT1->WSPR = 0xAAAAu;
-    while(std::uint32_t(WDT1->WWPS & 0x3FU) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::wdt1::wspr, 0xAAAAUL>::reg_set();
+    while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::wdt1::wwps>::reg_get() & std::uint32_t(0x3FUL)) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
 
-    WDT1->WSPR = 0x5555u;
-    while(std::uint32_t(WDT1->WWPS & 0x3FU) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::wdt1::wspr, 0x5555UL>::reg_set();
+    while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::wdt1::wwps>::reg_get() & std::uint32_t(0x3FUL)) != std::uint32_t(0UL)) { mcal::cpu::nop(); }
   }
 }
 

@@ -12,8 +12,8 @@
 
 namespace
 {
-  constexpr std::uint32_t port1_initial_value = static_cast<std::uint32_t>(0x00000000UL);
-  constexpr std::uint32_t port1_output_enable = static_cast<std::uint32_t>(0xFE1FFFFFUL);
+  constexpr std::uint32_t port1_initial_value = std::uint32_t(0x00000000UL);
+  constexpr std::uint32_t port1_output_enable = std::uint32_t(0xFFFFFFFFUL);
 }
 
 void mcal::port::init(const config_type*)
@@ -32,18 +32,32 @@ void mcal::port::init(const config_type*)
 
   // Enable the gpio1 modules.
   // Clear the disablemodule bit in the control register (ctrl).
-  // The gating ratio is 1:1.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1::ctrl, 0x00UL>::reg_set();
+  // Set the gating ratio to 1:1.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::gpio1_base + mcal::reg::gpiox::ctrl,
+                    0x00UL>::reg_set();
 
-  // Reset the GPIO module: no-idle, no wakeup, soft-reset, ocp clock free running.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1::sysconfig, 0x0AUL>::reg_set();
+  // Reset the gpio1 module: no-idle, no wakeup, soft-reset, ocp clock free running.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::gpio1_base + mcal::reg::gpiox::sysconfig,
+                    0x0AUL>::reg_set();
 
-  // Wait until the GPIO Module is reset.
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1::sysstatus>::reg_get() & std::uint32_t(1UL)) == std::uint32_t(0UL))
+  // Wait until the gpio1 Module is reset.
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1_base + mcal::reg::gpiox::sysstatus>::reg_get() & std::uint32_t(1UL)) == std::uint32_t(0UL))
   {
     mcal::cpu::nop();
   }
 
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1::oe, port1_output_enable>::reg_set();
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1::dataout, port1_initial_value>::reg_set();
+  // Set the port1 output value and direction registers.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::gpio1_base + mcal::reg::gpiox::dataout,
+                    port1_initial_value>::reg_set();
+
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::gpio1_base + mcal::reg::gpiox::oe,
+                    port1_output_enable>::reg_set();
 }

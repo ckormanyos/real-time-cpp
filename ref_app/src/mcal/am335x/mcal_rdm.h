@@ -15,7 +15,7 @@
     namespace rdm
     {
       typedef std::uint32_t address_type;
-      constexpr address_type address_offset = address_type(0xA0000000UL);
+      constexpr address_type address_offset = address_type(0x402F0000UL);
     }
   }
 
