@@ -1,5 +1,6 @@
 
 /*
+ Copyright Michael Schnerr 2011 - 2013.
  Copyright Christopher Kormanyos 2013.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -97,4 +98,3 @@ SECTIONS
 
   _rom_data_begin = LOADADDR(.data);
 }
-

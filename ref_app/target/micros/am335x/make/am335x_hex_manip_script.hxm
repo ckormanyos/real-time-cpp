@@ -1,4 +1,11 @@
 
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 // Program code.
 NEW_BUFFER   Buf_402F0400_to_402FBBFF  FROM_FILE    inFile -useAreas={{0x402F0400, 0xBC00}}  -setByteOrder=LittleEndian
 FILL_BUFFER  Buf_402F0400_to_402FBBFF  WITH_FILLER  { 0xFF }
