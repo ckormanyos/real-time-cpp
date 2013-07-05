@@ -135,9 +135,6 @@
     <None Include="target\micros\mips\make\mips_hex_manip_script.hxm">
       <Filter>micros\mips\make</Filter>
     </None>
-    <None Include="target\micros\am335x\startup\exception.s">
-      <Filter>micros\am335x\startup</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp">

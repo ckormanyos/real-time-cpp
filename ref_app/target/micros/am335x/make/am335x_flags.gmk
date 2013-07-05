@@ -16,17 +16,11 @@ GCC_TARGET  = arm-none-eabi
 TGT_CFLAGS    = -mcpu=cortex-a8                       \
                 -mlong-calls                          \
                 -mtune=cortex-a8                      \
-                -mno-unaligned-access                 \
-                -Dam335x_15x15                        \
-                -DMMCSD                               \
-                -I$(PATH_TGT)/include                 \
-                -I$(PATH_TGT)/include/hw              \
-                -I$(PATH_TGT)/include/armv7a          \
-                -I$(PATH_TGT)/include/armv7a/am335x
+                -mno-unaligned-access
 
 TGT_CPPFLAGS  = -std=c++11                            \
                 -Wzero-as-null-pointer-constant
 
-TGT_AFLAGS    = -I$(PATH_TGT)/include/hw
+TGT_AFLAGS    =
 
 TGT_LFLAGS    =
