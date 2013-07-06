@@ -6,7 +6,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <array>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 

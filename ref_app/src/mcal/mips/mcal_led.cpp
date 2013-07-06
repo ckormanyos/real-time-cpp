@@ -6,7 +6,6 @@
 //
 
 #include <mcal_led.h>
-#include <iostream>
 
 namespace mcal
 {
