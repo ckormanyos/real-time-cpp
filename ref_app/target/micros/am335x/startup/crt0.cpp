@@ -37,7 +37,7 @@ asm volatile(".set user_system_mode, 0x1F");
 
 asm volatile(".equ if_mask, 0xC0");
 
-extern "C" void __my_startup() __attribute__((section(".startup"), naked));
+extern "C" void __my_startup() __attribute__((section(".startup"), naked, used, noinline));
 
 void __my_startup()
 {

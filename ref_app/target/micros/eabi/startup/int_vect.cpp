@@ -10,17 +10,17 @@
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __my_startup();
-extern "C" void __vector_unused_irq();
-extern "C" void __nmi_handler        ();
-extern "C" void __hard_fault_handler ();
-extern "C" void __mem_manage_handler ();
-extern "C" void __bus_fault_handler  ();
-extern "C" void __usage_fault_handler();
-extern "C" void __svc_handler        ();
-extern "C" void __debug_mon_handler  ();
-extern "C" void __pend_sv_handler    ();
-extern "C" void __sys_tick_handler   ();
+extern "C" void __my_startup         () __attribute__((naked, used, noinline));
+extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
+extern "C" void __nmi_handler        () __attribute__((used, noinline));
+extern "C" void __hard_fault_handler () __attribute__((used, noinline));
+extern "C" void __mem_manage_handler () __attribute__((used, noinline));
+extern "C" void __bus_fault_handler  () __attribute__((used, noinline));
+extern "C" void __usage_fault_handler() __attribute__((used, noinline));
+extern "C" void __svc_handler        () __attribute__((used, noinline));
+extern "C" void __debug_mon_handler  () __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
+extern "C" void __sys_tick_handler   () __attribute__((used, noinline));
 extern "C" void __timer4_irq_handler ();
 
 extern "C" void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }

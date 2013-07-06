@@ -1,8 +1,7 @@
 
-This is the companion code for "Real-Time C++".
+This is the companion code for the book "Real-Time C++".
 
-See the book:
-C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
+See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
 Template Microcontroller Programming (Springer, Heidelberg, 2013).
 
 Details on the Reference Project
@@ -20,8 +19,9 @@ The reference project supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
-  * BeagleBone with ARM(R) A8
+  * BeagleBone with Texas Instruments AM335x ARM(R) A8
   * Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
+  * Considered: Raspberry Pi with ARM(R) 11
 
 Cross Development in the Reference Project
 ------------------------------------------
@@ -48,11 +48,19 @@ ref_app.atsln.
 Target Details
 -----------------
 
-The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board. It toggles
-the yellow LED on portb.5.
+The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
+The program toggles the yellow LED on portb.5.
 
 The ARM(R) Cortex(TM)-M3 configuration runs on the STM32VLDISCOVERY board available
-from ST Microelectronics(R). It toggles the blue LED on portc.8.
+from ST Microelectronics(R). The program toggles the blue LED on portc.8.
+
+The ARM(R) A8 configuration runs on the BeagleBone board. There is support for both
+the black edition as well as the white edition. This is a bare-metal program for
+the BeagleBone. The program is designed to boot the BeagleBone from a binary file
+called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a special
+boot header comprised of two 32-bit integers. The program is loaded from SD-card
+into RAM memory and subsequently executed. The program toggles the first user
+LED1 on port1.21.
 
 The GNU Compilers
 -----------------
@@ -61,7 +69,8 @@ GCC ports for the microcontroller solutions are available in the directory:
   ref_app/tools/Util/MinGW/msys/1.0/local/*
 
 The following compilers are available:
-  GCC 4.7.2 for avr-unknown-elf, for ATMEL(R) AVR(R)
-  GCC 4.7.2 for arm-unknown-eabi, for ARM(R) Cortex(TM)-M3
+  GCC 4.7.2 for avr-unknown-elf : For ATMEL(R) AVR(R)
+  GCC 4.7.2 for arm-unknown-eabi: For ARM(R) Cortex(TM)-M3 and ARM(R) A8
 
-These compilers have been built in MinGW and moved to the solution.
+These compilers have been built in MinGW and moved to the solution to
+a convenient location in the tools directory.

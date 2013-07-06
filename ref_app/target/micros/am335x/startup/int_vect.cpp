@@ -13,14 +13,22 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
-extern "C" void __my_startup         ();
-extern "C" void __undef_instr_handler();
-extern "C" void __pend_sv_handler    ();
-extern "C" void __abort_handler      ();
-extern "C" void __irq_handler        ();
-extern "C" void __fiq_handler        ();
-extern "C" void __vector_unused_irq  ();
+extern "C" void __my_startup         () __attribute__((section(".startup"), naked, used, noinline));
+extern "C" void __undef_instr_handler() __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
+extern "C" void __abort_handler      () __attribute__((used, noinline));
+extern "C" void __irq_handler        () __attribute__((naked, used, noinline));
+extern "C" void __fiq_handler        () __attribute__((naked, used, noinline));
+extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
 extern "C" void __vector_timer7      ();
+
+namespace crt
+{
+  void init_system_interrupt_vectors();
+}
+
+extern "C"
+const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
 
 void __undef_instr_handler() { for(;;) { mcal::cpu::nop(); } }
 void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
@@ -56,22 +64,14 @@ namespace
   }
 }
 
-namespace crt
+void crt::init_system_interrupt_vectors()
 {
-  void init_system_interrupt_vectors();
+  vector_base_address_set(am335x_vector_base);
 
-  void init_system_interrupt_vectors()
-  {
-    vector_base_address_set(am335x_vector_base);
-
-    std::copy(system_isr_vectors.begin(),
-              system_isr_vectors.end(),
-              reinterpret_cast<std::uint32_t*>(am335x_vector_base));
-  }
+  std::copy(system_isr_vectors.begin(),
+            system_isr_vectors.end(),
+            reinterpret_cast<std::uint32_t*>(am335x_vector_base));
 }
-
-extern "C"
-const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
 const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector =
@@ -206,32 +206,26 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq  // unused127         : 127
 }};
 
-asm volatile (".section .text");
-asm volatile (".global __irq_handler");
-asm volatile (".global __fiq_handler");
-asm volatile (".global __isr_vector");
 
 asm volatile (".set intc_sir_irq_activeirq, 0x0000007F");
 asm volatile (".set intc_control_newirqagr, 0x00000001");
 asm volatile (".set intc_sir_fiq_activefiq, 0x0000007F");
 asm volatile (".set intc_control_newfiqagr, 0x00000002");
-asm volatile (".set soc_aintc_regs,         0x48200000");
 
-asm volatile (".equ addr_sir_irq, soc_aintc_regs + 0x40");
-asm volatile (".equ addr_sir_fiq, soc_aintc_regs + 0x44");
-asm volatile (".equ addr_control, soc_aintc_regs + 0x48");
+asm volatile (".equ addr_sir_irq, 0x48200000 + 0x40");
+asm volatile (".equ addr_sir_fiq, 0x48200000 + 0x44");
+asm volatile (".equ addr_control, 0x48200000 + 0x48");
 
 asm volatile (".equ mask_active_irq, intc_sir_irq_activeirq");
 asm volatile (".equ mask_active_fiq, intc_sir_fiq_activefiq");
 asm volatile (".equ newirqagr, intc_control_newirqagr");
 asm volatile (".equ newfiqagr, intc_control_newfiqagr");
 
-asm volatile (".code 32");
+void __irq_handler()
+{
+  // The IRQ handler routes the ISR of highest priority in the IRQ
+  // to its handler. The IRQ handler does not support nesting.
 
-// The IRQ handler routes the ISR of highest priority in the IRQ
-// to its handler. The IRQ handler does not support nesting.
-
-asm volatile ("__irq_handler:");
   asm volatile ("stmfd  r13!, {r0-r3, r12, r14}");  // Save the context in the IRQ stack.
   asm volatile ("ldr r0, =addr_sir_irq");           // Get the Active IRQ.
   asm volatile ("ldr r1, [r0]");
@@ -245,11 +239,12 @@ asm volatile ("__irq_handler:");
   asm volatile ("dmb");                             // Complete the data write.
   asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
   asm volatile ("subs pc, r14, #0x4");              // Return to the program location before the IRQ.
+}
 
-// The FIQ handler routes the ISR of highest priority in the FIQ
-// to its handler. The FIQ handler does not support nesting.
-
-asm volatile ("__fiq_handler:");
+void __fiq_handler()
+{
+  // The FIQ handler routes the ISR of highest priority in the FIQ
+  // to its handler. The FIQ handler does not support nesting.
   asm volatile ("stmfd  r13!, {r0-r3, r12, r14}");  // Save the context in the FIQ stack.
   asm volatile ("ldr r0, =addr_sir_fiq");           // Get the Active FIQ.
   asm volatile ("ldr r1, [r0]");
@@ -263,3 +258,4 @@ asm volatile ("__fiq_handler:");
   asm volatile ("dmb");                             // Complete the data write.
   asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
   asm volatile ("subs pc, r14, #0x4");              // Return to the program location before the FIQ.
+}
