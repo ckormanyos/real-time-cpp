@@ -237,13 +237,13 @@ asm volatile ("__irq_handler:");
   asm volatile ("ldr r1, [r0]");
   asm volatile ("and r1, r1, #mask_active_irq");    // Mask the Active IRQ number.
   asm volatile ("ldr r0, =__isr_vector");           // Load the base of the vector table.
-  asm volatile ("add r14, pc, #0");                 // Save return address in LR.
+  asm volatile ("add r14, pc, #0");                 // Save the return address.
   asm volatile ("ldr pc, [r0, r1, lsl #2]");        // Jump to the ISR.
   asm volatile ("mov r0, #newirqagr");              // Acknowledge the IRQ.
   asm volatile ("ldr r1, =addr_control");
   asm volatile ("str r0, [r1]");
   asm volatile ("dmb");                             // Complete the data write.
-  asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the context.
+  asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
   asm volatile ("subs pc, r14, #0x4");              // Return to the program location before the IRQ.
 
 // The FIQ handler routes the ISR of highest priority in the FIQ
@@ -255,11 +255,11 @@ asm volatile ("__fiq_handler:");
   asm volatile ("ldr r1, [r0]");
   asm volatile ("and r1, r1, #mask_active_fiq");    // Mask the Active IRQ number.
   asm volatile ("ldr r0, =__isr_vector");           // Load the base of the vector table.
-  asm volatile ("add r14, pc, #0");                 // Save return address in LR.
+  asm volatile ("add r14, pc, #0");                 // Save the return address.
   asm volatile ("ldr pc, [r0, r1, lsl #2]");        // Jump to the ISR.
   asm volatile ("mov r0, #newfiqagr");              // Acknowledge the FIQ.
   asm volatile ("ldr r1, =addr_control");
   asm volatile ("str r0, [r1]");
   asm volatile ("dmb");                             // Complete the data write.
-  asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the context.
+  asm volatile ("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
   asm volatile ("subs pc, r14, #0x4");              // Return to the program location before the FIQ.

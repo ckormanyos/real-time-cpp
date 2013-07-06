@@ -28,19 +28,20 @@ mcal::gpt::value_type consistent_microsecond_tick()
   // Return the system tick using a multiple read to ensure
   // data consistency of the high-byte of the system tick.
 
+  typedef std::uint32_t timer_address_type;
   typedef std::uint32_t timer_register_type;
 
   // Do the first read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
+  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
   // Do the second read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
+  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
   // Perform the consistency check and return the consistent microsecond tick.
-  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(std::uint32_t(tim7_cnt_1 + 12UL) / 24U))
-                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(std::uint32_t(tim7_cnt_2 + 12UL) / 24U)));
+  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + 12UL) / 24U))
+                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + 12UL) / 24U)));
 }
 
 extern "C" void __vector_timer7();
@@ -75,7 +76,8 @@ void mcal::gpt::init(const config_type*)
 
     // Register the timer7 interrupt, including priority, routing, etc.
     mcal::irq::interrupt_descriptor::register_interrupt<mcal::irq::interrupt_descriptor::isr_id_tint7,
-                                                        mcal::irq::interrupt_descriptor::priority_type(0U)>();
+                                                        mcal::irq::interrupt_descriptor::priority_type(0U),
+                                                        mcal::irq::interrupt_descriptor::route_to_irq>();
 
     // Enable the timer7 overflow interrupt.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, 2UL>::reg_msk<7UL>();

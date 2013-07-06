@@ -23,7 +23,7 @@
 
       inline void enable_all()
       {
-        // Enable all IRQ.
+        // Enable all user interrupts.
         asm volatile("mrs r0, cpsr");
         asm volatile("bic r0, #0x80");
         asm volatile("msr cpsr, r0");
@@ -31,7 +31,7 @@
 
       inline void disable_all()
       {
-        // Disable all IRQ.
+        // Disable all user interrupts.
         asm volatile("mrs r0, cpsr");
         asm volatile("orr r0, #0x80");
         asm volatile("msr cpsr, r0");
@@ -51,30 +51,30 @@
 
         template<const number_type   isr_number,
                  const priority_type isr_priority,
-                 const routing_type  isr_routing = route_to_irq>
+                 const routing_type  isr_routing>
         static void register_interrupt()
         {
-          if(isr_number < number_of_interrupts)
-          {
-            constexpr bool isr_routing_is_irq = (isr_routing == route_to_irq);
+          static_assert(isr_number < number_of_interrupts,
+                        "The registered ISR number exceeds the maximum allowed index!");
 
-            constexpr std::uint32_t ilr_value = std::uint32_t(  std::uint32_t(std::uint32_t(isr_priority << std::uint32_t(2UL)) & std::uint32_t(0x01FCUL))
-                                                              | std::uint32_t(isr_routing_is_irq ? 0UL : 1UL));
+          // Set the interrupt priority level and the interrupt routing.
+          constexpr std::uint32_t priority_bits = std::uint32_t(std::uint32_t(isr_priority << std::uint32_t(2UL)) & std::uint32_t(0x01FCUL));
+          constexpr std::uint32_t routing_bits  = std::uint32_t((isr_routing == route_to_irq) ? 0UL : 1UL);
 
-            mcal::reg::access<std::uint32_t,
-                              std::uint32_t,
-                              mcal::reg::intc::ilr_base_0x80 + (isr_number * 4UL),
-                              ilr_value>::reg_set();
+          mcal::reg::access<std::uint32_t,
+                            std::uint32_t,
+                            mcal::reg::intc::ilr_base_0x80 + (isr_number * 4UL),
+                            priority_bits | routing_bits>::reg_set();
 
-            // Enable the system interrupt in the corresponding mir_clear register.
-            constexpr number_type   intc_sys_reg_index = number_type(number_type(isr_number >> 5U) & number_type(3U));
-            constexpr std::uint32_t intc_sys_reg_bpos  = std::uint32_t(std::uint32_t(isr_number) & std::uint32_t(0x01FUL));
+          // Enable the interrupt by setting the corresponding bit
+          // in the mir_clear register.
+          constexpr number_type   intc_sys_reg_index = number_type(number_type(isr_number >> 5U) & number_type(3U));
+          constexpr std::uint32_t intc_sys_reg_bpos  = std::uint32_t(std::uint32_t(isr_number) & std::uint32_t(0x01FUL));
 
-            mcal::reg::access<std::uint32_t,
-                              std::uint32_t,
-                              mcal::reg::intc::sys_base_0x04 + ((intc_sys_reg_index * 0x20UL) + mcal::reg::intc::sys::mir_clear),
-                              intc_sys_reg_bpos>::bit_set();
-          }
+          mcal::reg::access<std::uint32_t,
+                            std::uint32_t,
+                            mcal::reg::intc::sys_base_0x04 + ((intc_sys_reg_index * 0x20UL) + mcal::reg::intc::sys::mir_clear),
+                            intc_sys_reg_bpos>::bit_set();
         }
 
         static constexpr number_type isr_id_emuint             =   0U;
