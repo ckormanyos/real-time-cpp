@@ -15,8 +15,8 @@
       typedef void config_type;
       void init(const config_type*);
 
-      inline void enable_all () { asm volatile ("cpsie i"); }
-      inline void disable_all() { asm volatile ("cpsid i"); }
+      inline void enable_all () { asm volatile("cpsie i"); }
+      inline void disable_all() { asm volatile("cpsid i"); }
     }
   }
 

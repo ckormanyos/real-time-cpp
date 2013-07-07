@@ -8,9 +8,9 @@
 #include <cstdint>
 #include <algorithm>
 
-asm volatile (".extern _rom_data_begin"); // Start address for the initialization values of the rom-to-ram section.
-asm volatile (".extern _data_begin");     // Start address for the .data section.
-asm volatile (".extern _data_end");       // End address for the .data section.
+asm volatile(".extern _rom_data_begin"); // Start address for the initialization values of the rom-to-ram section.
+asm volatile(".extern _data_begin");     // Start address for the .data section.
+asm volatile(".extern _data_end");       // End address for the .data section.
 
 extern "C"
 {
@@ -33,24 +33,24 @@ namespace
   void do_copy_data()
   {
     // Copy the data segment initializers from ROM to RAM.
-    asm volatile ("ldi r17, hi8(_data_end)");
-    asm volatile ("ldi r26, lo8(_data_begin)");
-    asm volatile ("ldi r27, hi8(_data_begin)");
-    asm volatile ("ldi r30, lo8(_rom_data_begin)");
-    asm volatile ("ldi r31, hi8(_rom_data_begin)");
+    asm volatile("ldi r17, hi8(_data_end)");
+    asm volatile("ldi r26, lo8(_data_begin)");
+    asm volatile("ldi r27, hi8(_data_begin)");
+    asm volatile("ldi r30, lo8(_rom_data_begin)");
+    asm volatile("ldi r31, hi8(_rom_data_begin)");
 
-    asm volatile ("rjmp .L__do_copy_data_start");
+    asm volatile("rjmp .L__do_copy_data_start");
 
-    asm volatile (".L__do_copy_data_loop:");
+    asm volatile(".L__do_copy_data_loop:");
 
-    asm volatile ("lpm r0, Z+");
-    asm volatile ("st X+, r0");
+    asm volatile("lpm r0, Z+");
+    asm volatile("st X+, r0");
 
-    asm volatile (".L__do_copy_data_start:");
+    asm volatile(".L__do_copy_data_start:");
 
-    asm volatile ("cpi r26, lo8(_data_end)");
-    asm volatile ("cpc r27, r17");
-    asm volatile ("brne .L__do_copy_data_loop");
+    asm volatile("cpi r26, lo8(_data_end)");
+    asm volatile("cpc r27, r17");
+    asm volatile("brne .L__do_copy_data_loop");
   }
 
   void do_clear_bss()

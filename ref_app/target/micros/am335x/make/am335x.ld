@@ -28,7 +28,7 @@ SECTIONS
   . = 0x402F0400;
   . = ALIGN(4);
 
-  /* Entry code. This is where the program starts. */
+  /* Startup: This is where the program starts. */
   .startup :
   {
     *(.startup)
@@ -42,6 +42,14 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
+  } > ROM = 0xAAAA
+
+  /* Non-maskable ISR vectors */
+  .isr_vector_nonmaskable :
+  {
+    *(.isr_vector_nonmaskable)
+    . = ALIGN(0x10);
+    KEEP(*(.isr_vector_nonmaskable))
   } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */

@@ -15,64 +15,47 @@ namespace crt
 {
   void init_ram();
   void init_ctors();
-  void init_system_interrupt_vectors();
+  void init_nonmaskable_isr_vectors();
 }
 
-asm volatile(".extern __initial_stack_pointer");
-asm volatile(".extern main");
-
-asm volatile(".set undefined_stack_size, 0x0010");
-asm volatile(".set abort_stack_size,     0x0010");
-asm volatile(".set fiq_stack_size,       0x0010");
-asm volatile(".set irq_stack_size,       0x0400");
-asm volatile(".set svc_stack_size,       0x0010");
-
-asm volatile(".set usr_mode,         0x10");
-asm volatile(".set fiq_mode,         0x11");
-asm volatile(".set irq_mode,         0x12");
-asm volatile(".set svc_mode,         0x13");
-asm volatile(".set abort_mode,       0x17");
-asm volatile(".set undefined_mode,   0x1B");
-asm volatile(".set user_system_mode, 0x1F");
-
-asm volatile(".equ if_mask, 0xC0");
-
-extern "C" void __my_startup() __attribute__((section(".startup"), naked, used, noinline));
+extern "C" int  main                   ();
+extern "C" void __initial_stack_pointer();
+extern "C" void __my_startup           () __attribute__((section(".startup"), naked, used, noinline));
 
 void __my_startup()
 {
   // Setup the Stack for undefined mode.
   asm volatile("ldr r0, =__initial_stack_pointer");
-  asm volatile("msr cpsr_c, #undefined_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x1B | 0xC0");
   asm volatile("mov sp,r0");
-  asm volatile("sub r0, r0, #undefined_stack_size");
+  asm volatile("sub r0, r0, #0x0010");
 
   // Setup the stack for abort mode.
-  asm volatile("msr cpsr_c, #abort_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x17 | 0xC0");
   asm volatile("mov sp, r0");
-  asm volatile("sub r0,r0, #abort_stack_size");
+  asm volatile("sub r0,r0, #0x0010");
 
   // Setup the stack for fiq mode.
-  asm volatile("msr cpsr_c, #fiq_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x11 | 0xC0");
   asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #fiq_stack_size");
+  asm volatile("sub r0, r0, #0x0010");
 
   // Setup the stack for irq mode.
-  asm volatile("msr cpsr_c, #irq_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x12 | 0xC0");
   asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #irq_stack_size");
+  asm volatile("sub r0, r0, #0x0400");
 
   // Setup the stack for svc mode.
-  asm volatile("msr cpsr_c, #svc_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x13 | 0xC0");
   asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #svc_stack_size");
+  asm volatile("sub r0, r0, #0x0010");
 
   // Setup the stack for user/system mode.
-  asm volatile("msr cpsr_c, #user_system_mode | if_mask");
+  asm volatile("msr cpsr_c, #0x1F | 0xC0");
   asm volatile("mov sp, r0");
 
   // Copy the system interrupt vector table from ROM to RAM.
-  crt::init_system_interrupt_vectors();
+  crt::init_nonmaskable_isr_vectors();
 
   // Chip init: Port, oscillator and watchdog.
   mcal::cpu::init();
