@@ -32,23 +32,23 @@ mcal::gpt::value_type consistent_microsecond_tick()
   typedef std::uint32_t timer_register_type;
 
   // Do the first read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
+  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
   // Do the second read of the timer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + 24002UL);
+  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
   // Perform the consistency check and return the consistent microsecond tick.
-  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + 12UL) / 24U))
-                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + 12UL) / 24U)));
+  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + timer_register_type(12UL)) / 24U))
+                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + timer_register_type(12UL)) / 24U)));
 }
 
 extern "C" void __vector_timer7();
 
 void __vector_timer7()
 {
-  // Disable the DMTimer interrupts.
+  // Disable the dmtimer interrupts.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_clr, 7UL>::reg_set();
 
   // Clear the status of the interrupt flags.
@@ -57,10 +57,10 @@ void __vector_timer7()
   // Increment the 64-bit system tick by 1000, representing 1000us.
   system_tick += 1000U;
 
-  // Notify end of interrupt.
+  // Signal the end of the interrupt.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irq_eoi, 1UL>::reg_not();
 
-  // Re-enable the DMTimer interrupts.
+  // Enable the dmtimer interrupts.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, 2UL>::reg_set();
 }
 
@@ -96,7 +96,7 @@ void mcal::gpt::init(const config_type*)
     }
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tldr, 0xFFFFFFFEUL - 24000UL>::reg_set();
 
-    // Set auto reload mode and start timer (no prescaler).
+    // Setup auto reload mode and start the timer (with no prescaler).
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tclr, 3UL>::reg_set();
 
     gpt_is_initialized() = true;

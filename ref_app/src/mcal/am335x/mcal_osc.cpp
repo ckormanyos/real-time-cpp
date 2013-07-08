@@ -11,23 +11,6 @@
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
 
-namespace
-{
-  constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
-
-  constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
-  constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
-
-  constexpr unsigned st_dpll_clk_bpos       =           0U;
-  constexpr unsigned st_mn_bypass_bpos      =           8U;
-
-  constexpr std::uint32_t modulemode_enable =       0x02UL;
-  constexpr std::uint32_t modulemode_mask   =       0x03UL;
-
-  constexpr std::uint32_t idlest_func       = 0x00000000UL;
-  constexpr std::uint32_t idlest_mask       = 0x00030000UL;
-}
-
 namespace mcal
 {
   namespace osc
@@ -43,6 +26,20 @@ namespace mcal
       void emif_init                   ();
       void gpio1_clock_init            ();
       void dm_timer7_clock_init        ();
+
+      constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
+
+      constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
+      constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
+
+      constexpr unsigned st_dpll_clk_bpos       =           0U;
+      constexpr unsigned st_mn_bypass_bpos      =           8U;
+
+      constexpr std::uint32_t modulemode_enable =       0x02UL;
+      constexpr std::uint32_t modulemode_mask   =       0x03UL;
+
+      constexpr std::uint32_t idlest_func       = 0x00000000UL;
+      constexpr std::uint32_t idlest_mask       = 0x00030000UL;
     }
   }
 }
@@ -365,7 +362,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::control_clkctrl,
-                    modulemode_enable>::reg_msk<modulemode_mask>();
+                    detail::modulemode_enable>::reg_msk<detail::modulemode_mask>();
 
   detail::emif_init();
 

@@ -24,38 +24,45 @@ extern "C" void __vector_timer7      ();
 
 namespace crt
 {
-  void init_nonmaskable_isr_vectors();
+  void init_interrupts_nmi();
 }
 
-extern "C"
-const volatile std::array<void(*)(), 16U> __isr_vector_nonmaskable __attribute__((section(".isr_vector_nonmaskable")));
+namespace
+{
+  typedef void(*function_type)();
 
-extern "C"
-const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
+  constexpr std::size_t number_of_interrupts_nmi = std::size_t(16U);
+  constexpr std::size_t number_of_interrupts     = std::size_t(mcal::irq::interrupt_descriptor::number_of_interrupts);
+}
+
+extern "C" const volatile std::array<function_type, number_of_interrupts_nmi> __isr_vector_nmi __attribute__((section(".isr_vector_nmi")));
+extern "C" const volatile std::array<function_type, number_of_interrupts>     __isr_vector     __attribute__((section(".isr_vector")));
 
 void __undef_instr_handler() { for(;;) { mcal::cpu::nop(); } }
 void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
 void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
-void crt::init_nonmaskable_isr_vectors()
+void crt::init_interrupts_nmi()
 {
-  const std::uint32_t addr = reinterpret_cast<std::uint32_t>(&__isr_vector_nonmaskable);
+  // Load the start address of the NMI interrupt table.
+
+  const std::uint32_t addr = reinterpret_cast<std::uint32_t>(&__isr_vector_nmi);
 
   asm volatile("mcr p15, #0, %[value], c12, c0, 0":: [value] "r" (addr));
 }
 
 extern "C"
-const volatile std::array<void(*)(), 16U> __isr_vector_nonmaskable =
+const volatile std::array<function_type, number_of_interrupts_nmi> __isr_vector_nmi =
 {{
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF014UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE24FF008UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF010UL)),
-  reinterpret_cast<void(*)()>(std::uint32_t(0xE59FF010UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF014UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE24FF008UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF010UL)),
+  reinterpret_cast<function_type>(std::uint32_t(0xE59FF010UL)),
   __my_startup,
   __undef_instr_handler,
   __pend_sv_handler,
@@ -67,7 +74,7 @@ const volatile std::array<void(*)(), 16U> __isr_vector_nonmaskable =
 }};
 
 extern "C"
-const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_interrupts> __isr_vector =
+const volatile std::array<function_type, number_of_interrupts> __isr_vector =
 {{
   __vector_unused_irq,        // emuint            :   0
   __vector_unused_irq,        // commtx            :   1
@@ -198,7 +205,6 @@ const volatile std::array<void(*)(), mcal::irq::interrupt_descriptor::number_of_
   __vector_unused_irq,        // unused126         : 126
   __vector_unused_irq         // unused127         : 127
 }};
-
 
 void __irq_handler()
 {

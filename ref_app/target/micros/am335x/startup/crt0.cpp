@@ -13,9 +13,9 @@
 
 namespace crt
 {
-  void init_ram();
-  void init_ctors();
-  void init_nonmaskable_isr_vectors();
+  void init_ram           ();
+  void init_ctors         ();
+  void init_interrupts_nmi();
 }
 
 extern "C" int  main                   ();
@@ -55,7 +55,7 @@ void __my_startup()
   asm volatile("mov sp, r0");
 
   // Copy the system interrupt vector table from ROM to RAM.
-  crt::init_nonmaskable_isr_vectors();
+  crt::init_interrupts_nmi();
 
   // Chip init: Port, oscillator and watchdog.
   mcal::cpu::init();
