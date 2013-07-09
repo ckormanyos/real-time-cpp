@@ -12,7 +12,7 @@
 
 void mcal::cpu::init()
 {
-  mcal::port::init(nullptr);
   mcal::wdg::init(nullptr);
+  mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }

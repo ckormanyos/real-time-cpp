@@ -22,11 +22,6 @@ extern "C" void __fiq_handler        () __attribute__((naked, used, noinline));
 extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
 extern "C" void __vector_timer7      ();
 
-namespace crt
-{
-  void init_interrupts_nmi();
-}
-
 namespace
 {
   typedef void(*function_type)();
@@ -43,7 +38,7 @@ void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
 void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
-void crt::init_interrupts_nmi()
+void init_interrupts_nmi()
 {
   // Load the start address of the NMI interrupt table.
 

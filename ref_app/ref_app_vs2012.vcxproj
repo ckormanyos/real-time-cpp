@@ -382,6 +382,7 @@
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />
     <ClInclude Include="src\math\fixed_point\fixed_point.h" />
+    <ClInclude Include="src\mcal\am335x\mcal_osc_detail.h" />
     <ClInclude Include="src\mcal\am335x\mcal_cpu.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

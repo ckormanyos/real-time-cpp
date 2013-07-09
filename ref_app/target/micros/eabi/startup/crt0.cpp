@@ -23,7 +23,7 @@ void __my_startup()
   // Load the stack pointer.
   asm volatile("movs r1, #0");
 
-  // Chip init: Port, oscillator and watchdog.
+  // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.

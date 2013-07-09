@@ -10,9 +10,14 @@
 #include <mcal_port.h>
 #include <mcal_wdg.h>
 
+void init_interrupts_nmi();
+
 void mcal::cpu::init()
 {
-  mcal::osc::init(nullptr);
+  // Copy the system interrupt vector table from ROM to RAM.
+  init_interrupts_nmi();
+
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
+  mcal::osc::init(nullptr);
 }

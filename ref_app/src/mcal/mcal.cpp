@@ -18,8 +18,8 @@ void mcal::init()
 
   // Note: mcal::cpu::init() has already been called from the startup code.
   // Therefore, the following have already been called:
-  //   mcal::port::init(nullptr);
   //   mcal::wdg::init(nullptr);
+  //   mcal::port::init(nullptr);
   //   mcal::osc::init(nullptr);
 
   mcal::irq::init (nullptr);

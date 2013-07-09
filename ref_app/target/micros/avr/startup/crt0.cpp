@@ -36,7 +36,7 @@ void __my_startup()
   // Load the SPL register (stack pointer low).
   asm volatile("out 0x3D, r28");
 
-  // Chip init: Port, oscillator and watchdog.
+  // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.

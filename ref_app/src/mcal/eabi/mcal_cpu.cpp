@@ -22,7 +22,7 @@ void mcal::cpu::init()
   // Relocate the vector table to internal flash.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, 0x08000000UL>::reg_set();
 
+  mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
-  mcal::wdg::init(nullptr);
 }

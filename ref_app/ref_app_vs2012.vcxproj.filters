@@ -651,6 +651,9 @@
     <ClInclude Include="src\mcal\am335x\mcal_wdg.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\am335x\mcal_osc_detail.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
