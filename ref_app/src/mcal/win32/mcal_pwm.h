@@ -8,7 +8,8 @@
 #ifndef _MCAL_PWM_2010_09_14_H_
   #define _MCAL_PWM_2010_09_14_H_
 
-  #include <util/utility/util_type.h>
+  #include <cstdint>
+  #include <util/utility/util_noncopyable.h>
 
   namespace mcal
   {
@@ -18,7 +19,7 @@
 
       inline void init(const config_type*) { }
 
-      class pwm_type
+      class pwm_type : private util::noncopyable
       {
       public:
         typedef std::uint8_t duty_type;

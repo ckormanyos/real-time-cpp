@@ -8,7 +8,7 @@
 #ifndef _MCAL_GPT_2011_10_20_H_
   #define _MCAL_GPT_2011_10_20_H_
 
-  #include <util/utility/util_type.h>
+  #include <cstdint>
 
   namespace mcal
   {

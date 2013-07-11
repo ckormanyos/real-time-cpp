@@ -8,8 +8,7 @@
 #ifndef _MCAL_PORT_2012_06_27_H_
   #define _MCAL_PORT_2012_06_27_H_
 
-  #include <util/utility/util_type.h>
-  #include <util/utility/util_noncopyable.h>
+  #include <cstdint>
   #include <mcal_reg_access.h>
 
   namespace mcal

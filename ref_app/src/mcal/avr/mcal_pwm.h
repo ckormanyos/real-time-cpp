@@ -10,9 +10,9 @@
 
   #include <algorithm>
   #include <atomic>
+  #include <cstdint>
   #include <mcal_port.h>
   #include <mcal_reg_access.h>
-  #include <util/utility/util_type.h>
   #include <util/utility/util_noncopyable.h>
 
   namespace mcal
@@ -32,14 +32,14 @@
                const addr_type addr,
                const reg_type bpos,
                const std::uint8_t resol = 100U>
-      class pwm_type
+      class pwm_type : private util::noncopyable
       {
       public:
         typedef std::uint8_t duty_type;
 
-        pwm_type(const duty_type duty = 0U) : counter(0U),
+        pwm_type(const duty_type duty = 0U) : counter   (0U),
                                               duty_cycle(duty),
-                                              shadow(duty)
+                                              shadow    (duty)
         {
           // Set the port pin to output with logic level low.
           port_pin_type::set_pin_low();
@@ -94,10 +94,6 @@
                                      reg_type,
                                      addr,
                                      bpos> port_pin_type;
-
-        // Make the pwm_type class non-copyable.
-        pwm_type(const pwm_type&) = delete;
-        const pwm_type& operator=(const pwm_type&) = delete;
       };
 
       typedef pwm_type<std::uint8_t,

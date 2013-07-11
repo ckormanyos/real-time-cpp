@@ -203,40 +203,48 @@ const volatile std::array<function_type, number_of_interrupts> __isr_vector =
 
 void __irq_handler()
 {
-  // The IRQ handler routes the ISR of highest priority in the IRQ
-  // to its handler. The IRQ handler does not support nesting.
+  // Route the ISR of highest priority in the IRQ to its handler.
+  // This does not support nested interrupts.
 
-  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");  // Save the context in the IRQ stack.
-  asm volatile("ldr r0, =0x48200040");             // Get the active IRQ.
+  // For an alternate implementation in the assembly language
+  // of the target processor and additional information, see parts
+  // of Sitara Ware's "exception.s".
+
+  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");
+  asm volatile("ldr r0, =0x48200040");
   asm volatile("ldr r1, [r0]");
-  asm volatile("and r1, r1, #0x0000007F");         // Mask the Active IRQ number.
-  asm volatile("ldr r0, =__isr_vector");           // Load the base of the vector table.
-  asm volatile("add r14, pc, #0");                 // Save the return address.
-  asm volatile("ldr pc, [r0, r1, lsl #2]");        // Jump to the interrupt service routine.
-  asm volatile("mov r0, #0x00000001");             // Acknowledge the IRQ.
-  asm volatile("ldr r1, =0x48200048");             // Address control register.
+  asm volatile("and r1, r1, #0x0000007F");
+  asm volatile("ldr r0, =__isr_vector");
+  asm volatile("add r14, pc, #0");
+  asm volatile("ldr pc, [r0, r1, lsl #2]");
+  asm volatile("mov r0, #0x00000001");
+  asm volatile("ldr r1, =0x48200048");
   asm volatile("str r0, [r1]");
-  asm volatile("dmb");                             // Complete the data write.
-  asm volatile("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
-  asm volatile("subs pc, r14, #0x4");              // Return to the program location before the IRQ.
+  asm volatile("dmb");
+  asm volatile("ldmfd r13!, {r0-r3, r12, r14}");
+  asm volatile("subs pc, r14, #0x4");
 }
 
 void __fiq_handler()
 {
-  // The FIQ handler routes the ISR of highest priority in the FIQ
-  // to its handler. The FIQ handler does not support nesting.
+  // Route the ISR of highest priority in the FIQ to its handler.
+  // This does not support nested interrupts.
 
-  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");  // Save the context in the FIQ stack.
-  asm volatile("ldr r0, =0x48200044");             // Get the active FIQ.
+  // For an alternate implementation in the assembly language
+  // of the target processor and additional information, see parts
+  // of Sitara Ware's "exception.s".
+
+  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");
+  asm volatile("ldr r0, =0x48200044");
   asm volatile("ldr r1, [r0]");
-  asm volatile("and r1, r1, #0x0000007F");         // Mask the Active IRQ number.
-  asm volatile("ldr r0, =__isr_vector");           // Load the base of the vector table.
-  asm volatile("add r14, pc, #0");                 // Save the return address.
-  asm volatile("ldr pc, [r0, r1, lsl #2]");        // Jump to the interrupt service routine.
-  asm volatile("mov r0, #0x00000002");             // Acknowledge the FIQ.
-  asm volatile("ldr r1, =0x48200048");             // Address control register.
+  asm volatile("and r1, r1, #0x0000007F");
+  asm volatile("ldr r0, =__isr_vector");
+  asm volatile("add r14, pc, #0");
+  asm volatile("ldr pc, [r0, r1, lsl #2]");
+  asm volatile("mov r0, #0x00000002");
+  asm volatile("ldr r1, =0x48200048");
   asm volatile("str r0, [r1]");
-  asm volatile("dmb");                             // Complete the data write.
-  asm volatile("ldmfd r13!, {r0-r3, r12, r14}");   // Restore the program context.
-  asm volatile("subs pc, r14, #0x4");              // Return to the program location before the FIQ.
+  asm volatile("dmb");
+  asm volatile("ldmfd r13!, {r0-r3, r12, r14}");
+  asm volatile("subs pc, r14, #0x4");
 }

@@ -8,9 +8,9 @@
 #ifndef _MCAL_LED_2010_09_14_H_
   #define _MCAL_LED_2010_09_14_H_
 
-  #include <util/utility/util_type.h>
-  #include <util/utility/util_noncopyable.h>
+  #include <cstdint>
   #include <mcal_port.h>
+  #include <util/utility/util_noncopyable.h>
 
   namespace mcal
   {

@@ -23,35 +23,41 @@ extern "C" void __my_startup           () __attribute__((section(".startup"), na
 
 void __my_startup()
 {
-  // Setup the Stack for undefined mode.
-  asm volatile("ldr r0, =__initial_stack_pointer");
+  // Setup the stack pointers and the stacks.
+  // For additional information on stack setup,
+  // see parts of Sitara Ware's "init.s".
+
+  asm volatile("mov r3, #0");
+
+  // Setup the undefined mode Stack.
+  asm volatile("ldr r3, =__initial_stack_pointer");
   asm volatile("msr cpsr_c, #0x1B | 0xC0");
-  asm volatile("mov sp,r0");
-  asm volatile("sub r0, r0, #0x0010");
+  asm volatile("mov sp, r3");
+  asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the stack for abort mode.
+  // Setup the abort mode stack.
   asm volatile("msr cpsr_c, #0x17 | 0xC0");
-  asm volatile("mov sp, r0");
-  asm volatile("sub r0,r0, #0x0010");
+  asm volatile("mov sp, r3");
+  asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the stack for fiq mode.
+  // Setup the fiq stack.
   asm volatile("msr cpsr_c, #0x11 | 0xC0");
-  asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #0x0010");
+  asm volatile("mov sp, r3");
+  asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the stack for irq mode.
+  // Setup the irq stack (with 1kB stack size).
   asm volatile("msr cpsr_c, #0x12 | 0xC0");
-  asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #0x0400");
+  asm volatile("mov sp, r3");
+  asm volatile("sub r3, r3, #0x0400");
 
-  // Setup the stack for svc mode.
+  // Setup the svc stack.
   asm volatile("msr cpsr_c, #0x13 | 0xC0");
-  asm volatile("mov sp, r0");
-  asm volatile("sub r0, r0, #0x0010");
+  asm volatile("mov sp, r3");
+  asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the stack for user/system mode.
+  // Setup the user/system stack.
   asm volatile("msr cpsr_c, #0x1F | 0xC0");
-  asm volatile("mov sp, r0");
+  asm volatile("mov sp, r3");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
