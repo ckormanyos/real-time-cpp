@@ -36,20 +36,20 @@ SECTIONS
     KEEP(*(.startup))
   } > ROM = 0xAAAA
 
-  /* ISR vectors */
-  .isr_vector :
-  {
-    *(.isr_vector)
-    . = ALIGN(0x10);
-    KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
-
   /* Non-maskable ISR vectors */
   .isr_vector_nmi :
   {
     *(.isr_vector_nmi)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector_nmi))
+  } > ROM = 0xAAAA
+
+  /* ISR vectors */
+  .isr_vector :
+  {
+    *(.isr_vector)
+    . = ALIGN(0x10);
+    KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */
