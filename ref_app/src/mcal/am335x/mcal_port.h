@@ -70,7 +70,7 @@
       typedef port_pin<std::uint32_t,
                        std::uint32_t,
                        mcal::reg::gpio1_base,
-                       24UL> port_rdm_type;
+                       14UL> port_rdm_type;
     }
   }
 

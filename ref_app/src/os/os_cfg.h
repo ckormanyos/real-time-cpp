@@ -27,15 +27,15 @@
   #define OS_TASK_LIST                                                           \
   {                                                                              \
     {                                                                            \
-    task_control_block ( sys::rdm::task_init,                                    \
+      task_control_block(sys::rdm::task_init,                                    \
                          sys::rdm::task_func,                                    \
-                         task_control_block::timer_type::microseconds( 1000U),   \
+                         task_control_block::timer_type::microseconds(  250U),   \
                          task_control_block::timer_type::microseconds(    0U)),  \
-    task_control_block ( app::led::task_init,                                    \
+      task_control_block(app::led::task_init,                                    \
                          app::led::task_func,                                    \
                          task_control_block::timer_type::microseconds( 2000U),   \
                          task_control_block::timer_type::microseconds(  211U)),  \
-    task_control_block ( sys::mon::task_init,                                    \
+      task_control_block(sys::mon::task_init,                                    \
                          sys::mon::task_func,                                    \
                          task_control_block::timer_type::microseconds(20000U),   \
                          task_control_block::timer_type::microseconds(  419U)),  \

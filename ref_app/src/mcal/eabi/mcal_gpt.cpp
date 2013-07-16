@@ -65,9 +65,9 @@ mcal::gpt::value_type consistent_microsecond_tick()
 }
 
 // TBD: Do we really need interrupt attributes here?
-extern "C" void __timer4_irq_handler() __attribute__((interrupt));
+extern "C" void __vector_timer4() __attribute__((interrupt));
 
-extern "C" void __timer4_irq_handler()
+extern "C" void __vector_timer4()
 {
   // Clear the interrupt request bit.
   mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, 0x0000U>::reg_set();

@@ -30,8 +30,8 @@
 
       // * The single-bit timeout is set to 5% less than four poll times.
       // * The receiver automatically resets if it is idle for 12 bit times or more.
-      static const std::uint_fast16_t bit_time_microseconds = 950U * 4U;
-      static const std::uint_fast8_t  receive_reset_limit   =  12U * 4U;
+      static const std::uint_fast16_t bit_time_microseconds = (475U * 4U) / 2U;
+      static const std::uint_fast8_t  receive_reset_limit   =   12U * 4U;
 
       typedef util::timer<std::uint_fast16_t> timer_type;
 

@@ -21,7 +21,7 @@ extern "C" void __svc_handler        () __attribute__((used, noinline));
 extern "C" void __debug_mon_handler  () __attribute__((used, noinline));
 extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
 extern "C" void __sys_tick_handler   () __attribute__((used, noinline));
-extern "C" void __timer4_irq_handler ();
+extern "C" void __vector_timer4      ();
 
 extern "C" void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 extern "C" void __nmi_handler        () { for(;;) { mcal::cpu::nop(); } }
@@ -91,7 +91,7 @@ const volatile std::array<isr_type, 128U> __isr_vector =
   __vector_unused_irq,       // 0x00AC, TIM1_CC IRQ handler,
   __vector_unused_irq,       // 0x00B0, TIM2 IRQ handler,
   __vector_unused_irq,       // 0x00B4, TIM3 IRQ handler,
-  __timer4_irq_handler,      // 0x00B8, TIM4 IRQ handler,
+  __vector_timer4,           // 0x00B8, TIM4 IRQ handler,
   __vector_unused_irq,       // 0x00BC, I2C1_EV IRQ handler,
   __vector_unused_irq,       // 0x00C0, I2C1_ER IRQ handler,
   __vector_unused_irq,       // 0x00C4, I2C2_EV IRQ handler,

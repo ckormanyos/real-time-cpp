@@ -210,7 +210,7 @@ void __irq_handler()
   // of the target processor and additional information, see parts
   // of Sitara Ware's "exception.s".
 
-  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");
+  asm volatile("stmfd r13!, {r0-r3, r12, r14}");
   asm volatile("ldr r0, =0x48200040");
   asm volatile("ldr r1, [r0]");
   asm volatile("and r1, r1, #0x0000007F");
@@ -234,7 +234,7 @@ void __fiq_handler()
   // of the target processor and additional information, see parts
   // of Sitara Ware's "exception.s".
 
-  asm volatile("stmfd  r13!, {r0-r3, r12, r14}");
+  asm volatile("stmfd r13!, {r0-r3, r12, r14}");
   asm volatile("ldr r0, =0x48200044");
   asm volatile("ldr r1, [r0]");
   asm volatile("and r1, r1, #0x0000007F");
