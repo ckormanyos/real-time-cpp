@@ -11,7 +11,7 @@
 
 namespace
 {
-  typedef util::single_pin_debug_monitor<mcal::port::port_rdm_type> rdm_debug_monitor_type;
+  typedef util::single_pin_debug_monitor<mcal::rdm::port_rdm_type> rdm_debug_monitor_type;
 
   rdm_debug_monitor_type rdm_debug_monitor;
 }

@@ -81,11 +81,6 @@
 
         static constexpr reg_type pdir_shift_offset = reg_type((bpos - reg_type((bpos >= 8U) ? 8U : 0U)) * 4U);
       };
-
-      typedef port_pin<std::uint32_t,
-                       std::uint32_t,
-                       mcal::reg::gpioc_odr,
-                       7U> port_rdm_type;
     }
   }
 

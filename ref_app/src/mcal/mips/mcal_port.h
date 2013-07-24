@@ -32,8 +32,6 @@
         static bool read_input_value() { return false; }
         static void toggle_pin() { }
       };
-
-      typedef port_pin<std::uint32_t, std::uint32_t, 0U, 0U> port_rdm_type;
     }
   }
 

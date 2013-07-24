@@ -9,6 +9,7 @@
   #define _MCAL_RDM_2013_06_07_H_
 
   #include <cstdint>
+  #include <mcal_port.h>
 
   namespace mcal
   {
@@ -16,6 +17,11 @@
     {
       typedef std::uint16_t address_type;
       constexpr address_type address_offset = address_type(0U);
+
+      typedef mcal::port::port_pin<std::uint8_t,
+                                   std::uint8_t,
+                                   mcal::reg::portd,
+                                   3U> port_rdm_type;
     }
   }
 

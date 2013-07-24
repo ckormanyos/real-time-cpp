@@ -66,11 +66,6 @@
         static constexpr addr_type pinp = addr_type(port + 0x0138UL);
         static constexpr addr_type pval = addr_type(port + 0x013CUL);
       };
-
-      typedef port_pin<std::uint32_t,
-                       std::uint32_t,
-                       mcal::reg::gpio1_base,
-                       14UL> port_rdm_type;
     }
   }
 

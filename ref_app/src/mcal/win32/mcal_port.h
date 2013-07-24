@@ -25,8 +25,6 @@
         static bool read_input_value() { return false; }
         static void toggle_pin() { }
       };
-
-      typedef port_pin port_rdm_type;
     }
   }
 
