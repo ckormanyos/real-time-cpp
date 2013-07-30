@@ -350,6 +350,7 @@
     <ClCompile Include="src\mcal\win32\mcal_pwm.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_spi.cpp" />
     <ClCompile Include="src\os\os.cpp" />
+    <ClCompile Include="src\os\os_detail.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
     <ClCompile Include="src\sys\rdm\sys_rdm.cpp" />
@@ -597,6 +598,7 @@
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
+    <ClInclude Include="src\os\os_detail.h" />
     <ClInclude Include="src\util\memory\util_factory.h" />
     <ClInclude Include="src\util\memory\util_placed_pointer.h" />
     <ClInclude Include="src\util\memory\util_ring_allocator.h" />

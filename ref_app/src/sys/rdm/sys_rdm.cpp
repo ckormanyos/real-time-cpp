@@ -9,13 +9,6 @@
 #include <mcal_rdm.h>
 #include <util/monitor/util_single_pin_debug_monitor.h>
 
-namespace
-{
-  typedef util::single_pin_debug_monitor<mcal::rdm::port_rdm_type> rdm_debug_monitor_type;
-
-  rdm_debug_monitor_type rdm_debug_monitor;
-}
-
 namespace sys
 {
   namespace rdm
@@ -25,6 +18,13 @@ namespace sys
   }
 }
 
+namespace
+{
+  typedef util::single_pin_debug_monitor<mcal::rdm::port_rdm_type> rdm_debug_monitor_type;
+
+  rdm_debug_monitor_type rdm_debug_monitor;
+}
+
 void sys::rdm::task_init()
 {
 }
@@ -32,5 +32,7 @@ void sys::rdm::task_init()
 void sys::rdm::task_func()
 {
   rdm_debug_monitor.driver_task();
-  rdm_debug_monitor.protocol_task<mcal::rdm::address_type, mcal::rdm::address_offset>();
+
+  rdm_debug_monitor.protocol_task<mcal::rdm::address_type,
+                                  mcal::rdm::address_offset>();
 }

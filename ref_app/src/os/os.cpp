@@ -5,81 +5,19 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
-#include <array>
 #include <algorithm>
-
-#include <os/os.h>
-#include <os/os_cfg.h>
-#include <util/utility/util_time.h>
-
-namespace os
-{
-  class task_control_block
-  {
-  public:
-    typedef void (*function_type)();
-
-    typedef util::timer<std::uint32_t> timer_type;
-    typedef timer_type::tick_type      tick_type;
-
-    task_control_block(const function_type i,
-                       const function_type f,
-                       const tick_type c,
-                       const tick_type o = static_cast<tick_type>(0U)) : init (i),
-                                                                         func (f),
-                                                                         cycle(c),
-                                                                         timer(o) { }
-
-    task_control_block(const task_control_block& tcb);
-
-    void initialize() const { init(); }
-
-    bool execute()
-    {
-      if(timer.timeout())
-      {
-        // Increment the task's interval timer with the task cycle.
-        timer.start_interval(cycle);
-
-        // Call the task.
-        func();
-
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-
-    }
-
-  private:
-    const function_type init;
-    const function_type func;
-    const tick_type     cycle;
-          timer_type    timer;
-
-    task_control_block();
-    const task_control_block& operator=(const task_control_block&);
-  };
-
-  static_assert(OS_TASK_COUNT > 0U, "the task count must exceed zero");
-
-  typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
-
-  task_list_type task_list = OS_TASK_LIST;
-}
+#include <mcal_irq.h>
+#include <os/os_detail.h>
 
 void os::schedule()
 {
   // Initialize the idle task.
-  os::idle_task_init();
+  OS_IDLE_TASK_INIT();
 
   // Initialize each task.
-  std::for_each(os::task_list.begin(),
-                os::task_list.end(),
-                [](const os::task_control_block& tcb)
+  std::for_each(os::detail::task_list.begin(),
+                os::detail::task_list.end(),
+                [](const os::detail::task_control_block& tcb)
                 {
                   tcb.initialize();
                 });
@@ -87,18 +25,58 @@ void os::schedule()
   for(;;)
   {
     // Find the next ready task using a priority-based find algorithm.
-    const task_list_type::const_iterator it_task = std::find_if(os::task_list.begin(),
-                                                                os::task_list.end(),
-                                                                [](os::task_control_block& tcb) -> bool
-                                                                {
-                                                                  return tcb.execute();
-                                                                });
+    const os::detail::task_list_type::iterator it_ready_task
+      = std::find_if(os::detail::task_list.begin(),
+                     os::detail::task_list.end(),
+                     [](os::detail::task_control_block& tcb) -> bool
+                     {
+                       return tcb.execute();
+                     });
 
-    if(os::task_list.end() == it_task)
+    if(it_ready_task == os::detail::task_list.end())
     {
+      os::detail::task_control_block::ready_task_index
+        = os::detail::task_control_block::task_index_type(os::detail::task_list.size());
+
       // If no ready-task was found, then service the idle task.
-      os::idle_task_func();
+      OS_IDLE_TASK_FUNC();
     }
   }
 }
 
+void os::set_event(const os::task_id_type task_id, const os::event_type& event_to_set)
+{
+  if(task_id < os::task_id_end)
+  {
+    os::detail::task_list_type::iterator task_iterator
+      = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(task_id));
+
+    mcal::irq::disable_all();
+    task_iterator->event |= event_to_set;
+    mcal::irq::enable_all();
+  }
+}
+
+void os::get_event(os::event_type& event_to_get)
+{
+  os::detail::task_list_type::iterator task_iterator
+    = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(os::detail::task_control_block::ready_task_index));
+
+  mcal::irq::disable_all();
+  const os::event_type evt = task_iterator->event;
+  mcal::irq::enable_all();
+
+  event_to_get = evt;
+}
+
+void os::clr_event(const os::event_type& event_mask_to_clear)
+{
+  os::detail::task_list_type::iterator task_iterator
+    = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(os::detail::task_control_block::ready_task_index));
+
+  const os::event_type event_clear_value = os::event_type(~event_mask_to_clear);
+
+  mcal::irq::disable_all();
+  task_iterator->event &= event_clear_value;
+  mcal::irq::enable_all();
+}

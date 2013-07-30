@@ -280,6 +280,9 @@
     <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <Filter>src\mcal</Filter>
     </ClCompile>
+    <ClCompile Include="src\os\os_detail.cpp">
+      <Filter>src\os</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -653,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_osc_detail.h">
       <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\os_detail.h">
+      <Filter>src\os</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

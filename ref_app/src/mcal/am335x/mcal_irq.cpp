@@ -27,3 +27,19 @@ void mcal::irq::init(const config_type*)
   // Enable all global interrupts.
   mcal::irq::enable_all();
 }
+
+void mcal::irq::enable_all()
+{
+  // Enable all user interrupts.
+  asm volatile("mrs r0, cpsr");
+  asm volatile("bic r0, #0x80");
+  asm volatile("msr cpsr, r0");
+}
+
+void mcal::irq::disable_all()
+{
+  // Disable all user interrupts.
+  asm volatile("mrs r0, cpsr");
+  asm volatile("orr r0, #0x80");
+  asm volatile("msr cpsr, r0");
+}
