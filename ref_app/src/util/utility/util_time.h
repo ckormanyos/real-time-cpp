@@ -14,11 +14,11 @@
 
   namespace util
   {
-    template<typename unsigned_tick>
+    template<typename unsigned_tick_type>
     class timer
     {
     public:
-      typedef unsigned_tick tick_type;
+      typedef unsigned_tick_type tick_type;
 
       static_assert(std::numeric_limits<tick_type>::is_signed == false,
                     "the timer tick type must be unsigned");

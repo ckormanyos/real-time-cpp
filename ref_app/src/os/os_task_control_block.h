@@ -54,8 +54,11 @@
       friend void os::clear_event(const event_type& event_mask_to_clear);
     };
 
-    static_assert(OS_TASK_COUNT > 0U, "the task count must exceed zero");
-    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<os::task_control_block::task_trace_type>::digits), "the task count exceeds the number of bits in the task trace");
+    static_assert(OS_TASK_COUNT > 0U,
+                  "the task count must exceed zero");
+
+    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<os::task_control_block::task_trace_type>::digits),
+                  "the task count exceeds the available bits in the task trace mechanism");
 
     typedef std::array<os::task_control_block, OS_TASK_COUNT> task_list_type;
 
