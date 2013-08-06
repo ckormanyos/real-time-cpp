@@ -115,9 +115,6 @@
     <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_ser.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\mcal.cpp">
       <Filter>src\mcal</Filter>
     </ClCompile>
@@ -157,9 +154,6 @@
     <ClCompile Include="src\mcal\eabi\mcal_led.cpp">
       <Filter>src\mcal\eabi</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_ser.cpp">
-      <Filter>src\mcal\eabi</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\eabi\mcal_wdg.cpp">
       <Filter>src\mcal\eabi</Filter>
     </ClCompile>
@@ -168,12 +162,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_osc.cpp">
       <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_spi.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_spi.cpp">
-      <Filter>src\mcal\eabi</Filter>
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
       <Filter>src\util\STL\impl</Filter>
@@ -186,9 +174,6 @@
     </ClCompile>
     <ClCompile Include="src\util\memory\util_static_allocator.cpp">
       <Filter>src\util\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_spi.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_pwm.cpp">
       <Filter>src\mcal\avr</Filter>
@@ -224,12 +209,6 @@
       <Filter>src\mcal\mips</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\mips\mcal_pwm.cpp">
-      <Filter>src\mcal\mips</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\mips\mcal_ser.cpp">
-      <Filter>src\mcal\mips</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\mips\mcal_spi.cpp">
       <Filter>src\mcal\mips</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\mips\mcal_wdg.cpp">
@@ -268,19 +247,13 @@
     <ClCompile Include="src\mcal\am335x\mcal_pwm.cpp">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\am335x\mcal_ser.cpp">
-      <Filter>src\mcal\am335x</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\am335x\mcal_spi.cpp">
-      <Filter>src\mcal\am335x</Filter>
+    <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <Filter>src\mcal</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\am335x\mcal_wdg.cpp">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
-      <Filter>src\mcal</Filter>
-    </ClCompile>
-    <ClCompile Include="src\os\os_detail.cpp">
+    <ClCompile Include="src\os\os_task_control_block.cpp">
       <Filter>src\os</Filter>
     </ClCompile>
   </ItemGroup>
@@ -651,13 +624,13 @@
     <ClInclude Include="src\mcal\am335x\mcal_spi.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_wdg.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_osc_detail.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
-    <ClInclude Include="src\os\os_detail.h">
+    <ClInclude Include="src\mcal\am335x\mcal_wdg.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
     </ClInclude>
   </ItemGroup>

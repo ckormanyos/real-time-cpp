@@ -14,5 +14,5 @@ extern "C" int main()
   mcal::init();
 
   // Start the multitasking scheduler (and never return).
-  os::schedule();
+  os::start_os();
 }

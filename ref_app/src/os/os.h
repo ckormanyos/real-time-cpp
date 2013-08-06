@@ -21,10 +21,10 @@
 
     typedef std::uint_fast8_t event_type;
 
-    void schedule();
-    void set_event(const os::task_id_type task_id, const os::event_type& event_to_set);
-    void get_event(os::event_type& event_to_get);
-    void clr_event(const os::event_type& event_clear_mask);
+    void start_os();
+    void set_event  (const os::task_id_type task_id, const os::event_type& event_to_set);
+    void get_event  (os::event_type& event_to_get);
+    void clear_event(const os::event_type& event_clear_mask);
   }
 
 #endif // _OS_2011_10_20_H_

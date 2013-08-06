@@ -12,7 +12,7 @@ namespace sys
   namespace idle
   {
     void task_init();
-    void task_func();
+    void task_func(const bool do_trigger);
   }
 }
 
@@ -20,7 +20,10 @@ void sys::idle::task_init()
 {
 }
 
-void sys::idle::task_func()
+void sys::idle::task_func(const bool do_trigger)
 {
-  mcal::wdg::trigger();
+  if(do_trigger)
+  {
+    mcal::wdg::trigger();
+  }
 }

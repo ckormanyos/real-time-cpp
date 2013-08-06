@@ -18,7 +18,7 @@
 
       void init(const config_type*);
 
-      inline void trigger() { asm volatile("wdr"); }
+      void trigger();
     }
   }
 

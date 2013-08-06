@@ -7,39 +7,52 @@
 
 #include <algorithm>
 #include <mcal_irq.h>
-#include <os/os_detail.h>
+#include <os/os_task_control_block.h>
 
-void os::schedule()
+void os::start_os()
 {
   // Initialize the idle task.
   OS_IDLE_TASK_INIT();
 
-  // Initialize each task.
-  std::for_each(os::detail::task_list.begin(),
-                os::detail::task_list.end(),
-                [](const os::detail::task_control_block& tcb)
+  // Initialize each task once.
+  std::for_each(os::task_list.begin(),
+                os::task_list.end(),
+                [](const os::task_control_block& tcb)
                 {
                   tcb.initialize();
                 });
 
   for(;;)
   {
-    // Find the next ready task using a priority-based find algorithm.
-    const os::detail::task_list_type::iterator it_ready_task
-      = std::find_if(os::detail::task_list.begin(),
-                     os::detail::task_list.end(),
-                     [](os::detail::task_control_block& tcb) -> bool
+    // Find the next ready task using a priority-based search algorithm.
+    const os::task_list_type::iterator it_ready_task
+      = std::find_if(os::task_list.begin(),
+                     os::task_list.end(),
+                     [](os::task_control_block& tcb) -> bool
                      {
                        return tcb.execute();
                      });
 
-    if(it_ready_task == os::detail::task_list.end())
+    // If no ready-task was found, then service the idle task.
+    if(it_ready_task == os::task_list.end())
     {
-      os::detail::task_control_block::ready_task_index
-        = os::detail::task_control_block::task_index_type(os::detail::task_list.size());
+      // Verify that all of the tasks have checked in by setting
+      // their appropriate bits in the task trace.
+      os::task_control_block::task_index = os::task_control_block::task_index_type(os::task_list.size());
 
-      // If no ready-task was found, then service the idle task.
-      OS_IDLE_TASK_FUNC();
+      const os::task_control_block::task_trace_type idle_trace( os::task_control_block::task_trace | os::task_control_block::task_trace_type(os::task_control_block::task_trace_type(1U) << std::uint_fast8_t(os::task_list.size())));
+      const os::task_control_block::task_trace_type idle_mask (~os::task_control_block::task_trace_type((std::numeric_limits<os::task_control_block::task_trace_type>::max)() << std::uint_fast8_t(os::task_list.size() + 1U)));
+
+      const bool my_trigger_condition = (idle_trace == idle_mask);
+
+      // Service the idle task (also include the task trace information).
+      OS_IDLE_TASK_FUNC(my_trigger_condition);
+
+      if(my_trigger_condition)
+      {
+        // Reset the task trace value to zero.
+        os::task_control_block::task_trace = os::task_control_block::task_trace_type(0U);
+      }
     }
   }
 }
@@ -48,35 +61,32 @@ void os::set_event(const os::task_id_type task_id, const os::event_type& event_t
 {
   if(task_id < os::task_id_end)
   {
-    os::detail::task_list_type::iterator task_iterator
-      = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(task_id));
+    os::task_control_block* task_pointer = os::task_control_block::get_task_pointer();
 
     mcal::irq::disable_all();
-    task_iterator->event |= event_to_set;
+    task_pointer->event |= event_to_set;
     mcal::irq::enable_all();
   }
 }
 
 void os::get_event(os::event_type& event_to_get)
 {
-  os::detail::task_list_type::iterator task_iterator
-    = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(os::detail::task_control_block::ready_task_index));
+  os::task_control_block* task_pointer = os::task_control_block::get_task_pointer();
 
   mcal::irq::disable_all();
-  const os::event_type evt = task_iterator->event;
+  const os::event_type evt = task_pointer->event;
   mcal::irq::enable_all();
 
   event_to_get = evt;
 }
 
-void os::clr_event(const os::event_type& event_mask_to_clear)
+void os::clear_event(const os::event_type& event_mask_to_clear)
 {
-  os::detail::task_list_type::iterator task_iterator
-    = (os::detail::task_list.begin() + os::detail::task_list_type::size_type(os::detail::task_control_block::ready_task_index));
+  os::task_control_block* task_pointer = os::task_control_block::get_task_pointer();
 
   const os::event_type event_clear_value = os::event_type(~event_mask_to_clear);
 
   mcal::irq::disable_all();
-  task_iterator->event &= event_clear_value;
+  task_pointer->event &= event_clear_value;
   mcal::irq::enable_all();
 }
