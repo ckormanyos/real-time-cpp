@@ -6,47 +6,51 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
-#include <mcal_osc_detail.h>
+#include <mcal_osc_shared.h>
 #include <mcal_reg_access.h>
 #include <mcal_wdg.h>
 
-namespace mcal
+namespace
 {
-  namespace osc
+  struct osc_detail
   {
-    namespace detail
-    {
-      void mpu_pll_init                ();
-      void core_pll_init               ();
-      void peripheral_pll_init         ();
-      void ddr_pll_init                ();
-      void interface_clock_init        ();
-      void power_domain_transition_init();
-      void emif_init                   ();
-      void dm_timer7_clock_init        ();
+    static void mpu_pll_init                ();
+    static void core_pll_init               ();
+    static void peripheral_pll_init         ();
+    static void ddr_pll_init                ();
+    static void interface_clock_init        ();
+    static void power_domain_transition_init();
+    static void emif_init                   ();
+    static void dm_timer7_clock_init        ();
 
-      constexpr std::uint32_t mcu_clkinp        =         24UL; // Clock input 24MHz.
+    static constexpr std::uint32_t modulemode_enable = mcal_osc_shared::modulemode_enable;
+    static constexpr std::uint32_t modulemode_mask   = mcal_osc_shared::modulemode_mask;
 
-      constexpr std::uint32_t dpll_mn_byp_mode  =       0x04UL;
-      constexpr std::uint32_t dpll_lock_mode    =       0x07UL;
+    static constexpr std::uint32_t idlest_func       = mcal_osc_shared::idlest_func;
+    static constexpr std::uint32_t idlest_mask       = mcal_osc_shared::idlest_mask;
 
-      constexpr unsigned st_dpll_clk_bpos       =           0U;
-      constexpr unsigned st_mn_bypass_bpos      =           8U;
-    }
-  }
+    static constexpr std::uint32_t mcu_clkinp        = UINT32_C(24); // Clock input 24MHz.
+
+    static constexpr std::uint32_t dpll_mn_byp_mode  = UINT32_C(0x04);
+    static constexpr std::uint32_t dpll_lock_mode    = UINT32_C(0x07);
+
+    static constexpr std::uint32_t st_dpll_clk_bpos  = UINT32_C(0);
+    static constexpr std::uint32_t st_mn_bypass_bpos = UINT32_C(8);
+  };
 }
 
-void mcal::osc::detail::mpu_pll_init()
+void osc_detail::mpu_pll_init()
 {
-  // Set the MPU clock to 600MHz.
+  // Set the MPU clock to 600MHz, an acceptable setting for both the
+  // BeagleBone white edition as well as the BeagleBone black edition.
+  // Note that the BeagleBone black edition can comfortably handle 900MHz.
 
   // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 600
-  constexpr std::uint32_t mcu_mpu_pll_m  = 600UL;
-  constexpr std::uint32_t mcu_mpu_pll_n  =  23UL;
-  constexpr std::uint32_t mcu_mpu_pll_m2 =   1UL;
+  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(600);
+  constexpr std::uint32_t mcu_mpu_pll_n  = UINT32_C(mcu_clkinp - 1);
+  constexpr std::uint32_t mcu_mpu_pll_m2 = UINT32_C(1);
 
   // Put the PLL in bypass mode.
   mcal::reg::access<std::uint32_t,
@@ -61,7 +65,7 @@ void mcal::osc::detail::mpu_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_mpu,
-                    (mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n)>::reg_msk<0x0007FF7FUL>();
+                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<0x0007FF7FUL>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -79,7 +83,7 @@ void mcal::osc::detail::mpu_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::core_pll_init()
+void osc_detail::core_pll_init()
 {
   // Enable the Core PLL.
 
@@ -88,11 +92,11 @@ void mcal::osc::detail::core_pll_init()
   // clkoutm4  = clkdcoldo / m4 = 200
   // clkoutm5  = clkdcoldo / m5 = 250
   // clkoutm6  = clkdcoldo / m6 = 500
-  constexpr std::uint32_t mcu_core_pll_m  =  1000UL;
-  constexpr std::uint32_t mcu_core_pll_n  =    23UL;
-  constexpr std::uint32_t mcu_core_pll_m4 =    10UL;
-  constexpr std::uint32_t mcu_core_pll_m5 =     8UL;
-  constexpr std::uint32_t mcu_core_pll_m6 =     4UL;
+  constexpr std::uint32_t mcu_core_pll_m  =  UINT32_C(1000);
+  constexpr std::uint32_t mcu_core_pll_n  =  UINT32_C(mcu_clkinp - 1);
+  constexpr std::uint32_t mcu_core_pll_m4 =  UINT32_C(10);
+  constexpr std::uint32_t mcu_core_pll_m5 =  UINT32_C(8);
+  constexpr std::uint32_t mcu_core_pll_m6 =  UINT32_C(4);
 
   // Put the PLL in bypass mode.
   mcal::reg::access<std::uint32_t,
@@ -107,7 +111,7 @@ void mcal::osc::detail::core_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_core,
-                    (mcu_core_pll_m << 8) | (mcu_core_pll_n)>::reg_msk<0x0007ff7FUL>();
+                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<0x0007ff7FUL>();
 
   // Configure the high speed dividers.
   mcal::reg::access<std::uint32_t,
@@ -135,16 +139,16 @@ void mcal::osc::detail::core_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::peripheral_pll_init()
+void osc_detail::peripheral_pll_init()
 {
   // Set the Peripheral clock to 960MHz
   // clkinp = 24MHz
   // clkout    = (m / (n + 1)) * clkinp * (1 / m2) = 192
   // clkdcoldo = (m / (n + 1)) * clkinp            = 960
-  constexpr std::uint32_t mcu_per_pll_m  =   960UL;
-  constexpr std::uint32_t mcu_per_pll_n  =    23UL;
-  constexpr std::uint32_t mcu_per_pll_m2 =     5UL;
-  constexpr std::uint32_t mcu_per_pll_sd =   (((mcu_per_pll_m / (mcu_per_pll_n + 1UL) * mcu_clkinp) + 249UL) / 250UL);
+  constexpr std::uint32_t mcu_per_pll_m  = UINT32_C(960);
+  constexpr std::uint32_t mcu_per_pll_n  = UINT32_C(mcu_clkinp - 1);
+  constexpr std::uint32_t mcu_per_pll_m2 = UINT32_C(5);
+  constexpr std::uint32_t mcu_per_pll_sd = UINT32_C(((mcu_per_pll_m / (mcu_per_pll_n + 1) * mcu_clkinp) + 249) / 250);
 
   // Put the PLL in bypass mode.
   mcal::reg::access<std::uint32_t,
@@ -177,12 +181,12 @@ void mcal::osc::detail::peripheral_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::ddr_pll_init()
+void osc_detail::ddr_pll_init()
 {
   // Setting DDR clock to 266
-  constexpr std::uint32_t mcu_ddr_pll_m  = 266UL;
-  constexpr std::uint32_t mcu_ddr_pll_n  =  23UL;
-  constexpr std::uint32_t mcu_ddr_pll_m2 =   1UL;
+  constexpr std::uint32_t mcu_ddr_pll_m  = UINT32_C(266);
+  constexpr std::uint32_t mcu_ddr_pll_n  = UINT32_C(mcu_clkinp - 1);
+  constexpr std::uint32_t mcu_ddr_pll_m2 = UINT32_C(1);
 
   // Put the PLL in bypass mode.
   mcal::reg::access<std::uint32_t,
@@ -197,7 +201,7 @@ void mcal::osc::detail::ddr_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_ddr,
-                    (mcu_ddr_pll_m << 8) | mcu_ddr_pll_n>::reg_msk<0x0007FF7FUL>();
+                    std::uint32_t((mcu_ddr_pll_m << 8) | mcu_ddr_pll_n)>::reg_msk<0x0007FF7FUL>();
 
   // Set the m2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -215,7 +219,7 @@ void mcal::osc::detail::ddr_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::interface_clock_init()
+void osc_detail::interface_clock_init()
 {
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
@@ -255,7 +259,7 @@ void mcal::osc::detail::interface_clock_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::power_domain_transition_init()
+void osc_detail::power_domain_transition_init()
 {
   constexpr std::uint32_t clktrctrl_sw_wkup = 0x2UL;
   constexpr std::uint32_t clktrctrl_mask    = 0x3UL;
@@ -285,7 +289,7 @@ void mcal::osc::detail::power_domain_transition_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::emif_init()
+void osc_detail::emif_init()
 {
   constexpr std::uint32_t clkactivity_emif_gclk = 0x00000004UL;
 
@@ -298,7 +302,7 @@ void mcal::osc::detail::emif_init()
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::wdg::trigger(); }
 }
 
-void mcal::osc::detail::dm_timer7_clock_init()
+void osc_detail::dm_timer7_clock_init()
 {
   constexpr std::uint32_t clksel_clk_m_osc        = 1UL;
   constexpr std::uint32_t clkactivity_timer7_gclk = 0x00002000UL;
@@ -324,18 +328,18 @@ void mcal::osc::init(const config_type*)
 {
   // Setup the clocksfor oscillator, PLL, RAM, I/O ports, and peripherals.
 
-  detail::mpu_pll_init();
-  detail::core_pll_init();
-  detail::peripheral_pll_init();
-  detail::ddr_pll_init();
-  detail::interface_clock_init();
-  detail::power_domain_transition_init();
+  osc_detail::mpu_pll_init();
+  osc_detail::core_pll_init();
+  osc_detail::peripheral_pll_init();
+  osc_detail::ddr_pll_init();
+  osc_detail::interface_clock_init();
+  osc_detail::power_domain_transition_init();
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::control_clkctrl,
-                    detail::modulemode_enable>::reg_msk<detail::modulemode_mask>();
+                    osc_detail::modulemode_enable>::reg_msk<osc_detail::modulemode_mask>();
 
-  detail::emif_init();
-  detail::dm_timer7_clock_init();
+  osc_detail::emif_init();
+  osc_detail::dm_timer7_clock_init();
 }

@@ -21,7 +21,7 @@
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::gpio1_base,
-                                   14UL> port_rdm_type;
+                                   UINT32_C(14)> port_rdm_type;
     }
   }
 

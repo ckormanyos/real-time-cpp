@@ -18,7 +18,10 @@
       typedef std::uint32_t address_type;
       constexpr address_type address_offset = address_type(0xA0000000UL);
 
-      typedef mcal::port::port_pin<std::uint32_t, std::uint32_t, 0U, 0U> port_rdm_type;
+      typedef mcal::port::port_pin<std::uint32_t,
+                                   std::uint32_t,
+                                   UINT32_C(0),
+                                   UINT32_C(0)> port_rdm_type;
     }
   }
 

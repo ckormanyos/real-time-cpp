@@ -29,6 +29,7 @@
       template<typename other_tick_type> static tick_type minutes     (const other_tick_type& value_minutes     ) { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
       template<typename other_tick_type> static tick_type hours       (const other_tick_type& value_hours       ) { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
       template<typename other_tick_type> static tick_type days        (const other_tick_type& value_days        ) { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
+      template<typename other_tick_type> static tick_type weeks       (const other_tick_type& value_weeks       ) { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
 
       timer() : my_tick(tick_type(my_now())) { }
 

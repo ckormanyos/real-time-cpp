@@ -95,6 +95,9 @@
     <Filter Include="src\mcal\am335x">
       <UniqueIdentifier>{9b5fd24e-5f56-4862-b157-28c2d59c7973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\libc">
+      <UniqueIdentifier>{f42ecd88-8797-4165-aea9-3e049728b2b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -255,6 +258,9 @@
     </ClCompile>
     <ClCompile Include="src\os\os_task_control_block.cpp">
       <Filter>src\os</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\libc\memory.c">
+      <Filter>src\util\libc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -624,14 +630,14 @@
     <ClInclude Include="src\mcal\am335x\mcal_spi.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_osc_detail.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_wdg.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am335x\mcal_osc_shared.h">
+      <Filter>src\mcal\am335x</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,34 @@
 
   #include <stdint.h>
 
+  // Implement some C macros from <stdint.h> if they are not present.
+
+  #if !defined(INT8_C)
+  #define INT8_C(x) ((signed char) (x))
+  #endif
+  #if !defined(INT16_C)
+  #define INT16_C(x) ((signed int) (x))
+  #endif
+  #if !defined(INT32_C)
+  #define INT32_C(x) ((signed long) (x##L))
+  #endif
+  #if !defined(INT64_C)
+  #define INT64_C(x) ((signed long long) (x##LL))
+  #endif
+
+  #if !defined(UINT8_C)
+  #define UINT8_C(x) ((unsigned char) (x##U))
+  #endif
+  #if !defined(UINT16_C)
+  #define UINT16_C(x) ((unsigned int) (x##U))
+  #endif
+  #if !defined(UINT32_C)
+  #define UINT32_C(x) ((unsigned long) (x##UL))
+  #endif
+  #if !defined(UINT64_C)
+  #define UINT64_C(x) ((unsigned long long) (x##ULL))
+  #endif
+
   // Implement some of <cstdint> for compilers that do not yet support it.
 
   namespace std

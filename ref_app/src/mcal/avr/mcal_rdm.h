@@ -21,7 +21,7 @@
       typedef mcal::port::port_pin<std::uint8_t,
                                    std::uint8_t,
                                    mcal::reg::portd,
-                                   3U> port_rdm_type;
+                                   UINT8_C(3)> port_rdm_type;
     }
   }
 
