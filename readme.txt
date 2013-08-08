@@ -36,11 +36,18 @@ also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
 Getting Started
 ---------------
 
-To get started, start Visual Studio(R) 2012 and open the solution ref_app_vs2012.sln.
-Select the desired configuration and then rebuild the entire solution.
+It is easiest to get started with the reference application using one of the
+supported boards, such as Arduino(R) or BeagleBone. The reference application
+is in the directory ref_app.
 
-Upon successful build, the build results (such as the HEX-file, etc.) should apear
-in the bin directory.
+To get started with the reference application, start Visual Studio(R) 2012
+and open the solution ref_app_vs2012.sln. Select the desired configuration
+and then rebuild the entire solution. Note that this is cross development
+using Visual Studio(R) 2012 to invoke an external makefile subsequently
+built with GNUmake.
+
+Upon successful build, the build results (such as the HEX-file, etc.)
+will be placed in the bin directory.
 
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
@@ -71,6 +78,10 @@ GCC ports for the microcontroller solutions are available in the directory:
 The following compilers are available:
   GCC 4.7.2 for avr-unknown-elf : For ATMEL(R) AVR(R)
   GCC 4.7.2 for arm-unknown-eabi: For ARM(R) Cortex(TM)-M3 and ARM(R) A8
+  (still needed) GCC for MIPS 4K.
 
-These compilers have been built in MinGW and moved to the solution to
-a convenient location in the tools directory.
+The compilers that are present have been built in MinGW and moved to
+the solution. They have been subsequently stored in a convenient location
+in the tools directory. The make-files are aware of the location of their
+respective tool chains and it is not necessary to add any kind of path
+information to the PC operating system or to Visual Studio(R).
