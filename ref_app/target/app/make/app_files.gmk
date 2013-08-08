@@ -25,8 +25,7 @@ FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
              $(PATH_APP)/sys/idle/sys_idle                           \
              $(PATH_APP)/sys/mon/sys_mon                             \
              $(PATH_APP)/sys/rdm/sys_rdm                             \
-             $(PATH_APP)/sys/start/sys_start                         \
-             $(PATH_APP)/util/libc/memory
+             $(PATH_APP)/sys/start/sys_start
 
 # Use these for CRC and/or MD5 benchmarks
 #             $(PATH_APP)/math/checksums/crc/crc          \

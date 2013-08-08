@@ -7,28 +7,35 @@
 
 #include <stddef.h>
 
+// Implement some efficient memory functions from the standard C library.
+// In this way, the linker will take these functions and may potentially
+// save some code. The application needs to be checked for an appraisal
+// of any actual code savings.
+
+extern "C"
 void* memset(void* s1, int c, size_t n)
 {
-  char* su1 = (char*) s1;
+  char* su1 = reinterpret_cast<char*>(s1);
 
-  for( ; (size_t) 0U < n; --n)
+  for( ; n > static_cast<size_t>(0U); --n)
   {
-    *su1 = (char) c;
+    *su1 = static_cast<char>(c);
     ++su1;
   }
 
   return s1;
 }
 
+extern "C"
 void* memcpy(void* s1, const void* s2, size_t n)
 {
   // For additional implementation details, see
   // P.J. Plauger, "The Standard C Library", Figure 14.4, page 400.
 
-  char* su1 = (char*) s1;
-  const char* su2 = (const char*) s2;
+        char* su1 = reinterpret_cast<      char*>(s1);
+  const char* su2 = reinterpret_cast<const char*>(s2);
 
-  for( ; (size_t) 0U < n; --n)
+  for( ; n > static_cast<size_t>(0U); --n)
   {
     *su1 = *su2;
     ++su1;
@@ -38,6 +45,7 @@ void* memcpy(void* s1, const void* s2, size_t n)
   return s1;
 }
 
+extern "C"
 void* memmove(void* s1, const void* s2, size_t n)
 {
   // For additional implementation details, see
@@ -45,27 +53,33 @@ void* memmove(void* s1, const void* s2, size_t n)
 
   // The function memmove does work properly even when its operands overlap.
 
-  char* sc1 = (char*) s1;
-  const char* sc2 = (const char*) s2;
+        char* sc1 = reinterpret_cast<      char*>(s1);
+  const char* sc2 = reinterpret_cast<const char*>(s2);
 
-  // Check for overlap.
+  // Check for a range overlap.
   if((sc2 < sc1) && (sc1 < (sc2 + n)))
   {
     sc1 += n;
     sc2 += n;
 
-    for( ; (size_t) 0u < n; --n)
+    for( ; n > static_cast<size_t>(0U); --n)
     {
-      *--sc1 = *--sc2; // Copy backwards.
+      // Perform a backwards copy.
+      --sc1;
+      --sc2;
+      *sc1 = *sc2;
     }
   }
   else
   {
-    for( ; (size_t) 0u < n; --n)
+    for( ; n > static_cast<size_t>(0U); --n)
     {
-      *sc1++ = *sc2++; // Copy forwards.
+      // Perform a forwards copy.
+      *sc1 = *sc2;
+      ++sc1;
+      ++sc2;
     }
   }
 
-  return (void*) s1;
+  return s1;
 }

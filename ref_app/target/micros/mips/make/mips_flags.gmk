@@ -9,8 +9,8 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION = 4.7.2
-GCC_TARGET  = mips-unknown-elf
+GCC_VERSION = 4.6.3
+GCC_TARGET  = mips-sde-elf
 
 TGT_CFLAGS    = -mips16                           \
                 -mno-gpopt                        \

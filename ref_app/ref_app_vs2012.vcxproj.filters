@@ -95,7 +95,7 @@
     <Filter Include="src\mcal\am335x">
       <UniqueIdentifier>{9b5fd24e-5f56-4862-b157-28c2d59c7973}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\libc">
+    <Filter Include="src\util\STD_LIBC">
       <UniqueIdentifier>{f42ecd88-8797-4165-aea9-3e049728b2b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -259,8 +259,8 @@
     <ClCompile Include="src\os\os_task_control_block.cpp">
       <Filter>src\os</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\libc\memory.c">
-      <Filter>src\util\libc</Filter>
+    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
+      <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

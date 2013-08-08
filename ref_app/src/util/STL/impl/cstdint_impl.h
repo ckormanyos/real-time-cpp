@@ -10,7 +10,7 @@
 
   #include <stdint.h>
 
-  // Implement some C macros from <stdint.h> if they are not present.
+  // Implement some C macros that belong in <stdint.h> if they are not present.
 
   #if !defined(INT8_C)
   #define INT8_C(x) ((signed char) (x))

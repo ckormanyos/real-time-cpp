@@ -9,6 +9,7 @@
 
 namespace
 {
+  // Use some GCC internal stuff here.
   constexpr float  avr_nan_float  = static_cast<float>(__builtin_nan(""));
   constexpr float  avr_inf_float  = static_cast<float>(__builtin_inf());
   constexpr double avr_nan_double = __builtin_nan("");

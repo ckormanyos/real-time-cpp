@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ATOMIC_2012_01_09_H_
-  #define _ATOMIC_2012_01_09_H_
+#ifndef _AVR_ATOMIC_2012_01_09_H_
+  #define _AVR_ATOMIC_2012_01_09_H_
 
   namespace std
   {
@@ -42,4 +42,4 @@
     static void disable_all_interrupts() { asm volatile("cli"); }
   };
 
-#endif // _ATOMIC_2012_01_09_H_
+#endif // _AVR_ATOMIC_2012_01_09_H_

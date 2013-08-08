@@ -63,10 +63,10 @@
   <avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=32 -fdata-sections -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.linker.optimization.GarbageCollectUnusedSections>True</avrgcccpp.linker.optimization.GarbageCollectUnusedSections>
   <avrgcccpp.linker.optimization.RelaxBranches>True</avrgcccpp.linker.optimization.RelaxBranches>
-  <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -nostartfiles -nostdlib -Wl,-T"../target/micros/avr/make/avr.ld"</avrgcccpp.linker.miscellaneous.LinkerFlags>
+  <avrgcccpp.linker.miscellaneous.LinkerFlags>-x none -Wl,--gc-sections</avrgcccpp.linker.miscellaneous.LinkerFlags>
 </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
@@ -99,7 +99,8 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="target" />
+    <Folder Include="src\sys\rdm" />
+    <Folder Include="src\util\monitor" />
     <Folder Include="src" />
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
@@ -124,10 +125,6 @@
     <Folder Include="src\util\STL\impl" />
     <Folder Include="src\util\STL\impl\avr" />
     <Folder Include="src\util\utility" />
-    <Folder Include="target\micros" />
-    <Folder Include="target\micros\avr" />
-    <Folder Include="target\micros\avr\make" />
-    <Folder Include="target\micros\avr\startup" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\app\led\app_led.cpp">
@@ -184,9 +181,6 @@
     <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_mcu.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -211,13 +205,7 @@
     <Compile Include="src\mcal\avr\mcal_reg_access.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_ser.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_ser.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_spi.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_spi.h">
@@ -235,7 +223,7 @@
     <Compile Include="src\mcal\mcal.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_led.h">
+    <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_access_template.h">
@@ -250,10 +238,19 @@
     <Compile Include="src\os\os_cfg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\os\os_task_control_block.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_task_control_block.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\sys\idle\sys_idle.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\sys\mon\sys_mon.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\rdm\sys_rdm.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\sys\start\sys_start.cpp">
@@ -269,6 +266,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\memory\util_static_allocator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\monitor\util_single_pin_debug_monitor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\monitor\util_single_pin_debug_monitor_base.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\algorithm_impl.h">
@@ -394,21 +397,6 @@
     <Compile Include="src\util\utility\util_utype_helper.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="target\micros\avr\startup\crt0.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="target\micros\avr\startup\crt0_init_ram.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="target\micros\avr\startup\crt1.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="target\micros\avr\startup\gcc_patch.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="target\micros\avr\startup\int_vect.cpp">
-      <SubType>compile</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -469,9 +457,6 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="target\micros\avr\make\avr.ld">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>
