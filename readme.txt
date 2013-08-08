@@ -4,18 +4,20 @@ This is the companion code for the book "Real-Time C++".
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
 Template Microcontroller Programming (Springer, Heidelberg, 2013).
 
-Details on the Reference Project
---------------------------------
+Details on the Reference Application
+------------------------------------
 
-The reference project boots via a small startup code and subsequently initializes
-a skinny microcontroller abstraction layer (MCAL). Control is then passed to a
-simple multitasking scheduler which schedules the LED application and an (empty)
-system task. The LED application toggles the LED with a frequency of 1/2 Hz.
+The reference application boots via a small startup code and subsequently
+initializes a skinny microcontroller abstraction layer (MCAL). Control is
+then passed to a simple multitasking scheduler which schedules the
+LED application, a debug monitor task, a (predominantly empty) system task,
+and an idle task that triggers the watchdog. The LED application toggles
+the LED with a frequency of 1/2 Hz.
 
-Supported Targets in the Reference Project
-------------------------------------------
+Supported Targets in the Reference Application
+----------------------------------------------
 
-The reference project supports the following targets:
+The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
@@ -23,22 +25,22 @@ The reference project supports the following targets:
   * Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
   * Considered: Raspberry Pi with ARM(R) 11
 
-Cross Development in the Reference Project
-------------------------------------------
+Cross Development in the Reference Application
+----------------------------------------------
 
-The reference project uses cross-development based on *nix-like make tools
+The reference application uses cross-development based on *nix-like make tools
 in combination with Microsoft(R) Visual Studio(R) 2012. The *nix-like
 make tools have been built in MinGW.
 
-The ATMEL(R) AVR(R) Atmega328P configuration in the reference project
+The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
 also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
 
-Getting Started
----------------
+Getting Started with the Reference Application
+----------------------------------------------
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino(R) or BeagleBone. The reference application
-is in the directory ref_app.
+can be found in the directory ref_app and its subdirectories.
 
 To get started with the reference application, start Visual Studio(R) 2012
 and open the solution ref_app_vs2012.sln. Select the desired configuration
@@ -53,7 +55,7 @@ There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
 
 Target Details
------------------
+--------------
 
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
 The program toggles the yellow LED on portb.5.
