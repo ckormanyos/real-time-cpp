@@ -22,7 +22,7 @@ The reference application supports the following targets:
   * ATMEL(R) AVR(R) Atmega328P
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
   * BeagleBone with Texas Instruments AM335x ARM(R) A8
-  * Under construction: Microchip(R) PIC(R)32, aka MIPS(R)
+  * Under construction: Microchip(R) PIC(R)32, aka MIPS(R) 4K
   * Considered: Raspberry Pi with ARM(R) 11
 
 Cross Development in the Reference Application
@@ -78,12 +78,15 @@ GCC ports for the microcontroller solutions are available in the directory:
   ref_app/tools/Util/MinGW/msys/1.0/local/*
 
 The following compilers are available:
-  GCC 4.7.2 for avr-unknown-elf : For ATMEL(R) AVR(R)
-  GCC 4.7.2 for arm-unknown-eabi: For ARM(R) Cortex(TM)-M3 and ARM(R) A8
-  (still needed) GCC for MIPS 4K.
+  * GCC 4.7.2 for avr-unknown-elf : For ATMEL(R) microcontrollers
+  * GCC 4.7.2 for arm-unknown-eabi: For ARM(R) microcontrollers
+  * (still needed) GCC for MIPS(R) 4K.
 
 The compilers that are present have been built in MinGW and moved to
 the solution. They have been subsequently stored in a convenient location
-in the tools directory. The make-files are aware of the location of their
-respective tool chains and it is not necessary to add any kind of path
-information to the PC operating system or to Visual Studio(R).
+in the tools directory.
+
+The make-files are aware of the location of their respective tool chains.
+It is not necessary to add any kind of path information to the
+PC operating system or to Visual Studio(R) in order to buld the
+reference application.
