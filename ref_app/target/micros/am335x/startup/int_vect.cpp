@@ -50,14 +50,14 @@ void init_interrupts_nmi()
 extern "C"
 const volatile std::array<function_type, number_of_interrupts_nmi> __isr_vector_nmi =
 {{
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF018UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF014UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE24FF008UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF010UL)),
-  reinterpret_cast<function_type>(std::uint32_t(0xE59FF010UL)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF018)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF018)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF018)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF018)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF014)),
+  reinterpret_cast<function_type>(UINT32_C(0xE24FF008)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF010)),
+  reinterpret_cast<function_type>(UINT32_C(0xE59FF010)),
   __my_startup,
   __undef_instr_handler,
   __pend_sv_handler,

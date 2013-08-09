@@ -45,22 +45,27 @@
                         "The registered ISR number exceeds the maximum allowed index!");
 
           // Set the interrupt priority level and the interrupt routing.
-          constexpr std::uint32_t priority_bits = std::uint32_t(std::uint32_t(isr_priority << std::uint32_t(2UL)) & std::uint32_t(0x01FCUL));
-          constexpr std::uint32_t routing_bits  = std::uint32_t((isr_routing == route_to_irq) ? 0UL : 1UL);
+          constexpr std::uint32_t priority_bits     = std::uint32_t(std::uint32_t(isr_priority << UINT32_C(2)) & UINT32_C(0x01FC));
+          constexpr std::uint32_t routing_bits      = std::uint32_t((isr_routing == route_to_irq) ? UINT32_C(0) : UINT32_C(1));
+          constexpr std::uint32_t intc_ilr_reg_addr = std::uint32_t(  mcal::reg::intc::ilr_base_0x80
+                                                                    + std::uint32_t(isr_number * UINT32_C(4)));
 
           mcal::reg::access<std::uint32_t,
                             std::uint32_t,
-                            mcal::reg::intc::ilr_base_0x80 + (isr_number * 4UL),
-                            priority_bits | routing_bits>::reg_set();
+                            intc_ilr_reg_addr,
+                            std::uint32_t(priority_bits | routing_bits)>::reg_set();
 
-          // Enable the interrupt by setting the corresponding bit
-          // in the mir_clear register.
+          // Enable the interrupt by setting the appropriate bits
+          // in the corresponding mir_clear register.
           constexpr number_type   intc_sys_reg_index = number_type(number_type(isr_number >> 5U) & number_type(3U));
-          constexpr std::uint32_t intc_sys_reg_bpos  = std::uint32_t(std::uint32_t(isr_number) & std::uint32_t(0x01FUL));
+          constexpr std::uint32_t intc_sys_reg_bpos  = std::uint32_t(std::uint32_t(isr_number) & UINT32_C(0x01F));
+          constexpr std::uint32_t intc_sys_reg_addr  = std::uint32_t(  mcal::reg::intc::sys_base_0x04
+                                                                     + std::uint32_t(intc_sys_reg_index * UINT32_C(0x20))
+                                                                     + mcal::reg::intc::sys::mir_clear);
 
           mcal::reg::access<std::uint32_t,
                             std::uint32_t,
-                            mcal::reg::intc::sys_base_0x04 + ((intc_sys_reg_index * 0x20UL) + mcal::reg::intc::sys::mir_clear),
+                            intc_sys_reg_addr,
                             intc_sys_reg_bpos>::bit_set();
         }
 

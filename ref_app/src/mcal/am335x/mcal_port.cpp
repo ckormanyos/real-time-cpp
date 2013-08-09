@@ -43,7 +43,7 @@ namespace
                         mcal::reg::cm_per::gpio1_clkctrl,
                         optfclken_gpio_1_gdbclk>::reg_msk<optfclken_gpio_1_gdbclk>();
 
-      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk  ) != optfclken_gpio_1_gdbclk  ) { mcal::wdg::trigger(); }
+      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk)   != optfclken_gpio_1_gdbclk  ) { mcal::wdg::trigger(); }
       while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & osc_detail::idlest_mask)   != osc_detail::idlest_func)   { mcal::wdg::trigger(); }
       while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_gpio_1_gdbclk) != clkactivity_gpio_1_gdbclk) { mcal::wdg::trigger(); }
     }

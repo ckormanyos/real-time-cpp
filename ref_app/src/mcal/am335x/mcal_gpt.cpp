@@ -31,11 +31,11 @@ mcal::gpt::value_type consistent_microsecond_tick()
   typedef std::uint32_t timer_address_type;
   typedef std::uint32_t timer_register_type;
 
-  // Do the first read of the timer7 counter and the system tick.
+  // Do the first read of the dmtimer7 counter and the system tick.
   const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-  // Do the second read of the timer7 counter and the system tick.
+  // Do the second read of the dmtimer7 counter and the system tick.
   const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
@@ -75,29 +75,29 @@ void mcal::gpt::init(const config_type*)
       mcal::cpu::nop();
     }
 
-    // Register the timer7 interrupt, including priority, routing, etc.
+    // Register the dmtimer7 interrupt, including priority, routing, etc.
     mcal::irq::interrupt_descriptor::register_interrupt<mcal::irq::interrupt_descriptor::isr_id_tint7,
                                                         mcal::irq::interrupt_descriptor::priority_type(0U),
                                                         mcal::irq::interrupt_descriptor::route_to_irq>();
 
-    // Enable the timer7 overflow interrupt.
+    // Enable the dmtimer7 overflow interrupt.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqenable_set, UINT32_C(2)>::reg_msk<UINT32_C(7)>();
 
-    // Set the timer7 counter register.
+    // Set the dmtimer7 counter register.
     while(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps>::reg_get() != UINT32_C(0))
     {
       mcal::cpu::nop();
     }
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr, UINT32_C(0xFFFFFFFE - 24000)>::reg_set();
 
-    // Set the timer7 reload register.
+    // Set the dmtimer7 reload register.
     while(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps>::reg_get() != UINT32_C(0))
     {
       mcal::cpu::nop();
     }
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tldr, UINT32_C(0xFFFFFFFE - 24000)>::reg_set();
 
-    // Setup auto reload mode and start the timer (with no prescaler).
+    // Setup auto reload mode and start dmtimer7, with no prescaler.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tclr, UINT32_C(3)>::reg_set();
 
     gpt_is_initialized() = true;

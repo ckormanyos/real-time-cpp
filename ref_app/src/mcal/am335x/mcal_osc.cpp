@@ -56,7 +56,7 @@ void osc_detail::mpu_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_mpu,
-                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
+                    dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -65,19 +65,19 @@ void osc_detail::mpu_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_mpu,
-                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<0x0007FF7FUL>();
+                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m2_dpll_mpu,
-                    mcu_mpu_pll_m2>::reg_msk<0x0000003FUL>();
+                    mcu_mpu_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_mpu,
-                    dpll_lock_mode>::reg_msk<0x07UL>();
+                    dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -102,7 +102,7 @@ void osc_detail::core_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_core,
-                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
+                    dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -111,29 +111,29 @@ void osc_detail::core_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_core,
-                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<0x0007ff7FUL>();
+                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Configure the high speed dividers.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m4_dpll_core,
-                    mcu_core_pll_m4>::reg_msk<0x0000001FUL>();
+                    mcu_core_pll_m4>::reg_msk<UINT32_C(0x0000001F)>();
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m5_dpll_core,
-                    mcu_core_pll_m5>::reg_msk<0x0000001FUL>();
+                    mcu_core_pll_m5>::reg_msk<UINT32_C(0x0000001F)>();
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m6_dpll_core,
-                    mcu_core_pll_m6>::reg_msk<0x0000001FUL>();
+                    mcu_core_pll_m6>::reg_msk<UINT32_C(0x0000001F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_core,
-                    dpll_lock_mode>::reg_msk<0x07UL>();
+                    dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -148,34 +148,38 @@ void osc_detail::peripheral_pll_init()
   constexpr std::uint32_t mcu_per_pll_m  = UINT32_C(960);
   constexpr std::uint32_t mcu_per_pll_n  = UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_per_pll_m2 = UINT32_C(5);
-  constexpr std::uint32_t mcu_per_pll_sd = UINT32_C(((mcu_per_pll_m / (mcu_per_pll_n + 1) * mcu_clkinp) + 249) / 250);
+  constexpr std::uint32_t mcu_per_pll_sd = std::uint32_t(((mcu_per_pll_m / (mcu_per_pll_n + UINT32_C(1)) * mcu_clkinp) + UINT32_C(249)) / UINT32_C(250));
 
   // Put the PLL in bypass mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_per,
-                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
+                    dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
 
   // Set the multiplier and divider values for the PLL.
+  constexpr std::uint32_t pll_val = std::uint32_t(  std::uint32_t(mcu_per_pll_sd << 24)
+                                                  | std::uint32_t(mcu_per_pll_m << 8)
+                                                  | mcu_per_pll_n);
+
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_periph,
-                    (mcu_per_pll_sd << 24U) | (mcu_per_pll_m << 8U) | mcu_per_pll_n>::reg_msk<0xFF0FFFFFUL>();
+                    pll_val>::reg_msk<UINT32_C(0xFF0FFFFF)>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m2_dpll_per,
-                    mcu_per_pll_m2>::reg_msk<0x0000003FUL>();
+                    mcu_per_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_per,
-                    dpll_lock_mode>::reg_msk<0x07UL>();
+                    dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -192,28 +196,31 @@ void osc_detail::ddr_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_ddr,
-                    dpll_mn_byp_mode>::reg_msk<0x07UL>();
+                    dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
 
   // Set the multiplier and divider values for the PLL.
+  constexpr std::uint32_t pll_val = std::uint32_t(  std::uint32_t(mcu_ddr_pll_m << 8)
+                                                  | mcu_ddr_pll_n);
+
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_ddr,
-                    std::uint32_t((mcu_ddr_pll_m << 8) | mcu_ddr_pll_n)>::reg_msk<0x0007FF7FUL>();
+                    pll_val>::reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Set the m2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m2_dpll_ddr,
-                    mcu_ddr_pll_m2>::reg_msk<0x0000003FUL>();
+                    mcu_ddr_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_ddr,
-                    dpll_lock_mode>::reg_msk<0x07UL>();
+                    dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
@@ -261,8 +268,8 @@ void osc_detail::interface_clock_init()
 
 void osc_detail::power_domain_transition_init()
 {
-  constexpr std::uint32_t clktrctrl_sw_wkup = 0x2UL;
-  constexpr std::uint32_t clktrctrl_mask    = 0x3UL;
+  constexpr std::uint32_t clktrctrl_sw_wkup = UINT32_C(0x2);
+  constexpr std::uint32_t clktrctrl_mask    = UINT32_C(0x3);
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
@@ -291,7 +298,7 @@ void osc_detail::power_domain_transition_init()
 
 void osc_detail::emif_init()
 {
-  constexpr std::uint32_t clkactivity_emif_gclk = 0x00000004UL;
+  constexpr std::uint32_t clkactivity_emif_gclk = UINT32_C(0x00000004);
 
   // Enable the clocks for the emif.
 
@@ -304,15 +311,15 @@ void osc_detail::emif_init()
 
 void osc_detail::dm_timer7_clock_init()
 {
-  constexpr std::uint32_t clksel_clk_m_osc        = 1UL;
-  constexpr std::uint32_t clkactivity_timer7_gclk = 0x00002000UL;
+  constexpr std::uint32_t clksel_clk_m_osc        = UINT32_C(1);
+  constexpr std::uint32_t clkactivity_timer7_gclk = UINT32_C(0x00002000);
 
   // Select the clock source clksel_clk_m_osc for timer7.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_dpll::clksel_timer7_clk,
-                    clksel_clk_m_osc>::reg_msk<0x3UL>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & 0x3UL) != clksel_clk_m_osc) { mcal::wdg::trigger(); }
+                    clksel_clk_m_osc>::reg_msk<UINT32_C(0x3)>();
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & UINT32_C(0x3)) != clksel_clk_m_osc) { mcal::wdg::trigger(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,

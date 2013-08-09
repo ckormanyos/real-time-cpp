@@ -6,23 +6,24 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cstdint>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
 void mcal::irq::init(const config_type*)
 {
-  // Reset the ARM interrupt controller.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysconfig, 2UL>::reg_set();
+  // Reset the ARM(R) interrupt controller.
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysconfig, UINT32_C(2)>::reg_set();
 
   // Wait for the interrupt reset to finish.
-  while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysstatus>::reg_get() & std::uint32_t(1UL)) != std::uint32_t(1UL))
+  while(std::uint32_t(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::sysstatus>::reg_get() & UINT32_C(1)) != UINT32_C(1))
   {
     mcal::cpu::nop();
   }
 
   // Enable the generation of all interrupts by setting the
   // priority threshold appropriately.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::threshold, 0xFFUL>::reg_set();
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::intc::threshold, UINT32_C(0xFF)>::reg_set();
 
   // Enable all global interrupts.
   mcal::irq::enable_all();
