@@ -9,8 +9,8 @@
 
 // Implement some efficient memory functions from the standard C library.
 // In this way, the linker will take these functions and may potentially
-// save some code. The application needs to be checked for an appraisal
-// of any actual code savings.
+// save some code. The application needs to be appraised in order to detect
+// if there actually is any code savings.
 
 extern "C"
 void* memset(void* s1, int c, size_t n)

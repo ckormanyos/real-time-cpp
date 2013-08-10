@@ -18,15 +18,15 @@
     {
     public:
       single_pin_debug_monitor();
-      virtual ~single_pin_debug_monitor() { }
+      virtual ~single_pin_debug_monitor();
       void driver_task();
 
     private:
       // Set up the port driver timing.
 
-      // The 250 baud corresponds to a bit-time of approximately 4ms
-      // per bit. The polling period is 1ms, such that the driver
-      // polls up to four times per bit.
+      // The 1000 baud corresponds to a bit-time of approximately 1ms
+      // per bit. The polling period is 0.250ms (i.e., 250us), such that
+      // the driver polls up to four times per bit.
 
       // * The single-bit timeout is set to 5% less than four poll times.
       // * The receiver automatically resets if it is idle for 12 bit times or more.
@@ -52,6 +52,9 @@
     {
       port_pin_type::set_direction_input();
     }
+
+    template<typename port_pin_type>
+    single_pin_debug_monitor<port_pin_type>::~single_pin_debug_monitor() { }
 
     template<typename port_pin_type>
     void single_pin_debug_monitor<port_pin_type>::driver_task()

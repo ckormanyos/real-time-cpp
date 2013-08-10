@@ -11,10 +11,12 @@
 
 void os::start_os()
 {
+  using os::task_control_block;
+
   // Initialize each task once.
-  std::for_each(os::task_list.begin(),
-                os::task_list.end(),
-                [](const os::task_control_block& tcb)
+  std::for_each(task_list.begin(),
+                task_list.end(),
+                [](const task_control_block& tcb)
                 {
                   tcb.initialize();
                 });
@@ -26,37 +28,40 @@ void os::start_os()
   for(;;)
   {
     // Find the next ready task using a priority-based search algorithm.
-    const os::task_list_type::iterator it_ready_task
-      = std::find_if(os::task_list.begin(),
-                     os::task_list.end(),
-                     [](os::task_control_block& tcb) -> bool
-                     {
-                       return tcb.execute();
-                     });
+    const task_list_type::iterator it_ready_task = std::find_if(task_list.begin(),
+                                                                task_list.end(),
+                                                                [](task_control_block& tcb) -> bool
+                                                                {
+                                                                  return tcb.execute();
+                                                                });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == os::task_list.end())
+    if(it_ready_task == task_list.end())
     {
       // Set the task index to one higher than the index of the
       // highest task in order to signify the idle task.
-      os::task_control_block::task_index = os::task_control_block::task_index_type(os::task_list.size());
+      task_control_block::task_index = task_control_block::task_index_type(task_list.size());
 
-      // Check if all of the tasks have, indeed, checked in
-      // by setting their appropriate bit in the task trace.
-      // In this case, the task trace will contain the bit
-      // from each task as well as the idle task.
-      const os::task_control_block::task_trace_type idle_trace( os::task_control_block::task_trace | os::task_control_block::task_trace_type(os::task_control_block::task_trace_type(1U) << std::uint_fast8_t(os::task_list.size())));
-      const os::task_control_block::task_trace_type idle_mask (~os::task_control_block::task_trace_type((std::numeric_limits<os::task_control_block::task_trace_type>::max)() << std::uint_fast8_t(os::task_list.size() + 1U)));
+      // Set the bit in the task trace belonging to the idle task.
+      task_control_block::task_trace |= task_control_block::task_trace_type(task_control_block::task_trace_type(1U) << std::uint_fast8_t(task_control_block::task_index));
 
-      const bool my_task_trace_condition = (idle_trace == idle_mask);
+      // Check if all of the tasks have, indeed, checked in by setting
+      // their appropriate bit in the task trace. This should be the case,
+      // and it means that the task trace will have a set bit corresponding
+      // to each task and also the idle task.
+      const task_control_block::task_trace_type idle_mask (~task_control_block::task_trace_type((std::numeric_limits<task_control_block::task_trace_type>::max)() << std::uint_fast8_t(task_list.size() + 1U)));
 
       // Service the idle task, and also include the task trace information.
-      OS_IDLE_TASK_FUNC(my_task_trace_condition);
-
-      if(my_task_trace_condition)
+      if(task_control_block::task_trace == idle_mask)
       {
+        OS_IDLE_TASK_FUNC(true);
+
         // Reset the task trace value to zero.
-        os::task_control_block::task_trace = os::task_control_block::task_trace_type(0U);
+        task_control_block::task_trace = task_control_block::task_trace_type(0U);
+      }
+      else
+      {
+        OS_IDLE_TASK_FUNC(false);
       }
     }
   }
@@ -66,7 +71,9 @@ void os::set_event(const os::task_id_type task_id, const os::event_type& event_t
 {
   if(task_id < os::task_id_end)
   {
-    os::task_control_block* my_task_pointer = os::task_control_block::get_task_pointer();
+    using os::task_control_block;
+
+    task_control_block* my_task_pointer = task_control_block::get_task_pointer();
 
     mcal::irq::disable_all();
     my_task_pointer->event |= event_to_set;
@@ -76,10 +83,12 @@ void os::set_event(const os::task_id_type task_id, const os::event_type& event_t
 
 void os::get_event(os::event_type& event_to_get)
 {
-  os::task_control_block* my_task_pointer = os::task_control_block::get_task_pointer();
+  using os::task_control_block;
+
+  task_control_block* my_task_pointer = task_control_block::get_task_pointer();
 
   mcal::irq::disable_all();
-  const os::event_type my_event = my_task_pointer->event;
+  const event_type my_event = my_task_pointer->event;
   mcal::irq::enable_all();
 
   event_to_get = my_event;
@@ -87,9 +96,11 @@ void os::get_event(os::event_type& event_to_get)
 
 void os::clear_event(const os::event_type& event_mask_to_clear)
 {
-  os::task_control_block* my_task_pointer = os::task_control_block::get_task_pointer();
+  using os::task_control_block;
 
-  const os::event_type my_event_clear_value = os::event_type(~event_mask_to_clear);
+  task_control_block* my_task_pointer = task_control_block::get_task_pointer();
+
+  const event_type my_event_clear_value = event_type(~event_mask_to_clear);
 
   mcal::irq::disable_all();
   my_task_pointer->event &= my_event_clear_value;

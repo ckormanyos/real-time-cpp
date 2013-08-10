@@ -92,7 +92,7 @@
       friend inline typename reverse_iterator::difference_type operator-(const reverse_iterator& x,
                                                                          const reverse_iterator& y)
       {
-        return y.current - x.current;
+        return (y.current - x.current);
       }
 
       friend inline reverse_iterator operator+(typename reverse_iterator::difference_type n,

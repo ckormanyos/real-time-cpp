@@ -38,11 +38,10 @@
     class single_pin_debug_monitor_base : private util::noncopyable
     {
     public:
-      virtual ~single_pin_debug_monitor_base() { }
-
-      // Forward declaration of the protocol task.
       template<typename addr_type, const addr_type addr_offset>
       void protocol_task();
+
+      virtual ~single_pin_debug_monitor_base();
 
     protected:
       // Set up the driver buffer.
@@ -109,7 +108,7 @@
       // with the volatile qualifier. This is because direct memory access can,
       // for a highly optimizing compiler, *seem* to simply do nothing.
       // The volatile qualification reduces the risk of the memory access
-      // code being optimized away entirely.
+      // code simply being optimized away entirely.
 
       volatile std::uint_fast8_t data_elements;
       volatile std::uint_fast8_t service_id;
@@ -157,9 +156,9 @@
 
       // Create the total address using the address offset combined
       // with the address obtained from the communication buffer.
-      // The width of this address is of type addr_type, which may
-      // exceed 16 bits based on the memory characteristics of the
-      // target system.
+      // The total address is of type addr_type, which may have a
+      // width that exceeds 16 bits based on the memory characteristics
+      // of the target system.
 
       const std::uint_least16_t address_from_buffer =
         std::uint_least16_t(util::make_long<std::uint8_t, std::uint16_t>(driver_buffer[1U], driver_buffer[2U]));
@@ -171,9 +170,7 @@
       {
         if(driver_buffer_length == std::uint_fast8_t(3U))
         {
-          std::fill(driver_buffer.begin(),
-                    driver_buffer.begin() + 4U,
-                    std::uint8_t(0U));
+          std::fill(driver_buffer.begin(), driver_buffer.begin() + 4U, std::uint8_t(0U));
 
           switch(data_elements)
           {
@@ -257,6 +254,8 @@
         }
       }
     }
+
+    single_pin_debug_monitor_base::~single_pin_debug_monitor_base() { }
   }
 
 #endif // _UTIL_SINGLE_PIN_DEBUG_MONITOR_BASE_2013_05_16_H_
