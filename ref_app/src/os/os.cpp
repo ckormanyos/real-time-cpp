@@ -40,10 +40,10 @@ void os::start_os()
     {
       // Set the task index to one higher than the index of the
       // highest task in order to signify the idle task.
-      task_control_block::task_index = task_control_block::task_index_type(task_list.size());
+      task_control_block::task_global_index = task_control_block::task_index_type(task_list.size());
 
       // Set the bit in the task trace belonging to the idle task.
-      task_control_block::task_trace |= task_control_block::task_trace_type(task_control_block::task_trace_type(1U) << std::uint_fast8_t(task_control_block::task_index));
+      task_control_block::task_global_trace |= task_control_block::task_trace_type(task_control_block::task_trace_type(1U) << std::uint_fast8_t(task_control_block::task_global_index));
 
       // Check if all of the tasks have, indeed, checked in by setting
       // their appropriate bit in the task trace. This should be the case,
@@ -52,12 +52,12 @@ void os::start_os()
       const task_control_block::task_trace_type idle_mask (~task_control_block::task_trace_type((std::numeric_limits<task_control_block::task_trace_type>::max)() << std::uint_fast8_t(task_list.size() + 1U)));
 
       // Service the idle task, and also include the task trace information.
-      if(task_control_block::task_trace == idle_mask)
+      if(task_control_block::task_global_trace == idle_mask)
       {
         OS_IDLE_TASK_FUNC(true);
 
         // Reset the task trace value to zero.
-        task_control_block::task_trace = task_control_block::task_trace_type(0U);
+        task_control_block::task_global_trace = task_control_block::task_trace_type(0U);
       }
       else
       {

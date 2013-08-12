@@ -26,7 +26,7 @@
                          const tick_type c,
                          const tick_type o);
 
-      task_control_block(const task_control_block&);
+      task_control_block(const task_control_block& tcb);
 
       void initialize() const { init(); }
 
@@ -38,10 +38,10 @@
       const tick_type        cycle;
             timer_type       timer;
             event_type       event;
-      const task_index_type  my_index;
+      const task_index_type  index;
 
-      static task_index_type task_index;
-      static task_trace_type task_trace;
+      static task_index_type task_global_index;
+      static task_trace_type task_global_trace;
 
       static task_control_block* get_task_pointer();
 
