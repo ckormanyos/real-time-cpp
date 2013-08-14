@@ -18,8 +18,8 @@
     class task_control_block
     {
     public:
-      typedef std::uint_fast8_t  task_index_type;
-      typedef std::uint_fast16_t task_trace_type;
+      typedef std::uint_fast8_t  index_type;
+      typedef std::uint_fast16_t trace_type;
 
       task_control_block(const function_type i,
                          const function_type f,
@@ -30,18 +30,18 @@
 
       void initialize() const { init(); }
 
-      bool execute();
+      bool execute() const;
 
     private:
-      const function_type    init;
-      const function_type    func;
-      const tick_type        cycle;
-            timer_type       timer;
-            event_type       event;
-      const task_index_type  index;
+      const   function_type init;
+      const   function_type func;
+      const   tick_type     cycle;
+      mutable timer_type    timer;
+      mutable event_type    event;
+      const   index_type    index;
 
-      static task_index_type task_global_index;
-      static task_trace_type task_global_trace;
+      static index_type task_global_index;
+      static trace_type task_global_trace;
 
       static task_control_block* get_task_pointer();
 
@@ -57,7 +57,7 @@
     static_assert(OS_TASK_COUNT > 0U,
                   "the task count must exceed zero");
 
-    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<os::task_control_block::task_trace_type>::digits),
+    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<os::task_control_block::trace_type>::digits),
                   "the task count exceeds the available bits in the task trace mechanism");
 
     typedef std::array<os::task_control_block, OS_TASK_COUNT> task_list_type;

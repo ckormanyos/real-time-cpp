@@ -5,8 +5,8 @@ namespace os
   os::task_list_type task_list = OS_TASK_LIST;
 }
 
-os::task_control_block::task_index_type os::task_control_block::task_global_index;
-os::task_control_block::task_trace_type os::task_control_block::task_global_trace;
+os::task_control_block::index_type os::task_control_block::task_global_index;
+os::task_control_block::trace_type os::task_control_block::task_global_trace;
 
 os::task_control_block::task_control_block(const function_type i,
                                            const function_type f,
@@ -30,7 +30,7 @@ os::task_control_block::task_control_block(const task_control_block& tcb) : init
 {
 }
 
-bool os::task_control_block::execute()
+bool os::task_control_block::execute() const
 {
   // Check for a task event.
   const bool task_does_have_event = (event != event_type(0U));
@@ -56,7 +56,7 @@ bool os::task_control_block::execute()
     task_global_index = index;
 
     // Log this task in the global task trace (for the watchdog).
-    task_global_trace |= task_trace_type(task_trace_type(1U) << index);
+    task_global_trace |= trace_type(trace_type(1U) << index);
 
     // Call the task function because of a timer timeout.
     func();
