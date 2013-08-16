@@ -14,17 +14,17 @@
 
   namespace os
   {
-    typedef void (*function_type)();
+    typedef void(*function_type)();
 
     typedef util::timer<std::uint32_t> timer_type;
     typedef timer_type::tick_type      tick_type;
 
     typedef std::uint_fast8_t event_type;
 
-    void start_os();
-    void set_event  (const os::task_id_type task_id, const os::event_type& event_to_set);
-    void get_event  (os::event_type& event_to_get);
-    void clear_event(const os::event_type& event_clear_mask);
+    void start_os   ();
+    void set_event  (const task_id_type task_id, const event_type& event_to_set);
+    void get_event  (event_type& event_to_get);
+    void clear_event(const event_type& event_clear_mask);
   }
 
 #endif // _OS_2011_10_20_H_

@@ -28,11 +28,9 @@
 
       task_control_block(const task_control_block& tcb);
 
-      void initialize() const { init(); }
-
-      bool execute() const;
-
     private:
+      static const trace_type task_idle_mask = trace_type(~trace_type(0UL)) >> (std::numeric_limits<trace_type>::digits - int(task_id_end + 1));
+
       const   function_type init;
       const   function_type func;
       const   tick_type     cycle;
@@ -43,24 +41,31 @@
       static index_type task_global_index;
       static trace_type task_global_trace;
 
-      static task_control_block* get_task_pointer();
+      void initialize() const { init(); }
+
+      bool execute() const;
+
+      static task_control_block* get_running_task_pointer();
 
       task_control_block();
       const task_control_block& operator=(const task_control_block&);
 
-      friend void os::start_os   ();
-      friend void os::set_event  (const task_id_type task_id, const event_type& event_to_set);
-      friend void os::get_event  (event_type& event_to_get);
-      friend void os::clear_event(const event_type& event_mask_to_clear);
+      friend void start_os   ();
+      friend void set_event  (const task_id_type task_id, const event_type& event_to_set);
+      friend void get_event  (event_type& event_to_get);
+      friend void clear_event(const event_type& event_mask_to_clear);
     };
 
     static_assert(OS_TASK_COUNT > 0U,
                   "the task count must exceed zero");
 
-    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<os::task_control_block::trace_type>::digits),
-                  "the task count exceeds the available bits in the task trace mechanism");
+    static_assert(OS_TASK_COUNT == unsigned(task_id_end),
+                  "the task count must be equal to the highest task id");
 
-    typedef std::array<os::task_control_block, OS_TASK_COUNT> task_list_type;
+    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<task_control_block::trace_type>::digits),
+                  "the task count exceeds the available bits in the task trace");
+
+    typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
     extern task_list_type task_list;
   }

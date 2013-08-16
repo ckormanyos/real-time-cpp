@@ -1,10 +1,5 @@
 #include <os/os_task_control_block.h>
 
-namespace os
-{
-  os::task_list_type task_list = OS_TASK_LIST;
-}
-
 os::task_control_block::index_type os::task_control_block::task_global_index;
 os::task_control_block::trace_type os::task_control_block::task_global_trace;
 
@@ -67,12 +62,13 @@ bool os::task_control_block::execute() const
   return task_is_ready;
 }
 
-os::task_control_block* os::task_control_block::get_task_pointer()
+os::task_control_block* os::task_control_block::get_running_task_pointer()
 {
+  // Return a pointer to the index of the task that is running.
+  // If no task is running, for example when the idle task is
+  // running, then the null pointer is returned.
+
   const task_list_type::size_type this_task_index(task_global_index);
 
-  const bool task_index_is_in_range = (this_task_index < task_list.size());
-
-  return (task_index_is_in_range ? &task_list[this_task_index] : nullptr);
+  return ((this_task_index < task_list.size()) ? &task_list[this_task_index] : nullptr);
 }
-

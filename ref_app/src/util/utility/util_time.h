@@ -73,7 +73,7 @@
     private:
       tick_type my_tick;
 
-      static mcal::gpt::value_type my_now() { return static_cast<mcal::gpt::value_type>(mcal::gpt::get_time_elapsed()); }
+      static mcal::gpt::value_type my_now() { return mcal::gpt::get_time_elapsed(); }
     };
   }
 

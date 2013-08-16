@@ -9,10 +9,13 @@
 #include <mcal_irq.h>
 #include <os/os_task_control_block.h>
 
+namespace os
+{
+  os::task_list_type task_list = OS_TASK_LIST;
+}
+
 void os::start_os()
 {
-  using os::task_control_block;
-
   // Initialize each task once.
   std::for_each(task_list.cbegin(),
                 task_list.cend(),
@@ -38,26 +41,25 @@ void os::start_os()
     // If no ready-task was found, then service the idle task.
     if(it_ready_task == task_list.end())
     {
-      // Set the task index to one higher than the index of the
-      // highest task in order to signify the idle task.
-      task_control_block::task_global_index = task_control_block::index_type(task_list.size());
+      // Set the task index to one higher than the highest
+      // task index in order to represent the idle task.
+      task_control_block::task_global_index = task_control_block::index_type(task_id_end);
 
       // Set the bit in the task trace belonging to the idle task.
-      task_control_block::task_global_trace |= task_control_block::trace_type(task_control_block::trace_type(1U) << std::uint_fast8_t(task_control_block::task_global_index));
+      task_control_block::task_global_trace |= task_control_block::trace_type(task_control_block::trace_type(1UL) << int(task_id_end));
 
       // Check if all of the tasks have, indeed, checked in by setting
-      // their appropriate bit in the task trace. This should be the case,
-      // and it means that the task trace will have a set bit corresponding
-      // to each task and also the idle task.
-      const task_control_block::trace_type idle_mask (~task_control_block::trace_type((std::numeric_limits<task_control_block::trace_type>::max)() << std::uint_fast8_t(task_list.size() + 1U)));
+      // their appropriate bit in the task trace. This means that the
+      // task trace will have a one bit set for each task and another
+      // bit set for the idle task.
 
-      // Service the idle task, and also include the task trace information.
-      if(task_control_block::task_global_trace == idle_mask)
+      // Service the idle task (include the task trace information).
+      if(task_control_block::task_global_trace == task_control_block::task_idle_mask)
       {
         OS_IDLE_TASK_FUNC(true);
 
         // Reset the task trace value to zero.
-        task_control_block::task_global_trace = task_control_block::trace_type(0U);
+        task_control_block::task_global_trace = task_control_block::trace_type(0UL);
       }
       else
       {
@@ -67,42 +69,48 @@ void os::start_os()
   }
 }
 
-void os::set_event(const os::task_id_type task_id, const os::event_type& event_to_set)
+void os::set_event(const task_id_type task_id, const event_type& event_to_set)
 {
-  if(task_id < os::task_id_end)
+  if(task_id < task_id_end)
   {
-    using os::task_control_block;
-
-    task_control_block* my_task_pointer = task_control_block::get_task_pointer();
+    // Get a pointer to the control block corresponding to
+    // the task ID that has been supplied to this subroutine.
+    task_control_block* control_block_of_the_task_id = &task_list[task_list_type::size_type(task_id)];
 
     mcal::irq::disable_all();
-    my_task_pointer->event |= event_to_set;
+    control_block_of_the_task_id->event |= event_to_set;
     mcal::irq::enable_all();
   }
 }
 
-void os::get_event(os::event_type& event_to_get)
+void os::get_event(event_type& event_to_get)
 {
-  using os::task_control_block;
+  // Get a pointer to the control block of the task that is running.
+  const task_control_block* control_block_of_the_running_task = task_control_block::get_running_task_pointer();
 
-  task_control_block* my_task_pointer = task_control_block::get_task_pointer();
+  if(control_block_of_the_running_task != nullptr)
+  {
+    mcal::irq::disable_all();
+    const event_type my_event = control_block_of_the_running_task->event;
+    mcal::irq::enable_all();
 
-  mcal::irq::disable_all();
-  const event_type my_event = my_task_pointer->event;
-  mcal::irq::enable_all();
-
-  event_to_get = my_event;
+    event_to_get = my_event;
+  }
+  else
+  {
+    event_to_get = event_type(0U);
+  }
 }
 
-void os::clear_event(const os::event_type& event_mask_to_clear)
+void os::clear_event(const event_type& event_mask_to_clear)
 {
-  using os::task_control_block;
+  // Get a pointer to the control block of the task that is running.
+  task_control_block* control_block_of_the_running_task = task_control_block::get_running_task_pointer();
 
-  task_control_block* my_task_pointer = task_control_block::get_task_pointer();
-
-  const event_type my_event_clear_value = event_type(~event_mask_to_clear);
-
-  mcal::irq::disable_all();
-  my_task_pointer->event &= my_event_clear_value;
-  mcal::irq::enable_all();
+  if(control_block_of_the_running_task != nullptr)
+  {
+    mcal::irq::disable_all();
+    control_block_of_the_running_task->event &= event_type(~event_mask_to_clear);
+    mcal::irq::enable_all();
+  }
 }

@@ -26,6 +26,8 @@
   namespace app { namespace led { void task_init(); void task_func(); } }
   namespace sys { namespace mon { void task_init(); void task_func(); } }
 
+  // Enumerate the task IDs. Note that the order in this list must
+  // be identical with the order of the tasks in the task list below.
   namespace os
   {
     typedef enum enum_task_id

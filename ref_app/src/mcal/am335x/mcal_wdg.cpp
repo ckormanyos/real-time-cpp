@@ -107,11 +107,11 @@ void mcal::wdg::init(const config_type*)
 
 void mcal::wdg::trigger()
 {
-  // Generate a different trigger value for each time that
-  // the watchdog trigger is set. In this subroutine, we add
-  // a prime number from a sequence of primes to the previous
-  // value of the watchdog trigger in order to create a unique
-  // new value for the watchdog trigger.
+  // Generate a different trigger value each time the watchdog
+  // trigger is set. In order to do this, we add a prime number
+  // from a sequence of primes to the previous value of the
+  // watchdog trigger. In this way, a unique new value for
+  // the watchdog trigger is created in each call.
 
   constexpr std::size_t prime_sequence_size = std::size_t(8U);
 
