@@ -121,6 +121,17 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wall                             \
               -Wextra                           \
               -pedantic                         \
+              -Wmain                            \
+              -Wundef                           \
+              -Wsign-conversion                 \
+              -Wfloat-equal                     \
+              -Wunreachable-code                \
+              -Winit-self                       \
+              -Wshadow                          \
+              -Wswitch-default                  \
+              -Wswitch-enum                     \
+              -Wcast-align                      \
+              -Wmissing-include-dirs            \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -O3                               \
@@ -136,7 +147,6 @@ CFLAGS      = $(GCCFLAGS)                       \
 CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
               -x c++                            \
-              -Wsign-conversion                 \
               -fno-rtti                         \
               -fstrict-enums                    \
               -fno-use-cxa-atexit               \

@@ -169,6 +169,11 @@
             }
             break;
 
+          case recieve_start_bit:
+          case recieve_start_bit_validation:
+          case recieve_data_bits:
+          case recieve_stop_bit:
+          case recieve_pause_for_next_byte:
           default:
             break;
         }
@@ -245,6 +250,10 @@
             driver_transmit_state = recieve_start_bit;
             break;
 
+          case send_start_bit:
+          case send_data_bits:
+          case send_stop_bit:
+          case send_pause_for_next_byte:
           default:
             break;
         }
