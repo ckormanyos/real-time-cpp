@@ -6,11 +6,10 @@
 //
 
 #include <cmath>
-#include <limits>
+#include "xcmath_impl.h"
 
 // The acosh function is implemented here using logarithmic functions.
 // This provides an example of a transcendental function calculation.
-// Note that double is the same as float for this compier.
 
 namespace
 {
@@ -23,7 +22,7 @@ namespace
     {
       return std::numeric_limits<float_type>::quiet_NaN();
     }
-    else if(1 == x)
+    else if(xcmath::near_integer(x, std::uint_least8_t(1U)))
     {
       return float_type(0);
     }

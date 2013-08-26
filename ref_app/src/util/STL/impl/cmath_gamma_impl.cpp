@@ -7,12 +7,11 @@
 
 #include <cstdint>
 #include <cmath>
-#include <limits>
 #include "cmath_constants_impl.h"
+#include "xcmath_impl.h"
 
-// The tgamma function is implemented here for the AVR.
+// The tgamma function is implemented here.
 // This provides an example of a special function calculation.
-// Note that double is the same as float for AVR.
 
 namespace
 {
@@ -58,7 +57,7 @@ namespace
 float tgamma(float x)
 {
   // Check for pure zero argument.
-  if(0 == x)
+  if(xcmath::near_integer(x, std::uint_least8_t(0U)))
   {
     return std::numeric_limits<float>::quiet_NaN();
   }
@@ -72,7 +71,9 @@ float tgamma(float x)
   }
 
   // Is the argument 1 or 2?
-  if((1 == x) || (2 == x))
+  if(   xcmath::near_integer(x, std::uint_least8_t(1U))
+     || xcmath::near_integer(x, std::uint_least8_t(2U))
+    )
   {
     return 1.0F;
   }

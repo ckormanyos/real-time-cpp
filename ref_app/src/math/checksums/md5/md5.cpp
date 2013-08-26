@@ -37,7 +37,6 @@
  documentation and/or software.
 */
 
-/*
 #include <cstddef>
 #include <algorithm>
 #include "md5.h"
@@ -47,7 +46,7 @@ namespace
   class MD5
   {
   public:
-    static constexpr std::size_t blocksize = 64;
+    static const std::size_t blocksize = 64;
 
     static void init();
     static void update(const std::uint8_t* buf, const std::size_t len);
@@ -55,22 +54,22 @@ namespace
 
   private:
     // Constants for MD5Transform routine.
-    static constexpr std::uint_fast8_t S11 =  7UL;
-    static constexpr std::uint_fast8_t S12 = 12UL;
-    static constexpr std::uint_fast8_t S13 = 17UL;
-    static constexpr std::uint_fast8_t S14 = 22UL;
-    static constexpr std::uint_fast8_t S21 =  5UL;
-    static constexpr std::uint_fast8_t S22 =  9UL;
-    static constexpr std::uint_fast8_t S23 = 14UL;
-    static constexpr std::uint_fast8_t S24 = 20UL;
-    static constexpr std::uint_fast8_t S31 =  4UL;
-    static constexpr std::uint_fast8_t S32 = 11UL;
-    static constexpr std::uint_fast8_t S33 = 16UL;
-    static constexpr std::uint_fast8_t S34 = 23UL;
-    static constexpr std::uint_fast8_t S41 =  6UL;
-    static constexpr std::uint_fast8_t S42 = 10UL;
-    static constexpr std::uint_fast8_t S43 = 15UL;
-    static constexpr std::uint_fast8_t S44 = 21UL;
+    static const std::uint_fast8_t S11 =  7UL;
+    static const std::uint_fast8_t S12 = 12UL;
+    static const std::uint_fast8_t S13 = 17UL;
+    static const std::uint_fast8_t S14 = 22UL;
+    static const std::uint_fast8_t S21 =  5UL;
+    static const std::uint_fast8_t S22 =  9UL;
+    static const std::uint_fast8_t S23 = 14UL;
+    static const std::uint_fast8_t S24 = 20UL;
+    static const std::uint_fast8_t S31 =  4UL;
+    static const std::uint_fast8_t S32 = 11UL;
+    static const std::uint_fast8_t S33 = 16UL;
+    static const std::uint_fast8_t S34 = 23UL;
+    static const std::uint_fast8_t S41 =  6UL;
+    static const std::uint_fast8_t S42 = 10UL;
+    static const std::uint_fast8_t S43 = 15UL;
+    static const std::uint_fast8_t S44 = 21UL;
 
     static void transform(const std::uint8_t* block);
     static void decode(std::uint32_t* output, const std::uint8_t* input, const std::size_t len);
@@ -366,4 +365,3 @@ std::array<std::uint8_t, 16U> md5(const std::uint8_t* buffer, const std::size_t 
 
   return digest;
 }
-*/

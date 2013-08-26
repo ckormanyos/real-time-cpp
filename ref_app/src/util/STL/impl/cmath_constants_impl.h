@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _AVR_CMATH_CONSTANTS_2012_01_09_H_
-  #define _AVR_CMATH_CONSTANTS_2012_01_09_H_
+#ifndef _CMATH_CONSTANTS_2012_01_09_H_
+  #define _CMATH_CONSTANTS_2012_01_09_H_
 
   template<typename T>
   const inline T const_sqrt2()
@@ -44,4 +44,4 @@
     return T(0.5772156649015328606065120900824024310422L);
   }
 
-#endif // _AVR_CMATH_CONSTANTS_2012_01_09_H_
+#endif // _CMATH_CONSTANTS_2012_01_09_H_

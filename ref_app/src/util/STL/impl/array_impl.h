@@ -15,8 +15,7 @@
 
   namespace std
   {
-    template<typename T,
-	           const std::size_t N>
+    template<typename T, const std::size_t N>
     class array
     {
     public:

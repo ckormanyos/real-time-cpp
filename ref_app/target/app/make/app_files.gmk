@@ -10,6 +10,7 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
+             $(PATH_APP)/math/checksums/md5/md5                      \
              $(PATH_APP)/mcal/mcal                                   \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                        \
