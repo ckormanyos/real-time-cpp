@@ -106,9 +106,6 @@
     <ClCompile Include="src\math\checksums\crc\crc.cpp">
       <Filter>src\math\checksums\crc</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\checksums\md5\md5.cpp">
-      <Filter>src\math\checksums\md5</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
@@ -642,6 +639,9 @@
     <ClInclude Include="src\util\STL\impl\xcmath_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\functional_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -718,6 +718,9 @@
     </None>
     <None Include="src\util\STL_C++11_Compatibility\thread">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL\functional">
+      <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>
 </Project>

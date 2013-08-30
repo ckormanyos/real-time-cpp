@@ -62,6 +62,44 @@
       }
     }
 
+    template<typename input_iterator,
+             typename output_iterator,
+             typename unary_function_type>
+    inline output_iterator xtransform(input_iterator first, input_iterator last, output_iterator destination, unary_function_type function)
+    {
+      while(first != last)
+      {
+        *destination = function(*first);
+
+        ++first;
+        ++destination;
+      }
+
+      return destination;
+    }
+
+    template<class input_iterator1,
+             class input_iterator2,
+             class output_iterator,
+             class binary_function_type>
+    inline output_iterator xtransform(input_iterator1 first1,
+                                      input_iterator1 last1,
+                                      input_iterator2 first2,
+                                      output_iterator destination,
+                                      binary_function_type function)
+    {
+      while(first1 != last1)
+      {
+        *destination = function(*first1, *first2);
+
+        ++first1;
+        ++first2;
+        ++destination;
+      }
+
+      return destination;
+    }
+
     template<class input_iterator1, class input_iterator2>
     inline bool xequal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {

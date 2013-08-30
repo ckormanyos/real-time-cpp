@@ -6,7 +6,7 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for ATMEL(R) AVR(R) ATmega16/32, etc. */
+/* Linker script for ATMEL(R) AVR(R) ATmega32P. */
 
 INPUT(libc.a libm.a)
 
@@ -14,12 +14,12 @@ OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
 /* The end of the 1K RAM stack */
-__initial_stack_pointer = 0x800400;
+__initial_stack_pointer = 0x800800;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 16K
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 1K - 100
+  ROM(rx)   : ORIGIN = 0, LENGTH = 32K
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 2K - 0x100
 }
 
 SECTIONS
@@ -55,10 +55,6 @@ SECTIONS
     . = ALIGN(2);
     *(.text*)
     . = ALIGN(2);
-    *(.rodata)
-    . = ALIGN(2);
-    *(.rodata*)
-    . = ALIGN(2);
   } > ROM
 
   .text :
@@ -79,6 +75,12 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
+    *(.rodata)  /* Do *NOT* move this! Include .rodata here if gcc is used with -fdata-sections. */
+    . = ALIGN(2);
+    KEEP (*(.rodata))
+    *(.rodata*)
+    . = ALIGN(2);
+    KEEP (*(.rodata*))
     _data_end = .;
   } > RAM AT > ROM
 
@@ -97,4 +99,3 @@ SECTIONS
 
   _rom_data_begin = LOADADDR(.data);
 }
-

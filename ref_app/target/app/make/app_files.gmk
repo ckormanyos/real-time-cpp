@@ -10,7 +10,6 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
-             $(PATH_APP)/math/checksums/md5/md5                      \
              $(PATH_APP)/mcal/mcal                                   \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                        \
@@ -28,6 +27,5 @@ FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
              $(PATH_APP)/sys/rdm/sys_rdm                             \
              $(PATH_APP)/sys/start/sys_start
 
-# Use these for CRC and/or MD5 benchmarks
-#             $(PATH_APP)/math/checksums/crc/crc          \
-#             $(PATH_APP)/math/checksums/md5/md5          \
+# Use this for CRC benchmarks
+#             $(PATH_APP)/math/checksums/crc/crc

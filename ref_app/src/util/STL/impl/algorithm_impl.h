@@ -58,6 +58,30 @@
       xalgorithm::xfill(first, first + n, value);
     }
 
+    template<typename input_iterator,
+             typename output_iterator,
+             typename binary_function_type>
+    inline output_iterator transform(input_iterator first,
+                                     input_iterator last,
+                                     output_iterator destination,
+                                     binary_function_type function)
+    {
+      return xalgorithm::xtransform(first, last, destination, function);
+    }
+
+    template<class input_iterator1,
+             class input_iterator2,
+             class output_iterator,
+             class binary_function_type>
+    inline output_iterator transform(input_iterator1 first1,
+                                     input_iterator1 last1,
+                                     input_iterator2 first2,
+                                     output_iterator destination,
+                                     binary_function_type function)
+    {
+      return xalgorithm::xtransform(first1, last1, first2, destination, function);
+    }
+
     template<typename input_iterator1, typename input_iterator2>
     inline bool equal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
