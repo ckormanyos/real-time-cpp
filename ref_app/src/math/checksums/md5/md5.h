@@ -8,9 +8,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // January 2012:
-// This work has been created by Christopher Kormanyos and
-// specifically designed for C++2011 and for portability
-// to microcontroller platforms.
+// This work has been created by Christopher Kormanyos.
+// It has been specifically designed for C++11 with particular
+// emphasis on portability to microcontroller platforms.
 //
 // This work was originally converted to a C++ class by
 // Frank Thilo (thilo@unix-ag.org) for bzflag (http://www.bzflag.org).
@@ -67,6 +67,12 @@
             digest_buffer          (),
             digest_result          () { }
 
+    md5(const md5& other) : the_result_is_finalized(other.the_result_is_finalized),
+                            count_of_bits          (other.count_of_bits),
+                            digest_state           (other.digest_state),
+                            digest_buffer          (other.digest_buffer),
+                            digest_result          (other.digest_result) { }
+
     md5(const std::uint8_t* data_buffer, const std::size_t count) : the_result_is_finalized(true),
                                                                     count_of_bits          (),
                                                                     digest_state           (),
@@ -86,35 +92,23 @@
     }
 
     template<typename unsigned_integer_type>
-    md5(const unsigned_integer_type& u) : the_result_is_finalized(true),
-                                          count_of_bits          (),
-                                          digest_state           (),
-                                          digest_buffer          (),
-                                          digest_result          ()
+    md5(const unsigned_integer_type& u);
+
+    md5& operator=(const md5& other)
     {
-      // Ensure that the template parameter is an unsigned integer type with radix 2, having a multiple of 8 bits.
-      static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
-                    && ( std::numeric_limits<unsigned_integer_type>::is_integer      == true)
-                    && ( std::numeric_limits<unsigned_integer_type>::is_signed       == false)
-                    && ( std::numeric_limits<unsigned_integer_type>::radix           == 2)
-                    && ((std::numeric_limits<unsigned_integer_type>::digits % 8)     == 0),
-                    "the template type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+      if(this != &other)
+      {
+        the_result_is_finalized = other.the_result_is_finalized;
+        count_of_bits           = other.count_of_bits;
+        digest_state            = other.digest_state;
+        digest_buffer           = other.digest_buffer;
+        digest_result           = other.digest_result;
+      }
 
-      std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
-
-      std::uint_fast8_t i = 0U;
-
-      std::for_each(the_data.begin(),
-                    the_data.end(),
-                    [&u, &i](std::uint8_t& data_value)
-                    {
-                      data_value = std::uint8_t(u >> i);
-
-                      i += 8U;
-                    });
-
-      process_data(the_data.data(), the_data.size());
+      return *this;
     }
+
+    ~md5() { }
 
     void process_data(const std::uint8_t* data_buffer, const std::size_t count);
 
@@ -150,7 +144,8 @@
       process_data(the_data.data(), the_data.size());
     }
 
-    const result_type& get_result_and_re_initialize();
+    result_type get_final_result_and_init_the_state();
+    result_type get_final_result_and_keep_the_state() const;
 
   private:
     static const std::size_t md5_blocksize = 64U;
@@ -175,8 +170,62 @@
     static const std::uint_fast8_t S43 = UINT8_C(15);
     static const std::uint_fast8_t S44 = UINT8_C(21);
 
-    bool                                     the_result_is_finalized; // A flag signalizing whether or not the result is finalized.
-    std::array<std::uint32_t, 2U>            count_of_bits;           // A counter for number of bits.
+    struct quadword_array
+    {
+    public:
+      typedef std::uint_fast8_t size_type;
+      typedef std::uint32_t     value_type;
+      typedef value_type*       pointer_type;
+
+      quadword_array(const value_type& lo = value_type(),
+                     const value_type& hi = value_type())
+      {
+        elems[0U] = lo;
+        elems[1U] = hi;
+      }
+
+      quadword_array(const quadword_array& q)
+      {
+        elems[0U] = q.elems[0U];
+        elems[1U] = q.elems[1U];
+      }
+
+      quadword_array& operator=(const quadword_array& other)
+      {
+        if(this != &other)
+        {
+          elems[0U] = other.elems[0U];
+          elems[1U] = other.elems[1U];
+        }
+
+        return *this;
+      }
+
+      quadword_array& operator=(const std::uint_least8_t value)
+      {
+        elems[0U] = value_type(value);
+        elems[1U] = value_type(0U);
+
+        return *this;
+      }
+
+      value_type& operator[](const size_type i)
+      {
+        return ((i == size_type(1U)) ? elems[1U] : elems[0U]);
+      }
+
+      size_type size() const { return size_type(2U); }
+
+      pointer_type data()  { return &elems[0U]; }
+      pointer_type begin() { return &elems[0U]; }
+      pointer_type end  () { return &elems[2U]; }
+
+    private:
+      value_type elems[2U];
+    };
+
+    bool                                     the_result_is_finalized; // A flag indicating if the result is finalized.
+    md5::quadword_array                      count_of_bits;           // A counter for number of bits.
     std::array<std::uint32_t, 4U>            digest_state;            // The message digest state so far.
     std::array<std::uint8_t,  md5_blocksize> digest_buffer;           // The message digest buffer.
     result_type                              digest_result;           // The result of the message digest.
@@ -192,10 +241,10 @@
     // The following are the low-level bit twiddle operations of the message digest.
 
     // F, G, H and I are basic MD5 functions.
-    static std::uint32_t f_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
-    static std::uint32_t g_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
-    static std::uint32_t h_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
-    static std::uint32_t i_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
+    static std::uint32_t f_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
+    static std::uint32_t g_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
+    static std::uint32_t h_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
+    static std::uint32_t i_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z);
 
     // The rotate_left function rotates x to the left by n bits.
     template<const std::uint_fast8_t n>
@@ -207,17 +256,27 @@
     // The following are the FF, GG, HH, and II transformations for
     // rounds 1, 2, 3, and 4 of the message digest.
     template<const std::uint_fast8_t s, const std::uint32_t ac>
-    static void ff_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
+    static void ff_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
 
     template<const std::uint_fast8_t s, const std::uint32_t ac>
-    static void gg_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
+    static void gg_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
 
     template<const std::uint_fast8_t s, const std::uint32_t ac>
-    static void hh_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
+    static void hh_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
 
     template<const std::uint_fast8_t s, const std::uint32_t ac>
-    static void ii_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
+    static void ii_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
   };
+
+  template<typename unsigned_integer_type>
+  md5::md5(const unsigned_integer_type& u) : the_result_is_finalized(true),
+                                             count_of_bits          (),
+                                             digest_state           (),
+                                             digest_buffer          (),
+                                             digest_result          ()
+  {
+    process_data(u);
+  }
 
   void md5::process_data(const std::uint8_t* data_buffer, const std::size_t count)
   {
@@ -271,7 +330,7 @@
     std::copy(data_buffer + i, data_buffer + count, digest_buffer.begin() + index);
   }
 
-  const md5::result_type& md5::get_result_and_re_initialize()
+  md5::result_type md5::get_final_result_and_init_the_state()
   {
     if((!the_result_is_finalized))
     {
@@ -289,10 +348,17 @@
     return digest_result;
   }
 
+  md5::result_type md5::get_final_result_and_keep_the_state() const
+  {
+    md5 temp_md5(*this);
+
+    return temp_md5.get_final_result_and_init_the_state();
+  }
+
   void md5::initialize()
   {
     // Clear the bit counters.
-    std::fill(count_of_bits.begin(), count_of_bits.end(), static_cast<std::uint32_t>(0U));
+    count_of_bits = 0U;
 
     // Load the *magic* initialization constants.
     digest_state[0U] = UINT32_C(0x67452301);
@@ -377,134 +443,134 @@
   {
     // Apply the MD5 algorithm to a block.
 
-    std::array<std::uint32_t, md5_blocksize / 4U> x_transform;
+    std::array<std::uint32_t, md5_blocksize / 4U> x_block;
 
-    std::array<std::uint32_t, 4U> abcd_transform = digest_state;
+    std::array<std::uint32_t, 4U> abcd = digest_state;
 
-    decode_uint8_input_to_uint32_output(block, block + md5_blocksize, x_transform.data());
+    decode_uint8_input_to_uint32_output(block, block + md5_blocksize, x_block.data());
 
     // Round 1
-    ff_transform<S11, UINT32_C(0xD76AA478)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 0U]); //  1
-    ff_transform<S12, UINT32_C(0xE8C7B756)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 1U]); //  2
-    ff_transform<S13, UINT32_C(0x242070DB)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 2U]); //  3
-    ff_transform<S14, UINT32_C(0xC1BDCEEE)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 3U]); //  4
-    ff_transform<S11, UINT32_C(0xF57C0FAF)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 4U]); //  5
-    ff_transform<S12, UINT32_C(0x4787C62A)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 5U]); //  6
-    ff_transform<S13, UINT32_C(0xA8304613)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 6U]); //  7
-    ff_transform<S14, UINT32_C(0xFD469501)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 7U]); //  8
-    ff_transform<S11, UINT32_C(0x698098D8)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 8U]); //  9
-    ff_transform<S12, UINT32_C(0x8B44F7AF)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 9U]); // 10
-    ff_transform<S13, UINT32_C(0xFFFF5BB1)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[10U]); // 11
-    ff_transform<S14, UINT32_C(0x895CD7BE)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[11U]); // 12
-    ff_transform<S11, UINT32_C(0x6B901122)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[12U]); // 13
-    ff_transform<S12, UINT32_C(0xFD987193)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[13U]); // 14
-    ff_transform<S13, UINT32_C(0xA679438E)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[14U]); // 15
-    ff_transform<S14, UINT32_C(0x49B40821)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[15U]); // 16
+    ff_transformation<S11, UINT32_C(0xD76AA478)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 0U]); //  1
+    ff_transformation<S12, UINT32_C(0xE8C7B756)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 1U]); //  2
+    ff_transformation<S13, UINT32_C(0x242070DB)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 2U]); //  3
+    ff_transformation<S14, UINT32_C(0xC1BDCEEE)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 3U]); //  4
+    ff_transformation<S11, UINT32_C(0xF57C0FAF)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 4U]); //  5
+    ff_transformation<S12, UINT32_C(0x4787C62A)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 5U]); //  6
+    ff_transformation<S13, UINT32_C(0xA8304613)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 6U]); //  7
+    ff_transformation<S14, UINT32_C(0xFD469501)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 7U]); //  8
+    ff_transformation<S11, UINT32_C(0x698098D8)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 8U]); //  9
+    ff_transformation<S12, UINT32_C(0x8B44F7AF)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 9U]); // 10
+    ff_transformation<S13, UINT32_C(0xFFFF5BB1)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[10U]); // 11
+    ff_transformation<S14, UINT32_C(0x895CD7BE)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[11U]); // 12
+    ff_transformation<S11, UINT32_C(0x6B901122)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[12U]); // 13
+    ff_transformation<S12, UINT32_C(0xFD987193)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[13U]); // 14
+    ff_transformation<S13, UINT32_C(0xA679438E)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[14U]); // 15
+    ff_transformation<S14, UINT32_C(0x49B40821)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[15U]); // 16
 
     // Round 2
-    gg_transform<S21, UINT32_C(0xF61E2562)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 1U]); // 17
-    gg_transform<S22, UINT32_C(0xC040B340)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 6U]); // 18
-    gg_transform<S23, UINT32_C(0x265E5A51)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[11U]); // 19
-    gg_transform<S24, UINT32_C(0xE9B6C7AA)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 0U]); // 20
-    gg_transform<S21, UINT32_C(0xD62F105D)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 5U]); // 21
-    gg_transform<S22, UINT32_C(0x02441453)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[10U]); // 22
-    gg_transform<S23, UINT32_C(0xD8A1E681)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[15U]); // 23
-    gg_transform<S24, UINT32_C(0xE7D3FBC8)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 4U]); // 24
-    gg_transform<S21, UINT32_C(0x21E1CDE6)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 9U]); // 25
-    gg_transform<S22, UINT32_C(0xC33707D6)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[14U]); // 26
-    gg_transform<S23, UINT32_C(0xF4D50D87)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 3U]); // 27
-    gg_transform<S24, UINT32_C(0x455A14ED)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 8U]); // 28
-    gg_transform<S21, UINT32_C(0xA9E3E905)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[13U]); // 29
-    gg_transform<S22, UINT32_C(0xFCEFA3F8)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 2U]); // 30
-    gg_transform<S23, UINT32_C(0x676F02D9)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 7U]); // 31
-    gg_transform<S24, UINT32_C(0x8D2A4C8A)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[12U]); // 32
+    gg_transformation<S21, UINT32_C(0xF61E2562)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 1U]); // 17
+    gg_transformation<S22, UINT32_C(0xC040B340)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 6U]); // 18
+    gg_transformation<S23, UINT32_C(0x265E5A51)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[11U]); // 19
+    gg_transformation<S24, UINT32_C(0xE9B6C7AA)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 0U]); // 20
+    gg_transformation<S21, UINT32_C(0xD62F105D)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 5U]); // 21
+    gg_transformation<S22, UINT32_C(0x02441453)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[10U]); // 22
+    gg_transformation<S23, UINT32_C(0xD8A1E681)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[15U]); // 23
+    gg_transformation<S24, UINT32_C(0xE7D3FBC8)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 4U]); // 24
+    gg_transformation<S21, UINT32_C(0x21E1CDE6)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 9U]); // 25
+    gg_transformation<S22, UINT32_C(0xC33707D6)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[14U]); // 26
+    gg_transformation<S23, UINT32_C(0xF4D50D87)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 3U]); // 27
+    gg_transformation<S24, UINT32_C(0x455A14ED)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 8U]); // 28
+    gg_transformation<S21, UINT32_C(0xA9E3E905)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[13U]); // 29
+    gg_transformation<S22, UINT32_C(0xFCEFA3F8)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 2U]); // 30
+    gg_transformation<S23, UINT32_C(0x676F02D9)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 7U]); // 31
+    gg_transformation<S24, UINT32_C(0x8D2A4C8A)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[12U]); // 32
 
     // Round 3
-    hh_transform<S31, UINT32_C(0xFFFA3942)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 5U]); // 33
-    hh_transform<S32, UINT32_C(0x8771F681)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 8U]); // 34
-    hh_transform<S33, UINT32_C(0x6D9D6122)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[11U]); // 35
-    hh_transform<S34, UINT32_C(0xFDE5380C)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[14U]); // 36
-    hh_transform<S31, UINT32_C(0xA4BEEA44)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 1U]); // 37
-    hh_transform<S32, UINT32_C(0x4BDECFA9)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 4U]); // 38
-    hh_transform<S33, UINT32_C(0xF6BB4B60)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 7U]); // 39
-    hh_transform<S34, UINT32_C(0xBEBFBC70)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[10U]); // 40
-    hh_transform<S31, UINT32_C(0x289B7EC6)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[13U]); // 41
-    hh_transform<S32, UINT32_C(0xEAA127FA)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 0U]); // 42
-    hh_transform<S33, UINT32_C(0xD4EF3085)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 3U]); // 43
-    hh_transform<S34, UINT32_C(0x04881D05)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 6U]); // 44
-    hh_transform<S31, UINT32_C(0xD9D4D039)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 9U]); // 45
-    hh_transform<S32, UINT32_C(0xE6DB99E5)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[12U]); // 46
-    hh_transform<S33, UINT32_C(0x1FA27CF8)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[15U]); // 47
-    hh_transform<S34, UINT32_C(0xC4AC5665)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 2U]); // 48
+    hh_transformation<S31, UINT32_C(0xFFFA3942)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 5U]); // 33
+    hh_transformation<S32, UINT32_C(0x8771F681)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 8U]); // 34
+    hh_transformation<S33, UINT32_C(0x6D9D6122)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[11U]); // 35
+    hh_transformation<S34, UINT32_C(0xFDE5380C)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[14U]); // 36
+    hh_transformation<S31, UINT32_C(0xA4BEEA44)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 1U]); // 37
+    hh_transformation<S32, UINT32_C(0x4BDECFA9)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 4U]); // 38
+    hh_transformation<S33, UINT32_C(0xF6BB4B60)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 7U]); // 39
+    hh_transformation<S34, UINT32_C(0xBEBFBC70)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[10U]); // 40
+    hh_transformation<S31, UINT32_C(0x289B7EC6)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[13U]); // 41
+    hh_transformation<S32, UINT32_C(0xEAA127FA)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 0U]); // 42
+    hh_transformation<S33, UINT32_C(0xD4EF3085)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 3U]); // 43
+    hh_transformation<S34, UINT32_C(0x04881D05)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 6U]); // 44
+    hh_transformation<S31, UINT32_C(0xD9D4D039)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 9U]); // 45
+    hh_transformation<S32, UINT32_C(0xE6DB99E5)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[12U]); // 46
+    hh_transformation<S33, UINT32_C(0x1FA27CF8)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[15U]); // 47
+    hh_transformation<S34, UINT32_C(0xC4AC5665)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 2U]); // 48
 
     // Round 4
-    ii_transform<S41, UINT32_C(0xF4292244)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 0U]); // 49
-    ii_transform<S42, UINT32_C(0x432AFF97)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 7U]); // 50
-    ii_transform<S43, UINT32_C(0xAB9423A7)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[14U]); // 51
-    ii_transform<S44, UINT32_C(0xFC93A039)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 5U]); // 52
-    ii_transform<S41, UINT32_C(0x655B59C3)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[12U]); // 53
-    ii_transform<S42, UINT32_C(0x8F0CCC92)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[ 3U]); // 54
-    ii_transform<S43, UINT32_C(0xFFEFF47D)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[10U]); // 55
-    ii_transform<S44, UINT32_C(0x85845DD1)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 1U]); // 56
-    ii_transform<S41, UINT32_C(0x6FA87E4F)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 8U]); // 57
-    ii_transform<S42, UINT32_C(0xFE2CE6E0)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[15U]); // 58
-    ii_transform<S43, UINT32_C(0xA3014314)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 6U]); // 59
-    ii_transform<S44, UINT32_C(0x4E0811A1)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[13U]); // 60
-    ii_transform<S41, UINT32_C(0xF7537E82)>(abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], x_transform[ 4U]); // 61
-    ii_transform<S42, UINT32_C(0xBD3AF235)>(abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], abcd_transform[2U], x_transform[11U]); // 62
-    ii_transform<S43, UINT32_C(0x2AD7D2BB)>(abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], abcd_transform[1U], x_transform[ 2U]); // 63
-    ii_transform<S44, UINT32_C(0xEB86D391)>(abcd_transform[1U], abcd_transform[2U], abcd_transform[3U], abcd_transform[0U], x_transform[ 9U]); // 64
+    ii_transformation<S41, UINT32_C(0xF4292244)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 0U]); // 49
+    ii_transformation<S42, UINT32_C(0x432AFF97)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 7U]); // 50
+    ii_transformation<S43, UINT32_C(0xAB9423A7)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[14U]); // 51
+    ii_transformation<S44, UINT32_C(0xFC93A039)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 5U]); // 52
+    ii_transformation<S41, UINT32_C(0x655B59C3)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[12U]); // 53
+    ii_transformation<S42, UINT32_C(0x8F0CCC92)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 3U]); // 54
+    ii_transformation<S43, UINT32_C(0xFFEFF47D)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[10U]); // 55
+    ii_transformation<S44, UINT32_C(0x85845DD1)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 1U]); // 56
+    ii_transformation<S41, UINT32_C(0x6FA87E4F)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 8U]); // 57
+    ii_transformation<S42, UINT32_C(0xFE2CE6E0)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[15U]); // 58
+    ii_transformation<S43, UINT32_C(0xA3014314)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 6U]); // 59
+    ii_transformation<S44, UINT32_C(0x4E0811A1)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[13U]); // 60
+    ii_transformation<S41, UINT32_C(0xF7537E82)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 4U]); // 61
+    ii_transformation<S42, UINT32_C(0xBD3AF235)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[11U]); // 62
+    ii_transformation<S43, UINT32_C(0x2AD7D2BB)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 2U]); // 63
+    ii_transformation<S44, UINT32_C(0xEB86D391)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 9U]); // 64
 
     // Update the state information with the transformation results.
     std::transform(digest_state.begin(),
                    digest_state.end(),
-                   abcd_transform.begin(),
+                   abcd.begin(),
                    digest_state.begin(),
                    std::plus<std::uint32_t>());
   }
 
-  std::uint32_t md5::f_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
+  std::uint32_t md5::f_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
   {
     return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & y) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~x) & z));
   }
 
-  std::uint32_t md5::g_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
+  std::uint32_t md5::g_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
   {
     return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & z) | static_cast<std::uint32_t>(y & static_cast<std::uint32_t>(~z)));
   }
 
-  std::uint32_t md5::h_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
+  std::uint32_t md5::h_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
   {
     return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x ^ y) ^ z);
   }
 
-  std::uint32_t md5::i_bit_twiddle(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
+  std::uint32_t md5::i_permutation(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
   {
     return static_cast<std::uint32_t>(y ^ static_cast<std::uint32_t>(x | static_cast<std::uint32_t>(~z)));
   }
 
   template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
-  void md5::ff_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
+  void md5::ff_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
   {
-    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + f_bit_twiddle(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + f_permutation(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
   }
 
   template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
-  void md5::gg_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
+  void md5::gg_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
   {
-    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + g_bit_twiddle(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + g_permutation(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
   }
 
   template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
-  void md5::hh_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
+  void md5::hh_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
   {
-    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + h_bit_twiddle(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + h_permutation(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
   }
 
   template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
-  void md5::ii_transform(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
+  void md5::ii_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
   {
-    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + i_bit_twiddle(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+    a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + i_permutation(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
   }
 
   // Test code in main()...
@@ -521,7 +587,7 @@
     // Initialize the Microcontroller Abstraction Layer.
     mcal::init();
 
-    const md5::result_type the_md5_result = the_md5.get_result_and_re_initialize();
+    const md5::result_type the_md5_result = the_md5.get_final_result_and_init_the_state();
 
     // Start the multitasking scheduler (and never return).
     if(the_md5_result.back() == static_cast<std::uint8_t>(0x9FU))
