@@ -201,8 +201,16 @@
         return *this;
       }
 
-      quadword_array& operator=(const std::uint_least8_t value)
+      template<typename unsigned_integer_type>
+      quadword_array& operator=(const unsigned_integer_type& value)
       {
+        // Ensure that the template parameter is an unsigned integer type, having at most 32 bits.
+        static_assert(   (std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
+                      && (std::numeric_limits<unsigned_integer_type>::is_integer      == true)
+                      && (std::numeric_limits<unsigned_integer_type>::is_signed       == false)
+                      && (std::numeric_limits<unsigned_integer_type>::digits          <= 32),
+                      "the template type must be an unsigned integer type, having at most 32 bits.");
+
         elems[0U] = value_type(value);
         elems[1U] = value_type(0U);
 
