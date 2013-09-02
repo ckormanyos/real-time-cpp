@@ -642,6 +642,9 @@
     <ClInclude Include="src\util\STL\impl\functional_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\type_traits_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -720,6 +723,9 @@
       <Filter>src\util\STL_C++11_Compatibility</Filter>
     </None>
     <None Include="src\util\STL\functional">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\type_traits">
       <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>

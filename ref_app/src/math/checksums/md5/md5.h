@@ -73,26 +73,16 @@
                             digest_buffer          (other.digest_buffer),
                             digest_result          (other.digest_result) { }
 
-    md5(const std::uint8_t* data_buffer, const std::size_t count) : the_result_is_finalized(true),
-                                                                    count_of_bits          (),
-                                                                    digest_state           (),
-                                                                    digest_buffer          (),
-                                                                    digest_result          ()
-    {
-      process_data(data_buffer, count);
-    }
+    template<typename count_type>
+    md5(const std::uint8_t* data_stream, const count_type& count);
 
-    md5(const char* data_string, const std::size_t count) : the_result_is_finalized(true),
-                                                            count_of_bits          (),
-                                                            digest_state           (),
-                                                            digest_buffer          (),
-                                                            digest_result          ()
-    {
-      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_string)), count);
-    }
+    template<typename count_type>
+    md5(const char* string_stream, const count_type& count);
 
     template<typename unsigned_integer_type>
     md5(const unsigned_integer_type& u);
+
+    ~md5() { }
 
     md5& operator=(const md5& other)
     {
@@ -108,41 +98,9 @@
       return *this;
     }
 
-    ~md5() { }
-
-    void process_data(const std::uint8_t* data_buffer, const std::size_t count);
-
-    void process_data(const char* data_string, const std::size_t count)
-    {
-      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_string)), count);
-    }
-
-    template<typename unsigned_integer_type>
-    void process_data(const unsigned_integer_type& u)
-    {
-      // Ensure that the template parameter is an unsigned integer type with radix 2, having a multiple of 8 bits.
-      static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
-                    && ( std::numeric_limits<unsigned_integer_type>::is_integer      == true)
-                    && ( std::numeric_limits<unsigned_integer_type>::is_signed       == false)
-                    && ( std::numeric_limits<unsigned_integer_type>::radix           == 2)
-                    && ((std::numeric_limits<unsigned_integer_type>::digits % 8)     == 0),
-                    "the template type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
-
-      std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
-
-      std::uint_fast8_t i = 0U;
-
-      std::for_each(the_data.begin(),
-                    the_data.end(),
-                    [&u, &i](std::uint8_t& data_value)
-                    {
-                      data_value = std::uint8_t(u >> i);
-
-                      i += 8U;
-                    });
-
-      process_data(the_data.data(), the_data.size());
-    }
+    template<typename count_type>            void process_data(const std::uint8_t* data_stream,   const count_type& count);
+    template<typename count_type>            void process_data(const char*         string_stream, const count_type& count);
+    template<typename unsigned_integer_type> void process_data(const unsigned_integer_type& u);
 
     result_type get_final_result_and_init_the_state();
     result_type get_final_result_and_keep_the_state() const;
@@ -244,6 +202,74 @@
     static void decode_uint8_input_to_uint32_output(const std::uint8_t*  input_begin, const std::uint8_t*  input_end, std::uint32_t* output_begin);
     static void encode_uint32_input_to_uint8_output(const std::uint32_t* input_begin, const std::uint32_t* input_end, std::uint8_t*  output_begin);
 
+    void process_single_data_section(const std::uint8_t* data_stream, const std::size_t& count)
+    {
+      if(the_result_is_finalized)
+      {
+        initialize();
+
+        the_result_is_finalized = false;
+      }
+
+      // Continue (or start) the message digest operation.
+
+      // Compute the number of bytes mod 64.
+      std::size_t index = static_cast<std::size_t>(static_cast<std::size_t>(count_of_bits[0U] / 8U) % md5_blocksize);
+
+      // Update the number of bits.
+      const std::uint32_t len_shift = static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) << 3U);
+
+      count_of_bits[0U] += len_shift;
+
+      if(count_of_bits[0U] < len_shift)
+      {
+        ++count_of_bits[1U];
+      }
+
+      count_of_bits[1U] += static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) >> 29U);
+
+      // Compute the number of bytes we need to inject into the buffer.
+      const std::size_t firstpart = static_cast<std::size_t>(md5_blocksize - index);
+
+      std::size_t i = static_cast<std::size_t>(0U);
+
+      // Transform as many times as possible.
+      if(count >= firstpart)
+      {
+        // Fill the buffer first, then transform.
+        std::copy(data_stream, data_stream + firstpart, digest_buffer.begin() + index);
+
+        transform(digest_buffer.data());
+
+        // Transform chunks of md5_blocksize (64 bytes).
+        for(i = firstpart; (i + md5_blocksize) <= count; i += md5_blocksize)
+        {
+          transform(&data_stream[i]);
+        }
+
+        index = static_cast<std::size_t>(0U);
+      }
+
+      // Buffer the remaining input.
+      std::copy(data_stream + i, data_stream + count, digest_buffer.begin() + index);
+    }
+
+    template<typename count_type>
+    void process_extended_data_stream(const std::uint8_t* data_stream, const count_type& count)
+    {
+      const std::size_t section_size  = static_cast<std::size_t>(std::size_t(1U) << (std::numeric_limits<std::size_t>::digits - 1));
+      const count_type  section_count = static_cast<count_type> (count / section_size);
+
+      count_type i;
+
+      for(i = static_cast<count_type>(0U); i < section_count; ++i)
+      {
+        process_single_data_section(data_stream, section_size);
+      }
+
+      process_single_data_section(data_stream, static_cast<std::size_t>(count % section_size));
+    }
+
     void transform(const std::uint8_t* block);
 
     // The following are the low-level bit twiddle operations of the message digest.
@@ -276,6 +302,26 @@
     static void ii_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
   };
 
+  template<typename count_type>
+  md5::md5(const std::uint8_t* data_stream, const count_type& count) : the_result_is_finalized(true),
+                                                                       count_of_bits          (),
+                                                                       digest_state           (),
+                                                                       digest_buffer          (),
+                                                                       digest_result          ()
+  {
+    process_data(data_stream, count);
+  }
+
+  template<typename count_type>
+  md5::md5(const char* string_stream, const count_type& count) : the_result_is_finalized(true),
+                                                                 count_of_bits          (),
+                                                                 digest_state           (),
+                                                                 digest_buffer          (),
+                                                                 digest_result          ()
+  {
+    process_data(string_stream, count);
+  }
+
   template<typename unsigned_integer_type>
   md5::md5(const unsigned_integer_type& u) : the_result_is_finalized(true),
                                              count_of_bits          (),
@@ -286,56 +332,45 @@
     process_data(u);
   }
 
-  void md5::process_data(const std::uint8_t* data_buffer, const std::size_t count)
+  template<typename count_type>
+  void md5::process_data(const std::uint8_t* data_stream, const count_type& count)
   {
-    if(the_result_is_finalized)
-    {
-      initialize();
+    process_extended_data_stream(data_stream, count);
+  }
 
-      the_result_is_finalized = false;
-    }
+  template<typename count_type>
+  void md5::process_data(const char* string_stream, const count_type& count)
+  {
+    const std::uint8_t* data_stream = static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream));
 
-    // Continue (or start) the message digest operation.
+    process_extended_data_stream(data_stream, count);
+  }
 
-    // Compute the number of bytes mod 64.
-    std::size_t index = static_cast<std::size_t>(static_cast<std::size_t>(count_of_bits[0U] / 8U) % md5_blocksize);
+  template<typename unsigned_integer_type>
+  void md5::process_data(const unsigned_integer_type& u)
+  {
+    // Ensure that the template parameter is an unsigned integer type with radix 2, having a multiple of 8 bits.
+    static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
+                  && ( std::numeric_limits<unsigned_integer_type>::is_integer      == true)
+                  && ( std::numeric_limits<unsigned_integer_type>::is_signed       == false)
+                  && ( std::numeric_limits<unsigned_integer_type>::radix           == 2)
+                  && ((std::numeric_limits<unsigned_integer_type>::digits % 8)     == 0),
+                  "the template type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
 
-    // Update the number of bits.
-    const std::uint32_t len_shift = static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) << 3U);
+    std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
 
-    count_of_bits[0U] += len_shift;
+    std::uint_fast8_t i = 0U;
 
-    if(count_of_bits[0U] < len_shift)
-    {
-      ++count_of_bits[1U];
-    }
+    std::for_each(the_data.begin(),
+                  the_data.end(),
+                  [&u, &i](std::uint8_t& data_value)
+                  {
+                    data_value = std::uint8_t(u >> i);
 
-    count_of_bits[1U] += static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) >> 29U);
+                    i += 8U;
+                  });
 
-    // Compute the number of bytes we need to inject into the buffer.
-    const std::size_t firstpart = static_cast<std::size_t>(md5_blocksize - index);
-
-    std::size_t i = static_cast<std::size_t>(0U);
-
-    // Transform as many times as possible.
-    if(count >= firstpart)
-    {
-      // Fill the buffer first, then transform.
-      std::copy(data_buffer, data_buffer + firstpart, digest_buffer.begin() + index);
-
-      transform(digest_buffer.data());
-
-      // Transform chunks of md5_blocksize (64 bytes).
-      for(i = firstpart; (i + md5_blocksize) <= count; i += md5_blocksize)
-      {
-        transform(&data_buffer[i]);
-      }
-
-      index = static_cast<std::size_t>(0U);
-    }
-
-    // Buffer the remaining input.
-    std::copy(data_buffer + i, data_buffer + count, digest_buffer.begin() + index);
+    process_extended_data_stream(the_data.data(), static_cast<std::uint_least8_t>(the_data.size()));
   }
 
   md5::result_type md5::get_final_result_and_init_the_state()
@@ -587,7 +622,7 @@
 
   namespace
   {
-    md5 the_md5("creativity", sizeof("creativity") - 1U);
+    md5 the_md5("creativity", static_cast<std::uint_least8_t>(sizeof("creativity") - 1U));
   }
 
   extern "C" int main()
