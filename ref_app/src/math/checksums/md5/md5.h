@@ -80,7 +80,7 @@
     md5(const char* string_stream, const count_type& count);
 
     template<typename unsigned_integer_type>
-    md5(const unsigned_integer_type& u);
+    md5(unsigned_integer_type u);
 
     ~md5() { }
 
@@ -100,10 +100,10 @@
 
     template<typename count_type>            void process_data(const std::uint8_t* data_stream,   const count_type& count);
     template<typename count_type>            void process_data(const char*         string_stream, const count_type& count);
-    template<typename unsigned_integer_type> void process_data(const unsigned_integer_type& u);
+    template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
-    result_type get_final_result_and_init_the_state();
-    result_type get_final_result_and_keep_the_state() const;
+    result_type get_result_and_finalize_the_state();
+    result_type get_result_and_nochange_the_state() const;
 
   private:
     static const std::size_t md5_blocksize = 64U;
@@ -211,6 +211,7 @@
         the_result_is_finalized = false;
       }
 
+      // TBD: Obtain a clear understanding of the algorithm and re-program it.
       // Continue (or start) the message digest operation.
 
       // Compute the number of bytes mod 64.
@@ -323,11 +324,11 @@
   }
 
   template<typename unsigned_integer_type>
-  md5::md5(const unsigned_integer_type& u) : the_result_is_finalized(true),
-                                             count_of_bits          (),
-                                             digest_state           (),
-                                             digest_buffer          (),
-                                             digest_result          ()
+  md5::md5(unsigned_integer_type u) : the_result_is_finalized(true),
+                                      count_of_bits          (),
+                                      digest_state           (),
+                                      digest_buffer          (),
+                                      digest_result          ()
   {
     process_data(u);
   }
@@ -347,7 +348,7 @@
   }
 
   template<typename unsigned_integer_type>
-  void md5::process_data(const unsigned_integer_type& u)
+  void md5::process_data(unsigned_integer_type u)
   {
     // Ensure that the template parameter is an unsigned integer type with radix 2, having a multiple of 8 bits.
     static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
@@ -359,21 +360,19 @@
 
     std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
 
-    std::uint_fast8_t i = 0U;
-
     std::for_each(the_data.begin(),
                   the_data.end(),
-                  [&u, &i](std::uint8_t& data_value)
+                  [&u](std::uint8_t& data_value)
                   {
-                    data_value = std::uint8_t(u >> i);
+                    data_value = std::uint8_t(u);
 
-                    i += 8U;
+                    u >>= 8;
                   });
 
-    process_extended_data_stream(the_data.data(), static_cast<std::uint_least8_t>(the_data.size()));
+    process_single_data_section(the_data.data(), the_data.size());
   }
 
-  md5::result_type md5::get_final_result_and_init_the_state()
+  md5::result_type md5::get_result_and_finalize_the_state()
   {
     if((!the_result_is_finalized))
     {
@@ -391,11 +390,16 @@
     return digest_result;
   }
 
-  md5::result_type md5::get_final_result_and_keep_the_state() const
+  md5::result_type md5::get_result_and_nochange_the_state() const
   {
+    // Make a local copy of the message digest.
     md5 temp_md5(*this);
 
-    return temp_md5.get_final_result_and_init_the_state();
+    // Finalize the local copy of the message digest,
+    // and return the final result from the copied object.
+    const md5::result_type the_result = temp_md5.get_result_and_finalize_the_state();
+
+    return the_result;
   }
 
   void md5::initialize()
@@ -415,7 +419,7 @@
   void md5::finalize()
   {
     // Perform the MD5 finalization.
-    // This ends an MD5 message-digest operation.
+    // This ends a message digest operation.
 
     // Create and initialize the padding.
     std::array<std::uint8_t, md5_blocksize - 8U> padding;
@@ -486,88 +490,88 @@
   {
     // Apply the MD5 algorithm to a block.
 
-    std::array<std::uint32_t, md5_blocksize / 4U> x_block;
+    std::array<std::uint32_t, md5_blocksize / 4U> transform_block;
 
-    std::array<std::uint32_t, 4U> abcd = digest_state;
+    std::array<std::uint32_t, 4U> digest_state_tmp = digest_state;
 
-    decode_uint8_input_to_uint32_output(block, block + md5_blocksize, x_block.data());
+    decode_uint8_input_to_uint32_output(block, block + md5_blocksize, transform_block.data());
 
     // Round 1
-    ff_transformation<S11, UINT32_C(0xD76AA478)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 0U]); //  1
-    ff_transformation<S12, UINT32_C(0xE8C7B756)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 1U]); //  2
-    ff_transformation<S13, UINT32_C(0x242070DB)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 2U]); //  3
-    ff_transformation<S14, UINT32_C(0xC1BDCEEE)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 3U]); //  4
-    ff_transformation<S11, UINT32_C(0xF57C0FAF)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 4U]); //  5
-    ff_transformation<S12, UINT32_C(0x4787C62A)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 5U]); //  6
-    ff_transformation<S13, UINT32_C(0xA8304613)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 6U]); //  7
-    ff_transformation<S14, UINT32_C(0xFD469501)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 7U]); //  8
-    ff_transformation<S11, UINT32_C(0x698098D8)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 8U]); //  9
-    ff_transformation<S12, UINT32_C(0x8B44F7AF)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 9U]); // 10
-    ff_transformation<S13, UINT32_C(0xFFFF5BB1)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[10U]); // 11
-    ff_transformation<S14, UINT32_C(0x895CD7BE)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[11U]); // 12
-    ff_transformation<S11, UINT32_C(0x6B901122)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[12U]); // 13
-    ff_transformation<S12, UINT32_C(0xFD987193)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[13U]); // 14
-    ff_transformation<S13, UINT32_C(0xA679438E)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[14U]); // 15
-    ff_transformation<S14, UINT32_C(0x49B40821)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[15U]); // 16
+    ff_transformation<S11, UINT32_C(0xD76AA478)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 0U]); //  1
+    ff_transformation<S12, UINT32_C(0xE8C7B756)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 1U]); //  2
+    ff_transformation<S13, UINT32_C(0x242070DB)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 2U]); //  3
+    ff_transformation<S14, UINT32_C(0xC1BDCEEE)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 3U]); //  4
+    ff_transformation<S11, UINT32_C(0xF57C0FAF)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 4U]); //  5
+    ff_transformation<S12, UINT32_C(0x4787C62A)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 5U]); //  6
+    ff_transformation<S13, UINT32_C(0xA8304613)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 6U]); //  7
+    ff_transformation<S14, UINT32_C(0xFD469501)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 7U]); //  8
+    ff_transformation<S11, UINT32_C(0x698098D8)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 8U]); //  9
+    ff_transformation<S12, UINT32_C(0x8B44F7AF)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 9U]); // 10
+    ff_transformation<S13, UINT32_C(0xFFFF5BB1)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[10U]); // 11
+    ff_transformation<S14, UINT32_C(0x895CD7BE)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[11U]); // 12
+    ff_transformation<S11, UINT32_C(0x6B901122)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[12U]); // 13
+    ff_transformation<S12, UINT32_C(0xFD987193)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[13U]); // 14
+    ff_transformation<S13, UINT32_C(0xA679438E)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[14U]); // 15
+    ff_transformation<S14, UINT32_C(0x49B40821)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[15U]); // 16
 
     // Round 2
-    gg_transformation<S21, UINT32_C(0xF61E2562)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 1U]); // 17
-    gg_transformation<S22, UINT32_C(0xC040B340)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 6U]); // 18
-    gg_transformation<S23, UINT32_C(0x265E5A51)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[11U]); // 19
-    gg_transformation<S24, UINT32_C(0xE9B6C7AA)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 0U]); // 20
-    gg_transformation<S21, UINT32_C(0xD62F105D)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 5U]); // 21
-    gg_transformation<S22, UINT32_C(0x02441453)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[10U]); // 22
-    gg_transformation<S23, UINT32_C(0xD8A1E681)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[15U]); // 23
-    gg_transformation<S24, UINT32_C(0xE7D3FBC8)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 4U]); // 24
-    gg_transformation<S21, UINT32_C(0x21E1CDE6)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 9U]); // 25
-    gg_transformation<S22, UINT32_C(0xC33707D6)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[14U]); // 26
-    gg_transformation<S23, UINT32_C(0xF4D50D87)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 3U]); // 27
-    gg_transformation<S24, UINT32_C(0x455A14ED)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 8U]); // 28
-    gg_transformation<S21, UINT32_C(0xA9E3E905)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[13U]); // 29
-    gg_transformation<S22, UINT32_C(0xFCEFA3F8)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 2U]); // 30
-    gg_transformation<S23, UINT32_C(0x676F02D9)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 7U]); // 31
-    gg_transformation<S24, UINT32_C(0x8D2A4C8A)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[12U]); // 32
+    gg_transformation<S21, UINT32_C(0xF61E2562)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 1U]); // 17
+    gg_transformation<S22, UINT32_C(0xC040B340)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 6U]); // 18
+    gg_transformation<S23, UINT32_C(0x265E5A51)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[11U]); // 19
+    gg_transformation<S24, UINT32_C(0xE9B6C7AA)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 0U]); // 20
+    gg_transformation<S21, UINT32_C(0xD62F105D)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 5U]); // 21
+    gg_transformation<S22, UINT32_C(0x02441453)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[10U]); // 22
+    gg_transformation<S23, UINT32_C(0xD8A1E681)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[15U]); // 23
+    gg_transformation<S24, UINT32_C(0xE7D3FBC8)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 4U]); // 24
+    gg_transformation<S21, UINT32_C(0x21E1CDE6)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 9U]); // 25
+    gg_transformation<S22, UINT32_C(0xC33707D6)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[14U]); // 26
+    gg_transformation<S23, UINT32_C(0xF4D50D87)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 3U]); // 27
+    gg_transformation<S24, UINT32_C(0x455A14ED)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 8U]); // 28
+    gg_transformation<S21, UINT32_C(0xA9E3E905)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[13U]); // 29
+    gg_transformation<S22, UINT32_C(0xFCEFA3F8)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 2U]); // 30
+    gg_transformation<S23, UINT32_C(0x676F02D9)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 7U]); // 31
+    gg_transformation<S24, UINT32_C(0x8D2A4C8A)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[12U]); // 32
 
     // Round 3
-    hh_transformation<S31, UINT32_C(0xFFFA3942)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 5U]); // 33
-    hh_transformation<S32, UINT32_C(0x8771F681)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 8U]); // 34
-    hh_transformation<S33, UINT32_C(0x6D9D6122)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[11U]); // 35
-    hh_transformation<S34, UINT32_C(0xFDE5380C)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[14U]); // 36
-    hh_transformation<S31, UINT32_C(0xA4BEEA44)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 1U]); // 37
-    hh_transformation<S32, UINT32_C(0x4BDECFA9)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 4U]); // 38
-    hh_transformation<S33, UINT32_C(0xF6BB4B60)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 7U]); // 39
-    hh_transformation<S34, UINT32_C(0xBEBFBC70)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[10U]); // 40
-    hh_transformation<S31, UINT32_C(0x289B7EC6)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[13U]); // 41
-    hh_transformation<S32, UINT32_C(0xEAA127FA)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 0U]); // 42
-    hh_transformation<S33, UINT32_C(0xD4EF3085)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 3U]); // 43
-    hh_transformation<S34, UINT32_C(0x04881D05)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 6U]); // 44
-    hh_transformation<S31, UINT32_C(0xD9D4D039)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 9U]); // 45
-    hh_transformation<S32, UINT32_C(0xE6DB99E5)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[12U]); // 46
-    hh_transformation<S33, UINT32_C(0x1FA27CF8)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[15U]); // 47
-    hh_transformation<S34, UINT32_C(0xC4AC5665)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 2U]); // 48
+    hh_transformation<S31, UINT32_C(0xFFFA3942)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 5U]); // 33
+    hh_transformation<S32, UINT32_C(0x8771F681)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 8U]); // 34
+    hh_transformation<S33, UINT32_C(0x6D9D6122)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[11U]); // 35
+    hh_transformation<S34, UINT32_C(0xFDE5380C)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[14U]); // 36
+    hh_transformation<S31, UINT32_C(0xA4BEEA44)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 1U]); // 37
+    hh_transformation<S32, UINT32_C(0x4BDECFA9)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 4U]); // 38
+    hh_transformation<S33, UINT32_C(0xF6BB4B60)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 7U]); // 39
+    hh_transformation<S34, UINT32_C(0xBEBFBC70)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[10U]); // 40
+    hh_transformation<S31, UINT32_C(0x289B7EC6)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[13U]); // 41
+    hh_transformation<S32, UINT32_C(0xEAA127FA)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 0U]); // 42
+    hh_transformation<S33, UINT32_C(0xD4EF3085)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 3U]); // 43
+    hh_transformation<S34, UINT32_C(0x04881D05)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 6U]); // 44
+    hh_transformation<S31, UINT32_C(0xD9D4D039)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 9U]); // 45
+    hh_transformation<S32, UINT32_C(0xE6DB99E5)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[12U]); // 46
+    hh_transformation<S33, UINT32_C(0x1FA27CF8)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[15U]); // 47
+    hh_transformation<S34, UINT32_C(0xC4AC5665)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 2U]); // 48
 
     // Round 4
-    ii_transformation<S41, UINT32_C(0xF4292244)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 0U]); // 49
-    ii_transformation<S42, UINT32_C(0x432AFF97)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 7U]); // 50
-    ii_transformation<S43, UINT32_C(0xAB9423A7)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[14U]); // 51
-    ii_transformation<S44, UINT32_C(0xFC93A039)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 5U]); // 52
-    ii_transformation<S41, UINT32_C(0x655B59C3)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[12U]); // 53
-    ii_transformation<S42, UINT32_C(0x8F0CCC92)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[ 3U]); // 54
-    ii_transformation<S43, UINT32_C(0xFFEFF47D)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[10U]); // 55
-    ii_transformation<S44, UINT32_C(0x85845DD1)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 1U]); // 56
-    ii_transformation<S41, UINT32_C(0x6FA87E4F)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 8U]); // 57
-    ii_transformation<S42, UINT32_C(0xFE2CE6E0)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[15U]); // 58
-    ii_transformation<S43, UINT32_C(0xA3014314)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 6U]); // 59
-    ii_transformation<S44, UINT32_C(0x4E0811A1)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[13U]); // 60
-    ii_transformation<S41, UINT32_C(0xF7537E82)>(abcd[0U], abcd[1U], abcd[2U], abcd[3U], x_block[ 4U]); // 61
-    ii_transformation<S42, UINT32_C(0xBD3AF235)>(abcd[3U], abcd[0U], abcd[1U], abcd[2U], x_block[11U]); // 62
-    ii_transformation<S43, UINT32_C(0x2AD7D2BB)>(abcd[2U], abcd[3U], abcd[0U], abcd[1U], x_block[ 2U]); // 63
-    ii_transformation<S44, UINT32_C(0xEB86D391)>(abcd[1U], abcd[2U], abcd[3U], abcd[0U], x_block[ 9U]); // 64
+    ii_transformation<S41, UINT32_C(0xF4292244)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 0U]); // 49
+    ii_transformation<S42, UINT32_C(0x432AFF97)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 7U]); // 50
+    ii_transformation<S43, UINT32_C(0xAB9423A7)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[14U]); // 51
+    ii_transformation<S44, UINT32_C(0xFC93A039)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 5U]); // 52
+    ii_transformation<S41, UINT32_C(0x655B59C3)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[12U]); // 53
+    ii_transformation<S42, UINT32_C(0x8F0CCC92)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[ 3U]); // 54
+    ii_transformation<S43, UINT32_C(0xFFEFF47D)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[10U]); // 55
+    ii_transformation<S44, UINT32_C(0x85845DD1)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 1U]); // 56
+    ii_transformation<S41, UINT32_C(0x6FA87E4F)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 8U]); // 57
+    ii_transformation<S42, UINT32_C(0xFE2CE6E0)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[15U]); // 58
+    ii_transformation<S43, UINT32_C(0xA3014314)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 6U]); // 59
+    ii_transformation<S44, UINT32_C(0x4E0811A1)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[13U]); // 60
+    ii_transformation<S41, UINT32_C(0xF7537E82)>(digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], transform_block[ 4U]); // 61
+    ii_transformation<S42, UINT32_C(0xBD3AF235)>(digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], digest_state_tmp[2U], transform_block[11U]); // 62
+    ii_transformation<S43, UINT32_C(0x2AD7D2BB)>(digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], digest_state_tmp[1U], transform_block[ 2U]); // 63
+    ii_transformation<S44, UINT32_C(0xEB86D391)>(digest_state_tmp[1U], digest_state_tmp[2U], digest_state_tmp[3U], digest_state_tmp[0U], transform_block[ 9U]); // 64
 
     // Update the state information with the transformation results.
     std::transform(digest_state.begin(),
                    digest_state.end(),
-                   abcd.begin(),
+                   digest_state_tmp.begin(),
                    digest_state.begin(),
                    std::plus<std::uint32_t>());
   }
@@ -630,7 +634,7 @@
     // Initialize the Microcontroller Abstraction Layer.
     mcal::init();
 
-    const md5::result_type the_md5_result = the_md5.get_final_result_and_init_the_state();
+    const md5::result_type the_md5_result = the_md5.get_result_and_finalize_the_state();
 
     // Start the multitasking scheduler (and never return).
     if(the_md5_result.back() == static_cast<std::uint8_t>(0x9FU))
