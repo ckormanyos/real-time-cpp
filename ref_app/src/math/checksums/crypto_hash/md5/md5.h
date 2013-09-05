@@ -67,10 +67,8 @@
                             digest_result   (other.digest_result),
                             digest_buffer   (other.digest_buffer) { }
 
-    template<typename count_type>
     md5(const std::uint8_t* data_stream, const count_type& count);
 
-    template<typename count_type>
     md5(const char* string_stream, const count_type& count);
 
     template<typename unsigned_integer_type>
@@ -92,9 +90,11 @@
       return *this;
     }
 
-    template<typename count_type>            void process_data(const std::uint8_t* data_stream,   const count_type& count);
-    template<typename count_type>            void process_data(const char*         string_stream, const count_type& count);
-    template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
+    void process_data(const std::uint8_t* data_stream,   const count_type& count);
+    void process_data(const char*         string_stream, const count_type& count);
+
+    template<typename unsigned_integer_type>
+    void process_data(unsigned_integer_type u);
 
     result_type_bytes get_result_bytes_and_finalize_the_state();
     result_type_bytes get_result_bytes_and_nochange_the_state() const;
@@ -176,7 +176,6 @@
       std::copy(data_stream + i, data_stream + count, digest_buffer.begin() + index);
     }
 
-    template<typename count_type>
     void process_extended_data_stream(const std::uint8_t* data_stream, const count_type& count)
     {
       const std::size_t section_size  = static_cast<std::size_t>(std::size_t(1U) << (std::numeric_limits<std::size_t>::digits - 1));
@@ -224,7 +223,6 @@
     static void ii_transformation(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x);
   };
 
-  template<typename count_type>
   md5::md5(const std::uint8_t* data_stream, const count_type& count) : digest_state (),
                                                                        digest_result(),
                                                                        digest_buffer()
@@ -232,7 +230,6 @@
     process_data(data_stream, count);
   }
 
-  template<typename count_type>
   md5::md5(const char* string_stream, const count_type& count) : digest_state (),
                                                                  digest_result(),
                                                                  digest_buffer()
@@ -248,13 +245,11 @@
     process_data(u);
   }
 
-  template<typename count_type>
   void md5::process_data(const std::uint8_t* data_stream, const count_type& count)
   {
     process_extended_data_stream(data_stream, count);
   }
 
-  template<typename count_type>
   void md5::process_data(const char* string_stream, const count_type& count)
   {
     const std::uint8_t* data_stream = static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream));
@@ -372,19 +367,19 @@
     std::fill(padding.begin() + 1U, padding.end(), static_cast<std::uint8_t>(0U));
 
     // Encode the number of bits.
-    const std::array<std::uint32_t, 2U> count_of_bits_non_encoded =
-    {{
-      std::uint32_t(count_of_bits),
-      std::uint32_t(count_of_bits >> 32)
-    }};
-
     std::array<std::uint8_t, 8U> count_of_bits_encoded;
-    encode_uint32_input_to_uint8_output(count_of_bits_non_encoded.data(),
-                                        count_of_bits_non_encoded.data() + count_of_bits_non_encoded.size(),
-                                        count_of_bits_encoded.data());
+
+    for(std::uint_fast8_t i = 0U; i < std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U); ++i)
+    {
+      count_of_bits_encoded[i] = std::uint8_t(count_of_bits >> (i * 8));
+    }
+
+    std::fill(count_of_bits_encoded.begin() + std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U),
+              count_of_bits_encoded.end(),
+              std::uint8_t(0U));
 
     // Pad out to 56 mod 64.
-    const std::size_t index = static_cast<std::size_t>(static_cast<std::uint32_t>(count_of_bits_non_encoded[0U] / 8U) % md5_blocksize);
+    const std::size_t index = static_cast<std::size_t>(static_cast<count_type>(count_of_bits / 8U) % md5_blocksize);
 
     const std::size_t pad_len = ((index < static_cast<std::size_t>(md5_blocksize - 8U))
                                    ? (static_cast<std::size_t>( md5_blocksize       - 8U) - index)

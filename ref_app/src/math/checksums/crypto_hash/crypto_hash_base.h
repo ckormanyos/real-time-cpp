@@ -14,6 +14,8 @@
   class crypto_hash_base
   {
   public:
+    typedef std::size_t count_type;
+
     virtual ~crypto_hash_base() { }
 
   protected:
@@ -32,8 +34,8 @@
       return *this;
     }
 
-    bool                the_result_is_finalized;
-    std::uint_least64_t count_of_bits;
+    bool       the_result_is_finalized;
+    count_type count_of_bits;
 
     static void decode_uint8_input_to_uint32_output(const std::uint8_t* input_begin, const std::uint8_t* input_end, std::uint32_t* output_begin)
     {
