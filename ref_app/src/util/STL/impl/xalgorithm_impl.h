@@ -62,6 +62,19 @@
       }
     }
 
+    template<typename output_iterator, typename difference_type, typename T>
+    inline output_iterator xfill_n(output_iterator destination, difference_type count, const T& value)
+    {
+      while(count > difference_type(0))
+      {
+        *destination = value;
+        --count;
+        ++destination;
+      }
+
+      return destination;
+    }
+
     template<typename input_iterator,
              typename output_iterator,
              typename unary_function_type>

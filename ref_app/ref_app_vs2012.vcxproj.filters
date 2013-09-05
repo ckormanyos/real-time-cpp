@@ -71,9 +71,6 @@
     <Filter Include="src\math\checksums\crc">
       <UniqueIdentifier>{a36baf93-acde-4cdb-94ba-f6e4a0ddfb7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\math\checksums\md5">
-      <UniqueIdentifier>{bc5c00d6-9eb4-48dc-9c43-deb1829232d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL\impl">
       <UniqueIdentifier>{23ebb7b1-aefc-4dc7-bc7f-6c458cb95a7e}</UniqueIdentifier>
     </Filter>
@@ -97,6 +94,15 @@
     </Filter>
     <Filter Include="src\util\STD_LIBC">
       <UniqueIdentifier>{f42ecd88-8797-4165-aea9-3e049728b2b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\checksums\crypto_hash">
+      <UniqueIdentifier>{cf18ff88-1a05-4e7e-bd76-385efe1dcb47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\checksums\crypto_hash\md5">
+      <UniqueIdentifier>{b08f5c15-b017-47ea-bd50-c36a45c2f381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\checksums\crypto_hash\sha">
+      <UniqueIdentifier>{92d1098a-9186-4547-ba9b-cdce221504c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +275,6 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\crc\crc.h">
       <Filter>src\math\checksums\crc</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\md5\md5.h">
-      <Filter>src\math\checksums\md5</Filter>
     </ClInclude>
     <ClInclude Include="src\math\constants\constants.h">
       <Filter>src\math\constants</Filter>
@@ -644,6 +647,15 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\type_traits_impl.h">
       <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\crypto_hash\sha\sha1.h">
+      <Filter>src\math\checksums\crypto_hash\sha</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\crypto_hash\md5\md5.h">
+      <Filter>src\math\checksums\crypto_hash\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\crypto_hash\crypto_hash_base.h">
+      <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

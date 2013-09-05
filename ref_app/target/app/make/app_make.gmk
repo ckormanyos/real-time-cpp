@@ -163,7 +163,6 @@ LFLAGS      = $(GCCFLAGS)                       \
               $(TGT_LFLAGS)                     \
               -x none                           \
               -nostartfiles                     \
-              -nostdlib                         \
               -Wl,--gc-sections
 
 # ------------------------------------------------------------------------------

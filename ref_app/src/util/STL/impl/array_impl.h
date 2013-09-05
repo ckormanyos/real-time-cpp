@@ -89,7 +89,12 @@
 
       void assign(const value_type& value)
       {
-        xalgorithm::xfill(begin(), N, value);
+        xalgorithm::xfill_n(elems, N, value);
+      }
+
+      void fill(const value_type& value)
+      {
+        xalgorithm::xfill_n(elems, N, value);
       }
 
     private:

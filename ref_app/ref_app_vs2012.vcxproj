@@ -345,10 +345,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\math\checksums\md5\md5.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="src\math\checksums\crypto_hash\crypto_hash_base.h" />
+    <ClInclude Include="src\math\checksums\crypto_hash\md5\md5.h" />
+    <ClInclude Include="src\math\checksums\crypto_hash\sha\sha1.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />
     <ClInclude Include="src\math\fixed_point\fixed_point.h" />

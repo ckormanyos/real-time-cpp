@@ -12,13 +12,10 @@
 // It has been specifically designed for C++11 with particular
 // emphasis on portability to microcontroller platforms.
 //
-// This work was originally converted to a C++ class by
-// Frank Thilo (thilo@unix-ag.org) for bzflag (http://www.bzflag.org).
-//
 // The origin of this work is identified as the
 // "RSA Data Security, Inc. MD5 Message-Digest Algorithm"
 //
-// This work is "derived from the RSA Data Security, Inc.
+// This work is: "derived from the RSA Data Security, Inc.
 // MD5 Message-Digest Algorithm".
 //
 // The original license notices from RSA Data Security, Inc.
@@ -49,29 +46,26 @@
 #ifndef _MD5_2012_01_13_H_
   #define _MD5_2012_01_13_H_
 
-  #include <algorithm>
   #include <array>
-  #include <cstdint>
   #include <cstddef>
   #include <functional>
   #include <limits>
+  #include "../crypto_hash_base.h"
 
-  class md5
+  class md5 : public crypto_hash_base
   {
   public:
-    typedef std::array<std::uint8_t, 16U> result_type;
+    typedef std::array<std::uint8_t,  16U> result_type_bytes;
+    typedef std::array<std::uint32_t,  4U> result_type_dwords;
 
-    md5() : the_result_is_finalized(true),
-            count_of_bits          (),
-            digest_state           (),
-            digest_buffer          (),
-            digest_result          () { }
+    md5() : digest_state (),
+            digest_result(),
+            digest_buffer() { }
 
-    md5(const md5& other) : the_result_is_finalized(other.the_result_is_finalized),
-                            count_of_bits          (other.count_of_bits),
-                            digest_state           (other.digest_state),
-                            digest_buffer          (other.digest_buffer),
-                            digest_result          (other.digest_result) { }
+    md5(const md5& other) : crypto_hash_base(other),
+                            digest_state    (other.digest_state),
+                            digest_result   (other.digest_result),
+                            digest_buffer   (other.digest_buffer) { }
 
     template<typename count_type>
     md5(const std::uint8_t* data_stream, const count_type& count);
@@ -82,17 +76,17 @@
     template<typename unsigned_integer_type>
     md5(unsigned_integer_type u);
 
-    ~md5() { }
+    virtual ~md5() { }
 
     md5& operator=(const md5& other)
     {
       if(this != &other)
       {
-        the_result_is_finalized = other.the_result_is_finalized;
-        count_of_bits           = other.count_of_bits;
-        digest_state            = other.digest_state;
-        digest_buffer           = other.digest_buffer;
-        digest_result           = other.digest_result;
+        static_cast<void>(crypto_hash_base::operator=(other));
+
+        digest_state  = other.digest_state;
+        digest_result = other.digest_result;
+        digest_buffer = other.digest_buffer;
       }
 
       return *this;
@@ -102,8 +96,11 @@
     template<typename count_type>            void process_data(const char*         string_stream, const count_type& count);
     template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
-    result_type get_result_and_finalize_the_state();
-    result_type get_result_and_nochange_the_state() const;
+    result_type_bytes get_result_bytes_and_finalize_the_state();
+    result_type_bytes get_result_bytes_and_nochange_the_state() const;
+
+    result_type_dwords get_result_dwords_and_finalize_the_state();
+    result_type_dwords get_result_dwords_and_nochange_the_state() const;
 
   private:
     static const std::size_t md5_blocksize = 64U;
@@ -128,79 +125,12 @@
     static const std::uint_fast8_t S43 = UINT8_C(15);
     static const std::uint_fast8_t S44 = UINT8_C(21);
 
-    struct quadword_array
-    {
-    public:
-      typedef std::uint_fast8_t size_type;
-      typedef std::uint32_t     value_type;
-      typedef value_type*       pointer_type;
-
-      quadword_array(const value_type& lo = value_type(),
-                     const value_type& hi = value_type())
-      {
-        elems[0U] = lo;
-        elems[1U] = hi;
-      }
-
-      quadword_array(const quadword_array& q)
-      {
-        elems[0U] = q.elems[0U];
-        elems[1U] = q.elems[1U];
-      }
-
-      quadword_array& operator=(const quadword_array& other)
-      {
-        if(this != &other)
-        {
-          elems[0U] = other.elems[0U];
-          elems[1U] = other.elems[1U];
-        }
-
-        return *this;
-      }
-
-      template<typename unsigned_integer_type>
-      quadword_array& operator=(const unsigned_integer_type& value)
-      {
-        // Ensure that the template parameter is an unsigned integer type, having at most 32 bits.
-        static_assert(   (std::numeric_limits<unsigned_integer_type>::is_specialized  == true)
-                      && (std::numeric_limits<unsigned_integer_type>::is_integer      == true)
-                      && (std::numeric_limits<unsigned_integer_type>::is_signed       == false)
-                      && (std::numeric_limits<unsigned_integer_type>::digits          <= 32),
-                      "the template type must be an unsigned integer type, having at most 32 bits.");
-
-        elems[0U] = value_type(value);
-        elems[1U] = value_type(0U);
-
-        return *this;
-      }
-
-      value_type& operator[](const size_type i)
-      {
-        return ((i == size_type(1U)) ? elems[1U] : elems[0U]);
-      }
-
-      size_type size() const { return size_type(2U); }
-
-      pointer_type data()  { return &elems[0U]; }
-      pointer_type begin() { return &elems[0U]; }
-      pointer_type end  () { return &elems[2U]; }
-
-    private:
-      value_type elems[2U];
-    };
-
-    bool                                     the_result_is_finalized; // A flag indicating if the result is finalized.
-    md5::quadword_array                      count_of_bits;           // A counter for number of bits.
-    std::array<std::uint32_t, 4U>            digest_state;            // The message digest state so far.
-    std::array<std::uint8_t,  md5_blocksize> digest_buffer;           // The message digest buffer.
-    result_type                              digest_result;           // The result of the message digest.
+    result_type_dwords                       digest_state;   // The message digest state so far.
+    result_type_bytes                        digest_result;  // The result of the message digest.
+    std::array<std::uint8_t,  md5_blocksize> digest_buffer;  // The message digest buffer.
 
     void initialize();
     void finalize();
-
-    static void decode_uint8_input_to_uint32_output(const std::uint8_t*  input_begin, const std::uint8_t*  input_end, std::uint32_t* output_begin);
-    static void encode_uint32_input_to_uint8_output(const std::uint32_t* input_begin, const std::uint32_t* input_end, std::uint8_t*  output_begin);
 
     void process_single_data_section(const std::uint8_t* data_stream, const std::size_t& count)
     {
@@ -215,19 +145,10 @@
       // Continue (or start) the message digest operation.
 
       // Compute the number of bytes mod 64.
-      std::size_t index = static_cast<std::size_t>(static_cast<std::size_t>(count_of_bits[0U] / 8U) % md5_blocksize);
+      std::size_t index = static_cast<std::size_t>(static_cast<std::uint_least64_t>(count_of_bits / 8U) % md5_blocksize);
 
       // Update the number of bits.
-      const std::uint32_t len_shift = static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) << 3U);
-
-      count_of_bits[0U] += len_shift;
-
-      if(count_of_bits[0U] < len_shift)
-      {
-        ++count_of_bits[1U];
-      }
-
-      count_of_bits[1U] += static_cast<std::uint32_t>(static_cast<std::uint32_t>(count) >> 29U);
+      count_of_bits += static_cast<std::uint_least64_t>(count) * 8U;
 
       // Compute the number of bytes we need to inject into the buffer.
       const std::size_t firstpart = static_cast<std::size_t>(md5_blocksize - index);
@@ -304,31 +225,25 @@
   };
 
   template<typename count_type>
-  md5::md5(const std::uint8_t* data_stream, const count_type& count) : the_result_is_finalized(true),
-                                                                       count_of_bits          (),
-                                                                       digest_state           (),
-                                                                       digest_buffer          (),
-                                                                       digest_result          ()
+  md5::md5(const std::uint8_t* data_stream, const count_type& count) : digest_state (),
+                                                                       digest_result(),
+                                                                       digest_buffer()
   {
     process_data(data_stream, count);
   }
 
   template<typename count_type>
-  md5::md5(const char* string_stream, const count_type& count) : the_result_is_finalized(true),
-                                                                 count_of_bits          (),
-                                                                 digest_state           (),
-                                                                 digest_buffer          (),
-                                                                 digest_result          ()
+  md5::md5(const char* string_stream, const count_type& count) : digest_state (),
+                                                                 digest_result(),
+                                                                 digest_buffer()
   {
     process_data(string_stream, count);
   }
 
   template<typename unsigned_integer_type>
-  md5::md5(unsigned_integer_type u) : the_result_is_finalized(true),
-                                      count_of_bits          (),
-                                      digest_state           (),
-                                      digest_buffer          (),
-                                      digest_result          ()
+  md5::md5(unsigned_integer_type u) : digest_state (),
+                                      digest_result(),
+                                      digest_buffer()
   {
     process_data(u);
   }
@@ -372,7 +287,7 @@
     process_single_data_section(the_data.data(), the_data.size());
   }
 
-  md5::result_type md5::get_result_and_finalize_the_state()
+  md5::result_type_bytes md5::get_result_bytes_and_finalize_the_state()
   {
     if((!the_result_is_finalized))
     {
@@ -390,16 +305,46 @@
     return digest_result;
   }
 
-  md5::result_type md5::get_result_and_nochange_the_state() const
+  md5::result_type_bytes md5::get_result_bytes_and_nochange_the_state() const
   {
     // Make a local copy of the message digest.
     md5 temp_md5(*this);
 
     // Finalize the local copy of the message digest,
     // and return the final result from the copied object.
-    const md5::result_type the_result = temp_md5.get_result_and_finalize_the_state();
+    return temp_md5.get_result_bytes_and_finalize_the_state();
+  }
 
-    return the_result;
+  md5::result_type_dwords md5::get_result_dwords_and_finalize_the_state()
+  {
+    if((!the_result_is_finalized))
+    {
+      // Finalize the result.
+      finalize();
+
+      // Extract the message digest result from the message digest state.
+      // Even though we are only getting the dword representation in this
+      // subroutine, we will prepare the byte representation as well.
+      encode_uint32_input_to_uint8_output(digest_state.data(),
+                                          digest_state.data() + digest_state.size(),
+                                          digest_result.data());
+
+      the_result_is_finalized = true;
+    }
+
+    return digest_state;
+  }
+
+  md5::result_type_dwords md5::get_result_dwords_and_nochange_the_state() const
+  {
+    // Make a local copy of the message digest.
+    md5 temp_md5(*this);
+
+    // Finalize the local copy of the message digest,
+    // and return the final result from the copied object.
+    temp_md5.finalize();
+
+    return temp_md5.digest_state;
   }
 
   void md5::initialize()
@@ -427,13 +372,19 @@
     std::fill(padding.begin() + 1U, padding.end(), static_cast<std::uint8_t>(0U));
 
     // Encode the number of bits.
+    const std::array<std::uint32_t, 2U> count_of_bits_non_encoded =
+    {{
+      std::uint32_t(count_of_bits),
+      std::uint32_t(count_of_bits >> 32)
+    }};
+
     std::array<std::uint8_t, 8U> count_of_bits_encoded;
-    encode_uint32_input_to_uint8_output(count_of_bits.data(),
-                                        count_of_bits.data() + count_of_bits.size(),
+    encode_uint32_input_to_uint8_output(count_of_bits_non_encoded.data(),
+                                        count_of_bits_non_encoded.data() + count_of_bits_non_encoded.size(),
                                         count_of_bits_encoded.data());
 
     // Pad out to 56 mod 64.
-    const std::size_t index = static_cast<std::size_t>(static_cast<std::uint32_t>(count_of_bits[0U] / 8U) % md5_blocksize);
+    const std::size_t index = static_cast<std::size_t>(static_cast<std::uint32_t>(count_of_bits_non_encoded[0U] / 8U) % md5_blocksize);
 
     const std::size_t pad_len = ((index < static_cast<std::size_t>(md5_blocksize - 8U))
                                    ? (static_cast<std::size_t>( md5_blocksize       - 8U) - index)
@@ -444,46 +395,6 @@
 
     // Update the digest state with the encoded number of bits.
     process_data(count_of_bits_encoded.data(), 8U);
-  }
-
-  void md5::decode_uint8_input_to_uint32_output(const std::uint8_t* input_begin, const std::uint8_t* input_end, std::uint32_t* output_begin)
-  {
-    // Decodes the input (std::uint8_t) into the output (std::uint32_t).
-    // This assumes that the length of the input is a multiple of 4.
-
-    std::size_t j = static_cast<std::size_t>(0U);
-
-    std::for_each(output_begin,
-                  output_begin + std::size_t(std::size_t(input_end - input_begin) / 4U),
-                  [&j, &input_begin](std::uint32_t& output_value)
-                  {
-                    output_value =  std::uint32_t(  static_cast<std::uint32_t>(static_cast<std::uint32_t>(input_begin[j + 0U]) <<  0U)
-                                                  | static_cast<std::uint32_t>(static_cast<std::uint32_t>(input_begin[j + 1U]) <<  8U)
-                                                  | static_cast<std::uint32_t>(static_cast<std::uint32_t>(input_begin[j + 2U]) << 16U)
-                                                  | static_cast<std::uint32_t>(static_cast<std::uint32_t>(input_begin[j + 3U]) << 24U));
-
-                    j += 4U;
-                  });
-  }
-
-  void md5::encode_uint32_input_to_uint8_output(const std::uint32_t* input_begin, const std::uint32_t* input_end, std::uint8_t* output_begin)
-  {
-    // Encodes the input (std::uint32_t) into the output (std::uint8_t).
-    // This assumes that the length of the output is a multiple of 4.
-
-    std::size_t j = static_cast<std::size_t>(0U);
-
-    std::for_each(input_begin,
-                  input_end,
-                  [&j, &output_begin](const std::uint32_t& input_value)
-                  {
-                    output_begin[j + 0U] = static_cast<std::uint8_t>(input_value >>  0U);
-                    output_begin[j + 1U] = static_cast<std::uint8_t>(input_value >>  8U);
-                    output_begin[j + 2U] = static_cast<std::uint8_t>(input_value >> 16U);
-                    output_begin[j + 3U] = static_cast<std::uint8_t>(input_value >> 24U);
-
-                    j += 4U;
-                  });
   }
 
   void md5::transform(const std::uint8_t* block)
@@ -622,7 +533,7 @@
 
   // Test code in main()...
   /*
-  #include <math/checksums/md5/md5.h>
+  #include <math/checksums/crypto_hash/md5/md5.h>
 
   namespace
   {
@@ -634,10 +545,10 @@
     // Initialize the Microcontroller Abstraction Layer.
     mcal::init();
 
-    const md5::result_type the_md5_result = the_md5.get_result_and_finalize_the_state();
+    const md5::result_type_dwords the_md5_result = the_md5.get_result_dwords_and_finalize_the_state();
 
     // Start the multitasking scheduler (and never return).
-    if(the_md5_result.back() == static_cast<std::uint8_t>(0x9FU))
+    if(the_md5_result.back() == UINT32_C(0x9F78BFB7))
     {
       os::start_os();
     }

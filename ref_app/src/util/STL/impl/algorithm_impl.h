@@ -53,9 +53,9 @@
     }
 
     template<typename output_iterator, typename difference_type, typename T>
-    inline void fill_n(output_iterator first, difference_type n, const T& value)
+    inline void fill_n(output_iterator first, difference_type count, const T& value)
     {
-      xalgorithm::xfill(first, first + n, value);
+      xalgorithm::xfill_n(first, count, value);
     }
 
     template<typename input_iterator,
