@@ -19,23 +19,26 @@
     virtual ~crypto_hash_base() { }
 
   protected:
-    crypto_hash_base() : the_result_is_finalized(true),
-                         count_of_bits() { }
+    crypto_hash_base() : the_result_is_finalized  (true),
+                         count_of_bytes           (),
+                         count_remaining_in_buffer(0U) { }
 
-    crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized(other.the_result_is_finalized),
-                                                      count_of_bits          (other.count_of_bits) { }
-
+    crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized  (other.the_result_is_finalized),
+                                                      count_of_bytes           (other.count_of_bytes),
+                                                      count_remaining_in_buffer(other.count_remaining_in_buffer) { }
 
     crypto_hash_base& operator=(const crypto_hash_base& other)
     {
-      the_result_is_finalized = other.the_result_is_finalized;
-      count_of_bits           = other.count_of_bits;
+      the_result_is_finalized   = other.the_result_is_finalized;
+      count_of_bytes            = other.count_of_bytes;
+      count_remaining_in_buffer = other.count_remaining_in_buffer;
 
       return *this;
     }
 
-    bool       the_result_is_finalized;
-    count_type count_of_bits;
+    bool               the_result_is_finalized;
+    count_type         count_of_bytes;
+    std::uint_least8_t count_remaining_in_buffer;
 
     static void decode_uint8_input_to_uint32_output(const std::uint8_t* input_begin, const std::uint8_t* input_end, std::uint32_t* output_begin)
     {

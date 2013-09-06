@@ -141,39 +141,41 @@
         the_result_is_finalized = false;
       }
 
-      // TBD: Obtain a clear understanding of the algorithm and re-program it.
-      // Continue (or start) the message digest operation.
+      std::size_t number_processed_in_this_call = static_cast<std::size_t>(0U);
 
-      // Compute the number of bytes mod 64.
-      std::size_t index = static_cast<std::size_t>(static_cast<std::uint_least64_t>(count_of_bits / 8U) % md5_blocksize);
-
-      // Update the number of bits.
-      count_of_bits += static_cast<std::uint_least64_t>(count) * 8U;
-
-      // Compute the number of bytes we need to inject into the buffer.
-      const std::size_t firstpart = static_cast<std::size_t>(md5_blocksize - index);
-
-      std::size_t i = static_cast<std::size_t>(0U);
-
-      // Transform as many times as possible.
-      if(count >= firstpart)
+      if(count > std::size_t(md5_blocksize - count_remaining_in_buffer))
       {
-        // Fill the buffer first, then transform.
-        std::copy(data_stream, data_stream + firstpart, digest_buffer.begin() + index);
+        number_processed_in_this_call = std::size_t(md5_blocksize - count_remaining_in_buffer);
+
+        std::copy(data_stream,
+                  data_stream + number_processed_in_this_call,
+                  digest_buffer.begin() + count_remaining_in_buffer);
 
         transform(digest_buffer.data());
-
-        // Transform chunks of md5_blocksize (64 bytes).
-        for(i = firstpart; (i + md5_blocksize) <= count; i += md5_blocksize)
-        {
-          transform(&data_stream[i]);
-        }
-
-        index = static_cast<std::size_t>(0U);
       }
 
+      std::size_t number_of_blocks = static_cast<std::size_t>((count - number_processed_in_this_call) / md5_blocksize);
+
+      for(std::size_t i = static_cast<std::size_t>(0U); i < number_of_blocks; ++i)
+      {
+        std::copy(data_stream + number_processed_in_this_call,
+                  data_stream + number_processed_in_this_call + (md5_blocksize + std::size_t(i * md5_blocksize)),
+                  digest_buffer.begin());
+
+        transform(digest_buffer.data());
+      }
+
+      number_processed_in_this_call += static_cast<std::size_t>(number_of_blocks * md5_blocksize);
+
       // Buffer the remaining input.
-      std::copy(data_stream + i, data_stream + count, digest_buffer.begin() + index);
+      std::copy(data_stream + number_processed_in_this_call,
+                data_stream + count,
+                digest_buffer.begin() + count_remaining_in_buffer);
+
+      count_remaining_in_buffer += std::uint_least8_t(count - number_processed_in_this_call);
+
+      // Update the number of bits.
+      count_of_bytes += number_processed_in_this_call;
     }
 
     void process_extended_data_stream(const std::uint8_t* data_stream, const count_type& count)
@@ -181,9 +183,7 @@
       const std::size_t section_size  = static_cast<std::size_t>(std::size_t(1U) << (std::numeric_limits<std::size_t>::digits - 1));
       const count_type  section_count = static_cast<count_type> (count / section_size);
 
-      count_type i;
-
-      for(i = static_cast<count_type>(0U); i < section_count; ++i)
+      for(count_type i = static_cast<count_type>(0U); i < section_count; ++i)
       {
         process_single_data_section(data_stream, section_size);
       }
@@ -345,7 +345,7 @@
   void md5::initialize()
   {
     // Clear the bit counters.
-    count_of_bits = 0U;
+    count_of_bytes = 0U;
 
     // Load the *magic* initialization constants.
     digest_state[0U] = UINT32_C(0x67452301);
@@ -361,35 +361,43 @@
     // Perform the MD5 finalization.
     // This ends a message digest operation.
 
-    // Create and initialize the padding.
-    std::array<std::uint8_t, md5_blocksize - 8U> padding;
-    padding[0U] = static_cast<std::uint8_t>(md5_blocksize * 2U);
-    std::fill(padding.begin() + 1U, padding.end(), static_cast<std::uint8_t>(0U));
+    // Create the padding. Begin by setting the first padding byte.
+    digest_buffer[count_remaining_in_buffer] = static_cast<std::uint8_t>(md5_blocksize * 2U);
 
-    // Encode the number of bits.
-    std::array<std::uint8_t, 8U> count_of_bits_encoded;
-
-    for(std::uint_fast8_t i = 0U; i < std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U); ++i)
+    // Fill the rest of the padding bytes.
+    if(count_remaining_in_buffer > std::uint_least8_t(md5_blocksize - 8U))
     {
-      count_of_bits_encoded[i] = std::uint8_t(count_of_bits >> (i * 8));
+      std::fill(digest_buffer.begin() + count_remaining_in_buffer + 1U,
+                digest_buffer.end(),
+                static_cast<std::uint8_t>(0U));
+
+      transform(digest_buffer.data());
+
+      std::fill(digest_buffer.begin(),
+                digest_buffer.end() - 8U,
+                static_cast<std::uint8_t>(0U));
+    }
+    else
+    {
+      std::fill(digest_buffer.begin() + count_remaining_in_buffer + 1U,
+                digest_buffer.end() - 8U,
+                static_cast<std::uint8_t>(0U));
     }
 
-    std::fill(count_of_bits_encoded.begin() + std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U),
-              count_of_bits_encoded.end(),
-              std::uint8_t(0U));
+    // Add the the bits from the remaining bytes in the buffer to the count of bits.
+    count_of_bytes += count_remaining_in_buffer;
 
-    // Pad out to 56 mod 64.
-    const std::size_t index = static_cast<std::size_t>(static_cast<count_type>(count_of_bits / 8U) % md5_blocksize);
+    // Encode the number of bits.
+    for(std::uint_fast8_t i = 0U; i < std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U); ++i)
+    {
+      digest_buffer[(md5_blocksize - 8U) + i] = std::uint8_t(count_type(count_of_bytes * 8U) >> (i * 8));
+    }
 
-    const std::size_t pad_len = ((index < static_cast<std::size_t>(md5_blocksize - 8U))
-                                   ? (static_cast<std::size_t>( md5_blocksize       - 8U) - index)
-                                   : (static_cast<std::size_t>((md5_blocksize * 2U) - 8U) - index));
+    std::fill(digest_buffer.begin() + ((md5_blocksize - 8U) + std::numeric_limits<count_type>::digits / 8U),
+              digest_buffer.end(),
+              static_cast<std::uint8_t>(0U));
 
-    // Update the digest state with the padding.
-    process_data(padding.data(), pad_len);
-
-    // Update the digest state with the encoded number of bits.
-    process_data(count_of_bits_encoded.data(), 8U);
+    transform(digest_buffer.data());
   }
 
   void md5::transform(const std::uint8_t* block)
