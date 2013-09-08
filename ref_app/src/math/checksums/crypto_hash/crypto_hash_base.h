@@ -31,7 +31,7 @@
     bool               the_result_is_finalized;
     std::uint_least8_t count_remaining_in_buffer;
 
-    static void decode_uint8_input_to_uint32_output(const std::uint8_t* input_begin, const std::uint8_t* input_end, std::uint32_t* output_begin)
+    static void convert_uint8_input_to_uint32_output(const std::uint8_t* input_begin, const std::uint8_t* input_end, std::uint32_t* output_begin)
     {
       // Decodes the input (std::uint8_t) into the output (std::uint32_t).
       // This assumes that the length of the input is a multiple of 4.
@@ -51,7 +51,7 @@
                     });
     }
 
-    static void encode_uint32_input_to_uint8_output(const std::uint32_t* input_begin, const std::uint32_t* input_end, std::uint8_t* output_begin)
+    static void convert_uint32_input_to_uint8_output(const std::uint32_t* input_begin, const std::uint32_t* input_end, std::uint8_t* output_begin)
     {
       // Encodes the input (std::uint32_t) into the output (std::uint8_t).
       // This assumes that the length of the output is a multiple of 4.
