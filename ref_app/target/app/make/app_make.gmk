@@ -136,7 +136,7 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -fno-exceptions                   \
               -O3                               \
               -finline-functions                \
-              -finline-limit=32                 \
+              -finline-limit=8                  \
               -ffunction-sections               \
               -fdata-sections
 

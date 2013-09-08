@@ -1,8 +1,18 @@
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2012 - 2013.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+// \license LGPLv3
+// md5 is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// chrono is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser Public License for more details.
+// You should have received a copy of the GNU Lesser Public License
+// along with chrono. If not, see <http://www.gnu.org/licenses/>.
 //
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,6 +65,7 @@
   public:
     typedef md5_count_type                 count_type;
     typedef std::array<std::uint8_t,  16U> result_type_as_bytes;
+    typedef std::array<char,          32U> result_type_as_chars;
     typedef std::array<std::uint32_t,  4U> result_type_as_dwords;
 
     static_assert(   ( std::numeric_limits<count_type>::is_specialized == true)
@@ -79,6 +90,9 @@
 
     result_type_as_dwords get_result_as_dwords_and_finalize_the_state();
     result_type_as_dwords get_result_as_dwords_and_nochange_the_state() const;
+
+    result_type_as_chars get_result_as_chars_and_finalize_the_state();
+    result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
 
     md5& operator=(const md5& other);
 
@@ -115,10 +129,10 @@
     result_type_as_bytes                     digest_result;  // The result of the message digest.
     std::array<std::uint8_t,  md5_blocksize> digest_buffer;  // The message digest buffer.
 
-    void apply_md5_algorithm(const std::uint8_t* block);
+    void apply_the_md5_algorithm(const std::uint8_t* block);
 
-    void finalize();
-    void initialize();
+    void finalize_the_md5_algorithm();
+    void initialize_the_md5_algorithm();
 
     void process_data_stream(const std::uint8_t* data_stream, const count_type& count);
 
@@ -210,12 +224,12 @@
     if((!the_result_is_finalized))
     {
       // Finalize the result.
-      finalize();
+      finalize_the_md5_algorithm();
 
       // Extract the message digest result from the message digest state.
       convert_uint32_input_to_uint8_output(digest_state.data(),
-                                            digest_state.data() + digest_state.size(),
-                                            digest_result.data());
+                                           digest_state.data() + digest_state.size(),
+                                           digest_result.data());
 
       the_result_is_finalized = true;
     }
@@ -240,14 +254,14 @@
     if((!the_result_is_finalized))
     {
       // Finalize the result.
-      finalize();
+      finalize_the_md5_algorithm();
 
       // Extract the message digest result from the message digest state.
-      // Even though we are only getting the dword representation in this
-      // subroutine, we will prepare the byte representation as well.
+      // Even though we are getting the dword representation in this
+      // subroutine, we will also prepare the byte representation.
       convert_uint32_input_to_uint8_output(digest_state.data(),
-                                            digest_state.data() + digest_state.size(),
-                                            digest_result.data());
+                                           digest_state.data() + digest_state.size(),
+                                           digest_result.data());
 
       the_result_is_finalized = true;
     }
@@ -263,9 +277,36 @@
 
     // Finalize the local copy of the message digest,
     // and return the final result from the copied object.
-    temp_md5.finalize();
+    temp_md5.finalize_the_md5_algorithm();
 
     return temp_md5.digest_state;
+  }
+
+  template<typename md5_count_type>
+  typename md5<md5_count_type>::result_type_as_chars md5<md5_count_type>::get_result_as_chars_and_finalize_the_state()
+  {
+    // Get the result of the md5 as a byte array.
+    const result_type_as_bytes the_result_as_bytes = get_result_as_bytes_and_finalize_the_state();
+
+    result_type_as_chars the_result_as_chars;
+
+    // Conver the result as a byte array to a character array.
+    convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
+                                        the_result_as_bytes.data() + the_result_as_bytes.size(),
+                                        the_result_as_chars.data());
+
+    return the_result_as_chars;
+  }
+
+  template<typename md5_count_type>
+  typename md5<md5_count_type>::result_type_as_chars md5<md5_count_type>::get_result_as_chars_and_nochange_the_state() const
+  {
+    // Make a local copy of the message digest.
+    md5 temp_md5(*this);
+
+    // Finalize the local copy of the message digest,
+    // and return the final result from the copied object.
+    return temp_md5.get_result_as_chars_and_finalize_the_state();
   }
 
   template<typename md5_count_type>
@@ -324,7 +365,7 @@
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::apply_md5_algorithm(const std::uint8_t* block)
+  void md5<md5_count_type>::apply_the_md5_algorithm(const std::uint8_t* block)
   {
     // Apply the md5 algorithm to a 64-byte data block.
 
@@ -415,7 +456,7 @@
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::finalize()
+  void md5<md5_count_type>::finalize_the_md5_algorithm()
   {
     // Perform the md5 finalization. This ends a message digest operation.
 
@@ -431,7 +472,7 @@
                 digest_buffer.end(),
                 static_cast<std::uint8_t>(0U));
 
-      apply_md5_algorithm(digest_buffer.data());
+      apply_the_md5_algorithm(digest_buffer.data());
 
       std::fill(digest_buffer.begin(),
                 digest_buffer.end() - 8U,
@@ -468,11 +509,11 @@
       *(digest_buffer.end() - (8U - i)) = static_cast<std::uint8_t>(carry);
     }
 
-    apply_md5_algorithm(digest_buffer.data());
+    apply_the_md5_algorithm(digest_buffer.data());
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::initialize()
+  void md5<md5_count_type>::initialize_the_md5_algorithm()
   {
     count_of_bytes          = count_type(0U);
     the_result_is_finalized = false;
@@ -489,7 +530,7 @@
     // Check if initialization is required.
     if(the_result_is_finalized)
     {
-      initialize();
+      initialize_the_md5_algorithm();
 
       the_result_is_finalized = false;
     }
@@ -505,7 +546,7 @@
                 data_stream + number_processed_in_this_call,
                 digest_buffer.begin() + count_remaining_in_buffer);
 
-      apply_md5_algorithm(digest_buffer.data());
+      apply_the_md5_algorithm(digest_buffer.data());
     }
 
     // Transform all data that are contained within subsequent modulus-64 blocks.
@@ -517,7 +558,7 @@
                 data_stream + (number_processed_in_this_call + (md5_blocksize + count_type(i * md5_blocksize))),
                 digest_buffer.begin());
 
-      apply_md5_algorithm(digest_buffer.data());
+      apply_the_md5_algorithm(digest_buffer.data());
     }
 
     number_processed_in_this_call += static_cast<count_type>(number_of_blocks * md5_blocksize);
