@@ -61,7 +61,12 @@ void __my_startup()
 
 // Do not remove these dummy stubs!
 // The AtmelStudio(R) project needs them.
-extern "C" void __do_global_ctors() { }
-extern "C" void __do_global_dtors() { }
-extern "C" void __do_copy_data   () { }
-extern "C" void __do_clear_bss   () { }
+extern "C" void __do_global_ctors();
+extern "C" void __do_global_dtors();
+extern "C" void __do_copy_data();
+extern "C" void __do_clear_bss();
+
+void __do_global_ctors() { }
+void __do_global_dtors() { }
+void __do_copy_data   () { }
+void __do_clear_bss   () { }

@@ -24,4 +24,6 @@
     }
   }
 
+  mcal::gpt::value_type consistent_microsecond_tick();
+
 #endif // _MCAL_GPT_2011_10_20_H_

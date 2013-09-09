@@ -28,7 +28,7 @@
     static void convert_uint8_input_to_char8_output (const std::uint8_t*  src_begin, const std::uint8_t*  src_end, char*          dest_begin);
 
   private:
-    static char convert_nibble4_to_char8(const std::uint8_t the_nibble, const bool use_uppercase);
+    static char convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase);
   };
 
   crypto_hash_base::crypto_hash_base() : the_result_is_finalized  (true),
@@ -96,14 +96,14 @@
                     const std::uint8_t lo_nibble =  the_byte & static_cast<std::uint8_t>(0x0FU);
                     const std::uint8_t hi_nibble = (the_byte >> 4);
 
-                    dest_begin[j + 1U] = convert_nibble4_to_char8(lo_nibble, true);
-                    dest_begin[j + 0U] = convert_nibble4_to_char8(hi_nibble, true);
+                    dest_begin[j + 1U] = convert_nibble4_to_char(lo_nibble, true);
+                    dest_begin[j + 0U] = convert_nibble4_to_char(hi_nibble, true);
 
                     j += 2U;
                   });
   }
 
-  char crypto_hash_base::convert_nibble4_to_char8(const std::uint8_t the_nibble, const bool use_uppercase)
+  char crypto_hash_base::convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase)
   {
     char c;
 

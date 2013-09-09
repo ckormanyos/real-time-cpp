@@ -9,8 +9,6 @@
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
 
-extern mcal::gpt::value_type consistent_microsecond_tick();
-
 // Implement std::chrono::high_resolution_clock::now()
 // for the standard library high-resolution clock.
 namespace std
@@ -48,6 +46,8 @@ void operator delete(void*) { }
 
 extern "C"
 {
+  void __cxa_pure_virtual();
+
   void __cxa_pure_virtual() { }
 
   int __errno;

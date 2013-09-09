@@ -3,16 +3,16 @@
 //  Copyright Christopher Kormanyos 2012 - 2013.
 //
 // \license LGPLv3
-// md5 is free software: you can redistribute it and/or modify
+// sha1 is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// chrono is distributed in the hope that it will be useful,
+// sha1 is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser Public License for more details.
 // You should have received a copy of the GNU Lesser Public License
-// along with chrono. If not, see <http://www.gnu.org/licenses/>.
+// along with sha1. If not, see <http://www.gnu.org/licenses/>.
 //
 
 #ifndef _SHA1_2013_09_08_H_

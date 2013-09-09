@@ -27,4 +27,7 @@
     }
   }
 
+  float  acosh(float x);
+  float tgamma(float x);
+
 #endif // _XCMATH_IMPL_2013_08_22_H_

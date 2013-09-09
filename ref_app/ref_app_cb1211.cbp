@@ -12,6 +12,21 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-enum" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wzero-as-null-pointer-constant" />
+					<Add option="-Wmain" />
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-DWIN32" />
 					<Add option="-D_DEBUG" />
 					<Add option="-D_CONSOLE" />
@@ -24,6 +39,23 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-enum" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wzero-as-null-pointer-constant" />
+					<Add option="-Wmain" />
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-DWIN32" />
 					<Add option="-DNDEBUG" />
 					<Add option="-D_CONSOLE" />
@@ -229,8 +261,17 @@
 		<Unit filename="src/math/calculus/integral.h" />
 		<Unit filename="src/math/checksums/crc/crc.cpp" />
 		<Unit filename="src/math/checksums/crc/crc.h" />
-		<Unit filename="src/math/checksums/md5/md5.cpp" />
-		<Unit filename="src/math/checksums/md5/md5.h" />
+		<Unit filename="src/math/checksums/crypto_hash/crypto_hash_base.h" />
+		<Unit filename="src/math/checksums/crypto_hash/md5.h" />
+		<Unit filename="src/math/checksums/crypto_hash/sha1.h" />
+		<Unit filename="src/math/checksums/crypto_hash/test_md5.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/math/checksums/crypto_hash/test_sha1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="src/math/constants/constants.h" />
 		<Unit filename="src/math/filters/fir_order_n.h" />
 		<Unit filename="src/math/fixed_point/fixed_point.h" />
@@ -602,6 +643,7 @@
 		<Unit filename="src/util/STL/impl/vector_impl.h" />
 		<Unit filename="src/util/STL/impl/xalgorithm_impl.h" />
 		<Unit filename="src/util/STL/impl/xallocator_impl.h" />
+		<Unit filename="src/util/STL/impl/xcmath_impl.h" />
 		<Unit filename="src/util/STL/impl/xiterator_impl.h" />
 		<Unit filename="src/util/STL/impl/xnumeric_impl.h" />
 		<Unit filename="src/util/STL/impl/xutils_impl.h" />

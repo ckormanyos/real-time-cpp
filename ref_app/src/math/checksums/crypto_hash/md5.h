@@ -126,7 +126,6 @@
 
     count_type                               count_of_bytes; // The running byte count in the md5.
     result_type_as_dwords                    digest_state;   // The message digest state so far.
-    result_type_as_bytes                     digest_result;  // The result of the message digest.
     std::array<std::uint8_t,  md5_blocksize> digest_buffer;  // The message digest buffer.
 
     void apply_the_md5_algorithm(const std::uint8_t* block);
@@ -215,7 +214,6 @@
   md5<md5_count_type>::md5(const md5& other) : crypto_hash_base(other),
                                                count_of_bytes  (other.count_of_bytes),
                                                digest_state    (other.digest_state),
-                                               digest_result   (other.digest_result),
                                                digest_buffer   (other.digest_buffer) { }
 
   template<typename md5_count_type>
@@ -226,13 +224,15 @@
       // Finalize the result.
       finalize_the_md5_algorithm();
 
-      // Extract the message digest result from the message digest state.
-      convert_uint32_input_to_uint8_output(digest_state.data(),
-                                           digest_state.data() + digest_state.size(),
-                                           digest_result.data());
-
       the_result_is_finalized = true;
     }
+
+    result_type_as_bytes digest_result;
+
+    // Extract the message digest result from the message digest state.
+    convert_uint32_input_to_uint8_output(digest_state.data(),
+                                         digest_state.data() + digest_state.size(),
+                                         digest_result.data());
 
     return digest_result;
   }
@@ -255,13 +255,6 @@
     {
       // Finalize the result.
       finalize_the_md5_algorithm();
-
-      // Extract the message digest result from the message digest state.
-      // Even though we are getting the dword representation in this
-      // subroutine, we will also prepare the byte representation.
-      convert_uint32_input_to_uint8_output(digest_state.data(),
-                                           digest_state.data() + digest_state.size(),
-                                           digest_result.data());
 
       the_result_is_finalized = true;
     }
@@ -318,7 +311,6 @@
 
       count_of_bytes = other.count_of_bytes;
       digest_state   = other.digest_state;
-      digest_result  = other.digest_result;
       digest_buffer  = other.digest_buffer;
     }
 
@@ -515,8 +507,9 @@
   template<typename md5_count_type>
   void md5<md5_count_type>::initialize_the_md5_algorithm()
   {
-    count_of_bytes          = count_type(0U);
-    the_result_is_finalized = false;
+    count_of_bytes            = count_type(0U);
+    the_result_is_finalized   = false;
+    count_remaining_in_buffer = std::uint_least8_t(0U);
 
     digest_state[0U] = UINT32_C(0x67452301);
     digest_state[1U] = UINT32_C(0xEfCDAB89);
@@ -537,7 +530,7 @@
 
     count_type number_processed_in_this_call = static_cast<count_type>(0U);
 
-    // Transform any data that are not contained within a modulus-64 block.
+    // Transform any data that will fill the current modulus-64 block.
     if(count > static_cast<count_type>(md5_blocksize - count_remaining_in_buffer))
     {
       number_processed_in_this_call = static_cast<count_type>(md5_blocksize - count_remaining_in_buffer);
@@ -555,13 +548,13 @@
     for(count_type i = static_cast<count_type>(0U); i < number_of_blocks; ++i)
     {
       std::copy(data_stream +  number_processed_in_this_call,
-                data_stream + (number_processed_in_this_call + (md5_blocksize + count_type(i * md5_blocksize))),
+                data_stream + (number_processed_in_this_call + md5_blocksize),
                 digest_buffer.begin());
 
       apply_the_md5_algorithm(digest_buffer.data());
-    }
 
-    number_processed_in_this_call += static_cast<count_type>(number_of_blocks * md5_blocksize);
+      number_processed_in_this_call += md5_blocksize;
+    }
 
     // Buffer the remaining input that could not fit into a modulus-64 block.
     std::copy(data_stream + number_processed_in_this_call,

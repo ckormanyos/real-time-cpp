@@ -38,6 +38,8 @@ void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
 void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
+void init_interrupts_nmi();
+
 void init_interrupts_nmi()
 {
   // Load the start address of the NMI interrupt table.

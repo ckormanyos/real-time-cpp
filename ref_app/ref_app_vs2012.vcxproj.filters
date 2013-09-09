@@ -259,10 +259,10 @@
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\md5_test.cpp">
+    <ClCompile Include="src\math\checksums\crypto_hash\test_md5.cpp">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\sha1_test.cpp">
+    <ClCompile Include="src\math\checksums\crypto_hash\test_sha1.cpp">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClCompile>
   </ItemGroup>

@@ -126,12 +126,13 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wsign-conversion                 \
               -Wfloat-equal                     \
               -Wunreachable-code                \
-              -Winit-self                       \
+              -Wmissing-declarations            \
               -Wshadow                          \
               -Wswitch-default                  \
               -Wswitch-enum                     \
               -Wcast-align                      \
               -Wmissing-include-dirs            \
+              -Winit-self                       \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -O3                               \
