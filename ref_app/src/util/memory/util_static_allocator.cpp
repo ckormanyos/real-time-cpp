@@ -10,7 +10,7 @@
 
 void* util::static_allocator_base::do_allocate(const size_type size)
 {
-  static std::uint8_t  buffer[buffer_size];
+  static std::uint8_t  buffer[static_allocator_base::buffer_size];
   static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.

@@ -21,7 +21,7 @@
       static_allocator_base() { }
 
       // The static_allocator's default buffer size.
-      static const size_type buffer_size = 64U;
+      static const size_type buffer_size = 256U;
 
       // The static_allocator's memory allocation.
       static void* do_allocate(const size_type size);
@@ -52,7 +52,7 @@
       typedef const value_type* const_pointer;
 
       template <class U>
-      struct rebind { typedef static_allocator<U> other; };
+      struct rebind { typedef static_allocator<U, alignment> other; };
     };
 
     template<typename T, const std::size_t alignment>
@@ -71,10 +71,10 @@
       static_allocator(const static_allocator&) throw() { }
 
       template <class U>
-      static_allocator(const static_allocator<U>&) throw() { }
+      static_allocator(const static_allocator<U, alignment>&) throw() { }
 
       template<class U> 
-      struct rebind { typedef static_allocator<U> other; };
+      struct rebind { typedef static_allocator<U, alignment> other; };
 
       size_type max_size() const throw()
       {

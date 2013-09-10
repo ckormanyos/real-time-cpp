@@ -21,7 +21,7 @@
       ring_allocator_base() { }
 
       // The ring_allocator's default buffer size.
-      static const size_type buffer_size = 64U;
+      static const size_type buffer_size = 256U;
 
       // The ring_allocator's memory allocation.
       static void* do_allocate(const size_type size);
@@ -52,7 +52,7 @@
       typedef const value_type* const_pointer;
 
       template <class U>
-      struct rebind { typedef ring_allocator<U> other; };
+      struct rebind { typedef ring_allocator<U, alignment> other; };
     };
 
     template<typename T, const std::size_t alignment>
@@ -71,10 +71,10 @@
       ring_allocator(const ring_allocator&) throw() { }
 
       template <class U>
-      ring_allocator(const ring_allocator<U>&) throw() { }
+      ring_allocator(const ring_allocator<U, alignment>&) throw() { }
 
       template<class U> 
-      struct rebind { typedef ring_allocator<U> other; };
+      struct rebind { typedef ring_allocator<U, alignment> other; };
 
       size_type max_size() const throw()
       {

@@ -15,22 +15,22 @@
 
   namespace util
   {
-    template<typename T, typename alloc = std::allocator<T> >
+    template<typename T, typename alloc = std::allocator<T>>
     class dynamic_array
     {
     public:
       // Type definitions:
-      typedef alloc allocator_type;
-      typedef T& reference;
-      typedef const T& const_reference;
-      typedef T* iterator;
-      typedef const T* const_iterator;
-      typedef std::size_t size_type;
-      typedef std::ptrdiff_t difference_type;
-      typedef T value_type;
-      typedef T* pointer;
-      typedef const T* const_pointer;
-      typedef std::reverse_iterator<iterator> reverse_iterator;
+      typedef alloc                                 allocator_type;
+      typedef T&                                    reference;
+      typedef const T&                              const_reference;
+      typedef T*                                    iterator;
+      typedef const T*                              const_iterator;
+      typedef std::size_t                           size_type;
+      typedef std::ptrdiff_t                        difference_type;
+      typedef T                                     value_type;
+      typedef T*                                    pointer;
+      typedef const T*                              const_pointer;
+      typedef std::reverse_iterator<iterator>       reverse_iterator;
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
       // Constructors:
@@ -52,7 +52,6 @@
         std::copy(other.begin(), other.end(), begin());
       }
 
-/*
       template<typename input_iterator>
       dynamic_array(input_iterator first, input_iterator last) : N(std::distance(first, last)),
                                                                  elems(allocator_type().allocate(N))
@@ -60,13 +59,13 @@
         std::copy(first, last, begin());
       }
 
+/*
       dynamic_array(std::initializer_list<T> lst) : N(lst.size()),
                                                     elems(allocator_type().allocate(N))
       {
         std::copy(lst.begin(), lst.end(), begin());
       }
 */
-
       // Destructor:
       ~dynamic_array()
       {

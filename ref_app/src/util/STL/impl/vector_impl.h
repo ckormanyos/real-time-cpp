@@ -66,7 +66,7 @@
       template<class input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first(a.allocate(last - first)),
+             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).(last - first)),
                                                            my_last (my_first + (last - first)),
                                                            my_end  (my_last)
       {
@@ -81,7 +81,7 @@
       }
 
       vector(std::initializer_list<T> lst,
-             const allocator_type& a = allocator_type()) : my_first(a.allocate(lst.size())),
+             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(lst.size())),
                                                            my_last (my_first + lst.size()),
                                                            my_end  (my_last)
       {

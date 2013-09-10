@@ -528,43 +528,52 @@
       the_result_is_finalized = false;
     }
 
-    count_type number_processed_in_this_call = static_cast<count_type>(0U);
+    count_type the_number_of_bytes_processed_in_this_call = static_cast<count_type>(0U);
+
+    const std::uint8_t* running_data_stream = data_stream;
 
     // Transform any data that will fill the current modulus-64 block.
+    // Do this even for an entire block of 64 bytes (as is the case for a fresh md5).
     if(count > static_cast<count_type>(md5_blocksize - count_remaining_in_buffer))
     {
-      number_processed_in_this_call = static_cast<count_type>(md5_blocksize - count_remaining_in_buffer);
+      the_number_of_bytes_processed_in_this_call = static_cast<count_type>(md5_blocksize - count_remaining_in_buffer);
 
-      std::copy(data_stream,
-                data_stream + number_processed_in_this_call,
+      std::copy(running_data_stream,
+                running_data_stream + the_number_of_bytes_processed_in_this_call,
                 digest_buffer.begin() + count_remaining_in_buffer);
 
       apply_the_md5_algorithm(digest_buffer.data());
+
+      running_data_stream += the_number_of_bytes_processed_in_this_call;
     }
 
     // Transform all data that are contained within subsequent modulus-64 blocks.
-    const count_type number_of_blocks = static_cast<count_type>(count - number_processed_in_this_call) / md5_blocksize;
+    const count_type number_of_blocks = static_cast<count_type>(count - the_number_of_bytes_processed_in_this_call) / md5_blocksize;
 
     for(count_type i = static_cast<count_type>(0U); i < number_of_blocks; ++i)
     {
-      std::copy(data_stream +  number_processed_in_this_call,
-                data_stream + (number_processed_in_this_call + md5_blocksize),
+      std::copy(running_data_stream,
+                running_data_stream + md5_blocksize,
                 digest_buffer.begin());
 
       apply_the_md5_algorithm(digest_buffer.data());
 
-      number_processed_in_this_call += md5_blocksize;
+      running_data_stream += md5_blocksize;
     }
 
+    the_number_of_bytes_processed_in_this_call += static_cast<count_type>(number_of_blocks * md5_blocksize);
+
     // Buffer the remaining input that could not fit into a modulus-64 block.
-    std::copy(data_stream + number_processed_in_this_call,
-              data_stream + count,
+    const std::uint_least8_t the_remainder_that_need_to_be_buffered = static_cast<std::uint_least8_t>(count - the_number_of_bytes_processed_in_this_call);
+
+    std::copy(running_data_stream,
+              running_data_stream + the_remainder_that_need_to_be_buffered,
               digest_buffer.begin() + count_remaining_in_buffer);
 
-    count_remaining_in_buffer += std::uint_least8_t(count - number_processed_in_this_call);
+    count_remaining_in_buffer += the_remainder_that_need_to_be_buffered;
 
-    // Update the number of bits.
-    count_of_bytes += number_processed_in_this_call;
+    // Update the number of bytes.
+    count_of_bytes += the_number_of_bytes_processed_in_this_call;
   }
 
 #endif // _MD5_2012_01_13_H_

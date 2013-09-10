@@ -20,7 +20,8 @@ TGT_CFLAGS    = -mcpu=cortex-m3                       \
                 -mno-long-calls
 
 TGT_CPPFLAGS  = -std=c++11                            \
-                -Wzero-as-null-pointer-constant
+                -Wzero-as-null-pointer-constant       \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
