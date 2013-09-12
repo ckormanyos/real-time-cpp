@@ -18,13 +18,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This work has been created by Christopher Kormanyos.
-// This work is an md5 implementation that has been specifically
+// This work is an implementation og md5 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
 //
-// The origin of this work is identified as the
-// "RSA Data Security, Inc. MD5 Message-Digest Algorithm"
-// This work is: "derived from the RSA Data Security, Inc.
+// This work has been: "derived from the RSA Data Security, Inc.
 // MD5 Message-Digest Algorithm". The original license notices
 // from RSA Data Security, Inc. follow below.
 //
@@ -96,8 +94,8 @@
 
     md5& operator=(const md5& other);
 
-    void process_data(const std::uint8_t* data_stream, const count_type& count);
-    void process_data(const char* string_stream, const count_type& count);
+    void process_data(const std::uint8_t* data_stream,   const count_type& count);
+    void process_data(const char*         string_stream, const count_type& count);
 
     template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
@@ -467,38 +465,42 @@
       apply_the_md5_algorithm(digest_buffer.data());
 
       std::fill(digest_buffer.begin(),
-                digest_buffer.end() - 8U,
+                digest_buffer.end(),
                 static_cast<std::uint8_t>(0U));
     }
     else
     {
       std::fill(digest_buffer.begin() + (count_remaining_in_buffer + 1U),
-                digest_buffer.end() - 8U,
+                digest_buffer.end(),
                 static_cast<std::uint8_t>(0U));
     }
 
     // Add the bits from the remaining bytes in the buffer to the count of bits.
     count_of_bytes += count_remaining_in_buffer;
 
-    std::fill(digest_buffer.end() - 8U, digest_buffer.end(), static_cast<std::uint8_t>(0U));
-
     // Encode the number of bits. Simultaneously convert the number of bytes
     // to the number of bits by performing a left-shift of 3 on the byte-array.
+    // The md5 stores the 8 bytes of the bit counter in forward order,
+    // with the lowest byte being stored at position 56 in the buffer
     std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
-    std::uint_fast8_t  i     = static_cast<std::uint_fast8_t>(0U);
+    std::int_least8_t   index = static_cast<std::int_least8_t>(0);
 
-    for( ; i < std::uint_fast8_t(std::numeric_limits<count_type>::digits / 8U); ++i)
+    count_type padding_length_tmp = count_of_bytes;
+
+    for( ; index < static_cast<std::int_least8_t>(std::numeric_limits<count_type>::digits / 8); ++index)
     {
-      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(static_cast<std::uint_least16_t>(count_of_bytes) << 3) >> (i * 8);
+      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
 
-      *(digest_buffer.end() - (8U - i)) = static_cast<std::uint8_t>(the_word | carry);
+      padding_length_tmp >>= (index * 8);
+
+      *(digest_buffer.rbegin() + (static_cast<std::int_least8_t>(8 - 1) - index)) = static_cast<std::uint8_t>(the_word | carry);
 
       carry = static_cast<std::uint_least8_t>(the_word >> 8);
     }
 
-    if(static_cast<std::uint_fast8_t>((md5_blocksize - 8U) + 1) < static_cast<std::uint_fast8_t>(md5_blocksize))
+    if(index < static_cast<std::int_least8_t>(8))
     {
-      *(digest_buffer.end() - (8U - i)) = static_cast<std::uint8_t>(carry);
+      *(digest_buffer.rbegin() + (static_cast<std::int_least8_t>(8 - 1) - index)) = static_cast<std::uint8_t>(carry);
     }
 
     apply_the_md5_algorithm(digest_buffer.data());

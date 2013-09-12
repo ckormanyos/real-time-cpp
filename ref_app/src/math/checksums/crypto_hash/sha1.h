@@ -15,187 +15,229 @@
 // along with sha1. If not, see <http://www.gnu.org/licenses/>.
 //
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// This work has been created by Arwed Steuer.
+// This work is implementation of sha1 that has been specifically
+// designed for C++. The implementation places particular
+// emphasis on portability to microcontroller platforms.
+//
+// This work has been derived from:
+// "RFC 3174 US Secure Hash Algorithm 1 (SHA1) September 2001".
+// The original license notices from "The Internet Society"
+// follow below.
+//
+// Copyright (C) The Internet Society (2001).  All Rights Reserved.
+//
+// This document and translations of it may be copied and furnished to
+// others, and derivative works that comment on or otherwise explain it
+// or assist in its implementation may be prepared, copied, published
+// and distributed, in whole or in part, without restriction of any
+// kind, provided that the above copyright notice and this paragraph are
+// included on all such copies and derivative works.  However, this
+// document itself may not be modified in any way, such as by removing
+// the copyright notice or references to the Internet Society or other
+// Internet organizations, except as needed for the purpose of
+// developing Internet standards in which case the procedures for
+// copyrights defined in the Internet Standards process must be
+// followed, or as required to translate it into languages other than
+// English.
+//
+// The limited permissions granted above are perpetual and will not be
+// revoked by the Internet Society or its successors or assigns.
+//
+// This document and the information contained herein is provided on an
+// "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+// TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+// BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+// HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+// MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+///////////////////////////////////////////////////////////////////////////////
+
 #ifndef SHA1_H_INCLUDED
 #define SHA1_H_INCLUDED
 
 #include <array>
-#include <fstream>
 #include <functional>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 #include "crypto_hash_base.h"
 
+template <typename sha1_count_type>
 class sha1 : public crypto_hash_base
 {
 public:
+  typedef sha1_count_type                count_type;
+  typedef std::array<std::uint8_t,  20U> result_type_as_bytes;
+  typedef std::array<char,          40U> result_type_as_chars;
+  typedef std::array<std::uint32_t,  5U> result_type_as_dwords;
+
+  static_assert(   ( std::numeric_limits<count_type>::is_specialized == true)
+                && ( std::numeric_limits<count_type>::is_integer     == true)
+                && ( std::numeric_limits<count_type>::is_signed      == false)
+                && ( std::numeric_limits<count_type>::radix          == 2)
+                && ((std::numeric_limits<count_type>::digits % 8)    == 0),
+                "the count type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+
   sha1();
-  sha1(char* message_hash, std::uint_fast64_t length_message);
+  sha1(const std::uint8_t* data_stream, const count_type& length_message);
+  sha1(const char*       string_stream, const count_type& length_message);
+  //template<typename unsigned_integer_type> sha1(unsigned_integer_type u);
   sha1(const sha1& other);
+  sha1& operator=(const sha1& other);
 
-  void input(char* message_hash, std::uint_fast64_t length_message);
-  void input(char* message_hash, std::uint_fast64_t length_message, bool the_other_method);
+  result_type_as_bytes get_result_as_bytes_and_finalize_the_state ();
+  result_type_as_bytes get_result_as_bytes_and_nochange_the_state () const;
 
-  std::array<std::uint8_t, 20> byte_array_result();
-  std::array<std::uint32_t, 5> dword_array_result();
-  std::string string_result();
+  result_type_as_dwords get_result_as_dwords_and_finalize_the_state();
+  result_type_as_dwords get_result_as_dwords_and_nochange_the_state() const;
 
-  void reset();
+  result_type_as_chars get_result_as_chars_and_finalize_the_state();
+  result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
+
+  void process_data(const std::uint8_t* data_stream, const count_type& length_message);
+
+  void process_data(const char* string_stream, const count_type& length_message)
+  {
+    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), length_message);
+  }
+
+  //template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
 private:
-  bool                         method2;
-  bool                         finalized;
-  std::uint_fast8_t            index_block_message;
-  std::uint64_t                padding_length;
-  std::array<std::uint32_t, 5> hash_message;
-  std::array<std::uint8_t, 64> block_message;
+  std::uint_fast8_t             index_block_message;
+  count_type                    padding_length;
+  std::array<std::uint32_t, 5U> hash_message;
+  std::array<std::uint8_t, 64U> block_message;
 
+  void perform_algorithm();
   void finalize();
-  void process1();
-  void process2();
+  void reset();
 
-  static std::uint32_t circular_shift(std::uint_fast8_t digits_shift, const std::uint32_t& shift_32word)
+  template<const std::uint_fast8_t digits_shift>
+  static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
   {
-    return (shift_32word << digits_shift) | (shift_32word >> (32 - digits_shift));
+    return (shift_32word << digits_shift) | (shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
   }
-  std::uint32_t constants(std::uint_fast8_t looper);
-  std::uint32_t functions(std::uint_fast8_t looper, std::uint32_t first_dword, std::uint32_t dword, std::uint32_t last_dword);
 };
 
 ////IMPLEMENTATION////
 
-sha1::sha1() : method2            (),
-               finalized          (),
-               index_block_message(),
-               padding_length     (),
-               hash_message       ( {{0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0}} ),
-               block_message      ()
+template <typename sha1_count_type>
+sha1<sha1_count_type>::sha1()
+{
+  reset();
+}
+
+template <typename sha1_count_type>
+sha1<sha1_count_type>::sha1(const std::uint8_t* data_stream,
+                            const sha1_count_type& length_message)
+{
+  reset();
+
+  process_data(data_stream, length_message);
+}
+
+template <typename sha1_count_type>
+sha1<sha1_count_type>::sha1(const char* string_stream,
+                            const sha1_count_type& length_message)
+{
+  reset();
+
+  process_data(string_stream, length_message);
+}
+
+template <typename sha1_count_type>
+sha1<sha1_count_type>::sha1(const sha1& other) : crypto_hash_base   (other),
+                                                 index_block_message(other.index_block_message),
+                                                 padding_length     (other.padding_length),
+                                                 hash_message       (other.hash_message),
+                                                 block_message      (other.block_message)
 {
 }
 
-sha1::sha1(char* message_hash,
-           std::uint_fast64_t length_message) : method2            (),
-                                                finalized          (),
-                                                index_block_message(),
-                                                padding_length     (),
-                                                hash_message       ( {{0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0}} ),
-                                                block_message      ()
+template <typename sha1_count_type>
+sha1<sha1_count_type>& sha1<sha1_count_type>::operator=(const sha1& other)
 {
-  input(message_hash, length_message, false);
-}
-
-sha1::sha1(const sha1& other) : crypto_hash_base   (other),
-                                method2            (other.method2),
-                                finalized          (other.finalized),
-                                index_block_message(other.index_block_message),
-                                padding_length     (other.padding_length),
-                                hash_message       (other.hash_message),
-                                block_message      (other.block_message)
-{
-}
-
-
-void sha1::input(char* message_hash, std::uint_fast64_t length_message)
-{
-  method2 = false;
-
-  while(length_message != 0)
+  if(this != &other)
   {
-    block_message[index_block_message++] = *message_hash;
+    static_cast<void>(crypto_hash_base::operator=(other));
 
-    if(index_block_message == 64)
+    index_block_message = other.index_block_message;
+    padding_length      = other.padding_length;
+    hash_message        = other.hash_message;
+    block_message       = other.block_message;
+  }
+
+  return *this;
+}
+
+template <typename sha1_count_type>
+void sha1<sha1_count_type>::process_data(const std::uint8_t* message_hash, const sha1_count_type& length_message)
+{
+  if(the_result_is_finalized) { reset(); }
+
+  count_type the_message_length = length_message;
+
+  while(the_message_length != static_cast<count_type>(0U))
+  {
+    block_message[index_block_message] = *message_hash;
+
+    ++index_block_message;
+
+    ++padding_length;
+
+    if(index_block_message == static_cast<std::uint_fast8_t>(64U))
     {
-      padding_length += 512;
-      if(method2)
-      {
-        process2();
-      }
-      else
-      {
-        process1();
-      }
+      perform_algorithm();
     }
 
-    if(length_message < 64)
-    {
-      padding_length += 8;
-    }
-
-    message_hash++;
-    length_message--;
+    ++message_hash;
+    --the_message_length;
   }
 }
 
-void sha1::input(char* message_hash, std::uint_fast64_t length_message, bool the_other_method)
-{
-  method2 = the_other_method;
-
-  while(length_message != 0)
-  {
-    block_message[index_block_message++] = *message_hash;
-
-    if(index_block_message == 64)
-    {
-      padding_length += 512;
-      if(method2)
-      {
-        process2();
-      }
-      else
-      {
-        process1();
-      }
-    }
-
-    if(length_message < 64)
-    {
-      padding_length += 8;
-    }
-
-    message_hash++;
-    length_message--;
-  }
-}
-
-void sha1::process1()
+/*
+template <typename sha1_count_type>
+void sha1<sha1_count_type>::perform_algorithm()
 {
   std::uint_fast8_t loop_counter;
   std::uint32_t temporary_32word;
 
-  std::array<std::uint32_t, 80> sequence_32word;
-  std::array<std::uint32_t,  5> buffer_32word;
+  std::array<std::uint32_t, 80U> sequence_32word;
+  std::array<std::uint32_t,  5U> buffer_32word;
 
-  for(loop_counter = 0; loop_counter < 16; loop_counter++)
+  for(loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(16U); loop_counter++)
   {
-    sequence_32word[loop_counter]  = (  (static_cast<std::uint32_t>(block_message[(loop_counter * 4)    ]) << 24)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 1]) << 16)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 2]) <<  8)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 3]) <<  0));
+    sequence_32word[loop_counter]  = (  (static_cast<std::uint32_t>(block_message[(loop_counter * 4U)                                     ]) << 24U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(1U)]) << 16U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(2U)]) <<  8U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(3U)]) <<  0U));
   }
 
-  for(loop_counter = 16; loop_counter < 80; loop_counter++)
+  for(loop_counter = static_cast<std::uint_fast8_t>(16U); loop_counter < static_cast<std::uint_fast8_t>(80U); loop_counter++)
   {
-    const std::uint32_t word_shift = (sequence_32word[loop_counter -  3] ^
-                                      sequence_32word[loop_counter -  8] ^
-                                      sequence_32word[loop_counter - 14] ^
-                                      sequence_32word[loop_counter - 16]);
+    const std::uint32_t word_shift = (sequence_32word[loop_counter - static_cast<std::uint_fast8_t>( 3U)] ^
+                                      sequence_32word[loop_counter - static_cast<std::uint_fast8_t>( 8U)] ^
+                                      sequence_32word[loop_counter - static_cast<std::uint_fast8_t>(14U)] ^
+                                      sequence_32word[loop_counter - static_cast<std::uint_fast8_t>(16U)]);
 
-    sequence_32word[loop_counter] = circular_shift(1, word_shift);
+    sequence_32word[loop_counter] = circular_shift<1U>(word_shift);
   }
 
   buffer_32word = hash_message;
 
-  for(loop_counter = 0; loop_counter < 80; loop_counter++)
+  for(loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(80U); loop_counter++)
   {
-    temporary_32word =  circular_shift(5, buffer_32word[0]) +
-                        functions(loop_counter, buffer_32word[1], buffer_32word[2], buffer_32word[3]) +
-                        buffer_32word[4] + sequence_32word[loop_counter] + constants(loop_counter);
+    temporary_32word =    circular_shift<5U>(buffer_32word[0U])
+                        + functions(loop_counter, buffer_32word[1U], buffer_32word[2U], buffer_32word[3U])
+                        + buffer_32word[4U]
+                        + sequence_32word[loop_counter]
+                        + constants(loop_counter);
 
-    buffer_32word[4] = buffer_32word[3];
-    buffer_32word[3] = buffer_32word[2];
-    buffer_32word[2] = circular_shift(30, buffer_32word[1]);
-    buffer_32word[1] = buffer_32word[0];
-    buffer_32word[0] = temporary_32word;
+    buffer_32word[4U] = buffer_32word[3U];
+    buffer_32word[3U] = buffer_32word[2U];
+    buffer_32word[2U] = circular_shift<30>(buffer_32word[1U]);
+    buffer_32word[1U] = buffer_32word[0U];
+    buffer_32word[0U] = temporary_32word;
   }
 
   std::transform(hash_message.cbegin(),
@@ -204,192 +246,236 @@ void sha1::process1()
                  hash_message.begin(),
                  std::plus<std::uint32_t>());
 
-  index_block_message = 0;
+  index_block_message = static_cast<std::uint_fast8_t>(0U);
 }
+*/
 
-void sha1::process2()
+template <typename sha1_count_type>
+void sha1<sha1_count_type>::perform_algorithm()
 {
-  std::uint_fast8_t loop_counter;
-  std::uint_fast8_t counter_loop;
-  std::uint32_t temporary_32word;
+  const std::array<std::uint32_t, 4> constants =
+  {{
+    UINT32_C(0x5A827999),
+    UINT32_C(0x6ED9EBA1),
+    UINT32_C(0x8F1BBCDC),
+    UINT32_C(0xCA62C1D6)
+  }};
 
-  std::array<std::uint32_t, 16> sequence_32word;
-  std::array<std::uint32_t,  5> buffer_32word;
+  typedef std::uint32_t(*function_type)(const std::uint32_t*);
 
-  for(loop_counter = 0; loop_counter < 16; loop_counter++)
+  const std::array<function_type, 4U> functions =
+  {{
+    [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+    {
+      return (std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[2U]) | std::uint32_t(std::uint32_t(~my_buffer_32word[1U]) & my_buffer_32word[3U]));
+    },
+    [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+    {
+      return std::uint32_t(std::uint32_t(my_buffer_32word[1U] ^ my_buffer_32word[2U]) ^ my_buffer_32word[3U]);
+    },
+    [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+    {
+      return (std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[2U]) | std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[3U]) | std::uint32_t(my_buffer_32word[2U] & my_buffer_32word[3U]));
+    },
+    [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+    {
+      return (std::uint32_t(my_buffer_32word[1U] ^ my_buffer_32word[2U]) ^ my_buffer_32word[3U]);
+    }
+  }};
+
+  std::array<std::uint32_t, 16U> sequence_32word;
+
+  for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(16U); loop_counter++)
   {
-    sequence_32word[loop_counter]  = (  (static_cast<std::uint32_t>(block_message[(loop_counter * 4)    ]) << 24)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 1]) << 16)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 2]) <<  8)
-                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4) + 3]) <<  0));
+    sequence_32word[loop_counter]  = (  (static_cast<std::uint32_t>(block_message[(loop_counter * 4U)                                     ]) << 24U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(1U)]) << 16U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(2U)]) <<  8U)
+                                      | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(3U)]) <<  0U));
   }
 
-  buffer_32word = hash_message;
+  std::array<std::uint32_t,  5U> buffer_32word = hash_message;
 
-  for(loop_counter = 0; loop_counter < 80; loop_counter++)
+  for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(80U); ++loop_counter)
   {
-    counter_loop = loop_counter & 0x0F;
+    const std::uint_fast8_t counter_loop = loop_counter & static_cast<std::uint_fast8_t>(0x0FU);
 
-    if(loop_counter >= 16)
+    if(loop_counter >= static_cast<std::uint_fast8_t>(16U))
     {
-      sequence_32word[counter_loop] = circular_shift(1, sequence_32word[(counter_loop + 13) & 0x0F] ^
-                                                        sequence_32word[(counter_loop +  8) & 0x0F] ^
-                                                        sequence_32word[(counter_loop +  2) & 0x0F] ^
-                                                        sequence_32word[counter_loop]);
+      sequence_32word[counter_loop] = circular_shift<1U>(sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>(13U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
+                                                         sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>( 8U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
+                                                         sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>( 2U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
+                                                         sequence_32word[(counter_loop                                      )                                        ]);
     }
 
-    temporary_32word =  circular_shift(5, buffer_32word[0]) +
-                        functions(loop_counter, buffer_32word[1], buffer_32word[2], buffer_32word[3]) +
-                        buffer_32word[4] + sequence_32word[counter_loop] + constants(loop_counter);
+    const std::uint_fast8_t loop_index = static_cast<std::uint_fast8_t>(loop_counter / static_cast<std::uint_fast8_t>(20U));
 
-    buffer_32word[4] = buffer_32word[3];
-    buffer_32word[3] = buffer_32word[2];
-    buffer_32word[2] = circular_shift(30, buffer_32word[1]);
-    buffer_32word[1] = buffer_32word[0];
-    buffer_32word[0] = temporary_32word;
+    const std::uint32_t temporary_32word =   circular_shift<5U>(buffer_32word[0U])
+                                           + functions[loop_index](buffer_32word.data())
+                                           + buffer_32word[4U]
+                                           + sequence_32word[counter_loop]
+                                           + constants[loop_index];
+
+    buffer_32word[4U] = buffer_32word[3U];
+    buffer_32word[3U] = buffer_32word[2U];
+    buffer_32word[2U] = circular_shift<30U>(buffer_32word[1U]);
+    buffer_32word[1U] = buffer_32word[0U];
+    buffer_32word[0U] = temporary_32word;
   }
 
-  std::transform(hash_message.cbegin(),
-                 hash_message.cend(),
-                 buffer_32word.cbegin(),
-                 hash_message.begin(),
+  std::transform(hash_message.cbegin     (),
+                 hash_message.cend       (),
+                 buffer_32word.cbegin    (),
+                 hash_message.begin      (),
                  std::plus<std::uint32_t>());
 
-  index_block_message = 0;
+  index_block_message = static_cast<std::uint_fast8_t>(0U);
 }
 
-std::uint32_t sha1::constants(std::uint_fast8_t looper)
+template <typename sha1_count_type>
+void sha1<sha1_count_type>::finalize()
 {
-  std::array<std::uint32_t, 4> definition = {{0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6}};
-
-  if(looper < 20)
-    return definition[0];
-  if(looper < 40)
-    return definition[1];
-  if(looper < 60)
-    return definition[2];
-  return definition[3];
-}
-
-std::uint32_t sha1::functions(std::uint_fast8_t looper, std::uint32_t first_dword, std::uint32_t dword, std::uint32_t last_dword)
-{
-  if(looper < 20)
-    return ((first_dword & dword) | ((~first_dword) & last_dword));
-  if(looper < 40)
-    return (first_dword ^ dword ^ last_dword);
-  if(looper < 60)
-    return ((first_dword & dword) | (first_dword & last_dword) | (dword & last_dword));
-  return (first_dword ^ dword ^ last_dword);
-
-}
-
-
-
-void sha1::finalize()
-{
-  if (index_block_message > 55)
+  if (index_block_message > static_cast<std::uint_fast8_t>(55U))
   {
-    block_message[index_block_message++] = 0x80;
-    while(index_block_message < 64)
-    {
-      block_message[index_block_message++] = 0;
-    }
+    block_message[index_block_message] = static_cast<std::uint8_t>(0x80U);
 
-    if(method2)
-    {
-      process2();
-    }
-    else
-    {
-      process1();
-    }
+    ++index_block_message;
 
-    while(index_block_message < 56)
-    {
-      block_message[index_block_message++] = 0;
-    }
+    std::fill(block_message.begin() + index_block_message,
+              block_message.end(),
+              static_cast<std::uint8_t>(0U));
+
+    perform_algorithm();
+
+    std::fill(block_message.begin(),
+              block_message.end(),
+              static_cast<std::uint8_t>(0U));
   }
   else
   {
-    block_message[index_block_message++] = 0x80;
-    while(index_block_message < 56)
-    {
-        block_message[index_block_message++] = 0;
-    }
+    std::fill(block_message.begin() + index_block_message,
+              block_message.end(),
+              static_cast<std::uint8_t>(0U));
+
+    block_message[index_block_message] = static_cast<std::uint8_t>(0x80U);
+
+    ++index_block_message;
   }
 
-  std::array<std::uint8_t, 8> bytes_padding_length = {{(std::uint8_t)(padding_length >> 56),
-                                                        (std::uint8_t)(padding_length >> 48),
-                                                        (std::uint8_t)(padding_length >> 40),
-                                                        (std::uint8_t)(padding_length >> 32),
-                                                        (std::uint8_t)(padding_length >> 24),
-                                                        (std::uint8_t)(padding_length >> 16),
-                                                        (std::uint8_t)(padding_length >>  8),
-                                                        (std::uint8_t)(padding_length >>  0)}};
+  // Encode the number of bits. Simultaneously convert the number of bytes
+  // to the number of bits by performing a left-shift of 3 on the byte-array.
+  // The sha1 stores the 8 bytes of the bit counter in reverse order,
+  // with the lowest byte being stored at the end of the buffer
+  std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
+  std::int_least8_t   index = static_cast<std::int_least8_t>(0);
 
-  std::copy(bytes_padding_length.begin(),
-            bytes_padding_length.end(),
-            block_message.begin() + 56);
+  count_type padding_length_tmp = padding_length;
 
-  if(method2)
+  for( ; index < static_cast<std::int_least8_t>(std::numeric_limits<count_type>::digits / 8); ++index)
   {
-    process2();
-  }
-  else
-  {
-    process1();
+    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
+
+    padding_length_tmp >>= (index * static_cast<std::int_least8_t>(8));
+
+    *(block_message.rbegin() + index) = static_cast<std::uint8_t>(the_word | carry);
+
+    carry = static_cast<std::uint_least8_t>(the_word >> 8);
   }
 
-  finalized = true;
+  if(index < static_cast<std::int_least8_t>(8))
+  {
+    *(block_message.rbegin() + index) = static_cast<std::uint8_t>(carry);
+  }
+
+  perform_algorithm();
+
+  the_result_is_finalized = true;
 }
 
-std::array<std::uint8_t, 20> sha1::byte_array_result()
+template <typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_bytes
+sha1<sha1_count_type>::get_result_as_bytes_and_finalize_the_state()
 {
-  if(!finalized)finalize();
+  if(!the_result_is_finalized) { finalize(); }
 
-  std::array<std::uint8_t, 20> result;
+  std::array<std::uint8_t, 20U> result;
 
-  convert_uint32_input_to_uint8_output(hash_message.cbegin(), hash_message.cend(), result.begin());
+  convert_uint32_input_to_uint8_output(hash_message.data(),
+                                       hash_message.data() + hash_message.size(),
+                                       result.data());
 
   return result;
 }
 
-std::array<std::uint32_t, 5> sha1::dword_array_result()
+template <typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_bytes
+sha1<sha1_count_type>::get_result_as_bytes_and_nochange_the_state() const
 {
-  if(!finalized)finalize();
+  sha1 other(*this);
+
+  return other.get_result_as_bytes_and_finalize_the_state();
+}
+
+template <typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_dwords
+sha1<sha1_count_type>::get_result_as_dwords_and_finalize_the_state()
+{
+  if(!the_result_is_finalized) { finalize(); }
 
   return hash_message;
 }
 
-std::string sha1::string_result()
+template <typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_dwords
+sha1<sha1_count_type>::get_result_as_dwords_and_nochange_the_state() const
 {
-  if(!finalized)finalize();
+  sha1 other(*this);
 
-  std::stringstream stream;
-
-  std::for_each(hash_message.begin(),
-                hash_message.end(),
-                [&stream](std::uint32_t this_dword)
-                {
-                  stream << std::setw(8) << std::setfill('0') << std::hex << this_dword << " ";
-                });
-
-  stream << "(Echtzeit)";
-  std::string result(stream.str());
-  return result;
+  return other.get_result_as_dwords_and_finalize_the_state();
 }
 
-
-
-void sha1::reset()
+template<typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_chars
+sha1<sha1_count_type>::get_result_as_chars_and_finalize_the_state()
 {
-  block_message.fill(0);
+  // Get the result of the sha1 as a byte array.
+  const result_type_as_bytes the_result_as_bytes = get_result_as_bytes_and_finalize_the_state();
 
-  hash_message = {{0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0}};
+  result_type_as_chars the_result_as_chars;
 
-  padding_length = 0;
-  index_block_message = 0;
-  finalized = false;
+  // Conver the result as a byte array to a character array.
+  convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
+                                      the_result_as_bytes.data() + the_result_as_bytes.size(),
+                                      the_result_as_chars.data());
+
+  return the_result_as_chars;
+}
+
+template<typename sha1_count_type>
+typename sha1<sha1_count_type>::result_type_as_chars
+sha1<sha1_count_type>::get_result_as_chars_and_nochange_the_state() const
+{
+  // Make a local copy of the message digest.
+  sha1 temp_sha1(*this);
+
+  // Finalize the local copy of the message digest,
+  // and return the final result from the copied object.
+  return temp_sha1.get_result_as_chars_and_finalize_the_state();
+}
+
+template <typename sha1_count_type>
+void sha1<sha1_count_type>::reset()
+{
+  block_message.fill(static_cast<std::uint8_t>(0U));
+
+  hash_message[0U] = UINT32_C(0x67452301);
+  hash_message[1U] = UINT32_C(0xEFCDAB89);
+  hash_message[2U] = UINT32_C(0x98BADCFE);
+  hash_message[3U] = UINT32_C(0x10325476);
+  hash_message[4U] = UINT32_C(0xC3D2E1F0);
+
+  padding_length          =     static_cast<std::uint64_t>(0U);
+  index_block_message     = static_cast<std::uint_fast8_t>(0U);
+  the_result_is_finalized =                              false;
 }
 
 #endif // SHA1_H_INCLUDED

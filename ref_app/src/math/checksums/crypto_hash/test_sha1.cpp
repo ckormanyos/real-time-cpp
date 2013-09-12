@@ -11,22 +11,28 @@
 
 namespace
 {
-  sha1_context example_hash;
+  typedef sha1<std::uint8_t> sha1_type;
+
+  const std::uint32_t control_value = UINT32_C(0x8029201C);
+
+  sha1_type the_sha1;
+
+  sha1_type::result_type_as_dwords the_sha1_result_as_dwords;
 }
 
 extern "C" int main()
 {
-  example_hash.sha1_initialize();
-  example_hash.sha1_input("The quick brown fox jumps over the lazy dog", 43U);
-  example_hash.sha1_finalize();
-
-  const std::array<std::uint32_t, 5> sha_hash = example_hash.get_hash();
-
   // Initialize the Microcontroller Abstraction Layer.
   mcal::init();
 
+  the_sha1.process_data("creativity", sha1_type::count_type(10U));
+
+  the_sha1_result_as_dwords = the_sha1.get_result_as_dwords_and_finalize_the_state();
+
+  const bool the_result_is_ok = (the_sha1_result_as_dwords.front() == control_value);
+
   // Start the multitasking scheduler (and never return).
-  if(sha_hash.front() == UINT32_C(0x2FD4E1C6))
+  if(the_result_is_ok)
   {
     os::start_os();
   }
