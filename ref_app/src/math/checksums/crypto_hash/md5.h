@@ -18,7 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This work has been created by Christopher Kormanyos.
-// This work is an implementation og md5 that has been specifically
+// This work is an implementation of md5 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
 //
@@ -449,12 +449,20 @@
   void md5<md5_count_type>::finalize_the_md5_algorithm()
   {
     // Perform the md5 finalization. This ends a message digest operation.
+    if(count_remaining_in_buffer == static_cast<std::uint_least8_t>(md5_blocksize))
+    {
+      apply_the_md5_algorithm(digest_buffer.data());
+
+      count_of_bytes += md5_blocksize;
+
+      count_remaining_in_buffer = static_cast<std::uint_least8_t>(0U);
+    }
 
     // Create the padding. Begin by setting the leading padding byte to 128.
     digest_buffer[count_remaining_in_buffer] = static_cast<std::uint8_t>(md5_blocksize * 2U);
 
     // Fill the rest of the padding bytes with zero.
-    if(count_remaining_in_buffer > std::uint_least8_t(md5_blocksize - 8U))
+    if(count_remaining_in_buffer >= std::uint_least8_t(md5_blocksize - 8U))
     {
       // We need an extra block. Fill the current block with zeros,
       // transform it, and pad an additional block.
@@ -491,7 +499,7 @@
     {
       const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
 
-      padding_length_tmp >>= (index * 8);
+      padding_length_tmp >>= (static_cast<std::int_least8_t>(index + 1) * 8);
 
       *(digest_buffer.rbegin() + (static_cast<std::int_least8_t>(8 - 1) - index)) = static_cast<std::uint8_t>(the_word | carry);
 
@@ -530,23 +538,29 @@
       the_result_is_finalized = false;
     }
 
-    count_type the_number_of_bytes_processed_in_this_call = static_cast<count_type>(0U);
+    count_type the_number_of_bytes_processed_in_this_call = 0U;
 
     const std::uint8_t* running_data_stream = data_stream;
 
     // Transform any data that will fill the current modulus-64 block.
     // Do this even for an entire block of 64 bytes (as is the case for a fresh md5).
-    if(count > static_cast<count_type>(md5_blocksize - count_remaining_in_buffer))
-    {
-      the_number_of_bytes_processed_in_this_call = static_cast<count_type>(md5_blocksize - count_remaining_in_buffer);
+    const std::uint_least8_t the_count_needed_to_fill_a_buffer = static_cast<std::uint_least8_t>(md5_blocksize - count_remaining_in_buffer);
 
+    if(count > the_count_needed_to_fill_a_buffer)
+    {
       std::copy(running_data_stream,
-                running_data_stream + the_number_of_bytes_processed_in_this_call,
+                running_data_stream + the_count_needed_to_fill_a_buffer,
                 digest_buffer.begin() + count_remaining_in_buffer);
 
       apply_the_md5_algorithm(digest_buffer.data());
 
-      running_data_stream += the_number_of_bytes_processed_in_this_call;
+      running_data_stream += the_count_needed_to_fill_a_buffer;
+
+      // Update the number of bytes.
+      count_of_bytes += md5_blocksize;
+      the_number_of_bytes_processed_in_this_call += the_count_needed_to_fill_a_buffer;
+
+      count_remaining_in_buffer = 0U;
     }
 
     // Transform all data that are contained within subsequent modulus-64 blocks.
@@ -563,6 +577,8 @@
       running_data_stream += md5_blocksize;
     }
 
+    // Update the number of bytes.
+    count_of_bytes += static_cast<count_type>(number_of_blocks * md5_blocksize);
     the_number_of_bytes_processed_in_this_call += static_cast<count_type>(number_of_blocks * md5_blocksize);
 
     // Buffer the remaining input that could not fit into a modulus-64 block.
@@ -573,9 +589,6 @@
               digest_buffer.begin() + count_remaining_in_buffer);
 
     count_remaining_in_buffer += the_remainder_that_need_to_be_buffered;
-
-    // Update the number of bytes.
-    count_of_bytes += the_number_of_bytes_processed_in_this_call;
   }
 
 #endif // _MD5_2012_01_13_H_

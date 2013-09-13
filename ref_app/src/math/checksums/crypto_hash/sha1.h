@@ -18,7 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This work has been created by Arwed Steuer.
-// This work is implementation of sha1 that has been specifically
+// This work is an implementation of sha1 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
 //
@@ -293,7 +293,7 @@ void sha1<sha1_count_type>::perform_algorithm()
                                       | (static_cast<std::uint32_t>(block_message[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(3U)]) <<  0U));
   }
 
-  std::array<std::uint32_t,  5U> buffer_32word = hash_message;
+  std::array<std::uint32_t, 5U> buffer_32word = hash_message;
 
   for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(80U); ++loop_counter)
   {
@@ -374,7 +374,7 @@ void sha1<sha1_count_type>::finalize()
   {
     const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
 
-    padding_length_tmp >>= (index * static_cast<std::int_least8_t>(8));
+    padding_length_tmp >>= (static_cast<std::int_least8_t>(index + 1) * 8);
 
     *(block_message.rbegin() + index) = static_cast<std::uint8_t>(the_word | carry);
 
