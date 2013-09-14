@@ -15,7 +15,7 @@
   {
   protected:
     bool               the_result_is_finalized;
-    std::uint_least8_t count_remaining_in_buffer;
+    std::uint_least8_t count_in_buffer_index;
 
     crypto_hash_base();
 
@@ -31,16 +31,16 @@
     static char convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase);
   };
 
-  crypto_hash_base::crypto_hash_base() : the_result_is_finalized  (true),
-                                         count_remaining_in_buffer(0U) { }
+  crypto_hash_base::crypto_hash_base() : the_result_is_finalized(true),
+                                         count_in_buffer_index  (0U) { }
 
-  crypto_hash_base::crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized  (other.the_result_is_finalized),
-                                                                      count_remaining_in_buffer(other.count_remaining_in_buffer) { }
+  crypto_hash_base::crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized(other.the_result_is_finalized),
+                                                                      count_in_buffer_index  (other.count_in_buffer_index) { }
 
   crypto_hash_base& crypto_hash_base::operator=(const crypto_hash_base& other)
   {
-    the_result_is_finalized   = other.the_result_is_finalized;
-    count_remaining_in_buffer = other.count_remaining_in_buffer;
+    the_result_is_finalized = other.the_result_is_finalized;
+    count_in_buffer_index   = other.count_in_buffer_index;
 
     return *this;
   }
