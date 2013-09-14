@@ -100,6 +100,9 @@
     template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
   private:
+    static const std::int_least8_t padding_index_max = ((static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) < static_cast<std::int_least8_t>(8)) ?
+                                                         static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) : static_cast<std::int_least8_t>(8));
+
     static const std::uint_least8_t md5_blocksize = 64U;
 
     static_assert(md5_blocksize == static_cast<std::uint_least8_t>(64U), "the md5 block size must exactly equal 64");
@@ -359,7 +362,7 @@
   {
     // Apply the md5 algorithm to a 64-byte data block.
 
-    std::array<std::uint32_t, 4U> digest_tmp = digest_state;
+    result_type_as_dwords digest_tmp = digest_state;
 
     std::array<std::uint32_t, md5_blocksize / 4U> transform_block;
 
@@ -441,10 +444,10 @@
 
     // Update the state information with the transformation results.
     std::transform(digest_state.begin(),
-                    digest_state.end(),
-                    digest_tmp.begin(),
-                    digest_state.begin(),
-                    std::plus<std::uint32_t>());
+                   digest_state.end(),
+                   digest_tmp.begin(),
+                   digest_state.begin(),
+                   std::plus<std::uint32_t>());
   }
 
   template<typename md5_count_type>
@@ -460,7 +463,7 @@
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
-    if(count_in_buffer_index >= std::uint_least8_t(md5_blocksize - 8U))
+    if((count_in_buffer_index) >= std::uint_least8_t(md5_blocksize - 8U))
     {
       apply_the_md5_algorithm();
 
@@ -477,24 +480,16 @@
     // The md5 stores the 8 bytes of the bit counter in forward order,
     // with the lowest byte being stored at index 56 in the buffer
     std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
-    std::int_least8_t  index = static_cast<std::int_least8_t>(0);
 
-    count_type padding_length_tmp = count_of_bytes;
-
-    for( ; index < static_cast<std::int_least8_t>(std::numeric_limits<count_type>::digits / 8); ++index)
+    for(std::uint_least8_t index = static_cast<std::int_least8_t>(md5_blocksize - 8U); index < static_cast<std::int_least8_t>((md5_blocksize - 8U) + padding_index_max); ++index)
     {
-      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
+      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(count_of_bytes) << 3;
 
-      *(digest_buffer.rbegin() + (static_cast<std::int_least8_t>(8 - 1) - index)) = static_cast<std::uint8_t>(the_word | carry);
+      digest_buffer[index] = static_cast<std::uint8_t>(the_word | carry);
 
-      padding_length_tmp >>= (static_cast<std::int_least8_t>(index + 1) * 8);
+      count_of_bytes >>= 8;
 
-      carry = static_cast<std::uint_least8_t>(the_word >> 8);
-    }
-
-    if(index < static_cast<std::int_least8_t>(8))
-    {
-      *(digest_buffer.rbegin() + (static_cast<std::int_least8_t>(8 - 1) - index)) = static_cast<std::uint8_t>(carry);
+      carry = static_cast<std::uint8_t>(the_word >> 8);
     }
 
     apply_the_md5_algorithm();
