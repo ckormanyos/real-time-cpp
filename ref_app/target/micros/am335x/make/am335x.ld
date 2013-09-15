@@ -32,25 +32,25 @@ SECTIONS
   .startup :
   {
     *(.startup)
-    . = ALIGN(0x10);
+    . = ALIGN(4);
     KEEP(*(.startup))
-  } > ROM = 0xAAAA
+  } > ROM
 
   /* Non-maskable ISR vectors */
   .isr_vector_nmi :
   {
     *(.isr_vector_nmi)
-    . = ALIGN(0x10);
+    . = ALIGN(4);
     KEEP(*(.isr_vector_nmi))
-  } > ROM = 0xAAAA
+  } > ROM
 
   /* ISR vectors */
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(0x10);
+    . = ALIGN(4);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > ROM
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -69,11 +69,6 @@ SECTIONS
     *(.rodata*)
     . = ALIGN(4);
   } > ROM
-
-  .text :
-  {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
 
   . = 0x402FC000;
   . = ALIGN(4);

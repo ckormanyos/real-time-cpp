@@ -8,7 +8,7 @@
 
 // Program code.
 NEW_BUFFER   Buf_402F0400_to_402FBBFF  FROM_FILE    inFile -useAreas={{0x402F0400, 0xBC00}}  -setByteOrder=LittleEndian
-FILL_BUFFER  Buf_402F0400_to_402FBBFF  WITH_FILLER  { 0xFF }
+FILL_BUFFER  Buf_402F0400_to_402FBBFF  WITH_FILLER  { 0x00, 0xA0, 0xF0, 0xF7 }
 
 // SD card boot header.
 // @ 0000 : Size of the image in bytes:   0x0000BC00
