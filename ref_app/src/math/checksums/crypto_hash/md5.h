@@ -73,7 +73,7 @@
                   && ((std::numeric_limits<count_type>::digits % 8)    == 0),
                   "the count type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
 
-    md5() { }
+    md5();
 
     md5(const std::uint8_t* data_stream, count_type count);
 
@@ -105,7 +105,8 @@
 
     static const std::uint_least8_t md5_blocksize = 64U;
 
-    static_assert(md5_blocksize == static_cast<std::uint_least8_t>(64U), "the md5 block size must exactly equal 64");
+    static_assert(md5_blocksize == static_cast<std::uint_least8_t>(64U),
+                  "the md5 block size must exactly equal 64");
 
     // Constants for the md5 transform routine.
     static const std::uint_fast8_t S11 = UINT8_C( 7);
@@ -125,17 +126,17 @@
     static const std::uint_fast8_t S43 = UINT8_C(15);
     static const std::uint_fast8_t S44 = UINT8_C(21);
 
-    typedef std::array<std::uint8_t, md5_blocksize>       digest_buffer_type;
+    typedef std::array<std::uint8_t,  md5_blocksize>      digest_buffer_type;
     typedef std::array<std::uint32_t, md5_blocksize / 4U> transform_block_type;
 
-    count_type            count_of_bytes; // The running byte count in the md5.
+    count_type            padding_length; // The running byte count in the md5.
     result_type_as_dwords digest_state;   // The message digest state so far.
     digest_buffer_type    digest_buffer;  // The message digest buffer.
 
-    void apply_the_md5_algorithm();
+    void perform_algorithm();
 
-    void finalize_the_md5_algorithm();
-    void initialize_the_md5_algorithm();
+    void finalize();
+    void reset();
 
     void process_data_stream(const std::uint8_t* data_stream, count_type count);
 
@@ -196,6 +197,9 @@
   };
 
   template<typename md5_count_type>
+  md5<md5_count_type>::md5() { }
+
+  template<typename md5_count_type>
   md5<md5_count_type>::md5(const std::uint8_t* data_stream, count_type count)
   {
     process_data(data_stream, count);
@@ -216,19 +220,17 @@
 
   template<typename md5_count_type>
   md5<md5_count_type>::md5(const md5& other) : crypto_hash_base(other),
-                                               count_of_bytes  (other.count_of_bytes),
+                                               padding_length  (other.padding_length),
                                                digest_state    (other.digest_state),
                                                digest_buffer   (other.digest_buffer) { }
 
   template<typename md5_count_type>
   typename md5<md5_count_type>::result_type_as_bytes md5<md5_count_type>::get_result_as_bytes_and_finalize_the_state()
   {
-    if((!the_result_is_finalized))
+    if(!the_result_is_finalized)
     {
       // Finalize the result.
-      finalize_the_md5_algorithm();
-
-      the_result_is_finalized = true;
+      finalize();
     }
 
     result_type_as_bytes digest_result;
@@ -255,12 +257,10 @@
   template<typename md5_count_type>
   typename md5<md5_count_type>::result_type_as_dwords md5<md5_count_type>::get_result_as_dwords_and_finalize_the_state()
   {
-    if((!the_result_is_finalized))
+    if(!the_result_is_finalized)
     {
       // Finalize the result.
-      finalize_the_md5_algorithm();
-
-      the_result_is_finalized = true;
+      finalize();
     }
 
     return digest_state;
@@ -274,7 +274,7 @@
 
     // Finalize the local copy of the message digest,
     // and return the final result from the copied object.
-    temp_md5.finalize_the_md5_algorithm();
+    temp_md5.finalize();
 
     return temp_md5.digest_state;
   }
@@ -313,7 +313,7 @@
     {
       static_cast<void>(crypto_hash_base::operator=(other));
 
-      count_of_bytes = other.count_of_bytes;
+      padding_length = other.padding_length;
       digest_state   = other.digest_state;
       digest_buffer  = other.digest_buffer;
     }
@@ -361,7 +361,7 @@
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::apply_the_md5_algorithm()
+  void md5<md5_count_type>::perform_algorithm()
   {
     // Apply the md5 algorithm to a 64-byte data block.
 
@@ -454,29 +454,27 @@
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::finalize_the_md5_algorithm()
+  void md5<md5_count_type>::finalize()
   {
-    // Create the padding. Begin by setting the leading padding byte to 128.
-    digest_buffer[count_in_buffer_index] = static_cast<std::uint8_t>(md5_blocksize * 2U);
+    // Add the count remaining in the buffer to the count of bytes.
+    padding_length += index_block_message;
+
+    // Create the padding. Begin by setting the leading padding byte to 0x80.
+    digest_buffer[index_block_message] = static_cast<std::uint8_t>(0x80U);
 
     // Fill the rest of the padding bytes with zero.
-    std::fill(digest_buffer.begin() + (count_in_buffer_index + 1U),
+    std::fill(digest_buffer.begin() + (index_block_message + 1U),
               digest_buffer.end(),
               static_cast<std::uint8_t>(0U));
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
-    if((count_in_buffer_index) >= std::uint_least8_t(md5_blocksize - 8U))
+    if(index_block_message >= std::uint_least8_t(md5_blocksize - 8U))
     {
-      apply_the_md5_algorithm();
+      perform_algorithm();
 
-      std::fill(digest_buffer.begin(),
-                digest_buffer.end(),
-                static_cast<std::uint8_t>(0U));
+      digest_buffer.fill(static_cast<std::uint8_t>(0U));
     }
-
-    // Add the bits from the remaining bytes in the buffer to the count of bits.
-    count_of_bytes += count_in_buffer_index;
 
     // Encode the number of bits. Simultaneously convert the number of bytes
     // to the number of bits by performing a left-shift of 3 on the byte-array.
@@ -487,26 +485,28 @@
 
     while(index != static_cast<std::uint_least8_t>((md5_blocksize - 8U) + padding_count_max))
     {
-      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(count_of_bytes) << 3;
+      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length) << 3;
 
       digest_buffer[index] = static_cast<std::uint8_t>(the_word | carry);
 
       ++index;
 
-      count_of_bytes >>= 8;
+      padding_length >>= 8;
 
       carry = static_cast<std::uint8_t>(the_word >> 8);
     }
 
-    apply_the_md5_algorithm();
+    perform_algorithm();
+
+    the_result_is_finalized = true;
   }
 
   template<typename md5_count_type>
-  void md5<md5_count_type>::initialize_the_md5_algorithm()
+  void md5<md5_count_type>::reset()
   {
-    count_of_bytes          = count_type(0U);
     the_result_is_finalized = false;
-    count_in_buffer_index   = std::uint_least8_t(0U);
+    padding_length          = count_type(0U);
+    index_block_message     = std::uint_least8_t(0U);
 
     digest_state[0U] = UINT32_C(0x67452301);
     digest_state[1U] = UINT32_C(0xEfCDAB89);
@@ -520,30 +520,28 @@
     // Check if initialization is required.
     if(the_result_is_finalized)
     {
-      initialize_the_md5_algorithm();
-
-      the_result_is_finalized = false;
+      reset();
     }
 
     // Transform any data that will fill the current modulus-64 block.
     // Do this even for an entire block of 64 bytes (as is the case for a fresh md5).
-    const std::uint_least8_t the_count_needed_to_fill_a_buffer = static_cast<std::uint_least8_t>(md5_blocksize - count_in_buffer_index);
+    const std::uint_least8_t the_count_needed_to_fill_a_buffer = static_cast<std::uint_least8_t>(md5_blocksize - index_block_message);
 
     if(count >= the_count_needed_to_fill_a_buffer)
     {
       std::copy(data_stream,
                 data_stream + the_count_needed_to_fill_a_buffer,
-                digest_buffer.begin() + count_in_buffer_index);
+                digest_buffer.begin() + index_block_message);
 
-      apply_the_md5_algorithm();
+      perform_algorithm();
 
       data_stream += the_count_needed_to_fill_a_buffer;
 
       // Update the number of bytes.
-      count_of_bytes += md5_blocksize;
+      padding_length += md5_blocksize;
       count          -= the_count_needed_to_fill_a_buffer;
 
-      count_in_buffer_index = 0U;
+      index_block_message = 0U;
     }
 
     // Transform all data that are contained within subsequent modulus-64 blocks.
@@ -555,20 +553,20 @@
                 data_stream + md5_blocksize,
                 digest_buffer.begin());
 
-      apply_the_md5_algorithm();
+      perform_algorithm();
 
       data_stream += md5_blocksize;
 
       count          -= md5_blocksize;
-      count_of_bytes += md5_blocksize;
+      padding_length += md5_blocksize;
     }
 
     // Buffer the remaining input that could not fit into a modulus-64 block.
     std::copy(data_stream,
               data_stream + static_cast<std::uint_least8_t>(count),
-              digest_buffer.begin() + count_in_buffer_index);
+              digest_buffer.begin() + index_block_message);
 
-    count_in_buffer_index += static_cast<std::uint_least8_t>(count);
+    index_block_message += static_cast<std::uint_least8_t>(count);
   }
 
 #endif // _MD5_2012_01_13_H_

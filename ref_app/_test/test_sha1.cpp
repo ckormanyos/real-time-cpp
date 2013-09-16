@@ -11,18 +11,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "md5.h"
+#include "sha1.h"
 
-struct md5_detail
+struct sha1_detail
 {
-  typedef md5<std::uint32_t> md5_type;
+  typedef sha1<std::uint32_t> sha1_type;
 
-  static md5_type the_md5;
+  static sha1_type the_sha1;
 
-  static typename md5_type::result_type_as_chars the_md5_result_as_chars;
+  static typename sha1_type::result_type_as_chars the_sha1_result_as_chars;
 
-  static const std::array<std::string, 196U> md5_control_results;
-  static const std::array<std::vector<std::uint8_t>, 196U> md5_data_sets;
+  static const std::array<std::string, 196U> sha1_control_results;
+  static const std::array<std::vector<std::uint8_t>, 196U> sha1_data_sets;
 
   static void print_test_result(const std::uint_least32_t count_of_test_case,
                                 const std::uint_least8_t data_index,
@@ -44,19 +44,19 @@ struct md5_detail
 
     std::uint_least32_t count_of_test_cases = 0U;
 
-    // Test round 1: Test each full-length md5 as an uninterupted data stream.
+    // Test round 1: Test each full-length sha1 as an uninterupted data stream.
     std::cout << "Test round 1" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(0U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
       ((i == static_cast<std::uint_least8_t>(0U))
-        ? the_md5.process_data("", static_cast<md5_type::count_type>(0U))
-        : the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(md5_data_sets[i].size())));
+        ? the_sha1.process_data("", static_cast<sha1_type::count_type>(0U))
+        : the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size())));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -65,18 +65,18 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 2: First pipe in 1 byte, then the remaining bytes for each md5.
+    // Test round 2: First pipe in 1 byte, then the remaining bytes for each sha1.
     std::cout << "Test round 2" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(2U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(1U));
-      the_md5.process_data(&(md5_data_sets[i])[1U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[1U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 1U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -85,18 +85,18 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 3: First pipe in 56 bytes, then the remaining bytes for md5's with 57 or more bytes.
+    // Test round 3: First pipe in 56 bytes, then the remaining bytes for sha1's with 57 or more bytes.
     std::cout << "Test round 3" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(57U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(56U));
-      the_md5.process_data(&(md5_data_sets[i])[56U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 56U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(56U));
+      the_sha1.process_data(&(sha1_data_sets[i])[56U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 56U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -105,18 +105,18 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 4: First pipe in 64 bytes, then the remaining bytes for md5's with 65 or more bytes.
+    // Test round 4: First pipe in 64 bytes, then the remaining bytes for sha1's with 65 or more bytes.
     std::cout << "Test round 4" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(65U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(64U));
-      the_md5.process_data(&(md5_data_sets[i])[64U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 64U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(64U));
+      the_sha1.process_data(&(sha1_data_sets[i])[64U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 64U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -125,19 +125,19 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 5: Pipe in 1 byte, then pipe in 63 bytes, and then the remaining bytes for md5's with 65 or more bytes.
+    // Test round 5: Pipe in 1 byte, then pipe in 63 bytes, and then the remaining bytes for sha1's with 65 or more bytes.
     std::cout << "Test round 5" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(65U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(1U));
-      the_md5.process_data(&(md5_data_sets[i])[1U], static_cast<md5_type::count_type>(63U));
-      the_md5.process_data(&(md5_data_sets[i])[64U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 64U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[1U], static_cast<sha1_type::count_type>(63U));
+      the_sha1.process_data(&(sha1_data_sets[i])[64U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 64U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -146,19 +146,19 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 6: Pipe in 1 byte, then pipe in 64 bytes, and then the remaining bytes for md5's with 66 or more bytes.
+    // Test round 6: Pipe in 1 byte, then pipe in 64 bytes, and then the remaining bytes for sha1's with 66 or more bytes.
     std::cout << "Test round 6" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(66U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(1U));
-      the_md5.process_data(&(md5_data_sets[i])[1U], static_cast<md5_type::count_type>(64U));
-      the_md5.process_data(&(md5_data_sets[i])[65U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 65U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[1U], static_cast<sha1_type::count_type>(64U));
+      the_sha1.process_data(&(sha1_data_sets[i])[65U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 65U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -167,19 +167,19 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 7: Pipe in 80 bytes, then pipe in 1 byte, and then the remaining bytes for md5's with 82 or more bytes.
+    // Test round 7: Pipe in 80 bytes, then pipe in 1 byte, and then the remaining bytes for sha1's with 82 or more bytes.
     std::cout << "Test round 7" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(82U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(80U));
-      the_md5.process_data(&(md5_data_sets[i])[80U], static_cast<md5_type::count_type>(1U));
-      the_md5.process_data(&(md5_data_sets[i])[81U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 81U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(80U));
+      the_sha1.process_data(&(sha1_data_sets[i])[80U], static_cast<sha1_type::count_type>(1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[81U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 81U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -188,20 +188,20 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 8: Pipe in sequences of bytes for md5's with a lot of bytes.
+    // Test round 8: Pipe in sequences of bytes for sha1's with a lot of bytes.
     std::cout << "Test round 8" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(130U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(80U));
-      the_md5.process_data(&(md5_data_sets[i])[80U], static_cast<md5_type::count_type>(1U));
-      the_md5.process_data(&(md5_data_sets[i])[81U], static_cast<md5_type::count_type>(80U));
-      the_md5.process_data(&(md5_data_sets[i])[161U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 161U));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(80U));
+      the_sha1.process_data(&(sha1_data_sets[i])[80U], static_cast<sha1_type::count_type>(1U));
+      the_sha1.process_data(&(sha1_data_sets[i])[81U], static_cast<sha1_type::count_type>(80U));
+      the_sha1.process_data(&(sha1_data_sets[i])[161U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 161U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -210,20 +210,20 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 9: Pipe in each single byte sequentially for md5's with one or more bytes.
+    // Test round 9: Pipe in each single byte sequentially for sha1's with one or more bytes.
     std::cout << "Test round 9" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(1U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(md5_data_sets[i].size()); ++j)
+      for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(sha1_data_sets[i].size()); ++j)
       {
-        the_md5.process_data(&(md5_data_sets[i])[j], static_cast<md5_type::count_type>(1U));
+        the_sha1.process_data(&(sha1_data_sets[i])[j], static_cast<sha1_type::count_type>(1U));
       }
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -232,35 +232,35 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 10: Pipe in two bytes sequentially for md5's with two or more bytes,
-    // and handle the last byte separately for md5's with an odd byte count.
+    // Test round 10: Pipe in two bytes sequentially for sha1's with two or more bytes,
+    // and handle the last byte separately for sha1's with an odd byte count.
     std::cout << "Test round 10" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(2U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      const std::size_t remainder = std::size_t(static_cast<std::uint_least32_t>(md5_data_sets[i].size()) % static_cast<md5_type::count_type>(2U));
+      const std::size_t remainder = std::size_t(static_cast<std::uint_least32_t>(sha1_data_sets[i].size()) % static_cast<sha1_type::count_type>(2U));
 
       if(remainder != 0U)
       {
-        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(md5_data_sets[i].size() - 2U); j += 2U)
+        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(sha1_data_sets[i].size() - 2U); j += 2U)
         {
-          the_md5.process_data(&(md5_data_sets[i])[j], static_cast<md5_type::count_type>(2U));
+          the_sha1.process_data(&(sha1_data_sets[i])[j], static_cast<sha1_type::count_type>(2U));
         }
 
-        the_md5.process_data(md5_data_sets[i].data() + (md5_data_sets[i].size() - remainder), static_cast<md5_type::count_type>(remainder));
+        the_sha1.process_data(sha1_data_sets[i].data() + (sha1_data_sets[i].size() - remainder), static_cast<sha1_type::count_type>(remainder));
       }
       else
       {
-        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(md5_data_sets[i].size()); j += 2U)
+        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(sha1_data_sets[i].size()); j += 2U)
         {
-          the_md5.process_data(&(md5_data_sets[i])[j], static_cast<md5_type::count_type>(2U));
+          the_sha1.process_data(&(sha1_data_sets[i])[j], static_cast<sha1_type::count_type>(2U));
         }
       }
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -269,35 +269,35 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 11: Pipe in three bytes sequentially for md5's with three or more bytes,
-    // and handle the last bytes separately for md5's with a non-modulus-three byte count.
+    // Test round 11: Pipe in three bytes sequentially for sha1's with three or more bytes,
+    // and handle the last bytes separately for sha1's with a non-modulus-three byte count.
     std::cout << "Test round 11" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(3U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      const std::size_t remainder = std::size_t(static_cast<std::uint_least32_t>(md5_data_sets[i].size()) % static_cast<md5_type::count_type>(3U));
+      const std::size_t remainder = std::size_t(static_cast<std::uint_least32_t>(sha1_data_sets[i].size()) % static_cast<sha1_type::count_type>(3U));
 
       if(remainder != 0U)
       {
-        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(md5_data_sets[i].size() - 3U); j += 3U)
+        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(sha1_data_sets[i].size() - 3U); j += 3U)
         {
-          the_md5.process_data(&(md5_data_sets[i])[j], static_cast<md5_type::count_type>(3U));
+          the_sha1.process_data(&(sha1_data_sets[i])[j], static_cast<sha1_type::count_type>(3U));
         }
 
-        the_md5.process_data(md5_data_sets[i].data() + (md5_data_sets[i].size() - remainder), static_cast<md5_type::count_type>(remainder));
+        the_sha1.process_data(sha1_data_sets[i].data() + (sha1_data_sets[i].size() - remainder), static_cast<sha1_type::count_type>(remainder));
       }
       else
       {
-        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(md5_data_sets[i].size()); j += 3U)
+        for(std::uint_least32_t j = 0U; j < static_cast<std::uint_least32_t>(sha1_data_sets[i].size()); j += 3U)
         {
-          the_md5.process_data(&(md5_data_sets[i])[j], static_cast<md5_type::count_type>(3U));
+          the_sha1.process_data(&(sha1_data_sets[i])[j], static_cast<sha1_type::count_type>(3U));
         }
       }
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -306,23 +306,23 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 12: Pipe in a dword, and then pipe in the remaining bytes for md5's with 5 or more bytes.
+    // Test round 12: Pipe in a dword, and then pipe in the remaining bytes for sha1's with 5 or more bytes.
     std::cout << "Test round 12" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(5U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      const std::uint32_t data_dword =   (static_cast<std::uint32_t>(md5_data_sets[i][0U]) <<  0)
-                                       | (static_cast<std::uint32_t>(md5_data_sets[i][1U]) <<  8)
-                                       | (static_cast<std::uint32_t>(md5_data_sets[i][2U]) << 16)
-                                       | (static_cast<std::uint32_t>(md5_data_sets[i][3U]) << 24);
+      const std::uint32_t data_dword =   (static_cast<std::uint32_t>(sha1_data_sets[i][0U]) <<  0)
+                                       | (static_cast<std::uint32_t>(sha1_data_sets[i][1U]) <<  8)
+                                       | (static_cast<std::uint32_t>(sha1_data_sets[i][2U]) << 16)
+                                       | (static_cast<std::uint32_t>(sha1_data_sets[i][3U]) << 24);
 
-      the_md5.process_data(data_dword);
-      the_md5.process_data(&(md5_data_sets[i])[4U], static_cast<md5_type::count_type>(md5_data_sets[i].size() - 4U));
+      the_sha1.process_data(data_dword);
+      the_sha1.process_data(&(sha1_data_sets[i])[4U], static_cast<sha1_type::count_type>(sha1_data_sets[i].size() - 4U));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -331,22 +331,22 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 13: Pipe in a each individual byte (as a data byte, not a pointer) for md5's with 1 or more bytes.
+    // Test round 13: Pipe in a each individual byte (as a data byte, not a pointer) for sha1's with 1 or more bytes.
     std::cout << "Test round 13" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(1U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      for(std::size_t j = 0U; j < md5_data_sets[i].size(); ++j)
+      for(std::size_t j = 0U; j < sha1_data_sets[i].size(); ++j)
       {
-        const std::uint8_t data_byte = md5_data_sets[i][j];
+        const std::uint8_t data_byte = sha1_data_sets[i][j];
 
-        the_md5.process_data(data_byte);
+        the_sha1.process_data(data_byte);
       }
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -355,30 +355,30 @@ struct md5_detail
       print_test_result(count_of_test_cases, i, this_test_result);
     }
 
-    // Test round 14: Pipe in a words (as to-byte data word, not a pointers) for md5's with 2 or more bytes.
+    // Test round 14: Pipe in a words (as two-byte data word, not a pointers) for sha1's with 2 or more bytes.
     std::cout << "Test round 14" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(2U); i < static_cast<std::uint_least8_t>(196U); ++i)
     {
-      for(std::size_t j = 0U; j <= md5_data_sets[i].size() - 2U; j += 2U)
+      for(std::size_t j = 0U; j <= sha1_data_sets[i].size() - 2U; j += 2U)
       {
-        const std::uint16_t data_word =   (static_cast<std::uint16_t>(md5_data_sets[i][j + 0U]) <<  0)
-                                        | (static_cast<std::uint16_t>(md5_data_sets[i][j + 1U]) <<  8);
+        const std::uint16_t data_word =   (static_cast<std::uint16_t>(sha1_data_sets[i][j + 0U]) <<  0)
+                                        | (static_cast<std::uint16_t>(sha1_data_sets[i][j + 1U]) <<  8);
 
-        the_md5.process_data(data_word);
+        the_sha1.process_data(data_word);
       }
 
-      const std::size_t remainder = static_cast<std::size_t>(md5_data_sets[i].size() % static_cast<std::size_t>(2U));
+      const std::size_t remainder = static_cast<std::size_t>(sha1_data_sets[i].size() % static_cast<std::size_t>(2U));
 
       if(remainder != static_cast<std::size_t>(0U))
       {
-        the_md5.process_data(md5_data_sets[i].back());
+        the_sha1.process_data(sha1_data_sets[i].back());
       }
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -388,20 +388,20 @@ struct md5_detail
     }
 
     // Test round 15: Pipe in half of the bytes, and then the other half of the bytes
-    // for md5's with small, even numbers of bytes.
+    // for sha1's with small, even numbers of bytes.
     std::cout << "Test round 15" << std::endl;
     for(std::uint_least8_t i = static_cast<std::uint_least8_t>(2U); i < static_cast<std::uint_least8_t>(130U); i += 2U)
     {
-      const std::size_t half_size = md5_data_sets[i].size() / 2U;
+      const std::size_t half_size = sha1_data_sets[i].size() / 2U;
 
-      the_md5.process_data(&(md5_data_sets[i])[0U], static_cast<md5_type::count_type>(half_size));
-      the_md5.process_data(&(md5_data_sets[i])[half_size], static_cast<md5_type::count_type>(half_size));
+      the_sha1.process_data(&(sha1_data_sets[i])[0U], static_cast<sha1_type::count_type>(half_size));
+      the_sha1.process_data(&(sha1_data_sets[i])[half_size], static_cast<sha1_type::count_type>(half_size));
 
-      the_md5_result_as_chars = the_md5.get_result_as_chars_and_finalize_the_state();
+      the_sha1_result_as_chars = the_sha1.get_result_as_chars_and_finalize_the_state();
 
-      const std::string str_result(the_md5_result_as_chars.begin(), the_md5_result_as_chars.end());
+      const std::string str_result(the_sha1_result_as_chars.begin(), the_sha1_result_as_chars.end());
 
-      const bool this_test_result = (str_result ==  md5_control_results[i]);
+      const bool this_test_result = (str_result ==  sha1_control_results[i]);
 
       the_total_test_result &= this_test_result;
 
@@ -417,214 +417,214 @@ struct md5_detail
 
 int main()
 {
-  md5_detail::do_test();
+  sha1_detail::do_test();
 }
 
-md5_detail::md5_type md5_detail::the_md5;
+sha1_detail::sha1_type sha1_detail::the_sha1;
 
-md5_detail::md5_type::result_type_as_chars md5_detail::the_md5_result_as_chars;
+sha1_detail::sha1_type::result_type_as_chars sha1_detail::the_sha1_result_as_chars;
 
-const std::array<std::string, 196U> md5_detail::md5_control_results =
+const std::array<std::string, 196U> sha1_detail::sha1_control_results =
 {{
-  std::string("D41D8CD98F00B204E9800998ECF8427E"),
-  std::string("C3E97DD6E97FB5125688C97F36720CBE"),
-  std::string("038701CA277A9D4DE87BFF428DD30A12"),
-  std::string("BC60C6192E361D99B59D47250668A852"),
-  std::string("542C3A0AB6B51BC6A88FA7BB567BCA3E"),
-  std::string("E035F9E748A2A09A4FBDCF18C4F58BF1"),
-  std::string("3B4CC9226A236742D72578C5915B6C3C"),
-  std::string("35950208A022BAAC90056636827158CE"),
-  std::string("84CEDFF2ED1B78B395CC8651094F4CE3"),
-  std::string("7BADF748F4CB700272A72EDFEA22E9BF"),
-  std::string("A1BB6E142739DBDB0925747D95E0A1AD"),
-  std::string("0CD9B72DFDEE8EFD2E1515F4C5A62284"),
-  std::string("EF07C13E75D50578D09052AA21A7CFFB"),
-  std::string("CF3B261AF9344BF83B4DD82B30242C78"),
-  std::string("530710F65FB98FFF8EB927E2938CB8C5"),
-  std::string("4E6D73658B27E19D4BB4500625001E39"),
-  std::string("C8E5F2F272B1EF88EC62DD0D9D54E902"),
-  std::string("031CBF1FB05B4EC09F3C93235D0F49AC"),
-  std::string("8C0E1400DF02BA8C4809B705E5F5E114"),
-  std::string("57EC48278E19F71F54C570A5AB306DF7"),
-  std::string("ECD3DC346A2337B95389A094A031610F"),
-  std::string("F11D91EAE492225CBD82EF356AA96F9F"),
-  std::string("26BD8B480216C723CE75DA98B9BD430C"),
-  std::string("80999C2D12F623E4F87E0550A8E3523A"),
-  std::string("00945C1BD739CE389AC24BB93F6F9A85"),
-  std::string("7AB55F0BD5DCA5B17ECAA7FEF73ED87B"),
-  std::string("E3CEDD606AD51DD18532ABD3079A3E0C"),
-  std::string("DF5ECC6732E22CC25836398A10222E97"),
-  std::string("863B6D9962EE3761BBB9CD8A8367589E"),
-  std::string("683C9384E29EFE82DD3AC847904C28E8"),
-  std::string("B3D948E72159DDC9C600D75512C5F115"),
-  std::string("CE8633A6CF189B07E022147BBBD0F350"),
-  std::string("8DF17372EB32A0AFA4FC47837262FF61"),
-  std::string("62C63CA91890CE6F78A59C0BDB1E7BAB"),
-  std::string("1EDA4BB0259A939548EC4CEB39FACDE4"),
-  std::string("C4F37A2C450F2A23322513B372E668A5"),
-  std::string("CAB8F06436C5AD45F982490215836F4E"),
-  std::string("3A43BC720714A2A42A73A76085542F86"),
-  std::string("03F2F4033B258E6EB1E101F1ED4C24B4"),
-  std::string("2CEB33CEC5ECAD4A50F6BD3A831AE77C"),
-  std::string("DD808F695D28F93562CFCB164BC3CCE4"),
-  std::string("01C6D7A87E94BF685205EC8D7C5196AF"),
-  std::string("EF0E93E8928F8BAE1B216DA8E661FC9B"),
-  std::string("C8DA55117D7D4B7EE8DDC8DC4BA73AA6"),
-  std::string("BBFC64583C6D4C2EF4B0358464D4D028"),
-  std::string("3BB5864481F2E66387419DD1A168AADC"),
-  std::string("0D725D3A1D3D97D7B5EA8293BBBF32BA"),
-  std::string("915EB22A15F7673F983672B6C353B6C8"),
-  std::string("13B51DA3E8A1422BFD58B79C4E19DE64"),
-  std::string("E69D6C03102464F22C395F9FA27108DE"),
-  std::string("132FA4CBEDAA7BD965B0B5900211BE48"),
-  std::string("E37FF5D9F14249F327A19DD5296E6C7E"),
-  std::string("4881A65CF107B1D034FF3ECD64AB9CB4"),
-  std::string("547E92D01C0B699CFDF43F91714CFE2D"),
-  std::string("AA2B3A055B56845F19109F21D3C783F4"),
-  std::string("EB1F01CC647ECE73B2192537200BB8B9"),
-  std::string("1DB274EF41B1AD71F713DF2B05207E1A"),
-  std::string("D8B4EC343B4310345EFC6DA9CEE8A2EC"),
-  std::string("082EE3B2BE7910F7350368E395A63D90"),
-  std::string("D247C4070AE1DE106BCB438A2DACAC23"),
-  std::string("F8CBC4F3AF45BEFC792679F2B113F1CB"),
-  std::string("9031006A437019C5DCD987A31731EBD9"),
-  std::string("A6B62759EE3883258FBDEEB8B56E6283"),
-  std::string("4933898605B4A1B970B674A2DDE92292"),
-  std::string("F0684CA20DE4607232F3E158E81A37F2"),
-  std::string("C0B3FDECB3BB7B4FF0C936F378CCB027"),
-  std::string("50652123B5E0E51BB5BC3FDDE3C6A750"),
-  std::string("ED4526BA8226D969F47EDBB27B2F1144"),
-  std::string("80E6F61DFF9DA8673FA16DBBDB14D03D"),
-  std::string("1D52744BF1450D7C5CFDF1F0BBF967C1"),
-  std::string("3438A953124960BCC44611923A8844EE"),
-  std::string("B2F341296DD7AABBD4FD8E011BE68A7D"),
-  std::string("322DBA69658A92E9A9ACE4D7177FB97D"),
-  std::string("B94A434A98EFA493FBBC989360671BB9"),
-  std::string("CD9CE9A01ED810AF70999D8CE4C63811"),
-  std::string("4C639ABB75A0AE0F22C3384CB9C68441"),
-  std::string("FE31FFCCED1717988C854C2F3492466E"),
-  std::string("B56D81337F9BBF0D838DF831E9B40216"),
-  std::string("0BE9161ADFEB2DD1C3F20338BFB3EC4B"),
-  std::string("BE7B7C9FA1AB09D6578A3F2A82BFAFE3"),
-  std::string("F6BDC04B4611DDF0AA8403BCB04292F7"),
-  std::string("1C7146A10F3C76B0C1DD4AF354B14982"),
-  std::string("0D3D987F94AEE65F84436696BCF33EA4"),
-  std::string("1A5C9AC3EE859361AD5477EA792506A3"),
-  std::string("E827D60F27E35D8E5B05AF748BA897DD"),
-  std::string("5B7899BF7A6267D9B3B8C82F241A1D7B"),
-  std::string("6DC9FE740CF4A4B93CB0953A3C2A6026"),
-  std::string("27ADF814806FD4A51C1FFC84122C5C8A"),
-  std::string("F74E94AB992C8F27DE264993A09AB429"),
-  std::string("5EEE0F1591D10C159763749EC86B9ECB"),
-  std::string("46898964A3889615D9F7C22A81E0A0E7"),
-  std::string("8FB58D6770971B0F12E40B31AD65B4A9"),
-  std::string("EB4CE130268DC13731DCD16FF492D0A9"),
-  std::string("23532A54E8005860AD5E77F4E3392827"),
-  std::string("07FEDC4DC4891D1A90C501A781A666F2"),
-  std::string("83E8341035B37DD70A92A6EED5406927"),
-  std::string("6C9F7B3B25734D58F21F5050642874A5"),
-  std::string("EF661042E6624F4052CE86D8F233D780"),
-  std::string("EFE794CDFAD5CB86656E29854A1F5C92"),
-  std::string("E5F19A0045481443BAE165F03598A9BA"),
-  std::string("B8FE8691321EDBF308A9D60BB817C6AF"),
-  std::string("F31FDD0F1AEF106005E6D29B72229FA1"),
-  std::string("239ED45C3CB734DB446ADFBBE3DAB8A1"),
-  std::string("2C2303411C7D25617A54106ACA18070D"),
-  std::string("DE179C41ACA8BCDC388964024948FF8E"),
-  std::string("CA335B74D59BD50832267D3BF28F81DF"),
-  std::string("DABDA7A1CBAA8EA5104C57C8950B703A"),
-  std::string("076352A22ECEA5EBC876812F62C1CB8D"),
-  std::string("EE0A2BDEC712A9413623D8A920714B96"),
-  std::string("A927C3A99F2843DE4133377C690DB9B7"),
-  std::string("1FA98CFF485549D49799DC8CF987A8AF"),
-  std::string("74013A076A786A26C7E04217BB51031D"),
-  std::string("A44CA9661E967BB2E98AF65277DAC72F"),
-  std::string("D30897726B635548DBFA5CEBFFD9CD63"),
-  std::string("4AD04A250B8029C9A7BF6529EE8793C3"),
-  std::string("DE41E337D96FD23619121EA709861E1A"),
-  std::string("18E070FD32CF732B9F37A0083320EEC2"),
-  std::string("7DD4B27CA8906182F684D0EE4DDB98C4"),
-  std::string("70A440A8BD06FF40F6E9135946EB174D"),
-  std::string("B8D052366E752CE7C803ABD24854E934"),
-  std::string("8AB9DFFF746CE3E62C6E04FEB7B48528"),
-  std::string("ECFCA8B371616EFE78E9916DBF825F5B"),
-  std::string("5F76DA828C37FC4EDB4557953539C92A"),
-  std::string("ECAD54F76CE3BC233E02FC6FD7F94628"),
-  std::string("E8A1CC06BFEC7F677F36A693E1342400"),
-  std::string("9AD0FE040E44A8E7146C3DD8582B6752"),
-  std::string("4E56F978F94CF72158FD4311831B4F9F"),
-  std::string("3B95686FE49F50006607D5978AAA3EFC"),
-  std::string("FA354DAECC45F14B82B0E7E567D24282"),
-  std::string("B7C30CF902E74C10E3D5C3AF7E854F6B"),
-  std::string("E9369A7EC98E63186BDAE77025CB5519"),
-  std::string("57B441E2F3397D2628657E636CD2FC80"),
-  std::string("8AE3A1E880FFB884260EC26E8FCD71A5"),
-  std::string("EB7D8F9199945E8A1E5C3708DA45E08B"),
-  std::string("D7DD1997C20A1029F9BD0FD1E2D2ED92"),
-  std::string("A986EF62EF378583985CF0D0A34D17D0"),
-  std::string("AD5BEF0D6AD3434F871983ED09AAA43C"),
-  std::string("326F662A5C18A14D26C3D35131EA4B4E"),
-  std::string("EA4BF919AEBF4ADD0024D91EE6F640D0"),
-  std::string("9CC49E156084D2C757BD6D502BAE8309"),
-  std::string("9C18D4C75CC02337C277532ECEA4B9FA"),
-  std::string("4159A65B7DB275742E998FB855E7B9F3"),
-  std::string("DF34D37F6B4EF078BD9570EFDD8FD2E2"),
-  std::string("84D2C12C4F0C28D288464D33A23F227C"),
-  std::string("17B55BBD4222066960E54182E1E95F0B"),
-  std::string("75EB69B22793852BC892CE264C421A1E"),
-  std::string("DE4ABE78E28E2718200C76237F2ED42F"),
-  std::string("1149C8FC988799F43F6E5069355E108B"),
-  std::string("4129891FF13DDD62820F6F3CDBFA95DA"),
-  std::string("C8758DF3C9AD4D311516EA39FE734052"),
-  std::string("360DDF0B658FD764EF5AE9BF7A8A1A12"),
-  std::string("AD054E0E84E2B8E2B02CE4DEE7688226"),
-  std::string("CB434F8C5FAD9793ED142805AFA861A0"),
-  std::string("83A3D5436F96CB2CB31D929794425F31"),
-  std::string("34DDE0F0FE7D4FDB359DF1FCCBF5FCDE"),
-  std::string("7B77219E9549FAD49E97C380F7E1F362"),
-  std::string("053F4E89AE2355C5CB259D21E85EB9CD"),
-  std::string("FC45C5118F642CC479E6A550756F1A4E"),
-  std::string("0138351089A87A2DDC2D98255CE6B8CC"),
-  std::string("1F3E42DAA4B315F2A0E6A530E0CC6976"),
-  std::string("AEC4974F238A6E04DCB07E20AD861230"),
-  std::string("7A27FEDAEEC41B5832BDA3169D76CD05"),
-  std::string("154BD1371AE66AD3AB9A9EE6B1324E36"),
-  std::string("A4594C9E974EED1FC159CC306DD7378A"),
-  std::string("431ACD1A4A4D6036057C9906DA8ADD5E"),
-  std::string("F6AFE47BDEDF075C7E188B2640152CF7"),
-  std::string("8BC3BD8625778F64ED7C29698025F292"),
-  std::string("51F6BB4DB8E6E61CC4333450C6035139"),
-  std::string("0BAFF1C675866BF259D3AC9417A33464"),
-  std::string("6E8A56A9A005C6C6239CCBDF48F59AA8"),
-  std::string("6565BCEB49F962F797F49084F3F819A1"),
-  std::string("2267037A7F3E753C653218FCF67CE9C7"),
-  std::string("ACA1AE6237F498986991565B0307F0DA"),
-  std::string("785BB09A5F25730A3AED4DE12DA4D9EA"),
-  std::string("4EB5472F4E5243FCD4A76533789E829A"),
-  std::string("7D725AE9A8E569F49C56194226B64DEE"),
-  std::string("7396F5D4491E79EC1AC0CE7A105BB233"),
-  std::string("AA64644A4877DA34E2197C5F2DC375C5"),
-  std::string("2165718FC24BF21F1C4E0623C8E8D811"),
-  std::string("E1F45852024724F00CED7935E297983A"),
-  std::string("DEAC06CDE1F6B18A53A2CF0B03998DA2"),
-  std::string("8371F0970EFBC6099C50AFBBD4F0E477"),
-  std::string("985D909280BC20607F4CB4941AE535F2"),
-  std::string("ABCDD18A791546544B52C0587DBD6107"),
-  std::string("23E8B5A657C962A3E77979859AE1400E"),
-  std::string("CC4FAB29CC180FFA888BE396CE6AA6F5"),
-  std::string("B553506DAEDF701CCDC437FBF3E6BBE4"),
-  std::string("D707AE093AB94607010DDDA09FC8A5A8"),
-  std::string("76BDAE04521BA996636C4DC431040031"),
-  std::string("556C14FD0F3FF7BD6B435BD630E48811"),
-  std::string("B500501957D4B8B412EA0102C842DD5E"),
-  std::string("D18506A74C66E4D8537269C10C783923"),
-  std::string("C9B4B691F4D88B7D2B4D5B770B05C8BF"),
-  std::string("BA915C678F944FE5A480364DDC3382A8"),
-  std::string("78134C91A1FFB2E21594DAA2C2A932FC"),
-  std::string("6FC6C8790DFC301EE38B8B63E18DEF5C")
+  std::string("DA39A3EE5E6B4B0D3255BFEF95601890AFD80709"),
+  std::string("3CDF2936DA2FC556BFA533AB1EB59CE710AC80E5"),
+  std::string("19C1E2048FA7393CFBF2D310AD8209EC11D996E5"),
+  std::string("CA775D8C80FAA6F87FA62BECA6CA6089D63B56E5"),
+  std::string("71AC973D0E4B50AE9E5043FF4D615381120A25A0"),
+  std::string("A6B5B9F854CFB76701C3BDDBF374B3094EA49CBA"),
+  std::string("D87A0EE74E4B9AD72E6847C87BDEEB3D07844380"),
+  std::string("1976B8DD509FE66BF09C9A8D33534D4EF4F63BFD"),
+  std::string("5A78F439B6DB845BB8A558E4CEB106CD7B7FF783"),
+  std::string("F871BCE62436C1E280357416695EE2EF9B83695C"),
+  std::string("62B243D1B780E1D31CF1BA2DE3F01C72AEEA0E47"),
+  std::string("1698994A273404848E56E7FDA4457B5900DE1342"),
+  std::string("056F4CDC02791DA7ED1EB2303314F7667518DEEF"),
+  std::string("9FE2DA967BD8441EEA1C32DF68DDAA9DC1FC8E4B"),
+  std::string("73A31777B4ACE9384EFA8BBEAD45C51A71ABA6DD"),
+  std::string("3F9D7C4E2384EDDABFF5DD8A31E23DE3D03F42AC"),
+  std::string("4814908F72B93FFD011135BEE347DE9A08DA838F"),
+  std::string("0978374B67A412A3102C5AA0B10E1A6596FC68EB"),
+  std::string("44AD6CB618BD935460D46D3F921D87B99AB91C1E"),
+  std::string("02DC989AF265B09CF8485640842128DCF95E9F39"),
+  std::string("67507B8D497B35D6E99FC01976D73F54AECA75CF"),
+  std::string("1EAE0373C1317CB60C36A42A867B716039D441F5"),
+  std::string("9C3834589E5BFFAC9F50950E0199B3EC2620BEC8"),
+  std::string("209F7ABC7F3B878EE46CDF3A1FBB9C21C3474F32"),
+  std::string("05FC054B00D97753A9B3E2DA8FBBA3EE808CEF22"),
+  std::string("0C4980EA3A46C757DFBFC5BAA38AC6C8E72DDCE7"),
+  std::string("96A460D2972D276928B69864445BEA353BDCFFD2"),
+  std::string("F3EF04D8FA8C6FA9850F394A4554C080956FA64B"),
+  std::string("F2A31D875D1D7B30874D416C4D2EA6BAF0FFBAFE"),
+  std::string("F4942D3B9E9588DCFDC6312A84DF75D05F111C20"),
+  std::string("310207DF35B014E4676D30806FA34424813734DD"),
+  std::string("4DA1955B2FA7C7E74E3F47D7360CE530BBF57CA3"),
+  std::string("74C4BC5B26FB4A08602D40CCEC6C6161B6C11478"),
+  std::string("0B103CE297338DFC7395F7715EE47539B556DDB6"),
+  std::string("EFC72D99E3D2311CE14190C0B726BDC68F4B0821"),
+  std::string("660EDAC0A8F4CE33DA0D8DBAE597650E97687250"),
+  std::string("FE0A55A988B3B93946A63EB36B23785A5E6EFC3E"),
+  std::string("0CBDF2A5781C59F907513147A0DE3CC774B54BF3"),
+  std::string("663E40FEE5A44BFCB1C99EA5935A6B5BC9F583B0"),
+  std::string("00162134256952DD9AE6B51EFB159B35C3C138C7"),
+  std::string("CEB88E4736E354416E2010FC1061B3B53B81664B"),
+  std::string("A6A2C4B6BCC41DDC67278F3DF4D8D0B9DD7784EF"),
+  std::string("C23D083CD8820B57800A869F5F261D45E02DC55D"),
+  std::string("E8AC31927B78DDEC41A31CA7A44EB7177165E7AB"),
+  std::string("E864EC5DBAB0F9FF6984AB6AD43A8C9B81CC9F9C"),
+  std::string("CFED6269069417A84D6DE2347220F4B858BCD530"),
+  std::string("D9217BFB46C96348722C3783D29D4B1A3FEDA38C"),
+  std::string("DEC24E5554F79697218D317315FA986229CE3350"),
+  std::string("83A099DF7071437BA5495A5B0BFBFEFE1C0EF7F3"),
+  std::string("AA3198E30891A83E33CE3BFA0587D86A197D4F80"),
+  std::string("9B6ACBEB4989CBEE7015C7D515A75672FFDE3442"),
+  std::string("B021EB08A436B02658EAA7BA3C88D49F1219C035"),
+  std::string("CAE36DAB8AEA29F62E0855D9CB3CD8E7D39094B1"),
+  std::string("02DE8BA699F3C1B0CB5AD89A01F2346E630459D7"),
+  std::string("88021458847DD39B4495368F7254941859FAD44B"),
+  std::string("91A165295C666FE85C2ADBC5A10329DAF0CB81A0"),
+  std::string("4B31312EAF8B506811151A9DBD162961F7548C4B"),
+  std::string("3FE70971B20558F7E9BAC303ED2BC14BDE659A62"),
+  std::string("93FB769D5BF49D6C563685954E2AECC024DC02D6"),
+  std::string("BC8827C3E614D515E83DEA503989DEA4FDA6EA13"),
+  std::string("E83868DBE4A389AB48E61CFC4ED894F32AE112AC"),
+  std::string("55C95459CDE4B33791B4B2BCAAF840930AF3F3BD"),
+  std::string("36BB0E2BA438A3E03214D9ED2B28A4D5C578FCAA"),
+  std::string("3ACBF874199763EBA20F3789DFC59572ACA4CF33"),
+  std::string("86BE037C4D509C9202020767D860DAB039CADACE"),
+  std::string("51B57D7080A87394EEC3EB2E0B242E553F2827C9"),
+  std::string("1EFBFA78866315CE6A71E457F3A750A38FACAB41"),
+  std::string("57D6CB41AEEC20236F365B3A490C61D0CFA39611"),
+  std::string("C532CB64B4BA826372BCCF2B4B5793D5B88BB715"),
+  std::string("15833B5631032663E783686A209C6A2B47A1080E"),
+  std::string("D04F2043C96E10CD83B574B1E1C217052CD4A6B2"),
+  std::string("E8882627C64DB743F7DB8B4413DD033FC63BEB20"),
+  std::string("CD2D32286B8867BC124A0AF2236FC74BE3622199"),
+  std::string("019B70D745375091ED5C7B218445EC986D0F5A82"),
+  std::string("E5FF5FEC1DADBAED02BF2DAD4026BE6A96B3F2AF"),
+  std::string("6F4E23B3F2E2C068D13921FE4E5E053FFED4E146"),
+  std::string("25E179602A575C915067566FBA6DA930E97F8678"),
+  std::string("67DED0E68E235C8A523E051E86108EEB757EFBFD"),
+  std::string("AF78536EA83C822796745556D62A3EE82C7BE098"),
+  std::string("64D7AC52E47834BE72455F6C64325F9C358B610D"),
+  std::string("9D4866BAA3639C13E541F250FFA3D8BC157A491F"),
+  std::string("2E258811961D3EB876F30E7019241A01F9517BEC"),
+  std::string("8E0EBC487146F83BC9077A1630E0FB3AB3C89E63"),
+  std::string("CE8953741FFF3425D2311FBBF4AB481B669DEF70"),
+  std::string("789D1D2DAB52086BD90C0E137E2515ED9C6B59B5"),
+  std::string("B76CE7472700DD68D6328B7AA8437FB051D15745"),
+  std::string("F218669B596C5FFB0B1C14BD03C467FC873230A0"),
+  std::string("1FF3BDBE0D504CB0CDFAB17E6C37ABA6B3CFFDED"),
+  std::string("2F3CBACBB14405A4652ED52793C1814FD8C4FCE0"),
+  std::string("982C8AB6CE164F481915AF59AAED9FFF2A391752"),
+  std::string("5CD92012D488A07ECE0E47901D0E083B6BD93E3F"),
+  std::string("69603FEC02920851D4B3B8782E07B92BB2963009"),
+  std::string("3E90F76437B1EA44CF98A08D83EA24CECF6E6191"),
+  std::string("34C09F107C42D990EB4881D4BF2DDDCAB01563AE"),
+  std::string("474BE0E5892EB2382109BFC5E3C8249A9283B03D"),
+  std::string("A04B4F75051786682483252438F6A75BF4705EC6"),
+  std::string("BE88A6716083EB50ED9416719D6A247661299383"),
+  std::string("C67E38717FEE1A5F65EC6C7C7C42AFC00CD37F04"),
+  std::string("959AC4082388E19E9BE5DE571C047EF10C174A8D"),
+  std::string("BAA7AA7B7753FA0ABDC4A541842B5D238D949F0A"),
+  std::string("351394DCEBC08155D100FCD488578E6AE71D0E9C"),
+  std::string("AB8BE94C5AF60D9477EF1252D604E58E27B2A9EE"),
+  std::string("3429EC74A695FDD3228F152564952308AFE0680A"),
+  std::string("907FA46C029BC67EAA8E4F46E3C2A232F85BD122"),
+  std::string("2644C87D1FBBBC0FC8D65F64BCA2492DA15BAAE4"),
+  std::string("110A3EEB408756E2E81ABAF4C5DCD4D4C6AFCF6D"),
+  std::string("CD4FDC35FAC7E1ADB5DE40F47F256EF74D584959"),
+  std::string("8E6E273208AC256F9ECCF296F3F5A37BC8A0F9F7"),
+  std::string("FE0606100BDBC268DB39B503E0FDFE3766185828"),
+  std::string("6C63C3E58047BCDB35A17F74EEBA4E9B14420809"),
+  std::string("BCC2BD305F0BCDA8CF2D478EF9FE080486CB265F"),
+  std::string("CE5223FD3DD920A3B666481D5625B16457DCB5E8"),
+  std::string("948886776E42E4F5FAE1B2D0C906AC3759E3F8B0"),
+  std::string("4C12A51FCFE242F832E3D7329304B11B75161EFB"),
+  std::string("C54BDD2050504D92F551D378AD5FC72C9ED03932"),
+  std::string("8F53E8FA79EA09FD1B682AF5ED1515ECA965604C"),
+  std::string("2D7E17F6294524CE78B33EAB72CDD08E5FF6E313"),
+  std::string("64582B4B57F782C9302BFE7D07F74AA176627A3A"),
+  std::string("6D88795B71D3E386BBD1EB830FB9F161BA98869F"),
+  std::string("86AD34A6463F12CEE6DE9596ABA72F0DF1397FD1"),
+  std::string("7EB46685A57C0D466152DC339C8122548C757ED1"),
+  std::string("E7A98FB0692684054407CC221ABC60C199D6F52A"),
+  std::string("34DF1306662206FD0A5FC2969A4BEEC4EB0197F7"),
+  std::string("56CF7EBF08D10F0CB9FE7EE3B63A5C3A02BCB450"),
+  std::string("3BAE5CB8226642088DA760A6F78B0CF8EDDEA9F1"),
+  std::string("6475DF681E061FA506672C27CBABFA9AA6DDFF62"),
+  std::string("79D81991FA4E4957C8062753439DBFD47BBB277D"),
+  std::string("BAE224477B20302E881F5249F52EC6C34DA8ECEF"),
+  std::string("EDE4DEB4293CFE4138C2C056B7C46FF821CC0ACC"),
+  std::string("A771FA5C812BD0C9596D869EC99E4F4AC988B13F"),
+  std::string("E99D566212BBBCEEE903946F6100C9C96039A8F4"),
+  std::string("B48CE6B1D13903E3925AE0C88CB931388C013F9C"),
+  std::string("E647D5BAF670D4BF3AFC0A6B72A2424B0C64F194"),
+  std::string("65C1CD932A06B05CD0B43AFB3BC7891F6BCEF45C"),
+  std::string("70FFAE353A5CD0F8A65A8B2746D0F16281B25EC7"),
+  std::string("CC8221F2B829B8CF39646BF46888317C3EB378EA"),
+  std::string("26ACCC2D6D51FF7BF3E5895588907765111BB69B"),
+  std::string("01072915B8E868D9B28E759CF2BC1AEA4BB92165"),
+  std::string("3016115711D74236ADF0C371E47992F87A428598"),
+  std::string("BF30417999C1368F008C1F19FECA4D18A5E1C3C9"),
+  std::string("62BA49087185F2742C26E1C1F4844112178BF673"),
+  std::string("E1F6B9536F384DD3098285BBFD495A474140DC5A"),
+  std::string("B522DAE1D67726EBA7C4136D4E2F6D6D645AC43E"),
+  std::string("E9A021C3EB0B9F2C710554D4BF21B19F78E09478"),
+  std::string("DF13573188F3BF705E697A3E1F580145F2183377"),
+  std::string("188835CFE52ECFA0C4135C2825F245DC29973970"),
+  std::string("41B615A34EE2CEC9D84A91B141CFAB115821950B"),
+  std::string("AB3DD6221D2AFE6613B815DA1C389EEC74AA0337"),
+  std::string("0706D414B4AA7FB4A9051AA70D6856A7264054FB"),
+  std::string("3CBF8151F3A00B1D5A809CBB8C4F3135055A6BD1"),
+  std::string("DA5D6A0319272BBCCEA63ACFA6799756FFDA6840"),
+  std::string("FB4429C95F6277B346D3B389413758DFFFEEDC98"),
+  std::string("2C6E30D9C895B42DCCCFC84C906EC88C09B20DE1"),
+  std::string("3DE3189A5E19F225CDCE254DFF23DACD22C61363"),
+  std::string("93530A9BC9A817F6922518A73A1505C411D05DA2"),
+  std::string("E31354345F832D31E05C1B842D405D4BD4588EC8"),
+  std::string("3FF76957E80B60CF74D015AD431FCA147B3AF232"),
+  std::string("34AE3B806BE143A84DCE82E4B830EB7D3D2BAC69"),
+  std::string("D7447E53D66BB5E4C26E8B41F83EFD107BF4ADDA"),
+  std::string("77DD2A4482705BC2E9DC96EC0A13395771AC850C"),
+  std::string("EAA1465DB1F59DE3F25EB8629602B568E693BB57"),
+  std::string("9329D5B40E0DC43AA25FED69A0FA9C211A948411"),
+  std::string("E94C0B6AA62AA08C625FAF817DDF8F51EC645273"),
+  std::string("7FF02B909D82AD668E31E547E0FB66CB8E213771"),
+  std::string("5BB3570858FA1744123BAC2873B0BB9810F53FA1"),
+  std::string("905F43940B3591CE39D1145ACB1ECA80AB5E43CD"),
+  std::string("336C79FBD82F33E490C577E3F791C3CBFE842AFF"),
+  std::string("5C6D07A6B44F7A75A64F6CE592F3BAE91E022210"),
+  std::string("7E0D3E9D33127F4A30EB8D9C134A58409FA8695B"),
+  std::string("9A5F50DFCFB19286206C229019F0ABF25283028C"),
+  std::string("DCA737E269F9D8626D488988C996E06B352C0708"),
+  std::string("B8FFC1D4972FCE63241E0E77850AC46DDE75DBFA"),
+  std::string("E9C9BF41C8549354151B977003CE1D830BE667DB"),
+  std::string("0942908960B54F96CB43452E583F4F9CB66E398A"),
+  std::string("FCE34051C34D4B81B85DDC4B543CDE8007E284B3"),
+  std::string("61E8916532503627F4024D13884640A46F1D61D4"),
+  std::string("F008D5D7853B6A17B7466CD9E18BD135E520FAF4"),
+  std::string("BD8D2E873CF659B5C77AAC1616827EF8A3B1A3B3"),
+  std::string("B25A04DD425302ED211A1C2412D2410FA10C63B6"),
+  std::string("A404E21588123E0893718B4B44E91414A785B91F"),
+  std::string("A1E13BC55BF6DAD83CF3AABDA3287AD68681EA64"),
+  std::string("D5FD35FFABED6733C92365929DF0FB4CAE864D15"),
+  std::string("C12E9C280EE9C079E0506FF89F9B20536E0A83EF"),
+  std::string("E22769DC00748A9BBD6C05BBC8E81F2CD1DC4E2D"),
+  std::string("F29835A93475740E888E8C14318F3CA45A3C8606"),
+  std::string("1A1D77C6D0F97C4B620FAA90F3F8644408E4B13D"),
+  std::string("4EC84870E9BDD25F523C6DFB6EDD605052CA4EAA"),
+  std::string("D689513FED08B80C39B67371959BC4E3FECB0537"),
+  std::string("C4FED58F209FC3C34AD19F86A6DACADC86C04D33"),
+  std::string("051888C6D00029C176DE792B84DECE2DC1C74B00"),
+  std::string("1A3540BEE05518505827954F58B751C475AEECE0"),
+  std::string("DFA19180359D5A7A38E842F172359CAF4208FC05"),
+  std::string("7B0FA84EBBCFF7D7F4500F73D79660C4A3431B67"),
+  std::string("9E886081C9ACAAD0F97B10810D1DE6FCDCE6B5F4"),
+  std::string("A4D46E4BA0AE4B012F75B1B50D0534D578AE9CB6"),
+  std::string("6342B199EE64C7B2C9CBCD4F2DCB65ACEF51516F")
 }};
 
-const std::array<std::vector<std::uint8_t>, 196U> md5_detail::md5_data_sets =
+const std::array<std::vector<std::uint8_t>, 196U> sha1_detail::sha1_data_sets =
 {{
   std::vector<std::uint8_t>( {{  }} ),
   std::vector<std::uint8_t>( {{  36U  }} ),

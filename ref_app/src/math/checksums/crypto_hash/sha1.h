@@ -100,10 +100,12 @@ public:
     process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), length_message);
   }
 
-  //template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
+  template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
 private:
-  std::uint_fast8_t             index_block_message;
+  static const std::int_least8_t padding_count_max = ((static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) < static_cast<std::int_least8_t>(8)) ?
+                                                       static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) : static_cast<std::int_least8_t>(8));
+
   count_type                    padding_length;
   std::array<std::uint32_t, 5U> hash_message;
   std::array<std::uint8_t, 64U> block_message;
@@ -124,15 +126,12 @@ private:
 template <typename sha1_count_type>
 sha1<sha1_count_type>::sha1()
 {
-  reset();
 }
 
 template <typename sha1_count_type>
 sha1<sha1_count_type>::sha1(const std::uint8_t* data_stream,
                             const sha1_count_type& length_message)
 {
-  reset();
-
   process_data(data_stream, length_message);
 }
 
@@ -140,14 +139,11 @@ template <typename sha1_count_type>
 sha1<sha1_count_type>::sha1(const char* string_stream,
                             const sha1_count_type& length_message)
 {
-  reset();
-
   process_data(string_stream, length_message);
 }
 
 template <typename sha1_count_type>
 sha1<sha1_count_type>::sha1(const sha1& other) : crypto_hash_base   (other),
-                                                 index_block_message(other.index_block_message),
                                                  padding_length     (other.padding_length),
                                                  hash_message       (other.hash_message),
                                                  block_message      (other.block_message)
@@ -193,6 +189,31 @@ void sha1<sha1_count_type>::process_data(const std::uint8_t* message_hash, const
     ++message_hash;
     --the_message_length;
   }
+}
+
+template<typename sha1_count_type>
+template<typename unsigned_integer_type>
+void sha1<sha1_count_type>::process_data(unsigned_integer_type u)
+{
+  static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized == true)
+                && ( std::numeric_limits<unsigned_integer_type>::is_integer     == true)
+                && ( std::numeric_limits<unsigned_integer_type>::is_signed      == false)
+                && ( std::numeric_limits<unsigned_integer_type>::radix          == 2)
+                && ((std::numeric_limits<unsigned_integer_type>::digits % 8)    == 0),
+                "the template parameter type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+
+  std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
+
+  std::for_each(the_data.begin(),
+                the_data.end(),
+                [&u](std::uint8_t& data_value)
+                {
+                  data_value = static_cast<std::uint8_t>(u);
+
+                  u >>= 8;
+                });
+
+  process_data(the_data.data(), the_data.size());
 }
 
 /*
@@ -334,31 +355,23 @@ void sha1<sha1_count_type>::perform_algorithm()
 template <typename sha1_count_type>
 void sha1<sha1_count_type>::finalize()
 {
-  if (index_block_message > static_cast<std::uint_fast8_t>(55U))
+  // Create the padding. Begin by setting the leading padding byte to 0x80.
+  block_message[index_block_message] = static_cast<std::uint8_t>(0x80U);
+
+  ++index_block_message;
+
+  // Fill the rest of the padding bytes with zero.
+  std::fill(block_message.begin() + index_block_message,
+            block_message.end(),
+            static_cast<std::uint8_t>(0U));
+
+  // Do we need an extra block? If so, then transform the
+  // current block and pad an additional block.
+  if(index_block_message > static_cast<std::uint_fast8_t>(56U))
   {
-    block_message[index_block_message] = static_cast<std::uint8_t>(0x80U);
-
-    ++index_block_message;
-
-    std::fill(block_message.begin() + index_block_message,
-              block_message.end(),
-              static_cast<std::uint8_t>(0U));
-
     perform_algorithm();
 
-    std::fill(block_message.begin(),
-              block_message.end(),
-              static_cast<std::uint8_t>(0U));
-  }
-  else
-  {
-    std::fill(block_message.begin() + index_block_message,
-              block_message.end(),
-              static_cast<std::uint8_t>(0U));
-
-    block_message[index_block_message] = static_cast<std::uint8_t>(0x80U);
-
-    ++index_block_message;
+    block_message.fill(static_cast<std::uint8_t>(0U));
   }
 
   // Encode the number of bits. Simultaneously convert the number of bytes
@@ -366,24 +379,16 @@ void sha1<sha1_count_type>::finalize()
   // The sha1 stores the 8 bytes of the bit counter in reverse order,
   // with the lowest byte being stored at the end of the buffer
   std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
-  std::int_least8_t   index = static_cast<std::int_least8_t>(0);
 
-  count_type padding_length_tmp = padding_length;
-
-  for( ; index < static_cast<std::int_least8_t>(std::numeric_limits<count_type>::digits / 8); ++index)
+  for(std::int_least8_t  index = static_cast<std::int_least8_t>(0); index < static_cast<std::int_least8_t>(padding_count_max); ++index)
   {
-    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length_tmp) << 3;
-
-    padding_length_tmp >>= (static_cast<std::int_least8_t>(index + 1) * 8);
+    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length) << 3;
 
     *(block_message.rbegin() + index) = static_cast<std::uint8_t>(the_word | carry);
 
-    carry = static_cast<std::uint_least8_t>(the_word >> 8);
-  }
+    padding_length >>= 8U;
 
-  if(index < static_cast<std::int_least8_t>(8))
-  {
-    *(block_message.rbegin() + index) = static_cast<std::uint8_t>(carry);
+    carry = static_cast<std::uint_least8_t>(the_word >> 8);
   }
 
   perform_algorithm();
@@ -447,6 +452,15 @@ sha1<sha1_count_type>::get_result_as_chars_and_finalize_the_state()
                                       the_result_as_bytes.data() + the_result_as_bytes.size(),
                                       the_result_as_chars.data());
 
+  // Obtain the correct byte order for displaying the sha1 string in the usual fashion.
+  for(std::uint_least8_t i = static_cast<std::uint_least8_t>(0U); i < static_cast<std::uint_least8_t>(the_result_as_chars.size()); i += 8U)
+  {
+    std::swap(the_result_as_chars[i + 0U], the_result_as_chars[i + 6U]);
+    std::swap(the_result_as_chars[i + 1U], the_result_as_chars[i + 7U]);
+    std::swap(the_result_as_chars[i + 2U], the_result_as_chars[i + 4U]);
+    std::swap(the_result_as_chars[i + 3U], the_result_as_chars[i + 5U]);
+  }
+
   return the_result_as_chars;
 }
 
@@ -473,9 +487,9 @@ void sha1<sha1_count_type>::reset()
   hash_message[3U] = UINT32_C(0x10325476);
   hash_message[4U] = UINT32_C(0xC3D2E1F0);
 
-  padding_length          =     static_cast<std::uint64_t>(0U);
+  the_result_is_finalized = false;
+  padding_length          = static_cast<count_type>(0U);
   index_block_message     = static_cast<std::uint_fast8_t>(0U);
-  the_result_is_finalized =                              false;
 }
 
 #endif // SHA1_H_INCLUDED
