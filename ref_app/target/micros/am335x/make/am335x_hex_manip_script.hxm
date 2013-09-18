@@ -20,9 +20,7 @@ NEW_BUFFER   Buf_0004_to_0007  FROM_VALUES    {0x00, 0x04, 0x2F, 0x40}
 // Create the output hex and binary files.
 // Include the SD card boot header in the binary file.
 WRITE_FILE   outFile  WITH_BUFFERS  {Buf_402F0400_to_402FBBFF}  -setFormat=IntelHexExtended
-WRITE_FILE   binFile  WITH_BUFFERS  {Buf_0000_to_0003,
-                                     Buf_0004_to_0007,
-                                     Buf_402F0400_to_402FBBFF}  -setFormat=RawBinary
+WRITE_FILE   binFile  WITH_BUFFERS  {Buf_402F0400_to_402FBBFF}  -setFormat=RawBinary
 WRITE_FILE   mloFile  WITH_BUFFERS  {Buf_0000_to_0003,
                                      Buf_0004_to_0007,
                                      Buf_402F0400_to_402FBBFF}  -setFormat=RawBinary

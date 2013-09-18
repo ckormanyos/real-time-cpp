@@ -15,7 +15,7 @@
   {
   protected:
     bool               the_result_is_finalized;
-    std::uint_least8_t index_block_message;
+    std::uint_least8_t message_block_index;
 
     crypto_hash_base();
 
@@ -32,15 +32,15 @@
   };
 
   crypto_hash_base::crypto_hash_base() : the_result_is_finalized(true),
-                                         index_block_message    (0U) { }
+                                         message_block_index    (0U) { }
 
   crypto_hash_base::crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized(other.the_result_is_finalized),
-                                                                      index_block_message    (other.index_block_message) { }
+                                                                      message_block_index    (other.message_block_index) { }
 
   crypto_hash_base& crypto_hash_base::operator=(const crypto_hash_base& other)
   {
     the_result_is_finalized = other.the_result_is_finalized;
-    index_block_message     = other.index_block_message;
+    message_block_index     = other.message_block_index;
 
     return *this;
   }

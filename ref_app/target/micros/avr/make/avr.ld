@@ -13,7 +13,7 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
-/* The end of the 1K RAM stack */
+/* The end of the 2K RAM stack */
 __initial_stack_pointer = 0x800800;
 
 MEMORY
@@ -31,17 +31,17 @@ SECTIONS
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(2);
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM
+  } > ROM = 0xAAAA
 
   /* Startup code */
   .startup :
   {
     *(.startup)
-    . = ALIGN(2);
+    . = ALIGN(0x10);
     KEEP(*(.startup))
-  } > ROM
+  } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -59,8 +59,8 @@ SECTIONS
 
   .text :
   {
-    . = ALIGN(4);
-  } > ROM
+    . = ALIGN(0x10);
+  } > ROM = 0xAAAA
 
   .= 0x800100;
   . = ALIGN(2);

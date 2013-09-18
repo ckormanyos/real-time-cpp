@@ -1,5 +1,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
+//  Copyright Arwed Steuer 2013.
 //  Copyright Christopher Kormanyos 2012 - 2013.
 //
 // \license LGPLv3
@@ -17,14 +18,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// This work has been created by Christopher Kormanyos.
+// This work has been created by Arwed Steuer and Christopher Kormanyos.
 // This work is an implementation of md5 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
 //
-// This work has been: "derived from the RSA Data Security, Inc.
-// MD5 Message-Digest Algorithm". The original license notices
-// from RSA Data Security, Inc. follow below.
+// This work has been derived from:
+// "RSA Data Security, Inc. MD5 Message-Digest Algorithm".
+// The original license notices from RSA Data Security, Inc.
+// follow below.
 //
 // Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
 // rights reserved.
@@ -54,14 +56,13 @@
   #include <array>
   #include <cstddef>
   #include <functional>
-  #include <limits>
   #include "crypto_hash_base.h"
 
-  template<typename md5_count_type>
+  template<typename my_count_type>
   class md5 : public crypto_hash_base
   {
   public:
-    typedef md5_count_type                 count_type;
+    typedef my_count_type                  count_type;
     typedef std::array<std::uint8_t,  16U> result_type_as_bytes;
     typedef std::array<char,          32U> result_type_as_chars;
     typedef std::array<std::uint32_t,  4U> result_type_as_dwords;
@@ -74,14 +75,20 @@
                   "the count type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
 
     md5();
-
-    md5(const std::uint8_t* data_stream, count_type count);
-
-    md5(const char* string_stream, count_type count);
-
+    md5(const std::uint8_t* data_stream,   count_type message_length);
+    md5(const char*         string_stream, count_type message_length);
     template<typename unsigned_integer_type> md5(unsigned_integer_type u);
-
     md5(const md5& other);
+    md5& operator=(const md5& other);
+
+    void process_data(const std::uint8_t* data_stream, count_type message_length);
+
+    void process_data(const char* string_stream, count_type message_length)
+    {
+      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+    }
+
+    template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
 
     result_type_as_bytes get_result_as_bytes_and_finalize_the_state();
     result_type_as_bytes get_result_as_bytes_and_nochange_the_state() const;
@@ -92,21 +99,29 @@
     result_type_as_chars get_result_as_chars_and_finalize_the_state();
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
 
-    md5& operator=(const md5& other);
-
-    void process_data(const std::uint8_t* data_stream,   count_type count);
-    void process_data(const char*         string_stream, count_type count);
-
-    template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
-
   private:
-    static const std::int_least8_t padding_count_max = ((static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) < static_cast<std::int_least8_t>(8)) ?
-                                                         static_cast<std::int_least8_t>((std::numeric_limits<count_type>::digits / 8) + 1) : static_cast<std::int_least8_t>(8));
-
     static const std::uint_least8_t md5_blocksize = 64U;
 
     static_assert(md5_blocksize == static_cast<std::uint_least8_t>(64U),
-                  "the md5 block size must exactly equal 64");
+                  "the block size must exactly equal 64");
+
+    typedef std::array<std::uint8_t,  md5_blocksize>      message_block_type;
+    typedef std::array<std::uint32_t, md5_blocksize / 4U> transform_block_type;
+
+    count_type            padding_length;
+    result_type_as_dwords message_hash;
+    message_block_type    message_block;
+
+    void perform_algorithm();
+    void finalize();
+    void reset();
+
+    template<const std::uint_fast8_t digits_shift>
+    static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
+    {
+      return   static_cast<std::uint32_t>(shift_32word << digits_shift)
+             | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
+    }
 
     // Constants for the md5 transform routine.
     static const std::uint_fast8_t S11 = UINT8_C( 7);
@@ -125,20 +140,6 @@
     static const std::uint_fast8_t S42 = UINT8_C(10);
     static const std::uint_fast8_t S43 = UINT8_C(15);
     static const std::uint_fast8_t S44 = UINT8_C(21);
-
-    typedef std::array<std::uint8_t,  md5_blocksize>      digest_buffer_type;
-    typedef std::array<std::uint32_t, md5_blocksize / 4U> transform_block_type;
-
-    count_type            padding_length; // The running byte count in the md5.
-    result_type_as_dwords digest_state;   // The message digest state so far.
-    digest_buffer_type    digest_buffer;  // The message digest buffer.
-
-    void perform_algorithm();
-
-    void finalize();
-    void reset();
-
-    void process_data_stream(const std::uint8_t* data_stream, count_type count);
 
     // F, G, H, and I are the low-level permutation operations of the md5.
 
@@ -162,182 +163,108 @@
       return static_cast<std::uint32_t>(y ^ static_cast<std::uint32_t>(x | static_cast<std::uint32_t>(~z)));
     }
 
-    template<const std::uint_fast8_t n>
-    static std::uint32_t rotate_left(const std::uint32_t& x)
-    {
-      // Rotates x to the left by n bits.
-      return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x << n) | static_cast<std::uint32_t>(x >> (32U - n)));
-    }
-
     // FF, GG, HH, and II are the transformations for rounds 1, 2, 3, and 4 of the md5.
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_ff(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + permutation_f(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_gg(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + permutation_g(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_hh(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + permutation_h(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_ii(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(rotate_left<my_s>(static_cast<std::uint32_t>(a + permutation_i(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
   };
 
-  template<typename md5_count_type>
-  md5<md5_count_type>::md5() { }
-
-  template<typename md5_count_type>
-  md5<md5_count_type>::md5(const std::uint8_t* data_stream, count_type count)
+  template<typename my_count_type>
+  md5<my_count_type>::md5()
   {
-    process_data(data_stream, count);
   }
 
-  template<typename md5_count_type>
-  md5<md5_count_type>::md5(const char* string_stream, count_type count)
+  template<typename my_count_type>
+  md5<my_count_type>::md5(const std::uint8_t* data_stream, count_type message_length)
   {
-    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), count);
+    process_data(data_stream, message_length);
   }
 
-  template<typename md5_count_type>
+  template<typename my_count_type>
+  md5<my_count_type>::md5(const char* string_stream, count_type message_length)
+  {
+    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+  }
+
+  template<typename my_count_type>
   template<typename unsigned_integer_type>
-  md5<md5_count_type>::md5(unsigned_integer_type u)
+  md5<my_count_type>::md5(unsigned_integer_type u)
   {
     process_data(u);
   }
 
-  template<typename md5_count_type>
-  md5<md5_count_type>::md5(const md5& other) : crypto_hash_base(other),
-                                               padding_length  (other.padding_length),
-                                               digest_state    (other.digest_state),
-                                               digest_buffer   (other.digest_buffer) { }
-
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_bytes md5<md5_count_type>::get_result_as_bytes_and_finalize_the_state()
+  template<typename my_count_type>
+  md5<my_count_type>::md5(const md5& other) : crypto_hash_base(other),
+                                              padding_length  (other.padding_length),
+                                              message_hash    (other.message_hash),
+                                              message_block   (other.message_block)
   {
-    if(!the_result_is_finalized)
-    {
-      // Finalize the result.
-      finalize();
-    }
-
-    result_type_as_bytes digest_result;
-
-    // Extract the message digest result from the message digest state.
-    convert_uint32_input_to_uint8_output(digest_state.data(),
-                                         digest_state.data() + digest_state.size(),
-                                         digest_result.data());
-
-    return digest_result;
   }
 
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_bytes md5<md5_count_type>::get_result_as_bytes_and_nochange_the_state() const
-  {
-    // Make a local copy of the message digest.
-    md5 temp_md5(*this);
-
-    // Finalize the local copy of the message digest,
-    // and return the final result from the copied object.
-    return temp_md5.get_result_as_bytes_and_finalize_the_state();
-  }
-
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_dwords md5<md5_count_type>::get_result_as_dwords_and_finalize_the_state()
-  {
-    if(!the_result_is_finalized)
-    {
-      // Finalize the result.
-      finalize();
-    }
-
-    return digest_state;
-  }
-
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_dwords md5<md5_count_type>::get_result_as_dwords_and_nochange_the_state() const
-  {
-    // Make a local copy of the message digest.
-    md5 temp_md5(*this);
-
-    // Finalize the local copy of the message digest,
-    // and return the final result from the copied object.
-    temp_md5.finalize();
-
-    return temp_md5.digest_state;
-  }
-
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_chars md5<md5_count_type>::get_result_as_chars_and_finalize_the_state()
-  {
-    // Get the result of the md5 as a byte array.
-    const result_type_as_bytes the_result_as_bytes = get_result_as_bytes_and_finalize_the_state();
-
-    result_type_as_chars the_result_as_chars;
-
-    // Conver the result as a byte array to a character array.
-    convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
-                                        the_result_as_bytes.data() + the_result_as_bytes.size(),
-                                        the_result_as_chars.data());
-
-    return the_result_as_chars;
-  }
-
-  template<typename md5_count_type>
-  typename md5<md5_count_type>::result_type_as_chars md5<md5_count_type>::get_result_as_chars_and_nochange_the_state() const
-  {
-    // Make a local copy of the message digest.
-    md5 temp_md5(*this);
-
-    // Finalize the local copy of the message digest,
-    // and return the final result from the copied object.
-    return temp_md5.get_result_as_chars_and_finalize_the_state();
-  }
-
-  template<typename md5_count_type>
-  md5<md5_count_type>& md5<md5_count_type>::operator=(const md5& other)
+  template<typename my_count_type>
+  md5<my_count_type>& md5<my_count_type>::operator=(const md5& other)
   {
     if(this != &other)
     {
       static_cast<void>(crypto_hash_base::operator=(other));
 
       padding_length = other.padding_length;
-      digest_state   = other.digest_state;
-      digest_buffer  = other.digest_buffer;
+      message_hash   = other.message_hash;
+      message_block  = other.message_block;
     }
 
     return *this;
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::process_data(const std::uint8_t* data_stream, count_type count)
+  template<typename my_count_type>
+  void md5<my_count_type>::process_data(const std::uint8_t* data_stream, count_type message_length)
   {
-    process_data_stream(data_stream, count);
+    if(the_result_is_finalized) { reset(); }
+
+    while(message_length != static_cast<count_type>(0U))
+    {
+      message_block[message_block_index] = *data_stream;
+
+      ++message_block_index;
+
+      ++padding_length;
+
+      if(message_block_index == md5_blocksize)
+      {
+        perform_algorithm();
+
+        message_block_index = static_cast<std::uint_least8_t>(0U);
+      }
+
+      ++data_stream;
+      --message_length;
+    }
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::process_data(const char* string_stream, count_type count)
-  {
-    const std::uint8_t* data_stream = static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream));
-
-    process_data_stream(data_stream, count);
-  }
-
-  template<typename md5_count_type>
+  template<typename my_count_type>
   template<typename unsigned_integer_type>
-  void md5<md5_count_type>::process_data(unsigned_integer_type u)
+  void md5<my_count_type>::process_data(unsigned_integer_type u)
   {
     static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized == true)
                   && ( std::numeric_limits<unsigned_integer_type>::is_integer     == true)
@@ -357,123 +284,122 @@
                     u >>= 8;
                   });
 
-    process_data_stream(the_data.data(), the_data.size());
+    process_data(the_data.data(), the_data.size());
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::perform_algorithm()
+  template<typename my_count_type>
+  void md5<my_count_type>::perform_algorithm()
   {
-    // Apply the md5 algorithm to a 64-byte data block.
+    // Apply the hash algorithm to a full data block.
 
     transform_block_type transform_block;
 
-    convert_uint8_input_to_uint32_output(digest_buffer.data(),
-                                         digest_buffer.data() + md5_blocksize,
+    convert_uint8_input_to_uint32_output(message_block.data(),
+                                         message_block.data() + md5_blocksize,
                                          transform_block.data());
 
-    result_type_as_dwords digest_tmp = digest_state;
+    result_type_as_dwords hash_tmp = message_hash;
 
     // Perform transformation round 1.
-    transformation_ff<S11, UINT32_C(0xD76AA478)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 0U]); //  1
-    transformation_ff<S12, UINT32_C(0xE8C7B756)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 1U]); //  2
-    transformation_ff<S13, UINT32_C(0x242070DB)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 2U]); //  3
-    transformation_ff<S14, UINT32_C(0xC1BDCEEE)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 3U]); //  4
-    transformation_ff<S11, UINT32_C(0xF57C0FAF)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 4U]); //  5
-    transformation_ff<S12, UINT32_C(0x4787C62A)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 5U]); //  6
-    transformation_ff<S13, UINT32_C(0xA8304613)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 6U]); //  7
-    transformation_ff<S14, UINT32_C(0xFD469501)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 7U]); //  8
-    transformation_ff<S11, UINT32_C(0x698098D8)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 8U]); //  9
-    transformation_ff<S12, UINT32_C(0x8B44F7AF)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 9U]); // 10
-    transformation_ff<S13, UINT32_C(0xFFFF5BB1)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[10U]); // 11
-    transformation_ff<S14, UINT32_C(0x895CD7BE)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[11U]); // 12
-    transformation_ff<S11, UINT32_C(0x6B901122)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[12U]); // 13
-    transformation_ff<S12, UINT32_C(0xFD987193)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[13U]); // 14
-    transformation_ff<S13, UINT32_C(0xA679438E)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[14U]); // 15
-    transformation_ff<S14, UINT32_C(0x49B40821)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[15U]); // 16
+    transformation_ff<S11, UINT32_C(0xD76AA478)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 0U]); //  1
+    transformation_ff<S12, UINT32_C(0xE8C7B756)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 1U]); //  2
+    transformation_ff<S13, UINT32_C(0x242070DB)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 2U]); //  3
+    transformation_ff<S14, UINT32_C(0xC1BDCEEE)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 3U]); //  4
+    transformation_ff<S11, UINT32_C(0xF57C0FAF)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 4U]); //  5
+    transformation_ff<S12, UINT32_C(0x4787C62A)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 5U]); //  6
+    transformation_ff<S13, UINT32_C(0xA8304613)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 6U]); //  7
+    transformation_ff<S14, UINT32_C(0xFD469501)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 7U]); //  8
+    transformation_ff<S11, UINT32_C(0x698098D8)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 8U]); //  9
+    transformation_ff<S12, UINT32_C(0x8B44F7AF)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 9U]); // 10
+    transformation_ff<S13, UINT32_C(0xFFFF5BB1)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[10U]); // 11
+    transformation_ff<S14, UINT32_C(0x895CD7BE)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[11U]); // 12
+    transformation_ff<S11, UINT32_C(0x6B901122)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[12U]); // 13
+    transformation_ff<S12, UINT32_C(0xFD987193)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[13U]); // 14
+    transformation_ff<S13, UINT32_C(0xA679438E)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[14U]); // 15
+    transformation_ff<S14, UINT32_C(0x49B40821)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[15U]); // 16
 
     // Perform transformation round 2.
-    transformation_gg<S21, UINT32_C(0xF61E2562)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 1U]); // 17
-    transformation_gg<S22, UINT32_C(0xC040B340)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 6U]); // 18
-    transformation_gg<S23, UINT32_C(0x265E5A51)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[11U]); // 19
-    transformation_gg<S24, UINT32_C(0xE9B6C7AA)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 0U]); // 20
-    transformation_gg<S21, UINT32_C(0xD62F105D)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 5U]); // 21
-    transformation_gg<S22, UINT32_C(0x02441453)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[10U]); // 22
-    transformation_gg<S23, UINT32_C(0xD8A1E681)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[15U]); // 23
-    transformation_gg<S24, UINT32_C(0xE7D3FBC8)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 4U]); // 24
-    transformation_gg<S21, UINT32_C(0x21E1CDE6)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 9U]); // 25
-    transformation_gg<S22, UINT32_C(0xC33707D6)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[14U]); // 26
-    transformation_gg<S23, UINT32_C(0xF4D50D87)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 3U]); // 27
-    transformation_gg<S24, UINT32_C(0x455A14ED)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 8U]); // 28
-    transformation_gg<S21, UINT32_C(0xA9E3E905)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[13U]); // 29
-    transformation_gg<S22, UINT32_C(0xFCEFA3F8)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 2U]); // 30
-    transformation_gg<S23, UINT32_C(0x676F02D9)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 7U]); // 31
-    transformation_gg<S24, UINT32_C(0x8D2A4C8A)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[12U]); // 32
+    transformation_gg<S21, UINT32_C(0xF61E2562)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 1U]); // 17
+    transformation_gg<S22, UINT32_C(0xC040B340)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 6U]); // 18
+    transformation_gg<S23, UINT32_C(0x265E5A51)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[11U]); // 19
+    transformation_gg<S24, UINT32_C(0xE9B6C7AA)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 0U]); // 20
+    transformation_gg<S21, UINT32_C(0xD62F105D)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 5U]); // 21
+    transformation_gg<S22, UINT32_C(0x02441453)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[10U]); // 22
+    transformation_gg<S23, UINT32_C(0xD8A1E681)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[15U]); // 23
+    transformation_gg<S24, UINT32_C(0xE7D3FBC8)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 4U]); // 24
+    transformation_gg<S21, UINT32_C(0x21E1CDE6)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 9U]); // 25
+    transformation_gg<S22, UINT32_C(0xC33707D6)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[14U]); // 26
+    transformation_gg<S23, UINT32_C(0xF4D50D87)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 3U]); // 27
+    transformation_gg<S24, UINT32_C(0x455A14ED)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 8U]); // 28
+    transformation_gg<S21, UINT32_C(0xA9E3E905)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[13U]); // 29
+    transformation_gg<S22, UINT32_C(0xFCEFA3F8)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 2U]); // 30
+    transformation_gg<S23, UINT32_C(0x676F02D9)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 7U]); // 31
+    transformation_gg<S24, UINT32_C(0x8D2A4C8A)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[12U]); // 32
 
     // Perform transformation round 3.
-    transformation_hh<S31, UINT32_C(0xFFFA3942)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 5U]); // 33
-    transformation_hh<S32, UINT32_C(0x8771F681)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 8U]); // 34
-    transformation_hh<S33, UINT32_C(0x6D9D6122)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[11U]); // 35
-    transformation_hh<S34, UINT32_C(0xFDE5380C)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[14U]); // 36
-    transformation_hh<S31, UINT32_C(0xA4BEEA44)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 1U]); // 37
-    transformation_hh<S32, UINT32_C(0x4BDECFA9)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 4U]); // 38
-    transformation_hh<S33, UINT32_C(0xF6BB4B60)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 7U]); // 39
-    transformation_hh<S34, UINT32_C(0xBEBFBC70)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[10U]); // 40
-    transformation_hh<S31, UINT32_C(0x289B7EC6)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[13U]); // 41
-    transformation_hh<S32, UINT32_C(0xEAA127FA)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 0U]); // 42
-    transformation_hh<S33, UINT32_C(0xD4EF3085)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 3U]); // 43
-    transformation_hh<S34, UINT32_C(0x04881D05)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 6U]); // 44
-    transformation_hh<S31, UINT32_C(0xD9D4D039)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 9U]); // 45
-    transformation_hh<S32, UINT32_C(0xE6DB99E5)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[12U]); // 46
-    transformation_hh<S33, UINT32_C(0x1FA27CF8)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[15U]); // 47
-    transformation_hh<S34, UINT32_C(0xC4AC5665)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 2U]); // 48
+    transformation_hh<S31, UINT32_C(0xFFFA3942)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 5U]); // 33
+    transformation_hh<S32, UINT32_C(0x8771F681)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 8U]); // 34
+    transformation_hh<S33, UINT32_C(0x6D9D6122)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[11U]); // 35
+    transformation_hh<S34, UINT32_C(0xFDE5380C)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[14U]); // 36
+    transformation_hh<S31, UINT32_C(0xA4BEEA44)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 1U]); // 37
+    transformation_hh<S32, UINT32_C(0x4BDECFA9)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 4U]); // 38
+    transformation_hh<S33, UINT32_C(0xF6BB4B60)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 7U]); // 39
+    transformation_hh<S34, UINT32_C(0xBEBFBC70)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[10U]); // 40
+    transformation_hh<S31, UINT32_C(0x289B7EC6)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[13U]); // 41
+    transformation_hh<S32, UINT32_C(0xEAA127FA)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 0U]); // 42
+    transformation_hh<S33, UINT32_C(0xD4EF3085)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 3U]); // 43
+    transformation_hh<S34, UINT32_C(0x04881D05)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 6U]); // 44
+    transformation_hh<S31, UINT32_C(0xD9D4D039)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 9U]); // 45
+    transformation_hh<S32, UINT32_C(0xE6DB99E5)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[12U]); // 46
+    transformation_hh<S33, UINT32_C(0x1FA27CF8)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[15U]); // 47
+    transformation_hh<S34, UINT32_C(0xC4AC5665)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 2U]); // 48
 
     // Perform transformation round 4.
-    transformation_ii<S41, UINT32_C(0xF4292244)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 0U]); // 49
-    transformation_ii<S42, UINT32_C(0x432AFF97)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 7U]); // 50
-    transformation_ii<S43, UINT32_C(0xAB9423A7)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[14U]); // 51
-    transformation_ii<S44, UINT32_C(0xFC93A039)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 5U]); // 52
-    transformation_ii<S41, UINT32_C(0x655B59C3)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[12U]); // 53
-    transformation_ii<S42, UINT32_C(0x8F0CCC92)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[ 3U]); // 54
-    transformation_ii<S43, UINT32_C(0xFFEFF47D)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[10U]); // 55
-    transformation_ii<S44, UINT32_C(0x85845DD1)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 1U]); // 56
-    transformation_ii<S41, UINT32_C(0x6FA87E4F)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 8U]); // 57
-    transformation_ii<S42, UINT32_C(0xFE2CE6E0)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[15U]); // 58
-    transformation_ii<S43, UINT32_C(0xA3014314)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 6U]); // 59
-    transformation_ii<S44, UINT32_C(0x4E0811A1)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[13U]); // 60
-    transformation_ii<S41, UINT32_C(0xF7537E82)>(digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], transform_block[ 4U]); // 61
-    transformation_ii<S42, UINT32_C(0xBD3AF235)>(digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], digest_tmp[2U], transform_block[11U]); // 62
-    transformation_ii<S43, UINT32_C(0x2AD7D2BB)>(digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], digest_tmp[1U], transform_block[ 2U]); // 63
-    transformation_ii<S44, UINT32_C(0xEB86D391)>(digest_tmp[1U], digest_tmp[2U], digest_tmp[3U], digest_tmp[0U], transform_block[ 9U]); // 64
+    transformation_ii<S41, UINT32_C(0xF4292244)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 0U]); // 49
+    transformation_ii<S42, UINT32_C(0x432AFF97)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 7U]); // 50
+    transformation_ii<S43, UINT32_C(0xAB9423A7)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[14U]); // 51
+    transformation_ii<S44, UINT32_C(0xFC93A039)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 5U]); // 52
+    transformation_ii<S41, UINT32_C(0x655B59C3)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[12U]); // 53
+    transformation_ii<S42, UINT32_C(0x8F0CCC92)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[ 3U]); // 54
+    transformation_ii<S43, UINT32_C(0xFFEFF47D)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[10U]); // 55
+    transformation_ii<S44, UINT32_C(0x85845DD1)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 1U]); // 56
+    transformation_ii<S41, UINT32_C(0x6FA87E4F)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 8U]); // 57
+    transformation_ii<S42, UINT32_C(0xFE2CE6E0)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[15U]); // 58
+    transformation_ii<S43, UINT32_C(0xA3014314)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 6U]); // 59
+    transformation_ii<S44, UINT32_C(0x4E0811A1)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[13U]); // 60
+    transformation_ii<S41, UINT32_C(0xF7537E82)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 4U]); // 61
+    transformation_ii<S42, UINT32_C(0xBD3AF235)>(hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], transform_block[11U]); // 62
+    transformation_ii<S43, UINT32_C(0x2AD7D2BB)>(hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], hash_tmp[1U], transform_block[ 2U]); // 63
+    transformation_ii<S44, UINT32_C(0xEB86D391)>(hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], hash_tmp[0U], transform_block[ 9U]); // 64
 
-    // Update the state information with the transformation results.
-    std::transform(digest_state.begin(),
-                   digest_state.end(),
-                   digest_tmp.begin(),
-                   digest_state.begin(),
+    // Update the hash state with the transformation results.
+    std::transform(message_hash.cbegin     (),
+                   message_hash.cend       (),
+                   hash_tmp.cbegin         (),
+                   message_hash.begin      (),
                    std::plus<std::uint32_t>());
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::finalize()
+  template<typename my_count_type>
+  void md5<my_count_type>::finalize()
   {
-    // Add the count remaining in the buffer to the count of bytes.
-    padding_length += index_block_message;
-
     // Create the padding. Begin by setting the leading padding byte to 0x80.
-    digest_buffer[index_block_message] = static_cast<std::uint8_t>(0x80U);
+    message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
+
+    ++message_block_index;
 
     // Fill the rest of the padding bytes with zero.
-    std::fill(digest_buffer.begin() + (index_block_message + 1U),
-              digest_buffer.end(),
+    std::fill(message_block.begin() + message_block_index,
+              message_block.end(),
               static_cast<std::uint8_t>(0U));
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
-    if(index_block_message >= std::uint_least8_t(md5_blocksize - 8U))
+    if(message_block_index > static_cast<std::uint_least8_t>(md5_blocksize - 8U))
     {
       perform_algorithm();
 
-      digest_buffer.fill(static_cast<std::uint8_t>(0U));
+      message_block.fill(static_cast<std::uint8_t>(0U));
     }
 
     // Encode the number of bits. Simultaneously convert the number of bytes
@@ -481,92 +407,110 @@
     // The md5 stores the 8 bytes of the bit counter in forward order,
     // with the lowest byte being stored at index 56 in the buffer
     std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
-    std::uint_least8_t index = static_cast<std::uint_least8_t>(md5_blocksize - 8U);
 
-    while(index != static_cast<std::uint_least8_t>((md5_blocksize - 8U) + padding_count_max))
-    {
-      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(padding_length) << 3;
+    std::for_each(message_block.end() - 8U,
+                  message_block.end(),
+                  [&carry, this](std::uint8_t& the_byte)
+                  {
+                    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->padding_length) << 3;
 
-      digest_buffer[index] = static_cast<std::uint8_t>(the_word | carry);
+                    the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-      ++index;
+                    this->padding_length >>= 8;
 
-      padding_length >>= 8;
-
-      carry = static_cast<std::uint8_t>(the_word >> 8);
-    }
+                    carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
+                  });
 
     perform_algorithm();
 
     the_result_is_finalized = true;
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::reset()
+  template<typename my_count_type>
+  void md5<my_count_type>::reset()
   {
-    the_result_is_finalized = false;
-    padding_length          = count_type(0U);
-    index_block_message     = std::uint_least8_t(0U);
+    message_hash[0U] = UINT32_C(0x67452301);
+    message_hash[1U] = UINT32_C(0xEFCDAB89);
+    message_hash[2U] = UINT32_C(0x98BADCFE);
+    message_hash[3U] = UINT32_C(0x10325476);
 
-    digest_state[0U] = UINT32_C(0x67452301);
-    digest_state[1U] = UINT32_C(0xEfCDAB89);
-    digest_state[2U] = UINT32_C(0x98BADCFE);
-    digest_state[3U] = UINT32_C(0x10325476);
+    the_result_is_finalized = false;
+    padding_length          = static_cast<count_type>(0U);
+    message_block_index     = static_cast<std::uint_least8_t>(0U);
   }
 
-  template<typename md5_count_type>
-  void md5<md5_count_type>::process_data_stream(const std::uint8_t* data_stream, count_type count)
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_bytes md5<my_count_type>::get_result_as_bytes_and_finalize_the_state()
   {
-    // Check if initialization is required.
-    if(the_result_is_finalized)
-    {
-      reset();
-    }
+    if(!the_result_is_finalized) { finalize(); }
 
-    // Transform any data that will fill the current modulus-64 block.
-    // Do this even for an entire block of 64 bytes (as is the case for a fresh md5).
-    const std::uint_least8_t the_count_needed_to_fill_a_buffer = static_cast<std::uint_least8_t>(md5_blocksize - index_block_message);
+    result_type_as_bytes result;
 
-    if(count >= the_count_needed_to_fill_a_buffer)
-    {
-      std::copy(data_stream,
-                data_stream + the_count_needed_to_fill_a_buffer,
-                digest_buffer.begin() + index_block_message);
+    // Extract the hash result from the message digest state.
+    convert_uint32_input_to_uint8_output(message_hash.data(),
+                                         message_hash.data() + message_hash.size(),
+                                         result.data());
 
-      perform_algorithm();
+    return result;
+  }
 
-      data_stream += the_count_needed_to_fill_a_buffer;
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_bytes md5<my_count_type>::get_result_as_bytes_and_nochange_the_state() const
+  {
+    // Make a local copy of the hash object.
+    md5 other(*this);
 
-      // Update the number of bytes.
-      padding_length += md5_blocksize;
-      count          -= the_count_needed_to_fill_a_buffer;
+    // Finalize the local copy of the hash object,
+    // and return the final result from the copied object.
+    return other.get_result_as_bytes_and_finalize_the_state();
+  }
 
-      index_block_message = 0U;
-    }
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_dwords md5<my_count_type>::get_result_as_dwords_and_finalize_the_state()
+  {
+    if(!the_result_is_finalized) { finalize(); }
 
-    // Transform all data that are contained within subsequent modulus-64 blocks.
-    const count_type number_of_blocks = count / md5_blocksize;
+    return message_hash;
+  }
 
-    for(count_type i = static_cast<count_type>(0U); i < number_of_blocks; ++i)
-    {
-      std::copy(data_stream,
-                data_stream + md5_blocksize,
-                digest_buffer.begin());
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_dwords md5<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
+  {
+    // Make a local copy of the hash object.
+    md5 other(*this);
 
-      perform_algorithm();
+    // Finalize the local copy of the hash object,
+    // and return the final result from the copied object.
+    other.finalize();
 
-      data_stream += md5_blocksize;
+    return other.message_hash;
+  }
 
-      count          -= md5_blocksize;
-      padding_length += md5_blocksize;
-    }
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_chars md5<my_count_type>::get_result_as_chars_and_finalize_the_state()
+  {
+    // Get the result of the hash object as a byte array.
+    const result_type_as_bytes the_result_as_bytes = get_result_as_bytes_and_finalize_the_state();
 
-    // Buffer the remaining input that could not fit into a modulus-64 block.
-    std::copy(data_stream,
-              data_stream + static_cast<std::uint_least8_t>(count),
-              digest_buffer.begin() + index_block_message);
+    result_type_as_chars the_result_as_chars;
 
-    index_block_message += static_cast<std::uint_least8_t>(count);
+    // Conver the result as a byte array to a character array.
+    convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
+                                        the_result_as_bytes.data() + the_result_as_bytes.size(),
+                                        the_result_as_chars.data());
+
+    return the_result_as_chars;
+  }
+
+  template<typename my_count_type>
+  typename md5<my_count_type>::result_type_as_chars md5<my_count_type>::get_result_as_chars_and_nochange_the_state() const
+  {
+    // Make a local copy of the hash object.
+    md5 temp_md5(*this);
+
+    // Finalize the local copy of the hash object,
+    // and return the final result from the copied object.
+    return temp_md5.get_result_as_chars_and_finalize_the_state();
   }
 
 #endif // _MD5_2012_01_13_H_

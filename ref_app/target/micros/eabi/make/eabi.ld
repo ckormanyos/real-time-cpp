@@ -31,9 +31,9 @@ SECTIONS
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(4);
+    . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM
+  } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -55,8 +55,8 @@ SECTIONS
 
   .text :
   {
-    . = ALIGN(4);
-  } > ROM
+    . = ALIGN(0x10);
+  } > ROM = 0xAAAA
 
   . = 0x20000000;
   . = ALIGN(4);

@@ -56,8 +56,18 @@
       bool timeout() const
       {
         const tick_type timer_mask = static_cast<tick_type>((1ULL << (std::numeric_limits<tick_type>::digits - 1)) - 1ULL);
-        const tick_type delta      = static_cast<tick_type>(tick_type(my_now()) - my_tick);
+        const tick_type delta      = static_cast<tick_type>(static_cast<tick_type>(my_now()) - my_tick);
         return (delta <= timer_mask);
+      }
+
+      void set_mark()
+      {
+        my_tick = static_cast<tick_type>(my_now());
+      }
+
+      tick_type get_ticks_since_mark() const
+      {
+        return static_cast<tick_type>(static_cast<tick_type>(my_now()) - my_tick);
       }
 
       static void blocking_delay(const tick_type& delay)
