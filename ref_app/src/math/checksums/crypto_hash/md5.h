@@ -141,52 +141,38 @@
     static const std::uint_fast8_t S43 = UINT8_C(15);
     static const std::uint_fast8_t S44 = UINT8_C(21);
 
-    // F, G, H, and I are the low-level permutation operations of the md5.
-
-    static std::uint32_t permutation_f(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
-    {
-      return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & y) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~x) & z));
-    }
-
-    static std::uint32_t permutation_g(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
-    {
-      return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & z) | static_cast<std::uint32_t>(y & static_cast<std::uint32_t>(~z)));
-    }
-
-    static std::uint32_t permutation_h(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
-    {
-      return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x ^ y) ^ z);
-    }
-
-    static std::uint32_t permutation_i(const std::uint32_t& x, const std::uint32_t& y, const std::uint32_t& z)
-    {
-      return static_cast<std::uint32_t>(y ^ static_cast<std::uint32_t>(x | static_cast<std::uint32_t>(~z)));
-    }
-
     // FF, GG, HH, and II are the transformations for rounds 1, 2, 3, and 4 of the md5.
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_ff(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      const std::uint32_t permutation_f = static_cast<std::uint32_t>(b & c) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~b) & d);
+
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_gg(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      const std::uint32_t permutation_g = static_cast<std::uint32_t>(b & d) | static_cast<std::uint32_t>(c & static_cast<std::uint32_t>(~d));
+
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_hh(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      const std::uint32_t permutation_h = static_cast<std::uint32_t>(b ^ c) ^ d;
+
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
     static void transformation_ii(std::uint32_t& a, const std::uint32_t& b, const std::uint32_t& c, const std::uint32_t& d, const std::uint32_t& x)
     {
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i(b, c, d)) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      const std::uint32_t permutation_i = c ^ static_cast<std::uint32_t>(b | static_cast<std::uint32_t>(~d));
+
+      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
   };
 
@@ -416,7 +402,7 @@
 
                     the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                    this->padding_length >>= 8;
+                    (this->padding_length) >>= 8;
 
                     carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
                   });

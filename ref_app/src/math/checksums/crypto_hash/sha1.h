@@ -272,24 +272,30 @@
 
     result_type_as_dwords hash_tmp = message_hash;
 
+    std::uint_fast8_t loop_index = static_cast<std::uint_fast8_t>(0U);
+
     for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(80U); ++loop_counter)
     {
-      const std::uint_fast8_t counter_loop = loop_counter & static_cast<std::uint_fast8_t>(0x0FU);
+      const std::uint_fast8_t inner_loop_counter = loop_counter & static_cast<std::uint_fast8_t>(0x0FU);
 
       if(loop_counter >= static_cast<std::uint_fast8_t>(16U))
       {
-        sequence_32word[counter_loop] = circular_shift<1U>(sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>(13U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
-                                                           sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>( 8U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
-                                                           sequence_32word[(counter_loop + static_cast<std::uint_fast8_t>( 2U)) & static_cast<std::uint_fast8_t>(0x0FU)] ^
-                                                           sequence_32word[(counter_loop                                      )                                        ]);
+        const std::uint32_t the_dword =   sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter + 13U) & 0x0FU]
+                                        ^ sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter +  8U) & 0x0FU]
+                                        ^ sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter +  2U) & 0x0FU]
+                                        ^ sequence_32word[                               inner_loop_counter];
+
+        sequence_32word[inner_loop_counter] = circular_shift<1U>(the_dword);
       }
 
-      const std::uint_fast8_t loop_index = static_cast<std::uint_fast8_t>(loop_counter / static_cast<std::uint_fast8_t>(20U));
+      if     (loop_counter == static_cast<std::uint_fast8_t>(20U)) { loop_index = static_cast<std::uint_fast8_t>(1U); }
+      else if(loop_counter == static_cast<std::uint_fast8_t>(40U)) { loop_index = static_cast<std::uint_fast8_t>(2U); }
+      else if(loop_counter == static_cast<std::uint_fast8_t>(60U)) { loop_index = static_cast<std::uint_fast8_t>(3U); }
 
       const std::uint32_t temporary_32word =   circular_shift<5U>(hash_tmp[0U])
                                              + functions[loop_index](hash_tmp.data())
                                              + hash_tmp[4U]
-                                             + sequence_32word[counter_loop]
+                                             + sequence_32word[inner_loop_counter]
                                              + constants[loop_index];
 
       hash_tmp[4U] = hash_tmp[3U];
@@ -343,7 +349,7 @@
 
                     the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                    this->padding_length >>= 8;
+                    (this->padding_length) >>= 8;
 
                     carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
                   });
