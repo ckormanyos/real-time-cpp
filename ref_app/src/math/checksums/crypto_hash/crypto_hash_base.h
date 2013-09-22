@@ -23,6 +23,13 @@
 
     crypto_hash_base& operator=(const crypto_hash_base& other);
 
+    template<const std::uint_fast8_t digits_shift>
+    static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
+    {
+      return   static_cast<std::uint32_t>(shift_32word << digits_shift)
+             | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
+    }
+
     static void convert_uint8_input_to_uint32_output(const std::uint8_t*  src_begin, const std::uint8_t*  src_end, std::uint32_t* dest_begin);
     static void convert_uint32_input_to_uint8_output(const std::uint32_t* src_begin, const std::uint32_t* src_end, std::uint8_t*  dest_begin);
     static void convert_uint8_input_to_char8_output (const std::uint8_t*  src_begin, const std::uint8_t*  src_end, char*          dest_begin);

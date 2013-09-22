@@ -100,9 +100,9 @@
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
 
   private:
-    static const std::uint_least8_t md5_blocksize = 64U;
+    static const std::uint_fast8_t md5_blocksize = 64U;
 
-    static_assert(md5_blocksize == static_cast<std::uint_least8_t>(64U),
+    static_assert(md5_blocksize == static_cast<std::uint_fast8_t>(64U),
                   "the block size must exactly equal 64");
 
     typedef std::array<std::uint8_t,  md5_blocksize>      message_block_type;
@@ -115,13 +115,6 @@
     void perform_algorithm();
     void finalize();
     void reset();
-
-    template<const std::uint_fast8_t digits_shift>
-    static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
-    {
-      return   static_cast<std::uint32_t>(shift_32word << digits_shift)
-             | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
-    }
 
     // Constants for the md5 transform routine.
     static const std::uint_fast8_t S11 = UINT8_C( 7);
@@ -240,7 +233,7 @@
       {
         perform_algorithm();
 
-        message_block_index = static_cast<std::uint_least8_t>(0U);
+        message_block_index = static_cast<std::uint_fast8_t>(0U);
       }
 
       ++data_stream;
@@ -381,7 +374,7 @@
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
-    if(message_block_index > static_cast<std::uint_least8_t>(md5_blocksize - 8U))
+    if(message_block_index > static_cast<std::uint_fast8_t>(md5_blocksize - 8U))
     {
       perform_algorithm();
 
@@ -392,7 +385,7 @@
     // to the number of bits by performing a left-shift of 3 on the byte-array.
     // The md5 stores the 8 bytes of the bit counter in forward order,
     // with the lowest byte being stored at index 56 in the buffer
-    std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
+    std::uint_fast8_t carry = static_cast<std::uint_fast8_t>(0U);
 
     std::for_each(message_block.end() - 8U,
                   message_block.end(),
@@ -404,7 +397,7 @@
 
                     (this->padding_length) >>= 8;
 
-                    carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
+                    carry = static_cast<std::uint_fast8_t>(the_word >> 8) & static_cast<std::uint_fast8_t>(0x07U);
                   });
 
     perform_algorithm();
@@ -422,7 +415,7 @@
 
     the_result_is_finalized = false;
     padding_length          = static_cast<count_type>(0U);
-    message_block_index     = static_cast<std::uint_least8_t>(0U);
+    message_block_index     = static_cast<std::uint_fast8_t>(0U);
   }
 
   template<typename my_count_type>

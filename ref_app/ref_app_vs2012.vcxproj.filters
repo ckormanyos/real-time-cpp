@@ -265,6 +265,9 @@
     <ClCompile Include="src\math\checksums\crypto_hash\test_sha1.cpp">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\led\app_led_runtime_measure.cpp">
+      <Filter>src\app\led</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
