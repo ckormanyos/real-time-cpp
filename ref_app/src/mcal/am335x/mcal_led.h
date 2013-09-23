@@ -48,7 +48,7 @@
       typedef led<std::uint32_t,
                   std::uint32_t,
                   mcal::reg::gpio1_base,
-                  21U> led_type;
+                  UINT32_C(21)> led_type;
 
       extern const led_type led0;
     }

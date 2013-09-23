@@ -48,7 +48,7 @@
       typedef led<std::uint8_t,
                   std::uint8_t,
                   mcal::reg::portb,
-                  5U> led_type;
+                  UINT8_C(5)> led_type;
 
       extern const led_type led0;
     }

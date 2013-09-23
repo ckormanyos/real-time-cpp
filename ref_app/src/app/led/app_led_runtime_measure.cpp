@@ -6,7 +6,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <iostream>
 #include <mcal/mcal.h>
 #include <util/utility/util_time.h>
 #include <math/checksums/crypto_hash/sha1.h>
@@ -33,10 +32,18 @@ namespace
 
   timer_type            app_runtime_timer;
   timer_type::tick_type app_runtime_result;
+
+  typedef mcal::port::port_pin<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::portd,
+                               UINT8_C(2)> app_runtime_port_type;
 }
 
 void app::led::task_init()
 {
+  mcal::led::led0.toggle();
+
+  app_runtime_port_type::set_direction_output();
 }
 
 void app::led::task_func()
@@ -45,19 +52,27 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(timer_type::milliseconds(100U));
 
-    // Start the multitasking scheduler (and never return).
-    if(the_result_is_ok)
+    static std::uint_least8_t led_toggle_prescaler;
+
+    ++led_toggle_prescaler;
+
+    if(led_toggle_prescaler == static_cast<std::uint_least8_t>(10U))
     {
       mcal::led::led0.toggle();
+
+      led_toggle_prescaler = static_cast<std::uint_least8_t>(0U);
+    }
+
+    if(the_result_is_ok)
+    {
+      app_runtime_port_type::set_pin_high();
       app_runtime_timer.set_mark();
       the_sha1.process_data("creativity", sha1_type::count_type(10U));
       the_sha1_result_as_dwords = the_sha1.get_result_as_dwords_and_finalize_the_state();
       app_runtime_result = app_runtime_timer.get_ticks_since_mark();
-      mcal::led::led0.toggle();
+      app_runtime_port_type::set_pin_low();
 
       the_result_is_ok = (the_sha1_result_as_dwords.front() == control_value);
-
-      std::cout << app_runtime_result << std::endl;
     }
   }
 }
