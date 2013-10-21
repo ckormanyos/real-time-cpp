@@ -360,6 +360,7 @@
     <ClInclude Include="src\math\checksums\crypto_hash\crypto_hash_base.h" />
     <ClInclude Include="src\math\checksums\crypto_hash\md5.h" />
     <ClInclude Include="src\math\checksums\crypto_hash\sha1.h" />
+    <ClInclude Include="src\math\checksums\crypto_hash\sha2.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />
     <ClInclude Include="src\math\fixed_point\fixed_point.h" />

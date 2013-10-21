@@ -72,20 +72,20 @@
                   && ( std::numeric_limits<count_type>::is_signed      == false)
                   && ( std::numeric_limits<count_type>::radix          == 2)
                   && ((std::numeric_limits<count_type>::digits % 8)    == 0),
-                  "the count type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+                  "the template count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
     md5();
-    md5(const std::uint8_t* data_stream,   count_type message_length);
-    md5(const char*         string_stream, count_type message_length);
+    md5(const std::uint8_t* data_bytes, count_type message_length);
+    md5(const char*         data_chars, count_type message_length);
     template<typename unsigned_integer_type> md5(unsigned_integer_type u);
     md5(const md5& other);
     md5& operator=(const md5& other);
 
-    void process_data(const std::uint8_t* data_stream, count_type message_length);
+    void process_data(const std::uint8_t* byte_data, count_type message_length);
 
-    void process_data(const char* string_stream, count_type message_length)
+    void process_data(const char* data_chars, count_type message_length)
     {
-      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_chars)), message_length);
     }
 
     template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
@@ -175,15 +175,15 @@
   }
 
   template<typename my_count_type>
-  md5<my_count_type>::md5(const std::uint8_t* data_stream, count_type message_length)
+  md5<my_count_type>::md5(const std::uint8_t* data_bytes, count_type message_length)
   {
-    process_data(data_stream, message_length);
+    process_data(data_bytes, message_length);
   }
 
   template<typename my_count_type>
-  md5<my_count_type>::md5(const char* string_stream, count_type message_length)
+  md5<my_count_type>::md5(const char* data_chars, count_type message_length)
   {
-    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_chars)), message_length);
   }
 
   template<typename my_count_type>
@@ -217,13 +217,13 @@
   }
 
   template<typename my_count_type>
-  void md5<my_count_type>::process_data(const std::uint8_t* data_stream, count_type message_length)
+  void md5<my_count_type>::process_data(const std::uint8_t* data_bytes, count_type message_length)
   {
     if(the_result_is_finalized) { reset(); }
 
     while(message_length != static_cast<count_type>(0U))
     {
-      message_block[message_block_index] = *data_stream;
+      message_block[message_block_index] = *data_bytes;
 
       ++message_block_index;
 
@@ -236,7 +236,7 @@
         message_block_index = static_cast<std::uint_fast8_t>(0U);
       }
 
-      ++data_stream;
+      ++data_bytes;
       --message_length;
     }
   }

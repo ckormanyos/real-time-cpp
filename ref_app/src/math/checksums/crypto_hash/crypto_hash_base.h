@@ -30,7 +30,9 @@
              | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
     }
 
-    static void convert_uint8_input_to_uint32_output(const std::uint8_t*  src_begin, const std::uint8_t*  src_end, std::uint32_t* dest_begin);
+    static void convert_uint8_input_to_uint32_output        (const std::uint8_t* src_begin, const std::uint8_t* src_end, std::uint32_t* dest_begin);
+    static void convert_uint8_input_to_uint32_output_reverse(const std::uint8_t* src_begin, const std::uint8_t* src_end, std::uint32_t* dest_begin);
+
     static void convert_uint32_input_to_uint8_output(const std::uint32_t* src_begin, const std::uint32_t* src_end, std::uint8_t*  dest_begin);
     static void convert_uint8_input_to_char8_output (const std::uint8_t*  src_begin, const std::uint8_t*  src_end, char*          dest_begin);
 
@@ -67,6 +69,26 @@
                                                 | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 1U]) <<  8U)
                                                 | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 2U]) << 16U)
                                                 | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 3U]) << 24U));
+
+                    j += 4U;
+                  });
+  }
+
+  void crypto_hash_base::convert_uint8_input_to_uint32_output_reverse(const std::uint8_t* src_begin, const std::uint8_t* src_end, std::uint32_t* dest_begin)
+  {
+    // Decodes the input (std::uint8_t) into the output (std::uint32_t).
+    // This assumes that the length of the input is a multiple of 4.
+
+    std::uint_least8_t j = static_cast<std::uint_least8_t>(0U);
+
+    std::for_each(dest_begin,
+                  dest_begin + std::uint_least8_t(src_end - src_begin) / 4U,
+                  [&j, &src_begin](std::uint32_t& dest_value)
+                  {
+                    dest_value =  std::uint32_t(  static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 3U]) <<  0U)
+                                                | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 2U]) <<  8U)
+                                                | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 1U]) << 16U)
+                                                | static_cast<std::uint32_t>(static_cast<std::uint32_t>(src_begin[j + 0U]) << 24U));
 
                     j += 4U;
                   });

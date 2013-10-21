@@ -77,20 +77,20 @@
                   && ( std::numeric_limits<count_type>::is_signed      == false)
                   && ( std::numeric_limits<count_type>::radix          == 2)
                   && ((std::numeric_limits<count_type>::digits % 8)    == 0),
-                  "the count type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+                  "the count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
     sha1();
-    sha1(const std::uint8_t* data_stream,   count_type message_length);
-    sha1(const char*         string_stream, count_type message_length);
+    sha1(const std::uint8_t* data_bytes, count_type message_length);
+    sha1(const char*         data_chars, count_type message_length);
     template<typename unsigned_integer_type> sha1(unsigned_integer_type u);
     sha1(const sha1& other);
     sha1& operator=(const sha1& other);
 
-    void process_data(const std::uint8_t* data_stream, count_type message_length);
+    void process_data(const std::uint8_t* data_bytes, count_type message_length);
 
-    void process_data(const char* string_stream, count_type message_length)
+    void process_data(const char* data_chars, count_type message_length)
     {
-      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+      process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_chars)), message_length);
     }
 
     template<typename unsigned_integer_type> void process_data(unsigned_integer_type u);
@@ -110,7 +110,8 @@
     static_assert(sha1_blocksize == static_cast<std::uint_fast8_t>(64U),
                   "the block size must exactly equal 64");
 
-    typedef std::array<std::uint8_t, sha1_blocksize> message_block_type;
+    typedef std::array<std::uint8_t, sha1_blocksize>       message_block_type;
+    typedef std::array<std::uint32_t, sha1_blocksize / 4U> transform_block_type;
 
     count_type            padding_length;
     result_type_as_dwords message_hash;
@@ -127,15 +128,15 @@
   }
 
   template <typename my_count_type>
-  sha1<my_count_type>::sha1(const std::uint8_t* data_stream, count_type message_length)
+  sha1<my_count_type>::sha1(const std::uint8_t* data_bytes, count_type message_length)
   {
-    process_data(data_stream, message_length);
+    process_data(data_bytes, message_length);
   }
 
   template <typename my_count_type>
-  sha1<my_count_type>::sha1(const char* string_stream, count_type message_length)
+  sha1<my_count_type>::sha1(const char* data_chars, count_type message_length)
   {
-    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
+    process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(data_chars)), message_length);
   }
 
   template<typename my_count_type>
@@ -169,13 +170,13 @@
   }
 
   template <typename my_count_type>
-  void sha1<my_count_type>::process_data(const std::uint8_t* data_stream, count_type message_length)
+  void sha1<my_count_type>::process_data(const std::uint8_t* data_bytes, count_type message_length)
   {
     if(the_result_is_finalized) { reset(); }
 
     while(message_length != static_cast<count_type>(0U))
     {
-      message_block[message_block_index] = *data_stream;
+      message_block[message_block_index] = *data_bytes;
 
       ++message_block_index;
 
@@ -188,7 +189,7 @@
         message_block_index = static_cast<std::uint_fast8_t>(0U);
       }
 
-      ++data_stream;
+      ++data_bytes;
       --message_length;
     }
   }
@@ -202,7 +203,7 @@
                   && ( std::numeric_limits<unsigned_integer_type>::is_signed      == false)
                   && ( std::numeric_limits<unsigned_integer_type>::radix          == 2)
                   && ((std::numeric_limits<unsigned_integer_type>::digits % 8)    == 0),
-                  "the template parameter type must be an unsigned integer type with radix 2, having a multiple of 8 bits");
+                  "the template count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
     std::array<std::uint8_t, std::numeric_limits<unsigned_integer_type>::digits / 8> the_data;
 
@@ -235,33 +236,29 @@
 
     const std::array<function_type, 4U> functions =
     {{
-      [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+      [](const std::uint32_t* hash_ptr) -> std::uint32_t
       {
-        return (std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[2U]) | std::uint32_t(std::uint32_t(~my_buffer_32word[1U]) & my_buffer_32word[3U]));
+        return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(std::uint32_t(~hash_ptr[1U]) & hash_ptr[3U]));
       },
-      [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+      [](const std::uint32_t* hash_ptr) -> std::uint32_t
       {
-        return std::uint32_t(std::uint32_t(my_buffer_32word[1U] ^ my_buffer_32word[2U]) ^ my_buffer_32word[3U]);
+        return std::uint32_t(std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
       },
-      [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+      [](const std::uint32_t* hash_ptr) -> std::uint32_t
       {
-        return (std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[2U]) | std::uint32_t(my_buffer_32word[1U] & my_buffer_32word[3U]) | std::uint32_t(my_buffer_32word[2U] & my_buffer_32word[3U]));
+        return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(hash_ptr[1U] & hash_ptr[3U]) | std::uint32_t(hash_ptr[2U] & hash_ptr[3U]));
       },
-      [](const std::uint32_t* my_buffer_32word) -> std::uint32_t
+      [](const std::uint32_t* hash_ptr) -> std::uint32_t
       {
-        return (std::uint32_t(my_buffer_32word[1U] ^ my_buffer_32word[2U]) ^ my_buffer_32word[3U]);
+        return (std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
       }
     }};
 
-    std::array<std::uint32_t, 16U> sequence_32word;
+    transform_block_type transform_block;
 
-    for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(16U); loop_counter++)
-    {
-      sequence_32word[loop_counter]  = (  (static_cast<std::uint32_t>(message_block[(loop_counter * 4U)                                     ]) << 24U)
-                                        | (static_cast<std::uint32_t>(message_block[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(1U)]) << 16U)
-                                        | (static_cast<std::uint32_t>(message_block[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(2U)]) <<  8U)
-                                        | (static_cast<std::uint32_t>(message_block[(loop_counter * 4U) + static_cast<std::uint_fast8_t>(3U)]) <<  0U));
-    }
+    convert_uint8_input_to_uint32_output_reverse(message_block.data(),
+                                                 message_block.data() + sha1_blocksize,
+                                                 transform_block.data());
 
     result_type_as_dwords hash_tmp = message_hash;
 
@@ -269,33 +266,31 @@
 
     for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(80U); ++loop_counter)
     {
-      const std::uint_fast8_t inner_loop_counter = loop_counter & static_cast<std::uint_fast8_t>(0x0FU);
-
       if(loop_counter >= static_cast<std::uint_fast8_t>(16U))
       {
-        const std::uint32_t the_dword =   sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter + 13U) & 0x0FU]
-                                        ^ sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter +  8U) & 0x0FU]
-                                        ^ sequence_32word[static_cast<std::uint_fast8_t>(inner_loop_counter +  2U) & 0x0FU]
-                                        ^ sequence_32word[                               inner_loop_counter];
+        const std::uint32_t the_dword =   transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter + 13U) & static_cast<std::uint_fast8_t>(0x0FU))]
+                                        ^ transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter +  8U) & static_cast<std::uint_fast8_t>(0x0FU))]
+                                        ^ transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter +  2U) & static_cast<std::uint_fast8_t>(0x0FU))]
+                                        ^ transform_block[static_cast<std::uint_fast8_t>(                               loop_counter        & static_cast<std::uint_fast8_t>(0x0FU))];
 
-        sequence_32word[inner_loop_counter] = circular_shift<1U>(the_dword);
+        transform_block[static_cast<std::uint_fast8_t>(loop_counter & static_cast<std::uint_fast8_t>(0x0FU))] = circular_shift<1U>(the_dword);
+
+        if     (loop_counter == static_cast<std::uint_fast8_t>(20U)) { loop_index = static_cast<std::uint_fast8_t>(1U); }
+        else if(loop_counter == static_cast<std::uint_fast8_t>(40U)) { loop_index = static_cast<std::uint_fast8_t>(2U); }
+        else if(loop_counter == static_cast<std::uint_fast8_t>(60U)) { loop_index = static_cast<std::uint_fast8_t>(3U); }
       }
 
-      if     (loop_counter == static_cast<std::uint_fast8_t>(20U)) { loop_index = static_cast<std::uint_fast8_t>(1U); }
-      else if(loop_counter == static_cast<std::uint_fast8_t>(40U)) { loop_index = static_cast<std::uint_fast8_t>(2U); }
-      else if(loop_counter == static_cast<std::uint_fast8_t>(60U)) { loop_index = static_cast<std::uint_fast8_t>(3U); }
-
-      const std::uint32_t temporary_32word =   circular_shift<5U>(hash_tmp[0U])
-                                             + functions[loop_index](hash_tmp.data())
-                                             + hash_tmp[4U]
-                                             + sequence_32word[inner_loop_counter]
-                                             + constants[loop_index];
+      const std::uint32_t tmp32 =   circular_shift<5U>(hash_tmp[0U])
+                                  + functions[loop_index](hash_tmp.data())
+                                  + hash_tmp[4U]
+                                  + transform_block[static_cast<std::uint_fast8_t>(loop_counter & static_cast<std::uint_fast8_t>(0x0FU))]
+                                  + constants[loop_index];
 
       hash_tmp[4U] = hash_tmp[3U];
       hash_tmp[3U] = hash_tmp[2U];
       hash_tmp[2U] = circular_shift<30U>(hash_tmp[1U]);
       hash_tmp[1U] = hash_tmp[0U];
-      hash_tmp[0U] = temporary_32word;
+      hash_tmp[0U] = tmp32;
     }
 
     // Update the hash state with the transformation results.
