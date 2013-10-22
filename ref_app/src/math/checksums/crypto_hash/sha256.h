@@ -1,5 +1,62 @@
-#ifndef _SHA2_2013_10_21_H_
-  #define _SHA2_2013_10_21_H_
+
+///////////////////////////////////////////////////////////////////////////////
+// \license BCP 78
+// sha256 can not be redistributed or modified.
+//
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// This work has been created by Arwed Steuer and Christopher Kormanyos.
+// This work is an implementation of sha256 that has been specifically
+// designed for C++. The implementation places particular
+// emphasis on portability to microcontroller platforms.
+//
+// This work has been derived from:
+// "RFC 4868 HMAC-SHA256, SHA384, and SHA512 in IPsec May 2007".
+// The original license notices from "The IETF Trust"
+// follow below.
+//
+// Copyright (C) The IETF Trust (2007).
+//
+// This document is subject to the rights, licenses and restrictions
+// contained in BCP 78, and except as set forth therein, the authors
+// retain all their rights.
+//
+// This document and the information contained herein are provided on an
+// "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+// OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+// THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+// THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+// WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+//
+// Intellectual Property
+//
+// The IETF takes no position regarding the validity or scope of any
+// Intellectual Property Rights or other rights that might be claimed to
+// pertain to the implementation or use of the technology described in
+// this document or the extent to which any license under such rights
+// might or might not be available; nor does it represent that it has
+// made any independent effort to identify any such rights. Information
+// on the procedures with respect to rights in RFC documents can be
+// found in BCP 78 and BCP 79.
+//
+// Copies of IPR disclosures made to the IETF Secretariat and any
+// assurances of licenses to be made available, or the result of an
+// attempt made to obtain a general license or permission for the use of
+// such proprietary rights by implementers or users of this
+// specification can be obtained from the IETF on-line IPR repository at
+// http://www.ietf.org/ipr.
+//
+// The IETF invites any interested party to bring to its attention any
+// copyrights, patents or patent applications, or other proprietary
+// rights that may cover technology that may be required to implement
+// this standard. Please address the information to the IETF at
+// ietf-ipr@ietf.org.
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef _SHA256_2013_10_21_H_
+  #define _SHA256_2013_10_21_H_
 
   #include <array>
   #include <cstddef>
@@ -7,7 +64,7 @@
   #include "crypto_hash_base.h"
 
   template <typename my_count_type>
-  class sha2 : public crypto_hash_base
+  class sha256 : public crypto_hash_base
   {
   public:
     typedef my_count_type                  count_type;
@@ -22,12 +79,12 @@
                   && ((std::numeric_limits<count_type>::digits % 8)    == 0),
                   "the count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
-    sha2();
-    sha2(const std::uint8_t* data_stream,   count_type message_length);
-    sha2(const char*         string_stream, count_type message_length);
-    template<typename unsigned_integer_type> sha2(unsigned_integer_type u);
-    sha2(const sha2& other);
-    sha2& operator=(const sha2& other);
+    sha256();
+    sha256(const std::uint8_t* data_stream,   count_type message_length);
+    sha256(const char*         string_stream, count_type message_length);
+    template<typename unsigned_integer_type> sha256(unsigned_integer_type u);
+    sha256(const sha256& other);
+    sha256& operator=(const sha256& other);
 
     void process_data(const std::uint8_t* data_stream, count_type message_length);
 
@@ -48,78 +105,71 @@
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
 
   private:
-    static const std::uint_least8_t sha2_blocksize = 64U;
+    static const std::uint_least8_t sha256_blocksize = 64U;
 
-    static_assert(sha2_blocksize == static_cast<std::uint_least8_t>(64U),
+    static_assert(sha256_blocksize == static_cast<std::uint_least8_t>(64U),
                   "the block size must exactly equal 64");
 
-    typedef std::array<std::uint8_t, sha2_blocksize> message_block_type;
+    typedef std::array<std::uint8_t, sha256_blocksize> message_block_type;
 
-    count_type            padding_length;
+    count_type            message_length_total;
     result_type_as_dwords message_hash;
     message_block_type    message_block;
 
     void perform_algorithm();
     void finalize();
     void reset();
-
-    template<const std::uint_fast8_t digits_shift>
-    static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
-    {
-      return   static_cast<std::uint32_t>(shift_32word << digits_shift)
-             | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
-    }
   };
 
   template <typename my_count_type>
-  sha2<my_count_type>::sha2()
+  sha256<my_count_type>::sha256()
   {
   }
 
   template <typename my_count_type>
-  sha2<my_count_type>::sha2(const std::uint8_t* data_stream, count_type message_length)
+  sha256<my_count_type>::sha256(const std::uint8_t* data_stream, count_type message_length)
   {
     process_data(data_stream, message_length);
   }
 
   template <typename my_count_type>
-  sha2<my_count_type>::sha2(const char* string_stream, count_type message_length)
+  sha256<my_count_type>::sha256(const char* string_stream, count_type message_length)
   {
     process_data(static_cast<const std::uint8_t*>(static_cast<const void*>(string_stream)), message_length);
   }
 
   template<typename my_count_type>
   template<typename unsigned_integer_type>
-  sha2<my_count_type>::sha2(unsigned_integer_type u)
+  sha256<my_count_type>::sha256(unsigned_integer_type u)
   {
     process_data(u);
   }
 
   template <typename my_count_type>
-  sha2<my_count_type>::sha2(const sha2& other) : crypto_hash_base(other),
-                                                   padding_length  (other.padding_length),
-                                                   message_hash    (other.message_hash),
-                                                   message_block   (other.message_block)
+  sha256<my_count_type>::sha256(const sha256& other) : crypto_hash_base    (other),
+                                                 message_length_total(other.message_length_total),
+                                                 message_hash        (other.message_hash),
+                                                 message_block       (other.message_block)
   {
   }
 
   template <typename my_count_type>
-  sha2<my_count_type>& sha2<my_count_type>::operator=(const sha2& other)
+  sha256<my_count_type>& sha256<my_count_type>::operator=(const sha256& other)
   {
     if(this != &other)
     {
       static_cast<void>(crypto_hash_base::operator=(other));
 
-      padding_length = other.padding_length;
-      message_hash   = other.message_hash;
-      message_block  = other.message_block;
+      message_length_total = other.message_length_total;
+      message_hash         = other.message_hash;
+      message_block        = other.message_block;
     }
 
     return *this;
   }
 
   template <typename my_count_type>
-  void sha2<my_count_type>::process_data(const std::uint8_t* data_stream, count_type message_length)
+  void sha256<my_count_type>::process_data(const std::uint8_t* data_stream, count_type message_length)
   {
     if(the_result_is_finalized) { reset(); }
 
@@ -129,9 +179,9 @@
 
       ++message_block_index;
 
-      ++padding_length;
+      ++message_length_total;
 
-      if(message_block_index == sha2_blocksize)
+      if(message_block_index == sha256_blocksize)
       {
         perform_algorithm();
       }
@@ -143,7 +193,7 @@
 
   template<typename my_count_type>
   template<typename unsigned_integer_type>
-  void sha2<my_count_type>::process_data(unsigned_integer_type u)
+  void sha256<my_count_type>::process_data(unsigned_integer_type u)
   {
     static_assert(   ( std::numeric_limits<unsigned_integer_type>::is_specialized == true)
                   && ( std::numeric_limits<unsigned_integer_type>::is_integer     == true)
@@ -167,76 +217,28 @@
   }
 
   template <typename my_count_type>
-  void sha2<my_count_type>::perform_algorithm()
+  void sha256<my_count_type>::perform_algorithm()
   {
     // Apply the hash algorithm to a full data block.
 
     const std::array<std::uint32_t, 64> constants =
     {{
-      UINT32_C(0x428a2f98),
-      UINT32_C(0x71374491),
-      UINT32_C(0xb5c0fbcf),
-      UINT32_C(0xe9b5dba5),
-      UINT32_C(0x3956c25b),
-      UINT32_C(0x59f111f1),
-      UINT32_C(0x923f82a4),
-      UINT32_C(0xab1c5ed5),
-      UINT32_C(0xd807aa98),
-      UINT32_C(0x12835b01),
-      UINT32_C(0x243185be),
-      UINT32_C(0x550c7dc3),
-      UINT32_C(0x72be5d74),
-      UINT32_C(0x80deb1fe),
-      UINT32_C(0x9bdc06a7),
-      UINT32_C(0xc19bf174),
-      UINT32_C(0xe49b69c1),
-      UINT32_C(0xefbe4786),
-      UINT32_C(0x0fc19dc6),
-      UINT32_C(0x240ca1cc),
-      UINT32_C(0x2de92c6f),
-      UINT32_C(0x4a7484aa),
-      UINT32_C(0x5cb0a9dc),
-      UINT32_C(0x76f988da),
-      UINT32_C(0x983e5152),
-      UINT32_C(0xa831c66d),
-      UINT32_C(0xb00327c8),
-      UINT32_C(0xbf597fc7),
-      UINT32_C(0xc6e00bf3),
-      UINT32_C(0xd5a79147),
-      UINT32_C(0x06ca6351),
-      UINT32_C(0x14292967),
-      UINT32_C(0x27b70a85),
-      UINT32_C(0x2e1b2138),
-      UINT32_C(0x4d2c6dfc),
-      UINT32_C(0x53380d13),
-      UINT32_C(0x650a7354),
-      UINT32_C(0x766a0abb),
-      UINT32_C(0x81c2c92e),
-      UINT32_C(0x92722c85),
-      UINT32_C(0xa2bfe8a1),
-      UINT32_C(0xa81a664b),
-      UINT32_C(0xc24b8b70),
-      UINT32_C(0xc76c51a3),
-      UINT32_C(0xd192e819),
-      UINT32_C(0xd6990624),
-      UINT32_C(0xf40e3585),
-      UINT32_C(0x106aa070),
-      UINT32_C(0x19a4c116),
-      UINT32_C(0x1e376c08),
-      UINT32_C(0x2748774c),
-      UINT32_C(0x34b0bcb5),
-      UINT32_C(0x391c0cb3),
-      UINT32_C(0x4ed8aa4a),
-      UINT32_C(0x5b9cca4f),
-      UINT32_C(0x682e6ff3),
-      UINT32_C(0x748f82ee),
-      UINT32_C(0x78a5636f),
-      UINT32_C(0x84c87814),
-      UINT32_C(0x8cc70208),
-      UINT32_C(0x90befffa),
-      UINT32_C(0xa4506ceb),
-      UINT32_C(0xbef9a3f7),
-      UINT32_C(0xc67178f2)
+      UINT32_C(0x428A2F98), UINT32_C(0x71374491), UINT32_C(0xB5C0FBCF), UINT32_C(0xE9B5DBA5), 
+      UINT32_C(0x3956C25B), UINT32_C(0x59F111F1), UINT32_C(0x923F82A4), UINT32_C(0xAB1C5ED5), 
+      UINT32_C(0xD807AA98), UINT32_C(0x12835B01), UINT32_C(0x243185BE), UINT32_C(0x550C7DC3), 
+      UINT32_C(0x72BE5D74), UINT32_C(0x80DEB1FE), UINT32_C(0x9BDC06A7), UINT32_C(0xC19BF174), 
+      UINT32_C(0xE49B69C1), UINT32_C(0xEFBE4786), UINT32_C(0x0FC19DC6), UINT32_C(0x240CA1CC), 
+      UINT32_C(0x2DE92C6F), UINT32_C(0x4A7484AA), UINT32_C(0x5CB0A9DC), UINT32_C(0x76F988DA), 
+      UINT32_C(0x983E5152), UINT32_C(0xA831C66D), UINT32_C(0xB00327C8), UINT32_C(0xBF597FC7), 
+      UINT32_C(0xC6E00BF3), UINT32_C(0xD5A79147), UINT32_C(0x06CA6351), UINT32_C(0x14292967), 
+      UINT32_C(0x27B70A85), UINT32_C(0x2E1B2138), UINT32_C(0x4D2C6DFC), UINT32_C(0x53380D13), 
+      UINT32_C(0x650A7354), UINT32_C(0x766A0ABB), UINT32_C(0x81C2C92E), UINT32_C(0x92722C85), 
+      UINT32_C(0xA2BFE8A1), UINT32_C(0xA81A664B), UINT32_C(0xC24B8B70), UINT32_C(0xC76C51A3), 
+      UINT32_C(0xD192E819), UINT32_C(0xD6990624), UINT32_C(0xF40E3585), UINT32_C(0x106AA070), 
+      UINT32_C(0x19A4C116), UINT32_C(0x1E376C08), UINT32_C(0x2748774C), UINT32_C(0x34B0BCB5), 
+      UINT32_C(0x391C0CB3), UINT32_C(0x4ED8AA4A), UINT32_C(0x5B9CCA4F), UINT32_C(0x682E6FF3), 
+      UINT32_C(0x748F82EE), UINT32_C(0x78A5636F), UINT32_C(0x84C87814), UINT32_C(0x8CC70208), 
+      UINT32_C(0x90BEFFFA), UINT32_C(0xA4506CEB), UINT32_C(0xBEF9A3F7), UINT32_C(0xC67178F2)
     }};
 
     typedef std::uint32_t(*function_type)(const std::uint32_t);
@@ -289,27 +291,25 @@
 
     result_type_as_dwords hash_tmp = message_hash;
 
-    std::uint32_t temporary1;
-    std::uint32_t temporary2;
-
     for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(64U); loop_counter++)
     {
-      temporary1 =   hash_tmp[7]
-                   + functions[1](hash_tmp[4])
-                   + (hash_tmp[4] & hash_tmp[5]) ^ ((!hash_tmp[4]) & hash_tmp[6])
-                   + constants[loop_counter]
-                   + sequence_32word[loop_counter];
-      temporary2 =   functions[0](hash_tmp[0])
-                   + (hash_tmp[0] & hash_tmp[1]) ^ (hash_tmp[0] & hash_tmp[2]) ^ (hash_tmp[1] & hash_tmp[2]);
+      const std::uint32_t tmp1 =   hash_tmp[7]
+                                 + functions[1](hash_tmp[4])
+                                 + std::uint32_t(std::uint32_t(hash_tmp[4] & hash_tmp[5]) ^ std::uint32_t(std::uint32_t(~hash_tmp[4]) & hash_tmp[6]))
+                                 + constants[loop_counter]
+                                 + sequence_32word[loop_counter];
+
+      const std::uint32_t tmp2 =   functions[0](hash_tmp[0])
+                                 + std::uint32_t(std::uint32_t(hash_tmp[0] & hash_tmp[1]) ^ std::uint32_t(hash_tmp[0] & hash_tmp[2]) ^ std::uint32_t(hash_tmp[1] & hash_tmp[2]));
 
       hash_tmp[7] = hash_tmp[6];
       hash_tmp[6] = hash_tmp[5];
       hash_tmp[5] = hash_tmp[4];
-      hash_tmp[4] = hash_tmp[3] + temporary1;
+      hash_tmp[4] = hash_tmp[3] + tmp1;
       hash_tmp[3] = hash_tmp[2];
       hash_tmp[2] = hash_tmp[1];
       hash_tmp[1] = hash_tmp[0];
-      hash_tmp[0] = temporary1 + temporary2;
+      hash_tmp[0] = tmp1 + tmp2;
     }
 
     // Update the hash state with the transformation results.
@@ -323,7 +323,7 @@
   }
 
   template <typename my_count_type>
-  void sha2<my_count_type>::finalize()
+  void sha256<my_count_type>::finalize()
   {
     // Create the padding. Begin by setting the leading padding byte to 0x80.
     message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
@@ -337,7 +337,7 @@
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
-    if(message_block_index > static_cast<std::uint_least8_t>(sha2_blocksize - 8U))
+    if(message_block_index > static_cast<std::uint_least8_t>(sha256_blocksize - 8U))
     {
       perform_algorithm();
 
@@ -346,7 +346,7 @@
 
     // Encode the number of bits. Simultaneously convert the number of bytes
     // to the number of bits by performing a left-shift of 3 on the byte-array.
-    // The sha2 stores the 8 bytes of the bit counter in reverse order,
+    // The sha256 stores the 8 bytes of the bit counter in reverse order,
     // with the lowest byte being stored at the highest position of the buffer
     std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
 
@@ -354,11 +354,11 @@
                   message_block.rbegin() + 8U,
                   [&carry, this](std::uint8_t& the_byte)
                   {
-                    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->padding_length) << 3;
+                    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->message_length_total) << 3;
 
                     the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                    this->padding_length >>= 8;
+                    this->message_length_total >>= 8;
 
                     carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
                   });
@@ -369,24 +369,24 @@
   }
 
   template<typename my_count_type>
-  void sha2<my_count_type>::reset()
+  void sha256<my_count_type>::reset()
   {
-    message_hash[0U] = UINT32_C(0x6a09e667);
-    message_hash[1U] = UINT32_C(0xbb67ae85);
-    message_hash[2U] = UINT32_C(0x3c6ef372);
-    message_hash[3U] = UINT32_C(0xa54ff53a);
-    message_hash[4U] = UINT32_C(0x510e527f);
-    message_hash[5U] = UINT32_C(0x9b05688c);
-    message_hash[6U] = UINT32_C(0x1f83d9ab);
-    message_hash[7U] = UINT32_C(0x5be0cd19);
+    message_hash[0U] = UINT32_C(0x6A09E667);
+    message_hash[1U] = UINT32_C(0xBB67AE85);
+    message_hash[2U] = UINT32_C(0x3C6EF372);
+    message_hash[3U] = UINT32_C(0xA54FF53A);
+    message_hash[4U] = UINT32_C(0x510E527F);
+    message_hash[5U] = UINT32_C(0x9B05688C);
+    message_hash[6U] = UINT32_C(0x1F83D9AB);
+    message_hash[7U] = UINT32_C(0x5BE0CD19);
 
     the_result_is_finalized = false;
-    padding_length          = static_cast<count_type>(0U);
+    message_length_total    = static_cast<count_type>(0U);
     message_block_index     = static_cast<std::uint_least8_t>(0U);
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_bytes sha2<my_count_type>::get_result_as_bytes_and_finalize_the_state()
+  typename sha256<my_count_type>::result_type_as_bytes sha256<my_count_type>::get_result_as_bytes_and_finalize_the_state()
   {
     if(!the_result_is_finalized) { finalize(); }
 
@@ -401,10 +401,10 @@
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_bytes sha2<my_count_type>::get_result_as_bytes_and_nochange_the_state() const
+  typename sha256<my_count_type>::result_type_as_bytes sha256<my_count_type>::get_result_as_bytes_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
-    sha2 other(*this);
+    sha256 other(*this);
 
     // Finalize the local copy of the hash object,
     // and return the final result from the copied object.
@@ -412,7 +412,7 @@
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_dwords sha2<my_count_type>::get_result_as_dwords_and_finalize_the_state()
+  typename sha256<my_count_type>::result_type_as_dwords sha256<my_count_type>::get_result_as_dwords_and_finalize_the_state()
   {
     if(!the_result_is_finalized) { finalize(); }
 
@@ -420,10 +420,10 @@
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_dwords sha2<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
+  typename sha256<my_count_type>::result_type_as_dwords sha256<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
-    sha2 other(*this);
+    sha256 other(*this);
 
     // Finalize the local copy of the hash object,
     // and return the final result from the copied object.
@@ -433,7 +433,7 @@
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_chars sha2<my_count_type>::get_result_as_chars_and_finalize_the_state()
+  typename sha256<my_count_type>::result_type_as_chars sha256<my_count_type>::get_result_as_chars_and_finalize_the_state()
   {
     // Get the result of the hash object as a byte array.
     const result_type_as_bytes the_result_as_bytes = get_result_as_bytes_and_finalize_the_state();
@@ -445,8 +445,8 @@
                                         the_result_as_bytes.data() + the_result_as_bytes.size(),
                                         the_result_as_chars.data());
 
-    // Obtain the correct byte order for displaying the sha2 string in the usual fashion.
-/*    for(std::uint_least8_t i = static_cast<std::uint_least8_t>(0U); i < static_cast<std::uint_least8_t>(the_result_as_chars.size()); i += 8U)
+    // Obtain the correct byte order for displaying the sha256 string in the usual fashion.
+    for(std::uint_least8_t i = static_cast<std::uint_least8_t>(0U); i < static_cast<std::uint_least8_t>(the_result_as_chars.size()); i += 8U)
     {
       std::swap_ranges(the_result_as_chars.begin() + (i + 0U),
                        the_result_as_chars.begin() + (i + 2U),
@@ -455,20 +455,20 @@
       std::swap_ranges(the_result_as_chars.begin() + (i + 2U),
                        the_result_as_chars.begin() + (i + 4U),
                        the_result_as_chars.begin() + (i + 4U));
-    }*/
+    }
 
     return the_result_as_chars;
   }
 
   template<typename my_count_type>
-  typename sha2<my_count_type>::result_type_as_chars sha2<my_count_type>::get_result_as_chars_and_nochange_the_state() const
+  typename sha256<my_count_type>::result_type_as_chars sha256<my_count_type>::get_result_as_chars_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
-    sha2 temp_sha2(*this);
+    sha256 temp_sha256(*this);
 
     // Finalize the local copy of the hash object,
     // and return the final result from the copied object.
-    return temp_sha2.get_result_as_chars_and_finalize_the_state();
+    return temp_sha256.get_result_as_chars_and_finalize_the_state();
   }
 
-#endif // _SHA2_2013_10_21_H_
+#endif // _SHA256_2013_10_21_H_

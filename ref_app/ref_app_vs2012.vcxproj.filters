@@ -660,7 +660,7 @@
     <ClInclude Include="src\math\checksums\crypto_hash\sha1.h">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha2.h">
+    <ClInclude Include="src\math\checksums\crypto_hash\sha256.h">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
   </ItemGroup>

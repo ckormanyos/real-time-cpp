@@ -108,7 +108,7 @@
     typedef std::array<std::uint8_t,  md5_blocksize>      message_block_type;
     typedef std::array<std::uint32_t, md5_blocksize / 4U> transform_block_type;
 
-    count_type            padding_length;
+    count_type            message_length_total;
     result_type_as_dwords message_hash;
     message_block_type    message_block;
 
@@ -194,10 +194,10 @@
   }
 
   template<typename my_count_type>
-  md5<my_count_type>::md5(const md5& other) : crypto_hash_base(other),
-                                              padding_length  (other.padding_length),
-                                              message_hash    (other.message_hash),
-                                              message_block   (other.message_block)
+  md5<my_count_type>::md5(const md5& other) : crypto_hash_base    (other),
+                                              message_length_total(other.message_length_total),
+                                              message_hash        (other.message_hash),
+                                              message_block       (other.message_block)
   {
   }
 
@@ -208,9 +208,9 @@
     {
       static_cast<void>(crypto_hash_base::operator=(other));
 
-      padding_length = other.padding_length;
-      message_hash   = other.message_hash;
-      message_block  = other.message_block;
+      message_length_total = other.message_length_total;
+      message_hash         = other.message_hash;
+      message_block        = other.message_block;
     }
 
     return *this;
@@ -227,7 +227,7 @@
 
       ++message_block_index;
 
-      ++padding_length;
+      ++message_length_total;
 
       if(message_block_index == md5_blocksize)
       {
@@ -391,11 +391,11 @@
                   message_block.end(),
                   [&carry, this](std::uint8_t& the_byte)
                   {
-                    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->padding_length) << 3;
+                    const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->message_length_total) << 3;
 
                     the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                    (this->padding_length) >>= 8;
+                    (this->message_length_total) >>= 8;
 
                     carry = static_cast<std::uint_fast8_t>(the_word >> 8) & static_cast<std::uint_fast8_t>(0x07U);
                   });
@@ -414,7 +414,7 @@
     message_hash[3U] = UINT32_C(0x10325476);
 
     the_result_is_finalized = false;
-    padding_length          = static_cast<count_type>(0U);
+    message_length_total    = static_cast<count_type>(0U);
     message_block_index     = static_cast<std::uint_fast8_t>(0U);
   }
 
