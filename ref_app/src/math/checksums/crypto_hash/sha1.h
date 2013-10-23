@@ -216,7 +216,7 @@
                     u >>= 8;
                   });
 
-    process_data(the_data.data(), the_data.size());
+    process_data(the_data.data(), static_cast<count_type>(the_data.size()));
   }
 
   template <typename my_count_type>
