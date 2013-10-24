@@ -141,7 +141,7 @@
     {
       const std::uint32_t permutation_f = static_cast<std::uint32_t>(b & c) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~b) & d);
 
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -149,7 +149,7 @@
     {
       const std::uint32_t permutation_g = static_cast<std::uint32_t>(b & d) | static_cast<std::uint32_t>(c & static_cast<std::uint32_t>(~d));
 
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -157,7 +157,7 @@
     {
       const std::uint32_t permutation_h = static_cast<std::uint32_t>(b ^ c) ^ d;
 
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -165,7 +165,7 @@
     {
       const std::uint32_t permutation_i = c ^ static_cast<std::uint32_t>(b | static_cast<std::uint32_t>(~d));
 
-      a = static_cast<std::uint32_t>(circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
   };
 

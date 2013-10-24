@@ -251,27 +251,27 @@
     {{
       [](const std::uint32_t& the_dword) -> std::uint32_t // BSIG0
       {
-        return (  std::uint32_t(std::uint32_t(the_dword >>  2U) | std::uint32_t(the_dword << (32U -  2U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 13U) | std::uint32_t(the_dword << (32U - 13U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 22U) | std::uint32_t(the_dword << (32U - 22U))));
+        return std::uint32_t(  crypto_hash_circular_shift<30U>(the_dword)
+                             ^ crypto_hash_circular_shift<19U>(the_dword)
+                             ^ crypto_hash_circular_shift<10U>(the_dword));
       },
       [](const std::uint32_t& the_dword) -> std::uint32_t // BSIG1
       {
-        return (  std::uint32_t(std::uint32_t(the_dword >>  6U) | std::uint32_t(the_dword << (32U -  6U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 11U) | std::uint32_t(the_dword << (32U - 11U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 25U) | std::uint32_t(the_dword << (32U - 25U))));
+        return std::uint32_t(  crypto_hash_circular_shift<26U>(the_dword)
+                             ^ crypto_hash_circular_shift<21U>(the_dword)
+                             ^ crypto_hash_circular_shift<7U>(the_dword));
       },
       [](const std::uint32_t& the_dword) -> std::uint32_t // SSIG0
       {
-        return (  std::uint32_t(std::uint32_t(the_dword >>  7U) | std::uint32_t(the_dword << (32U -  7U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 18U) | std::uint32_t(the_dword << (32U - 18U)))
-                ^               std::uint32_t(the_dword >>  3U));
+        return std::uint32_t(  crypto_hash_circular_shift<25U>(the_dword)
+                             ^ crypto_hash_circular_shift<14U>(the_dword)
+                             ^ std::uint32_t(the_dword >> 3U));
       },
       [](const std::uint32_t& the_dword) -> std::uint32_t // SSIG1
       {
-        return (  std::uint32_t(std::uint32_t(the_dword >> 17U) | std::uint32_t(the_dword << (32U - 17U)))
-                ^ std::uint32_t(std::uint32_t(the_dword >> 19U) | std::uint32_t(the_dword << (32U - 19U)))
-                ^               std::uint32_t(the_dword >> 10U));
+        return std::uint32_t(  crypto_hash_circular_shift<15U>(the_dword)
+                             ^ crypto_hash_circular_shift<13U>(the_dword)
+                             ^ std::uint32_t(the_dword >> 10U));
       }
     }};
 

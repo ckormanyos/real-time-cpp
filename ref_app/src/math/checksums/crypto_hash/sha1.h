@@ -268,27 +268,27 @@
     {
       if(loop_counter >= static_cast<std::uint_fast8_t>(16U))
       {
-        const std::uint32_t the_dword =   transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter + 13U) & static_cast<std::uint_fast8_t>(0x0FU))]
-                                        ^ transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter +  8U) & static_cast<std::uint_fast8_t>(0x0FU))]
-                                        ^ transform_block[static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(loop_counter +  2U) & static_cast<std::uint_fast8_t>(0x0FU))]
-                                        ^ transform_block[static_cast<std::uint_fast8_t>(                               loop_counter        & static_cast<std::uint_fast8_t>(0x0FU))];
+        const std::uint32_t the_dword =   transform_block[std::uint_fast8_t(std::uint_fast8_t(loop_counter + 13U) & std::uint_fast8_t(0x0FU))]
+                                        ^ transform_block[std::uint_fast8_t(std::uint_fast8_t(loop_counter +  8U) & std::uint_fast8_t(0x0FU))]
+                                        ^ transform_block[std::uint_fast8_t(std::uint_fast8_t(loop_counter +  2U) & std::uint_fast8_t(0x0FU))]
+                                        ^ transform_block[std::uint_fast8_t(                  loop_counter        & std::uint_fast8_t(0x0FU))];
 
-        transform_block[static_cast<std::uint_fast8_t>(loop_counter & static_cast<std::uint_fast8_t>(0x0FU))] = circular_shift<1U>(the_dword);
+        transform_block[static_cast<std::uint_fast8_t>(loop_counter & std::uint_fast8_t(0x0FU))] = crypto_hash_circular_shift<1U>(the_dword);
 
-        if     (loop_counter == static_cast<std::uint_fast8_t>(20U)) { loop_index = static_cast<std::uint_fast8_t>(1U); }
-        else if(loop_counter == static_cast<std::uint_fast8_t>(40U)) { loop_index = static_cast<std::uint_fast8_t>(2U); }
-        else if(loop_counter == static_cast<std::uint_fast8_t>(60U)) { loop_index = static_cast<std::uint_fast8_t>(3U); }
+        if     (loop_counter == std::uint_fast8_t(20U)) { loop_index = std::uint_fast8_t(1U); }
+        else if(loop_counter == std::uint_fast8_t(40U)) { loop_index = std::uint_fast8_t(2U); }
+        else if(loop_counter == std::uint_fast8_t(60U)) { loop_index = std::uint_fast8_t(3U); }
       }
 
-      const std::uint32_t tmp32 =   circular_shift<5U>(hash_tmp[0U])
+      const std::uint32_t tmp32 =   crypto_hash_circular_shift<5U>(hash_tmp[0U])
                                   + functions[loop_index](hash_tmp.data())
                                   + hash_tmp[4U]
-                                  + transform_block[static_cast<std::uint_fast8_t>(loop_counter & static_cast<std::uint_fast8_t>(0x0FU))]
+                                  + transform_block[std::uint_fast8_t(loop_counter & std::uint_fast8_t(0x0FU))]
                                   + constants[loop_index];
 
       hash_tmp[4U] = hash_tmp[3U];
       hash_tmp[3U] = hash_tmp[2U];
-      hash_tmp[2U] = circular_shift<30U>(hash_tmp[1U]);
+      hash_tmp[2U] = crypto_hash_circular_shift<30U>(hash_tmp[1U]);
       hash_tmp[1U] = hash_tmp[0U];
       hash_tmp[0U] = tmp32;
     }

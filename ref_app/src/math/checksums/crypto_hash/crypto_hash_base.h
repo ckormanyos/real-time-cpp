@@ -11,6 +11,13 @@
   #include <algorithm>
   #include <cstdint>
 
+  template<const std::uint_fast8_t digits_shift>
+  inline std::uint32_t crypto_hash_circular_shift(const std::uint32_t& the_dword)
+  {
+    return std::uint32_t(  std::uint32_t(the_dword << digits_shift)
+                         | std::uint32_t(the_dword >> (std::uint_fast8_t(32U) - digits_shift)));
+  }
+
   class crypto_hash_base
   {
   protected:
@@ -22,13 +29,6 @@
     crypto_hash_base(const crypto_hash_base& other);
 
     crypto_hash_base& operator=(const crypto_hash_base& other);
-
-    template<const std::uint_fast8_t digits_shift>
-    static std::uint32_t circular_shift(const std::uint32_t& shift_32word)
-    {
-      return   static_cast<std::uint32_t>(shift_32word << digits_shift)
-             | static_cast<std::uint32_t>(shift_32word >> (static_cast<std::uint_fast8_t>(32U) - digits_shift));
-    }
 
     static void convert_uint8_input_to_uint32_output        (const std::uint8_t* src_begin, const std::uint8_t* src_end, std::uint32_t* dest_begin);
     static void convert_uint8_input_to_uint32_output_reverse(const std::uint8_t* src_begin, const std::uint8_t* src_end, std::uint32_t* dest_begin);
