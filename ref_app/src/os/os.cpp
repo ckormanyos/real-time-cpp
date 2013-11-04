@@ -48,12 +48,8 @@ void os::start_os()
       // Set the bit in the task trace belonging to the idle task.
       task_control_block::task_global_trace |= task_control_block::trace_type(task_control_block::trace_type(1UL) << int(task_id_end));
 
-      // Check if all of the tasks have, indeed, checked in by setting
-      // their appropriate bit in the task trace. This means that the
-      // task trace will have a one bit set for each task and another
-      // bit set for the idle task.
-
-      // Service the idle task (include the task trace information).
+      // Check if all of the tasks have checked in via checking the task trace value.
+      // If all the tasks have checked in, then service the idle task.
       if(task_control_block::task_global_trace == task_control_block::task_idle_mask)
       {
         OS_IDLE_TASK_FUNC(true);
