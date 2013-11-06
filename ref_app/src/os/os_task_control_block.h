@@ -26,7 +26,7 @@
                          const tick_type c,
                          const tick_type o);
 
-      task_control_block(const task_control_block& tcb);
+      task_control_block(const task_control_block&);
 
     private:
       static const trace_type task_idle_mask = trace_type(~trace_type(0UL)) >> (std::numeric_limits<trace_type>::digits - int(task_id_end + 1));
@@ -51,9 +51,9 @@
       const task_control_block& operator=(const task_control_block&);
 
       friend void start_os   ();
-      friend void set_event  (const task_id_type task_id, const event_type& event_to_set);
-      friend void get_event  (event_type& event_to_get);
-      friend void clear_event(const event_type& event_mask_to_clear);
+      friend void set_event  (const task_id_type, const event_type&);
+      friend void get_event  (event_type&);
+      friend void clear_event(const event_type&);
     };
 
     static_assert(OS_TASK_COUNT > 0U,

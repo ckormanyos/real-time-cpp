@@ -14,8 +14,8 @@
                         const value_type dx,
                         function_type function)
   {
-    // Compute the first derivative of function using a
-    // three-point central difference rule of O(dx^6).
+    // Compute the first derivative of the input function
+    // using a three-point central difference rule of O(dx^6).
 
     const value_type dx2(dx * 2U);
     const value_type dx3(dx * 3U);
@@ -40,8 +40,9 @@
                             const value_type dx,
                             function_type function)
   {
-    // Compute the second derivative of function using a
-    // three-point central difference rule of O(dx^6).
+    // Compute the second derivative of the input function
+    // using a three-point central difference rule of O(dx^6).
+
 
     const value_type fn2(function(x) * 2U);
     const value_type dx2(dx * 2U);
