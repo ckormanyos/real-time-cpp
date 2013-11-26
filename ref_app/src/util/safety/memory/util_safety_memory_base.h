@@ -98,4 +98,3 @@
   }
 
 #endif // _UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
-
