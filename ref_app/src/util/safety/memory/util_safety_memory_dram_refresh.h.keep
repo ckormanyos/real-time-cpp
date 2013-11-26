@@ -1,0 +1,113 @@
+#ifndef _UTIL_SAFETY_MEMORY_DRAM_REFRESH_2013_11_22_H_
+  #define _UTIL_SAFETY_MEMORY_DRAM_REFRESH_2013_11_22_H_
+
+  #include <array>
+  #include <cstddef>
+  #include <cstdint>
+  #include <mcal_irq.h>
+  #include <util/safety/memory/util_safety_memory_base.h>
+  #include <util/safety/memory/util_safety_memory_block.h>
+
+  namespace util
+  {
+    namespace safety
+    {
+      template<typename memory_address_type,
+               const std::size_t memory_list_count>
+      class dram_memory_refresh : public util::safety::memory_base
+      {
+      public:
+        typedef void(*callback_function_type)(const bool);
+
+        typedef std::array<memory_block<memory_address_type>, memory_list_count> memory_list_type;
+
+        dram_memory_refresh(const memory_list_type& memory_blocks) : memory_list       (memory_blocks),
+                                                                     memory_list_index (0U),
+                                                                     memory_block_index(0U),
+                                                                     result_of_refresh (true) { }
+
+        virtual ~dram_memory_refresh() { }
+
+        void service(callback_function_type callback_function)
+        {
+          if(memory_list.empty())
+          {
+            return;
+          }
+
+          bool increment_memory_list_index = false;
+
+          const bool memory_block_is_empty = (memory_list[memory_list_index].memory_block_size == static_cast<std::size_t>(0U));
+
+          if(memory_block_is_empty)
+          {
+            // Skip this memory block if it is empty, and increment the memory list index.
+            increment_memory_list_index = true;
+          }
+          else
+          {
+            // Obtain a pointer to the next byte of memory in the refresh.
+            volatile std::uint8_t* pointer_to_memory = reinterpret_cast<volatile std::uint8_t*>(memory_list[memory_list_index].memory_block_start + memory_block_index);
+
+            // Refresh one byte of memory. Surround this with disable / enable
+            // interrutps in order to ensure data consistency.
+            mcal::irq::disable_all();
+            refresh_one_byte(pointer_to_memory);
+            mcal::irq::enable_all();
+
+            // Did we reach the end of a memory block?
+            if(++memory_block_index >= memory_list[memory_list_index].memory_block_size)
+            {
+              // Reset the memory block index.
+              memory_block_index = static_cast<std::size_t>(0U);
+
+              increment_memory_list_index = true;
+            }
+          }
+
+          // Did we reach the end of the memory list?
+          if(increment_memory_list_index && (++memory_list_index >= memory_list.size()))
+          {
+            // Reset the memory list index.
+            memory_list_index = static_cast<std::size_t>(0U);
+
+            // Call the user-supplied callback function with the result of the refresh.
+            // (Only call the callback function if one is actually provided.)
+            if(callback_function != nullptr)
+            {
+              callback_function(result_of_refresh);
+            }
+          }
+        }
+
+        bool get_result_of_refresh() const { return result_of_refresh; }
+
+      private:
+        const memory_list_type& memory_list;
+
+        std::size_t memory_list_index;
+        std::size_t memory_block_index;
+
+        bool result_of_refresh;
+
+        void refresh_one_byte(volatile std::uint8_t* pointer_to_memory)
+        {
+          // Backup the memory.
+          const std::uint8_t memory_backup = *pointer_to_memory;
+
+          // Write the pattern 0x55 to the memory and read it back.
+          *pointer_to_memory = static_cast<std::uint8_t>(0x55U);
+          result_of_refresh &= (*pointer_to_memory == static_cast<std::uint8_t>(0x55U));
+
+          // Write the pattern 0xAA to the memory and read it back.
+          *pointer_to_memory = static_cast<std::uint8_t>(0xAAU);
+          result_of_refresh &= (*pointer_to_memory == static_cast<std::uint8_t>(0xAAU));
+
+          // Restore the memory from the backup.
+          *pointer_to_memory = memory_backup;
+        }
+      };
+    }
+  }
+
+#endif // _UTIL_SAFETY_MEMORY_DRAM_REFRESH_2013_11_22_H_

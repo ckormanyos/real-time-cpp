@@ -13,13 +13,17 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
+/* The beginning and end (i.e., top) of the stack */
+_stack_begin = 0x800600;
+_stack_end   = 0x800800;
+
 /* The end of the 2K RAM stack */
 __initial_stack_pointer = 0x800800;
 
 MEMORY
 {
   ROM(rx)   : ORIGIN = 0, LENGTH = 32K
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 2K - 0x100
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x0500
 }
 
 SECTIONS

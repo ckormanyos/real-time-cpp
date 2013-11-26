@@ -13,13 +13,16 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/* The end of the stack */
+/* The beginning and end (i.e., top) of the stack */
+_stack_begin = 0x20001C00;
+_stack_end   = 0x20002000;
+
 __initial_stack_pointer = 0x20002000;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0x08000000, LENGTH = 128K
-  RAM(rwx)  : ORIGIN = 0x20000000, LENGTH = 8K
+  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 128K
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x1C00
 }
 
 SECTIONS
@@ -89,4 +92,3 @@ SECTIONS
 
   _rom_data_begin = LOADADDR(.data);
 }
-

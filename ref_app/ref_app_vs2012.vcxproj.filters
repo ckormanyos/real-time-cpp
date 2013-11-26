@@ -98,6 +98,12 @@
     <Filter Include="src\math\checksums\crypto_hash">
       <UniqueIdentifier>{cf18ff88-1a05-4e7e-bd76-385efe1dcb47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\safety">
+      <UniqueIdentifier>{a3dedf88-a5f5-4b86-8004-f8ccd0f98cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\safety\memory">
+      <UniqueIdentifier>{70025b0b-8528-42d1-b2ad-9d7a625e8ba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -270,6 +276,21 @@
     </ClCompile>
     <ClCompile Include="src\math\checksums\crypto_hash\test_sha256.cpp">
       <Filter>src\math\checksums\crypto_hash</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\eabi\mcal_safety_dram.cpp">
+      <Filter>src\mcal\eabi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_safety_dram.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\mips\mcal_safety_dram.cpp">
+      <Filter>src\mcal\mips</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_safety_dram.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am335x\mcal_safety_dram.cpp">
+      <Filter>src\mcal\am335x</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -665,6 +686,30 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\crypto_hash\sha256.h">
       <Filter>src\math\checksums\crypto_hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\safety\memory\util_safety_memory_base.h">
+      <Filter>src\util\safety\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\eabi\mcal_safety_dram.h">
+      <Filter>src\mcal\eabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_safety_dram.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mips\mcal_safety_dram.h">
+      <Filter>src\mcal\mips</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_safety_dram.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am335x\mcal_safety_dram.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_refresh.h">
+      <Filter>src\util\safety\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_block.h">
+      <Filter>src\util\safety\memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
