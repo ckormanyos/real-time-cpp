@@ -14,6 +14,10 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
+/* The beginning and end of the program ROM area */
+_rom_begin = 0x402F0400;
+_rom_end   = 0x402FDFFC;
+
 /* The beginning and end (i.e., top) of the stack */
 _stack_begin = 0x402FFC00;
 _stack_end   = 0x40300000;
@@ -23,7 +27,7 @@ __initial_stack_pointer = 0x40300000;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x402F0400, LENGTH = 0xDC00
+  ROM(rx)  : ORIGIN = 0x402F0400, LENGTH = 0xDC00 - 4
   RAM(rwx) : ORIGIN = 0x402FE000, LENGTH = 0x1C00
 }
 

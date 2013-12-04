@@ -54,7 +54,7 @@ void __vector_timer7()
   // Clear the status of the interrupt flags.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqstatus, UINT32_C(7)>::reg_set();
 
-  // Increment the 64-bit system tick by 1000, representing 1000us.
+  // Increment the 64-bit system tick with 1000, representing 1000 microseconds.
   system_tick += UINT16_C(1000);
 
   // Signal the end of the interrupt.

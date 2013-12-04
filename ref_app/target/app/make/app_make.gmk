@@ -118,6 +118,7 @@ C_INCLUDES = -I$(PATH_APP)                      \
 
 GCCFLAGS    = $(C_INCLUDES)                     \
               $(TGT_CFLAGS)                     \
+              -g                                \
               -Wall                             \
               -Wextra                           \
               -pedantic                         \

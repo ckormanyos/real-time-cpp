@@ -6,7 +6,7 @@
 
 namespace
 {
-  std::array<std::uint8_t, 256U> dummy_dram;
+  std::array<std::uint8_t, 32U> dummy_dram;
 }
 
 namespace mcal

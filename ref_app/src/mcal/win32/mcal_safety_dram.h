@@ -17,7 +17,7 @@
         number_of_dram_memory_blocks = 1
       };
 
-      typedef util::safety::dram_memory_block<mcal::safety::type_of_dram_memory_address> dram_memory_block_type;
+      typedef util::safety::memory_block<mcal::safety::type_of_dram_memory_address> dram_memory_block_type;
 
       typedef util::safety::dram_memory_refresh<mcal::safety::type_of_dram_memory_address,
                                                 mcal::safety::number_of_dram_memory_blocks> dram_memory_refresh_type;

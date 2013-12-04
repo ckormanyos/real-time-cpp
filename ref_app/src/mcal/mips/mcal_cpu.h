@@ -8,6 +8,8 @@
 #ifndef _MCAL_CPU_2009_02_14_H_
   #define _MCAL_CPU_2009_02_14_H_
 
+  #include <cstdint>
+
   namespace mcal
   {
     namespace cpu
@@ -15,6 +17,11 @@
       void init();
 
       inline void nop() { asm volatile("nop"); }
+
+      inline std::uint8_t read_program_memory(volatile std::uint8_t* pointer_to_program_memory)
+      {
+        return *pointer_to_program_memory;
+      }
     }
   }
 

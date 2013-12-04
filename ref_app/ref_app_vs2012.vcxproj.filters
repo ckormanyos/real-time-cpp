@@ -292,6 +292,21 @@
     <ClCompile Include="src\mcal\am335x\mcal_safety_dram.cpp">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\am335x\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\am335x</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\mips\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\mips</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\eabi\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\eabi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -687,9 +702,6 @@
     <ClInclude Include="src\math\checksums\crypto_hash\sha256.h">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\safety\memory\util_safety_memory_base.h">
-      <Filter>src\util\safety\memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\eabi\mcal_safety_dram.h">
       <Filter>src\mcal\eabi</Filter>
     </ClInclude>
@@ -708,8 +720,29 @@
     <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_refresh.h">
       <Filter>src\util\safety\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_block.h">
+    <ClInclude Include="src\util\safety\memory\util_safety_rom_memory_checksum.h">
       <Filter>src\util\safety\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\safety\memory\util_safety_memory_block.h">
+      <Filter>src\util\safety\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\safety\memory\util_safety_memory_base.h">
+      <Filter>src\util\safety\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am335x\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mips\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\mips</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\eabi\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\eabi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
