@@ -671,6 +671,9 @@
     <ClInclude Include="src\util\safety\memory\util_safety_memory_block.h" />
     <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_refresh.h" />
     <ClInclude Include="src\util\safety\memory\util_safety_rom_memory_checksum.h" />
+    <ClInclude Include="src\util\safety\time\util_safety_max_time_base.h" />
+    <ClInclude Include="src\util\safety\time\util_safety_max_time_of_process.h" />
+    <ClInclude Include="src\util\safety\time\util_safety_max_time_since_service.h" />
     <ClInclude Include="src\util\STL\impl\algorithm_impl.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

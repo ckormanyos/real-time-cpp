@@ -29,11 +29,11 @@ void __my_startup()
   // Initialize statics from ROM to RAM.
   // Zero-clear non-initialized static RAM.
   crt::init_ram();
-  mcal::wdg::trigger();
+  mcal::wdg::secure::trigger();
 
   // Call all ctor initializations.
   crt::init_ctors();
-  mcal::wdg::trigger();
+  mcal::wdg::secure::trigger();
 
   // Call main (and never return).
   asm volatile("ldr r3, =main");
@@ -43,6 +43,6 @@ void __my_startup()
   for(;;)
   {
     // Replace with a loud error if desired.
-    mcal::wdg::trigger();
+    mcal::wdg::secure::trigger();
   }
 }

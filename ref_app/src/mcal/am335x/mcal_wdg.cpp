@@ -105,7 +105,7 @@ void mcal::wdg::init(const config_type*)
                          UINT32_C(0x00004444)>();
 }
 
-void mcal::wdg::trigger()
+void mcal::wdg::secure::trigger()
 {
   // Generate a different trigger value each time the watchdog
   // trigger is set. In order to do this, we add a prime number

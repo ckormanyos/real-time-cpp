@@ -10,7 +10,6 @@
 #include <mcal_osc.h>
 #include <mcal_osc_shared.h>
 #include <mcal_reg_access.h>
-#include <mcal_wdg.h>
 
 namespace
 {
@@ -59,7 +58,7 @@ void osc_detail::mpu_pll_init()
                     dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -80,7 +79,7 @@ void osc_detail::mpu_pll_init()
                     dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
 void osc_detail::core_pll_init()
@@ -105,7 +104,7 @@ void osc_detail::core_pll_init()
                     dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -136,7 +135,7 @@ void osc_detail::core_pll_init()
                     dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
 void osc_detail::peripheral_pll_init()
@@ -157,7 +156,7 @@ void osc_detail::peripheral_pll_init()
                     dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
   constexpr std::uint32_t pll_val = std::uint32_t(  std::uint32_t(mcu_per_pll_sd << 24)
@@ -182,7 +181,7 @@ void osc_detail::peripheral_pll_init()
                     dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
 void osc_detail::ddr_pll_init()
@@ -199,7 +198,7 @@ void osc_detail::ddr_pll_init()
                     dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_mn_bypass_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
   constexpr std::uint32_t pll_val = std::uint32_t(  std::uint32_t(mcu_ddr_pll_m << 8)
@@ -223,7 +222,7 @@ void osc_detail::ddr_pll_init()
                     dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
-  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::wdg::trigger(); }
+  while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
 }
 
 void osc_detail::interface_clock_init()
@@ -232,38 +231,38 @@ void osc_detail::interface_clock_init()
                     std::uint32_t,
                     mcal::reg::cm_per::l3_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l4ls_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l4fw_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4fw_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4fw_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   // TBD: delete this: It seems to be a read-only register?
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::l4wkup_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::l4wkup_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::l4wkup_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l3_instr_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_instr_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_instr_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l4hs_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 }
 
 void osc_detail::power_domain_transition_init()
@@ -275,25 +274,25 @@ void osc_detail::power_domain_transition_init()
                     std::uint32_t,
                     mcal::reg::cm_per::l3_clkstctrl,
                     clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l4ls_clkstctrl,
                     clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkstctrl,
                     clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::l3s_clkstctrl,
                     clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 }
 
 void osc_detail::emif_init()
@@ -306,7 +305,7 @@ void osc_detail::emif_init()
                     std::uint32_t,
                     mcal::reg::cm_per::emif_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::cpu::nop(); }
 }
 
 void osc_detail::dm_timer7_clock_init()
@@ -319,16 +318,16 @@ void osc_detail::dm_timer7_clock_init()
                     std::uint32_t,
                     mcal::reg::cm_dpll::clksel_timer7_clk,
                     clksel_clk_m_osc>::reg_msk<UINT32_C(0x3)>();
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & UINT32_C(0x3)) != clksel_clk_m_osc) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & UINT32_C(0x3)) != clksel_clk_m_osc) { mcal::cpu::nop(); }
 
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_per::timer7_clkctrl,
                     modulemode_enable>::reg_msk<modulemode_mask>();
 
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & modulemode_mask        ) != modulemode_enable      ) { mcal::wdg::trigger(); }
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & idlest_mask            ) != idlest_func            ) { mcal::wdg::trigger(); }
-  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_timer7_gclk) != clkactivity_timer7_gclk) { mcal::wdg::trigger(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & modulemode_mask        ) != modulemode_enable      ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & idlest_mask            ) != idlest_func            ) { mcal::cpu::nop(); }
+  while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_timer7_gclk) != clkactivity_timer7_gclk) { mcal::cpu::nop(); }
 }
 
 void mcal::osc::init(const config_type*)

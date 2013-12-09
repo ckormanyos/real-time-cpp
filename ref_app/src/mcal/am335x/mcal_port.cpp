@@ -10,7 +10,6 @@
 #include <mcal_osc_shared.h>
 #include <mcal_port.h>
 #include <mcal_reg_access.h>
-#include <mcal_wdg.h>
 
 namespace
 {
@@ -35,7 +34,7 @@ namespace
                         std::uint32_t,
                         mcal::reg::cm_per::gpio1_clkctrl,
                         osc_detail::modulemode_enable>::reg_msk<osc_detail::modulemode_mask>();
-      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get() & osc_detail::modulemode_mask) != osc_detail::modulemode_enable) { mcal::wdg::trigger(); }
+      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get() & osc_detail::modulemode_mask) != osc_detail::modulemode_enable) { mcal::cpu::nop(); }
 
       // Enable the optional function clock.
       mcal::reg::access<std::uint32_t,
@@ -43,9 +42,9 @@ namespace
                         mcal::reg::cm_per::gpio1_clkctrl,
                         optfclken_gpio_1_gdbclk>::reg_msk<optfclken_gpio_1_gdbclk>();
 
-      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk)   != optfclken_gpio_1_gdbclk  ) { mcal::wdg::trigger(); }
-      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & osc_detail::idlest_mask)   != osc_detail::idlest_func)   { mcal::wdg::trigger(); }
-      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_gpio_1_gdbclk) != clkactivity_gpio_1_gdbclk) { mcal::wdg::trigger(); }
+      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk)   != optfclken_gpio_1_gdbclk  ) { mcal::cpu::nop(); }
+      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & osc_detail::idlest_mask)   != osc_detail::idlest_func)   { mcal::cpu::nop(); }
+      while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clkactivity_gpio_1_gdbclk) != clkactivity_gpio_1_gdbclk) { mcal::cpu::nop(); }
     }
 
     static constexpr std::uint32_t port1_initial_value = UINT32_C(0x00000000);
@@ -87,7 +86,7 @@ void mcal::port::init(const config_type*)
   // Wait until the gpio1 Module is reset.
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::gpio1_base + mcal::reg::gpiox::sysstatus>::reg_get() & UINT32_C(1)) == UINT32_C(0))
   {
-    mcal::wdg::trigger();
+    mcal::cpu::nop();
   }
 
   // Set the port1 output value and direction registers.

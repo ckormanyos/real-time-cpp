@@ -14,7 +14,7 @@
     namespace idle
     {
       void task_init();
-      void task_func(const bool do_trigger);
+      void task_func(const bool do_watchdog_trigger);
     }
   }
 

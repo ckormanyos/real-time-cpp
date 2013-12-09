@@ -42,7 +42,7 @@ void mcal::wdg::init(const config_type*)
                     std::uint8_t(0x0BU)>::reg_set();
 }
 
-void mcal::wdg::trigger()
+void mcal::wdg::secure::trigger()
 {
   asm volatile("wdr");
 }

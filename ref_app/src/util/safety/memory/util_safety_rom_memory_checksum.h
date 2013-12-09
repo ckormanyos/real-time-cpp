@@ -56,6 +56,17 @@
     }
   }
 
+  template<typename memory_address_type,
+           const std::size_t memory_list_count>
+  util::safety::rom_memory_checksum<memory_address_type,
+                                    memory_list_count>::rom_memory_checksum(const memory_list_type& memory_blocks,
+                                                                            const memory_address_type address)
+    : memory_base_type (memory_blocks),
+      crc32_result     (0U),
+      address_of_result(address)
+  {
+  }
+
   template <typename memory_address_type,
             const std::size_t memory_list_count>
   void util::safety::rom_memory_checksum<memory_address_type, memory_list_count>::finalize()
@@ -71,17 +82,6 @@
 
     memory_base_type::result_of_process = ((crc32_result == expected_result) ? memory_base_type::result_is_finished_and_correct
                                                                              : memory_base_type::result_is_finished_and_wrong);
-  }
-
-  template <typename memory_address_type,
-            const std::size_t memory_list_count>
-  util::safety::rom_memory_checksum<memory_address_type,
-                                    memory_list_count>::rom_memory_checksum(const memory_list_type& memory_blocks,
-                                                                            const memory_address_type address)
-    : memory_base_type (memory_blocks),
-      crc32_result     (0U),
-      address_of_result(address)
-  {
   }
 
   template <typename memory_address_type,

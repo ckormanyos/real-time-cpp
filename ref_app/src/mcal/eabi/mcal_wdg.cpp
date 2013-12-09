@@ -48,7 +48,7 @@ void mcal::wdg::init(const config_type*)
   static_cast<void>(dummy_read);
 }
 
-void mcal::wdg::trigger()
+void mcal::wdg::secure::trigger()
 {
   // Reload the watchdog counter with value in iwdg_rlr
   mcal::reg::access<std::uint32_t,

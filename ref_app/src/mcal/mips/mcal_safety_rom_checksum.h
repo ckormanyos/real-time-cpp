@@ -25,6 +25,7 @@
       typedef rom_memory_checksum_type::memory_list_type rom_memory_checksum_block_list_type;
 
       extern const rom_memory_checksum_block_list_type rom_memory_block_list;
+      extern const type_of_rom_memory_address          rom_memory_result_address;
     }
   }
 

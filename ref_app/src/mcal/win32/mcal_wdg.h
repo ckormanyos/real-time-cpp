@@ -8,6 +8,8 @@
 #ifndef _MCAL_WDG_2010_04_10_H_
   #define _MCAL_WDG_2010_04_10_H_
 
+  namespace sys { namespace idle { void task_func(const bool); } }
+
   namespace mcal
   {
     namespace wdg
@@ -16,7 +18,13 @@
 
       inline void init(const config_type*) { }
 
-      inline void trigger() { }
+      class secure
+      {
+      private:
+        static void trigger() { }
+
+        friend void sys::idle::task_func(const bool);
+      };
     }
   }
 
