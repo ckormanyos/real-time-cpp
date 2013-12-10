@@ -25,7 +25,7 @@
       private:
         static void trigger();
 
-        friend void sys::idle::task_func(const bool);
+        friend void ::sys::idle::task_func(const bool);
         friend void ::__my_startup();
       };
     }

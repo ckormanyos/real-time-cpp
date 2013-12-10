@@ -21,9 +21,9 @@
       class secure
       {
       private:
-        static void trigger() { }
+        static void trigger();
 
-        friend void sys::idle::task_func(const bool);
+        friend void ::sys::idle::task_func(const bool);
       };
     }
   }

@@ -364,6 +364,7 @@
     <ClCompile Include="src\mcal\win32\mcal_pwm.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_safety_dram.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_safety_rom_checksum.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_wdg.cpp" />
     <ClCompile Include="src\os\os.cpp" />
     <ClCompile Include="src\os\os_task_control_block.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />

@@ -310,6 +310,9 @@
     <ClCompile Include="src\mcal\eabi\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\eabi</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
