@@ -33,20 +33,20 @@ namespace
 
   std::uint_least8_t safety_prescaler;
 
-  typedef std::uint16_t watchdog_statistics_type;
+  typedef std::uint16_t watchdog_statistics_value_type;
 
-  const std::array<watchdog_statistics_type, 5U> watchdog_statistics_ranges =
+  const std::array<watchdog_statistics_value_type, 5U> sys_idle_watchdog_statistics_ranges =
   {{
-    watchdog_statistics_type( 2000U),
-    watchdog_statistics_type( 4000U),
-    watchdog_statistics_type(10000U),
-    watchdog_statistics_type(20000U),
-    watchdog_statistics_type(32000U)
+    watchdog_statistics_value_type( 2000U),
+    watchdog_statistics_value_type( 4000U),
+    watchdog_statistics_value_type(10000U),
+    watchdog_statistics_value_type(20000U),
+    watchdog_statistics_value_type(32000U)
   }};
 
-  util::safety::max_time_since_service<watchdog_statistics_type,
-                                       5U,
-                                       std::uint_least16_t> sys_idle_time_since_watchdog_trigger(watchdog_statistics_ranges);
+  typedef util::safety::max_time_since_service<watchdog_statistics_value_type, 5U, std::uint_least16_t> my_watchdog_statistics_type;
+
+  my_watchdog_statistics_type sys_idle_time_since_watchdog_trigger(sys_idle_watchdog_statistics_ranges);
 }
 
 void sys::idle::task_init() { }
