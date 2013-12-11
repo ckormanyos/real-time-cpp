@@ -99,9 +99,9 @@
 
     const std::uint8_t the_byte = mcal::cpu::read_program_memory(pointer_to_memory);
 
-    // First calculate the lower 4 bits, then the upper 4 bits.
-    crc32_result = std::uint32_t(crc32_result << 4) ^ crc32_lookup_table[std::uint_fast8_t(std::uint_fast8_t(crc32_result >> 28) ^ std::uint_fast8_t(the_byte >>    4 ))];
-    crc32_result = std::uint32_t(crc32_result << 4) ^ crc32_lookup_table[std::uint_fast8_t(std::uint_fast8_t(crc32_result >> 28) ^ std::uint_fast8_t(the_byte &  0x0FU))];
+    // First calculate the lower 4 bits, then calculate the upper 4 bits.
+    crc32_result = std::uint32_t(crc32_result << 4) ^ crc32_lookup_table[std::uint_fast8_t((std::uint_fast8_t(crc32_result >> 28) & UINT8_C(0x0F)) ^ (std::uint_fast8_t(the_byte >>    4 )))];
+    crc32_result = std::uint32_t(crc32_result << 4) ^ crc32_lookup_table[std::uint_fast8_t((std::uint_fast8_t(crc32_result >> 28) & UINT8_C(0x0F)) ^ (std::uint_fast8_t(the_byte &  0x0FU)))];
   }
 
 #endif // _UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
