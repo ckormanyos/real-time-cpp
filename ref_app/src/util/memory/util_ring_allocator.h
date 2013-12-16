@@ -21,7 +21,7 @@
       ring_allocator_base() { }
 
       // The ring_allocator's default buffer size.
-      static const size_type buffer_size = 256U;
+      static const size_type buffer_size = 8U;
 
       // The ring_allocator's memory allocation.
       static void* do_allocate(const size_type size);
@@ -85,7 +85,7 @@
       const_pointer address(const_reference x) const { return &x; }
 
       pointer allocate(size_type num,
-                       ring_allocator<void>::const_pointer = 0U)
+                       ring_allocator<void>::const_pointer = nullptr)
       {
         std::size_t chunk_size = num * sizeof(value_type);
 

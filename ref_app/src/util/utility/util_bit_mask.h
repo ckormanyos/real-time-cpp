@@ -15,32 +15,47 @@
     template<typename data_type,
              const unsigned bit_pos,
              const unsigned bit_cnt>
-    struct bit_mask
+    struct bit_mask_multi_bit_value
     {
       // Ensure that the data_type is unsigned.
       static_assert(std::numeric_limits<data_type>::is_signed == false,
                     "the data type of the bit mask template must be unsigned");
 
       // Ensure that the requested bit mask is in range.
-      static_assert((bit_pos + bit_cnt) <= std::numeric_limits<data_type>::digits,
+      static_assert((bit_pos + bit_cnt) <= unsigned(std::numeric_limits<data_type>::digits),
                     "the requested bit mask exceeds the bits available in the data type");
 
-      static const data_type value = static_cast<data_type>(static_cast<data_type>(data_type(-1) >> (std::numeric_limits<data_type>::digits - bit_cnt)) << bit_pos);
+      static const data_type value = static_cast<data_type>(static_cast<data_type>((std::numeric_limits<data_type>::max)() >> (std::numeric_limits<data_type>::digits - bit_cnt)) << bit_pos);
     };
 
     template<typename data_type,
              const unsigned bit_pos>
-    struct bit_value
+    struct bit_mask_multi_bit_value<data_type, bit_pos, 1U>
+    {
+      // Ensure that the data_type is unsigned.
+      static_assert(std::numeric_limits<data_type>::is_signed == false,
+                    "the data type of the bit mask template must be unsigned");
+
+      // Ensure that the requested bit mask is in range.
+      static_assert(bit_pos < unsigned(std::numeric_limits<data_type>::digits),
+                    "the requested bit mask exceeds the bits available in the data type");
+
+      static const data_type value = static_cast<data_type>(static_cast<data_type>(1U) << bit_pos);
+    };
+
+    template<typename data_type,
+             const unsigned bit_pos>
+    struct bit_mask_single_bit_value
     {
       // Ensure that the data_type is unsigned.
       static_assert(std::numeric_limits<data_type>::is_signed == false,
                     "the data type of the bit value template must be unsigned");
 
       // Ensure that the requested bit position is in range.
-      static_assert(bit_pos < std::numeric_limits<data_type>::digits,
+      static_assert(bit_pos < unsigned(std::numeric_limits<data_type>::digits),
                     "the requested bit position exceeds the bits available in the data type");
 
-      static const data_type value = static_cast<data_type>(static_cast<data_type>(1ULL) << bit_pos);
+      static const data_type value = static_cast<data_type>(static_cast<data_type>(1U) << bit_pos);
     };
   }
 

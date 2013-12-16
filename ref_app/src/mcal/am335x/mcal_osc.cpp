@@ -88,9 +88,9 @@ void osc_detail::core_pll_init()
 
   // clkinp = 24MHz
   // clkdcoldo = 2 * [m / (n + 1)] * clkinp = 2000
-  // clkoutm4  = clkdcoldo / m4 = 200
-  // clkoutm5  = clkdcoldo / m5 = 250
-  // clkoutm6  = clkdcoldo / m6 = 500
+  // clkoutm4  = clkdcoldo / m4 = 2000 / 10 =  200
+  // clkoutm5  = clkdcoldo / m5 = 2000 /  8 =  250
+  // clkoutm6  = clkdcoldo / m6 = 2000 /  4 =  500
   constexpr std::uint32_t mcu_core_pll_m  =  UINT32_C(1000);
   constexpr std::uint32_t mcu_core_pll_n  =  UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_core_pll_m4 =  UINT32_C(10);
@@ -245,7 +245,8 @@ void osc_detail::interface_clock_init()
                     modulemode_enable>::reg_msk<modulemode_mask>();
   while((mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4fw_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
-  // TBD: delete this: It seems to be a read-only register?
+  // Is this an error in the documentation. The entire register,
+  // including the modulemask field, is listed as a read-only register.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::l4wkup_clkctrl,
@@ -332,7 +333,7 @@ void osc_detail::dm_timer7_clock_init()
 
 void mcal::osc::init(const config_type*)
 {
-  // Setup the clocksfor oscillator, PLL, RAM, I/O ports, and peripherals.
+  // Setup the clocks for oscillator, PLL, RAM, I/O ports, and peripherals.
 
   osc_detail::mpu_pll_init();
   osc_detail::core_pll_init();

@@ -57,7 +57,7 @@
                          - fn2
                          + function(x - dx3)) / 9U);
 
-    return (((c1 * 54U) - (c2 * 9U) - (c3 * 2U)) / (dx * dx)) / 43U;
+    return ((((c1 * 54U) - (c2 * 9U)) - (c3 * 2U)) / (dx * dx)) / 43U;
   }
 
 #endif // _DERIVATIVE_2012_01_09_H_

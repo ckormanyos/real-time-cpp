@@ -27,7 +27,7 @@
       allocator_base() { }
 
       // The allocator's buffer size.
-      static constexpr size_type buffer_size = 32U;
+      static constexpr size_type buffer_size = 8U;
 
       // The allocator's memory allocation.
       static void* do_allocate(const size_type size);
@@ -90,7 +90,7 @@
       const_pointer address(const_reference x) const { return &x; }
 
       pointer allocate(size_type num,
-                       allocator<void>::const_pointer = 0U) const
+                       allocator<void>::const_pointer = nullptr) const
       {
         void* p = do_allocate(num * sizeof(value_type));
         return static_cast<pointer>(p);

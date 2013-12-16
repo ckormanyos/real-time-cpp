@@ -18,10 +18,10 @@
       noncopyable() {}
       ~noncopyable() {}
 
-   // Emphasize: The following members are private.
-   private:
-     noncopyable(const noncopyable&);
-     const noncopyable& operator=(const noncopyable&);
+    // Emphasize: The following members are private.
+    private:
+      noncopyable(const noncopyable&);
+      const noncopyable& operator=(const noncopyable&);
     };
   }
 

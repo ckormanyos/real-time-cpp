@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <mcal_irq.h>
 #include <os/os_task_control_block.h>
+#include <util/utility/util_bit_mask.h>
 
 namespace os
 {
@@ -46,7 +47,9 @@ void os::start_os()
       task_control_block::task_global_index = task_control_block::index_type(task_id_end);
 
       // Set the bit in the task trace belonging to the idle task.
-      task_control_block::task_global_trace |= task_control_block::trace_type(task_control_block::trace_type(1UL) << int(task_id_end));
+      task_control_block::task_global_trace |=
+        util::bit_mask_single_bit_value<task_control_block::trace_type,
+                                        static_cast<unsigned>(task_id_end)>::value;
 
       // Check if all of the tasks have checked in via checking the task trace value.
       // If all the tasks have checked in, then service the idle task.
@@ -55,7 +58,7 @@ void os::start_os()
         OS_IDLE_TASK_FUNC(true);
 
         // Reset the task trace value to zero.
-        task_control_block::task_global_trace = task_control_block::trace_type(0UL);
+        task_control_block::task_global_trace = task_control_block::trace_type(0U);
       }
       else
       {

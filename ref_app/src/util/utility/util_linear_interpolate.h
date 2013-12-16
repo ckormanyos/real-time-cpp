@@ -25,17 +25,17 @@
         // There are no data points to interpolate.
         return y_type();
       }
-      else if(   (x <= pts_begin->x)
+      else if(   (x <= pts_begin->my_x)
               || ((pts_begin + 1U) == pts_end))
       {
         // We are beneath the lower x-range or there
         // is only one data point to interpolate.
-        return pts_begin->y;
+        return pts_begin->my_y;
       }
-      else if(x >= (pts_end - 1U)->x)
+      else if(x >= (pts_end - 1U)->my_x)
       {
         // We are above the upper x-range.
-        return (pts_end - 1U)->y;
+        return (pts_end - 1U)->my_y;
       }
       else
       {
@@ -45,11 +45,11 @@
                                              point<x_type>(x));
 
         // Do the linear interpolation.
-        const x_type xn       = (it - 1U)->x;
-        const x_type delta_xn = it->x - xn;
+        const x_type xn       = (it - 1U)->my_x;
+        const x_type delta_xn = it->my_x - xn;
         const x_type delta_x  = x - xn;
-        const y_type yn       = (it - 1U)->y;
-        const y_type delta_yn = it->y - yn;
+        const y_type yn       = (it - 1U)->my_y;
+        const y_type delta_yn = it->my_y - yn;
 
         const y_type delta_y = (delta_x * delta_yn) / delta_xn;
 

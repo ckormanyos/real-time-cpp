@@ -21,18 +21,19 @@ namespace sys
 
 namespace
 {
+  // Define the DRAM memory refresh mechanism.
   typedef mcal::safety::dram_memory_refresh_type my_dram_memory_refresh_type;
-  typedef mcal::safety::rom_memory_checksum_type my_rom_memory_checksum_type;
 
   my_dram_memory_refresh_type sys_idle_dram_memory_refresh(mcal::safety::dram_memory_block_list);
+
+  // Define the ROM memory checksum mechanism.
+  typedef mcal::safety::rom_memory_checksum_type my_rom_memory_checksum_type;
+
   my_rom_memory_checksum_type sys_idle_rom_memory_checksum(mcal::safety::rom_memory_block_list,
                                                            mcal::safety::rom_memory_result_address);
 
-  bool result_of_dram_refresh_is_ok = true;
-  bool result_of_rom_checksum_is_ok = true;
-
-  std::uint_least8_t safety_prescaler;
-
+  // Define the mechanism that evaluates the maximum time
+  // (in microseconds) since the last wathdog trigger.
   typedef std::uint16_t watchdog_statistics_value_type;
 
   const std::array<watchdog_statistics_value_type, 5U> sys_idle_watchdog_statistics_ranges =
@@ -53,21 +54,26 @@ void sys::idle::task_init() { }
 
 void sys::idle::task_func(const bool do_watchdog_trigger)
 {
-  // Service (i.e., trigger) the watchdog if necessary.
+  static bool result_of_dram_refresh_is_ok = true;
+  static bool result_of_rom_checksum_is_ok = true;
+
   if(do_watchdog_trigger)
   {
+    // Service the mechanism that evaluates the maximum time
+    // (in microseconds) since the last wathdog trigger.
+    sys_idle_time_since_watchdog_trigger.service();
+
+    // Service (i.e., trigger) the watchdog.
     if(result_of_dram_refresh_is_ok && result_of_rom_checksum_is_ok)
     {
       mcal::wdg::secure::trigger();
     }
-
-    // Service the mechanism that evaluates the maximum time
-    // (in microseconds) since the last wathdog trigger.
-    sys_idle_time_since_watchdog_trigger.service();
   }
   else
   {
-    if(safety_prescaler == static_cast<std::uint_least8_t>(0U))
+    static std::uint_least8_t safety_prescaler;
+
+    if((safety_prescaler == static_cast<std::uint_least8_t>(0U)) && result_of_dram_refresh_is_ok)
     {
       // Service the DRAM memory refresh mechanism.
       sys_idle_dram_memory_refresh.service();
@@ -75,7 +81,7 @@ void sys::idle::task_func(const bool do_watchdog_trigger)
       // Obtain (and store) the result of the DRAM memory refresh mechanism.
       result_of_dram_refresh_is_ok = (sys_idle_dram_memory_refresh.get_result_of_process() != my_dram_memory_refresh_type::result_is_finished_and_wrong);
     }
-    else if(safety_prescaler == static_cast<std::uint_least8_t>(1U))
+    else if((safety_prescaler == static_cast<std::uint_least8_t>(1U)) && result_of_rom_checksum_is_ok)
     {
       // Service the ROM memory checksum mechanism.
       sys_idle_rom_memory_checksum.service();

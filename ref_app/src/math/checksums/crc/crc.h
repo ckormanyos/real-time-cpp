@@ -13,12 +13,12 @@
   #include <util/utility/util_utype_helper.h>
 
   template<const std::size_t bits,
-           const typename util::utype_helper<bits>::exact ini_value,
-           const typename util::utype_helper<bits>::exact xor_value>
+           const typename util::utype_helper<bits>::exact_type ini_value,
+           const typename util::utype_helper<bits>::exact_type xor_value>
   class crc
   {
   public:
-    typedef typename util::utype_helper<bits>::exact value_type;
+    typedef typename util::utype_helper<bits>::exact_type value_type;
     void process_bytes(const std::uint8_t*, const std::size_t) { }
     value_type checksum() const { return value_type(0U); }
 
@@ -27,12 +27,12 @@
     const crc& operator=(const crc&);
   };
 
-  template<const util::utype_helper<8U>::exact ini_value,
-           const util::utype_helper<8U>::exact xor_value>
+  template<const util::utype_helper<8U>::exact_type ini_value,
+           const util::utype_helper<8U>::exact_type xor_value>
   class crc<8U, ini_value, xor_value>
   {
   public:
-    typedef typename util::utype_helper<8U>::exact value_type;
+    typedef typename util::utype_helper<8U>::exact_type value_type;
 
     crc() : crc_value(ini_value) { }
     crc(const crc& other_crc) : crc_value(other_crc.crc_value) { }
@@ -63,12 +63,12 @@
     value_type crc_value;
   };
 
-  template<const util::utype_helper<16U>::exact ini_value,
-           const util::utype_helper<16U>::exact xor_value>
+  template<const util::utype_helper<16U>::exact_type ini_value,
+           const util::utype_helper<16U>::exact_type xor_value>
   class crc<16U, ini_value, xor_value>
   {
   public:
-    typedef typename util::utype_helper<16U>::exact value_type;
+    typedef typename util::utype_helper<16U>::exact_type value_type;
 
     crc() : crc_value(ini_value) { }
     crc(const crc& other_crc) : crc_value(other_crc.crc_value) { }
@@ -100,12 +100,12 @@
     value_type crc_value;
   };
 
-  template<const util::utype_helper<32U>::exact ini_value,
-           const util::utype_helper<32U>::exact xor_value>
+  template<const util::utype_helper<32U>::exact_type ini_value,
+           const util::utype_helper<32U>::exact_type xor_value>
   class crc<32U, ini_value, xor_value>
   {
   public:
-    typedef typename util::utype_helper<32U>::exact value_type;
+    typedef typename util::utype_helper<32U>::exact_type value_type;
 
     crc() : crc_value(ini_value) { }
     crc(const crc& other_crc) : crc_value(other_crc.crc_value) { }
@@ -138,12 +138,12 @@
     value_type crc_value;
   };
 
-  template<const util::utype_helper<64U>::exact ini_value,
-           const util::utype_helper<64U>::exact xor_value>
+  template<const util::utype_helper<64U>::exact_type ini_value,
+           const util::utype_helper<64U>::exact_type xor_value>
   class crc<64U, ini_value, xor_value>
   {
   public:
-    typedef typename util::utype_helper<64U>::exact value_type;
+    typedef typename util::utype_helper<64U>::exact_type value_type;
 
     crc() : crc_value(ini_value) { }
     crc(const crc& other_crc) : crc_value(other_crc.crc_value) { }

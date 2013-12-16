@@ -229,9 +229,6 @@
     <ClCompile Include="src\util\STL\impl\cmath_acosh_impl.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\utility\util_communication.cpp">
-      <Filter>src\util\utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\sys\rdm\sys_rdm.cpp">
       <Filter>src\sys\rdm</Filter>
     </ClCompile>
@@ -376,12 +373,6 @@
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_bit_mask.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_compiler.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_language.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_noncopyable.h">
@@ -764,6 +755,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
       <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
+      <Filter>src\mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

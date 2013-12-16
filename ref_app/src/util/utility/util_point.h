@@ -10,17 +10,15 @@
 
   namespace util
   {
-    template<typename x_type,
-              typename y_type = x_type>
-    class point
+    template<typename x_type, typename y_type = x_type>
+    struct point
     {
-    public:
-      x_type x;
-      y_type y;
+      x_type my_x;
+      y_type my_y;
 
-      point(const x_type& x_ = x_type(),
-            const y_type& y_ = y_type()) : x(x_),
-                                           y(y_) { }
+      point(const x_type& x = x_type(),
+            const y_type& y = y_type()) : my_x(x),
+                                          my_y(y) { }
 
       bool operator<(const point& other) const
       {

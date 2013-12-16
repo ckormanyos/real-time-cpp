@@ -8,9 +8,9 @@
 #include <stddef.h>
 
 // Implement some efficient memory functions from the standard C library.
-// In this way, the linker will take these functions and may potentially
-// save some code. The application needs should be checked in order to
-// determine if there actually is any code savings.
+// If this file is included in the project, the linker will take these
+// instead of its own from the C-library. The functions in this file
+// *may* potentially save some code.
 
 extern "C"
 void* memset(void* s1, int c, size_t n)
@@ -51,7 +51,7 @@ void* memmove(void* s1, const void* s2, size_t n)
   // For additional implementation details, see
   // P.J. Plauger, "The Standard C Library", Figure 14.5, page 400.
 
-  // The function memmove does work properly even when its operands overlap.
+  // The function memmove *does* work properly even when its operands overlap.
 
         char* sc1 = reinterpret_cast<      char*>(s1);
   const char* sc2 = reinterpret_cast<const char*>(s2);

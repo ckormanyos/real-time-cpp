@@ -388,7 +388,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\util\utility\util_communication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h" />
@@ -587,6 +586,7 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_template.h" />
+    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h" />
     <ClInclude Include="src\mcal\mips\mcal_cpu.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -795,9 +795,7 @@
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
-    <ClInclude Include="src\util\utility\util_compiler.h" />
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />
-    <ClInclude Include="src\util\utility\util_language.h" />
     <ClInclude Include="src\util\utility\util_linear_interpolate.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />

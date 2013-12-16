@@ -13,10 +13,10 @@
 
   template<typename value_type,
            typename function_type>
-  inline value_type integral(const value_type a,
-                             const value_type b,
-                             const value_type tol,
-                             function_type function)
+  value_type integral(const value_type a,
+                      const value_type b,
+                      const value_type tol,
+                      function_type function)
   {
     std::uint_fast8_t n = 1U;
 
@@ -52,10 +52,10 @@
 
   template<typename value_type,
            typename function_type>
-  inline std::complex<value_type> integral_complex(const value_type a,
-                                                   const value_type b,
-                                                   const value_type tol,
-                                                   function_type function)
+  std::complex<value_type> integral_complex(const value_type a,
+                                            const value_type b,
+                                            const value_type tol,
+                                            function_type function)
   {
     std::uint_fast8_t n = 1U;
 

@@ -37,10 +37,10 @@
   {
   public:
     typedef integer_type signed_value_type;
-    typedef typename util::utype_helper<std::numeric_limits<signed_value_type>::digits + 1>::exact unsigned_value_type;
+    typedef typename util::utype_helper<std::numeric_limits<signed_value_type>::digits + 1>::exact_type unsigned_value_type;
 
   private:
-    typedef typename util::utype_helper<std::numeric_limits<unsigned_value_type>::digits / 2>::exact unsigned_short_type;
+    typedef typename util::utype_helper<std::numeric_limits<unsigned_value_type>::digits / 2>::exact_type unsigned_short_type;
 
     static const std::size_t         decimal_split       = std::numeric_limits<unsigned_value_type>::digits / 2;
     static const signed_value_type   decimal_split_value = unsigned_value_type(1ULL) << decimal_split;
@@ -146,7 +146,7 @@
       // TBD: Needs compiler support for conditional compilation.
       if(std::numeric_limits<unsigned_value_type>::digits <= 16)
       {
-        typedef typename util::utype_helper<std::numeric_limits<unsigned_value_type>::digits * 2>::exact unsigned_long_long_type;
+        typedef typename util::utype_helper<std::numeric_limits<unsigned_value_type>::digits * 2>::exact_type unsigned_long_long_type;
 
         const unsigned_long_long_type result = (static_cast<unsigned_long_long_type>(u_self) * v_other) >> decimal_split;
 
