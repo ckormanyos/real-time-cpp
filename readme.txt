@@ -22,6 +22,7 @@ The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
+  * ST microelectronics(R) STM32F4xx ARM(R) Cortex(TM)-M4
   * BeagleBone with Texas Instruments AM335x ARM(R) A8
   * Under construction: Microchip(R) PIC(R)32, aka MIPS(R) 4K
   * Considered: Raspberry Pi with ARM(R) 11
