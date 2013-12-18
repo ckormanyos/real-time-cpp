@@ -5,16 +5,15 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_osc.h>
+#include <mcal_reg_access.h>
 
-  #include <cstdint>
+extern "C" void SetSysClock();
 
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+void mcal::osc::init(const config_type*)
+{
+  // Configure the System clock source.
+  // Set the PLL Multiply and divide factors, the AHB/APBx prescalers,
+  // and the flash settings.
+  SetSysClock();
+}

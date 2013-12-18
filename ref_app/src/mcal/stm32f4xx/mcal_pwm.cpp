@@ -5,16 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_pwm.h>
 
-  #include <cstdint>
-
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+//mcal::pwm::pwm_type pwm0;
+//mcal::pwm::pwm_type pwm1;

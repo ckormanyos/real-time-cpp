@@ -5,16 +5,19 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_cpu.h>
+#include <mcal_osc.h>
+#include <mcal_port.h>
+#include <mcal_reg_access.h>
+#include <mcal_wdg.h>
 
-  #include <cstdint>
+extern "C" void SystemInitCore(void);
 
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+void mcal::cpu::init()
+{
+  SystemInitCore();
+
+  mcal::wdg::init(nullptr);
+  mcal::port::init(nullptr);
+  mcal::osc::init(nullptr);
+}

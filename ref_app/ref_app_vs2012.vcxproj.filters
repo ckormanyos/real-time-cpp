@@ -107,6 +107,12 @@
     <Filter Include="src\util\safety\time">
       <UniqueIdentifier>{be85e876-1040-4705-bb46-36a60160228f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\stm32f4xx">
+      <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32f4xx\stm32f4xx">
+      <UniqueIdentifier>{0da2030f-25c5-469b-9ba0-32aa928a8a12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -312,6 +318,39 @@
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
       <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_irq.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_led.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_osc.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_port.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_safety_dram.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f4xx\stm32f4xx\system_stm32f4xx.c">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -758,6 +797,69 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_cpu.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_gpt.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_irq.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_led.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_osc.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_port.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_pwm.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_rdm.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_reg.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_reg_access.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_safety_dram.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_ser.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_spi.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_wdg.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cm4.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\stm32f4xx.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\system_stm32f4xx.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cm4_simd.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cmFunc.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cmInstr.h">
+      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

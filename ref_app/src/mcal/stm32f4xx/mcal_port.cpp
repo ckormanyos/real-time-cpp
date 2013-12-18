@@ -5,16 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_port.h>
+#include <mcal_reg_access.h>
 
-  #include <cstdint>
-
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+void mcal::port::init(const config_type*)
+{
+  // Enable the peripheral clock for portd.
+  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_ahb1enr, UINT32_C(0x08)>::reg_or();
+}

@@ -5,16 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_led.h>
 
-  #include <cstdint>
-
-  namespace mcal
+namespace mcal
+{
+  namespace led
   {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
+    const led_type led0;
   }
-#endif // _MCAL_REG_2010_04_10_H_
+}

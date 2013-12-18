@@ -5,16 +5,24 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef _MCAL_GPT_2011_10_20_H_
+  #define _MCAL_GPT_2011_10_20_H_
 
   #include <cstdint>
 
   namespace mcal
   {
-    namespace reg
+    namespace gpt
     {
-      // TBD: Define the necessary MIPS register addresses.
+      typedef void          config_type;
+      typedef std::uint64_t value_type;
+
+      void init(const config_type*);
+
+      value_type get_time_elapsed();
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+
+  mcal::gpt::value_type consistent_microsecond_tick();
+
+#endif // _MCAL_GPT_2011_10_20_H_

@@ -61,13 +61,12 @@
       constexpr std::uint32_t iwdg_sr     = static_cast<std::uint32_t>(0x4000300CUL); // 32-bit register.
 
       // Interrupt control registers.
-      constexpr std::uint32_t nvic_iser_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0000); // 32-bit registers : Interrupt set enable registers.
-      constexpr std::uint32_t nvic_icer_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0080); // 32-bit registers : Interrupt clear enable registers.
-      constexpr std::uint32_t nvic_ispr_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0100); // 32-bit registers : Interrupt set pending registers.
-      constexpr std::uint32_t nvic_icpr_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0180); // 32-bit registers : Interrupt clear pending registers.
-      constexpr std::uint32_t nvic_iabr_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0200); // 32-bit registers : Interrupt active bit registers.
-      constexpr std::uint32_t nvic_ip_base_address   = static_cast<std::uint32_t>(0xE000E100 + 0x0300); //  8-bit registers : Interrupt priority registers (each one 8 bits wide).
-      constexpr std::uint32_t nvic_stir_base_address = static_cast<std::uint32_t>(0xE000E100 + 0x0E00); // 32-bit register  : Software trigger interrupt register.
+      constexpr std::uint32_t nvic_iser   = static_cast<std::uint32_t>(0xE000E100 + 0x0000); // 32-bit registers : Interrupt set enable registers.
+      constexpr std::uint32_t nvic_icer   = static_cast<std::uint32_t>(0xE000E100 + 0x0080); // 32-bit registers : Interrupt clear enable registers.
+      constexpr std::uint32_t nvic_ispr   = static_cast<std::uint32_t>(0xE000E100 + 0x0100); // 32-bit registers : Interrupt set pending registers.
+      constexpr std::uint32_t nvic_icpr   = static_cast<std::uint32_t>(0xE000E100 + 0x0180); // 32-bit registers : Interrupt clear pending registers.
+      constexpr std::uint32_t nvic_iabr   = static_cast<std::uint32_t>(0xE000E100 + 0x0200); // 32-bit registers : Interrupt active bit registers.
+      constexpr std::uint32_t nvic_ip     = static_cast<std::uint32_t>(0xE000E100 + 0x0300); //  8-bit registers : Interrupt priority registers (each one 8 bits wide).
     }
   }
 

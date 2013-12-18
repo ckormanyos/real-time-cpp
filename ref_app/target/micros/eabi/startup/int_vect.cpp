@@ -37,13 +37,15 @@ extern "C" void __sys_tick_handler   () { for(;;) { mcal::cpu::nop(); } }
 namespace
 {
   typedef void(*isr_type)();
+
+  constexpr std::size_t number_of_interrupts = 128U;
 }
 
 extern "C"
-const volatile std::array<isr_type, 128U> __isr_vector __attribute__((section(".isr_vector")));
+const volatile std::array<isr_type, number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_type, 128U> __isr_vector =
+const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
 {{
   __initial_stack_pointer,   // 0x0000, initial stack pointer
   __my_startup,              // 0x0004, reset

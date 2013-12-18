@@ -5,16 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
-
-  #include <cstdint>
+#ifndef _MCAL_OSC_2011_10_20_H_
+  #define _MCAL_OSC_2011_10_20_H_
 
   namespace mcal
   {
-    namespace reg
+    namespace osc
     {
-      // TBD: Define the necessary MIPS register addresses.
+      typedef void config_type;
+      void init(const config_type*);
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+
+#endif // _MCAL_OSC_2011_10_20_H_

@@ -139,7 +139,6 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -O3                               \
               -finline-functions                \
               -finline-limit=32                 \
-              -ftemplate-depth=4096             \
               -ffunction-sections               \
               -fdata-sections
 
@@ -156,7 +155,8 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-use-cxa-get-exception-ptr    \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
-              -fno-enforce-eh-specs
+              -fno-enforce-eh-specs             \
+              -ftemplate-depth=4096
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \

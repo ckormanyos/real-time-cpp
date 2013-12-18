@@ -5,16 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef _MCAL_REG_ACCESS_2010_04_10_H_
+  #define _MCAL_REG_ACCESS_2010_04_10_H_
 
-  #include <cstdint>
+  #include <mcal_reg.h>
+  #include <mcal/mcal_reg_access_template.h>
+  #include <mcal/mcal_reg_dynamic_access_template.h>
 
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+#endif // _MCAL_REG_ACCESS_2010_04_10_H_

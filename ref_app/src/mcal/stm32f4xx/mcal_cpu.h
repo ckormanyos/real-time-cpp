@@ -5,16 +5,24 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef _MCAL_CPU_2009_02_14_H_
+  #define _MCAL_CPU_2009_02_14_H_
 
   #include <cstdint>
 
   namespace mcal
   {
-    namespace reg
+    namespace cpu
     {
-      // TBD: Define the necessary MIPS register addresses.
+      void init();
+
+      inline void nop() { asm volatile("nop"); }
+
+      inline std::uint8_t read_program_memory(volatile std::uint8_t* pointer_to_program_memory)
+      {
+        return *pointer_to_program_memory;
+      }
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+
+#endif // _MCAL_CPU_2009_02_14_H_

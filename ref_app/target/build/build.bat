@@ -8,4 +8,8 @@
 @rem
 @rem ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-tools\Util\MinGW\msys\1.0\bin\make.exe -f target/app/make/app_make.gmk %2 TGT=%1
+@Set build_command=tools\Util\MinGW\msys\1.0\bin\make.exe -f target/app/make/app_make.gmk %2 TGT=%1
+
+@echo Executing Command: %build_command%
+
+@%build_command%

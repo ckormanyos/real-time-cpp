@@ -5,16 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#include <mcal_irq.h>
 
-  #include <cstdint>
-
-  namespace mcal
-  {
-    namespace reg
-    {
-      // TBD: Define the necessary MIPS register addresses.
-    }
-  }
-#endif // _MCAL_REG_2010_04_10_H_
+void mcal::irq::init(const config_type*)
+{
+  // Enable all global interrupts.
+  mcal::irq::enable_all();
+}
