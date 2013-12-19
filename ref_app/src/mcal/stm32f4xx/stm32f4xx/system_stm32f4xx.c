@@ -73,20 +73,20 @@
 // PLL Parameters:
 // PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
 #define PLL_M      8
-#define PLL_N      336
+#define PLL_N      256
 
 // SYSCLK = PLL_VCO / PLL_P
-#define PLL_P      4
+#define PLL_P      2
 
 // USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ
-#define PLL_Q      7
+#define PLL_Q      6
 
 // Select the PLL clock source
 // HSE (8MHz) is used to clock the PLL, and the PLL is used
 // as the system clock source.
 #define PLL_SOURCE_HSE
 
-uint32_t SystemCoreClock = UINT32_C(96000000);
+uint32_t SystemCoreClock = UINT32_C(128000000);
 
 void SystemInitCore(void);
 void SetSysClock   (void);
@@ -157,7 +157,7 @@ void SetSysClock(void)
   if(HSEStatus == (uint32_t) 0x01)
   {
     // Configure the main PLL.
-    RCC->PLLCFGR =   PLL_M
+    RCC->PLLCFGR =    PLL_M
                    | (PLL_N << 6)
                    | (((PLL_P >> 1) - 1) << 16)
                    | (RCC_PLLCFGR_PLLSRC_HSE)
@@ -176,11 +176,11 @@ void SetSysClock(void)
   // HCLK = SYSCLK / 1.
   RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
 
-  // PCLK2 = HCLK / 1.
-  RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+  // PCLK2 = HCLK / 2.
+  RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;
 
-  // PCLK1 = HCLK / 2.
-  RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+  // PCLK1 = HCLK / 4.
+  RCC->CFGR |= RCC_CFGR_PPRE1_DIV4;
 
   // Enable the main PLL.
   RCC->CR |= RCC_CR_PLLON;
@@ -195,7 +195,7 @@ void SetSysClock(void)
   FLASH->ACR =   FLASH_ACR_PRFTEN
                | FLASH_ACR_ICEN
                | FLASH_ACR_DCEN
-               | FLASH_ACR_LATENCY_2WS;
+               | FLASH_ACR_LATENCY_4WS;
 
   // Select the main PLL as system clock source.
   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
