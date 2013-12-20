@@ -9,8 +9,7 @@
 # File list of the ARM(R) Cortex(TM)-M4 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/stm32f4xx/system_stm32f4xx        \
-             $(PATH_APP)/util/STD_LIBC/memory                          \
+FILES_TGT  = $(PATH_APP)/util/STD_LIBC/memory                          \
              $(PATH_TGT)/startup/crt0                                  \
              $(PATH_TGT)/startup/crt0_init_ram                         \
              $(PATH_TGT)/startup/crt1                                  \

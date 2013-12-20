@@ -110,9 +110,6 @@
     <Filter Include="src\mcal\stm32f4xx">
       <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32f4xx\stm32f4xx">
-      <UniqueIdentifier>{0da2030f-25c5-469b-9ba0-32aa928a8a12}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -348,9 +345,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f4xx\mcal_wdg.cpp">
       <Filter>src\mcal\stm32f4xx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\stm32f4xx\system_stm32f4xx.c">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -842,24 +836,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f4xx\mcal_wdg.h">
       <Filter>src\mcal\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cm4.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\stm32f4xx.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\system_stm32f4xx.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cm4_simd.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cmFunc.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\stm32f4xx\core_cmInstr.h">
-      <Filter>src\mcal\stm32f4xx\stm32f4xx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

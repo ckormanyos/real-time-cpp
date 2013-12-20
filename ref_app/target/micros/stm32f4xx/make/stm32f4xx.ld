@@ -6,7 +6,7 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for STM32F103x ARM(R) Cortex(TM)-M3 MCU */
+/* Linker script for STM32F4xx ARM(R) Cortex(TM)-M4 MCU */
 
 INPUT(libc.a libm.a)
 
@@ -14,14 +14,17 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
+/* Set up a ROM area with a size of 32K - 4 */
 _rom_begin = 0x08000000;
 _rom_end   = 0x08007FFC;
 
-/* The beginning and end (i.e., top) of the stack */
+/* The beginning and end (i.e., the top) of the stack */
+/* Set up a stack with a size of 4K */
 _stack_begin = 0x2000F000;
 _stack_end   = 0x20010000;
 
-__initial_stack_pointer = 0x20010000;
+__initial_stack_pointer = _stack_end;
+
 
 MEMORY
 {
