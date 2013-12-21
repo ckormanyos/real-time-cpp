@@ -20,15 +20,13 @@ namespace
                       mcal::reg::rcc_cr,
                       UINT32_C(0x00010000)>::reg_or();
 
-    volatile bool hse_is_ready = false;
-
     // Wait until the hse is ready.
-    while(false == hse_is_ready)
+    while(mcal::reg::access<std::uint32_t,
+                            std::uint32_t,
+                            mcal::reg::rcc_cr,
+                            UINT32_C(17)>::bit_get() == false)
     {
-      hse_is_ready = mcal::reg::access<std::uint32_t,
-                                       std::uint32_t,
-                                       mcal::reg::rcc_cr,
-                                       UINT32_C(17)>::bit_get();
+      mcal::cpu::nop();
     }
 
     // Set the pll parameters.
@@ -39,15 +37,13 @@ namespace
     // Enable the pll.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(0x01000000)>::reg_or();
 
-    volatile bool pll_is_locked = false;
-
     // Wait until the pll is locked.
-    while(false == pll_is_locked)
+    while(mcal::reg::access<std::uint32_t,
+                            std::uint32_t,
+                            mcal::reg::rcc_cr,
+                            UINT32_C(25)>::bit_get() == false)
     {
-      pll_is_locked = mcal::reg::access<std::uint32_t,
-                                       std::uint32_t,
-                                       mcal::reg::rcc_cr,
-                                       UINT32_C(25)>::bit_get();
+      mcal::cpu::nop();
     }
 
     // Select the pll as the system clock source.
@@ -56,17 +52,14 @@ namespace
                       mcal::reg::rcc_cfgr,
                       UINT32_C(0x00000002)>::reg_msk<UINT32_C(0x00000003)>();
 
-    volatile bool pll_is_the_clock_source = false;
+    std::uint32_t rcc_cfgr_sws_value = UINT32_C(0);
 
     // Wait until the pll is latched as the system clock source.
-    while(false == pll_is_the_clock_source)
+    while(rcc_cfgr_sws_value != UINT32_C(0x00000008))
     {
-      const std::uint32_t rcc_cfgr_sws_value =
-        mcal::reg::access<std::uint32_t,
-                          std::uint32_t,
-                          mcal::reg::rcc_cfgr>::reg_get() & UINT32_C(0x0000000C);
-
-      pll_is_the_clock_source = (rcc_cfgr_sws_value == UINT32_C(0x00000008));
+      rcc_cfgr_sws_value = mcal::reg::access<std::uint32_t,
+                                             std::uint32_t,
+                                             mcal::reg::rcc_cfgr>::reg_get() & UINT32_C(0x0000000C);
     }
 
     // Now we have:
@@ -79,5 +72,5 @@ namespace
 void mcal::osc::init(const config_type*)
 {
   // Configure the system clock for 24MHz using the hse-pll.
-  set_the_system_clock()
+  set_the_system_clock();
 }

@@ -78,7 +78,7 @@ void mcal::gpt::init(const config_type*)
     constexpr std::uint32_t timer4_nvic_irq_preemption_prio = UINT32_C(0x0F);
     constexpr std::uint32_t timer4_nvic_irq_sub_prio        = UINT32_C(0x0F);
 
-    constexpr std::size_t timer4_irq_n = 30UL;
+    constexpr std::uint32_t timer4_irq_n = UINT32_C(30);
 
     const std::uint8_t timer4_interrupt_priority = std::uint8_t(  std::uint32_t(timer4_nvic_irq_preemption_prio << tmp_pre)
                                                                 | std::uint32_t(timer4_nvic_irq_sub_prio & tmp_sub)
@@ -92,7 +92,7 @@ void mcal::gpt::init(const config_type*)
     // Set the timer4 interrupt set enable register.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
-                      std::uint32_t(mcal::reg::nvic_iser + ((timer4_irq_n >> 0x05) * 4U)),
+                      std::uint32_t(mcal::reg::nvic_iser + ((timer4_irq_n >> 5) * 4U)),
                       std::uint32_t(UINT32_C(1) << (timer4_irq_n & UINT32_C(0x1F)))>::reg_set();
 
     // Clear the timer4 interrupt request bit.
