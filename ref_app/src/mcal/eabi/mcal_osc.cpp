@@ -5,97 +5,79 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cstdint>
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
 
 namespace
 {
-  bool set_the_system_clock_to_24mhz()
+  void set_the_system_clock()
   {
-    // Configure the system clock for 24MHz using the PLL.
+    // Enable the hse.
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::rcc_cr,
+                      UINT32_C(0x00010000)>::reg_or();
 
-    // Enable the HSE.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x00010083UL>::reg_set();
+    volatile bool hse_is_ready = false;
 
-    constexpr std::uint32_t max_counter = 500000UL;
-
-    volatile std::uint32_t startup_counter;
-
-    // Wait until the HSE is ready or exit if timeout occurs.
-    for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
+    // Wait until the hse is ready.
+    while(false == hse_is_ready)
     {
-      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
-
-      if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x00020000UL)) != static_cast<std::uint32_t>(0UL))
-      {
-        break;
-      }
+      hse_is_ready = mcal::reg::access<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::rcc_cr,
+                                       UINT32_C(17)>::bit_get();
     }
 
-    // Verify that the HSE is ready.
-    const bool hse_is_ready = (startup_counter < max_counter);
+    // Set the pll parameters.
 
-    if(!hse_is_ready)
+    // The pll configuration is: = (hse / 2) * 6 = 24 MHz.
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, UINT32_C(0x00130000)>::reg_or();
+
+    // Enable the pll.
+    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(0x01000000)>::reg_or();
+
+    volatile bool pll_is_locked = false;
+
+    // Wait until the pll is locked.
+    while(false == pll_is_locked)
     {
-      // The HSE is not ready.
-      return false;
+      pll_is_locked = mcal::reg::access<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::rcc_cr,
+                                       UINT32_C(25)>::bit_get();
     }
 
-    // The PLL configuration is: = (HSE / 2) * 6 = 24 MHz.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130000UL>::reg_set();
+    // Select the pll as the system clock source.
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::rcc_cfgr,
+                      UINT32_C(0x00000002)>::reg_msk<UINT32_C(0x00000003)>();
 
-    // Enable the PLL.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x01010083UL>::reg_set();
+    volatile bool pll_is_the_clock_source = false;
 
-    // Wait until the PLL is locked.
-    for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
+    // Wait until the pll is latched as the system clock source.
+    while(false == pll_is_the_clock_source)
     {
-      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr>::reg_get();
+      const std::uint32_t rcc_cfgr_sws_value =
+        mcal::reg::access<std::uint32_t,
+                          std::uint32_t,
+                          mcal::reg::rcc_cfgr>::reg_get() & UINT32_C(0x0000000C);
 
-      if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x00020000UL)) != static_cast<std::uint32_t>(0UL))
-      {
-        break;
-      }
+      pll_is_the_clock_source = (rcc_cfgr_sws_value == UINT32_C(0x00000008));
     }
-
-    // Verify that the PLL is locked.
-    const bool pll_is_locked = (startup_counter < max_counter);
-
-    if(!pll_is_locked)
-    {
-      // The PLL is not locked.
-      return false;
-    }
-
-    // Select the PLL as the system clock source.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x00130002UL>::reg_set();
-
-    // Wait until the PLL latched as the system clock source.
-    for(startup_counter = 0UL; startup_counter < max_counter; ++startup_counter)
-    {
-      const std::uint32_t tmp = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr>::reg_get();
-
-      if(static_cast<std::uint32_t>(tmp & static_cast<std::uint32_t>(0x0CUL)) == static_cast<std::uint32_t>(0x08UL))
-      {
-        break;
-      }
-    }
-
-    // Verify that the PLL is the clock source.
-    const bool pll_is_the_clock_source = (startup_counter < max_counter);
 
     // Now we have:
-    //   * The HSE is ready.
-    //   * The PLL is locked.
-    //   * The PLL is the clock source.
-
-    return pll_is_the_clock_source;
+    //   * The hse is ready.
+    //   * The pll is locked.
+    //   * The pll is the clock source.
   }
 }
 
 void mcal::osc::init(const config_type*)
 {
-  const bool clock_result = ::set_the_system_clock_to_24mhz();
-
-  static_cast<void>(clock_result);
+  // Configure the system clock for 24MHz using the hse-pll.
+  set_the_system_clock()
 }

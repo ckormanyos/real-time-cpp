@@ -13,6 +13,9 @@
 
 namespace
 {
+  constexpr std::uint32_t rcc_apb1enr_pwren = UINT32_C(0x10000000);
+  constexpr std::uint32_t pwr_cr_vos_bit    = UINT32_C(14);
+
   constexpr std::uint32_t flash_acr_wait_state_calculator(const unsigned my_count)
   {
     return static_cast<std::uint32_t>(my_count);
@@ -84,7 +87,20 @@ void mcal::cpu::init()
                     mcal::reg::rcc_cir,
                     UINT32_C(0)>::reg_set();
 
+  // Configure the flash memory.
   configure_the_flash();
+
+  // Enable the power interface clock.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::rcc_apb1enr,
+                    rcc_apb1enr_pwren>::reg_or();
+
+  // Select the regulator voltage scaling output to scale 1 mode.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::pwr_cr,
+                    pwr_cr_vos_bit>::bit_set();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
