@@ -63,9 +63,9 @@ void sys::idle::task_func(const bool do_watchdog_trigger)
     // (in microseconds) since the last wathdog trigger.
     sys_idle_time_since_watchdog_trigger.service();
 
-    // Service (i.e., trigger) the watchdog.
     if(result_of_dram_refresh_is_ok && result_of_rom_checksum_is_ok)
     {
+      // Service the watchdog (i.e., trigger it).
       mcal::wdg::secure::trigger();
     }
   }

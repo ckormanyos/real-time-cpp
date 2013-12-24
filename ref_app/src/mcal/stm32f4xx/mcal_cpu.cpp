@@ -11,35 +11,6 @@
 #include <mcal_reg_access.h>
 #include <mcal_wdg.h>
 
-namespace
-{
-  constexpr std::uint32_t rcc_apb1enr_pwren = UINT32_C(0x10000000);
-  constexpr std::uint32_t pwr_cr_vos_bit    = UINT32_C(14);
-
-  constexpr std::uint32_t flash_acr_wait_state_calculator(const unsigned my_count)
-  {
-    return static_cast<std::uint32_t>(my_count);
-  }
-
-  void configure_the_flash()
-  {
-    // Configure the flash prefetch, the instruction cache,
-    // the data cache, and the number of wait states.
-    constexpr std::uint32_t flash_acr_prften = UINT32_C(0x00000100);
-    constexpr std::uint32_t flash_acr_icen   = UINT32_C(0x00000200);
-    constexpr std::uint32_t flash_acr_dcen   = UINT32_C(0x00000400);
-
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::flash_acr,
-                      static_cast<std::uint32_t>(  flash_acr_wait_state_calculator(5U)
-                                                 | flash_acr_prften
-                                                 | flash_acr_icen
-                                                 | flash_acr_dcen
-                                                )>::reg_set();
-  }
-}
-
 void mcal::cpu::init()
 {
   // Initialize the fpu.
@@ -47,8 +18,7 @@ void mcal::cpu::init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::scb_cpacr,
-                    static_cast<std::uint32_t>(  (UINT32_C(3) << (10 * 2))
-                                               | (UINT32_C(3) << (11 * 2)))>::reg_or();
+                    UINT32_C(0x00F00000)>::reg_or();
 
   // Reset the rcc clock configuration to the default reset state
   // Set the hsion bit.
@@ -88,19 +58,26 @@ void mcal::cpu::init()
                     UINT32_C(0)>::reg_set();
 
   // Configure the flash memory.
-  configure_the_flash();
+  // Set 5 wait states.
+  // Activate the flash prefetch.
+  // Activate the instruction cache.
+  // Activate the data cache.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::flash_acr,
+                    UINT32_C(5) | UINT32_C(0x00000700)>::reg_set();
 
   // Enable the power interface clock.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::rcc_apb1enr,
-                    rcc_apb1enr_pwren>::reg_or();
+                    UINT32_C(0x10000000)>::reg_or();
 
   // Select the regulator voltage scaling output to scale 1 mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::pwr_cr,
-                    pwr_cr_vos_bit>::bit_set();
+                    UINT32_C(0x00004000)>::reg_or();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
