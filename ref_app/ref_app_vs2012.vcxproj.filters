@@ -837,6 +837,9 @@
     <ClInclude Include="src\mcal\stm32f4xx\mcal_wdg.h">
       <Filter>src\mcal\stm32f4xx</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_stopwatch.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

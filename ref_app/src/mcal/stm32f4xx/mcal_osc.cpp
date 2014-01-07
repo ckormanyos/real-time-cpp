@@ -42,10 +42,10 @@ namespace
 
     constexpr std::uint32_t rcc_pllcfgr_value =
       static_cast<std::uint32_t>(  pll_m
-                                 | (pll_n << 6)
-                                 | (((pll_p >> 1) - 1) << 16)
+                                 | static_cast<std::uint32_t>(pll_n << 6)
+                                 | static_cast<std::uint32_t>(static_cast<std::uint32_t>((pll_p >> 1) - 1) << 16)
                                  | UINT32_C(0x00400000)
-                                 | (pll_q << 24));
+                                 | static_cast<std::uint32_t>(pll_q << 24));
 
     // Configure the main pll.
     mcal::reg::access<std::uint32_t,

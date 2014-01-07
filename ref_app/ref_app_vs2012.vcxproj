@@ -901,6 +901,7 @@
     <ClInclude Include="src\util\utility\util_nothing.h" />
     <ClInclude Include="src\util\utility\util_null_ptr_workaround.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
+    <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_time.h" />
     <ClInclude Include="src\util\utility\util_two_part_data_manipulation.h" />
     <ClInclude Include="src\util\utility\util_type.h" />

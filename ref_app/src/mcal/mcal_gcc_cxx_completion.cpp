@@ -18,26 +18,16 @@ namespace std
     high_resolution_clock::time_point high_resolution_clock::now()
     {
        // The source of the high-resolution clock is from microseconds.
-       typedef std::chrono::time_point<high_resolution_clock, microseconds> from_type;
+       typedef std::chrono::time_point<high_resolution_clock, std::chrono::microseconds> microsecond_time_point_type;
 
        // Get the consistent tick in units of microseconds.
-       const auto microsecond_tick = consistent_microsecond_tick();
+       const mcal::gpt::value_type microsecond_tick = consistent_microsecond_tick();
 
        // Now obtain a time-point in microseconds.
-       auto from_micro = from_type(microseconds(microsecond_tick));
+       const microsecond_time_point_type time_point_in_microseconds = microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
 
        // And return the corresponding duration in microseconds.
-       return time_point_cast<duration>(from_micro);
-/*
-       // The source of the high-resolution clock is microseconds.
-      typedef std::chrono::time_point<high_resolution_clock, microseconds> microseconds_type;
-
-      // Obtain a time-point from the consistent tick in units of microseconds.
-      microseconds_type my_now(std::chrono::microseconds(::consistent_microsecond_tick()));
-
-      // Return the corresponding duration in microseconds.
-      return std::chrono::high_resolution_clock::time_point(my_now);
-*/
+       return time_point_cast<duration>(time_point_in_microseconds);
     }
   }
 }
