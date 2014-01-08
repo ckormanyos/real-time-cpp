@@ -1,38 +1,23 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-asm volatile(".extern call_ctor_table_entry");
-asm volatile(".extern _ctors_begin");
-asm volatile(".extern _ctors_end");
+#include <cstdint>
+#include <mcal_cpu.h>
+#include <util/utility/util_two_part_data_manipulation.h>
 
-namespace
+extern "C"
 {
-  void do_global_ctors() __attribute__((section(".startup")));
-
-  void do_global_ctors()
+  struct ctor_type
   {
-    asm volatile("ldi r17, hi8(_ctors_begin)");
-    asm volatile("ldi r28, lo8(_ctors_end)");
-    asm volatile("ldi r29, hi8(_ctors_end)");
+    typedef void(*function_type)();
+  };
 
-    asm volatile("rjmp .L__do_global_ctors_start");
-
-    asm volatile(".L__do_global_ctors_loop:");
-
-    asm volatile("sbiw r28, 0x02");
-    asm volatile("movw r30, r28");
-    asm volatile("call call_ctor_table_entry");
-
-    asm volatile(".L__do_global_ctors_start:");
-
-    asm volatile("cpi r28, lo8(_ctors_begin)");
-    asm volatile("cpc r29, r17");
-    asm volatile("brne .L__do_global_ctors_loop");
-  }
+  extern ctor_type::function_type _ctors_end[];
+  extern ctor_type::function_type _ctors_begin[];
 }
 
 namespace crt
@@ -42,15 +27,24 @@ namespace crt
 
 void crt::init_ctors()
 {
-  do_global_ctors();
+  typedef std::uint16_t function_aligned_type;
+
+  for(volatile std::uint8_t* rom_source  = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_end));
+                             rom_source != static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_begin));
+                             rom_source -= sizeof(function_aligned_type))
+  {
+    // Note that particular care needs to be taken to read program
+    // memory with the function mcal::cpu::read_program_memory().
+
+    // Read the high byte and the low byte of the ctor function address.
+    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source - 1U);
+    const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source - 2U);
+
+    // Create the address of the ctor function.
+    const ctor_type::function_type ctor_function_address
+      = reinterpret_cast<const ctor_type::function_type>(util::make_long<function_aligned_type>(addr_lo, addr_hi));
+
+    // Call the ctor function.
+    ctor_function_address();
+  }
 }
-
-asm volatile(".section .text");
-
-asm volatile(".func call_ctor_table_entry");
-asm volatile("call_ctor_table_entry:");
-  asm volatile("lpm r0, Z+");
-  asm volatile("lpm r31, Z");
-  asm volatile("mov r30, r0");
-  asm volatile("ijmp");
-asm volatile(".endfunc");

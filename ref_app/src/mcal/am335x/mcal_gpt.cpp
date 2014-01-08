@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,27 +21,6 @@ namespace
 
     return is_init;
   }
-}
-
-mcal::gpt::value_type consistent_microsecond_tick()
-{
-  // Return the system tick using a multiple read to ensure
-  // data consistency of the high-byte of the system tick.
-
-  typedef std::uint32_t timer_address_type;
-  typedef std::uint32_t timer_register_type;
-
-  // Do the first read of the dmtimer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
-  const mcal::gpt::value_type sys_tick_1 = system_tick;
-
-  // Do the second read of the dmtimer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
-  const mcal::gpt::value_type sys_tick_2 = system_tick;
-
-  // Perform the consistency check and return the consistent microsecond tick.
-  return ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + timer_register_type(12UL)) / 24U))
-                                     : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + timer_register_type(12UL)) / 24U)));
 }
 
 extern "C" void __vector_timer7();
@@ -104,8 +83,26 @@ void mcal::gpt::init(const config_type*)
   }
 }
 
-mcal::gpt::value_type mcal::gpt::get_time_elapsed()
+mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
-  return (gpt_is_initialized() ? consistent_microsecond_tick()
-                               : mcal::gpt::value_type(0U));
+  // Return the system tick using a multiple read to ensure
+  // data consistency of the high-byte of the system tick.
+
+  typedef std::uint32_t timer_address_type;
+  typedef std::uint32_t timer_register_type;
+
+  // Do the first read of the dmtimer7 counter and the system tick.
+  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
+  const mcal::gpt::value_type sys_tick_1 = system_tick;
+
+  // Do the second read of the dmtimer7 counter and the system tick.
+  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
+  const mcal::gpt::value_type sys_tick_2 = system_tick;
+
+  // Perform the consistency check and obtain the consistent microsecond tick.
+  const mcal::gpt::value_type consistent_microsecond_tick
+    = ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + timer_register_type(12UL)) / 24U))
+                                  : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + timer_register_type(12UL)) / 24U)));
+
+  return (gpt_is_initialized() ? consistent_microsecond_tick : mcal::gpt::value_type(0U));
 }

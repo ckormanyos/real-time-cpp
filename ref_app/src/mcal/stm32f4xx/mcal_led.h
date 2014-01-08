@@ -45,10 +45,15 @@
                                      bpos> port_pin_type;
       };
 
+      // The LED's on the stm32f4discovery board are as follows:
+      // - portd.12: green
+      // - portd.13: organge
+      // - portd.14: red
+      // - portd.15: blue
       typedef led<std::uint32_t,
                   std::uint32_t,
                   mcal::reg::gpiod_base,
-                  UINT32_C(13)> led_type;
+                  UINT32_C(15)> led_type;
 
       extern const led_type led0;
     }

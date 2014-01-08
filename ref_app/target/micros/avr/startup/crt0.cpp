@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Switched to C++ and modified for Atmega168P by Chris.
+// Completely written in C++ for Atmega328P by Chris.
 
 #include <mcal/mcal.h>
 
@@ -58,15 +58,3 @@ void __my_startup()
     mcal::wdg::secure::trigger();
   }
 }
-
-// Do not remove these dummy stubs!
-// The AtmelStudio(R) project needs them.
-extern "C" void __do_global_ctors();
-extern "C" void __do_global_dtors();
-extern "C" void __do_copy_data();
-extern "C" void __do_clear_bss();
-
-void __do_global_ctors() { }
-void __do_global_dtors() { }
-void __do_copy_data   () { }
-void __do_clear_bss   () { }

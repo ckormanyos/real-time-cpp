@@ -20,13 +20,13 @@ namespace std
        // The source of the high-resolution clock is from microseconds.
        typedef std::chrono::time_point<high_resolution_clock, std::chrono::microseconds> microsecond_time_point_type;
 
-       // Get the consistent tick in units of microseconds.
-       const mcal::gpt::value_type microsecond_tick = consistent_microsecond_tick();
+       // Get the consistent system tick with microsecond resolution.
+       const mcal::gpt::value_type microsecond_tick = mcal::gpt::secure::get_time_elapsed();
 
-       // Now obtain a time-point in microseconds.
+       // Now obtain a time-point with microsecond resolution.
        const microsecond_time_point_type time_point_in_microseconds = microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
 
-       // And return the corresponding duration in microseconds.
+       // And return the corresponding duration with microsecond resolution.
        return time_point_cast<duration>(time_point_in_microseconds);
     }
   }

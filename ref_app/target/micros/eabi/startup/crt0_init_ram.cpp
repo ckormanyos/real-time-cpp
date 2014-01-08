@@ -23,13 +23,10 @@ namespace crt
   void init_ram();
 }
 
-namespace
-{
-  typedef std::uint32_t memory_aligned_type;
-}
-
 void crt::init_ram()
 {
+  typedef std::uint32_t memory_aligned_type;
+
   // Copy the data segment initializers from ROM to RAM.
   // Note that all data segments are aligned by 4.
   const std::size_t size = std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))

@@ -12,8 +12,8 @@
 
   namespace util
   {
-    template<typename short_type,
-             typename long_type>
+    template<typename long_type,
+             typename short_type>
     inline long_type make_long(short_type lo, short_type hi)
     {
       // Ensure that the long_type has exactly twice the digits as the short_type.

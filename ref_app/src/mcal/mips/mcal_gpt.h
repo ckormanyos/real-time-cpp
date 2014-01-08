@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,15 @@
 #ifndef _MCAL_GPT_2011_10_20_H_
   #define _MCAL_GPT_2011_10_20_H_
 
+  #include <chrono>
   #include <cstdint>
+
+  // Forward declaration of the util::timer template class.
+  namespace util
+  {
+    template<typename unsigned_tick_type>
+    class timer;
+  }
 
   namespace mcal
   {
@@ -19,11 +27,17 @@
 
       void init(const config_type*);
 
-      // Elapsed time in microseconds.
-      value_type get_time_elapsed();
+      class secure
+      {
+      private:
+        static value_type get_time_elapsed();
+
+        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now();
+
+        template<typename unsigned_tick_type>
+        friend class util::timer;
+      };
     }
   }
-
-  mcal::gpt::value_type consistent_microsecond_tick();
 
 #endif // _MCAL_GPT_2011_10_20_H_

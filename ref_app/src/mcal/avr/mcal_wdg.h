@@ -8,7 +8,7 @@
 #ifndef _MCAL_WDT_2010_04_10_H_
   #define _MCAL_WDT_2010_04_10_H_
 
-  extern "C" void __my_startup();
+  extern "C" void __my_startup() __attribute__((section(".startup"), naked, used, noinline));
 
   namespace sys { namespace idle { void task_func(const bool); } }
 
