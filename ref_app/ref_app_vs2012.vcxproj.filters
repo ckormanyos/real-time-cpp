@@ -840,6 +840,9 @@
     <ClInclude Include="src\util\utility\util_stopwatch.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\cstdfloat_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -921,6 +924,9 @@
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\type_traits">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cstdfloat">
       <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>

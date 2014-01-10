@@ -687,7 +687,7 @@
       static float signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_float_signaling_NaN(); }
       static float denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_float_denorm_min(); }
 
-      static const bool is_iec559 = ((has_infinity && has_quiet_NaN) && (has_denorm == denorm_present));
+      static const bool is_iec559 = true;
       static const bool is_bounded = true;
       static const bool is_modulo = false;
 
@@ -734,7 +734,54 @@
       static double signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_double_signaling_NaN(); }
       static double denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_double_denorm_min(); }
 
-      static const bool is_iec559 = false; // double is only four bytes for AVR!
+      static const bool is_iec559 = true;
+      static const bool is_bounded = true;
+      static const bool is_modulo = false;
+
+      static const bool traps = false;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_to_nearest;
+    };
+
+    // Specialization for long double.
+    template<>
+    class numeric_limits<long double>
+    {
+    public:
+      static const bool is_specialized = true;
+
+      static double min() throw()    { return  DBL_MIN; }
+      static double max() throw()    { return  DBL_MAX; }
+      static double lowest() throw() { return -DBL_MAX; }
+
+      static const int digits = DBL_MANT_DIG;
+      static const int digits10 = DBL_DIG;
+      static const int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(DBL_MANT_DIG);
+      static const bool is_signed = true;
+      static const bool is_integer = false;
+      static const bool is_exact = false;
+      static const int radix = 2; // DBL_RADIX;
+
+      static double epsilon() throw()     { return DBL_EPSILON; }
+      static double round_error() throw() { return 0.5; }
+
+      static const int min_exponent = DBL_MIN_EXP;
+      static const int min_exponent10 = DBL_MIN_10_EXP;
+      static const int max_exponent = DBL_MAX_EXP;
+      static const int max_exponent10 = DBL_MAX_10_EXP;
+
+      static const bool has_infinity = true;
+      static const bool has_quiet_NaN = true;
+      static const bool has_signaling_NaN = false;
+      static const bool has_denorm = true;
+      static const bool has_denorm_loss = false;
+
+      static double infinity() throw()      { return numeric_limits_base::my_value_that_needs_to_be_provided_double_infinity(); }
+      static double quiet_NaN() throw()     { return numeric_limits_base::my_value_that_needs_to_be_provided_double_quiet_NaN(); }
+      static double signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_double_signaling_NaN(); }
+      static double denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_double_denorm_min(); }
+
+      static const bool is_iec559 = true;
       static const bool is_bounded = true;
       static const bool is_modulo = false;
 
