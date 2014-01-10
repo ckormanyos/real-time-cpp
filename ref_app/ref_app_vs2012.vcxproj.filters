@@ -110,6 +110,9 @@
     <Filter Include="src\mcal\stm32f4xx">
       <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL_C++14_Compatibility">
+      <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -840,9 +843,6 @@
     <ClInclude Include="src\util\utility\util_stopwatch.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL\impl\cstdfloat_impl.h">
-      <Filter>src\util\STL\impl</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -926,8 +926,8 @@
     <None Include="src\util\STL\type_traits">
       <Filter>src\util\STL</Filter>
     </None>
-    <None Include="src\util\STL\cstdfloat">
-      <Filter>src\util\STL</Filter>
+    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
+      <Filter>src\util\STL_C++14_Compatibility</Filter>
     </None>
   </ItemGroup>
 </Project>

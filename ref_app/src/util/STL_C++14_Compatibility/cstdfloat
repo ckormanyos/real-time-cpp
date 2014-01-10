@@ -7,8 +7,8 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDFLOAT_IMPL_2014_01_09_H_
-  #define _CSTDFLOAT_IMPL_2014_01_09_H_
+#ifndef _CSTDFLOAT_2014_01_09_
+  #define _CSTDFLOAT_2014_01_09_
 
   #include <float.h>
   #include <limits>
@@ -333,4 +333,4 @@
     typedef ::floatmax_t floatmax_t;
   }
 
-#endif // _CSTDFLOAT_IMPL_2014_01_09_H_
+#endif // _CSTDFLOAT_2014_01_09_

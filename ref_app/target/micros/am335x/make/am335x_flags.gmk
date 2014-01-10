@@ -13,13 +13,14 @@ GCC_VERSION = 4.7.2
 GCC_TARGET  = arm-none-eabi
 
 
-TGT_CFLAGS    = -mcpu=cortex-a8                       \
-                -mlong-calls                          \
-                -mtune=cortex-a8                      \
+TGT_CFLAGS    = -mcpu=cortex-a8                               \
+                -mlong-calls                                  \
+                -mtune=cortex-a8                              \
                 -mno-unaligned-access
 
-TGT_CPPFLAGS  = -std=c++11                            \
-                -Wzero-as-null-pointer-constant
+TGT_CPPFLAGS  = -std=c++11                                     \
+                -Wzero-as-null-pointer-constant                \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
 
 TGT_AFLAGS    =
 

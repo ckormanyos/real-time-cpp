@@ -12,13 +12,14 @@
 GCC_VERSION = 4.6.3
 GCC_TARGET  = mips-sde-elf
 
-TGT_CFLAGS    = -mips16                           \
-                -mno-gpopt                        \
-                -msoft-float                      \
-                -mno-dsp                          \
+TGT_CFLAGS    = -mips16                                        \
+                -mno-gpopt                                     \
+                -msoft-float                                   \
+                -mno-dsp                                       \
                 -mno-dspr2
 
-TGT_CPPFLAGS  = -std=c++0x
+TGT_CPPFLAGS  = -std=c++0x                                     \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
 
 TGT_AFLAGS    =
 
