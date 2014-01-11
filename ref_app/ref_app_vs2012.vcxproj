@@ -445,6 +445,7 @@
     <ClInclude Include="src\math\checksums\crypto_hash\sha1.h" />
     <ClInclude Include="src\math\checksums\crypto_hash\sha256.h" />
     <ClInclude Include="src\math\constants\constants.h" />
+    <ClInclude Include="src\math\constants\constant_trig_functions.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />
     <ClInclude Include="src\math\fixed_point\fixed_point.h" />
     <ClInclude Include="src\math\special_functions\acosh.h" />

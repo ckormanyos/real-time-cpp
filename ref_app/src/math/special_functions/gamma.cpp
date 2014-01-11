@@ -114,8 +114,8 @@ std::float32_t math::tgamma(std::float32_t x)
   }
   else
   {
-    const std::float32_t sin_pi_x = std::sin(const_pi<std::float32_t>() * x);
+    const std::float32_t sin_pi_x = std::sin(math::constants::pi<std::float32_t>() * x);
 
-    return -const_pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
+    return -math::constants::pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
   }
 }

@@ -855,6 +855,9 @@
     <ClInclude Include="src\math\special_functions\acosh.h">
       <Filter>src\math\special_functions</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\constants\constant_trig_functions.h">
+      <Filter>src\math\constants</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
