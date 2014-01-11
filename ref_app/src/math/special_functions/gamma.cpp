@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,7 +29,7 @@ std::float32_t detail::tgamma_imp(std::float32_t x)
   {
     // Perform the small-argument Taylor series for 1 / tgamma(x).
     const std::float32_t gamma_inverse_series
-      = (((((((    + FLOAT32_C(0.0072189432)
+      = (((((((     + FLOAT32_C(0.0072189432)
                 * x - FLOAT32_C(0.0096219715))
                 * x - FLOAT32_C(0.0421977346))
                 * x + FLOAT32_C(0.1665386114))
@@ -97,12 +97,12 @@ std::float32_t math::tgamma(std::float32_t x)
 
   // Obtain an approximation of the tgamma(x), where x is
   // potentially negated and/or scaled to a lower value.
-  std::float32_t g = detail::tgamma_imp(x);
+  std::float32_t gamma_value = detail::tgamma_imp(x);
 
   // Do the recursion if necessary.
   for(std::uint_least8_t k = static_cast<std::uint_least8_t>(0U); k < n_recur; ++k)
   {
-    g *= x;
+    gamma_value *= x;
 
     ++x;
   }
@@ -110,12 +110,12 @@ std::float32_t math::tgamma(std::float32_t x)
   // Return (and possibly reflect) the result.
   if(false == b_neg)
   {
-    return g;
+    return gamma_value;
   }
   else
   {
     const std::float32_t sin_pi_x = std::sin(const_pi<std::float32_t>() * x);
 
-    return -const_pi<std::float32_t>() / ((x * g) * sin_pi_x);
+    return -const_pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
   }
 }

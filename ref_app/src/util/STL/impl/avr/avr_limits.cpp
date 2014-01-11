@@ -10,31 +10,58 @@
 namespace
 {
   // Use some GCC internal stuff here.
-  constexpr float  avr_nan_float  = static_cast<float>(__builtin_nan(""));
-  constexpr float  avr_inf_float  = static_cast<float>(__builtin_inf());
-  constexpr double avr_nan_double = __builtin_nan("");
-  constexpr double avr_inf_double = __builtin_inf();
+  constexpr float       avr_nan_flt  = static_cast<float>(__builtin_nan(""));
+  constexpr float       avr_inf_flt  = static_cast<float>(__builtin_inf());
+  constexpr double      avr_nan_dbl  = __builtin_nan("");
+  constexpr double      avr_inf_dbl  = __builtin_inf();
+  constexpr long double avr_nan_ldbl = static_cast<long double>(__builtin_nan(""));
+  constexpr long double avr_inf_ldbl = static_cast<long double>(__builtin_inf());
 }
 
 namespace std
 {
-  float numeric_limits_base::my_value_that_needs_to_be_provided_float_quiet_NaN()
+  float numeric_limits_details::my_value_that_needs_to_be_provided_flt_quiet_NaN()
   {
-    return ::avr_nan_float;
+    return ::avr_nan_flt;
   }
 
-  float numeric_limits_base::my_value_that_needs_to_be_provided_float_infinity()
+  float numeric_limits_details::my_value_that_needs_to_be_provided_flt_signaling_NaN()
   {
-    return ::avr_inf_float;
+    return 0.0F;
   }
 
-  double numeric_limits_base::my_value_that_needs_to_be_provided_double_quiet_NaN()
+  float numeric_limits_details::my_value_that_needs_to_be_provided_flt_infinity()
   {
-    return ::avr_nan_double;
+    return ::avr_inf_flt;
   }
 
-  double numeric_limits_base::my_value_that_needs_to_be_provided_double_infinity()
+  double numeric_limits_details::my_value_that_needs_to_be_provided_dbl_quiet_NaN()
   {
-    return ::avr_inf_double;
+    return ::avr_nan_dbl;
+  }
+
+  double numeric_limits_details::my_value_that_needs_to_be_provided_dbl_signaling_NaN()
+  {
+    return 0.0;
+  }
+
+  double numeric_limits_details::my_value_that_needs_to_be_provided_dbl_infinity()
+  {
+    return ::avr_inf_dbl;
+  }
+
+  long double numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_quiet_NaN()
+  {
+    return ::avr_nan_ldbl;
+  }
+
+  long double numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_signaling_NaN()
+  {
+    return 0.0L;
+  }
+
+  long double numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_infinity()
+  {
+    return ::avr_inf_ldbl;
   }
 }
