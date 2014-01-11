@@ -10,6 +10,8 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
+             $(PATH_APP)/math/special_functions/gamma                \
+             $(PATH_APP)/math/special_functions/acosh                \
              $(PATH_APP)/mcal/mcal                                   \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                        \
@@ -29,7 +31,7 @@ FILES_CPP  = $(PATH_APP)/app/led/app_led                             \
              $(PATH_APP)/sys/rdm/sys_rdm                             \
              $(PATH_APP)/sys/start/sys_start                         \
              $(PATH_APP)/util/memory/util_ring_allocator             \
-             $(PATH_APP)/util/memory/util_static_allocator
+             $(PATH_APP)/util/memory/util_static_allocator           \
 
 # Use this for CRC benchmarks
 #             $(PATH_APP)/math/checksums/crc/crc

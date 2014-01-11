@@ -11,41 +11,49 @@
   // No real std implementation yet.
   // Just include math.h.
   #include <math.h>
-
-  // AVR C-library does not have tgamma.
-  float tgamma(float x);
-  double tgamma(double x);
-
-  float acosh(float x);
-  double acosh(double x);
+  #include <cstdfloat>
 
   namespace std
   {
-    template<typename T> inline T abs(T t) { return ((t < T(0)) ? -t : t); }
+    using ::cos;
+    using ::fabs;
+    using ::fmod;
+    using ::modf;
+    using ::sin;
+    using ::sqrt;
+    using ::tan;
+    using ::floor;
+    using ::ceil;
+    using ::frexp;
+    using ::ldexp;
+    using ::cosh;
+    using ::sinh;
+    using ::atan;
+    using ::atan2;
+    using ::log;
+    using ::log10;
+    using ::pow;
+    using ::isnan;
+    using ::isinf;
+    using ::square;
+    using ::copysign;
+    using ::fdim;
+    using ::fma;
+    using ::fmax;
+    using ::fmin;
+    using ::signbit;
+    using ::trunc;
+    using ::isfinite;
+    using ::hypot;
+    using ::round;
+    using ::lround;
+    using ::lrint;
 
-    inline float sin (float  x) { return ::sinf(x); }
-    inline float cos (float  x) { return ::cosf(x); }
-    inline float tan (float  x) { return ::tanf(x); }
-    inline float asin(float  x) { return ::asinf(x); }
-    inline float acos(float  x) { return ::acosf(x); }
-    inline float atan(float  x) { return ::atanf(x); }
-    inline float sinh(float  x) { return ::sinhf(x); }
-    inline float cosh(float  x) { return ::coshf(x); }
-    inline float tanh(float  x) { return ::tanhf(x); }
-    inline float exp (float  x) { return ::expf(x); }
-    inline float log (float  x) { return ::logf(x); }
+    inline float abs(const float&  x) { return ::fabs(x); }
 
-    inline double sin (double x) { return ::sin(x); }
-    inline double cos (double x) { return ::cos(x); }
-    inline double tan (double x) { return ::tan(x); }
-    inline double asin(double x) { return ::asin(x); }
-    inline double acos(double x) { return ::acos(x); }
-    inline double atan(double x) { return ::atan(x); }
-    inline double sinh(double x) { return ::sinh(x); }
-    inline double cosh(double x) { return ::cosh(x); }
-    inline double tanh(double x) { return ::tanh(x); }
-    inline double exp (double x) { return ::exp(x); }
-    inline double log (double x) { return ::log(x); }
+    // AVR C-library does not have tgamma or acosh.
+    std::float32_t tgamma(std::float32_t x);
+    std::float32_t acosh (std::float32_t x);
   }
 
 #endif // _CMATH_IMPL_2010_02_23_H_

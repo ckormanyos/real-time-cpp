@@ -17,8 +17,8 @@ TGT_CFLAGS    = -mmcu=atmega328p                               \
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
-                -I$(PATH_APP)/util/STL_C++14_Compatibility     \
-                -I$(PATH_APP)/util/STL
+                -I$(PATH_APP)/util/STL                         \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
 
 TGT_AFLAGS    =
 
