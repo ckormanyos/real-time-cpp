@@ -7,15 +7,15 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// <cstdfloat> implements floating-point typedefs having
+// specified widths, as described in N3626 (proposed for C++14).
+// See: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3626.pdf
+
 #ifndef _CSTDFLOAT_2014_01_09_
   #define _CSTDFLOAT_2014_01_09_
 
   #include <stdfloat.h>
   #include <limits>
-
-  // <cstdfloat> implements floating-point typedefs having
-  // specified widths, as described in N3626 (proposed for C++14).
-  // See: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3626.pdf
 
   // Here, a clear assessment of IEEE-754 comformance is carried out
   // using compile-time assertion.

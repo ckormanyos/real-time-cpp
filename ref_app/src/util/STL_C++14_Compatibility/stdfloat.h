@@ -7,14 +7,14 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// <stdfloat.h> implements floating-point typedefs having
+// specified widths, as described in N1703 (proposed for JTC1/SC22/WG14 - C).
+// See: http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1703.pdf
+
 #ifndef _STDFLOAT_2014_01_09_H_
   #define _STDFLOAT_2014_01_09_H_
 
   #include <float.h>
-
-  // <stdfloat.h> implements floating-point typedefs having
-  // specified widths, as described in N1703 (proposed for JTC1/SC22/WG14 - C).
-  // See: http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1703.pdf
 
   // This is the beginning of the preamble.
 
@@ -319,38 +319,7 @@
     #define FLOATMAX_MIN  FLOAT_128_MIN
     #define FLOATMAX_MAX  FLOAT_128_MAX
   #else
-    #error The maximum available floating-point width for cstdfloat is undefined.
+    #error The maximum available floating-point width for <stdfloat.h> is undefined.
   #endif
-
-  // Here, we define floating-point typedefs having specified widths
-  // within the namespace std.
-  namespace std
-  {
-    #if(STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 1)
-      using ::float32_t;
-      using ::float_fast32_t;
-      using ::float_least32_t;
-    #endif
-
-    #if(STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 1)
-      using ::float64_t;
-      using ::float_fast64_t;
-      using ::float_least64_t;
-    #endif
-
-    #if(STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 1)
-      using ::float80_t;
-      using ::float_fast80_t;
-      using ::float_least80_t;
-    #endif
-
-    #if(STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 1)
-      using ::float128_t;
-      using ::float_fast128_t;
-      using ::float_least128_t;
-    #endif
-
-    typedef ::floatmax_t floatmax_t;
-  }
 
 #endif // _STDFLOAT_2014_01_09_H_
