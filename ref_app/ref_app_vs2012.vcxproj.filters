@@ -187,9 +187,6 @@
     <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_limits.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\memory\util_ring_allocator.cpp">
       <Filter>src\util\memory</Filter>
     </ClCompile>
@@ -354,6 +351,9 @@
     </ClCompile>
     <ClCompile Include="src\math\special_functions\gamma.cpp">
       <Filter>src\math\special_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
+      <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

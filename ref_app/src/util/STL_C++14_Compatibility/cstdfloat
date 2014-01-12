@@ -45,7 +45,7 @@
   #define FLOAT80_C(x)  (x ## F)
   #define FLOAT128_C(x) (x ## F)
 
-  #if (!defined(FLT_RADIX) && (FLT_RADIX != 2))
+  #if (!defined(FLT_RADIX) || ((defined(FLT_RADIX) && (FLT_RADIX != 2))))
     #error The compiler does not support radix-2 floating-point types for <cstdfloat>.
   #endif
 

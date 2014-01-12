@@ -37,25 +37,25 @@
         #define CONST_UNIQUE_CHI2 T(CONST_UNIQUE_CHI * CONST_UNIQUE_CHI)
 
         // Do the order-19 polynomial expansion.
-        #define CONST_UNIQUE_SUM                                       \
-                       ((((((((( - T(4.2468171354841523379493663E-14)  \
-             * CONST_UNIQUE_CHI2 + T(6.0640855645940930588123490E-12)) \
-             * CONST_UNIQUE_CHI2 - T(6.6880001786329819459555395E-10)) \
-             * CONST_UNIQUE_CHI2 + T(5.6921726597221657560994942E-08)) \
-             * CONST_UNIQUE_CHI2 - T(3.5988432339708525153771884E-06)) \
-             * CONST_UNIQUE_CHI2 + T(1.6044118478699232812460184E-04)) \
-             * CONST_UNIQUE_CHI2 - T(4.6817541353186228516958362E-03)) \
-             * CONST_UNIQUE_CHI2 + T(7.9692626246167038770053004E-02)) \
-             * CONST_UNIQUE_CHI2 - T(6.4596409750624625337325359E-01)) \
-             * CONST_UNIQUE_CHI2 + T(1.5707963267948966192276341E+00)) \
+        #define CONST_UNIQUE_SUM                                                                \
+                       ((((((((( - static_cast<T>(FLOATMAX_C(4.2468171354841523379493663E-14))  \
+             * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(6.0640855645940930588123490E-12))) \
+             * CONST_UNIQUE_CHI2 - static_cast<T>(FLOATMAX_C(6.6880001786329819459555395E-10))) \
+             * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(5.6921726597221657560994942E-08))) \
+             * CONST_UNIQUE_CHI2 - static_cast<T>(FLOATMAX_C(3.5988432339708525153771884E-06))) \
+             * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(1.6044118478699232812460184E-04))) \
+             * CONST_UNIQUE_CHI2 - static_cast<T>(FLOATMAX_C(4.6817541353186228516958362E-03))) \
+             * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(7.9692626246167038770053004E-02))) \
+             * CONST_UNIQUE_CHI2 - static_cast<T>(FLOATMAX_C(6.4596409750624625337325359E-01))) \
+             * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(1.5707963267948966192276341E+00))) \
              * CONST_UNIQUE_CHI
 
         // Reflect the result if necessary.
         #define CONST_UNIQUE_NEEDS_REFLECT bool((CONST_UNIQUE_NPI % 2) != 0)
 
         return ((CONST_UNIQUE_NEEDS_REFLECT == CONST_UNIQUE_IS_NEG)
-                 ?  CONST_UNIQUE_SUM
-                 : -CONST_UNIQUE_SUM);
+                 ?  (CONST_UNIQUE_SUM)
+                 : -(CONST_UNIQUE_SUM));
 
         #undef CONST_UNIQUE_CHI_S
         #undef CONST_UNIQUE_IS_NEG

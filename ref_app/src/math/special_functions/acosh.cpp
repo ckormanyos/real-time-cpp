@@ -10,8 +10,10 @@
 #include <math/special_functions/acosh.h>
 #include <math/tools/tools.h>
 
-// The acosh function is implemented here using logarithmic functions.
-// This provides an example of a transcendental function calculation.
+// Here, we compute the hyperbolic arc-cosine function (acosh)
+// for std::float32_t. The acosh function is implemented with
+// logarithmic functions. This provides an example of the
+// calculation of a common elementary transcendental function.
 
 std::float32_t math::acosh(std::float32_t x)
 {
