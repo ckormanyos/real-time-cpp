@@ -7,8 +7,8 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// <stdfloat.h> implements floating-point typedefs having
-// specified widths, as described in N1703 (proposed for JTC1/SC22/WG14 - C).
+// <stdfloat.h> implements floating-point typedefs having specified widths,
+// as described in N1703 (proposed for C via JTC1/SC22/WG14).
 // See: http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1703.pdf
 
 #ifndef _STDFLOAT_2014_01_09_H_
@@ -26,10 +26,10 @@
   // whereby an unequivocal test based on numeric_limits follows below.
 
   // In addition, macros that are used for initializing floating-point
-  // literal values and minimum and maximum values are defined.
+  // literal values and some basic min/max values are defined.
 
-  // First, we will pre-load some preprocessor definitions with
-  // dummy values.
+  // First, we will pre-load certain preprocessor definitions
+  // with a dummy value.
 
   #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH  0
 
@@ -38,6 +38,7 @@
   #define STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  0
   #define STDFLOAT_HAS_FLOAT128_NATIVE_TYPE 0
 
+  // Ensure that the compiler has a radix-2 floating-point representation.
   #if (!defined(FLT_RADIX) || ((defined(FLT_RADIX) && (FLT_RADIX != 2))))
     #error The compiler does not support radix-2 floating-point types required for <stdfloat.h>.
   #endif
@@ -59,7 +60,7 @@
       #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 64
       #undef  STDFLOAT_HAS_FLOAT64_NATIVE_TYPE
       #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  1
-      #define FLOAT64_C(x)  (x ## F)
+      #define FLOAT64_C(x)  (x ##F)
       #define FLOAT_64_MIN  FLT_MIN
       #define FLOAT_64_MAX  FLT_MAX
     #elif((FLT_MANT_DIG == 63) && (FLT_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 0))
@@ -165,14 +166,16 @@
     #endif
   #endif
 
+  // This is the end of the preamble. Now we use the results
+  // of the queries that have been obtained in the preamble.
+
+  // Ensure that the compiler has any suitable floating-point type whatsoever.
   #if (   (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
     #error The compiler does not support any of the floating-point types required for <stdfloat.h>.
   #endif
-
-  // This is the end of the preamble and the beginning of the type definitions.
 
   // Here, we define the floating-point typedefs having specified widths
   // based on the preprocessor analysis from the preamble above.
@@ -182,6 +185,9 @@
   // For simplicity, the least and fast types are type defined identically
   // as the corresponding fixed-width type. This behavior can, however,
   // be modified in order to be optimized for a given compiler implementation.
+
+  // This section also contains the various min/max macros
+  // for the *leastN and *fastN types.
 
   #if(STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT32_NATIVE_TYPE  float32_t;
@@ -231,8 +237,12 @@
   // are used for initializing floating-point literal values.
   // The types of the max-form are handled.
 
-  // In addition, all unused pre-processor definitions previously
-  // initialized with dummy values are herewith un-defined.
+  // The following section contains macros that are used for
+  // initializing floating-point literal values and various
+  // min/max macros for the *floatmax types.
+
+  // In addition, all unused pre-processor definitions are
+  // herewith un-defined.
 
   #if  (STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 32)
     typedef float32_t     floatmax_t;
