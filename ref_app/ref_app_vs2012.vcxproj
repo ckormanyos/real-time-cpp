@@ -902,6 +902,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h" />
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h" />
     <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
@@ -1009,9 +1011,11 @@
     </None>
     <None Include="src\util\STL_C++11_Compatibility\chrono" />
     <None Include="src\util\STL_C++11_Compatibility\condition_variable" />
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool" />
     <None Include="src\util\STL_C++11_Compatibility\mutex" />
     <None Include="src\util\STL_C++11_Compatibility\ratio" />
     <None Include="src\util\STL_C++11_Compatibility\thread" />
+    <None Include="src\util\STL_C++11_Compatibility\type_traits" />
     <None Include="src\util\STL_C++14_Compatibility\cstdfloat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

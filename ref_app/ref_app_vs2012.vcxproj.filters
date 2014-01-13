@@ -119,6 +119,9 @@
     <Filter Include="src\math\tools">
       <UniqueIdentifier>{31e97f5b-8b33-4d6b-95ec-dd99b85ef479}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL_C++11_Compatibility\impl">
+      <UniqueIdentifier>{9f427a37-704f-4f54-a49f-4d9804e2579b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -861,6 +864,12 @@
     <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h">
       <Filter>src\util\STL_C++14_Compatibility</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -946,6 +955,12 @@
     </None>
     <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
       <Filter>src\util\STL_C++14_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\type_traits">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
     </None>
   </ItemGroup>
 </Project>

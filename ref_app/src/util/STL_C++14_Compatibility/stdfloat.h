@@ -25,8 +25,12 @@
   // widths. These are *thought* to be conformant with IEEE-754,
   // whereby an unequivocal test based on numeric_limits follows below.
 
+  // In addition, macros that are used for initializing floating-point
+  // literal values and minimum and maximum values are defined.
+
   // First, we will pre-load some preprocessor definitions with
   // dummy values.
+
   #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH  0
 
   #define STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  0
@@ -45,7 +49,7 @@
   #define FLOAT128_C(x) (x ## F)
 
   #if (!defined(FLT_RADIX) || ((defined(FLT_RADIX) && (FLT_RADIX != 2))))
-    #error The compiler does not support radix-2 floating-point types for <stdfloat.h>.
+    #error The compiler does not support radix-2 floating-point types required for <stdfloat.h>.
   #endif
 
   // Check if built-in float is equivalent to float32_t, float64_t, float80_t, or float128_t.
@@ -59,6 +63,8 @@
       #define STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  1
       #undef  FLOAT32_C
       #define FLOAT32_C(x)  (x ## F)
+      #define FLOAT_32_MIN  FLT_MIN
+      #define FLOAT_32_MAX  FLT_MAX
     #elif((FLT_MANT_DIG == 53) && (FLT_MAX_EXP == 1024) && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT64_NATIVE_TYPE
       #define STDFLOAT_FLOAT64_NATIVE_TYPE float
@@ -68,6 +74,8 @@
       #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  1
       #undef  FLOAT64_C
       #define FLOAT64_C(x)  (x ## F)
+      #define FLOAT_64_MIN  FLT_MIN
+      #define FLOAT_64_MAX  FLT_MAX
     #elif((FLT_MANT_DIG == 63) && (FLT_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT80_NATIVE_TYPE
       #define STDFLOAT_FLOAT80_NATIVE_TYPE float
@@ -77,6 +85,8 @@
       #define STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  1
       #undef  FLOAT80_C
       #define FLOAT80_C(x)  (x ## F)
+      #define FLOAT_80_MIN  FLT_MIN
+      #define FLOAT_80_MAX  FLT_MAX
     #elif((FLT_MANT_DIG == 113) && (FLT_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT128_NATIVE_TYPE
       #define STDFLOAT_FLOAT128_NATIVE_TYPE float
@@ -86,6 +96,8 @@
       #define STDFLOAT_HAS_FLOAT128_NATIVE_TYPE  1
       #undef  FLOAT128_C
       #define FLOAT128_C(x)  (x ## F)
+      #define FLOAT_128_MIN  FLT_MIN
+      #define FLOAT_128_MAX  FLT_MAX
     #endif
   #endif
 
@@ -100,6 +112,8 @@
       #define STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  1
       #undef  FLOAT32_C
       #define FLOAT32_C(x)  (x)
+      #define FLOAT_32_MIN  DBL_MIN
+      #define FLOAT_32_MAX  DBL_MAX
     #elif((DBL_MANT_DIG == 53) && (DBL_MAX_EXP == 1024) && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT64_NATIVE_TYPE
       #define STDFLOAT_FLOAT64_NATIVE_TYPE double
@@ -109,6 +123,8 @@
       #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  1
       #undef  FLOAT64_C
       #define FLOAT64_C(x)  (x)
+      #define FLOAT_64_MIN  DBL_MIN
+      #define FLOAT_64_MAX  DBL_MAX
     #elif((DBL_MANT_DIG == 63) && (DBL_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT80_NATIVE_TYPE
       #define STDFLOAT_FLOAT80_NATIVE_TYPE double
@@ -118,6 +134,8 @@
       #define STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  1
       #undef  FLOAT80_C
       #define FLOAT80_C(x)  (x)
+      #define FLOAT_80_MIN  DBL_MIN
+      #define FLOAT_80_MAX  DBL_MAX
     #elif((DBL_MANT_DIG == 113) && (DBL_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT128_NATIVE_TYPE
       #define STDFLOAT_FLOAT128_NATIVE_TYPE double
@@ -127,6 +145,8 @@
       #define STDFLOAT_HAS_FLOAT128_NATIVE_TYPE  1
       #undef  FLOAT128_C
       #define FLOAT128_C(x)  (x)
+      #define FLOAT_128_MIN  DBL_MIN
+      #define FLOAT_128_MAX  DBL_MAX
     #endif
   #endif
 
@@ -141,6 +161,8 @@
       #define STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  1
       #undef  FLOAT32_C
       #define FLOAT32_C(x)  (x ## L)
+      #define FLOAT_32_MIN  LDBL_MIN
+      #define FLOAT_32_MAX  LDBL_MAX
     #elif((LDBL_MANT_DIG == 53) && (LDBL_MAX_EXP == 1024) && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT64_NATIVE_TYPE
       #define STDFLOAT_FLOAT64_NATIVE_TYPE long double
@@ -150,6 +172,8 @@
       #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  1
       #undef  FLOAT64_C
       #define FLOAT64_C(x)  (x ## L)
+      #define FLOAT_64_MIN  LDBL_MIN
+      #define FLOAT_64_MAX  LDBL_MAX
     #elif((LDBL_MANT_DIG == 63) && (LDBL_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT80_NATIVE_TYPE
       #define STDFLOAT_FLOAT80_NATIVE_TYPE long double
@@ -159,6 +183,8 @@
       #define STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  1
       #undef  FLOAT80_C
       #define FLOAT80_C(x)  (x ## L)
+      #define FLOAT_80_MIN  LDBL_MIN
+      #define FLOAT_80_MAX  LDBL_MAX
     #elif((LDBL_MANT_DIG == 113) && (LDBL_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
       #undef  STDFLOAT_FLOAT128_NATIVE_TYPE
       #define STDFLOAT_FLOAT128_NATIVE_TYPE long double
@@ -168,6 +194,8 @@
       #define STDFLOAT_HAS_FLOAT128_NATIVE_TYPE  1
       #undef  FLOAT128_C
       #define FLOAT128_C(x)  (x ## L)
+      #define FLOAT_128_MIN  LDBL_MIN
+      #define FLOAT_128_MAX  LDBL_MAX
     #endif
   #endif
 
@@ -175,23 +203,7 @@
        && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
-
-    #undef STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
-
-    #undef STDFLOAT_HAS_FLOAT32_NATIVE_TYPE
-    #undef STDFLOAT_HAS_FLOAT64_NATIVE_TYPE
-    #undef STDFLOAT_HAS_FLOAT80_NATIVE_TYPE
-    #undef STDFLOAT_HAS_FLOAT128_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT32_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT64_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT80_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef FLOAT32_C
-    #undef FLOAT64_C
-    #undef FLOAT80_C
-    #undef FLOAT128_C
-
-    #error The compiler does not support any of the required floating-point types for <stdfloat.h>.
+    #error The compiler does not support any of the floating-point types required for <stdfloat.h>.
   #endif
 
   // This is the end of the preamble and the beginning of the type definitions.
@@ -209,68 +221,47 @@
     typedef STDFLOAT_FLOAT32_NATIVE_TYPE  float32_t;
     typedef float32_t float_fast32_t;
     typedef float32_t float_least32_t;
+
+    #define FLOAT_FAST32_MIN   FLOAT_32_MIN
+    #define FLOAT_LEAST32_MIN  FLOAT_32_MIN
+    #define FLOAT_FAST32_MAX   FLOAT_32_MAX
+    #define FLOAT_LEAST32_MAX  FLOAT_32_MAX
   #endif
 
   #if(STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT64_NATIVE_TYPE  float64_t;
     typedef float64_t float_fast64_t;
     typedef float64_t float_least64_t;
+
+    #define FLOAT_FAST64_MIN   FLOAT_64_MIN
+    #define FLOAT_LEAST64_MIN  FLOAT_64_MIN
+    #define FLOAT_FAST64_MAX   FLOAT_64_MAX
+    #define FLOAT_LEAST64_MAX  FLOAT_64_MAX
   #endif
 
   #if(STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT80_NATIVE_TYPE  float80_t;
     typedef float80_t float_fast80_t;
     typedef float80_t float_least80_t;
+
+    #define FLOAT_FAST80_MIN   FLOAT_80_MIN
+    #define FLOAT_LEAST80_MIN  FLOAT_80_MIN
+    #define FLOAT_FAST80_MAX   FLOAT_80_MAX
+    #define FLOAT_LEAST80_MAX  FLOAT_80_MAX
   #endif
 
   #if(STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT128_NATIVE_TYPE float128_t;
     typedef float128_t float_fast128_t;
     typedef float128_t float_least128_t;
-  #endif
 
-  // The following section contains the first group of macros that
-  // are used for initializing floating-point literal values.
-  // The types of the three forms (fixed-width, least-width, and fast-width)
-  // in bit-counts of 32, 64, 80, 128 are handled.
-
-  #if(STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 1)
-    #define FLOAT_32_MIN       FLOAT32_C(1.175494351e-38)
-    #define FLOAT_FAST32_MIN   FLOAT_32_MIN
-    #define FLOAT_LEAST32_MIN  FLOAT_32_MIN
-    #define FLOAT_32_MAX       FLOAT32_C(3.402823466e+38)
-    #define FLOAT_FAST32_MAX   FLOAT_32_MAX
-    #define FLOAT_LEAST32_MAX  FLOAT_32_MAX
-  #endif
-
-  #if(STDFLOAT_HAS_FLOAT64_NATIVE_TYPE == 1)
-    #define FLOAT_64_MIN       FLOAT64_C(2.2250738585072014e-308)
-    #define FLOAT_FAST64_MIN   FLOAT_64_MIN
-    #define FLOAT_LEAST64_MIN  FLOAT_64_MIN
-    #define FLOAT_64_MAX       FLOAT64_C(1.7976931348623158e+308)
-    #define FLOAT_FAST64_MAX   FLOAT_64_MAX
-    #define FLOAT_LEAST64_MAX  FLOAT_64_MAX
-  #endif
-
-  #if(STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 1)
-    #define FLOAT_80_MIN       FLOAT80_C(3.3621031431120935062627E-4932)
-    #define FLOAT_FAST80_MIN   FLOAT_80_MIN
-    #define FLOAT_LEAST80_MIN  FLOAT_80_MIN
-    #define FLOAT_80_MAX       FLOAT80_C(1.1897314953572317650213E+4932)
-    #define FLOAT_FAST80_MAX   FLOAT_80_MAX
-    #define FLOAT_LEAST80_MAX  FLOAT_80_MAX
-  #endif
-
-  #if(STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 1)
-    #define FLOAT_128_MIN       FLOAT128_C(3.362103143112093506262677817321752603E-4932)
     #define FLOAT_FAST128_MIN   FLOAT_128_MIN
     #define FLOAT_LEAST128_MIN  FLOAT_128_MIN
-    #define FLOAT_128_MAX       FLOAT128_C(1.189731495357231765085759326628007016E+4932)
     #define FLOAT_FAST128_MAX   FLOAT_128_MAX
     #define FLOAT_LEAST128_MAX  FLOAT_128_MAX
   #endif
 
-  // The following section contains the second group of macros that
+  // The following section contains the second macros that
   // are used for initializing floating-point literal values.
   // The types of the max-form are handled.
 
@@ -283,36 +274,36 @@
     #define FLOATMAX_MIN  FLOAT_32_MIN
     #define FLOATMAX_MAX  FLOAT_32_MAX
 
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT64_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT80_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT128_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT64_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT80_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef BOOST_FLOAT64_C
-    #undef BOOST_FLOAT80_C
-    #undef BOOST_FLOAT128_C
+    #undef STDFLOAT_HAS_FLOAT64_NATIVE_TYPE
+    #undef STDFLOAT_HAS_FLOAT80_NATIVE_TYPE
+    #undef STDFLOAT_HAS_FLOAT128_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT64_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT80_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
+    #undef FLOAT64_C
+    #undef FLOAT80_C
+    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 64)
     typedef float64_t     floatmax_t;
     #define FLOATMAX_C(x) FLOAT64_C(x)
     #define FLOATMAX_MIN  FLOAT_64_MIN
     #define FLOATMAX_MAX  FLOAT_64_MAX
 
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT80_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT128_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT80_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef BOOST_FLOAT80_C
-    #undef BOOST_FLOAT128_C
+    #undef STDFLOAT_HAS_FLOAT80_NATIVE_TYPE
+    #undef STDFLOAT_HAS_FLOAT128_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT80_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
+    #undef FLOAT80_C
+    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 80)
     typedef float80_t     floatmax_t;
     #define FLOATMAX_C(x) FLOAT80_C(x)
     #define FLOATMAX_MIN  FLOAT_80_MIN
     #define FLOATMAX_MAX  FLOAT_80_MAX
 
-    #undef BOOST_CSTDFLOAT_HAS_FLOAT128_NATIVE_TYPE
-    #undef BOOST_CSTDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef BOOST_FLOAT128_C
+    #undef STDFLOAT_HAS_FLOAT128_NATIVE_TYPE
+    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
+    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 128)
     typedef float128_t    floatmax_t;
     #define FLOATMAX_C(x) FLOAT128_C(x)

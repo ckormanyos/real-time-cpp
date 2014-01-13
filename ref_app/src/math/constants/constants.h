@@ -15,7 +15,7 @@
     namespace constants
     {
       template<typename float_type>
-      const float_type sqrt2()
+      const float_type root_two()
       {
         return static_cast<float_type>(FLOATMAX_C(1.4142135623730950488016887242096980785697));
       }
@@ -27,19 +27,19 @@
       }
 
       template<typename float_type>
-      const float_type pi_half()
+      const float_type half_pi()
       {
         return static_cast<float_type>(FLOATMAX_C(1.5707963267948966192313216916397514420986));
       }
 
       template<typename float_type>
-      const float_type sqrt_pi()
+      const float_type root_pi()
       {
         return static_cast<float_type>(FLOATMAX_C(1.7724538509055160272981674833411451827975));
       }
 
       template<typename float_type>
-      const float_type ln2()
+      const float_type ln_two()
       {
         return static_cast<float_type>(FLOATMAX_C(0.6931471805599453094172321214581765680755));
       }
@@ -51,9 +51,33 @@
       }
 
       template<typename float_type>
-      const float_type euler_gamma()
+      const float_type euler()
       {
         return static_cast<float_type>(FLOATMAX_C(0.5772156649015328606065120900824024310422));
+      }
+
+      template<typename float_type>
+      const float_type zeta_three()
+      {
+        return static_cast<float_type>(FLOATMAX_C(1.2020569031595942853997381615114499907650));
+      }
+
+      template<typename float_type>
+      const float_type catalan()
+      {
+        return static_cast<float_type>(FLOATMAX_C(0.91596559417721901505460351493238411077415));
+      }
+
+      template<typename float_type>
+      const float_type glaisher()
+      {
+        return static_cast<float_type>(FLOATMAX_C(1.2824271291006226368753425688697917277677));
+      }
+
+      template<typename float_type>
+      const float_type khinchin()
+      {
+        return static_cast<float_type>(FLOATMAX_C(2.6854520010653064453097148354817956938204));
       }
     }
   }
