@@ -23,7 +23,7 @@ std::float32_t math::acosh(std::float32_t x)
   {
     return std::numeric_limits<std::float32_t>::quiet_NaN();
   }
-  else if(std::abs(x) < std::numeric_limits<std::float32_t>::epsilon())
+  else if((x - FLOAT32_C(1.0)) < std::numeric_limits<std::float32_t>::epsilon())
   {
     return FLOAT32_C(0.0);
   }
