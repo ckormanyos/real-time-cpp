@@ -33,6 +33,8 @@
 
   #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH  0
 
+  #define STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  0
+  #define STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  0
   #define STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  0
   #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  0
   #define STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  0
@@ -43,9 +45,27 @@
     #error The compiler does not support radix-2 floating-point types required for <stdfloat.h>.
   #endif
 
-  // Check if built-in float is equivalent to float32_t, float64_t, float80_t, or float128_t.
+  // Check if built-in float is equivalent to float16_t, float24_t, float32_t, float64_t, float80_t, or float128_t.
   #if(defined(FLT_MANT_DIG) && defined(FLT_MAX_EXP))
-    #if  ((FLT_MANT_DIG == 24) && (FLT_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
+    #if  ((FLT_MANT_DIG == 11) && (FLT_MAX_EXP == 16) && (STDFLOAT_HAS_FLOAT16_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT16_NATIVE_TYPE float
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 16
+      #undef  STDFLOAT_HAS_FLOAT16_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  1
+      #define FLOAT16_C(x)  (x ## F)
+      #define FLOAT_16_MIN  FLT_MIN
+      #define FLOAT_16_MAX  FLT_MAX
+    #elif((FLT_MANT_DIG == 17) && (FLT_MAX_EXP == 64) && (STDFLOAT_HAS_FLOAT24_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT24_NATIVE_TYPE float
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 24
+      #undef  STDFLOAT_HAS_FLOAT24_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  1
+      #define FLOAT24_C(x)  (x ## F)
+      #define FLOAT_24_MIN  FLT_MIN
+      #define FLOAT_24_MAX  FLT_MAX
+    #elif((FLT_MANT_DIG == 24) && (FLT_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
       #define STDFLOAT_FLOAT32_NATIVE_TYPE float
       #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
       #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 32
@@ -84,9 +104,27 @@
     #endif
   #endif
 
-  // Check if built-in double is equivalent to float32_t, float64_t, float80_t, or float128_t.
+  // Check if built-in double is equivalent to float16_t, float24_t, float32_t, float64_t, float80_t, or float128_t.
   #if(defined(DBL_MANT_DIG) && defined(DBL_MAX_EXP))
-    #if  ((DBL_MANT_DIG == 24) && (DBL_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
+    #if  ((DBL_MANT_DIG == 11) && (DBL_MAX_EXP == 16) && (STDFLOAT_HAS_FLOAT16_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT16_NATIVE_TYPE double
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 16
+      #undef  STDFLOAT_HAS_FLOAT16_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  1
+      #define FLOAT16_C(x)  (x)
+      #define FLOAT_16_MIN  DBL_MIN
+      #define FLOAT_16_MAX  DBL_MAX
+    #elif((DBL_MANT_DIG == 17) && (DBL_MAX_EXP == 64) && (STDFLOAT_HAS_FLOAT24_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT24_NATIVE_TYPE double
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 24
+      #undef  STDFLOAT_HAS_FLOAT24_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  1
+      #define FLOAT24_C(x)  (x)
+      #define FLOAT_24_MIN  DBL_MIN
+      #define FLOAT_24_MAX  DBL_MAX
+    #elif((DBL_MANT_DIG == 24) && (DBL_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
       #define STDFLOAT_FLOAT32_NATIVE_TYPE double
       #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
       #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 32
@@ -125,9 +163,27 @@
     #endif
   #endif
 
-  // Check if built-in long double is equivalent to float32_t, float64_t, float80_t, or float128_t.
+  // Check if built-in long double is equivalent to float16_t, float24_t, float32_t, float64_t, float80_t, or float128_t.
   #if(defined(LDBL_MANT_DIG) && defined(LDBL_MAX_EXP))
-    #if  ((LDBL_MANT_DIG == 24) && (LDBL_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
+    #if  ((LDBL_MANT_DIG == 11) && (LDBL_MAX_EXP == 16) && (STDFLOAT_HAS_FLOAT16_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT16_NATIVE_TYPE long double
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 16
+      #undef  STDFLOAT_HAS_FLOAT16_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  1
+      #define FLOAT16_C(x)  (x ## L)
+      #define FLOAT_16_MIN  LDBL_MIN
+      #define FLOAT_16_MAX  LDBL_MAX
+    #elif((LDBL_MANT_DIG == 17) && (LDBL_MAX_EXP == 64) && (STDFLOAT_HAS_FLOAT24_NATIVE_TYPE == 0))
+      #define STDFLOAT_FLOAT24_NATIVE_TYPE long double
+      #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
+      #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 24
+      #undef  STDFLOAT_HAS_FLOAT24_NATIVE_TYPE
+      #define STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  1
+      #define FLOAT24_C(x)  (x ## L)
+      #define FLOAT_24_MIN  LDBL_MIN
+      #define FLOAT_24_MAX  LDBL_MAX
+    #elif((LDBL_MANT_DIG == 24) && (LDBL_MAX_EXP == 128) && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 0))
       #define STDFLOAT_FLOAT32_NATIVE_TYPE long double
       #undef  STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
       #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 32
@@ -170,7 +226,9 @@
   // of the queries that have been obtained in the preamble.
 
   // Ensure that the compiler has any suitable floating-point type whatsoever.
-  #if (   (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  == 0) \
+  #if (   (STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  == 0) \
+       && (STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  == 0) \
+       && (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  == 0) \
        && (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 0))
@@ -188,6 +246,28 @@
 
   // This section also contains the various min/max macros
   // for the *leastN and *fastN types.
+
+  #if(STDFLOAT_HAS_FLOAT16_NATIVE_TYPE == 1)
+    typedef STDFLOAT_FLOAT16_NATIVE_TYPE  float16_t;
+    typedef float16_t float_fast16_t;
+    typedef float16_t float_least16_t;
+
+    #define FLOAT_FAST16_MIN   FLOAT_16_MIN
+    #define FLOAT_LEAST16_MIN  FLOAT_16_MIN
+    #define FLOAT_FAST16_MAX   FLOAT_16_MAX
+    #define FLOAT_LEAST16_MAX  FLOAT_16_MAX
+  #endif
+
+  #if(STDFLOAT_HAS_FLOAT24_NATIVE_TYPE == 1)
+    typedef STDFLOAT_FLOAT24_NATIVE_TYPE  float24_t;
+    typedef float24_t float_fast24_t;
+    typedef float24_t float_least24_t;
+
+    #define FLOAT_FAST24_MIN   FLOAT_24_MIN
+    #define FLOAT_LEAST24_MIN  FLOAT_24_MIN
+    #define FLOAT_FAST24_MAX   FLOAT_24_MAX
+    #define FLOAT_LEAST24_MAX  FLOAT_24_MAX
+  #endif
 
   #if(STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT32_NATIVE_TYPE  float32_t;
@@ -244,36 +324,31 @@
   // In addition, all unused pre-processor definitions are
   // herewith un-defined.
 
-  #if  (STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 32)
+  #if  (STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 16)
+    typedef float16_t     floatmax_t;
+    #define FLOATMAX_C(x) FLOAT16_C(x)
+    #define FLOATMAX_MIN  FLOAT_16_MIN
+    #define FLOATMAX_MAX  FLOAT_16_MAX
+  #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 24)
+    typedef float24_t     floatmax_t;
+    #define FLOATMAX_C(x) FLOAT24_C(x)
+    #define FLOATMAX_MIN  FLOAT_24_MIN
+    #define FLOATMAX_MAX  FLOAT_24_MAX
+  #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 32)
     typedef float32_t     floatmax_t;
     #define FLOATMAX_C(x) FLOAT32_C(x)
     #define FLOATMAX_MIN  FLOAT_32_MIN
     #define FLOATMAX_MAX  FLOAT_32_MAX
-
-    #undef STDFLOAT_FLOAT64_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT80_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef FLOAT64_C
-    #undef FLOAT80_C
-    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 64)
     typedef float64_t     floatmax_t;
     #define FLOATMAX_C(x) FLOAT64_C(x)
     #define FLOATMAX_MIN  FLOAT_64_MIN
     #define FLOATMAX_MAX  FLOAT_64_MAX
-
-    #undef STDFLOAT_FLOAT80_NATIVE_TYPE
-    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef FLOAT80_C
-    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 80)
     typedef float80_t     floatmax_t;
     #define FLOATMAX_C(x) FLOAT80_C(x)
     #define FLOATMAX_MIN  FLOAT_80_MIN
     #define FLOATMAX_MAX  FLOAT_80_MAX
-
-    #undef STDFLOAT_FLOAT128_NATIVE_TYPE
-    #undef FLOAT128_C
   #elif(STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 128)
     typedef float128_t    floatmax_t;
     #define FLOATMAX_C(x) FLOAT128_C(x)
