@@ -98,6 +98,8 @@
         || (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  == 1) \
         || (STDFLOAT_HAS_FLOAT128_NATIVE_TYPE == 1))
       using ::floatmax_t;
+    #else
+      #error The maximum available floating-point width for <cstdfloat> is undefined.
     #endif
   }
 
