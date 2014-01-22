@@ -6,12 +6,12 @@
 //
 
 #include <mcal_port.h>
-#include <mcal_rdm.h>
-#include <util/monitor/util_single_pin_debug_monitor.h>
+#include <mcal_debug_monitor.h>
+#include <util/debug_monitor/util_single_pin_debug_monitor.h>
 
 namespace sys
 {
-  namespace rdm
+  namespace debug_monitor
   {
     void task_init();
     void task_func();
@@ -20,27 +20,27 @@ namespace sys
 
 namespace
 {
-  typedef util::single_pin_debug_monitor<mcal::rdm::port_rdm_type> rdm_debug_monitor_type;
+  typedef util::single_pin_debug_monitor<mcal::debug_monitor::port_debug_monitor_type> debug_monitor_debug_monitor_type;
 
-  rdm_debug_monitor_type rdm_debug_monitor;
+  debug_monitor_debug_monitor_type debug_monitor_debug_monitor;
 
   std::uint_least8_t protocol_prescaler;
 }
 
-void sys::rdm::task_init()
+void sys::debug_monitor::task_init()
 {
 }
 
-void sys::rdm::task_func()
+void sys::debug_monitor::task_func()
 {
-  rdm_debug_monitor.driver_task();
+  debug_monitor_debug_monitor.driver_task();
 
   const bool run_the_protocol_task = (static_cast<std::uint_fast8_t>(protocol_prescaler % 8U) == static_cast<std::uint_fast8_t>(0U));
 
   if(run_the_protocol_task)
   {
-    rdm_debug_monitor.protocol_task<mcal::rdm::address_type,
-                                    mcal::rdm::address_offset>();
+    debug_monitor_debug_monitor.protocol_task<mcal::debug_monitor::address_type,
+                                              mcal::debug_monitor::address_offset>();
   }
 
   ++protocol_prescaler;

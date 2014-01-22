@@ -22,7 +22,7 @@
   #define OS_IDLE_TASK_FUNC(my_trigger) sys::idle::task_func(my_trigger)
 
   // Declare all of the tasks and their initialization functions.
-  namespace sys { namespace rdm { void task_init(); void task_func(); } }
+  namespace sys { namespace debug_monitor { void task_init(); void task_func(); } }
   namespace app { namespace led { void task_init(); void task_func(); } }
   namespace sys { namespace mon { void task_init(); void task_func(); } }
 
@@ -32,7 +32,7 @@
   {
     typedef enum enum_task_id
     {
-      task_id_sys_rdm,
+      task_id_sys_debug_monitor,
       task_id_app_led,
       task_id_sys_mon,
       task_id_end
@@ -46,8 +46,8 @@
   #define OS_TASK_LIST                                       \
   {                                                          \
     {                                                        \
-      task_control_block(sys::rdm::task_init,                \
-                         sys::rdm::task_func,                \
+      task_control_block(sys::debug_monitor::task_init,      \
+                         sys::debug_monitor::task_func,      \
                          timer_type::microseconds( 250U),    \
                          timer_type::microseconds(   0U)),   \
       task_control_block(app::led::task_init,                \

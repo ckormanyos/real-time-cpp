@@ -83,12 +83,6 @@
     <Filter Include="src\util\STL_C++11_Compatibility">
       <UniqueIdentifier>{20982b03-2390-4ddf-906f-bbc52686ae17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\monitor">
-      <UniqueIdentifier>{2612fe47-889a-4ed8-934e-5f34a57797d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\sys\rdm">
-      <UniqueIdentifier>{2696f37d-c606-4ccd-b420-a61361e29241}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\am335x">
       <UniqueIdentifier>{9b5fd24e-5f56-4862-b157-28c2d59c7973}</UniqueIdentifier>
     </Filter>
@@ -121,6 +115,12 @@
     </Filter>
     <Filter Include="src\util\STL_C++11_Compatibility\impl">
       <UniqueIdentifier>{9f427a37-704f-4f54-a49f-4d9804e2579b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sys\debug_monitor">
+      <UniqueIdentifier>{2696f37d-c606-4ccd-b420-a61361e29241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\debug_monitor">
+      <UniqueIdentifier>{2612fe47-889a-4ed8-934e-5f34a57797d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -234,9 +234,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\mips\mcal_wdg.cpp">
       <Filter>src\mcal\mips</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sys\rdm\sys_rdm.cpp">
-      <Filter>src\sys\rdm</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\am335x\mcal_cpu.cpp">
       <Filter>src\mcal\am335x</Filter>
@@ -357,6 +354,9 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\debug_monitor\sys_debug_monitor.cpp">
+      <Filter>src\sys\debug_monitor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -660,24 +660,6 @@
     <ClInclude Include="src\mcal\mips\mcal_wdg.h">
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor.h">
-      <Filter>src\util\monitor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\monitor\util_single_pin_debug_monitor_base.h">
-      <Filter>src\util\monitor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_rdm.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_rdm.h">
-      <Filter>src\mcal\eabi</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mips\mcal_rdm.h">
-      <Filter>src\mcal\mips</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_rdm.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_cpu.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
@@ -697,9 +679,6 @@
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_pwm.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_rdm.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_reg.h">
@@ -819,9 +798,6 @@
     <ClInclude Include="src\mcal\stm32f4xx\mcal_pwm.h">
       <Filter>src\mcal\stm32f4xx</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_rdm.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f4xx\mcal_reg.h">
       <Filter>src\mcal\stm32f4xx</Filter>
     </ClInclude>
@@ -869,6 +845,30 @@
     </ClInclude>
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\am335x\mcal_debug_monitor.h">
+      <Filter>src\mcal\am335x</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_debug_monitor.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\eabi\mcal_debug_monitor.h">
+      <Filter>src\mcal\eabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mips\mcal_debug_monitor.h">
+      <Filter>src\mcal\mips</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f4xx\mcal_debug_monitor.h">
+      <Filter>src\mcal\stm32f4xx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_debug_monitor.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\debug_monitor\util_single_pin_debug_monitor.h">
+      <Filter>src\util\debug_monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\debug_monitor\util_single_pin_debug_monitor_base.h">
+      <Filter>src\util\debug_monitor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
