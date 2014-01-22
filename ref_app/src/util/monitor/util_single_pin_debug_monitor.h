@@ -65,13 +65,16 @@
       }
       else
       {
-        // Clear the buffer if nothing has been received for a while.
-        if(port_pin_receive())
+        const bool port_pin_is_idle_high = (port_pin_receive() == true);
+
+        if(port_pin_is_idle_high)
         {
+          // Increment a counter if nothing has been received.
           ++driver_received_nothing_counter;
 
           if(driver_received_nothing_counter >= receive_reset_limit)
           {
+            // Clear the buffer if nothing has been received for quite a while.
             driver_flush_buffer();
             driver_received_nothing_counter = std::uint_fast8_t(0U);
           }

@@ -105,10 +105,10 @@
       }
 
       // Note: These variables are shielded from aggressive optimization
-      // with the volatile qualifier. This is because direct memory access can,
-      // for a highly optimizing compiler, *seem* to simply do nothing.
+      // with the volatile qualifier. This is because direct memory access
+      // might *seem* to simply do nothing for a highly optimizing compiler.
       // The volatile qualification reduces the risk of the memory access
-      // code simply being optimized away entirely.
+      // code being wrongly optimized away (partly or entirely).
 
       volatile std::uint_fast8_t data_elements;
       volatile std::uint_fast8_t service_id;
