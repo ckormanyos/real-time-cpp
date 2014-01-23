@@ -11,8 +11,8 @@ The reference application boots via a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler which schedules the
 LED application, a debug monitor task, a (predominantly empty) system task,
-and an idle task. The idle task performs ROM and RAM integrity checks
-and triggers the watchdog. The LED application toggles the LED with
+and an idle task. The idle task performs various high-integrity robustness
+checks and triggers the watchdog. The LED application toggles the LED with
 a frequency of 1/2 Hz.
 
 Supported Targets in the Reference Application
@@ -45,11 +45,11 @@ supported boards, such as Arduino(R) or BeagleBone. The reference application
 can be found in the directory ref_app and its subdirectories.
 
 To get started with the reference application, start Visual Studio(R) 2012
-and open the solution ref_app_vs2012.sln. Select the desired configuration
-and then rebuild the entire solution. Note that the build in Visual Studio(R)
-makes heavy use of cross development using a project workspace of type
-"external makefile" to invoke GNUmake (via batch file) in combination
-with several makefiles.
+(or later) and open the solution ref_app_vs2012.sln. Select the desired
+configuration. Then rebuild the entire solution. Note that the build in
+Visual Studio(R) makes heavy use of cross development using a project
+workspace of type "external makefile" to invoke GNUmake (via batch file)
+in combination with several makefiles.
 
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the bin directory.
