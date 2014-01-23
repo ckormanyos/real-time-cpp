@@ -834,9 +834,6 @@
     <ClInclude Include="src\math\special_functions\acosh.h">
       <Filter>src\math\special_functions</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\constants\constant_trig_functions.h">
-      <Filter>src\math\constants</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h">
       <Filter>src\util\STL_C++14_Compatibility</Filter>
     </ClInclude>
@@ -869,6 +866,9 @@
     </ClInclude>
     <ClInclude Include="src\util\debug_monitor\util_single_pin_debug_monitor_base.h">
       <Filter>src\util\debug_monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\constants\constant_functions.h">
+      <Filter>src\math\constants</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

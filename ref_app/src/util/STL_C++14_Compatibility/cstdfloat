@@ -36,17 +36,6 @@
       static_assert(std::numeric_limits<float16_t>::max_exponent ==   16, "The 16-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
     #endif
 
-    #if(STDFLOAT_HAS_FLOAT24_NATIVE_TYPE == 1)
-      using ::float24_t;
-      using ::float_fast24_t;
-      using ::float_least24_t;
-
-      static_assert(std::numeric_limits<float24_t>::is_iec559    == true, "The 24-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
-      static_assert(std::numeric_limits<float24_t>::radix        ==    2, "The 24-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
-      static_assert(std::numeric_limits<float24_t>::digits       ==   17, "The 24-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
-      static_assert(std::numeric_limits<float24_t>::max_exponent ==   64, "The 24-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
-    #endif
-
     #if(STDFLOAT_HAS_FLOAT32_NATIVE_TYPE == 1)
       using ::float32_t;
       using ::float_fast32_t;
@@ -92,7 +81,6 @@
     #endif
 
     #if(   (STDFLOAT_HAS_FLOAT16_NATIVE_TYPE  == 1) \
-        || (STDFLOAT_HAS_FLOAT24_NATIVE_TYPE  == 1) \
         || (STDFLOAT_HAS_FLOAT32_NATIVE_TYPE  == 1) \
         || (STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  == 1) \
         || (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE  == 1) \

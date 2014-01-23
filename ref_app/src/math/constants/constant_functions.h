@@ -5,17 +5,112 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CONSTANT_TRIG_FUNCTIONS_2013_01_02_H_
-  #define _CONSTANT_TRIG_FUNCTIONS_2013_01_02_H_
+#ifndef _CONSTANT_FUNCTIONS_2013_01_02_H_
+  #define _CONSTANT_FUNCTIONS_2013_01_02_H_
 
-  #include <cstdint>
   #include <cstdfloat>
-  #include "constants.h"
+  #include <cstdint>
+  #include <limits>
 
   namespace math
   {
-    namespace constants
+    namespace const_functions
     {
+      template <class T>
+      inline constexpr T pow_imp(T val, std::int32_t n);
+
+      template <class T>
+      inline constexpr T pow_imp2(T val, std::int32_t n)
+      {
+        return n & 1 ? pow_imp(val, n / 2) * pow_imp(val, n / 2) * val : pow_imp(val, n / 2);
+      }
+
+      template <class T>
+      inline constexpr T pow_imp(T val, std::int32_t n)
+      {
+        return n == 1 ? val : n == 2 ? val * val : n == 3 ? val * val * val : pow_imp2(val, n);
+      }
+
+      template <class T>
+      inline constexpr T pow(T val, std::int32_t n)
+      {
+        return n < 0 ? 1 / pow_imp(val, -n) : n == 0 ? 1 : pow_imp(val, n);
+      }
+
+      template <class T>
+      inline constexpr T log2_order(T x)
+      {
+        return x <= 1 ? 0 : 1 + log2_order(x / 2);
+      }
+
+      template <class F1, class F2>
+      struct newton
+      {
+        static constexpr F1 f1 = {};
+        static constexpr F2 f2 = {};
+
+        template <class T>
+        static constexpr T eval_once(T x, T target)
+        {
+          return x - f1(x, target) / f2(x);
+        }
+
+        template <class T>
+        static constexpr T eval_n(T x, T target, int n)
+        {
+          return n == 0 ? x : n == 1 ? eval_once(x, target) : eval_once(eval_n(x, target, n - 1), target);
+        }
+
+        template <class T>
+        static constexpr T eval(T x, T target)
+        {
+          return eval_n(x, target, log2_order(std::numeric_limits<T>::digits));
+        }
+      };
+
+      template <class F1, class F2>
+      constexpr F1 newton<F1, F2>::f1;
+
+      template <class F1, class F2>
+      constexpr F2 newton<F1, F2>::f2;
+
+      template <class T>
+      struct sqrt_f1
+      {
+        inline constexpr T operator()(T x, T target)
+        {
+          return x * x - target;
+        }
+      };
+
+      template <class T>
+      struct sqrt_f2
+      {
+        inline constexpr T operator()(T x)
+        {
+          return 2 * x;
+        }
+      };
+
+      template <class T>
+      inline constexpr T sqrt_estimate(T x)
+      {
+        return pow(T(2), log2_order(x) / 2);
+      }
+
+      template <class T>
+      inline constexpr T sqrt(T x)
+      {
+        //static_assert(x >= 0, "This function should only be called in a constexpr context!");
+        return newton<sqrt_f1<T>, sqrt_f2<T> >::eval(sqrt_estimate(x), x);
+      }
+
+      template<typename T>
+      const T half_pi()
+      {
+        return static_cast<T>(FLOATMAX_C(1.5707963267948966192313216916397514420986));
+      }
+
       template<typename T>
       constexpr T sin(T x)
       {
@@ -95,4 +190,4 @@
     }
   }
 
-#endif // _CONSTANT_TRIG_FUNCTIONS_2013_01_02_H_
+#endif // _CONSTANT_FUNCTIONS_2013_01_02_H_
