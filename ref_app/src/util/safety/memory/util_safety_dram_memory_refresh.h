@@ -13,7 +13,8 @@
       // subsequently read back. This will refresh each DRAM byte
       // and ensure that each DRAM byte can be properly written
       // and read. The value present in the byte will be backed up
-      // restored prior to and after the pattern write and read-back.
+      // restored prior to and after the DRAM refresh of a the byte.
+      // This is, of course, done with the interrupts disabled.
 
       template<typename memory_address_type,
                const std::size_t memory_list_count>
