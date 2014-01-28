@@ -65,7 +65,7 @@
 
       static_assert(std::numeric_limits<float80_t>::is_iec559    ==  true, "The 80-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
       static_assert(std::numeric_limits<float80_t>::radix        ==     2, "The 80-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
-      static_assert(std::numeric_limits<float80_t>::digits       ==    63, "The 80-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
+      static_assert(std::numeric_limits<float80_t>::digits       ==    64, "The 80-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
       static_assert(std::numeric_limits<float80_t>::max_exponent == 16384, "The 80-bit floating-point type in <cstdfloat> is not IEEE-754 conformant.");
     #endif
 
