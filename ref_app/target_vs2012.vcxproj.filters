@@ -58,6 +58,15 @@
     <Filter Include="micros\stm32f4xx\startup">
       <UniqueIdentifier>{1e874255-7f2a-47d1-86a2-93c2a964b58a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\rl78">
+      <UniqueIdentifier>{d1311802-f547-42c6-aea8-30e9ffccc4af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rl78\make">
+      <UniqueIdentifier>{aef1b57c-74b7-4bad-9c2e-6b379ac30a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rl78\startup">
+      <UniqueIdentifier>{89534cfd-a037-41e1-9902-46641dab75f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Target\Micros\EABI\Startup\crt0.cpp">
@@ -156,6 +165,18 @@
     <None Include="target\micros\stm32f4xx\make\stm32f4xx_hex_manip_script.hxm">
       <Filter>micros\stm32f4xx\make</Filter>
     </None>
+    <None Include="target\micros\rl78\make\rl78.ld">
+      <Filter>micros\rl78\make</Filter>
+    </None>
+    <None Include="target\micros\rl78\make\rl78_files.gmk">
+      <Filter>micros\rl78\make</Filter>
+    </None>
+    <None Include="target\micros\rl78\make\rl78_flags.gmk">
+      <Filter>micros\rl78\make</Filter>
+    </None>
+    <None Include="target\micros\rl78\make\rl78_hex_manip_script.hxm">
+      <Filter>micros\rl78\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp">
@@ -193,6 +214,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f4xx\startup\int_vect.cpp">
       <Filter>micros\stm32f4xx\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rl78\startup\crt0.cpp">
+      <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp">
+      <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rl78\startup\crt1.cpp">
+      <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rl78\startup\int_vect.cpp">
+      <Filter>micros\rl78\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

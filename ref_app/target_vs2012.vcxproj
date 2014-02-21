@@ -250,6 +250,10 @@
     <None Include="target\micros\mips\startup\crt0.s" />
     <None Include="target\micros\mips\startup\general-exception.s" />
     <None Include="target\micros\mips\startup\regs.s" />
+    <None Include="target\micros\rl78\make\rl78.ld" />
+    <None Include="target\micros\rl78\make\rl78_files.gmk" />
+    <None Include="target\micros\rl78\make\rl78_flags.gmk" />
+    <None Include="target\micros\rl78\make\rl78_hex_manip_script.hxm" />
     <None Include="target\micros\stm32f4xx\make\stm32f4xx.ld" />
     <None Include="target\micros\stm32f4xx\make\stm32f4xx_files.gmk" />
     <None Include="target\micros\stm32f4xx\make\stm32f4xx_flags.gmk" />
@@ -264,6 +268,10 @@
     <ClCompile Include="Target\Micros\EABI\Startup\crt0_init_ram.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp" />
     <ClCompile Include="Target\Micros\EABI\Startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\rl78\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\stm32f4xx\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32f4xx\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f4xx\startup\crt1.cpp" />

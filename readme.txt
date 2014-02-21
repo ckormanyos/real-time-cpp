@@ -24,6 +24,7 @@ The reference application supports the following targets:
   * ST microelectronics(R) STM32F10x ARM(R) Cortex(TM)-M3
   * ST microelectronics(R) STM32F4xx ARM(R) Cortex(TM)-M4
   * BeagleBone with Texas Instruments AM335x ARM(R) A8
+  * Under construction: Renesas(R) RL78/G13
   * Under construction: Microchip(R) PIC(R)32, aka MIPS(R) 4K
   * Considered: Raspberry Pi with ARM(R) 11
 
