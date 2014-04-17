@@ -12,6 +12,7 @@
   #include <array>
   #include <limits>
   #include <os/os.h>
+  #include <util/utility/util_bit_mask.h>
 
   namespace os
   {
@@ -19,7 +20,6 @@
     {
     public:
       typedef std::uint_fast8_t  index_type;
-      typedef std::uint_fast16_t trace_type;
 
       task_control_block(const function_type i,
                          const function_type f,
@@ -29,17 +29,14 @@
       task_control_block(const task_control_block&);
 
     private:
-      static const trace_type task_idle_mask = trace_type(~trace_type(0UL)) >> (std::numeric_limits<trace_type>::digits - int(task_id_end + 1));
-
-      const   function_type init;
-      const   function_type func;
-      const   tick_type     cycle;
-      mutable timer_type    timer;
-      mutable event_type    event;
-      const   index_type    index;
+      const    function_type init;
+      const    function_type func;
+      const    tick_type     cycle;
+      mutable  timer_type    timer;
+      volatile event_type    event;
+      const    index_type    index;
 
       static index_type task_global_index;
-      static trace_type task_global_trace;
 
       void initialize() const { init(); }
 
@@ -61,9 +58,6 @@
 
     static_assert(OS_TASK_COUNT == unsigned(task_id_end),
                   "the task count must be equal to the highest task id");
-
-    static_assert(OS_TASK_COUNT < unsigned(std::numeric_limits<task_control_block::trace_type>::digits),
-                  "the task count exceeds the available bits in the task trace");
 
     typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 

@@ -8,6 +8,7 @@
 #ifndef _UTIL_SINGLE_PIN_DEBUG_MONITOR_2013_05_16_H_
   #define _UTIL_SINGLE_PIN_DEBUG_MONITOR_2013_05_16_H_
 
+  #include <os/os_debug_monitor_cfg.h>
   #include <util/debug_monitor/util_single_pin_debug_monitor_base.h>
   #include <util/utility/util_time.h>
 
@@ -24,14 +25,12 @@
     private:
       // Set up the port driver timing.
 
-      // The 1000 baud corresponds to a bit-time of approximately 1ms
-      // per bit. The polling period is 0.250ms (i.e., 250us), such that
-      // the driver polls up to four times per bit.
+      // The polling period is set such that the driver polls four times per bit.
+      // The single-bit timeout is set to 95% of four poll times.
+      // The receiver automatically resets if it is idle for 12 bit times or more.
 
-      // * The single-bit timeout is set to 5% less than four poll times.
-      // * The receiver automatically resets if it is idle for 12 bit times or more.
-      static const std::uint_fast16_t bit_time_microseconds = (475U * 4U) / 2U;
-      static const std::uint_fast8_t  receive_reset_limit   =   12U * 4U;
+      static const std::uint_fast16_t bit_time_microseconds = std::uint_fast16_t(((std::uint32_t(os::debug_monitor::task_poll_time) * UINT32_C(380)) + UINT32_C(99)) / UINT32_C(100));
+      static const std::uint_fast8_t  receive_reset_limit   = 12U * 4U;
 
       typedef util::timer<std::uint_fast16_t> timer_type;
 

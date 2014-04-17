@@ -25,10 +25,10 @@ namespace
   timer_type app_led_timer(timer_type::milliseconds(100U));
 
   typedef sha1<std::uint8_t> sha1_type;
-  const std::uint32_t              control_value = UINT32_C(0x8029201C);
-  sha1_type                        the_sha1;
-  sha1_type::result_type_as_dwords the_sha1_result_as_dwords;
-  bool                             the_result_is_ok = true;
+  const std::uint32_t                       control_value = UINT32_C(0x8029201C);
+  sha1_type                                 the_sha1;
+  sha1_type::result_type_as_integral_values the_sha1_result_as_integral_values;
+  bool                                      the_result_is_ok = true;
 
   timer_type            app_runtime_timer;
   timer_type::tick_type app_runtime_result;
@@ -68,11 +68,11 @@ void app::led::task_func()
       app_runtime_port_type::set_pin_high();
       app_runtime_timer.set_mark();
       the_sha1.process_data("creativity", sha1_type::count_type(10U));
-      the_sha1_result_as_dwords = the_sha1.get_result_as_dwords_and_finalize_the_state();
+      the_sha1_result_as_integral_values = the_sha1.get_result_as_integral_values_and_finalize_the_state();
       app_runtime_result = app_runtime_timer.get_ticks_since_mark();
       app_runtime_port_type::set_pin_low();
 
-      the_result_is_ok = (the_sha1_result_as_dwords.front() == control_value);
+      the_result_is_ok = (the_sha1_result_as_integral_values.front() == control_value);
     }
   }
 }

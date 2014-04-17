@@ -11,6 +11,7 @@
 
 extern "C" void __my_startup       () __attribute__((section(".startup"), naked, used, noinline));
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
+extern "C" void __vector_13        () __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 
 void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
@@ -47,7 +48,7 @@ const volatile std::array<isr_type, 26U> __isr_vector =
   { {0x0C, 0x94}, __vector_unused_irq },      // 10,  timer1 cap
   { {0x0C, 0x94}, __vector_unused_irq },      // 11,  timer1 cmp a
   { {0x0C, 0x94}, __vector_unused_irq },      // 12,  timer1 cmp b
-  { {0x0C, 0x94}, __vector_unused_irq },      // 13,  timer1 ovf
+  { {0x0C, 0x94}, __vector_13 },              // 13,  timer1 ovf
   { {0x0C, 0x94}, __vector_unused_irq },      // 14,  timer0 cmp a
   { {0x0C, 0x94}, __vector_unused_irq },      // 15,  timer0 cmp b
   { {0x0C, 0x94}, __vector_16 },              // 16,  timer0 ovf

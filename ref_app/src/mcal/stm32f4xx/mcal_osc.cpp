@@ -14,6 +14,12 @@ namespace
 {
   void set_the_system_clock()
   {
+    // Set the HCLK frequency to 168MHz generated from an input HSE OSC of 8MHz.
+    // The clock configuration tool from ST has been used to generate the settings.
+    // The resulting frequency tim2/3/4/5/6/7/12/13/14 is 84MHz.
+    // The resulting frequency tim1/8/9/10/11 is 168MHz.
+    // The wait states are set in mcal_cpu.cpp.
+
     // Enable the hse.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
@@ -56,7 +62,10 @@ namespace
     // Set hclk  = sysclk / 1.
     // Set pclk2 =   hclk / 2.
     // Set pclk1 =   hclk / 4.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, UINT32_C(0x00009400)>::reg_or();
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::rcc_cfgr,
+                      UINT32_C(0x00009400)>::reg_or();
 
     // Enable the pll.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(0x01000000)>::reg_or();

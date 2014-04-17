@@ -1,8 +1,5 @@
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Arwed Steuer 2013.
-//  Copyright Christopher Kormanyos 2013.
-//
 // \license LGPLv3
 // sha1 is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser Public License as published by
@@ -18,7 +15,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// This work has been created by Arwed Steuer and Christopher Kormanyos.
+// This work has been created by Christopher Kormanyos.
 // This work is an implementation of sha1 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
@@ -70,7 +67,7 @@
     typedef my_count_type                  count_type;
     typedef std::array<std::uint8_t,  20U> result_type_as_bytes;
     typedef std::array<char,          40U> result_type_as_chars;
-    typedef std::array<std::uint32_t,  5U> result_type_as_dwords;
+    typedef std::array<std::uint32_t,  5U> result_type_as_integral_values;
 
     static_assert(   ( std::numeric_limits<count_type>::is_specialized == true)
                   && ( std::numeric_limits<count_type>::is_integer     == true)
@@ -98,8 +95,8 @@
     result_type_as_bytes get_result_as_bytes_and_finalize_the_state();
     result_type_as_bytes get_result_as_bytes_and_nochange_the_state() const;
 
-    result_type_as_dwords get_result_as_dwords_and_finalize_the_state();
-    result_type_as_dwords get_result_as_dwords_and_nochange_the_state() const;
+    result_type_as_integral_values get_result_as_integral_values_and_finalize_the_state();
+    result_type_as_integral_values get_result_as_integral_values_and_nochange_the_state() const;
 
     result_type_as_chars get_result_as_chars_and_finalize_the_state();
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
@@ -113,13 +110,34 @@
     typedef std::array<std::uint8_t, sha1_blocksize>       message_block_type;
     typedef std::array<std::uint32_t, sha1_blocksize / 4U> transform_block_type;
 
-    count_type            message_length_total;
-    result_type_as_dwords message_hash;
-    message_block_type    message_block;
+    result_type_as_integral_values          message_hash;
+    count_type                              message_index;
+    count_type                              message_length_total;
+    const std::uint8_t*                     the_message;
 
     void perform_algorithm();
     void finalize();
     void reset();
+
+    static std::uint32_t transform_function1(const std::uint32_t* hash_ptr)
+    {
+      return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(std::uint32_t(~hash_ptr[1U]) & hash_ptr[3U]));
+    }
+
+    static std::uint32_t transform_function2(const std::uint32_t* hash_ptr)
+    {
+      return std::uint32_t(std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
+    }
+
+    static std::uint32_t transform_function3(const std::uint32_t* hash_ptr)
+    {
+      return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(hash_ptr[1U] & hash_ptr[3U]) | std::uint32_t(hash_ptr[2U] & hash_ptr[3U]));
+    }
+
+    static std::uint32_t transform_function4(const std::uint32_t* hash_ptr)
+    {
+      return (std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
+    }
   };
 
   template <typename my_count_type>
@@ -149,8 +167,7 @@
   template <typename my_count_type>
   sha1<my_count_type>::sha1(const sha1& other) : crypto_hash_base    (other),
                                                  message_length_total(other.message_length_total),
-                                                 message_hash        (other.message_hash),
-                                                 message_block       (other.message_block)
+                                                 message_hash        (other.message_hash)
   {
   }
 
@@ -163,7 +180,6 @@
 
       message_length_total = other.message_length_total;
       message_hash         = other.message_hash;
-      message_block        = other.message_block;
     }
 
     return *this;
@@ -174,22 +190,21 @@
   {
     if(the_result_is_finalized) { reset(); }
 
+    the_message = data_bytes;
+
     while(message_length != static_cast<count_type>(0U))
     {
-      message_block[message_block_index] = *data_bytes;
-
       ++message_block_index;
-
       ++message_length_total;
 
       if(message_block_index == sha1_blocksize)
       {
         perform_algorithm();
 
-        message_block_index = static_cast<std::uint_fast8_t>(0U);
+        message_block_index = static_cast<std::uint_least8_t>(0U);
+        ++message_index;
       }
 
-      ++data_bytes;
       --message_length;
     }
   }
@@ -224,7 +239,7 @@
   {
     // Apply the hash algorithm to a full data block.
 
-    const std::array<std::uint32_t, 4> constants =
+    static const std::array<std::uint32_t, 4U> constants =
     {{
       UINT32_C(0x5A827999),
       UINT32_C(0x6ED9EBA1),
@@ -234,33 +249,21 @@
 
     typedef std::uint32_t(*function_type)(const std::uint32_t*);
 
-    const std::array<function_type, 4U> functions =
+    static const std::array<function_type, 4U> functions =
     {{
-      [](const std::uint32_t* hash_ptr) -> std::uint32_t
-      {
-        return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(std::uint32_t(~hash_ptr[1U]) & hash_ptr[3U]));
-      },
-      [](const std::uint32_t* hash_ptr) -> std::uint32_t
-      {
-        return std::uint32_t(std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
-      },
-      [](const std::uint32_t* hash_ptr) -> std::uint32_t
-      {
-        return (std::uint32_t(hash_ptr[1U] & hash_ptr[2U]) | std::uint32_t(hash_ptr[1U] & hash_ptr[3U]) | std::uint32_t(hash_ptr[2U] & hash_ptr[3U]));
-      },
-      [](const std::uint32_t* hash_ptr) -> std::uint32_t
-      {
-        return (std::uint32_t(hash_ptr[1U] ^ hash_ptr[2U]) ^ hash_ptr[3U]);
-      }
+      transform_function1,
+      transform_function2,
+      transform_function3,
+      transform_function4
     }};
 
     transform_block_type transform_block;
 
-    convert_uint8_input_to_uint32_output_reverse(message_block.data(),
-                                                 message_block.data() + sha1_blocksize,
+    convert_uint8_input_to_uint32_output_reverse(the_message + sha1_blocksize *  message_index,
+                                                 the_message + sha1_blocksize * (message_index + 1U),
                                                  transform_block.data());
 
-    result_type_as_dwords hash_tmp = message_hash;
+    result_type_as_integral_values hash_tmp = message_hash;
 
     std::uint_fast8_t loop_index = static_cast<std::uint_fast8_t>(0U);
 
@@ -273,14 +276,14 @@
                                         ^ transform_block[std::uint_fast8_t(std::uint_fast8_t(loop_counter +  2U) & std::uint_fast8_t(0x0FU))]
                                         ^ transform_block[std::uint_fast8_t(                  loop_counter        & std::uint_fast8_t(0x0FU))];
 
-        transform_block[static_cast<std::uint_fast8_t>(loop_counter & std::uint_fast8_t(0x0FU))] = crypto_hash_circular_shift<1U>(the_dword);
+        transform_block[static_cast<std::uint_fast8_t>(loop_counter & std::uint_fast8_t(0x0FU))] = circular_left_shift<1U>(the_dword);
 
         if     (loop_counter == std::uint_fast8_t(20U)) { loop_index = std::uint_fast8_t(1U); }
         else if(loop_counter == std::uint_fast8_t(40U)) { loop_index = std::uint_fast8_t(2U); }
         else if(loop_counter == std::uint_fast8_t(60U)) { loop_index = std::uint_fast8_t(3U); }
       }
 
-      const std::uint32_t tmp32 =   crypto_hash_circular_shift<5U>(hash_tmp[0U])
+      const std::uint32_t tmp32 =   circular_left_shift<5U>(hash_tmp[0U])
                                   + functions[loop_index](hash_tmp.data())
                                   + hash_tmp[4U]
                                   + transform_block[std::uint_fast8_t(loop_counter & std::uint_fast8_t(0x0FU))]
@@ -288,7 +291,7 @@
 
       hash_tmp[4U] = hash_tmp[3U];
       hash_tmp[3U] = hash_tmp[2U];
-      hash_tmp[2U] = crypto_hash_circular_shift<30U>(hash_tmp[1U]);
+      hash_tmp[2U] = circular_left_shift<30U>(hash_tmp[1U]);
       hash_tmp[1U] = hash_tmp[0U];
       hash_tmp[0U] = tmp32;
     }
@@ -304,23 +307,31 @@
   template <typename my_count_type>
   void sha1<my_count_type>::finalize()
   {
+    message_block_type the_last_message_block;
+    std::copy((the_message + sha1_blocksize*message_index),
+              (the_message + sha1_blocksize*message_index + message_block_index),
+              (the_last_message_block.begin()));
+
     // Create the padding. Begin by setting the leading padding byte to 0x80.
-    message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
+    the_last_message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
 
     ++message_block_index;
 
     // Fill the rest of the padding bytes with zero.
-    std::fill(message_block.begin() + message_block_index,
-              message_block.end(),
+    std::fill(the_last_message_block.begin() + message_block_index,
+              the_last_message_block.end(),
               static_cast<std::uint8_t>(0U));
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
     if(message_block_index > static_cast<std::uint_fast8_t>(sha1_blocksize - 8U))
     {
+      message_index = static_cast<count_type>(0U);
+      the_message = the_last_message_block.data();
+
       perform_algorithm();
 
-      message_block.fill(static_cast<std::uint8_t>(0U));
+      the_last_message_block.fill(static_cast<std::uint8_t>(0U));
     }
 
     // Encode the number of bits. Simultaneously convert the number of bytes
@@ -329,8 +340,8 @@
     // with the lowest byte being stored at the highest position of the buffer
     std::uint_fast8_t carry = static_cast<std::uint_fast8_t>(0U);
 
-    std::for_each(message_block.rbegin(),
-                  message_block.rbegin() + 8U,
+    std::for_each(the_last_message_block.rbegin(),
+                  the_last_message_block.rbegin() + 8U,
                   [&carry, this](std::uint8_t& the_byte)
                   {
                     const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->message_length_total) << 3;
@@ -341,6 +352,9 @@
 
                     carry = static_cast<std::uint_fast8_t>(the_word >> 8) & static_cast<std::uint_fast8_t>(0x07U);
                   });
+
+    message_index = static_cast<count_type>(0U);
+    the_message = the_last_message_block.data();
 
     perform_algorithm();
 
@@ -359,6 +373,7 @@
     the_result_is_finalized = false;
     message_length_total    = static_cast<count_type>(0U);
     message_block_index     = static_cast<std::uint_fast8_t>(0U);
+    message_index           = static_cast<count_type>(0U);
   }
 
   template<typename my_count_type>
@@ -369,9 +384,9 @@
     result_type_as_bytes result;
 
     // Extract the hash result from the message digest state.
-    convert_uint32_input_to_uint8_output(message_hash.data(),
-                                         message_hash.data() + message_hash.size(),
-                                         result.data());
+    convert_uint32_input_to_uint8_output_reverse(message_hash.data(),
+                                                 message_hash.data() + message_hash.size(),
+                                                 result.data());
 
     return result;
   }
@@ -388,7 +403,7 @@
   }
 
   template<typename my_count_type>
-  typename sha1<my_count_type>::result_type_as_dwords sha1<my_count_type>::get_result_as_dwords_and_finalize_the_state()
+  typename sha1<my_count_type>::result_type_as_integral_values sha1<my_count_type>::get_result_as_integral_values_and_finalize_the_state()
   {
     if(!the_result_is_finalized) { finalize(); }
 
@@ -396,7 +411,7 @@
   }
 
   template<typename my_count_type>
-  typename sha1<my_count_type>::result_type_as_dwords sha1<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
+  typename sha1<my_count_type>::result_type_as_integral_values sha1<my_count_type>::get_result_as_integral_values_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
     sha1 other(*this);
@@ -416,13 +431,13 @@
 
     result_type_as_chars the_result_as_chars;
 
-    // Conver the result as a byte array to a character array.
+    // Convert the result as a byte array to a character array.
     convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
                                         the_result_as_bytes.data() + the_result_as_bytes.size(),
                                         the_result_as_chars.data());
 
     // Obtain the correct byte order for displaying the sha1 string in the usual fashion.
-    for(std::uint_fast8_t i = static_cast<std::uint_fast8_t>(0U); i < static_cast<std::uint_fast8_t>(the_result_as_chars.size()); i += 8U)
+    /*for(std::uint_fast8_t i = static_cast<std::uint_fast8_t>(0U); i < static_cast<std::uint_fast8_t>(the_result_as_chars.size()); i += 8U)
     {
       std::swap_ranges(the_result_as_chars.begin() + (i + 0U),
                        the_result_as_chars.begin() + (i + 2U),
@@ -431,7 +446,7 @@
       std::swap_ranges(the_result_as_chars.begin() + (i + 2U),
                        the_result_as_chars.begin() + (i + 4U),
                        the_result_as_chars.begin() + (i + 4U));
-    }
+    }*/
 
     return the_result_as_chars;
   }

@@ -15,26 +15,26 @@
 
   namespace xalgorithm
   {
-    template<typename T>
-    inline const T& xmin(const T& a, const T& b)
+    template<typename compare_type>
+    inline const compare_type& xmin(const compare_type& a, const compare_type& b)
     {
       return ((a < b) ? a : b);
     }
 
-    template<typename T, typename BinaryPredicate>
-    inline const T& xmin(const T& a, const T& b, BinaryPredicate comp)
+    template<typename compare_type, typename binary_predicate>
+    inline const compare_type& xmin(const compare_type& a, const compare_type& b, binary_predicate comp)
     {
       return (*comp)(a, b);
     }
 
-    template<typename T>
-    inline const T& xmax(const T& a, const T& b)
+    template<typename compare_type>
+    inline const compare_type& xmax(const compare_type& a, const compare_type& b)
     {
       return ((a > b) ? a : b);
     }
 
-    template<typename T, typename BinaryPredicate>
-    inline const T& xmax(const T& a, const T& b, BinaryPredicate comp)
+    template<typename compare_type, typename binary_predicate>
+    inline const compare_type& xmax(const compare_type& a, const compare_type& b, binary_predicate comp)
     {
       return (*comp)(a, b);
     }
@@ -364,21 +364,21 @@
       return (last1);
     }
 
-    template<typename T>
-    inline void xswap(T& left, T& right)
+    template<typename swap_type>
+    inline void xswap(swap_type& left, swap_type& right)
     {
       // Exchange the values stored at left and right if they are different.
       if(&left != &right)
       {
-        T tmp = left;
+        const swap_type tmp = left;
 
         left = right;
         right = tmp;
       }
     }
 
-    template<typename T, std::size_t N>
-    inline void xswap(T(&left)[N], T(&right)[N])
+    template<typename swap_type, std::size_t N>
+    inline void xswap(swap_type(&left)[N], swap_type(&right)[N])
     {
       for(std::size_t i = static_cast<std::size_t>(0U); i < N; ++i)
       {
@@ -386,8 +386,8 @@
       }
     }
 
-    template<typename Iterator1, typename Iterator2>
-    inline void xiter_swap(Iterator1 left, Iterator2 right)
+    template<typename input_iterator1, typename input_iterator2>
+    inline void xiter_swap(input_iterator1 left, input_iterator2 right)
     {
       xalgorithm::xswap(*left, *right);
     }

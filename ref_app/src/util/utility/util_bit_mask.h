@@ -25,7 +25,7 @@
       static_assert((bit_pos + bit_cnt) <= unsigned(std::numeric_limits<data_type>::digits),
                     "the requested bit mask exceeds the bits available in the data type");
 
-      static const data_type value = static_cast<data_type>(static_cast<data_type>((std::numeric_limits<data_type>::max)() >> (std::numeric_limits<data_type>::digits - bit_cnt)) << bit_pos);
+      static const data_type value = (data_type(~data_type(0ULL)) >> (std::numeric_limits<data_type>::digits - (bit_cnt + 1U))) << bit_pos;
     };
 
     template<typename data_type,

@@ -14,15 +14,15 @@
 
   namespace std
   {
-    template<typename T>
+    template<typename char_type>
     class char_traits
     {
     public:
-      static std::size_t length(const T* first)
+      static std::size_t length(const char_type* first)
       {
-        const T* p = first;
+        const char_type* p = first;
 
-        while(*p != T('\0'))
+        while(*p != char_type('\0'))
         {
           ++p;
         }

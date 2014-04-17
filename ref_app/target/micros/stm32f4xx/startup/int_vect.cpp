@@ -61,51 +61,51 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __svc_handler,             // 0x002C, SVC handler
   __debug_mon_handler,       // 0x0030, debug monitor
   __vector_unused_irq,       // 0x0034, reserved
-  __pend_sv_handler,         // 0x0038, pending SVC
-  __sys_tick_handler,        // 0x003C, system tick handler
-  __vector_unused_irq,       // 0x0040, Window WatchDog
-  __vector_unused_irq,       // 0x0044, PVD through EXTI Line detection
-  __vector_unused_irq,       // 0x0048, Tamper and TimeStamps through the EXTI line
-  __vector_unused_irq,       // 0x004C, RTC Wakeup through the EXTI line
-  __vector_unused_irq,       // 0x0050, FLASH
-  __vector_unused_irq,       // 0x0054, RCC
-  __vector_unused_irq,       // 0x0058, EXTI Line0
-  __vector_unused_irq,       // 0x005C, EXTI Line1
-  __vector_unused_irq,       // 0x0060, EXTI Line2
-  __vector_unused_irq,       // 0x0064, EXTI Line3
-  __vector_unused_irq,       // 0x0068, EXTI Line4
-  __vector_unused_irq,       // 0x006C, DMA1 Stream 0
-  __vector_unused_irq,       // 0x0070, DMA1 Stream 1
-  __vector_unused_irq,       // 0x0074, DMA1 Stream 2
-  __vector_unused_irq,       // 0x0078, DMA1 Stream 3
-  __vector_unused_irq,       // 0x007C, DMA1 Stream 4
-  __vector_unused_irq,       // 0x0080, DMA1 Stream 5
-  __vector_unused_irq,       // 0x0084, DMA1 Stream 6
-  __vector_unused_irq,       // 0x0088, ADC1, ADC2 and ADC3s
-  __vector_unused_irq,       // 0x008C, CAN1 TX
-  __vector_unused_irq,       // 0x0090, CAN1 RX0
-  __vector_unused_irq,       // 0x0094, CAN1 RX1
-  __vector_unused_irq,       // 0x0098, CAN1 SCE
-  __vector_unused_irq,       // 0x009C, External Line[9:5]s
-  __vector_unused_irq,       // 0x00A0, TIM1 Break and TIM9
-  __vector_unused_irq,       // 0x00A4, TIM1 Update and TIM10
-  __vector_unused_irq,       // 0x00A8, TIM1 Trigger and Commutation and TIM11
-  __vector_unused_irq,       // 0x00AC, TIM1 Capture Compare
-  __vector_unused_irq,       // 0x00B0, TIM2
-  __vector_unused_irq,       // 0x00B4, TIM3
-  __vector_timer4,           // 0x00B8, TIM4
-  __vector_unused_irq,       // 0x00BC, I2C1 Event
-  __vector_unused_irq,       // 0x00C0, I2C1 Error
-  __vector_unused_irq,       // 0x00C4, I2C2 Event
-  __vector_unused_irq,       // 0x00C8, I2C2 Error
-  __vector_unused_irq,       // 0x00CC, SPI1
-  __vector_unused_irq,       // 0x00D0, SPI2
-  __vector_unused_irq,       // 0x00D4, USART1
-  __vector_unused_irq,       // 0x00D8, USART2
-  __vector_unused_irq,       // 0x00DC, USART3
-  __vector_unused_irq,       // 0x00E0, External Line[15:10]s
-  __vector_unused_irq,       // 0x00E4, RTC Alarm (A and B) through EXTI Line
-  __vector_unused_irq,       // 0x00E8, USB OTG FS Wakeup through EXTI line
+  __pend_sv_handler,         // 0x0038, pending SVC,
+  __sys_tick_handler,        // 0x003C, system tick handler,
+  __vector_unused_irq,       // 0x0040, WWDG IRQ handler,
+  __vector_unused_irq,       // 0x0044, PVD IRQ handler,
+  __vector_unused_irq,       // 0x0048, TAMPER IRQ handler,
+  __vector_unused_irq,       // 0x004C, RTC IRQ handler,
+  __vector_unused_irq,       // 0x0050, FLASH IRQ handler,
+  __vector_unused_irq,       // 0x0054, RCC IRQ handler,
+  __vector_unused_irq,       // 0x0058, EXTI0 IRQ handler,
+  __vector_unused_irq,       // 0x005C, EXTI1 IRQ handler,
+  __vector_unused_irq,       // 0x0060, EXTI2 IRQ handler,
+  __vector_unused_irq,       // 0x0064, EXTI3 IRQ handler,
+  __vector_unused_irq,       // 0x0068, EXTI4 IRQ handler,
+  __vector_unused_irq,       // 0x006C, DMAChannel1 IRQ handler,
+  __vector_unused_irq,       // 0x0070, DMAChannel2 IRQ handler,
+  __vector_unused_irq,       // 0x0074, DMAChannel3 IRQ handler,
+  __vector_unused_irq,       // 0x0078, DMAChannel4 IRQ handler,
+  __vector_unused_irq,       // 0x007C, DMAChannel5 IRQ handler,
+  __vector_unused_irq,       // 0x0080, DMAChannel6 IRQ handler,
+  __vector_unused_irq,       // 0x0084, DMAChannel7 IRQ handler,
+  __vector_unused_irq,       // 0x0088, ADC IRQ handler,
+  __vector_unused_irq,       // 0x008C, USB_HP_CAN_TX IRQ handler,
+  __vector_unused_irq,       // 0x0090, USB_LP_CAN_RX0 IRQ handler,
+  __vector_unused_irq,       // 0x0094, CAN_RX1 IRQ handler,
+  __vector_unused_irq,       // 0x0098, CAN_SCE IRQ handler,
+  __vector_unused_irq,       // 0x009C, EXTI9_5 IRQ handler,
+  __vector_unused_irq,       // 0x00A0, TIM1_BRK IRQ handler,
+  __vector_unused_irq,       // 0x00A4, TIM1_UP IRQ handler,
+  __vector_unused_irq,       // 0x00A8, TIM1_TRG_COM IRQ handler,
+  __vector_unused_irq,       // 0x00AC, TIM1_CC IRQ handler,
+  __vector_unused_irq,       // 0x00B0, TIM2 IRQ handler,
+  __vector_unused_irq,       // 0x00B4, TIM3 IRQ handler,
+  __vector_timer4,           // 0x00B8, TIM4 IRQ handler,
+  __vector_unused_irq,       // 0x00BC, I2C1_EV IRQ handler,
+  __vector_unused_irq,       // 0x00C0, I2C1_ER IRQ handler,
+  __vector_unused_irq,       // 0x00C4, I2C2_EV IRQ handler,
+  __vector_unused_irq,       // 0x00C8, I2C2_ER IRQ handler,
+  __vector_unused_irq,       // 0x00CC, SPI1 IRQ handler,
+  __vector_unused_irq,       // 0x00D0, SPI2 IRQ handler,
+  __vector_unused_irq,       // 0x00D4, USART1 IRQ handler,
+  __vector_unused_irq,       // 0x00D8, USART2 IRQ handler,
+  __vector_unused_irq,       // 0x00DC, USART3 IRQ handler,
+  __vector_unused_irq,       // 0x00E0, EXTI15_10 IRQ handler,
+  __vector_unused_irq,       // 0x00E4, RTCAlarm IRQ handler,
+  __vector_unused_irq,       // 0x00E8, USBWakeUp IRQ handler,
   __vector_unused_irq,       // 0x00EC, TIM8 Break and TIM12
   __vector_unused_irq,       // 0x00F0, TIM8 Update and TIM13
   __vector_unused_irq,       // 0x00F4, TIM8 Trigger and Commutation and TIM14

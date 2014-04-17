@@ -14,8 +14,7 @@
       // and ensure that each DRAM byte can be properly written
       // and read. The value present in the byte will be backed up
       // and subsequently restored prior to and after the pattern write
-      // and read-back operation (with interrupts disabled for data
-      // preservation).
+      // and read-back operation (of course, with interrupts disabled).
 
       template<typename memory_address_type,
                const std::size_t memory_list_count>

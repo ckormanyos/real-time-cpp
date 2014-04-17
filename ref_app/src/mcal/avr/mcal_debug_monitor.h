@@ -21,7 +21,7 @@
       typedef mcal::port::port_pin<std::uint8_t,
                                    std::uint8_t,
                                    mcal::reg::portd,
-                                   UINT8_C(3)> port_debug_monitor_type;
+                                   UINT8_C(3)> debug_monitor_port_type;
     }
   }
 

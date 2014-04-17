@@ -1,8 +1,5 @@
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Arwed Steuer 2013.
-//  Copyright Christopher Kormanyos 2012 - 2013.
-//
 // \license LGPLv3
 // md5 is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser Public License as published by
@@ -18,7 +15,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// This work has been created by Arwed Steuer and Christopher Kormanyos.
+// This work has been created by Christopher Kormanyos.
 // This work is an implementation of md5 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
@@ -65,7 +62,7 @@
     typedef my_count_type                  count_type;
     typedef std::array<std::uint8_t,  16U> result_type_as_bytes;
     typedef std::array<char,          32U> result_type_as_chars;
-    typedef std::array<std::uint32_t,  4U> result_type_as_dwords;
+    typedef std::array<std::uint32_t,  4U> result_type_as_integral_values;
 
     static_assert(   ( std::numeric_limits<count_type>::is_specialized == true)
                   && ( std::numeric_limits<count_type>::is_integer     == true)
@@ -93,8 +90,8 @@
     result_type_as_bytes get_result_as_bytes_and_finalize_the_state();
     result_type_as_bytes get_result_as_bytes_and_nochange_the_state() const;
 
-    result_type_as_dwords get_result_as_dwords_and_finalize_the_state();
-    result_type_as_dwords get_result_as_dwords_and_nochange_the_state() const;
+    result_type_as_integral_values get_result_as_integral_values_and_finalize_the_state();
+    result_type_as_integral_values get_result_as_integral_values_and_nochange_the_state() const;
 
     result_type_as_chars get_result_as_chars_and_finalize_the_state();
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
@@ -108,9 +105,10 @@
     typedef std::array<std::uint8_t,  md5_blocksize>      message_block_type;
     typedef std::array<std::uint32_t, md5_blocksize / 4U> transform_block_type;
 
-    count_type            message_length_total;
-    result_type_as_dwords message_hash;
-    message_block_type    message_block;
+    result_type_as_integral_values          message_hash;
+    count_type                              message_index;
+    count_type                              message_length_total;
+    const std::uint8_t*                     the_message;
 
     void perform_algorithm();
     void finalize();
@@ -141,7 +139,7 @@
     {
       const std::uint32_t permutation_f = static_cast<std::uint32_t>(b & c) | static_cast<std::uint32_t>(static_cast<std::uint32_t>(~b) & d);
 
-      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_left_shift<my_s>(static_cast<std::uint32_t>(a + permutation_f) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -149,7 +147,7 @@
     {
       const std::uint32_t permutation_g = static_cast<std::uint32_t>(b & d) | static_cast<std::uint32_t>(c & static_cast<std::uint32_t>(~d));
 
-      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_left_shift<my_s>(static_cast<std::uint32_t>(a + permutation_g) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -157,7 +155,7 @@
     {
       const std::uint32_t permutation_h = static_cast<std::uint32_t>(b ^ c) ^ d;
 
-      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_left_shift<my_s>(static_cast<std::uint32_t>(a + permutation_h) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
 
     template<const std::uint_fast8_t my_s, const std::uint32_t my_ac>
@@ -165,7 +163,7 @@
     {
       const std::uint32_t permutation_i = c ^ static_cast<std::uint32_t>(b | static_cast<std::uint32_t>(~d));
 
-      a = static_cast<std::uint32_t>(crypto_hash_circular_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i) + static_cast<std::uint32_t>(x + my_ac)) + b);
+      a = static_cast<std::uint32_t>(circular_left_shift<my_s>(static_cast<std::uint32_t>(a + permutation_i) + static_cast<std::uint32_t>(x + my_ac)) + b);
     }
   };
 
@@ -196,8 +194,7 @@
   template<typename my_count_type>
   md5<my_count_type>::md5(const md5& other) : crypto_hash_base    (other),
                                               message_length_total(other.message_length_total),
-                                              message_hash        (other.message_hash),
-                                              message_block       (other.message_block)
+                                              message_hash        (other.message_hash)
   {
   }
 
@@ -210,7 +207,6 @@
 
       message_length_total = other.message_length_total;
       message_hash         = other.message_hash;
-      message_block        = other.message_block;
     }
 
     return *this;
@@ -221,22 +217,21 @@
   {
     if(the_result_is_finalized) { reset(); }
 
+    the_message = data_bytes;
+
     while(message_length != static_cast<count_type>(0U))
     {
-      message_block[message_block_index] = *data_bytes;
-
       ++message_block_index;
-
       ++message_length_total;
 
       if(message_block_index == md5_blocksize)
       {
         perform_algorithm();
 
-        message_block_index = static_cast<std::uint_fast8_t>(0U);
+        message_block_index = static_cast<std::uint_least8_t>(0U);
+        ++message_index;
       }
 
-      ++data_bytes;
       --message_length;
     }
   }
@@ -273,11 +268,11 @@
 
     transform_block_type transform_block;
 
-    convert_uint8_input_to_uint32_output(message_block.data(),
-                                         message_block.data() + md5_blocksize,
+    convert_uint8_input_to_uint32_output(the_message + md5_blocksize *  message_index,
+                                         the_message + md5_blocksize * (message_index + 1U),
                                          transform_block.data());
 
-    result_type_as_dwords hash_tmp = message_hash;
+    result_type_as_integral_values hash_tmp = message_hash;
 
     // Perform transformation round 1.
     transformation_ff<S11, UINT32_C(0xD76AA478)>(hash_tmp[0U], hash_tmp[1U], hash_tmp[2U], hash_tmp[3U], transform_block[ 0U]); //  1
@@ -362,23 +357,31 @@
   template<typename my_count_type>
   void md5<my_count_type>::finalize()
   {
+    message_block_type the_last_message_block;
+    std::copy((the_message + md5_blocksize*message_index),
+              (the_message + md5_blocksize*message_index + message_block_index),
+              (the_last_message_block.begin()));
+
     // Create the padding. Begin by setting the leading padding byte to 0x80.
-    message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
+    the_last_message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
 
     ++message_block_index;
 
     // Fill the rest of the padding bytes with zero.
-    std::fill(message_block.begin() + message_block_index,
-              message_block.end(),
+    std::fill(the_last_message_block.begin() + message_block_index,
+              the_last_message_block.end(),
               static_cast<std::uint8_t>(0U));
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
     if(message_block_index > static_cast<std::uint_fast8_t>(md5_blocksize - 8U))
     {
+      message_index = static_cast<count_type>(0U);
+      the_message = the_last_message_block.data();
+
       perform_algorithm();
 
-      message_block.fill(static_cast<std::uint8_t>(0U));
+      the_last_message_block.fill(static_cast<std::uint8_t>(0U));
     }
 
     // Encode the number of bits. Simultaneously convert the number of bytes
@@ -387,8 +390,8 @@
     // with the lowest byte being stored at index 56 in the buffer
     std::uint_fast8_t carry = static_cast<std::uint_fast8_t>(0U);
 
-    std::for_each(message_block.end() - 8U,
-                  message_block.end(),
+    std::for_each(the_last_message_block.end() - 8U,
+                  the_last_message_block.end(),
                   [&carry, this](std::uint8_t& the_byte)
                   {
                     const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->message_length_total) << 3;
@@ -399,6 +402,9 @@
 
                     carry = static_cast<std::uint_fast8_t>(the_word >> 8) & static_cast<std::uint_fast8_t>(0x07U);
                   });
+
+    message_index = static_cast<count_type>(0U);
+    the_message = the_last_message_block.data();
 
     perform_algorithm();
 
@@ -416,6 +422,7 @@
     the_result_is_finalized = false;
     message_length_total    = static_cast<count_type>(0U);
     message_block_index     = static_cast<std::uint_fast8_t>(0U);
+    message_index           = static_cast<count_type>(0U);
   }
 
   template<typename my_count_type>
@@ -445,7 +452,7 @@
   }
 
   template<typename my_count_type>
-  typename md5<my_count_type>::result_type_as_dwords md5<my_count_type>::get_result_as_dwords_and_finalize_the_state()
+  typename md5<my_count_type>::result_type_as_integral_values md5<my_count_type>::get_result_as_integral_values_and_finalize_the_state()
   {
     if(!the_result_is_finalized) { finalize(); }
 
@@ -453,7 +460,7 @@
   }
 
   template<typename my_count_type>
-  typename md5<my_count_type>::result_type_as_dwords md5<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
+  typename md5<my_count_type>::result_type_as_integral_values md5<my_count_type>::get_result_as_integral_values_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
     md5 other(*this);

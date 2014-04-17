@@ -7,7 +7,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// This work has been created by Arwed Steuer and Christopher Kormanyos.
+// This work has been created by Christopher Kormanyos.
 // This work is an implementation of sha256 that has been specifically
 // designed for C++. The implementation places particular
 // emphasis on portability to microcontroller platforms.
@@ -56,6 +56,8 @@
 // ietf-ipr@ietf.org.
 ///////////////////////////////////////////////////////////////////////////////
 
+// Note: SHA224, 256, 384, 512 are from RFC 4634, not from RFC 4868
+
 #ifndef _SHA256_2013_10_21_H_
   #define _SHA256_2013_10_21_H_
 
@@ -71,7 +73,7 @@
     typedef my_count_type                  count_type;
     typedef std::array<std::uint8_t,  32U> result_type_as_bytes;
     typedef std::array<char,          64U> result_type_as_chars;
-    typedef std::array<std::uint32_t,  8U> result_type_as_dwords;
+    typedef std::array<std::uint32_t,  8U> result_type_as_integral_values;
 
     static_assert(   ( std::numeric_limits<count_type>::is_specialized == true)
                   && ( std::numeric_limits<count_type>::is_integer     == true)
@@ -99,8 +101,8 @@
     result_type_as_bytes get_result_as_bytes_and_finalize_the_state();
     result_type_as_bytes get_result_as_bytes_and_nochange_the_state() const;
 
-    result_type_as_dwords get_result_as_dwords_and_finalize_the_state();
-    result_type_as_dwords get_result_as_dwords_and_nochange_the_state() const;
+    result_type_as_integral_values get_result_as_integral_values_and_finalize_the_state();
+    result_type_as_integral_values get_result_as_integral_values_and_nochange_the_state() const;
 
     result_type_as_chars get_result_as_chars_and_finalize_the_state();
     result_type_as_chars get_result_as_chars_and_nochange_the_state() const;
@@ -114,13 +116,46 @@
     typedef std::array<std::uint8_t,  sha256_blocksize> message_block_type;
     typedef std::array<std::uint32_t, sha256_blocksize> transform_block_type;
 
-    count_type            message_length_total;
-    result_type_as_dwords message_hash;
-    message_block_type    message_block;
+    result_type_as_integral_values          message_hash;
+    count_type                              message_index;
+    count_type                              message_length_total;
+    const std::uint8_t*                     the_message;
 
     void perform_algorithm();
     void finalize();
     void reset();
+
+      // BSIG0
+      static std::uint32_t transform_function1(const std::uint32_t& the_dword)
+      {
+        return std::uint32_t(  circular_right_shift< 2U>(the_dword)
+                             ^ circular_right_shift<13U>(the_dword)
+                             ^ circular_right_shift<22U>(the_dword));
+      }
+
+      // BSIG1
+      static std::uint32_t transform_function2(const std::uint32_t& the_dword)
+      {
+        return std::uint32_t(  circular_right_shift< 6U>(the_dword)
+                             ^ circular_right_shift<11U>(the_dword)
+                             ^ circular_right_shift<25U>(the_dword));
+      }
+
+      // SSIG0
+      static std::uint32_t transform_function3(const std::uint32_t& the_dword)
+      {
+        return std::uint32_t(  circular_right_shift< 7U>(the_dword)
+                             ^ circular_right_shift<18U>(the_dword)
+                             ^ std::uint32_t(the_dword >> 3U));
+      }
+
+      // SSIG1
+      static std::uint32_t transform_function4(const std::uint32_t& the_dword)
+      {
+        return std::uint32_t(  circular_right_shift<17U>(the_dword)
+                             ^ circular_right_shift<19U>(the_dword)
+                             ^ std::uint32_t(the_dword >> 10U));
+      }
   };
 
   template <typename my_count_type>
@@ -150,8 +185,7 @@
   template <typename my_count_type>
   sha256<my_count_type>::sha256(const sha256& other) : crypto_hash_base    (other),
                                                        message_length_total(other.message_length_total),
-                                                       message_hash        (other.message_hash),
-                                                       message_block       (other.message_block)
+                                                       message_hash        (other.message_hash)
   {
   }
 
@@ -164,7 +198,6 @@
 
       message_length_total = other.message_length_total;
       message_hash         = other.message_hash;
-      message_block        = other.message_block;
     }
 
     return *this;
@@ -175,12 +208,11 @@
   {
     if(the_result_is_finalized) { reset(); }
 
+    the_message = data_bytes;
+
     while(message_length != static_cast<count_type>(0U))
     {
-      message_block[message_block_index] = *data_bytes;
-
       ++message_block_index;
-
       ++message_length_total;
 
       if(message_block_index == sha256_blocksize)
@@ -188,12 +220,13 @@
         perform_algorithm();
 
         message_block_index = static_cast<std::uint_least8_t>(0U);
+        ++message_index;
       }
 
-      ++data_bytes;
       --message_length;
     }
   }
+
 
   template<typename my_count_type>
   template<typename unsigned_integer_type>
@@ -225,63 +258,43 @@
   {
     // Apply the hash algorithm to a full data block.
 
-    const std::array<std::uint32_t, 64> constants =
+    static const std::array<std::uint32_t, 64U> constants =
     {{
-      UINT32_C(0x428A2F98), UINT32_C(0x71374491), UINT32_C(0xB5C0FBCF), UINT32_C(0xE9B5DBA5), 
-      UINT32_C(0x3956C25B), UINT32_C(0x59F111F1), UINT32_C(0x923F82A4), UINT32_C(0xAB1C5ED5), 
-      UINT32_C(0xD807AA98), UINT32_C(0x12835B01), UINT32_C(0x243185BE), UINT32_C(0x550C7DC3), 
-      UINT32_C(0x72BE5D74), UINT32_C(0x80DEB1FE), UINT32_C(0x9BDC06A7), UINT32_C(0xC19BF174), 
-      UINT32_C(0xE49B69C1), UINT32_C(0xEFBE4786), UINT32_C(0x0FC19DC6), UINT32_C(0x240CA1CC), 
-      UINT32_C(0x2DE92C6F), UINT32_C(0x4A7484AA), UINT32_C(0x5CB0A9DC), UINT32_C(0x76F988DA), 
-      UINT32_C(0x983E5152), UINT32_C(0xA831C66D), UINT32_C(0xB00327C8), UINT32_C(0xBF597FC7), 
-      UINT32_C(0xC6E00BF3), UINT32_C(0xD5A79147), UINT32_C(0x06CA6351), UINT32_C(0x14292967), 
-      UINT32_C(0x27B70A85), UINT32_C(0x2E1B2138), UINT32_C(0x4D2C6DFC), UINT32_C(0x53380D13), 
-      UINT32_C(0x650A7354), UINT32_C(0x766A0ABB), UINT32_C(0x81C2C92E), UINT32_C(0x92722C85), 
-      UINT32_C(0xA2BFE8A1), UINT32_C(0xA81A664B), UINT32_C(0xC24B8B70), UINT32_C(0xC76C51A3), 
-      UINT32_C(0xD192E819), UINT32_C(0xD6990624), UINT32_C(0xF40E3585), UINT32_C(0x106AA070), 
-      UINT32_C(0x19A4C116), UINT32_C(0x1E376C08), UINT32_C(0x2748774C), UINT32_C(0x34B0BCB5), 
-      UINT32_C(0x391C0CB3), UINT32_C(0x4ED8AA4A), UINT32_C(0x5B9CCA4F), UINT32_C(0x682E6FF3), 
-      UINT32_C(0x748F82EE), UINT32_C(0x78A5636F), UINT32_C(0x84C87814), UINT32_C(0x8CC70208), 
+      UINT32_C(0x428A2F98), UINT32_C(0x71374491), UINT32_C(0xB5C0FBCF), UINT32_C(0xE9B5DBA5),
+      UINT32_C(0x3956C25B), UINT32_C(0x59F111F1), UINT32_C(0x923F82A4), UINT32_C(0xAB1C5ED5),
+      UINT32_C(0xD807AA98), UINT32_C(0x12835B01), UINT32_C(0x243185BE), UINT32_C(0x550C7DC3),
+      UINT32_C(0x72BE5D74), UINT32_C(0x80DEB1FE), UINT32_C(0x9BDC06A7), UINT32_C(0xC19BF174),
+      UINT32_C(0xE49B69C1), UINT32_C(0xEFBE4786), UINT32_C(0x0FC19DC6), UINT32_C(0x240CA1CC),
+      UINT32_C(0x2DE92C6F), UINT32_C(0x4A7484AA), UINT32_C(0x5CB0A9DC), UINT32_C(0x76F988DA),
+      UINT32_C(0x983E5152), UINT32_C(0xA831C66D), UINT32_C(0xB00327C8), UINT32_C(0xBF597FC7),
+      UINT32_C(0xC6E00BF3), UINT32_C(0xD5A79147), UINT32_C(0x06CA6351), UINT32_C(0x14292967),
+      UINT32_C(0x27B70A85), UINT32_C(0x2E1B2138), UINT32_C(0x4D2C6DFC), UINT32_C(0x53380D13),
+      UINT32_C(0x650A7354), UINT32_C(0x766A0ABB), UINT32_C(0x81C2C92E), UINT32_C(0x92722C85),
+      UINT32_C(0xA2BFE8A1), UINT32_C(0xA81A664B), UINT32_C(0xC24B8B70), UINT32_C(0xC76C51A3),
+      UINT32_C(0xD192E819), UINT32_C(0xD6990624), UINT32_C(0xF40E3585), UINT32_C(0x106AA070),
+      UINT32_C(0x19A4C116), UINT32_C(0x1E376C08), UINT32_C(0x2748774C), UINT32_C(0x34B0BCB5),
+      UINT32_C(0x391C0CB3), UINT32_C(0x4ED8AA4A), UINT32_C(0x5B9CCA4F), UINT32_C(0x682E6FF3),
+      UINT32_C(0x748F82EE), UINT32_C(0x78A5636F), UINT32_C(0x84C87814), UINT32_C(0x8CC70208),
       UINT32_C(0x90BEFFFA), UINT32_C(0xA4506CEB), UINT32_C(0xBEF9A3F7), UINT32_C(0xC67178F2)
     }};
 
     typedef std::uint32_t(*function_type)(const std::uint32_t&);
 
-    const std::array<function_type, 4U> functions =
+    static const std::array<function_type, 4U> functions =
     {{
-      [](const std::uint32_t& the_dword) -> std::uint32_t // BSIG0
-      {
-        return std::uint32_t(  crypto_hash_circular_shift<30U>(the_dword)
-                             ^ crypto_hash_circular_shift<19U>(the_dword)
-                             ^ crypto_hash_circular_shift<10U>(the_dword));
-      },
-      [](const std::uint32_t& the_dword) -> std::uint32_t // BSIG1
-      {
-        return std::uint32_t(  crypto_hash_circular_shift<26U>(the_dword)
-                             ^ crypto_hash_circular_shift<21U>(the_dword)
-                             ^ crypto_hash_circular_shift<7U>(the_dword));
-      },
-      [](const std::uint32_t& the_dword) -> std::uint32_t // SSIG0
-      {
-        return std::uint32_t(  crypto_hash_circular_shift<25U>(the_dword)
-                             ^ crypto_hash_circular_shift<14U>(the_dword)
-                             ^ std::uint32_t(the_dword >> 3U));
-      },
-      [](const std::uint32_t& the_dword) -> std::uint32_t // SSIG1
-      {
-        return std::uint32_t(  crypto_hash_circular_shift<15U>(the_dword)
-                             ^ crypto_hash_circular_shift<13U>(the_dword)
-                             ^ std::uint32_t(the_dword >> 10U));
-      }
+      transform_function1,
+      transform_function2,
+      transform_function3,
+      transform_function4
     }};
 
     transform_block_type transform_block;
 
-    convert_uint8_input_to_uint32_output_reverse(message_block.data(),
-                                                 message_block.data() + sha256_blocksize,
+    convert_uint8_input_to_uint32_output_reverse(the_message + sha256_blocksize *  message_index,
+                                                 the_message + sha256_blocksize * (message_index + 1U),
                                                  transform_block.data());
 
-    for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(16U); loop_counter < static_cast<std::uint_fast8_t>(64U); loop_counter++)
+    for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(16U); loop_counter < static_cast<std::uint_fast8_t>(64U); ++loop_counter)
     {
       transform_block[loop_counter] =   functions[3U](transform_block[loop_counter - 2U])
                                       + transform_block[loop_counter - 7U]
@@ -289,9 +302,9 @@
                                       + transform_block[loop_counter - 16U];
     }
 
-    result_type_as_dwords hash_tmp = message_hash;
+    result_type_as_integral_values hash_tmp = message_hash;
 
-    for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(64U); loop_counter++)
+    for(std::uint_fast8_t loop_counter = static_cast<std::uint_fast8_t>(0U); loop_counter < static_cast<std::uint_fast8_t>(64U); ++loop_counter)
     {
       const std::uint32_t tmp1 =   hash_tmp[7U]
                                  + functions[1U](hash_tmp[4U])
@@ -323,23 +336,31 @@
   template <typename my_count_type>
   void sha256<my_count_type>::finalize()
   {
+    message_block_type the_last_message_block;
+    std::copy((the_message + sha256_blocksize*message_index),
+              (the_message + sha256_blocksize*message_index + message_block_index),
+              (the_last_message_block.begin()));
+
     // Create the padding. Begin by setting the leading padding byte to 0x80.
-    message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
+    the_last_message_block[message_block_index] = static_cast<std::uint8_t>(0x80U);
 
     ++message_block_index;
 
     // Fill the rest of the padding bytes with zero.
-    std::fill(message_block.begin() + message_block_index,
-              message_block.end(),
+    std::fill(the_last_message_block.begin() + message_block_index,
+              the_last_message_block.end(),
               static_cast<std::uint8_t>(0U));
 
     // Do we need an extra block? If so, then transform the
     // current block and pad an additional block.
     if(message_block_index > static_cast<std::uint_least8_t>(sha256_blocksize - 8U))
     {
+      message_index = static_cast<count_type>(0U);
+      the_message = the_last_message_block.data();
+
       perform_algorithm();
 
-      message_block.fill(static_cast<std::uint8_t>(0U));
+      the_last_message_block.fill(static_cast<std::uint8_t>(0U));
     }
 
     // Encode the number of bits. Simultaneously convert the number of bytes
@@ -348,18 +369,21 @@
     // with the lowest byte being stored at the highest position of the buffer
     std::uint_least8_t carry = static_cast<std::uint_least8_t>(0U);
 
-    std::for_each(message_block.rbegin(),
-                  message_block.rbegin() + 8U,
+    std::for_each(the_last_message_block.rbegin(),
+                  the_last_message_block.rbegin() + 8U,
                   [&carry, this](std::uint8_t& the_byte)
                   {
                     const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(this->message_length_total) << 3;
 
                     the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                    this->message_length_total >>= 8;
+                    (this->message_length_total) >>= 8;
 
                     carry = static_cast<std::uint_least8_t>(the_word >> 8) & static_cast<std::uint_least8_t>(0x07U);
                   });
+
+    message_index = static_cast<count_type>(0U);
+    the_message = the_last_message_block.data();
 
     perform_algorithm();
 
@@ -381,6 +405,7 @@
     the_result_is_finalized = false;
     message_length_total    = static_cast<count_type>(0U);
     message_block_index     = static_cast<std::uint_least8_t>(0U);
+    message_index           = static_cast<count_type>(0U);
   }
 
   template<typename my_count_type>
@@ -391,9 +416,9 @@
     result_type_as_bytes result;
 
     // Extract the hash result from the message digest state.
-    convert_uint32_input_to_uint8_output(message_hash.data(),
-                                         message_hash.data() + message_hash.size(),
-                                         result.data());
+    convert_uint32_input_to_uint8_output_reverse(message_hash.data(),
+                                                 message_hash.data() + message_hash.size(),
+                                                 result.data());
 
     return result;
   }
@@ -410,7 +435,7 @@
   }
 
   template<typename my_count_type>
-  typename sha256<my_count_type>::result_type_as_dwords sha256<my_count_type>::get_result_as_dwords_and_finalize_the_state()
+  typename sha256<my_count_type>::result_type_as_integral_values sha256<my_count_type>::get_result_as_integral_values_and_finalize_the_state()
   {
     if(!the_result_is_finalized) { finalize(); }
 
@@ -418,7 +443,7 @@
   }
 
   template<typename my_count_type>
-  typename sha256<my_count_type>::result_type_as_dwords sha256<my_count_type>::get_result_as_dwords_and_nochange_the_state() const
+  typename sha256<my_count_type>::result_type_as_integral_values sha256<my_count_type>::get_result_as_integral_values_and_nochange_the_state() const
   {
     // Make a local copy of the hash object.
     sha256 other(*this);
@@ -442,18 +467,6 @@
     convert_uint8_input_to_char8_output(the_result_as_bytes.data(),
                                         the_result_as_bytes.data() + the_result_as_bytes.size(),
                                         the_result_as_chars.data());
-
-    // Obtain the correct byte order for displaying the sha256 string in the usual fashion.
-    for(std::uint_least8_t i = static_cast<std::uint_least8_t>(0U); i < static_cast<std::uint_least8_t>(the_result_as_chars.size()); i += 8U)
-    {
-      std::swap_ranges(the_result_as_chars.begin() + (i + 0U),
-                       the_result_as_chars.begin() + (i + 2U),
-                       the_result_as_chars.begin() + (i + 6U));
-
-      std::swap_ranges(the_result_as_chars.begin() + (i + 2U),
-                       the_result_as_chars.begin() + (i + 4U),
-                       the_result_as_chars.begin() + (i + 4U));
-    }
 
     return the_result_as_chars;
   }

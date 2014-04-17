@@ -58,14 +58,16 @@ void mcal::cpu::init()
                     UINT32_C(0)>::reg_set();
 
   // Configure the flash memory.
-  // Set 5 wait states.
+  // Set the wait states.
   // Activate the flash prefetch.
   // Activate the instruction cache.
   // Activate the data cache.
+  constexpr std::uint32_t wait_states = UINT32_C(5);
+
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::flash_acr,
-                    UINT32_C(5) | UINT32_C(0x00000700)>::reg_set();
+                    wait_states | UINT32_C(0x00000700)>::reg_set();
 
   // Enable the power interface clock.
   mcal::reg::access<std::uint32_t,
@@ -73,7 +75,7 @@ void mcal::cpu::init()
                     mcal::reg::rcc_apb1enr,
                     UINT32_C(0x10000000)>::reg_or();
 
-  // Select the regulator voltage scaling output to scale 1 mode.
+  // Select the regulator voltage scaling output to "scale 1 mode".
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::pwr_cr,

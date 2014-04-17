@@ -23,12 +23,12 @@
     value_type h = (b - a);
     value_type I = (function(a) + function(b)) * (h / 2);
 
-    for(std::uint_fast8_t k = 0U; k < 8U; k++)
+    for(std::uint_fast8_t k = 0U; k < 8U; ++k)
     {
       h /= 2;
 
       value_type sum(0);
-      for(std::uint_fast8_t j = 1U; j <= n; j++)
+      for(std::uint_fast8_t j = 1U; j <= n; ++j)
       {
         sum += function(value_type(a + (value_type((j * 2) - 1) * h)));
       }
@@ -62,12 +62,12 @@
     value_type h = (b - a);
     std::complex<value_type> I = (function(a) + function(b)) * (h / 2);
 
-    for(std::uint_fast8_t k = 0U; k < 8U; k++)
+    for(std::uint_fast8_t k = 0U; k < 8U; ++k)
     {
       h /= 2;
 
       std::complex<value_type> sum(0);
-      for(std::uint_fast8_t j = 1U; j <= n; j++)
+      for(std::uint_fast8_t j = 1U; j <= n; ++j)
       {
         sum += function(std::complex<value_type>(a + (value_type((j * 2) - 1) * h)));
       }

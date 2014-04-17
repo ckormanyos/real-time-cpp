@@ -13,8 +13,8 @@ GCC_VERSION = 4.7.2
 GCC_TARGET  = arm-none-eabi
 
 TGT_CFLAGS    = -mcpu=cortex-m3                                \
-                -mthumb                                        \
                 -mtune=cortex-m3                               \
+                -mthumb                                        \
                 -mfloat-abi=soft                               \
                 -mno-unaligned-access                          \
                 -mno-long-calls

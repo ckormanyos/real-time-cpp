@@ -21,7 +21,7 @@
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::gpio1_base,
-                                   UINT32_C(14)> port_debug_monitor_type;
+                                   UINT32_C(14)> debug_monitor_port_type;
     }
   }
 

@@ -33,6 +33,8 @@
 
       extern pwm_type pwm0;
       extern pwm_type pwm1;
+
+      inline void set_duty_cycle(const std::uint8_t, const std::uint8_t) { }
     }
   }
 

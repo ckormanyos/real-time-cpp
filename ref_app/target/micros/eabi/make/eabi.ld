@@ -18,6 +18,7 @@ _rom_begin = 0x08000000;
 _rom_end   = 0x08007FFC;
 
 /* The beginning and end (i.e., top) of the stack */
+/* Set up a stack with a size of 1K */
 _stack_begin = 0x20001C00;
 _stack_end   = 0x20002000;
 

@@ -8,15 +8,20 @@
 #include <algorithm>
 #include <mcal_irq.h>
 #include <os/os_task_control_block.h>
-#include <util/utility/util_bit_mask.h>
 
-namespace os
-{
-  os::task_list_type task_list = OS_TASK_LIST;
-}
+
+// The one (and only one) operating system task list.
+os::task_list_type os::task_list = OS_TASK_LIST;
+
 
 void os::start_os()
 {
+  // Initialize the idle task.
+  OS_IDLE_TASK_INIT();
+
+  // Call the idle task and trigger the watchdog at OS begin.
+  OS_IDLE_TASK_FUNC();
+
   // Initialize each task once.
   std::for_each(task_list.cbegin(),
                 task_list.cend(),
@@ -24,9 +29,6 @@ void os::start_os()
                 {
                   tcb.initialize();
                 });
-
-  // Initialize the idle task.
-  OS_IDLE_TASK_INIT();
 
   // Enter the endless loop of the multitasking scheduler.
   for(;;)
@@ -42,28 +44,7 @@ void os::start_os()
     // If no ready-task was found, then service the idle task.
     if(it_ready_task == task_list.end())
     {
-      // Set the task index to one higher than the highest
-      // task index in order to represent the idle task.
-      task_control_block::task_global_index = task_control_block::index_type(task_id_end);
-
-      // Set the bit in the task trace belonging to the idle task.
-      task_control_block::task_global_trace |=
-        util::bit_mask_single_bit_value<task_control_block::trace_type,
-                                        static_cast<unsigned>(task_id_end)>::value;
-
-      // Check if all of the tasks have checked in via checking the task trace value.
-      // If all the tasks have checked in, then service the idle task.
-      if(task_control_block::task_global_trace == task_control_block::task_idle_mask)
-      {
-        OS_IDLE_TASK_FUNC(true);
-
-        // Reset the task trace value to zero.
-        task_control_block::task_global_trace = task_control_block::trace_type(0U);
-      }
-      else
-      {
-        OS_IDLE_TASK_FUNC(false);
-      }
+      OS_IDLE_TASK_FUNC();
     }
   }
 }
@@ -74,7 +55,7 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
   {
     // Get a pointer to the control block corresponding to
     // the task ID that has been supplied to this subroutine.
-    task_control_block* control_block_of_the_task_id = &task_list[task_list_type::size_type(task_id)];
+    task_control_block* control_block_of_the_task_id = task_list.data() + task_list_type::size_type(task_id);
 
     mcal::irq::disable_all();
     control_block_of_the_task_id->event |= event_to_set;

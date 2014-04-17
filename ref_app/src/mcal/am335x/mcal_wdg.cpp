@@ -145,9 +145,9 @@ void mcal::wdg::secure::trigger()
                                                                   + prime_sequence[next_prime_sequence_index]);
 
   // Set the watchdog trigger value for the next cycle.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::wdt1::wtgr>::reg_set(next_watchdog_trigger_value);
+  mcal::reg::dynamic_access<std::uint32_t,
+                            std::uint32_t>::reg_set(mcal::reg::wdt1::wtgr,
+                                                    next_watchdog_trigger_value);
 
   // Increment the prime number sequence index for the following cycle.
   ++prime_sequence_index;

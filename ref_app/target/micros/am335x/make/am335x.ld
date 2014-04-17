@@ -19,7 +19,8 @@ _rom_begin = 0x402F0400;
 _rom_end   = 0x402FDFFC;
 
 /* The beginning and end (i.e., top) of the stack */
-_stack_begin = 0x402FFC00;
+/* Set up a stack with a size of 4K */
+_stack_begin = 0x402FF000;
 _stack_end   = 0x40300000;
 
 /* The end of the stack */

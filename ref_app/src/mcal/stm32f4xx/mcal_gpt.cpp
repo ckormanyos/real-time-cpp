@@ -64,9 +64,9 @@ void mcal::gpt::init(const config_type*)
                                                                ) << 0x04;
 
     // Set the timer4 interrupt priority.
-    mcal::reg::access<std::uint32_t,
-                      std::uint8_t,
-                      std::uint32_t(mcal::reg::nvic_ip + timer4_irq_n)>::reg_set(timer4_interrupt_priority);
+    mcal::reg::dynamic_access<std::uint32_t,
+                              std::uint8_t>::reg_set(std::uint32_t(mcal::reg::nvic_ip + timer4_irq_n),
+                                                     timer4_interrupt_priority);
 
     // Set the timer4 interrupt set enable register.
     mcal::reg::access<std::uint32_t,

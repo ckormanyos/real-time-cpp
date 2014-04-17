@@ -20,9 +20,9 @@ namespace sys
 
 namespace
 {
-  typedef util::single_pin_debug_monitor<mcal::debug_monitor::port_debug_monitor_type> debug_monitor_debug_monitor_type;
+  typedef util::single_pin_debug_monitor<mcal::debug_monitor::debug_monitor_port_type> debug_monitor_type;
 
-  debug_monitor_debug_monitor_type debug_monitor_debug_monitor;
+  debug_monitor_type the_debug_monitor;
 
   std::uint_least8_t protocol_prescaler;
 }
@@ -33,14 +33,14 @@ void sys::debug_monitor::task_init()
 
 void sys::debug_monitor::task_func()
 {
-  debug_monitor_debug_monitor.driver_task();
+  the_debug_monitor.driver_task();
 
-  const bool run_the_protocol_task = (static_cast<std::uint_fast8_t>(protocol_prescaler % 8U) == static_cast<std::uint_fast8_t>(0U));
+  const bool run_the_protocol_task = (static_cast<std::uint_fast8_t>(protocol_prescaler % 16U) == static_cast<std::uint_fast8_t>(0U));
 
   if(run_the_protocol_task)
   {
-    debug_monitor_debug_monitor.protocol_task<mcal::debug_monitor::address_type,
-                                              mcal::debug_monitor::address_offset>();
+    the_debug_monitor.protocol_task<mcal::debug_monitor::address_type,
+                                    mcal::debug_monitor::address_offset>();
   }
 
   ++protocol_prescaler;

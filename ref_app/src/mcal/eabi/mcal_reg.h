@@ -29,6 +29,12 @@
       constexpr std::uint32_t gpioa_crh = static_cast<std::uint32_t>(0x40010804UL);   // 32-bit register.
       constexpr std::uint32_t gpioa_idr = static_cast<std::uint32_t>(0x40010808UL);   // 32-bit register.
       constexpr std::uint32_t gpioa_odr = static_cast<std::uint32_t>(0x4001080CUL);   // 32-bit register.
+
+      constexpr std::uint32_t gpiob_crl = static_cast<std::uint32_t>(0x40010C00UL);   // 32-bit register.
+      constexpr std::uint32_t gpiob_crh = static_cast<std::uint32_t>(0x40010C04UL);   // 32-bit register.
+      constexpr std::uint32_t gpiob_idr = static_cast<std::uint32_t>(0x40010C08UL);   // 32-bit register.
+      constexpr std::uint32_t gpiob_odr = static_cast<std::uint32_t>(0x40010C0CUL);   // 32-bit register.
+
       constexpr std::uint32_t gpioc_crl = static_cast<std::uint32_t>(0x40011000UL);   // 32-bit register.
       constexpr std::uint32_t gpioc_crh = static_cast<std::uint32_t>(0x40011004UL);   // 32-bit register.
       constexpr std::uint32_t gpioc_idr = static_cast<std::uint32_t>(0x40011008UL);   // 32-bit register.

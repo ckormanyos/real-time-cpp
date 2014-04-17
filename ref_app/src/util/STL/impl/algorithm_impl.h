@@ -13,6 +13,7 @@
   #include "iterator_impl.h"
 
   // Implement some of <algorithm> for compilers that do not yet support it.
+  // See ISO/IEC 14882:2011 Chapter 25.1.
 
   namespace std
   {

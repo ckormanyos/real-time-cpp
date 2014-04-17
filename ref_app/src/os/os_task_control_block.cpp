@@ -1,7 +1,6 @@
 #include <os/os_task_control_block.h>
 
 os::task_control_block::index_type os::task_control_block::task_global_index;
-os::task_control_block::trace_type os::task_control_block::task_global_trace;
 
 os::task_control_block::task_control_block(const function_type i,
                                            const function_type f,
@@ -50,9 +49,6 @@ bool os::task_control_block::execute() const
     // Set the global task index to the index of the running task.
     task_global_index = index;
 
-    // Log this task in the global task trace (for the watchdog).
-    task_global_trace |= trace_type(trace_type(1U) << index);
-
     // Call the task function because of a timer timeout.
     func();
   }
@@ -68,7 +64,8 @@ os::task_control_block* os::task_control_block::get_running_task_pointer()
   // If no task is running, for example when the idle task is
   // running, then the null pointer is returned.
 
-  const task_list_type::size_type this_task_index(task_global_index);
+  const task_list_type::size_type this_task_index = static_cast<task_list_type::size_type>(task_global_index);
 
-  return ((this_task_index < task_list.size()) ? &task_list[this_task_index] : nullptr);
+  return ((this_task_index < task_list.size()) ? (task_list.data() + this_task_index)
+                                               : nullptr);
 }

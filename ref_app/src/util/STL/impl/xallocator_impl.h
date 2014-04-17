@@ -14,7 +14,7 @@
 
   #include "cstddef_impl.h"
 
-  // Implement helper functions for std::allocator.
+  // Implement helper functions for some of std::allocator.
 
   namespace xallocator
   {

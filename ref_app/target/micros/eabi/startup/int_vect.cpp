@@ -154,15 +154,15 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x01A0, Unused
   __vector_unused_irq,       // 0x01A4, Unused
   __vector_unused_irq,       // 0x01A8, Unused
-  __vector_unused_irq,       // 0x01AC, Unused
-  __vector_unused_irq,       // 0x01B0, Unused
-  __vector_unused_irq,       // 0x01B4, Unused
-  __vector_unused_irq,       // 0x01B8, Unused
-  __vector_unused_irq,       // 0x01BC, Unused
-  __vector_unused_irq,       // 0x01C0, Unused
-  __vector_unused_irq,       // 0x01C4, Unused
-  __vector_unused_irq,       // 0x01C8, Unused
-  __vector_unused_irq,       // 0x01CC, Unused
+  nullptr,                   // 0x01AC, Dummy
+  nullptr,                   // 0x01B0, Dummy
+  nullptr,                   // 0x01B4, Dummy
+  nullptr,                   // 0x01B8, Dummy
+  nullptr,                   // 0x01BC, Dummy
+  nullptr,                   // 0x01C0, Dummy
+  nullptr,                   // 0x01C4, Dummy
+  nullptr,                   // 0x01C8, Dummy
+  nullptr,                   // 0x01CC, Dummy
   nullptr,                   // 0x01D0, Dummy
   nullptr,                   // 0x01D4, Dummy
   nullptr,                   // 0x01D8, Dummy

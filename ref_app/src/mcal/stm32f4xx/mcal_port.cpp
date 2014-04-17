@@ -10,9 +10,9 @@
 
 void mcal::port::init(const config_type*)
 {
-  // Enable the peripheral clocks for portc and portd.
+  // Enable the peripheral clocks for portb, portc, and portd.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::rcc_ahb1enr,
-                    UINT32_C(0x04) | UINT32_C(0x08) >::reg_or();
+                    UINT32_C(0x02) | UINT32_C(0x04) | UINT32_C(0x08) >::reg_or();
 }

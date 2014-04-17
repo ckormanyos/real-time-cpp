@@ -8,52 +8,48 @@
 #ifndef _CMATH_IMPL_2010_02_23_H_
   #define _CMATH_IMPL_2010_02_23_H_
 
-  // No real std implementation yet.
-  // Just include math.h.
+  // Here, we do not provide a full std implementation of <cmath>.
+  // We simply include math.h and provide a few exemplary patches.
+
   #include <math.h>
   #include <cstdfloat>
 
   namespace std
   {
-    using ::cos;
+    inline std::float32_t abs(const std::float32_t  x) { return ::fabs(x); }
     using ::fabs;
     using ::fmod;
     using ::modf;
-    using ::sin;
-    using ::sqrt;
-    using ::tan;
     using ::floor;
     using ::ceil;
     using ::frexp;
     using ::ldexp;
-    using ::cosh;
-    using ::sinh;
-    using ::atan;
-    using ::atan2;
-    using ::log;
-    using ::log10;
-    using ::pow;
     using ::isnan;
     using ::isinf;
-    using ::square;
-    using ::copysign;
-    using ::fdim;
-    using ::fma;
-    using ::fmax;
-    using ::fmin;
-    using ::signbit;
-    using ::trunc;
     using ::isfinite;
-    using ::hypot;
-    using ::round;
-    using ::lround;
-    using ::lrint;
+    using ::sqrt;
+    using ::sin;
+    using ::cos;
+    using ::tan;
+    using ::asin;
+    using ::acos;
+    using ::atan;
+    using ::atan2;
+    using ::exp;
+    using ::pow;
+    using ::log;
+    using ::log10;
+    using ::sinh;
+    using ::cosh;
+    using ::tanh;
 
-    inline float abs(const float&  x) { return ::fabs(x); }
-
-    // AVR C-library does not have tgamma or acosh.
-    std::float32_t tgamma(std::float32_t x);
+    // AVR C-library does not have certain functions. So we will
+    // patch some of them in an exemplary fashion for float32_t.
+    std::float32_t asinh (std::float32_t x);
     std::float32_t acosh (std::float32_t x);
+    std::float32_t atanh (std::float32_t x);
+    std::float32_t lgamma(std::float32_t x);
+    std::float32_t tgamma(std::float32_t x);
   }
 
 #endif // _CMATH_IMPL_2010_02_23_H_

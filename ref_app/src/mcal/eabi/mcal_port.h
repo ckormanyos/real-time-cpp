@@ -35,7 +35,7 @@
           new_pdir_value |= (reg_type(0x3UL) << pdir_shift_offset);
 
           // Set the port for digital output.
-          mcal::reg::access<addr_type, reg_type, pdir>::reg_set(new_pdir_value);
+          mcal::reg::dynamic_access<addr_type, reg_type>::reg_set(pdir, new_pdir_value);
         }
 
         static void set_direction_input()
@@ -48,7 +48,7 @@
           new_pdir_value |= (reg_type(0x4UL) << pdir_shift_offset);
 
           // Set the port for digital input.
-          mcal::reg::access<addr_type, reg_type, pdir>::reg_set(new_pdir_value);
+          mcal::reg::dynamic_access<addr_type, reg_type>::reg_set(pdir, new_pdir_value);
         }
 
         static void set_pin_high()

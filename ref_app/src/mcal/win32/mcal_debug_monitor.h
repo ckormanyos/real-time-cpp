@@ -11,7 +11,7 @@
       typedef std::uint32_t address_type;
       const address_type address_offset = address_type(0UL);
 
-      typedef mcal::port::port_pin port_debug_monitor_type;
+      typedef mcal::port::port_pin debug_monitor_port_type;
     }
   }
 

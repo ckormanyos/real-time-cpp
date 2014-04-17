@@ -8,23 +8,20 @@
 #ifndef _OS_CFG_2011_10_20_H_
   #define _OS_CFG_2011_10_20_H_
 
-  // Declare and define the initialization and function of the idle task.
-  namespace sys
-  {
-    namespace idle
-    {
-      void task_init();
-      void task_func(const bool do_watchdog_trigger);
-    }
-  }
+  #include <os/os_debug_monitor_cfg.h>
 
-  #define OS_IDLE_TASK_INIT()           sys::idle::task_init()
-  #define OS_IDLE_TASK_FUNC(my_trigger) sys::idle::task_func(my_trigger)
+  // Declare and define the task initialization and the task function of the idle process.
+  namespace sys { namespace idle { void task_init(); void task_func(); } }
 
-  // Declare all of the tasks and their initialization functions.
+  // Define symbols for the task initialization and the task function of the idle process.
+  #define OS_IDLE_TASK_INIT() sys::idle::task_init()
+  #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
+
+  // Declare all of the task initializations and the task functions.
   namespace sys { namespace debug_monitor { void task_init(); void task_func(); } }
-  namespace app { namespace led { void task_init(); void task_func(); } }
-  namespace sys { namespace mon { void task_init(); void task_func(); } }
+  namespace app { namespace led           { void task_init(); void task_func(); } }
+  namespace sys { namespace mon           { void task_init(); void task_func(); } }
+  namespace app { namespace benchmark     { void task_init(); void task_func(); } }
 
   // Enumerate the task IDs. Note that the order in this list must
   // be identical with the order of the tasks in the task list below.
@@ -35,30 +32,36 @@
       task_id_sys_debug_monitor,
       task_id_app_led,
       task_id_sys_mon,
+      task_id_app_benchmark,
       task_id_end
     }
     task_id_type;
   }
 
   // Configure the operating system tasks.
-  #define OS_TASK_COUNT 3U
 
-  #define OS_TASK_LIST                                       \
-  {                                                          \
-    {                                                        \
-      task_control_block(sys::debug_monitor::task_init,      \
-                         sys::debug_monitor::task_func,      \
-                         timer_type::microseconds( 250U),    \
-                         timer_type::microseconds(   0U)),   \
-      task_control_block(app::led::task_init,                \
-                         app::led::task_func,                \
-                         timer_type::microseconds(2000U),    \
-                         timer_type::microseconds( 211U)),   \
-      task_control_block(sys::mon::task_init,                \
-                         sys::mon::task_func,                \
-                         timer_type::microseconds(4000U),    \
-                         timer_type::microseconds( 419U)),   \
-    }                                                        \
+  #define OS_TASK_COUNT 4U
+
+  #define OS_TASK_LIST                                                                           \
+  {                                                                                              \
+    {                                                                                            \
+      os::task_control_block(sys::debug_monitor::task_init,                                      \
+                             sys::debug_monitor::task_func,                                      \
+                             os::timer_type::microseconds(os::debug_monitor::task_poll_time),    \
+                             os::timer_type::microseconds(UINT32_C(     0))),                    \
+      os::task_control_block(app::led::task_init,                                                \
+                             app::led::task_func,                                                \
+                             os::timer_type::microseconds(UINT32_C(  2000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   417))),                    \
+      os::task_control_block(sys::mon::task_init,                                                \
+                             sys::mon::task_func,                                                \
+                             os::timer_type::microseconds(UINT32_C(  4000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   513))),                    \
+      os::task_control_block(app::benchmark::task_init,                                          \
+                             app::benchmark::task_func,                                          \
+                             os::timer_type::microseconds(UINT32_C(200000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   739))),                    \
+    }                                                                                            \
   }
 
 #endif // _OS_CFG_2011_10_20_H_

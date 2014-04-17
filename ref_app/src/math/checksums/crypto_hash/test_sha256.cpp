@@ -17,7 +17,7 @@ namespace
 
   sha256_type the_sha256;
 
-  sha256_type::result_type_as_dwords the_sha256_result_as_dwords;
+  sha256_type::result_type_as_integral_values the_sha256_result_as_integral_values;
 }
 
 extern "C" int main()
@@ -27,13 +27,21 @@ extern "C" int main()
 
   the_sha256.process_data("creativity", sha256_type::count_type(10U));
 
-  the_sha256_result_as_dwords = the_sha256.get_result_as_dwords_and_finalize_the_state();
+  the_sha256_result_as_integral_values = the_sha256.get_result_as_integral_values_and_finalize_the_state();
 
-  const bool the_result_is_ok = (the_sha256_result_as_dwords.front() == control_value);
+  const bool the_result_is_ok = (the_sha256_result_as_integral_values.front() == control_value);
 
   // Start the multitasking scheduler (and never return).
   if(the_result_is_ok)
   {
     os::start_os();
+  }
+  else
+  {
+    for(;;)
+    {
+      // Make a visible error reaction here...
+      ;
+    }
   }
 }

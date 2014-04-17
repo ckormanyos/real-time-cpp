@@ -51,6 +51,14 @@
       constexpr std::uint8_t ocr0a  = 0x27U + sfr_offset;
       constexpr std::uint8_t timsk0 = 0x6EU;
 
+      constexpr std::uint8_t tifr1  = 0x16U + sfr_offset;
+      constexpr std::uint8_t tccr1a = 0x80U;
+      constexpr std::uint8_t tccr1b = 0x81U;
+      constexpr std::uint8_t tcnt1l = 0x84U;
+      constexpr std::uint8_t tcnt1h = 0x85U;
+      constexpr std::uint8_t ocr1a  = 0x88U;
+      constexpr std::uint8_t timsk1 = 0x6FU;
+
       constexpr std::uint8_t tifr2  = 0x17U + sfr_offset;
       constexpr std::uint8_t tccr2a = 0xB0U;
       constexpr std::uint8_t tccr2b = 0xB1U;

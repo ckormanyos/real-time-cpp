@@ -17,8 +17,7 @@ TGT_CFLAGS    = -mcpu=cortex-m4                                \
                 -mtune=cortex-m4                               \
                 -mfloat-abi=soft                               \
                 -mno-unaligned-access                          \
-                -mno-long-calls                                \
-                -DSTM32F40_41xxx
+                -mno-long-calls
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \

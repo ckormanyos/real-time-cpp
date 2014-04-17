@@ -5,11 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
-#include <cmath>
-#include <math/constants/constants.h>
-#include <math/special_functions/gamma.h>
-#include <math/tools/tools.h>
+#include "cmath_impl.h"
+#include "cstdint_impl.h"
+#include "xcmath_impl.h"
 
 // Here, we compute the tgamma function for std::float32_t.
 // This provides an example of a portable special function
@@ -61,10 +59,10 @@ std::float32_t detail::tgamma_imp(std::float32_t x)
   }
 }
 
-std::float32_t math::tgamma(std::float32_t x)
+std::float32_t std::tgamma(std::float32_t x)
 {
   // Check for pure zero argument.
-  if(math::tools::near_integer(x, static_cast<std::uint_least8_t>(0U)))
+  if(xcmath::near_integer(x, static_cast<std::uint_least8_t>(0U)))
   {
     return std::numeric_limits<std::float32_t>::quiet_NaN();
   }
@@ -79,8 +77,8 @@ std::float32_t math::tgamma(std::float32_t x)
   }
 
   // Is the argument 1 or 2?
-  if(   math::tools::near_integer(x, static_cast<std::uint_least8_t>(1U))
-     || math::tools::near_integer(x, static_cast<std::uint_least8_t>(2U))
+  if(   xcmath::near_integer(x, static_cast<std::uint_least8_t>(1U))
+     || xcmath::near_integer(x, static_cast<std::uint_least8_t>(2U))
     )
   {
     return FLOAT32_C(1.0);
@@ -114,8 +112,8 @@ std::float32_t math::tgamma(std::float32_t x)
   }
   else
   {
-    const std::float32_t sin_pi_x = std::sin(math::constants::pi<std::float32_t>() * x);
+    const std::float32_t sin_pi_x = std::sin(xcmath::pi<std::float32_t>() * x);
 
-    return -math::constants::pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
+    return -xcmath::pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
   }
 }

@@ -23,7 +23,7 @@ _rom_end   = 0x08007FFC;
 _stack_begin = 0x2000F000;
 _stack_end   = 0x20010000;
 
-__initial_stack_pointer = _stack_end;
+__initial_stack_pointer = 0x20010000;
 
 
 MEMORY
