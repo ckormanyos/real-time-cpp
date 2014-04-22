@@ -18,7 +18,10 @@
 
       inline void nop() { asm volatile("nop"); }
 
-      std::uint8_t read_program_memory(volatile std::uint8_t* pointer_to_program_memory);
+      inline std::uint8_t read_program_memory(volatile std::uint8_t* pointer_to_program_memory)
+      {
+        return *pointer_to_program_memory;
+      }
     }
   }
 

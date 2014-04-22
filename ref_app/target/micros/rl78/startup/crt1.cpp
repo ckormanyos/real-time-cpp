@@ -1,50 +1,38 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+/////////////////////////////////////////////////////// 
+//  Copyright 2013 Stephan Hage.
+//  Copyright 2013 Christopher Kormanyos.
+//  Distributed under the Boost 
+//  Software License, Version 1.0. 
+//  (See accompanying file LICENSE_1_0.txt 
+//  or copy at http://www.boost.org/LICENSE_1_0.txt ) 
 //
 
-#include <cstdint>
-#include <mcal_cpu.h>
-#include <util/utility/util_two_part_data_manipulation.h>
+#include <iterator>
+#include <algorithm>
 
 extern "C"
 {
   struct ctor_type
   {
     typedef void(*function_type)();
+    typedef std::reverse_iterator<const function_type*> const_reverse_iterator;
   };
 
-  extern ctor_type::function_type _ctors_end[];
-  extern ctor_type::function_type _ctors_begin[];
+  extern ctor_type::function_type ctors_end[];
+  extern ctor_type::function_type ctors_begin[];
 }
 
 namespace crt
 {
-  void init_ctors() __attribute__((section(".startup")));
+  void init_ctors();
 }
 
 void crt::init_ctors()
 {
-  typedef std::uint16_t function_aligned_type;
-
-  for(volatile std::uint8_t* rom_source  = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_end));
-                             rom_source != static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_begin));
-                             rom_source -= sizeof(function_aligned_type))
-  {
-    // Note that particular care needs to be taken to read program
-    // memory with the function mcal::cpu::read_program_memory().
-
-    // Read the high byte and the low byte of the ctor function address.
-    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source - 1U);
-    const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source - 2U);
-
-    // Create the address of the ctor function.
-    const ctor_type::function_type ctor_function_address
-      = reinterpret_cast<const ctor_type::function_type>(util::make_long<function_aligned_type>(addr_lo, addr_hi));
-
-    // Call the ctor function.
-    ctor_function_address();
-  }
+  std::for_each(ctor_type::const_reverse_iterator(ctors_end),
+                ctor_type::const_reverse_iterator(ctors_begin),
+                [](const ctor_type::function_type pf)
+                {
+                  pf();
+                });
 }

@@ -13,9 +13,10 @@ INPUT(libc.a libm.a)
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
-/* The beginning and end of the program ROM area */
+/* The beginning and end of the program ROM area. */
+/* Leave 4 bytes for the 32-bit checksum plus 0x10 extra bytes free. */
 _rom_begin = 0x00000000;
-_rom_end   = 0x00007FFC;
+_rom_end   = 0x00007FEC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of (1/2)K */
@@ -27,7 +28,7 @@ __initial_stack_pointer = 0x800800;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 4
+  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 0x14
   RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x0500
 }
 

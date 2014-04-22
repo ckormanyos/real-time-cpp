@@ -59,13 +59,13 @@
       <UniqueIdentifier>{1e874255-7f2a-47d1-86a2-93c2a964b58a}</UniqueIdentifier>
     </Filter>
     <Filter Include="micros\rl78">
-      <UniqueIdentifier>{65a98653-f2a6-49f0-a916-8a532b94d99f}</UniqueIdentifier>
+      <UniqueIdentifier>{607cacb8-ea40-4e32-9da1-4d52c66f9cfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="micros\rl78\make">
-      <UniqueIdentifier>{f2a4e449-499f-4036-9e28-4ab8046591b2}</UniqueIdentifier>
+      <UniqueIdentifier>{699262d8-5e0e-4d26-aa21-c1457354dbb2}</UniqueIdentifier>
     </Filter>
     <Filter Include="micros\rl78\startup">
-      <UniqueIdentifier>{6b26198c-d5b8-4fee-bcfa-7752997040f9}</UniqueIdentifier>
+      <UniqueIdentifier>{9c63cee6-d07d-403b-8e60-13f7fa68b6bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

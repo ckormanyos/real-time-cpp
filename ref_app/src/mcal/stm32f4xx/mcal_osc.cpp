@@ -16,8 +16,8 @@ namespace
   {
     // Set the HCLK frequency to 168MHz generated from an input HSE OSC of 8MHz.
     // The clock configuration tool from ST has been used to generate the settings.
-    // The resulting frequency tim2/3/4/5/6/7/12/13/14 is 84MHz.
-    // The resulting frequency tim1/8/9/10/11 is 168MHz.
+    // The resulting frequency of tim2/3/4/5/6/7/12/13/14 is 84MHz.
+    // The resulting frequency of tim1/8/9/10/11 is 168MHz.
     // The wait states are set in mcal_cpu.cpp.
 
     // Enable the hse.

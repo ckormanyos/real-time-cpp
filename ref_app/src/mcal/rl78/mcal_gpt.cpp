@@ -21,26 +21,65 @@ namespace
   }
 }
 
-extern "C" void __vector_16() __attribute__((signal, used, externally_visible));
+extern "C" void __inttm02_vect() __attribute__((interrupt, used, externally_visible));
 
-void __vector_16()
+void __inttm02_vect()
 {
-  // Increment the 32-bit system tick with 0x80, representing 128 microseconds.
-  system_tick += static_cast<std::uint8_t>(0x80U);
+  // Increment the software system tick.
+  system_tick += UINT32_C(0x10000);
 }
 
 void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
-    // Clear the timer0 overflow flag.
-    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x01U>::reg_set();
+    // set TAU0EN to enable input clock supply.
+    mcal::reg::access<std::uint32_t,
+                      std::uint8_t,
+                      mcal::reg::per0,
+                      0x01U>::reg_set();
 
-    // Enable the timer0 overflow interrupt.
-    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::timsk0, 0x01U>::reg_set();
+    // fclk 32 MHz --> 1 MHz frequency (prescaler fclk/2^5).
+    mcal::reg::access<std::uint32_t,
+                      std::uint16_t,
+                      mcal::reg::tps0,
+                      0x005U>::reg_set();
 
-    // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
-    mcal::reg::access<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
+    // Data register of timer channel 2, compare value of 0xFFFFU.
+    mcal::reg::access<std::uint32_t,
+                      std::uint16_t,
+                      mcal::reg::tdr02,
+                      0xFFFFU>::reg_set();
+
+    // config Timer mode (interval timer mode, downcounting) falling edge
+    mcal::reg::access<std::uint32_t,
+                      std::uint16_t,
+                      mcal::reg::tmr02,
+                      0x000U>::reg_set();
+
+    //start timing (set bit ts0.2).
+    mcal::reg::access<std::uint32_t,
+                      std::uint16_t,
+                      mcal::reg::ts0,
+                      0x004U>::reg_set();
+
+    //enable INTTM02 interrupt.
+    mcal::reg::access<std::uint32_t,
+                      std::uint8_t,
+                      mcal::reg::mk1l,
+                      6U>::bit_clr();
+
+    // set priority.
+    mcal::reg::access<std::uint32_t,
+                      std::uint8_t,
+                      mcal::reg::pr01l,
+                      6U>::bit_clr();
+
+    // also set priority.
+    mcal::reg::access<std::uint32_t,
+                      std::uint8_t,
+                      mcal::reg::pr11l,
+                      6U>::bit_clr();
 
     // Set the is-initialized indication flag.
     gpt_is_initialized() = true;
@@ -50,24 +89,30 @@ void mcal::gpt::init(const config_type*)
 mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
   // Return the system tick using a multiple read to ensure
-  // data consistency of the high-byte of the system tick.
+  // data consistency of the system tick.
 
-  typedef std::uint8_t timer_address_type;
-  typedef std::uint8_t timer_register_type;
+  typedef std::uint32_t timer_address_type;
+  typedef std::uint16_t timer_register_type;
 
-  // Do the first read of the timer0 counter and the system tick.
-  const timer_register_type tim0_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+  // Attention: Down-counting timer --> use (0xFFFFU - timer counter).
 
-  // Read the system tick.
+  // Do the first read of the timer counter channel 2.
+  const timer_register_type timer_cnt_1 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type,
+                                                                                timer_register_type,
+                                                                                mcal::reg::tcr02>::reg_get();
+
+  // Read the system tick once.
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-  // Do the second read of the timer0 counter and the system tick.
-  const timer_register_type tim0_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+  // Do the second read of the timer counter.
+  const timer_register_type timer_cnt_2 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type,
+                                                                                timer_register_type,
+                                                                                mcal::reg::tcr02>::reg_get();
 
-  // Perform the consistency check and obtain the consistent microsecond tick.
+    // Perform the consistency check and return the system tick in microseconds.
   const mcal::gpt::value_type consistent_microsecond_tick
-    = ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
-                                  : mcal::gpt::value_type(system_tick | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
+    = ((timer_cnt_2 >= timer_cnt_1) ? static_cast<mcal::gpt::value_type>(sys_tick_1  | timer_cnt_1)
+                                    : static_cast<mcal::gpt::value_type>(system_tick | timer_cnt_2));
 
   return (gpt_is_initialized() ? consistent_microsecond_tick : mcal::gpt::value_type(0U));
 }

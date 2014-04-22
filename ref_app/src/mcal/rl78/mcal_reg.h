@@ -14,57 +14,96 @@
   {
     namespace reg
     {
-      constexpr std::uint8_t sfr_offset = 0x20U;
+      // Port- and Portmode adresses.
+      constexpr std::uint32_t p0    = static_cast<std::uint32_t>(0xFFF00U);
+      constexpr std::uint32_t pm0   = static_cast<std::uint32_t>(0xFFF20U);
 
-      // Bit-position values.
-      constexpr std::uint8_t bval0  = 1U;
-      constexpr std::uint8_t bval1  = 1U << 1U;
-      constexpr std::uint8_t bval2  = 1U << 2U;
-      constexpr std::uint8_t bval3  = 1U << 3U;
-      constexpr std::uint8_t bval4  = 1U << 4U;
-      constexpr std::uint8_t bval5  = 1U << 5U;
-      constexpr std::uint8_t bval6  = 1U << 6U;
-      constexpr std::uint8_t bval7  = 1U << 7U;
+      constexpr std::uint32_t p1    = static_cast<std::uint32_t>(0xFFF01U);
+      constexpr std::uint32_t pm1   = static_cast<std::uint32_t>(0xFFF21U);
 
-      // System registers.
-      constexpr std::uint8_t mcusr  = 0x14U + sfr_offset;
+      constexpr std::uint32_t p2    = static_cast<std::uint32_t>(0xFFF02U);
+      constexpr std::uint32_t pm2   = static_cast<std::uint32_t>(0xFFF22U);
 
-      // Port registers.
-      constexpr std::uint8_t pinb   = 0x03U + sfr_offset;
-      constexpr std::uint8_t ddrb   = 0x04U + sfr_offset;
-      constexpr std::uint8_t portb  = 0x05U + sfr_offset;
-      constexpr std::uint8_t pinc   = 0x06U + sfr_offset;
-      constexpr std::uint8_t ddrc   = 0x07U + sfr_offset;
-      constexpr std::uint8_t portc  = 0x08U + sfr_offset;
-      constexpr std::uint8_t pind   = 0x09U + sfr_offset;
-      constexpr std::uint8_t ddrd   = 0x0AU + sfr_offset;
-      constexpr std::uint8_t portd  = 0x0BU + sfr_offset;
-      constexpr std::uint8_t pine   = 0x0CU + sfr_offset;
-      constexpr std::uint8_t ddre   = 0x0DU + sfr_offset;
-      constexpr std::uint8_t porte  = 0x0EU + sfr_offset;
+      constexpr std::uint32_t p3    = static_cast<std::uint32_t>(0xFFF03U);
+      constexpr std::uint32_t pm3   = static_cast<std::uint32_t>(0xFFF23U);
 
-      // Timer registers
-      constexpr std::uint8_t tifr0  = 0x15U + sfr_offset;
-      constexpr std::uint8_t tccr0a = 0x24U + sfr_offset;
-      constexpr std::uint8_t tccr0b = 0x25U + sfr_offset;
-      constexpr std::uint8_t tcnt0  = 0x26U + sfr_offset;
-      constexpr std::uint8_t ocr0a  = 0x27U + sfr_offset;
-      constexpr std::uint8_t timsk0 = 0x6EU;
+      constexpr std::uint32_t p4    = static_cast<std::uint32_t>(0xFFF04U);
+      constexpr std::uint32_t pm4   = static_cast<std::uint32_t>(0xFFF24U);
 
-      constexpr std::uint8_t tifr2  = 0x17U + sfr_offset;
-      constexpr std::uint8_t tccr2a = 0xB0U;
-      constexpr std::uint8_t tccr2b = 0xB1U;
-      constexpr std::uint8_t tcnt2  = 0xB2U;
-      constexpr std::uint8_t ocr2a  = 0xB3U;
-      constexpr std::uint8_t timsk2 = 0x70U;
+      constexpr std::uint32_t p5    = static_cast<std::uint32_t>(0xFFF05U);
+      constexpr std::uint32_t pm5   = static_cast<std::uint32_t>(0xFFF25U);
 
-      // SPI(TM) registers.
-      constexpr std::uint8_t spcr = 0x2CU + sfr_offset;
-      constexpr std::uint8_t spsr = 0x2DU + sfr_offset;
-      constexpr std::uint8_t spdr = 0x2EU + sfr_offset;
+      constexpr std::uint32_t p6    = static_cast<std::uint32_t>(0xFFF06U);
+      constexpr std::uint32_t pm6   = static_cast<std::uint32_t>(0xFFF26U);
 
-      // Watchdog registers
-      constexpr std::uint8_t wdtcsr = 0x60U;
+      constexpr std::uint32_t p7    = static_cast<std::uint32_t>(0xFFF07U);
+      constexpr std::uint32_t pm7   = static_cast<std::uint32_t>(0xFFF27U);
+
+      constexpr std::uint32_t p12   = static_cast<std::uint32_t>(0xFFF0CU);
+      constexpr std::uint32_t pm12  = static_cast<std::uint32_t>(0xFFF2CU);
+
+      // no pm13 register.
+      constexpr std::uint32_t p13   = static_cast<std::uint32_t>(0xFFF0DU);
+
+      constexpr std::uint32_t p14   = static_cast<std::uint32_t>(0xFFF0EU);
+      constexpr std::uint32_t pm14  = static_cast<std::uint32_t>(0xFFF2EU);
+
+      // timer register
+      constexpr std::uint32_t tdr00 = static_cast<std::uint32_t>(0xFFF18U);
+      constexpr std::uint32_t tcr00 = static_cast<std::uint32_t>(0xF0180U);
+      constexpr std::uint32_t tmr00 = static_cast<std::uint32_t>(0xF0190U);
+
+      constexpr std::uint32_t tdr01 = static_cast<std::uint32_t>(0xFFF1AU);
+      constexpr std::uint32_t tcr01 = static_cast<std::uint32_t>(0xF0182U);
+      constexpr std::uint32_t tmr01 = static_cast<std::uint32_t>(0xF0192U);
+
+      constexpr std::uint32_t tdr02 = static_cast<std::uint32_t>(0xFFF64U);
+      constexpr std::uint32_t tcr02 = static_cast<std::uint32_t>(0xF0184U);
+      constexpr std::uint32_t tmr02 = static_cast<std::uint32_t>(0xF0194U);
+
+      constexpr std::uint32_t tdr03 = static_cast<std::uint32_t>(0xFFF66U);
+      constexpr std::uint32_t tcr03 = static_cast<std::uint32_t>(0xF0186U);
+      constexpr std::uint32_t tmr03 = static_cast<std::uint32_t>(0xF0196U);
+
+      constexpr std::uint32_t tdr04 = static_cast<std::uint32_t>(0xFFF68U);
+      constexpr std::uint32_t tcr04 = static_cast<std::uint32_t>(0xF0188U);
+      constexpr std::uint32_t tmr04 = static_cast<std::uint32_t>(0xF0198U);
+
+      constexpr std::uint32_t tdr05 = static_cast<std::uint32_t>(0xFFF6AU);
+      constexpr std::uint32_t tcr05 = static_cast<std::uint32_t>(0xF018AU);
+      constexpr std::uint32_t tmr05 = static_cast<std::uint32_t>(0xF019AU);
+
+      constexpr std::uint32_t tdr06 = static_cast<std::uint32_t>(0xFFF6CU);
+      constexpr std::uint32_t tcr06 = static_cast<std::uint32_t>(0xF018CU);
+      constexpr std::uint32_t tmr06 = static_cast<std::uint32_t>(0xF019CU);
+
+      constexpr std::uint32_t tdr07 = static_cast<std::uint32_t>(0xFFF6EU);
+      constexpr std::uint32_t tcr07 = static_cast<std::uint32_t>(0xF018EU);
+      constexpr std::uint32_t tmr07 = static_cast<std::uint32_t>(0xF019EU);
+
+      constexpr std::uint32_t to0   = static_cast<std::uint32_t>(0xF01B8U);
+      constexpr std::uint32_t to0l  = static_cast<std::uint32_t>(0xF01B8U);
+      constexpr std::uint32_t toe0  = static_cast<std::uint32_t>(0xF01BAU);
+      constexpr std::uint32_t toe0l = static_cast<std::uint32_t>(0xF01BAU);
+      constexpr std::uint32_t tol0  = static_cast<std::uint32_t>(0xF01BCU);
+      constexpr std::uint32_t tol0l = static_cast<std::uint32_t>(0xF01BCU);
+      constexpr std::uint32_t ts0   = static_cast<std::uint32_t>(0xF01B2U);
+      constexpr std::uint32_t ts0l  = static_cast<std::uint32_t>(0xF01B2U);
+      constexpr std::uint32_t tps0  = static_cast<std::uint32_t>(0xF01B6U);
+
+      // register for priority of timer channel n.
+      constexpr std::uint32_t pr01l = static_cast<std::uint32_t>(0xFFFEAU);
+      constexpr std::uint32_t pr11l = static_cast<std::uint32_t>(0xFFFEEU);
+
+      // interrupt mask flag register.
+      constexpr std::uint32_t mk2l  = static_cast<std::uint32_t>(0xFFFD4U);
+      constexpr std::uint32_t mk2h  = static_cast<std::uint32_t>(0xFFFE5U);
+      constexpr std::uint32_t mk0l  = static_cast<std::uint32_t>(0xFFFE4U);
+      constexpr std::uint32_t mk1l  = static_cast<std::uint32_t>(0xFFFE6U);
+      constexpr std::uint32_t mk1h  = static_cast<std::uint32_t>(0xFFFE7U);
+
+      constexpr std::uint32_t per0  = static_cast<std::uint32_t>(0xF00F0U);
+      constexpr std::uint32_t if1l  = static_cast<std::uint32_t>(0xFFFE2U);
     }
   }
 #endif // _MCAL_REG_2010_04_10_H_

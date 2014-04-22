@@ -28,9 +28,8 @@
              typename Distance = std::ptrdiff_t,
              typename Pointer = T*,
              typename Reference = T&>
-    class iterator
+    struct iterator
     {
-    public:
       typedef T         value_type;
       typedef Distance  difference_type;
       typedef Pointer   pointer;

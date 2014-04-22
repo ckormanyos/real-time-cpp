@@ -15,7 +15,7 @@
 
   namespace std
   {
-    typedef ::time_t time_t;
+    using ::time_t;
   }
 
 #endif // _CTIME_IMPL_2012_06_01_H_

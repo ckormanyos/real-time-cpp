@@ -20,8 +20,7 @@
     class array
     {
     public:
-      T elems[N];
-
+      // Standard container-local type definitions.
       typedef std::size_t                           size_type;
       typedef std::ptrdiff_t                        difference_type;
       typedef T                                     value_type;
@@ -33,6 +32,8 @@
       typedef const_pointer                         const_iterator;
       typedef std::reverse_iterator<iterator>       reverse_iterator;
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
+      value_type elems[N];
 
       static constexpr size_type static_size = N;
 

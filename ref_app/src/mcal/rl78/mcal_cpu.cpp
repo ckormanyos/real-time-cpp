@@ -18,9 +18,3 @@ void mcal::cpu::init()
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }
-
-std::uint8_t mcal::cpu::read_program_memory(volatile std::uint8_t* pointer_to_program_memory)
-{
-  return pgm_read_byte(reinterpret_cast<std::uint16_t>(pointer_to_program_memory));
-}
-
