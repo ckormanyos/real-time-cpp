@@ -46,6 +46,15 @@
 
 #pragma GCC system_header
 
+// TBD: If the compiler has <time.h>, then include it for ::time_t.
+typedef unsigned int time_t;
+
+namespace std
+{
+  using ::time_t;
+}
+
+/*
 #include <cstddef>
 
 #include <time.h>
@@ -77,5 +86,6 @@ namespace std
   using ::localtime;
   using ::strftime;
 }
+*/
 
 #endif
