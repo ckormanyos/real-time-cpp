@@ -12,13 +12,13 @@
 GCC_VERSION   = 4.7.2
 GCC_TARGET    = avr-unknown-elf
 
-#TGT_STL_DIR   = STL
-#TGT_STL_DEFS  =
+TGT_STL_DIR   = STL
+TGT_STL_DEFS  =
 
-TGT_STL_DIR   = STL_StandardCplusplus
+#TGT_STL_DIR   = STL_StandardCplusplus
 
-TGT_STL_DEFS  = -D__UCLIBCXX_HAS_FLOATS__=1                    \
-                -D__UCLIBCXX_SUPPORT_MATH__=1
+#TGT_STL_DEFS  = -D__UCLIBCXX_HAS_FLOATS__=1                    \
+#                -D__UCLIBCXX_SUPPORT_MATH__=1
 
 TGT_CFLAGS    = -mmcu=atmega328p                               \
                 -fsigned-char                                  \

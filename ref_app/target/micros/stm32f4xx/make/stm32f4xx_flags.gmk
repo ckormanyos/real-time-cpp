@@ -12,17 +12,27 @@
 GCC_VERSION = 4.7.2
 GCC_TARGET  = arm-none-eabi
 
+TGT_STL_DIR   = STL
+TGT_STL_DEFS  =
+
+#TGT_STL_DIR   = STL_StandardCplusplus
+
+#TGT_STL_DEFS  = -D__UCLIBCXX_HAS_FLOATS__=1                    \
+#                -D__UCLIBCXX_SUPPORT_MATH__=1
+
 TGT_CFLAGS    = -mcpu=cortex-m4                                \
                 -mthumb                                        \
                 -mtune=cortex-m4                               \
                 -mfloat-abi=softfp                             \
-                -mfpu=fpv4-sp-d16                              \
                 -mno-unaligned-access                          \
-                -mno-long-calls
+                -mno-long-calls                                \
+                $(TGT_STL_DEFS)
 
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
+                -I$(PATH_APP)/util/$(TGT_STL_DIR)              \
+                -I$(PATH_APP)/util/STL_C++11_Compatibility     \
                 -I$(PATH_APP)/util/STL_C++14_Compatibility
 
 TGT_AFLAGS    =

@@ -125,6 +125,9 @@
     <Filter Include="src\util\STL_StandardCplusplus">
       <UniqueIdentifier>{25de6b2b-7c78-4959-8b38-4daf883b17ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL\impl\arm">
+      <UniqueIdentifier>{9720414a-cb9d-4d52-b113-55909704ad88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -370,9 +373,6 @@
     <ClCompile Include="src\app\led\app_runtime_measure.cpp">
       <Filter>src\app\led</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_cpu.cpp">
       <Filter>src\mcal\rl78</Filter>
     </ClCompile>
@@ -531,6 +531,18 @@
     </ClCompile>
     <ClCompile Include="src\util\STL_StandardCplusplus\vector.cpp">
       <Filter>src\util\STL_StandardCplusplus</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_cpu.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_dsp.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_fpu.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\arm\arm_float_limits.cpp">
+      <Filter>src\util\STL\impl\arm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1133,6 +1145,9 @@
     </ClInclude>
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\time.h">
+      <Filter>src\util\STL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,7 @@
 
   namespace std
   {
-    inline std::float32_t abs(const std::float32_t  x) { return ::fabs(x); }
+    inline std::float32_t abs(const std::float32_t x) { return ::fabs(x); }
     using ::fabs;
     using ::fmod;
     using ::modf;
@@ -24,9 +24,6 @@
     using ::ceil;
     using ::frexp;
     using ::ldexp;
-    using ::isnan;
-    using ::isinf;
-    using ::isfinite;
     using ::sqrt;
     using ::sin;
     using ::cos;
