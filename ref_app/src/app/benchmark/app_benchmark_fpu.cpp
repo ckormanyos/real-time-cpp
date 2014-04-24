@@ -13,6 +13,7 @@
   #include <cmath>
   #include <cstdint>
   #include <cstdfloat>
+  #include <limits>
   #include <mcal_benchmark.h>
 
   #define CFG_APP_BENCHMARK_FPU_TYPE_SQRT     1
@@ -30,7 +31,7 @@
   #define CFG_APP_BENCHMARK_FPU_TYPE_TANH    13
   #define CFG_APP_BENCHMARK_FPU_TYPE_GAMMA   14
 
-//  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_SQRT
+  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_SQRT
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_SIN
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_COS
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_TAN
@@ -58,6 +59,8 @@
 
     std::float32_t value_x;
     std::float32_t value_y;
+
+    const std::float32_t tolerance = std::numeric_limits<std::float32_t>::epsilon() * FLOAT32_C(1000.0);
   }
 
 #endif
@@ -95,43 +98,43 @@ void app::benchmark::fpu::task_func()
 
     // The expected value is: sqrt(0.5) = (approx.) 0.707106781.
     value_y = std::sqrt(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.707106781), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.707106781), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_SIN)
 
     // The expected value is: sin(0.5) = (approx.) 0.479425539.
     value_y = std::sin(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.479425539), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.479425539), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_COS)
 
     // The expected value is: cos(0.5) = (approx.) 0.877582562.
     value_y = std::cos(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.877582562), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.877582562), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_TAN)
 
     // The expected value is: tan(0.5) = (approx.) 0.546302490.
     value_y = std::tan(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.546302490), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.546302490), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_ASIN)
 
     // The expected value is: asin(0.5) = (approx.) 0.523598776.
     value_y = std::asin(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.523598776), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(0.523598776), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_COS)
 
     // The expected value is: acos(0.5) = (approx.) 1.047197551.
     value_y = std::acos(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.047197551), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.047197551), value_y, tolerance);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_GAMMA)
 
     // The expected value is: tgamma(0.5) = sqrt(pi) = (approx.) 1.77245385.
     value_y = std::tgamma(value_x);
-    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.77245385), value_y, FLOAT32_C(0.0001));
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.77245385), value_y, tolerance);
 
   #endif
 
