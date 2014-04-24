@@ -71,7 +71,7 @@
                              os::timer_type::microseconds(UINT32_C(  1223))),                    \
       os::task_control_block(app::benchmark::fpu::task_init,                                     \
                              app::benchmark::fpu::task_func,                                     \
-                             os::timer_type::microseconds(UINT32_C(500000)),                     \
+                             os::timer_type::microseconds(UINT32_C(250000)),                     \
                              os::timer_type::microseconds(UINT32_C(  1987))),                    \
     }                                                                                            \
   }

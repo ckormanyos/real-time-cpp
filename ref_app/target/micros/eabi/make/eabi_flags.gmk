@@ -23,7 +23,7 @@ TGT_STL_DEFS  =
 TGT_CFLAGS    = -mcpu=cortex-m3                                \
                 -mtune=cortex-m3                               \
                 -mthumb                                        \
-                -mfloat-abi=soft                               \
+                -mfloat-abi=softfp                             \
                 -mno-unaligned-access                          \
                 -mno-long-calls                                \
                 $(TGT_STL_DEFS)

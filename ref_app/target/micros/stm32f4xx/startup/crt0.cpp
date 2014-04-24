@@ -37,6 +37,12 @@ void __my_startup()
   crt::init_ctors();
   mcal::wdg::secure::trigger();
 
+  // Enable the FPU.
+  asm volatile("ldr.w r0, =0xE000ED88");
+  asm volatile("ldr r1, [r0]");
+  asm volatile("orr r1, r1, #(0xF << 20)");
+  asm volatile("str r1, [r0]");
+
   // Call main (and never return).
   asm volatile("ldr r3, =main");
   asm volatile("blx r3");
