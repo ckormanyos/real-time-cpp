@@ -125,37 +125,37 @@
     void finalize();
     void reset();
 
-      // BSIG0
-      static std::uint64_t transform_function1(const std::uint64_t& the_qword)
-      {
-        return std::uint64_t(  circular_right_shift<28U>(the_qword)
-                             ^ circular_right_shift<34U>(the_qword)
-                             ^ circular_right_shift<39U>(the_qword));
-      }
+    // BSIG0
+    static std::uint64_t transform_function1(const std::uint64_t& the_qword)
+    {
+      return std::uint64_t(  circular_right_shift<28U>(the_qword)
+                           ^ circular_right_shift<34U>(the_qword)
+                           ^ circular_right_shift<39U>(the_qword));
+    }
 
-      // BSIG1
-      static std::uint64_t transform_function2(const std::uint64_t& the_qword)
-      {
-        return std::uint64_t(  circular_right_shift<14U>(the_qword)
-                             ^ circular_right_shift<18U>(the_qword)
-                             ^ circular_right_shift<41U>(the_qword));
-      }
+    // BSIG1
+    static std::uint64_t transform_function2(const std::uint64_t& the_qword)
+    {
+      return std::uint64_t(  circular_right_shift<14U>(the_qword)
+                           ^ circular_right_shift<18U>(the_qword)
+                           ^ circular_right_shift<41U>(the_qword));
+    }
 
-      // SSIG0
-      static std::uint64_t transform_function3(const std::uint64_t& the_qword)
-      {
-        return std::uint64_t(  circular_right_shift< 1U>(the_qword)
-                             ^ circular_right_shift< 8U>(the_qword)
-                             ^ std::uint64_t(the_qword >>  7U));
-      }
+    // SSIG0
+    static std::uint64_t transform_function3(const std::uint64_t& the_qword)
+    {
+      return std::uint64_t(  circular_right_shift< 1U>(the_qword)
+                           ^ circular_right_shift< 8U>(the_qword)
+                           ^ std::uint64_t(the_qword >>  7U));
+    }
 
-      // SSIG1
-      static std::uint64_t transform_function4(const std::uint64_t& the_qword)
-      {
-        return std::uint64_t(  circular_right_shift<19U>(the_qword)
-                             ^ circular_right_shift<61U>(the_qword)
-                             ^ std::uint64_t(the_qword >>  6U));
-      }
+    // SSIG1
+    static std::uint64_t transform_function4(const std::uint64_t& the_qword)
+    {
+      return std::uint64_t(  circular_right_shift<19U>(the_qword)
+                           ^ circular_right_shift<61U>(the_qword)
+                           ^ std::uint64_t(the_qword >>  6U));
+    }
   };
 
   template <typename my_count_type>

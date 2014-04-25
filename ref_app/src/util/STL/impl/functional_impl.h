@@ -10,48 +10,56 @@
 
   namespace std
   {
+    template<typename argument1, typename argument2, typename result>
+    struct binary_function
+    {
+      typedef argument1 first_argument_type;
+      typedef argument2 second_argument_type;
+      typedef result    result_type;
+    };
+
     template<typename operand_type>
-    struct plus
+    struct plus : public binary_function<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
-        return operand_type(left + right);
+        return left + right;
       }
     };
 
     template<typename operand_type>
-    struct minus
+    struct minus : public binary_function<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
-        return operand_type(left - right);
+        return left - right;
       }
     };
 
     template<typename operand_type>
-    struct multiplies
+    struct multiplies : public binary_function<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
-        return operand_type(left * right);
+        return left * right;
       }
     };
 
     template<typename operand_type>
-    struct divides
+    struct divides : public binary_function<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
-        return operand_type(left / right);
+        return left / right;
       }
     };
 
     template<typename operand_type>
-    struct modulus
+    struct modulus : public binary_function<operand_type, operand_type, operand_type>
     {
       operand_type operator()(const operand_type& left, const operand_type& right) const
       {
-        return operand_type(left % right);
+        return left % right;
       }
     };
   }

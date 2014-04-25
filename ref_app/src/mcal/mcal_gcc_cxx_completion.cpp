@@ -48,4 +48,6 @@ extern "C"
   {
     while(1) { mcal::cpu::nop(); }
   }
+
+  unsigned char __fdlib_version;
 }

@@ -16,105 +16,90 @@
   namespace xalgorithm
   {
     template<typename compare_type>
-    inline const compare_type& xmin(const compare_type& a, const compare_type& b)
+    const compare_type& xmin(const compare_type& a, const compare_type& b)
     {
       return ((a < b) ? a : b);
     }
 
     template<typename compare_type, typename binary_predicate>
-    inline const compare_type& xmin(const compare_type& a, const compare_type& b, binary_predicate comp)
+    const compare_type& xmin(const compare_type& a, const compare_type& b, binary_predicate comp)
     {
       return (*comp)(a, b);
     }
 
     template<typename compare_type>
-    inline const compare_type& xmax(const compare_type& a, const compare_type& b)
+    const compare_type& xmax(const compare_type& a, const compare_type& b)
     {
       return ((a > b) ? a : b);
     }
 
     template<typename compare_type, typename binary_predicate>
-    inline const compare_type& xmax(const compare_type& a, const compare_type& b, binary_predicate comp)
+    const compare_type& xmax(const compare_type& a, const compare_type& b, binary_predicate comp)
     {
       return (*comp)(a, b);
     }
 
     template<typename input_iterator, typename output_iterator>
-    inline output_iterator xcopy(input_iterator first, input_iterator last, output_iterator result)
+    output_iterator xcopy(input_iterator first, input_iterator last, output_iterator result)
     {
-      while(first != last)
+      for( ; first != last; ++result, ++first)
       {
-        *result = typename xiterator::xiterator_traits<output_iterator>::value_type(*first);
-        ++first;
-        ++result;
+        *result = *first;
       }
 
       return result;
     }
 
-    template<typename forward_iterator, typename T>
-    inline void xfill(forward_iterator first, forward_iterator last, const T& value)
+    template<typename forward_iterator, typename value_type>
+    void xfill(forward_iterator first, forward_iterator last, const value_type& value)
     {
-      while(first != last)
+      const value_type tmp = value;
+
+      for( ; first != last; ++first)
       {
-        *first = typename xiterator::xiterator_traits<forward_iterator>::value_type(value);
-        ++first;
+        *first = tmp;
       }
     }
 
-    template<typename output_iterator, typename difference_type, typename T>
-    inline output_iterator xfill_n(output_iterator destination, difference_type count, const T& value)
+    template<typename output_iterator, typename difference_type, typename value_type>
+    output_iterator xfill_n(output_iterator first, difference_type count, const value_type& value)
     {
-      while(count > difference_type(0))
-      {
-        *destination = value;
-        --count;
-        ++destination;
-      }
+      const output_iterator last = first + count;
 
-      return destination;
+      xfill(first, last, value);
+
+      return last;
     }
 
     template<typename input_iterator,
              typename output_iterator,
-             typename unary_function_type>
-    inline output_iterator xtransform(input_iterator first, input_iterator last, output_iterator destination, unary_function_type function)
+             typename unary_operation>
+    output_iterator xtransform(input_iterator first, input_iterator last, output_iterator result, unary_operation unary_op)
     {
-      while(first != last)
+      for(; first != last; ++first, ++result)
       {
-        *destination = function(*first);
-
-        ++first;
-        ++destination;
+        *result = unary_op(*first);
       }
 
-      return destination;
+      return result;
     }
 
-    template<class input_iterator1,
-             class input_iterator2,
-             class output_iterator,
-             class binary_function_type>
-    inline output_iterator xtransform(input_iterator1 first1,
-                                      input_iterator1 last1,
-                                      input_iterator2 first2,
-                                      output_iterator destination,
-                                      binary_function_type function)
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename output_iterator,
+             typename binary_operation>
+    output_iterator xtransform(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, output_iterator result, binary_operation binary_op)
     {
-      while(first1 != last1)
+      for(; first1 != last1; ++first1, ++first2, ++result)
       {
-        *destination = function(*first1, *first2);
-
-        ++first1;
-        ++first2;
-        ++destination;
+        *result = binary_op(*first1, *first2);
       }
 
-      return destination;
+      return result;
     }
 
     template<class input_iterator1, class input_iterator2>
-    inline bool xequal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
+    bool xequal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
       while(first1 != last1)
       {
@@ -131,7 +116,7 @@
     }
 
     template<typename iterator_type, typename function_type>
-    inline bool xall_of(iterator_type first, iterator_type last, function_type function)
+    bool xall_of(iterator_type first, iterator_type last, function_type function)
     {
       while((first != last) && function(*first))
       {
@@ -142,7 +127,7 @@
     }
 
     template<typename iterator_type, typename function_type>
-    inline bool xany_of(iterator_type first, iterator_type last, function_type function)
+    bool xany_of(iterator_type first, iterator_type last, function_type function)
     {
       while((first != last) && (!function(*first)))
       {
@@ -153,7 +138,7 @@
     }
 
     template<typename iterator_type, typename function_type>
-    inline bool xnone_of(iterator_type first, iterator_type last, function_type function)
+    bool xnone_of(iterator_type first, iterator_type last, function_type function)
     {
       while((first != last) && (!function(*first)))
       {
@@ -164,12 +149,11 @@
     }
 
     template<typename iterator_type, typename function_type>
-    inline function_type xfor_each(iterator_type first, iterator_type last, function_type function)
+    function_type xfor_each(iterator_type first, iterator_type last, function_type function)
     {
-      while(first != last)
+      for( ; first != last; ++first)
       {
         function(*first);
-        ++first;
       }
 
       return function;
@@ -177,7 +161,7 @@
 
     // Find the first element that satisfies the predicate.
     template<typename input_iterator, typename predicate_type>
-    inline input_iterator xfind_if(input_iterator first, input_iterator last, predicate_type predicate)
+    input_iterator xfind_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
       while((first != last) && (!predicate(*first)))
       {
@@ -189,7 +173,7 @@
 
     // Find the first element that does not satisfy the predicate.
     template<typename input_iterator, typename predicate_type>
-    inline input_iterator xfind_if_not(input_iterator first, input_iterator last, predicate_type predicate)
+    input_iterator xfind_if_not(input_iterator first, input_iterator last, predicate_type predicate)
     {
       while((first != last) && predicate(*first))
       {
@@ -230,10 +214,10 @@
     template<typename forward_iterator1,
               typename difference2,
               typename value_type>
-    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
-                                       forward_iterator1 last1,
-                                       difference2 count_value,
-                                       const value_type& search_value)
+    forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                forward_iterator1 last1,
+                                difference2 count_value,
+                                const value_type& search_value)
     {
       // Find the first count_value * search_value match.
       // Use random-access iterators.
@@ -299,11 +283,11 @@
              typename difference2,
              typename value_type,
              typename predicate_type>
-    inline forward_iterator1 xsearch_n(forward_iterator1 first1,
-                                       forward_iterator1 last1,
-                                       difference2 count_value,
-                                       const value_type& search_value,
-                                       predicate_type predicate)
+    forward_iterator1 xsearch_n(forward_iterator1 first1,
+                                forward_iterator1 last1,
+                                difference2 count_value,
+                                const value_type& search_value,
+                                predicate_type predicate)
     {
       // Find the first count_value * search_value that satisfies the predicate.
       // Use random-access iterators.
@@ -365,7 +349,7 @@
     }
 
     template<typename swap_type>
-    inline void xswap(swap_type& left, swap_type& right)
+    void xswap(swap_type left, swap_type right)
     {
       // Exchange the values stored at left and right if they are different.
       if(&left != &right)
@@ -378,7 +362,7 @@
     }
 
     template<typename swap_type, std::size_t N>
-    inline void xswap(swap_type(&left)[N], swap_type(&right)[N])
+    void xswap(swap_type(&left)[N], swap_type(&right)[N])
     {
       for(std::size_t i = static_cast<std::size_t>(0U); i < N; ++i)
       {
@@ -387,13 +371,13 @@
     }
 
     template<typename input_iterator1, typename input_iterator2>
-    inline void xiter_swap(input_iterator1 left, input_iterator2 right)
+    void xiter_swap(input_iterator1 left, input_iterator2 right)
     {
       xalgorithm::xswap(*left, *right);
     }
 
     template<typename input_iterator1, typename input_iterator2>
-    inline input_iterator2 xswap_ranges(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
+    input_iterator2 xswap_ranges(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
       for(; first1 != last1; ++first1, ++first2)
       {

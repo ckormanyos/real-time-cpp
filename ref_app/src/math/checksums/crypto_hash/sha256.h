@@ -125,37 +125,37 @@
     void finalize();
     void reset();
 
-      // BSIG0
-      static std::uint32_t transform_function1(const std::uint32_t& the_dword)
-      {
-        return std::uint32_t(  circular_right_shift< 2U>(the_dword)
-                             ^ circular_right_shift<13U>(the_dword)
-                             ^ circular_right_shift<22U>(the_dword));
-      }
+    // BSIG0
+    static std::uint32_t transform_function1(const std::uint32_t& the_dword)
+    {
+      return std::uint32_t(  circular_right_shift< 2U>(the_dword)
+                           ^ circular_right_shift<13U>(the_dword)
+                           ^ circular_right_shift<22U>(the_dword));
+    }
 
-      // BSIG1
-      static std::uint32_t transform_function2(const std::uint32_t& the_dword)
-      {
-        return std::uint32_t(  circular_right_shift< 6U>(the_dword)
-                             ^ circular_right_shift<11U>(the_dword)
-                             ^ circular_right_shift<25U>(the_dword));
-      }
+    // BSIG1
+    static std::uint32_t transform_function2(const std::uint32_t& the_dword)
+    {
+      return std::uint32_t(  circular_right_shift< 6U>(the_dword)
+                           ^ circular_right_shift<11U>(the_dword)
+                           ^ circular_right_shift<25U>(the_dword));
+    }
 
-      // SSIG0
-      static std::uint32_t transform_function3(const std::uint32_t& the_dword)
-      {
-        return std::uint32_t(  circular_right_shift< 7U>(the_dword)
-                             ^ circular_right_shift<18U>(the_dword)
-                             ^ std::uint32_t(the_dword >> 3U));
-      }
+    // SSIG0
+    static std::uint32_t transform_function3(const std::uint32_t& the_dword)
+    {
+      return std::uint32_t(  circular_right_shift< 7U>(the_dword)
+                           ^ circular_right_shift<18U>(the_dword)
+                           ^ std::uint32_t(the_dword >> 3U));
+    }
 
-      // SSIG1
-      static std::uint32_t transform_function4(const std::uint32_t& the_dword)
-      {
-        return std::uint32_t(  circular_right_shift<17U>(the_dword)
-                             ^ circular_right_shift<19U>(the_dword)
-                             ^ std::uint32_t(the_dword >> 10U));
-      }
+    // SSIG1
+    static std::uint32_t transform_function4(const std::uint32_t& the_dword)
+    {
+      return std::uint32_t(  circular_right_shift<17U>(the_dword)
+                           ^ circular_right_shift<19U>(the_dword)
+                           ^ std::uint32_t(the_dword >> 10U));
+    }
   };
 
   template <typename my_count_type>
