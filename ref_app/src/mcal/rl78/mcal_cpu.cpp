@@ -5,8 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <avr/io.h>
-#include <avr/pgmspace.h>
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>

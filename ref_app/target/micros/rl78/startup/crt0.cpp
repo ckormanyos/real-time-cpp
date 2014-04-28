@@ -1,27 +1,14 @@
-/////////////////////////////////////////////////////// 
-//  Copyright 2013 Stephan Hage.
-//  Copyright 2013 Christopher Kormanyos.
-//  Distributed under the Boost 
-//  Software License, Version 1.0. 
-//  (See accompanying file LICENSE_1_0.txt 
-//  or copy at http://www.boost.org/LICENSE_1_0.txt ) 
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2014.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// RL78 startup code.
+// Completely written in C++ for RL78 FG12 by Chris.
 
-#include <cstdint>
-#include <Bsw/EcuM/EcuM.h>
-#include <Bsw/Mcal/Reg/Reg.h>
-
-
-
-// RL78 startup code
-// Switched to C++ and modified for RL78Fx by Chris.
-
-
-
-#include <Bsw/Mcal/Wdg/Wdg.h>
-
-extern "C" int main();
+#include <mcal/mcal.h>
 
 asm volatile(".extern __initial_stack_pointer");
 
@@ -31,17 +18,24 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup()
+extern "C" void __my_startup();
+
+void __my_startup()
 {
-  // Set the stack pointer.
+  // Load the stack pointer.
   asm volatile("movw sp, #__initial_stack_pointer");
+
+  // Chip init: Watchdog, port, and oscillator.
+  mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
   // Zero-clear non-initialized static RAM.
   crt::init_ram();
+  mcal::wdg::secure::trigger();
 
   // Call all ctor initializations.
   crt::init_ctors();
+  mcal::wdg::secure::trigger();
 
   // Call main (and never return).
   asm volatile("call !!_main");
@@ -50,6 +44,6 @@ extern "C" void __my_startup()
   for(;;)
   {
     // Replace with a loud error if desired.
-    Wdg_Trigger();
+    mcal::wdg::secure::trigger();
   }
 }

@@ -8,9 +8,9 @@
 #ifndef _MCAL_WDT_2010_04_10_H_
   #define _MCAL_WDT_2010_04_10_H_
 
-  extern "C" void __my_startup() __attribute__((section(".startup"), naked, used, noinline));
+  extern "C" void __my_startup();
 
-  namespace sys { namespace idle { void task_func(const bool); } }
+  namespace sys { namespace idle { void task_func(); } }
 
   namespace mcal
   {
@@ -25,7 +25,7 @@
       private:
         static void trigger();
 
-        friend void ::sys::idle::task_func(const bool);
+        friend void ::sys::idle::task_func();
         friend void ::__my_startup();
       };
     }
