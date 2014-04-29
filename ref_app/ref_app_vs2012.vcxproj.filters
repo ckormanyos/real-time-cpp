@@ -1152,6 +1152,9 @@
     <ClInclude Include="src\mcal\rl78\mcal_benchmark.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h">
+      <Filter>src\app\benchmark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

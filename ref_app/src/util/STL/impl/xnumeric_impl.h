@@ -43,7 +43,7 @@
              typename value_type>
     inline value_type xinner_product(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, value_type val)
     {
-      for(first1 != last1)
+      while(first1 != last1)
       {
         val += (*first1 * (*first2));
         ++first1;

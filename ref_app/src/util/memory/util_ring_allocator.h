@@ -8,6 +8,8 @@
 #ifndef _UTIL_RING_ALLOCATOR_2010_02_23_H_
   #define _UTIL_RING_ALLOCATOR_2010_02_23_H_
 
+  #include <cstddef>
+  #include <cstdint>
   #include <memory>
 
   namespace util
@@ -15,16 +17,21 @@
     class ring_allocator_base
     {
     public:
-      typedef std::size_t size_type;
+      typedef std::size_t    size_type;
+      typedef std::ptrdiff_t difference_type;
 
     protected:
       ring_allocator_base() { }
 
-      // The ring_allocator's default buffer size.
-      static const size_type buffer_size = 8U;
-
       // The ring_allocator's memory allocation.
       static void* do_allocate(const size_type size);
+
+      // The ring_allocator's default buffer size.
+      static const size_type buffer_size = 64U;
+
+    private:
+      static std::uint8_t  buffer[ring_allocator_base::buffer_size];
+      static std::uint8_t* get_ptr;
     };
 
     // Global comparison operators (required in the standard).
@@ -40,11 +47,11 @@
       return false;
     }
 
-    template<typename T, const std::size_t alignment = 4U>
+    template<typename T>
     class ring_allocator;
 
-    template<const std::size_t alignment>
-    class ring_allocator<void, alignment> : public ring_allocator_base
+    template<>
+    class ring_allocator<void> : public ring_allocator_base
     {
     public:
       typedef void              value_type;
@@ -52,10 +59,10 @@
       typedef const value_type* const_pointer;
 
       template <class U>
-      struct rebind { typedef ring_allocator<U, alignment> other; };
+      struct rebind { typedef ring_allocator<U> other; };
     };
 
-    template<typename T, const std::size_t alignment>
+    template<typename T>
     class ring_allocator : public ring_allocator_base
     {
     public:
@@ -64,17 +71,16 @@
       typedef const value_type* const_pointer;
       typedef value_type&       reference;
       typedef const value_type& const_reference;
-      typedef std::ptrdiff_t    difference_type;
 
       ring_allocator() throw() { }
 
       ring_allocator(const ring_allocator&) throw() { }
 
       template <class U>
-      ring_allocator(const ring_allocator<U, alignment>&) throw() { }
+      ring_allocator(const ring_allocator<U>&) throw() { }
 
       template<class U> 
-      struct rebind { typedef ring_allocator<U, alignment> other; };
+      struct rebind { typedef ring_allocator<U> other; };
 
       size_type max_size() const throw()
       {
@@ -87,14 +93,7 @@
       pointer allocate(size_type num,
                        ring_allocator<void>::const_pointer = nullptr)
       {
-        std::size_t chunk_size = num * sizeof(value_type);
-
-        const std::size_t misalignment = static_cast<std::size_t>(chunk_size % alignment);
-
-        if(misalignment != static_cast<std::size_t>(0U))
-        {
-          chunk_size += static_cast<std::size_t>(alignment - misalignment);
-        }
+        const size_type chunk_size = num * sizeof(value_type);
 
         void* p = do_allocate(chunk_size);
 

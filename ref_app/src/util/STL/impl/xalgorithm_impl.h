@@ -76,7 +76,7 @@
              typename unary_operation>
     output_iterator xtransform(input_iterator first, input_iterator last, output_iterator result, unary_operation unary_op)
     {
-      for(; first != last; ++first, ++result)
+      for( ; first != last; ++first, ++result)
       {
         *result = unary_op(*first);
       }
@@ -90,7 +90,7 @@
              typename binary_operation>
     output_iterator xtransform(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, output_iterator result, binary_operation binary_op)
     {
-      for(; first1 != last1; ++first1, ++first2, ++result)
+      for( ; first1 != last1; ++first1, ++first2, ++result)
       {
         *result = binary_op(*first1, *first2);
       }
@@ -379,7 +379,7 @@
     template<typename input_iterator1, typename input_iterator2>
     input_iterator2 xswap_ranges(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
-      for(; first1 != last1; ++first1, ++first2)
+      for( ; first1 != last1; ++first1, ++first2)
       {
         xalgorithm::xiter_swap(first1, first2);
       }

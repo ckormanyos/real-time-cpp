@@ -136,7 +136,7 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Winit-self                       \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -O3                               \
+              -O2                               \
               -ffunction-sections               \
               -fdata-sections
 

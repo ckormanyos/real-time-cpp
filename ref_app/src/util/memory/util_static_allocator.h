@@ -40,11 +40,11 @@
       return false;
     }
 
-    template<typename T, const std::size_t alignment = 4U>
+    template<typename T>
     class static_allocator;
 
-    template<const std::size_t alignment>
-    class static_allocator<void, alignment> : public static_allocator_base
+    template<>
+    class static_allocator<void> : public static_allocator_base
     {
     public:
       typedef void              value_type;
@@ -52,10 +52,10 @@
       typedef const value_type* const_pointer;
 
       template <class U>
-      struct rebind { typedef static_allocator<U, alignment> other; };
+      struct rebind { typedef static_allocator<U> other; };
     };
 
-    template<typename T, const std::size_t alignment>
+    template<typename T>
     class static_allocator : public static_allocator_base
     {
     public:
@@ -71,10 +71,10 @@
       static_allocator(const static_allocator&) throw() { }
 
       template <class U>
-      static_allocator(const static_allocator<U, alignment>&) throw() { }
+      static_allocator(const static_allocator<U>&) throw() { }
 
       template<class U> 
-      struct rebind { typedef static_allocator<U, alignment> other; };
+      struct rebind { typedef static_allocator<U> other; };
 
       size_type max_size() const throw()
       {
@@ -87,14 +87,7 @@
       pointer allocate(size_type num,
                        static_allocator<void>::const_pointer = nullptr)
       {
-        std::size_t chunk_size = num * sizeof(value_type);
-
-        const std::size_t misalignment = static_cast<std::size_t>(chunk_size % alignment);
-
-        if(misalignment != static_cast<std::size_t>(0U))
-        {
-          chunk_size += static_cast<std::size_t>(alignment - misalignment);
-        }
+        const size_type chunk_size = num * sizeof(value_type);
 
         void* p = do_allocate(chunk_size);
 

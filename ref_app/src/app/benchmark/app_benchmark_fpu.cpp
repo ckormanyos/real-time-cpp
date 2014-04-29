@@ -14,6 +14,7 @@
   #include <cstdint>
   #include <cstdfloat>
   #include <limits>
+  #include <math/constants/constants.h>
   #include <mcal_benchmark.h>
 
   #define CFG_APP_BENCHMARK_FPU_TYPE_FLOOR    1
@@ -33,6 +34,7 @@
   #define CFG_APP_BENCHMARK_FPU_TYPE_COSH    15
   #define CFG_APP_BENCHMARK_FPU_TYPE_TANH    16
   #define CFG_APP_BENCHMARK_FPU_TYPE_GAMMA   17
+  #define CFG_APP_BENCHMARK_FPU_TYPE_HYPERG  18
 
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_FLOOR
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_CEIL
@@ -51,6 +53,11 @@
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_COSH
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_TANH
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_GAMMA
+//  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_HYPERG
+
+  #if (CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_HYPERG)
+    #include <app/benchmark/app_benchmark_fpu_hypergeometric.h>
+  #endif
 
   namespace
   {
@@ -61,18 +68,6 @@
       const std::float32_t delta = std::fabs(FLOAT32_C(1.0) - ratio);
 
       return (delta < tol);
-    }
-
-    template<typename float_type>
-    const float_type root_two()
-    {
-      return static_cast<float_type>(FLOATMAX_C(1.4142135623730950488016887242096980785697));
-    }
-
-    template<typename float_type>
-    const float_type pi()
-    {
-      return static_cast<float_type>(FLOATMAX_C(3.1415926535897932384626433832795028841972));
     }
 
     std::float32_t value_x;
@@ -112,18 +107,17 @@ void app::benchmark::fpu::task_func()
 
   mcal::benchmark::benchmark_port_type::set_pin_high();
 
-
   #if(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_FLOOR)
 
     // The expected value is: floor(pi) = (approx.) 3.0.
-    value_y = std::floor(pi<std::float32_t>());
+    value_y = std::floor(math::constants::pi<std::float32_t>());
     const bool the_result_is_ok = is_close_fraction(FLOAT32_C(3.0), value_y, tolerance);
     static_cast<void>(value_x);
 
   #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_CEIL)
 
     // The expected value is: ceil(root_two) = (approx.) 2.0.
-    value_y = std::ceil(root_two<std::float32_t>());
+    value_y = std::ceil(math::constants::root_two<std::float32_t>());
     const bool the_result_is_ok = is_close_fraction(FLOAT32_C(2.0), value_y, tolerance);
     static_cast<void>(value_x);
 
@@ -168,6 +162,30 @@ void app::benchmark::fpu::task_func()
     // The expected value is: tgamma(0.5) = sqrt(pi) = (approx.) 1.77245385.
     value_y = std::tgamma(value_x);
     const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.77245385), value_y, tolerance);
+
+  #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_HYPERG)
+
+    const std::array<float, 4U> an = {{ 1.0F / 2, 1.0F / 3, 1.0F / 4, 1.0F / 5, }};
+    const std::array<float, 5U> bm = {{ 2.0F / 3, 2.0F / 4, 2.0F / 5, 2.0F / 6, 2.0F / 7 }};
+
+    // Here is a control value from Wolfram's Alpha or Mathematica(R).
+    // N[HypergeometricPFQ[{1/2, 1/3, 1/4, 1/5}, {2/3, 2/4, 2/5, 2/6, 2/7}, EulerGamma], 100]
+    // 1.437152091623117098817180937046270756251132185487659323159061684966332133966272470711486705986290248
+
+    // The expected value is: hypergeometric_pfq({an};{bm}, euler) = (approx.) 1.43715209,
+    // where the coefficients {an} and {bm} are listed above, and euler = (approx.) 0.57721566.
+    value_y = hypergeometric_pfq(an.begin(),
+                                 an.end(),
+                                 bm.begin(),
+                                 bm.end(),
+                                 math::constants::euler<float>());
+
+    const bool the_result_is_ok = is_close_fraction(FLOAT32_C(1.43715209), value_y, tolerance);
+    static_cast<void>(value_x);
+
+  #else
+
+    const bool the_result_is_ok = true;
 
   #endif
 

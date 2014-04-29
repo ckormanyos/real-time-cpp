@@ -20,7 +20,7 @@ _rom_end   = 0x00007FEC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of (1/2)K */
-_stack_begin = 0x800600;
+_stack_begin = 0x800500;
 _stack_end   = 0x800800;
 
 /* The end of the 2K RAM stack */
@@ -29,7 +29,7 @@ __initial_stack_pointer = 0x800800;
 MEMORY
 {
   ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 0x14
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x0500
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x0400
 }
 
 SECTIONS

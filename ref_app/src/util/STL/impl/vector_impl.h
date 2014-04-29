@@ -66,8 +66,8 @@
       template<class input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).(last - first)),
-                                                           my_last (my_first + (last - first)),
+             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(size_type(last - first))),
+                                                           my_last (my_first + size_type(last - first)),
                                                            my_end  (my_last)
       {
         xalgorithm::xcopy(first, last, my_first);
