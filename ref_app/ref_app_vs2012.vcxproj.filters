@@ -1155,6 +1155,12 @@
     <ClInclude Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h">
       <Filter>src\app\benchmark</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_legendre.h">
+      <Filter>src\app\benchmark</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_bessel.h">
+      <Filter>src\app\benchmark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

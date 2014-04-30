@@ -671,7 +671,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_bessel.h" />
     <ClInclude Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h" />
+    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_legendre.h" />
     <ClInclude Include="src\math\calculus\derivative.h" />
     <ClInclude Include="src\math\calculus\integral.h" />
     <ClInclude Include="src\math\checksums\crc\crc.h">
