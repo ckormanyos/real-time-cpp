@@ -27,7 +27,7 @@
       allocator_base() { }
 
       // The allocator's buffer size.
-      static constexpr size_type buffer_size = 8U;
+      static constexpr size_type buffer_size = 4U;
 
       // The allocator's memory allocation.
       static void* do_allocate(const size_type size);
