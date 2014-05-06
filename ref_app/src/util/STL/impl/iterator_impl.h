@@ -23,18 +23,19 @@
     template<typename iterator_type>
     class iterator_traits : public xiterator::xiterator_traits<iterator_type> { };
 
-    template<typename Category,
-             typename T,
-             typename Distance = std::ptrdiff_t,
-             typename Pointer = T*,
-             typename Reference = T&>
+    template<typename my_category,
+             typename my_value_type,
+             typename my_difference_type = std::ptrdiff_t,
+             typename my_pointer_type    = my_value_type*,
+             typename my_reference_type  = my_value_type&>
     struct iterator
     {
-      typedef T         value_type;
-      typedef Distance  difference_type;
-      typedef Pointer   pointer;
-      typedef Reference reference;
-      typedef Category  iterator_category;
+      typedef my_category        iterator_category;
+      typedef my_value_type      value_type;
+      typedef my_difference_type difference_type;
+      typedef my_pointer_type    pointer;
+      typedef my_reference_type  reference;
+
       iterator() { }
     };
 
@@ -104,15 +105,18 @@
     template<class input_iterator>
     typename iterator_traits<input_iterator>::difference_type distance(input_iterator first, input_iterator last)
     {
-      typename iterator_traits<input_iterator>::difference_type dst = 0;
+      typedef typename iterator_traits<input_iterator>::difference_type distance_type;
+
+      distance_type the_distance = static_cast<distance_type>(0);
 
       while(first != last)
       {
-        ++dst;
+        ++the_distance;
+
         ++first;
       }
 
-      return dst;
+      return the_distance;
     }
 
     // See ISO/IEC 14882:2011, near the end of Section 24.3.

@@ -105,7 +105,7 @@
                    input_iterator last,
                    const allocator_type& a = allocator_type())
       {
-        const size_type sz = (size_type) (last - first);
+        const size_type count static_cast<size_type>(std::distance(first, last));
         my_first = (const_cast<allocator_type&>(a)).allocate(sz + 1U);
         my_last  = my_first + sz;
         xalgorithm::xcopy(first, last, my_first);
@@ -215,8 +215,8 @@
       reference at(const size_type i)             { return my_first[i]; }
       const_reference at(const size_type i) const { return my_first[i]; }
 
-      bool empty() const { return (my_first == my_last); }
-      size_type length() const { return (size_type) (my_last - my_first); }
+      bool      empty () const { return (my_first == my_last); }
+      size_type length() const { return static_cast<size_type>(std::distance(first, last)); }
 
       const_pointer c_str() const { return my_first; }
 

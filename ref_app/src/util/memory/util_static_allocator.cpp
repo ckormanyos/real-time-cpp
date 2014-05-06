@@ -10,14 +10,14 @@
 
 void* util::static_allocator_base::do_allocate(const size_type size)
 {
-  static std::uint8_t  buffer[static_allocator_base::buffer_size];
-  static std::uint8_t* get_ptr = buffer;
+  static volatile std::uint8_t  buffer[static_allocator_base::buffer_size];
+  static volatile std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
-  std::uint8_t* p = get_ptr;
+  volatile std::uint8_t* p = get_ptr;
 
   // Increment the pointer for next time.
   get_ptr += size;
 
-  return static_cast<void*>(p);
+  return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }

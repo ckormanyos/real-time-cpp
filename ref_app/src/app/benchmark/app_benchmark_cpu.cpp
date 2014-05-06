@@ -29,32 +29,26 @@
   #if(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_MD5)
     #include <math/checksums/crypto_hash/md5.h>
     typedef md5   <std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint32_t control_value = UINT32_C(0x09191D4F);
   #elif(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_SHA1)
     #include <math/checksums/crypto_hash/sha1.h>
     typedef sha1  <std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint32_t control_value = UINT32_C(0x8029201C);
   #elif(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_SHA224)
     #include <math/checksums/crypto_hash/sha224.h>
     typedef sha224<std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint32_t control_value = UINT32_C(0xB34E7f65);
   #elif(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_SHA256)
     #include <math/checksums/crypto_hash/sha256.h>
     typedef sha256<std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint32_t control_value = UINT32_C(0x5A59225B);
   #elif(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_SHA384)
     #include <math/checksums/crypto_hash/sha384.h>
     typedef sha384<std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint64_t control_value = UINT64_C(0x8BB184C5851558CA);
   #elif(CFG_APP_BENCHMARK_CPU_TYPE == CFG_APP_BENCHMARK_CPU_TYPE_SHA512)
     #include <math/checksums/crypto_hash/sha512.h>
     typedef sha512<std::uint8_t> hash_type;
-    typedef hash_type::result_type_as_integral_values result_type;
     const std::uint64_t control_value = UINT64_C(0x3F7E0479733B7E33);
   #else
     #error Cryptographic benchmark type is undefined (CFG_APP_BENCHMARK_CPU_TYPE)
@@ -62,8 +56,9 @@
 
   namespace
   {
-    hash_type   the_hash;
-    result_type the_hash_result;
+    hash_type the_hash;
+
+    hash_type::result_type_as_integral_values the_hash_result;
   }
 
 #endif
@@ -96,7 +91,9 @@ void app::benchmark::cpu::task_func()
   mcal::benchmark::benchmark_port_type::set_pin_high();
 
   the_hash.process_data("creativity", hash_type::count_type(10U));
+
   the_hash_result = the_hash.get_result_as_integral_values_and_finalize_the_state();
+
   const bool the_result_is_ok = (the_hash_result.front() == control_value);
 
   if(the_result_is_ok)

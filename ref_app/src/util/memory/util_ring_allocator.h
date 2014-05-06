@@ -27,14 +27,14 @@
       static void* do_allocate(const size_type size);
 
       // The ring_allocator's default buffer size.
-      static const size_type buffer_size = 64U;
+      static const size_type buffer_size = 96U;
 
     private:
-      static std::uint8_t  buffer[ring_allocator_base::buffer_size];
-      static std::uint8_t* get_ptr;
+      static volatile std::uint8_t  buffer[buffer_size];
+      static volatile std::uint8_t* get_ptr;
     };
 
-    // Global comparison operators (required in the standard).
+    // Global comparison operators (required by the standard).
     inline bool operator==(const ring_allocator_base&,
                            const ring_allocator_base&) throw()
     {
@@ -102,7 +102,7 @@
 
       void construct(pointer p, const value_type& x)
       {
-        new(static_cast<void*>(p)) value_type(x); 
+        new(static_cast<void*>(p)) value_type(x);
       }
 
       void destroy(pointer p) { p->~value_type(); }

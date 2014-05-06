@@ -66,8 +66,8 @@
       template<class input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(size_type(last - first))),
-                                                           my_last (my_first + size_type(last - first)),
+             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(static_cast<size_type>(std::distance(first, last)))),
+                                                           my_last (my_first + static_cast<size_type>(std::distance(first, last))),
                                                            my_end  (my_last)
       {
         xalgorithm::xcopy(first, last, my_first);
@@ -161,9 +161,9 @@
       reference       back()       { return *(my_last - 1U); }
       const_reference back() const { return *(my_last - 1U); }
 
-      bool empty() const { return (my_first == my_last); }
-      size_type size() const { return (size_type) (my_last - my_first); }
-      size_type capacity() const { return (size_type) (my_end - my_first); }
+      bool      empty   () const { return (my_first == my_last); }
+      size_type size    () const { return static_cast<size_type>(std::distance(my_first, my_last)); }
+      size_type capacity() const { return static_cast<size_type>(std::distance(my_first, my_end)); }
 
       void reserve(size_type count)
       {
@@ -210,7 +210,7 @@
       template<typename input_iterator>
       void assign(input_iterator first, input_iterator last)
       {
-        resize((size_type) (last - first));
+        resize(static_cast<size_type>(std::distance(first, last)));
         xalgorithm::xcopy(first, last, my_first);
       }
 

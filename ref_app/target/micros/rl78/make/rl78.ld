@@ -44,6 +44,8 @@ SECTIONS
     . = ALIGN(2);
     *(.text.*)
     . = ALIGN(2);
+    *(.plt)
+    . = ALIGN(2);
     *(.rodata)
     . = ALIGN(2);
     *(.rodata*)

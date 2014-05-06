@@ -21,13 +21,13 @@
       static_allocator_base() { }
 
       // The static_allocator's default buffer size.
-      static const size_type buffer_size = 8U;
+      static const size_type buffer_size = 4U;
 
       // The static_allocator's memory allocation.
       static void* do_allocate(const size_type size);
     };
 
-    // Global comparison operators (required in the standard).
+    // Global comparison operators (required by the standard).
     inline bool operator==(const static_allocator_base&,
                            const static_allocator_base&) throw()
     {
@@ -96,7 +96,7 @@
 
       void construct(pointer p, const value_type& x)
       {
-        new(static_cast<void*>(p)) value_type(x); 
+        new(static_cast<void*>(p)) value_type(x);
       }
 
       void destroy(pointer p) { p->~value_type(); }

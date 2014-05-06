@@ -218,8 +218,8 @@
     }
 
     template<typename forward_iterator,
-              typename difference_type,
-              typename value_type>
+             typename difference_type,
+             typename value_type>
     forward_iterator xsearch_n(forward_iterator first,
                                forward_iterator last,
                                difference_type count_value,

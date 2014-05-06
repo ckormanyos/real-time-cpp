@@ -11,6 +11,11 @@
 
   #include <app/benchmark/app_benchmark_fpu_hypergeometric.h>
 
+  #if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
+    #include <cstdfloat>
+    namespace std { std::float32_t tgamma(std::float32_t); }
+  #endif
+
   namespace app
   {
     namespace benchmark
@@ -18,15 +23,16 @@
       template<typename T>
       T legendre_p(T v, T u, T x)
       {
-        // Implement the small-argument Taylor series for legendre_p().
-
-        using std::pow;
-        using std::tgamma;
+        // Compute the Taylor series representation of legendre_p.
+        // There are no checks on input range or parameter boundaries.
 
         const T my_one(1);
 
         const T one_plus_x  = my_one + x;
         const T one_minus_x = my_one - x;
+
+        using std::pow;
+        using std::tgamma;
 
         const T one_plus_x_over_one_minus_x_pow_u_half = pow(one_plus_x / one_minus_x, u / 2);
 

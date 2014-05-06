@@ -7,28 +7,28 @@
 
 #include "util_ring_allocator.h"
 
-std::uint8_t  util::ring_allocator_base::buffer[util::ring_allocator_base::buffer_size];
-std::uint8_t* util::ring_allocator_base::get_ptr = buffer;
+volatile std::uint8_t  util::ring_allocator_base::buffer[buffer_size];
+volatile std::uint8_t* util::ring_allocator_base::get_ptr = buffer;
 
 void* util::ring_allocator_base::do_allocate(const size_type size)
 {
   // Get the newly allocated pointer.
-  std::uint8_t* p = get_ptr;
+  volatile std::uint8_t* p = get_ptr;
 
-  // Increment the pointer for next time.
+  // Increment the pointer for the next allocation.
   get_ptr += size;
 
-  // Does the allocation wrap around the buffer?
+  // Does this allocation overflow the top of the buffer?
   const bool is_wrap = (get_ptr >= (buffer + buffer_size));
 
   if(is_wrap)
   {
-    // The allocation wraps around the buffer.
-    // Reset the newly allocated pointer to the start of the buffer
+    // Here, the allocation overflows the top of the buffer.
+    // Reset the allocated pointer to the bottom of the buffer
     // and increment the next get-pointer accordingly.
     p       = buffer;
     get_ptr = buffer + size;
   }
 
-  return static_cast<void*>(p);
+  return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }

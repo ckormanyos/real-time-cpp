@@ -128,6 +128,9 @@
     <Filter Include="src\util\STL\impl\arm">
       <UniqueIdentifier>{9720414a-cb9d-4d52-b113-55909704ad88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL\impl\rl78">
+      <UniqueIdentifier>{e5d40cb1-7138-45c2-a206-9124a2aa53ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -543,6 +546,9 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\arm\arm_float_limits.cpp">
       <Filter>src\util\STL\impl\arm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\rl78\rl78_float_limits.cpp">
+      <Filter>src\util\STL\impl\rl78</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
