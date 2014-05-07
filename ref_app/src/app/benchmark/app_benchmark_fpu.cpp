@@ -13,7 +13,6 @@
   #include <cmath>
   #include <cstdfloat>
   #include <cstdint>
-  #include <cstdfloat>
   #include <limits>
   #include <mcal_benchmark.h>
 

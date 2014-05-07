@@ -61,6 +61,8 @@ SECTIONS
     . = ALIGN(2);
     KEEP (*(SORT(.ctors)))
     _ctors_end = .;
+    *(.progmem*)
+    . = ALIGN(2);
     *(.text)
     . = ALIGN(2);
     *(.text*)

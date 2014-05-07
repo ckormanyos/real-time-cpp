@@ -19,47 +19,44 @@
 
   namespace detail
   {
-    std::float32_t tgamma_imp(std::float32_t x);
+    std::float32_t tgamma_taylor_series           (std::float32_t x);
+    std::float32_t tgamma_polynomial_approximation(std::float32_t x);
   }
 
-  std::float32_t detail::tgamma_imp(std::float32_t x)
+  std::float32_t detail::tgamma_taylor_series(std::float32_t x)
   {
-    // Compute the std::float32_t result of tgamma(x) for 0 < x < 1.
-
-    if(x < FLOAT32_C(0.1))
-    {
-      // Perform the small-argument Taylor series for 1 / tgamma(x).
-      const std::float32_t gamma_inverse_series
-        = (((((((     + FLOAT32_C(0.0072189432)
-                  * x - FLOAT32_C(0.0096219715))
-                  * x - FLOAT32_C(0.0421977346))
-                  * x + FLOAT32_C(0.1665386114))
-                  * x - FLOAT32_C(0.0420026350))
-                  * x - FLOAT32_C(0.6558780715))
-                  * x + FLOAT32_C(0.5772156649))
-                  * x + FLOAT32_C(1.0))
-                  * x;
+    // Perform the small-argument Taylor series for 1 / tgamma(x).
+    const std::float32_t gamma_inverse_series
+      = (((((((     + FLOAT32_C(0.0072189432)
+                * x - FLOAT32_C(0.0096219715))
+                * x - FLOAT32_C(0.0421977346))
+                * x + FLOAT32_C(0.1665386114))
+                * x - FLOAT32_C(0.0420026350))
+                * x - FLOAT32_C(0.6558780715))
+                * x + FLOAT32_C(0.5772156649))
+                * x + FLOAT32_C(1.0))
+                * x;
 
       return FLOAT32_C(1.0) / gamma_inverse_series;
     }
-    else
-    {
-      // Perform the order-9 polynomial fit for tgamma(1 + x).
-      const std::float32_t gamma_polynomial_approximation
-        = ((((((((    - FLOAT32_C(0.0235850272)
-                  * x + FLOAT32_C(0.1405004023))
-                  * x - FLOAT32_C(0.3860871683))
-                  * x + FLOAT32_C(0.6721315341))
-                  * x - FLOAT32_C(0.8649108124))
-                  * x + FLOAT32_C(0.9539074630))
-                  * x - FLOAT32_C(0.9035083713))
-                  * x + FLOAT32_C(0.9887589417))
-                  * x - FLOAT32_C(0.5772069549))
-                  * x + FLOAT32_C(0.9999999703);
 
-      // Note that we are using one downward recursion here.
-      return gamma_polynomial_approximation / x;
-    }
+  std::float32_t detail::tgamma_polynomial_approximation(std::float32_t x)
+  {
+    // Perform the order-9 polynomial fit for tgamma(1 + x).
+    const std::float32_t gamma_polynomial_approximation
+      = ((((((((    - FLOAT32_C(0.0235850272)
+                * x + FLOAT32_C(0.1405004023))
+                * x - FLOAT32_C(0.3860871683))
+                * x + FLOAT32_C(0.6721315341))
+                * x - FLOAT32_C(0.8649108124))
+                * x + FLOAT32_C(0.9539074630))
+                * x - FLOAT32_C(0.9035083713))
+                * x + FLOAT32_C(0.9887589417))
+                * x - FLOAT32_C(0.5772069549))
+                * x + FLOAT32_C(0.9999999703);
+
+    // Note that we are using one downward recursion here.
+    return gamma_polynomial_approximation / x;
   }
 
   namespace std { std::float32_t tgamma(std::float32_t); }
@@ -100,7 +97,8 @@
 
     // Obtain an approximation of the tgamma(x), where x has
     // perhaps been negated and/or scaled to a lower value.
-    std::float32_t gamma_value = detail::tgamma_imp(x);
+    std::float32_t gamma_value = ((x < FLOAT32_C(0.1)) ? detail::tgamma_taylor_series(x)
+                                                       : detail::tgamma_polynomial_approximation(x));
 
     // Scale up the result via recursion, if necessary.
     for(std::uint_least8_t k = static_cast<std::uint_least8_t>(0U); k < n_recur; ++k)
