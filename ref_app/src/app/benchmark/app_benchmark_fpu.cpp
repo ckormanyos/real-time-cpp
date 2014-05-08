@@ -78,7 +78,7 @@
   namespace
   {
     template<typename float_type>
-    bool is_close_fraction(float_type left, float_type right, float_type the_tolerance)
+    bool is_close_fraction(float_type left, float_type right, float_type tolerance)
     {
       const float_type ratio = left / right;
 
@@ -86,7 +86,7 @@
 
       const float_type delta = fabs(float_type(1) - ratio);
 
-      return (delta < the_tolerance);
+      return (delta < tolerance);
     }
 
     std::float32_t value_x;

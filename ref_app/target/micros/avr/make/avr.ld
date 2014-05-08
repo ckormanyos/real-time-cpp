@@ -63,6 +63,8 @@ SECTIONS
     _ctors_end = .;
     *(.progmem*)
     . = ALIGN(2);
+    *(.trampolines*)
+    . = ALIGN(2);
     *(.text)
     . = ALIGN(2);
     *(.text*)

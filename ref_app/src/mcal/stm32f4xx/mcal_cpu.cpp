@@ -13,8 +13,8 @@
 
 void mcal::cpu::init()
 {
-  // Initialize the fpu.
-  // Set cp10 and cp11 to full access.
+  // Initialize the fpu: Enable cp10 and cp11.
+  // Note: The address of scb_cpacr is 0xE000ED88.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::scb_cpacr,
