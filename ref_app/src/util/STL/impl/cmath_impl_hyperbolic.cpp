@@ -5,64 +5,83 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "cmath_impl.h"
+#if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
 
-// Here, we implement computations of the inverse hyperbolic
-// trigonometric functions asinh, acosh, and atanh for std::float32_t.
-// The functions are implemented with logarithmic functions.
+  #include <cmath>
+  #include <cstdint>
+  #include <cstdfloat>
+  #include "xcmath_impl.h"
 
-// This provides an example of calculating some common elementary
-// transcendental functions using floating-point typedefs having
-// specified widths.
+  // Here, we implement computations of the inverse hyperbolic
+  // trigonometric functions asinh, acosh, and atanh for std::float32_t.
+  // The functions are implemented with logarithmic functions.
 
-std::float32_t std::asinh(std::float32_t x)
-{
-  return std::log(x + std::sqrt((x * x) + FLOAT32_C(1.0)));
-}
+  // This provides an example of calculating some common elementary
+  // transcendental functions using floating-point typedefs having
+  // specified widths.
 
-std::float32_t std::acosh(std::float32_t x)
-{
-  if(x < FLOAT32_C(1.0))
+  namespace std
   {
-    return std::numeric_limits<std::float32_t>::quiet_NaN();
-  }
-  else if((x - FLOAT32_C(1.0)) < std::numeric_limits<std::float32_t>::epsilon())
-  {
-    return FLOAT32_C(0.0);
-  }
-  else
-  {
-    const std::float32_t xp = (x + FLOAT32_C(1.0));
-    const std::float32_t xm = (x - FLOAT32_C(1.0));
-
-    return std::log(x + std::sqrt(xm * xp));
-  }
-}
-
-std::float32_t std::atanh(std::float32_t x)
-{
-  const bool is_neg = (x < FLOAT32_C(0.0));
-
-  const std::float32_t xx = ((!is_neg) ? x : -x);
-
-  if(xx > FLOAT32_C(1.0))
-  {
-    return std::numeric_limits<std::float32_t>::quiet_NaN();
+    std::float32_t asinh(std::float32_t);
+    std::float32_t acosh(std::float32_t);
+    std::float32_t atanh(std::float32_t);
   }
 
-  std::float32_t result;
-
-  if(xx < FLOAT32_C(1.0))
+  std::float32_t std::asinh(std::float32_t x)
   {
-    const std::float32_t xp = (xx + FLOAT32_C(1.0));
-    const std::float32_t xm = (xx - FLOAT32_C(1.0));
-
-    result = (std::log(xp) - std::log(-xm)) / FLOAT32_C(2.0);
-  }
-  else
-  {
-    result = std::numeric_limits<std::float32_t>::infinity();
+    // Implement a naive hyperbolic arc-sine function.
+    return std::log(x + std::sqrt((x * x) + FLOAT32_C(1.0)));
   }
 
-  return ((!is_neg) ? result : -result);
-}
+  std::float32_t std::acosh(std::float32_t x)
+  {
+    const std::float32_t x_minus_one = x - FLOAT32_C(1.0);
+
+    if(x_minus_one < -std::numeric_limits<std::float32_t>::epsilon())
+    {
+      return std::numeric_limits<std::float32_t>::quiet_NaN();
+    }
+    else if(x_minus_one < std::numeric_limits<std::float32_t>::epsilon())
+    {
+      return FLOAT32_C(1.0);
+    }
+    else
+    {
+      // Implement a naive hyperbolic arc-cosine function.
+      const std::float32_t xp = (x + FLOAT32_C(1.0));
+      const std::float32_t xm = (x - FLOAT32_C(1.0));
+
+      return std::log(x + std::sqrt(xm * xp));
+    }
+  }
+
+  std::float32_t std::atanh(std::float32_t x)
+  {
+    const bool is_neg = (x < FLOAT32_C(0.0));
+
+    const std::float32_t xx = ((!is_neg) ? x : -x);
+
+    if(xx > FLOAT32_C(1.0))
+    {
+      return std::numeric_limits<std::float32_t>::quiet_NaN();
+    }
+
+    std::float32_t result;
+
+    if(xx < FLOAT32_C(1.0))
+    {
+      // Implement a naive hyperbolic arc-tangent function.
+      const std::float32_t xp = (xx + FLOAT32_C(1.0));
+      const std::float32_t xm = (FLOAT32_C(1.0) - xx);
+
+      result = (std::log(xp) - std::log(xm)) / FLOAT32_C(2.0);
+    }
+    else
+    {
+      result = std::numeric_limits<std::float32_t>::infinity();
+    }
+
+    return ((!is_neg) ? result : -result);
+  }
+
+#endif

@@ -59,7 +59,10 @@
     return gamma_polynomial_approximation / x;
   }
 
-  namespace std { std::float32_t tgamma(std::float32_t); }
+  namespace std
+  {
+    std::float32_t tgamma(std::float32_t);
+  }
 
   std::float32_t std::tgamma(std::float32_t x)
   {

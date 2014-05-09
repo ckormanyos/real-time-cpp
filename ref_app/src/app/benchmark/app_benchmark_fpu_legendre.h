@@ -10,11 +10,17 @@
   #define _APP_BENCHMARK_FPU_LEGENDRE_2014_04_30_H_
 
   #include <cmath>
-  #if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
-    #include <cstdfloat>
-    namespace std { std::float32_t tgamma(std::float32_t); }
-  #endif
+  #include <cstdfloat>
   #include <app/benchmark/app_benchmark_fpu_hypergeometric.h>
+
+  #if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
+
+    namespace std
+    {
+      std::float32_t tgamma(std::float32_t);
+    }
+
+  #endif
 
   namespace app
   {

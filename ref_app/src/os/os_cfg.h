@@ -63,15 +63,15 @@
                              os::timer_type::microseconds(UINT32_C(   513))),                    \
       os::task_control_block(app::benchmark::cpu::task_init,                                     \
                              app::benchmark::cpu::task_func,                                     \
-                             os::timer_type::microseconds(UINT32_C(200000)),                     \
+                             os::timer_type::microseconds(UINT32_C(250000)),                     \
                              os::timer_type::microseconds(UINT32_C(   739))),                    \
       os::task_control_block(app::benchmark::dsp::task_init,                                     \
                              app::benchmark::dsp::task_func,                                     \
-                             os::timer_type::microseconds(UINT32_C(200000)),                     \
+                             os::timer_type::microseconds(UINT32_C(100000)),                     \
                              os::timer_type::microseconds(UINT32_C(  1223))),                    \
       os::task_control_block(app::benchmark::fpu::task_init,                                     \
                              app::benchmark::fpu::task_func,                                     \
-                             os::timer_type::microseconds(UINT32_C(250000)),                     \
+                             os::timer_type::microseconds(UINT32_C(200000)),                     \
                              os::timer_type::microseconds(UINT32_C(  1987))),                    \
     }                                                                                            \
   }
