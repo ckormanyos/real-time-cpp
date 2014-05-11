@@ -6,7 +6,7 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the AVR files in the project
+# File list of the avr files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/util/STL/impl/avr/avr_float_limits            \

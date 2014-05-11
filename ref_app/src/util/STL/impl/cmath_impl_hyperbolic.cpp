@@ -12,7 +12,7 @@
   #include <cstdfloat>
   #include "xcmath_impl.h"
 
-  // Here, we implement computations of the inverse hyperbolic
+  // Here, we implement naive computations of the inverse hyperbolic
   // trigonometric functions asinh, acosh, and atanh for std::float32_t.
   // The functions are implemented with logarithmic functions.
 

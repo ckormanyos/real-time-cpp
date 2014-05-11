@@ -23,7 +23,9 @@
     namespace benchmark
     {
       template<typename T>
-      T hypergeometric_0f1(T b, T x, T tolerance = std::numeric_limits<T>::epsilon() * T(10))
+      T hypergeometric_0f1(T b,
+                           T x,
+                           T tolerance = std::numeric_limits<T>::epsilon() * T(10))
       {
         // Compute the Taylor series representation of hypergeometric_0f1.
         // There are no checks on input range or parameter boundaries.
@@ -64,7 +66,11 @@
       }
 
       template<typename T>
-      T hypergeometric_2f1(T a, T b, T c, T x, T tolerance = std::numeric_limits<T>::epsilon() * T(10))
+      T hypergeometric_2f1(T a,
+                           T b,
+                           T c,
+                           T x,
+                           T tolerance = std::numeric_limits<T>::epsilon() * T(10))
       {
         // Compute the Taylor series representation of hypergeometric_2f1.
         // There are no checks on input range or parameter boundaries.

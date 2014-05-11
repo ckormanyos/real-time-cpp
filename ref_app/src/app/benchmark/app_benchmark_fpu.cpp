@@ -16,29 +16,31 @@
   #include <limits>
   #include <mcal_benchmark.h>
 
-  #define CFG_APP_BENCHMARK_FPU_TYPE_DIV       1
-  #define CFG_APP_BENCHMARK_FPU_TYPE_SQRT      2
-  #define CFG_APP_BENCHMARK_FPU_TYPE_SIN       3
-  #define CFG_APP_BENCHMARK_FPU_TYPE_COS       4
-  #define CFG_APP_BENCHMARK_FPU_TYPE_TAN       5
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ASIN      6
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ACOS      7
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ATAN      8
-  #define CFG_APP_BENCHMARK_FPU_TYPE_EXP       9
-  #define CFG_APP_BENCHMARK_FPU_TYPE_POW      10
-  #define CFG_APP_BENCHMARK_FPU_TYPE_LOG      11
-  #define CFG_APP_BENCHMARK_FPU_TYPE_LOG10    12
-  #define CFG_APP_BENCHMARK_FPU_TYPE_SINH     13
-  #define CFG_APP_BENCHMARK_FPU_TYPE_COSH     14
-  #define CFG_APP_BENCHMARK_FPU_TYPE_TANH     15
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ASINH    16
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ACOSH    17
-  #define CFG_APP_BENCHMARK_FPU_TYPE_ATANH    18
-  #define CFG_APP_BENCHMARK_FPU_TYPE_GAMMA    19
-  #define CFG_APP_BENCHMARK_FPU_TYPE_BESSEL   20
-  #define CFG_APP_BENCHMARK_FPU_TYPE_HYPERG   21
-  #define CFG_APP_BENCHMARK_FPU_TYPE_LEGENDRE 22
+  #define CFG_APP_BENCHMARK_FPU_TYPE_MUL       1
+  #define CFG_APP_BENCHMARK_FPU_TYPE_DIV       2
+  #define CFG_APP_BENCHMARK_FPU_TYPE_SQRT      3
+  #define CFG_APP_BENCHMARK_FPU_TYPE_SIN       4
+  #define CFG_APP_BENCHMARK_FPU_TYPE_COS       5
+  #define CFG_APP_BENCHMARK_FPU_TYPE_TAN       6
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ASIN      7
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ACOS      8
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ATAN      9
+  #define CFG_APP_BENCHMARK_FPU_TYPE_EXP      10
+  #define CFG_APP_BENCHMARK_FPU_TYPE_POW      11
+  #define CFG_APP_BENCHMARK_FPU_TYPE_LOG      12
+  #define CFG_APP_BENCHMARK_FPU_TYPE_LOG10    13
+  #define CFG_APP_BENCHMARK_FPU_TYPE_SINH     14
+  #define CFG_APP_BENCHMARK_FPU_TYPE_COSH     15
+  #define CFG_APP_BENCHMARK_FPU_TYPE_TANH     16
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ASINH    17
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ACOSH    18
+  #define CFG_APP_BENCHMARK_FPU_TYPE_ATANH    19
+  #define CFG_APP_BENCHMARK_FPU_TYPE_GAMMA    20
+  #define CFG_APP_BENCHMARK_FPU_TYPE_BESSEL   21
+  #define CFG_APP_BENCHMARK_FPU_TYPE_HYPERG   22
+  #define CFG_APP_BENCHMARK_FPU_TYPE_LEGENDRE 23
 
+//  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_MUL
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_DIV
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_SQRT
 //  #define CFG_APP_BENCHMARK_FPU_TYPE CFG_APP_BENCHMARK_FPU_TYPE_SIN
@@ -118,7 +120,7 @@
 
       using std::fabs;
 
-      const float_type delta = fabs(float_type(1) - ratio);
+      const float_type delta = fabs(static_cast<float_type>(FLOATMAX_C(1.0)) - ratio);
 
       return (delta < tolerance);
     }
@@ -162,9 +164,20 @@ void app::benchmark::fpu::task_func()
 
     mcal::benchmark::benchmark_port_type::set_pin_high();
 
-    #if(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_DIV)
+    #if(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_MUL)
 
-      // The expected value is: sqrt(0.5) = (approx.) 0.707106781.
+      // The expected value is: 0.5 * sqrt(0.5) = (approx.) 0.353553385.
+      value_y = value_x * FLOAT32_C(0.707106781);
+
+      if(the_result_is_ok) { mcal::benchmark::benchmark_port_type::set_pin_low(); }
+
+      the_result_is_ok = is_close_fraction(FLOAT32_C(0.353553385),
+                                           value_y,
+                                           benchmark_tolerance);
+
+    #elif(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_DIV)
+
+      // The expected value is: 0.5 / sqrt(0.5) = (approx.) 0.707106781.
       value_y = value_x / FLOAT32_C(0.707106781);
 
       if(the_result_is_ok) { mcal::benchmark::benchmark_port_type::set_pin_low(); }
