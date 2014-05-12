@@ -10,7 +10,7 @@
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __my_startup         () __attribute__((naked, used, noinline));
+extern "C" void __my_startup         () __attribute__((used, noinline));
 extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
 extern "C" void __nmi_handler        () __attribute__((used, noinline));
 extern "C" void __hard_fault_handler () __attribute__((used, noinline));

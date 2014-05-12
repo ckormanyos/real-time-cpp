@@ -13,12 +13,12 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
-extern "C" void __my_startup         () __attribute__((section(".startup"), naked, used, noinline));
+extern "C" void __my_startup         () __attribute__((section(".startup"), used, noinline));
 extern "C" void __undef_instr_handler() __attribute__((used, noinline));
 extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
 extern "C" void __abort_handler      () __attribute__((used, noinline));
-extern "C" void __irq_handler        () __attribute__((naked, used, noinline));
-extern "C" void __fiq_handler        () __attribute__((naked, used, noinline));
+extern "C" void __irq_handler        () __attribute__((used, noinline));
+extern "C" void __fiq_handler        () __attribute__((used, noinline));
 extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
 extern "C" void __vector_timer7      ();
 

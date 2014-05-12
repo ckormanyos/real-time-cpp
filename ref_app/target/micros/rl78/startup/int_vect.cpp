@@ -67,40 +67,40 @@ const volatile isr::function_type isr_vector[64U] __attribute__ ((section(".ivec
   __vector_unused_irq,             // 0x0032 inttm03_vect
   __vector_unused_irq,             // 0x0034 intad_vect
   __vector_unused_irq,             // 0x0036 intrtc_vect
-  __vector_unused_irq,             // 0x0038 intit_vect   
-  __vector_unused_irq,             // 0x003A intkr_vect   
+  __vector_unused_irq,             // 0x0038 intit_vect
+  __vector_unused_irq,             // 0x003A intkr_vect
   __vector_unused_irq,             // 0x003C intcsis0_vect / intsts0_vect
   __vector_unused_irq,             // 0x003E intsrs0_vect / intcsis1_vect
-  __vector_unused_irq,             // 0x0040 intwutm_vect 
-  __vector_unused_irq,             // 0x0042 inttm04_vect 
-  __vector_unused_irq,             // 0x0044 inttm05_vect 
-  __vector_unused_irq,             // 0x0046 inttm06_vect 
-  __vector_unused_irq,             // 0x0048 inttm07_vect 
-  __vector_unused_irq,             // 0x004A intp6_vect   
-  __vector_unused_irq,             // 0x004C intlt_vect    / intp7_vect
-  __vector_unused_irq,             // 0x004E intlr_vect    / intp8_vect
-  __vector_unused_irq,             // 0x0050 intls_vect    / intp9_vect
+  __vector_unused_irq,             // 0x0040 intwutm_vect
+  __vector_unused_irq,             // 0x0042 inttm04_vect
+  __vector_unused_irq,             // 0x0044 inttm05_vect
+  __vector_unused_irq,             // 0x0046 inttm06_vect
+  __vector_unused_irq,             // 0x0048 inttm07_vect
+  __vector_unused_irq,             // 0x004A intp6_vect
+  __vector_unused_irq,             // 0x004C intlt_vect / intp7_vect
+  __vector_unused_irq,             // 0x004E intlr_vect / intp8_vect
+  __vector_unused_irq,             // 0x0050 intls_vect / intp9_vect
   __vector_unused_irq,             // 0x0052 intsreS0_vect / intp10_vect
   __vector_unused_irq,             // 0x0054 intp11_vect
-  nullptr      ,                   // 0x0056 nullptr      
-  nullptr      ,                   // 0x0058 nullptr      
-  nullptr      ,                   // 0x005A nullptr      
-  nullptr,                         // 0x005C nullptr,     
-  __vector_unused_irq,             // 0x005E intmd_vect,  
-  nullptr,                         // 0x0060 nullptr,     
-  __vector_unused_irq,             // 0x0062 intfl_vect,  
-  nullptr,                         // 0x0064 nullptr,     
-  nullptr,                         // 0x0066 nullptr,     
-  nullptr,                         // 0x0068 nullptr,     
-  nullptr,                         // 0x006A nullptr,     
-  nullptr,                         // 0x006C nullptr,     
-  nullptr,                         // 0x006E nullptr,     
-  nullptr,                         // 0x0070 nullptr,     
-  nullptr,                         // 0x0072 nullptr,     
-  nullptr,                         // 0x0074 nullptr,     
-  nullptr,                         // 0x0076 nullptr,     
-  nullptr,                         // 0x0078 nullptr,     
-  nullptr,                         // 0x007A nullptr,     
-  nullptr,                         // 0x007C nullptr,     
-  __vector_unused_irq              // 0x007E brk_i_vect   
+  nullptr,                         // 0x0056 nullptr
+  nullptr,                         // 0x0058 nullptr
+  nullptr,                         // 0x005A nullptr
+  nullptr,                         // 0x005C nullptr
+  __vector_unused_irq,             // 0x005E intmd_vect,
+  nullptr,                         // 0x0060 nullptr,
+  __vector_unused_irq,             // 0x0062 intfl_vect,
+  nullptr,                         // 0x0064 nullptr,
+  nullptr,                         // 0x0066 nullptr,
+  nullptr,                         // 0x0068 nullptr,
+  nullptr,                         // 0x006A nullptr,
+  nullptr,                         // 0x006C nullptr,
+  nullptr,                         // 0x006E nullptr,
+  nullptr,                         // 0x0070 nullptr,
+  nullptr,                         // 0x0072 nullptr,
+  nullptr,                         // 0x0074 nullptr,
+  nullptr,                         // 0x0076 nullptr,
+  nullptr,                         // 0x0078 nullptr,
+  nullptr,                         // 0x007A nullptr,
+  nullptr,                         // 0x007C nullptr,
+  __vector_unused_irq              // 0x007E brk_i_vect
 };

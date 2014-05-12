@@ -9,7 +9,7 @@
 #include <array>
 #include <mcal_cpu.h>
 
-extern "C" void __my_startup       () __attribute__((section(".startup"), naked, used, noinline));
+extern "C" void __my_startup       () __attribute__((section(".startup"), used, noinline));
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 

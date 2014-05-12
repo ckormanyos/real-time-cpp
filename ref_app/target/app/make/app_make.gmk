@@ -134,11 +134,13 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wcast-align                      \
               -Wmissing-include-dirs            \
               -Winit-self                       \
+              -Wstack-usage=512                 \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -O2                               \
               -ffunction-sections               \
-              -fdata-sections
+              -fdata-sections                   \
+              -fstack-check
 
 CFLAGS      = $(GCCFLAGS)                       \
               -x c                              \

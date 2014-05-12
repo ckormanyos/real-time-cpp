@@ -19,7 +19,7 @@ namespace crt
 
 extern "C" int  main                   ();
 extern "C" void __initial_stack_pointer();
-extern "C" void __my_startup           () __attribute__((section(".startup"), naked, used, noinline));
+extern "C" void __my_startup           () __attribute__((section(".startup"), used, noinline));
 
 void __my_startup()
 {
