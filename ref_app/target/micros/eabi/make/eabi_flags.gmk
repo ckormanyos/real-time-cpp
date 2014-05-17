@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.7.2
+GCC_VERSION   = 4.8.3
 GCC_TARGET    = arm-none-eabi
 
 TGT_CFLAGS    = -mcpu=cortex-m3                                \
