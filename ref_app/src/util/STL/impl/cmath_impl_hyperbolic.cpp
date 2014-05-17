@@ -14,11 +14,12 @@
 
   // Here, we implement naive computations of the inverse hyperbolic
   // trigonometric functions asinh, acosh, and atanh for std::float32_t.
-  // The functions are implemented with logarithmic functions.
+  // The inverse hyperbolic trigonometric functions are represented
+  // in terms of logarithmic functions.
 
-  // This provides an example of calculating some common elementary
-  // transcendental functions using floating-point typedefs having
-  // specified widths.
+  // These provide examples of portable calculations of some common
+  // elementary transcendental functions using floating-point typedefs
+  // having specified widths.
 
   namespace std
   {

@@ -37,6 +37,13 @@
     {
       return static_cast<float_type>(FLOATMAX_C(0.6931471805599453094172321214581765680755));
     }
+
+      template<typename float_type>
+      const float_type euler()
+      {
+        return static_cast<float_type>(FLOATMAX_C(0.5772156649015328606065120900824024310422));
+      }
+
   }
 
 #endif // _XCMATH_IMPL_2014_01_11_H_

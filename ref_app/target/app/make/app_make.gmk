@@ -172,7 +172,7 @@ LFLAGS      = $(GCCFLAGS)                       \
 # Main-Dependencies (app: all)
 # ------------------------------------------------------------------------------
 .PHONY: all
-all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).elf
+all: clean_prj version $(APP).elf $(APP)_flash.hex $(APP)_nm.txt
 
 
 # ------------------------------------------------------------------------------
@@ -229,7 +229,7 @@ version:
 # link/locate application and generate an assembly list file
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
-	@-$(ECHO) +++ linking application: $(APP).elf
+	@-$(ECHO) +++ linking application to generate: $(APP).elf
 	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
@@ -239,13 +239,13 @@ $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 # parse the object files to obtain symbol information, and create a size summary
 # ------------------------------------------------------------------------------
 $(APP)_nm.txt : $(APP).elf
-	@-$(ECHO) +++ parsing symbols with nm: $(APP)_nm.txt
+	@-$(ECHO) +++ parsing symbols with nm to generate: $(APP)_nm.txt
 	@-$(NM) --numeric-sort --print-size $(APP).elf > $(APP)_nm.txt
-	@-$(ECHO) +++ demangling symbols with c++filt: $(APP)_cppfilt.txt
+	@-$(ECHO) +++ demangling symbols with c++filt to generate: $(APP)_cppfilt.txt
 	@-$(NM) --numeric-sort --print-size $(APP).elf | $(CPPFILT) > $(APP)_cppfilt.txt
-	@-$(ECHO) +++ parsing symbols with readelf: $(APP)_readelf.txt
+	@-$(ECHO) +++ parsing symbols with readelf to generate: $(APP)_readelf.txt
 	@-$(READELF) --syms $(APP).elf > $(APP)_readelf.txt
-	@-$(ECHO) +++ creating size summary table with size: $(APP)_size.txt
+	@-$(ECHO) +++ creating size summary table with size to generate: $(APP)_size.txt
 	@-$(SIZE) -A -t $(APP).elf > $(APP)_size.txt
 
 

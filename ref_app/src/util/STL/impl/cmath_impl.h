@@ -65,80 +65,127 @@
         #define __BUILTIN_TANHF  __builtin_tanhf
       #endif // __AVR__ or not __AVR__ stuff
 
+      #define __BUILTIN_FABSL  __builtin_fabsl
+      #define __BUILTIN_FMODL  __builtin_fmodl
+      #define __BUILTIN_MODFL  __builtin_modfl
+      #define __BUILTIN_FLOORL __builtin_floorl
+      #define __BUILTIN_CEILL  __builtin_ceill
+      #define __BUILTIN_FREXPL __builtin_frexpl
+      #define __BUILTIN_LDEXPL __builtin_ldexpl
+      #define __BUILTIN_SQRTL  __builtin_sqrtl
+      #define __BUILTIN_SINL   __builtin_sinl
+      #define __BUILTIN_COSL   __builtin_cosl
+      #define __BUILTIN_TANL   __builtin_tanl
+      #define __BUILTIN_ASINL  __builtin_asinl
+      #define __BUILTIN_ACOSL  __builtin_acosl
+      #define __BUILTIN_ATANL  __builtin_atanl
+      #define __BUILTIN_ATAN2L __builtin_atan2l
+      #define __BUILTIN_EXPL   __builtin_expl
+      #define __BUILTIN_POWL   __builtin_powl
+      #define __BUILTIN_LOGL   __builtin_logl
+      #define __BUILTIN_LOG10L __builtin_log10l
+      #define __BUILTIN_SINHL  __builtin_sinhl
+      #define __BUILTIN_COSHL  __builtin_coshl
+      #define __BUILTIN_TANHL  __builtin_tanhl
+
       inline float         abs  (float       x)                 { return __BUILTIN_FABSF (x); }
       inline double        abs  (double      x)                 { return __builtin_fabs  (x); }
-      inline long double   abs  (long double x)                 { return __builtin_fabsl (x); }
+      inline long double   abs  (long double x)                 { return __BUILTIN_FABSL (x); }
 
       inline float         fabs (float       x)                 { return __BUILTIN_FABSF (x); }
-      using              ::fabs;
-      inline long double   fabs (long double x)                 { return __builtin_fabsl (x); }
+      using              ::fabs;                                // Using global fabs function.
+      inline long double   fabs (long double x)                 { return __BUILTIN_FABSL (x); }
+
       inline float         fmod (float       x, float y)        { return __BUILTIN_FMODF (x, y); }
-      using              ::fmod;
-      inline long double   fmod (long double x, long double y)  { return __builtin_fmodl (x, y); }
+      using              ::fmod;                                // Using global fmod function.
+      inline long double   fmod (long double x, long double y)  { return __BUILTIN_FMODL (x, y); }
+
       inline float         modf (float x,       float*       p) { return __BUILTIN_MODFF (x, p); }
-      using              ::modf;
-      inline long double   modf (long double x, long double* p) { return __builtin_modfl (x, p); }
+      using              ::modf;                                // Using global modf function.
+      inline long double   modf (long double x, long double* p) { return __BUILTIN_MODFL (x, p); }
+
       inline float         floor(float       x)                 { return __BUILTIN_FLOORF(x); }
-      using              ::floor;
-      inline long double   floor(long double x)                 { return __builtin_floorl(x); }
+      using              ::floor;                               // Using global floor function.
+      inline long double   floor(long double x)                 { return __BUILTIN_FLOORL(x); }
+
       inline float         ceil (float       x)                 { return __BUILTIN_CEILF (x); }
-      using              ::ceil;
-      inline long double   ceil (long double x)                 { return __builtin_ceill (x); }
+      using              ::ceil;                                // Using global ceil function.
+      inline long double   ceil (long double x)                 { return __BUILTIN_CEILL (x); }
+
       inline float         frexp(float x,       int* p)         { return __BUILTIN_FREXPF(x, p); }
-      using              ::frexp;
-      inline long double   frexp(long double x, int* p)         { return __builtin_frexpl(x, p); }
+      using              ::frexp;                               // Using global fresp function.
+      inline long double   frexp(long double x, int* p)         { return __BUILTIN_FREXPL(x, p); }
+
       inline float         ldexp(float x,       int p)          { return __BUILTIN_LDEXPF(x, p); }
-      using              ::ldexp;
-      inline long double   ldexp(long double x, int p)          { return __builtin_ldexpl(x, p); }
+      using              ::ldexp;                               // Using global ldexp function.
+      inline long double   ldexp(long double x, int p)          { return __BUILTIN_LDEXPL(x, p); }
+
       inline float         sqrt (float       x)                 { return __BUILTIN_SQRTF (x); }
-      using              ::sqrt;
-      inline long double   sqrt (long double x)                 { return __builtin_sqrtl (x); }
+      using              ::sqrt;                                // Using global function.
+      inline long double   sqrt (long double x)                 { return __BUILTIN_SQRTL (x); }
+
       inline float         sin  (float       x)                 { return __BUILTIN_SINF  (x); }
-      using              ::sin;
-      inline long double   sin  (long double x)                 { return __builtin_sinl  (x); }
+      using              ::sin;                                 // Using global function.
+      inline long double   sin  (long double x)                 { return __BUILTIN_SINL  (x); }
+
       inline float         cos  (float       x)                 { return __BUILTIN_COSF  (x); }
-      using              ::cos;
-      inline long double   cos  (long double x)                 { return __builtin_cosl  (x); }
+      using              ::cos;                                 // Using global sqrt function.
+      inline long double   cos  (long double x)                 { return __BUILTIN_COSL  (x); }
+
       inline float         tan  (float       x)                 { return __BUILTIN_TANF  (x); }
-      using              ::tan;
-      inline long double   tan  (long double x)                 { return __builtin_tanl  (x); }
+      using              ::tan;                                 // Using global tan function.
+      inline long double   tan  (long double x)                 { return __BUILTIN_TANL  (x); }
+
       inline float         asin (float       x)                 { return __BUILTIN_ASINF (x); }
-      using              ::asin;
-      inline long double   asin (long double x)                 { return __builtin_asinl (x); }
+      using              ::asin;                                // Using global asin function.
+      inline long double   asin (long double x)                 { return __BUILTIN_ASINL (x); }
+
       inline float         acos (float       x)                 { return __BUILTIN_ACOSF (x); }
-      using              ::acos;
-      inline long double   acos (long double x)                 { return __builtin_acosl (x); }
+      using              ::acos;                                // Using global acos function.
+      inline long double   acos (long double x)                 { return __BUILTIN_ACOSL (x); }
+
       inline float         atan (float       x)                 { return __BUILTIN_ATANF (x); }
-      using              ::atan;
-      inline long double   atan (long double x)                 { return __builtin_atanl (x); }
+      using              ::atan;                                // Using global atan function.
+      inline long double   atan (long double x)                 { return __BUILTIN_ATANL (x); }
+
       inline float         atan2(float       y, float       x)  { return __BUILTIN_ATAN2F(y, x); }
-      using              ::atan2;
-      inline long double   atan2(long double y, long double x)  { return __builtin_atan2l(y, x); }
+      using              ::atan2;                               // Using global atan2 function.
+      inline long double   atan2(long double y, long double x)  { return __BUILTIN_ATAN2L(y, x); }
+
       inline float         exp  (float       x)                 { return __BUILTIN_EXPF  (x); }
-      using              ::exp;
-      inline long double   exp  (long double x)                 { return __builtin_expl  (x); }
+      using              ::exp;                                 // Using global exp function.
+      inline long double   exp  (long double x)                 { return __BUILTIN_EXPL  (x); }
+
       inline float         pow  (float       x, float a)        { return __BUILTIN_POWF  (x, a); }
-      using              ::pow;
-      inline long double   pow  (long double x, long double a)  { return __builtin_powl  (x, a); }
+      using              ::pow;                                 // Using global pow function.
+      inline long double   pow  (long double x, long double a)  { return __BUILTIN_POWL  (x, a); }
+
       inline float         log  (float       x)                 { return __BUILTIN_LOGF  (x); }
-      using              ::log;
-      inline long double   log  (long double x)                 { return __builtin_logl  (x); }
+      using              ::log;                                 // Using global log function.
+      inline long double   log  (long double x)                 { return __BUILTIN_LOGL  (x); }
+
       inline float         log10(float       x)                 { return __BUILTIN_LOG10F(x); }
-      using              ::log10;
-      inline long double   log10(long double x)                 { return __builtin_log10l(x); }
+      using              ::log10;                               // Using global log10 function.
+      inline long double   log10(long double x)                 { return __BUILTIN_LOG10L(x); }
+
       inline float         sinh (float       x)                 { return __BUILTIN_SINHF (x); }
-      using              ::sinh;
-      inline long double   sinh (long double x)                 { return __builtin_sinhl (x); }
+      using              ::sinh;                                // Using global sinh function.
+      inline long double   sinh (long double x)                 { return __BUILTIN_SINHL (x); }
+
       inline float         cosh (float       x)                 { return __BUILTIN_COSHF (x); }
-      using              ::cosh;
-      inline long double   cosh (long double x)                 { return __builtin_coshl (x); }
+      using              ::cosh;                                // Using global cosh function.
+      inline long double   cosh (long double x)                 { return __BUILTIN_COSHL (x); }
+
       inline float         tanh (float       x)                 { return __BUILTIN_TANHF (x); }
-      using              ::tanh;
-      inline long double   tanh (long double x)                 { return __builtin_tanhl (x); }
+      using              ::tanh;                                // Using global tanh function.
+      inline long double   tanh (long double x)                 { return __BUILTIN_TANHL (x); }
 
     #else
 
-      inline std::float32_t abs(const std::float32_t x) { return ::fabs(x); }
+      inline float       abs(float x)       { return ::fabsf(x); }
+      inline double      abs(double x)      { return ::fabs (x); }
+      inline long double abs(long double x) { return ::fabsl(x); }
+
       using ::fabs;
       using ::fmod;
       using ::modf;
@@ -165,11 +212,11 @@
     #endif // __GNUC__ or not __GNUC__ stuff
 
     // Provide certain functions that are often missing from <math.h>.
-    // Here, we patch some of these in an exemplary fashion for float32_t.
+    // Here, we patch some of these in an exemplary fashion for the
+    // proposed std::float32_t.
     std::float32_t asinh (std::float32_t x);
     std::float32_t acosh (std::float32_t x);
     std::float32_t atanh (std::float32_t x);
-    std::float32_t lgamma(std::float32_t x);
     std::float32_t tgamma(std::float32_t x);
   }
 

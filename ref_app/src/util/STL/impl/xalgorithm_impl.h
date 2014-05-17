@@ -225,7 +225,6 @@
                                difference_type count_value,
                                const value_type& search_value)
     {
-      forward_iterator it;
       forward_iterator limit = first;
 
       difference_type i;
@@ -237,7 +236,7 @@
 
       while(first != limit)
       {
-        it = first;
+        forward_iterator it = first;
 
         i = difference_type(0);
 
@@ -268,7 +267,6 @@
                                const value_type& search_value,
                                predicate_type predicate)
     {
-      forward_iterator it;
       forward_iterator limit = first;
 
       difference_type i;
@@ -280,7 +278,7 @@
 
       while(first != limit)
       {
-        it = first;
+        forward_iterator it = first;
 
         i = difference_type(0);
 

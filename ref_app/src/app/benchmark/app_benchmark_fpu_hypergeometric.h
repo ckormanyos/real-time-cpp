@@ -48,7 +48,9 @@
           x_pow_n_div_n_fact *= x;
           x_pow_n_div_n_fact /= n;
 
-          pochhammer_sequence_b *= ++bp;
+          ++bp;
+
+          pochhammer_sequence_b *= bp;
 
           const T next_term = x_pow_n_div_n_fact / pochhammer_sequence_b;
 
@@ -95,9 +97,13 @@
           x_pow_n_div_n_fact *= x;
           x_pow_n_div_n_fact /= n;
 
-          pochhammer_sequence_a *= ++ap;
-          pochhammer_sequence_b *= ++bp;
-          pochhammer_sequence_c *= ++cp;
+          ++ap;
+          ++bp;
+          ++cp;
+
+          pochhammer_sequence_a *= ap;
+          pochhammer_sequence_b *= bp;
+          pochhammer_sequence_c *= cp;
 
           const T next_term = ((pochhammer_sequence_a * pochhammer_sequence_b) / pochhammer_sequence_c) * x_pow_n_div_n_fact;
 
@@ -168,7 +174,7 @@
         T pochhammer_sequence_b = (count_of_b_terms_is_zero ? T(1) : std::accumulate(bm.begin(), bm.end(), my_one, std::multiplies<T>()));
 
         // Calculate the first term in the Taylor series expansion.
-        // Use either: (an * (x^n / n!)) / bn
+        // Use either:  (an * (x^n / n!)) / bn
         // or else use: (an / bn) * (x^n / n!)
         // based on whether or not (x^n / n!) > 1.
         const T first_term = ((x_pow_n_div_n_fact > 1)
@@ -187,7 +193,7 @@
           x_pow_n_div_n_fact *= x;
           x_pow_n_div_n_fact /= n;
 
-          if((!count_of_a_terms_is_zero))
+          if(count_of_a_terms_is_zero == false)
           {
             // Increment each of the pochhammer elements in {an}.
             std::for_each(an.begin(), an.end(), [](T& a) { ++a; });
@@ -198,7 +204,7 @@
             pochhammer_sequence_a *= std::accumulate(an.begin(), an.end(), my_one, std::multiplies<T>());
           }
 
-          if((!count_of_b_terms_is_zero))
+          if(count_of_b_terms_is_zero = false)
           {
             // Increment each of the pochhammer elements in {bm}.
             std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });
