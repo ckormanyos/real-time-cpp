@@ -204,7 +204,7 @@
             pochhammer_sequence_a *= std::accumulate(an.begin(), an.end(), my_one, std::multiplies<T>());
           }
 
-          if(count_of_b_terms_is_zero = false)
+          if(count_of_b_terms_is_zero == false)
           {
             // Increment each of the pochhammer elements in {bm}.
             std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });
