@@ -134,13 +134,11 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wcast-align                      \
               -Wmissing-include-dirs            \
               -Winit-self                       \
-              -Wstack-usage=512                 \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -O2                               \
               -ffunction-sections               \
-              -fdata-sections                   \
-              -fstack-check
+              -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               -x c                              \
@@ -172,7 +170,7 @@ LFLAGS      = $(GCCFLAGS)                       \
 # Main-Dependencies (app: all)
 # ------------------------------------------------------------------------------
 .PHONY: all
-all: clean_prj version $(APP).elf $(APP)_flash.hex $(APP)_nm.txt
+all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).elf
 
 
 # ------------------------------------------------------------------------------

@@ -21,6 +21,9 @@ namespace
 
     return is_init;
   }
+
+  constexpr std::uint16_t timer7_frequency_khz = UINT16_C(24);
+  constexpr std::uint32_t timer7_reload_value  = static_cast<std::uint32_t>(UINT32_C(0x10000) * static_cast<std::uint32_t>(timer7_frequency_khz));
 }
 
 extern "C" void __vector_timer7();
@@ -34,7 +37,7 @@ void __vector_timer7()
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irqstatus, UINT32_C(7)>::reg_set();
 
   // Increment the 64-bit system tick with 1000, representing 1000 microseconds.
-  system_tick += UINT16_C(1000);
+  system_tick += (timer7_reload_value / timer7_frequency_khz);
 
   // Signal the end of the interrupt.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::irq_eoi, UINT32_C(1)>::reg_not();
@@ -67,14 +70,22 @@ void mcal::gpt::init(const config_type*)
     {
       mcal::cpu::nop();
     }
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tcrr, UINT32_C(0xFFFFFFFE - 24000)>::reg_set();
+
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::dmtimer7::tcrr,
+                      static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFE) - timer7_reload_value)>::reg_set();
 
     // Set the dmtimer7 reload register.
     while(mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps>::reg_get() != UINT32_C(0))
     {
       mcal::cpu::nop();
     }
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tldr, UINT32_C(0xFFFFFFFE - 24000)>::reg_set();
+
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::dmtimer7::tldr,
+                      static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFE) - timer7_reload_value)>::reg_set();
 
     // Setup auto reload mode and start dmtimer7, with no prescaler.
     mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::tclr, UINT32_C(3)>::reg_set();
@@ -92,17 +103,17 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
   typedef std::uint32_t timer_register_type;
 
   // Do the first read of the dmtimer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
+  const timer_register_type   tim7_cnt_1 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(timer7_reload_value + 2U));
   const mcal::gpt::value_type sys_tick_1 = system_tick;
 
   // Do the second read of the dmtimer7 counter and the system tick.
-  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(24002UL));
+  const timer_register_type   tim7_cnt_2 = timer_register_type(mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get() + timer_register_type(timer7_reload_value + 2U));
   const mcal::gpt::value_type sys_tick_2 = system_tick;
 
   // Perform the consistency check and obtain the consistent microsecond tick.
   const mcal::gpt::value_type consistent_microsecond_tick
-    = ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + timer_register_type(12UL)) / 24U))
-                                  : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + timer_register_type(12UL)) / 24U)));
+    = ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + std::uint32_t(timer_register_type(tim7_cnt_1 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz))
+                                  : mcal::gpt::value_type(sys_tick_2 + std::uint32_t(timer_register_type(tim7_cnt_2 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz)));
 
   return (gpt_is_initialized() ? consistent_microsecond_tick : mcal::gpt::value_type(0U));
 }

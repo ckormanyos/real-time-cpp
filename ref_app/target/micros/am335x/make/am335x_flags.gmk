@@ -12,10 +12,14 @@
 GCC_VERSION   = 4.8.3
 GCC_TARGET    = arm-none-eabi
 
-TGT_CFLAGS    = -mcpu=cortex-a8                               \
-                -mtune=cortex-a8                              \
-                -marm                                         \
-                -mno-unaligned-access                         \
+TGT_CFLAGS    = -mcpu=cortex-a8                                \
+                -march=armv7-a                                 \
+                -mtune=cortex-a8                               \
+                -marm                                          \
+                -mfloat-abi=hard                               \
+                -mfpu=neon                                     \
+                -ffast-math                                    \
+                -mno-unaligned-access                          \
                 -mno-long-calls
 
 TGT_CPPFLAGS  = -std=c++11                                     \

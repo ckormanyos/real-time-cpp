@@ -120,7 +120,7 @@ void mcal::wdg::secure::trigger()
   // Generate a sequence containing the first eight primes at
   // equidistant stride of 10,000. In particular, this means the
   // 10,000'th, 20,000'th, ... 80,000'th primes. See, for example,
-  // Mathematica(R) or Wolfram's Alpha, and use something like:
+  // Mathematica(R) or Wolfram's Alpha, and use a command such as:
   // Table[Prime[n 10000], {n, 1, 8, 1}]
 
   constexpr prime_sequence_type prime_sequence =

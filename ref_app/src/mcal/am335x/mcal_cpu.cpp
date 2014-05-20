@@ -15,6 +15,18 @@ void init_interrupts_nmi();
 
 void mcal::cpu::init()
 {
+  // Initialize the NEON coprocessor and the VFP.
+  asm volatile("mrc p15, #0, r3, c1, c0, #2"); // Read the cpacr.
+  asm volatile("orr r3, r3, #0x00F00000");     // Enable the FPU via setting cp10 and cp11.
+  asm volatile("mcr p15, #0, r3, c1, c0, #2"); // Write the cpacr.
+  asm volatile("isb");                         // Perform an instruction memory barrier (IMB/ISB) sequence .
+
+  // Enable the NEON coprocessor and the VFP.
+  asm volatile("mov r0, #0x40000000");
+  asm volatile("vmsr fpexc, r0");              // Enable the floating-point exception register.
+  asm volatile("vmrs r1, fpsid");
+  asm volatile("isb");                         // Perform an instruction memory barrier (IMB/ISB) sequence .
+
   // Copy the system interrupt vector table from ROM to RAM.
   init_interrupts_nmi();
 
