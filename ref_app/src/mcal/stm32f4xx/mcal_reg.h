@@ -33,6 +33,7 @@
       constexpr std::uint32_t gpiod_base      = ahb1periph_base + UINT32_C(0x0C00);
       constexpr std::uint32_t gpioe_base      = ahb1periph_base + UINT32_C(0x1000);
       constexpr std::uint32_t gpiof_base      = ahb1periph_base + UINT32_C(0x1400);
+      constexpr std::uint32_t gpiog_base      = ahb1periph_base + UINT32_C(0x1800);
 
       constexpr std::uint32_t tim4_base       = periph_base     + UINT32_C(0x0800);
 
@@ -130,6 +131,17 @@
       constexpr std::uint32_t gpiof_lckr      = gpiof_base      + UINT32_C(0x001C);  // 32-bit register.
       constexpr std::uint32_t gpiof_afrl      = gpiof_base      + UINT32_C(0x0020);  // 32-bit register.
       constexpr std::uint32_t gpiof_afrh      = gpiof_base      + UINT32_C(0x0024);  // 32-bit register.
+
+      constexpr std::uint32_t gpiog_moder     = gpiog_base      + UINT32_C(0x0000);  // 32-bit register.
+      constexpr std::uint32_t gpiog_otyper    = gpiog_base      + UINT32_C(0x0004);  // 32-bit register.
+      constexpr std::uint32_t gpiog_ospeedr   = gpiog_base      + UINT32_C(0x0008);  // 32-bit register.
+      constexpr std::uint32_t gpiog_pupdr     = gpiog_base      + UINT32_C(0x000C);  // 32-bit register.
+      constexpr std::uint32_t gpiog_idr       = gpiog_base      + UINT32_C(0x0010);  // 32-bit register.
+      constexpr std::uint32_t gpiog_odr       = gpiog_base      + UINT32_C(0x0014);  // 32-bit register.
+      constexpr std::uint32_t gpiog_bsrr      = gpiog_base      + UINT32_C(0x0018);  // 32-bit register.
+      constexpr std::uint32_t gpiog_lckr      = gpiog_base      + UINT32_C(0x001C);  // 32-bit register.
+      constexpr std::uint32_t gpiog_afrl      = gpiog_base      + UINT32_C(0x0020);  // 32-bit register.
+      constexpr std::uint32_t gpiog_afrh      = gpiog_base      + UINT32_C(0x0024);  // 32-bit register.
 
       // Timer registers.
       constexpr std::uint32_t tim4_cr1        = tim4_base       + UINT32_C(0x0000);  // 16-bit register.
