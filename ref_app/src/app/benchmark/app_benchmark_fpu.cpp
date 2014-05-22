@@ -15,6 +15,7 @@
   #include <cstdint>
   #include <limits>
   #include <mcal_benchmark.h>
+  #include <util/utility/util_time.h>
 
   #define CFG_APP_BENCHMARK_FPU_TYPE_ADD         1
   #define CFG_APP_BENCHMARK_FPU_TYPE_SUB         2
@@ -129,11 +130,16 @@
       return (delta < tolerance);
     }
 
-    std::float32_t value_x;
-    std::float32_t value_y;
+    typedef util::timer<std::uint32_t> timer_type;
 
-    bool the_result_is_ok = true;
+    timer_type            app_benchmark_fpu_timer;
+    timer_type::tick_type app_benchmark_fpu_result;
   }
+
+  std::float32_t value_x;
+  std::float32_t value_y;
+
+  bool the_result_is_ok = true;
 
 #endif
 
@@ -170,6 +176,8 @@ void app::benchmark::fpu::task_func()
 
     const std::float32_t benchmark_tolerance = std::numeric_limits<std::float32_t>::epsilon() * FLOAT32_C(100.0);
 
+    app_benchmark_fpu_timer.set_mark();
+
     benchmark_port_type::set_pin_high();
 
     #if(CFG_APP_BENCHMARK_FPU_TYPE == CFG_APP_BENCHMARK_FPU_TYPE_ADD)
@@ -177,7 +185,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: 0.5 + sqrt(0.5) = (approx.) 1.207106781.
       value_y = value_x + FLOAT32_C(0.707106781);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(1.207106781),
                                            value_y,
@@ -188,7 +200,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: sqrt(0.5) - 0.5 = (approx.) 0.207106781.
       value_y = FLOAT32_C(0.707106781) - value_x;
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.207106781),
                                            value_y,
@@ -199,7 +215,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: 0.5 * sqrt(0.5) = (approx.) 0.353553385.
       value_y = value_x * FLOAT32_C(0.707106781);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.353553385),
                                            value_y,
@@ -210,7 +230,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: 0.5 / sqrt(0.5) = (approx.) 0.707106781.
       value_y = value_x / FLOAT32_C(0.707106781);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.707106781),
                                            value_y,
@@ -221,7 +245,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: sqrt(0.5) = (approx.) 0.707106781.
       value_y = std::sqrt(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.707106781),
                                            value_y,
@@ -232,7 +260,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: sin(0.5) = (approx.) 0.479425539.
       value_y = std::sin(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.479425539),
                                            value_y,
@@ -243,7 +275,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: cos(0.5) = (approx.) 0.877582562.
       value_y = std::cos(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.877582562),
                                            value_y,
@@ -254,7 +290,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: tan(0.5) = (approx.) 0.546302490.
       value_y = std::tan(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.546302490),
                                            value_y,
@@ -265,7 +305,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: asin(0.5) = (approx.) 0.523598776.
       value_y = std::asin(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.523598776),
                                            value_y,
@@ -276,7 +320,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: acos(0.5) = (approx.) 1.047197551.
       value_y = std::acos(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(1.047197551),
                                            value_y,
@@ -287,7 +335,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: atan(0.5) = (approx.) 0.463647609.
       value_y = std::atan(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.463647609),
                                            value_y,
@@ -298,7 +350,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: exp(0.5) = (approx.) 1.648721271.
       value_y = std::exp(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(1.648721271),
                                            value_y,
@@ -309,7 +365,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: pow(0.5, 1/2) = (approx.) 0.707106781.
       value_y = std::pow(value_x, value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.707106781),
                                            value_y,
@@ -320,7 +380,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: log(2.0) = (approx.) 0.693147181.
       value_y = std::log(FLOAT32_C(1.0) / value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.693147181),
                                            value_y,
@@ -331,7 +395,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: log10(FLOAT32_C(1.0) / value_x) = (approx.) 0.301029996.
       value_y = std::log10(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.301029996),
                                            value_y,
@@ -342,7 +410,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: sinh(0.5) = (approx.) 0.521095306.
       value_y = std::sinh(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.521095306),
                                            value_y,
@@ -353,7 +425,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: cosh(0.5) = (approx.) 1.127625965.
       value_y = std::cosh(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(1.127625965),
                                            value_y,
@@ -364,7 +440,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: tanh(0.5) = (approx.) 0.462117157.
       value_y = std::tanh(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.462117157),
                                            value_y,
@@ -375,7 +455,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: asinh(0.5) = (approx.) 0.481211825.
       value_y = std::asinh(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.481211825),
                                            value_y,
@@ -386,7 +470,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: acosh(1.5) = (approx.) 0.962423650.
       value_y = std::acosh(value_x * FLOAT32_C(3.0));
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.962423650),
                                            value_y,
@@ -397,7 +485,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: atanh(0.5) = (approx.) 0.549306144.
       value_y = std::atanh(value_x);
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.549306144),
                                            value_y,
@@ -408,7 +500,11 @@ void app::benchmark::fpu::task_func()
       // The expected value is: gamma(0.5 + 4) = (approx.) 11.6317284.
       value_y = std::tgamma(value_x + FLOAT32_C(4.0));
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(11.6317284),
                                            value_y,
@@ -429,7 +525,11 @@ void app::benchmark::fpu::task_func()
 
       value_y = cyl_bessel_j(v, euler<std::float32_t>());
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(0.154540873),
                                            value_y,
@@ -471,7 +571,11 @@ void app::benchmark::fpu::task_func()
                                    bm.end(),
                                    euler<std::float32_t>());
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(1.4371520916),
                                            value_y,
@@ -495,7 +599,11 @@ void app::benchmark::fpu::task_func()
 
       value_y = legendre_p(v, u, euler<std::float32_t>());
 
-      if(the_result_is_ok) { benchmark_port_type::set_pin_low(); }
+      if(the_result_is_ok)
+      {
+        benchmark_port_type::set_pin_low();
+        app_benchmark_fpu_result = app_benchmark_fpu_timer.get_ticks_since_mark();
+      }
 
       the_result_is_ok = is_close_fraction(FLOAT32_C(2.4043536151562),
                                            value_y,
