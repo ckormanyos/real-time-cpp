@@ -101,7 +101,7 @@
     <Filter Include="src\util\safety\time">
       <UniqueIdentifier>{be85e876-1040-4705-bb46-36a60160228f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32f4xx">
+    <Filter Include="src\mcal\stm32f407">
       <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util\STL_C++14_Compatibility">
@@ -122,14 +122,14 @@
     <Filter Include="src\mcal\rl78">
       <UniqueIdentifier>{f8af3f0f-5c80-41e7-88de-7809108140bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL_StandardCplusplus">
-      <UniqueIdentifier>{25de6b2b-7c78-4959-8b38-4daf883b17ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL\impl\arm">
       <UniqueIdentifier>{9720414a-cb9d-4d52-b113-55909704ad88}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util\STL\impl\rl78">
       <UniqueIdentifier>{e5d40cb1-7138-45c2-a206-9124a2aa53ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32f429">
+      <UniqueIdentifier>{3d9c9058-7846-4b3f-b8aa-c64674ccacb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -322,35 +322,35 @@
     <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_cpu.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_gpt.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_irq.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_irq.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_led.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_led.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_osc.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_osc.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_port.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_port.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_pwm.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_safety_dram.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_safety_dram.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f4xx\mcal_wdg.cpp">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClCompile Include="src\mcal\stm32f407\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
@@ -406,135 +406,6 @@
     <ClCompile Include="src\mcal\rl78\mcal_wdg.cpp">
       <Filter>src\mcal\rl78</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\algorithm.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\associative_base.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\bitset.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\char_traits.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\complex.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\del_op.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\del_opnt.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\del_opv.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\del_opvnt.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\deque.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\eh_alloc.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\eh_globals.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\exception.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\fstream.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\func_exception.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\iomanip.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\ios.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\iostream.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\istream.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\iterator.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\limits.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\list.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\locale.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\map.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\new_handler.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\new_op.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\new_opnt.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\new_opv.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\new_opvnt.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\numeric.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\ostream.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\queue.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\set.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\sstream.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\stack.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\stdexcept.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\streambuf.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\string.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\support.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\typeinfo.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\utility.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\valarray.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL_StandardCplusplus\vector.cpp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_cpu.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
@@ -549,6 +420,36 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\rl78\rl78_float_limits.cpp">
       <Filter>src\util\STL\impl\rl78</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_irq.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_led.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_osc.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_port.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_safety_dram.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -969,47 +870,47 @@
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_cpu.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_cpu.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_gpt.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_gpt.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_irq.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_irq.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_led.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_led.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_osc.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_osc.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_port.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_port.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_pwm.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_pwm.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_reg.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_reg.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_reg_access.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_reg_access.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_safety_dram.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_safety_dram.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_ser.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_ser.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_spi.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_spi.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_wdg.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_wdg.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_stopwatch.h">
       <Filter>src\util\utility</Filter>
@@ -1035,8 +936,8 @@
     <ClInclude Include="src\mcal\mips\mcal_debug_monitor.h">
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_debug_monitor.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_debug_monitor.h">
       <Filter>src\mcal\win32</Filter>
@@ -1071,8 +972,8 @@
     <ClInclude Include="src\util\STL\impl\cstdbool_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f4xx\mcal_benchmark.h">
-      <Filter>src\mcal\stm32f4xx</Filter>
+    <ClInclude Include="src\mcal\stm32f407\mcal_benchmark.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_benchmark.h">
       <Filter>src\mcal\win32</Filter>
@@ -1134,15 +1035,6 @@
     <ClInclude Include="src\mcal\rl78\mcal_wdg.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL_StandardCplusplus\StandardCplusplus.h">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_StandardCplusplus\system_configuration.h">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_StandardCplusplus\unwind-cxx.h">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
     </ClInclude>
@@ -1166,6 +1058,54 @@
     </ClInclude>
     <ClInclude Include="src\app\benchmark\app_benchmark_fpu_bessel.h">
       <Filter>src\app\benchmark</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_benchmark.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_cpu.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_debug_monitor.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_gpt.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_irq.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_led.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_osc.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_port.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_pwm.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_reg.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_reg_access.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_safety_dram.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_ser.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_spi.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_wdg.h">
+      <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1253,200 +1193,8 @@
     <None Include="src\util\STL\cstdbool">
       <Filter>src\util\STL</Filter>
     </None>
-    <None Include="src\util\STL_StandardCplusplus\algorithm">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\array">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\associative_base">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\basic_definitions">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\bitset">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cassert">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cctype">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cerrno">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cfloat">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\char_traits">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\climits">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\clocale">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cmath">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\complex">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\csetjmp">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\csignal">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstdarg">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstddef">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstdio">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstdlib">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstring">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\ctime">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cwchar">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cwctype">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\deque">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\exception">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\fstream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\func_exception">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\functional">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\initializer_list">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\iomanip">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\ios">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\iosfwd">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\iostream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\istream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\istream_helpers">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\iterator">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\iterator_base">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\limits">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\list">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\locale">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\map">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\memory">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\new">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\numeric">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\ostream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\ostream_helpers">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\queue">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\serstream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\set">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\sstream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\stack">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\stdexcept">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\streambuf">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\string">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\string_iostream">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\support">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\type_traits">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\typeinfo">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\uartbuf">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\utility">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\valarray">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\vector">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
-    </None>
     <None Include="src\util\STL_C++11_Compatibility\cstdint">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_StandardCplusplus\cstdint">
-      <Filter>src\util\STL_StandardCplusplus</Filter>
     </None>
   </ItemGroup>
 </Project>

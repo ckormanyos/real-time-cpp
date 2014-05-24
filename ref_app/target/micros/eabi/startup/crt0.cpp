@@ -6,7 +6,7 @@
 //
 
 // STM32 EABI Cortex-M3 startup code
-// Switched to C++ and modified for STM32F103x by Chris.
+// Switched to C++ and modified for STM32F100 by Chris.
 
 #include <mcal/mcal.h>
 

@@ -1,0 +1,35 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 4.8.3
+GCC_TARGET    = arm-none-eabi
+
+TGT_CFLAGS    = -mcpu=cortex-m4                                \
+                -mtune=cortex-m4                               \
+                -mthumb                                        \
+                -mfloat-abi=hard                               \
+                -mfpu=fpv4-sp-d16                              \
+                -ffast-math                                    \
+                -mno-unaligned-access                          \
+                -mno-long-calls
+
+#                -mfloat-abi=soft                               \
+
+#                -mfloat-abi=hard                               \
+#                -mfpu=fpv4-sp-d16                              \
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                -Wzero-as-null-pointer-constant                \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
+
+TGT_AFLAGS    =
+
+TGT_LFLAGS    =

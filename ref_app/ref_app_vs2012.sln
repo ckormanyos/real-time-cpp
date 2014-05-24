@@ -14,7 +14,8 @@ Global
 		target eabi|Win32 = target eabi|Win32
 		target mips|Win32 = target mips|Win32
 		target rl78|Win32 = target rl78|Win32
-		target stm32f4xx|Win32 = target stm32f4xx|Win32
+		target stm32f407|Win32 = target stm32f407|Win32
+		target stm32f429|Win32 = target stm32f429|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -26,9 +27,11 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target eabi|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target mips|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rl78|Win32.ActiveCfg = Release|Win32
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f4xx|Win32.ActiveCfg = Release|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f407|Win32.ActiveCfg = Release|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f429|Win32.ActiveCfg = Release|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|Win32.ActiveCfg = target avr|Win32
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|Win32.ActiveCfg = target stm32f4xx|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|Win32.ActiveCfg = target stm32f407|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|Win32.Build.0 = target stm32f407|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|Win32.ActiveCfg = target am335x|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|Win32.Build.0 = target am335x|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.ActiveCfg = target avr|Win32
@@ -39,8 +42,10 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target mips|Win32.Build.0 = target mips|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|Win32.ActiveCfg = target rl78|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|Win32.Build.0 = target rl78|Win32
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f4xx|Win32.ActiveCfg = target stm32f4xx|Win32
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f4xx|Win32.Build.0 = target stm32f4xx|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f407|Win32.ActiveCfg = target stm32f407|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f407|Win32.Build.0 = target stm32f407|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f429|Win32.ActiveCfg = target stm32f429|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f429|Win32.Build.0 = target stm32f429|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

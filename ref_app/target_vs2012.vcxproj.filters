@@ -49,13 +49,13 @@
     <Filter Include="micros\am335x\startup">
       <UniqueIdentifier>{5448ad0f-89af-4486-b7b5-acbbd7097fc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\stm32f4xx">
+    <Filter Include="micros\stm32f407">
       <UniqueIdentifier>{929c88f9-9c63-4561-b552-640c83475ef2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\stm32f4xx\make">
+    <Filter Include="micros\stm32f407\make">
       <UniqueIdentifier>{af0127a0-f219-4ef0-8306-5ec9a7b00849}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\stm32f4xx\startup">
+    <Filter Include="micros\stm32f407\startup">
       <UniqueIdentifier>{1e874255-7f2a-47d1-86a2-93c2a964b58a}</UniqueIdentifier>
     </Filter>
     <Filter Include="micros\rl78">
@@ -66,6 +66,15 @@
     </Filter>
     <Filter Include="micros\rl78\startup">
       <UniqueIdentifier>{9c63cee6-d07d-403b-8e60-13f7fa68b6bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32f429">
+      <UniqueIdentifier>{1961760f-87c5-43fa-b965-6912e8fbf24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32f429\make">
+      <UniqueIdentifier>{6272ab58-5727-4841-8de8-e3a595018094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32f429\startup">
+      <UniqueIdentifier>{ddc364cc-7a6a-451e-a808-90cdd5848570}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,17 +162,17 @@
     <None Include="target\micros\mips\make\mips_hex_manip_script.hxm">
       <Filter>micros\mips\make</Filter>
     </None>
-    <None Include="target\micros\stm32f4xx\make\stm32f4xx.ld">
-      <Filter>micros\stm32f4xx\make</Filter>
+    <None Include="target\micros\stm32f407\make\stm32f407.ld">
+      <Filter>micros\stm32f407\make</Filter>
     </None>
-    <None Include="target\micros\stm32f4xx\make\stm32f4xx_files.gmk">
-      <Filter>micros\stm32f4xx\make</Filter>
+    <None Include="target\micros\stm32f407\make\stm32f407_files.gmk">
+      <Filter>micros\stm32f407\make</Filter>
     </None>
-    <None Include="target\micros\stm32f4xx\make\stm32f4xx_flags.gmk">
-      <Filter>micros\stm32f4xx\make</Filter>
+    <None Include="target\micros\stm32f407\make\stm32f407_flags.gmk">
+      <Filter>micros\stm32f407\make</Filter>
     </None>
-    <None Include="target\micros\stm32f4xx\make\stm32f4xx_hex_manip_script.hxm">
-      <Filter>micros\stm32f4xx\make</Filter>
+    <None Include="target\micros\stm32f407\make\stm32f407_hex_manip_script.hxm">
+      <Filter>micros\stm32f407\make</Filter>
     </None>
     <None Include="target\micros\rl78\make\rl78.ld">
       <Filter>micros\rl78\make</Filter>
@@ -176,6 +185,18 @@
     </None>
     <None Include="target\micros\rl78\make\rl78_hex_manip_script.hxm">
       <Filter>micros\rl78\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f429\make\stm32f429.ld">
+      <Filter>micros\stm32f429\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f429\make\stm32f429_files.gmk">
+      <Filter>micros\stm32f429\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f429\make\stm32f429_flags.gmk">
+      <Filter>micros\stm32f429\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f429\make\stm32f429_hex_manip_script.hxm">
+      <Filter>micros\stm32f429\make</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -203,17 +224,17 @@
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp">
       <Filter>micros\am335x\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\stm32f4xx\startup\crt0.cpp">
-      <Filter>micros\stm32f4xx\startup</Filter>
+    <ClCompile Include="target\micros\stm32f407\startup\crt0.cpp">
+      <Filter>micros\stm32f407\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\stm32f4xx\startup\crt0_init_ram.cpp">
-      <Filter>micros\stm32f4xx\startup</Filter>
+    <ClCompile Include="target\micros\stm32f407\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32f407\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\stm32f4xx\startup\crt1.cpp">
-      <Filter>micros\stm32f4xx\startup</Filter>
+    <ClCompile Include="target\micros\stm32f407\startup\crt1.cpp">
+      <Filter>micros\stm32f407\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\stm32f4xx\startup\int_vect.cpp">
-      <Filter>micros\stm32f4xx\startup</Filter>
+    <ClCompile Include="target\micros\stm32f407\startup\int_vect.cpp">
+      <Filter>micros\stm32f407\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp">
       <Filter>micros\rl78\startup</Filter>
@@ -226,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\rl78\startup\int_vect.cpp">
       <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f429\startup\crt0.cpp">
+      <Filter>micros\stm32f429\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f429\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32f429\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f429\startup\crt1.cpp">
+      <Filter>micros\stm32f429\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f429\startup\int_vect.cpp">
+      <Filter>micros\stm32f429\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
