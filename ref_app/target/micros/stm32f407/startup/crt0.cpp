@@ -23,7 +23,7 @@ void __my_startup()
   // Load the stack pointer.
   // The stack pointer is automatically loaded from
   // the base position of the interrupt vector table.
-  // So do nothing here.
+  // So we do nothing here.
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();

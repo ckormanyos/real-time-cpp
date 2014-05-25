@@ -22,13 +22,13 @@
     <Filter Include="micros\avr\startup">
       <UniqueIdentifier>{3500d006-2e46-4281-adcb-a55d324a5d8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\eabi">
+    <Filter Include="micros\stm32f100">
       <UniqueIdentifier>{bb59a455-d3da-468a-a7b0-a98e288bce0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\eabi\make">
+    <Filter Include="micros\stm32f100\make">
       <UniqueIdentifier>{98393bf8-ed15-4ac1-90bf-0db9add1c35c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\eabi\startup">
+    <Filter Include="micros\stm32f100\startup">
       <UniqueIdentifier>{c59321aa-9533-4c7a-8fe3-6d03e26392f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="micros\mips">
@@ -78,9 +78,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Target\Micros\EABI\Startup\crt0.cpp">
-      <Filter>micros\eabi\startup</Filter>
-    </None>
     <None Include="target\app\make\app_files.gmk">
       <Filter>app\make</Filter>
     </None>
@@ -102,14 +99,8 @@
     <None Include="target\micros\avr\make\avr_flags.gmk">
       <Filter>micros\avr\make</Filter>
     </None>
-    <None Include="target\micros\eabi\make\eabi.ld">
-      <Filter>micros\eabi\make</Filter>
-    </None>
-    <None Include="target\micros\eabi\make\eabi_files.gmk">
-      <Filter>micros\eabi\make</Filter>
-    </None>
-    <None Include="target\micros\eabi\make\eabi_flags.gmk">
-      <Filter>micros\eabi\make</Filter>
+    <None Include="target\micros\stm32f100\make\stm32f100.ld">
+      <Filter>micros\stm32f100\make</Filter>
     </None>
     <None Include="target\micros\mips\make\procdefs.ld">
       <Filter>micros\mips\make</Filter>
@@ -153,9 +144,6 @@
     <None Include="target\micros\am335x\make\am335x.ld">
       <Filter>micros\am335x\make</Filter>
     </None>
-    <None Include="target\micros\eabi\make\eabi_hex_manip_script.hxm">
-      <Filter>micros\eabi\make</Filter>
-    </None>
     <None Include="target\micros\avr\make\avr_hex_manip_script.hxm">
       <Filter>micros\avr\make</Filter>
     </None>
@@ -198,19 +186,19 @@
     <None Include="target\micros\stm32f429\make\stm32f429_hex_manip_script.hxm">
       <Filter>micros\stm32f429\make</Filter>
     </None>
+    <None Include="target\micros\stm32f100\make\stm32f100_files.gmk">
+      <Filter>micros\stm32f100\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f100\make\stm32f100_flags.gmk">
+      <Filter>micros\stm32f100\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f100\make\stm32f100_hex_manip_script.hxm">
+      <Filter>micros\stm32f100\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Target\Micros\EABI\Startup\crt1.cpp">
-      <Filter>micros\eabi\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="Target\Micros\EABI\Startup\crt0_init_ram.cpp">
-      <Filter>micros\eabi\startup</Filter>
-    </ClCompile>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
       <Filter>micros\avr\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="Target\Micros\EABI\Startup\int_vect.cpp">
-      <Filter>micros\eabi\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp">
       <Filter>micros\am335x\startup</Filter>
@@ -259,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f429\startup\int_vect.cpp">
       <Filter>micros\stm32f429\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f100\startup\crt0.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f100\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f100\startup\crt1.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f100\startup\int_vect.cpp">
+      <Filter>micros\stm32f100\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

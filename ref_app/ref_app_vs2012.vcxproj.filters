@@ -14,7 +14,7 @@
     <Filter Include="src\mcal\avr">
       <UniqueIdentifier>{35abab27-f12f-49fc-a3f3-db5c1a3d86d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\eabi">
+    <Filter Include="src\mcal\stm32f100">
       <UniqueIdentifier>{eec5b14c-e762-4ba2-8423-1f7a149a1ac8}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\math">
@@ -175,23 +175,23 @@
     <ClCompile Include="src\mcal\avr\mcal_wdg.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_cpu.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_gpt.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_irq.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_irq.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_led.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_led.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_wdg.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_osc.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_osc.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_osc.cpp">
       <Filter>src\mcal\avr</Filter>
@@ -211,14 +211,14 @@
     <ClCompile Include="src\mcal\win32\mcal_pwm.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_pwm.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_port.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_port.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_port.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\mips\mcal_cpu.cpp">
       <Filter>src\mcal\mips</Filter>
@@ -286,8 +286,8 @@
     <ClCompile Include="src\math\checksums\crypto_hash\test_sha256.cpp">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_safety_dram.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_safety_dram.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_safety_dram.cpp">
       <Filter>src\mcal\win32</Filter>
@@ -313,8 +313,8 @@
     <ClCompile Include="src\mcal\mips\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\mips</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\eabi\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\eabi</Filter>
+    <ClCompile Include="src\mcal\stm32f100\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
       <Filter>src\mcal\win32</Filter>
@@ -552,32 +552,32 @@
     <ClInclude Include="src\mcal\avr\mcal_wdg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_cpu.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_cpu.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_gpt.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_gpt.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_irq.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_irq.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_led.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_led.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_pwm.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_pwm.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_reg_access.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_reg_access.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_ser.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_ser.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_wdg.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_wdg.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_osc.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_osc.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_osc.h">
       <Filter>src\mcal\avr</Filter>
@@ -591,8 +591,8 @@
     <ClInclude Include="src\mcal\win32\mcal_spi.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_spi.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_spi.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\algorithm_impl.h">
       <Filter>src\util\STL\impl</Filter>
@@ -699,8 +699,8 @@
     <ClInclude Include="src\mcal\avr\mcal_port.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_port.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_port.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_port.h">
       <Filter>src\mcal\win32</Filter>
@@ -714,8 +714,8 @@
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_reg.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_reg.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\mips\mcal_cpu.h">
       <Filter>src\mcal\mips</Filter>
@@ -813,8 +813,8 @@
     <ClInclude Include="src\math\checksums\crypto_hash\sha256.h">
       <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_safety_dram.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_safety_dram.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_safety_dram.h">
       <Filter>src\mcal\win32</Filter>
@@ -852,8 +852,8 @@
     <ClInclude Include="src\mcal\mips\mcal_safety_rom_checksum.h">
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\util\safety\time\util_safety_max_time_since_service.h">
       <Filter>src\util\safety\time</Filter>
@@ -930,8 +930,8 @@
     <ClInclude Include="src\mcal\avr\mcal_debug_monitor.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_debug_monitor.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_debug_monitor.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\mips\mcal_debug_monitor.h">
       <Filter>src\mcal\mips</Filter>
@@ -981,8 +981,8 @@
     <ClInclude Include="src\mcal\mips\mcal_benchmark.h">
       <Filter>src\mcal\mips</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\eabi\mcal_benchmark.h">
-      <Filter>src\mcal\eabi</Filter>
+    <ClInclude Include="src\mcal\stm32f100\mcal_benchmark.h">
+      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
       <Filter>src\mcal\avr</Filter>

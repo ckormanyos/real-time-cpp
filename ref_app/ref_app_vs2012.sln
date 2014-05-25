@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_app", "ref_app_vs2012.vcxproj", "{C8B59726-9319-45C3-8F11-F9F388FB6A2C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "target", "target_vs2012.vcxproj", "{30CE370B-40F3-4BCD-8986-64AAFF8971BD}"
@@ -11,9 +13,9 @@ Global
 		Release|Win32 = Release|Win32
 		target am335x|Win32 = target am335x|Win32
 		target avr|Win32 = target avr|Win32
-		target eabi|Win32 = target eabi|Win32
 		target mips|Win32 = target mips|Win32
 		target rl78|Win32 = target rl78|Win32
+		target stm32f100|Win32 = target stm32f100|Win32
 		target stm32f407|Win32 = target stm32f407|Win32
 		target stm32f429|Win32 = target stm32f429|Win32
 	EndGlobalSection
@@ -24,9 +26,9 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|Win32.Build.0 = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target am335x|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|Win32.ActiveCfg = Release|Win32
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target eabi|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target mips|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rl78|Win32.ActiveCfg = Release|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f100|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f407|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f429|Win32.ActiveCfg = Release|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|Win32.ActiveCfg = target avr|Win32
@@ -35,12 +37,12 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|Win32.Build.0 = target am335x|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.ActiveCfg = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.Build.0 = target avr|Win32
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target eabi|Win32.ActiveCfg = target eabi|Win32
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target eabi|Win32.Build.0 = target eabi|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target mips|Win32.ActiveCfg = target mips|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target mips|Win32.Build.0 = target mips|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|Win32.ActiveCfg = target rl78|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|Win32.Build.0 = target rl78|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f100|Win32.ActiveCfg = target stm32f100|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f100|Win32.Build.0 = target stm32f100|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f407|Win32.ActiveCfg = target stm32f407|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f407|Win32.Build.0 = target stm32f407|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f429|Win32.ActiveCfg = target stm32f429|Win32

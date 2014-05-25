@@ -106,54 +106,54 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x00E0, exti15_10 irq handler,
   __vector_unused_irq,       // 0x00E4, rtcalarm irq handler,
   __vector_unused_irq,       // 0x00E8, usbwakeup irq handler,
-  __vector_unused_irq,       // 0x00EC, tim8 break and tim12
-  __vector_unused_irq,       // 0x00F0, tim8 update and tim13
-  __vector_unused_irq,       // 0x00F4, tim8 trigger and commutation and tim14
-  __vector_unused_irq,       // 0x00F8, tim8 capture compare
-  __vector_unused_irq,       // 0x00FC, dma1 stream7
-  __vector_unused_irq,       // 0x0100, fmc
-  __vector_unused_irq,       // 0x0104, sdio
-  __vector_unused_irq,       // 0x0108, tim5
-  __vector_unused_irq,       // 0x010C, spi3
-  __vector_unused_irq,       // 0x0110, uart4
-  __vector_unused_irq,       // 0x0114, uart5
-  __vector_unused_irq,       // 0x0118, tim6 and dac1&2 underrun errors
-  __vector_unused_irq,       // 0x011C, tim7
-  __vector_unused_irq,       // 0x0120, dma2 stream 0
-  __vector_unused_irq,       // 0x0124, dma2 stream 1
-  __vector_unused_irq,       // 0x0128, dma2 stream 2
-  __vector_unused_irq,       // 0x012C, dma2 stream 3
-  __vector_unused_irq,       // 0x0130, dma2 stream 4
-  __vector_unused_irq,       // 0x0134, ethernet
-  __vector_unused_irq,       // 0x0138, ethernet wakeup through exti line
-  __vector_unused_irq,       // 0x013C, can2 tx
-  __vector_unused_irq,       // 0x0140, can2 rx0
-  __vector_unused_irq,       // 0x0144, can2 rx1
-  __vector_unused_irq,       // 0x0148, can2 sce
-  __vector_unused_irq,       // 0x014C, usb otg fs
-  __vector_unused_irq,       // 0x0150, dma2 stream 5
-  __vector_unused_irq,       // 0x0154, dma2 stream 6
-  __vector_unused_irq,       // 0x0158, dma2 stream 7
-  __vector_unused_irq,       // 0x015C, usart6
-  __vector_unused_irq,       // 0x0160, i2c3 event
-  __vector_unused_irq,       // 0x0164, i2c3 error
-  __vector_unused_irq,       // 0x0168, usb otg hs end point 1 out
-  __vector_unused_irq,       // 0x016C, usb otg hs end point 1 in
-  __vector_unused_irq,       // 0x0170, usb otg hs wakeup through exti
-  __vector_unused_irq,       // 0x0174, usb otg hs
-  __vector_unused_irq,       // 0x0178, dcmi
-  __vector_unused_irq,       // 0x017C, cryp crypto
-  __vector_unused_irq,       // 0x0180, hash and rng
-  __vector_unused_irq,       // 0x0184, fpu
-  __vector_unused_irq,       // 0x0188, uart7
-  __vector_unused_irq,       // 0x018C, uart8
-  __vector_unused_irq,       // 0x0190, spi4
-  __vector_unused_irq,       // 0x0194, spi5
-  __vector_unused_irq,       // 0x0198, spi6
-  __vector_unused_irq,       // 0x019C, sai1
-  __vector_unused_irq,       // 0x01A0, reserved
-  __vector_unused_irq,       // 0x01A4, reserved
-  __vector_unused_irq,       // 0x01A8, dma2d
+  __vector_unused_irq,       // 0x00EC, reserved
+  __vector_unused_irq,       // 0x00F0, reserved
+  __vector_unused_irq,       // 0x00F4, reserved
+  __vector_unused_irq,       // 0x00F8, reserved
+  __vector_unused_irq,       // 0x00FC, reserved
+  __vector_unused_irq,       // 0x0100, reserved
+  __vector_unused_irq,       // 0x0104, reserved
+  __vector_unused_irq,       // 0x0108, this is for boot in ram mode for medium density devices.
+  __vector_unused_irq,       // 0x010C, unused
+  __vector_unused_irq,       // 0x0110, unused
+  __vector_unused_irq,       // 0x0114, unused
+  __vector_unused_irq,       // 0x0118, unused
+  __vector_unused_irq,       // 0x011C, unused
+  __vector_unused_irq,       // 0x0120, unused
+  __vector_unused_irq,       // 0x0124, unused
+  __vector_unused_irq,       // 0x0128, unused
+  __vector_unused_irq,       // 0x012C, unused
+  __vector_unused_irq,       // 0x0130, unused
+  __vector_unused_irq,       // 0x0134, unused
+  __vector_unused_irq,       // 0x0138, unused
+  __vector_unused_irq,       // 0x013C, unused
+  __vector_unused_irq,       // 0x0140, unused
+  __vector_unused_irq,       // 0x0144, unused
+  __vector_unused_irq,       // 0x0148, unused
+  __vector_unused_irq,       // 0x014C, unused
+  __vector_unused_irq,       // 0x0150, unused
+  __vector_unused_irq,       // 0x0154, unused
+  __vector_unused_irq,       // 0x0158, unused
+  __vector_unused_irq,       // 0x015C, unused
+  __vector_unused_irq,       // 0x0160, unused
+  __vector_unused_irq,       // 0x0164, unused
+  __vector_unused_irq,       // 0x0168, unused
+  __vector_unused_irq,       // 0x016C, unused
+  __vector_unused_irq,       // 0x0170, unused
+  __vector_unused_irq,       // 0x0174, unused
+  __vector_unused_irq,       // 0x0178, unused
+  __vector_unused_irq,       // 0x017C, unused
+  __vector_unused_irq,       // 0x0180, unused
+  __vector_unused_irq,       // 0x0184, unused
+  __vector_unused_irq,       // 0x0188, unused
+  __vector_unused_irq,       // 0x018C, unused
+  __vector_unused_irq,       // 0x0190, unused
+  __vector_unused_irq,       // 0x0194, unused
+  __vector_unused_irq,       // 0x0198, unused
+  __vector_unused_irq,       // 0x019C, unused
+  __vector_unused_irq,       // 0x01A0, unused
+  __vector_unused_irq,       // 0x01A4, unused
+  __vector_unused_irq,       // 0x01A8, unused
   nullptr,                   // 0x01AC, dummy
   nullptr,                   // 0x01B0, dummy
   nullptr,                   // 0x01B4, dummy
