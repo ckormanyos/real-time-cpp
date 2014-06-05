@@ -19,8 +19,10 @@ TGT_CFLAGS    = -mcpu=cortex-a8                                \
                 -mfloat-abi=hard                               \
                 -mfpu=neon                                     \
                 -ffast-math                                    \
+                -ftree-vectorize                               \
                 -mno-unaligned-access                          \
                 -mno-long-calls
+
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \

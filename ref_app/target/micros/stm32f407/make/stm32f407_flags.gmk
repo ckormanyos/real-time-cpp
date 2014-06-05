@@ -25,6 +25,7 @@ TGT_CFLAGS    = -mcpu=cortex-m4                                \
 
 #                -mfloat-abi=hard                               \
 #                -mfpu=fpv4-sp-d16                              \
+#                -ffast-math                                    \
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
