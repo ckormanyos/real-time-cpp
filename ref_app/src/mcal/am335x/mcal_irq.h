@@ -21,8 +21,21 @@
 
       void init(const config_type*);
 
-      void enable_all();
-      void disable_all();
+      inline void enable_all()
+      {
+        // Enable all user interrupts.
+        asm volatile("mrs r0, cpsr");
+        asm volatile("bic r0, #0x80");
+        asm volatile("msr cpsr, r0");
+      }
+
+      inline void disable_all()
+      {
+        // Disable all user interrupts.
+        asm volatile("mrs r0, cpsr");
+        asm volatile("orr r0, #0x80");
+        asm volatile("msr cpsr, r0");
+      }
 
       struct interrupt_descriptor
       {

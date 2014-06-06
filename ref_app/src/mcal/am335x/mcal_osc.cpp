@@ -41,12 +41,11 @@ namespace
 
 void osc_detail::mpu_pll_init()
 {
-  // Set the MPU clock to 600MHz, an acceptable setting for both the
-  // BeagleBone white edition as well as the BeagleBone black edition.
-  // Note that the BeagleBone black edition can comfortably handle 900MHz.
+  // Set the MPU clock to 1000MHz for the BeagleBone *black* edition.
+  // Note that the BeagleBone *white* edition can be clocked at max. 700MHz.
 
-  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 600
-  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(600);
+  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 1000
+  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(1000);
   constexpr std::uint32_t mcu_mpu_pll_n  = UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_mpu_pll_m2 = UINT32_C(1);
 
