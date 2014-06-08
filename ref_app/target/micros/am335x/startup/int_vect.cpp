@@ -38,15 +38,15 @@ void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
 void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
-void init_interrupts_nmi();
-
-void init_interrupts_nmi()
+namespace int_vect
 {
-  // Load the start address of the NMI interrupt table.
+  std::uint32_t get_the_address_of_the_nmi_interrupt_table();
 
-  const std::uint32_t addr = reinterpret_cast<std::uint32_t>(&__isr_vector_nmi);
-
-  asm volatile("mcr p15, #0, %[value], c12, c0, 0":: [value] "r" (addr));
+  std::uint32_t get_the_address_of_the_nmi_interrupt_table()
+  {
+    // Get the address of the nmi interrupt table.
+    return reinterpret_cast<std::uint32_t>(&__isr_vector_nmi);
+  }
 }
 
 extern "C"

@@ -12,7 +12,10 @@
 #include <mcal_reg_access.h>
 #include <mcal_wdg.h>
 
-void init_interrupts_nmi();
+namespace int_vect
+{
+  std::uint32_t get_the_address_of_the_nmi_interrupt_table();
+}
 
 namespace mcal
 {
@@ -20,23 +23,16 @@ namespace mcal
   {
     namespace detail
     {
-      struct secure
-      {
-      private:
-        friend void mcal::cpu::init();
-
-        static void initialize_the_neon_coprocessor_and_the_vfp();
-
-        static void enable_the_level_1_instruction_cache();
-
-        static void enable_the_level_1_data_cache();
-      };
+      void initialize_the_neon_coprocessor_and_the_vfp();
+      void enable_the_level_1_instruction_cache();
+      void enable_the_level_1_data_cache();
+      void load_the_address_of_the_nmi_interrupt_table();
     }
   }
 } // namespace mcal::cpu::detail
 
 
-void mcal::cpu::detail::secure::initialize_the_neon_coprocessor_and_the_vfp()
+void mcal::cpu::detail::initialize_the_neon_coprocessor_and_the_vfp()
 {
   // Initialize the neon coprocessor and the vfp.
   asm volatile("push {r1}");
@@ -66,7 +62,7 @@ void mcal::cpu::detail::secure::initialize_the_neon_coprocessor_and_the_vfp()
   */
 }
 
-void mcal::cpu::detail::secure::enable_the_level_1_instruction_cache()
+void mcal::cpu::detail::enable_the_level_1_instruction_cache()
 {
   // Enable the level 1 instruction cache.
   asm volatile("push {r1}");
@@ -79,22 +75,29 @@ void mcal::cpu::detail::secure::enable_the_level_1_instruction_cache()
   asm volatile("pop {r1}");
 }
 
-void mcal::cpu::detail::secure::enable_the_level_1_data_cache()
+void mcal::cpu::detail::enable_the_level_1_data_cache()
 {
   // TBD: Enable the level 1 data cache.
 }
 
+void mcal::cpu::detail::load_the_address_of_the_nmi_interrupt_table()
+{
+  // Load the address of the nmi interrupt table.
+  const std::uint32_t the_address = int_vect::get_the_address_of_the_nmi_interrupt_table();
+
+  asm volatile("mcr p15, #0, %[value], c12, c0, 0" :: [value] "r" (the_address));
+}
+
 void mcal::cpu::init()
 {
-  detail::secure::initialize_the_neon_coprocessor_and_the_vfp();
+  detail::initialize_the_neon_coprocessor_and_the_vfp();
 
-  detail::secure::enable_the_level_1_instruction_cache();
+  detail::enable_the_level_1_instruction_cache();
 
   // TBD: Enabling the level 1 data chache is not yet implemented.
-  detail::secure::enable_the_level_1_data_cache();
+  detail::enable_the_level_1_data_cache();
 
-  // Copy the system interrupt vector table from ROM to RAM.
-  init_interrupts_nmi();
+  detail::load_the_address_of_the_nmi_interrupt_table();
 
   // Disable OPP50 operation and enable OPP100 operation.
   // Use the ratio for 24MHz to 32KHz division.
@@ -104,7 +107,7 @@ void mcal::cpu::init()
                     mcal::reg::control::clk32kdivratio_ctrl,
                     UINT32_C(0x00000000)>::reg_set();
 
-  mcal::wdg::init(nullptr);
+  mcal::wdg::init (nullptr);
   mcal::port::init(nullptr);
-  mcal::osc::init(nullptr);
+  mcal::osc::init (nullptr);
 }
