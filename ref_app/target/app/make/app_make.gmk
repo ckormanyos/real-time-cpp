@@ -157,6 +157,7 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -ftemplate-depth=4096
 
 AFLAGS      = $(GCCFLAGS)                       \
+              $(TGT_CFLAGS)                     \
               $(TGT_AFLAGS)                     \
               -x assembler
 

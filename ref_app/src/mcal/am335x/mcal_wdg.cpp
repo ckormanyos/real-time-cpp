@@ -15,21 +15,21 @@ namespace
   struct wdg_detail
   {
   public:
-    template<const std::uint32_t wspr_pattern_01,
-             const std::uint32_t wspr_pattern_02>
+    template<const std::uint32_t wdg_action_pattern_01,
+             const std::uint32_t wdg_action_pattern_02>
     static void wdg_action()
     {
       mcal::reg::access<std::uint32_t,
                         std::uint32_t,
                         mcal::reg::wdt1::wspr,
-                        wspr_pattern_01>::reg_set();
+                        wdg_action_pattern_01>::reg_set();
 
       wdg_wait_clock_stable();
 
       mcal::reg::access<std::uint32_t,
                         std::uint32_t,
                         mcal::reg::wdt1::wspr,
-                        wspr_pattern_02>::reg_set();
+                        wdg_action_pattern_02>::reg_set();
 
       wdg_wait_clock_stable();
     }
@@ -41,10 +41,11 @@ namespace
 
       do
       {
-        wwps_mask_value = std::uint32_t(  mcal::reg::access<std::uint32_t,
-                                                            std::uint32_t,
-                                                            mcal::reg::wdt1::wwps>::reg_get()
-                                        & UINT32_C(0x3F));
+        wwps_mask_value = mcal::reg::access<std::uint32_t,
+                                            std::uint32_t,
+                                            mcal::reg::wdt1::wwps>::reg_get();
+
+        wwps_mask_value &= UINT32_C(0x3F);
       }
       while(wwps_mask_value != UINT32_C(0));
     }
@@ -129,7 +130,7 @@ void mcal::wdg::secure::trigger()
       UINT32_C(611953), UINT32_C(746773), UINT32_C(882377), UINT32_C(1020379)
   }};
 
-  static prime_sequence_type::size_type prime_sequence_index;
+  static volatile prime_sequence_type::size_type prime_sequence_index;
 
   // Read from the hardware the watchdog trigger value for this cycle.
   const std::uint32_t this_watchdog_trigger_value = mcal::reg::access<std::uint32_t,

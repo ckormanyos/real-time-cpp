@@ -29,33 +29,33 @@ void __my_startup()
 
   asm volatile("mov r3, #0");
 
-  // Setup the undefined mode Stack.
+  // Setup the undefined mode stack, and switch to undefined mode.
   asm volatile("ldr r3, =__initial_stack_pointer");
   asm volatile("msr cpsr_c, #0x1B | 0xC0");
   asm volatile("mov sp, r3");
   asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the abort mode stack.
+  // Setup the abort mode stack, and switch to abort mode.
   asm volatile("msr cpsr_c, #0x17 | 0xC0");
   asm volatile("mov sp, r3");
   asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the fiq stack.
+  // Setup the fiq stack, and switch to fiq mode.
   asm volatile("msr cpsr_c, #0x11 | 0xC0");
   asm volatile("mov sp, r3");
   asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the irq stack (with 1kB stack size).
+  // Setup the irq stack (with 1kB stack size), and switch to irq mode.
   asm volatile("msr cpsr_c, #0x12 | 0xC0");
   asm volatile("mov sp, r3");
   asm volatile("sub r3, r3, #0x0400");
 
-  // Setup the svc stack.
+  // Setup the svc stack, and switch to svc mode.
   asm volatile("msr cpsr_c, #0x13 | 0xC0");
   asm volatile("mov sp, r3");
   asm volatile("sub r3, r3, #0x0010");
 
-  // Setup the user/system stack.
+  // Setup the user/system stack, and switch to system mode.
   asm volatile("msr cpsr_c, #0x1F | 0xC0");
   asm volatile("mov sp, r3");
 

@@ -80,39 +80,6 @@ namespace
       mcal::cpu::nop();
     }
 
-/*
-    // Set the oden bit of the pwr_cr register to enable over-drive.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::pwr_cr,
-                      UINT32_C(0x00010000)>::reg_or();
-
-    // Wait for the odrdy flag to be set in the pwr_csr register.
-    while(mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::pwr_csr,
-                            UINT32_C(0x00010000)>::bit_get() == false)
-    {
-      mcal::cpu::nop();
-    }
-
-    // Set the odsw bit in the pwr_cr register to switch the
-    // voltage regulator from normal mode to over-drive mode.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::pwr_cr,
-                      UINT32_C(0x00020000)>::reg_or();
-
-    // Wait for the odswrdy flag in the pwr_csr to be set.
-    while(mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::pwr_csr,
-                            UINT32_C(0x00020000)>::bit_get() == false)
-    {
-      mcal::cpu::nop();
-    }
-*/
-
     // Select the pll as the system clock source.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,

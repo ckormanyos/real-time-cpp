@@ -30,8 +30,6 @@
           *reinterpret_cast<volatile register_value_type*>(address) = register_value_type(register_value_type(reg_get() & register_value_type(~mask_value)) | register_value_type(value & mask_value));
         }
 
-//        static void     reg_set(const register_value_type new_val) { *reinterpret_cast<volatile register_value_type*>(address) = new_val; }
-
         static void     bit_set() { *reinterpret_cast<volatile register_value_type*>(address) |= static_cast<register_value_type>(1UL << value); }
         static void     bit_clr() { *reinterpret_cast<volatile register_value_type*>(address) &= static_cast<register_value_type>(~static_cast<register_value_type>(1UL << value)); }
         static void     bit_not() { *reinterpret_cast<volatile register_value_type*>(address) ^= static_cast<register_value_type>(1UL << value); }

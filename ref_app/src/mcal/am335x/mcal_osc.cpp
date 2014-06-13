@@ -41,11 +41,12 @@ namespace
 
 void osc_detail::mpu_pll_init()
 {
-  // Set the MPU clock to 1000MHz for the BeagleBone *black* edition.
-  // Note that the BeagleBone *white* edition can be clocked at max. 700MHz.
+  // Set the MPU clock to 600MHz, an acceptable setting for both the
+  // BeagleBone white edition as well as the BeagleBone black edition.
+  // Note that the BeagleBone black edition can comfortably handle 900MHz.
 
-  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 1000
-  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(1000);
+  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 600
+  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(600);
   constexpr std::uint32_t mcu_mpu_pll_n  = UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_mpu_pll_m2 = UINT32_C(1);
 
@@ -62,7 +63,7 @@ void osc_detail::mpu_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_mpu,
-                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
+                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FFFF)>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::access<std::uint32_t,
@@ -89,13 +90,17 @@ void osc_detail::core_pll_init()
   // clkoutm4  = clkdcoldo / m4 = 2000 / 10 =  200
   // clkoutm5  = clkdcoldo / m5 = 2000 /  8 =  250
   // clkoutm6  = clkdcoldo / m6 = 2000 /  4 =  500
+
+  // See also:
+  // https://github.com/kientzle/u-boot-beaglebone-freebsd/blob/ee5d61417b5553094cf784cb4164837f0544611f/arch/arm/include/asm/arch-ti81xx/clocks_am335x.h
+
   constexpr std::uint32_t mcu_core_pll_m  =  UINT32_C(1000);
   constexpr std::uint32_t mcu_core_pll_n  =  UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_core_pll_m4 =  UINT32_C(10);
   constexpr std::uint32_t mcu_core_pll_m5 =  UINT32_C(8);
   constexpr std::uint32_t mcu_core_pll_m6 =  UINT32_C(4);
 
-  // Put the PLL in bypass mode.
+  // Switch the PLL to bypass mode.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_core,
@@ -108,7 +113,7 @@ void osc_detail::core_pll_init()
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_core,
-                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
+                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FFFF)>();
 
   // Configure the high speed dividers.
   mcal::reg::access<std::uint32_t,
