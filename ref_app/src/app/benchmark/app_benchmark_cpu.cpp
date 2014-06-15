@@ -11,6 +11,7 @@
 #if defined(CFG_USE_APP_BENCHMARK_CPU)
 
   #include <mcal_benchmark.h>
+  #include <util/utility/util_time.h>
 
   #define CFG_APP_BENCHMARK_CPU_TYPE_MD5     1
   #define CFG_APP_BENCHMARK_CPU_TYPE_SHA1    2
@@ -59,7 +60,14 @@
     hash_type the_hash;
 
     hash_type::result_type_as_integral_values the_hash_result;
+
+    typedef util::timer<std::uint32_t> timer_type;
+
+    timer_type            app_benchmark_cpu_timer;
+    timer_type::tick_type app_benchmark_cpu_timing_result;
   }
+
+  bool app_benchmark_cpu_the_result_is_ok = true;
 
 #endif
 
@@ -88,18 +96,21 @@ void app::benchmark::cpu::task_func()
 {
   #if defined(CFG_USE_APP_BENCHMARK_CPU)
 
+  app_benchmark_cpu_timer.set_mark();
+
   mcal::benchmark::benchmark_port_type::set_pin_high();
 
   the_hash.process_data("creativity", hash_type::count_type(10U));
 
   the_hash_result = the_hash.get_result_as_integral_values_and_finalize_the_state();
 
-  const bool the_result_is_ok = (the_hash_result.front() == control_value);
-
-  if(the_result_is_ok)
+  if(app_benchmark_cpu_the_result_is_ok)
   {
     mcal::benchmark::benchmark_port_type::set_pin_low();
+    app_benchmark_cpu_timing_result = app_benchmark_cpu_timer.get_ticks_since_mark();
   }
+
+  app_benchmark_cpu_the_result_is_ok = (the_hash_result.front() == control_value);
 
   #endif
 }

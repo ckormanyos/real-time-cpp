@@ -131,9 +131,6 @@
     <Filter Include="src\mcal\stm32f429">
       <UniqueIdentifier>{3d9c9058-7846-4b3f-b8aa-c64674ccacb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\am335x\src">
-      <UniqueIdentifier>{3ed9ee8b-f5f4-49ec-ba07-ec36ab3bccc9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1204,12 +1201,6 @@
     </None>
     <None Include="src\util\STL_C++11_Compatibility\cstdint">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\mcal\am335x\src\startup.s">
-      <Filter>src\mcal\am335x\src</Filter>
-    </None>
-    <None Include="src\mcal\am335x\src\v7.s">
-      <Filter>src\mcal\am335x\src</Filter>
     </None>
   </ItemGroup>
 </Project>

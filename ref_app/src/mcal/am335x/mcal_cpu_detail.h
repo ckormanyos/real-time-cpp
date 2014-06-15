@@ -8,8 +8,6 @@
 #ifndef _MCAL_CPU_DETAIL_2014_06_12_H_
   #define _MCAL_CPU_DETAIL_2014_06_12_H_
 
-  #include <cstdint>
-
   namespace mcal
   {
     namespace cpu

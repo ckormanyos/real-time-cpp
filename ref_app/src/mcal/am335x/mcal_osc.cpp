@@ -41,12 +41,12 @@ namespace
 
 void osc_detail::mpu_pll_init()
 {
-  // Set the MPU clock to 600MHz, an acceptable setting for both the
-  // BeagleBone white edition as well as the BeagleBone black edition.
-  // Note that the BeagleBone black edition can comfortably handle 900MHz.
+  // Set the MPU clock to 900MHz, an acceptable setting for the
+  // BeagleBone black edition. Note that the BeagleBone white
+  // edition is limite to frequencies less than 700MHz.
 
-  // CLKOUT = [M / (N + 1)] * CLKINP * [1 / M2] = 600
-  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(600);
+  // clkout = [m / (n + 1)] * clkinp * [1 / m2] = 900
+  constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(900);
   constexpr std::uint32_t mcu_mpu_pll_n  = UINT32_C(mcu_clkinp - 1);
   constexpr std::uint32_t mcu_mpu_pll_m2 = UINT32_C(1);
 
@@ -60,18 +60,22 @@ void osc_detail::mpu_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
+  // Here, we are using bits 0...6 and bits 8...18, resulting
+  // in the bit mask 0x0007FF7F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_mpu,
-                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FFFF)>();
+                    std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
 
-  // Set the M2 divider values for the PLL.
+  // Set the M2 divider values for the PLL. Here, we are using
+  // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m2_dpll_mpu,
-                    mcu_mpu_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
+                    mcu_mpu_pll_m2>::reg_msk<UINT32_C(0x0000001F)>();
 
-  // Enable the PLL in lock mode.
+  // Enable the PLL in lock mode. Here, we are using
+  // bits 0...2, resulting in the bit mask 0x00000007.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_mpu,
@@ -100,7 +104,8 @@ void osc_detail::core_pll_init()
   constexpr std::uint32_t mcu_core_pll_m5 =  UINT32_C(8);
   constexpr std::uint32_t mcu_core_pll_m6 =  UINT32_C(4);
 
-  // Switch the PLL to bypass mode.
+  // Switch the PLL to bypass mode. Here, we are using
+  // bits 0...2, resulting in the bit mask 0x00000007.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_core,
@@ -110,28 +115,36 @@ void osc_detail::core_pll_init()
   while(!mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the multiplier and divider values for the PLL.
+  // Here, we are using bits 0...6 and bits 8...18, resulting
+  // in the bit mask 0x0007FF7F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clksel_dpll_core,
-                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FFFF)>();
+                    std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
 
-  // Configure the high speed dividers.
+  // Configure the high speed divider m4. Here, we are using
+  // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m4_dpll_core,
                     mcu_core_pll_m4>::reg_msk<UINT32_C(0x0000001F)>();
 
+  // Configure the high speed divider m5. Here, we are using
+  // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m5_dpll_core,
                     mcu_core_pll_m5>::reg_msk<UINT32_C(0x0000001F)>();
 
+  // Configure the high speed divider m6. Here, we are using
+  // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::div_m6_dpll_core,
                     mcu_core_pll_m6>::reg_msk<UINT32_C(0x0000001F)>();
 
-  // Enable the PLL in lock mode.
+  // Enable the PLL in lock mode. Here, we are using
+  // bits 0...2, resulting in the bit mask 0x00000007.
   mcal::reg::access<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_core,
