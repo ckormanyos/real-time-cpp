@@ -9,10 +9,10 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION = 4.6.3
+GCC_VERSION = 4.9.0
 GCC_TARGET  = mips-sde-elf
 
-TGT_CFLAGS    = -mips16                                        \
+TGT_CFLAGS    = -mips32                                        \
                 -mno-gpopt                                     \
                 -msoft-float                                   \
                 -mno-dsp                                       \
@@ -24,8 +24,3 @@ TGT_CPPFLAGS  = -std=c++0x                                     \
 TGT_AFLAGS    =
 
 TGT_LFLAGS    =
-
-# To configure binutils without exceptions and without POSIX threads.
-# ../binutils-2.23/configure --prefix=/usr/local/gcc-4.8.1-mips-sde-elf --target=mips-sde-elf --with-arch-32=mips32r2 --build=i686-pc-mingw32 --disable-threads --disable-__cxa_atexit --disable-shared --enable-static --disable-nls --with-dwarf2 --disable-win32-registry --disable-sjlj-exceptions --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-cloog=/usr/local --with-isl=/usr/local
-# To configure GCC without exceptions and without POSIX threads.
-# ../gcc-4.8.1/configure --prefix=/usr/local/gcc-4.8.1-mips-sde-elf --target=mips-sde-elf --with-arch-32=mips32r2 --build=i686-pc-mingw32 --disable-threads --disable-__cxa_atexit --enable-languages=c,c++ --disable-shared --enable-static --with-newlib --disable-nls --with-dwarf2 --disable-fixed-point --disable-win32-registry --disable-sjlj-exceptions --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-cloog=/usr/local --with-isl=/usr/local

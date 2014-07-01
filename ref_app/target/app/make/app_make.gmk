@@ -125,15 +125,18 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wmain                            \
               -Wundef                           \
               -Wsign-conversion                 \
-              -Wfloat-equal                     \
-              -Wunreachable-code                \
+              -Wunused-parameter                \
+              -Wuninitialized                   \
               -Wmissing-declarations            \
               -Wshadow                          \
+              -Wunreachable-code                \
               -Wswitch-default                  \
               -Wswitch-enum                     \
               -Wcast-align                      \
               -Wmissing-include-dirs            \
               -Winit-self                       \
+              -Wfloat-equal                     \
+              -Wdouble-promotion                \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -O2                               \
@@ -141,6 +144,7 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
+              -Wunsuffixed-float-constants      \
               -x c                              \
               -std=c99
 
@@ -154,7 +158,7 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=4096
+              -ftemplate-depth=32
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \

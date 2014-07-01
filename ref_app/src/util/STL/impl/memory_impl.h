@@ -12,8 +12,8 @@
   #include "cstdint_impl.h"
 
   // Provide the default placement versions of operator new.
-  inline void* operator new  (size_t, void* my_p) throw() { return my_p; }
-  inline void* operator new[](size_t, void* my_p) throw() { return my_p; }
+  inline void* operator new  (size_t, void* my_p) noexcept { return my_p; }
+  inline void* operator new[](size_t, void* my_p) noexcept { return my_p; }
 
   // Implement the standard allocator (std::allocator).
   namespace std

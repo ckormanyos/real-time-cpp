@@ -1,0 +1,18 @@
+
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2014.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Program code.
+NEW_BUFFER   Buf_FFFC0000_to_0xFFFCFFFF  FROM_FILE      inFile                        -useAreas={{0xFFFC0000, 0x00010000}} -setByteOrder=BigEndian
+FILL_BUFFER  Buf_FFFC0000_to_0xFFFCFFFF  WITH_FILLER    { 0xFF }
+
+// Create a CRC32 of the program code and place it above the end of the program code.
+NEW_CRC      My_Crc32_prog_code          FROM_BUFFER    Buf_FFFC0000_to_0xFFFCFFFF    -useAreas={{0xFFFC0000, 0xFFFCFFFC}}  -setType=Crc32_Afs2
+FILL_BUFFER  Buf_FFFC0000_to_0xFFFCFFFF  WITH_CRC       My_Crc32_prog_code            -useAreas={{0xFFFCFFFC, 0x00000004}}
+
+// Create the output hex file.
+WRITE_FILE   outFile                     WITH_BUFFERS   {Buf_FFFC0000_to_0xFFFCFFFF}  -setFormat=IntelHexExtended

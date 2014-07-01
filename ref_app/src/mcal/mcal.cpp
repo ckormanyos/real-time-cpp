@@ -28,5 +28,5 @@ void mcal::init()
   mcal::spi::init(nullptr);
   mcal::pwm::init(nullptr);
 
-  mcal::cpu::init2();
+  mcal::cpu::post_init();
 }

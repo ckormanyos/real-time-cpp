@@ -16,23 +16,23 @@ OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
 _rom_begin = 0x402F0400;
-_rom_end   = 0x402F7FFC;
+_rom_end   = 0x402FBFFC;
 
 /* The beginning of the RAM area */
-_ram_begin = 0x402F8000;
+_ram_begin = 0x402FC000;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 8K */
-_stack_begin = 0x402FA000;
-_stack_end   = 0x402FC000;
+_stack_begin = 0x402FE000;
+_stack_end   = 0x40300000;
 
 /* The end of the stack */
-__initial_stack_pointer = 0x402FC000;
+__initial_stack_pointer = 0x40300000;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x402F0400, LENGTH = 0x7C00 - 4
-  RAM(rwx) : ORIGIN = 0x402F8000, LENGTH = 0x1000
+  ROM(rx)  : ORIGIN = 0x402F0400, LENGTH = 0xBC00 - 4
+  RAM(rwx) : ORIGIN = 0x402FC000, LENGTH = 0x1000
 }
 
 SECTIONS

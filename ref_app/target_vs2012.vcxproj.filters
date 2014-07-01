@@ -76,6 +76,15 @@
     <Filter Include="micros\stm32f429\startup">
       <UniqueIdentifier>{ddc364cc-7a6a-451e-a808-90cdd5848570}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\rx63n">
+      <UniqueIdentifier>{f5b10b76-28c9-459b-9fea-a36092f27fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rx63n\make">
+      <UniqueIdentifier>{47ce5be0-5754-4473-a713-03228467129a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rx63n\startup">
+      <UniqueIdentifier>{145ad14c-97bb-4f35-b080-b38e0b3694be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -105,12 +114,6 @@
     <None Include="target\micros\mips\make\procdefs.ld">
       <Filter>micros\mips\make</Filter>
     </None>
-    <None Include="target\micros\mips\startup\crt0.s">
-      <Filter>micros\mips\startup</Filter>
-    </None>
-    <None Include="target\micros\mips\startup\general-exception.s">
-      <Filter>micros\mips\startup</Filter>
-    </None>
     <None Include="target\micros\mips\make\mips_files.gmk">
       <Filter>micros\mips\make</Filter>
     </None>
@@ -119,9 +122,6 @@
     </None>
     <None Include="target\micros\mips\make\mips.ld">
       <Filter>micros\mips\make</Filter>
-    </None>
-    <None Include="target\micros\mips\startup\regs.s">
-      <Filter>micros\mips\startup</Filter>
     </None>
     <None Include="Target\Micros\AVR\Startup\crt0.cpp">
       <Filter>micros\avr\startup</Filter>
@@ -195,6 +195,18 @@
     <None Include="target\micros\stm32f100\make\stm32f100_hex_manip_script.hxm">
       <Filter>micros\stm32f100\make</Filter>
     </None>
+    <None Include="target\micros\rx63n\make\rx63n.ld">
+      <Filter>micros\rx63n\make</Filter>
+    </None>
+    <None Include="target\micros\rx63n\make\rx63n_files.gmk">
+      <Filter>micros\rx63n\make</Filter>
+    </None>
+    <None Include="target\micros\rx63n\make\rx63n_flags.gmk">
+      <Filter>micros\rx63n\make</Filter>
+    </None>
+    <None Include="target\micros\rx63n\make\rx63n_hex_manip_script.hxm">
+      <Filter>micros\rx63n\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -259,6 +271,30 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f100\startup\int_vect.cpp">
       <Filter>micros\stm32f100\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rx63n\startup\crt0.cpp">
+      <Filter>micros\rx63n\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rx63n\startup\crt0_init_ram.cpp">
+      <Filter>micros\rx63n\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rx63n\startup\crt1.cpp">
+      <Filter>micros\rx63n\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rx63n\startup\int_vect.cpp">
+      <Filter>micros\rx63n\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\mips\startup\crt0.cpp">
+      <Filter>micros\mips\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\mips\startup\crt0_init_ram.cpp">
+      <Filter>micros\mips\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\mips\startup\crt1.cpp">
+      <Filter>micros\mips\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\mips\startup\int_vect.cpp">
+      <Filter>micros\mips\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,10 @@
       <Configuration>target rl78</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target rx63n|Win32">
+      <Configuration>target rx63n</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="target stm32f407|Win32">
       <Configuration>target stm32f407</Configuration>
       <Platform>Win32</Platform>
@@ -43,6 +47,11 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -90,6 +99,10 @@
     <ConfigurationType>Makefile</ConfigurationType>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">
     <ConfigurationType>Makefile</ConfigurationType>
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
@@ -102,6 +115,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'" Label="PropertySheets">
@@ -124,6 +140,7 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(SolutionDir)bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)bin\</OutDir>
@@ -131,6 +148,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(OutDir)</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(OutDir)</IntDir>
@@ -138,6 +156,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(OutDir)</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">target\build\build.bat stm32f100</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429</NMakeBuildCommandLine>
@@ -145,6 +164,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">target\build\build.bat stm32f100 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 rebuild</NMakeReBuildCommandLine>
@@ -152,6 +172,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Target\Build\Build.bat rl78 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Target\Build\Build.bat rx63n clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">target\build\build.bat stm32f100 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 clean_all</NMakeCleanCommandLine>
@@ -159,6 +180,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips clean_all</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'" />
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
@@ -166,6 +188,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
     </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
@@ -174,6 +197,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f407</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f429</NMakeIncludeSearchPath>
@@ -181,6 +205,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/mips</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
     </NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
@@ -189,6 +214,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
     </NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
@@ -197,6 +223,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
     </NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
@@ -213,22 +240,29 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Target\Build\Build.bat rl78</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Target\Build\Build.bat rx63n</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Target\Build\Build.bat rl78 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Target\Build\Build.bat rx63n rebuild</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/avr</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rl78</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rx63n</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">Build\Build.bat AVR clean_all</NMakeCleanCommandLine>
@@ -239,16 +273,22 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
+    <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">
     <BuildLog>
@@ -261,6 +301,11 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">
+    <BuildLog>
+      <Path>$(SolutionDir)bin\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">
     <BuildLog>
       <Path>$(SolutionDir)bin\ref_app.log</Path>
     </BuildLog>
@@ -311,15 +356,16 @@
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
+    <None Include="target\micros\rx63n\make\rx63n.ld" />
+    <None Include="target\micros\rx63n\make\rx63n_files.gmk" />
+    <None Include="target\micros\rx63n\make\rx63n_flags.gmk" />
+    <None Include="target\micros\rx63n\make\rx63n_hex_manip_script.hxm" />
     <None Include="target\micros\stm32f100\make\stm32f100.ld" />
     <None Include="target\micros\mips\make\mips.ld" />
     <None Include="target\micros\mips\make\mips_files.gmk" />
     <None Include="target\micros\mips\make\mips_flags.gmk" />
     <None Include="target\micros\mips\make\mips_hex_manip_script.hxm" />
     <None Include="target\micros\mips\make\procdefs.ld" />
-    <None Include="target\micros\mips\startup\crt0.s" />
-    <None Include="target\micros\mips\startup\general-exception.s" />
-    <None Include="target\micros\mips\startup\regs.s" />
     <None Include="target\micros\rl78\make\rl78.ld" />
     <None Include="target\micros\rl78\make\rl78_files.gmk" />
     <None Include="target\micros\rl78\make\rl78_flags.gmk" />
@@ -342,10 +388,18 @@
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\mips\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\mips\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\mips\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\mips\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
     <ClCompile Include="target\micros\rl78\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\rx63n\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\rx63n\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\rx63n\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\rx63n\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f100\startup\crt1.cpp" />

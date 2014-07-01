@@ -14,18 +14,9 @@
     {
       namespace detail
       {
-        void initialize_the_neon_coprocessor_and_the_vfp();
-        void invalidate_the_caches                      ();
-        void clear_the_branch_prediction_array          ();
-        void invalidate_the_tlb                         ();
-        void setup_the_domain_access_control            ();
-        void fill_the_tlb                               ();
-        void set_the_tlb_base_address                   ();
-        void enable_the_mmu                             ();
-        void enable_branch_prediction                   ();
-        void enable_the_caches                          ();
-        void load_the_address_of_the_nmi_interrupt_table();
-        void switch_to_user_mode                        ();
+        void init     ();
+        void load_nmi ();
+        void user_mode();
       }
     }
   } // namespace mcal::cpu::detail

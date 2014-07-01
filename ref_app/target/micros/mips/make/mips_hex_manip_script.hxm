@@ -6,10 +6,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-//NEW_BUFFER     Buf_9D000000_to_9D004000   FROM_FILE      inFile     -useAreas={{0x9D000000, 0x4000}} -setByteOrder=BigEndian
-//NEW_BUFFER     Buf_9FC00490_to_9FC00E00   FROM_FILE      inFile     -useAreas={{0x9FC00490, 0x0970}} -setByteOrder=BigEndian
-//FILL_BUFFER    Buf_9D000000_to_9D004000   WITH_FILLER    { 0xFF }
-//FILL_BUFFER    Buf_9FC00490_to_9FC00E00   WITH_FILLER    { 0xFF }
+NEW_BUFFER     Buf_1D000000_to_1D010000  FROM_FILE      inFile                      -useAreas={{0x1D000000, 0x10000}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_1D000000_to_1D010000  WITH_FILLER    { 0xFF }
 
-//WRITE_FILE     outFile            WITH_BUFFERS   {Buf_9D000000_to_9D004000,
-//                                                  Buf_9FC00490_to_9FC00E00}  -setFormat=IntelHexExtended
+WRITE_FILE     outFile                   WITH_BUFFERS   {Buf_1D000000_to_1D010000}  -setFormat=IntelHexExtended

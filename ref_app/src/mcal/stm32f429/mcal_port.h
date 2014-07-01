@@ -8,7 +8,6 @@
 #ifndef _MCAL_PORT_2014_01_10_H_
   #define _MCAL_PORT_2014_01_10_H_
 
-  #include <cstdint>
   #include <mcal_reg_access.h>
 
   namespace mcal
@@ -106,12 +105,12 @@
         }
 
       private:
-        static constexpr addr_type port_mode_register         = port;
-        static constexpr addr_type output_type_register       = port + 0x04U;
-        static constexpr addr_type output_speed_register      = port + 0x08U;
-        static constexpr addr_type pull_up_pull_down_register = port + 0x0CU;
-        static constexpr addr_type input_data_register        = port + 0x10U;
-        static constexpr addr_type output_data_register       = port + 0x14U;
+        static constexpr addr_type port_mode_register         = addr_type(port + 0x00UL);
+        static constexpr addr_type output_type_register       = addr_type(port + 0x04UL);
+        static constexpr addr_type output_speed_register      = addr_type(port + 0x08UL);
+        static constexpr addr_type pull_up_pull_down_register = addr_type(port + 0x0CUL);
+        static constexpr addr_type input_data_register        = addr_type(port + 0x10UL);
+        static constexpr addr_type output_data_register       = addr_type(port + 0x14UL);
       };
     }
   }

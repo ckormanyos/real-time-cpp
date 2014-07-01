@@ -16,7 +16,7 @@
     {
       inline void init() { }
 
-      inline void init2() { }
+      inline void post_init() { }
 
       inline void nop() { }
 

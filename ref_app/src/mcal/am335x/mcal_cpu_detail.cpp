@@ -10,128 +10,35 @@
 
 #include <cstdint>
 #include <mcal_cpu_detail.h>
+#include <mcal_cpu_detail_secure.h>
 
 namespace int_vect
 {
-  std::uint32_t get_the_address_of_the_nmi_interrupt_table();
+  std::uint32_t get_nmi_load_address();
 }
 
-namespace mcal
+void mcal::cpu::detail::init()
 {
-  namespace cpu
-  {
-    namespace detail
-    {
-      constexpr std::uint32_t tlb_base_address = UINT32_C(0x4030C000);
-    }
-  }
+  secure::initialize_neon_and_vfp      ();
+  secure::invalidate_caches            ();
+  secure::clear_branch_prediction_array();
+  secure::invalidate_tlb               ();
+  secure::setup_domain_access_control  ();
+  secure::fill_tlb_entries             ();
+  secure::set_tlb_base_address         ();
+  secure::enable_mmu                   ();
+  secure::enable_branch_prediction     ();
+  secure::enable_caches                ();
 }
 
-void mcal::cpu::detail::initialize_the_neon_coprocessor_and_the_vfp()
+void mcal::cpu::detail::load_nmi()
 {
-  asm volatile("mrc p15, #0, r1, c1, c0, #2");
-  asm volatile("orr r1, r1, #0x00F00000");
-  asm volatile("mcr p15, #0, r1, c1, c0, #2");
-  asm volatile("isb");
-  asm volatile("mov r1, #0x40000000");
-  asm volatile("vmsr fpexc, r1");
-}
-
-void mcal::cpu::detail::invalidate_the_caches()
-{
-  // There are no contents here because the ARMv7 core
-  // does not need to flush and invalidate the caches
-  // prior to using them.
-}
-
-void mcal::cpu::detail::clear_the_branch_prediction_array()
-{
-  asm volatile("mov r1, #0x0");
-  asm volatile("mcr p15, #0, r1, c7, c5, #6");
-}
-
-void mcal::cpu::detail::invalidate_the_tlb()
-{
-  asm volatile("mov r1, #0x0");
-  asm volatile("mcr p15, #0, r1, c3, c0, #0");
-}
-
-void mcal::cpu::detail::setup_the_domain_access_control()
-{
-  asm volatile("mov r1, #0x3");
-  asm volatile("mcr p15, #0, r1, c3, c0, #0");
-}
-
-void mcal::cpu::detail::fill_the_tlb()
-{
-  volatile std::uint32_t* pointer_to_tlb_base = reinterpret_cast<volatile std::uint32_t*>(tlb_base_address);
-
-  // Set every memory block to be of type "strongly ordered memory",
-  // which means there is no data caching.
-  
-  // The single memory block used by the bare-metal BeagleBone
-  // application will be set for data caching below.
-
-  for(std::uint32_t tlb_index = UINT32_C(0); tlb_index < UINT32_C(4096); ++tlb_index)
-  {
-    const std::uint32_t this_tlb_value = static_cast<std::uint32_t>(UINT32_C(0x00000C02) | static_cast<std::uint32_t>(tlb_index << 20));
-
-    pointer_to_tlb_base[tlb_index] = this_tlb_value;
-  }
-
-  // (Re)-Set the index of the single memory block used by
-  // the bare-metal BeagleBone application to be of type
-  // "cacheable memory".
-
-  // This memory block contains all of the code, the data,
-  // and the stack in the bare-metal BeagleBone application.
-  // This is the 1MB memory block that resides at 0x40200000.
-
-  pointer_to_tlb_base[0x402U] = static_cast<std::uint32_t>(UINT32_C(0x00004C06) | static_cast<std::uint32_t>(UINT32_C(0x402) << 20));
-
-  // Insert an instruction barrier.
-  asm volatile("dsb");
-}
-
-void mcal::cpu::detail::set_the_tlb_base_address()
-{
-  const volatile std::uint32_t the_address = tlb_base_address;
-
-  asm volatile("mcr p15, #0, %[value], c2, c0, #0" : : [value] "r" (the_address));
-
-  static_cast<void>(the_address);
-}
-
-void mcal::cpu::detail::enable_the_mmu()
-{
-  asm volatile("mrc p15, #0, r1, c1, c0, #0");
-  asm volatile("orr r1, r1, #0x1");
-  asm volatile("mcr p15, #0, r1, c1, c0, #0");
-}
-
-void mcal::cpu::detail::enable_branch_prediction()
-{
-  asm volatile("mrc p15, #0, r1, c1, c0, #0");
-  asm volatile("orr r1, r1, #0x0800");
-  asm volatile("mcr p15, #0,r1, c1, c0, #0");
-}
-
-void mcal::cpu::detail::enable_the_caches()
-{
-  asm volatile("mrc p15, #0, r1, c1, c0, #0");
-  asm volatile("orr r1,  r1, #0x0004");        // Bit  2: data cache.
-  asm volatile("orr r1,  r1, #0x1000");        // Bit 12: instruction cache.
-  asm volatile("mcr p15, #0, r1, c1, c0, #0");
-}
-
-void mcal::cpu::detail::load_the_address_of_the_nmi_interrupt_table()
-{
-  const volatile std::uint32_t the_address = int_vect::get_the_address_of_the_nmi_interrupt_table();
+  const volatile std::uint32_t the_address = int_vect::get_nmi_load_address();
 
   asm volatile("mcr p15, #0, %[value], c12, c0, #0" : : [value] "r" (the_address));
 }
 
-void mcal::cpu::detail::switch_to_user_mode()
+void mcal::cpu::detail::user_mode()
 {
   asm volatile("mrs r1, cpsr");
   asm volatile("bic r1, #0x0F");

@@ -16,27 +16,9 @@
 
 void mcal::cpu::init()
 {
-  detail::initialize_the_neon_coprocessor_and_the_vfp();
+  detail::init();
 
-  detail::invalidate_the_caches();
-
-  detail::clear_the_branch_prediction_array();
-
-  detail::invalidate_the_tlb();
-
-  detail::setup_the_domain_access_control();
-
-  detail::fill_the_tlb();
-
-  detail::set_the_tlb_base_address();
-
-  detail::enable_the_mmu();
-
-  detail::enable_branch_prediction();
-
-  detail::enable_the_caches();
-
-  detail::load_the_address_of_the_nmi_interrupt_table();
+  detail::load_nmi();
 
   // Disable OPP50 operation and enable OPP100 operation.
   // Use the ratio for 24MHz to 32KHz division.
@@ -51,7 +33,7 @@ void mcal::cpu::init()
   mcal::osc::init (nullptr);
 }
 
-void mcal::cpu::init2()
+void mcal::cpu::post_init()
 {
-  detail::switch_to_user_mode();
+  detail::user_mode();
 }

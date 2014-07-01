@@ -17,36 +17,44 @@
       // Port- and Portmode adresses.
       constexpr std::uint32_t p0    = static_cast<std::uint32_t>(0xFFF00U);
       constexpr std::uint32_t pm0   = static_cast<std::uint32_t>(0xFFF20U);
+      constexpr std::uint32_t pu0   = static_cast<std::uint32_t>(0xFFF30U);
 
       constexpr std::uint32_t p1    = static_cast<std::uint32_t>(0xFFF01U);
       constexpr std::uint32_t pm1   = static_cast<std::uint32_t>(0xFFF21U);
+      constexpr std::uint32_t pu1   = static_cast<std::uint32_t>(0xFFF31U);
 
       constexpr std::uint32_t p2    = static_cast<std::uint32_t>(0xFFF02U);
       constexpr std::uint32_t pm2   = static_cast<std::uint32_t>(0xFFF22U);
 
       constexpr std::uint32_t p3    = static_cast<std::uint32_t>(0xFFF03U);
       constexpr std::uint32_t pm3   = static_cast<std::uint32_t>(0xFFF23U);
+      constexpr std::uint32_t pu3   = static_cast<std::uint32_t>(0xFFF33U);
 
       constexpr std::uint32_t p4    = static_cast<std::uint32_t>(0xFFF04U);
       constexpr std::uint32_t pm4   = static_cast<std::uint32_t>(0xFFF24U);
+      constexpr std::uint32_t pu4   = static_cast<std::uint32_t>(0xFFF34U);
 
       constexpr std::uint32_t p5    = static_cast<std::uint32_t>(0xFFF05U);
       constexpr std::uint32_t pm5   = static_cast<std::uint32_t>(0xFFF25U);
+      constexpr std::uint32_t pu5   = static_cast<std::uint32_t>(0xFFF35U);
 
       constexpr std::uint32_t p6    = static_cast<std::uint32_t>(0xFFF06U);
       constexpr std::uint32_t pm6   = static_cast<std::uint32_t>(0xFFF26U);
 
       constexpr std::uint32_t p7    = static_cast<std::uint32_t>(0xFFF07U);
       constexpr std::uint32_t pm7   = static_cast<std::uint32_t>(0xFFF27U);
+      constexpr std::uint32_t pu7   = static_cast<std::uint32_t>(0xFFF37U);
 
       constexpr std::uint32_t p12   = static_cast<std::uint32_t>(0xFFF0CU);
       constexpr std::uint32_t pm12  = static_cast<std::uint32_t>(0xFFF2CU);
+      constexpr std::uint32_t pu12  = static_cast<std::uint32_t>(0xFFF3CU);
 
       // no pm13 register.
       constexpr std::uint32_t p13   = static_cast<std::uint32_t>(0xFFF0DU);
 
       constexpr std::uint32_t p14   = static_cast<std::uint32_t>(0xFFF0EU);
       constexpr std::uint32_t pm14  = static_cast<std::uint32_t>(0xFFF2EU);
+      constexpr std::uint32_t pu14  = static_cast<std::uint32_t>(0xFFF3EU);
 
       // timer register
       constexpr std::uint32_t tdr00 = static_cast<std::uint32_t>(0xFFF18U);
