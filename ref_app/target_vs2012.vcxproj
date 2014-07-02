@@ -167,7 +167,8 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">target\build\build.bat stm32f100 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407 rebuild</NMakeReBuildCommandLine>
-    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 rebuild
+</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
@@ -175,17 +176,26 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Target\Build\Build.bat rx63n clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">target\build\build.bat stm32f100 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407 clean_all</NMakeCleanCommandLine>
-    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 clean_all
+</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips clean_all</NMakeCleanCommandLine>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(OutDir)\App_flash.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'" />
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">
+    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">
+    </NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -297,42 +307,42 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">
     <BuildLog>
-      <Path>$(SolutionDir)bin\ref_app.log</Path>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">
