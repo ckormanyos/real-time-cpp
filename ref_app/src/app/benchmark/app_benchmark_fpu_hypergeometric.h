@@ -146,9 +146,9 @@
            && (count_of_b_terms == static_cast<std::ptrdiff_t>(1)))
         {
           // Use hypergeometric_2f1, which is explicitly implemented above.
-          return hypergeometric_2f1(* coefficients_a_begin,
+          return hypergeometric_2f1( *coefficients_a_begin,
                                     *(coefficients_a_begin + std::size_t(1U)),
-                                    * coefficients_b_begin,
+                                     *coefficients_b_begin,
                                     x,
                                     tolerance);
         }
