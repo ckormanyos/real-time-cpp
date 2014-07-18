@@ -16,8 +16,19 @@ void* util::static_allocator_base::do_allocate(const size_type size)
   // Get the newly allocated pointer.
   volatile std::uint8_t* p = get_ptr;
 
+  // Does this allocation overflow the top of the buffer?
+  const bool is_overflow = ((get_ptr + size) >= (buffer + static_allocator_base::buffer_size));
+
   // Increment the pointer for next time.
-  get_ptr += size;
+  // But only do this if the buffer does *not* overflow.
+  if(is_overflow)
+  {
+    // TBD: Is any sensible error reaction possible here?
+  }
+  else
+  {
+    get_ptr += size;
+  }
 
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }

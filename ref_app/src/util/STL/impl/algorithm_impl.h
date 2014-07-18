@@ -41,6 +41,15 @@
       return predicate(a, b);
     }
 
+    template <typename input_iterator1, typename input_iterator2>
+    bool lexicographical_compare(input_iterator1 first1,
+                                 input_iterator1 last1,
+                                 input_iterator2 first2,
+                                 input_iterator2 last2)
+    {
+      return xalgorithm::xlexicographical_compare(first1, last1, first2, last2);
+    }
+
     template<typename input_iterator, typename output_iterator>
     output_iterator copy(input_iterator first, input_iterator last, output_iterator result)
     {

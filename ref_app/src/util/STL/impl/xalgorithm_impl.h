@@ -39,6 +39,30 @@
       return (*comp)(a, b);
     }
 
+    template <typename input_iterator1, typename input_iterator2>
+    bool xlexicographical_compare (input_iterator1 first1,
+                                   input_iterator1 last1,
+                                   input_iterator2 first2,
+                                   input_iterator2 last2)
+    {
+      while(first1 != last1)
+      {
+        if((first2 == last2) || (*first2 < *first1))
+        {
+          return false;
+        }
+        else if(*first1 < *first2)
+        {
+          return true;
+        }
+
+        ++first1;
+        ++first2;
+      }
+
+      return (first2 != last2);
+    }
+
     template<typename input_iterator, typename output_iterator>
     output_iterator xcopy(input_iterator first, input_iterator last, output_iterator result)
     {

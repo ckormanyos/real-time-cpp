@@ -33,15 +33,15 @@ PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\MinGW\msys\1.0
 PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
 PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\$(COMPILER_DIRECTORY)\bin
 
-PATH_APP       = src
-PATH_TGT       = target/micros/$(TGT)
-PATH_APP_MAKE  = target/app/make
-PATH_TGT_MAKE  = $(PATH_TGT)/make
-PATH_BIN       = bin
-PATH_TMP       = tmp
-PATH_OBJ       = $(PATH_TMP)/obj
-PATH_SRC       = $(PATH_TMP)/src
-PATH_ERR       = $(PATH_TMP)/err
+PATH_APP             = src
+PATH_TGT             = target/micros/$(TGT)
+PATH_APP_MAKE        = target/app/make
+PATH_TGT_MAKE        = $(PATH_TGT)/make
+PATH_BIN             = bin
+PATH_TMP             = tmp
+PATH_OBJ             = $(PATH_TMP)/obj
+PATH_SRC             = $(PATH_TMP)/src
+PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
@@ -168,6 +168,7 @@ AFLAGS      = $(GCCFLAGS)                       \
 LFLAGS      = $(GCCFLAGS)                       \
               $(TGT_LFLAGS)                     \
               -x none                           \
+              -nostdlib                         \
               -nostartfiles                     \
               -Wl,--gc-sections
 

@@ -158,10 +158,17 @@
 
         T x_pow_n_div_n_fact(x);
 
+        // Define an allocator type for use in the containers below.
+        typedef util::ring_allocator<T> allocator_type;
+
+        // Define a container type for the upcoming calculation.
+        typedef std::vector<T, allocator_type> container_type;
+
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.
-        std::vector<T, util::ring_allocator<T> > an(coefficients_a_begin, coefficients_a_end);
-        std::vector<T, util::ring_allocator<T> > bm(coefficients_b_begin, coefficients_b_end);
+
+        container_type an(coefficients_a_begin, coefficients_a_end);
+        container_type bm(coefficients_b_begin, coefficients_b_end);
 
         const bool count_of_a_terms_is_zero = (count_of_a_terms == static_cast<std::ptrdiff_t>(0));
         const bool count_of_b_terms_is_zero = (count_of_b_terms == static_cast<std::ptrdiff_t>(0));

@@ -21,7 +21,7 @@
       static_allocator_base() { }
 
       // The static_allocator's default buffer size.
-      static const size_type buffer_size = 4U;
+      static const size_type buffer_size = 32U;
 
       // The static_allocator's memory allocation.
       static void* do_allocate(const size_type size);

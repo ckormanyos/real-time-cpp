@@ -10,14 +10,15 @@
 
   #include <cstdint>
   #include <memory>
+  #include <util/utility/util_noncopyable.h>
 
   namespace util
   {
     template<typename T>
-    class placed_ptr
+    class placed_ptr : private util::noncopyable
     {
     public:
-      typedef T value_type;
+      typedef T           value_type;
       typedef value_type* pointer;
 
       placed_ptr()
@@ -37,7 +38,7 @@
       }
 
       pointer operator->() const { return my_ptr(); }
-      pointer get() { return my_ptr(); }
+      pointer get()              { return my_ptr(); }
 
     private:
       std::uint8_t my_buf[sizeof(T)];
@@ -46,9 +47,6 @@
       {
         return reinterpret_cast<pointer>(const_cast<void*>(static_cast<const void*>(my_buf)));
       }
-
-      placed_ptr(const placed_ptr&);
-      const placed_ptr& operator=(const placed_ptr&);
     };
   }
 

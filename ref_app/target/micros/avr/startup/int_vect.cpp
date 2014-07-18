@@ -54,7 +54,7 @@ const volatile std::array<isr_type, 26U> __isr_vector =
   { {0x0C, 0x94}, __vector_unused_irq },      // 17,  spi(TM)
   { {0x0C, 0x94}, __vector_unused_irq },      // 18,  usart rx
   { {0x0C, 0x94}, __vector_unused_irq },      // 19,  usart err
-  { {0x0C, 0x94}, __vector_unused_irq },      // 20,  usart rx
+  { {0x0C, 0x94}, __vector_unused_irq },      // 20,  usart tx
   { {0x0C, 0x94}, __vector_unused_irq },      // 21,  adc
   { {0x0C, 0x94}, __vector_unused_irq },      // 22,  eep Ready
   { {0x0C, 0x94}, __vector_unused_irq },      // 23,  comparator

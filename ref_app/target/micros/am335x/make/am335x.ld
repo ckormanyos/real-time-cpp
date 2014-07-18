@@ -9,7 +9,7 @@
 
 /* Linker script for SitaraWare AM335x ARM(R) A8 MCU */
 
-INPUT(libc.a libm.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
