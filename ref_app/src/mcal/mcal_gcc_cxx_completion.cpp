@@ -7,7 +7,6 @@
 
 #include <chrono>
 #include <cstddef>
-#include <exception>
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
 
