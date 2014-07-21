@@ -19,14 +19,19 @@
     class task_control_block
     {
     public:
-      typedef std::uint_fast8_t  index_type;
+      typedef std::uint_fast8_t index_type;
 
       task_control_block(const function_type i,
                          const function_type f,
                          const tick_type c,
                          const tick_type o);
 
-      task_control_block(const task_control_block&);
+      task_control_block(const task_control_block& tcb) : init (tcb.init),
+                                                          func (tcb.func),
+                                                          cycle(tcb.cycle),
+                                                          timer(tcb.timer),
+                                                          event(tcb.event),
+                                                          index(tcb.index) { }
 
     private:
       const    function_type init;
@@ -36,13 +41,9 @@
       volatile event_type    event;
       const    index_type    index;
 
-      static index_type task_global_index;
-
       void initialize() const { init(); }
 
       bool execute() const;
-
-      static task_control_block* get_running_task_pointer();
 
       task_control_block();
       const task_control_block& operator=(const task_control_block&);
@@ -61,7 +62,7 @@
 
     typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
-    extern task_list_type task_list;
+    extern task_list_type& task_list();
   }
 
 #endif // _OS_TASK_CONTROL_BLOCK_2013_07_30_H_

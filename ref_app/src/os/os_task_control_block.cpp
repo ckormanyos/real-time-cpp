@@ -1,6 +1,14 @@
 #include <os/os_task_control_block.h>
 
-os::task_control_block::index_type os::task_control_block::task_global_index;
+namespace
+{
+  os::task_control_block::index_type& os_task_global_index()
+  {
+    static os::task_control_block::index_type the_index;
+
+    return the_index;
+  }
+}
 
 os::task_control_block::task_control_block(const function_type i,
                                            const function_type f,
@@ -10,18 +18,9 @@ os::task_control_block::task_control_block(const function_type i,
                                                                 cycle(c),
                                                                 timer(o),
                                                                 event(os::event_type(0U)),
-                                                                index(task_global_index)
+                                                                index(os_task_global_index())
 {
-  ++task_global_index;
-}
-
-os::task_control_block::task_control_block(const task_control_block& tcb) : init (tcb.init),
-                                                                            func (tcb.func),
-                                                                            cycle(tcb.cycle),
-                                                                            timer(tcb.timer),
-                                                                            event(tcb.event),
-                                                                            index(tcb.index)
-{
+  ++os_task_global_index();
 }
 
 bool os::task_control_block::execute() const
@@ -31,8 +30,8 @@ bool os::task_control_block::execute() const
 
   if(task_does_have_event)
   {
-    // Set the global task index to the index of the running task.
-    task_global_index = index;
+    // Set the global task index equal to the index of the running task.
+    os_task_global_index() = index;
 
     // Call the task function because of an event.
     func();
@@ -46,8 +45,8 @@ bool os::task_control_block::execute() const
     // Increment the task's interval timer with the task cycle.
     timer.start_interval(cycle);
 
-    // Set the global task index to the index of the running task.
-    task_global_index = index;
+    // Set the global task index equal to the index of the running task.
+    os_task_global_index() = index;
 
     // Call the task function because of a timer timeout.
     func();
@@ -58,14 +57,16 @@ bool os::task_control_block::execute() const
   return task_is_ready;
 }
 
-os::task_control_block* os::task_control_block::get_running_task_pointer()
+os::task_list_type::iterator os_get_running_task_iterator();
+
+os::task_list_type::iterator os_get_running_task_iterator()
 {
-  // Return a pointer to the index of the task that is running.
-  // If no task is running, for example when the idle task is
-  // running, then the null pointer is returned.
+  // Return the iterator of the running task. If no task is running
+  // (for example when the idle task is running), then the iterator
+  // of the end of the task list is returned.
 
-  const task_list_type::size_type this_task_index = static_cast<task_list_type::size_type>(task_global_index);
+  const os::task_list_type::size_type this_task_index = static_cast<os::task_list_type::size_type>(os_task_global_index());
 
-  return ((this_task_index < task_list.size()) ? (task_list.data() + this_task_index)
-                                               : nullptr);
+  return ((this_task_index < os::task_list().size()) ? (os::task_list().begin() + this_task_index)
+                                                     :  os::task_list().end());
 }
