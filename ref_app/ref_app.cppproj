@@ -98,6 +98,7 @@
     <Folder Include="src" />
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
+    <Folder Include="src\app\benchmark" />
     <Folder Include="src\mcal" />
     <Folder Include="src\mcal\avr" />
     <Folder Include="src\os" />
@@ -118,6 +119,24 @@
     <Folder Include="target\micros\avr\startup" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\app\benchmark\app_benchmark_cpu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_dsp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fpu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fpu_bessel.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fpu_legendre.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
