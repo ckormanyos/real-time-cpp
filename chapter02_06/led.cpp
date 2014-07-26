@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,19 +20,18 @@ public:
   led_template()
   {
     // Set the port pin to low.
-    *reinterpret_cast<volatile bval_type*>(port)
-      &= static_cast<bval_type>(~bval);
+    *reinterpret_cast<volatile bval_type*>(port) &= static_cast<bval_type>(~bval);
+
+    constexpr bval_type pdir = port - 1U;
 
     // Set the port pin to output.
-    *reinterpret_cast<volatile bval_type*>(port - 1u)
-      |= bval;
+    *reinterpret_cast<volatile bval_type*>(pdir) |= bval;
   }
 
   static void toggle(void)
   {
     // Toggle the LED.
-    *reinterpret_cast<volatile bval_type*>(port)
-      ^= bval;
+    *reinterpret_cast<volatile bval_type*>(port) ^= bval;
   }
 };
 

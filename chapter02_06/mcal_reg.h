@@ -27,4 +27,4 @@
     }
   }
 
-#endif // _MCAL_REG_2011_11_04_H_
+#endif // _MCAL_REGISTERS_2011_11_04_H_

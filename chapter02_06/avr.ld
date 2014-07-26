@@ -5,97 +5,79 @@
   or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
+
 /* Default linker script, for normal executables */
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
-INPUT(libc.a libg.a libm.a libgcc.a)
-
 MEMORY
 {
-  text   (rx)   : ORIGIN = 0, LENGTH = 32K
-  data   (rw!x) : ORIGIN = 0x800060, LENGTH = 1K - 60
+  ROM(rx)   : ORIGIN = 0, LENGTH = 32K
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 1K - 100
 }
 
 SECTIONS
 {
-  /* Internal text space or external memory.  */
-  .text   :
+  . = 0x0;
+  . = ALIGN(2);
+
+  /* Program code (text), isr vectors, read-only data and static ctors */
+  .text :
   {
     *(.isr_vectors)
+    . = ALIGN(2);
     KEEP(*(.isr_vectors))
-    /* For data that needs to reside in the lower 64k of progmem.  */
-    *(.progmem.gcc*)
+     __ctors_start = . ;
+    *(.ctors)
+    . = ALIGN(2);
+    KEEP (*(SORT(.ctors)))
+     __ctors_end = . ;
     *(.progmem*)
     . = ALIGN(2);
-     __trampolines_start = . ;
-    /* The jump trampolines for the 16-bit limited relocs will reside here.  */
-    *(.trampolines)
     *(.trampolines*)
-     __trampolines_end = . ;
-    /* For future tablejump instruction arrays for 3 byte pc devices.
-       We don't relax jump/call instructions within these sections.  */
-    *(.jumptables)
-    *(.jumptables*)
-    /* For code that needs to reside in the lower 128k progmem.  */
-    *(.lowtext)
-    *(.lowtext*)
-     __ctors_start = . ;
-     *(.ctors)
-     __ctors_end = . ;
-     __dtors_start = . ;
-     *(.dtors)
-     __dtors_end = . ;
-    KEEP(SORT(*)(.ctors))
-    KEEP(SORT(*)(.dtors))
-    /* From this point on, we don't bother about wether the insns are
-       below or above the 16 bits boundary.  */
-    *(.init0)  /* Start here after reset.  */
-    KEEP (*(.init0))
-    *(.init4)  /* Initialize data and BSS.  */
-    KEEP (*(.init4))
-    *(.init6)  /* C++ constructors.  */
-    KEEP (*(.init6))
+    . = ALIGN(2);
     *(.text)
     . = ALIGN(2);
-    *(.text.*)
+    *(.text*)
     . = ALIGN(2);
-    *(.fini6)  /* C++ destructors.  */
-    KEEP (*(.fini6))
-     _etext = . ;
-  }  > text
+  } > ROM
 
-  .data    : AT (ADDR (.text) + SIZEOF (.text))
+  .= 0x800100;
+  . = ALIGN(2);
+
+  /* The ROM-to-RAM initialized data section */
+  .data :
   {
-    PROVIDE (__data_start = .) ;
+    __data_start = .;
     *(.data)
-    *(.data*)
-    *(.rodata)  /* We need to include .rodata here if gcc is used */
-    *(.rodata*) /* with -fdata-sections.  */
-    *(.gnu.linkonce.d*)
     . = ALIGN(2);
-     _edata = . ;
-     PROVIDE (__data_end = .) ;
-  }  > data
+    KEEP (*(.data))
+    *(.data*)
+    . = ALIGN(2);
+    KEEP (*(.data*))
+    *(.rodata)  /* Do *NOT* move this! Include .rodata here if gcc is used with -fdata-sections. */
+    . = ALIGN(2);
+    KEEP (*(.rodata))
+    *(.rodata*)
+    . = ALIGN(2);
+    KEEP (*(.rodata*))
+    __data_end = .;
+  } > RAM AT > ROM
 
-  .bss   : AT (ADDR (.bss))
+  /* The uninitialized (zero-cleared) data section */
+  .bss :
   {
-    PROVIDE (__bss_start = .) ;
+    __bss_start = .;
     *(.bss)
+    . = ALIGN(2);
+    KEEP (*(.bss))
     *(.bss*)
-    *(COMMON)
-     PROVIDE (__bss_end = .) ;
-  }  > data
-   __data_load_start = LOADADDR(.data);
-   __data_load_end = __data_load_start + SIZEOF(.data);
+    . = ALIGN(2);
+    KEEP (*(.bss*))
+    __bss_end = .;
+  } > RAM
 
-  /* Global data not cleared after reset.  */
-  .noinit  :
-  {
-    PROVIDE (__noinit_start = .) ;
-    *(.noinit*)
-    PROVIDE (__noinit_end = .) ;
-    _end = . ;
-  }  > data
+   __data_load_start = LOADADDR(.data);
+   __data_load_end   = __data_load_start + SIZEOF(.data);
 }
