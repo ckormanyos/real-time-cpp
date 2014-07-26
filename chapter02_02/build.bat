@@ -1,6 +1,19 @@
 
+@rem
+@rem Copyright Christopher Kormanyos 2014.
+@rem Distributed under the Boost Software License,
+@rem Version 1.0. (See accompanying file LICENSE_1_0.txt
+@rem or copy at http://www.boost.org/LICENSE_1_0.txt)
+@rem
+
+
+@rem
 @rem Usage:
-@rem build.bat "W:\ksc2rt_snapshot\User\Ks\uC_Software\Boards\cpp_board\tools\Util\MinGW\msys\1.0\local\gcc-4.8.1-avr\bin" avr
+@rem build.bat "C:\directory_of_gcc_bin" avr
+@rem For example:
+@rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
+@rem
+
 
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2
