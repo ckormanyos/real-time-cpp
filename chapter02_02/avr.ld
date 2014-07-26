@@ -1,5 +1,5 @@
 /*
-  Copyright Christopher Kormanyos 2007 - 2013.
+  Copyright Christopher Kormanyos 2007 - 2014.
   Distributed under the Boost Software License,
   Version 1.0. (See accompanying file LICENSE_1_0.txt
   or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,12 +22,25 @@ SECTIONS
   . = 0x0;
   . = ALIGN(2);
 
-  /* Program code (text), isr vectors, read-only data and static ctors */
-  .text :
+  /* ISR vectors */
+  .isr_vectors :
   {
     *(.isr_vectors)
     . = ALIGN(2);
     KEEP(*(.isr_vectors))
+  } > ROM
+
+  /* Startup code */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(2);
+    KEEP(*(.startup))
+  } > ROM
+
+  /* Program code (text), read-only data and static ctors */
+  .text :
+  {
      __ctors_start = . ;
     *(.ctors)
     . = ALIGN(2);
@@ -79,5 +92,4 @@ SECTIONS
   } > RAM
 
    __data_load_start = LOADADDR(.data);
-   __data_load_end   = __data_load_start + SIZEOF(.data);
 }

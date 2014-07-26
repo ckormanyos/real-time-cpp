@@ -12,45 +12,44 @@ Address of section .data set to 0x800100
                 0x00000000                . = 0x0
                 0x00000000                . = ALIGN (0x2)
 
-.text           0x00000000       0x1e
+.isr_vectors    0x00000000        0x4
  *(.isr_vectors)
  .isr_vectors   0x00000000        0x4 bin/crt0.o
                 0x00000000                isr_vectors
                 0x00000004                . = ALIGN (0x2)
  *(.isr_vectors)
-                0x00000004                __ctors_start = .
+
+.startup        0x00000004       0x60
+ *(.startup)
+ .startup       0x00000004       0x60 bin/crt0.o
+                0x00000004                __my_startup
+                0x00000022                __do_copy_data
+                0x0000003a                __do_clear_bss
+                0x0000004c                __do_global_ctors
+                0x00000064                . = ALIGN (0x2)
+ *(.startup)
+
+.text           0x00000064       0x1a
+                0x00000064                __ctors_start = .
  *(.ctors)
- .ctors         0x00000004        0x2 bin/led.o
-                0x00000006                . = ALIGN (0x2)
+ .ctors         0x00000064        0x2 bin/led.o
+                0x00000066                . = ALIGN (0x2)
  *(SORT(.ctors))
-                0x00000006                __ctors_end = .
+                0x00000066                __ctors_end = .
  *(.progmem*)
-                0x00000006                . = ALIGN (0x2)
+                0x00000066                . = ALIGN (0x2)
  *(.trampolines*)
- .trampolines   0x00000006        0x0 linker stubs
-                0x00000006                . = ALIGN (0x2)
+ .trampolines   0x00000066        0x0 linker stubs
+                0x00000066                . = ALIGN (0x2)
  *(.text)
- .text          0x00000006        0x0 bin/led.o
- .text          0x00000006        0x8 bin/crt0.o
-                0x00000006                __tablejump__
-                0x0000000e                . = ALIGN (0x2)
+ .text          0x00000066        0x0 bin/led.o
+ .text          0x00000066        0x8 bin/crt0.o
+                0x00000066                __tablejump__
+                0x0000006e                . = ALIGN (0x2)
  *(.text*)
- .text.startup  0x0000000e       0x10 bin/led.o
-                0x0000000e                main
-                0x0000001e                . = ALIGN (0x2)
-
-.init0          0x0000001e       0x1e
- .init0         0x0000001e       0x1e bin/crt0.o
-                0x0000001e                startup
-
-.init4          0x0000003c       0x2a
- .init4         0x0000003c       0x2a bin/crt0.o
-                0x0000003c                __do_copy_data
-                0x00000054                __do_clear_bss
-
-.init6          0x00000066       0x18
- .init6         0x00000066       0x18 bin/crt0.o
-                0x00000066                __do_global_ctors
+ .text.startup  0x0000006e       0x10 bin/led.o
+                0x0000006e                main
+                0x0000007e                . = ALIGN (0x2)
                 0x00800100                . = 0x800100
                 0x00800100                . = ALIGN (0x2)
 
@@ -84,16 +83,8 @@ Address of section .data set to 0x800100
  *(.bss*)
                 0x00800100                __bss_end = .
                 0x0000007e                __data_load_start = LOADADDR (.data)
-                0x0000007e                __data_load_end = (__data_load_start + SIZEOF (.data))
 LOAD bin/led.o
 LOAD bin/crt0.o
-LOAD c:/program files (x86)/gcc-4.8.1-avr/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a
-LOAD c:/program files (x86)/gcc-4.8.1-avr/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5\libm.a
-START GROUP
-LOAD c:/program files (x86)/gcc-4.8.1-avr/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a
-LOAD c:/program files (x86)/gcc-4.8.1-avr/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5\libm.a
-LOAD c:/program files (x86)/gcc-4.8.1-avr/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5\libc.a
-END GROUP
 OUTPUT(bin/led.elf elf32-avr)
 LOAD linker stubs
 

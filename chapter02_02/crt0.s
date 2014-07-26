@@ -1,5 +1,5 @@
 ;
-;  Copyright Christopher Kormanyos 2007 - 2013.
+;  Copyright Christopher Kormanyos 2007 - 2014.
 ;  Distributed under the Boost Software License,
 ;  Version 1.0. (See accompanying file LICENSE_1_0.txt
 ;  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 .global isr_vectors
 .func isr_vectors
 isr_vectors:
-  call startup
+  call __my_startup
   .endfunc
 
 .extern __do_clear_bss
@@ -22,11 +22,11 @@ isr_vectors:
 .weak  __stack
 .set   __stack, RAMEND
 
-.section .init0,"ax",@progbits
-.weak startup
-.func startup
+.section .startup,"ax",@progbits
+.weak __my_startup
+.func __my_startup
 
-startup:
+__my_startup:
 
   eor  r1, r1
   out  0x3f, r1         ; SREG
@@ -61,7 +61,7 @@ startup:
 .extern __bss_end
 
 
-.section .init4,"ax",@progbits
+.section .startup,"ax",@progbits
 
 .global __do_copy_data
 
@@ -123,8 +123,7 @@ __do_clear_bss:
 .extern __ctors_end
 .extern __tablejump__
 
-.text
-.section .init6,"ax",@progbits
+.section .startup,"ax",@progbits
 .weak  __do_global_ctors
 .func  __do_global_ctors
 

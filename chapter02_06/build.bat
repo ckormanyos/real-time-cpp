@@ -10,7 +10,7 @@
 @rem
 @rem Usage:
 @rem build.bat "C:\directory_of_gcc_bin" avr
-@rem For example:
+@rem For example,
 @rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
 @rem
 
@@ -20,16 +20,10 @@
 
 @echo.
 @echo.Building with       : build.bat
-
-@echo.
 @echo.Using tool path     : %TOOL_PATH%
-
-@echo.
 @echo.Using tool prefix   : %TOOL_PREFIX%
-
-@echo.
-@echo.Clean bin directory : bin\*.*
-del /Q bin\*.*
+@echo.Clean bin directory : bin\led*.*
+del /Q bin\led*.*
 
 @echo.
 @echo.Assemble : crt0.s  to bin/crt0.o
@@ -38,12 +32,15 @@ del /Q bin\*.*
 @echo.Compile  : led.cpp to bin/led.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -O3 -std=c++0x -I. -c led.cpp -o bin/led.o
 
-@echo.Link     : objects to led.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -nostartfiles -Wl,-Tavr.ld,-Map,bin/led.map bin/led.o bin/crt0.o -o bin/led.elf
+@echo.Link     : objects to bin/led.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -nostartfiles -nostdlib -Wl,-Tavr.ld,-Map,bin/led.map bin/led.o bin/crt0.o -o bin/led.elf
 
 @echo.
 @echo.Extract  : executalbe hex file : from bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/led.elf bin/led.hex
+
+@echo.Extract  : assembly list file  : from bin/led.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/led.elf > bin/led.lss
 
 @echo.Extract  : size information    : from bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/led.elf > bin\led_size.txt

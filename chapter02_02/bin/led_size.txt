@@ -1,12 +1,11 @@
 bin/led.elf  :
-section    size      addr
-.data         0   8388864
-.text        60         0
-.init0       30        60
-.init4       42        90
-.init6       24       132
-.bss          2   8388864
-.comment     48         0
-Total       206
+section        size      addr
+.data             0   8388864
+.isr_vectors      4         0
+.startup         96         4
+.text            58       100
+.bss              2   8388864
+.comment         48         0
+Total           208
 
 
