@@ -7,11 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chapter02_06", "chapter02_0
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		avr|avr = avr|avr
+		avr|Win32 = avr|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{63201AE1-2F65-42D1-BE4B-F76ACBF3AB48}.avr|avr.ActiveCfg = avr|Win32
-		{63201AE1-2F65-42D1-BE4B-F76ACBF3AB48}.avr|avr.Build.0 = avr|Win32
+		{63201AE1-2F65-42D1-BE4B-F76ACBF3AB48}.avr|Win32.ActiveCfg = avr|Win32
+		{63201AE1-2F65-42D1-BE4B-F76ACBF3AB48}.avr|Win32.Build.0 = avr|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

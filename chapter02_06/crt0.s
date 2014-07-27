@@ -15,12 +15,8 @@ isr_vectors:
 
 .extern __do_clear_bss
 .extern __do_global_ctors
+.extern __initial_stack_pointer
 .extern main
-
-.equ RAMEND, 0x800800
-
-.weak  __stack
-.set   __stack, RAMEND
 
 .section .startup,"ax",@progbits
 .weak __my_startup
@@ -30,8 +26,8 @@ __my_startup:
 
   eor  r1, r1
   out  0x3f, r1         ; SREG
-  ldi  r28,lo8(__stack)
-  ldi  r29,hi8(__stack)
+  ldi  r28,lo8(__initial_stack_pointer)
+  ldi  r29,hi8(__initial_stack_pointer)
   out  0x3E, r29        ; SPH
   out  0x3D, r28        ; SPL
 
@@ -46,8 +42,7 @@ __my_startup:
 
   call main
 
-  ; Catch an unexpected return from main
-  ; using a loop with watchdog service.
+  ; Catch an unexpected return from main using an endless loop.
   .L__unexpected_return_loop:
   rjmp .L__unexpected_return_loop
 
@@ -90,7 +85,6 @@ __do_copy_data:
   brne  .L__do_copy_data_loop
 
   ret
-
 .endfunc
 
 .global __do_clear_bss
@@ -116,7 +110,6 @@ __do_clear_bss:
   brne .L__do_clear_bss_loop
 
   ret
-
 .endfunc
 
 .extern __ctors_start
@@ -147,7 +140,6 @@ __do_global_ctors:
   brne .L__do_global_ctors_loop
 
   ret
-
 .endfunc
 
 

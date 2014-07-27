@@ -11,6 +11,9 @@
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
+/* The end of the 2K RAM stack */
+__initial_stack_pointer = 0x800800;
+
 MEMORY
 {
   ROM(rx)   : ORIGIN = 0, LENGTH = 32K
