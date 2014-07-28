@@ -12,16 +12,15 @@
   #include "iterator_impl.h"
 
   // Implement most of std::array for compilers that do not yet support it.
+  // See ISO/IEC 14882:2011 Chapter 23.3.2.
 
   namespace std
   {
-    template<typename T,
-	           const std::size_t N>
+    template<typename T, const std::size_t N>
     class array
     {
     public:
-      T elems[N];
-
+      // Standard container-local type definitions.
       typedef std::size_t                           size_type;
       typedef std::ptrdiff_t                        difference_type;
       typedef T                                     value_type;
@@ -33,6 +32,8 @@
       typedef const_pointer                         const_iterator;
       typedef std::reverse_iterator<iterator>       reverse_iterator;
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
+      value_type elems[N];
 
       static constexpr size_type static_size = N;
 
@@ -90,7 +91,12 @@
 
       void assign(const value_type& value)
       {
-        xalgorithm::xfill(begin(), N, value);
+        xalgorithm::xfill_n(elems, N, value);
+      }
+
+      void fill(const value_type& value)
+      {
+        xalgorithm::xfill_n(elems, N, value);
       }
 
     private:

@@ -9,6 +9,5 @@
 
 void mcal::irq::init(const config_type*)
 {
-  // Enable all global interrupts.
-  enable_all();
+  mcal::irq::enable_all();
 }

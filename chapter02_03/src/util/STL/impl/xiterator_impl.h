@@ -14,7 +14,7 @@
 
   #include "cstddef_impl.h"
 
-  // Implement helper functions for <iterator>.
+  // Implement helper functions for some of <iterator>.
 
   namespace xiterator
   {

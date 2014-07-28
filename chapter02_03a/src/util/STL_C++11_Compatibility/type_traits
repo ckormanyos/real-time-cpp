@@ -1,0 +1,13 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef _TYPE_TRAITS_2013_09_01_
+  #define _TYPE_TRAITS_2013_09_01_
+
+  #include "impl/type_traits_impl.h"
+
+#endif // _TYPE_TRAITS_2013_09_01_

@@ -14,18 +14,14 @@
 
   namespace util
   {
-    template<typename unsigned_tick>
+    template<typename unsigned_tick_type>
     class timer
     {
     public:
+      typedef unsigned_tick_type tick_type;
 
-      #if defined(_MSC_VER) && (_MSC_VER <= 1600)
-      #else
-        static_assert(false == std::numeric_limits<unsigned_tick>::is_signed,
-                      "error: the type of unsigned_tick must be unsigned!");
-      #endif
-
-      typedef unsigned_tick tick_type;
+      static_assert(std::numeric_limits<tick_type>::is_signed == false,
+                    "the timer tick type must be unsigned");
 
       template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }
       template<typename other_tick_type> static tick_type milliseconds(const other_tick_type& value_milliseconds) { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
@@ -33,6 +29,7 @@
       template<typename other_tick_type> static tick_type minutes     (const other_tick_type& value_minutes     ) { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
       template<typename other_tick_type> static tick_type hours       (const other_tick_type& value_hours       ) { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
       template<typename other_tick_type> static tick_type days        (const other_tick_type& value_days        ) { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
+      template<typename other_tick_type> static tick_type weeks       (const other_tick_type& value_weeks       ) { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
 
       timer() : my_tick(tick_type(my_now())) { }
 
@@ -59,8 +56,18 @@
       bool timeout() const
       {
         const tick_type timer_mask = static_cast<tick_type>((1ULL << (std::numeric_limits<tick_type>::digits - 1)) - 1ULL);
-        const tick_type delta      = static_cast<tick_type>(tick_type(my_now()) - my_tick);
+        const tick_type delta      = static_cast<tick_type>(static_cast<tick_type>(my_now()) - my_tick);
         return (delta <= timer_mask);
+      }
+
+      void set_mark()
+      {
+        my_tick = static_cast<tick_type>(my_now());
+      }
+
+      tick_type get_ticks_since_mark() const
+      {
+        return static_cast<tick_type>(static_cast<tick_type>(my_now()) - my_tick);
       }
 
       static void blocking_delay(const tick_type& delay)
@@ -76,7 +83,7 @@
     private:
       tick_type my_tick;
 
-      static mcal::gpt::value_type my_now() { return static_cast<mcal::gpt::value_type>(mcal::gpt::get_time_elapsed()); }
+      static mcal::gpt::value_type my_now() { return mcal::gpt::secure::get_time_elapsed(); }
     };
   }
 

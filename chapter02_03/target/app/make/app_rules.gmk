@@ -1,3 +1,10 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
 # ------------------------------------------------------------------------------
 # 
 # Rules.gmk
@@ -14,30 +21,34 @@
 $(PATH_OBJ)/%.o : %.cpp
 	@$(ECHO) +++ compile: $< to $@
   # Compile the source file
-  # ...and Reformat (using sed) any possible error/warning messages for the Visual Studio build window
+  # ...and Reformat (using sed) any possible error/warning messages for the VisualStudio(R) output window
   # ...and Create an assembly listing using objdump
-  # ...and Generate a dependency file (using the g++ flag -MM), reformating it with sed
+  # ...and Generate a dependency file (using the -MM flag).
+  # ...and Be sure to include the path in the dependency file.
 	@-$(CL) $(CPPFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -j .text -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
-	@-$(CL) $(CPPFLAGS) -MM $< > $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(OBJDUMP) -S -C $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CL) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
 $(PATH_OBJ)/%.o : %.c
 	@$(ECHO) +++ compile: $< to $@
   # Compile the source file
-  # ...and Reformat (using sed) any possible error/warning messages for the Visual Studio build window
+  # ...and Reformat (using sed) any possible error/warning messages for the VisualStudio(R) output window
   # ...and Create an assembly listing using objdump
-  # ...and Generate a dependency file (using the g++ flag -MM), reformating it with sed
+  # ...and Generate a dependency file (using the -MM flag)
+  # ...and Be sure to include the path in the dependency file.
 	@-$(CC) $(CFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -j .text -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
-	@-$(CC) $(CFLAGS) -MM $< > $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CL) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
 $(PATH_OBJ)/%.o : %.s
 	@$(ECHO) +++ assemble: $< to $@
   # Assemble the source file
-  # ...and Reformat (using sed) any possible error/warning messages for the Visual Studio build window
+  # ...and Reformat (using sed) any possible error/warning messages for the VisualStudio(R) output window
   # ...and Create an assembly listing using objdump
 	@-$(CL) $(AFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -j .text -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst

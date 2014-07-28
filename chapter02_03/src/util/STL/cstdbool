@@ -1,0 +1,6 @@
+#ifndef _CSTDBOOL_2012_12_14_
+  #define _CSTDBOOL_2012_12_14_
+
+  #include "impl/cstdbool_impl.h"
+
+#endif // _CSTDBOOL_2012_12_14_

@@ -62,13 +62,10 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/src/mcal/win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -85,11 +82,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/src/mcal/win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_SECURE_SCL=0;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <OutputFile>$(SolutionDir)$(Configuration)\$(ProjectName).exe</OutputFile>
@@ -182,23 +177,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_osc.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_port.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_wdg.cpp">
+    <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\mcal\mcal.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_led.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
-    <ClCompile Include="src\util\memory\util_ring_allocator.cpp" />
-    <ClCompile Include="src\util\memory\util_static_allocator.cpp" />
     <ClCompile Include="src\util\STL\impl\avr\avr_cmath_acosh.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -229,15 +215,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_mcu.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_osc.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_port.h">
+    <ClInclude Include="src\mcal\avr\mcal_led.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -249,23 +227,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_wdg.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="src\mcal\mcal.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_template.h" />
     <ClInclude Include="src\mcal\win32\mcal_cpu.h" />
     <ClInclude Include="src\mcal\win32\mcal_gpt.h" />
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
-    <ClInclude Include="src\mcal\win32\mcal_mcu.h" />
-    <ClInclude Include="src\mcal\win32\mcal_port.h" />
+    <ClInclude Include="src\mcal\win32\mcal_led.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
-    <ClInclude Include="src\util\memory\util_factory.h" />
-    <ClInclude Include="src\util\memory\util_placed_pointer.h" />
-    <ClInclude Include="src\util\memory\util_ring_allocator.h" />
-    <ClInclude Include="src\util\memory\util_static_allocator.h" />
     <ClInclude Include="src\util\STL\impl\algorithm_impl.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -378,6 +347,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h" />
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h" />
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h" />
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h" />
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h" />
+    <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
@@ -475,6 +450,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="src\util\STL_C++11_Compatibility\chrono" />
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool" />
+    <None Include="src\util\STL_C++11_Compatibility\cstdint" />
+    <None Include="src\util\STL_C++11_Compatibility\ratio" />
+    <None Include="src\util\STL_C++11_Compatibility\type_traits" />
+    <None Include="src\util\STL_C++14_Compatibility\cstdfloat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,15 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Target\Micros\AVR\Startup\crt1.s">
-      <Filter>micros\avr\startup</Filter>
-    </None>
-    <None Include="Target\Micros\AVR\Startup\crt0.s">
-      <Filter>micros\avr\startup</Filter>
-    </None>
-    <None Include="Target\Micros\AVR\Startup\crt0_init4.s">
-      <Filter>micros\avr\startup</Filter>
-    </None>
     <None Include="target\app\make\app_files.gmk">
       <Filter>app\make</Filter>
     </None>
@@ -54,15 +45,18 @@
     <None Include="target\micros\avr\make\avr_flags.gmk">
       <Filter>micros\avr\make</Filter>
     </None>
-    <None Include="target\micros\avr\make\avr_hex_manip_script.hxm">
-      <Filter>micros\avr\make</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Target\Micros\AVR\Startup\gcc_patch.cpp">
+    <ClCompile Include="target\micros\avr\startup\crt0.cpp">
       <Filter>micros\avr\startup</Filter>
     </ClCompile>
-    <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
+    <ClCompile Include="target\micros\avr\startup\crt0_init_ram.cpp">
+      <Filter>micros\avr\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\avr\startup\crt1.cpp">
+      <Filter>micros\avr\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\avr\startup\int_vect.cpp">
       <Filter>micros\avr\startup</Filter>
     </ClCompile>
   </ItemGroup>

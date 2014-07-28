@@ -9,7 +9,7 @@
 
 @rem
 @rem Usage:
-@rem build.bat "C:\directory_of_gcc_bin" avr
+@rem build.bat directory_of_gcc_bin avr
 @rem For example,
 @rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
 @rem

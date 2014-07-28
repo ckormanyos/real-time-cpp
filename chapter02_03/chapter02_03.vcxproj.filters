@@ -16,9 +16,6 @@
     <Filter Include="src\util\utility">
       <UniqueIdentifier>{709b9348-a32f-4b38-aad0-9d4733c541af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\memory">
-      <UniqueIdentifier>{fb6afa64-87b9-489c-bf74-fff0df6f7822}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL">
       <UniqueIdentifier>{d0d11263-d7b2-4316-9cb7-b3d7a8509d74}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,15 @@
     <Filter Include="src\mcal\win32">
       <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL_C++14_Compatibility">
+      <UniqueIdentifier>{91752c8a-7e79-4bfb-b230-ef3355e8a033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\STL_C++11_Compatibility">
+      <UniqueIdentifier>{96a081d3-49bf-4a50-a375-a8107fb760ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\STL_C++11_Compatibility\impl">
+      <UniqueIdentifier>{a366dc4b-f9e4-4839-b7a6-a91fe70d160c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
@@ -54,12 +60,6 @@
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_wdg.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_osc.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
@@ -72,16 +72,13 @@
     <ClCompile Include="src\util\STL\impl\avr\avr_limits.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\memory\util_ring_allocator.cpp">
-      <Filter>src\util\memory</Filter>
+    <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
+      <Filter>src\mcal\win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\memory\util_static_allocator.cpp">
-      <Filter>src\util\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_port.cpp">
+    <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
+    <ClCompile Include="src\mcal\win32\mcal_led.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,9 +90,6 @@
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_irq.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_mcu.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_reg_access.h">
@@ -136,12 +130,6 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_utype_helper.h">
       <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_wdg.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_osc.h">
-      <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\algorithm_impl.h">
       <Filter>src\util\STL\impl</Filter>
@@ -218,12 +206,6 @@
     <ClInclude Include="src\util\STL\impl\avr\avr_cmath_constants.h">
       <Filter>src\util\STL\impl\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\memory\util_factory.h">
-      <Filter>src\util\memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\memory\util_placed_pointer.h">
-      <Filter>src\util\memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_communication.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
@@ -239,17 +221,8 @@
     <ClInclude Include="src\util\STL\impl\ctime_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\memory\util_ring_allocator.h">
-      <Filter>src\util\memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\memory\util_static_allocator.h">
-      <Filter>src\util\memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_circular_buffer.h">
       <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_port.h">
-      <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_linear_interpolate.h">
       <Filter>src\util\utility</Filter>
@@ -269,16 +242,34 @@
     <ClInclude Include="src\mcal\win32\mcal_irq.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_mcu.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_port.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_reg.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
+      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h">
+      <Filter>src\util\STL_C++14_Compatibility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_led.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_led.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
@@ -342,6 +333,24 @@
     </None>
     <None Include="src\util\STL\ctime">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\chrono">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdint">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\ratio">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\type_traits">
+      <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
+      <Filter>src\util\STL_C++14_Compatibility</Filter>
     </None>
   </ItemGroup>
 </Project>

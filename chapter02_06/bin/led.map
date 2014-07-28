@@ -9,6 +9,7 @@ RAM              0x00800100         0x0000039c         rw !x
 Linker script and memory map
 
 Address of section .data set to 0x800100
+                0x00800800                __initial_stack_pointer = 0x800800
                 0x00000000                . = 0x0
                 0x00000000                . = ALIGN (0x2)
 

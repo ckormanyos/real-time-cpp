@@ -1,4 +1,0 @@
-NEW_BUFFER     Buf_0000_to_7FFF   FROM_FILE      inFile     -useAreas={{0x0000, 0x8000}} -setByteOrder=LittleEndian
-FILL_BUFFER    Buf_0000_to_7FFF   WITH_FILLER    { 0xFF }
-
-WRITE_FILE     outFile            WITH_BUFFERS   {Buf_0000_to_7FFF}  -setFormat=IntelHexExtended

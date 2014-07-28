@@ -13,8 +13,9 @@
   #endif
 
   #include "cstddef_impl.h"
+  #include "iterator_impl.h"
 
-  // Implement helper functions for std::allocator.
+  // Implement helper functions for some of std::allocator.
 
   namespace xallocator
   {
@@ -31,7 +32,9 @@
     template<typename iterator_type, typename allocator_type>
     inline void xdeallocate_range(iterator_type first, iterator_type last, allocator_type a)
     {
-      a.deallocate(first, (std::size_t) (last - first));
+      const std::size_t count = static_cast<std::size_t>(std::distance(first, last));
+
+      a.deallocate(first, count);
     }
   }
 

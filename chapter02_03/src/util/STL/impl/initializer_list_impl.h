@@ -15,7 +15,7 @@
   #include "cstddef_impl.h"
 
   // Implement std::initializer_list for compilers that do not yet support it.
-  // See ISO/IEC Chapter 18.9.
+  // See ISO/IEC 14882:2011 Chapter 18.9.
 
   namespace std
   {

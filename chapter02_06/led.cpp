@@ -22,13 +22,11 @@ public:
     // Set the port pin to low.
     *reinterpret_cast<volatile bval_type*>(port) &= static_cast<bval_type>(~bval);
 
-    constexpr bval_type pdir = port - 1U;
-
     // Set the port pin to output.
-    *reinterpret_cast<volatile bval_type*>(pdir) |= bval;
+    *reinterpret_cast<volatile bval_type*>(port - 1U) |= bval;
   }
 
-  static void toggle(void)
+  void toggle(void) const
   {
     // Toggle the LED.
     *reinterpret_cast<volatile bval_type*>(port) ^= bval;

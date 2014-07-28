@@ -18,5 +18,4 @@
 00800100 B __bss_start
 00800100 D __data_end
 00800100 D __data_start
-00800800 W __stack
-00800800 a RAMEND
+00800800 A __initial_stack_pointer

@@ -19,5 +19,4 @@
 00800100 D __data_start
 00800100 00000002 b _ZN12_GLOBAL__N_1L6led_b5E
 00800102 B __bss_end
-00800800 W __stack
-00800800 a RAMEND
+00800800 A __initial_stack_pointer

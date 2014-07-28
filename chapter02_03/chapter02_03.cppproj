@@ -11,9 +11,9 @@
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
-    <AssemblyName>chapter02_04</AssemblyName>
-    <Name>chapter02_04</Name>
-    <RootNamespace>chapter02_04</RootNamespace>
+    <AssemblyName>chapter02_03</AssemblyName>
+    <Name>chapter02_03</Name>
+    <RootNamespace>chapter02_03</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
@@ -36,7 +36,7 @@
     <AsfVersion>3.0.1</AsfVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputFileName>chapter02_04</OutputFileName>
+    <OutputFileName>chapter02_03</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
@@ -66,7 +66,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputFileName>chapter02_04</OutputFileName>
+    <OutputFileName>chapter02_03</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp xmlns="">
@@ -93,7 +93,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\util\memory" />
+    <Folder Include="src\util\STL_C++11_Compatibility\impl" />
+    <Folder Include="src\util\STL_C++14_Compatibility" />
+    <Folder Include="src\util\STL_C++11_Compatibility" />
     <Folder Include="target" />
     <Folder Include="src" />
     <Folder Include="src\mcal" />
@@ -128,19 +130,10 @@
     <Compile Include="src\mcal\avr\mcal_irq.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_mcu.h">
+    <Compile Include="src\mcal\avr\mcal_led.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_osc.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_osc.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_port.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_port.h">
+    <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -149,40 +142,22 @@
     <Compile Include="src\mcal\avr\mcal_reg_access.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_wdg.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_wdg.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\mcal.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\mcal_reg_access_template.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\mcal_reg_dynamic_access_template.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\sys\start\sys_start.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_factory.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_placed_pointer.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_ring_allocator.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_ring_allocator.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_static_allocator.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_static_allocator.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\algorithm_impl.h">
@@ -195,18 +170,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_cmath_acosh.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_cmath_constants.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_limits.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_cmath_gamma.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\basic_string_impl.h">
@@ -281,6 +244,24 @@
     <Compile Include="src\util\STL\impl\xutils_impl.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++14_Compatibility\stdfloat.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_bit_mask.h">
       <SubType>compile</SubType>
     </Compile>
@@ -312,9 +293,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_utype_helper.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="target\micros\avr\startup\gcc_patch.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
@@ -377,6 +355,24 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdint">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\type_traits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>

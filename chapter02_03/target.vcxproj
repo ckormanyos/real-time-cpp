@@ -143,14 +143,12 @@
     <None Include="target\micros\avr\make\avr.ld" />
     <None Include="target\micros\avr\make\avr_files.gmk" />
     <None Include="target\micros\avr\make\avr_flags.gmk" />
-    <None Include="target\micros\avr\make\avr_hex_manip_script.hxm" />
-    <None Include="Target\Micros\AVR\Startup\crt0.s" />
-    <None Include="Target\Micros\AVR\Startup\crt0_init4.s" />
-    <None Include="Target\Micros\AVR\Startup\crt1.s" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Target\Micros\AVR\Startup\gcc_patch.cpp" />
-    <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\avr\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\avr\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\avr\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\avr\startup\int_vect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,7 +16,8 @@
   #include <float.h>
 
   // Implement some of <limits> for compilers that do not yet support it.
-  // The implementation was partly inspired by some concepts in the GCC's <limits>.
+  // The implementation was partly inspired by some concepts in GCC's
+  // implementation of <limits>.
 
   namespace std
   {
@@ -44,23 +45,41 @@
     }
     float_round_style;
 
-    class numeric_limits_base
+    // Forward declaration of the numeric_limits template class.
+    template<typename T>
+    class numeric_limits;
+
+    class numeric_limits_details
+    {
+    private:
+      static const long long my_long_long_max = 0x7FFFFFFFFFFFFFFFLL;
+
+      // The following values for float, double, and long double are provided
+      // in a separate file that is dependent on the AVR architecture.
+
+      static float my_value_that_needs_to_be_provided_flt_infinity();
+      static float my_value_that_needs_to_be_provided_flt_quiet_NaN();
+      static float my_value_that_needs_to_be_provided_flt_signaling_NaN();
+      static float my_value_that_needs_to_be_provided_flt_denorm_min();
+
+      static double my_value_that_needs_to_be_provided_dbl_infinity();
+      static double my_value_that_needs_to_be_provided_dbl_quiet_NaN();
+      static double my_value_that_needs_to_be_provided_dbl_signaling_NaN();
+      static double my_value_that_needs_to_be_provided_dbl_denorm_min();
+
+      static long double my_value_that_needs_to_be_provided_ldbl_infinity();
+      static long double my_value_that_needs_to_be_provided_ldbl_quiet_NaN();
+      static long double my_value_that_needs_to_be_provided_ldbl_signaling_NaN();
+      static long double my_value_that_needs_to_be_provided_ldbl_denorm_min();
+
+      template<typename unsigned_tick_type>
+      friend class numeric_limits;
+    };
+
+    template<typename T>
+    class numeric_limits
     {
     public:
-      static const long long MY_LONG_LONG_MAX = 0x7FFFFFFFFFFFFFFFLL;
-
-      // These are designed to produce a linker error when using float.
-      static float my_value_that_needs_to_be_provided_float_infinity();
-      static float my_value_that_needs_to_be_provided_float_quiet_NaN();
-      static float my_value_that_needs_to_be_provided_float_signaling_NaN();
-      static float my_value_that_needs_to_be_provided_float_denorm_min();
-
-      // These are designed to produce a linker error when using double.
-      static double my_value_that_needs_to_be_provided_double_infinity();
-      static double my_value_that_needs_to_be_provided_double_quiet_NaN();
-      static double my_value_that_needs_to_be_provided_double_signaling_NaN();
-      static double my_value_that_needs_to_be_provided_double_denorm_min();
-
       static const bool is_specialized = false;
       static const int digits = 0;
       static const int digits10 = 0;
@@ -84,12 +103,7 @@
       static const bool traps = false;
       static const bool tinyness_before = false;
       static const float_round_style round_style = round_toward_zero;
-    };
 
-    template<typename T>
-    class numeric_limits : public numeric_limits_base
-    {
-    public:
       static T min() throw()           { return static_cast<T>(0); }
       static T max() throw()           { return static_cast<T>(0); }
       static T lowest() throw()        { return static_cast<T>(0); }
@@ -566,8 +580,8 @@
     public:
       static const bool is_specialized = true;
 
-      static long long min() throw()    { return -numeric_limits_base::MY_LONG_LONG_MAX - 1; }
-      static long long max() throw()    { return  numeric_limits_base::MY_LONG_LONG_MAX; }
+      static long long min() throw()    { return -numeric_limits_details::my_long_long_max - 1; }
+      static long long max() throw()    { return  numeric_limits_details::my_long_long_max; }
       static long long lowest() throw() { return min(); }
 
       static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(long long);
@@ -612,7 +626,7 @@
       static const bool is_specialized = true;
 
       static unsigned long long min() throw()    { return 0; }
-      static unsigned long long max() throw()    { return (numeric_limits_base::MY_LONG_LONG_MAX * 2ULL) + 1; }
+      static unsigned long long max() throw()    { return (numeric_limits_details::my_long_long_max * 2ULL) + 1; }
       static unsigned long long lowest() throw() { return min(); }
 
       static const int digits = CONCEPT_FROM_GLIBCXX_DIGITS(unsigned long long);
@@ -682,12 +696,12 @@
       static const bool has_denorm = true;
       static const bool has_denorm_loss = false;
 
-      static float infinity() throw()      { return numeric_limits_base::my_value_that_needs_to_be_provided_float_infinity(); }
-      static float quiet_NaN() throw()     { return numeric_limits_base::my_value_that_needs_to_be_provided_float_quiet_NaN(); }
-      static float signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_float_signaling_NaN(); }
-      static float denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_float_denorm_min(); }
+      static float infinity() throw()      { return numeric_limits_details::my_value_that_needs_to_be_provided_flt_infinity(); }
+      static float quiet_NaN() throw()     { return numeric_limits_details::my_value_that_needs_to_be_provided_flt_quiet_NaN(); }
+      static float signaling_NaN() throw() { return numeric_limits_details::my_value_that_needs_to_be_provided_flt_signaling_NaN(); }
+      static float denorm_min() throw()    { return numeric_limits_details::my_value_that_needs_to_be_provided_flt_denorm_min(); }
 
-      static const bool is_iec559 = ((has_infinity && has_quiet_NaN) && (has_denorm == denorm_present));
+      static const bool is_iec559 = true;
       static const bool is_bounded = true;
       static const bool is_modulo = false;
 
@@ -729,12 +743,59 @@
       static const bool has_denorm = true;
       static const bool has_denorm_loss = false;
 
-      static double infinity() throw()      { return numeric_limits_base::my_value_that_needs_to_be_provided_double_infinity(); }
-      static double quiet_NaN() throw()     { return numeric_limits_base::my_value_that_needs_to_be_provided_double_quiet_NaN(); }
-      static double signaling_NaN() throw() { return numeric_limits_base::my_value_that_needs_to_be_provided_double_signaling_NaN(); }
-      static double denorm_min() throw()    { return numeric_limits_base::my_value_that_needs_to_be_provided_double_denorm_min(); }
+      static double infinity() throw()      { return numeric_limits_details::my_value_that_needs_to_be_provided_dbl_infinity(); }
+      static double quiet_NaN() throw()     { return numeric_limits_details::my_value_that_needs_to_be_provided_dbl_quiet_NaN(); }
+      static double signaling_NaN() throw() { return numeric_limits_details::my_value_that_needs_to_be_provided_dbl_signaling_NaN(); }
+      static double denorm_min() throw()    { return numeric_limits_details::my_value_that_needs_to_be_provided_dbl_denorm_min(); }
 
-      static const bool is_iec559 = false; // double is only four bytes for AVR!
+      static const bool is_iec559 = true;
+      static const bool is_bounded = true;
+      static const bool is_modulo = false;
+
+      static const bool traps = false;
+      static const bool tinyness_before = false;
+      static const float_round_style round_style = round_to_nearest;
+    };
+
+    // Specialization for long double.
+    template<>
+    class numeric_limits<long double>
+    {
+    public:
+      static const bool is_specialized = true;
+
+      static long double min() throw()    { return  LDBL_MIN; }
+      static long double max() throw()    { return  LDBL_MAX; }
+      static long double lowest() throw() { return -LDBL_MAX; }
+
+      static const int digits = LDBL_MANT_DIG;
+      static const int digits10 = LDBL_DIG;
+      static const int max_digits10 = CONCEPT_FROM_GLIBCXX_MAX_DIGITS10(LDBL_MANT_DIG);
+      static const bool is_signed = true;
+      static const bool is_integer = false;
+      static const bool is_exact = false;
+      static const int radix = 2; // DBL_RADIX;
+
+      static long double epsilon() throw()     { return LDBL_EPSILON; }
+      static long double round_error() throw() { return 0.5; }
+
+      static const int min_exponent = LDBL_MIN_EXP;
+      static const int min_exponent10 = LDBL_MIN_10_EXP;
+      static const int max_exponent = LDBL_MAX_EXP;
+      static const int max_exponent10 = LDBL_MAX_10_EXP;
+
+      static const bool has_infinity = true;
+      static const bool has_quiet_NaN = true;
+      static const bool has_signaling_NaN = false;
+      static const bool has_denorm = true;
+      static const bool has_denorm_loss = false;
+
+      static long double infinity() throw()      { return numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_infinity(); }
+      static long double quiet_NaN() throw()     { return numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_quiet_NaN(); }
+      static long double signaling_NaN() throw() { return numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_signaling_NaN(); }
+      static long double denorm_min() throw()    { return numeric_limits_details::my_value_that_needs_to_be_provided_ldbl_denorm_min(); }
+
+      static const bool is_iec559 = true;
       static const bool is_bounded = true;
       static const bool is_modulo = false;
 
