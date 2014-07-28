@@ -63,6 +63,15 @@
     typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
     extern task_list_type& task_list();
+
+    struct secure
+    {
+    private:
+      static task_list_type::iterator os_get_running_task_iterator();
+
+      friend void os::get_event  (os::event_type&);
+      friend void os::clear_event(const os::event_type&);
+    };
   }
 
 #endif // _OS_TASK_CONTROL_BLOCK_2013_07_30_H_

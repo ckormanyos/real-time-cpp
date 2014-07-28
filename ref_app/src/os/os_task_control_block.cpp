@@ -1,4 +1,4 @@
-#include <os/os_task_control_block.h>
+#include <os/os.h>
 
 namespace
 {
@@ -57,9 +57,7 @@ bool os::task_control_block::execute() const
   return task_is_ready;
 }
 
-os::task_list_type::iterator os_get_running_task_iterator();
-
-os::task_list_type::iterator os_get_running_task_iterator()
+os::task_list_type::iterator os::secure::os_get_running_task_iterator()
 {
   // Return the iterator of the running task. If no task is running
   // (for example when the idle task is running), then the iterator

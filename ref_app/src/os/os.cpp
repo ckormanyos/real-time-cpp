@@ -7,7 +7,7 @@
 
 #include <algorithm>
 #include <mcal_irq.h>
-#include <os/os_task_control_block.h>
+#include <os/os.h>
 
 // The one (and only one) operating system task list.
 os::task_list_type& os::task_list()
@@ -69,10 +69,8 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
 
 void os::get_event(event_type& event_to_get)
 {
-  task_list_type::iterator os_get_running_task_iterator();
-
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::iterator control_block_of_the_running_task = os_get_running_task_iterator();
+  const os::task_list_type::iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().end())
   {
@@ -90,10 +88,8 @@ void os::get_event(event_type& event_to_get)
 
 void os::clear_event(const event_type& event_mask_to_clear)
 {
-  task_list_type::iterator os_get_running_task_iterator();
-
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::iterator control_block_of_the_running_task = os_get_running_task_iterator();
+  const os::task_list_type::iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().end())
   {
