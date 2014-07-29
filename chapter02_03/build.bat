@@ -22,12 +22,15 @@
 @set CINCLUDES=-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++14_Compatibility
 
 @echo.
-@echo.Building with       : build.bat
-@echo.Using tool path     : %TOOL_PATH%
-@echo.Using tool prefix   : %TOOL_PREFIX%
-@echo.Clean bin directory : bin\*.o bin\chapter02_03*.*
-@del /Q bin\*.o
-@del /Q bin\chapter02_03*.*
+@echo.Building with        : build.bat
+@echo.Using tool path      : %TOOL_PATH%
+@echo.Using tool prefix    : %TOOL_PREFIX%
+@echo.Create bin directory : bin\
+@if not exist bin mkdir bin
+@echo.Clean  bin directory : bin\*.o bin\chapter02_03*.*
+@if exist bin\*.o del /Q bin\*.o
+@if exist bin\chapter02_03*.* del /Q bin\chapter02_03*.*
+@echo.
 
 @echo.Compile  : mcal.cpp to bin/mcal.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/mcal.cpp -o bin/mcal.o
@@ -66,7 +69,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter02_03.elf
 
 @echo.
-@echo.Extract  : executalbe hex file : from bin/chapter02_03.elf
+@echo.Extract  : executable hex file : from bin/chapter02_03.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter02_03.elf bin/chapter02_03.hex
 
 @echo.Extract  : assembly list file  : from bin/chapter02_03.elf
