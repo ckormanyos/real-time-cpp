@@ -16,7 +16,7 @@
     namespace debug_monitor
     {
       typedef std::uint16_t address_type;
-      constexpr address_type address_offset = address_type(0U);
+      constexpr address_type address_offset = UINT16_C(0);
 
       typedef mcal::port::port_pin<std::uint8_t,
                                    std::uint8_t,

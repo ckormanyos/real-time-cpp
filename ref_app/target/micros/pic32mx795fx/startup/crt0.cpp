@@ -25,7 +25,7 @@ asm(".ent __my_startup0");
 asm volatile("__my_startup0:");
   asm volatile("mfc0 $k0, $12, 0");                  // Read the status register.
   asm volatile("ext $k0, $k0, 19, 1");               // Check the nmi bit.
-  asm volatile("beqz $k0, label_is_a_normal_reset"); // It is a normal reset.
+  asm volatile("beqz $k0, label_for_a_normal_reset"); // It is a normal reset.
   asm volatile("nop");
 
   // An nmi interrupt has been detected.
@@ -34,7 +34,7 @@ asm volatile("__my_startup0:");
   asm volatile("eret");
   asm volatile("nop");
 
-  asm volatile("label_is_a_normal_reset:");
+  asm volatile("label_for_a_normal_reset:");
 
   // Initialize the stack pointer and the global (small data) pointer.
   asm volatile("la $sp, __initial_stack_pointer");

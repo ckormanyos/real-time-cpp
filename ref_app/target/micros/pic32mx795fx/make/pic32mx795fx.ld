@@ -32,7 +32,7 @@ MEMORY
   ROM   (rx)  : ORIGIN = 0x9D000000, LENGTH = 0x08000 - 4
   IVEC  (rx)  : ORIGIN = 0x9FC01200, LENGTH = 0x00800
   RAM   (rwx) : ORIGIN = 0xA0000000, LENGTH = 0x07000
-  RESET (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x01000
+  RESET (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x00400
   CONFIG(r)   : ORIGIN = 0xBFC02FF0, LENGTH = 0x00010
 }
 
@@ -68,16 +68,16 @@ SECTIONS
    * Interrupt vectors.
    * They are 64 small code segments in sequence.
    */
-  .vector_0 _ebase_address + 0x200 + (_vector_spacing << 5)  *  0 : { KEEP(*(.vector_0)) } > IVEC
-  .vector_1 _ebase_address + 0x200 + (_vector_spacing << 5)  *  1 : { KEEP(*(.vector_1)) } > IVEC
-  .vector_2 _ebase_address + 0x200 + (_vector_spacing << 5)  *  2 : { KEEP(*(.vector_2)) } > IVEC
-  .vector_3 _ebase_address + 0x200 + (_vector_spacing << 5)  *  3 : { KEEP(*(.vector_3)) } > IVEC
-  .vector_4 _ebase_address + 0x200 + (_vector_spacing << 5)  *  4 : { KEEP(*(.vector_4)) } > IVEC
-  .vector_5 _ebase_address + 0x200 + (_vector_spacing << 5)  *  5 : { KEEP(*(.vector_5)) } > IVEC
-  .vector_6 _ebase_address + 0x200 + (_vector_spacing << 5)  *  6 : { KEEP(*(.vector_6)) } > IVEC
-  .vector_7 _ebase_address + 0x200 + (_vector_spacing << 5)  *  7 : { KEEP(*(.vector_7)) } > IVEC
-  .vector_8 _ebase_address + 0x200 + (_vector_spacing << 5)  *  8 : { KEEP(*(.vector_8)) } > IVEC
-  .vector_9 _ebase_address + 0x200 + (_vector_spacing << 5)  *  9 : { KEEP(*(.vector_9)) } > IVEC
+  .vector_0  _ebase_address + 0x200 + (_vector_spacing << 5) *  0 : { KEEP(*(.vector_0))  } > IVEC
+  .vector_1  _ebase_address + 0x200 + (_vector_spacing << 5) *  1 : { KEEP(*(.vector_1))  } > IVEC
+  .vector_2  _ebase_address + 0x200 + (_vector_spacing << 5) *  2 : { KEEP(*(.vector_2))  } > IVEC
+  .vector_3  _ebase_address + 0x200 + (_vector_spacing << 5) *  3 : { KEEP(*(.vector_3))  } > IVEC
+  .vector_4  _ebase_address + 0x200 + (_vector_spacing << 5) *  4 : { KEEP(*(.vector_4))  } > IVEC
+  .vector_5  _ebase_address + 0x200 + (_vector_spacing << 5) *  5 : { KEEP(*(.vector_5))  } > IVEC
+  .vector_6  _ebase_address + 0x200 + (_vector_spacing << 5) *  6 : { KEEP(*(.vector_6))  } > IVEC
+  .vector_7  _ebase_address + 0x200 + (_vector_spacing << 5) *  7 : { KEEP(*(.vector_7))  } > IVEC
+  .vector_8  _ebase_address + 0x200 + (_vector_spacing << 5) *  8 : { KEEP(*(.vector_8))  } > IVEC
+  .vector_9  _ebase_address + 0x200 + (_vector_spacing << 5) *  9 : { KEEP(*(.vector_9))  } > IVEC
   .vector_10 _ebase_address + 0x200 + (_vector_spacing << 5) * 10 : { KEEP(*(.vector_10)) } > IVEC
   .vector_11 _ebase_address + 0x200 + (_vector_spacing << 5) * 11 : { KEEP(*(.vector_11)) } > IVEC
   .vector_12 _ebase_address + 0x200 + (_vector_spacing << 5) * 12 : { KEEP(*(.vector_12)) } > IVEC

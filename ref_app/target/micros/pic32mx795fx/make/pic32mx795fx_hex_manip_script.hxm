@@ -6,7 +6,27 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-NEW_BUFFER     Buf_1D000000_to_1D010000  FROM_FILE      inFile                      -useAreas={{0x1D000000, 0x10000}} -setByteOrder=BigEndian
-FILL_BUFFER    Buf_1D000000_to_1D010000  WITH_FILLER    { 0xFF }
+// Buffer for program code.
+NEW_BUFFER     Buf_9D000000_to_9D007FFF  FROM_FILE      inFile                      -useAreas={{0x9D000000, 0x08000}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_9D000000_to_9D007FFF  WITH_FILLER    { 0xFF }
 
-WRITE_FILE     outFile                   WITH_BUFFERS   {Buf_1D000000_to_1D010000}  -setFormat=IntelHexExtended
+// Create a CRC32 of the program code and place it above the end of the program code.
+NEW_CRC        My_Crc32_prog_code        FROM_BUFFER    Buf_9D000000_to_9D007FFF    -useAreas={{0x9D000000, 0x9D007FFC}}  -setType=Crc32_Afs2
+FILL_BUFFER    Buf_9D000000_to_9D007FFF  WITH_CRC       My_Crc32_prog_code          -useAreas={{0x9D007FFC, 0x0004}}
+
+// Buffer for interrupt vectors.
+NEW_BUFFER     Buf_9FC01200_to_9FC019FF  FROM_FILE      inFile                      -useAreas={{0x9FC01200, 0x00800}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_9FC01200_to_9FC019FF  WITH_FILLER    { 0xFF }
+
+// Buffer for startup code.
+NEW_BUFFER     Buf_BFC00000_to_BFC003FF  FROM_FILE      inFile                      -useAreas={{0xBFC00000, 0x00400}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_BFC00000_to_BFC003FF  WITH_FILLER    { 0xFF }
+
+// Buffer for configuration dword.
+NEW_BUFFER     Buf_BFC02FF0_to_BFC02FFF  FROM_FILE      inFile                      -useAreas={{0xBFC02FF0, 0x00010}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_BFC02FF0_to_BFC02FFF  WITH_FILLER    { 0xFF }
+
+WRITE_FILE     outFile                   WITH_BUFFERS   {Buf_9D000000_to_9D007FFF,
+                                                         Buf_9FC01200_to_9FC019FF,
+                                                         Buf_BFC00000_to_BFC003FF,
+                                                         Buf_BFC02FF0_to_BFC02FFF }  -setFormat=IntelHexExtended
