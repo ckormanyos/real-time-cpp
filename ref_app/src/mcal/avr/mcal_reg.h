@@ -28,6 +28,7 @@
 
       // System registers.
       constexpr std::uint8_t mcusr  = 0x14U + sfr_offset;
+      constexpr std::uint8_t prr    = 0x64U;
 
       // Port registers.
       constexpr std::uint8_t pinb   = 0x03U + sfr_offset;

@@ -31,15 +31,6 @@
     <Filter Include="micros\stm32f100\startup">
       <UniqueIdentifier>{c59321aa-9533-4c7a-8fe3-6d03e26392f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\mips">
-      <UniqueIdentifier>{07c0fd40-d9f8-40c7-a363-c7bac2234b3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\mips\make">
-      <UniqueIdentifier>{2a5d7844-e062-45e6-8369-554fb830cf6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\mips\startup">
-      <UniqueIdentifier>{233d3e07-73e6-456c-ad85-eee1754c294b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\am335x">
       <UniqueIdentifier>{9b8f3b1f-73a5-4635-92f1-d96e7a0dc318}</UniqueIdentifier>
     </Filter>
@@ -85,6 +76,21 @@
     <Filter Include="micros\rx63n\startup">
       <UniqueIdentifier>{145ad14c-97bb-4f35-b080-b38e0b3694be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\pic32mx795fx">
+      <UniqueIdentifier>{07c0fd40-d9f8-40c7-a363-c7bac2234b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\pic32mx795fx\make">
+      <UniqueIdentifier>{2a5d7844-e062-45e6-8369-554fb830cf6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\pic32mx795fx\startup">
+      <UniqueIdentifier>{233d3e07-73e6-456c-ad85-eee1754c294b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\pic32mx795fx\startup\microchip_startup">
+      <UniqueIdentifier>{f6743362-9767-4ac9-b716-def6378ee007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\pic32mx795fx\startup\microchip_startup\proc">
+      <UniqueIdentifier>{9df0459a-6c55-4161-91a5-538d1a18d1ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -111,18 +117,6 @@
     <None Include="target\micros\stm32f100\make\stm32f100.ld">
       <Filter>micros\stm32f100\make</Filter>
     </None>
-    <None Include="target\micros\mips\make\procdefs.ld">
-      <Filter>micros\mips\make</Filter>
-    </None>
-    <None Include="target\micros\mips\make\mips_files.gmk">
-      <Filter>micros\mips\make</Filter>
-    </None>
-    <None Include="target\micros\mips\make\mips_flags.gmk">
-      <Filter>micros\mips\make</Filter>
-    </None>
-    <None Include="target\micros\mips\make\mips.ld">
-      <Filter>micros\mips\make</Filter>
-    </None>
     <None Include="Target\Micros\AVR\Startup\crt0.cpp">
       <Filter>micros\avr\startup</Filter>
     </None>
@@ -146,9 +140,6 @@
     </None>
     <None Include="target\micros\avr\make\avr_hex_manip_script.hxm">
       <Filter>micros\avr\make</Filter>
-    </None>
-    <None Include="target\micros\mips\make\mips_hex_manip_script.hxm">
-      <Filter>micros\mips\make</Filter>
     </None>
     <None Include="target\micros\stm32f407\make\stm32f407.ld">
       <Filter>micros\stm32f407\make</Filter>
@@ -206,6 +197,48 @@
     </None>
     <None Include="target\micros\rx63n\make\rx63n_hex_manip_script.hxm">
       <Filter>micros\rx63n\make</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx.ld">
+      <Filter>micros\pic32mx795fx\make</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_files.gmk">
+      <Filter>micros\pic32mx795fx\make</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_flags.gmk">
+      <Filter>micros\pic32mx795fx\make</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_hex_manip_script.hxm">
+      <Filter>micros\pic32mx795fx\make</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crti.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crtn.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\Makefile.inc">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\cache-err-exception.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0_cpprt0.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0_mcrt0.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\debug-exception-return.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\general-exception.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </None>
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\simple-tlb-refill-exception.s">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -284,17 +317,37 @@
     <ClCompile Include="target\micros\rx63n\startup\int_vect.cpp">
       <Filter>micros\rx63n\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\mips\startup\crt0.cpp">
-      <Filter>micros\mips\startup</Filter>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0.cpp">
+      <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\mips\startup\crt0_init_ram.cpp">
-      <Filter>micros\mips\startup</Filter>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0_init_ram.cpp">
+      <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\mips\startup\crt1.cpp">
-      <Filter>micros\mips\startup</Filter>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt1.cpp">
+      <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\mips\startup\int_vect.cpp">
-      <Filter>micros\mips\startup</Filter>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\int_vect.cpp">
+      <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\microchip_startup\crtstuff.c">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\microchip_startup\software-debug-break.c">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\pic32mx795fx\startup\config.cpp">
+      <Filter>micros\pic32mx795fx\startup</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\cp0defs.h">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\xc.h">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\proc\p32mx795f512l.h">
+      <Filter>micros\pic32mx795fx\startup\microchip_startup\proc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

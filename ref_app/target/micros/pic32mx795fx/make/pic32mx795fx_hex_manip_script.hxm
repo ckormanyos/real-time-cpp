@@ -1,0 +1,12 @@
+
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+NEW_BUFFER     Buf_1D000000_to_1D010000  FROM_FILE      inFile                      -useAreas={{0x1D000000, 0x10000}} -setByteOrder=BigEndian
+FILL_BUFFER    Buf_1D000000_to_1D010000  WITH_FILLER    { 0xFF }
+
+WRITE_FILE     outFile                   WITH_BUFFERS   {Buf_1D000000_to_1D010000}  -setFormat=IntelHexExtended

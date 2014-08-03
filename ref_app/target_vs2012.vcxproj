@@ -25,8 +25,8 @@
       <Configuration>target avr</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="target mips|Win32">
-      <Configuration>target mips</Configuration>
+    <ProjectConfiguration Include="target pic32mx795fx|Win32">
+      <Configuration>target pic32mx795fx</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="target stm32f429|Win32">
@@ -80,7 +80,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -132,7 +132,7 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -145,7 +145,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(SolutionDir)bin\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(SolutionDir)bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(OutDir)</IntDir>
@@ -153,7 +153,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(OutDir)</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(OutDir)</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(OutDir)</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
@@ -161,7 +161,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x</NMakeBuildCommandLine>
-    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
@@ -170,7 +170,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 rebuild
 </NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
-    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Target\Build\Build.bat rl78 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">Target\Build\Build.bat rx63n clean_all</NMakeCleanCommandLine>
@@ -179,7 +179,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 clean_all
 </NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
-    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">target\build\build.bat mips clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx clean_all</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">
@@ -194,7 +194,7 @@
     </NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">
     </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">
     </NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -204,7 +204,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
@@ -212,7 +212,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f407</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f429</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/am335x</NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/mips</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/pic32mx795fx</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
@@ -221,7 +221,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
@@ -230,7 +230,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
@@ -239,7 +239,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">Build\Build.bat R8C</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">Build\Build.bat R8C rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">Build\Build.bat R8C clean_all</NMakeCleanCommandLine>
@@ -340,7 +340,7 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target mips|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
@@ -366,16 +366,27 @@
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
+    <None Include="target\micros\pic32mx795fx\make\mips.ld" />
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx.ld" />
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_files.gmk" />
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_flags.gmk" />
+    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_hex_manip_script.hxm" />
+    <None Include="target\micros\pic32mx795fx\make\procdefs.ld" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\cache-err-exception.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0_cpprt0.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0_mcrt0.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crti.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crtn.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\debug-exception-return.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\general-exception.s" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\Makefile.inc" />
+    <None Include="target\micros\pic32mx795fx\startup\microchip_startup\simple-tlb-refill-exception.s" />
     <None Include="target\micros\rx63n\make\rx63n.ld" />
     <None Include="target\micros\rx63n\make\rx63n_files.gmk" />
     <None Include="target\micros\rx63n\make\rx63n_flags.gmk" />
     <None Include="target\micros\rx63n\make\rx63n_hex_manip_script.hxm" />
     <None Include="target\micros\stm32f100\make\stm32f100.ld" />
-    <None Include="target\micros\mips\make\mips.ld" />
-    <None Include="target\micros\mips\make\mips_files.gmk" />
-    <None Include="target\micros\mips\make\mips_flags.gmk" />
-    <None Include="target\micros\mips\make\mips_hex_manip_script.hxm" />
-    <None Include="target\micros\mips\make\procdefs.ld" />
     <None Include="target\micros\rl78\make\rl78.ld" />
     <None Include="target\micros\rl78\make\rl78_files.gmk" />
     <None Include="target\micros\rl78\make\rl78_flags.gmk" />
@@ -398,10 +409,13 @@
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
-    <ClCompile Include="target\micros\mips\startup\crt0.cpp" />
-    <ClCompile Include="target\micros\mips\startup\crt0_init_ram.cpp" />
-    <ClCompile Include="target\micros\mips\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\mips\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\config.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\microchip_startup\crtstuff.c" />
+    <ClCompile Include="target\micros\pic32mx795fx\startup\microchip_startup\software-debug-break.c" />
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
@@ -422,6 +436,11 @@
     <ClCompile Include="target\micros\stm32f429\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\int_vect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\cp0defs.h" />
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\proc\p32mx795f512l.h" />
+    <ClInclude Include="target\micros\pic32mx795fx\startup\microchip_startup\xc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

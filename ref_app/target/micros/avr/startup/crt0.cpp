@@ -22,7 +22,7 @@ extern "C" void __my_startup() __attribute__((section(".startup"), used, noinlin
 
 void __my_startup()
 {
-  // Load the SREG register.
+  // Load the sreg register.
   asm volatile("eor r1, r1");
   asm volatile("out 0x3F, r1");
 

@@ -1,0 +1,30 @@
+#
+#  Copyright Christopher Kormanyos 2014.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION = 4.9.0
+GCC_TARGET  = mips-sde-elf
+
+TGT_CFLAGS    = -mips32r2                                      \
+                -EL                                            \
+                -march=m4k                                     \
+                -mlong-calls                                   \
+                -mno-gpopt                                     \
+                -msoft-float                                   \
+                -mno-dsp                                       \
+                -mno-dspr2
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                -Wzero-as-null-pointer-constant                \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
+
+TGT_AFLAGS    = -mlong-calls
+
+TGT_LFLAGS    =
