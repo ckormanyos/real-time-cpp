@@ -366,12 +366,10 @@
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
-    <None Include="target\micros\pic32mx795fx\make\mips.ld" />
     <None Include="target\micros\pic32mx795fx\make\pic32mx795fx.ld" />
     <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_files.gmk" />
     <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_flags.gmk" />
     <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_hex_manip_script.hxm" />
-    <None Include="target\micros\pic32mx795fx\make\procdefs.ld" />
     <None Include="target\micros\pic32mx795fx\startup\microchip_startup\cache-err-exception.s" />
     <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0.s" />
     <None Include="target\micros\pic32mx795fx\startup\microchip_startup\crt0_cpprt0.s" />
