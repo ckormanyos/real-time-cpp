@@ -12,7 +12,7 @@
 #include <mcal_cpu.h>
 
 extern "C"
-const volatile std::array<std::uint8_t, 16U> option_bytes __attribute__ ((section(".opt")));
+const volatile std::array<std::uint8_t, 16U> option_bytes __attribute__((section(".opt")));
 
 extern "C"
 const volatile std::array<std::uint8_t, 16U> option_bytes =
@@ -47,7 +47,7 @@ struct isr
 };
 
 extern "C"
-const volatile std::array<isr::function_type, 12U> isr_vector_fixed __attribute__ ((section(".vectors_fixed")));
+const volatile std::array<isr::function_type, 12U> isr_vector_fixed __attribute__((section(".vectors_fixed")));
 
 extern "C"
 const volatile std::array<isr::function_type, 12U> isr_vector_fixed =
@@ -67,7 +67,7 @@ const volatile std::array<isr::function_type, 12U> isr_vector_fixed =
 }};
 
 extern "C"
-const volatile std::array<isr::function_type, 256U> isr_vector_user __attribute__ ((section(".vectors_user")));
+const volatile std::array<isr::function_type, 256U> isr_vector_user __attribute__((section(".vectors_user")));
 
 extern "C"
 const volatile std::array<isr::function_type, 256U> isr_vector_user =

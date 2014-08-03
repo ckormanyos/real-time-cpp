@@ -16,21 +16,21 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup0() __attribute__((section(".startup"), used, noinline));
-extern "C" void __my_startup () __attribute__((section(".startup"), used, noinline));
+extern "C" void __my_startup_reset() __attribute__((section(".startup"), used, noinline));
+extern "C" void __my_startup      () __attribute__((section(".startup"), used, noinline));
 
 asm volatile(".section .startup,\"ax\",@progbits");
 asm(".set noreorder");
-asm(".ent __my_startup0");
-asm volatile("__my_startup0:");
-  asm volatile("mfc0 $k0, $12, 0");                  // Read the status register.
-  asm volatile("ext $k0, $k0, 19, 1");               // Check the nmi bit.
+asm(".ent __my_startup_reset");
+asm volatile("__my_startup_reset:");
+  asm volatile("mfc0 $k0, $12, 0");                   // Read the status register.
+  asm volatile("ext $k0, $k0, 19, 1");                // Check the nmi bit.
   asm volatile("beqz $k0, label_for_a_normal_reset"); // It is a normal reset.
   asm volatile("nop");
 
   // An nmi interrupt has been detected.
-  // This happens when the watchdog resets the cpu when in sleep mode.
-  // Do nothing. Return and let the cpu wakeup.
+  // This happens when there is a watchdog reset in sleep mode.
+  // Do nothing. Simply return and let the cpu wakeup.
   asm volatile("eret");
   asm volatile("nop");
 
@@ -82,8 +82,8 @@ asm volatile("__my_startup0:");
   // Call __my_startup which will finish the initialization,
   // subsequently call main, and never return.
   asm volatile("j __my_startup");
-asm(".end __my_startup0");
-asm(".globl __my_startup0");
+asm(".end __my_startup_reset");
+asm(".globl __my_startup_reset");
 
 void __my_startup()
 {

@@ -8,15 +8,15 @@
 #include <cstdint>
 
 extern "C"
-const volatile std::uint32_t configuration_dwords[4U] __attribute__ ((section(".config")));
+const volatile std::uint32_t configuration_dwords[4U] __attribute__((section(".config")));
 
 extern "C"
 const volatile std::uint32_t configuration_dwords[4U] =
 {
-  UINT32_C(0xFFFFFFFF), // config at 0xBFC02FF0: TBD: Meaning of the bits.
-  UINT32_C(0xFFF97FD9), // config at 0xBFC02FF4: TBD: Meaning of the bits.
-  UINT32_C(0xFF7FCB59), // config at 0xBFC02FF8: TBD: Meaning of the bits.
-  UINT32_C(0x7FFFFFF6), // config at 0xBFC02FFC: TBD: Meaning of the bits.
+  UINT32_C(0xFFFFFFFF), // config at 0xBFC02FF0: TBD: Describe the meanings of the bits.
+  UINT32_C(0xFFF97FD9), // config at 0xBFC02FF4: TBD: Describe the meanings of the bits.
+  UINT32_C(0xFF7FCB59), // config at 0xBFC02FF8: TBD: Describe the meanings of the bits.
+  UINT32_C(0x7FFFFFF6), // config at 0xBFC02FFC: TBD: Describe the meanings of the bits.
 };
 
 namespace crt

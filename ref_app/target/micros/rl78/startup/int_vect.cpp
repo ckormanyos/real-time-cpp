@@ -11,10 +11,10 @@
 #include <mcal_cpu.h>
 
 extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__ ((section(".opt")));
+const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt")));
 
 extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__ ((section(".opt"))) =
+const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt"))) =
 {
   0x6E,
   0xFF,
@@ -34,10 +34,10 @@ struct isr
 };
 
 extern "C"
-const volatile isr::function_type isr_vector[64U] __attribute__ ((section(".ivec")));
+const volatile isr::function_type isr_vector[64U] __attribute__((section(".ivec")));
 
 extern "C"
-const volatile isr::function_type isr_vector[64U] __attribute__ ((section(".ivec"))) =
+const volatile isr::function_type isr_vector[64U] __attribute__((section(".ivec"))) =
 {
   __my_startup,                    // 0x0000 __my_startup
   __vector_unused_irq,             // 0x0002 intdbg_vect

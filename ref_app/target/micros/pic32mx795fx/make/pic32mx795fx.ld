@@ -10,7 +10,7 @@
 
 OUTPUT_FORMAT("elf32-tradlittlemips")
 OUTPUT_ARCH("mips")
-ENTRY(__my_startup0)
+ENTRY(__my_startup_reset)
 
 /* The beginning and end of the program ROM area */
 _rom_begin = 0x9D000000;
