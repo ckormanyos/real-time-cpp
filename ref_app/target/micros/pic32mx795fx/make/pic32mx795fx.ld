@@ -29,11 +29,14 @@ PROVIDE(_ebase_address  = 0x9FC01000);
 
 MEMORY
 {
-  ROM   (rx)  : ORIGIN = 0x9D000000, LENGTH = 0x08000 - 4
-  IVEC  (rx)  : ORIGIN = 0x9FC01200, LENGTH = 0x00800
-  RAM   (rwx) : ORIGIN = 0xA0000000, LENGTH = 0x07000
-  RESET (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x00400
-  CONFIG(r)   : ORIGIN = 0xBFC02FF0, LENGTH = 0x00010
+  ROM    (rx)  : ORIGIN = 0x9D000000, LENGTH = 0x08000 - 4
+  IVEC   (rx)  : ORIGIN = 0x9FC01200, LENGTH = 0x00800
+  RAM    (rwx) : ORIGIN = 0xA0000000, LENGTH = 0x07000
+  RESET  (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x00400
+  CONFIG3(r)   : ORIGIN = 0xBFC02FF0, LENGTH = 0x00004
+  CONFIG2(r)   : ORIGIN = 0xBFC02FF4, LENGTH = 0x00004
+  CONFIG1(r)   : ORIGIN = 0xBFC02FF8, LENGTH = 0x00004
+  CONFIG0(r)   : ORIGIN = 0xBFC02FFC, LENGTH = 0x00004
 }
 
 SECTIONS
@@ -178,7 +181,10 @@ SECTIONS
 
   . = ALIGN(0x4);
 
-  .config : { KEEP(*(.config)) } > CONFIG
+  .config3 : { KEEP(*(.config3)) } > CONFIG3
+  .config2 : { KEEP(*(.config2)) } > CONFIG2
+  .config1 : { KEEP(*(.config1)) } > CONFIG1
+  .config0 : { KEEP(*(.config0)) } > CONFIG0
 
   _rom_data_begin = LOADADDR(.data);
 }

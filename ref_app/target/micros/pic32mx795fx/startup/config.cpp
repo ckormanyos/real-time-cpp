@@ -7,24 +7,32 @@
 
 #include <cstdint>
 
-extern "C"
-const volatile std::uint32_t configuration_dwords[4U] __attribute__((section(".config")));
+namespace
+{
+  // TBD: Describe the meanings of the bits
+  constexpr std::uint32_t config3 = UINT32_C(0xFFFFFFFF);
+  constexpr std::uint32_t config2 = UINT32_C(0xFFF97FD9);
+  constexpr std::uint32_t config1 = UINT32_C(0xFF7FCB59);
+  constexpr std::uint32_t config0 = UINT32_C(0x7FFFFFF6);
+}
 
 extern "C"
-const volatile std::uint32_t configuration_dwords[4U] =
 {
-  UINT32_C(0xFFFFFFFF), // config at 0xBFC02FF0: TBD: Describe the meanings of the bits.
-  UINT32_C(0xFFF97FD9), // config at 0xBFC02FF4: TBD: Describe the meanings of the bits.
-  UINT32_C(0xFF7FCB59), // config at 0xBFC02FF8: TBD: Describe the meanings of the bits.
-  UINT32_C(0x7FFFFFF6), // config at 0xBFC02FFC: TBD: Describe the meanings of the bits.
-};
+  volatile const std::uint32_t config3_at_0xBFC02FF0 __attribute__((section(".config3"))) = config3;
+  volatile const std::uint32_t config2_at_0xBFC02FF4 __attribute__((section(".config2"))) = config2;
+  volatile const std::uint32_t config1_at_0xBFC02FF8 __attribute__((section(".config1"))) = config1;
+  volatile const std::uint32_t config0_at_0xBFC02FFC __attribute__((section(".config0"))) = config0;
+}
 
 namespace crt
 {
-  bool do_not_optimize_the_config_dwords_away();
+  bool do_not_optimize_the_configuration();
 
-  bool do_not_optimize_the_config_dwords_away()
+  bool do_not_optimize_the_configuration()
   {
-    return (configuration_dwords[3U] != UINT32_C(0));
+    return (   (config3_at_0xBFC02FF0 != UINT32_C(0))
+            && (config2_at_0xBFC02FF4 != UINT32_C(0))
+            && (config1_at_0xBFC02FF8 != UINT32_C(0))
+            && (config0_at_0xBFC02FFC != UINT32_C(0)));
   }
 }

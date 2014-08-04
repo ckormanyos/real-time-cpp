@@ -19,12 +19,12 @@ void mcal::cpu::init()
 
 namespace crt
 {
-  bool do_not_optimize_the_config_dwords_away();
+  bool do_not_optimize_the_configuration();
 }
 
 void mcal::cpu::post_init()
 {
-  const bool dummy_do_not_optimize_the_config_dwords_away = crt::do_not_optimize_the_config_dwords_away();
+  const volatile bool dummy_do_not_optimize_the_configuration = crt::do_not_optimize_the_configuration();
 
-  static_cast<void>(dummy_do_not_optimize_the_config_dwords_away);
+  static_cast<void>(dummy_do_not_optimize_the_configuration);
 }
