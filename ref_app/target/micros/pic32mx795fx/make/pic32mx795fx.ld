@@ -14,7 +14,7 @@ ENTRY(__my_startup_reset)
 
 /* The beginning and end of the program ROM area */
 _rom_begin = 0x9D000000;
-_rom_end   = 0x9D07FFFC;
+_rom_end   = 0x9D007FFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 4K */
@@ -67,10 +67,9 @@ SECTIONS
   . = ALIGN(0x20);
 
   /* ISR vectors */
-  /*
-   * Interrupt vectors.
-   * They are 64 small code segments in sequence.
-   */
+  /* Declare the interrupt vectors. */
+  /* There are 64 code segments, each one of which is 32 bytes. */
+
   .vector_0  _ebase_address + 0x200 + (_vector_spacing << 5) *  0 : { KEEP(*(.vector_0))  } > IVEC
   .vector_1  _ebase_address + 0x200 + (_vector_spacing << 5) *  1 : { KEEP(*(.vector_1))  } > IVEC
   .vector_2  _ebase_address + 0x200 + (_vector_spacing << 5) *  2 : { KEEP(*(.vector_2))  } > IVEC
@@ -152,7 +151,10 @@ SECTIONS
     _data_end = .;
   } > RAM AT > ROM
 
-  /* TBD: Add the small data section after the gp if small data are used. */
+  /* Add the small data section after the gp.*/
+  /* TBD: The project does not use small data. */
+  /* Does anyone want to use small data? */
+
   _gp = ALIGN(16) + 0x7FF0;
 
   /* The uninitialized (zero-cleared) data section */
