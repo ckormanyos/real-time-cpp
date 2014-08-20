@@ -490,6 +490,30 @@
     <ClCompile Include="src\mcal\pic32mx795fx\mcal_wdg.cpp">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\stm32f407\mcal_spi.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\am335x\mcal_spi.cpp">
+      <Filter>src\mcal\am335x</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_spi.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\pic32mx795fx\mcal_spi.cpp">
+      <Filter>src\mcal\pic32mx795fx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rl78\mcal_spi.cpp">
+      <Filter>src\mcal\rl78</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rx63n\mcal_spi.cpp">
+      <Filter>src\mcal\rx63n</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f100\mcal_spi.cpp">
+      <Filter>src\mcal\stm32f100</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_spi.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">

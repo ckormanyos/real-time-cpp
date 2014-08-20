@@ -10,4 +10,9 @@
 
 void mcal::port::init(const config_type*)
 {
+  // Set all analog pins to digital input/output.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::ad1pcfg,
+                    UINT32_C(0xFFFFFFFF)>::reg_set();
 }

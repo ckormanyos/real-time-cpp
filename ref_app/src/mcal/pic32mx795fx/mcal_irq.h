@@ -15,8 +15,8 @@
       typedef void config_type;
       void init(const config_type*);
 
-      inline void enable_all () { asm volatile("ei"); }
-      inline void disable_all() { asm volatile("di"); }
+      void enable_all ();
+      void disable_all();
     }
   }
 

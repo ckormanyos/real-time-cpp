@@ -297,4 +297,9 @@
       <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="target\micros\pic32mx795fx\startup\config.h">
+      <Filter>micros\pic32mx795fx\startup</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

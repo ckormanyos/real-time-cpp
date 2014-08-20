@@ -26,6 +26,7 @@
         led()
         {
           // Set the port pin value to low.
+//          port_pin_type::set_pin_high();
           port_pin_type::set_pin_low();
 
           // Set the port pin direction to output.
@@ -50,6 +51,12 @@
       // - portd.13: organge
       // - portd.14: red
       // - portd.15: blue
+/*
+      typedef led<std::uint32_t,
+                  std::uint32_t,
+                  mcal::reg::gpioe_base,
+                  UINT32_C(11)> led_type;
+*/
       typedef led<std::uint32_t,
                   std::uint32_t,
                   mcal::reg::gpiod_base,

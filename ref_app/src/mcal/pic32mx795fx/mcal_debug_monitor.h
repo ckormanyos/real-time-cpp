@@ -10,6 +10,7 @@
 
   #include <cstdint>
   #include <mcal_port.h>
+  #include <mcal_reg_access.h>
 
   namespace mcal
   {
@@ -20,8 +21,8 @@
 
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   UINT32_C(0),
-                                   UINT32_C(0)> debug_monitor_port_type;
+                                   mcal::reg::trisg,
+                                   UINT32_C(13)> debug_monitor_port_type;
     }
   }
 

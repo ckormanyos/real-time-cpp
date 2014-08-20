@@ -10,6 +10,7 @@
 
   #include <cstdint>
   #include <mcal_port.h>
+  #include <mcal_reg_access.h>
 
   namespace mcal
   {

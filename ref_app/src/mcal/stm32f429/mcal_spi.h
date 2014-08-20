@@ -14,7 +14,7 @@
     {
       typedef void config_type;
 
-      inline void init(const config_type*) { }
+      void init(const config_type*);
     }
   }
 

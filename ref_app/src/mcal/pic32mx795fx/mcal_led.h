@@ -8,28 +8,46 @@
 #ifndef _MCAL_LED_2010_09_14_H_
   #define _MCAL_LED_2010_09_14_H_
 
+  #include <mcal_port.h>
   #include <util/utility/util_noncopyable.h>
 
   namespace mcal
   {
     namespace led
     {
+      template<typename addr_type,
+               typename reg_type,
+               const addr_type port,
+               const reg_type bpos>
       class led : private util::noncopyable
       {
       public:
-        led() : is_on(false) { }
-
-        void toggle() const
+        led()
         {
-          // Toggle the LED state.
-          is_on = (!is_on);
+          // Set the port pin value to low.
+          port_pin_type::set_pin_low();
+
+          // Set the port pin direction to output.
+          port_pin_type::set_direction_output();
+        }
+
+        static void toggle()
+        {
+          // Toggle the LED.
+          port_pin_type::toggle_pin();
         }
 
       private:
-        mutable bool is_on;
+        typedef mcal::port::port_pin<addr_type,
+                                     reg_type,
+                                     port,
+                                     bpos> port_pin_type;
       };
 
-      typedef led led_type;
+      typedef led<std::uint32_t,
+                  std::uint32_t,
+                  mcal::reg::trisg,
+                  UINT32_C(12)> led_type;
 
       extern const led_type led0;
     }

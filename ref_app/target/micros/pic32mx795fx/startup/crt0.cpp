@@ -16,13 +16,13 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup_reset() __attribute__((section(".startup"), used, noinline));
+extern "C" void __my_startup_entry() __attribute__((section(".startup"), used, noinline));
 extern "C" void __my_startup      () __attribute__((section(".startup"), used, noinline));
 
 asm volatile(".section .startup,\"ax\",@progbits");
 asm(".set noreorder");
-asm(".ent __my_startup_reset");
-asm volatile("__my_startup_reset:");
+asm(".ent __my_startup_entry");
+asm volatile("__my_startup_entry:");
   asm volatile("mfc0 $k0, $12, 0");                   // Read the status register.
   asm volatile("ext $k0, $k0, 19, 1");                // Check the nmi bit.
   asm volatile("beqz $k0, label_for_a_normal_reset"); // It is a normal reset.
@@ -69,21 +69,21 @@ asm volatile("__my_startup_reset:");
   asm volatile("mtc0 $t2, $12, 1");
 
   // Set the cause register.
-  // Reset everything, set IV bit to enable vectored interrupts:
+  // Reset everything, set the iv-bit to enable vectored interrupts.
   asm volatile("li $t1, 0x00800000");
   asm volatile("mtc0 $t1, $13, 0");
 
   // Set the status register.
-  // Reset everything: BEV = 0 (enable vectored interrupts),
-  // IPL = 0 (lowest priority run mode).
+  // Reset everything set bev = 0 (enable vectored interrupts),
+  // Set ipl = 0 (lowest priority run mode).
   asm volatile("li $t1, 0");
   asm volatile("mtc0 $t1, $12, 0");
 
-  // Call __my_startup which will finish the initialization,
+  // Call __my_startup_part2 which will finish the initialization,
   // subsequently call main, and never return.
   asm volatile("j __my_startup");
-asm(".end __my_startup_reset");
-asm(".globl __my_startup_reset");
+asm(".end __my_startup_entry");
+asm(".globl __my_startup_entry");
 
 void __my_startup()
 {
