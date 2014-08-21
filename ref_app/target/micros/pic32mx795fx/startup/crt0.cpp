@@ -1,3 +1,4 @@
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2014.
 //  Distributed under the Boost Software License,
@@ -5,7 +6,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Microchip pic32mx795fx startup code
+// Microchip(R) pic32mx795fx startup code
 // Switched to C++ and modified for pic32mx795fx by Chris.
 
 #include <mcal/mcal.h>
@@ -23,9 +24,11 @@ asm volatile(".section .startup,\"ax\",@progbits");
 asm(".set noreorder");
 asm(".ent __my_startup_entry");
 asm volatile("__my_startup_entry:");
-  asm volatile("mfc0 $k0, $12, 0");                   // Read the status register.
-  asm volatile("ext $k0, $k0, 19, 1");                // Check the nmi bit.
-  asm volatile("beqz $k0, label_for_a_normal_reset"); // It is a normal reset.
+
+  // Check for the kind of the reset.
+  asm volatile("mfc0 $k0, $12, 0");               // Read the status register.
+  asm volatile("ext $k0, $k0, 19, 1");            // Check the nmi bit.
+  asm volatile("beqz $k0, jump_to_normal_reset"); // It is a normal reset.
   asm volatile("nop");
 
   // An nmi interrupt has been detected.
@@ -34,13 +37,13 @@ asm volatile("__my_startup_entry:");
   asm volatile("eret");
   asm volatile("nop");
 
-  asm volatile("label_for_a_normal_reset:");
+  asm volatile("jump_to_normal_reset:");
 
   // Initialize the stack pointer and the global (small data) pointer.
   asm volatile("la $sp, __initial_stack_pointer");
   asm volatile("la $gp, _gp");
 
-  asm volatile("mfc0   $t1, $12, 2");
+  asm volatile("mfc0 $t1, $12, 2");
   asm volatile("add  $t3, $t1, $0");
   asm volatile("ext  $t2, $t1, 26, 4");
   asm volatile("ins  $t1, $t2, 6, 4");
@@ -79,8 +82,10 @@ asm volatile("__my_startup_entry:");
   asm volatile("li $t1, 0");
   asm volatile("mtc0 $t1, $12, 0");
 
-  // Call __my_startup_part2 which will finish the initialization,
-  // subsequently call main, and never return.
+  // Call __my_startup_part2 which will:
+  // * finish the initialization
+  // * subsequently call main()
+  // * and never return from main().
   asm volatile("j __my_startup");
 asm(".end __my_startup_entry");
 asm(".globl __my_startup_entry");

@@ -5,11 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-//#include "config.h"
-
-//DECLARE_CONFIG(DEVCFG1, DEVCFG1_FNOSC_PRIPLL & DEVCFG1_FPBDIV_8   & DEVCFG1_POSCMOD_HS)
-//DECLARE_CONFIG(DEVCFG2, DEVCFG2_FPLLIDIV_2   & DEVCFG2_FPLLMUL_20 & DEVCFG2_FPLLODIV_1)
-
 #include <cstdint>
 
 namespace

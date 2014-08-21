@@ -90,34 +90,40 @@ void mcal::gpt::init(const config_type*)
 
 mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
-  // Return the system tick using a multiple read to ensure
-  // data consistency of the system tick.
+  if(gpt_is_initialized())
+  {
+    // Return the system tick using a multiple read to ensure
+    // data consistency of the system tick.
 
-  typedef std::uint32_t timer_address_type;
-  typedef std::uint8_t  timer_register_type;
+    typedef std::uint32_t timer_address_type;
+    typedef std::uint8_t  timer_register_type;
 
-  // Do the first read of the timer counter.
-  const timer_register_type timer_cnt_1 = mcal::reg::access<timer_address_type,
-                                                            timer_register_type,
-                                                            mcal::reg::tmr0_tcnt>::reg_get();
+    // Do the first read of the timer counter.
+    const timer_register_type timer_cnt_1 = mcal::reg::access<timer_address_type,
+                                                              timer_register_type,
+                                                              mcal::reg::tmr0_tcnt>::reg_get();
 
-  // Read the system tick once.
-  const mcal::gpt::value_type sys_tick_1 = system_tick;
+    // Read the system tick once.
+    const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-  // Do the second read of the timer counter.
-  const timer_register_type timer_cnt_2 = mcal::reg::access<timer_address_type,
-                                                            timer_register_type,
-                                                            mcal::reg::tmr0_tcnt>::reg_get();
+    // Do the second read of the timer counter.
+    const timer_register_type timer_cnt_2 = mcal::reg::access<timer_address_type,
+                                                              timer_register_type,
+                                                              mcal::reg::tmr0_tcnt>::reg_get();
 
-  // Perform the consistency check.
-  mcal::gpt::value_type consistent_microsecond_tick =
-    ((timer_cnt_2 >= timer_cnt_1) ? static_cast<mcal::gpt::value_type>(sys_tick_1  | timer_cnt_1)
-                                  : static_cast<mcal::gpt::value_type>(system_tick | timer_cnt_2));
+    // Perform the consistency check.
+    mcal::gpt::value_type consistent_microsecond_tick =
+      ((timer_cnt_2 >= timer_cnt_1) ? static_cast<mcal::gpt::value_type>(sys_tick_1  | timer_cnt_1)
+                                    : static_cast<mcal::gpt::value_type>(system_tick | timer_cnt_2));
 
-  // Convert the consistent tick to microseconds.
-  consistent_microsecond_tick = static_cast<mcal::gpt::value_type>(static_cast<mcal::gpt::value_type>(consistent_microsecond_tick * 4U)  + 3U) / 6U;
+    // Convert the consistent tick to microseconds.
+    consistent_microsecond_tick = static_cast<mcal::gpt::value_type>(static_cast<mcal::gpt::value_type>(consistent_microsecond_tick * 4U)  + 3U) / 6U;
 
-  // Return the value of the consistent microsecond tick.
-  return (gpt_is_initialized() ? consistent_microsecond_tick : mcal::gpt::value_type(0U));
+    return consistent_microsecond_tick;
+  }
+  else
+  {
+    return mcal::gpt::value_type(0U);
+  }
 }
 

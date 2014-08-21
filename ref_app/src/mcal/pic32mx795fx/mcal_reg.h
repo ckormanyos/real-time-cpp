@@ -14,11 +14,57 @@
   {
     namespace reg
     {
-      // System registers.
-      constexpr std::uint32_t ddpcon   = UINT32_C(0xBF80F200);   // 32-bit register.
+      // Timer registers.
+      constexpr std::uint32_t t1con    = UINT32_C(0xBF800600);   // 32-bit register.
+      constexpr std::uint32_t tmr1     = UINT32_C(0xBF800610);   // 32-bit register.
+      constexpr std::uint32_t pr1      = UINT32_C(0xBF800620);   // 32-bit register.
+
+      constexpr std::uint32_t t2con    = UINT32_C(0xBF800800);   // 32-bit register.
+      constexpr std::uint32_t tmr2     = UINT32_C(0xBF800810);   // 32-bit register.
+      constexpr std::uint32_t pr2      = UINT32_C(0xBF800820);   // 32-bit register.
+
+      constexpr std::uint32_t t3con    = UINT32_C(0xBF800A00);   // 32-bit register.
+      constexpr std::uint32_t tmr3     = UINT32_C(0xBF800A10);   // 32-bit register.
+      constexpr std::uint32_t pr3      = UINT32_C(0xBF800A20);   // 32-bit register.
+
+      constexpr std::uint32_t t4con    = UINT32_C(0xBF800C00);   // 32-bit register.
+      constexpr std::uint32_t tmr4     = UINT32_C(0xBF800C10);   // 32-bit register.
+      constexpr std::uint32_t pr4      = UINT32_C(0xBF800C20);   // 32-bit register.
+
+      constexpr std::uint32_t t5con    = UINT32_C(0xBF800E00);   // 32-bit register.
+      constexpr std::uint32_t tmr5     = UINT32_C(0xBF800E10);   // 32-bit register.
+      constexpr std::uint32_t pr5      = UINT32_C(0xBF800E20);   // 32-bit register.
 
       // ADC registers.
       constexpr std::uint32_t ad1pcfg  = UINT32_C(0xBF809060);   // 32-bit register.
+
+      // Oscillator registers.
+      constexpr std::uint32_t osccon   = UINT32_C(0xBF80F000);   // 32-bit register.
+
+      // System registers.
+      constexpr std::uint32_t ddpcon   = UINT32_C(0xBF80F200);   // 32-bit register.
+
+      // Interrupt registers.
+      constexpr std::uint32_t intcon   = UINT32_C(0xBF881000);   // 32-bit register.
+      constexpr std::uint32_t ifs0     = UINT32_C(0xBF881030);   // 32-bit register.
+      constexpr std::uint32_t ifs1     = UINT32_C(0xBF881040);   // 32-bit register.
+      constexpr std::uint32_t ifs2     = UINT32_C(0xBF881050);   // 32-bit register.
+      constexpr std::uint32_t iec0     = UINT32_C(0xBF881060);   // 32-bit register.
+      constexpr std::uint32_t iec1     = UINT32_C(0xBF881070);   // 32-bit register.
+      constexpr std::uint32_t iec2     = UINT32_C(0xBF881080);   // 32-bit register.
+      constexpr std::uint32_t ipc0     = UINT32_C(0xBF881090);   // 32-bit register.
+      constexpr std::uint32_t ipc1     = UINT32_C(0xBF8810A0);   // 32-bit register.
+      constexpr std::uint32_t ipc2     = UINT32_C(0xBF8810B0);   // 32-bit register.
+      constexpr std::uint32_t ipc3     = UINT32_C(0xBF8810C0);   // 32-bit register.
+      constexpr std::uint32_t ipc4     = UINT32_C(0xBF8810D0);   // 32-bit register.
+      constexpr std::uint32_t ipc5     = UINT32_C(0xBF8810E0);   // 32-bit register.
+      constexpr std::uint32_t ipc6     = UINT32_C(0xBF8810F0);   // 32-bit register.
+      constexpr std::uint32_t ipc7     = UINT32_C(0xBF880100);   // 32-bit register.
+      constexpr std::uint32_t ipc8     = UINT32_C(0xBF880110);   // 32-bit register.
+      constexpr std::uint32_t ipc9     = UINT32_C(0xBF880120);   // 32-bit register.
+      constexpr std::uint32_t ipc10    = UINT32_C(0xBF880130);   // 32-bit register.
+      constexpr std::uint32_t ipc11    = UINT32_C(0xBF880140);   // 32-bit register.
+      constexpr std::uint32_t ipc12    = UINT32_C(0xBF880150);   // 32-bit register.
 
       // Port registers.
       constexpr std::uint32_t trisa    = UINT32_C(0xBF886000);   // 32-bit register.
@@ -55,9 +101,6 @@
       constexpr std::uint32_t portg    = UINT32_C(0xBF886190);   // 32-bit register.
       constexpr std::uint32_t latg     = UINT32_C(0xBF8861A0);   // 32-bit register.
       constexpr std::uint32_t odcg     = UINT32_C(0xBF8861B0);   // 32-bit register.
-
-      // Interrupt register.
-      constexpr std::uint32_t intcon   = UINT32_C(0xBF881000);   // 32-bit register.
     }
   }
 #endif // _MCAL_REG_2010_04_10_H_

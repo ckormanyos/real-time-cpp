@@ -9,7 +9,7 @@
 #include <mcal_cpu.h>
 
 extern "C" void __vector_unused_irq() __attribute__((used, noinline));
-extern "C" void __vector_timer2    ();
+extern "C" void __vector_timer1    ();
 
 #if defined(QUOTE)
 #undef QUOTE
@@ -33,11 +33,11 @@ DECLARE_INTERRUPT( 0, __vector_unused_irq); // coretimer                        
 DECLARE_INTERRUPT( 1, __vector_unused_irq); // coresw0                           1
 DECLARE_INTERRUPT( 2, __vector_unused_irq); // coresw1                           2
 DECLARE_INTERRUPT( 3, __vector_unused_irq); // int0                              3
-DECLARE_INTERRUPT( 4, __vector_unused_irq); // timer1                            4
+DECLARE_INTERRUPT( 4, __vector_timer1);     // timer1                            4
 DECLARE_INTERRUPT( 5, __vector_unused_irq); // ic1                               5
 DECLARE_INTERRUPT( 6, __vector_unused_irq); // oc1                               6
 DECLARE_INTERRUPT( 7, __vector_unused_irq); // int1                              7
-DECLARE_INTERRUPT( 8, __vector_timer2);     // timer2                            8
+DECLARE_INTERRUPT( 8, __vector_unused_irq); // timer2                            8
 DECLARE_INTERRUPT( 9, __vector_unused_irq); // ic2                               9
 DECLARE_INTERRUPT(10, __vector_unused_irq); // oc2                              10
 DECLARE_INTERRUPT(11, __vector_unused_irq); // int2                             11

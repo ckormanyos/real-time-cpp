@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cstdint>
 #include <mcal_osc.h>
 #include <mcal_reg_access.h>
 
