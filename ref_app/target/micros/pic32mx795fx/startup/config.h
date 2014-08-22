@@ -9,96 +9,96 @@
 #ifndef _CONFIG_2014_08_20_H_
   #define _CONFIG_2014_08_20_H_
 
-  #if !defined(QUOTE)
-  #define QUOTE(arg)     #arg
-  #define STRVAL(arg)    QUOTE(arg)
-  #endif
+  #include <cstdint>
 
-  #define CONFIG0                  0
-  #define CONFIG1                  1
-  #define CONFIG2                  2
-  #define CONFIG3                  3
+  constexpr std::uint32_t config0_cp_on            = UINT32_C(0xefffffff);
+  constexpr std::uint32_t config0_cp_off           = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config0_bwp_ro           = UINT32_C(0xfeffffff);
+  constexpr std::uint32_t config0_bwp_rw           = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config0_pwp_off          = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config0_icesel_2         = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config0_icesel_1         = UINT32_C(0xfffffff7);
+  constexpr std::uint32_t config0_debug_on         = UINT32_C(0xfffffffe);
+  constexpr std::uint32_t config0_debug_off        = UINT32_C(0xffffffff);
 
-  #define CONFIG0_CP_ON            0xefffffff
-  #define CONFIG0_CP_OFF           0xffffffff
-  #define CONFIG0_BWP_RO           0xfeffffff
-  #define CONFIG0_BWP_RW           0xffffffff
-  #define CONFIG0_PWP_OFF          0xffffffff
-  #define CONFIG0_ICESEL_2         0xffffffff
-  #define CONFIG0_ICESEL_1         0xfffffff7
-  #define CONFIG0_DEBUG_ON         0xfffffffe
-  #define CONFIG0_DEBUG_OFF        0xffffffff
+  constexpr std::uint32_t config1_fwdten_off       = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config1_fwdten_on        = UINT32_C(0xff7fffff);
 
-  #define CONFIG1_FWDTEN_OFF       0xffffffff
-  #define CONFIG1_FWDTEN_ON        0xff7fffff
+  constexpr std::uint32_t config1_fpbdiv_1         = UINT32_C(0xffffcfff);
+  constexpr std::uint32_t config1_fpbdiv_2         = UINT32_C(0xffffdfff);
+  constexpr std::uint32_t config1_fpbdiv_4         = UINT32_C(0xffffefff);
+  constexpr std::uint32_t config1_fpbdiv_8         = UINT32_C(0xffffffff);
 
-  #define CONFIG1_FPBDIV_1         0xffffcfff
-  #define CONFIG1_FPBDIV_2         0xffffdfff
-  #define CONFIG1_FPBDIV_4         0xffffefff
-  #define CONFIG1_FPBDIV_8         0xffffffff
+  constexpr std::uint32_t config1_poscmod_off      = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config1_poscmod_ec       = UINT32_C(0xfffffcff);
+  constexpr std::uint32_t config1_poscmod_xt       = UINT32_C(0xfffffdff);
+  constexpr std::uint32_t config1_poscmod_hs       = UINT32_C(0xfffffeff);
 
-  #define CONFIG1_POSCMOD_OFF      0xffffffff
-  #define CONFIG1_POSCMOD_EC       0xfffffcff
-  #define CONFIG1_POSCMOD_XT       0xfffffdff
-  #define CONFIG1_POSCMOD_HS       0xfffffeff
+  constexpr std::uint32_t config1_ieso_on          = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config1_ieso_off         = UINT32_C(0xffffff7f);
 
-  #define CONFIG1_IESO_ON          0xffffffff
-  #define CONFIG1_IESO_OFF         0xffffff7f
+  constexpr std::uint32_t config1_foscen_on        = UINT32_C(0xffffffff);
+  constexpr std::uint32_t config1_foscen_off       = UINT32_C(0xffffffdf);
 
-  #define CONFIG1_FOSCEN_ON        0xffffffff
-  #define CONFIG1_FOSCEN_OFF       0xffffffdf
+  constexpr std::uint32_t config1_fnosc_frc        = UINT32_C(0xfffffff8);
+  constexpr std::uint32_t config1_fnosc_frcpll     = UINT32_C(0xfffffff9);
+  constexpr std::uint32_t config1_fnosc_pri        = UINT32_C(0xfffffffa);
+  constexpr std::uint32_t config1_fnosc_pripll     = UINT32_C(0xfffffffb);
+  constexpr std::uint32_t config1_fnosc_sosc       = UINT32_C(0xfffffffc);
+  constexpr std::uint32_t config1_fnosc_lprc       = UINT32_C(0xfffffffd);
+  constexpr std::uint32_t config1_fnosc_frvdiv16   = UINT32_C(0xfffffffe);
+  constexpr std::uint32_t config1_fnosc_frcdiv     = UINT32_C(0xffffffff);
 
-  #define CONFIG1_FNOSC_FRC        0xfffffff8
-  #define CONFIG1_FNOSC_FRCPLL     0xfffffff9
-  #define CONFIG1_FNOSC_PRI        0xfffffffa
-  #define CONFIG1_FNOSC_PRIPLL     0xfffffffb
-  #define CONFIG1_FNOSC_SOSC       0xfffffffc
-  #define CONFIG1_FNOSC_LPRC       0xfffffffd
-  #define CONFIG1_FNOSC_FRVDIV16   0xfffffffe
-  #define CONFIG1_FNOSC_FRCDIV     0xffffffff
+  constexpr std::uint32_t config2_fpllodiv_1       = UINT32_C(0xfff8ffff);
+  constexpr std::uint32_t config2_fpllodiv_2       = UINT32_C(0xfff9ffff);
+  constexpr std::uint32_t config2_fpllodiv_4       = UINT32_C(0xfffaffff);
+  constexpr std::uint32_t config2_fpllodiv_8       = UINT32_C(0xfffbffff);
+  constexpr std::uint32_t config2_fpllodiv_16      = UINT32_C(0xfffcffff);
+  constexpr std::uint32_t config2_fpllodiv_32      = UINT32_C(0xfffdffff);
+  constexpr std::uint32_t config2_fpllodiv_64      = UINT32_C(0xfffeffff);
+  constexpr std::uint32_t config2_fpllodiv_256     = UINT32_C(0xffffffff);
 
-  #define CONFIG2_FPLLODIV_1       0xfff8ffff
-  #define CONFIG2_FPLLODIV_2       0xfff9ffff
-  #define CONFIG2_FPLLODIV_4       0xfffaffff
-  #define CONFIG2_FPLLODIV_8       0xfffbffff
-  #define CONFIG2_FPLLODIV_16      0xfffcffff
-  #define CONFIG2_FPLLODIV_32      0xfffdffff
-  #define CONFIG2_FPLLODIV_64      0xfffeffff
-  #define CONFIG2_FPLLODIV_256     0xffffffff
+  constexpr std::uint32_t config2_upllen_on        = UINT32_C(0xffff7fff);
+  constexpr std::uint32_t config2_upllen_off       = UINT32_C(0xffffffff);
 
-  #define CONFIG2_UPLLEN_ON        0xffff7fff
-  #define CONFIG2_UPLLEN_OFF       0xffffffff
+  constexpr std::uint32_t config2_upllidiv_1       = UINT32_C(0xfffff8ff);
+  constexpr std::uint32_t config2_upllidiv_2       = UINT32_C(0xfffff9ff);
+  constexpr std::uint32_t config2_upllidiv_3       = UINT32_C(0xfffffaff);
+  constexpr std::uint32_t config2_upllidiv_4       = UINT32_C(0xfffffbff);
+  constexpr std::uint32_t config2_upllidiv_5       = UINT32_C(0xfffffcff);
+  constexpr std::uint32_t config2_upllidiv_6       = UINT32_C(0xfffffdff);
+  constexpr std::uint32_t config2_upllidiv_10      = UINT32_C(0xfffffeff);
+  constexpr std::uint32_t config2_upllidiv_12      = UINT32_C(0xffffffff);
 
-  #define CONFIG2_UPLLIDIV_1       0xfffff8ff
-  #define CONFIG2_UPLLIDIV_2       0xfffff9ff
-  #define CONFIG2_UPLLIDIV_3       0xfffffaff
-  #define CONFIG2_UPLLIDIV_4       0xfffffbff
-  #define CONFIG2_UPLLIDIV_5       0xfffffcff
-  #define CONFIG2_UPLLIDIV_6       0xfffffdff
-  #define CONFIG2_UPLLIDIV_10      0xfffffeff
-  #define CONFIG2_UPLLIDIV_12      0xffffffff
+  constexpr std::uint32_t config2_fpllmul_15       = UINT32_C(0xffffff8f);
+  constexpr std::uint32_t config2_fpllmul_16       = UINT32_C(0xffffff9f);
+  constexpr std::uint32_t config2_fpllmul_17       = UINT32_C(0xffffffaf);
+  constexpr std::uint32_t config2_fpllmul_18       = UINT32_C(0xffffffbf);
+  constexpr std::uint32_t config2_fpllmul_19       = UINT32_C(0xffffffcf);
+  constexpr std::uint32_t config2_fpllmul_20       = UINT32_C(0xffffffdf);
+  constexpr std::uint32_t config2_fpllmul_21       = UINT32_C(0xffffffef);
+  constexpr std::uint32_t config2_fpllmul_24       = UINT32_C(0xffffffff);
 
-  #define CONFIG2_FPLLMUL_15       0xffffff8f
-  #define CONFIG2_FPLLMUL_16       0xffffff9f
-  #define CONFIG2_FPLLMUL_17       0xffffffaf
-  #define CONFIG2_FPLLMUL_18       0xffffffbf
-  #define CONFIG2_FPLLMUL_19       0xffffffcf
-  #define CONFIG2_FPLLMUL_20       0xffffffdf
-  #define CONFIG2_FPLLMUL_21       0xffffffef
-  #define CONFIG2_FPLLMUL_24       0xffffffff
+  constexpr std::uint32_t config2_fpllidiv_1       = UINT32_C(0xfffffff8);
+  constexpr std::uint32_t config2_fpllidiv_2       = UINT32_C(0xfffffff9);
+  constexpr std::uint32_t config2_fpllidiv_3       = UINT32_C(0xfffffffa);
+  constexpr std::uint32_t config2_fpllidiv_4       = UINT32_C(0xfffffffb);
+  constexpr std::uint32_t config2_fpllidiv_5       = UINT32_C(0xfffffffc);
+  constexpr std::uint32_t config2_fpllidiv_6       = UINT32_C(0xfffffffd);
+  constexpr std::uint32_t config2_fpllidiv_10      = UINT32_C(0xfffffffe);
+  constexpr std::uint32_t config2_fpllidiv_12      = UINT32_C(0xffffffff);
 
-  #define CONFIG2_FPLLIDIV_1       0xfffffff8
-  #define CONFIG2_FPLLIDIV_2       0xfffffff9
-  #define CONFIG2_FPLLIDIV_3       0xfffffffa
-  #define CONFIG2_FPLLIDIV_4       0xfffffffb
-  #define CONFIG2_FPLLIDIV_5       0xfffffffc
-  #define CONFIG2_FPLLIDIV_6       0xfffffffd
-  #define CONFIG2_FPLLIDIV_10      0xfffffffe
-  #define CONFIG2_FPLLIDIV_12      0xffffffff
+  #define CONFIG_QUOTE(arg)       #arg
+  #define CONFIG_STRVAL(arg)      CONFIG_QUOTE(arg)
 
-  #define DECLARE_CONFIG(x, val)                              \
-     asm(".section .config" STRVAL(x) ",\"ax\",@progbits");   \
-     asm(".word " STRVAL(0xffffffff & val));                  \
+  #define CONFIG_NUMBER_0  0
+  #define CONFIG_NUMBER_1  1
+  #define CONFIG_NUMBER_2  2
+  #define CONFIG_NUMBER_3  3
+
+  #define CONFIG_DECLARE_CONFIG(x, val)                              \
+     asm(".section .config" CONFIG_STRVAL(x) ",\"ax\",@progbits");   \
+     asm(".word " CONFIG_STRVAL(UINT32_C(0xffffffff) & (val)));      \
      asm(".text");
 
 #endif // _CONFIG_2014_08_20_H_
