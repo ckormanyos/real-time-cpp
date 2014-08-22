@@ -32,12 +32,12 @@ void mcal::cpu::init()
 
 namespace crt
 {
-  bool do_not_optimize_the_configuration();
+  bool do_not_optimize_the_configuration_away();
 }
 
 void mcal::cpu::post_init()
 {
-  const volatile bool dummy_do_not_optimize_the_configuration = crt::do_not_optimize_the_configuration();
+  const volatile bool dummy = crt::do_not_optimize_the_configuration_away();
 
-  static_cast<void>(dummy_do_not_optimize_the_configuration);
+  static_cast<void>(dummy);
 }

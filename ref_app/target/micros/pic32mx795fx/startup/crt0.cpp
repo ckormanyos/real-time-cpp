@@ -25,7 +25,7 @@ asm(".set noreorder");
 asm(".ent __my_startup_entry");
 asm volatile("__my_startup_entry:");
 
-  // Check for the kind of the reset.
+  // Check what kind of reset this is.
   asm volatile("mfc0 $k0, $12, 0");               // Read the status register.
   asm volatile("ext $k0, $k0, 19, 1");            // Check the nmi bit.
   asm volatile("beqz $k0, jump_to_normal_reset"); // It is a normal reset.
@@ -82,11 +82,12 @@ asm volatile("__my_startup_entry:");
   asm volatile("li $t1, 0");
   asm volatile("mtc0 $t1, $12, 0");
 
-  // Call __my_startup_part2 which will:
+  // Call __my_startup which will do the following:
   // * finish the initialization
   // * subsequently call main()
   // * and never return from main().
-  asm volatile("j __my_startup");
+  asm volatile("la $t0, __my_startup");
+  asm volatile("jalr $t0");
 asm(".end __my_startup_entry");
 asm(".globl __my_startup_entry");
 

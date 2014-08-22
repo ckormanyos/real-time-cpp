@@ -92,8 +92,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
   if(gpt_is_initialized())
   {
-    // Return the system tick using a multiple read to ensure
-    // data consistency of the system tick.
+    // Return the system tick using a multiple read to ensure data consistency.
 
     typedef std::uint32_t timer_address_type;
     typedef std::uint8_t  timer_register_type;

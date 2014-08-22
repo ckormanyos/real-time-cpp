@@ -29,12 +29,8 @@ void app::led::task_init()
   mcal::led::led0.toggle();
 }
 
-//extern void dummy_spi_send();
-
 void app::led::task_func()
 {
-//  dummy_spi_send();
-
   if(app_led_timer.timeout())
   {
     app_led_timer.start_interval(timer_type::seconds(1U));

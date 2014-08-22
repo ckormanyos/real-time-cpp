@@ -13,13 +13,16 @@ GCC_VERSION = 4.9.0
 GCC_TARGET  = mips-sde-elf
 
 TGT_CFLAGS    = -mips32r2                                      \
-                -EL                                            \
                 -march=m4k                                     \
+                -EL                                            \
                 -mlong-calls                                   \
+                -mno-extern-sdata                              \
+                -mno-local-sdata                               \
                 -mno-gpopt                                     \
                 -msoft-float                                   \
                 -mno-dsp                                       \
                 -mno-dspr2
+
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \

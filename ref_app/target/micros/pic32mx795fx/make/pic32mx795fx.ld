@@ -60,6 +60,8 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
+    *(.rodata.*)
+    . = ALIGN(4);
   } > ROM
 
   .= 0x9FC01200;
@@ -144,9 +146,15 @@ SECTIONS
     *(.data)
     . = ALIGN(4);
     KEEP (*(.data))
+    *(.data.*)
+    . = ALIGN(4);
+    KEEP (*(.data.*))
     *(.data*)
     . = ALIGN(4);
     KEEP (*(.data*))
+    *(.sdata*)
+    . = ALIGN(4);
+    KEEP (*(.sdata*))
     _data_end = .;
   } > RAM AT > ROM
 
@@ -162,12 +170,18 @@ SECTIONS
   .bss :
   {
     _bss_begin = .;
-    *(.bss)
+    *(.sbss*)
     . = ALIGN(4);
-    KEEP (*(.bss))
+    KEEP (*(.sbss*))
+    *(.sbss.*)
+    . = ALIGN(4);
+    KEEP (*(.sbss.*))
     *(.bss*)
     . = ALIGN(4);
     KEEP (*(.bss*))
+    *(.bss.*)
+    . = ALIGN(4);
+    KEEP (*(.bss.*))
     _bss_end = .;
   } > RAM
 

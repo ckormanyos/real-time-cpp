@@ -11,8 +11,6 @@
 
 extern "C"
 {
-  extern std::uintptr_t _data_begin;     // Start address for the .data section (the lowest DRAM address).
-  extern std::uintptr_t _stack_begin;    // Start address for the lower end of the stack (one past the highest DRAM address).
   extern std::uintptr_t _rom_begin;      // Start address for the program ROM section (the lowest ROM address).
   extern std::uintptr_t _rom_end;        // End   address for the program ROM section (one past the highest ROM address).
 }

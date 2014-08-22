@@ -1,5 +1,6 @@
+
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,15 +21,19 @@ namespace
     return is_init;
   }
 
-  // Here are some timer1 period characteristics.
+  // Here are some parameters that define the timer1 period.
+
   constexpr std::uint_least16_t timer1_period_in_ticks        = UINT16_C(40000);
   constexpr std::uint_least16_t timer1_period_in_microseconds = UINT16_C(1000);
   constexpr std::uint_least16_t timer1_ticks_per_microseconds = static_cast<std::uint_least16_t>(timer1_period_in_ticks / timer1_period_in_microseconds);
+
+  static_assert(static_cast<std::uint_least16_t>(timer1_period_in_ticks % timer1_period_in_microseconds) == UINT16_C(0),
+                "The timer1 microsecond period must evenly divide the timer1 tick period.");
 }
 
-extern "C" void __attribute__((nomips16, interrupt)) __vector_timer1();
+extern "C" void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1();
 
-void __attribute__((nomips16, interrupt)) __vector_timer1()
+void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1()
 {
   // Increment the system tick.
   system_tick += timer1_period_in_microseconds;
@@ -44,7 +49,7 @@ void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
-    // Set timer1 basic operation with prescaler 1.
+    // Setup timer1 for basic operation with a prescaler of 1.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
                       mcal::reg::t1con,
@@ -56,13 +61,13 @@ void mcal::gpt::init(const config_type*)
                       mcal::reg::pr1,
                       static_cast<std::uint32_t>(timer1_period_in_ticks)>::reg_set();
 
-    // Set timer1 interrupt priority to 6.
+    // Set the timer1 interrupt priority to 6.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
                       mcal::reg::ipc1,
                       static_cast<std::uint32_t>(UINT32_C(6) << 2)>::reg_or();
 
-    // Set timer1 interrupt subpriority to 0.
+    // Set the timer1 interrupt subpriority to 0.
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
                       mcal::reg::ipc1,
@@ -94,8 +99,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
   if(gpt_is_initialized())
   {
-    // Return the system tick using a multiple read to ensure
-    // data consistency of the high-byte of the system tick.
+    // Return the system tick using a multiple read to ensure data consistency.
 
     typedef std::uint32_t timer_address_type;
     typedef std::uint16_t timer_register_type;

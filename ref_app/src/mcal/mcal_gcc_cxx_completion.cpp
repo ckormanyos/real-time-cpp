@@ -116,9 +116,9 @@ extern "C"
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
   void        __cxa_call_terminate(_Unwind_Exception*)                { }
 
-  // Provide some patched data.
-  char*         __env[1] = { nullptr };
-  char**        environ  = __env;
-  int           __errno;
-  unsigned char __fdlib_version;
+  // Provide some patched data values.
+  const char* const  __env[1]        = { nullptr };
+  const char** const environ         = { nullptr };
+  const int          __errno         = 0;
+  const std::uint8_t __fdlib_version = UINT8_C(0);
 }
