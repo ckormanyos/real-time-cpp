@@ -423,9 +423,6 @@
     <ClCompile Include="target\micros\stm32f429\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\int_vect.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="target\micros\pic32mx795fx\startup\config.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
