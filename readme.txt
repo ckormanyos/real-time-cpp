@@ -80,14 +80,16 @@ includes a special boot header comprised of two 32-bit integers. The program
 is loaded from SD-card into RAM memory and subsequently executed.
 The program toggles the first user LED (LED1 on port1.21).
 
-The GNU Compilers
+For other compatible boards, please contact me via issue request for
+further details.
+
+GNU Compilers
 -----------------
 
-GCC ports for the microcontroller solutions are not available here.
-A GCC port with at least some C++11 awarenes such as GCC 4.8 or higher
-is required.
+GNU GCC ports for the microcontroller solutions are not available here.
+A GNU GCC port with a relatively high level of C++11 awarenes such as
+GCC 4.8 or higher is required for building the reference application.
 
-The make-files are aware of the location of their respective tool chains.
-It is not necessary to add any kind of path information to the
-PC operating system or to Visual Studio(R) in order to buld the
-reference application.
+The make-files are aware of the location of a default location of
+the respective tool chain. This needs to be modified if a custom
+build is tailored for a different environment.
