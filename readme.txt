@@ -10,8 +10,8 @@ Details on the Reference Application
 The reference application boots via a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler which schedules the
-LED application, a debug monitor triggers the watchdog. The LED application
-toggles the LED with a frequency of 1/2 Hz.
+LED application, services a a debug monitor, and triggers the watchdog.
+The LED application toggles the LED with a frequency of 1/2 Hz.
 
 Supported Targets in the Reference Application
 ----------------------------------------------
