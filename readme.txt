@@ -10,10 +10,8 @@ Details on the Reference Application
 The reference application boots via a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler which schedules the
-LED application, a debug monitor task, a (predominantly empty) system task,
-and an idle task. The idle task performs various high-integrity robustness
-checks and triggers the watchdog. The LED application toggles the LED with
-a frequency of 1/2 Hz.
+LED application, a debug monitor triggers the watchdog. The LED application
+toggles the LED with a frequency of 1/2 Hz.
 
 Supported Targets in the Reference Application
 ----------------------------------------------
@@ -54,6 +52,10 @@ Visual Studio(R) makes heavy use of cross development using a project
 workspace of type "external makefile" to invoke GNUmake (via batch file)
 in combination with several makefiles.
 
+To build any target other than Debug or Release for Win32, a cross-compiler
+(GNU GCC cross compiler) is required. See the text below for additional
+details.
+
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the bin directory.
 
@@ -69,27 +71,34 @@ be found in the target-directory and its subdirectories.
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
 The program toggles the yellow LED on portb.5.
 
-The ARM(R) Cortex(TM)-M3 configuration runs on the STM32VLDISCOVERY board available
-from ST Microelectronics(R). The program toggles the blue LED on portc.8.
+The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
+the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
+The program toggles the blue LED on portc.8.
 
-The ARM(R) A8 configuration runs on the BeagleBone board (black edition).
-For the white edition, the CPU clock needs to be reduced. This is a bare-metal
-program for the BeagleBone. The program is designed to boot the BeagleBone from
-a binary file called "MLO" stored on a FAT32 SDHC microcard. The binary file
-includes a special boot header comprised of two 32-bit integers. The program
-is loaded from SD-card into RAM memory and subsequently executed.
-The program toggles the first user LED (LED1 on port1.21).
+The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
+board (black edition). For the white edition, the CPU clock needs to be reduced
+from 900MHz to something like 600MHz. This project creates a bare-metal program
+for the BeagleBone that runs independently form any kind of *nix distro on
+the board. Our program is designed to boot the BeagleBone from a raw binary file
+called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a
+special boot header comprised of two 32-bit integers. The program is loaded
+from SD-card into RAM memory and subsequently executed. When switching on
+the BeagleBone black, the boot button (S2) must be pressed while powering
+up the board. The program toggles the first user LED (LED1 on port1.21).
 
-For other compatible boards, please contact me via issue request for
-further details.
+For other compatible boards, feel free contact me with an issue requesting
+further details on your desired target system.
 
-GNU Compilers
+GNU GCC Compilers
 -----------------
 
-GNU GCC ports for the microcontroller solutions are not available here.
+GNU GCC cross compilers for the microcontroller solutions are *not*
+available here.
+
 A GNU GCC port with a relatively high level of C++11 awarenes such as
 GCC 4.8 or higher is required for building the reference application.
 
-The make-files are aware of the location of a default location of
-the respective tool chain. This needs to be modified if a custom
-build is tailored for a different environment.
+The make-files are aware of the location of a default location of the
+respective tool chain. When using the reference application or designing
+a custom build, the root directory of the tool chain must be properly
+supplied to the makefiles.
