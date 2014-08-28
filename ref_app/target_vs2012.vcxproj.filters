@@ -296,5 +296,8 @@
     <ClCompile Include="target\micros\pic32mx795fx\startup\config.cpp">
       <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\rl78\startup\option.cpp">
+      <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

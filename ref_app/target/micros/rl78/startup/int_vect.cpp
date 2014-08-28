@@ -10,18 +10,6 @@
 #include <cstdint>
 #include <mcal_cpu.h>
 
-extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt")));
-
-extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt"))) =
-{
-  0x6E,
-  0xFF,
-  0xE8,
-  0x85,
-};
-
 extern "C" void __my_startup       ();
 extern "C" void __inttm02_vect     () __attribute__((interrupt, used, externally_visible));
 extern "C" void __vector_unused_irq() __attribute__((interrupt, used, externally_visible));

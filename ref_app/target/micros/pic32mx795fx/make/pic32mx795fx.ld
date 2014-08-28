@@ -1,12 +1,14 @@
 
 /*
- Copyright Christopher Kormanyos 2007 - 2013.
+ Copyright Christopher Kormanyos 2014.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Default linker script, for normal executables */
+/* Linker script for Microchip(R) PIC32MX795x. */
+
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-tradlittlemips")
 OUTPUT_ARCH("mips")
@@ -29,14 +31,11 @@ PROVIDE(_ebase_address  = 0x9FC01000);
 
 MEMORY
 {
-  ROM    (rx)  : ORIGIN = 0x9D000000, LENGTH = 0x08000 - 4
-  IVEC   (rx)  : ORIGIN = 0x9FC01200, LENGTH = 0x00800
-  RAM    (rwx) : ORIGIN = 0xA0000000, LENGTH = 0x07000
-  RESET  (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x00400
-  CONFIG3(r)   : ORIGIN = 0xBFC02FF0, LENGTH = 0x00004
-  CONFIG2(r)   : ORIGIN = 0xBFC02FF4, LENGTH = 0x00004
-  CONFIG1(r)   : ORIGIN = 0xBFC02FF8, LENGTH = 0x00004
-  CONFIG0(r)   : ORIGIN = 0xBFC02FFC, LENGTH = 0x00004
+  ROM   (rx)  : ORIGIN = 0x9D000000, LENGTH = 0x00008000 - 4
+  IVEC  (rx)  : ORIGIN = 0x9FC01200, LENGTH = 0x00000800
+  RAM   (rwx) : ORIGIN = 0xA0000000, LENGTH = 0x00007000
+  RESET (rx)  : ORIGIN = 0xBFC00000, LENGTH = 0x00000400
+  CONFIG(r)   : ORIGIN = 0xBFC02FF0, LENGTH = 0x00000010
 }
 
 SECTIONS
@@ -195,10 +194,7 @@ SECTIONS
 
   .= 0xBFC02FF0;
 
-  .config3 : { . = ALIGN(0x4); KEEP(*(.config3)) } > CONFIG3
-  .config2 : { . = ALIGN(0x4); KEEP(*(.config2)) } > CONFIG2
-  .config1 : { . = ALIGN(0x4); KEEP(*(.config1)) } > CONFIG1
-  .config0 : { . = ALIGN(0x4); KEEP(*(.config0)) } > CONFIG0
+  .config : { . = ALIGN(0x4); KEEP(*(.config)) } > CONFIG
 
   _rom_data_begin = LOADADDR(.data);
 }

@@ -16,7 +16,7 @@
     {
       void init();
 
-      void post_init();
+      inline void post_init() { }
 
       inline void nop() { asm volatile("nop"); }
 

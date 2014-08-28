@@ -29,18 +29,3 @@ void mcal::cpu::init()
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }
-
-namespace crt
-{
-  namespace config
-  {
-    bool do_not_optimize_the_config_away();
-  }
-}
-
-void mcal::cpu::post_init()
-{
-  const volatile bool config_dummy = crt::config::do_not_optimize_the_config_away();
-
-  static_cast<void>(config_dummy);
-}
