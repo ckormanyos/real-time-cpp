@@ -32,8 +32,8 @@ Cross Development in the Reference Application
 ----------------------------------------------
 
 The reference application uses cross-development based on *nix-like make
-tools in combination with Microsoft(R) Visual Studio(R). The *nix-like
-make tools have been built in MinGW.
+tools in combination with Microsoft(R) Visual Studio(R). Tool chains
+are not available in this repo (see below for further details).
 
 The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
 also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
