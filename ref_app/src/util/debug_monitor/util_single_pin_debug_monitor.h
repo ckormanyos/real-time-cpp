@@ -29,8 +29,8 @@
       // The single-bit timeout is set to 95% of four poll times.
       // The receiver automatically resets if it is idle for 12 bit times or more.
 
-      static const std::uint_fast16_t bit_time_microseconds = std::uint_fast16_t(((std::uint32_t(os::debug_monitor::task_poll_time) * UINT32_C(380)) + UINT32_C(99)) / UINT32_C(100));
-      static const std::uint_fast8_t  receive_reset_limit   = 12U * 4U;
+      static std::uint_fast16_t bit_time_microseconds() { return std::uint_fast16_t(((std::uint32_t(os::debug_monitor::task_poll_time()) * UINT32_C(380)) + UINT32_C(99)) / UINT32_C(100)); }
+      static std::uint_fast8_t  receive_reset_limit()   { return std::uint_fast8_t(12U * 4U); }
 
       typedef util::timer<std::uint_fast16_t> timer_type;
 
@@ -72,7 +72,7 @@
         // Increment a counter if nothing has been received.
         ++driver_received_nothing_counter;
 
-        if(driver_received_nothing_counter >= receive_reset_limit)
+        if(driver_received_nothing_counter >= receive_reset_limit())
         {
           // Clear the buffer if nothing has been received for quite a while.
           driver_flush_buffer();
@@ -117,7 +117,7 @@
       switch(driver_transmit_state)
       {
         case send_start_bit:
-          driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
+          driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds()));
 
           if(driver_current_byte_value == std::uint_fast8_t(0U))
           {
@@ -131,7 +131,7 @@
         case send_data_bits:
           if(driver_wait.timeout())
           {
-            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
+            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds()));
 
             // Send a single data bit.
             const bool bit_is_high = (uint_fast8_t(std::uint_fast8_t(driver_buffer[driver_current_byte_value]) & std::uint_fast8_t(1U << driver_current_bit_position)) != std::uint_fast8_t(0U));
@@ -150,7 +150,7 @@
         case send_stop_bit:
           if(driver_wait.timeout())
           {
-            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
+            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds()));
             port_pin_send(true);
             driver_transmit_state = send_pause_for_next_byte;
           }
@@ -202,7 +202,7 @@
         case recieve_start_bit_validation:
           if((!port_pin_receive()))
           {
-            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
+            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds()));
             driver_current_bit_position = std::uint_fast8_t(0U);
             driver_current_byte_value   = std::uint_fast8_t(0U);
             driver_transmit_state       = recieve_data_bits;
@@ -218,7 +218,7 @@
         case recieve_data_bits:
           if(driver_wait.timeout())
           {
-            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds));
+            driver_wait.start_relative(timer_type::microseconds(bit_time_microseconds()));
 
             // Append the bit value to the current byte value.
             if(port_pin_receive())

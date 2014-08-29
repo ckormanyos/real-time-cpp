@@ -51,7 +51,7 @@
     {                                                                                            \
       os::task_control_block(sys::debug_monitor::task_init,                                      \
                              sys::debug_monitor::task_func,                                      \
-                             os::timer_type::microseconds(os::debug_monitor::task_poll_time),    \
+                             os::timer_type::microseconds(os::debug_monitor::task_poll_time()),  \
                              os::timer_type::microseconds(UINT32_C(     0))),                    \
       os::task_control_block(app::led::task_init,                                                \
                              app::led::task_func,                                                \
