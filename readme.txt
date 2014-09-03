@@ -95,7 +95,7 @@ GNU GCC Compilers
 GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
-A GNU GCC port with a relatively high level of C++11 awarenes such as
+A GNU GCC port with a relatively high level of C++11 awareness such as
 GCC 4.8 or higher is required for building the reference application.
 
 The make-files are aware of the location of a default location of the
