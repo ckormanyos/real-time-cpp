@@ -85,6 +85,15 @@
     <Filter Include="micros\pic32mx795fx\startup">
       <UniqueIdentifier>{233d3e07-73e6-456c-ad85-eee1754c294b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\arm1176Jzf_s">
+      <UniqueIdentifier>{4041bfb9-b914-4b7c-a460-4ea024a343cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\arm1176Jzf_s\make">
+      <UniqueIdentifier>{d1060f48-ad53-4ceb-a846-299be0b751c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\arm1176Jzf_s\startup">
+      <UniqueIdentifier>{1f5312f0-2137-4a89-aee2-60f6c6f08196}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -204,6 +213,21 @@
     <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_hex_manip_script.hxm">
       <Filter>micros\pic32mx795fx\make</Filter>
     </None>
+    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s.ld">
+      <Filter>micros\arm1176Jzf_s\make</Filter>
+    </None>
+    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_files.gmk">
+      <Filter>micros\arm1176Jzf_s\make</Filter>
+    </None>
+    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_flags.gmk">
+      <Filter>micros\arm1176Jzf_s\make</Filter>
+    </None>
+    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_hex_manip_script.hxm">
+      <Filter>micros\arm1176Jzf_s\make</Filter>
+    </None>
+    <None Include="target\micros\arm1176Jzf_s\startup\start.s">
+      <Filter>micros\arm1176Jzf_s\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -298,6 +322,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\rl78\startup\option.cpp">
       <Filter>micros\rl78\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt0.cpp">
+      <Filter>micros\arm1176Jzf_s\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt0_init_ram.cpp">
+      <Filter>micros\arm1176Jzf_s\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt1.cpp">
+      <Filter>micros\arm1176Jzf_s\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\arm1176Jzf_s\startup\int_vect.cpp">
+      <Filter>micros\arm1176Jzf_s\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

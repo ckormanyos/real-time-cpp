@@ -140,7 +140,7 @@
 
             ++driver_current_bit_position;
 
-            if(driver_current_bit_position >= driver_buffer.size())
+            if(driver_current_bit_position >= driver_buffer_size)
             {
               driver_transmit_state = send_stop_bit;
             }
@@ -188,7 +188,7 @@
   {
     // Read incoming data bytes on the port pin and store them in the buffer.
     // Use the UART physical layer protocol.
-    if(driver_buffer_length < driver_buffer.size())
+    if(driver_buffer_length < driver_buffer_size)
     {
       switch(driver_transmit_state)
       {

@@ -31,3 +31,5 @@ TGT_CPPFLAGS  = -std=c++11                                     \
 TGT_AFLAGS    = -mlong-calls
 
 TGT_LFLAGS    =
+
+IMAGE_FILE_NAME = dummy.foo

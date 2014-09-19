@@ -8,9 +8,10 @@
 #ifndef _UTIL_SINGLE_PIN_DEBUG_MONITOR_BASE_2013_05_16_H_
   #define _UTIL_SINGLE_PIN_DEBUG_MONITOR_BASE_2013_05_16_H_
 
-  #include <cstdint>
   #include <algorithm>
   #include <array>
+  #include <cstdint>
+  #include <iterator>
   #include <mcal_port.h>
   #include <util/utility/util_noncopyable.h>
   #include <util/utility/util_two_part_data_manipulation.h>
@@ -46,6 +47,7 @@
     protected:
       // Set up the driver buffer.
       static const std::uint_fast8_t driver_buffer_size = std::uint_fast8_t(8U);
+
       typedef std::array<std::uint8_t, driver_buffer_size> driver_buffer_type;
 
       typedef enum enum_driver_transmit_state_type
@@ -62,7 +64,7 @@
       }
       driver_transmit_state_type;
 
-      driver_buffer_type         driver_buffer;
+      volatile std::uint8_t      driver_buffer[driver_buffer_size];
       std::uint_fast8_t          driver_buffer_length;
       bool                       driver_is_in_send_mode;
       std::uint_fast8_t          driver_current_byte_value;
@@ -90,7 +92,7 @@
       {
         driver_buffer_length  = std::uint_fast8_t(0U);
         driver_transmit_state = recieve_start_bit;
-        std::fill(driver_buffer.begin(), driver_buffer.end(), driver_buffer_type::value_type(0U));
+        std::fill(std::begin(driver_buffer), std::end(driver_buffer), driver_buffer_type::value_type(0U));
       }
     };
 
@@ -99,21 +101,15 @@
   template<typename addr_type, const addr_type addr_offset>
   void util::single_pin_debug_monitor_base::protocol_task()
   {
-    // This protocol task embodies the "BWD" protocol.
+    // This protocol task embodies the "bwd" protocol.
 
     if(driver_is_in_send_mode)
     {
       return;
     }
 
-    // Note: These variables are shielded from aggressive optimization
-    // with the volatile qualifier. This is because direct memory access
-    // might *seem* to simply do nothing for a highly optimizing compiler.
-    // The volatile qualification reduces the risk of the memory access
-    // code being wrongly optimized away (partly or entirely).
-
-    volatile std::uint_fast8_t data_elements;
-    volatile std::uint_fast8_t service_id;
+    std::uint_fast8_t data_elements;
+    std::uint_fast8_t service_id;
 
     // Obtain the service ID for a read or write command,
     // and set the number of data elements in the command.
@@ -172,7 +168,7 @@
     {
       if(driver_buffer_length == std::uint_fast8_t(3U))
       {
-        std::fill(driver_buffer.begin(), driver_buffer.begin() + 4U, std::uint8_t(0U));
+        std::fill(std::begin(driver_buffer), std::begin(driver_buffer) + 4U, std::uint8_t(0U));
 
         switch(data_elements)
         {

@@ -27,6 +27,8 @@ TGT_AFLAGS    =
 
 TGT_LFLAGS    =
 
+IMAGE_FILE_NAME = dummy.foo
+
 # To configure GMP
 # ../gmp-5.1.3/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --enable-cxx --disable-static --enable-shared CPPFLAGS="-fexceptions"
 # To configure MPFR

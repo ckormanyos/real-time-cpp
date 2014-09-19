@@ -21,3 +21,5 @@ TGT_CPPFLAGS  = -std=c++11                                     \
 TGT_AFLAGS    =
 
 TGT_LFLAGS    = -nostdlib
+
+IMAGE_FILE_NAME = dummy.foo
