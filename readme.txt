@@ -26,7 +26,7 @@ The reference application supports the following targets:
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
   * Microchip(R) PIC(R)32 MIPS4K
-  * In progress: Raspberry Pi with ARM(R) 11
+  * Raspberry Pi with ARM(R) 11
 
 Cross Development in the Reference Application
 ----------------------------------------------
