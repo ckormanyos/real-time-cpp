@@ -37,6 +37,11 @@
         template<typename unsigned_tick_type>
         friend class util::timer;
       };
+
+      namespace detail
+      {
+        void rpi_armtimer_interrupt_callback();
+      }
     }
   }
 

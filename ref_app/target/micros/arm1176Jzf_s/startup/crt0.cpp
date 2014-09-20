@@ -14,12 +14,8 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" int  main                   ();
-//extern "C" void __initial_stack_pointer();
-extern "C" void __my_startup           () __attribute__((used, noinline));
-
-
-
+extern "C" int  main        ();
+extern "C" void __my_startup() __attribute__((used, noinline));
 
 void __my_startup()
 {

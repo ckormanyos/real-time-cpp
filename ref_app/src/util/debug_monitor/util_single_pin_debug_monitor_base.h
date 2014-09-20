@@ -64,20 +64,21 @@
       }
       driver_transmit_state_type;
 
-      volatile std::uint8_t      driver_buffer[driver_buffer_size];
       std::uint_fast8_t          driver_buffer_length;
       bool                       driver_is_in_send_mode;
       std::uint_fast8_t          driver_current_byte_value;
       std::uint_fast8_t          driver_received_nothing_counter;
       driver_transmit_state_type driver_transmit_state;
+      volatile std::uint8_t      driver_buffer[driver_buffer_size];
 
-      single_pin_debug_monitor_base() : driver_buffer(),
-                                        driver_buffer_length(0U),
+      single_pin_debug_monitor_base() : driver_buffer_length(0U),
                                         driver_is_in_send_mode(false),
                                         driver_current_byte_value(0U),
                                         driver_received_nothing_counter(0U),
                                         driver_transmit_state(recieve_start_bit)
       {
+        std::fill(driver_buffer, driver_buffer + driver_buffer_size, UINT8_C(0));
+
         driver_flush_buffer();
       }
 

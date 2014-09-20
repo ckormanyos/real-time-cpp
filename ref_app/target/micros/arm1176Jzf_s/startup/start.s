@@ -1,8 +1,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2014.
-//  Adapted from: Part of the Raspberry-Pi Bare Metal Tutorials
-//  See original copyright notice below.
+//  Adapted from: "Part of the Raspberry-Pi Bare Metal Tutorials"
+//  See the original copyright notice below.
 
 //  Part of the Raspberry-Pi Bare Metal Tutorials
 //  Copyright (c) 2013, Brian Sidebotham
@@ -30,6 +30,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
+
 .section ".text.startup"
 
 .global _start
@@ -42,10 +43,10 @@
 .equ    CPSR_MODE_UNDEFINED,    0x1B
 .equ    CPSR_MODE_SYSTEM,       0x1F
 
-// See ARM section A2.5 (Program status registers)
-.equ    CPSR_IRQ_INHIBIT,       0x80
-.equ    CPSR_FIQ_INHIBIT,       0x40
 .equ    CPSR_THUMB,             0x20
+.equ    CPSR_FIQ_INHIBIT,       0x40
+.equ    CPSR_IRQ_INHIBIT,       0x80
+
 
 _start:
   ldr pc, _reset_h
@@ -54,22 +55,23 @@ _start:
   ldr pc, _prefetch_abort_vector_h
   ldr pc, _data_abort_vector_h
   ldr pc, _unused_handler_h
-  ldr pc, _interrupt_vector_h
-  ldr pc, _fast_interrupt_vector_h
+  ldr pc, _the_one_and_only_interrupt_vector_h
+  ldr pc, _the_one_and_only_fast_interrupt_vector_h
 
-_reset_h:                           .word   _reset_
-_undefined_instruction_vector_h:    .word   undefined_instruction_vector
-_software_interrupt_vector_h:       .word   software_interrupt_vector
-_prefetch_abort_vector_h:           .word   prefetch_abort_vector
-_data_abort_vector_h:               .word   data_abort_vector
-_unused_handler_h:                  .word   _reset_
-_interrupt_vector_h:                .word   interrupt_vector
-_fast_interrupt_vector_h:           .word   fast_interrupt_vector
+_reset_h:                                  .word   _reset_
+_undefined_instruction_vector_h:           .word   undefined_instruction_vector
+_software_interrupt_vector_h:              .word   software_interrupt_vector
+_prefetch_abort_vector_h:                  .word   prefetch_abort_vector
+_data_abort_vector_h:                      .word   data_abort_vector
+_unused_handler_h:                         .word   _reset_
+_the_one_and_only_interrupt_vector_h:      .word   the_one_and_only_interrupt_vector
+_the_one_and_only_fast_interrupt_vector_h: .word   the_one_and_only_fast_interrupt_vector
+
 
 _reset_:
-  // We enter execution in supervisor mode. For more information on
-  // processor modes see ARM Section A2.2 (Processor Modes)
 
+  // Copy the interrupt vector table.
+  // TBD: Can the same be accomplished in C++?
   mov     r0, #0x8000
   mov     r1, #0x0000
   ldmia   r0!, {r2, r3, r4, r5, r6, r7, r8, r9}
@@ -77,16 +79,17 @@ _reset_:
   ldmia   r0!, {r2, r3, r4, r5, r6, r7, r8, r9}
   stmia   r1!, {r2, r3, r4, r5, r6, r7, r8, r9}
 
-  // Setup the irq stack (with 1kB stack size), and switch to irq mode.
-  mov r0, #(CPSR_MODE_IRQ | CPSR_IRQ_INHIBIT | CPSR_FIQ_INHIBIT )
-  msr cpsr_c, r0
-  mov sp, #0x10000
+  // Setup the interrupt stack (with 1kB stack size),
+  // and switch to irq mode.
+  ldr r3, =__initial_stack_pointer
+  msr cpsr_c, #(CPSR_MODE_IRQ | CPSR_IRQ_INHIBIT | CPSR_FIQ_INHIBIT)
+  mov sp, r3
+  sub r3, r3, #0x0400
 
   // Setup the user/system stack (with 3kB stack size),
-  // and switch to system mode.
-  mov r0, #(CPSR_MODE_SVR | CPSR_IRQ_INHIBIT | CPSR_FIQ_INHIBIT )
-  msr cpsr_c, r0
-  mov sp, #0x0FC00
+  // and switch back to system mode.
+  msr cpsr_c, #(CPSR_MODE_SVR | CPSR_IRQ_INHIBIT | CPSR_FIQ_INHIBIT)
+  mov sp, r3
 
-  // The c-startup function which we never return.
+  // Jump to the startup function and never return.
   bl __my_startup
