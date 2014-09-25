@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="target arm1176Jzf_s|Win32">
-      <Configuration>target arm1176Jzf_s</Configuration>
+    <ProjectConfiguration Include="target bcm2835_raspi_b|Win32">
+      <Configuration>target bcm2835_raspi_b</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="target rl78|Win32">
@@ -84,7 +84,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -142,7 +142,7 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" Label="PropertySheets">
@@ -158,7 +158,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(SolutionDir)bin\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">$(SolutionDir)bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">$(SolutionDir)bin\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(OutDir)</IntDir>
@@ -167,7 +167,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(OutDir)</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">$(OutDir)</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">$(OutDir)</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(OutDir)</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
@@ -176,7 +176,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">target\build\build.bat stm32f407</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x</NMakeBuildCommandLine>
-    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">target\build\build.bat arm1176Jzf_s</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">target\build\build.bat bcm2835_raspi_b</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
@@ -186,7 +186,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 rebuild
 </NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
-    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">target\build\build.bat arm1176Jzf_s rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">target\build\build.bat bcm2835_raspi_b rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">Target\Build\Build.bat rl78 clean_all</NMakeCleanCommandLine>
@@ -196,7 +196,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">target\build\build.bat stm32f429 clean_all
 </NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
-    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">target\build\build.bat arm1176Jzf_s clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">target\build\build.bat bcm2835_raspi_b clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx clean_all</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeOutput>
@@ -212,7 +212,7 @@
     </NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">
     </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">
     </NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -223,7 +223,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
@@ -232,7 +232,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f407</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f429</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/am335x</NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/arm1176Jzf_s</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/bcm2835_raspi_b</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/pic32mx795fx</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
@@ -242,7 +242,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
@@ -252,7 +252,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
@@ -262,7 +262,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'" />
-    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'" />
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">Build\Build.bat R8C</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">Build\Build.bat R8C rebuild</NMakeReBuildCommandLine>
@@ -364,7 +364,7 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target arm1176Jzf_s|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
@@ -388,11 +388,11 @@
     <None Include="target\micros\am335x\make\am335x_files.gmk" />
     <None Include="target\micros\am335x\make\am335x_flags.gmk" />
     <None Include="target\micros\am335x\make\am335x_hex_manip_script.hxm" />
-    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s.ld" />
-    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_files.gmk" />
-    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_flags.gmk" />
-    <None Include="target\micros\arm1176Jzf_s\make\arm1176Jzf_s_hex_manip_script.hxm" />
-    <None Include="target\micros\arm1176Jzf_s\startup\start.s" />
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b.ld" />
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_files.gmk" />
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_flags.gmk" />
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_hex_manip_script.hxm" />
+    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect_table.s" />
     <None Include="target\micros\avr\make\avr.ld" />
     <None Include="target\micros\avr\make\avr_files.gmk" />
     <None Include="target\micros\avr\make\avr_flags.gmk" />
@@ -430,10 +430,10 @@
     <ClCompile Include="target\micros\am335x\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\am335x\startup\crt1.cpp" />
     <ClCompile Include="target\micros\am335x\startup\int_vect.cpp" />
-    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt0.cpp" />
-    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt0_init_ram.cpp" />
-    <ClCompile Include="target\micros\arm1176Jzf_s\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\arm1176Jzf_s\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
     <ClCompile Include="target\micros\pic32mx795fx\startup\config.cpp" />
     <ClCompile Include="target\micros\pic32mx795fx\startup\crt0.cpp" />

@@ -134,7 +134,7 @@
     <Filter Include="src\mcal\pic32mx795fx">
       <UniqueIdentifier>{0a764d8d-e956-4aca-a762-550fcb433896}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\arm1176Jzf_s">
+    <Filter Include="src\mcal\bcm2835_raspi_b">
       <UniqueIdentifier>{7b9388d6-f502-4205-b264-1d91355a71bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -517,38 +517,38 @@
     <ClCompile Include="src\mcal\stm32f429\mcal_spi.cpp">
       <Filter>src\mcal\stm32f429</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_cpu.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_gpt.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_gpt.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_irq.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_irq.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_led.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_led.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_osc.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_osc.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_port.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_port.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_pwm.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_pwm.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_safety_dram.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_safety_dram.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_safety_rom_checksum.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_spi.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_spi.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\arm1176Jzf_s\mcal_wdg.cpp">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_wdg.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1260,53 +1260,53 @@
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_wdg.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_benchmark.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_benchmark.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_cpu.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_cpu.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_debug_monitor.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_debug_monitor.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_gpt.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_gpt.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_irq.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_irq.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_led.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_led.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_osc.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_osc.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_port.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_port.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_pwm.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_pwm.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_reg.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_reg.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_reg_access.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_reg_access.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_safety_dram.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_safety_dram.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_safety_rom_checksum.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_ser.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_ser.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_spi.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_spi.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\arm1176Jzf_s\mcal_wdg.h">
-      <Filter>src\mcal\arm1176Jzf_s</Filter>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_wdg.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

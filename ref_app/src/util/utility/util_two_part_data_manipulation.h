@@ -16,6 +16,13 @@
              typename short_type>
     inline long_type make_long(short_type lo, short_type hi)
     {
+      // Ensure that both the short_type as well as the long_type are unsigned.
+      static_assert(std::numeric_limits<short_type>::is_integer == true,
+                    "the short type of the make_long template must be an integer type");
+
+      static_assert(std::numeric_limits<long_type>::is_integer == true,
+                    "the long type of the make_long template must be an integer type.");
+
       // Ensure that the long_type has exactly twice the digits as the short_type.
       static_assert((std::numeric_limits<short_type>::digits * 2) == std::numeric_limits<long_type>::digits,
                     "the long type of the make_long template must be twice as wide as the short_type");
@@ -24,7 +31,7 @@
       static_assert(std::numeric_limits<short_type>::is_signed == false,
                     "the short type of the make_long template must be unsigned");
 
-      static_assert(std::numeric_limits< long_type>::is_signed == false,
+      static_assert(std::numeric_limits<long_type>::is_signed == false,
                     "the long type of the make_long template must be unsigned.");
 
       return static_cast<long_type>(static_cast<long_type>(static_cast<long_type>(hi) << std::numeric_limits<short_type>::digits) | lo);
