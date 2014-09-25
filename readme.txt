@@ -87,13 +87,13 @@ from SD-card into RAM memory and subsequently executed. When switching on
 the BeagleBone black, the boot button (S2) must be pressed while powering
 up the board. The program toggles the first user LED (LED1 on port1.21).
 
-The ARM(R) 11 configuration runs on the Raspberry Pi (TBD version).
-This project creates a bare-metal program for the Raspberry Pi that runs
-independently form any kind of *nix distro on the board. Our program is
-designed to boot the BeagleBone from a raw binary file called "kernel.img"
-stored on a FAT32 SDHC microcard. The kernel.img file is stored on the
-SD card together with two other files: bootcode.bin and start.elf, both
-available from internet.
+The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
+RaspberryPi-B. This project creates a bare-metal program for the RaspberryPi.
+This program runs independently form any kind of *nix distro on the board.
+Our program is designed to boot the RaspberryPi from a raw binary file.
+The raw binary file is called "kernel.img" and it is stored on a FAT32 SDHC
+microcard. The kernel.img file is stored on the SD card together with two
+other files: bootcode.bin and start.elf, both available from internet.
 
 For other compatible boards, feel free contact me with an issue requesting
 further details on your desired target system.
