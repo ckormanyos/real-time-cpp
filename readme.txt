@@ -42,8 +42,9 @@ Getting Started with the Reference Application
 ----------------------------------------------
 
 It is easiest to get started with the reference application using one of the
-supported boards, such as Arduino(R) or BeagleBone. The reference application
-can be found in the directory ref_app and its subdirectories.
+supported boards, such as Arduino or RaspberryPi or BeagleBone. etc.
+The reference application can be found in the directory ref_app and its
+subdirectories.
 
 To get started with the reference application, start Visual Studio(R) 2012
 (or later) and open the solution ref_app_vs2012.sln. Select the desired
