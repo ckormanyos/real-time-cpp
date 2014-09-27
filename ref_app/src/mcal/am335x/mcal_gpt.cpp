@@ -146,12 +146,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
                                            + mcal::reg::access<timer_address_type,
                                                                timer_register_type,
                                                                mcal::reg::dmtimer7::tcrr>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick;
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick
-      = ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1 + timer_register_type(timer_register_type(tim7_cnt_1 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz))
-                                    : mcal::gpt::value_type(sys_tick_2 + timer_register_type(timer_register_type(tim7_cnt_2 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz)));
+      = ((tim7_cnt_2 >= tim7_cnt_1) ? mcal::gpt::value_type(sys_tick_1  + timer_register_type(timer_register_type(tim7_cnt_1 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz))
+                                    : mcal::gpt::value_type(system_tick + timer_register_type(timer_register_type(tim7_cnt_2 + timer_register_type(timer7_frequency_khz / 2)) / timer7_frequency_khz)));
 
     return consistent_microsecond_tick;
   }

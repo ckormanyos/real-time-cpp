@@ -111,12 +111,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Do the second read of the timer4 counter and the system tick.
     const timer_register_type   tim4_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_2 = system_tick;
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick
-      = ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1 | tim4_cnt_1)
-                                    : mcal::gpt::value_type(sys_tick_2 | tim4_cnt_2));
+      = ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | tim4_cnt_1)
+                                    : mcal::gpt::value_type(system_tick | tim4_cnt_2));
 
     return consistent_microsecond_tick;
   }

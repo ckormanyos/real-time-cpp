@@ -62,7 +62,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     // Read the system tick.
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-    // Do the second read of the timer0 counter and the system tick.
+    // Do the second read of the timer0 counter.
     const timer_register_type tim0_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
 
     // Perform the consistency check.
