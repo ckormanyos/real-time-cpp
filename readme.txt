@@ -79,7 +79,7 @@ The program toggles the blue LED on portc.8.
 The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
-for the BeagleBone that runs independently form any kind of *nix distro on
+for the BeagleBone that runs independently from any kind of *nix distro on
 the board. Our program is designed to boot the BeagleBone from a raw binary file
 called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a
 special boot header comprised of two 32-bit integers. The program is loaded
@@ -89,7 +89,7 @@ up the board. The program toggles the first user LED (LED1 on port1.21).
 
 The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
 RaspberryPi-B. This project creates a bare-metal program for the RaspberryPi.
-This program runs independently form any kind of *nix distro on the board.
+This program runs independently from any kind of *nix distro on the board.
 Our program is designed to boot the RaspberryPi from a raw binary file.
 The raw binary file is called "kernel.img" and it is stored on a FAT32 SDHC
 microcard. The kernel.img file is stored on the SD card together with two
@@ -105,7 +105,8 @@ GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
 A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 4.8 or higher is required for building the reference application.
+GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
+the reference application.
 
 The make-files are aware of the location of a default location of the
 respective tool chain. When using the reference application or designing
