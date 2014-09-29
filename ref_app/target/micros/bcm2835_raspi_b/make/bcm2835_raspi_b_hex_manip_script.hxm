@@ -1,29 +1,29 @@
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013.
+//  Copyright Christopher Kormanyos 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // Program code.
-NEW_BUFFER   Buf_00008000_to_0000E000  FROM_FILE      inFile                    -useAreas={{0x00008000, 0x6000}}  -setByteOrder=BigEndian
-FILL_BUFFER  Buf_00008000_to_0000E000  WITH_FILLER    { 0x00, 0xA0, 0xF0, 0xF7 }
+NEW_BUFFER   Buf_00008000_to_00026000  FROM_FILE      inFile                    -useAreas={{0x00008000, 0x1E000}}   -setByteOrder=BigEndian
+FILL_BUFFER  Buf_00008000_to_00026000  WITH_FILLER    { 0x00, 0xA0, 0xF0, 0xF7 }
 
 // Create a CRC32 of the program code and place it above the end of the program code.
-NEW_CRC      My_Crc32_prog_code        FROM_BUFFER    Buf_00008000_to_0000E000  -useAreas={{0x00008000, 0x5FFC}}  -setType=Crc32_Afs2
-FILL_BUFFER  Buf_00008000_to_0000E000  WITH_CRC       My_Crc32_prog_code        -useAreas={{0x0000DFFC, 0x0004}}
+NEW_CRC      My_Crc32_prog_code        FROM_BUFFER    Buf_00008000_to_00026000  -useAreas={{0x00008000, 0x1DFFC}}  -setType=Crc32_Afs2
+FILL_BUFFER  Buf_00008000_to_00026000  WITH_CRC       My_Crc32_prog_code        -useAreas={{0x00025FFC, 0x0004}}
 
 // Zero-clear the DRAM area on the SD card image (optional).
-NEW_BUFFER   Buf_0000E000_to_00010000  FROM_VALUES  {0x00} -useAreas={{0x0000E000, 0x2000}}
+NEW_BUFFER   Buf_00026000_to_00280000  FROM_VALUES  {0x00} -useAreas={{0x00026000, 0x2000}}
 
 // Do not include any header information in the SD card boot header.
 
 // Create the output hex and binary files.
 // Include the SD card boot header in the binary file.
-WRITE_FILE   outFile  WITH_BUFFERS  {Buf_00008000_to_0000E000,
-                                     Buf_0000E000_to_00010000}  -setFormat=IntelHexExtended
-WRITE_FILE   binFile  WITH_BUFFERS  {Buf_00008000_to_0000E000,
-                                     Buf_0000E000_to_00010000}  -setFormat=RawBinary
-WRITE_FILE   imgFile  WITH_BUFFERS  {Buf_00008000_to_0000E000,
-                                     Buf_0000E000_to_00010000}  -setFormat=RawBinary
+WRITE_FILE   outFile  WITH_BUFFERS  {Buf_00008000_to_00026000,
+                                     Buf_00026000_to_00280000}  -setFormat=IntelHexExtended
+WRITE_FILE   binFile  WITH_BUFFERS  {Buf_00008000_to_00026000,
+                                     Buf_00026000_to_00280000}  -setFormat=RawBinary
+WRITE_FILE   imgFile  WITH_BUFFERS  {Buf_00008000_to_00026000,
+                                     Buf_00026000_to_00280000}  -setFormat=RawBinary

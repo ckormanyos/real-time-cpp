@@ -97,18 +97,12 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint32_t timer_address_type;
     typedef std::uint8_t  timer_register_type;
 
-    // Do the first read of the timer counter.
-    const timer_register_type timer_cnt_1 = mcal::reg::access<timer_address_type,
-                                                              timer_register_type,
-                                                              mcal::reg::tmr0_tcnt>::reg_get();
-
-    // Read the system tick once.
+    // Do the first read of the timer0 counter and the system tick.
+    const timer_register_type timer_cnt_1  = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-    // Do the second read of the timer counter.
-    const timer_register_type timer_cnt_2 = mcal::reg::access<timer_address_type,
-                                                              timer_register_type,
-                                                              mcal::reg::tmr0_tcnt>::reg_get();
+    // Do the second read of the timer0 counter.
+    const timer_register_type timer_cnt_2  = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
 
     // Perform the consistency check.
     mcal::gpt::value_type consistent_microsecond_tick =

@@ -1308,6 +1308,9 @@
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_wdg.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_countof.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

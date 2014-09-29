@@ -6,6 +6,7 @@
 //
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <mcal_irq.h>
 
@@ -43,7 +44,7 @@ void __int_vect_future_15_handler     () { mcal::irq::secure::int_vect_future_15
 
 namespace int_vect
 {
-  void load_lower_interrupt_vector_data(const std::uint32_t load_address);
+  void load_lower_interrupt_vector_data(const std::uint32_t load_address = UINT32_C(0x00000000));
 
   void load_lower_interrupt_vector_data(const std::uint32_t load_address)
   {
@@ -51,14 +52,13 @@ namespace int_vect
     // vector table code that is implemented in "int_vect_table.s".
     // The code has been assembled and linked to address 0x00000000.
     // The corresponding byte code has subsequently been extracted
-    // from the hex mask and has been transcribed to the table below.
+    // from the hex mask and has been transcribed to the table
+    // of hex-values below.
 
     // In this sense the input parameter load_address is unused.
-    // But we supply the parameter to avoid hard-coding a pointer
-    // to the costant value 0, which would result in certain
+    // But we supply this parameter in order to avoid hard-coding
+    // a pointer to zero, which would otherwise result in undesired
     // compiler warnings.
-
-    static_cast<void>(load_address);
 
     static const std::uint8_t the_data[64U] =
     {

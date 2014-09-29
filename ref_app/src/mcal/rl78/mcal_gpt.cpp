@@ -97,18 +97,13 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Attention: Down-counting timer --> use (0xFFFFU - timer counter).
 
-    // Do the first read of the timer counter channel 2.
-    const timer_register_type timer_cnt_1 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type,
-                                                                                  timer_register_type,
-                                                                                  mcal::reg::tcr02>::reg_get();
+    // Do the first read of the timer channel 2 counter and the system tick.
+    const timer_register_type timer_cnt_1 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcr02>::reg_get();
 
-    // Read the system tick once.
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-    // Do the second read of the timer counter.
-    const timer_register_type timer_cnt_2 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type,
-                                                                                  timer_register_type,
-                                                                                  mcal::reg::tcr02>::reg_get();
+    // Do the second read of the timer channel 2 counter.
+    const timer_register_type timer_cnt_2 = UINT16_C(0xFFFF) - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tcr02>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick

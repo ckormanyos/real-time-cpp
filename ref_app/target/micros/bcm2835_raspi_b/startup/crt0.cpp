@@ -16,7 +16,7 @@ namespace crt
 
 namespace int_vect
 {
-  void load_lower_interrupt_vector_data(const std::uint32_t load_address);
+  void load_lower_interrupt_vector_data(const std::uint32_t load_address = UINT32_C(0x00000000));
 }
 
 extern "C" int  main                   ();
@@ -26,7 +26,7 @@ extern "C" void __my_startup           () __attribute__((section(".text.startup"
 void __my_startup()
 {
   // Load the lower interrupt vector table to address 0x00000000.
-  int_vect::load_lower_interrupt_vector_data(UINT32_C(0x00000000));
+  int_vect::load_lower_interrupt_vector_data();
 
   // Setup the interrupt stack (with 1kB stack size),
   // and switch to irq mode.

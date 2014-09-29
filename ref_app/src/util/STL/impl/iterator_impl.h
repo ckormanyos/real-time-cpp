@@ -10,7 +10,7 @@
 
   #include "xiterator_impl.h"
 
-  // Implement some of std::iterator for compilers that do not yet support it.
+  // Implement some of <iterator> for compilers that do not yet support it.
 
   namespace std
   {
@@ -79,7 +79,7 @@
 
       reference operator[](typename reverse_iterator<iterator_type>::difference_type n) const { return current[-n - 1]; }
 
-    protected:
+    private:
       iterator_type current;
 
       friend inline bool operator< (const reverse_iterator& x, const reverse_iterator& y) { return (x.current  > y.current); }
@@ -120,14 +120,15 @@
     }
 
     // See ISO/IEC 14882:2011, near the end of Section 24.3.
-    template <class C> inline auto  begin(      C& c) -> decltype(c.begin())  { return c.begin(); }
-    template <class C> inline auto  begin(const C& c) -> decltype(c.begin())  { return c.begin(); }
-    template <class C> inline auto cbegin(const C& c) -> decltype(c.cbegin()) { return c.cbegin(); }
-    template <class C> inline auto  end  (      C& c) -> decltype(c.end())    { return c.end(); }
-    template <class C> inline auto  end  (const C& c) -> decltype(c.end())    { return c.end(); }
-    template <class C> inline auto cend  (const C& c) -> decltype(c.cend())   { return c.cend(); }
-    template <class T, size_t N> inline T* begin(T (&c_array)[N]) { return &c_array[0U]; }
-    template <class T, size_t N> inline T* end  (T (&c_array)[N]) { return &c_array[N]; }
+    template <typename container_type> inline auto  begin(      container_type& c) -> decltype(c.begin())  { return c.begin(); }
+    template <typename container_type> inline auto  begin(const container_type& c) -> decltype(c.begin())  { return c.begin(); }
+    template <typename container_type> inline auto cbegin(const container_type& c) -> decltype(c.cbegin()) { return c.cbegin(); }
+    template <typename container_type> inline auto  end  (      container_type& c) -> decltype(c.end())    { return c.end(); }
+    template <typename container_type> inline auto  end  (const container_type& c) -> decltype(c.end())    { return c.end(); }
+    template <typename container_type> inline auto cend  (const container_type& c) -> decltype(c.cend())   { return c.cend(); }
+
+    template <typename value_type, size_t N> inline value_type* begin(value_type(&c_array)[N]) { return &c_array[0U]; }
+    template <typename value_type, size_t N> inline value_type* end  (value_type(&c_array)[N]) { return &c_array[N]; }
   }
 
 #endif // _ITERATOR_IMPL_2010_02_23_H_

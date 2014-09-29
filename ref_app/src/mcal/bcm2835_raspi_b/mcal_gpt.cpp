@@ -99,11 +99,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint32_t timer_address_type;
     typedef std::uint16_t timer_register_type;
 
-    // Do the first read of the timer value and the system tick.
+    // Do the first read of the rpi_arm timer value and the system tick.
     const timer_register_type   tmr_tick_1 = system_timer_reload - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-    // Do the second read of the timer value.
+    // Do the second read of the rpi_arm timer value.
     const timer_register_type   tmr_tick_2 = system_timer_reload - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
 
     // Perform the consistency check.

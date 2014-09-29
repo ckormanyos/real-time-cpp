@@ -108,7 +108,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     const timer_register_type   tmr1_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
-    // Do the second read of the timer1 counter and the system tick.
+    // Do the second read of the timer1 counter.
     const timer_register_type   tmr1_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
 
     // Perform the consistency check.

@@ -16,26 +16,26 @@ OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
 _rom_begin = 0x00008000;
-_rom_end   = 0x0000E000;
+_rom_end   = 0x00026000;
 
 /* The beginning of the RAM area */
-_ram_begin = 0x0000E000;
+_ram_begin = 0x00026000;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 4K */
-_stack_begin = 0x0000F000;
-_stack_end   = 0x00010000;
+_stack_begin = 0x00027000;
+_stack_end   = 0x00028000;
 
 /* The end of the stack */
-__initial_stack_pointer = 0x00010000;
+__initial_stack_pointer = 0x00028000;
 
 MEMORY
 {
-  VECLO(rwx) : ORIGIN = 0x00000000, LENGTH = 0x0040
-  VECHI(rwx) : ORIGIN = 0x00008000, LENGTH = 0x0040
-  ISR  (rwx) : ORIGIN = 0x00008040, LENGTH = 0x03C0
-  ROM  (rwx) : ORIGIN = 0x00008400, LENGTH = 0x5C00 - 4
-  RAM  (rwx) : ORIGIN = 0x0000E000, LENGTH = 0x1000
+  VECLO(rwx) : ORIGIN = 0x00000000, LENGTH = 0x00000040
+  VECHI(rwx) : ORIGIN = 0x00008000, LENGTH = 0x00000040
+  ISR  (rwx) : ORIGIN = 0x00008040, LENGTH = 0x000003C0
+  ROM  (rwx) : ORIGIN = 0x00008400, LENGTH = 0x0001DC00 - 4
+  RAM  (rwx) : ORIGIN = 0x00026000, LENGTH = 0x00001000
 }
 
 SECTIONS
@@ -58,7 +58,7 @@ SECTIONS
   .text.vechi :
   {
     *(.text.vechi)
-    . = ALIGN(0x4);
+    . = ALIGN(4);
     KEEP(*(.text.vechi))
   } > VECHI
 
