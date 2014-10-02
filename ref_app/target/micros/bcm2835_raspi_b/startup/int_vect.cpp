@@ -48,28 +48,37 @@ namespace int_vect
 
   void load_lower_interrupt_vector_data(const std::uint32_t load_address)
   {
-    // These data have been extracted from the lower interrupt
+    // Copy the lower interrupt vector table to the destination
+    // address 0x00000000 
+
+    // The data below have been extracted from the lower interrupt
     // vector table code that is implemented in "int_vect_table.s".
     // The code has been assembled and linked to address 0x00000000.
     // The corresponding byte code has subsequently been extracted
     // from the hex mask and has been transcribed to the table
     // of hex-values below.
 
-    // In this sense the input parameter load_address is unused.
-    // But we supply this parameter in order to avoid hard-coding
-    // a pointer to zero, which would otherwise result in undesired
-    // compiler warnings.
-
-    static const std::uint8_t the_data[64U] =
+    if(load_address == UINT32_C(0))
     {
-      0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
-      0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
-      0x00U, 0x84U, 0x00U, 0x00U, 0x40U, 0x80U, 0x00U, 0x00U, 0x80U, 0x80U, 0x00U, 0x00U, 0xC0U, 0x80U, 0x00U, 0x00U,
-      0x00U, 0x81U, 0x00U, 0x00U, 0x40U, 0x81U, 0x00U, 0x00U, 0x80U, 0x81U, 0x00U, 0x00U, 0xC0U, 0x81U, 0x00U, 0x00U,
-    };
+      // Here the input parameter "load_address" is checked to be
+      // identically equal to zero. In this sense the input parameter
+      // "load_address" is unused. We supply this parameter in order
+      // to avoid hard-coding a pointer to zero, which would otherwise
+      // result in undesired compiler warnings related to zero used
+      // instead of nullptr.
 
-    std::copy(std::begin(the_data),
-              std::end  (the_data),
-              reinterpret_cast<volatile std::uint8_t*>(load_address));
+      static const std::uint8_t the_lower_interrupt_vector_table_data[64U] =
+      {
+        0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
+        0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
+        0x00U, 0x84U, 0x00U, 0x00U, 0x40U, 0x80U, 0x00U, 0x00U, 0x80U, 0x80U, 0x00U, 0x00U, 0xC0U, 0x80U, 0x00U, 0x00U,
+        0x00U, 0x81U, 0x00U, 0x00U, 0x40U, 0x81U, 0x00U, 0x00U, 0x80U, 0x81U, 0x00U, 0x00U, 0xC0U, 0x81U, 0x00U, 0x00U,
+      };
+
+      // Perform the copy of the lower interrupt vector table data.
+      std::copy(std::begin(the_lower_interrupt_vector_table_data),
+                std::end  (the_lower_interrupt_vector_table_data),
+                reinterpret_cast<volatile std::uint8_t*>(load_address));
+    }
   }
 }

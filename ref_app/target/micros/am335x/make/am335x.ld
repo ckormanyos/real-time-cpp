@@ -1,13 +1,13 @@
 
 /*
- Copyright Michael Schnerr 2011 - 2013.
- Copyright Christopher Kormanyos 2013.
+ Copyright Michael Schnerr 2011 - 2014.
+ Copyright Christopher Kormanyos 2014.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for SitaraWare AM335x ARM(R) A8 MCU */
+/* Linker script for Bare-Metal BeagleBone(R) AM335x ARM(R) A8 MCU */
 
 INPUT(libc.a libm.a libgcc.a)
 
