@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,9 +10,9 @@
 #include <os/os.h>
 
 // The one (and only one) operating system task list.
-os::task_list_type& os::task_list()
+const os::task_list_type& os::task_list()
 {
-  static os::task_list_type the_task_list = OS_TASK_LIST;
+  static const os::task_list_type the_task_list = OS_TASK_LIST;
 
   return the_task_list;
 }
@@ -59,10 +59,10 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
   {
     // Get a pointer to the control block corresponding to
     // the task ID that has been supplied to this subroutine.
-    task_list_type::iterator control_block_of_the_task_id = task_list().begin() + task_list_type::size_type(task_id);
+    task_list_type::const_iterator control_block_of_the_task_id = task_list().cbegin() + task_list_type::size_type(task_id);
 
     mcal::irq::disable_all();
-    control_block_of_the_task_id->event |= event_to_set;
+    control_block_of_the_task_id->my_event |= event_to_set;
     mcal::irq::enable_all();
   }
 }
@@ -70,12 +70,12 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
 void os::get_event(event_type& event_to_get)
 {
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
+  const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().end())
   {
     mcal::irq::disable_all();
-    const event_type my_event = control_block_of_the_running_task->event;
+    const event_type my_event = control_block_of_the_running_task->my_event;
     mcal::irq::enable_all();
 
     event_to_get = my_event;
@@ -89,12 +89,12 @@ void os::get_event(event_type& event_to_get)
 void os::clear_event(const event_type& event_mask_to_clear)
 {
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
+  const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().end())
   {
     mcal::irq::disable_all();
-    control_block_of_the_running_task->event &= event_type(~event_mask_to_clear);
+    control_block_of_the_running_task->my_event &= event_type(~event_mask_to_clear);
     mcal::irq::enable_all();
   }
 }

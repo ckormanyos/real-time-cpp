@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,14 +17,16 @@
   {
     typedef void(*function_type)();
 
-    typedef util::timer<std::uint_fast32_t> timer_type;
+    typedef std::uint_fast32_t              unsigned_tick_type;
+    typedef util::timer<unsigned_tick_type> timer_type;
     typedef timer_type::tick_type           tick_type;
+    typedef std::uint_fast16_t              event_type;
 
-    static_assert(std::numeric_limits<os::tick_type>::digits >= 32, "The operating system timer type must be at least 32-bits wide.");
+    static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
+                  "The operating system timer_type must be at least 32-bits wide.");
 
-    typedef std::uint_fast16_t event_type;
-
-    static_assert(std::numeric_limits<os::event_type>::digits >= 16, "The operating system event type must be at least 16-bits wide.");
+    static_assert(std::numeric_limits<os::event_type>::digits >= 16,
+                  "The operating system event_type must be at least 16-bits wide.");
 
     void start_os   ();
     void set_event  (const task_id_type task_id, const event_type& event_to_set);
