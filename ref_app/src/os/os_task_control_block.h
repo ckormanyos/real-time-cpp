@@ -16,7 +16,7 @@
 
   namespace os
   {
-    class task_control_block
+    class task_control_block final
     {
     public:
       typedef std::uint_fast8_t index_type;
@@ -26,7 +26,9 @@
                          const tick_type     cycle,
                          const tick_type     offset);
 
-      task_control_block(const task_control_block& tcb);
+      task_control_block(const task_control_block& other_tcb);
+
+      ~task_control_block();
 
     private:
       const    function_type my_init;
@@ -41,7 +43,7 @@
       bool execute() const;
 
       task_control_block();
-      const task_control_block& operator=(const task_control_block&);
+      task_control_block& operator=(const task_control_block&);
 
       friend void start_os   ();
       friend void set_event  (const task_id_type, const event_type&);

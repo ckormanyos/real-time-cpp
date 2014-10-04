@@ -11,7 +11,7 @@ namespace
 {
   os::task_control_block::index_type& os_task_global_index()
   {
-    static os::task_control_block::index_type the_index;
+    static os::task_control_block::index_type the_index = os::task_control_block::index_type();
 
     return the_index;
   }
@@ -30,12 +30,16 @@ os::task_control_block::task_control_block(const function_type i,
   ++os_task_global_index();
 }
 
-os::task_control_block::task_control_block(const task_control_block& tcb) : my_init (tcb.my_init),
-                                                                            my_func (tcb.my_func),
-                                                                            my_cycle(tcb.my_cycle),
-                                                                            my_timer(tcb.my_timer),
-                                                                            my_event(tcb.my_event),
-                                                                            my_index(tcb.my_index)
+os::task_control_block::task_control_block(const task_control_block& other_tcb) : my_init (other_tcb.my_init),
+                                                                                  my_func (other_tcb.my_func),
+                                                                                  my_cycle(other_tcb.my_cycle),
+                                                                                  my_timer(other_tcb.my_timer),
+                                                                                  my_event(other_tcb.my_event),
+                                                                                  my_index(other_tcb.my_index)
+{
+}
+
+os::task_control_block::~task_control_block()
 {
 }
 
@@ -73,9 +77,7 @@ bool os::task_control_block::execute() const
     my_func();
   }
 
-  const bool task_is_ready = (task_does_have_event || task_does_have_timeout);
-
-  return task_is_ready;
+  return (task_does_have_event || task_does_have_timeout);
 }
 
 os::task_list_type::const_iterator os::secure::os_get_running_task_iterator()

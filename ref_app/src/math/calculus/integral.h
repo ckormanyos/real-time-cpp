@@ -11,79 +11,81 @@
   #include <cstdint>
   #include <complex>
 
-  template<typename value_type,
+  template<typename real_value_type,
            typename function_type>
-  value_type integral(const value_type a,
-                      const value_type b,
-                      const value_type tol,
-                      function_type function)
+  real_value_type integral(const real_value_type& a,
+                           const real_value_type& b,
+                           const real_value_type& tol,
+                           function_type function)
   {
-    std::uint_fast8_t n = 1U;
+    std::uint_fast8_t n = UINT8_C(1);
 
-    value_type h = (b - a);
-    value_type I = (function(a) + function(b)) * (h / 2);
+    real_value_type h = (b - a) / 2;
+    real_value_type I = (function(a) + function(b)) * h;
 
-    for(std::uint_fast8_t k = 0U; k < 8U; ++k)
+    for(std::uint_fast8_t k = UINT8_C(0); k < UINT8_C(8); ++k)
     {
-      h /= 2;
+      real_value_type sum(0);
 
-      value_type sum(0);
-      for(std::uint_fast8_t j = 1U; j <= n; ++j)
+      for(std::uint_fast8_t j = UINT8_C(1); j <= n; ++j)
       {
-        sum += function(value_type(a + (value_type((j * 2) - 1) * h)));
+        sum += function(real_value_type(a + (real_value_type((j * 2) - 1) * h)));
       }
 
-      const value_type I0 = I;
-      I = (I / value_type(2)) + (h * sum);
+      const real_value_type I0 = I;
+      I = (I / real_value_type(2)) + (h * sum);
 
-      const value_type ratio = I0 / I;
-      const value_type delta = std::abs(ratio - value_type(1));
+      const real_value_type ratio = std::abs(I0 / I);
+      const real_value_type delta = std::abs(ratio - real_value_type(1));
 
-      if((k > 1U) && (delta < tol))
+      if((k > UINT8_C(1)) && (delta < tol))
       {
         break;
       }
 
-      n *= 2U;
+      n *= 2;
+
+      h /= 2;
     }
 
     return I;
   }
 
-  template<typename value_type,
+  template<typename real_value_type,
            typename function_type>
-  std::complex<value_type> integral_complex(const value_type a,
-                                            const value_type b,
-                                            const value_type tol,
-                                            function_type function)
+  std::complex<real_value_type> integral_complex(const real_value_type& a,
+                                                 const real_value_type& b,
+                                                 const real_value_type& tol,
+                                                 function_type function)
   {
-    std::uint_fast8_t n = 1U;
+    std::uint_fast8_t n = UINT8_C(1);
 
-    value_type h = (b - a);
-    std::complex<value_type> I = (function(a) + function(b)) * (h / 2);
+    real_value_type h = (b - a) / 2;
+    std::complex<real_value_type> I = (function(a) + function(b)) * h;
 
-    for(std::uint_fast8_t k = 0U; k < 8U; ++k)
+    for(std::uint_fast8_t k = UINT8_C(0); k < UINT8_C(8); ++k)
     {
-      h /= 2;
+      std::complex<real_value_type> sum(0);
 
-      std::complex<value_type> sum(0);
-      for(std::uint_fast8_t j = 1U; j <= n; ++j)
+      for(std::uint_fast8_t j = UINT8_C(1); j <= n; ++j)
       {
-        sum += function(std::complex<value_type>(a + (value_type((j * 2) - 1) * h)));
+        sum += function(std::complex<real_value_type>(a + (real_value_type((j * 2) - 1) * h)));
       }
 
-      const std::complex<value_type> I0 = I;
-      I = (I / value_type(2)) + (h * sum);
+      const std::complex<real_value_type> I0 = I;
+      I = (I / real_value_type(2)) + (h * sum);
 
-      const std::complex<value_type> ratio = I0 / I;
-      const value_type  delta = std::abs(ratio - value_type(1));
+      const std::complex<real_value_type> ratio = std::abs(I0 / I);
+      const real_value_type  delta = std::abs(ratio - real_value_type(1));
 
-      if((k > 1U) && (delta < tol))
+      if((k > UINT8_C(1)) && (delta < tol))
       {
         break;
       }
 
-      n *= 2U;
+      n *= 2;
+
+      h /= 2;
     }
 
     return I;

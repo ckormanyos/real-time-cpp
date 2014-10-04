@@ -19,20 +19,16 @@ const os::task_list_type& os::task_list()
 
 void os::start_os()
 {
-  // Initialize the idle task.
-  OS_IDLE_TASK_INIT();
-
   // Initialize each task once.
   std::for_each(task_list().cbegin(),
                 task_list().cend(),
-                [](const task_control_block& tcb)
+                [](const task_control_block& the_tcb)
                 {
-                  tcb.initialize();
+                  the_tcb.initialize();
                 });
 
-  // Call the idle task and trigger the watchdog at the start of the os
-  // but after the initialization of each task.
-  OS_IDLE_TASK_FUNC();
+  // Initialize the idle task.
+  OS_IDLE_TASK_INIT();
 
   // Enter the endless loop of the multitasking scheduler.
   for(;;)
@@ -40,13 +36,13 @@ void os::start_os()
     // Find the next ready task using a priority-based search algorithm.
     const task_list_type::const_iterator it_ready_task = std::find_if(task_list().cbegin(),
                                                                       task_list().cend(),
-                                                                      [](const task_control_block& tcb) -> bool
+                                                                      [](const task_control_block& the_tcb) -> bool
                                                                       {
-                                                                        return tcb.execute();
+                                                                        return the_tcb.execute();
                                                                       });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == task_list().end())
+    if(it_ready_task == task_list().cend())
     {
       OS_IDLE_TASK_FUNC();
     }
@@ -72,17 +68,17 @@ void os::get_event(event_type& event_to_get)
   // Get the iterator of the control block of the running task.
   const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
-  if(control_block_of_the_running_task != os::task_list().end())
+  if(control_block_of_the_running_task != os::task_list().cend())
   {
     mcal::irq::disable_all();
-    const event_type my_event = control_block_of_the_running_task->my_event;
+    const event_type the_event = control_block_of_the_running_task->my_event;
     mcal::irq::enable_all();
 
-    event_to_get = my_event;
+    event_to_get = the_event;
   }
   else
   {
-    event_to_get = event_type(0U);
+    event_to_get = event_type();
   }
 }
 
@@ -91,7 +87,7 @@ void os::clear_event(const event_type& event_mask_to_clear)
   // Get the iterator of the control block of the running task.
   const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
-  if(control_block_of_the_running_task != os::task_list().end())
+  if(control_block_of_the_running_task != os::task_list().cend())
   {
     mcal::irq::disable_all();
     control_block_of_the_running_task->my_event &= event_type(~event_mask_to_clear);
