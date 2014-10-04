@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,16 +12,16 @@
   #include <complex>
 
   template<typename real_value_type,
-           typename function_type>
+           typename real_function_type>
   real_value_type integral(const real_value_type& a,
                            const real_value_type& b,
                            const real_value_type& tol,
-                           function_type function)
+                           real_function_type real_function)
   {
     std::uint_fast8_t n = UINT8_C(1);
 
     real_value_type h = (b - a) / 2;
-    real_value_type I = (function(a) + function(b)) * h;
+    real_value_type I = (real_function(a) + real_function(b)) * h;
 
     for(std::uint_fast8_t k = UINT8_C(0); k < UINT8_C(8); ++k)
     {
@@ -52,16 +52,16 @@
   }
 
   template<typename real_value_type,
-           typename function_type>
+           typename complex_function_type>
   std::complex<real_value_type> integral_complex(const real_value_type& a,
                                                  const real_value_type& b,
                                                  const real_value_type& tol,
-                                                 function_type function)
+                                                 complex_function_type complex_function)
   {
     std::uint_fast8_t n = UINT8_C(1);
 
     real_value_type h = (b - a) / 2;
-    std::complex<real_value_type> I = (function(a) + function(b)) * h;
+    std::complex<real_value_type> I = (complex_function(a) + complex_function(b)) * h;
 
     for(std::uint_fast8_t k = UINT8_C(0); k < UINT8_C(8); ++k)
     {
@@ -69,7 +69,7 @@
 
       for(std::uint_fast8_t j = UINT8_C(1); j <= n; ++j)
       {
-        sum += function(std::complex<real_value_type>(a + (real_value_type((j * 2) - 1) * h)));
+        sum += complex_function(std::complex<real_value_type>(a + (real_value_type((j * 2) - 1) * h)));
       }
 
       const std::complex<real_value_type> I0 = I;
@@ -99,20 +99,27 @@
 #include <math/constants/constants.h>
 #include <math/calculus/integral.h>
 
-// Compute y = J1(1.23 + 3.45 I) = -1.12043943555101131903 + 3.65329424719653313092 I.
-// N[BesselJ[2, 123/100 + ((345 / 100) I)], 21]
+void do_something();
 
-using std::cos;
-using std::sin;
+void do_something()
+{
+  // Compute y = J1(1.23 + 3.45 I) = -1.12043943555101131903 + 3.65329424719653313092 I.
+  // N[BesselJ[2, 123/100 + ((345 / 100) I)], 21]
 
-const std::complex<float> x(1.23F, 3.45F);
-const std::uint_fast8_t n = 2U;
+  using std::cos;
+  using std::sin;
 
-std::complex<float> zj = integral_complex(0.0F,
-                                          const_pi<float>(),
-                                          static_cast<float>(1.0F / 1024),
-                                          [&x, &n](const std::complex<float>& t) -> std::complex<float>
-                                          {
-                                            return cos(x * sin(t) - (float(n) * t));
-                                          }) / const_pi<float>();
+  const std::complex<float> x(1.23F, 3.45F);
+  const std::uint_fast8_t n = 2U;
+
+  std::complex<float> zj = integral_complex(0.0F,
+                                            math::constants::pi<float>(),
+                                            static_cast<float>(1.0F / 1024),
+                                            [&x, &n](const std::complex<float>& t) -> std::complex<float>
+                                            {
+                                              return cos(x * sin(t) - (float(n) * t));
+                                            }) / math::constants::pi<float>();
+
+  static_cast<void>(zj);
+}
 */
