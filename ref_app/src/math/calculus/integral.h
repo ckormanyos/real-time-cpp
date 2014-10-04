@@ -58,10 +58,12 @@
                                                  const real_value_type& tol,
                                                  complex_function_type complex_function)
   {
+    typedef std::complex<real_value_type> complex_value_type;
+
     std::uint_fast8_t n = UINT8_C(1);
 
-    real_value_type h = (b - a) / 2;
-    std::complex<real_value_type> I = (complex_function(a) + complex_function(b)) * h;
+    real_value_type    h = (b - a) / 2;
+    complex_value_type I = (complex_function(a) + complex_function(b)) * h;
 
     for(std::uint_fast8_t k = UINT8_C(0); k < UINT8_C(8); ++k)
     {
@@ -69,14 +71,14 @@
 
       for(std::uint_fast8_t j = UINT8_C(1); j <= n; ++j)
       {
-        sum += complex_function(std::complex<real_value_type>(a + (real_value_type((j * 2) - 1) * h)));
+        sum += complex_function(complex_value_type(a + (real_value_type((j * 2) - 1) * h)));
       }
 
-      const std::complex<real_value_type> I0 = I;
+      const complex_value_type I0 = I;
       I = (I / real_value_type(2)) + (h * sum);
 
-      const std::complex<real_value_type> ratio = std::abs(I0 / I);
-      const real_value_type  delta = std::abs(ratio - real_value_type(1));
+      const real_value_type ratio = std::abs(I0 / I);
+      const real_value_type delta = std::abs(ratio - real_value_type(1));
 
       if((k > UINT8_C(1)) && (delta < tol))
       {

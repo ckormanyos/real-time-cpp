@@ -22,25 +22,29 @@
       template <class T>
       inline constexpr T pow_imp2(T val, std::int32_t n)
       {
-        return n & 1 ? pow_imp(val, n / 2) * pow_imp(val, n / 2) * val : pow_imp(val, n / 2);
+        return ((std::int32_t(n & 1) != std::int32_t(1)) ? (pow_imp(val, n / 2) * pow_imp(val, n / 2)) * val
+                                                         :  pow_imp(val, n / 2));
       }
 
       template <class T>
       inline constexpr T pow_imp(T val, std::int32_t n)
       {
-        return n == 1 ? val : n == 2 ? val * val : n == 3 ? val * val * val : pow_imp2(val, n);
+        return ((n == 1) ? val
+                         : ((n == 2) ? val * val
+                                     : ((n == 3) ? val * val * val : pow_imp2(val, n))));
       }
 
       template <class T>
       inline constexpr T pow(T val, std::int32_t n)
       {
-        return n < 0 ? 1 / pow_imp(val, -n) : n == 0 ? 1 : pow_imp(val, n);
+        return ((n < 0) ? 1 / pow_imp(val, -n)
+                        : ((n == 0) ? 1 : pow_imp(val, n)));
       }
 
       template <class T>
       inline constexpr T log2_order(T x)
       {
-        return x <= 1 ? 0 : 1 + log2_order(x / 2);
+        return ((x <= 1) ? 0 : 1 + log2_order(x / 2));
       }
 
       template <class F1, class F2>
@@ -52,13 +56,15 @@
         template <class T>
         static constexpr T eval_once(T x, T target)
         {
-          return x - f1(x, target) / f2(x);
+          return x - (f1(x, target) / f2(x));
         }
 
         template <class T>
         static constexpr T eval_n(T x, T target, int n)
         {
-          return n == 0 ? x : n == 1 ? eval_once(x, target) : eval_once(eval_n(x, target, n - 1), target);
+          return ((n == 0) ? x
+                           : ((n == 1) ? eval_once(x, target)
+                                       : eval_once(eval_n(x, target, n - 1), target)));
         }
 
         template <class T>
@@ -79,7 +85,7 @@
       {
         inline constexpr T operator()(T x, T target)
         {
-          return x * x - target;
+          return (x * x) - target;
         }
       };
 
