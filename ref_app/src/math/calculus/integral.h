@@ -71,28 +71,27 @@ void do_something();
 
 void do_something()
 {
-  // Compute y = J2(1.23) = 0.16636938378681407351267852431513159437103348245333
+  // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
   // N[BesselJ[2, 123/100], 50]
 
-  typedef float float_type;
-
-  using std::cos;
-  using std::sin;
   using std::sqrt;
-  using math::constants::pi;
+  using boost::math::constants::pi;
 
   const float_type x = float_type(123) / 100;
 
   const std::uint_fast8_t n = 2;
 
-  float_type jv = math::integral(float_type(0),
-                                 pi<float_type>(),
-                                 sqrt(std::numeric_limits<float_type>::epsilon()),
-                                 [&x, &n](const float_type& t) -> float_type
-                                 {
-                                   return cos(x * sin(t) - (float_type(n) * t));
-                                 }) / pi<float_type>();
+  const float_type y = math::integral<float_type>(float_type(0),
+                                                  pi<float_type>(),
+                                                  sqrt(std::numeric_limits<float_type>::epsilon()),
+                                                  [&x, &n](const float_type& t) -> float_type
+                                                  {
+                                                    using std::cos;
+                                                    using std::sin;
 
-  static_cast<void>(jv);
+                                                    return cos(x * sin(t) - (t * n));
+                                                  }) / pi<float_type>();
+
+  static_cast<void>(y);
 }
 */
