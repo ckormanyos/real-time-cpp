@@ -46,8 +46,8 @@ supported boards, such as Arduino or RaspberryPi or BeagleBone. etc.
 The reference application can be found in the directory ref_app and its
 subdirectories.
 
-To get started with the reference application, start Visual Studio(R) 2012
-(or later) and open the solution ref_app_vs2012.sln. Select the desired
+To get started with the reference application, start Visual Studio(R) 2013
+(or later) and open the solution ref_app_vs2013.sln. Select the desired
 configuration. Then rebuild the entire solution. Note that the build in
 Visual Studio(R) makes heavy use of cross development using a project
 workspace of type "external makefile" to invoke GNUmake (via batch file)
