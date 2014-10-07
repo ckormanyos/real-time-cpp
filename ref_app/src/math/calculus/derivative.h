@@ -8,56 +8,59 @@
 #ifndef _DERIVATIVE_2012_01_09_H_
   #define _DERIVATIVE_2012_01_09_H_
 
-  template<typename real_value_type,
-           typename real_function_type>
-  real_value_type derivative(const real_value_type& x,
-                             const real_value_type& dx,
-                             real_function_type real_function)
+  namespace math
   {
-    // Compute the first derivative of the input function
-    // using a three-point central difference rule of O(dx^6).
+    template<typename real_value_type,
+             typename real_function_type>
+    real_value_type derivative(const real_value_type& x,
+                               const real_value_type& dx,
+                               real_function_type real_function)
+    {
+      // Compute the first derivative of the input function
+      // using a three-point central difference rule of O(dx^6).
 
-    const real_value_type dx2(dx  + dx);
-    const real_value_type dx3(dx2 + dx);
+      const real_value_type dx2(dx  + dx);
+      const real_value_type dx3(dx2 + dx);
 
-    const real_value_type m1((  real_function(x + dx)
-                              - real_function(x - dx))  / 2;
-    const real_value_type m2((  real_function(x + dx2)
-                              - real_function(x - dx2)) / 4);
-    const real_value_type m3((  real_function(x + dx3)
-                              - real_function(x - dx3)) / 6);
+      const real_value_type m1((  real_function(x + dx)
+                                - real_function(x - dx))  / 2;
+      const real_value_type m2((  real_function(x + dx2)
+                                - real_function(x - dx2)) / 4);
+      const real_value_type m3((  real_function(x + dx3)
+                                - real_function(x - dx3)) / 6);
 
-    const real_value_type fifteen_m1(m1 * 15);
-    const real_value_type six_m2    (m2 *  6);
-    const real_value_type ten_dx    (dx * 10);
+      const real_value_type fifteen_m1(m1 * 15);
+      const real_value_type six_m2    (m2 *  6);
+      const real_value_type ten_dx    (dx * 10);
 
-    return ((fifteen_m1 - six_m2) + m3) / ten_dx;
-  }
+      return ((fifteen_m1 - six_m2) + m3) / ten_dx;
+    }
 
-  template<typename real_value_type,
-           typename real_function_type>
-  real_value_type derivative_two(const real_value_type& x,
-                                 const real_value_type& dx,
-                                 real_function_type real_function)
-  {
-    // Compute the second derivative of the input function
-    // using a three-point central difference rule of O(dx^6).
+    template<typename real_value_type,
+             typename real_function_type>
+    real_value_type derivative_two(const real_value_type& x,
+                                   const real_value_type& dx,
+                                   real_function_type real_function)
+    {
+      // Compute the second derivative of the input function
+      // using a three-point central difference rule of O(dx^6).
 
-    const real_value_type fn2(real_function(x) * 2);
-    const real_value_type dx2(dx  + dx);
-    const real_value_type dx3(dx2 + dx);
+      const real_value_type fn2(real_function(x) * 2);
+      const real_value_type dx2(dx  + dx);
+      const real_value_type dx3(dx2 + dx);
 
-    const real_value_type c1(   real_function(x + dx)
-                              - fn2
-                              + real_function(x - dx));
-    const real_value_type c2((  real_function(x + dx2)
-                              - fn2
-                              + real_function(x - dx2)) / 4);
-    const real_value_type c3((  real_function(x + dx3)
-                              - fn2
-                              + real_function(x - dx3)) / 9);
+      const real_value_type c1(   real_function(x + dx)
+                                - fn2
+                                + real_function(x - dx));
+      const real_value_type c2((  real_function(x + dx2)
+                                - fn2
+                                + real_function(x - dx2)) / 4);
+      const real_value_type c3((  real_function(x + dx3)
+                                - fn2
+                                + real_function(x - dx3)) / 9);
 
-    return ((((c1 * 54) - (c2 * 9)) - (c3 * 2)) / (dx * dx)) / 43;
-  }
+      return ((((c1 * 54) - (c2 * 9)) - (c3 * 2)) / (dx * dx)) / 43;
+    }
+  } // namespace math
 
 #endif // _DERIVATIVE_2012_01_09_H_

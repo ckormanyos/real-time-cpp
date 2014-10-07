@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_app", "ref_app_vs2012.vcxproj", "{C8B59726-9319-45C3-8F11-F9F388FB6A2C}"
+# Visual Studio 2013
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ref_app", "ref_app_vs2013.vcxproj", "{C8B59726-9319-45C3-8F11-F9F388FB6A2C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "target", "target_vs2012.vcxproj", "{30CE370B-40F3-4BCD-8986-64AAFF8971BD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "target", "target_vs2013.vcxproj", "{30CE370B-40F3-4BCD-8986-64AAFF8971BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
