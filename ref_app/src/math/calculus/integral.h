@@ -22,10 +22,10 @@
                              real_function_type real_function,
                              const integer_value_type k_max = ((std::numeric_limits<integer_value_type>::max)() / 2) - integer_value_type(1))
     {
-      integer_value_type n2 = integer_value_type(1);
+      integer_value_type n2(1);
 
-      real_value_type step_size       = (b - a) / 2;
-      real_value_type integral_result = (real_function(a) + real_function(b)) * step_size;
+      real_value_type step_size      ((b - a) / 2);
+      real_value_type integral_result((real_function(a) + real_function(b)) * step_size);
 
       for(integer_value_type k = integer_value_type(0); k < k_max; ++k)
       {
@@ -33,19 +33,19 @@
 
         for(integer_value_type j = integer_value_type(0); j < n2; ++j)
         {
-          const real_value_type this_step_size = real_value_type((j * integer_value_type(2)) + integer_value_type(1)) * step_size;
+          const real_value_type this_step_size(((j * integer_value_type(2)) + integer_value_type(1)) * step_size);
 
           sum += real_function(a + this_step_size);
         }
 
-        const real_value_type integral_result_tmp = integral_result;
+        const real_value_type integral_result_tmp(integral_result);
 
-        integral_result = (integral_result / real_value_type(2)) + (step_size * sum);
+        integral_result = (integral_result / 2) + (step_size * sum);
 
         using std::abs;
 
-        const real_value_type ratio = abs(integral_result_tmp / integral_result);
-        const real_value_type delta = abs(ratio - real_value_type(1));
+        const real_value_type ratio(abs(integral_result_tmp / integral_result));
+        const real_value_type delta(abs(ratio - real_value_type(1)));
 
         if((k > integer_value_type(1)) && (delta < tol))
         {
