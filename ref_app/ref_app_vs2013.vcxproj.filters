@@ -550,6 +550,12 @@
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_wdg.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\stm32f429\mcal_osc_detail.cpp">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32f407\mcal_osc_detail.cpp">
+      <Filter>src\mcal\stm32f407</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -1310,6 +1316,12 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_countof.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f429\mcal_osc_detail.h">
+      <Filter>src\mcal\stm32f429</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32f407\mcal_osc_detail.h">
+      <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

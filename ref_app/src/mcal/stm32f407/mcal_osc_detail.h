@@ -18,7 +18,7 @@
     {
       namespace detail
       {
-        class stm32f4xx_clock_settings : private util::noncopyable
+        class stm32f4xx_clock_settings final : private util::noncopyable
         {
         public:
           stm32f4xx_clock_settings(const std::uint16_t f_pll,
