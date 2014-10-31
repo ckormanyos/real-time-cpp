@@ -6,10 +6,11 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the ARM(R) Cortex(TM)-M4 files in the project
+# File list of the stm32f407 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/util/STD_LIBC/memory                          \
+FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_osc_detail                   \
+             $(PATH_APP)/util/STD_LIBC/memory                          \
              $(PATH_APP)/util/STL/impl/cmath_impl_gamma                \
              $(PATH_APP)/util/STL/impl/cmath_impl_hyperbolic           \
              $(PATH_TGT)/startup/crt0                                  \

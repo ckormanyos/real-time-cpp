@@ -6,8 +6,8 @@
 //
 
 #include <mcal_spi.h>
-#include <mcal_reg_access.h>
 
 void mcal::spi::init(const mcal::spi::config_type*)
 {
 }
+

@@ -6,7 +6,7 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the ARM(R) Cortex(TM)-M3 files in the project
+# File list of the stm32f100 files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/util/STD_LIBC/memory                          \

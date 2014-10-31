@@ -80,7 +80,7 @@ void mcal::gpt::init(const config_type*)
     // Enable the timer4 update interrupt.
     mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, UINT16_C(0x0001)>::reg_set();
 
-    // Set the timer prescaler to 84 resulting in a 1MHz frequency.
+    // Set the timer prescaler to 83 resulting in a 1MHz frequency.
     mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, UINT16_C(84 - 1)>::reg_set();
 
     // Set the auto-reload register for the entire 16-bit period of the timer.
