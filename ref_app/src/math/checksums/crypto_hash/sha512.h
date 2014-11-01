@@ -67,7 +67,7 @@
   #include "crypto_hash_base.h"
 
   template <typename my_count_type>
-  class sha512 : public crypto_hash_base
+  class sha512 final : public crypto_hash_base
   {
   public:
     typedef my_count_type                   count_type;
@@ -83,11 +83,17 @@
                   "the count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
     sha512();
+
     sha512(const std::uint8_t* data_bytes, count_type message_length);
+
     sha512(const char*         data_chars, count_type message_length);
+
     template<typename unsigned_integer_type> sha512(unsigned_integer_type u);
     sha512(const sha512& other);
+
     sha512& operator=(const sha512& other);
+
+    virtual ~sha512();
 
     void process_data(const std::uint8_t* data_bytes, count_type message_length);
 
@@ -160,6 +166,11 @@
 
   template <typename my_count_type>
   sha512<my_count_type>::sha512()
+  {
+  }
+
+  template <typename my_count_type>
+  sha512<my_count_type>::~sha512()
   {
   }
 

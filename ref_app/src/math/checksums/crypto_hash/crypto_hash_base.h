@@ -14,6 +14,9 @@
 
   class crypto_hash_base
   {
+  public:
+    virtual ~crypto_hash_base() { }
+
   protected:
     bool                the_result_is_finalized;
     std::uint_least8_t  message_block_index;

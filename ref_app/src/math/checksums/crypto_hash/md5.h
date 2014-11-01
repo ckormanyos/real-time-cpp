@@ -56,7 +56,7 @@
   #include "crypto_hash_base.h"
 
   template<typename my_count_type>
-  class md5 : public crypto_hash_base
+  class md5 final : public crypto_hash_base
   {
   public:
     typedef my_count_type                  count_type;
@@ -72,10 +72,16 @@
                   "the template count type must be an unsigned integer with radix 2, having a multiple of 8 bits");
 
     md5();
+
     md5(const std::uint8_t* data_bytes, count_type message_length);
+
     md5(const char*         data_chars, count_type message_length);
+
     template<typename unsigned_integer_type> md5(unsigned_integer_type u);
     md5(const md5& other);
+
+    virtual ~md5();
+
     md5& operator=(const md5& other);
 
     void process_data(const std::uint8_t* byte_data, count_type message_length);
@@ -169,6 +175,11 @@
 
   template<typename my_count_type>
   md5<my_count_type>::md5()
+  {
+  }
+
+  template<typename my_count_type>
+  md5<my_count_type>::~md5()
   {
   }
 

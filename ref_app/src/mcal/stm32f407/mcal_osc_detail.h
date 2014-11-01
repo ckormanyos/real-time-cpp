@@ -21,8 +21,8 @@
         class stm32f4xx_clock_settings final : private util::noncopyable
         {
         public:
-          stm32f4xx_clock_settings(const std::uint16_t f_pll,
-                                   const std::uint8_t  f_hsx);
+          stm32f4xx_clock_settings(const std::uint16_t f_pll = UINT16_C(168),
+                                   const std::uint8_t  f_hsx = UINT8_C(8));
 
           ~stm32f4xx_clock_settings();
 
