@@ -26,4 +26,4 @@ TGT_AFLAGS    =
 
 TGT_LFLAGS    =
 
-IMAGE_FILE_NAME = kernel.img
+IMAGE_FILE    = kernel.img

@@ -35,4 +35,4 @@ TGT_AFLAGS    =
 
 TGT_LFLAGS    =
 
-IMAGE_FILE_NAME = dummy.foo
+IMAGE_FILE    = dummy.foo

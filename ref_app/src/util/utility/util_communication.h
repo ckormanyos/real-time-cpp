@@ -10,8 +10,8 @@
 
   #include <cstddef>
   #include <cstdint>
-  #include <util/utility/util_dynamic_array.h>
   #include <util/memory/util_ring_allocator.h>
+  #include <util/utility/util_dynamic_array.h>
 
   namespace util
   {

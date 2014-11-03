@@ -9,7 +9,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <algorithm>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 

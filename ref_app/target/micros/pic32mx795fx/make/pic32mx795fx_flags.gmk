@@ -32,4 +32,4 @@ TGT_AFLAGS    = -mlong-calls
 
 TGT_LFLAGS    =
 
-IMAGE_FILE_NAME = dummy.foo
+IMAGE_FILE    = dummy.foo

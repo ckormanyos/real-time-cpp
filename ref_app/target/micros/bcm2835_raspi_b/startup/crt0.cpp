@@ -16,7 +16,7 @@ namespace crt
 
 namespace int_vect
 {
-  void load_lower_interrupt_vector_data(const std::uint32_t load_address = UINT32_C(0x00000000));
+  void load_lower_interrupt_vector_data(const std::uint32_t load_address);
 }
 
 extern "C" int  main                   ();
@@ -25,9 +25,6 @@ extern "C" void __my_startup           () __attribute__((section(".text.startup"
 
 void __my_startup()
 {
-  // Load the lower interrupt vector table to address 0x00000000.
-  int_vect::load_lower_interrupt_vector_data();
-
   // Setup the interrupt stack (with 1kB stack size),
   // and switch to irq mode.
   asm volatile("ldr r3, =__initial_stack_pointer");
@@ -39,6 +36,9 @@ void __my_startup()
   // and switch back to system mode.
   asm volatile("msr cpsr_c, #(0x13 | 0xC0)");
   asm volatile("mov sp, r3");
+
+  // Load the lower interrupt vector table to address 0x00000000.
+  int_vect::load_lower_interrupt_vector_data(UINT32_C(0x00000000));
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();

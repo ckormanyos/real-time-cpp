@@ -9,9 +9,9 @@
 #ifndef _APP_BENCHMARK_FPU_HYPERGEOMETRIC_2014_04_29_H_
   #define _APP_BENCHMARK_FPU_HYPERGEOMETRIC_2014_04_29_H_
 
-  #include <cstdint>
   #include <algorithm>
   #include <array>
+  #include <cstdint>
   #include <functional>
   #include <limits>
   #include <numeric>

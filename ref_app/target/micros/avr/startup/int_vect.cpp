@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstdint>
 #include <array>
+#include <cstdint>
 #include <mcal_cpu.h>
 
 extern "C" void __my_startup       () __attribute__((section(".startup"), used, noinline));

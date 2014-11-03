@@ -19,6 +19,11 @@ TGT_CFLAGS    = -mcpu=cortex-m3                                \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 
+#                -mfloat-abi=hard                               \
+#                -mfpu=vfp                                      \
+
+#                -mfloat-abi=soft                               \
+
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
                 -I$(PATH_APP)/util/STL_C++14_Compatibility
@@ -26,8 +31,9 @@ TGT_CPPFLAGS  = -std=c++11                                     \
 TGT_AFLAGS    =
 
 TGT_LFLAGS    =
+#TGT_LFLAGS    = -L$(PATH_TOOLS_CC)/../$(GCC_TARGET)/lib/fpu
 
-IMAGE_FILE_NAME = dummy.foo
+IMAGE_FILE    = dummy.foo
 
 # To configure GMP
 # ../gmp-5.1.3/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --enable-cxx --disable-static --enable-shared CPPFLAGS="-fexceptions"

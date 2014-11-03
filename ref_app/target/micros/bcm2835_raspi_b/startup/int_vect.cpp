@@ -46,12 +46,23 @@ void __int_vect_future_15_handler     () { mcal::irq::secure::int_vect_future_15
 
 namespace int_vect
 {
-  void load_lower_interrupt_vector_data(const std::uint32_t load_address = UINT32_C(0x00000000));
+  void load_lower_interrupt_vector_data(const std::uint32_t load_address);
 
   void load_lower_interrupt_vector_data(const std::uint32_t load_address)
   {
     // Copy the lower interrupt vector table to the destination
     // address 0x00000000 
+
+    // Here the input parameter "load_address" is hard-wired to be
+    // identically equal to zero. In this sense the input parameter
+    // "load_address" is unused. We supply this parameter in order
+    // to avoid hard-coding a pointer to zero, which would otherwise
+    // result in undesired compiler warnings related to zero used
+    // instead of nullptr.
+
+    static_cast<void>(load_address);
+
+    const std::uint32_t my_load_address_zero = UINT32_C(0);
 
     // The data below have been extracted from the lower interrupt
     // vector table code that is implemented in "int_vect_table.s".
@@ -60,23 +71,16 @@ namespace int_vect
     // from the hex mask and has been transcribed to the table
     // of hex-values below.
 
-    static_cast<void>(load_address);
-
-    const std::uint32_t my_load_address_zero = UINT32_C(0);
-
-    // Here the input parameter "load_address" is checked to be
-    // identically equal to zero. In this sense the input parameter
-    // "load_address" is unused. We supply this parameter in order
-    // to avoid hard-coding a pointer to zero, which would otherwise
-    // result in undesired compiler warnings related to zero used
-    // instead of nullptr.
-
     static const std::uint8_t the_lower_interrupt_vector_table_data[64U] =
     {
-      0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
-      0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U, 0x18U, 0xF0U, 0x9FU, 0xE5U,
-      0x00U, 0x84U, 0x00U, 0x00U, 0x40U, 0x80U, 0x00U, 0x00U, 0x80U, 0x80U, 0x00U, 0x00U, 0xC0U, 0x80U, 0x00U, 0x00U,
-      0x00U, 0x81U, 0x00U, 0x00U, 0x40U, 0x81U, 0x00U, 0x00U, 0x80U, 0x81U, 0x00U, 0x00U, 0xC0U, 0x81U, 0x00U, 0x00U,
+      UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U), UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U),
+      UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U), UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U),
+      UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U), UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U),
+      UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U), UINT8_C(0x18U), UINT8_C(0xF0U), UINT8_C(0x9FU), UINT8_C(0xE5U),
+      UINT8_C(0x00U), UINT8_C(0x84U), UINT8_C(0x00U), UINT8_C(0x00U), UINT8_C(0x40U), UINT8_C(0x80U), UINT8_C(0x00U), UINT8_C(0x00U),
+      UINT8_C(0x80U), UINT8_C(0x80U), UINT8_C(0x00U), UINT8_C(0x00U), UINT8_C(0xC0U), UINT8_C(0x80U), UINT8_C(0x00U), UINT8_C(0x00U),
+      UINT8_C(0x00U), UINT8_C(0x81U), UINT8_C(0x00U), UINT8_C(0x00U), UINT8_C(0x40U), UINT8_C(0x81U), UINT8_C(0x00U), UINT8_C(0x00U),
+      UINT8_C(0x80U), UINT8_C(0x81U), UINT8_C(0x00U), UINT8_C(0x00U), UINT8_C(0xC0U), UINT8_C(0x81U), UINT8_C(0x00U), UINT8_C(0x00U),
     };
 
     // Perform the copy of the lower interrupt vector table data.

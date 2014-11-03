@@ -259,7 +259,7 @@ $(APP)_nm.txt : $(APP).elf
 $(APP)_flash.hex : $(APP).elf
 	@-$(ECHO) +++ creating and manipulating hex modules: $(APP).hex, etc.
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
-	@-$(HEX_MANIP) outFile=$(APP)_flash.hex imgFile=$(PATH_BIN)/$(IMAGE_FILE_NAME) binFile=$(APP)_flash.bin inFile=$(APP).hex elfFile=$(APP).elf $(HEX_MANIP_SCRIPT_FILE)
+	@-$(HEX_MANIP) outFile=$(APP)_flash.hex imgFile=$(PATH_BIN)/$(IMAGE_FILE) binFile=$(APP)_flash.bin inFile=$(APP).hex elfFile=$(APP).elf $(HEX_MANIP_SCRIPT_FILE)
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)

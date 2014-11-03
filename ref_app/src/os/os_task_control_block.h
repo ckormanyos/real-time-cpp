@@ -8,8 +8,8 @@
 #ifndef _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
   #define _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
 
-  #include <cstdint>
   #include <array>
+  #include <cstdint>
   #include <limits>
   #include <os/os.h>
   #include <util/utility/util_bit_mask.h>

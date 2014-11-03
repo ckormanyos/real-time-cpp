@@ -31,9 +31,6 @@ void* memset(void* s1, int c, size_t n)
 extern "C"
 void* memcpy(void* s1, const void* s2, size_t n)
 {
-  // For additional implementation details, see
-  // P.J. Plauger, "The Standard C Library", Figure 14.4, page 400.
-
         uint8_t* su1 = reinterpret_cast<      uint8_t*>(s1);
   const uint8_t* su2 = reinterpret_cast<const uint8_t*>(s2);
 
@@ -50,9 +47,6 @@ void* memcpy(void* s1, const void* s2, size_t n)
 extern "C"
 void* memmove(void* s1, const void* s2, size_t n)
 {
-  // For additional implementation details, see
-  // P.J. Plauger, "The Standard C Library", Figure 14.5, page 400.
-
   // The function memmove *does* work properly even when its operands overlap.
 
         uint8_t* sc1 = reinterpret_cast<      uint8_t*>(s1);

@@ -633,9 +633,6 @@
     <ClInclude Include="src\util\utility\util_two_part_data_manipulation.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_type.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_utype_helper.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>

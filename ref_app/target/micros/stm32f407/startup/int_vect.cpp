@@ -6,6 +6,7 @@
 //
 
 #include <array>
+#include <cstddef>
 #include <mcal_cpu.h>
 
 extern "C" void __initial_stack_pointer();

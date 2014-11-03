@@ -8,10 +8,10 @@
 #ifndef _UTIL_DYNAMIC_ARRAY_2012_05_16_H_
   #define _UTIL_DYNAMIC_ARRAY_2012_05_16_H_
 
-  #include <memory>
-  #include <iterator>
-//  #include <initializer_list>
   #include <algorithm>
+//  #include <initializer_list>
+  #include <iterator>
+  #include <memory>
 
   namespace util
   {
