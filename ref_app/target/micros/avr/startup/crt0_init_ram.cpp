@@ -44,8 +44,8 @@ void crt::init_ram()
                   // Note that particular care needs to be taken to read program
                   // memory with the function mcal::cpu::read_program_memory().
 
-                  ram_destination = util::make_long<std::uint16_t>(mcal::cpu::read_program_memory(rom_source),
-                                                                   mcal::cpu::read_program_memory(rom_source + 1U));
+                  ram_destination = util::make_long(mcal::cpu::read_program_memory(rom_source),
+                                                    mcal::cpu::read_program_memory(rom_source + 1U));
 
                   rom_source += 2U;
                 });

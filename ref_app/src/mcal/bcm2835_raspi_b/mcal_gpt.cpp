@@ -14,6 +14,8 @@ namespace
   // The one (and only one) system tick.
   volatile mcal::gpt::value_type system_tick;
 
+  bool& gpt_is_initialized() __attribute__((used, noinline));
+
   bool& gpt_is_initialized()
   {
     static bool is_init = false;
@@ -23,18 +25,18 @@ namespace
 
   constexpr std::uint16_t system_timer_reload = UINT16_C(0xFFFF);
 
-  // Timer rpi_arm timer counter width 16-bit / 32-bit : 1 = 32-bit counters.
+  // Timer rpi_arm timer counter width 16-bit / 32-bit : Select 1 = 32-bit counters.
   constexpr std::uint32_t  rpi_armtimer_ctrl_32bit        = (UINT32_C(1) << 1);
 
   constexpr std::uint32_t  rpi_armtimer_ctrl_prescale_1   = (UINT32_C(0) << 2);
   constexpr std::uint32_t  rpi_armtimer_ctrl_prescale_16  = (UINT32_C(1) << 2);
   constexpr std::uint32_t  rpi_armtimer_ctrl_prescale_256 = (UINT32_C(2) << 2);
 
-  // Timer rpi_arm timer interrupt disabled : 1 = interrupt enabled.
+  // Timer rpi_arm timer interrupt disabled : Select 1 = interrupt enabled.
   constexpr std::uint32_t  rpi_armtimer_ctrl_int_enable   = (UINT32_C(1) << 5);
   constexpr std::uint32_t  rpi_armtimer_ctrl_int_disable  = (UINT32_C(0) << 5);
 
-  // Timer rpi_arm timer function disabled : 1 = timer function enabled.
+  // Timer rpi_arm timer function disabled : Select 1 = timer function enabled.
   constexpr std::uint32_t  rpi_armtimer_ctrl_enable       = (UINT32_C(1) << 7);
   constexpr std::uint32_t  rpi_armtimer_ctrl_disable      = (UINT32_C(0) << 7);
 

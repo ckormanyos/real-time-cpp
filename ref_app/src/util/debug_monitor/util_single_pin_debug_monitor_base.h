@@ -160,7 +160,7 @@
     // of the target system.
 
     const std::uint_least16_t address_from_buffer =
-      std::uint_least16_t(util::make_long<std::uint16_t>(driver_buffer[1U], driver_buffer[2U]));
+      std::uint_least16_t(util::make_long(driver_buffer[1U], driver_buffer[2U]));
 
     const addr_type address = addr_type(addr_offset + address_from_buffer);
 
@@ -226,8 +226,8 @@
             {
               // Write a word with the command 'W'.
               const std::uint16_t value =
-                util::make_long<std::uint16_t>(static_cast<std::uint8_t>(driver_buffer[3U]),
-                                                static_cast<std::uint8_t>(driver_buffer[4U]));
+                util::make_long(static_cast<std::uint8_t>(driver_buffer[3U]),
+                                static_cast<std::uint8_t>(driver_buffer[4U]));
 
               *reinterpret_cast<volatile std::uint16_t*>(address) = value;
             }
@@ -237,14 +237,14 @@
             {
               // Write a dword with the command 'D'.
               const std::uint16_t value_lo =
-                util::make_long<std::uint16_t>(static_cast<std::uint8_t>(driver_buffer[3U]),
-                                                static_cast<std::uint8_t>(driver_buffer[4U]));
+                util::make_long(static_cast<std::uint8_t>(driver_buffer[3U]),
+                                static_cast<std::uint8_t>(driver_buffer[4U]));
 
               const std::uint16_t value_hi =
-                util::make_long<std::uint16_t>(static_cast<std::uint8_t>(driver_buffer[5U]),
-                                                static_cast<std::uint8_t>(driver_buffer[6U]));
+                util::make_long(static_cast<std::uint8_t>(driver_buffer[5U]),
+                                static_cast<std::uint8_t>(driver_buffer[6U]));
 
-              *reinterpret_cast<volatile std::uint32_t*>(address) = util::make_long<std::uint32_t>(value_lo, value_hi);
+              *reinterpret_cast<volatile std::uint32_t*>(address) = util::make_long(value_lo, value_hi);
             }
             break;
         }

@@ -15,6 +15,8 @@ namespace
   // The one (and only one) system tick.
   volatile mcal::gpt::value_type system_tick;
 
+  bool& gpt_is_initialized() __attribute__((used, noinline));
+
   bool& gpt_is_initialized()
   {
     static bool is_init;

@@ -42,7 +42,7 @@ void crt::init_ctors()
 
     // Create the address of the ctor function.
     const ctor_type::function_type ctor_function_address
-      = reinterpret_cast<const ctor_type::function_type>(util::make_long<function_aligned_type>(addr_lo, addr_hi));
+      = reinterpret_cast<const ctor_type::function_type>(util::make_long(addr_lo, addr_hi));
 
     // Call the ctor function.
     ctor_function_address();

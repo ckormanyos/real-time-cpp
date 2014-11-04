@@ -77,8 +77,8 @@
     const std::uint8_t expected_result_byte3 = mcal::cpu::read_program_memory(reinterpret_cast<volatile std::uint8_t*>(address_of_result + 0U));
 
     const std::uint32_t expected_result =
-      util::make_long<std::uint32_t>(util::make_long<std::uint16_t>(expected_result_byte0, expected_result_byte1),
-                                     util::make_long<std::uint16_t>(expected_result_byte2, expected_result_byte3));
+      util::make_long(util::make_long(expected_result_byte0, expected_result_byte1),
+                      util::make_long(expected_result_byte2, expected_result_byte3));
 
     memory_base_type::result_of_process = ((crc32_result == expected_result) ? memory_base_type::result_is_finished_and_correct
                                                                              : memory_base_type::result_is_finished_and_wrong);
