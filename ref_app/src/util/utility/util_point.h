@@ -10,15 +10,38 @@
 
   namespace util
   {
-    template<typename x_type, typename y_type = x_type>
+    template<typename x_type,
+             typename y_type = x_type>
     struct point
     {
-      x_type my_x;
-      y_type my_y;
+      x_type x;
+      y_type y;
 
-      point(const x_type& x = x_type(),
-            const y_type& y = y_type()) : my_x(x),
-                                          my_y(y) { }
+      point(const x_type& x0 = x_type(),
+            const y_type& y0 = y_type()) : x(x0),
+                                           y(y0) { }
+
+      point(const point& other)
+      {
+        if(this != &other)
+        {
+          x = other.x;
+          y = other.y;
+        }
+      }
+
+      ~point() { }
+
+      point& operator=(const point& other)
+      {
+        if(this != &other)
+        {
+          x = other.x;
+          y = other.y;
+        }
+
+        return *this;
+      }
 
       bool operator<(const point& other) const
       {

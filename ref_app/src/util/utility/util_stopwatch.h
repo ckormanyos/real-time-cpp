@@ -8,17 +8,39 @@
 #ifndef _UTIL_STOPWATCH_2014_01_07_H_
   #define _UTIL_STOPWATCH_2014_01_07_H_
 
-  #include <util/utility/util_noncopyable.h>
-
   namespace util
   {
     template<typename clock_type>
-    class stopwatch : private util::noncopyable
+    class stopwatch final
     {
     public:
       typedef typename clock_type::duration duration_type;
 
       stopwatch() : my_start(clock_type::now()) { }
+
+      stopwatch(clock_type::time_point start) : my_start(start)
+      {
+      }
+
+      stopwatch(const stopwatch& other)
+      {
+        if(this != &other)
+        {
+          my_start = other.my_start;
+        }
+      }
+
+      ~stopwatch() { }
+
+      stopwatch& operator=(const stopwatch& other)
+      {
+        if(this != &other)
+        {
+          my_start = other.my_start;
+        }
+
+        return *this;
+      }
 
       duration_type elapsed() const
       {

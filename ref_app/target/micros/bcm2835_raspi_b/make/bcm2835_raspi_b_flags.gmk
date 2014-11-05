@@ -20,7 +20,7 @@ TGT_CFLAGS    = -march=armv6zk                                 \
                 -mno-long-calls
 
 TGT_CPPFLAGS  = -std=c++11                                     \
-                -I$(PATH_APP)/util/STL_C++14_Compatibility
+                -I$(PATH_APP)/util/STL_C++17_Compatibility
 
 TGT_AFLAGS    =
 

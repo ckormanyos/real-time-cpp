@@ -101,9 +101,6 @@
     <Filter Include="src\mcal\stm32f407">
       <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL_C++14_Compatibility">
-      <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL_C++11_Compatibility\impl">
       <UniqueIdentifier>{9f427a37-704f-4f54-a49f-4d9804e2579b}</UniqueIdentifier>
     </Filter>
@@ -136,6 +133,9 @@
     </Filter>
     <Filter Include="src\mcal\bcm2835_raspi_b">
       <UniqueIdentifier>{7b9388d6-f502-4205-b264-1d91355a71bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\STL_C++17_Compatibility">
+      <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -975,9 +975,6 @@
     <ClInclude Include="src\util\utility\util_stopwatch.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h">
-      <Filter>src\util\STL_C++14_Compatibility</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
     </ClInclude>
@@ -1320,6 +1317,9 @@
     <ClInclude Include="src\mcal\stm32f407\mcal_osc_detail.h">
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h">
+      <Filter>src\util\STL_C++17_Compatibility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -1394,9 +1394,6 @@
     <None Include="src\util\STL\type_traits">
       <Filter>src\util\STL</Filter>
     </None>
-    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
-      <Filter>src\util\STL_C++14_Compatibility</Filter>
-    </None>
     <None Include="src\util\STL_C++11_Compatibility\cstdbool">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
     </None>
@@ -1408,6 +1405,9 @@
     </None>
     <None Include="src\util\STL_C++11_Compatibility\cstdint">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
+      <Filter>src\util\STL_C++17_Compatibility</Filter>
     </None>
   </ItemGroup>
 </Project>

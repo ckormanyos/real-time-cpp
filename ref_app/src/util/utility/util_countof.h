@@ -17,7 +17,11 @@
       template <class T, const std::size_t N>
       inline constexpr std::size_t countof(T(&c_array)[N])
       {
-        static_assert(N > std::size_t(0U), "Sorry, util::countof requires an array size larger than zero.");
+        static_assert(N > std::size_t(0U),
+                      "Sorry, util::countof requires an array size larger than zero.");
+
+        static_assert(sizeof(c_array[0U]) > std::size_t(0U),
+                      "Sorry, util::countof requires an element size larger than zero.");
 
         return sizeof(c_array) / sizeof(c_array[0U]);
       }
@@ -27,7 +31,11 @@
       template <class T, const std::size_t N>
       inline std::size_t countof(T(&c_array)[N])
       {
-        static_assert(N > std::size_t(0U), "Sorry, util::countof requires an array size larger than zero.");
+        static_assert(N > std::size_t(0U),
+                      "Sorry, util::countof requires an array size larger than zero.");
+
+        static_assert(sizeof(c_array[0U]) > std::size_t(0U),
+                      "Sorry, util::countof requires an element size larger than zero.");
 
         return sizeof(c_array) / sizeof(c_array[0U]);
       }

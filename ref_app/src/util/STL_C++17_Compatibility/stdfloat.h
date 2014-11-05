@@ -23,7 +23,8 @@
   // of these queries, an attempt is made to automatically detect
   // the presence of built-in floating-point types having specified
   // widths. These are *thought* to be conformant with IEEE-754,
-  // whereby an unequivocal test based on numeric_limits follows below.
+  // whereby an unequivocal test based on numeric_limits is
+  // provided in the C++ header <cstdfloat>.
 
   // In addition, macros that are used for initializing floating-point
   // literal values and some basic min/max values are defined.
@@ -41,7 +42,7 @@
 
   // Ensure that the compiler has a radix-2 floating-point representation.
   #if (!defined(FLT_RADIX) || ((defined(FLT_RADIX) && (FLT_RADIX != 2))))
-    #error The compiler does not support radix-2 floating-point types required for <stdfloat.h>.
+    #error The compiler does not support any of the radix-2 floating-point types required for <stdfloat.h>.
   #endif
 
   // Check if built-in float is equivalent to float16_t, float32_t, float64_t, float80_t, or float128_t.
@@ -216,7 +217,7 @@
   // be modified in order to be optimized for a given compiler implementation.
 
   // This section also contains the various min/max macros
-  // for the *leastN and *fastN types.
+  // for the least and fast types.
 
   #if(STDFLOAT_HAS_FLOAT16_NATIVE_TYPE == 1)
     typedef STDFLOAT_FLOAT16_NATIVE_TYPE  float16_t;
@@ -273,16 +274,9 @@
     #define FLOAT_LEAST128_MAX  FLOAT_128_MAX
   #endif
 
-  // The following section contains the second macros that
-  // are used for initializing floating-point literal values.
-  // The types of the max-form are handled.
-
   // The following section contains macros that are used for
   // initializing floating-point literal values and various
-  // min/max macros for the *floatmax types.
-
-  // In addition, all unused pre-processor definitions are
-  // herewith un-defined.
+  // min and max macros for the floatmax types.
 
   #if  (STDFLOAT_MAXIMUM_AVAILABLE_WIDTH == 16)
     typedef float16_t     floatmax_t;
@@ -312,5 +306,7 @@
   #else
     #error The maximum available floating-point width for <stdfloat.h> is undefined.
   #endif
+
+  #undef STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
 
 #endif // _STDFLOAT_2014_01_09_H_

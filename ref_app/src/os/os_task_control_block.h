@@ -12,7 +12,6 @@
   #include <cstdint>
   #include <limits>
   #include <os/os.h>
-  #include <util/utility/util_bit_mask.h>
 
   namespace os
   {

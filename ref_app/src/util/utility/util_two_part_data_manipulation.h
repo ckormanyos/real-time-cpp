@@ -29,10 +29,11 @@
       static_assert((std::numeric_limits<unsigned_short_type>::digits * 2) == std::numeric_limits<unsigned_long_type>::digits,
                     "the unsigned_long_type of the make_long template must be twice as wide as the unsigned_short_type");
 
-      // Ensure that both the unsigned_short_type as well as the unsigned_long_type are unsigned.
+      // Ensure that the unsigned_short_type is unsigned.
       static_assert(std::numeric_limits<unsigned_short_type>::is_signed == false,
                     "the unsigned_short_type of the make_long template must be unsigned");
 
+      // Ensure that the unsigned_long_type is unsigned.
       static_assert(std::numeric_limits<unsigned_long_type>::is_signed == false,
                     "the unsigned_long_type of the make_long template must be unsigned.");
 
