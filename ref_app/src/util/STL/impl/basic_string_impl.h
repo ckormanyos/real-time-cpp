@@ -93,7 +93,7 @@
 
       basic_string(size_type count,
                    const T& value,
-                   const allocator_type& a) : my_first((const_cast<allocator_type&>(a)).allocate(count + 1U)),
+                   const allocator_type& a) : my_first(allocator_type(a).allocate(count + 1U)),
                                               my_last (my_first + count)
       {
         xalgorithm::xfill(my_first, my_last, value);
@@ -106,7 +106,7 @@
                    const allocator_type& a = allocator_type())
       {
         const size_type count static_cast<size_type>(std::distance(first, last));
-        my_first = (const_cast<allocator_type&>(a)).allocate(sz + 1U);
+        my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
         xalgorithm::xcopy(first, last, my_first);
         *my_last = static_cast<value_type>(0);
@@ -116,7 +116,7 @@
                    const allocator_type& a = allocator_type())
       {
         const size_type sz = (size_type) (lst.size());
-        my_first = (const_cast<allocator_type&>(a)).allocate(sz + 1U);
+        my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
         xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
         *my_last = static_cast<value_type>(0);

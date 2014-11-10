@@ -16,7 +16,7 @@
 
   namespace std
   {
-    template<typename T, const std::size_t N>
+    template<typename T, size_t N>
     class array
     {
     public:
@@ -102,6 +102,55 @@
     private:
       static void rangecheck(const size_type) { }
     };
+
+    template<typename T, size_t N>
+    bool operator==(const array<T, N>& left, const array<T, N>& right)
+    {
+      return xalgorithm::xequal(left.begin(),
+                                left.end(),
+                                right.begin());
+    }
+
+    template<typename T, size_t N>
+    bool operator<(const array<T, N>& left, const array<T, N>& right)
+    {
+      return xalgorithm::xlexicographical_compare(left.begin(),
+                                                  left.end(),
+                                                  right.begin(),
+                                                  right.end());
+    }
+
+    template<typename T, size_t N>
+    bool operator!=(const array<T, N>& left, const array<T, N>& right)
+    {
+      return ((left == right) == false);
+    }
+
+    template<typename T, size_t N>
+    bool operator>(const array<T, N>& left, const array<T, N>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename T, size_t N>
+    bool operator>=(const array<T, N>& left, const array<T, N>& right)
+    {
+      return ((left < right) == false);
+    }
+
+    template<typename T, size_t N>
+    bool operator<=(const array<T, N>& left, const array<T, N>& right)
+    {
+      return ((right < left) == false);
+    }
+
+    template<typename T, size_t N >
+    void swap(array<T, N>& x, array<T, N>& y)
+    {
+      xalgorithm::xswap_ranges(x.begin(),
+                               x.end(),
+                               y.begin());
+    }
   }
 
 #endif // _ARRAY_IMPL_2010_02_23_H_

@@ -42,8 +42,8 @@
                                    const real_value_type& dx,
                                    real_function_type real_function)
     {
-      // Compute the second derivative of the input function
-      // using a three-point central difference rule of O(dx^6).
+      // Compute the second derivative of real_function using
+      // a three-point central difference rule of O(dx^6).
 
       const real_value_type fn2(real_function(x) * 2);
       const real_value_type dx2(dx  + dx);

@@ -90,7 +90,7 @@
       const_pointer address(const_reference x) const { return &x; }
 
       pointer allocate(size_type num,
-                       allocator<void>::const_pointer = nullptr) const
+                       allocator<void>::const_pointer = nullptr)
       {
         void* p = do_allocate(num * sizeof(value_type));
         return static_cast<pointer>(p);

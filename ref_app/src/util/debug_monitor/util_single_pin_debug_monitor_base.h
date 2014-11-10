@@ -184,8 +184,8 @@
               // Read a word with the command 'w'.
               const std::uint16_t value = *reinterpret_cast<volatile std::uint16_t*>(address);
 
-              driver_buffer[1U] = util::hi_part<std::uint8_t, std::uint16_t>(value);
-              driver_buffer[0U] = util::lo_part<std::uint8_t, std::uint16_t>(value);
+              driver_buffer[1U] = util::hi_part<std::uint8_t>(value);
+              driver_buffer[0U] = util::lo_part<std::uint8_t>(value);
             }
             break;
 
@@ -194,13 +194,13 @@
               // Read a dword with the command 'd'.
               const std::uint32_t value = *reinterpret_cast<volatile std::uint32_t*>(address);
 
-              const std::uint16_t value_lo = util::lo_part<std::uint16_t, std::uint32_t>(value);
-              const std::uint16_t value_hi = util::hi_part<std::uint16_t, std::uint32_t>(value);
+              const std::uint16_t value_lo = util::lo_part<std::uint16_t>(value);
+              const std::uint16_t value_hi = util::hi_part<std::uint16_t>(value);
 
-              driver_buffer[3U] = util::hi_part<std::uint8_t, std::uint16_t>(value_hi);
-              driver_buffer[2U] = util::lo_part<std::uint8_t, std::uint16_t>(value_hi);
-              driver_buffer[1U] = util::hi_part<std::uint8_t, std::uint16_t>(value_lo);
-              driver_buffer[0U] = util::lo_part<std::uint8_t, std::uint16_t>(value_lo);
+              driver_buffer[3U] = util::hi_part<std::uint8_t>(value_hi);
+              driver_buffer[2U] = util::lo_part<std::uint8_t>(value_hi);
+              driver_buffer[1U] = util::hi_part<std::uint8_t>(value_lo);
+              driver_buffer[0U] = util::lo_part<std::uint8_t>(value_lo);
             }
             break;
         }
@@ -226,8 +226,7 @@
             {
               // Write a word with the command 'W'.
               const std::uint16_t value =
-                util::make_long(static_cast<std::uint8_t>(driver_buffer[3U]),
-                                static_cast<std::uint8_t>(driver_buffer[4U]));
+                util::make_long(driver_buffer[3U], driver_buffer[4U]);
 
               *reinterpret_cast<volatile std::uint16_t*>(address) = value;
             }
@@ -237,12 +236,10 @@
             {
               // Write a dword with the command 'D'.
               const std::uint16_t value_lo =
-                util::make_long(static_cast<std::uint8_t>(driver_buffer[3U]),
-                                static_cast<std::uint8_t>(driver_buffer[4U]));
+                util::make_long(driver_buffer[3U], driver_buffer[4U]);
 
               const std::uint16_t value_hi =
-                util::make_long(static_cast<std::uint8_t>(driver_buffer[5U]),
-                                static_cast<std::uint8_t>(driver_buffer[6U]));
+                util::make_long(driver_buffer[5U], driver_buffer[6U]);
 
               *reinterpret_cast<volatile std::uint32_t*>(address) = util::make_long(value_lo, value_hi);
             }
