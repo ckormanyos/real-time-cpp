@@ -12,6 +12,7 @@
   #include <initializer_list>
   #include <iterator>
   #include <memory>
+  #include <utility>
 
   namespace util
   {
@@ -35,61 +36,105 @@
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
       // Constructors.
-      explicit dynamic_array(size_type count) : N    (count),
-                                                elems(allocator_type().allocate(N))
+      dynamic_array() : N    (0U),
+                        elems(allocator_type().allocate(1U))
       {
-        std::fill_n(begin(), N, T());
+        elems[0U] = value_type();
       }
 
-      dynamic_array(size_type count, const T& v) : N    (count),
-                                                   elems(allocator_type().allocate(N))
+      dynamic_array(size_type count) : N    (count),
+                                       elems(allocator_type().allocate((std::max)(size_type(1U), N)))
       {
-        std::fill_n(begin(), N, v);
+        if(N > size_type(0U))
+        {
+          std::fill_n(begin(), N, value_type());
+        }
+        else
+        {
+          elems[0U] = value_type();
+        }
+      }
+
+      dynamic_array(size_type count,
+                    const value_type& v,
+                    const allocator_type& a = allocator_type()) : N    (count),
+                                                                  elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
+      {
+        if(N > size_type(0U))
+        {
+          std::fill_n(begin(), N, v);
+        }
+        else
+        {
+          elems[0U] = value_type();
+        }
       }
 
       dynamic_array(const dynamic_array& other) : N    (other.size()),
-                                                  elems(allocator_type().allocate(N))
+                                                  elems(allocator_type().allocate((std::max)(size_type(1U), N)))
       {
-        std::copy(other.begin(), other.end(), begin());
+        if(other.size() > size_type(0U))
+        {
+          std::copy(other.begin(), other.end(), begin());
+        }
+        else
+        {
+          elems[0U] = value_type();
+        }
       }
 
       template<typename input_iterator>
-      dynamic_array(input_iterator first, input_iterator last) : N    (std::distance(first, last)),
-                                                                 elems(allocator_type().allocate(N))
+      dynamic_array(input_iterator first,
+                    input_iterator last,
+                    const allocator_type& a = allocator_type()) : N    (std::distance(first, last)),
+                                                                  elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
       {
-        for(size_type i = static_cast<size_type>(0U); i < N; ++i)
+        if(first != last)
         {
-          elems[i] = value_type(*first);
+          for(size_type i = static_cast<size_type>(0U); i < N; ++i)
+          {
+            elems[i] = value_type(*first);
 
-          ++first;
+            ++first;
+          }
+        }
+        else
+        {
+          elems[0U] = value_type();
         }
       }
 
-      dynamic_array(std::initializer_list<T> lst) : N    (lst.size()),
-                                                    elems(allocator_type().allocate(N))
+      dynamic_array(std::initializer_list<T> lst,
+                    const allocator_type& a = allocator_type()) : N    (lst.size()),
+                                                                  elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
       {
-        std::copy(lst.begin(), lst.end(), begin());
+        if(lst.size() != size_type(0U))
+        {
+          std::copy(lst.begin(), lst.end(), begin());
+        }
+        else
+        {
+          elems[0U] = value_type();
+        }
       }
 
-      // Destructor:
+      // Destructor.
       ~dynamic_array()
       {
-        for(pointer p = elems; p != (elems + size()); ++p)
+        // Destroy the elements and deallocate the range.
+        if(N > size_type(0U))
         {
-          allocator_type().destroy(p);
+          for(pointer p = elems; p != (elems + size()); ++p)
+          {
+            allocator_type().destroy(p);
+          }
+
+          allocator_type().deallocate(elems, N);
         }
-
-        // Deallocate the range.
-        allocator_type().deallocate(elems, N);
-      }
-
-      dynamic_array& operator=(const dynamic_array& other)
-      {
-        std::copy(other.begin(),
-                  other.begin() + (std::min)(N, other.size()),
-                  begin());
-
-        return *this;
+        else
+        {
+          allocator_type().deallocate(elems, size_type(1U));
+        }
       }
 
       // Iterator members:
@@ -118,77 +163,123 @@
       reference       front()       { return elems[0U]; }
       const_reference front() const { return elems[0U]; }
 
-      reference       back()        { return elems[N - 1U]; }
-      const_reference back() const  { return elems[N - 1U]; }
+      reference       back()        { return ((N > size_type(0U)) ? elems[N - 1U] : elems[0U]); }
+      const_reference back() const  { return ((N > size_type(0U)) ? elems[N - 1U] : elems[0U]); }
 
-      reference       at(const size_type i)       { return elems[i]; }
-      const_reference at(const size_type i) const { return elems[i]; }
+      reference       at(const size_type i)       { return ((i < N) ? elems[i] : elems[0U]); }
+      const_reference at(const size_type i) const { return ((i < N) ? elems[i] : elems[0U]); }
 
       // Element manipulation members.
-      void fill(const T& v) { std::fill_n(begin(), N, v); }
+      void fill(const value_type& v) { std::fill_n(begin(), N, v); }
 
       void swap(dynamic_array& other)
       {
+        const size_type count = (std::min)(N, other.size());
+
         std::swap_ranges(begin(),
-                         begin() + (std::min)(N, other.size()),
+                         begin() + count,
                          other.begin());
+
+        if(count < N)
+        {
+          std::fill(begin() + count, end(), value_type());
+        }
       }
 
     private:
       const size_type N;
       pointer         elems;
+
+      // dynamic_array can not be copied.
+      dynamic_array& operator=(const dynamic_array&);
     };
 
     template<typename T, typename alloc>
-    bool operator==(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator==(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      const bool sizes_are_equal = (left.size() == right.size());
+      const bool sizes_are_equal = (lhs.size() == rhs.size());
 
-      return (sizes_are_equal && std::equal(left.begin(),
-                                            left.end(),
-                                            right.begin()));
+      typedef typename dynamic_array<T, alloc>::size_type size_type;
+
+      const bool size_of_left_is_zero = (lhs.size() == size_type(0U));
+
+      return (sizes_are_equal && (size_of_left_is_zero || std::equal(lhs.begin(), lhs.end(), rhs.begin())));
     }
 
     template<typename T, typename alloc>
-    bool operator<(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator<(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      return std::lexicographical_compare(left.begin(),
-                                          left.begin() + (std::min)(left.size(), right.size()),
-                                          right.begin(),
-                                          right.begin() + (std::min)(left.size(), right.size()));
+      typedef typename dynamic_array<T, alloc>::size_type size_type;
+
+      const bool size_of_left_is_zero = (lhs.size() == size_type(0U));
+
+      if(size_of_left_is_zero)
+      {
+        const bool size_of_right_is_zero = (rhs.size() == size_type(0U));
+
+        return (size_of_right_is_zero ? false : true);
+      }
+      else
+      {
+        if(size_of_left_is_zero)
+        {
+          const bool size_of_right_is_zero = (rhs.size() == size_type(0U));
+
+          return (size_of_right_is_zero == false);
+        }
+        else
+        {
+          const size_type count = (std::min)(lhs.size(), rhs.size());
+
+          return std::lexicographical_compare(lhs.begin(),
+                                              lhs.begin() + count,
+                                              rhs.begin(),
+                                              rhs.begin() + count);
+        }
+      }
     }
 
     template<typename T, typename alloc>
-    bool operator!=(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator!=(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      return ((left == right) == false);
+      return ((lhs == rhs) == false);
     }
 
     template<typename T, typename alloc>
-    bool operator>(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator>(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      return (right < left);
+      return (rhs < lhs);
     }
 
     template<typename T, typename alloc>
-    bool operator>=(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator>=(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      return ((left < right) == false);
+      return ((lhs < rhs) == false);
     }
 
     template<typename T, typename alloc>
-    bool operator<=(const dynamic_array<T, alloc>& left, const dynamic_array<T, alloc>& right)
+    bool operator<=(const dynamic_array<T, alloc>& lhs, const dynamic_array<T, alloc>& rhs)
     {
-      return ((right < left) == false);
+      return ((rhs < lhs) == false);
     }
 
     template<typename T, typename alloc>
     void swap(const dynamic_array<T, alloc>& x, const dynamic_array<T, alloc>& y)
     {
-      std::swap_ranges(x.begin(),
-                       x.begin() + (std::min)(x.size(), y.size()),
-                       y.begin());
+      x.swap(y);
     }
   }
+
+  /*
+  #include <util/memory/util_ring_allocator.h>
+  #include <util/utility/util_dynamic_array.h>
+
+  typedef util::dynamic_array<int, util::ring_allocator<int>> dynamic_array_type;
+
+  const dynamic_array_type a1( { 1, 2, 3 } );
+  const dynamic_array_type a2( { 1, 2, 4 } );
+
+  const bool b_test = (a1 < a2);
+  */
 
 #endif // _UTIL_DYNAMIC_ARRAY_2012_05_16_H_

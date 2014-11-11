@@ -51,7 +51,7 @@ namespace int_vect
   void load_lower_interrupt_vector_data(const std::uint32_t load_address)
   {
     // Copy the lower interrupt vector table to the destination
-    // address 0x00000000 
+    // address 0x00000000.
 
     // Here the input parameter "load_address" is hard-wired to be
     // identically equal to zero. In this sense the input parameter
