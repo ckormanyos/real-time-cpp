@@ -22,18 +22,18 @@
     {
     public:
       // Type definitions.
-      typedef alloc                                 allocator_type;
-      typedef       T                               value_type;
-      typedef       T&                              reference;
-      typedef const T&                              const_reference;
-      typedef       T*                              iterator;
-      typedef const T*                              const_iterator;
-      typedef       T*                              pointer;
-      typedef const T*                              const_pointer;
-      typedef std::size_t                           size_type;
-      typedef std::ptrdiff_t                        difference_type;
-      typedef std::reverse_iterator<iterator>       reverse_iterator;
-      typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+      typedef       alloc                                 allocator_type;
+      typedef       T                                     value_type;
+      typedef       T&                                    reference;
+      typedef const T&                                    const_reference;
+      typedef       T*                                    iterator;
+      typedef const T*                                    const_iterator;
+      typedef       T*                                    pointer;
+      typedef const T*                                    const_pointer;
+      typedef       std::size_t                           size_type;
+      typedef       std::ptrdiff_t                        difference_type;
+      typedef       std::reverse_iterator<iterator>       reverse_iterator;
+      typedef       std::reverse_iterator<const_iterator> const_reverse_iterator;
 
       // Constructors.
       dynamic_array() : N    (0U),
@@ -70,16 +70,22 @@
         }
       }
 
-      dynamic_array(const dynamic_array& other) : N    (other.size()),
-                                                  elems(allocator_type().allocate((std::max)(size_type(1U), N)))
+      dynamic_array(const dynamic_array& other)
       {
-        if(other.size() > size_type(0U))
+        if(this != &other)
         {
-          std::copy(other.begin(), other.end(), begin());
-        }
-        else
-        {
-          elems[0U] = value_type();
+          N = other.size();
+
+          elems = allocator_type().allocate((std::max)(size_type(1U), N));
+
+          if(N > size_type(0U))
+          {
+            std::copy(other.begin(), other.end(), begin());
+          }
+          else
+          {
+            elems[0U] = value_type();
+          }
         }
       }
 
@@ -89,14 +95,9 @@
                     const allocator_type& a = allocator_type()) : N    (std::distance(first, last)),
                                                                   elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
       {
-        if(first != last)
+        if(N > size_type(0U))
         {
-          for(size_type i = static_cast<size_type>(0U); i < N; ++i)
-          {
-            elems[i] = value_type(*first);
-
-            ++first;
-          }
+          std::copy(first, last, begin());
         }
         else
         {
@@ -108,7 +109,7 @@
                     const allocator_type& a = allocator_type()) : N    (lst.size()),
                                                                   elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
       {
-        if(lst.size() != size_type(0U))
+        if(N > size_type(0U))
         {
           std::copy(lst.begin(), lst.end(), begin());
         }
@@ -176,9 +177,7 @@
       {
         const size_type count = (std::min)(N, other.size());
 
-        std::swap_ranges(begin(),
-                         begin() + count,
-                         other.begin());
+        std::swap_ranges(begin(), begin() + count, other.begin());
 
         if(count < N)
         {
@@ -264,7 +263,7 @@
     }
 
     template<typename T, typename alloc>
-    void swap(const dynamic_array<T, alloc>& x, const dynamic_array<T, alloc>& y)
+    void swap(dynamic_array<T, alloc>& x, dynamic_array<T, alloc>& y)
     {
       x.swap(y);
     }
