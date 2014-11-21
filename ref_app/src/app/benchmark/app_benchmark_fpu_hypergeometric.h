@@ -17,6 +17,7 @@
   #include <numeric>
   #include <vector>
   #include <util/memory/util_ring_allocator.h>
+  #include <util/utility/util_dynamic_array.h>
 
   namespace app
   {
@@ -162,7 +163,7 @@
         typedef util::ring_allocator<T> allocator_type;
 
         // Define a container type for the upcoming calculation.
-        typedef std::vector<T, allocator_type> container_type;
+        typedef util::dynamic_array<T, allocator_type> container_type;
 
         // The pochhammer symbols for the multiplications in the series expansion
         // will be stored in non-constant STL vectors.

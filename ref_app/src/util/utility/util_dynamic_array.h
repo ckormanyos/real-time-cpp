@@ -70,12 +70,10 @@
         }
       }
 
-      dynamic_array(const dynamic_array& other)
+      dynamic_array(const dynamic_array& other) : N(other.size())
       {
         if(this != &other)
         {
-          N = other.size();
-
           elems = allocator_type().allocate((std::max)(size_type(1U), N));
 
           if(N > size_type(0U))
@@ -92,7 +90,7 @@
       template<typename input_iterator>
       dynamic_array(input_iterator first,
                     input_iterator last,
-                    const allocator_type& a = allocator_type()) : N    (std::distance(first, last)),
+                    const allocator_type& a = allocator_type()) : N    (static_cast<size_type>(std::distance(first, last))),
                                                                   elems(allocator_type(a).allocate((std::max)(size_type(1U), N)))
       {
         if(N > size_type(0U))
