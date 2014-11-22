@@ -31,9 +31,7 @@
     void start_os   ();
     void set_event  (const task_id_type task_id, const event_type& event_to_set);
     void get_event  (event_type& event_to_get);
-    void clear_event(const event_type& event_clear_mask);
+    void clear_event(const event_type& event_to_clear);
   }
-
-  #include <os/os_task_control_block.h>
 
 #endif // _OS_2011_10_20_H_

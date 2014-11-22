@@ -8,11 +8,12 @@
 #include <algorithm>
 #include <mcal_irq.h>
 #include <os/os.h>
+#include <os/os_task_control_block.h>
 
 // The one (and only one) operating system task list.
 const os::task_list_type& os::task_list()
 {
-  static const os::task_list_type the_task_list = OS_TASK_LIST;
+  static const os::task_list_type the_task_list(OS_TASK_LIST);
 
   return the_task_list;
 }
@@ -71,7 +72,7 @@ void os::get_event(event_type& event_to_get)
   if(control_block_of_the_running_task != os::task_list().cend())
   {
     mcal::irq::disable_all();
-    const event_type the_event = control_block_of_the_running_task->my_event;
+    const volatile event_type the_event = control_block_of_the_running_task->my_event;
     mcal::irq::enable_all();
 
     event_to_get = the_event;
@@ -82,15 +83,17 @@ void os::get_event(event_type& event_to_get)
   }
 }
 
-void os::clear_event(const event_type& event_mask_to_clear)
+void os::clear_event(const event_type& event_to_clear)
 {
   // Get the iterator of the control block of the running task.
   const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().cend())
   {
+    const volatile event_type event_clear_mask = static_cast<event_type>(~event_to_clear);
+
     mcal::irq::disable_all();
-    control_block_of_the_running_task->my_event &= event_type(~event_mask_to_clear);
+    control_block_of_the_running_task->my_event &= event_clear_mask;
     mcal::irq::enable_all();
   }
 }

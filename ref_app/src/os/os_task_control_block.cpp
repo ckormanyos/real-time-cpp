@@ -5,27 +5,27 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <os/os.h>
+#include <os/os_task_control_block.h>
 
 namespace
 {
   os::task_control_block::index_type& os_task_global_index()
   {
-    static os::task_control_block::index_type the_index = os::task_control_block::index_type();
+    static os::task_control_block::index_type the_index = static_cast<os::task_control_block::index_type>(0U);
 
     return the_index;
   }
 }
 
-os::task_control_block::task_control_block(const function_type i,
-                                           const function_type f,
-                                           const tick_type c,
-                                           const tick_type o) : my_init (i),
-                                                                my_func (f),
-                                                                my_cycle(c),
-                                                                my_timer(o),
-                                                                my_event(os::event_type(0U)),
-                                                                my_index(os_task_global_index())
+os::task_control_block::task_control_block(const function_type init,
+                                           const function_type func,
+                                           const tick_type cycle,
+                                           const tick_type offset) : my_init (init),
+                                                                     my_func (func),
+                                                                     my_cycle(cycle),
+                                                                     my_timer(offset),
+                                                                     my_event(os::event_type(0U)),
+                                                                     my_index(os_task_global_index())
 {
   ++os_task_global_index();
 }

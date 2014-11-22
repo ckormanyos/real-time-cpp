@@ -9,6 +9,7 @@
   #define _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
 
   #include <array>
+  #include <cstddef>
   #include <cstdint>
   #include <limits>
   #include <os/os.h>
@@ -44,17 +45,13 @@
       task_control_block();
       task_control_block& operator=(const task_control_block&);
 
-      friend void start_os   ();
-      friend void set_event  (const task_id_type, const event_type&);
-      friend void get_event  (event_type&);
-      friend void clear_event(const event_type&);
+      friend void os::start_os   ();
+      friend void os::set_event  (const task_id_type, const event_type&);
+      friend void os::get_event  (event_type&);
+      friend void os::clear_event(const event_type&);
     };
 
-    static_assert(OS_TASK_COUNT > 0U,
-                  "the task count must exceed zero");
-
-    static_assert(OS_TASK_COUNT == unsigned(task_id_end),
-                  "the task count must be identically equal to the highest task id");
+    static_assert(OS_TASK_COUNT > static_cast<std::size_t>(0U), "the task count must exceed zero");
 
     typedef const std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
@@ -65,8 +62,8 @@
     private:
       static task_list_type::const_iterator os_get_running_task_iterator();
 
-      friend void os::get_event  (os::event_type&);
-      friend void os::clear_event(const os::event_type&);
+      friend void os::get_event  (event_type&);
+      friend void os::clear_event(const event_type&);
     };
   }
 
