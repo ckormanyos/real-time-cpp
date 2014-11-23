@@ -70,20 +70,16 @@
         }
       }
 
-      dynamic_array(const dynamic_array& other) : N(other.size())
+      dynamic_array(const dynamic_array& other) : N    (other.size()),
+                                                  elems(allocator_type().allocate((std::max)(size_type(1U), N)))
       {
-        if(this != &other)
+        if(N > size_type(0U))
         {
-          elems = allocator_type().allocate((std::max)(size_type(1U), N));
-
-          if(N > size_type(0U))
-          {
-            std::copy(other.begin(), other.end(), begin());
-          }
-          else
-          {
-            elems[0U] = value_type();
-          }
+          std::copy(other.begin(), other.end(), begin());
+        }
+        else
+        {
+          elems[0U] = value_type();
         }
       }
 
@@ -137,23 +133,23 @@
       }
 
       // Iterator members:
-      iterator               begin()         { return elems; }
-      iterator               end()           { return elems + N; }
-      const_iterator         begin() const   { return elems; }
-      const_iterator         end() const     { return elems + N; }
-      const_iterator         cbegin() const  { return elems; }
-      const_iterator         cend() const    { return elems + N; }
-      reverse_iterator       rbegin()        { return reverse_iterator(elems + N); }
-      reverse_iterator       rend()          { return reverse_iterator(elems); }
-      const_reverse_iterator rbegin() const  { return const_reverse_iterator(elems + N); }
-      const_reverse_iterator rend() const    { return const_reverse_iterator(elems); }
+      iterator               begin  ()       { return elems; }
+      iterator               end    ()       { return elems + N; }
+      const_iterator         begin  () const { return elems; }
+      const_iterator         end    () const { return elems + N; }
+      const_iterator         cbegin () const { return elems; }
+      const_iterator         cend   () const { return elems + N; }
+      reverse_iterator       rbegin ()       { return reverse_iterator(elems + N); }
+      reverse_iterator       rend   ()       { return reverse_iterator(elems); }
+      const_reverse_iterator rbegin () const { return const_reverse_iterator(elems + N); }
+      const_reverse_iterator rend   () const { return const_reverse_iterator(elems); }
       const_reverse_iterator crbegin() const { return const_reverse_iterator(elems + N); }
-      const_reverse_iterator crend() const   { return const_reverse_iterator(elems); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
       // Size and capacity.
-      size_type size()     const { return N; }
+      size_type size    () const { return N; }
       size_type max_size() const { return N; }
-      bool      empty()    const { return false; }
+      bool      empty   () const { return false; }
 
       // Element access members.
       reference       operator[](const size_type i)       { return elems[i]; }
