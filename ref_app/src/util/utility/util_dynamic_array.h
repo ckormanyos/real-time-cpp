@@ -183,7 +183,7 @@
       const size_type N;
       pointer         elems;
 
-      // dynamic_array can not be copied.
+      // dynamic_array can not be copied with operator=().
       dynamic_array& operator=(const dynamic_array&);
     };
 

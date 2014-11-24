@@ -21,6 +21,7 @@ namespace app
 namespace
 {
   typedef util::timer<std::uint32_t> timer_type;
+
   timer_type app_led_timer(timer_type::seconds(1U));
 }
 

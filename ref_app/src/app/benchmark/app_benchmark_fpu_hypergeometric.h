@@ -194,7 +194,7 @@
         std::uint_fast16_t n;
 
         // Calculate the maximum number of iterations allowed.
-        const std::uint_fast16_t max_iteration = std::numeric_limits<T>::digits10 * 10;
+        const std::uint_fast16_t max_iteration = static_cast<std::uint_fast16_t>(std::numeric_limits<T>::digits10 * 10);
 
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {

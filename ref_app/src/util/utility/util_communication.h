@@ -18,14 +18,16 @@
     class communication
     {
     public:
-      typedef dynamic_array<std::uint8_t, util::ring_allocator<std::uint8_t> > data_type;
+      typedef dynamic_array<std::uint8_t, util::ring_allocator<std::uint8_t>> buffer_type;
+
+      typedef typename buffer_type::size_type size_type;
 
       virtual ~communication() { }
 
       virtual bool send(const std::uint8_t) = 0;
-      virtual bool send(const data_type&) = 0;
+      virtual bool send(const buffer_type&) = 0;
       virtual bool recv(std::uint8_t&) = 0;
-      virtual bool recv(data_type&) = 0;
+      virtual bool recv(buffer_type&) = 0;
       virtual std::size_t recv_ready() const = 0;
       virtual bool idle() const = 0;
 
