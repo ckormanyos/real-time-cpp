@@ -29,7 +29,7 @@ void crt::init_ram()
 {
   typedef std::uint16_t memory_aligned_type;
 
-  // Copy the data segment initializers from ROM to RAM.
+  // Copy the data segment initializers from rom-to-ram.
   // Note that all data segments are aligned by 2.
   const std::size_t size = std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
                                        - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
@@ -44,8 +44,12 @@ void crt::init_ram()
                   // Note that particular care needs to be taken to read program
                   // memory with the function mcal::cpu::read_program_memory().
 
-                  ram_destination = util::make_long(mcal::cpu::read_program_memory(rom_source),
-                                                    mcal::cpu::read_program_memory(rom_source + 1U));
+                  // Acquire the next 16-bit address of the rom-source.
+                  const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source + 0U);
+                  const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source + 1U);
+
+                  // Copy the data from the rom-source to the ram-destination.
+                  ram_destination = util::make_long(addr_lo, addr_hi);
 
                   rom_source += 2U;
                 });
