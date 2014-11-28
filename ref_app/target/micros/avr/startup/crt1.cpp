@@ -36,9 +36,9 @@ void crt::init_ctors()
     // Note that particular care needs to be taken to read program
     // memory with the function mcal::cpu::read_program_memory().
 
-    // Read the high byte and the low byte of the ctor function address.
-    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source - 1U);
+    // Acquire the next 16-bit ctor function address.
     const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source - 2U);
+    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source - 1U);
 
     // Create the address of the ctor function.
     const ctor_type::function_type ctor_function_address

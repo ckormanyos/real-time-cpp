@@ -5,6 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// Raspberry Pi bare-metal startup code.
+// Expressed with C++ for Raspberry Pi bare-metal by Chris.
+
 #include <cstdint>
 #include <mcal/mcal.h>
 

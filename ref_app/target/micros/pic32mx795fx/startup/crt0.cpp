@@ -6,8 +6,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Microchip(R) pic32mx795fx startup code
-// Switched to C++ and modified for pic32mx795fx by Chris.
+// Microchip(R) pic32mx795fx startup code.
+// Expressed with C++ for pic32mx795fx by Chris.
 
 #include <mcal/mcal.h>
 
@@ -61,7 +61,7 @@ asm volatile("__my_startup_entry:");
   asm volatile("li $t2, -1");
   asm volatile("mtc0 $t2, $11, 0");
 
-  // Set the ebase register to points to the interrupt vector table,
+  // Set the ebase register to point to the interrupt vector table,
   asm volatile("la $t1, _ebase_address");
   asm volatile("mtc0 $t1, $15, 1");
 
@@ -72,12 +72,12 @@ asm volatile("__my_startup_entry:");
   asm volatile("mtc0 $t2, $12, 1");
 
   // Set the cause register.
-  // Reset everything, set the iv-bit to enable vectored interrupts.
+  // Reset everything. Set the iv-bit to enable vectored interrupts.
   asm volatile("li $t1, 0x00800000");
   asm volatile("mtc0 $t1, $13, 0");
 
   // Set the status register.
-  // Reset everything set bev = 0 (enable vectored interrupts),
+  // Reset everything. Set bev = 0 (enable vectored interrupts).
   // Set ipl = 0 (lowest priority run mode).
   asm volatile("li $t1, 0");
   asm volatile("mtc0 $t1, $12, 0");

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// STM32 EABI Cortex-M3 startup code
-// Switched to C++ and modified for STM32F100 by Chris.
+// STM32 EABI ARM(R) Cortex-M3(TM) startup code.
+// Expressed with C++ for STM32F100 by Chris.
 
 #include <mcal/mcal.h>
 

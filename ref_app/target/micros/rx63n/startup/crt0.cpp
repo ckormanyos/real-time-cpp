@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Renesas RX63n startup code
-// Switched to C++ and modified for RX6300 by Chris.
+// Renesas RX63n startup code.
+// Expressed with C++ for RX6300 by Chris.
 
 #include <mcal/mcal.h>
 

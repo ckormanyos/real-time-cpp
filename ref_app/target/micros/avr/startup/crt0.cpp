@@ -6,7 +6,7 @@
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Completely written in C++ for Atmega328P by Chris.
+// Expressed with C++ for Atmega328P by Chris.
 
 #include <mcal/mcal.h>
 

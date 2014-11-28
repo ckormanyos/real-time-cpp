@@ -6,8 +6,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// AM335x ARM(R) A8 startup code
-// Written in C++ for BeagleBone by Chris.
+// TI AM3359 ARM(R) A8 (BeagleBone) startup code.
+// Expressed with C++ for TI AM3359 ARM(R) A8 (BeagleBone) by Chris.
 
 #include <mcal/mcal.h>
 

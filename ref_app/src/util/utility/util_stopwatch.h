@@ -24,10 +24,7 @@
 
       stopwatch(const stopwatch& other)
       {
-        if(this != &other)
-        {
-          my_start = other.my_start;
-        }
+        my_start = other.my_start;
       }
 
       ~stopwatch() { }

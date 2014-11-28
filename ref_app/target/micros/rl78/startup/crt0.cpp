@@ -6,7 +6,7 @@
 //
 
 // RL78 startup code.
-// Completely written in C++ for RL78 FG12 by Chris.
+// Expressed with C++ for RL78 FG12 by Chris.
 
 #include <mcal/mcal.h>
 
