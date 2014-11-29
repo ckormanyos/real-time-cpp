@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,8 +8,10 @@
 #ifndef _ARRAY_IMPL_2010_02_23_H_
   #define _ARRAY_IMPL_2010_02_23_H_
 
-  #include "xalgorithm_impl.h"
   #include "iterator_impl.h"
+  #include "tuple_impl.h"
+  #include "type_traits_impl.h"
+  #include "xalgorithm_impl.h"
 
   // Implement most of std::array for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 23.3.2.
@@ -151,6 +153,27 @@
                                x.end(),
                                y.begin());
     }
-  }
+
+    template<typename T>
+    class tuple_size;
+
+    template<class T, const std::size_t N>
+    class tuple_size<std::array<T, N>> : public std::integral_constant<std::size_t, N>
+    {
+    };
+
+    template<const std::size_t N, typename T>
+    class tuple_element;
+
+    template<const std::size_t I,
+             typename T,
+             const std::size_t N>
+    class tuple_element<I, std::array<T, N>>
+    {
+      static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
+
+      typedef T type;
+    };
+  } // namespace std
 
 #endif // _ARRAY_IMPL_2010_02_23_H_
