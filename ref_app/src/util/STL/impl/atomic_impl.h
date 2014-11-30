@@ -10,9 +10,9 @@
 
   // Implement just a little bit of the atomic library.
 
-  #include <stdint.h>
   #include <stddef.h>
-  #include "./avr/avr_atomic.h"
+  #include <stdint.h>
+  #include "avr/avr_atomic.h"
 
   namespace std
   {

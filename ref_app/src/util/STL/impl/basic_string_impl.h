@@ -12,12 +12,12 @@
   #pragma GCC system_header
   #endif
 
-  #include "xallocator_impl.h"
-  #include "xalgorithm_impl.h"
-  #include "memory_impl.h"
   #include "char_traits_impl.h"
-  #include "iterator_impl.h"
   #include "initializer_list_impl.h"
+  #include "iterator_impl.h"
+  #include "memory_impl.h"
+  #include "xalgorithm_impl.h"
+  #include "xallocator_impl.h"
 
   // Implement some of std::basic_string for compilers that do not yet support it.
 

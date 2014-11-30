@@ -34,9 +34,9 @@
 #ifndef _CHRONO_IMPL_2012_06_01_H_
   #define _CHRONO_IMPL_2012_06_01_H_
 
-  #include "limits_impl.h"
   #include "ctime_impl.h"
   #include "cstdint_impl.h"
+  #include "limits_impl.h"
   #include "ratio_impl.h"
 
   namespace std

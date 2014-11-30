@@ -102,7 +102,10 @@
       }
 
     private:
-      static void rangecheck(const size_type) { }
+      static void rangecheck(const size_type)
+      {
+        // Not implemented due to optimization goals.
+      }
     };
 
     template<typename T, size_t N>

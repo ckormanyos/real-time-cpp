@@ -8,11 +8,11 @@
 #ifndef _VECTOR_IMPL_2010_02_23_H_
   #define _VECTOR_IMPL_2010_02_23_H_
 
+  #include "initializer_list_impl.h"
+  #include "iterator_impl.h"
+  #include "memory_impl.h"
   #include "xalgorithm_impl.h"
   #include "xallocator_impl.h"
-  #include "memory_impl.h"
-  #include "iterator_impl.h"
-  #include "initializer_list_impl.h"
 
   // Implement some of std::vector for compilers that do not yet support it.
 

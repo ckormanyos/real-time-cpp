@@ -8,8 +8,8 @@
 #ifndef _XALGORITHM_IMPL_2010_02_23_H_
   #define _XALGORITHM_IMPL_2010_02_23_H_
 
-  #include "xiterator_impl.h"
   #include "cstddef_impl.h"
+  #include "xiterator_impl.h"
 
   // Implement helper functions for <algorithm>.
 
