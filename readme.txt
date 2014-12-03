@@ -108,7 +108,8 @@ A GNU GCC port with a relatively high level of C++11 awareness such as
 GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
 the reference application.
 
-The make-files are aware of the location of a default location of the
-respective tool chain. When using the reference application or designing
-a custom build, the root directory of the tool chain must be properly
-supplied to the makefiles.
+In the reference application, the makefiles are aware of a default location
+for the respective GCC tool chains. This location has been defined by me
+and it might not be where you want it to be. Therefore, when using the
+reference application or designing a custom build, the root directory of
+the tool chain must be properly supplied to the makefiles.
