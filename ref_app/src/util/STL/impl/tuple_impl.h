@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2010 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,6 +14,7 @@
 
   #include "cstddef_impl.h"
   #include "pair_impl.h"
+  #include "type_traits_impl.h"
   #include "xutils_impl.h"
 
   // Implement some of std::tuple for compilers that do not yet support it.
@@ -47,6 +48,7 @@
     {
     public:
       template<const std::size_t N, typename tuple_type> friend class xtuple::xtuple_get_helper;
+
       template<typename tuple_type> friend class xtuple::xtuple_size_helper;
 
       typedef tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple_type;
@@ -75,19 +77,20 @@
                                                t9 (p9),
                                                t10(p10) { }
 
-      tuple(const tuple_type& t) : t0(t.t0),
-                                   t1(t.t1),
-                                   t2(t.t2),
-                                   t3(t.t3),
-                                   t4(t.t4),
-                                   t5(t.t5),
-                                   t6(t.t6),
-                                   t7(t.t7),
-                                   t8(t.t8),
-                                   t9(t.t9),
+      tuple(const tuple_type& t) : t0 (t.t0),
+                                   t1 (t.t1),
+                                   t2 (t.t2),
+                                   t3 (t.t3),
+                                   t4 (t.t4),
+                                   t5 (t.t5),
+                                   t6 (t.t6),
+                                   t7 (t.t7),
+                                   t8 (t.t8),
+                                   t9 (t.t9),
                                    t10(t.t10) { }
 
-      template<typename U0, typename U1>
+      template<typename U0,
+               typename U1>
       tuple(const std::pair<U0, U1>& p) : t0 (p.first),
                                           t1 (p.second),
                                           t2 (T2 ()),
@@ -99,6 +102,8 @@
                                           t8 (T8 ()),
                                           t9 (T9 ()),
                                           t10(T10()) { }
+
+      ~tuple() { }
 
       template<typename U0,
                typename U1,
@@ -124,28 +129,40 @@
         t8  = T8 (t.t8);
         t9  = T9 (t.t9);
         t10 = T10(t.t10);
+
         return *this;
       }
 
-      template<typename U0, typename U1>
+      template<typename U0,
+               typename U1>
       tuple& operator=(const std::pair<U0, U1>& p)
       {
-        t0  = T0(p.first);
-        t1  = T1(p.second);
-        t2  = T2();
-        t3  = T3();
-        t4  = T4();
-        t5  = T5();
-        t6  = T6();
-        t7  = T7();
-        t8  = T8();
-        t9  = T9();
+        t0  = T0 (p.first);
+        t1  = T1 (p.second);
+        t2  = T2 ();
+        t3  = T3 ();
+        t4  = T4 ();
+        t5  = T5 ();
+        t6  = T6 ();
+        t7  = T7 ();
+        t8  = T8 ();
+        t9  = T9 ();
         t10 = T10();
         return *this;
       }
 
     private:
-      T0 t0; T1 t1; T2 t2; T3 t3; T4 t4; T5 t5; T6 t6; T7 t7; T8 t8; T9 t9; T10 t10;
+      T0  t0;
+      T1  t1;
+      T2  t2;
+      T3  t3;
+      T4  t4;
+      T5  t5;
+      T6  t6;
+      T7  t7;
+      T8  t8;
+      T9  t9;
+      T10 t10;
 
       typedef T0  type0;
       typedef T1  type1;
@@ -187,25 +204,24 @@
     MAKE_XTUPLE_GET_HELPER(9);
     MAKE_XTUPLE_GET_HELPER(10);
 
-    template<typename T> class xtuple_elem_size_helper                   { public: static const unsigned int value = 1U; };
-    template<>           class xtuple_elem_size_helper<xutils::xnothing> { public: static const unsigned int value = 0U; };
+    template<typename T> class xtuple_elem_size_helper                   { public: static constexpr std::size_t value = 1U; };
+    template<>           class xtuple_elem_size_helper<xutils::xnothing> { public: static constexpr std::size_t value = 0U; };
 
     template<typename tuple_type>
     class xtuple_size_helper
     {
     public:
-      static const unsigned int value =
-          xtuple_elem_size_helper<typename tuple_type::type0>::value
-        + xtuple_elem_size_helper<typename tuple_type::type1>::value
-        + xtuple_elem_size_helper<typename tuple_type::type2>::value
-        + xtuple_elem_size_helper<typename tuple_type::type3>::value
-        + xtuple_elem_size_helper<typename tuple_type::type4>::value
-        + xtuple_elem_size_helper<typename tuple_type::type5>::value
-        + xtuple_elem_size_helper<typename tuple_type::type6>::value
-        + xtuple_elem_size_helper<typename tuple_type::type7>::value
-        + xtuple_elem_size_helper<typename tuple_type::type8>::value
-        + xtuple_elem_size_helper<typename tuple_type::type9>::value
-        + xtuple_elem_size_helper<typename tuple_type::type10>::value;
+      static constexpr std::size_t value =   xtuple_elem_size_helper<typename tuple_type::type0>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type1>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type2>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type3>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type4>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type5>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type6>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type7>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type8>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type9>::value
+                                           + xtuple_elem_size_helper<typename tuple_type::type10>::value;
     };
   }
 
@@ -268,11 +284,47 @@
       typedef typename xtuple::xtuple_get_helper<N, tuple_type>::elem_type type;
     };
 
-    template<typename tuple_type>
+    template<const std::size_t N, typename tuple_type>
+    class tuple_element<N, const tuple_type>
+    {
+    public:
+      typedef typename tuple_element<N, const tuple_type>::type type;
+    };
+
+    template<const std::size_t N, typename tuple_type>
+    class tuple_element<N, volatile tuple_type>
+    {
+    public:
+      typedef typename tuple_element<N, volatile tuple_type>::type type;
+    };
+
+    template<const std::size_t N, typename tuple_type>
+    class tuple_element<N, const volatile tuple_type>
+    {
+    public:
+      typedef typename tuple_element<N, const volatile tuple_type>::type type;
+    };
+
+    template<class tuple_type>
     class tuple_size
     {
     public:
-      static const unsigned int value = xtuple::xtuple_size_helper<tuple_type>::value;
+      static constexpr std::size_t value = xtuple::xtuple_size_helper<tuple_type>::value;
+    };
+
+    template<class tuple_type>
+    class tuple_size<const tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
+    {
+    };
+
+    template<class tuple_type>
+    class tuple_size<volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
+    {
+    };
+
+    template<class tuple_type>
+    class tuple_size<const volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
+    {
     };
 
     template<typename T0,
@@ -298,8 +350,9 @@
                                                                   const T9&  p9  = T9 (),
                                                                   const T10& p10 = T10())
     {
-      return tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+      typedef tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>::tuple_type tuple_type;
+
+      return tuple_type(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
     }
   }
-
 #endif // _TUPLE_IMPL_2010_02_23_H_

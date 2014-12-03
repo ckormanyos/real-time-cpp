@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 #ifndef _ATOMIC_IMPL_2012_01_09_H_
   #define _ATOMIC_IMPL_2012_01_09_H_
 
-  // Implement just a little bit of the atomic library.
+  // Implement a small subset of the atomic library.
 
   #include <stddef.h>
   #include <stdint.h>
@@ -89,11 +89,6 @@
     template<> inline void atomic_store(atomic_char*   addr, atomic_char   val) { *addr = val; }
     template<> inline void atomic_store(atomic_schar*  addr, atomic_schar  val) { *addr = val; }
     template<> inline void atomic_store(atomic_uchar*  addr, atomic_uchar  val) { *addr = val; }
-    template<> inline void atomic_store(atomic_short*  addr, atomic_short  val) { *addr = val; }
-    template<> inline void atomic_store(atomic_ushort* addr, atomic_ushort val) { *addr = val; }
-    template<> inline void atomic_store(atomic_int*    addr, atomic_int    val) { *addr = val; }
-    template<> inline void atomic_store(atomic_uint*   addr, atomic_uint   val) { *addr = val; }
-
 
     template<typename atomic_integral_type>
     inline void atomic_store(volatile atomic_integral_type* addr, atomic_integral_type val)
@@ -106,10 +101,6 @@
     template<> inline void atomic_store(volatile atomic_char*   addr, atomic_char   val) { *addr = val; }
     template<> inline void atomic_store(volatile atomic_schar*  addr, atomic_schar  val) { *addr = val; }
     template<> inline void atomic_store(volatile atomic_uchar*  addr, atomic_uchar  val) { *addr = val; }
-    template<> inline void atomic_store(volatile atomic_short*  addr, atomic_short  val) { *addr = val; }
-    template<> inline void atomic_store(volatile atomic_ushort* addr, atomic_ushort val) { *addr = val; }
-    template<> inline void atomic_store(volatile atomic_int*    addr, atomic_int    val) { *addr = val; }
-    template<> inline void atomic_store(volatile atomic_uint*   addr, atomic_uint   val) { *addr = val; }
   }
 
 #endif // _ATOMIC_IMPL_2012_01_09_H_
