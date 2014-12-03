@@ -350,7 +350,7 @@
                                                                   const T9&  p9  = T9 (),
                                                                   const T10& p10 = T10())
     {
-      typedef tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>::tuple_type tuple_type;
+      typedef typename tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>::tuple_type tuple_type;
 
       return tuple_type(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
     }
