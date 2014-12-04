@@ -21,14 +21,14 @@
   // This implementation of tuple supports up to 11 template parameters.
   // Do not use variadic templates because they might not be supported either.
 
-  namespace xtuple
+  namespace xtuple_helper
   {
     template<const std::size_t N,
-             typename tuple_type>
-    class xtuple_get_helper;
+             typename xtuple_type>
+    class xget;
 
-    template<typename tuple_type>
-    class xtuple_size_helper;
+    template<typename xtuple_type>
+    class xsize;
   }
 
   namespace std
@@ -47,9 +47,12 @@
     class tuple
     {
     public:
-      template<const std::size_t N, typename tuple_type> friend class xtuple::xtuple_get_helper;
+      template<const std::size_t N,
+               typename xtuple_type>
+      friend class xtuple_helper::xget;
 
-      template<typename tuple_type> friend class xtuple::xtuple_size_helper;
+      template<typename xtuple_type>
+      friend class xtuple_helper::xsize;
 
       typedef tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple_type;
 
@@ -178,18 +181,18 @@
     };
   }
 
-  namespace xtuple
+  namespace xtuple_helper
   {
-    template<const std::size_t N, typename tuple_type>
-    class xtuple_get_helper { };
+    template<const std::size_t N, typename xtuple_type>
+    class xget { };
 
-    #define MAKE_XTUPLE_GET_HELPER(NUM)                                            \
-    template<typename tuple_type> class xtuple_get_helper<NUM, tuple_type>         \
-    {                                                                              \
-    public:                                                                        \
-      typedef typename tuple_type::type##NUM elem_type;                            \
-      static       elem_type& get      (      tuple_type& t) { return t.t##NUM ; } \
-      static const elem_type& get_const(const tuple_type& t) { return t.t##NUM ; } \
+    #define MAKE_XTUPLE_GET_HELPER(NUM)                                             \
+    template<typename xtuple_type> class xget<(NUM), xtuple_type>                   \
+    {                                                                               \
+    public:                                                                         \
+      typedef typename xtuple_type::type##NUM elem_type;                            \
+      static       elem_type& get      (      xtuple_type& t) { return t.t##NUM ; } \
+      static const elem_type& get_const(const xtuple_type& t) { return t.t##NUM ; } \
     }
 
     MAKE_XTUPLE_GET_HELPER(0);
@@ -207,82 +210,82 @@
     template<typename T> class xtuple_elem_size_helper                   { public: static constexpr std::size_t value = 1U; };
     template<>           class xtuple_elem_size_helper<xutils::xnothing> { public: static constexpr std::size_t value = 0U; };
 
-    template<typename tuple_type>
-    class xtuple_size_helper
+    template<typename xtuple_type>
+    class xsize
     {
     public:
-      static constexpr std::size_t value =   xtuple_elem_size_helper<typename tuple_type::type0>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type1>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type2>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type3>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type4>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type5>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type6>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type7>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type8>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type9>::value
-                                           + xtuple_elem_size_helper<typename tuple_type::type10>::value;
+      static constexpr std::size_t value =   xtuple_elem_size_helper<typename xtuple_type::type0>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type1>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type2>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type3>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type4>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type5>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type6>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type7>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type8>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type9>::value
+                                           + xtuple_elem_size_helper<typename xtuple_type::type10>::value;
     };
   }
 
   namespace std
   {
     template<const std::size_t N>
-    typename xtuple::xtuple_get_helper<N, tuple<> >::elem_type& get(tuple<>& t) { return xtuple::xtuple_get_helper<N, tuple<> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<> >::elem_type& get(tuple<>& t) { return xtuple_helper::xget<N, tuple<> >::get(t); }
     template<const std::size_t N, typename T0>
-    typename xtuple::xtuple_get_helper<N, tuple<T0> >::elem_type& get(tuple<T0>& t) { return xtuple::xtuple_get_helper<N, tuple<T0> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0> >::elem_type& get(tuple<T0>& t) { return xtuple_helper::xget<N, tuple<T0> >::get(t); }
     template<const std::size_t N, typename T0, typename T1>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1> >::elem_type& get(tuple<T0, T1>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1> >::elem_type& get(tuple<T0, T1>& t) { return xtuple_helper::xget<N, tuple<T0, T1> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2> >::elem_type& get(tuple<T0, T1, T2>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2> >::elem_type& get(tuple<T0, T1, T2>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3> >::elem_type& get(tuple<T0, T1, T2, T3>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3> >::elem_type& get(tuple<T0, T1, T2, T3>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4> >::elem_type& get(tuple<T0, T1, T2, T3, T4>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4> >::elem_type& get(tuple<T0, T1, T2, T3, T4>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::get(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
-    typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get(t); }
+    typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::elem_type& get(tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get(t); }
 
     template<const std::size_t N>
-    const typename xtuple::xtuple_get_helper<N, tuple<> >::elem_type& get(const tuple<>& t) { return xtuple::xtuple_get_helper<N, tuple<> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<>>::elem_type& get(const tuple<>& t) { return xtuple_helper::xget<N, tuple<>>::get_const(t); }
     template<const std::size_t N, typename T0>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0> >::elem_type& get(const tuple<T0>& t) { return xtuple::xtuple_get_helper<N, tuple<T0> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0>>::elem_type& get(const tuple<T0>& t) { return xtuple_helper::xget<N, tuple<T0>>::get_const(t); }
     template<const std::size_t N, typename T0, typename T1>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1> >::elem_type& get(const tuple<T0, T1>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1>>::elem_type& get(const tuple<T0, T1>& t) { return xtuple_helper::xget<N, tuple<T0, T1>>::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2> >::elem_type& get(const tuple<T0, T1, T2>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2>>::elem_type& get(const tuple<T0, T1, T2>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2>>::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3> >::elem_type& get(const tuple<T0, T1, T2, T3>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3>>::elem_type& get(const tuple<T0, T1, T2, T3>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4> >::elem_type& get(const tuple<T0, T1, T2, T3, T4>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4> >::elem_type& get(const tuple<T0, T1, T2, T3, T4>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> >::get_const(t); }
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
-    const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get_const(t); }
+    const typename xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple_helper::xget<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get_const(t); }
 
     template<const std::size_t N,
              typename tuple_type>
     class tuple_element
     {
     public:
-      typedef typename xtuple::xtuple_get_helper<N, tuple_type>::elem_type type;
+      typedef typename xtuple_helper::xget<N, tuple_type>::elem_type type;
     };
 
     template<const std::size_t N,
@@ -313,23 +316,17 @@
     class tuple_size
     {
     public:
-      static constexpr std::size_t value = xtuple::xtuple_size_helper<tuple_type>::value;
+      static constexpr std::size_t value = xtuple_helper::xsize<tuple_type>::value;
     };
 
     template<class tuple_type>
-    class tuple_size<const tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
-    {
-    };
+    class tuple_size<const tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
     template<class tuple_type>
-    class tuple_size<volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
-    {
-    };
+    class tuple_size<volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
     template<class tuple_type>
-    class tuple_size<const volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value>
-    {
-    };
+    class tuple_size<const volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
     template<typename T0,
              typename T1,
