@@ -8,6 +8,7 @@
 #ifndef _UTILITY_IMPL_2010_02_23_H_
   #define _UTILITY_IMPL_2010_02_23_H_
 
+  #include "cstddef_impl.h"
   #include "pair_impl.h"
   #include "tuple_impl.h"
 
@@ -16,14 +17,14 @@
   namespace std
   {
     template<int I, typename T1, typename T2>
-    inline typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::nonconstant_reference_type
+    typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::nonconstant_reference_type
     get(std::pair<T1, T2>& my_pair)
     {
       return (xpair::xpair_get_helper<I, std::pair<T1, T2> >::my_value(my_pair));
     }
 
     template<int I, typename T1, typename T2>
-    inline typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::constant_reference_type
+    typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::constant_reference_type
     get(const std::pair<T1, T2>& my_pair)
     {
       return (xpair::xpair_get_helper<I, std::pair<T1, T2> >::my_value(my_pair));
@@ -47,11 +48,11 @@
     class tuple_size<std::pair<T1, T2> >
     {
     public:
-      static const unsigned int value = 2;
+      static const std::size_t value = 2;
     };
 
     template<typename T1, typename T2>
-    inline void swap(std::pair<T1, T2>& left, std::pair<T1, T2>& right)
+    void swap(std::pair<T1, T2>& left, std::pair<T1, T2>& right)
     {
       const std::pair<T1, T2> tmp(left);
       left  = right;
@@ -59,43 +60,43 @@
     }
 
     template<typename T1, typename T2>
-    inline bool operator==(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator==(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return ((left.first == right.first) && (left.second == right.second));
     }
 
     template<typename T1, typename T2>
-    inline bool operator!=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator!=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return (!(left == right));
     }
 
     template<typename T1, typename T2>
-    inline bool operator<(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator<(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return (((left.first < right.first) || (!(right.first < left.first))) && (left.second < right.second));
     }
 
     template<typename T1, typename T2>
-    inline bool operator>(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator>(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return (right < left);
     }
 
     template<typename T1, typename T2>
-    inline bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return (!(right < left));
     }
 
     template<typename T1, typename T2>
-    inline bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
       return (!(left < right));
     }
 
     template<typename T1, typename T2>
-    inline std::pair<T1, T2> make_pair(T1 value1, T2 value2)
+    std::pair<T1, T2> make_pair(T1 value1, T2 value2)
     {
       return std::pair<T1, T2>(value1, value2);
     }

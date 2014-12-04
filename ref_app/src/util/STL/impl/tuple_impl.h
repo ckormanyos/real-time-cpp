@@ -277,32 +277,36 @@
     template<const std::size_t N, typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
     const typename xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::elem_type& get(const tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>& t) { return xtuple::xtuple_get_helper<N, tuple<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> >::get_const(t); }
 
-    template<const std::size_t N, typename tuple_type>
+    template<const std::size_t N,
+             typename tuple_type>
     class tuple_element
     {
     public:
       typedef typename xtuple::xtuple_get_helper<N, tuple_type>::elem_type type;
     };
 
-    template<const std::size_t N, typename tuple_type>
+    template<const std::size_t N,
+             typename tuple_type>
     class tuple_element<N, const tuple_type>
     {
     public:
-      typedef typename tuple_element<N, const tuple_type>::type type;
+      typedef typename std::add_const<typename std::tuple_element<N, tuple_type>::type>::type type;
     };
 
-    template<const std::size_t N, typename tuple_type>
+    template<const std::size_t N,
+             typename tuple_type>
     class tuple_element<N, volatile tuple_type>
     {
     public:
-      typedef typename tuple_element<N, volatile tuple_type>::type type;
+      typedef typename std::add_volatile<typename std::tuple_element<N, tuple_type>::type>::type type;
     };
 
-    template<const std::size_t N, typename tuple_type>
+    template<const std::size_t N,
+             typename tuple_type>
     class tuple_element<N, const volatile tuple_type>
     {
     public:
-      typedef typename tuple_element<N, const volatile tuple_type>::type type;
+      typedef typename std::add_cv<typename std::tuple_element<N, tuple_type>::type>::type type;
     };
 
     template<class tuple_type>
@@ -355,4 +359,5 @@
       return tuple_type(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
     }
   }
+
 #endif // _TUPLE_IMPL_2010_02_23_H_
