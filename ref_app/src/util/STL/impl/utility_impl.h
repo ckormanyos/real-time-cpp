@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,17 +17,17 @@
   namespace std
   {
     template<int I, typename T1, typename T2>
-    typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::nonconstant_reference_type
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::nonconstant_reference_type
     get(std::pair<T1, T2>& my_pair)
     {
-      return (xpair::xpair_get_helper<I, std::pair<T1, T2> >::my_value(my_pair));
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
     }
 
     template<int I, typename T1, typename T2>
-    typename xpair::xpair_get_helper<I, std::pair<T1, T2> >::constant_reference_type
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::constant_reference_type
     get(const std::pair<T1, T2>& my_pair)
     {
-      return (xpair::xpair_get_helper<I, std::pair<T1, T2> >::my_value(my_pair));
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
     }
 
     template<typename T1, typename T2>

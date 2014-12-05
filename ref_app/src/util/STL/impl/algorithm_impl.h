@@ -193,7 +193,7 @@
     template<typename T, std::size_t N>
     void xswap(T(&left)[N], T(&right)[N])
     {
-      xalgorithm::xswap(left, right);
+      xalgorithm::xswap_ranges(&left[0U], &left[N], &right[0U]);
     }
   }
 

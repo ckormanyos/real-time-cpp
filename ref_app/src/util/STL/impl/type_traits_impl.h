@@ -8,6 +8,13 @@
 #ifndef _TYPE_TRAITS_IMPL_2013_09_02_H_
   #define _TYPE_TRAITS_IMPL_2013_09_02_H_
 
+  #if defined(_MSC_VER)
+  #include <stddef.h>
+    typedef ::int16_t char16_t;
+    typedef ::int32_t char32_t;
+  #endif // _MSC_VER
+
+  #include "_stl_local_constexpr.h"
   #include "cstddef_impl.h"
   #include "limits_impl.h"
 
@@ -21,7 +28,7 @@
     {
       typedef template_value_type value_type;
 
-      static constexpr value_type value = the_value;
+      static STL_LOCAL_CONSTEXPR value_type value = the_value;
 
       typedef integral_constant<value_type, value> type;
 
@@ -34,11 +41,6 @@
     typedef integral_constant<bool, true>  true_type;
     typedef integral_constant<bool, false> false_type;
   }
-
-  #if defined(_MSC_VER)
-    typedef signed short char16_t;
-    typedef signed int   char32_t;
-  #endif
 
   namespace traits_helper
   {
@@ -85,16 +87,31 @@
     struct is_same<template_value_type1,
                    template_value_type1> : true_type { };
 
-    template<typename T> struct add_const    { typedef const T type; };
-    template<typename T> struct add_volatile { typedef volatile T type; };
-    template<typename T> struct add_cv       { typedef typename std::add_volatile<typename std::add_const<T>::type>::type type; };
+    template<typename T> struct remove_const                      { typedef T type; };
+    template<typename T> struct remove_const<const T>             { typedef T type; };
+    template<typename T> struct remove_volatile                   { typedef T type; };
+    template<typename T> struct remove_volatile<volatile T>       { typedef T type; }; 
+    template<typename T> struct remove_cv                         { typedef typename std::remove_volatile<typename std::remove_const<T>::type>::type type; };
+    template<typename T> struct remove_reference                  { typedef T type; };
+    template<typename T> struct remove_reference<T&>              { typedef T type; };
+    template<typename T> struct remove_reference<T&&>             { typedef T type; };
+    template<typename T> struct remove_pointer                    { typedef T type; };
+    template<typename T> struct remove_pointer<T*>                { typedef T type; };
+    template<typename T> struct remove_pointer<T* const>          { typedef T type; };
+    template<typename T> struct remove_pointer<T* volatile>       { typedef T type; };
+    template<typename T> struct remove_pointer<T* const volatile> { typedef T type; };
+    template<typename T> struct add_const                         { typedef const T type; };
+    template<typename T> struct add_volatile                      { typedef volatile T type; };
+    template<typename T> struct add_cv                            { typedef typename std::add_volatile<typename std::add_const<T>::type>::type type; };
+    template<typename T> struct add_pointer                       { typedef typename std::remove_reference<T>::type* type; };
 
-    template<typename T> struct remove_const                { typedef T type; };
-    template<typename T> struct remove_const<const T>       { typedef T type; };
-    template<typename T> struct remove_volatile             { typedef T type; };
-    template<typename T> struct remove_volatile<volatile T> { typedef T type; }; 
-    template<typename T> struct remove_cv                   { typedef typename std::remove_volatile<typename std::remove_const<T>::type>::type type; };
+    template<typename T> struct is_const                : std::false_type { };
+    template<typename T> struct is_const<const T>       : std::true_type  { };
+    template<typename T> struct is_volatile             : std::false_type { };
+    template<typename T> struct is_volatile<volatile T> : std::true_type  { };
 
+    template<typename T> struct is_signed         : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == true )> { };
+    template<typename T> struct is_unsigned       : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == false)> { };
     template<typename T> struct is_void           : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<T>::type>::value> { };
     template<typename T> struct is_null_pointer   : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<std::nullptr_t>::type>::value> { };
     template<typename T> struct is_integral       : traits_helper::is_integral      <typename remove_cv<T>::type> { };

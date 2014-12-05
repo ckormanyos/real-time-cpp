@@ -12,6 +12,7 @@
   #pragma GCC system_header
   #endif
 
+  #include "_stl_local_constexpr.h"
   #include "cstddef_impl.h"
 
   // Implement some of std::initializer_list for compilers that do not yet support it.
@@ -30,31 +31,31 @@
       typedef const T*    iterator;
       typedef const T*    const_iterator;
 
-      constexpr initializer_list() : data  (nullptr),
-                                     length(0U) { }
+      STL_LOCAL_CONSTEXPR initializer_list() : data  (nullptr),
+                                               length(0U) { }
 
-      constexpr size_type size() { return length; }
+      STL_LOCAL_CONSTEXPR size_type size() { return length; }
 
-      constexpr const_iterator begin() { return data; }
-      constexpr const_iterator end  () { return begin() + size(); }
+      STL_LOCAL_CONSTEXPR const_iterator begin() { return data; }
+      STL_LOCAL_CONSTEXPR const_iterator end  () { return begin() + size(); }
 
     private:
       iterator data;
       const size_type length;
 
-      constexpr initializer_list(const_iterator it, size_type len) : data  (it),
-                                                                     length(len) { }
+      STL_LOCAL_CONSTEXPR initializer_list(const_iterator it, size_type len) : data  (it),
+                                                                               length(len) { }
     };
 
     // Class-external begin and end of initializer_list<T>.
     template<typename T>
-    constexpr typename initializer_list<T>::const_iterator begin(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator begin(initializer_list<T> lst)
     {
       return lst.begin();
     }
 
     template<typename T>
-    constexpr typename initializer_list<T>::const_iterator end(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator end(initializer_list<T> lst)
     {
       return lst.end();
     }

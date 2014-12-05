@@ -8,6 +8,7 @@
 #ifndef _ARRAY_IMPL_2010_02_23_H_
   #define _ARRAY_IMPL_2010_02_23_H_
 
+  #include "_stl_local_constexpr.h"
   #include "iterator_impl.h"
   #include "tuple_impl.h"
   #include "type_traits_impl.h"
@@ -37,7 +38,7 @@
 
       value_type elems[N];
 
-      static constexpr size_type static_size = N;
+      static STL_LOCAL_CONSTEXPR size_type static_size = N;
 
       iterator begin() { return elems; }
       iterator end  () { return elems + N; }
@@ -161,7 +162,7 @@
     class tuple_size;
 
     template<class T, const std::size_t N>
-    class tuple_size<std::array<T, N>> : public std::integral_constant<std::size_t, N>
+    class tuple_size<std::array<T, N> > : public std::integral_constant<std::size_t, N>
     {
     };
 
@@ -171,7 +172,7 @@
     template<const std::size_t I,
              typename T,
              const std::size_t N>
-    class tuple_element<I, std::array<T, N>>
+    class tuple_element<I, std::array<T, N> >
     {
       static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
 

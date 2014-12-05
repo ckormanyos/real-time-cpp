@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,22 +25,70 @@
       first_type  first;
       second_type second;
 
-      pair() : first (T1()), second(T2()) { }
+      pair() : first(T1()), second(T2()) { }
 
-      pair(const first_type& t1, const second_type& t2) : first(t1), second(t2) { }
+      pair(const first_type& t1, const second_type& t2) : first (t1),
+                                                          second(t2) { }
 
-      template<typename U1, typename U2>
-      pair(const pair<U1, U2>& p) : first(T1(p.first)), second(T2(p.second)) { }
+      pair(const pair& other) : first (other.first),
+                                second(other.second) { }
+
+      template<typename other_type1,
+               typename other_type2>
+      pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
+                                                      second(T2(p.second)) { }
     };
-  }
-
-  namespace xpair
-  {
-    template<int I, typename T>
-    class xpair_get_helper { };
 
     template<typename T1, typename T2>
-    class xpair_get_helper<0, std::pair<T1, T2> >
+    bool operator==(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return (   (left.first  == right.first)
+              && (left.second == right.second));
+    }
+
+    template<typename T1, typename T2>
+    bool operator!=(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return (   (left.first  != right.first)
+              || (left.second != right.second));
+    }
+
+    template<typename T1, typename T2>
+    bool operator<(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return ((left.first < right.first)
+               ? true
+               : ((right.first < left.first)
+                   ? false
+                   : ((left.second < right.second) ? true : false)));
+    }
+
+    template<typename T1, typename T2>
+    bool operator<=(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return ((right < left) == false);
+    }
+
+    template<typename T1, typename T2>
+    bool operator>(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename T1, typename T2>
+    bool operator>=(const pair<T1, T2>& left, const pair<T1, T2>& right)
+    {
+      return ((left < right) == false);
+    }
+  }
+
+  namespace xpair_helper
+  {
+    template<int I, typename T>
+    class xget { };
+
+    template<typename T1, typename T2>
+    class xget<0, std::pair<T1, T2> >
     {
     public:
       typedef       T1& nonconstant_reference_type;
@@ -51,7 +99,7 @@
     };
 
     template<typename T1, typename T2>
-    class xpair_get_helper<1, std::pair<T1, T2> >
+    class xget<1, std::pair<T1, T2> >
     {
     public:
       typedef       T2& nonconstant_reference_type;

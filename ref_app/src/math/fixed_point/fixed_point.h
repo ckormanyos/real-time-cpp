@@ -70,9 +70,9 @@
     fixed_point(const unsigned int   n) : data(signed_value_type(n) << decimal_split)  { }
     fixed_point(const   signed long  n) : data(signed_value_type(n) << decimal_split)  { }
     fixed_point(const unsigned long  n) : data(signed_value_type(n) << decimal_split)  { }
-    fixed_point(const float&  f) : data(signed_value_type(f * decimal_split_value)) { }
-    fixed_point(const double& d) : data(signed_value_type(d * decimal_split_value)) { }
-    fixed_point(const fixed_point& fp) : data(fp.data) { }
+    fixed_point(const float&  f)        : data(signed_value_type(f * decimal_split_value)) { }
+    fixed_point(const double& d)        : data(signed_value_type(d * decimal_split_value)) { }
+    fixed_point(const fixed_point& fp)  : data(fp.data) { }
 
     template<typename other_signed_type>
     fixed_point(const fixed_point<other_signed_type>& other)
@@ -197,7 +197,7 @@
 
       if(a_is_larger)
       {
-        const unsigned_value_type half_a = a >> 1u;
+        const unsigned_value_type half_a = a >> 1U;
 
         while(temp < half_a)
         {

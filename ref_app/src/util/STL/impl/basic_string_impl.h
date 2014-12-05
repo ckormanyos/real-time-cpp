@@ -12,6 +12,7 @@
   #pragma GCC system_header
   #endif
 
+  #include "_stl_local_constexpr.h"
   #include "char_traits_impl.h"
   #include "initializer_list_impl.h"
   #include "iterator_impl.h"
@@ -42,7 +43,7 @@
       typedef std::reverse_iterator<iterator>          reverse_iterator;
       typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
-      static constexpr size_type npos = static_cast<size_type>(-1);
+      static STL_LOCAL_CONSTEXPR size_type npos = static_cast<size_type>(-1);
 
       basic_string() : my_first(allocator_type().allocate(1U)),
                        my_last (my_first)

@@ -1320,6 +1320,9 @@
     <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h">
       <Filter>src\util\STL_C++17_Compatibility</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\_stl_local_constexpr.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

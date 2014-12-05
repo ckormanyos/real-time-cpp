@@ -5,17 +5,18 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "../_stl_local_constexpr.h"
 #include "../limits_impl.h"
 
 namespace float_limits
 {
   // Use some GCC internal stuff here.
-  constexpr float       arm_nan_flt  = static_cast<float>(__builtin_nan(""));
-  constexpr float       arm_inf_flt  = static_cast<float>(__builtin_inf());
-  constexpr double      arm_nan_dbl  = __builtin_nan("");
-  constexpr double      arm_inf_dbl  = __builtin_inf();
-  constexpr long double arm_nan_ldbl = static_cast<long double>(__builtin_nan(""));
-  constexpr long double arm_inf_ldbl = static_cast<long double>(__builtin_inf());
+  STL_LOCAL_CONSTEXPR float       arm_nan_flt  = static_cast<float>(__builtin_nan(""));
+  STL_LOCAL_CONSTEXPR float       arm_inf_flt  = static_cast<float>(__builtin_inf());
+  STL_LOCAL_CONSTEXPR double      arm_nan_dbl  = __builtin_nan("");
+  STL_LOCAL_CONSTEXPR double      arm_inf_dbl  = __builtin_inf();
+  STL_LOCAL_CONSTEXPR long double arm_nan_ldbl = static_cast<long double>(__builtin_nan(""));
+  STL_LOCAL_CONSTEXPR long double arm_inf_ldbl = static_cast<long double>(__builtin_inf());
 }
 
 namespace std

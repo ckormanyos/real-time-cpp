@@ -8,6 +8,7 @@
 #ifndef _MEMORY_IMPL_2010_02_23_H_
   #define _MEMORY_IMPL_2010_02_23_H_
 
+  #include "_stl_local_constexpr.h"
   #include "cstddef_impl.h"
   #include "cstdint_impl.h"
 
@@ -27,7 +28,7 @@
       allocator_base() { }
 
       // The allocator's buffer size.
-      static constexpr size_type buffer_size = 4U;
+      static STL_LOCAL_CONSTEXPR size_type buffer_size = 4U;
 
       // The allocator's memory allocation.
       static void* do_allocate(const size_type size);

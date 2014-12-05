@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -48,6 +48,48 @@
         return (x < other.x);
       }
     };
+
+    template<typename x_type, typename y_type>
+    bool operator==(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return (   (left.x  == right.x)
+              && (left.y == right.y));
+    }
+
+    template<typename x_type, typename y_type>
+    bool operator!=(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return (   (left.x  != right.x)
+              || (left.y != right.y));
+    }
+
+    template<typename x_type, typename y_type>
+    bool operator<(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return ((left.x < right.x)
+               ? true
+               : ((right.x < left.x)
+                   ? false
+                   : ((left.y < right.y) ? true : false)));
+    }
+
+    template<typename x_type, typename y_type>
+    bool operator<=(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return ((right < left) == false);
+    }
+
+    template<typename x_type, typename y_type>
+    bool operator>(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename x_type, typename y_type>
+    bool operator>=(const point<x_type, y_type>& left, const point<x_type, y_type>& right)
+    {
+      return ((left < right) == false);
+    }
   }
 
 #endif // _UTIL_POINT_2008_11_22_H_
