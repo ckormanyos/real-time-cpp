@@ -10,9 +10,8 @@
 
   #include "cstddef_impl.h"
   #include "pair_impl.h"
-  #include "tuple_impl.h"
 
-  // Implement most of <utility> for compilers that do not yet support it.
+  // Implement some of <utility> for compilers that do not yet support it.
 
   namespace std
   {
@@ -68,13 +67,17 @@
     template<typename T1, typename T2>
     bool operator!=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return (!(left == right));
+      return ((left.first != right.first) || (left.second != right.second));
     }
 
     template<typename T1, typename T2>
     bool operator<(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return (((left.first < right.first) || (!(right.first < left.first))) && (left.second < right.second));
+      return ((left.first < right.first)
+               ? true
+               : ((right.first < left.first)
+                   ? false
+                   : ((left.second < right.second) ? true : false)));
     }
 
     template<typename T1, typename T2>
@@ -86,13 +89,13 @@
     template<typename T1, typename T2>
     bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return (!(right < left));
+      return ((right < left) == false);
     }
 
     template<typename T1, typename T2>
     bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return (!(left < right));
+      return ((left < right) == false);
     }
 
     template<typename T1, typename T2>

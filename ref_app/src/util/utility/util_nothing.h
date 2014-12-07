@@ -19,12 +19,12 @@
       nothing& operator=(const nothing&) { return *this; }
     };
 
-    bool operator==(const nothing&, const nothing&) { return true; }
-    bool operator!=(const nothing&, const nothing&) { return false; }
-    bool operator< (const nothing&, const nothing&) { return false; }
-    bool operator<=(const nothing&, const nothing&) { return false; }
-    bool operator> (const nothing&, const nothing&) { return false; }
-    bool operator>=(const nothing&, const nothing&) { return false; }
+    inline bool operator==(const nothing&, const nothing&) { return true; }
+    inline bool operator!=(const nothing&, const nothing&) { return false; }
+    inline bool operator< (const nothing&, const nothing&) { return false; }
+    inline bool operator<=(const nothing&, const nothing&) { return false; }
+    inline bool operator> (const nothing&, const nothing&) { return false; }
+    inline bool operator>=(const nothing&, const nothing&) { return false; }
   }
 
 #endif // _UTIL_NOTHING_2010_06_13_H_

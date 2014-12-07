@@ -12,7 +12,20 @@
 
   namespace xutils
   {
-    struct xnothing { };
+    struct xnothing
+    {
+      xnothing() { }
+      xnothing(const xnothing&) { }
+      ~xnothing() { }
+      xnothing& operator=(const xnothing&) { return *this; }
+    };
+
+    inline bool operator==(const xnothing&, const xnothing&) { return true; }
+    inline bool operator!=(const xnothing&, const xnothing&) { return false; }
+    inline bool operator< (const xnothing&, const xnothing&) { return false; }
+    inline bool operator<=(const xnothing&, const xnothing&) { return false; }
+    inline bool operator> (const xnothing&, const xnothing&) { return false; }
+    inline bool operator>=(const xnothing&, const xnothing&) { return false; }
   }
 
 #endif // _XUTILS_IMPL_2010_02_23_H_

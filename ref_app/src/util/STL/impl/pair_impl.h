@@ -10,7 +10,7 @@
 
   #include "cstddef_impl.h"
 
-  // Implement most of std::pair for compilers that do not yet support it.
+  // Implement some of std::pair for compilers that do not yet support it.
 
   namespace std
   {
@@ -38,48 +38,6 @@
       pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
                                                       second(T2(p.second)) { }
     };
-
-    template<typename T1, typename T2>
-    bool operator==(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return (   (left.first  == right.first)
-              && (left.second == right.second));
-    }
-
-    template<typename T1, typename T2>
-    bool operator!=(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return (   (left.first  != right.first)
-              || (left.second != right.second));
-    }
-
-    template<typename T1, typename T2>
-    bool operator<(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return ((left.first < right.first)
-               ? true
-               : ((right.first < left.first)
-                   ? false
-                   : ((left.second < right.second) ? true : false)));
-    }
-
-    template<typename T1, typename T2>
-    bool operator<=(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return ((right < left) == false);
-    }
-
-    template<typename T1, typename T2>
-    bool operator>(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return (right < left);
-    }
-
-    template<typename T1, typename T2>
-    bool operator>=(const pair<T1, T2>& left, const pair<T1, T2>& right)
-    {
-      return ((left < right) == false);
-    }
   }
 
   namespace xpair_helper
