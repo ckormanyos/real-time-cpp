@@ -155,6 +155,24 @@
         return *this;
       }
 
+      void swap(tuple& other)
+      {
+        if(this != &other)
+        {
+          const type0  tmp0 (t0 ); t0  = other.t0 ; other.t0  = tmp0 ;
+          const type1  tmp1 (t1 ); t1  = other.t1 ; other.t1  = tmp1 ;
+          const type2  tmp2 (t2 ); t2  = other.t2 ; other.t2  = tmp2 ;
+          const type3  tmp3 (t3 ); t3  = other.t3 ; other.t3  = tmp3 ;
+          const type4  tmp4 (t4 ); t4  = other.t4 ; other.t4  = tmp4 ;
+          const type5  tmp5 (t5 ); t5  = other.t5 ; other.t5  = tmp5 ;
+          const type6  tmp6 (t6 ); t6  = other.t6 ; other.t6  = tmp6 ;
+          const type7  tmp7 (t7 ); t7  = other.t7 ; other.t7  = tmp7 ;
+          const type8  tmp8 (t8 ); t8  = other.t8 ; other.t8  = tmp8 ;
+          const type9  tmp9 (t9 ); t9  = other.t9 ; other.t9  = tmp9 ;
+          const type10 tmp10(t10); t10 = other.t10; other.t10 = tmp10;
+        }
+      }
+
     private:
       T0  t0;
       T1  t1;
