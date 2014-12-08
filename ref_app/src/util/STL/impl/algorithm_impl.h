@@ -70,6 +70,27 @@
       xalgorithm::xfill_n(first, count, value);
     }
 
+    template<typename forward_iterator,
+             typename generator_type>
+    void generate(forward_iterator first, forward_iterator last, generator_type generator)
+    {
+      xalgorithm::xgenerate(first, last, generator);
+    }
+
+    template<typename output_iterator,
+             typename size_type,
+             typename generator_type>
+    output_iterator xgenerate_n(output_iterator first, size_type count, generator_type generator)
+    {
+      return xalgorithm::xgenerate_n(first, count, generator);
+    }
+
+    template<typename bidirectional_iterator>
+    void reverse(bidirectional_iterator first, bidirectional_iterator last)
+    {
+      xalgorithm::xreverse(first, last);
+    }
+
     template<typename input_iterator,
              typename output_iterator,
              typename binary_function_type>
