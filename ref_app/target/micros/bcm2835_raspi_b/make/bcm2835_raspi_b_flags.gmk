@@ -12,7 +12,8 @@
 GCC_VERSION   = 4.8.3
 GCC_TARGET    = arm-none-eabi
 
-TGT_CFLAGS    = -march=armv6zk                                 \
+TGT_CFLAGS    = -O2                                            \
+                -march=armv6zk                                 \
                 -mtune=arm1176jzf-s                            \
                 -marm                                          \
                 -mfloat-abi=soft                               \

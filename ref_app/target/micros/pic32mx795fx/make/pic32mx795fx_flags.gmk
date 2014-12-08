@@ -12,7 +12,8 @@
 GCC_VERSION = 4.9.0
 GCC_TARGET  = mips-sde-elf
 
-TGT_CFLAGS    = -mips32r2                                      \
+TGT_CFLAGS    = -O2                                            \
+                -mips32r2                                      \
                 -march=m4k                                     \
                 -EL                                            \
                 -mlong-calls                                   \

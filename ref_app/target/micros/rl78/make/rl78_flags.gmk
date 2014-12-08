@@ -12,7 +12,8 @@
 GCC_VERSION   = 4.8.2
 GCC_TARGET    = rl78-unknown-elf
 
-TGT_CFLAGS    = -mmul=none
+TGT_CFLAGS    = -O2                                            \
+                -mmul=none
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \

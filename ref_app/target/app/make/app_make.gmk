@@ -139,7 +139,6 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wdouble-promotion                \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -O2                               \
               -ffunction-sections               \
               -fdata-sections
 

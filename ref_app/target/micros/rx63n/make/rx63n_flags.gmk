@@ -12,15 +12,16 @@
 GCC_VERSION   = 4.9.0
 GCC_TARGET    = rx-unknown-elf
 
-TGT_CFLAGS    = -mcpu=RX610                       \
-                -mlittle-endian-data              \
-                -fpu                              \
-                -mno-pid                          \
-                -msave-acc-in-interrupts          \
+TGT_CFLAGS    = -O2                                            \
+                -mcpu=RX610                                    \
+                -mlittle-endian-data                           \
+                -fpu                                           \
+                -mno-pid                                       \
+                -msave-acc-in-interrupts                       \
                 -funsafe-math-optimizations
 
-#                -mrelax                           \
-#                -nofpu                            \
+#                -mrelax                                        \
+#                -nofpu                                         \
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
