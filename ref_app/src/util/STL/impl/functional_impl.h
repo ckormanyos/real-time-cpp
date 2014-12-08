@@ -113,6 +113,60 @@
 
       return std::unary_binder<function_type>(function, the_value);
     }
+
+    template<typename T>
+    struct equal_to
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left == right);
+      }
+    };
+
+    template<typename T>
+    struct not_equal_to
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left != right);
+      }
+    };
+
+    template<typename T>
+    struct less
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left < right);
+      }
+    };
+
+    template<typename T>
+    struct less_equal
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left <= right);
+      }
+    };
+
+    template<typename T>
+    struct greater
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left > right);
+      }
+    };
+
+    template<typename T>
+    struct greater_equal
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left >= right);
+      }
+    };
   }
 
 #endif // _FUNCTIONAL_IMPL_2013_08_30_H_

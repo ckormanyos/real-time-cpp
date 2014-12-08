@@ -22,9 +22,58 @@
     }
 
     template<typename compare_type, typename binary_predicate>
-    const compare_type& xmin(const compare_type& a, const compare_type& b, binary_predicate comp)
+    const compare_type& xmin(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
-      return (*comp)(a, b);
+      return (compare_function(b, a) ? b : a);
+    }
+
+    template<typename forward_iterator>
+    forward_iterator xmin_element(forward_iterator first, forward_iterator last)
+    {
+      forward_iterator the_minimum_iterator = first;
+
+      if(first == last)
+      {
+      }
+      else
+      {
+        ++first;
+
+        for( ; first != last; ++first)
+        {
+          if((*first) < (*the_minimum_iterator))
+          {
+            the_minimum_iterator = first;
+          }
+        }
+      }
+
+      return the_minimum_iterator;
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator xmin_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      forward_iterator the_minimum_iterator = first;
+
+      if(first == last)
+      {
+      }
+      else
+      {
+        ++first;
+
+        for( ; first != last; ++first)
+        {
+          if(compare_function(*first, *the_minimum_iterator))
+          {
+            the_minimum_iterator = first;
+          }
+        }
+      }
+
+      return the_minimum_iterator;
     }
 
     template<typename compare_type>
@@ -34,9 +83,58 @@
     }
 
     template<typename compare_type, typename binary_predicate>
-    const compare_type& xmax(const compare_type& a, const compare_type& b, binary_predicate comp)
+    const compare_type& xmax(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
-      return (*comp)(a, b);
+      return (compare_function(a, b) ? a : b);
+    }
+
+    template<class forward_iterator>
+    forward_iterator xmax_element(forward_iterator first, forward_iterator last)
+    {
+      forward_iterator the_maximum_iterator = first;
+
+      if(first == last)
+      {
+      }
+      else
+      {
+        ++first;
+
+        for( ; first != last; ++first)
+        {
+          if((*first) > (*the_maximum_iterator))
+          {
+            the_maximum_iterator = first;
+          }
+        }
+      }
+
+      return the_maximum_iterator;
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator xmax_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      forward_iterator the_maximum_iterator = first;
+
+      if(first == last)
+      {
+      }
+      else
+      {
+        ++first;
+
+        for( ; first != last; ++first)
+        {
+          if(compare_function(*the_maximum_iterator, *first))
+          {
+            the_maximum_iterator = first;
+          }
+        }
+      }
+
+      return the_maximum_iterator;
     }
 
     template <typename input_iterator1, typename input_iterator2>
@@ -400,9 +498,12 @@
     template<typename input_iterator1, typename input_iterator2>
     input_iterator2 xswap_ranges(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
-      for( ; first1 != last1; ++first1, ++first2)
+      while(first1 != last1)
       {
         xalgorithm::xiter_swap(first1, first2);
+
+        ++first1;
+        ++first2;
       }
 
       return first2;

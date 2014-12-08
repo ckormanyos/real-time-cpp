@@ -18,27 +18,55 @@
   namespace std
   {
     template<typename compare_type>
-    const compare_type& (max)(const compare_type& a, const compare_type& b)
-    {
-      return xalgorithm::xmax(a, b);
-    }
-
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate predicate)
-    {
-      return predicate(a, b);
-    }
-
-    template<typename compare_type>
     const compare_type& (min)(const compare_type& a, const compare_type& b)
     {
       return xalgorithm::xmin(a, b);
     }
 
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate predicate)
+    template<typename compare_type,
+             typename binary_predicate>
+    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
-      return predicate(a, b);
+      return xalgorithm::xmin(a, b, compare_function);
+    }
+
+    template<typename forward_iterator>
+    forward_iterator min_element(forward_iterator first, forward_iterator last)
+    {
+      return xalgorithm::xmin_element(first, last);
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator min_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      return xalgorithm::xmin_element(first, last, compare_function);
+    }
+
+    template<typename compare_type>
+    const compare_type& (max)(const compare_type& a, const compare_type& b)
+    {
+      return xalgorithm::xmax(a, b);
+    }
+
+    template<typename compare_type,
+             typename binary_predicate>
+    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    {
+      return xalgorithm::xmax(a, b, compare_function);
+    }
+
+    template<typename forward_iterator>
+    forward_iterator max_element(forward_iterator first, forward_iterator last)
+    {
+      return xalgorithm::xmax_element(first, last);
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator max_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      return xalgorithm::xmax_element(first, last, compare_function);
     }
 
     template <typename input_iterator1, typename input_iterator2>
