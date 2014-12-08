@@ -16,17 +16,17 @@
   {
     namespace const_functions
     {
-      template <class T>
+      template<typename T>
       inline constexpr T pow_imp(T val, std::int32_t n);
 
-      template <class T>
+      template<typename T>
       inline constexpr T pow_imp2(T val, std::int32_t n)
       {
         return ((std::int32_t(n & 1) != std::int32_t(1)) ? (pow_imp(val, n / 2) * pow_imp(val, n / 2)) * val
                                                          :  pow_imp(val, n / 2));
       }
 
-      template <class T>
+      template<typename T>
       inline constexpr T pow_imp(T val, std::int32_t n)
       {
         return ((n == 1) ? val
@@ -34,32 +34,32 @@
                                      : ((n == 3) ? val * val * val : pow_imp2(val, n))));
       }
 
-      template <class T>
+      template<typename T>
       inline constexpr T pow(T val, std::int32_t n)
       {
         return ((n < 0) ? 1 / pow_imp(val, -n)
                         : ((n == 0) ? 1 : pow_imp(val, n)));
       }
 
-      template <class T>
+      template<typename T>
       inline constexpr T log2_order(T x)
       {
         return ((x <= 1) ? 0 : 1 + log2_order(x / 2));
       }
 
-      template <class F1, class F2>
+      template<typename F1, typename F2>
       struct newton
       {
         static constexpr F1 f1 = {};
         static constexpr F2 f2 = {};
 
-        template <class T>
+        template<typename T>
         static constexpr T eval_once(T x, T target)
         {
           return x - (f1(x, target) / f2(x));
         }
 
-        template <class T>
+        template<typename T>
         static constexpr T eval_n(T x, T target, int n)
         {
           return ((n == 0) ? x
@@ -67,20 +67,20 @@
                                        : eval_once(eval_n(x, target, n - 1), target)));
         }
 
-        template <class T>
+        template<typename T>
         static constexpr T eval(T x, T target)
         {
           return eval_n(x, target, log2_order(std::numeric_limits<T>::digits));
         }
       };
 
-      template <class F1, class F2>
+      template<typename F1, typename F2>
       constexpr F1 newton<F1, F2>::f1;
 
-      template <class F1, class F2>
+      template<typename F1, typename F2>
       constexpr F2 newton<F1, F2>::f2;
 
-      template <class T>
+      template<typename T>
       struct sqrt_f1
       {
         inline constexpr T operator()(T x, T target)
@@ -89,7 +89,7 @@
         }
       };
 
-      template <class T>
+      template<typename T>
       struct sqrt_f2
       {
         inline constexpr T operator()(T x)
@@ -98,13 +98,13 @@
         }
       };
 
-      template <class T>
+      template<typename T>
       inline constexpr T sqrt_estimate(T x)
       {
         return pow(T(2), log2_order(x) / 2);
       }
 
-      template <class T>
+      template<typename T>
       inline constexpr T sqrt(T x)
       {
         //static_assert(x >= 0, "This function should only be called in a constexpr context!");

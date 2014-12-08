@@ -130,10 +130,10 @@
       return xalgorithm::xtransform(first, last, destination, function);
     }
 
-    template<class input_iterator1,
-             class input_iterator2,
-             class output_iterator,
-             class binary_function_type>
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename output_iterator,
+             typename binary_function_type>
     output_iterator transform(input_iterator1 first1,
                               input_iterator1 last1,
                               input_iterator2 first2,
@@ -191,7 +191,7 @@
       return xalgorithm::xcount(first, last, value);
     }
 
-    template<class input_iterator, class predicate_type>
+    template<typename input_iterator, typename predicate_type>
     typename iterator_traits<input_iterator>::difference_type count_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
       return xcount_if(first, last, predicate);

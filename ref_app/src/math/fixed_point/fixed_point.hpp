@@ -156,16 +156,16 @@
     template<> struct integer_type_helper<63U> { typedef std::int64_t exact_signed_type; typedef std::uint64_t exact_unsigned_type; };
     template<> struct integer_type_helper<64U> { typedef std::int64_t exact_signed_type; typedef std::uint64_t exact_unsigned_type; };
 
-    template<class integral_source_type,
-             class other_destination_type>
+    template<typename integral_source_type,
+             typename other_destination_type>
     other_destination_type convert_to(const integral_source_type& source)
     {
       return static_cast<other_destination_type>(source);
     }
 
-    template<class arithmetic_type,
+    template<typename arithmetic_type,
              const int radix_split,
-             class enable_type = void>
+             typename enable_type = void>
     struct radix_split_maker
     {
       static arithmetic_type value()
@@ -176,7 +176,7 @@
       }
     };
 
-    template<class arithmetic_type,
+    template<typename arithmetic_type,
              const int radix_split>
     struct radix_split_maker<arithmetic_type,
                              radix_split,
@@ -188,7 +188,7 @@
       }
     };
 
-    template<class arithmetic_type,
+    template<typename arithmetic_type,
              const int radix_split>
     struct radix_split_maker<arithmetic_type,
                              radix_split,
@@ -217,7 +217,7 @@
 
     negatable() : data() { }
 
-    template<class signed_integral_type>
+    template<typename signed_integral_type>
     negatable(const signed_integral_type& n,
               const typename std::enable_if<   std::is_same<char,       signed_integral_type>::value
                                             || std::is_same<short,      signed_integral_type>::value
@@ -226,7 +226,7 @@
                                             || std::is_same<long long,  signed_integral_type>::value
                                             || std::is_same<value_type, signed_integral_type>::value>::type* = nullptr) : data(n * radix_split_value<value_type>()) { }
 
-    template<class unsigned_integral_type>
+    template<typename unsigned_integral_type>
     negatable(const unsigned_integral_type& u,
               const typename std::enable_if<   std::is_same<unsigned char,      unsigned_integral_type>::value
                                             || std::is_same<unsigned short,     unsigned_integral_type>::value
@@ -234,7 +234,7 @@
                                             || std::is_same<unsigned long,      unsigned_integral_type>::value
                                             || std::is_same<unsigned long long, unsigned_integral_type>::value>::type* = nullptr) : data(value_type(u) << radix_split) { }
 
-    template<class floating_point_type>
+    template<typename floating_point_type>
     negatable(const floating_point_type& f,
               const typename std::enable_if<   std::is_same<float,       floating_point_type>::value
                                             || std::is_same<double,      floating_point_type>::value
@@ -545,7 +545,7 @@
     typedef typename detail::integer_type_helper<range * 1>::exact_unsigned_type unsigned_small_type;
     typedef typename detail::integer_type_helper<range * 2>::exact_unsigned_type unsigned_large_type;
 
-    template<class arithmetic_type>
+    template<typename arithmetic_type>
     static arithmetic_type radix_split_value()
     {
       return fixed_point::detail::radix_split_maker<arithmetic_type, radix_split>::value();
@@ -553,7 +553,7 @@
 
     struct nothing { };
 
-    template<class signed_integral_type>
+    template<typename signed_integral_type>
     negatable(const nothing&,
               const signed_integral_type& n,
               const typename std::enable_if<   std::is_same<char,       signed_integral_type>::value
@@ -563,7 +563,7 @@
                                             || std::is_same<long long,  signed_integral_type>::value
                                             || std::is_same<value_type, signed_integral_type>::value>::type* = nullptr) : data(n) { }
 
-    template<class unsigned_integral_type>
+    template<typename unsigned_integral_type>
     negatable(const nothing&,
               const unsigned_integral_type& u,
               const typename std::enable_if<   std::is_same<unsigned char,      unsigned_integral_type>::value

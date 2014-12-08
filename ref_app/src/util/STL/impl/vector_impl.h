@@ -63,7 +63,7 @@
         xalgorithm::xfill(my_first, my_last, value);
       }
 
-      template<class input_iterator>
+      template<typename input_iterator>
       vector(input_iterator first,
              input_iterator last,
              const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(static_cast<size_type>(std::distance(first, last)))),

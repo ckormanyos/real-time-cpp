@@ -101,7 +101,7 @@
         *my_last = static_cast<value_type>(0);
       }
 
-      template<class input_iterator>
+      template<typename input_iterator>
       basic_string(input_iterator first,
                    input_iterator last,
                    const allocator_type& a = allocator_type())

@@ -21,7 +21,7 @@
 
   namespace std
   {
-    template<class T>
+    template<typename T>
     class initializer_list
     {
     public:

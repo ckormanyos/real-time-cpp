@@ -88,7 +88,7 @@
       return (compare_function(a, b) ? a : b);
     }
 
-    template<class forward_iterator>
+    template<typename forward_iterator>
     forward_iterator xmax_element(forward_iterator first, forward_iterator last)
     {
       forward_iterator the_maximum_iterator = first;
@@ -261,7 +261,7 @@
       return result;
     }
 
-    template<class input_iterator1, class input_iterator2>
+    template<typename input_iterator1, typename input_iterator2>
     bool xequal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
     {
       while(first1 != last1)
@@ -362,7 +362,7 @@
       return count_value;
     }
 
-    template<class input_iterator, class predicate_type>
+    template<typename input_iterator, typename predicate_type>
     typename xiterator::xiterator_traits<input_iterator>::difference_type xcount_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
       typename xiterator::xiterator_traits<input_iterator>::difference_type count_value(0);

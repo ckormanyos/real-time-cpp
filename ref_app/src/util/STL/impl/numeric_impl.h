@@ -37,8 +37,8 @@
       return xnumeric::xinner_product(first1, last1, first2, val);
     }
 
-    template<class input_iterator,
-             class output_iterator>
+    template<typename input_iterator,
+             typename output_iterator>
     output_iterator partial_sum(input_iterator first, input_iterator last, output_iterator result)
     {
       return xnumeric::xpartial_sum(first, last, result);

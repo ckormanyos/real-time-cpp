@@ -14,7 +14,7 @@
   {
     #if defined(__GNUC__)
 
-      template <class T, const std::size_t N>
+      template<typename T, const std::size_t N>
       inline constexpr std::size_t countof(T(&c_array)[N])
       {
         static_assert(N > std::size_t(0U),
@@ -28,7 +28,7 @@
 
     #else
 
-      template <class T, const std::size_t N>
+      template<typename T, const std::size_t N>
       inline std::size_t countof(T(&c_array)[N])
       {
         static_assert(N > std::size_t(0U),

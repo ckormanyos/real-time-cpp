@@ -57,7 +57,7 @@
 
       explicit reverse_iterator(iterator_type x) : current(x) { }
 
-      template<class other>
+      template<typename other>
       reverse_iterator(const reverse_iterator<other>& u) : current(u.current) { }
 
       iterator_type base() const { return current; }
@@ -102,7 +102,7 @@
       }
     };
 
-    template<class input_iterator>
+    template<typename input_iterator>
     typename iterator_traits<input_iterator>::difference_type distance(input_iterator first, input_iterator last)
     {
       typedef typename iterator_traits<input_iterator>::difference_type distance_type;

@@ -332,20 +332,20 @@
       typedef typename std::add_cv<typename std::tuple_element<N, tuple_type>::type>::type type;
     };
 
-    template<class tuple_type>
+    template<typename tuple_type>
     class tuple_size
     {
     public:
       static STL_LOCAL_CONSTEXPR std::size_t value = xtuple_helper::xsize<tuple_type>::value;
     };
 
-    template<class tuple_type>
+    template<typename tuple_type>
     class tuple_size<const tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
-    template<class tuple_type>
+    template<typename tuple_type>
     class tuple_size<volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
-    template<class tuple_type>
+    template<typename tuple_type>
     class tuple_size<const volatile tuple_type> : public std::integral_constant<std::size_t, tuple_size<tuple_type>::value> { };
 
     template<typename T0,

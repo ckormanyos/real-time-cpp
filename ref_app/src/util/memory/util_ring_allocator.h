@@ -58,7 +58,7 @@
       typedef value_type*       pointer;
       typedef const value_type* const_pointer;
 
-      template <class U>
+      template<typename U>
       struct rebind { typedef ring_allocator<U> other; };
     };
 
@@ -76,10 +76,10 @@
 
       ring_allocator(const ring_allocator&) throw() { }
 
-      template <class U>
+      template <typename U>
       ring_allocator(const ring_allocator<U>&) throw() { }
 
-      template<class U> 
+      template<typename U> 
       struct rebind { typedef ring_allocator<U> other; };
 
       size_type max_size() const throw()

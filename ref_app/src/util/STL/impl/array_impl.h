@@ -161,7 +161,7 @@
     template<typename T>
     class tuple_size;
 
-    template<class T, const std::size_t N>
+    template<typename T, typename std::size_t N>
     class tuple_size<std::array<T, N> > : public std::integral_constant<std::size_t, N>
     {
     };

@@ -47,14 +47,14 @@
       template<typename Rep, typename Period>
       struct duration;
 
-      template<class ToDuration, class Rep, class Period>
+      template<typename ToDuration, typename Rep, typename Period>
       inline ToDuration duration_cast(const duration<Rep, Period>& d);
 
       template<typename Clock, typename Duration = typename Clock::duration>
       struct time_point;
 
       // duration_values
-      template<class _Rep>
+      template<typename _Rep>
       struct duration_values
       {
         static _Rep zero()  { return _Rep(0); }
@@ -64,7 +64,7 @@
 
       // TBD: Add more specializations of common_type here
       // common_type is in namespace std::chrono cause its usage is private here
-      template<class Tp, class Up>
+      template<typename Tp, typename Up>
       struct common_type
       { typedef Tp type; };   // default return is 1. param (Tp) if no specialization is found
 
@@ -129,11 +129,11 @@
 
         ~duration() { }
 
-        template <class Rep2>
+        template<typename Rep2>
         explicit duration(const Rep2& r)
          : rep_(static_cast<rep>(r)) { }
 
-        template <class Rep2, class Period2>
+        template<typename Rep2, typename Period2>
         duration(const duration<Rep2, Period2>& d)
          : rep_(duration_cast<duration>(d).count()) { }
 
@@ -194,7 +194,7 @@
 
 
       // non-member arithmetic
-      template<class Rep1, class Period1, class Rep2, class Period2>
+      template<typename Rep1, typename Period1, typename Rep2, typename Period2>
       inline const typename common_type<duration<Rep1, Period1>, duration<Rep2, Period2> >::type
       operator+(const duration<Rep1, Period1>& lhs,
                 const duration<Rep2, Period2>& rhs)
@@ -205,7 +205,7 @@
         return _ct(lhs) += rhs;
       }
 
-      template<class Rep1, class Period1, class Rep2, class Period2>
+      template<typename Rep1, typename Period1, typename Rep2, typename Period2>
       inline const typename common_type<duration<Rep1, Period1>, duration<Rep2, Period2> >::type
       operator-(const duration<Rep1, Period1>& lhs,
                 const duration<Rep2, Period2>& rhs)
@@ -323,7 +323,7 @@
       }
 
       // duration_cast implementation
-      template<class ToDuration, class CF, class CR, bool _NumIsOne = false, bool _DenIsOne = false>
+      template<typename ToDuration, typename CF, typename CR, bool _NumIsOne = false, bool _DenIsOne = false>
       struct _duration_cast_impl {
         template<typename Rep, typename Period>
         static const ToDuration _cast(const duration<Rep, Period>& d)
@@ -335,7 +335,7 @@
       };
 
       // duration_cast
-      template<class ToDuration, class Rep, class Period>
+      template<typename ToDuration, typename Rep, typename Period>
       inline ToDuration duration_cast(const duration<Rep, Period>& d)
       {
         typedef typename ToDuration::period _to_period;
@@ -347,7 +347,7 @@
         return _dc::_cast(d);
       }
 
-      template<class ToDuration, class CF, class CR>
+      template<typename ToDuration, typename CF, typename CR>
       struct _duration_cast_impl<ToDuration, CF, CR, true, true> {
         template<typename Rep, typename Period>
         static const ToDuration _cast(const duration<Rep, Period>& d)
@@ -356,7 +356,7 @@
         }
       };
 
-      template<class ToDuration, class CF, class CR>
+      template<typename ToDuration, typename CF, typename CR>
       struct _duration_cast_impl<ToDuration, CF, CR, true, false> {
         template<typename Rep, typename Period>
         static const ToDuration _cast(const duration<Rep, Period>& d)
@@ -365,7 +365,7 @@
         }
       };
 
-      template<class ToDuration, class CF, class CR>
+      template<typename ToDuration, typename CF, typename CR>
       struct _duration_cast_impl<ToDuration, CF, CR, false, true> {
         template<typename Rep, typename Period>
         static const ToDuration _cast(const duration<Rep, Period>& d)
@@ -415,7 +415,7 @@
         { }
 
         // conversions
-        template<class Duration2>
+        template<typename Duration2>
         time_point(const time_point<clock, Duration2>& t)
          : d_(t.time_since_epoch())
         { }
@@ -451,7 +451,7 @@
       }
 
       // time_point arithmetic
-      template<class Clock, class Dur1, class Rep2, class Period2>
+      template<typename Clock, typename Dur1, typename Rep2, typename Period2>
       inline time_point<Clock, typename common_type<Dur1, duration<Rep2, Period2> >::type>
       operator+(const time_point<Clock, Dur1>& lhs,
                 const duration<Rep2, Period2>& rhs)
@@ -462,7 +462,7 @@
         return _time_point(lhs) += rhs;
       }
 
-      template<class Rep1, class Period1, class Clock, class Dur2>
+      template<typename Rep1, typename Period1, typename Clock, typename Dur2>
       inline time_point<Clock, typename common_type<duration<Rep1, Period1>, Dur2>::type>
       operator+(const duration<Rep1, Period1>& lhs,
                 const time_point<Clock, Dur2>& rhs)
@@ -470,7 +470,7 @@
         return rhs + lhs;
       }
 
-      template<class Clock, class Dur1, class Rep2, class Period2>
+      template<typename Clock, typename Dur1, typename Rep2, typename Period2>
       inline time_point<Clock, typename common_type<Dur1, duration<Rep2, Period2> >::type>
       operator-(const time_point<Clock, Dur1>& lhs,
                 const duration<Rep2, Period2>& rhs)
@@ -478,7 +478,7 @@
         return lhs + (-rhs);
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline typename common_type<Dur1, Dur2>::type
       operator-(const time_point<Clock, Dur1>& lhs,
                 const time_point<Clock, Dur2>& rhs)
@@ -487,42 +487,42 @@
       }
 
       // time_point comparisons
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator==(const time_point<Clock, Dur1>& lhs,
                              const time_point<Clock, Dur2>& rhs)
       {
         return lhs.time_since_epoch() == rhs.time_since_epoch();
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator!=(const time_point<Clock, Dur1>& lhs,
                              const time_point<Clock, Dur2>& rhs)
       {
         return !(lhs == rhs);
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator<(const time_point<Clock, Dur1>& lhs,
                             const time_point<Clock, Dur2>& rhs)
       {
         return  lhs.time_since_epoch() < rhs.time_since_epoch();
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator<=(const time_point<Clock, Dur1>& lhs,
                              const time_point<Clock, Dur2>& rhs)
       {
         return !(rhs < lhs);
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator>(const time_point<Clock, Dur1>& lhs,
                             const time_point<Clock, Dur2>& rhs)
       {
         return rhs < lhs;
       }
 
-      template<class Clock, class Dur1, class Dur2>
+      template<typename Clock, typename Dur1, typename Dur2>
       inline bool operator>=(const time_point<Clock, Dur1>& lhs,
                              const time_point<Clock, Dur2>& rhs)
       {

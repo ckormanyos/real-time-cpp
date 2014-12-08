@@ -31,7 +31,7 @@
   {
 
   // helper functions
-  template<class T, T v>
+  template<typename T, T v>
   struct _integral_constant
   {
     static const T value = v;

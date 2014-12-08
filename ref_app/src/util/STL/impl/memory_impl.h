@@ -57,7 +57,7 @@
       typedef value_type*       pointer;
       typedef const value_type* const_pointer;
 
-      template <class U>
+      template<typename U>
       struct rebind { typedef allocator<U> other; };
     };
 
@@ -76,10 +76,10 @@
 
       allocator(const allocator&) throw() { }
 
-      template <class U>
+      template<typename U>
       allocator(const allocator<U>&) throw() { }
 
-      template<class U> 
+      template<typename U> 
       struct rebind { typedef allocator<U> other; };
 
       size_type max_size() const throw()
