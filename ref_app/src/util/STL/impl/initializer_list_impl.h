@@ -14,6 +14,7 @@
 
   #include "_stl_local_constexpr.h"
   #include "cstddef_impl.h"
+  #include "iterator_impl.h"
 
   // Implement some of std::initializer_list for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 18.9.
@@ -36,8 +37,8 @@
 
       STL_LOCAL_CONSTEXPR size_type size() { return length; }
 
-      STL_LOCAL_CONSTEXPR const_iterator begin() { return data; }
-      STL_LOCAL_CONSTEXPR const_iterator end  () { return begin() + size(); }
+      STL_LOCAL_CONSTEXPR const_iterator begin() const { return data; }
+      STL_LOCAL_CONSTEXPR const_iterator end  () const { return begin() + size(); }
 
     private:
       iterator data;
@@ -58,6 +59,24 @@
     STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator end(initializer_list<T> lst)
     {
       return lst.end();
+    }
+
+    // Class-external reverse-begin and reverse-end of initializer_list<T>.
+    // These are specified in C++14.
+    template<typename T>
+    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rbegin(initializer_list<T> lst)
+    {
+      typedef std::reverse_iterator<iterator> reverse_iterator_type;
+
+      return reverse_iterator_type(lst.end());
+    }
+
+    template<typename T>
+    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rend(initializer_list<T> lst)
+    {
+      typedef std::reverse_iterator<iterator> reverse_iterator_type;
+
+      return reverse_iterator_type(lst.begin());
     }
   }
 

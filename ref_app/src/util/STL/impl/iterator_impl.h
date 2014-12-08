@@ -57,8 +57,8 @@
 
       explicit reverse_iterator(iterator_type x) : current(x) { }
 
-      template<class Other>
-      reverse_iterator(const reverse_iterator<Other>& u) : current(u.current) { }
+      template<class other>
+      reverse_iterator(const reverse_iterator<other>& u) : current(u.current) { }
 
       iterator_type base() const { return current; }
 
@@ -127,8 +127,18 @@
     template <typename container_type> inline auto  end  (const container_type& c) -> decltype(c.end())    { return c.end(); }
     template <typename container_type> inline auto cend  (const container_type& c) -> decltype(c.cend())   { return c.cend(); }
 
+    template <typename container_type> inline auto  rbegin(      container_type& c) -> decltype(c.rbegin())  { return c.rbegin(); }
+    template <typename container_type> inline auto  rbegin(const container_type& c) -> decltype(c.rbegin())  { return c.rbegin(); }
+    template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
+    template <typename container_type> inline auto  rend  (      container_type& c) -> decltype(c.rend())    { return c.rend(); }
+    template <typename container_type> inline auto  rend  (const container_type& c) -> decltype(c.rend())    { return c.rend(); }
+    template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
+
     template <typename value_type, size_t N> inline value_type* begin(value_type(&c_array)[N]) { return &c_array[0U]; }
     template <typename value_type, size_t N> inline value_type* end  (value_type(&c_array)[N]) { return &c_array[N]; }
+
+    template <typename value_type, size_t N> inline value_type* rbegin(value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[N]); }
+    template <typename value_type, size_t N> inline value_type* rend  (value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[0U]); }
   }
 
 #endif // _ITERATOR_IMPL_2010_02_23_H_

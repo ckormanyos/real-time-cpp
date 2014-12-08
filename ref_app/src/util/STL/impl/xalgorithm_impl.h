@@ -95,6 +95,47 @@
       return last;
     }
 
+    template<typename forward_iterator, typename generator_type>
+    void xgenerate(forward_iterator first, forward_iterator last, generator_type generator)
+    {
+      while(first != last)
+      {
+        *first = generator();
+
+        ++first;
+      }
+    }
+
+    template<typename output_iterator, typename size_type, typename generator_type>
+    output_iterator xgenerate_n(output_iterator first, size_type count, generator_type generator)
+    {
+      for(size_type i = size_type(0); i < count; ++i)
+      {
+        *first = generator();
+
+        ++first;
+      }
+
+      return first;
+    }
+
+    template<typename input_iterator1, typename input_iterator2>
+    void xiter_swap(input_iterator1 left, input_iterator2 right);
+
+    template<typename bidirectional_iterator>
+    void xreverse(bidirectional_iterator first, bidirectional_iterator last)
+    {
+      --last;
+
+      while(first != last)
+      {
+        xiter_swap(first, last);
+
+        ++first;
+        --last;
+      }
+    }
+
     template<typename input_iterator,
              typename output_iterator,
              typename unary_operation>
@@ -324,7 +365,7 @@
     }
 
     template<typename swap_type>
-    void xswap(swap_type left, swap_type right)
+    void xswap(swap_type& left, swap_type& right)
     {
       if(&left != &right)
       {
@@ -347,7 +388,13 @@
     template<typename input_iterator1, typename input_iterator2>
     void xiter_swap(input_iterator1 left, input_iterator2 right)
     {
-      xalgorithm::xswap(*left, *right);
+      typedef typename xiterator::xiterator_traits<input_iterator1>::value_type left_type;
+      typedef typename xiterator::xiterator_traits<input_iterator2>::value_type right_type;
+
+      const left_type tmp(*left);
+
+      *left  = left_type (*right);
+      *right = right_type(tmp);
     }
 
     template<typename input_iterator1, typename input_iterator2>
