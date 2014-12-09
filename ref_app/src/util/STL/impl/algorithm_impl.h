@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
   #include "cstddef_impl.h"
   #include "xalgorithm_impl.h"
-  #include "iterator_impl.h"
+  #include "initializer_list_impl.h"
 
   // Implement some of <algorithm> for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 25.1.
@@ -43,6 +43,19 @@
       return xalgorithm::xmin_element(first, last, compare_function);
     }
 
+    template<typename T>
+    T (min)(std::initializer_list<T> il)
+    {
+      return *std::min_element(il.begin(), il.end());
+    }
+
+    template<typename T,
+             typename binary_predicate>
+    T (min)(std::initializer_list<T> il, binary_predicate compare_function)
+    {
+      return *std::min_element(il.begin(), il.end(), compare_function);
+    }
+
     template<typename compare_type>
     const compare_type& (max)(const compare_type& a, const compare_type& b)
     {
@@ -67,6 +80,19 @@
     forward_iterator max_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
     {
       return xalgorithm::xmax_element(first, last, compare_function);
+    }
+
+    template<typename T>
+    T (max)(std::initializer_list<T> il)
+    {
+      return *std::max_element(il.begin(), il.end());
+    }
+
+    template<typename T,
+             typename binary_predicate>
+    T (max)(std::initializer_list<T> il, binary_predicate compare_function)
+    {
+      return *std::max_element(il.begin(), il.end(), compare_function);
     }
 
     template <typename input_iterator1, typename input_iterator2>
@@ -108,7 +134,7 @@
     template<typename output_iterator,
              typename size_type,
              typename generator_type>
-    output_iterator xgenerate_n(output_iterator first, size_type count, generator_type generator)
+    output_iterator generate_n(output_iterator first, size_type count, generator_type generator)
     {
       return xalgorithm::xgenerate_n(first, count, generator);
     }

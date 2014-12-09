@@ -347,7 +347,9 @@
     template<typename input_iterator, typename T>
     typename xiterator::xiterator_traits<input_iterator>::difference_type xcount(input_iterator first, input_iterator last, const T& value)
     {
-      typename xiterator::xiterator_traits<input_iterator>::difference_type count_value(0);
+      typedef typename xiterator::xiterator_traits<input_iterator>::difference_type count_type;
+
+      count_type count_value(0);
 
       while(first != last)
       {
@@ -365,7 +367,9 @@
     template<typename input_iterator, typename predicate_type>
     typename xiterator::xiterator_traits<input_iterator>::difference_type xcount_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
-      typename xiterator::xiterator_traits<input_iterator>::difference_type count_value(0);
+      typedef typename xiterator::xiterator_traits<input_iterator>::difference_type count_type;
+
+      count_type count_value(0);
 
       while(first != last)
       {
