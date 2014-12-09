@@ -90,16 +90,29 @@ namespace
     mcal::reg::access<std::uint32_t,
                       std::uint32_t,
                       mcal::reg::rcc_cfgr,
-                      UINT32_C(0x00000002)>::reg_msk<UINT32_C(0x00000003)>();
+                      UINT32_C(2)>::reg_msk<UINT32_C(3)>();
 
-    std::uint32_t rcc_cfgr_sws_value = UINT32_C(0);
+/*
+    // Select the pll as the system clock source.
+    asm volatile("push {r1}");
+    asm volatile("push {r2}");
+    asm volatile("ldr r2, =0x40023808");
+    asm volatile("ldr r1, [r2]");
+    asm volatile("and r1, r1, #0xFFFFFFFC");
+    asm volatile("orr r1, r1, #0x00000002");
+    asm volatile("str r1, [r2]");
+    asm volatile("pop {r2}");
+    asm volatile("pop {r1}");
+*/
+
+    volatile std::uint32_t mcal_osc_rcc_cfgr = UINT32_C(0);
 
     // Wait until the pll is latched as the system clock source.
-    while(rcc_cfgr_sws_value != UINT32_C(0x00000008))
+    while(mcal_osc_rcc_cfgr != UINT32_C(0x00000008))
     {
-      rcc_cfgr_sws_value = mcal::reg::access<std::uint32_t,
-                                             std::uint32_t,
-                                             mcal::reg::rcc_cfgr>::reg_get() & UINT32_C(0x0000000C);
+      mcal_osc_rcc_cfgr = mcal::reg::access<std::uint32_t,
+                                            std::uint32_t,
+                                            mcal::reg::rcc_cfgr>::reg_get() & UINT32_C(0x0000000C);
     }
 
     // Now we have:
