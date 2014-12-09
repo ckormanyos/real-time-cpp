@@ -108,7 +108,7 @@
     template<typename output_iterator,
              typename size_type,
              typename generator_type>
-    output_iterator xgenerate_n(output_iterator first, size_type count, generator_type generator)
+    output_iterator generate_n(output_iterator first, size_type count, generator_type generator)
     {
       return xalgorithm::xgenerate_n(first, count, generator);
     }
