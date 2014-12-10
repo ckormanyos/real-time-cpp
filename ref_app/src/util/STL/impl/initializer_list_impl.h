@@ -48,7 +48,7 @@
                                                                                length(len) { }
     };
 
-    // Class-external begin and end of initializer_list<T>.
+    // Namespace std inline versions of begin and end of initializer_list<T>.
     template<typename T>
     STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator begin(initializer_list<T> lst)
     {
@@ -61,12 +61,12 @@
       return lst.end();
     }
 
-    // Class-external reverse-begin and reverse-end of initializer_list<T>.
+    // Namespace std inline versions of rbegin and rend of initializer_list<T>.
     // These are specified in C++14.
     template<typename T>
     STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rbegin(initializer_list<T> lst)
     {
-      typedef std::reverse_iterator<iterator> reverse_iterator_type;
+      typedef std::reverse_iterator<typename initializer_list<T>::const_iterator> reverse_iterator_type;
 
       return reverse_iterator_type(lst.end());
     }
@@ -74,7 +74,7 @@
     template<typename T>
     STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rend(initializer_list<T> lst)
     {
-      typedef std::reverse_iterator<iterator> reverse_iterator_type;
+      typedef std::reverse_iterator<typename initializer_list<T>::const_iterator> reverse_iterator_type;
 
       return reverse_iterator_type(lst.begin());
     }

@@ -223,25 +223,28 @@
     template<typename bidirectional_iterator>
     void xreverse(bidirectional_iterator first, bidirectional_iterator last)
     {
-      --last;
-
-      while(first != last)
+      if(first != last)
       {
-        xiter_swap(first, last);
-
-        ++first;
         --last;
+
+        while(first != last)
+        {
+          xiter_swap(first, last);
+
+          ++first;
+          --last;
+        }
       }
     }
 
     template<typename input_iterator,
              typename output_iterator,
              typename unary_operation>
-    output_iterator xtransform(input_iterator first, input_iterator last, output_iterator result, unary_operation unary_op)
+    output_iterator xtransform(input_iterator first, input_iterator last, output_iterator result, unary_operation unary_function)
     {
       for( ; first != last; ++first, ++result)
       {
-        *result = unary_op(*first);
+        *result = unary_function(*first);
       }
 
       return result;
@@ -251,11 +254,11 @@
              typename input_iterator2,
              typename output_iterator,
              typename binary_operation>
-    output_iterator xtransform(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, output_iterator result, binary_operation binary_op)
+    output_iterator xtransform(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, output_iterator result, binary_operation binary_function)
     {
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
-        *result = binary_op(*first1, *first2);
+        *result = binary_function(*first1, *first2);
       }
 
       return result;
@@ -266,16 +269,16 @@
     {
       while(first1 != last1)
       {
-        if(!(*first1 == *first2))
+        if((*first1) != (*first2))
         {
-          return false;
+          break;
         }
 
         ++first1;
         ++first2;
       }
 
-      return true;
+      return (first1 == last1);
     }
 
     template<typename iterator_type, typename function_type>
@@ -292,7 +295,7 @@
     template<typename iterator_type, typename function_type>
     bool xany_of(iterator_type first, iterator_type last, function_type function)
     {
-      while((first != last) && (!function(*first)))
+      while((first != last) && (function(*first) == false))
       {
         ++first;
       }
@@ -303,7 +306,7 @@
     template<typename iterator_type, typename function_type>
     bool xnone_of(iterator_type first, iterator_type last, function_type function)
     {
-      while((first != last) && (!function(*first)))
+      while((first != last) && (function(*first) == false))
       {
         ++first;
       }

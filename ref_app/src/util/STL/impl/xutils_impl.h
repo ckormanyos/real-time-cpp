@@ -12,7 +12,7 @@
 
   namespace xutils
   {
-    struct xnothing final
+    struct xnothing //final
     {
       xnothing() { }
       xnothing(const xnothing&) { }
