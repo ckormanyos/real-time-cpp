@@ -113,16 +113,14 @@
     template<typename T> struct is_signed         : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == true )> { };
     template<typename T> struct is_unsigned       : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == false)> { };
     template<typename T> struct is_void           : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<T>::type>::value> { };
- //   template<typename T> struct is_null_pointer   : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<std::nullptr_t>::type>::value> { };
+    template<typename T> struct is_null_pointer   : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<std::nullptr_t>::type>::value> { };
     template<typename T> struct is_integral       : traits_helper::is_integral      <typename remove_cv<T>::type> { };
     template<typename T> struct is_floating_point : traits_helper::is_floating_point<typename remove_cv<T>::type> { };
     template<typename T> struct is_arithmetic     : std::integral_constant          <bool,    std::is_integral      <T>::value
                                                                                            || std::is_floating_point<T>::value> { };
-/*
     template<typename T> struct is_fundamental    : std::integral_constant          <bool,    std::is_arithmetic    <T>::value
                                                                                            || std::is_void          <T>::value
                                                                                            || std::is_null_pointer  <T>::value> { };
-*/
     template<typename T> struct is_array          : std::false_type {};
     template<typename T> struct is_array<T[]>     : std::true_type  {};
     template<typename T, std::size_t N>

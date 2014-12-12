@@ -14,7 +14,7 @@
   {
     using ::size_t;
     using ::ptrdiff_t;
-    //using ::nullptr_t;
+    using ::nullptr_t;
   }
 
 #endif // _CSTDDEF_IMPL_2010_02_23_H_
