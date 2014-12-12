@@ -86,9 +86,6 @@
     <Filter Include="src\util\STD_LIBC">
       <UniqueIdentifier>{f42ecd88-8797-4165-aea9-3e049728b2b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\math\checksums\crypto_hash">
-      <UniqueIdentifier>{cf18ff88-1a05-4e7e-bd76-385efe1dcb47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\safety">
       <UniqueIdentifier>{a3dedf88-a5f5-4b86-8004-f8ccd0f98cd5}</UniqueIdentifier>
     </Filter>
@@ -136,6 +133,9 @@
     </Filter>
     <Filter Include="src\util\STL_C++17_Compatibility">
       <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\checksums\hash">
+      <UniqueIdentifier>{cf18ff88-1a05-4e7e-bd76-385efe1dcb47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -259,15 +259,6 @@
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_md5.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_sha1.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_sha256.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\stm32f100\mcal_safety_dram.cpp">
       <Filter>src\mcal\stm32f100</Filter>
     </ClCompile>
@@ -339,15 +330,6 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <Filter>src\util\STL\impl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_sha224.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_sha384.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crypto_hash\test_sha512.cpp">
-      <Filter>src\math\checksums\crypto_hash</Filter>
     </ClCompile>
     <ClCompile Include="src\app\led\app_runtime_measure.cpp">
       <Filter>src\app\led</Filter>
@@ -867,18 +849,6 @@
     <ClInclude Include="src\util\STL\impl\type_traits_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\crypto_hash_base.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\md5.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha1.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha256.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_safety_dram.h">
       <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
@@ -1008,20 +978,11 @@
     <ClInclude Include="src\util\STL\impl\xcmath_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha384.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\fixed_point\fixed_point.hpp">
       <Filter>src\math\fixed_point</Filter>
     </ClInclude>
     <ClInclude Include="src\os\os_debug_monitor_cfg.h">
       <Filter>src\os</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha224.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crypto_hash\sha512.h">
-      <Filter>src\math\checksums\crypto_hash</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\cstdbool_impl.h">
       <Filter>src\util\STL\impl</Filter>
@@ -1322,6 +1283,27 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\_stl_local_constexpr.h">
       <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_base.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\md5.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\sha1.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\sha224.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\sha256.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\sha384.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\sha512.h">
+      <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

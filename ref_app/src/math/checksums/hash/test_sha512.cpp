@@ -7,17 +7,17 @@
 
 #include <mcal/mcal.h>
 #include <os/os.h>
-#include <math/checksums/crypto_hash/sha256.h>
+#include <math/checksums/hash_base/sha512.h>
 
 namespace
 {
-  typedef sha256<std::uint8_t> sha256_type;
+  typedef sha512<std::uint8_t> sha512_type;
 
-  const std::uint32_t control_value = UINT32_C(0x5A59225B);
+  const std::uint64_t control_value = UINT64_C(0x3F7E0479733B7E33);
 
-  sha256_type the_sha256;
+  sha512_type the_sha512;
 
-  sha256_type::result_type_as_integral_values the_sha256_result_as_integral_values;
+  sha512_type::result_type_as_integral_values the_sha512_result_as_integral_values;
 }
 
 extern "C" int main()
@@ -25,11 +25,11 @@ extern "C" int main()
   // Initialize the Microcontroller Abstraction Layer.
   mcal::init();
 
-  the_sha256.process_data("creativity", sha256_type::count_type(10U));
+  the_sha512.process_data("creativity", sha512_type::count_type(10U));
 
-  the_sha256_result_as_integral_values = the_sha256.get_result_as_integral_values_and_finalize_the_state();
+  the_sha512_result_as_integral_values = the_sha512.get_result_as_integral_values_and_finalize_the_state();
 
-  const bool the_result_is_ok = (the_sha256_result_as_integral_values.front() == control_value);
+  const bool the_result_is_ok = (the_sha512_result_as_integral_values.front() == control_value);
 
   // Start the multitasking scheduler (and never return).
   if(the_result_is_ok)

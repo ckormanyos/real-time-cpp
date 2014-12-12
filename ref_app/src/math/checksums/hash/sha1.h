@@ -58,10 +58,10 @@
   #include <array>
   #include <cstddef>
   #include <functional>
-  #include "crypto_hash_base.h"
+  #include "hash_base.h"
 
   template <typename my_count_type>
-  class sha1 final : public crypto_hash_base
+  class sha1 final : public hash_base
   {
   public:
     typedef my_count_type                  count_type;
@@ -177,7 +177,7 @@
   }
 
   template <typename my_count_type>
-  sha1<my_count_type>::sha1(const sha1& other) : crypto_hash_base    (other),
+  sha1<my_count_type>::sha1(const sha1& other) : hash_base           (other),
                                                  message_length_total(other.message_length_total),
                                                  message_hash        (other.message_hash)
   {
@@ -188,7 +188,7 @@
   {
     if(this != &other)
     {
-      static_cast<void>(crypto_hash_base::operator=(other));
+      static_cast<void>(hash_base::operator=(other));
 
       message_length_total = other.message_length_total;
       message_hash         = other.message_hash;

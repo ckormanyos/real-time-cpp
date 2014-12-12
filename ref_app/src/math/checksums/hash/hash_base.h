@@ -5,27 +5,27 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CRYPTO_HASH_BASE_2013_09_05_H_
-  #define _CRYPTO_HASH_BASE_2013_09_05_H_
+#ifndef _HASH_BASE_2013_09_05_H_
+  #define _HASH_BASE_2013_09_05_H_
 
   #include <algorithm>
   #include <cstdint>
   #include <limits>
 
-  class crypto_hash_base
+  class hash_base
   {
   public:
-    virtual ~crypto_hash_base() { }
+    virtual ~hash_base() { }
 
   protected:
     bool                the_result_is_finalized;
     std::uint_least8_t  message_block_index;
 
-    crypto_hash_base();
+    hash_base();
 
-    crypto_hash_base(const crypto_hash_base& other);
+    hash_base(const hash_base& other);
 
-    crypto_hash_base& operator=(const crypto_hash_base& other);
+    hash_base& operator=(const hash_base& other);
 
     template<const std::uint_fast8_t digits_shift,
              typename arithmetic_type>
@@ -67,13 +67,13 @@
     static char convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase);
   };
 
-  crypto_hash_base::crypto_hash_base() : the_result_is_finalized(true),
-                                         message_block_index    (0U) { }
+  hash_base::hash_base() : the_result_is_finalized(true),
+                           message_block_index    (0U) { }
 
-  crypto_hash_base::crypto_hash_base(const crypto_hash_base& other) : the_result_is_finalized(other.the_result_is_finalized),
-                                                                      message_block_index    (other.message_block_index) { }
+  hash_base::hash_base(const hash_base& other) : the_result_is_finalized(other.the_result_is_finalized),
+                                                 message_block_index    (other.message_block_index) { }
 
-  crypto_hash_base& crypto_hash_base::operator=(const crypto_hash_base& other)
+  hash_base& hash_base::operator=(const hash_base& other)
   {
     the_result_is_finalized = other.the_result_is_finalized;
     message_block_index     = other.message_block_index;
@@ -81,7 +81,7 @@
     return *this;
   }
 
-  void crypto_hash_base::convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint32_t* out_begin)
+  void hash_base::convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint32_t* out_begin)
   {
     // Decodes the input (std::uint8_t) into the output (std::uint32_t).
     // This assumes that the length of the input is a multiple of 4.
@@ -101,7 +101,7 @@
                   });
   }
 
-  void crypto_hash_base::convert_uint8_input_to_uint32_output_reverse(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint32_t* out_begin)
+  void hash_base::convert_uint8_input_to_uint32_output_reverse(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint32_t* out_begin)
   {
     // Decodes the input (std::uint8_t) into the output (std::uint32_t).
     // This assumes that the length of the input is a multiple of 4.
@@ -121,7 +121,7 @@
                   });
   }
 
-  void crypto_hash_base::convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t* out_begin)
+  void hash_base::convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t* out_begin)
   {
     // Encodes the input (std::uint32_t) into the output (std::uint8_t).
     // This assumes that the length of the output is a multiple of 4.
@@ -141,7 +141,7 @@
                   });
   }
 
-    void crypto_hash_base::convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t* out_begin)
+    void hash_base::convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t* out_begin)
   {
     // Encodes the input (std::uint32_t) into the output (std::uint8_t).
     // This assumes that the length of the output is a multiple of 4.
@@ -162,7 +162,7 @@
   }
 
 
-  void crypto_hash_base::convert_uint8_input_to_uint64_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint64_t* out_begin)
+  void hash_base::convert_uint8_input_to_uint64_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint64_t* out_begin)
   {
     // Decodes the input (std::uint8_t) into the output (std::uint64_t).
     // This assumes that the length of the input is a multiple of 8.
@@ -186,7 +186,7 @@
                   });
   }
 
-  void crypto_hash_base::convert_uint8_input_to_uint64_output_reverse(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint64_t* out_begin)
+  void hash_base::convert_uint8_input_to_uint64_output_reverse(const std::uint8_t* in_begin, const std::uint8_t* in_end, std::uint64_t* out_begin)
   {
     // Decodes the input (std::uint8_t) into the output (std::uint64_t).
     // This assumes that the length of the input is a multiple of 8.
@@ -210,7 +210,7 @@
                   });
   }
 
-  void crypto_hash_base::convert_uint64_input_to_uint8_output(const std::uint64_t* in_begin, const std::uint64_t* in_end, std::uint8_t* out_begin)
+  void hash_base::convert_uint64_input_to_uint8_output(const std::uint64_t* in_begin, const std::uint64_t* in_end, std::uint8_t* out_begin)
   {
     // Encodes the input (std::uint64_t) into the output (std::uint8_t).
     // This assumes that the length of the output is a multiple of 8.
@@ -234,7 +234,7 @@
                   });
   }
 
-    void crypto_hash_base::convert_uint64_input_to_uint8_output_reverse(const std::uint64_t* in_begin, const std::uint64_t* in_end, std::uint8_t* out_begin)
+    void hash_base::convert_uint64_input_to_uint8_output_reverse(const std::uint64_t* in_begin, const std::uint64_t* in_end, std::uint8_t* out_begin)
   {
     // Encodes the input (std::uint64_t) into the output (std::uint8_t).
     // This assumes that the length of the output is a multiple of 8.
@@ -259,7 +259,7 @@
   }
 
 
-  void crypto_hash_base::convert_uint8_input_to_char8_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, char* out_begin)
+  void hash_base::convert_uint8_input_to_char8_output(const std::uint8_t* in_begin, const std::uint8_t* in_end, char* out_begin)
   {
     std::uint_least8_t j = static_cast<std::uint_least8_t>(0U);
 
@@ -277,7 +277,7 @@
                   });
   }
 
-  char crypto_hash_base::convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase)
+  char hash_base::convert_nibble4_to_char(const std::uint8_t& the_nibble, const bool use_uppercase)
   {
     char c;
 
@@ -299,4 +299,4 @@
     return c;
   }
 
-#endif // _CRYPTO_HASH_BASE_2013_09_05_H_
+#endif // _HASH_BASE_2013_09_05_H_

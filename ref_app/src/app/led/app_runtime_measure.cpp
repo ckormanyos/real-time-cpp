@@ -8,7 +8,7 @@
 
 #include <mcal/mcal.h>
 #include <util/utility/util_time.h>
-#include <math/checksums/crypto_hash/sha1.h>
+#include <math/checksums/hash/hash_base/sha1.h>
 
 namespace app
 {
