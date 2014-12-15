@@ -47,9 +47,6 @@
     <Filter Include="src\math\fixed_point">
       <UniqueIdentifier>{9e589103-0fd8-4fb0-b033-c9e37b055853}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\math\checksums">
-      <UniqueIdentifier>{8d4c06fe-330a-4369-94d8-b393bba2cc55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\math\constants">
       <UniqueIdentifier>{ac401e26-4242-43da-804a-937e5eb999a0}</UniqueIdentifier>
     </Filter>
@@ -67,9 +64,6 @@
     </Filter>
     <Filter Include="src\sys\start">
       <UniqueIdentifier>{41a9ec66-7b1d-45ca-b5d9-4195aa12cc5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\math\checksums\crc">
-      <UniqueIdentifier>{a36baf93-acde-4cdb-94ba-f6e4a0ddfb7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util\STL\impl">
       <UniqueIdentifier>{23ebb7b1-aefc-4dc7-bc7f-6c458cb95a7e}</UniqueIdentifier>
@@ -107,9 +101,6 @@
     <Filter Include="src\util\debug_monitor">
       <UniqueIdentifier>{2612fe47-889a-4ed8-934e-5f34a57797d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\app\benchmark">
-      <UniqueIdentifier>{0ed35e7b-a26d-4f85-955f-823e196ef1b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\rl78">
       <UniqueIdentifier>{f8af3f0f-5c80-41e7-88de-7809108140bd}</UniqueIdentifier>
     </Filter>
@@ -134,16 +125,10 @@
     <Filter Include="src\util\STL_C++17_Compatibility">
       <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\math\checksums\hash">
-      <UniqueIdentifier>{cf18ff88-1a05-4e7e-bd76-385efe1dcb47}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
       <Filter>src\app\led</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crc\crc.cpp">
-      <Filter>src\math\checksums\crc</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
       <Filter>src\mcal\avr</Filter>
@@ -364,15 +349,6 @@
     <ClCompile Include="src\mcal\rl78\mcal_wdg.cpp">
       <Filter>src\mcal\rl78</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_cpu.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_dsp.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_fpu.cpp">
-      <Filter>src\app\benchmark</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STL\impl\arm\arm_float_limits.cpp">
       <Filter>src\util\STL\impl\arm</Filter>
     </ClCompile>
@@ -545,9 +521,6 @@
     </ClInclude>
     <ClInclude Include="src\math\calculus\integral.h">
       <Filter>src\math\calculus</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crc\crc.h">
-      <Filter>src\math\checksums\crc</Filter>
     </ClInclude>
     <ClInclude Include="src\math\constants\constants.h">
       <Filter>src\math\constants</Filter>
@@ -1062,15 +1035,6 @@
     <ClInclude Include="src\mcal\rl78\mcal_benchmark.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h">
-      <Filter>src\app\benchmark</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_legendre.h">
-      <Filter>src\app\benchmark</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_bessel.h">
-      <Filter>src\app\benchmark</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f429\mcal_benchmark.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
@@ -1283,27 +1247,6 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\_stl_local_constexpr.h">
       <Filter>src\util\STL\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\hash_base.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\md5.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\sha1.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\sha224.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\sha256.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\sha384.h">
-      <Filter>src\math\checksums\hash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\sha512.h">
-      <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

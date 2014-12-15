@@ -15,55 +15,55 @@
 // runtime in the executable.
 
 extern "C"
-void* memset(void* s1, int c, size_t n)
+void* memset(void* dst, int c, size_t n)
 {
-  uint8_t* su1 = reinterpret_cast<uint8_t*>(s1);
+  uint8_t* the_dst = reinterpret_cast<uint8_t*>(dst);
 
   for( ; n > static_cast<size_t>(0U); --n)
   {
-    *su1 = static_cast<uint8_t>(c);
-    ++su1;
+    *the_dst = static_cast<uint8_t>(c);
+    ++the_dst;
   }
 
-  return s1;
+  return dst;
 }
 
 extern "C"
-void* memcpy(void* s1, const void* s2, size_t n)
+void* memcpy(void* dst, const void* src, size_t n)
 {
-        uint8_t* su1 = reinterpret_cast<      uint8_t*>(s1);
-  const uint8_t* su2 = reinterpret_cast<const uint8_t*>(s2);
+        uint8_t* the_dst = reinterpret_cast<      uint8_t*>(dst);
+  const uint8_t* the_src = reinterpret_cast<const uint8_t*>(src);
 
   for( ; n > static_cast<size_t>(0U); --n)
   {
-    *su1 = *su2;
-    ++su1;
-    ++su2;
+    *the_dst = *the_src;
+    ++the_dst;
+    ++the_src;
   }
 
-  return s1;
+  return dst;
 }
 
 extern "C"
-void* memmove(void* s1, const void* s2, size_t n)
+void* memmove(void* dst, const void* src, size_t n)
 {
   // The function memmove *does* work properly even when its operands overlap.
 
-        uint8_t* sc1 = reinterpret_cast<      uint8_t*>(s1);
-  const uint8_t* sc2 = reinterpret_cast<const uint8_t*>(s2);
+        uint8_t* the_dst = reinterpret_cast<      uint8_t*>(dst);
+  const uint8_t* the_src = reinterpret_cast<const uint8_t*>(src);
 
   // Check for a range overlap.
-  if((sc2 < sc1) && (sc1 < (sc2 + n)))
+  if((the_src < the_dst) && (the_dst < (the_src + n)))
   {
-    sc1 += n;
-    sc2 += n;
+    the_dst += n;
+    the_src += n;
 
     for( ; n > static_cast<size_t>(0U); --n)
     {
       // Perform a backwards copy.
-      --sc1;
-      --sc2;
-      *sc1 = *sc2;
+      --the_dst;
+      --the_src;
+      *the_dst = *the_src;
     }
   }
   else
@@ -71,11 +71,11 @@ void* memmove(void* s1, const void* s2, size_t n)
     for( ; n > static_cast<size_t>(0U); --n)
     {
       // Perform a forwards copy.
-      *sc1 = *sc2;
-      ++sc1;
-      ++sc2;
+      *the_dst = *the_src;
+      ++the_dst;
+      ++the_src;
     }
   }
 
-  return s1;
+  return dst;
 }

@@ -61,8 +61,8 @@
       reference operator[](const size_type i)             { return elems[i]; }
       const_reference operator[](const size_type i) const { return elems[i]; }
 
-      reference at(const size_type i)             { rangecheck(i); return elems[i]; }
-      const_reference at(const size_type i) const { rangecheck(i); return elems[i]; }
+      reference at(const size_type i)             { return elems[i]; }
+      const_reference at(const size_type i) const { return elems[i]; }
 
       reference front()             { return elems[0U]; }
       const_reference front() const { return elems[0U]; }
@@ -100,12 +100,6 @@
       void fill(const value_type& value)
       {
         xalgorithm::xfill_n(elems, N, value);
-      }
-
-    private:
-      static void rangecheck(const size_type)
-      {
-        // Not implemented due to optimization goals.
       }
     };
 

@@ -29,7 +29,7 @@ void __my_startup()
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
-  // Zero-clear non-initialized static RAM.
+  // Zero-clear default-initialized static RAM.
   crt::init_ram();
   mcal::wdg::secure::trigger();
 

@@ -177,15 +177,8 @@
     </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\benchmark\app_benchmark_cpu.cpp" />
-    <ClCompile Include="src\app\benchmark\app_benchmark_dsp.cpp" />
-    <ClCompile Include="src\app\benchmark\app_benchmark_fpu.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />
     <ClCompile Include="src\app\led\app_runtime_measure.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\math\checksums\crc\crc.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -651,22 +644,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_bessel.h" />
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_hypergeometric.h" />
-    <ClInclude Include="src\app\benchmark\app_benchmark_fpu_legendre.h" />
     <ClInclude Include="src\math\calculus\derivative.h" />
     <ClInclude Include="src\math\calculus\integral.h" />
-    <ClInclude Include="src\math\checksums\crc\crc.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\hash\hash_base.h" />
-    <ClInclude Include="src\math\checksums\hash\md5.h" />
-    <ClInclude Include="src\math\checksums\hash\sha1.h" />
-    <ClInclude Include="src\math\checksums\hash\sha224.h" />
-    <ClInclude Include="src\math\checksums\hash\sha256.h" />
-    <ClInclude Include="src\math\checksums\hash\sha384.h" />
-    <ClInclude Include="src\math\checksums\hash\sha512.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\constants\constant_functions.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />

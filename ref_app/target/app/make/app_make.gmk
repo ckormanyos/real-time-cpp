@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Copyright Christopher Kormanyos 2007 - 2014.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -79,7 +79,7 @@ LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 # ------------------------------------------------------------------------------
 # VPATH definition
 #
-# VPATH is required for the maker to find the C-/ASM-Source files.
+# VPATH is required for the maker to find the C/C++/ASM-Source files.
 # Extract the directory/module names from the file list with the dir
 # command and remove the duplicated directory names with the sort command.
 # FILES_PRJ is listed first to make sure that the source files in the project
