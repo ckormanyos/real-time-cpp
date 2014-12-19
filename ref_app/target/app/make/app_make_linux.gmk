@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# 
+#
 # Makefile
 #
 # Build file for the ref_app application using the GNU tools
@@ -10,6 +10,12 @@
 #
 # ------------------------------------------------------------------------------
 
+# generate more efficient code. GCC > 4.8
+USE_LTO = yes
+# generate small code, but slower
+OPTMIZE_SIZE = yes
+# store intermediate files: preprocessor output and assembler files
+SAVE_INTERMEDIATES = no
 
 # ------------------------------------------------------------------------------
 # paths
@@ -65,7 +71,8 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 AR        = $(GCC_TARGET)-ar
 CL        = $(GCC_TARGET)-g++
-CC        = $(GCC_TARGET)-g++
+CC        = $(GCC_TARGET)-gcc
+CXX       = $(GCC_TARGET)-g++
 OBJDUMP   = $(GCC_TARGET)-objdump
 OBJCOPY   = $(GCC_TARGET)-objcopy
 NM        = $(GCC_TARGET)-nm
@@ -76,23 +83,84 @@ ECHO      = echo
 MAKE      = make
 MKDIR     = mkdir
 SED       = sed
-
+RMDIR     = rm -rf
+RM        = rm
 
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
+# common inlcude directories
 C_INCLUDES = -I$(PATH_APP) -I$(PATH_APP)/mcal/$(TGT)
-GCCFLAGS   = $(C_INCLUDES) $(TGTFLAGS) -Wall -Wextra -pedantic -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-enforce-eh-specs -O3 -finline-functions -finline-limit=64
-CFLAGS     = $(GCCFLAGS) -x c
-CPPFLAGS   = $(GCCFLAGS) -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-LFLAGS     = $(GCCFLAGS) -x none -nostartfiles -nostdlib
 
+# Common flags for C and C++
+GCCFLAGS   = -Wall -Wextra -pedantic -gdwarf-2 \
+             -fno-use-cxa-atexit -fno-exceptions -fno-enforce-eh-specs \
+             -finline-functions -finline-limit=64 $(OPTIMIZE_SIZE_CFLAGS) \
+             $(LTO_CFLAGS)
+
+# C-Compiler flags only (gcc)!
+CFLAGS     = $(GCCFLAGS) $(TGT_CFLAGS)
+
+# C++-Compiler flags only (g++)!
+CXXFLAGS   = $(GCCFLAGS) $(TGT_CFLAGS) $(TGT_CXXFLAGS) -fno-rtti -fno-nonansi-builtins \
+             -fno-threadsafe-statics -fno-enforce-eh-specs
+
+# Assembler flags
+ASFLAGS    = $(TGT_MMCU) -x assembler-with-cpp
+
+# Preprocessor flags only (used in C and C++)
+CPPFLAGS   = $(C_INCLUDES) $(TGT_CPPFLAGS) $(DEFINES)
+
+# linker flags (if LTO should be used all CFLAGS must be provided here too)
+LDFLAGS    = -x none -nostartfiles -nostdlib -Wl,--relax -Wl,--gc-sections \
+             $(LTO_LDFLAGS) $(OPTIMIZE_SIZE_LDFLAGS) $(TGT_LDFLAGS)
+
+# flags for LST file generation
+GEN_LST_CXXFLAGS = -Wa,-adhlns=$(patsubst %.cpp,$(PATH_SRC)/%.lst,$(notdir $<))
+GEN_LST_CFLAGS = -Wa,-adhlns=$(patsubst %.c,$(PATH_SRC)/%.lst,$(notdir $<))
+GEN_LST_ASFLAGS = -Wa,-adhlns=$(patsubst %.s,$(PATH_SRC)/%.lst,$(notdir $<)),-gstabs,--listing-cont-lines=100
+
+# flags for dependency file generaton
+GEN_DEP_FLAGS = -MMD -MP -MF $(PATH_OBJ)/$(@F:.o=.d)
+
+SAVE_ERR = 2>&1 | tee $(PATH_ERR)/$(@F:.o=.err)
+
+# lto is available for most platforms using gcc.
+LTO_CFLAGS =
+LTO_LDFLAGS =
+ifeq ($(USE_LTO), yes)
+LTO_CFLAGS = -flto
+LTO_LDFLAGS = -flto $(CFLAGS)
+endif
+
+# remove unused sections, available for all nearly platforms using gcc
+ifeq ($(OPTMIZE_SIZE), yes)
+OPTIMIZE_SIZE_CFLAGS += -ffunction-sections -fdata-sections
+OPTIMIZE_SIZE_LDFLAGS += -Wl,--gc-sections
+# if gc is enabled some symbols must be guarded by 'used'
+# attribute. Otherwise they will be removed without a
+# notice. sys_start::main() is a candidate for 'used' attribute.
+DEFINES += -DDO_NOT_GC_THIS="__attribute__((used))"
+else
+DEFINES += -DDO_NOT_GC_THIS
+endif
+
+ifeq ($(SAVE_INTERMEDIATES), yes)
+GCCFLAGS += -save-temps=obj
+endif
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
 # ------------------------------------------------------------------------------
 .PHONY: all
-all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).elf
+all: mkdirs $(APP)_flash.hex $(APP)_nm.txt
+
+.PHONY: mkdirs
+mkdirs:
+	@-$(MKDIR) -p $(PATH_BIN)
+	@-$(MKDIR) -p $(PATH_OBJ)
+	@-$(MKDIR) -p $(PATH_ERR)
+	@-$(MKDIR) -p $(PATH_SRC)
 
 
 # ------------------------------------------------------------------------------
@@ -107,30 +175,17 @@ rebuild: clean_all all
 # ------------------------------------------------------------------------------
 .PHONY: clean_prj
 clean_prj:
-	@-$(ECHO) +++ cleaning project
-	@-$(MKDIR) -p $(PATH_BIN)
-	@-$(MKDIR) -p $(PATH_OBJ)
-	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
-	@-rm -r $(PATH_BIN)   > NUL  2> NUL
-	@-$(MKDIR) -p $(PATH_BIN)
+	$(RMDIR) $(PATH_BIN)
 
+.PHONY: clean
+clean:
+	$(RMDIR) $(PATH_OBJ) $(PATH_ERR) $(PATH_SRC)
 
 # ------------------------------------------------------------------------------
 # clean all
 # ------------------------------------------------------------------------------
 .PHONY: clean_all
-clean_all:
-	@-$(ECHO) +++ cleaning all
-	@-$(MKDIR) -p $(PATH_BIN)
-	@-$(MKDIR) -p $(PATH_OBJ)
-	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
-	@-rm -r $(PATH_OBJ)   > NUL  2> NUL
-	@-rm -r $(PATH_ERR)   > NUL  2> NUL
-	@-rm -r $(PATH_SRC)   > NUL  2> NUL
-	@-rm -r $(PATH_BIN)   > NUL  2> NUL
-	@-$(MKDIR) -p $(PATH_BIN)
+clean_all: clean_prj clean
 
 
 # ------------------------------------------------------------------------------
@@ -142,7 +197,7 @@ version:
 	@$(ECHO) GNUmake version...
 	@$(MAKE) --version
 	@$(ECHO) GCC version...
-	@$(CL) -v
+	@$(CC) -v
 
 
 # ------------------------------------------------------------------------------
@@ -150,7 +205,8 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(FILE_LDEF) $(FILES_O)
 	@-$(ECHO) +++ linking application: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(FILE_LDEF),-Map,$(APP).map$(LFLAGS_WL) -o $(APP).elf
+	$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(FILE_LDEF),-Map,$(APP).map$(LFLAGS_WL) \
+	-o $(APP).elf 2>&1 | tee $(APP).elf.err
 
 
 # ------------------------------------------------------------------------------
@@ -158,13 +214,13 @@ $(APP).elf : $(FILE_LDEF) $(FILES_O)
 # ------------------------------------------------------------------------------
 $(APP)_nm.txt : $(APP).elf
 	@-$(ECHO) +++ parsing symbols with nm: $(APP)_nm.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf > $(APP)_nm.txt
-	@-$(ECHO) +++ demangling symbols with c++filt: $(APP)_cppfilt.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf | $(CPPFILT) > $(APP)_cppfilt.txt
+	$(NM) --numeric-sort --print-size $(APP).elf > $(APP)_nm.txt
+	@-$(ECHO) +++ demangling symbols with nm -C: $(APP)_cppfilt.txt
+	$(NM) -C --numeric-sort --print-size $(APP).elf > $(APP)_cppfilt.txt
 	@-$(ECHO) +++ parsing symbols with readelf: $(APP)_readelf.txt
-	@-$(READELF) --syms $(APP).elf > $(APP)_readelf.txt
+	$(READELF) --syms $(APP).elf > $(APP)_readelf.txt
 	@-$(ECHO) +++ creating size summary table with size: $(APP)_size.txt
-	@-$(SIZE) -A -t $(APP).elf > $(APP)_size.txt
+	$(SIZE) -A -t $(APP).elf > $(APP)_size.txt
 
 
 # ------------------------------------------------------------------------------
@@ -172,9 +228,8 @@ $(APP)_nm.txt : $(APP).elf
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).elf
 	@-$(ECHO) +++ creating hex module: $(APP)_flash.hex
-	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
-	@-rm NUL
+	$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
+	$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
 
 
 # ------------------------------------------------------------------------------
@@ -184,11 +239,11 @@ $(APP)_flash.hex : $(APP).elf
 # If the files do not exist then the includes will be ignored.
 # ------------------------------------------------------------------------------
 ifneq ($(MAKECMDGOALS),rebuild)
--include $(subst .o,.d,$(FILES_O))       # for example Tmp/obj/SysStart.d, Tmp/obj/Hal.d, etc
+-include $(FILES_O:.o=.d)       # for example Tmp/obj/SysStart.d, Tmp/obj/Hal.d, etc
 endif
 
 
 # ------------------------------------------------------------------------------
 # include rules
 # ------------------------------------------------------------------------------
-include $(PATH_APP_MAKE)/app_rules.gmk
+include $(PATH_APP_MAKE)/app_rules_linux.gmk

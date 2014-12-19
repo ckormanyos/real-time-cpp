@@ -8,7 +8,9 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-extern "C" int main()
+extern "C" int main() DO_NOT_GC_THIS;
+
+int main()
 {
   // Initialize the microcontroller abstraction layer.
   mcal::init();

@@ -1,0 +1,42 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+#
+# Rules.gmk
+#
+# Generic pattern rules
+#
+# Based on GNU Make 3.81
+#
+# 07-April-2010
+#
+# ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+# Rule to compile C++ source file (*.cpp) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+$(PATH_OBJ)/%.o : %.cpp
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(GEN_DEP_FLAGS) $(GEN_LST_CXXFLAGS) $< -o $@ \
+	$(SAVE_ERR)
+
+
+# ------------------------------------------------------------------------------
+# Rule to compile C source file (*.c) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+$(PATH_OBJ)/%.o : %.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(GEN_DEP_FLAGS) $(GEN_LST_CFLAGS) $< -o $@ \
+	$(SAVE_ERR)
+
+# ------------------------------------------------------------------------------
+# Rule to assemble source file (*.s) to object file (*.o).
+# ------------------------------------------------------------------------------
+$(PATH_OBJ)/%.o : %.s
+	$(CC) -c $(CPPFLAGS) $(ASFLAGS) $(GEN_LST_ASFLAGS) $< -o $@ $(SAVE_ERR)
