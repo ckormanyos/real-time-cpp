@@ -19,9 +19,9 @@ Supported Targets in the Reference Application
 The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
-  * ST microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
-  * ST microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
-  * ST microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
+  * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
+  * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
+  * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
   * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
@@ -75,6 +75,10 @@ The program toggles the yellow LED on portb.5.
 The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portc.8.
+
+The first ARM(R) Cortex(TM)-M4 configuration (called "target stm32f407") runs on
+the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
+The program toggles the blue LED on portd.15.
 
 The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
