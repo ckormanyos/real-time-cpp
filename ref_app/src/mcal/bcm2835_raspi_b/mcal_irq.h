@@ -34,9 +34,8 @@
       void enable_all ();
       void disable_all();
 
-      struct secure
+      class secure final
       {
-      private:
         static void int_vect_undef_instr_handler_callback   ();
         static void int_vect_sw_interrupt_handler_callback  ();
         static void int_vect_prefetch_abort_handler_callback();

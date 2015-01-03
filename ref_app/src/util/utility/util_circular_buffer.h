@@ -14,6 +14,9 @@
 
   namespace util
   {
+    // TBD: We need to define a custom iterator class in order
+    // to provide proper iterator support for circular_buffer.
+
     template<typename T,
              const std::size_t N>
     class circular_buffer
@@ -37,14 +40,10 @@
         out_ptr += the_count;
       }
 
-      circular_buffer(const circular_buffer& other)
+      circular_buffer(const circular_buffer& other) : in_ptr (other.in_ptr),
+                                                      out_ptr(other.out_ptr)
       {
-        if(this != &other)
-        {
-          in_ptr   (other.in_ptr);
-          out_ptr  (other.out_ptr);
-          std::copy(other.buffer, other.buffer + N, buffer);
-        }
+        std::copy(other.buffer, other.buffer + N, buffer);
       }
 
       circular_buffer& operator=(const circular_buffer& other)

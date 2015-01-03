@@ -57,9 +57,8 @@
 
     extern const task_list_type& task_list();
 
-    struct secure
+    class secure final
     {
-    private:
       static task_list_type::const_iterator os_get_running_task_iterator();
 
       friend void os::get_event  (event_type&);

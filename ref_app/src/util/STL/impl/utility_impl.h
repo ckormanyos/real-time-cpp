@@ -10,6 +10,7 @@
 
   #include "cstddef_impl.h"
   #include "pair_impl.h"
+  #include "tuple_impl.h"
 
   // Implement some of <utility> for compilers that do not yet support it.
 
@@ -29,15 +30,18 @@
       return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
     }
 
+    template<std::size_t I, typename T>
+    class tuple_element;
+
     template<typename T1, typename T2>
-    class tuple_element<0, std::pair<T1, T2> >
+    class tuple_element<0U, std::pair<T1, T2> >
     {
     public:
       typedef T1 type;
     };
 
     template<typename T1, typename T2>
-    class tuple_element<1, std::pair<T1, T2> >
+    class tuple_element<1U, std::pair<T1, T2> >
     {
     public:
       typedef T2 type;

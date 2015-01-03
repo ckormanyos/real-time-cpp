@@ -16,7 +16,7 @@
                typename register_value_type,
                const register_address_type address,
                const register_value_type value = static_cast<register_value_type>(0)>
-      struct access
+      struct access final
       {
         static void     reg_set() { *reinterpret_cast<volatile register_value_type*>(address)  = value; }
         static void     reg_and() { *reinterpret_cast<volatile register_value_type*>(address) &= value; }

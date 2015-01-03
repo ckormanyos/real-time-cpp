@@ -18,9 +18,8 @@
 
       inline void init(const config_type*) { }
 
-      class secure
+      class secure final
       {
-      private:
         static void trigger();
 
         friend void ::sys::idle::task_func();

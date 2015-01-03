@@ -14,7 +14,7 @@
     {
       template<typename register_address_type,
                typename register_value_type>
-      struct dynamic_access
+      struct dynamic_access final
       {
         static register_value_type
                     reg_get(const register_address_type address) { return *reinterpret_cast<volatile register_value_type*>(address); }

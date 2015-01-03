@@ -217,9 +217,6 @@
       return first;
     }
 
-    template<typename input_iterator1, typename input_iterator2>
-    void xiter_swap(input_iterator1 left, input_iterator2 right);
-
     template<typename bidirectional_iterator>
     void xreverse(bidirectional_iterator first, bidirectional_iterator last)
     {
@@ -229,7 +226,12 @@
 
         while(first != last)
         {
-          xiter_swap(first, last);
+          typedef typename xiterator::xiterator_traits<bidirectional_iterator>::value_type value_type;
+
+          const value_type tmp(*first);
+
+          *first  = *last;
+          *last   = tmp;
 
           ++first;
           --last;
@@ -476,7 +478,7 @@
       {
         const swap_type tmp = left;
 
-        left = right;
+        left  = right;
         right = tmp;
       }
     }
@@ -484,9 +486,15 @@
     template<typename swap_type, std::size_t N>
     void xswap(swap_type(&left)[N], swap_type(&right)[N])
     {
-      for(std::size_t i = static_cast<std::size_t>(0U); i < N; ++i)
+      if(&left[0U] != &right[0U])
       {
-        xswap(left[i], right[i]);
+        for(std::size_t i = static_cast<std::size_t>(0U); i < N; ++i)
+        {
+          const swap_type tmp = left[i];
+
+          left [i] = right[i];
+          right[i] = tmp;
+        }
       }
     }
 

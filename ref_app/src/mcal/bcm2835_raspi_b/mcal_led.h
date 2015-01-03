@@ -14,7 +14,7 @@
   {
     namespace led
     {
-      class led_type : private util::noncopyable
+      class led_type final : private util::noncopyable
       {
       public:
         led_type();

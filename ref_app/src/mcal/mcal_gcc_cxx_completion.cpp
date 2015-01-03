@@ -19,13 +19,15 @@ namespace std
     high_resolution_clock::time_point high_resolution_clock::now()
     {
        // The source of the high-resolution clock is microseconds.
-       typedef std::chrono::time_point<high_resolution_clock, std::chrono::microseconds> microsecond_time_point_type;
+       typedef std::chrono::time_point<high_resolution_clock,
+                                       std::chrono::microseconds>
+       microsecond_time_point_type;
 
        // Get the consistent system tick (having microsecond resolution).
        const mcal::gpt::value_type microsecond_tick = mcal::gpt::secure::get_time_elapsed();
 
-       // Now obtain a time-point with microsecond resolution.
-       const microsecond_time_point_type time_point_in_microseconds = microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
+       // Obtain a time-point with microsecond resolution.
+       const auto time_point_in_microseconds = microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
 
        // And return the corresponding duration with microsecond resolution.
        return time_point_cast<duration>(time_point_in_microseconds);
@@ -38,6 +40,8 @@ void  operator delete(void*) noexcept;
 
 void* operator new(std::size_t size)
 {
+  // This is an absolutzely naive and non-functional implementation
+  // of operator new().
   volatile std::uint8_t  buffer[16U];
   volatile std::uint8_t* get_ptr = &buffer[0U];
 
@@ -72,12 +76,12 @@ extern "C"
 
   typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
 
-  void        abort               ()               noexcept __attribute__((noreturn));
-  int         atexit              (void (*)(void)) noexcept;
-  int         at_quick_exit       (void (*)(void)) noexcept;
-  void        _Exit               (int)            noexcept __attribute__((noreturn));
-  void        exit                (int)                     __attribute__((noreturn));
-  void        quick_exit          (int)                     __attribute__((noreturn));
+  void        abort               ()           noexcept __attribute__((noreturn));
+  int         atexit              (void (*)()) noexcept;
+  int         at_quick_exit       (void (*)()) noexcept;
+  void        _Exit               (int)        noexcept __attribute__((noreturn));
+  void        exit                (int)                 __attribute__((noreturn));
+  void        quick_exit          (int)                 __attribute__((noreturn));
   int         _exit               (int);
   int         _isatty             (int);
   int         _lseek              (int, int, int);
@@ -96,8 +100,8 @@ extern "C"
   // Implementations of patched functions.
 
   void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)(void)) noexcept           { return 0; }
-  int         at_quick_exit       (void (*)(void)) noexcept           { return 0; }
+  int         atexit              (void (*)()) noexcept               { return 0; }
+  int         at_quick_exit       (void (*)()) noexcept               { return 0; }
   void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }

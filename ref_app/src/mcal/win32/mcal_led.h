@@ -14,7 +14,7 @@
   {
     namespace led
     {
-      class led : private util::noncopyable
+      class led final : private util::noncopyable
       {
       public:
         led() : is_on(false) { }

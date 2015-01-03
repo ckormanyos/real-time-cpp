@@ -16,9 +16,8 @@
       {
         void init();
 
-        struct secure
+        class secure final
         {
-        private:
           static constexpr std::uint32_t tlb_base_address = UINT32_C(0x4030C000);
 
           static void initialize_neon_and_vfp      ();

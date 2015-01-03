@@ -15,7 +15,7 @@
     struct debug_monitor
     {
       // The debug monitor task poll time in microseconds.
-      static std::uint_fast16_t task_poll_time() { return UINT16_C(250); }
+      static std::uint_fast16_t task_poll_time() { return UINT16_C(1000); }
     };
   }
 

@@ -17,7 +17,7 @@
   namespace util
   {
     template<typename T,
-             typename alloc = std::allocator<T>>
+             typename alloc = std::allocator<T> >
     class dynamic_array
     {
     public:

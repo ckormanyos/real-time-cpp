@@ -11,7 +11,7 @@ namespace
 {
   os::task_control_block::index_type& os_task_global_index()
   {
-    static os::task_control_block::index_type the_index = static_cast<os::task_control_block::index_type>(0U);
+    static auto the_index = static_cast<os::task_control_block::index_type>(0U);
 
     return the_index;
   }
@@ -86,7 +86,7 @@ os::task_list_type::const_iterator os::secure::os_get_running_task_iterator()
   // (for example when the idle task is running), then the iterator
   // of the end of the task list is returned.
 
-  const os::task_list_type::size_type this_task_index = static_cast<os::task_list_type::size_type>(os_task_global_index());
+  const auto this_task_index = static_cast<os::task_list_type::size_type>(os_task_global_index());
 
   return ((this_task_index < os::task_list().size()) ? (os::task_list().cbegin() + this_task_index)
                                                      :  os::task_list().cend());

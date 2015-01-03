@@ -59,7 +59,7 @@
                                 - fn2
                                 + real_function(x - dx3)) / 9);
 
-      return ((((c1 * 54) - (c2 * 9)) - (c3 * 2)) / (dx * dx)) / 43;
+      return ((((c1 * 54) - (c2 * 9)) - (c3 * 2)) / (dx * 43)) / dx;
     }
   } // namespace math
 

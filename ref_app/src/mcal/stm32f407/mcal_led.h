@@ -20,7 +20,7 @@
                typename reg_type,
                const addr_type port,
                const reg_type bpos>
-      class led : private util::noncopyable
+      class led final : private util::noncopyable
       {
       public:
         led()

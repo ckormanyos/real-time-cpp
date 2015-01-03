@@ -18,7 +18,7 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup();
+extern "C" void __my_startup() __attribute__((used, noinline));
 
 void __my_startup()
 {

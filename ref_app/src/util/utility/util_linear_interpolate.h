@@ -13,12 +13,12 @@
   namespace util
   {
     template<typename point_iterator,
-              typename x_type,
-              typename y_type = x_type>
-    y_type linear_interpolate(point_iterator pts_begin,
-                              point_iterator pts_end,
-                              const x_type& x,
-                              const y_type& offset)
+             typename x_type,
+             typename y_type = x_type>
+    inline y_type linear_interpolate(point_iterator pts_begin,
+                                     point_iterator pts_end,
+                                     const x_type& x,
+                                     const y_type& offset)
     {
       if(pts_begin == pts_end)
       {
@@ -39,7 +39,7 @@
       }
       else
       {
-        // Find interpolation pair with binary search.
+        // Find the interpolation pair with binary search.
         point_iterator it = std::lower_bound(pts_begin,
                                              pts_end,
                                              point<x_type>(x));

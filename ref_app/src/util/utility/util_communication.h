@@ -8,31 +8,34 @@
 #ifndef _UTIL_COMMUNICATION_2012_05_31_H_
   #define _UTIL_COMMUNICATION_2012_05_31_H_
 
-  #include <cstddef>
   #include <cstdint>
-  #include <util/memory/util_ring_allocator.h>
-  #include <util/utility/util_dynamic_array.h>
+  #include <util/utility/util_circular_buffer.h>
 
   namespace util
   {
+    template<const std::size_t buffer_size = 16U>
     class communication
     {
     public:
-      typedef dynamic_array<std::uint8_t, util::ring_allocator<std::uint8_t>> buffer_type;
+      typedef util::circular_buffer<std::uint8_t, buffer_size> buffer_type;
 
       typedef typename buffer_type::size_type size_type;
 
       virtual ~communication() { }
 
-      virtual bool send(const std::uint8_t) = 0;
-      virtual bool send(const buffer_type&) = 0;
-      virtual bool recv(std::uint8_t&) = 0;
-      virtual bool recv(buffer_type&) = 0;
-      virtual std::size_t recv_ready() const = 0;
-      virtual bool idle() const = 0;
+      virtual bool send           (const std::uint8_t byte_to_send) = 0;
+      virtual bool send           (const buffer_type& data_to_send) = 0;
+      virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
+      virtual bool recv           (buffer_type& data_to_recv) = 0;
+      virtual size_type recv_ready() const = 0;
+      virtual bool idle           () const = 0;
 
     protected:
-      communication() { }
+      communication() : send_buffer(),
+                        recv_buffer() { }
+
+      buffer_type send_buffer;
+      buffer_type recv_buffer;
     };
   }
 
