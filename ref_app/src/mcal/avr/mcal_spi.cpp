@@ -5,16 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+/*
 #include <algorithm>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 #include <mcal_port.h>
 #include <mcal_spi.h>
 #include <mcal_reg_access.h>
-
-void mcal::spi::init(const mcal::spi::config_type*)
-{
-}
 
 mcal::spi::spi_communication mcal::spi::the_spi;
 
@@ -131,22 +128,6 @@ bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
   return true;
 }
 
-bool mcal::spi::spi_communication::send(const buffer_type& data_to_send)
-{
-  // TBD: Replace this temporary copy of the data-to-send-buffer
-  // with iterators as soon as the circular_buffer class gets
-  // proper iterator support.
-  buffer_type tmp(data_to_send);
-
-  // Sequentially send all the bytes in the command.
-  for(size_type count = 0U; count < data_to_send.size(); ++count)
-  {
-    static_cast<void>(send(tmp.out()));
-  }
-
-  return true;
-}
-
 bool mcal::spi::spi_communication::recv(std::uint8_t& byte_to_recv)
 {
   disable_rx_tx_interrupt();
@@ -154,22 +135,6 @@ bool mcal::spi::spi_communication::recv(std::uint8_t& byte_to_recv)
   byte_to_recv = recv_buffer.out();
 
   enable_rx_tx_interrupt();
-
-  return true;
-}
-
-bool mcal::spi::spi_communication::recv(buffer_type& data_to_recv)
-{
-  const size_type count_to_recv = (std::min)(data_to_recv.size(), recv_ready());
-
-  for(size_type count = 0U; count < count_to_recv; ++count)
-  {
-    std::uint8_t byte_to_recv;
-
-    recv(byte_to_recv);
-
-    data_to_recv.in(byte_to_recv);
-  }
 
   return true;
 }
@@ -254,3 +219,4 @@ void __vector_17()
                               std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
   }
 }
+*/

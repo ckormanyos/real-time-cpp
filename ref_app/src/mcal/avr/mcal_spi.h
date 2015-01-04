@@ -8,6 +8,18 @@
 #ifndef _MCAL_SPI_2012_05_24_H_
   #define _MCAL_SPI_2012_05_24_H_
 
+  namespace mcal
+  {
+    namespace spi
+    {
+      typedef void config_type;
+
+      inline void init(const config_type*) { }
+    }
+  }
+
+  /*
+  #include <iterator>
   #include <util/utility/util_communication.h>
 
   extern "C" void __vector_17() __attribute__((signal, used, externally_visible));
@@ -18,7 +30,7 @@
     {
       typedef void config_type;
 
-      void init(const config_type*);
+      inline void init(const config_type*) { }
 
       class spi_communication : public util::communication<16U>
       {
@@ -27,9 +39,7 @@
         virtual ~spi_communication();
 
         virtual bool send           (const std::uint8_t byte_to_send);
-        virtual bool send           (const buffer_type& data_to_send);
         virtual bool recv           (std::uint8_t& byte_to_recv);
-        virtual bool recv           (buffer_type& data_to_recv);
         virtual size_type recv_ready() const;
         virtual bool idle           () const;
 
@@ -45,5 +55,6 @@
       extern spi_communication the_spi;
     }
   }
+  */
 
 #endif // _MCAL_SPI_2012_05_24_H_
