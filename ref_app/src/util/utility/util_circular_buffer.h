@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,6 @@
 
   #include <algorithm>
   #include <cstddef>
-  #include <iterator>
 
   namespace util
   {
@@ -23,8 +22,8 @@
     {
     public:
       typedef T                 value_type;
-      typedef       value_type* iterator;
-      typedef const value_type* const_iterator;
+      typedef       value_type* pointer;
+      typedef const value_type* const_pointer;
       typedef       std::size_t size_type;
       typedef       value_type& reference;
       typedef const value_type& const_reference;
@@ -37,7 +36,7 @@
 
         std::fill(in_ptr, in_ptr + the_count, value);
 
-        out_ptr += the_count;
+        in_ptr += the_count;
       }
 
       circular_buffer(const circular_buffer& other) : in_ptr (other.in_ptr),
@@ -64,10 +63,10 @@
 
       size_type size() const
       {
-        const bool is_wrap = (in_ptr >= out_ptr);
+        const bool is_wrap = (in_ptr < out_ptr);
 
-        return (is_wrap ? size_type(in_ptr - out_ptr)
-                        : size() - size_type(out_ptr - in_ptr));
+        return ((is_wrap == false) ? size_type(in_ptr - out_ptr)
+                                   : N - size_type(out_ptr - in_ptr));
       }
 
       void clear()
@@ -76,110 +75,82 @@
         out_ptr = buffer;
       }
 
-      void push(const value_type value)
+      void in(const value_type value)
       {
-        *in_ptr = value;
-
-        ++in_ptr;
-
         if(in_ptr >= (buffer + N))
         {
           in_ptr = buffer;
         }
+
+        *in_ptr = value;
+
+        ++in_ptr;
       }
 
-      value_type pop()
+      value_type out()
       {
-        if(empty())
+        if(out_ptr >= (buffer + N))
         {
-          return value_type(0);
+          out_ptr = buffer;
         }
-        else
-        {
-          const value_type value = *out_ptr;
 
-          ++out_ptr;
+        const value_type value = *out_ptr;
 
-          if(out_ptr >= (buffer + N))
-          {
-            out_ptr = buffer;
-          }
+        ++out_ptr;
 
-          return value;
-        }
+        return value;
       }
 
-      reference& front()
-      {
-        if(empty())
-        {
-          return buffer[0U];
-        }
-        else
-        {
-          return ((in_ptr == buffer) ? buffer[N - 1U] : *(in_ptr - 1U));
-        }
-      }
-
-      reference& back()
-      {
-        if(empty())
-        {
-          return buffer[0U];
-        }
-        else
-        {
-          return ((out_ptr == buffer) ? buffer[N - 1U] : *(out_ptr - 1U));
-        }
-      }
-
-      const_reference& front() const
-      {
-        if(empty())
-        {
-          return buffer[0U];
-        }
-        else
-        {
-          return ((in_ptr == buffer) ? buffer[N - 1U] : *(in_ptr - 1U));
-        }
-      }
-
-      const_reference& back() const
-      {
-        if(empty())
-        {
-          return buffer[0U];
-        }
-        else
-        {
-          return ((out_ptr == buffer) ? buffer[N - 1U] : *(out_ptr - 1U));
-        }
-      }
+      reference       front()       { return ((out_ptr >= (buffer + N)) ? buffer[N - 1U] : *out_ptr); }
+      const_reference front() const { return ((out_ptr >= (buffer + N)) ? buffer[N - 1U] : *out_ptr); }
+      reference       back ()       { return ((in_ptr  >= (buffer + N)) ? buffer[N - 1U] : *in_ptr); }
+      const_reference back () const { return ((in_ptr  >= (buffer + N)) ? buffer[N - 1U] : *in_ptr); }
 
     private:
       value_type buffer[N];
-      iterator   in_ptr;
-      iterator   out_ptr;
+      pointer    in_ptr;
+      pointer    out_ptr;
     };
   }
 
   /*
-  #include <cstdint>
   #include <util/utility/util_circular_buffer.h>
 
   void do_something();
 
   void do_something()
   {
-    typedef util::circular_buffer<std::uint8_t, 8U> buffer_type;
+    typedef util::circular_buffer<unsigned, 3U> circular_buffer_type;
 
-    buffer_type data;
+    circular_buffer_type             data;
+    circular_buffer_type::size_type  size;
+    circular_buffer_type::value_type value;
 
-    const buffer_type::value_type the_value(0x55U);
+    data.in(1U);
+    size = data.size();
+    data.in(2U);
+    size = data.size();
+    data.in(3U);
+    size = data.size();
 
-    data.push(the_value);
-    data.push(the_value);
+    value = data.out();
+    size = data.size();
+    value = data.out();
+    size = data.size();
+    value = data.out();
+    size = data.size();
+
+    data.in(101U);
+    size = data.size();
+    data.in(102U);
+    size = data.size();
+
+    value = data.out();
+    size = data.size();
+    value = data.out();
+    size = data.size();
+
+    volatile unsigned debug = 0U;
   }
   */
 

@@ -8,9 +8,9 @@
 #ifndef _MCAL_SPI_2012_05_24_H_
   #define _MCAL_SPI_2012_05_24_H_
 
-//  #include <util/utility/util_communication.h>
+  #include <util/utility/util_communication.h>
 
-//  extern "C" void __vector_17() __attribute__((signal, used, externally_visible));
+  extern "C" void __vector_17() __attribute__((signal, used, externally_visible));
 
   namespace mcal
   {
@@ -19,7 +19,7 @@
       typedef void config_type;
 
       void init(const config_type*);
-/*
+
       class spi_communication : public util::communication<16U>
       {
       public:
@@ -43,7 +43,6 @@
       };
 
       extern spi_communication the_spi;
-*/
     }
   }
 

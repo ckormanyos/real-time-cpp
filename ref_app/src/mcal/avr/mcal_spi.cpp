@@ -5,18 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-//#include <algorithm>
-//#include <mcal_cpu.h>
-//#include <mcal_irq.h>
-//#include <mcal_port.h>
+#include <algorithm>
+#include <mcal_cpu.h>
+#include <mcal_irq.h>
+#include <mcal_port.h>
 #include <mcal_spi.h>
-//#include <mcal_reg_access.h>
+#include <mcal_reg_access.h>
 
 void mcal::spi::init(const mcal::spi::config_type*)
 {
 }
 
-/*
 mcal::spi::spi_communication mcal::spi::the_spi;
 
 namespace
@@ -124,7 +123,7 @@ bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
   {
     // A transmission is already in progress.
     // Pack the next byte-to-send into the send-buffer.
-    send_buffer.push(byte_to_send);
+    send_buffer.in(byte_to_send);
 
     mcal::irq::enable_all();
   }
@@ -142,7 +141,7 @@ bool mcal::spi::spi_communication::send(const buffer_type& data_to_send)
   // Sequentially send all the bytes in the command.
   for(size_type count = 0U; count < data_to_send.size(); ++count)
   {
-    static_cast<void>(send(tmp.pop()));
+    static_cast<void>(send(tmp.out()));
   }
 
   return true;
@@ -152,7 +151,7 @@ bool mcal::spi::spi_communication::recv(std::uint8_t& byte_to_recv)
 {
   disable_rx_tx_interrupt();
 
-  byte_to_recv = recv_buffer.pop();
+  byte_to_recv = recv_buffer.out();
 
   enable_rx_tx_interrupt();
 
@@ -169,7 +168,7 @@ bool mcal::spi::spi_communication::recv(buffer_type& data_to_recv)
 
     recv(byte_to_recv);
 
-    data_to_recv.push(byte_to_recv);
+    data_to_recv.in(byte_to_recv);
   }
 
   return true;
@@ -222,7 +221,7 @@ void __vector_17()
                                                       std::uint8_t,
                                                       mcal::reg::spdr>::reg_get();
 
-  mcal::spi::the_spi.recv_buffer.push(byte_to_recv);
+  mcal::spi::the_spi.recv_buffer.in(byte_to_recv);
 
   const bool send_buffer_is_empty = mcal::spi::the_spi.send_buffer.empty();
 
@@ -249,12 +248,9 @@ void __vector_17()
   else
   {
     // Send the next byte if there is at least one in the send queue.
-    const std::uint8_t byte_to_send = mcal::spi::the_spi.send_buffer.pop();
-
-    mcal::spi::the_spi.send_buffer.pop();
+    const std::uint8_t byte_to_send = mcal::spi::the_spi.send_buffer.out();
 
     mcal::reg::dynamic_access<std::uint8_t,
                               std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
   }
 }
-*/
