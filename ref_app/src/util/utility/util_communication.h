@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,7 @@
 #ifndef _UTIL_COMMUNICATION_2012_05_31_H_
   #define _UTIL_COMMUNICATION_2012_05_31_H_
 
+  #include <algorithm>
   #include <cstdint>
   #include <util/utility/util_circular_buffer.h>
 

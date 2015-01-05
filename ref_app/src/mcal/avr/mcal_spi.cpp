@@ -6,7 +6,6 @@
 //
 
 /*
-#include <algorithm>
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 #include <mcal_port.h>

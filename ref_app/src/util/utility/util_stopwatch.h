@@ -18,14 +18,9 @@
 
       stopwatch() : my_start(clock_type::now()) { }
 
-      stopwatch(clock_type::time_point start) : my_start(start)
-      {
-      }
+      stopwatch(typename clock_type::time_point start) : my_start(start) { }
 
-      stopwatch(const stopwatch& other)
-      {
-        my_start = other.my_start;
-      }
+      stopwatch(const stopwatch& other) : my_start(other.my_start) { }
 
       ~stopwatch() { }
 
@@ -50,7 +45,7 @@
       }
 
     private:
-       typename clock_type::time_point my_start;
+        typename clock_type::time_point my_start;
     };
   }
 
