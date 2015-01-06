@@ -35,7 +35,7 @@ public:
 
 namespace
 {
-  // Create led_b5 at port B, bit position 0.
+  // Create led_b5 at portb, bit position 5.
   const led_template<std::uint8_t,
                      std::uint8_t,
                      mcal::reg::portb,
