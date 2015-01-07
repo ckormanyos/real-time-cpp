@@ -57,7 +57,7 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
   {
     // Get a pointer to the control block corresponding to
     // the task id that has been supplied to this subroutine.
-    task_list_type::const_iterator control_block_of_the_task_id = task_list().cbegin() + task_list_type::size_type(task_id);
+    auto control_block_of_the_task_id = task_list().cbegin() + task_list_type::size_type(task_id);
 
     // Set the event of the corresponding task.
     mcal::irq::disable_all();
@@ -69,7 +69,7 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
 void os::get_event(event_type& event_to_get)
 {
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
+  const auto control_block_of_the_running_task = os::secure::get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().cend())
   {
@@ -89,7 +89,7 @@ void os::get_event(event_type& event_to_get)
 void os::clear_event(const event_type& event_to_clear)
 {
   // Get the iterator of the control block of the running task.
-  const os::task_list_type::const_iterator control_block_of_the_running_task = os::secure::os_get_running_task_iterator();
+  const auto control_block_of_the_running_task = os::secure::get_running_task_iterator();
 
   if(control_block_of_the_running_task != os::task_list().cend())
   {

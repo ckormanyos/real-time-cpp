@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -80,7 +80,7 @@ bool os::task_control_block::execute() const
   return (task_does_have_event || task_does_have_timeout);
 }
 
-os::task_list_type::const_iterator os::secure::os_get_running_task_iterator()
+os::task_list_type::const_iterator os::secure::get_running_task_iterator()
 {
   // Return the iterator of the running task. If no task is running
   // (for example when the idle task is running), then the iterator

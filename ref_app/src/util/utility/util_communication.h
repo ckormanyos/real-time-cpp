@@ -22,7 +22,7 @@
 
       typedef typename buffer_type::size_type size_type;
 
-      virtual ~communication() { }
+      virtual ~communication();
 
       virtual bool send           (const std::uint8_t byte_to_send) = 0;
       virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
@@ -56,12 +56,11 @@
 
         while(first != last)
         {
-          typedef typename std::iterator_traits<recv_iterator_type>::value_type recv_value_type;
-
           std::uint8_t byte_to_recv;
 
           recv_result &= recv(byte_to_recv);
 
+          typedef typename std::iterator_traits<recv_iterator_type>::value_type recv_value_type;
           *first = recv_value_type(byte_to_recv);
 
           ++first;
@@ -86,5 +85,8 @@
       buffer_type recv_buffer;
     };
   }
+
+  template<const std::size_t buffer_size>
+  void util::communication::~communication() { }
 
 #endif // _UTIL_COMMUNICATION_2012_05_31_H_

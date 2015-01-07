@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -59,7 +59,7 @@
 
     class secure final
     {
-      static task_list_type::const_iterator os_get_running_task_iterator();
+      static task_list_type::const_iterator get_running_task_iterator();
 
       friend void os::get_event  (event_type&);
       friend void os::clear_event(const event_type&);
