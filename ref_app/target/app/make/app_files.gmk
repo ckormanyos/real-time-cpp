@@ -9,7 +9,8 @@
 # List of the source files in the project
 # ------------------------------------------------------------------------------
 
-FILES_CPP  = $(PATH_APP)/app/led/app_led                                 \
+FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
+             $(PATH_APP)/app/led/app_led                                 \
              $(PATH_APP)/mcal/mcal                                       \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                    \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                            \

@@ -9,20 +9,18 @@
   #define _UTIL_COMMUNICATION_2012_05_31_H_
 
   #include <algorithm>
+  #include <cstddef>
   #include <cstdint>
   #include <util/utility/util_circular_buffer.h>
 
   namespace util
   {
-    template<const std::size_t buffer_size = 16U>
-    class communication
+    class communication_base
     {
     public:
-      typedef util::circular_buffer<std::uint8_t, buffer_size> buffer_type;
+      typedef typename std::size_t size_type;
 
-      typedef typename buffer_type::size_type size_type;
-
-      virtual ~communication();
+      virtual ~communication_base() { }
 
       virtual bool send           (const std::uint8_t byte_to_send) = 0;
       virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
@@ -34,7 +32,6 @@
       {
         bool send_result = true;
 
-        // Sequentially send all the bytes in the command.
         while(first != last)
         {
           send_result &= send(value_type(*first));
@@ -78,15 +75,27 @@
       }
 
     protected:
+      communication_base() { }
+    };
+
+    template<const std::size_t buffer_size = 16U>
+    class communication : public communication_base
+    {
+    public:
+      typedef util::circular_buffer<std::uint8_t, buffer_size> buffer_type;
+
+      virtual ~communication();
+
+    protected:
       communication() : send_buffer(),
                         recv_buffer() { }
 
       buffer_type send_buffer;
       buffer_type recv_buffer;
     };
-  }
 
-  template<const std::size_t buffer_size>
-  void util::communication::~communication() { }
+    template<const std::size_t buffer_size>
+    communication<buffer_size>::~communication() { }
+  }
 
 #endif // _UTIL_COMMUNICATION_2012_05_31_H_
