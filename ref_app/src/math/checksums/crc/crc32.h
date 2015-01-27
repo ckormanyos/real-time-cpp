@@ -10,23 +10,26 @@
 
   #include <array>
   #include <cstdint>
+  #include <iterator>
 
   namespace math
   {
     namespace checksums
     {
-      inline std::uint32_t crc32_mpeg2(const std::uint8_t* first,
-                                       const std::uint8_t* last)
+      template<typename input_iterator>
+      std::uint32_t crc32_mpeg2(input_iterator first,
+                                input_iterator last)
       {
-        // Name   : "CRC-32/MPEG-2"
-        // Poly   : 0x04C1'1DB7
-        // Init   : 0xFFFF'FFFF
-        // Check  : 0x0376'E6E7
+        // Name            : CRC-32/MPEG-2
+        // Polynomial      : 0x04C1'1DB7
+        // Initial value   : 0xFFFF'FFFF
+        // Test: '1'...'9' : 0x0376'E6E7
 
-        // ISO/IEC 13818-1:2000-ITU-T
+        // ISO/IEC 13818-1:2000
         // Recommendation H.222.0 Annex A
 
-        constexpr std::array<std::uint32_t, 16U> table =
+        // CRC-32/MPEG2 Table based on nibbles.
+        const std::array<std::uint32_t, 16U> table =
         {{
           UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
           UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
@@ -35,29 +38,40 @@
           UINT32_C(0x2608EDB8), UINT32_C(0x22C9F00F),
           UINT32_C(0x2F8AD6D6), UINT32_C(0x2B4BCB61),
           UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
-          UINT32_C(0x3C8EA00A), UINT32_C(0x384fBDBD)
+          UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
         }};
 
+        // Set the initial value.
         std::uint32_t crc = UINT32_C(0xFFFFFFFF);
 
+        // Loop through the input iterator data stream.
         while(first != last)
         {
-          const std::uint_fast8_t data =
-            uint_fast8_t(*first) & UINT8_C(0xFF);
+          // Define a local value_type.
+          typedef typename
+          std::iterator_traits<input_iterator>::value_type
+          value_type;
+
+          const value_type value = *first & UINT8_C(0xFF);
+
+          const std::uint_fast8_t byte = uint_fast8_t(value);
 
           std::uint_fast8_t index;
 
-          index = (  std::uint_fast8_t(crc  >> 28)
-                   ^ std::uint_fast8_t(data >>  4)
-                  ) & UINT8_C(0xFF);
+          // Perform the CRC-32/MPEG2 algorithm.
+          index =   (std::uint_fast8_t(crc  >> 28))
+                  ^ (std::uint_fast8_t(byte >>  4));
 
-          crc   = std::uint32_t(crc << 4) ^ table[index];
+          crc   =   std::uint32_t(  std::uint32_t(crc << 4)
+                                  & UINT32_C(0xFFFFFFF0))
+                  ^ table[index & UINT8_C(0x0F)];
 
-          index = (  std::uint_fast8_t(crc  >> 28)
-                   ^ std::uint_fast8_t(data & UINT8_C(0x0F))
-                  )  & UINT8_C(0xFF);
+          index =   (std::uint_fast8_t(crc >> 28))
+                  ^ (std::uint_fast8_t(byte));
 
-          crc   = std::uint32_t(crc << 4) ^ table[index];
+          crc =     std::uint32_t(std::uint32_t(crc << 4)
+                                  & UINT32_C(0xFFFFFFF0))
+                  ^ table[index & UINT8_C(0x0F)];
 
           ++first;
         }

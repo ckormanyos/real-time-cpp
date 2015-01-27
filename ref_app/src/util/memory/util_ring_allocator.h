@@ -28,10 +28,6 @@
 
       // The ring_allocator's default buffer size.
       static const size_type buffer_size = 96U;
-
-    private:
-      static volatile std::uint8_t  buffer[buffer_size];
-      static volatile std::uint8_t* get_ptr;
     };
 
     // Global comparison operators (required by the standard).

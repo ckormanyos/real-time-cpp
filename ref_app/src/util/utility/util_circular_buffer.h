@@ -28,30 +28,41 @@
       typedef       value_type& reference;
       typedef const value_type& const_reference;
 
-      circular_buffer(const T& value        = T(),
-                      const size_type count = size_type(0U)) : in_ptr (buffer),
-                                                               out_ptr(buffer)
+      circular_buffer(
+          const T& value        = T(),
+          const size_type count = size_type(0U))
+        : in_ptr (buffer),
+          out_ptr(buffer)
       {
-        const size_type the_count = (std::min)(N, count);
+        const size_type the_count =
+          (std::min)(N, count);
 
-        std::fill(in_ptr, in_ptr + the_count, value);
+        std::fill(in_ptr,
+                  in_ptr + the_count,
+                  value);
 
         in_ptr += the_count;
       }
 
-      circular_buffer(const circular_buffer& other) : in_ptr (other.in_ptr),
-                                                      out_ptr(other.out_ptr)
+      circular_buffer(const circular_buffer& other)
+        : in_ptr (other.in_ptr),
+          out_ptr(other.out_ptr)
       {
-        std::copy(other.buffer, other.buffer + N, buffer);
+        std::copy(other.buffer,
+                  other.buffer + N,
+                  buffer);
       }
 
-      circular_buffer& operator=(const circular_buffer& other)
+      circular_buffer& operator=(
+          const circular_buffer& other)
       {
         if(this != &other)
         {
           in_ptr   (other.in_ptr);
           out_ptr  (other.out_ptr);
-          std::copy(other.buffer, other.buffer + N, buffer);
+          std::copy(other.buffer,
+                    other.buffer + N,
+                    buffer);
         }
 
         return *this;
@@ -59,14 +70,18 @@
 
       size_type capacity() const { return N; }
 
-      bool empty() const { return (in_ptr == out_ptr); }
+      bool empty() const
+      {
+        return (in_ptr == out_ptr);
+      }
 
       size_type size() const
       {
         const bool is_wrap = (in_ptr < out_ptr);
 
-        return ((is_wrap == false) ? size_type(in_ptr - out_ptr)
-                                   : N - size_type(out_ptr - in_ptr));
+        return size_type((is_wrap == false)
+          ? size_type(in_ptr - out_ptr)
+          : N - size_type(out_ptr - in_ptr));
       }
 
       void clear()
@@ -101,10 +116,33 @@
         return value;
       }
 
-      reference       front()       { return ((out_ptr >= (buffer + N)) ? buffer[N - 1U] : *out_ptr); }
-      const_reference front() const { return ((out_ptr >= (buffer + N)) ? buffer[N - 1U] : *out_ptr); }
-      reference       back ()       { return ((in_ptr  >= (buffer + N)) ? buffer[N - 1U] : *in_ptr); }
-      const_reference back () const { return ((in_ptr  >= (buffer + N)) ? buffer[N - 1U] : *in_ptr); }
+      reference       front()
+      {
+        return ((out_ptr >= (buffer + N))
+                 ? buffer[N - 1U]
+                 : *out_ptr);
+      }
+
+      const_reference front() const
+      {
+        return ((out_ptr >= (buffer + N))
+                 ? buffer[N - 1U]
+                 : *out_ptr);
+      }
+
+      reference back ()
+      {
+        return ((in_ptr  >= (buffer + N))
+                 ? buffer[N - 1U]
+                 : *in_ptr);
+      }
+
+      const_reference back () const
+      {
+        return ((in_ptr  >= (buffer + N))
+                 ? buffer[N - 1U]
+                 : *in_ptr);
+      }
 
     private:
       value_type buffer[N];

@@ -11,6 +11,7 @@
 #include <math/checksums/crc/crc32.h>
 #include <mcal_benchmark.h>
 #include <mcal_cpu.h>
+#include <mcal_irq.h>
 
 #define APP_BENCHMARK_TYPE_NONE     0
 #define APP_BENCHMARK_TYPE_CRC32    1
@@ -55,12 +56,15 @@ void app::benchmark::task_func()
       UINT8_C(0x39)
     }};
 
+    mcal::irq::disable_all();
     mcal::benchmark::benchmark_port_type::set_pin_high();
 
     app_benchmark_crc =
-      math::checksums::crc32_mpeg2(data.data(), data.data() + data.size());
+      math::checksums::crc32_mpeg2(data.cbegin(),
+                                   data.cend());
 
     mcal::benchmark::benchmark_port_type::set_pin_low();
+    mcal::irq::enable_all();
 
     if(app_benchmark_crc == UINT32_C(0x0376E6E7))
     {

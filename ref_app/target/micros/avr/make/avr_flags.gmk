@@ -15,7 +15,7 @@ GCC_TARGET    = avr
 TGT_STL_DIR   = STL
 TGT_STL_DEFS  =
 
-TGT_CFLAGS    = -O2                                            \
+TGT_CFLAGS    = -O3                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
                 $(TGT_STL_DEFS)
