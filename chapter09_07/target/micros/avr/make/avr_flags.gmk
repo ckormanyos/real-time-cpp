@@ -1,0 +1,77 @@
+#
+#  Copyright Christopher Kormanyos 2014.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 4.8.1
+GCC_TARGET    = avr
+
+TGT_STL_DIR   = STL
+TGT_STL_DEFS  =
+
+TGT_CFLAGS    = -mmcu=atmega328p                               \
+                -fsigned-char                                  \
+                $(TGT_STL_DEFS)
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                -Wzero-as-null-pointer-constant                \
+                -I$(PATH_APP)/util/$(TGT_STL_DIR)              \
+                -I$(PATH_APP)/util/STL_C++11_Compatibility     \
+                -I$(PATH_APP)/util/STL_C++14_Compatibility
+
+TGT_AFLAGS    =
+
+TGT_LFLAGS    = -mrelax
+
+# To configure GMP
+# ../gmp-5.1.3/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --enable-cxx --disable-static --enable-shared CPPFLAGS="-fexceptions"
+# To configure MPFR
+# ../mpfr-3.1.2/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --disable-static --enable-shared --with-gmp=/usr/local
+# To configure MPC
+# ../mpc-1.0.2/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --disable-static --enable-shared --with-gmp=/usr/local --with-mpfr=/usr/local
+# To configure CLOOG
+# ../cloog-0.18.1/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --disable-static --enable-shared --with-gmp-prefix=/usr/local
+# To configure ISL
+# ../isl-0.12.2/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --with-gmp-prefix=/usr/local
+# To configure ISL (version 0.11.x for building binutils)
+# ../isl-0.11.2/configure --build=i686-pc-mingw32 --host=i686-pc-mingw32 --prefix=/usr/local --with-gmp-prefix=/usr/local/isl-0.11.2
+
+# Notes for isl:
+# See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58012
+# With cloog/isl, graphite*.c files includes isl headers. In <isl/int.h>,
+# there is a function: `std::ostream &operator<<(std::ostream &os, isl_int i)'.
+# Remove this function definition, recompile graphite*.c, and link: succeed.
+# "I'm not sure whether this is a bug in GCC or there's something wrong with
+# my compile environment."
+# --------------------------------------------------------------------------
+# It's not the function definition, but `#include <iostream>' that caused the error.
+# Either isl should get patched to `#include <ostream>'; or gcc should provide
+# a bigger libstdc++convenience.a that has the missing bits. The previous is easier,
+# as long as only std::ostream is used in that header.
+# --------------------------------------------------------------------------
+# Also `#include <stdio.h>' for the C language.
+
+# To configure binutils
+# ../binutils-2.24/configure --prefix=/usr/local/gcc-4.8.2-avr-unknown-elf --target=avr-unknown-elf --build=i686-pc-mingw32 --host=i686-pc-mingw32 --disable-__cxa_atexit --disable-nls --disable-threads --enable-shared --disable-static --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-cloog=/usr/local --with-isl=/usr/local/isl-0.11.2
+
+# Notes for binutils-2.24:
+# At the time of binutils-2.24, the configure script does not recognize
+# the ISL library version 0.12.x, so a separate version 0.11.x can be
+# built, for example, such as with --prefix=/usr/local/isl-0.11.2.
+# This path needs to be accounted for when configuring binutils.
+
+# To configure GCC *without* newlib, without exceptions, and without threads, disable libquadmath, disable fixed-point, disable decimal float
+# ../gcc-4.8.2/configure --prefix=/usr/local/gcc-4.8.2-avr-unknown-elf --target=avr-unknown-elf --build=i686-pc-mingw32 --host=i686-pc-mingw32 --enable-languages=c,c++ --disable-libgomp --disable-libada --disable-libssp --disable-__cxa_atexit --disable-nls --disable-threads --disable-static --enable-shared --disable-win32-registry --disable-sjlj-exceptions --with-dwarf2 --disable-libquadmath --disable-fixed-point --disable-decimal-float --disable-werror --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --with-cloog=/usr/local --with-isl=/usr/local
+
+# Build avr-libc
+# Don't forget to set the PATH for the build to be able to find the avr-unknown-elf binaries
+# To configure avr-libc
+# ../avr-libc-1.8.0/configure --prefix=/usr/local/gcc-4.8.2-avr-unknown-elf --target=avr-unknown-elf --host=avr-unknown-elf --build=i686-pc-mingw32
+# After building avr-libc, merge avr-libc to the installed version
+# of the GCC avr-unknown-elf cross compiler
