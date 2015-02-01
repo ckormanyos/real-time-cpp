@@ -19,7 +19,7 @@
 
 @set CFLAGS=-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O3 -fno-exceptions
 @set CPPFLAGS=-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-@set CINCLUDES=-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++14_Compatibility
+@set CINCLUDES=-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++17_Compatibility
 
 @echo.
 @echo.Building with        : build.bat
