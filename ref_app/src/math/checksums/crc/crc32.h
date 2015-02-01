@@ -44,7 +44,7 @@
         // Set the initial value.
         std::uint32_t crc = UINT32_C(0xFFFFFFFF);
 
-        // Loop through the input iterator data stream.
+        // Loop through the input data stream.
         while(first != last)
         {
           // Define a local value_type.
@@ -52,26 +52,28 @@
           std::iterator_traits<input_iterator>::value_type
           value_type;
 
-          const value_type value = *first & UINT8_C(0xFF);
+          const value_type value = (*first) & UINT8_C(0xFF);
 
           const std::uint_fast8_t byte = uint_fast8_t(value);
 
           std::uint_fast8_t index;
 
           // Perform the CRC-32/MPEG2 algorithm.
-          index =   (std::uint_fast8_t(crc  >> 28))
-                  ^ (std::uint_fast8_t(byte >>  4));
+          index = (  (std::uint_fast8_t(crc  >> 28))
+                   ^ (std::uint_fast8_t(byte >>  4))
+                  ) & UINT8_C(0x0F);
 
           crc   =   std::uint32_t(  std::uint32_t(crc << 4)
                                   & UINT32_C(0xFFFFFFF0))
-                  ^ table[index & UINT8_C(0x0F)];
+                  ^ table[index];
 
-          index =   (std::uint_fast8_t(crc >> 28))
-                  ^ (std::uint_fast8_t(byte));
+          index = (  (std::uint_fast8_t(crc >> 28))
+                   ^ (std::uint_fast8_t(byte))
+                  ) & UINT8_C(0x0F);
 
           crc =     std::uint32_t(std::uint32_t(crc << 4)
                                   & UINT32_C(0xFFFFFFF0))
-                  ^ table[index & UINT8_C(0x0F)];
+                  ^ table[index];
 
           ++first;
         }

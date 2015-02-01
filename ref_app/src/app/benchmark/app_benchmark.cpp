@@ -56,14 +56,19 @@ void app::benchmark::task_func()
       UINT8_C(0x39)
     }};
 
+    typedef
+    mcal::benchmark::benchmark_port_type
+    port_type;
+
+
     mcal::irq::disable_all();
-    mcal::benchmark::benchmark_port_type::set_pin_high();
+    port_type::set_pin_high();
 
     app_benchmark_crc =
       math::checksums::crc32_mpeg2(data.cbegin(),
                                    data.cend());
 
-    mcal::benchmark::benchmark_port_type::set_pin_low();
+    port_type::set_pin_low();
     mcal::irq::enable_all();
 
     if(app_benchmark_crc == UINT32_C(0x0376E6E7))

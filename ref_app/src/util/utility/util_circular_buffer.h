@@ -29,7 +29,7 @@
       typedef const value_type& const_reference;
 
       circular_buffer(
-          const T& value        = T(),
+          const T& value        = value_type(),
           const size_type count = size_type(0U))
         : in_ptr (buffer),
           out_ptr(buffer)
@@ -116,38 +116,141 @@
         return value;
       }
 
-      reference       front()
+      reference front()
       {
         return ((out_ptr >= (buffer + N))
-                 ? buffer[N - 1U]
-                 : *out_ptr);
+                  ? buffer[N - 1U]
+                  : *out_ptr);
       }
 
       const_reference front() const
       {
         return ((out_ptr >= (buffer + N))
-                 ? buffer[N - 1U]
-                 : *out_ptr);
+                  ? buffer[N - 1U]
+                  : *out_ptr);
       }
 
-      reference back ()
+      reference back()
       {
         return ((in_ptr  >= (buffer + N))
-                 ? buffer[N - 1U]
-                 : *in_ptr);
+                  ? buffer[N - 1U]
+                  : *in_ptr);
       }
 
-      const_reference back () const
+      const_reference back() const
       {
         return ((in_ptr  >= (buffer + N))
-                 ? buffer[N - 1U]
-                 : *in_ptr);
+                  ? buffer[N - 1U]
+                  : *in_ptr);
       }
 
     private:
       value_type buffer[N];
       pointer    in_ptr;
       pointer    out_ptr;
+    };
+
+    template<typename T>
+    class circular_buffer<T, std::size_t(1U)>
+    {
+    public:
+      typedef T                 value_type;
+      typedef       value_type* pointer;
+      typedef const value_type* const_pointer;
+      typedef       std::size_t size_type;
+      typedef       value_type& reference;
+      typedef const value_type& const_reference;
+
+      circular_buffer(
+          const T& value        = value_type(),
+          const size_type count = size_type(0U))
+      {
+        if(count > size_type(0U))
+        {
+          data     = value;
+          has_data = true;
+        }
+        else
+        {
+          data = value_type();
+
+          has_data = false;
+        }
+      }
+
+      circular_buffer(const circular_buffer& other)
+        : data    (other.data),
+          has_data(other.has_data)
+      {
+      }
+
+      circular_buffer& operator=(
+          const circular_buffer& other)
+      {
+        if(this != &other)
+        {
+          data = other.data;
+
+          has_data = other.has_data;
+        }
+
+        return *this;
+      }
+
+      size_type capacity() const { return size_type(1U); }
+
+      bool empty() const
+      {
+        return (has_data == false);
+      }
+
+      size_type size() const
+      {
+        return size_type(has_data ? 1U : 0U);
+      }
+
+      void clear()
+      {
+        has_data = false;
+      }
+
+      void in(const value_type value)
+      {
+        has_data = true;
+
+        data = value;
+      }
+
+      value_type out()
+      {
+        has_data = false;
+
+        return data;
+      }
+
+      reference front()
+      {
+        return data;
+      }
+
+      const_reference front() const
+      {
+        return data;
+      }
+
+      reference back()
+      {
+        return data;
+      }
+
+      const_reference back() const
+      {
+        return data;
+      }
+
+    private:
+      value_type data;
+      bool       has_data;
     };
   }
 

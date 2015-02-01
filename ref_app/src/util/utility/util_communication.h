@@ -18,7 +18,7 @@
     class communication_base
     {
     public:
-      typedef typename std::size_t size_type;
+      typedef std::size_t size_type;
 
       virtual ~communication_base() { }
 

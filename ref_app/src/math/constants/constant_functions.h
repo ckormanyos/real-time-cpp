@@ -11,6 +11,7 @@
   #include <cstdfloat>
   #include <cstdint>
   #include <limits>
+  #include <math/constants/constants.h>
 
   namespace math
   {
@@ -112,16 +113,10 @@
       }
 
       template<typename T>
-      const T half_pi()
-      {
-        return static_cast<T>(FLOATMAX_C(1.5707963267948966192313216916397514420986));
-      }
-
-      template<typename T>
       constexpr T sin(T x)
       {
         // Scale x to CONST_UNIQUE_CHI (+-pi/2 to +-1).
-        #define CONST_UNIQUE_CHI_S T(x / half_pi<T>())
+        #define CONST_UNIQUE_CHI_S T(x / constants::half_pi<T>())
 
         // Take the absolute value of CONST_UNIQUE_CHI.
         #define CONST_UNIQUE_IS_NEG bool(CONST_UNIQUE_CHI_S < T(0))
@@ -144,7 +139,7 @@
         //   N[%, 80]
         //   Fit[%, {x, x^3, x^5, x^7, x^9, x^11, x^13, x^15, x^17, x^19, x^21, x^23, x^25, x^27, x^29, x^31, x^33, x^35}, x]
         // ... and then manually edit the coefficients, etc.
-        #define CONST_UNIQUE_SUM                                                                                       \
+        #define CONST_UNIQUE_SUM                                                                                \
             ((((((((((((((((( - static_cast<T>(FLOATMAX_C(6.960126571061682906052555861870486E-34))             \
           * CONST_UNIQUE_CHI2 + static_cast<T>(FLOATMAX_C(3.41355654163618725285729366189197196E-31)))          \
           * CONST_UNIQUE_CHI2 - static_cast<T>(FLOATMAX_C(1.4611474454146482327655058465577124173E-28)))        \
@@ -185,7 +180,7 @@
       template<typename T>
       constexpr T cos(T x)
       {
-        return -sin<T>(x - half_pi<T>());
+        return -sin<T>(x - constants::half_pi<T>());
       }
 
       template<typename T>
