@@ -5,20 +5,26 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_IRQ_2010_04_10_H_
-  #define _MCAL_IRQ_2010_04_10_H_
+#ifndef _MCAL_WDG_2010_04_10_H_
+  #define _MCAL_WDG_2010_04_10_H_
+
+  namespace sys { namespace idle { void task_func(); } }
 
   namespace mcal
   {
-    namespace irq
+    namespace wdg
     {
       typedef void config_type;
 
-      inline void enable_all () { asm volatile("sei"); }
-      inline void disable_all() { asm volatile("cli"); }
+      inline void init(const config_type*) { }
 
-      void init(const config_type*);
+      class secure final
+      {
+        static void trigger();
+
+        friend void ::sys::idle::task_func();
+      };
     }
   }
 
-#endif // _MCAL_IRQ_2010_04_10_H_
+#endif // _MCAL_WDG_2010_04_10_H_

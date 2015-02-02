@@ -31,6 +31,8 @@ namespace
 
 void app::display::task_init()
 {
+  mcal::led::led0.toggle();
+
   mcal::display::display0().write_dp(app_display_dp_on);
 
   mcal::display::display0().write(app_display_index);
@@ -41,6 +43,8 @@ void app::display::task_func()
   if(app_display_timer.timeout())
   {
     app_display_timer.start_interval(timer_type::seconds(1U));
+
+    mcal::led::led0.toggle();
 
     ++app_display_index;
 

@@ -5,21 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_wdg.h>
+#include <mcal_wdg_watchdog.h>
 
-namespace sys
+void mcal::wdg::secure::trigger()
 {
-  namespace idle
-  {
-    void task_init();
-    void task_func();
-  }
-}
-
-void sys::idle::task_init() { }
-
-void sys::idle::task_func()
-{
-  // Service the watchdog.
-  mcal::wdg::secure::trigger();
+  mcal::wdg::watchdog::the_watchdog.reset_watchdog_timer();
 }

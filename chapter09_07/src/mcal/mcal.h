@@ -8,11 +8,18 @@
 #ifndef _MCAL_2011_10_20_H_
   #define _MCAL_2011_10_20_H_
 
+  #include <mcal_reg_access.h>
   #include <mcal_cpu.h>
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
-  #include <mcal_reg_access.h>
+  #include <mcal_led.h>
+  #include <mcal_wdg.h>
   #include <mcal/mcal_display.h>
+
+  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
+                && (std::numeric_limits<mcal::gpt::value_type>::is_integer == true)
+                && (std::numeric_limits<mcal::gpt::value_type>::is_signed  == false),
+                "the gpt value type must be an unsigned integer type having at least 32 bits");
 
   namespace mcal
   {

@@ -16,9 +16,43 @@ namespace
   public:
     display_console() { }
 
+    display_console(const std::uint8_t value,
+                    const bool dp_on) : display_seven_segment(value,
+                                                              dp_on)
+    {
+      static_cast<void>(do_write_dp(dp_on));
+
+      static_cast<void>(do_write(value));
+    }
+
     virtual ~display_console() { }
 
-    virtual bool write(const std::uint8_t byte_to_write)
+    virtual bool write(const std::uint8_t value)
+    {
+      return do_write(value);
+    }
+
+    virtual bool read(std::uint8_t& byte_to_read) const
+    {
+      byte_to_read = data;
+
+      return true;
+    }
+
+    virtual bool write_dp(const bool dp_on)
+    {
+      return do_write_dp(dp_on);
+    }
+
+    virtual bool read_dp(bool& dp_on) const
+    {
+      dp_on = dp_is_on;
+
+      return true;
+    }
+
+  private:
+    bool do_write(const std::uint8_t value)
     {
       const std::array<std::uint8_t, 16U> character_table =
       {{
@@ -44,12 +78,12 @@ namespace
       bool write_is_ok;
 
       const bool byte_is_in_range =
-        (byte_to_write <
-            std::uint8_t(character_table.size()));
+        (value <
+         std::uint8_t(character_table.size()));
 
       if(byte_is_in_range)
       {
-        table_index = byte_to_write;
+        table_index = value;
 
         write_is_ok = true;
       }
@@ -61,7 +95,8 @@ namespace
         write_is_ok = false;
       }
 
-      std::cout << char(character_table[table_index]);
+      std::cout << "seven_segment display: "
+                << char(character_table[table_index]);
 
       if(dp_is_on)
       {
@@ -73,23 +108,9 @@ namespace
       return write_is_ok;
     }
 
-    virtual bool read(std::uint8_t& byte_to_read) const
-    {
-      byte_to_read = data;
-
-      return true;
-    }
-
-    virtual bool write_dp(const bool dp_on)
+    bool do_write_dp(const bool dp_on)
     {
       dp_is_on = dp_on;
-
-      return true;
-    }
-
-    virtual bool read_dp(bool& dp_on) const
-    {
-      dp_on = dp_is_on;
 
       return true;
     }

@@ -5,15 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// The Led Program (with a skinny operating system)
-
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-int main(void)
+extern "C" int main()
 {
-  // Initialize the mcal.
+  // Initialize the microcontroller abstraction layer.
   mcal::init();
 
+  // Start the multitasking scheduler, and never return.
   os::start_os();
 }

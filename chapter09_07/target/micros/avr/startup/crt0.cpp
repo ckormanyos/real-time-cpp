@@ -6,7 +6,7 @@
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Completely written in C++ for Atmega328P by Chris.
+// Expressed with C++ for Atmega328P by Chris.
 
 #include <mcal/mcal.h>
 
@@ -22,7 +22,7 @@ extern "C" void __my_startup() __attribute__((section(".startup"), used, noinlin
 
 void __my_startup()
 {
-  // Load the SREG register.
+  // Load the sreg register.
   asm volatile("eor r1, r1");
   asm volatile("out 0x3F, r1");
 
@@ -30,21 +30,23 @@ void __my_startup()
   asm volatile("ldi r28, lo8(__initial_stack_pointer)");
   asm volatile("ldi r29, hi8(__initial_stack_pointer)");
 
-  // Load the SPH register (stack pointer high).
+  // Load the sph register (stack pointer high).
   asm volatile("out 0x3E, r29");
 
-  // Load the SPL register (stack pointer low).
+  // Load the spl register (stack pointer low).
   asm volatile("out 0x3D, r28");
 
-  // This is an empty dummy in this project.
+  // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
-  // Zero-clear non-initialized static RAM.
+  // Zero-clear default-initialized static RAM.
   crt::init_ram();
+  mcal::wdg::secure::trigger();
 
   // Call all ctor initializations.
   crt::init_ctors();
+  mcal::wdg::secure::trigger();
 
   // Call main (and never return).
   asm volatile("call main");
@@ -53,6 +55,6 @@ void __my_startup()
   for(;;)
   {
     // Replace with a loud error if desired.
-    mcal::cpu::nop();
+    mcal::wdg::secure::trigger();
   }
 }

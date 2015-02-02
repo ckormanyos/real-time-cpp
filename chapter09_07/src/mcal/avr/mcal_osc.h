@@ -5,21 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_wdg.h>
+#ifndef _MCAL_OSC_2011_10_20_H_
+  #define _MCAL_OSC_2011_10_20_H_
 
-namespace sys
-{
-  namespace idle
+  namespace mcal
   {
-    void task_init();
-    void task_func();
+    namespace osc
+    {
+      typedef void config_type;
+
+      inline void init(const config_type*) { }
+    }
   }
-}
 
-void sys::idle::task_init() { }
-
-void sys::idle::task_func()
-{
-  // Service the watchdog.
-  mcal::wdg::secure::trigger();
-}
+#endif // _MCAL_OSC_2011_10_20_H_

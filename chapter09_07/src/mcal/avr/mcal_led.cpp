@@ -5,21 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_wdg.h>
+#include <mcal_led.h>
 
-namespace sys
+namespace mcal
 {
-  namespace idle
+  namespace led
   {
-    void task_init();
-    void task_func();
+    const led_type led0;
   }
-}
-
-void sys::idle::task_init() { }
-
-void sys::idle::task_func()
-{
-  // Service the watchdog.
-  mcal::wdg::secure::trigger();
 }

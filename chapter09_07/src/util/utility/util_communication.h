@@ -28,13 +28,20 @@
       virtual bool idle           () const = 0;
 
       template<typename send_iterator_type>
-      bool send_n(send_iterator_type first, send_iterator_type last)
+      bool send_n(send_iterator_type first,
+                  send_iterator_type last)
       {
         bool send_result = true;
 
         while(first != last)
         {
-          send_result &= send(value_type(*first));
+          typedef typename
+          std::iterator_traits<send_iterator_type>::value_type
+          send_value_type;
+
+          const send_value_type value(*first);
+
+          send_result &= send(std::uint8_t(value));
 
           ++first;
         }
@@ -43,7 +50,8 @@
       }
 
       template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first, size_type count)
+      bool recv_n(recv_iterator_type first,
+                  size_type count)
       {
         const size_type count_to_recv = (std::min)(count, recv_ready());
 
@@ -57,7 +65,10 @@
 
           recv_result &= recv(byte_to_recv);
 
-          typedef typename std::iterator_traits<recv_iterator_type>::value_type recv_value_type;
+          typedef typename
+          std::iterator_traits<recv_iterator_type>::value_type
+          recv_value_type;
+
           *first = recv_value_type(byte_to_recv);
 
           ++first;

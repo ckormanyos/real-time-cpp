@@ -44,14 +44,26 @@
 @echo.Compile  : mcal_cpu.cpp to bin/mcal_cpu.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_cpu.cpp -o bin/mcal_cpu.o
 
+@echo.Compile  : mcal_display.cpp to bin/mcal_display.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_display.cpp -o bin/mcal_display.o
+
 @echo.Compile  : mcal_gpt.cpp to bin/mcal_gpt.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_gpt.cpp -o bin/mcal_gpt.o
 
 @echo.Compile  : mcal_irq.cpp to bin/mcal_irq.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_irq.cpp -o bin/mcal_irq.o
 
-@echo.Compile  : mcal_display.cpp to bin/mcal_display.o
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_display.cpp -o bin/mcal_display.o
+@echo.Compile  : mcal_led.cpp to bin/mcal_led.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_led.cpp -o bin/mcal_led.o
+
+@echo.Compile  : mcal_osc.cpp to bin/mcal_osc.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_osc.cpp -o bin/mcal_osc.o
+
+@echo.Compile  : mcal_port.cpp to bin/mcal_port.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_port.cpp -o bin/mcal_port.o
+
+@echo.Compile  : mcal_wdg.cpp to bin/mcal_wdg.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_wdg.cpp -o bin/mcal_wdg.o
 
 @echo.Compile  : os.cpp to bin/os.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/os/os.cpp -o bin/os.o
