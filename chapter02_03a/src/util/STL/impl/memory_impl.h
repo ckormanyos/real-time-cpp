@@ -8,6 +8,7 @@
 #ifndef _MEMORY_IMPL_2010_02_23_H_
   #define _MEMORY_IMPL_2010_02_23_H_
 
+  #include "_stl_local_constexpr.h"
   #include "cstddef_impl.h"
   #include "cstdint_impl.h"
 
@@ -27,7 +28,7 @@
       allocator_base() { }
 
       // The allocator's buffer size.
-      static constexpr size_type buffer_size = 4U;
+      static STL_LOCAL_CONSTEXPR size_type buffer_size = 4U;
 
       // The allocator's memory allocation.
       static void* do_allocate(const size_type size);
@@ -56,7 +57,7 @@
       typedef value_type*       pointer;
       typedef const value_type* const_pointer;
 
-      template <class U>
+      template<typename U>
       struct rebind { typedef allocator<U> other; };
     };
 
@@ -75,10 +76,10 @@
 
       allocator(const allocator&) throw() { }
 
-      template <class U>
+      template<typename U>
       allocator(const allocator<U>&) throw() { }
 
-      template<class U> 
+      template<typename U> 
       struct rebind { typedef allocator<U> other; };
 
       size_type max_size() const throw()
@@ -90,7 +91,7 @@
       const_pointer address(const_reference x) const { return &x; }
 
       pointer allocate(size_type num,
-                       allocator<void>::const_pointer = nullptr) const
+                       allocator<void>::const_pointer = nullptr)
       {
         void* p = do_allocate(num * sizeof(value_type));
         return static_cast<pointer>(p);

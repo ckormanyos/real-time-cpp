@@ -8,13 +8,13 @@
 #ifndef _UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
   #define _UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
 
-  #include "util_point.h"
+  #include <util/utility/util_point.h>
 
   namespace util
   {
     template<typename point_iterator,
-              typename x_type,
-              typename y_type = x_type>
+             typename x_type,
+             typename y_type = x_type>
     y_type linear_interpolate(point_iterator pts_begin,
                               point_iterator pts_end,
                               const x_type& x,
@@ -39,7 +39,7 @@
       }
       else
       {
-        // Find interpolation pair with binary search.
+        // Find the interpolation pair with binary search.
         point_iterator it = std::lower_bound(pts_begin,
                                              pts_end,
                                              point<x_type>(x));

@@ -35,6 +35,6 @@
   template<typename T> inline bool operator==(const nullptr_t&, T* p) { return (static_cast<T*>(0U) == p); }
   template<typename T> inline bool operator!=(const nullptr_t&, T* p) { return (static_cast<T*>(0U) != p); }
 
-  constexpr nullptr_t nullptr = { };
+  const nullptr_t nullptr = { };
 
 #endif // _UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_

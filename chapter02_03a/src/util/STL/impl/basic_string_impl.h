@@ -12,12 +12,13 @@
   #pragma GCC system_header
   #endif
 
-  #include "xallocator_impl.h"
-  #include "xalgorithm_impl.h"
-  #include "memory_impl.h"
+  #include "_stl_local_constexpr.h"
   #include "char_traits_impl.h"
-  #include "iterator_impl.h"
   #include "initializer_list_impl.h"
+  #include "iterator_impl.h"
+  #include "memory_impl.h"
+  #include "xalgorithm_impl.h"
+  #include "xallocator_impl.h"
 
   // Implement some of std::basic_string for compilers that do not yet support it.
 
@@ -42,7 +43,7 @@
       typedef std::reverse_iterator<iterator>          reverse_iterator;
       typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
-      static constexpr size_type npos = static_cast<size_type>(-1);
+      static STL_LOCAL_CONSTEXPR size_type npos = static_cast<size_type>(-1);
 
       basic_string() : my_first(allocator_type().allocate(1U)),
                        my_last (my_first)
@@ -93,20 +94,20 @@
 
       basic_string(size_type count,
                    const T& value,
-                   const allocator_type& a) : my_first((const_cast<allocator_type&>(a)).allocate(count + 1U)),
+                   const allocator_type& a) : my_first(allocator_type(a).allocate(count + 1U)),
                                               my_last (my_first + count)
       {
         xalgorithm::xfill(my_first, my_last, value);
         *my_last = static_cast<value_type>(0);
       }
 
-      template<class input_iterator>
+      template<typename input_iterator>
       basic_string(input_iterator first,
                    input_iterator last,
                    const allocator_type& a = allocator_type())
       {
         const size_type count static_cast<size_type>(std::distance(first, last));
-        my_first = (const_cast<allocator_type&>(a)).allocate(sz + 1U);
+        my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
         xalgorithm::xcopy(first, last, my_first);
         *my_last = static_cast<value_type>(0);
@@ -116,7 +117,7 @@
                    const allocator_type& a = allocator_type())
       {
         const size_type sz = (size_type) (lst.size());
-        my_first = (const_cast<allocator_type&>(a)).allocate(sz + 1U);
+        my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
         xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
         *my_last = static_cast<value_type>(0);

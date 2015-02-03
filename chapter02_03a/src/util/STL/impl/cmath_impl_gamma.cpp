@@ -8,8 +8,8 @@
 #if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
 
   #include <cmath>
-  #include <cstdint>
   #include <cstdfloat>
+  #include <cstdint>
   #include "xcmath_impl.h"
 
   // Here, we compute the tgamma function for std::float32_t.

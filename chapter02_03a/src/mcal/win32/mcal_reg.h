@@ -8,7 +8,7 @@
 #ifndef _MCAL_REG_2010_04_10_H_
   #define _MCAL_REG_2010_04_10_H_
 
-  #include <util/utility/util_type.h>
+  #include <cstdint>
 
   namespace mcal
   {

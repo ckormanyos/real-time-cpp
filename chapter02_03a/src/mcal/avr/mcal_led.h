@@ -1,44 +1,57 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014.
+//  Copyright Christopher Kormanyos 2007 - 2013.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_LED_2014_07_28_H_
-  #define _MCAL_LED_2014_07_28_H_
-
+#ifndef _MCAL_LED_2010_09_14_H_
+  #define _MCAL_LED_2010_09_14_H_
 
   #include <cstdint>
+  #include <mcal_port.h>
+  #include <util/utility/util_noncopyable.h>
 
-  class led
+  namespace mcal
   {
-  public:
-    typedef std::uint8_t port_type;
-    typedef std::uint8_t bval_type;
-
-    led(const port_type p,
-        const bval_type b) : port(p),
-                             bval(b)
+    namespace led
     {
-      // Set the port pin to low.
-      *reinterpret_cast<volatile bval_type*>(port) &= static_cast<bval_type>(~bval);
+      template<typename addr_type,
+               typename reg_type,
+               const addr_type port,
+               const reg_type bpos>
+      class led final : private util::noncopyable
+      {
+      public:
+        led()
+        {
+          // Set the port pin value to low.
+          port_pin_type::set_pin_low();
 
-      // Set the port pin to output.
-      *reinterpret_cast<volatile bval_type*>(port - 1U) |= bval;
+          // Set the port pin direction to output.
+          port_pin_type::set_direction_output();
+        }
+
+        static void toggle()
+        {
+          // Toggle the LED.
+          port_pin_type::toggle_pin();
+        }
+
+      private:
+        typedef mcal::port::port_pin<addr_type,
+                                     reg_type,
+                                     port,
+                                     bpos> port_pin_type;
+      };
+
+      typedef led<std::uint8_t,
+                  std::uint8_t,
+                  mcal::reg::portb,
+                  UINT8_C(5)> led_type;
+
+      extern const led_type led0;
     }
+  }
 
-    void toggle(void) const
-    {
-      // Toggle the LED.
-      *reinterpret_cast<volatile bval_type*>(port) ^= bval;
-    }
-
-  private:
-    const port_type port;
-    const bval_type bval;
-  };
-
-  extern const led led_b5;
-
-#endif // _MCAL_LED_2014_07_28_H_
+#endif // _MCAL_LED_2010_09_14_H_

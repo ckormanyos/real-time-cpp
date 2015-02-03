@@ -1,10 +1,22 @@
-#include <iostream>
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #include <mcal_led.h>
-#include <mcal_reg_access.h>
+#include <iostream>
 
-const led led_b5;
+namespace mcal
+{
+  namespace led
+  {
+    const led_type led0;
+  }
+}
 
-void led::toggle() const
+void mcal::led::led::toggle() const
 {
   // Toggle the LED state.
   is_on = (!is_on);

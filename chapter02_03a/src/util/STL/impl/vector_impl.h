@@ -8,11 +8,11 @@
 #ifndef _VECTOR_IMPL_2010_02_23_H_
   #define _VECTOR_IMPL_2010_02_23_H_
 
+  #include "initializer_list_impl.h"
+  #include "iterator_impl.h"
+  #include "memory_impl.h"
   #include "xalgorithm_impl.h"
   #include "xallocator_impl.h"
-  #include "memory_impl.h"
-  #include "iterator_impl.h"
-  #include "initializer_list_impl.h"
 
   // Implement some of std::vector for compilers that do not yet support it.
 
@@ -56,17 +56,17 @@
 
       vector(size_type count,
              const T& value,
-             const allocator_type& a) : my_first((const_cast<allocator_type&>(a)).allocate(count)),
+             const allocator_type& a) : my_first(allocator_type(a).allocate(count)),
                                         my_last (my_first + count),
                                         my_end  (my_last)
       {
         xalgorithm::xfill(my_first, my_last, value);
       }
 
-      template<class input_iterator>
+      template<typename input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(static_cast<size_type>(std::distance(first, last)))),
+             const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(static_cast<size_type>(std::distance(first, last)))),
                                                            my_last (my_first + static_cast<size_type>(std::distance(first, last))),
                                                            my_end  (my_last)
       {
@@ -81,7 +81,7 @@
       }
 
       vector(std::initializer_list<T> lst,
-             const allocator_type& a = allocator_type()) : my_first((const_cast<allocator_type&>(a)).allocate(lst.size())),
+             const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(lst.size())),
                                                            my_last (my_first + lst.size()),
                                                            my_end  (my_last)
       {

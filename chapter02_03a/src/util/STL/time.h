@@ -44,7 +44,8 @@
 #ifndef _TIME_2014_04_23_H_
   #define _TIME_2014_04_23_H_
 
-  // TBD: If the compiler has <time.h>, then include it for ::time_t.
+  // If the compiler has <time.h>, then include it for the type time_t.
+  // Otherwise, we simply define time_t as unsigned int.
 
   typedef unsigned int time_t;
 

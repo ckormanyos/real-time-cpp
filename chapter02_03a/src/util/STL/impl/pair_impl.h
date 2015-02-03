@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
   #include "cstddef_impl.h"
 
-  // Implement most of std::pair for compilers that do not yet support it.
+  // Implement some of std::pair for compilers that do not yet support it.
 
   namespace std
   {
@@ -25,22 +25,28 @@
       first_type  first;
       second_type second;
 
-      pair() : first (T1()), second(T2()) { }
+      pair() : first(T1()), second(T2()) { }
 
-      pair(const first_type& t1, const second_type& t2) : first(t1), second(t2) { }
+      pair(const first_type& t1, const second_type& t2) : first (t1),
+                                                          second(t2) { }
 
-      template<typename U1, typename U2>
-      pair(const pair<U1, U2>& p) : first(T1(p.first)), second(T2(p.second)) { }
+      pair(const pair& other) : first (other.first),
+                                second(other.second) { }
+
+      template<typename other_type1,
+               typename other_type2>
+      pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
+                                                      second(T2(p.second)) { }
     };
   }
 
-  namespace xpair
+  namespace xpair_helper
   {
     template<int I, typename T>
-    class xpair_get_helper { };
+    class xget { };
 
     template<typename T1, typename T2>
-    class xpair_get_helper<0, std::pair<T1, T2> >
+    class xget<0, std::pair<T1, T2> >
     {
     public:
       typedef       T1& nonconstant_reference_type;
@@ -51,7 +57,7 @@
     };
 
     template<typename T1, typename T2>
-    class xpair_get_helper<1, std::pair<T1, T2> >
+    class xget<1, std::pair<T1, T2> >
     {
     public:
       typedef       T2& nonconstant_reference_type;

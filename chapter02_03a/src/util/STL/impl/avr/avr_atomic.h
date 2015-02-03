@@ -23,9 +23,8 @@
     void atomic_store(volatile atomic_integral_type*, atomic_integral_type);
   }
 
-  class atomic_helper
+  struct atomic_helper
   {
-  private:
     template<typename atomic_integral_type>
     friend atomic_integral_type std::atomic_load(const atomic_integral_type*);
 

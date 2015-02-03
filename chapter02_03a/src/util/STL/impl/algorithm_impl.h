@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
   #include "cstddef_impl.h"
   #include "xalgorithm_impl.h"
-  #include "iterator_impl.h"
+  #include "initializer_list_impl.h"
 
   // Implement some of <algorithm> for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 25.1.
@@ -18,27 +18,81 @@
   namespace std
   {
     template<typename compare_type>
-    const compare_type& (max)(const compare_type& a, const compare_type& b)
-    {
-      return xalgorithm::xmax(a, b);
-    }
-
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate predicate)
-    {
-      return predicate(a, b);
-    }
-
-    template<typename compare_type>
     const compare_type& (min)(const compare_type& a, const compare_type& b)
     {
       return xalgorithm::xmin(a, b);
     }
 
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate predicate)
+    template<typename compare_type,
+             typename binary_predicate>
+    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
-      return predicate(a, b);
+      return xalgorithm::xmin(a, b, compare_function);
+    }
+
+    template<typename forward_iterator>
+    forward_iterator min_element(forward_iterator first, forward_iterator last)
+    {
+      return xalgorithm::xmin_element(first, last);
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator min_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      return xalgorithm::xmin_element(first, last, compare_function);
+    }
+
+    template<typename T>
+    T (min)(std::initializer_list<T> il)
+    {
+      return *std::min_element(il.begin(), il.end());
+    }
+
+    template<typename T,
+             typename binary_predicate>
+    T (min)(std::initializer_list<T> il, binary_predicate compare_function)
+    {
+      return *std::min_element(il.begin(), il.end(), compare_function);
+    }
+
+    template<typename compare_type>
+    const compare_type& (max)(const compare_type& a, const compare_type& b)
+    {
+      return xalgorithm::xmax(a, b);
+    }
+
+    template<typename compare_type,
+             typename binary_predicate>
+    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    {
+      return xalgorithm::xmax(a, b, compare_function);
+    }
+
+    template<typename forward_iterator>
+    forward_iterator max_element(forward_iterator first, forward_iterator last)
+    {
+      return xalgorithm::xmax_element(first, last);
+    }
+
+    template<typename forward_iterator,
+             typename binary_predicate>
+    forward_iterator max_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+    {
+      return xalgorithm::xmax_element(first, last, compare_function);
+    }
+
+    template<typename T>
+    T (max)(std::initializer_list<T> il)
+    {
+      return *std::max_element(il.begin(), il.end());
+    }
+
+    template<typename T,
+             typename binary_predicate>
+    T (max)(std::initializer_list<T> il, binary_predicate compare_function)
+    {
+      return *std::max_element(il.begin(), il.end(), compare_function);
     }
 
     template <typename input_iterator1, typename input_iterator2>
@@ -70,6 +124,27 @@
       xalgorithm::xfill_n(first, count, value);
     }
 
+    template<typename forward_iterator,
+             typename generator_type>
+    void generate(forward_iterator first, forward_iterator last, generator_type generator)
+    {
+      xalgorithm::xgenerate(first, last, generator);
+    }
+
+    template<typename output_iterator,
+             typename size_type,
+             typename generator_type>
+    output_iterator generate_n(output_iterator first, size_type count, generator_type generator)
+    {
+      return xalgorithm::xgenerate_n(first, count, generator);
+    }
+
+    template<typename bidirectional_iterator>
+    void reverse(bidirectional_iterator first, bidirectional_iterator last)
+    {
+      xalgorithm::xreverse(first, last);
+    }
+
     template<typename input_iterator,
              typename output_iterator,
              typename binary_function_type>
@@ -81,10 +156,10 @@
       return xalgorithm::xtransform(first, last, destination, function);
     }
 
-    template<class input_iterator1,
-             class input_iterator2,
-             class output_iterator,
-             class binary_function_type>
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename output_iterator,
+             typename binary_function_type>
     output_iterator transform(input_iterator1 first1,
                               input_iterator1 last1,
                               input_iterator2 first2,
@@ -142,7 +217,7 @@
       return xalgorithm::xcount(first, last, value);
     }
 
-    template<class input_iterator, class predicate_type>
+    template<typename input_iterator, typename predicate_type>
     typename iterator_traits<input_iterator>::difference_type count_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
       return xcount_if(first, last, predicate);
@@ -193,7 +268,7 @@
     template<typename T, std::size_t N>
     void xswap(T(&left)[N], T(&right)[N])
     {
-      xalgorithm::xswap(left, right);
+      xalgorithm::xswap_ranges(&left[0U], &left[N], &right[0U]);
     }
   }
 

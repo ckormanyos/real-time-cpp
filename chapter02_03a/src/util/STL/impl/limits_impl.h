@@ -12,8 +12,8 @@
   #pragma GCC system_header
   #endif
 
-  #include <limits.h>
   #include <float.h>
+  #include <limits.h>
 
   // Implement some of <limits> for compilers that do not yet support it.
   // The implementation was partly inspired by some concepts in GCC's

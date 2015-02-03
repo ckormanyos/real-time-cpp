@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,26 +8,39 @@
 #ifndef _UTIL_NONCOPYABLE_2008_12_16_H_
   #define _UTIL_NONCOPYABLE_2008_12_16_H_
 
-  // A non-copyable base class, taken from boost::noncopyable.
+  // Taken (with slight modification) from boost::noncopyable.
 
   namespace util
   {
-    class noncopyable
+    namespace my_noncopyable_namespace
     {
-    protected:
-      noncopyable() {}
-      ~noncopyable() {}
+      class noncopyable
+      {
+      protected:
 
-   // Emphasize: The following members are private.
-   private:
-#if defined(_MSC_VER) //&& (_MSC_VER <= 1600)
-      noncopyable(const noncopyable&);
-      const noncopyable& operator=(const noncopyable&);
-#else
-      noncopyable(const noncopyable&) = delete;
-      const noncopyable& operator=(const noncopyable&) = delete;
-#endif
-    };
+      #if defined(__GNUC__)
+        constexpr noncopyable() = default;
+        ~noncopyable() = default;
+      #else
+        noncopyable() {}
+        ~noncopyable() {}
+      #endif
+
+      private:
+
+      #if defined(__GNUC__)
+        // Emphasize: The following members are private.
+        noncopyable(const noncopyable&) = delete;
+        noncopyable& operator=(const noncopyable&) = delete;
+      #else
+        // Emphasize: The following members are private.
+        noncopyable(const noncopyable&);
+        noncopyable& operator=(const noncopyable&);
+      #endif
+      };
+    }
+
+    typedef my_noncopyable_namespace::noncopyable noncopyable;
   }
 
 #endif // _UTIL_NONCOPYABLE_2008_12_16_H_

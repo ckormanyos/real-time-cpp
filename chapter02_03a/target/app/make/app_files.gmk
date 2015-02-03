@@ -9,6 +9,9 @@ FILES_CPP  = $(PATH_APP)/app/led/app_led                       \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                  \
              $(PATH_APP)/mcal/$(TGT)/mcal_irq                  \
              $(PATH_APP)/mcal/$(TGT)/mcal_led                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_osc                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_port                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_wdg                  \
              $(PATH_APP)/os/os                                 \
              $(PATH_APP)/os/os_task_control_block              \
              $(PATH_APP)/sys/idle/sys_idle                     \

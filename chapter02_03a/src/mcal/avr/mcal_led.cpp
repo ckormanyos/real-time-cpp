@@ -1,4 +1,16 @@
-#include <mcal_led.h>
-#include <mcal_reg_access.h>
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
-const led led_b5(mcal::reg::portb, mcal::reg::bval5);
+#include <mcal_led.h>
+
+namespace mcal
+{
+  namespace led
+  {
+    const led_type led0;
+  }
+}
