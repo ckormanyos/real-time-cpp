@@ -159,23 +159,23 @@ namespace
 
 mcal::display::display_seven_segment& mcal::display::display0()
 {
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(0)> portc0_type;
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(1)> portc1_type;
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(2)> portc2_type;
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(3)> portc3_type;
   typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(4)> portc4_type;
   typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(5)> portc5_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(2)> portc2_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(1)> portc1_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(0)> portc0_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(6)> portd6_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(5)> portd5_type;
-  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, UINT8_C(3)> portc3_type;
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(0)> portd0_type;
+  typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(1)> portd1_type;
 
   typedef display_fnd567<portc4_type,
-                         portc5_type,
-                         portc2_type,
+                         portc3_type,
                          portc1_type,
                          portc0_type,
-                         portd6_type,
-                         portd5_type,
-                         portc3_type> display_type;
+                         portc5_type,
+                         portd0_type,
+                         portd1_type,
+                         portc2_type> display_type;
 
   static display_type the_display;
 

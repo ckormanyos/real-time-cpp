@@ -8,7 +8,7 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega32P. */
 
-INPUT(libc.a)
+INPUT(libc.a libm.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)

@@ -9,7 +9,7 @@
 
 @rem
 @rem Usage:
-@rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
+@rem build.bat directory_of_gcc_bin avr
 @rem For example,
 @rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
 @rem
@@ -30,7 +30,7 @@ del /Q bin\led*.*
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -x assembler crt0.s -c -o bin/crt0.o
 
 @echo.Compile  : led.cpp to bin/led.o
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -O3 -std=c++0x -I. -c led.cpp -o bin/led.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -fsigned-char -O2 -std=c++0x -I. -c led.cpp -o bin/led.o
 
 @echo.Link     : objects to bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -mmcu=atmega328p -nostartfiles -nostdlib -Wl,-Tavr.ld,-Map,bin/led.map bin/led.o bin/crt0.o -o bin/led.elf

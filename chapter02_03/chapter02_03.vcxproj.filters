@@ -34,14 +34,14 @@
     <Filter Include="src\mcal\win32">
       <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL_C++14_Compatibility">
-      <UniqueIdentifier>{91752c8a-7e79-4bfb-b230-ef3355e8a033}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL_C++11_Compatibility">
       <UniqueIdentifier>{96a081d3-49bf-4a50-a375-a8107fb760ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util\STL_C++11_Compatibility\impl">
       <UniqueIdentifier>{a366dc4b-f9e4-4839-b7a6-a91fe70d160c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util\STL_C++17_Compatibility">
+      <UniqueIdentifier>{91752c8a-7e79-4bfb-b230-ef3355e8a033}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -263,14 +263,14 @@
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL_C++14_Compatibility\stdfloat.h">
-      <Filter>src\util\STL_C++14_Compatibility</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_led.h">
       <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h">
+      <Filter>src\util\STL_C++17_Compatibility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,8 +349,8 @@
     <None Include="src\util\STL_C++11_Compatibility\type_traits">
       <Filter>src\util\STL_C++11_Compatibility</Filter>
     </None>
-    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
-      <Filter>src\util\STL_C++14_Compatibility</Filter>
+    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
+      <Filter>src\util\STL_C++17_Compatibility</Filter>
     </None>
   </ItemGroup>
 </Project>
