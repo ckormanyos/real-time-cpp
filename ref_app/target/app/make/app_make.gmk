@@ -96,7 +96,6 @@ AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
-HEX_MANIP = $(PATH_TOOLS)\generic\hex_tools\HexManip.exe
 NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
 OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objdump.exe
 OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objcopy.exe
@@ -256,9 +255,8 @@ $(APP)_nm.txt : $(APP).elf
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).elf
-	@-$(ECHO) +++ creating and manipulating hex modules: $(APP).hex, etc.
+	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
-	@-$(HEX_MANIP) outFile=$(APP)_flash.hex imgFile=$(PATH_BIN)/$(IMAGE_FILE) binFile=$(APP)_flash.bin inFile=$(APP).hex elfFile=$(APP).elf $(HEX_MANIP_SCRIPT_FILE)
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)
