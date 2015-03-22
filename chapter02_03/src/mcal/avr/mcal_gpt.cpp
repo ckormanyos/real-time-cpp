@@ -66,8 +66,8 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
   // Perform the consistency check and obtain the consistent microsecond tick.
   const mcal::gpt::value_type consistent_microsecond_tick
-    = ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_1) + 1U) >> 1U))
-                                  : mcal::gpt::value_type(system_tick | std::uint8_t(std::uint16_t(std::uint16_t(tim0_cnt_2) + 1U) >> 1U)));
+    = ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(tim0_cnt_1 >> 1U))
+                                  : mcal::gpt::value_type(system_tick | std::uint8_t(tim0_cnt_2 >> 1U)));
 
   return (gpt_is_initialized() ? consistent_microsecond_tick : mcal::gpt::value_type(0U));
 }
