@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>6.0</ProjectVersion>
+    <ProjectVersion>6.2</ProjectVersion>
     <ProjectGuid>{9c2d4315-d501-4961-b0d1-4cc0f4ab0d17}</ProjectGuid>
     <avrdevice>ATmega328P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
@@ -27,22 +27,42 @@
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
     <avrtoolinterface />
-    <ToolchainName>com.Atmel.AVRGCC8</ToolchainName>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfVersion>3.0.1</AsfVersion>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <BootSegment>2</BootSegment>
+    <AsfFrameworkConfig>
+      <framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputFileName>chapter09_07</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
-      <AvrGccCpp>
+      <AvrGccCpp xmlns="">
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
         <avrgcccpp.compiler.directories.IncludePaths>
@@ -58,7 +78,7 @@
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
-            <Value>m</Value>
+            <Value>libm</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.memorysettings.InitialStack>0x800</avrgcccpp.linker.memorysettings.InitialStack>
@@ -70,6 +90,11 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp xmlns="">
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
         <avrgcccpp.compiler.directories.IncludePaths>
@@ -85,7 +110,7 @@
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
-            <Value>m</Value>
+            <Value>libm</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
@@ -94,12 +119,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app" />
-    <Folder Include="src\app\led" />
+    <Folder Include="src\app\display" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
     <Folder Include="src\util\STL_C++11_Compatibility\impl" />
-    <Folder Include="src\util\STL_C++14_Compatibility" />
+    <Folder Include="src\util\STL_C++17_Compatibility" />
     <Folder Include="src\util\STL_C++11_Compatibility" />
     <Folder Include="target" />
     <Folder Include="src" />
@@ -117,13 +142,16 @@
     <Folder Include="target\micros\avr\startup" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\app\led\app_led.cpp">
+    <Compile Include="src\app\display\app_display.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_display.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_gpt.cpp">
@@ -144,16 +172,37 @@
     <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg_access.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\mcal.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_display.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
@@ -172,9 +221,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os_cfg.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\os\os_debug_monitor_cfg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os_task_control_block.cpp">
@@ -291,7 +337,7 @@
     <Compile Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL_C++14_Compatibility\stdfloat.h">
+    <Compile Include="src\util\STL_C++17_Compatibility\stdfloat.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_bit_mask.h">
@@ -404,7 +450,7 @@
     <None Include="src\util\STL_C++11_Compatibility\type_traits">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
+    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>
