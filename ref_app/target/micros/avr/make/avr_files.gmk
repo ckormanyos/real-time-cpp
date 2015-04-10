@@ -17,3 +17,6 @@ FILES_TGT  = $(PATH_APP)/util/STL/impl/avr/avr_float_limits            \
              $(PATH_TGT)/startup/crt0_init_ram                         \
              $(PATH_TGT)/startup/crt1                                  \
              $(PATH_TGT)/startup/int_vect
+
+#             $(PATH_APP)/mcal/avr/mcal_display_pixel_ws2812            \
+             
