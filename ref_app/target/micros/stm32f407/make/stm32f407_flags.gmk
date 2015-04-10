@@ -12,7 +12,7 @@
 GCC_VERSION   = 4.8.3
 GCC_TARGET    = arm-none-eabi
 
-TGT_CFLAGS    = -Os                                            \
+TGT_CFLAGS    = -O2                                            \
                 -mcpu=cortex-m4                                \
                 -mtune=cortex-m4                               \
                 -mthumb                                        \

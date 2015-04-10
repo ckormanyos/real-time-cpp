@@ -10,25 +10,27 @@
 
 void* util::static_allocator_base::do_allocate(const size_type size)
 {
-  static volatile std::uint8_t  buffer[static_allocator_base::buffer_size];
-  static volatile std::uint8_t* get_ptr = buffer;
+  static std::uint8_t  buffer[static_allocator_base::buffer_size];
+  static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
-  volatile std::uint8_t* p = get_ptr;
+  std::uint8_t* p = get_ptr;
 
-  // Does this allocation overflow the top of the buffer?
-  const bool is_overflow = ((get_ptr + size) >= (buffer + static_allocator_base::buffer_size));
+  // Does this allocation overflow the top
+  // of the buffer?
+  const bool is_overflow =
+    (get_ptr >= (buffer + buffer_size));
 
-  // Increment the pointer for next time.
-  // But only do this if the buffer does *not* overflow.
   if(is_overflow)
   {
-    // TBD: Is any sensible error reaction possible here?
+    // Here, the allocation overflows the top
+    // of the buffer. In this design, however,
+    // there is no sensible error reaction possible here.
   }
   else
   {
     get_ptr += size;
   }
 
-  return static_cast<void*>(const_cast<std::uint8_t*>(p));
+  return static_cast<void*>(p);
 }

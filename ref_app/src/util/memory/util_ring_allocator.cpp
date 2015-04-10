@@ -20,10 +20,10 @@ void* util::ring_allocator_base::do_allocate(const size_type size)
 
   // Does this allocation overflow the top
   // of the buffer?
-  const bool is_wrap =
+  const bool is_overflow =
     (get_ptr >= (buffer + buffer_size));
 
-  if(is_wrap)
+  if(is_overflow)
   {
     // Here, the allocation overflows the top
     // of the buffer. Reset the allocated pointer
@@ -33,5 +33,5 @@ void* util::ring_allocator_base::do_allocate(const size_type size)
     get_ptr = buffer + size;
   }
 
-  return static_cast<void*>(const_cast<std::uint8_t*>(p));
+  return static_cast<void*>(p);
 }
