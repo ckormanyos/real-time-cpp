@@ -19,16 +19,16 @@ namespace
            typename segment_f_port,
            typename segment_g_port,
            typename segment_dp_port>
-  class display_fnd567 final : public mcal::display::display_seven_segment
+  class display_board final : public mcal::display::display_seven_segment
   {
   public:
-    display_fnd567()
+    display_board()
     {
       port_init();
     }
 
-    display_fnd567(const std::uint8_t value,
-                   const bool dp_on)
+    display_board(const std::uint8_t value,
+                  const bool dp_on)
       : display_seven_segment(value, dp_on)
     {
       port_init();
@@ -38,7 +38,7 @@ namespace
       do_write(value);
     }
 
-    virtual ~display_fnd567() { }
+    virtual ~display_board() { }
 
     virtual bool write(const std::uint8_t value)
     {
@@ -168,14 +168,14 @@ mcal::display::display_seven_segment& mcal::display::display0()
   typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(0)> portd0_type;
   typedef mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, UINT8_C(1)> portd1_type;
 
-  typedef display_fnd567<portc4_type,
-                         portc3_type,
-                         portc1_type,
-                         portc0_type,
-                         portc5_type,
-                         portd0_type,
-                         portd1_type,
-                         portc2_type> display_type;
+  typedef display_board<portc4_type,
+                        portc3_type,
+                        portc1_type,
+                        portc0_type,
+                        portc5_type,
+                        portd0_type,
+                        portd1_type,
+                        portc2_type> display_type;
 
   static display_type the_display;
 
