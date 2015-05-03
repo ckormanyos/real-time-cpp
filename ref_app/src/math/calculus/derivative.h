@@ -23,7 +23,7 @@
       const real_value_type dx3(dx2 + dx);
 
       const real_value_type m1((  real_function(x + dx)
-                                - real_function(x - dx))  / 2;
+                                - real_function(x - dx))  / 2);
       const real_value_type m2((  real_function(x + dx2)
                                 - real_function(x - dx2)) / 4);
       const real_value_type m3((  real_function(x + dx3)
