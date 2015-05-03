@@ -9,15 +9,14 @@
   #define _MCAL_BENCHMARK_2014_04_16_H_
 
   #include <mcal_port.h>
+  #include <mcal_reg_access.h>
 
   namespace mcal
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<std::uint32_t,
-                                   std::uint32_t,
-                                   mcal::reg::trisg,
-                                   UINT32_C(14)> benchmark_port_type;
+      // TBD: The port_pin template is not yet supported.
+      typedef mcal::port::port_pin benchmark_port_type;
     }
   }
 
