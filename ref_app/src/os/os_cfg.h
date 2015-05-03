@@ -10,7 +10,7 @@
 
   #include <os/os_debug_monitor_cfg.h>
 
-  // Declare and define the task initialization and the task function of the idle process.
+  // Declare the task initialization and the task function of the idle process.
   namespace sys { namespace idle { void task_init(); void task_func(); } }
 
   // Define symbols for the task initialization and the task function of the idle process.
@@ -41,12 +41,12 @@
   // Configure the operating system tasks.
 
   // Use prime numbers for offsets.
-  // Use Wolfram's alpha or Mathematica(R): Table[Prime[n], {n, 50, 2000, 50}]
+  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 50, 4000, 100}]
   // to obtain:
-  //   229,   541,   863,  1223,  1583,  1987,  2357,  2741,  3181,  3571,
-  //  3989,  4409,  4831,  5279,  5693,  6133,  6571,  6997,  7499,  7919,
-  //  8387,  8831,  9283,  9733, 10177, 10657, 11149, 11657, 12109, 12553,
-  // 13007, 13499, 13967, 14519, 14947, 15401, 15881, 16381, 16903, 17389
+  //   229,   863,  1583,  2357,  3181,  3989,  4831,  5693,  6571,  7499,
+  //  8387,  9283, 10177, 11149, 12109, 13007, 13967, 14947, 15881, 16903,
+  // 17891, 18899, 19891, 20897, 21841, 22817, 23827, 24877, 25913, 26891,
+  // 27947, 28933, 30059, 31091, 32159, 33113, 34157, 35159, 36277, 37309
 
   #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
 
@@ -64,11 +64,11 @@
       os::task_control_block(app::benchmark::task_init,                                          \
                              app::benchmark::task_func,                                          \
                              os::timer_type::microseconds(UINT32_C(100000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   541))),                    \
+                             os::timer_type::microseconds(UINT32_C(   863))),                    \
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   863))),                    \
+                             os::timer_type::microseconds(UINT32_C(  1583))),                    \
     }                                                                                            \
   }
 
