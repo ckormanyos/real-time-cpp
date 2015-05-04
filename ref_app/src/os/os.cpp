@@ -6,6 +6,7 @@
 //
 
 #include <algorithm>
+#include <iterator>
 #include <mcal_irq.h>
 #include <os/os.h>
 #include <os/os_task_control_block.h>
@@ -13,7 +14,7 @@
 // The one (and only one) operating system task list.
 const os::task_list_type& os::task_list()
 {
-  static const os::task_list_type the_task_list(OS_TASK_LIST);
+  static const task_list_type the_task_list(OS_TASK_LIST);
 
   return the_task_list;
 }
@@ -21,8 +22,8 @@ const os::task_list_type& os::task_list()
 void os::start_os()
 {
   // Initialize each task once (and only once) before the task scheduling begins.
-  std::for_each(task_list().cbegin(),
-                task_list().cend(),
+  std::for_each(std::begin(task_list()),
+                std::end  (task_list()),
                 [](const task_control_block& the_tcb)
                 {
                   the_tcb.initialize();
@@ -36,15 +37,15 @@ void os::start_os()
   for(;;)
   {
     // Find the next ready task using a priority-based search algorithm.
-    const auto it_ready_task = std::find_if(task_list().cbegin(),
-                                            task_list().cend(),
+    const auto it_ready_task = std::find_if(std::begin(task_list()),
+                                            std::end  (task_list()),
                                             [](const task_control_block& the_tcb) -> bool
                                             {
                                               return the_tcb.execute();
                                             });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == task_list().cend())
+    if(it_ready_task == std::end(task_list()))
     {
       OS_IDLE_TASK_FUNC();
     }
@@ -57,7 +58,8 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
   {
     // Get a pointer to the control block corresponding to
     // the task id that has been supplied to this subroutine.
-    auto control_block_of_the_task_id = task_list().cbegin() + task_list_type::size_type(task_id);
+    auto control_block_of_the_task_id =   std::begin(task_list())
+                                        + task_list_type::size_type(task_id);
 
     // Set the event of the corresponding task.
     mcal::irq::disable_all();
@@ -69,9 +71,9 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
 void os::get_event(event_type& event_to_get)
 {
   // Get the iterator of the control block of the running task.
-  const auto control_block_of_the_running_task = os::secure::get_running_task_iterator();
+  const auto control_block_of_the_running_task = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != os::task_list().cend())
+  if(control_block_of_the_running_task != std::end(task_list()))
   {
     // Get the event of the running task.
     mcal::irq::disable_all();
@@ -89,15 +91,15 @@ void os::get_event(event_type& event_to_get)
 void os::clear_event(const event_type& event_to_clear)
 {
   // Get the iterator of the control block of the running task.
-  const auto control_block_of_the_running_task = os::secure::get_running_task_iterator();
+  const auto control_block_of_the_running_task = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != os::task_list().cend())
+  if(control_block_of_the_running_task != std::end(task_list()))
   {
-    const volatile event_type event_clear_mask = static_cast<event_type>(~event_to_clear);
+    const volatile event_type the_event_clear_mask = static_cast<event_type>(~event_to_clear);
 
     // Clear the event of the running task.
     mcal::irq::disable_all();
-    control_block_of_the_running_task->my_event &= event_clear_mask;
+    control_block_of_the_running_task->my_event &= the_event_clear_mask;
     mcal::irq::enable_all();
   }
 }

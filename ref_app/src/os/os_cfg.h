@@ -8,7 +8,10 @@
 #ifndef _OS_CFG_2011_10_20_H_
   #define _OS_CFG_2011_10_20_H_
 
+  #include <cstdint>
+  #include <limits>
   #include <os/os_debug_monitor_cfg.h>
+  #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
   namespace sys { namespace idle { void task_init(); void task_func(); } }
@@ -23,10 +26,10 @@
   namespace app { namespace benchmark        { void task_init(); void task_func(); } }
   namespace sys { namespace mon              { void task_init(); void task_func(); } }
 
-  // Enumerate the task IDs. Note that the order in this list must
-  // be identical with the order of the tasks in the task list below.
   namespace os
   {
+    // Enumerate the task IDs. Note that the order in this list must
+    // be identical with the order of the tasks in the task list below.
     typedef enum enum_task_id
     {
       task_id_sys_debug_monitor,
@@ -36,6 +39,20 @@
       task_id_end
     }
     task_id_type;
+
+    // Configure the operating system types.
+    typedef void(*function_type)();
+
+    typedef std::uint_fast32_t              unsigned_tick_type;
+    typedef util::timer<unsigned_tick_type> timer_type;
+    typedef timer_type::tick_type           tick_type;
+    typedef std::uint_fast16_t              event_type;
+
+    static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
+                  "The operating system timer_type must be at least 32-bits wide.");
+
+    static_assert(std::numeric_limits<os::event_type>::digits >= 16,
+                  "The operating system event_type must be at least 16-bits wide.");
   }
 
   // Configure the operating system tasks.
