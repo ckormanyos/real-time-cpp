@@ -40,7 +40,7 @@
                                std::uint32_t(UINT32_C(0xFFFFFFFF)),
                                [](std::uint32_t& crc, const value_type& value) -> std::uint32_t
                                {
-                                 constexpr std::array<std::uint32_t, 16U> table =
+                                 const std::array<std::uint32_t, 16U> table =
                                  {{
                                    UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
                                    UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
