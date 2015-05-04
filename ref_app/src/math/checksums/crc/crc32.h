@@ -11,6 +11,7 @@
   #include <array>
   #include <cstdint>
   #include <iterator>
+  #include <numeric>
 
   namespace math
   {
@@ -29,56 +30,43 @@
         // Recommendation H.222.0 Annex A
 
         // CRC-32/MPEG2 Table based on nibbles.
-        const std::array<std::uint32_t, 16U> table =
-        {{
-          UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
-          UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
-          UINT32_C(0x130476DC), UINT32_C(0x17C56B6B),
-          UINT32_C(0x1A864DB2), UINT32_C(0x1E475005),
-          UINT32_C(0x2608EDB8), UINT32_C(0x22C9F00F),
-          UINT32_C(0x2F8AD6D6), UINT32_C(0x2B4BCB61),
-          UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
-          UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
-        }};
 
-        // Set the initial value.
-        std::uint32_t crc = UINT32_C(0xFFFFFFFF);
+        // Define a local value_type.
+        typedef typename std::iterator_traits<input_iterator>::value_type value_type;
 
-        // Loop through the input data stream.
-        while(first != last)
-        {
-          // Define a local value_type.
-          typedef typename
-          std::iterator_traits<input_iterator>::value_type
-          value_type;
+        // Loop through the input data stream to generate the CRC-32/MPEG2 result.
+        return std::accumulate(first,
+                               last,
+                               std::uint32_t(UINT32_C(0xFFFFFFFF)),
+                               [](std::uint32_t& crc, const value_type& value) -> std::uint32_t
+                               {
+                                 constexpr std::array<std::uint32_t, 16U> table =
+                                 {{
+                                   UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
+                                   UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
+                                   UINT32_C(0x130476DC), UINT32_C(0x17C56B6B),
+                                   UINT32_C(0x1A864DB2), UINT32_C(0x1E475005),
+                                   UINT32_C(0x2608EDB8), UINT32_C(0x22C9F00F),
+                                   UINT32_C(0x2F8AD6D6), UINT32_C(0x2B4BCB61),
+                                   UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
+                                   UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
+                                 }};
 
-          const value_type value = (*first) & UINT8_C(0xFF);
+                                 const std::uint_fast8_t byte = uint_fast8_t(value) & UINT8_C(0xFF);
 
-          const std::uint_fast8_t byte = uint_fast8_t(value);
+                                 std::uint_fast8_t index;
 
-          std::uint_fast8_t index;
+                                 // Perform the CRC-32/MPEG2 algorithm.
+                                 index = ((std::uint_fast8_t(crc >> 28)) ^ (std::uint_fast8_t(byte >> 4))) & std::uint_fast8_t(UINT8_C(0x0F));
 
-          // Perform the CRC-32/MPEG2 algorithm.
-          index = (  (std::uint_fast8_t(crc  >> 28))
-                   ^ (std::uint_fast8_t(byte >>  4))
-                  ) & UINT8_C(0x0F);
+                                 crc   = std::uint32_t(std::uint32_t(crc << 4) & UINT32_C(0xFFFFFFF0)) ^ table[index];
 
-          crc   =   std::uint32_t(  std::uint32_t(crc << 4)
-                                  & UINT32_C(0xFFFFFFF0))
-                  ^ table[index];
+                                 index = ((std::uint_fast8_t(crc >> 28)) ^ (std::uint_fast8_t(byte))) & std::uint_fast8_t(UINT8_C(0x0F));
 
-          index = (  (std::uint_fast8_t(crc >> 28))
-                   ^ (std::uint_fast8_t(byte))
-                  ) & UINT8_C(0x0F);
+                                 crc   = std::uint32_t(std::uint32_t(crc << 4) & UINT32_C(0xFFFFFFF0)) ^ table[index];
 
-          crc =     std::uint32_t(std::uint32_t(crc << 4)
-                                  & UINT32_C(0xFFFFFFF0))
-                  ^ table[index];
-
-          ++first;
-        }
-
-        return crc;
+                                 return crc;
+                               });
       }
     }
   }
