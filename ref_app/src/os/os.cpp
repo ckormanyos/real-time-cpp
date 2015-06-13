@@ -52,7 +52,7 @@ void os::start_os()
   }
 }
 
-void os::set_event(const task_id_type task_id, const event_type& event_to_set)
+bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
 {
   if(task_id < task_id_end)
   {
@@ -65,6 +65,12 @@ void os::set_event(const task_id_type task_id, const event_type& event_to_set)
     mcal::irq::disable_all();
     control_block_of_the_task_id->my_event |= event_to_set;
     mcal::irq::enable_all();
+
+    return true;
+  }
+  else
+  {
+    return false;
   }
 }
 
@@ -95,7 +101,7 @@ void os::clear_event(const event_type& event_to_clear)
 
   if(control_block_of_the_running_task != std::end(task_list()))
   {
-    const volatile event_type the_event_clear_mask = static_cast<event_type>(~event_to_clear);
+    const volatile event_type the_event_clear_mask(~event_to_clear);
 
     // Clear the event of the running task.
     mcal::irq::disable_all();

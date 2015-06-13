@@ -16,7 +16,7 @@
   namespace os
   {
     void start_os   ();
-    void set_event  (const task_id_type task_id, const event_type& event_to_set);
+    bool set_event  (const task_id_type task_id, const event_type& event_to_set);
     void get_event  (event_type& event_to_get);
     void clear_event(const event_type& event_to_clear);
   }

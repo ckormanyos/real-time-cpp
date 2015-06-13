@@ -16,6 +16,8 @@ TGT_STL_DIR   = STL
 TGT_STL_DEFS  =
 
 TGT_CFLAGS    = -O2                                            \
+                -finline-functions                             \
+                -finline-limit=16                              \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
                 $(TGT_STL_DEFS)

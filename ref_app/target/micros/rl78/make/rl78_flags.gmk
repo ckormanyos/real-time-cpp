@@ -13,6 +13,8 @@ GCC_VERSION   = 4.8.2
 GCC_TARGET    = rl78-unknown-elf
 
 TGT_CFLAGS    = -O2                                            \
+                -finline-functions                             \
+                -finline-limit=16                              \
                 -mmul=none
 
 TGT_CPPFLAGS  = -std=c++11                                     \

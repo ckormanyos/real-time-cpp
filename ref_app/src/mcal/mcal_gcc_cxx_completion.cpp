@@ -40,10 +40,10 @@ void  operator delete(void*) noexcept;
 
 void* operator new(std::size_t size)
 {
-  // This is an absolutzely naive and non-functional implementation
+  // This is an absolutely naive and non-functional implementation
   // of operator new().
-  volatile std::uint8_t  buffer[16U];
-  volatile std::uint8_t* get_ptr = &buffer[0U];
+  volatile static std::uint8_t  buffer[8U];
+  volatile static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
   volatile std::uint8_t* p = get_ptr;
@@ -126,3 +126,10 @@ extern "C"
   const int          __errno         = 0;
   const std::uint8_t __fdlib_version = UINT8_C(0);
 }
+
+namespace std
+{
+  void __throw_length_error(char const*);
+}
+
+void std::__throw_length_error(char const*) { }

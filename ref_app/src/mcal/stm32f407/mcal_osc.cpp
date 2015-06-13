@@ -92,19 +92,6 @@ namespace
                       mcal::reg::rcc_cfgr,
                       UINT32_C(2)>::reg_msk<UINT32_C(3)>();
 
-/*
-    // Select the pll as the system clock source.
-    asm volatile("push {r1}");
-    asm volatile("push {r2}");
-    asm volatile("ldr r2, =0x40023808");
-    asm volatile("ldr r1, [r2]");
-    asm volatile("and r1, r1, #0xFFFFFFFC");
-    asm volatile("orr r1, r1, #0x00000002");
-    asm volatile("str r1, [r2]");
-    asm volatile("pop {r2}");
-    asm volatile("pop {r1}");
-*/
-
     volatile std::uint32_t mcal_osc_rcc_cfgr = UINT32_C(0);
 
     // Wait until the pll is latched as the system clock source.

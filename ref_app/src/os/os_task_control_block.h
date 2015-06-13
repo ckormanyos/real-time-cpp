@@ -46,12 +46,13 @@
       task_control_block& operator=(const task_control_block&);
 
       friend void os::start_os   ();
-      friend void os::set_event  (const task_id_type, const event_type&);
+      friend bool os::set_event  (const task_id_type, const event_type&);
       friend void os::get_event  (event_type&);
       friend void os::clear_event(const event_type&);
     };
 
-    static_assert(OS_TASK_COUNT > static_cast<std::size_t>(0U), "the task count must exceed zero");
+    static_assert(OS_TASK_COUNT > std::size_t(0U),
+                  "the task count must exceed zero");
 
     typedef const std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 

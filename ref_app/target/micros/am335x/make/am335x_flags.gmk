@@ -13,6 +13,8 @@ GCC_VERSION   = 4.8.3
 GCC_TARGET    = arm-none-eabi
 
 TGT_CFLAGS    = -O2                                            \
+                -finline-functions                             \
+                -finline-limit=16                              \
                 -mcpu=cortex-a8                                \
                 -march=armv7-a                                 \
                 -mtune=cortex-a8                               \
