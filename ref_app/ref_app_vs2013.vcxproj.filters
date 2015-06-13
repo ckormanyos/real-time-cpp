@@ -196,15 +196,6 @@
     <ClCompile Include="src\mcal\avr\mcal_osc.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
-      <Filter>src\util\STL\impl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\memory\util_ring_allocator.cpp">
-      <Filter>src\util\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\memory\util_static_allocator.cpp">
-      <Filter>src\util\memory</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_pwm.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
@@ -1265,6 +1256,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_display_pixel.h">
       <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_alignas.h">
+      <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

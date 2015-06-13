@@ -613,8 +613,6 @@
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
-    <ClCompile Include="src\util\memory\util_ring_allocator.cpp" />
-    <ClCompile Include="src\util\memory\util_static_allocator.cpp" />
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -634,10 +632,6 @@
     <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\rl78\rl78_float_limits.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -1432,6 +1426,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h" />
+    <ClInclude Include="src\util\utility\util_alignas.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
