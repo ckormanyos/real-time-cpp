@@ -1260,6 +1260,12 @@
     <ClInclude Include="src\util\utility\util_alignas.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\climits_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\cfloat_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -1348,6 +1354,12 @@
     </None>
     <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
       <Filter>src\util\STL_C++17_Compatibility</Filter>
+    </None>
+    <None Include="src\util\STL\climits">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cfloat">
+      <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -10,286 +10,300 @@
 
   #include <algorithm>
   #include <cstddef>
+  #include <iterator>
 
   namespace util
   {
-    // TBD: We need to define a custom iterator class in order
-    // to provide proper iterator support for circular_buffer.
+    // Forward declaration of the circular_buffer class.
+    template<typename T,
+             const std::size_t N>
+    class circular_buffer;
+
+    namespace circular_buffer_detail
+    {
+      template<typename T,
+               const std::size_t N,
+               typename traits_type>
+      struct circular_iterator : public std::iterator<std::random_access_iterator_tag,
+                                                      typename traits_type::value_type,
+                                                      typename traits_type::difference_type,
+                                                      typename traits_type::pointer,
+                                                      typename traits_type::reference>
+      {
+      public:
+        typedef std::iterator<std::random_access_iterator_tag,
+                              typename traits_type::value_type,
+                              typename traits_type::difference_type,
+                              typename traits_type::pointer,
+                              typename traits_type::reference> iterator_type;
+
+        typedef typename iterator_type::value_type      value_type;
+        typedef typename iterator_type::pointer         pointer;
+        typedef typename iterator_type::reference       reference;
+        typedef typename const iterator_type::reference const_reference;
+        typedef typename std::size_t                    size_type;
+        typedef typename iterator_type::difference_type difference_type;
+
+        typedef util::circular_buffer<T, N> circular_buffer_type;
+
+        circular_iterator(const pointer pb = nullptr,
+                          const pointer pc = nullptr) : buffer_pointer  (pb),
+                                                        circular_pointer(pc) { }
+
+        circular_iterator& operator=(const circular_iterator& other_iterator)
+        {
+          if(this != &other_iterator)
+          {
+            buffer_pointer   = other_iterator.buffer_pointer;
+            circular_pointer = other_iterator.circular_pointer;
+          }
+
+          return *this;
+        }
+
+        const_reference operator*() const
+        {
+          return *circular_pointer;
+        }
+
+        reference operator*()
+        {
+          return *const_cast<pointer>(circular_pointer);
+        }
+
+        circular_iterator& operator++()
+        {
+          ++circular_pointer;
+
+          if(circular_pointer >= (buffer_pointer + difference_type(N)))
+          {
+            circular_pointer = buffer_pointer;
+          }
+
+          return *this;
+        }
+
+        circular_iterator& operator--()
+        {
+          --circular_pointer;
+
+          if(circular_pointer < buffer_pointer)
+          {
+            circular_pointer = buffer_pointer + difference_type(N - 1U);
+          }
+
+          return *this;
+        }
+
+        circular_iterator& operator+=(difference_type n)
+        {
+          if(n > difference_type(0))
+          {
+            for(difference_type i = difference_type(0); i < n; ++i)
+            {
+              ++circular_pointer;
+
+              if(circular_pointer >= buffer_pointer + difference_type(N))
+              {
+                circular_pointer = buffer_pointer;
+              }
+            }
+          }
+          else if (n < 0)
+          {
+            *this -= -n;
+          }
+
+          return *this;
+        }
+
+        circular_iterator& operator-=(difference_type n)
+        {
+          if(n > difference_type(0))
+          {
+            for(difference_type i = difference_type(0); i < n; ++i)
+            {
+              --circular_pointer;
+
+              if(circular_pointer < buffer_pointer)
+              {
+                circular_pointer = buffer_pointer + difference_type(N - 1U);
+              }
+            }
+          }
+          else if (n < 0)
+          {
+            *this += -n;
+          }
+
+          return *this;
+        }
+
+        circular_iterator operator+(difference_type n) const { return circular_iterator(*this) += n; }
+        circular_iterator operator-(difference_type n) const { return circular_iterator(*this) -= n; }
+
+      private:
+        pointer buffer_pointer;
+        pointer circular_pointer;
+      };
+    }
 
     template<typename T,
              const std::size_t N>
     class circular_buffer
     {
     public:
-      typedef T                 value_type;
-      typedef       value_type* pointer;
-      typedef const value_type* const_pointer;
-      typedef       std::size_t size_type;
-      typedef       value_type& reference;
-      typedef const value_type& const_reference;
+      static_assert(N > std::size_t(0U),
+                    "Error: The circular_buffer class requires more than zero elements.");
 
-      circular_buffer(
-          const T& value        = value_type(),
-          const size_type count = size_type(0U))
-        : in_ptr (buffer),
-          out_ptr(buffer)
+      template<typename U,
+               const std::size_t M,
+               typename traits_type>
+      friend struct circular_buffer_detail::circular_iterator;
+
+      typedef       T              value_type;
+      typedef       value_type*    pointer;
+      typedef const value_type*    const_pointer;
+      typedef       std::size_t    size_type;
+      typedef       std::ptrdiff_t difference_type;
+      typedef       value_type&    reference;
+      typedef const value_type&    const_reference;
+
+      typedef circular_buffer_detail::circular_iterator<T, N, std::iterator_traits<T*> > iterator;
+      typedef circular_buffer_detail::circular_iterator<T, N, std::iterator_traits<const T*> > const_iterator;
+
+      typedef std::reverse_iterator<iterator> reverse_iterator;
+      typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
+      circular_buffer(const size_type count = size_type(0U)) : buffer (),
+                                                               my_size(0),
+                                                               in_ptr (buffer)
       {
-        const size_type the_count =
-          (std::min)(N, count);
+        static_cast<void>(count);
 
-        std::fill(in_ptr,
-                  in_ptr + the_count,
-                  value);
-
-        in_ptr += the_count;
+        std::fill(buffer, buffer + difference_type(N), value_type());
       }
 
-      circular_buffer(const circular_buffer& other)
-        : in_ptr (other.in_ptr),
-          out_ptr(other.out_ptr)
+      circular_buffer(const circular_buffer& other) : buffer (),
+                                                      my_size(other.size()),
+                                                      in_ptr (buffer + difference_type(other.in_ptr - other.buffer))
       {
-        std::copy(other.buffer,
-                  other.buffer + N,
-                  buffer);
+        std::copy(other.buffer, other.buffer + difference_type(N), buffer);
       }
 
-      circular_buffer& operator=(
-          const circular_buffer& other)
+      circular_buffer& operator=(const circular_buffer& other)
       {
         if(this != &other)
         {
-          in_ptr   (other.in_ptr);
-          out_ptr  (other.out_ptr);
-          std::copy(other.buffer,
-                    other.buffer + N,
-                    buffer);
+          std::copy(other.buffer, other.buffer + difference_type(N), buffer);
+
+          my_size = other.size();
+
+          in_ptr = buffer + difference_type(other.in_ptr - other.buffer);
         }
 
         return *this;
       }
 
-      size_type capacity() const { return N; }
+      static size_type capacity() { return N; }
 
       bool empty() const
       {
-        return (in_ptr == out_ptr);
+        return (my_size == difference_type(0U));
       }
 
       size_type size() const
       {
-        const bool is_wrap = (in_ptr < out_ptr);
-
-        return size_type((is_wrap == false)
-          ? size_type(in_ptr - out_ptr)
-          : N - size_type(out_ptr - in_ptr));
+        return size_type(my_size);
       }
 
       void clear()
       {
         in_ptr  = buffer;
-        out_ptr = buffer;
+        my_size = difference_type(0);
       }
 
-      void in(const value_type value)
+      void push_front(const value_type value)
       {
-        if(in_ptr >= (buffer + N))
+        ++in_ptr;
+
+        if(in_ptr >= buffer + difference_type(N))
         {
           in_ptr = buffer;
         }
 
         *in_ptr = value;
 
-        ++in_ptr;
-      }
-
-      value_type out()
-      {
-        if(out_ptr >= (buffer + N))
+        if(my_size < difference_type(N))
         {
-          out_ptr = buffer;
+          ++my_size;
         }
-
-        const value_type value = *out_ptr;
-
-        ++out_ptr;
-
-        return value;
       }
 
-      reference front()
+      void pop_back()
       {
-        return ((out_ptr >= (buffer + N))
-                  ? buffer[N - 1U]
-                  : *out_ptr);
+        if(my_size > difference_type(0))
+        {
+          --my_size;
+        }
       }
 
-      const_reference front() const
-      {
-        return ((out_ptr >= (buffer + N))
-                  ? buffer[N - 1U]
-                  : *out_ptr);
-      }
-
-      reference back()
-      {
-        return ((in_ptr  >= (buffer + N))
-                  ? buffer[N - 1U]
-                  : *in_ptr);
-      }
-
-      const_reference back() const
-      {
-        return ((in_ptr  >= (buffer + N))
-                  ? buffer[N - 1U]
-                  : *in_ptr);
-      }
+      iterator        begin()       { return iterator      (buffer, in_ptr); }
+      const_iterator  begin() const { return const_iterator(buffer, in_ptr); }
+      iterator        end  ()       { return begin() - my_size; }
+      const_iterator  end  () const { return begin() - my_size; }
+      reference       front()       { return *begin(); }
+      const_reference front() const { return *begin(); }
+      reference       back ()       { return *(end() + 1); }
+      const_reference back () const { return *(end() + 1); }
 
     private:
-      value_type buffer[N];
-      pointer    in_ptr;
-      pointer    out_ptr;
-    };
-
-    template<typename T>
-    class circular_buffer<T, std::size_t(1U)>
-    {
-    public:
-      typedef T                 value_type;
-      typedef       value_type* pointer;
-      typedef const value_type* const_pointer;
-      typedef       std::size_t size_type;
-      typedef       value_type& reference;
-      typedef const value_type& const_reference;
-
-      circular_buffer(
-          const T& value        = value_type(),
-          const size_type count = size_type(0U))
-      {
-        if(count > size_type(0U))
-        {
-          data     = value;
-          has_data = true;
-        }
-        else
-        {
-          data = value_type();
-
-          has_data = false;
-        }
-      }
-
-      circular_buffer(const circular_buffer& other)
-        : data    (other.data),
-          has_data(other.has_data)
-      {
-      }
-
-      circular_buffer& operator=(
-          const circular_buffer& other)
-      {
-        if(this != &other)
-        {
-          data = other.data;
-
-          has_data = other.has_data;
-        }
-
-        return *this;
-      }
-
-      size_type capacity() const { return size_type(1U); }
-
-      bool empty() const
-      {
-        return (has_data == false);
-      }
-
-      size_type size() const
-      {
-        return size_type(has_data ? 1U : 0U);
-      }
-
-      void clear()
-      {
-        has_data = false;
-      }
-
-      void in(const value_type value)
-      {
-        has_data = true;
-
-        data = value;
-      }
-
-      value_type out()
-      {
-        has_data = false;
-
-        return data;
-      }
-
-      reference front()
-      {
-        return data;
-      }
-
-      const_reference front() const
-      {
-        return data;
-      }
-
-      reference back()
-      {
-        return data;
-      }
-
-      const_reference back() const
-      {
-        return data;
-      }
-
-    private:
-      value_type data;
-      bool       has_data;
+      value_type      buffer[N];
+      difference_type my_size;
+      pointer         in_ptr;
     };
   }
 
   /*
+  #include <iostream>
   #include <util/utility/util_circular_buffer.h>
 
-  void do_something();
-
+  template<typename circular_buffer_type>
   void do_something()
   {
-    typedef util::circular_buffer<unsigned, 3U> circular_buffer_type;
+    circular_buffer_type cb(3U);
 
-    circular_buffer_type             data;
-    circular_buffer_type::size_type  size;
-    circular_buffer_type::value_type value;
+    cb.push_front(1U);
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+    cb.push_front(2U);
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+    cb.push_front(3U);
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
 
-    data.in(1U);
-    size = data.size();
-    data.in(2U);
-    size = data.size();
-    data.in(3U);
-    size = data.size();
+    cb.pop_back();
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+    cb.pop_back();
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+    cb.pop_back();
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
 
-    value = data.out();
-    size = data.size();
-    value = data.out();
-    size = data.size();
-    value = data.out();
-    size = data.size();
+    cb.push_front(101U);
+    cb.push_front(102U);
+    cb.push_front(103U);
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
 
-    data.in(101U);
-    size = data.size();
-    data.in(102U);
-    size = data.size();
+    cb.pop_back();
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
 
-    value = data.out();
-    size = data.size();
-    value = data.out();
-    size = data.size();
+    cb.pop_back();
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+
+    cb.push_front(42U);
+    std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
+
+    circular_buffer_type other_cb;
+
+    other_cb = cb;
 
     volatile unsigned debug = 0U;
   }
