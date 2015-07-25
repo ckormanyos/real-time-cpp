@@ -89,7 +89,7 @@
 
           if(circular_pointer < buffer_pointer)
           {
-            circular_pointer = buffer_pointer + difference_type(N - 1U);
+            circular_pointer = buffer_pointer + difference_type(N);
           }
 
           return *this;
@@ -98,14 +98,18 @@
         circular_iterator operator++(int)
         {
           circular_iterator tmp = *this;
+
           ++(*this);
+
           return tmp;
         }
 
         circular_iterator operator--(int)
         {
           circular_iterator tmp = *this;
+
           --(*this);
+
           return tmp;
         }
 
@@ -113,18 +117,14 @@
         {
           if(n > difference_type(0))
           {
-            // TBD: Optimize this loop with a single addition and overflow check.
-            for(difference_type i = difference_type(0); i < n; ++i)
-            {
-              ++circular_pointer;
+            circular_pointer += n;
 
-              if(circular_pointer > buffer_pointer + difference_type(N))
-              {
-                circular_pointer = buffer_pointer;
-              }
+            if(circular_pointer > (buffer_pointer + difference_type(N)))
+            {
+              circular_pointer -= difference_type(N);
             }
           }
-          else if (n < 0)
+          else if(n < 0)
           {
             *this -= -n;
           }
@@ -136,18 +136,14 @@
         {
           if(n > difference_type(0))
           {
-            // TBD: Optimize this loop with a single subtraction and underflow check.
-            for(difference_type i = difference_type(0); i < n; ++i)
-            {
-              --circular_pointer;
+            circular_pointer -= n;
 
-              if(circular_pointer < buffer_pointer)
-              {
-                circular_pointer = buffer_pointer + difference_type(N - 1U);
-              }
+            if(circular_pointer < buffer_pointer)
+            {
+              circular_pointer += difference_type(N);
             }
           }
-          else if (n < 0)
+          else if(n < 0)
           {
             *this += -n;
           }
@@ -155,22 +151,15 @@
           return *this;
         }
 
-        circular_iterator operator+(difference_type n) const { return circular_iterator(*this) += n; }
-        circular_iterator operator-(difference_type n) const { return circular_iterator(*this) -= n; }
-
       private:
         pointer buffer_pointer;
         pointer circular_pointer;
 
-        friend inline bool operator==(const circular_iterator& a, const circular_iterator& b)
-        {
-          return (a.circular_pointer == b.circular_pointer);
-        }
+        friend inline circular_iterator operator+(const circular_iterator& a, difference_type n) { return circular_iterator(a) += n; }
+        friend inline circular_iterator operator-(const circular_iterator& a, difference_type n) { return circular_iterator(a) -= n; }
 
-        friend inline bool operator!=(const circular_iterator& a, const circular_iterator& b)
-        {
-          return (a.circular_pointer != b.circular_pointer);
-        }
+        friend inline bool operator==(const circular_iterator& a, const circular_iterator& b) { return (a.circular_pointer == b.circular_pointer); }
+        friend inline bool operator!=(const circular_iterator& a, const circular_iterator& b) { return (a.circular_pointer != b.circular_pointer); }
 
         // TBD: Implement operator<().
         // TBD: Implement the remaining operators.
@@ -342,7 +331,7 @@
     cb.push_front(103U);
     std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
 
-    for(auto it = cb.cbegin();  it != cb.cend();  ++it) { std::cout << *it << std::endl; }
+    for(auto it = cb.cbegin();  it != cb.cbegin() + cb.size();  ++it) { std::cout << *it << std::endl; }
     for(auto it = cb.crbegin(); it != cb.crend(); ++it) { std::cout << *it << std::endl; }
 
     cb.pop_back();
