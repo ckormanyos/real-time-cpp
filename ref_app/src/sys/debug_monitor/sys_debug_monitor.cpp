@@ -18,6 +18,7 @@ namespace sys
   }
 }
 
+/*
 namespace
 {
   typedef util::single_pin_debug_monitor<mcal::debug_monitor::debug_monitor_port_type> debug_monitor_type;
@@ -26,6 +27,7 @@ namespace
 
   std::uint_least8_t protocol_prescaler;
 }
+*/
 
 void sys::debug_monitor::task_init()
 {
@@ -33,6 +35,7 @@ void sys::debug_monitor::task_init()
 
 void sys::debug_monitor::task_func()
 {
+/*
   the_debug_monitor.driver_task();
 
   const bool run_the_protocol_task = (static_cast<std::uint_fast8_t>(protocol_prescaler % 16U) == static_cast<std::uint_fast8_t>(0U));
@@ -44,4 +47,5 @@ void sys::debug_monitor::task_func()
   }
 
   ++protocol_prescaler;
+*/
 }
