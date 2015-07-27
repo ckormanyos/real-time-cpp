@@ -43,8 +43,7 @@
     // Configure the operating system types.
     typedef void(*function_type)();
 
-    typedef std::uint_fast32_t              unsigned_tick_type;
-    typedef util::timer<unsigned_tick_type> timer_type;
+    typedef util::timer<std::uint_fast32_t> timer_type;
     typedef timer_type::tick_type           tick_type;
     typedef std::uint_fast16_t              event_type;
 
@@ -57,13 +56,17 @@
 
   // Configure the operating system tasks.
 
-  // Use prime numbers for offsets.
-  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 50, 4000, 100}]
+  // Use small prime numbers (representing microseconds) for task offsets.
+  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 50, 4000, 50}]
   // to obtain:
-  //   229,   863,  1583,  2357,  3181,  3989,  4831,  5693,  6571,  7499,
-  //  8387,  9283, 10177, 11149, 12109, 13007, 13967, 14947, 15881, 16903,
-  // 17891, 18899, 19891, 20897, 21841, 22817, 23827, 24877, 25913, 26891,
-  // 27947, 28933, 30059, 31091, 32159, 33113, 34157, 35159, 36277, 37309
+  //   229,   541,   863,  1223,  1583,  1987,  2357,  2741,  3181,  3571,
+  //  3989,  4409,  4831,  5279,  5693,  6133,  6571,  6997,  7499,  7919,
+  //  8387,  8831,  9283,  9733, 10177, 10657, 11149, 11657, 12109, 12553,
+  // 13007, 13499, 13967, 14519, 14947, 15401, 15881, 16381, 16903, 17389,
+  // 17891, 18313, 18899, 19423, 19891, 20357, 20897, 21383, 21841, 22307,
+  // 22817, 23321, 23827, 24281, 24877, 25391, 25913, 26399, 26891, 27449,
+  // 27947, 28499, 28933, 29443, 30059, 30559, 31091, 31601, 32159, 32609,
+  // 33113, 33613, 34157, 34649, 35159, 35759, 36277, 36781, 37309, 37813
 
   #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
 
@@ -72,7 +75,7 @@
     {                                                                                            \
       os::task_control_block(sys::debug_monitor::task_init,                                      \
                              sys::debug_monitor::task_func,                                      \
-                             os::timer_type::microseconds(os::debug_monitor::task_poll_time()),  \
+                             os::timer_type::microseconds(UINT32_C(     0)),                     \
                              os::timer_type::microseconds(UINT32_C(     0))),                    \
       os::task_control_block(app::led::task_init,                                                \
                              app::led::task_func,                                                \
@@ -81,11 +84,11 @@
       os::task_control_block(app::benchmark::task_init,                                          \
                              app::benchmark::task_func,                                          \
                              os::timer_type::microseconds(UINT32_C(100000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   863))),                    \
+                             os::timer_type::microseconds(UINT32_C(   541))),                    \
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(  1583))),                    \
+                             os::timer_type::microseconds(UINT32_C(   863))),                    \
     }                                                                                            \
   }
 

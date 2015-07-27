@@ -71,9 +71,23 @@
         return (delta <= timer_mask);
       }
 
+      bool timeout_of_specific_timepoint(const tick_type timepoint) const
+      {
+        const tick_type delta = timepoint - my_tick;
+
+        return (delta <= timer_mask);
+      }
+
       void set_mark()
       {
         my_tick = my_now();
+
+        return my_tick;
+      }
+
+      static tick_type get_mark()
+      {
+        return my_now();
       }
 
       tick_type get_ticks_since_mark() const

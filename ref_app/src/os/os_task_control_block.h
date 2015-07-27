@@ -31,16 +31,16 @@
       ~task_control_block();
 
     private:
-      const    function_type my_init;
-      const    function_type my_func;
-      const    tick_type     my_cycle;
-      mutable  timer_type    my_timer;
-      mutable  event_type    my_event;
-      const    index_type    my_index;
+      const   function_type my_init;
+      const   function_type my_func;
+      const   tick_type     my_cycle;
+      mutable timer_type    my_timer;
+      mutable event_type    my_event;
+      const   index_type    my_index;
 
       void initialize() const;
 
-      bool execute() const;
+      bool execute(const tick_type& timepoint_of_ckeck_ready_task) const;
 
       task_control_block();
       task_control_block& operator=(const task_control_block&);
@@ -54,7 +54,7 @@
     static_assert(OS_TASK_COUNT > std::size_t(0U),
                   "the task count must exceed zero");
 
-    typedef const std::array<task_control_block, OS_TASK_COUNT> task_list_type;
+    typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
     extern const task_list_type& task_list();
 

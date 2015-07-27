@@ -37,18 +37,18 @@
                               typename traits_type::pointer,
                               typename traits_type::reference> iterator_type;
 
-        typedef typename iterator_type::value_type      value_type;
-        typedef typename iterator_type::pointer         pointer;
-        typedef typename iterator_type::reference       reference;
-        typedef          const reference                const_reference;
-        typedef typename std::size_t                    size_type;
-        typedef typename iterator_type::difference_type difference_type;
+        typedef typename       iterator_type::value_type      value_type;
+        typedef typename       iterator_type::pointer         pointer;
+        typedef typename       iterator_type::reference       reference;
+        typedef          const reference                      const_reference;
+        typedef typename       std::size_t                    size_type;
+        typedef typename       iterator_type::difference_type difference_type;
 
-        typedef util::circular_buffer<T, N> circular_buffer_type;
+        explicit circular_iterator(const pointer pb,
+                                   const pointer pc = pb) : buffer_pointer  (pb),
+                                                            circular_pointer(pc) { }
 
-        circular_iterator(const pointer pb = nullptr,
-                          const pointer pc = nullptr) : buffer_pointer  (pb),
-                                                        circular_pointer(pc) { }
+        ~circular_iterator() { }
 
         circular_iterator& operator=(const circular_iterator& other_iterator)
         {
@@ -155,6 +155,8 @@
         pointer buffer_pointer;
         pointer circular_pointer;
 
+        circular_iterator();
+
         friend inline circular_iterator operator+(const circular_iterator& a, difference_type n) { return circular_iterator(a) += n; }
         friend inline circular_iterator operator-(const circular_iterator& a, difference_type n) { return circular_iterator(a) -= n; }
 
@@ -167,7 +169,7 @@
     }
 
     template<typename T,
-             const std::size_t N>
+             const std::size_t N = std::size_t(16U)>
     class circular_buffer
     {
     public:
@@ -188,14 +190,23 @@
       typedef std::reverse_iterator<iterator> reverse_iterator;
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-      circular_buffer(const size_type count = size_type(0U)) : buffer (),
-                                                               my_size(difference_type(0)),
-                                                               first  (buffer),
-                                                               last   (buffer + difference_type(N))
+      circular_buffer() : buffer (),
+                          my_size(difference_type(0)),
+                          first  (buffer + difference_type(N)),
+                          last   (buffer + difference_type(N))
       {
-        static_cast<void>(count);
-
         std::fill(buffer, buffer + difference_type(N), value_type());
+      }
+
+      explicit circular_buffer(const size_type  count,
+                               const value_type value = value_type()) : buffer (),
+                                                                        my_size(difference_type(count)),
+                                                                        first  (buffer + difference_type(N - count)),
+                                                                        last   (buffer + difference_type(N))
+      {
+        std::fill(buffer, buffer + difference_type(N - count), value_type());
+
+        std::fill(buffer + difference_type(N - count), buffer + difference_type(N), value);
       }
 
       circular_buffer(const circular_buffer& other) : buffer (),
@@ -205,6 +216,8 @@
       {
         std::copy(other.buffer, other.buffer + difference_type(N), buffer);
       }
+
+      ~circular_buffer() { }
 
       circular_buffer& operator=(const circular_buffer& other)
       {
@@ -263,7 +276,7 @@
         {
           --my_size;
 
-          // TBD: Do we actually need to manually call the destructor of last here?
+          // TBD: Do we actually need to manually call the destructor here?
           last->~value_type();
 
           --last;
@@ -281,10 +294,6 @@
       iterator        end   ()       { return iterator      (buffer, last); }
       const_iterator  end   () const { return const_iterator(buffer, last); }
       const_iterator  cend  () const { return const_iterator(buffer, last); }
-      reference       front ()       { return *begin(); }
-      const_reference front () const { return *begin(); }
-      reference       back  ()       { return *(end() - 1); }
-      const_reference back  () const { return *(cend() - 1); }
 
       reverse_iterator       rbegin ()       { return std::reverse_iterator<iterator>      (iterator      (buffer, last)); }
       const_reverse_iterator rbegin () const { return std::reverse_iterator<const_iterator>(const_iterator(buffer, last)); }
@@ -292,6 +301,11 @@
       reverse_iterator       rend   ()       { return std::reverse_iterator<iterator>      (iterator      (buffer, first)); }
       const_reverse_iterator rend   () const { return std::reverse_iterator<const_iterator>(const_iterator(buffer, first)); }
       const_reverse_iterator crend  () const { return std::reverse_iterator<const_iterator>(const_iterator(buffer, first)); }
+
+      reference       front ()       { return *begin(); }
+      const_reference front () const { return *begin(); }
+      reference       back  ()       { return *(end() - iterator::difference_type(1)); }
+      const_reference back  () const { return *(cend() - const_iterator::difference_type(1)); }
 
     private:
       value_type      buffer[N];
@@ -310,9 +324,8 @@
   template<typename circular_buffer_type>
   void do_something()
   {
-    circular_buffer_type cb(3U);
+    circular_buffer_type cb(1U, 1U);
 
-    cb.push_front(1U);
     std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;
     cb.push_front(2U);
     std::cout << cb.size() << ", " << cb.front() << ", " << cb.back() << std::endl;

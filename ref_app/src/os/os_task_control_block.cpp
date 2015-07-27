@@ -48,7 +48,7 @@ void os::task_control_block::initialize() const
   my_init();
 }
 
-bool os::task_control_block::execute() const
+bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_ready_task) const
 {
   // Check for a task event.
   const bool task_does_have_event = (my_event != event_type(0U));
@@ -63,7 +63,8 @@ bool os::task_control_block::execute() const
   }
 
   // Check for a task timeout.
-  const bool task_does_have_timeout = my_timer.timeout();
+  const bool task_does_have_timeout = (   (my_cycle != os::tick_type(0U))
+                                       &&  my_timer.timeout_of_specific_timepoint(timepoint_of_ckeck_ready_task));
 
   if(task_does_have_timeout)
   {
