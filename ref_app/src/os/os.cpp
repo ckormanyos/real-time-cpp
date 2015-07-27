@@ -22,8 +22,8 @@ const os::task_list_type& os::task_list()
 void os::start_os()
 {
   // Initialize each task once (and only once) before the task scheduling begins.
-  std::for_each(std::cbegin(task_list()),
-                std::cend  (task_list()),
+  std::for_each(task_list().cbegin(),
+                task_list().cend(),
                 [](const task_control_block& the_tcb)
                 {
                   the_tcb.initialize();
@@ -43,15 +43,15 @@ void os::start_os()
 
     const os::tick_type timepoint_of_ckeck_ready_task = os::timer_type::get_mark();
 
-    const auto it_ready_task = std::find_if(std::cbegin(task_list()),
-                                            std::cend  (task_list()),
+    const auto it_ready_task = std::find_if(task_list().cbegin(),
+                                            task_list().cend(),
                                             [&timepoint_of_ckeck_ready_task](const task_control_block& the_tcb) -> bool
                                             {
                                               return the_tcb.execute(timepoint_of_ckeck_ready_task);
                                             });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == std::cend(task_list()))
+    if(it_ready_task == task_list().cend())
     {
       OS_IDLE_TASK_FUNC();
     }
@@ -64,7 +64,7 @@ bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
   {
     // Get a pointer to the control block corresponding to
     // the task id that has been supplied to this subroutine.
-    auto control_block_of_the_task_id =   std::cbegin(task_list())
+    auto control_block_of_the_task_id =   task_list().cbegin()
                                         + task_list_type::size_type(task_id);
 
     // Set the event of the corresponding task.
@@ -85,7 +85,7 @@ void os::get_event(event_type& event_to_get)
   // Get the iterator of the control block of the running task.
   const auto control_block_of_the_running_task = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != std::cend(task_list()))
+  if(control_block_of_the_running_task != task_list().cend())
   {
     // Get the event of the running task.
     mcal::irq::disable_all();
@@ -105,7 +105,7 @@ void os::clear_event(const event_type& event_to_clear)
   // Get the iterator of the control block of the running task.
   const auto control_block_of_the_running_task = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != std::cend(task_list()))
+  if(control_block_of_the_running_task != task_list().cend())
   {
     const volatile event_type the_event_clear_mask(~event_to_clear);
 
