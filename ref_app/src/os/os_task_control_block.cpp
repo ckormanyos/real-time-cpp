@@ -11,7 +11,7 @@ namespace
 {
   os::task_control_block::index_type& os_task_global_index()
   {
-    static auto the_index = static_cast<os::task_control_block::index_type>(0U);
+    static os::task_control_block::index_type the_index;
 
     return the_index;
   }
@@ -48,7 +48,7 @@ void os::task_control_block::initialize() const
   my_init();
 }
 
-bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_ready_task) const
+bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_ready)
 {
   // Check for a task event.
   const bool task_does_have_event = (my_event != event_type(0U));
@@ -64,7 +64,7 @@ bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_rea
 
   // Check for a task timeout.
   const bool task_does_have_timeout = (   (my_cycle != os::tick_type(0U))
-                                       &&  my_timer.timeout_of_specific_timepoint(timepoint_of_ckeck_ready_task));
+                                       &&  my_timer.timeout_of_specific_timepoint(timepoint_of_ckeck_ready));
 
   if(task_does_have_timeout)
   {
@@ -81,7 +81,7 @@ bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_rea
   return (task_does_have_event || task_does_have_timeout);
 }
 
-os::task_list_type::const_iterator os::secure::get_running_task_iterator()
+os::task_list_type::iterator os::secure::get_running_task_iterator()
 {
   // Return the iterator of the running task. If no task is running
   // (for example when the idle task is running), then the iterator
@@ -89,6 +89,6 @@ os::task_list_type::const_iterator os::secure::get_running_task_iterator()
 
   const auto this_task_index = static_cast<os::task_list_type::size_type>(os_task_global_index());
 
-  return ((this_task_index < os::task_list().size()) ? (os::task_list().cbegin() + this_task_index)
-                                                     :  os::task_list().cend());
+  return ((this_task_index < os::task_list().size()) ? (os::task_list().begin() + this_task_index)
+                                                     :  os::task_list().end());
 }

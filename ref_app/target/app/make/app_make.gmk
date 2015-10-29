@@ -127,7 +127,6 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wunused-parameter                \
               -Wuninitialized                   \
               -Wmissing-declarations            \
-              -Wshadow                          \
               -Wunreachable-code                \
               -Wswitch-default                  \
               -Wswitch-enum                     \

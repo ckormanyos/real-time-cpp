@@ -34,13 +34,13 @@
       const   function_type my_init;
       const   function_type my_func;
       const   tick_type     my_cycle;
-      mutable timer_type    my_timer;
-      mutable event_type    my_event;
+              timer_type    my_timer;
+              event_type    my_event;
       const   index_type    my_index;
 
       void initialize() const;
 
-      bool execute(const tick_type& timepoint_of_ckeck_ready_task) const;
+      bool execute(const tick_type& timepoint_of_ckeck_ready);
 
       task_control_block();
       task_control_block& operator=(const task_control_block&);
@@ -56,11 +56,11 @@
 
     typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
 
-    extern const task_list_type& task_list();
+    extern task_list_type& task_list();
 
     class secure final
     {
-      static task_list_type::const_iterator get_running_task_iterator();
+      static task_list_type::iterator get_running_task_iterator();
 
       friend void os::get_event  (event_type&);
       friend void os::clear_event(const event_type&);

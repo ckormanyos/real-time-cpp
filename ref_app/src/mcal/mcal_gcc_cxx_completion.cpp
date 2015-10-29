@@ -123,8 +123,9 @@ extern "C"
   // Provide some patched data values.
   const char* const  __env[1]        = { nullptr };
   const char** const environ         = { nullptr };
-  const int          __errno         = 0;
-  const std::uint8_t __fdlib_version = UINT8_C(0);
+
+  int          __errno         = 0;
+  std::uint8_t __fdlib_version = UINT8_C(0);
 }
 
 namespace std

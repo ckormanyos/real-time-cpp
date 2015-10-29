@@ -73,7 +73,7 @@
             <Value>../src/util/STL_C++17_Compatibility</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize most (-O3)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-O3 -Wall -Wextra -pedantic -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=32 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ffunction-sections -fdata-sections</avrgcccpp.compiler.miscellaneous.OtherFlags>
@@ -137,7 +137,7 @@
     <Folder Include="src\util\memory" />
     <Folder Include="src\util\debug_monitor" />
     <Folder Include="src\util\STL_C++11_Compatibility\impl" />
-    <Folder Include="src\util\STL_C++14_Compatibility" />
+    <Folder Include="src\util\STL_C++17_Compatibility" />
     <Folder Include="src\util\STL_C++11_Compatibility" />
     <Folder Include="src\util\STL" />
     <Folder Include="src\util\STL\impl" />
@@ -167,9 +167,6 @@
     <Compile Include="src\mcal\avr\mcal_debug_monitor.h">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="src\mcal\avr\mcal_display_pixel_ws2812.cpp">
-      <SubType>compile</SubType>
-    </None>
     <Compile Include="src\mcal\avr\mcal_gpt.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -233,9 +230,6 @@
     <Compile Include="src\mcal\mcal.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_display_pixel.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -287,13 +281,7 @@
     <Compile Include="src\util\memory\util_placed_pointer.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\memory\util_ring_allocator.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\memory\util_ring_allocator.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\memory\util_static_allocator.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\memory\util_static_allocator.h">
@@ -317,10 +305,16 @@
     <Compile Include="src\util\STL\impl\basic_string_impl.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\cfloat_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\impl\char_traits_impl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\chrono_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\climits_impl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\cmath_impl.h">
@@ -357,9 +351,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\limits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\memory_impl.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\memory_impl.h">
@@ -404,6 +395,9 @@
     <Compile Include="src\util\STL\impl\xutils_impl.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\_stl_local_constexpr.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\time.h">
       <SubType>compile</SubType>
     </Compile>
@@ -422,7 +416,7 @@
     <Compile Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL_C++14_Compatibility\stdfloat.h">
+    <Compile Include="src\util\STL_C++17_Compatibility\stdfloat.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_bit_mask.h">
@@ -481,7 +475,13 @@
     <None Include="src\util\STL\basic_string">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\cfloat">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\climits">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\cmath">
@@ -553,7 +553,7 @@
     <None Include="src\util\STL_C++11_Compatibility\type_traits">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\util\STL_C++14_Compatibility\cstdfloat">
+    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>

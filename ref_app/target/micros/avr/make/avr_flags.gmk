@@ -28,6 +28,9 @@ TGT_CPPFLAGS  = -std=c++11                                     \
                 -I$(PATH_APP)/util/STL_C++11_Compatibility     \
                 -I$(PATH_APP)/util/STL_C++17_Compatibility
 
+#                -ID:/boost/boost_1_58_0                        \
+#                -ID:/boost_fixed_point/include
+
 TGT_AFLAGS    =
 
 TGT_LFLAGS    = -mrelax

@@ -12,9 +12,9 @@
 #include <os/os_task_control_block.h>
 
 // The one (and only one) operating system task list.
-const os::task_list_type& os::task_list()
+os::task_list_type& os::task_list()
 {
-  static const task_list_type the_task_list(OS_TASK_LIST);
+  static task_list_type the_task_list(OS_TASK_LIST);
 
   return the_task_list;
 }
@@ -38,20 +38,21 @@ void os::start_os()
   {
     // Find the next ready task using a priority-based search algorithm.
     // Use a constant time-point based on the timer mark of now.
-    // In this way, each task in the loop will be checked for tiemout
-    // using the same time-point.
+    // In this way, each task in the loop will be checked for being
+    // ready using the same time-point.
 
-    const os::tick_type timepoint_of_ckeck_ready_task = os::timer_type::get_mark();
+    const os::tick_type timepoint_of_ckeck_ready = os::timer_type::get_mark();
 
-    const auto it_ready_task = std::find_if(task_list().cbegin(),
-                                            task_list().cend(),
-                                            [&timepoint_of_ckeck_ready_task](const task_control_block& the_tcb) -> bool
-                                            {
-                                              return the_tcb.execute(timepoint_of_ckeck_ready_task);
-                                            });
+    const task_list_type::iterator it_ready_task =
+      std::find_if(task_list().begin(),
+                   task_list().end(),
+                   [&timepoint_of_ckeck_ready](task_control_block& the_tcb) -> bool
+                   {
+                     return the_tcb.execute(timepoint_of_ckeck_ready);
+                   });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == task_list().cend())
+    if(it_ready_task == task_list().end())
     {
       OS_IDLE_TASK_FUNC();
     }
@@ -62,14 +63,13 @@ bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
 {
   if(task_id < task_id_end)
   {
-    // Get a pointer to the control block corresponding to
+    // Get the iterator of the control block corresponding to
     // the task id that has been supplied to this subroutine.
-    auto control_block_of_the_task_id =   task_list().cbegin()
-                                        + task_list_type::size_type(task_id);
+    task_list_type::iterator iterator_of_the_task_id = task_list().begin() + task_list_type::size_type(task_id);
 
     // Set the event of the corresponding task.
     mcal::irq::disable_all();
-    control_block_of_the_task_id->my_event |= event_to_set;
+    iterator_of_the_task_id->my_event |= event_to_set;
     mcal::irq::enable_all();
 
     return true;
@@ -83,13 +83,13 @@ bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
 void os::get_event(event_type& event_to_get)
 {
   // Get the iterator of the control block of the running task.
-  const auto control_block_of_the_running_task = secure::get_running_task_iterator();
+  const task_list_type::iterator running_task_iterator = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != task_list().cend())
+  if(running_task_iterator != task_list().cend())
   {
     // Get the event of the running task.
     mcal::irq::disable_all();
-    const volatile event_type the_event = control_block_of_the_running_task->my_event;
+    const volatile event_type the_event = running_task_iterator->my_event;
     mcal::irq::enable_all();
 
     event_to_get = the_event;
@@ -103,15 +103,15 @@ void os::get_event(event_type& event_to_get)
 void os::clear_event(const event_type& event_to_clear)
 {
   // Get the iterator of the control block of the running task.
-  const auto control_block_of_the_running_task = secure::get_running_task_iterator();
+  const task_list_type::iterator running_task_iterator = secure::get_running_task_iterator();
 
-  if(control_block_of_the_running_task != task_list().cend())
+  if(running_task_iterator != task_list().cend())
   {
-    const volatile event_type the_event_clear_mask(~event_to_clear);
+    const volatile event_type event_clear_mask(~event_to_clear);
 
     // Clear the event of the running task.
     mcal::irq::disable_all();
-    control_block_of_the_running_task->my_event &= the_event_clear_mask;
+    running_task_iterator->my_event &= event_clear_mask;
     mcal::irq::enable_all();
   }
 }
