@@ -95,12 +95,6 @@
     <Filter Include="src\util\STL_C++11_Compatibility\impl">
       <UniqueIdentifier>{9f427a37-704f-4f54-a49f-4d9804e2579b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\sys\debug_monitor">
-      <UniqueIdentifier>{2696f37d-c606-4ccd-b420-a61361e29241}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\debug_monitor">
-      <UniqueIdentifier>{2612fe47-889a-4ed8-934e-5f34a57797d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\rl78">
       <UniqueIdentifier>{f8af3f0f-5c80-41e7-88de-7809108140bd}</UniqueIdentifier>
     </Filter>
@@ -306,9 +300,6 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sys\debug_monitor\sys_debug_monitor.cpp">
-      <Filter>src\sys\debug_monitor</Filter>
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
       <Filter>src\util\STL\impl</Filter>
@@ -927,27 +918,6 @@
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
       <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_debug_monitor.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_debug_monitor.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f100\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_debug_monitor.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\debug_monitor\util_single_pin_debug_monitor.h">
-      <Filter>src\util\debug_monitor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\debug_monitor\util_single_pin_debug_monitor_base.h">
-      <Filter>src\util\debug_monitor</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\constants\constant_functions.h">
       <Filter>src\math\constants</Filter>
     </ClInclude>
@@ -956,9 +926,6 @@
     </ClInclude>
     <ClInclude Include="src\math\fixed_point\fixed_point.hpp">
       <Filter>src\math\fixed_point</Filter>
-    </ClInclude>
-    <ClInclude Include="src\os\os_debug_monitor_cfg.h">
-      <Filter>src\os</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\cstdbool_impl.h">
       <Filter>src\util\STL\impl</Filter>
@@ -979,9 +946,6 @@
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_cpu.h">
-      <Filter>src\mcal\rl78</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rl78\mcal_debug_monitor.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_gpt.h">
@@ -1044,9 +1008,6 @@
     <ClInclude Include="src\mcal\stm32f429\mcal_cpu.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f429\mcal_gpt.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
@@ -1098,9 +1059,6 @@
     <ClInclude Include="src\mcal\rx63n\mcal_cpu.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\rx63n\mcal_debug_monitor.h">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rx63n\mcal_gpt.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
@@ -1146,9 +1104,6 @@
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_cpu.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_debug_monitor.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_gpt.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
@@ -1192,9 +1147,6 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_cpu.h">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_debug_monitor.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_gpt.h">

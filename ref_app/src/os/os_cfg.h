@@ -10,7 +10,6 @@
 
   #include <cstdint>
   #include <limits>
-  #include <os/os_debug_monitor_cfg.h>
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
@@ -21,7 +20,6 @@
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace sys { namespace debug_monitor    { void task_init(); void task_func(); } }
   namespace app { namespace led              { void task_init(); void task_func(); } }
   namespace app { namespace benchmark        { void task_init(); void task_func(); } }
   namespace sys { namespace mon              { void task_init(); void task_func(); } }
@@ -32,7 +30,6 @@
     // be identical with the order of the tasks in the task list below.
     typedef enum enum_task_id
     {
-      task_id_sys_debug_monitor,
       task_id_app_led,
       task_id_app_benchmark,
       task_id_sys_mon,
@@ -73,10 +70,6 @@
   #define OS_TASK_LIST                                                                           \
   {                                                                                              \
     {                                                                                            \
-      os::task_control_block(sys::debug_monitor::task_init,                                      \
-                             sys::debug_monitor::task_func,                                      \
-                             os::timer_type::microseconds(UINT32_C(     0)),                     \
-                             os::timer_type::microseconds(UINT32_C(     0))),                    \
       os::task_control_block(app::led::task_init,                                                \
                              app::led::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  2000)),                     \
