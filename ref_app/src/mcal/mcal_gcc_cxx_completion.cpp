@@ -35,7 +35,7 @@ namespace std
   }
 }
 
-void* operator new(std::size_t size);
+void* operator new(std::size_t size) noexcept;
 void  operator delete(void*) noexcept;
 
 void* operator new(std::size_t size)
@@ -71,8 +71,9 @@ extern "C"
 {
   // Declarations of patched functions.
 
-  // Provide user-supplied copies of certain functions declared in <stdlib.h> and <cstdlib>.
-  // Provide also user-supplied copies of certain empirically found library functions.
+  // Provide stubbed copies of certain functions declared in <stdlib.h> and <cstdlib>.
+  // Also provide stubbed copies of certain empirically found library functions
+  // and objects.
 
   typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
 
@@ -100,8 +101,8 @@ extern "C"
   // Implementations of patched functions.
 
   void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)()) noexcept               { return 0; }
-  int         at_quick_exit       (void (*)()) noexcept               { return 0; }
+  int         atexit              (void (*)())                        { return 0; }
+  int         at_quick_exit       (void (*)())                        { return 0; }
   void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
