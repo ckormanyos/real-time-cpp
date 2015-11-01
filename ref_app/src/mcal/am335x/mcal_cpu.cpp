@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <algorithm>
 #include <cstdint>
 #include <mcal_cpu.h>
 #include <mcal_cpu_detail.h>

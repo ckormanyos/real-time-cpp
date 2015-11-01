@@ -45,15 +45,7 @@ void app::benchmark::task_func()
 
     const std::array<std::uint8_t, 9U> data =
     {{
-      UINT8_C(0x31),
-      UINT8_C(0x32),
-      UINT8_C(0x33),
-      UINT8_C(0x34),
-      UINT8_C(0x35),
-      UINT8_C(0x36),
-      UINT8_C(0x37),
-      UINT8_C(0x38),
-      UINT8_C(0x39)
+      0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
     }};
 
     typedef mcal::benchmark::benchmark_port_type port_type;
