@@ -8,6 +8,7 @@
 #ifndef _UTIL_TIME_2010_04_10_H_
   #define _UTIL_TIME_2010_04_10_H_
 
+  #include <cstdint>
   #include <limits>
   #include <mcal_cpu.h>
   #include <mcal_gpt.h>
@@ -27,7 +28,7 @@
                     "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
 
     private:
-      static const tick_type timer_mask = static_cast<tick_type>((1ULL << (std::numeric_limits<tick_type>::digits - 1)) - 1ULL);
+      static const tick_type timer_mask = static_cast<tick_type>((UINTMAX_C(1) << (std::numeric_limits<tick_type>::digits - 1)) - UINTMAX_C(1));
 
     public:
       template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }

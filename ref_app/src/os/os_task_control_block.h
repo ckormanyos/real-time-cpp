@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,26 +19,31 @@
     class task_control_block final
     {
     public:
-      typedef std::uint_fast8_t index_type;
-
       task_control_block(const function_type init,
                          const function_type func,
-                         const tick_type     cycle,
-                         const tick_type     offset);
+                         const tick_type cycle,
+                         const tick_type offset) : my_init (init),
+                                                   my_func (func),
+                                                   my_cycle(cycle),
+                                                   my_timer(offset),
+                                                   my_event() { }
 
-      task_control_block(const task_control_block& other_tcb);
+      task_control_block(const task_control_block& other_tcb) : my_init (other_tcb.my_init),
+                                                                my_func (other_tcb.my_func),
+                                                                my_cycle(other_tcb.my_cycle),
+                                                                my_timer(other_tcb.my_timer),
+                                                                my_event(other_tcb.my_event) { }
 
-      ~task_control_block();
+      ~task_control_block() { }
 
     private:
-      const   function_type my_init;
-      const   function_type my_func;
-      const   tick_type     my_cycle;
-              timer_type    my_timer;
-              event_type    my_event;
-      const   index_type    my_index;
+      const function_type my_init;
+      const function_type my_func;
+      const tick_type     my_cycle;
+            timer_type    my_timer;
+            event_type    my_event;
 
-      void initialize() const;
+      void initialize() const { my_init(); }
 
       bool execute(const tick_type& timepoint_of_ckeck_ready);
 
@@ -47,21 +52,6 @@
 
       friend void os::start_os   ();
       friend bool os::set_event  (const task_id_type, const event_type&);
-      friend void os::get_event  (event_type&);
-      friend void os::clear_event(const event_type&);
-    };
-
-    static_assert(OS_TASK_COUNT > std::size_t(0U),
-                  "the task count must exceed zero");
-
-    typedef std::array<task_control_block, OS_TASK_COUNT> task_list_type;
-
-    extern task_list_type& task_list();
-
-    class secure final
-    {
-      static task_list_type::iterator get_running_task_iterator();
-
       friend void os::get_event  (event_type&);
       friend void os::clear_event(const event_type&);
     };

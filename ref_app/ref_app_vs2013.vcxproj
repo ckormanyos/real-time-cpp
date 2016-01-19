@@ -14,10 +14,14 @@
     <ProjectGuid>{C8B59726-9319-45C3-8F11-F9F388FB6A2C}</ProjectGuid>
     <RootNamespace>ref_app</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <SccProjectName>Rational ClearCase</SccProjectName>
-    <SccAuxPath>Rational ClearCase</SccAuxPath>
-    <SccLocalPath>Rational ClearCase</SccLocalPath>
-    <SccProvider>Rational ClearCase</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
     <ProjectName>ref_app</ProjectName>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
   </PropertyGroup>

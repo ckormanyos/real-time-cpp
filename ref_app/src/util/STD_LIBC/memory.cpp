@@ -49,8 +49,8 @@ void* memmove(void* dst, const void* src, size_t n)
 {
   // The function memmove *does* work properly even when its operands overlap.
 
-        std::uint8_t* the_dst = reinterpret_cast<      std::uint8_t*>(dst);
-  const std::uint8_t* the_src = reinterpret_cast<const std::uint8_t*>(src);
+        std::uint8_t* the_dst = static_cast<      std::uint8_t*>(dst);
+  const std::uint8_t* the_src = static_cast<const std::uint8_t*>(src);
 
   // Check for a range overlap.
   if((the_src < the_dst) && (the_dst < (the_src + n)))

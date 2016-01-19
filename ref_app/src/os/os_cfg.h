@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,7 @@
 #ifndef _OS_CFG_2011_10_20_H_
   #define _OS_CFG_2011_10_20_H_
 
+  #include <cstddef>
   #include <cstdint>
   #include <limits>
   #include <util/utility/util_time.h>
@@ -84,5 +85,7 @@
                              os::timer_type::microseconds(UINT32_C(   863))),                    \
     }                                                                                            \
   }
+
+  static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
 
 #endif // _OS_CFG_2011_10_20_H_
