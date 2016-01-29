@@ -33,7 +33,7 @@
       typedef const T*    const_iterator;
 
       STL_LOCAL_CONSTEXPR xinitializer_list() : data  (nullptr),
-                                               length(0U) { }
+                                                length(0U) { }
 
       STL_LOCAL_CONSTEXPR size_type size() { return length; }
 
@@ -44,8 +44,9 @@
       iterator data;
       const size_type length;
 
-      STL_LOCAL_CONSTEXPR xinitializer_list(const_iterator it, size_type len) : data  (it),
-                                                                               length(len) { }
+      STL_LOCAL_CONSTEXPR xinitializer_list(const_iterator it,
+                                            size_type len) : data  (it),
+                                                             length(len) { }
     };
 
     // Namespace std inline versions of begin and end of xinitializer_list<T>.

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,6 +14,14 @@
 
   #include <float.h>
   #include <limits.h>
+
+  #if !defined(DBL_RADIX)
+    #define DBL_RADIX 2
+  #endif
+
+  #if !defined(LDBL_RADIX)
+    #define LDBL_RADIX 2
+  #endif
 
   // Implement some of <limits> for compilers that do not yet support it.
   // The implementation was partly inspired by some concepts in GCC's
@@ -727,7 +735,7 @@
       static const bool is_signed = true;
       static const bool is_integer = false;
       static const bool is_exact = false;
-      static const int radix = 2; // DBL_RADIX;
+      static const int radix = DBL_RADIX;
 
       static double epsilon() throw()     { return DBL_EPSILON; }
       static double round_error() throw() { return 0.5; }
@@ -774,7 +782,7 @@
       static const bool is_signed = true;
       static const bool is_integer = false;
       static const bool is_exact = false;
-      static const int radix = 2; // DBL_RADIX;
+      static const int radix = LDBL_RADIX;
 
       static long double epsilon() throw()     { return LDBL_EPSILON; }
       static long double round_error() throw() { return 0.5; }

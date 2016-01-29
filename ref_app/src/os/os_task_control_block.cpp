@@ -20,7 +20,7 @@ bool os::task_control_block::execute(const os::tick_type& timepoint_of_ckeck_rea
 
   // Check for a task timeout.
   const bool task_does_have_timeout = (   (my_cycle != os::tick_type(0U))
-                                        &&  my_timer.timeout_of_specific_timepoint(timepoint_of_ckeck_ready));
+                                       &&  my_timer.timeout_of_specific_timepoint(timepoint_of_ckeck_ready));
 
   if(task_does_have_timeout)
   {
