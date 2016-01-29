@@ -13,7 +13,7 @@
 
   // Implement helper functions for <algorithm>.
 
-  namespace xalgorithm
+  namespace stl_local
   {
     template<typename compare_type>
     const compare_type& xmin(const compare_type& a, const compare_type& b)
@@ -226,7 +226,7 @@
 
         while(first != last)
         {
-          typedef typename xiterator::xiterator_traits<bidirectional_iterator>::value_type value_type;
+          typedef typename stl_local::xiterator_traits<bidirectional_iterator>::value_type value_type;
 
           const value_type tmp(*first);
 
@@ -350,9 +350,9 @@
     }
 
     template<typename input_iterator, typename T>
-    typename xiterator::xiterator_traits<input_iterator>::difference_type xcount(input_iterator first, input_iterator last, const T& value)
+    typename stl_local::xiterator_traits<input_iterator>::difference_type xcount(input_iterator first, input_iterator last, const T& value)
     {
-      typedef typename xiterator::xiterator_traits<input_iterator>::difference_type count_type;
+      typedef typename stl_local::xiterator_traits<input_iterator>::difference_type count_type;
 
       count_type count_value(0);
 
@@ -370,9 +370,9 @@
     }
 
     template<typename input_iterator, typename predicate_type>
-    typename xiterator::xiterator_traits<input_iterator>::difference_type xcount_if(input_iterator first, input_iterator last, predicate_type predicate)
+    typename stl_local::xiterator_traits<input_iterator>::difference_type xcount_if(input_iterator first, input_iterator last, predicate_type predicate)
     {
-      typedef typename xiterator::xiterator_traits<input_iterator>::difference_type count_type;
+      typedef typename stl_local::xiterator_traits<input_iterator>::difference_type count_type;
 
       count_type count_value(0);
 
@@ -501,8 +501,8 @@
     template<typename input_iterator1, typename input_iterator2>
     void xiter_swap(input_iterator1 left, input_iterator2 right)
     {
-      typedef typename xiterator::xiterator_traits<input_iterator1>::value_type left_type;
-      typedef typename xiterator::xiterator_traits<input_iterator2>::value_type right_type;
+      typedef typename stl_local::xiterator_traits<input_iterator1>::value_type left_type;
+      typedef typename stl_local::xiterator_traits<input_iterator2>::value_type right_type;
 
       const left_type tmp(*left);
 
@@ -515,7 +515,7 @@
     {
       while(first1 != last1)
       {
-        xalgorithm::xiter_swap(first1, first2);
+        stl_local::xiter_swap(first1, first2);
 
         ++first1;
         ++first2;

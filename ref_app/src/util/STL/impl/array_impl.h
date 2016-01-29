@@ -77,7 +77,7 @@
       template<typename T2>
       void swap(array<T2, N>& y)
       {
-        xalgorithm::xswap_ranges(begin(), end(), y.begin());
+        stl_local::xswap_ranges(begin(), end(), y.begin());
       }
 
       const_pointer data() const { return elems; }
@@ -88,25 +88,25 @@
       template<typename T2>
       array& operator=(const array<T2, N>& y)
       {
-        xalgorithm::xcopy(y.begin(), y.end(), begin());
+        stl_local::xcopy(y.begin(), y.end(), begin());
         return *this;
       }
 
       void assign(const value_type& value)
       {
-        xalgorithm::xfill_n(elems, N, value);
+        stl_local::xfill_n(elems, N, value);
       }
 
       void fill(const value_type& value)
       {
-        xalgorithm::xfill_n(elems, N, value);
+        stl_local::xfill_n(elems, N, value);
       }
     };
 
     template<typename T, size_t N>
     bool operator==(const array<T, N>& left, const array<T, N>& right)
     {
-      return xalgorithm::xequal(left.begin(),
+      return stl_local::xequal(left.begin(),
                                 left.end(),
                                 right.begin());
     }
@@ -114,7 +114,7 @@
     template<typename T, size_t N>
     bool operator<(const array<T, N>& left, const array<T, N>& right)
     {
-      return xalgorithm::xlexicographical_compare(left.begin(),
+      return stl_local::xlexicographical_compare(left.begin(),
                                                   left.end(),
                                                   right.begin(),
                                                   right.end());
@@ -147,7 +147,7 @@
     template<typename T, size_t N >
     void swap(array<T, N>& x, array<T, N>& y)
     {
-      xalgorithm::xswap_ranges(x.begin(),
+      stl_local::xswap_ranges(x.begin(),
                                x.end(),
                                y.begin());
     }

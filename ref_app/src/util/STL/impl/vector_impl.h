@@ -44,14 +44,14 @@
                                          my_last (my_first + count),
                                          my_end  (my_last)
       {
-        xalgorithm::xfill(my_first, my_last, value_type());
+        stl_local::xfill(my_first, my_last, value_type());
       }
 
       vector(size_type count, const T& value) : my_first(allocator_type().allocate(count)),
                                                 my_last (my_first + count),
                                                 my_end  (my_last)
       {
-        xalgorithm::xfill(my_first, my_last, value);
+        stl_local::xfill(my_first, my_last, value);
       }
 
       vector(size_type count,
@@ -60,7 +60,7 @@
                                         my_last (my_first + count),
                                         my_end  (my_last)
       {
-        xalgorithm::xfill(my_first, my_last, value);
+        stl_local::xfill(my_first, my_last, value);
       }
 
       template<typename input_iterator>
@@ -70,14 +70,14 @@
                                                            my_last (my_first + static_cast<size_type>(std::distance(first, last))),
                                                            my_end  (my_last)
       {
-        xalgorithm::xcopy(first, last, my_first);
+        stl_local::xcopy(first, last, my_first);
       }
 
       vector(const vector& other) : my_first(allocator_type().allocate(other.size())),
                                     my_last (my_first + other.size()),
                                     my_end  (my_last)
       {
-        xalgorithm::xcopy(other.my_first, other.my_last, my_first);
+        stl_local::xcopy(other.my_first, other.my_last, my_first);
       }
 
       vector(std::initializer_list<T> lst,
@@ -85,13 +85,13 @@
                                                            my_last (my_first + lst.size()),
                                                            my_end  (my_last)
       {
-        xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
+        stl_local::xcopy(lst.begin(), lst.end(), my_first);
       }
 
       ~vector()
       {
-        xallocator::xdestroy_range(my_first, my_last, allocator_type());
-        xallocator::xdeallocate_range(my_first, my_end, allocator_type());
+        stl_local::xdestroy_range(my_first, my_last, allocator_type());
+        stl_local::xdeallocate_range(my_first, my_end, allocator_type());
       }
 
       vector& operator=(const vector& other)
@@ -106,7 +106,7 @@
           my_end   = my_first + sz;
         }
 
-        xalgorithm::xcopy(other.begin(), other.end(), my_first);
+        stl_local::xcopy(other.begin(), other.end(), my_first);
 
         return *this;
       }
@@ -123,7 +123,7 @@
           my_end   = my_first + sz;
         }
 
-        xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
+        stl_local::xcopy(lst.begin(), lst.end(), my_first);
 
         return *this;
       }
@@ -171,9 +171,9 @@
         {
           iterator new_first = allocator_type().allocate(count);
 
-          xalgorithm::xcopy(my_first, my_last, new_first);
-          xallocator::xdestroy_range(my_first, my_last, allocator_type());
-          xallocator::xdeallocate_range(my_first, my_end, allocator_type());
+          stl_local::xcopy(my_first, my_last, new_first);
+          stl_local::xdestroy_range(my_first, my_last, allocator_type());
+          stl_local::xdeallocate_range(my_first, my_end, allocator_type());
 
           my_last  = new_first + size();
           my_first = new_first;
@@ -186,7 +186,7 @@
         if     (count == size()) { }
         else if(count <  size())
         {
-          xallocator::xdestroy_range(my_first + count, my_last, allocator_type());
+          stl_local::xdestroy_range(my_first + count, my_last, allocator_type());
           my_last = my_first + count;
         }
         else
@@ -196,7 +196,7 @@
             reserve(count);
           }
 
-          xalgorithm::xfill(my_last, my_first + count, value);
+          stl_local::xfill(my_last, my_first + count, value);
           my_last = my_first + count;
         }
       }
@@ -204,14 +204,14 @@
       void assign(size_type count, const T& value)
       {
         resize(count);
-        xalgorithm::xfill(my_first, my_last, value);
+        stl_local::xfill(my_first, my_last, value);
       }
 
       template<typename input_iterator>
       void assign(input_iterator first, input_iterator last)
       {
         resize(static_cast<size_type>(std::distance(first, last)));
-        xalgorithm::xcopy(first, last, my_first);
+        stl_local::xcopy(first, last, my_first);
       }
 
       void push_back(const value_type& value)
@@ -221,7 +221,7 @@
         if(capacity() <= the_size)
         {
           const size_type count = the_size * 2U;
-          reserve(xalgorithm::xmax(count, 4U));
+          reserve(stl_local::xmax(count, 4U));
         }
 
         *my_last = value;
@@ -230,8 +230,8 @@
 
       void clear()
       {
-        xallocator::xdestroy_range(my_first, my_last, allocator_type());
-        xallocator::xdeallocate_range(my_first, my_last, allocator_type());
+        stl_local::xdestroy_range(my_first, my_last, allocator_type());
+        stl_local::xdeallocate_range(my_first, my_last, allocator_type());
         my_last = my_first;
       }
 

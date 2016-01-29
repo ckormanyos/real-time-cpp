@@ -37,7 +37,9 @@ void app::benchmark::task_init()
   #endif
 }
 
-std::uint32_t app_benchmark_crc;
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC32)
+  std::uint32_t app_benchmark_crc;
+#endif
 
 void app::benchmark::task_func()
 {

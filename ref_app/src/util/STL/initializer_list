@@ -8,6 +8,11 @@
 #ifndef _INITIALIZER_LIST_2012_02_14_H_
   #define _INITIALIZER_LIST_2012_02_14_H_
 
-  #include "impl/initializer_list_impl.h"
+  #include "impl/initializer_list.h"
+
+  namespace std
+  {
+    typedef stl_local::xinitializer_list initializer_list;
+  }
 
 #endif // _INITIALIZER_LIST_2012_02_14_H_

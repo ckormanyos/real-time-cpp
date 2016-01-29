@@ -12,7 +12,7 @@
 
   #include "xiterator_impl.h"
 
-  namespace xnumeric
+  namespace stl_local
   {
     template<typename input_iterator,
              typename value_type>
@@ -75,7 +75,7 @@
       }
       else
       {
-        typedef typename xiterator::xiterator_traits<input_iterator>::value_type sum_type;
+        typedef typename stl_local::xiterator_traits<input_iterator>::value_type sum_type;
 
         sum_type sum = *first;
         ++first;
@@ -108,7 +108,7 @@
       }
       else
       {
-        typedef typename xiterator::xiterator_traits<input_iterator>::value_type sum_type;
+        typedef typename stl_local::xiterator_traits<input_iterator>::value_type sum_type;
 
         sum_type sum = *first;
         ++first;

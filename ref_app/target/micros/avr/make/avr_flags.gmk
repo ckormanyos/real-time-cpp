@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.8.1
+GCC_VERSION   = 5.3.0
 GCC_TARGET    = avr
 
 TGT_STL_DIR   = STL

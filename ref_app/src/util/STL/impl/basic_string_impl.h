@@ -54,14 +54,14 @@
       explicit basic_string(size_type count) : my_first(allocator_type().allocate(count + 1U)),
                                                my_last (my_first + count)
       {
-        xalgorithm::xfill(my_first, my_last, value_type());
+        stl_local::xfill(my_first, my_last, value_type());
         *my_last = static_cast<value_type>(0);
       }
 
       basic_string(size_type count, const T& value) : my_first(allocator_type().allocate(count + 1U)),
                                                       my_last (my_first + count)
       {
-        xalgorithm::xfill(my_first, my_last, value);
+        stl_local::xfill(my_first, my_last, value);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -70,7 +70,7 @@
         const size_type count = traits_type::length(p);
         my_first = allocator_type().allocate(count + 1U);
         my_last = my_first + count;
-        xalgorithm::xcopy(p, p + count, my_first);
+        stl_local::xcopy(p, p + count, my_first);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -79,7 +79,7 @@
         const size_type count = str.length();
         my_first = allocator_type().allocate(count + 1U);
         my_last = my_first + count;
-        xalgorithm::xcopy(str.begin(), str.end(), my_first);
+        stl_local::xcopy(str.begin(), str.end(), my_first);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -88,7 +88,7 @@
         const size_type count = lst.size();
         my_first = allocator_type().allocate(count + 1U);
         my_last = my_first + count;
-        xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
+        stl_local::xcopy(lst.begin(), lst.end(), my_first);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -97,7 +97,7 @@
                    const allocator_type& a) : my_first(allocator_type(a).allocate(count + 1U)),
                                               my_last (my_first + count)
       {
-        xalgorithm::xfill(my_first, my_last, value);
+        stl_local::xfill(my_first, my_last, value);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -109,7 +109,7 @@
         const size_type count static_cast<size_type>(std::distance(first, last));
         my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
-        xalgorithm::xcopy(first, last, my_first);
+        stl_local::xcopy(first, last, my_first);
         *my_last = static_cast<value_type>(0);
       }
 
@@ -119,14 +119,14 @@
         const size_type sz = (size_type) (lst.size());
         my_first = allocator_type(a).allocate(sz + 1U);
         my_last  = my_first + sz;
-        xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
+        stl_local::xcopy(lst.begin(), lst.end(), my_first);
         *my_last = static_cast<value_type>(0);
       }
 
       ~basic_string()
       {
-        xallocator::xdestroy_range   (my_first, my_last + 1U, allocator_type());
-        xallocator::xdeallocate_range(my_first, my_last + 1U, allocator_type());
+        stl_local::xdestroy_range   (my_first, my_last + 1U, allocator_type());
+        stl_local::xdeallocate_range(my_first, my_last + 1U, allocator_type());
       }
 
       basic_string& operator=(const basic_string& str)
@@ -140,14 +140,14 @@
 
           if(length() != sz)
           {
-            xallocator::xdestroy_range   (my_first, my_last + 1U, allocator_type());
-            xallocator::xdeallocate_range(my_first, my_last + 1U, allocator_type());
+            stl_local::xdestroy_range   (my_first, my_last + 1U, allocator_type());
+            stl_local::xdeallocate_range(my_first, my_last + 1U, allocator_type());
 
             my_first = allocator_type().allocate(sz + 1U);
             my_last  = my_first + sz;
           }
 
-          xalgorithm::xcopy(str.begin(), str.end(), my_first);
+          stl_local::xcopy(str.begin(), str.end(), my_first);
           *my_last = static_cast<value_type>(0);
         }
 
@@ -160,14 +160,14 @@
 
         if(length() != sz)
         {
-          xallocator::xdestroy_range   (my_first, my_last + 1U, allocator_type());
-          xallocator::xdeallocate_range(my_first, my_last + 1U, allocator_type());
+          stl_local::xdestroy_range   (my_first, my_last + 1U, allocator_type());
+          stl_local::xdeallocate_range(my_first, my_last + 1U, allocator_type());
 
           my_first = allocator_type().allocate(sz + 1U);
           my_last  = my_first + sz;
         }
 
-        xalgorithm::xcopy(p, p + sz, my_first);
+        stl_local::xcopy(p, p + sz, my_first);
         *my_last = static_cast<value_type>(0);
 
         return *this;
@@ -179,14 +179,14 @@
 
         if(length() != sz)
         {
-          xallocator::xdestroy_range   (my_first, my_last + 1U, allocator_type());
-          xallocator::xdeallocate_range(my_first, my_last + 1U, allocator_type());
+          stl_local::xdestroy_range   (my_first, my_last + 1U, allocator_type());
+          stl_local::xdeallocate_range(my_first, my_last + 1U, allocator_type());
 
           my_first = allocator_type().allocate(sz + 1U);
           my_last  = my_first + sz;
         }
 
-        xalgorithm::xcopy(lst.begin(), lst.end(), my_first);
+        stl_local::xcopy(lst.begin(), lst.end(), my_first);
         *my_last = static_cast<value_type>(0);
 
         return *this;
@@ -227,7 +227,7 @@
       {
         const bool the_lengths_are_equal = (length() == other.length());
 
-        return (the_lengths_are_equal && xalgorithm::xequal(my_first, my_last, other.my_first));
+        return (the_lengths_are_equal && stl_local::xequal(my_first, my_last, other.my_first));
       }
 
     private:

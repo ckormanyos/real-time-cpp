@@ -19,10 +19,10 @@
   // Implement some of std::initializer_list for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 18.9.
 
-  namespace std
+  namespace stl_local
   {
     template<typename T>
-    class initializer_list
+    class xinitializer_list
     {
     public:
       typedef T           value_type;
@@ -32,7 +32,7 @@
       typedef const T*    iterator;
       typedef const T*    const_iterator;
 
-      STL_LOCAL_CONSTEXPR initializer_list() : data  (nullptr),
+      STL_LOCAL_CONSTEXPR xinitializer_list() : data  (nullptr),
                                                length(0U) { }
 
       STL_LOCAL_CONSTEXPR size_type size() { return length; }
@@ -44,37 +44,37 @@
       iterator data;
       const size_type length;
 
-      STL_LOCAL_CONSTEXPR initializer_list(const_iterator it, size_type len) : data  (it),
+      STL_LOCAL_CONSTEXPR xinitializer_list(const_iterator it, size_type len) : data  (it),
                                                                                length(len) { }
     };
 
-    // Namespace std inline versions of begin and end of initializer_list<T>.
+    // Namespace std inline versions of begin and end of xinitializer_list<T>.
     template<typename T>
-    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator begin(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename xinitializer_list<T>::const_iterator begin(xinitializer_list<T> lst)
     {
       return lst.begin();
     }
 
     template<typename T>
-    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator end(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename xinitializer_list<T>::const_iterator end(xinitializer_list<T> lst)
     {
       return lst.end();
     }
 
-    // Namespace std inline versions of rbegin and rend of initializer_list<T>.
+    // Namespace std inline versions of rbegin and rend of xinitializer_list<T>.
     // These are specified in C++14.
     template<typename T>
-    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rbegin(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename xinitializer_list<T>::const_iterator rbegin(xinitializer_list<T> lst)
     {
-      typedef std::reverse_iterator<typename initializer_list<T>::const_iterator> reverse_iterator_type;
+      typedef std::reverse_iterator<typename xinitializer_list<T>::const_iterator> reverse_iterator_type;
 
       return reverse_iterator_type(lst.end());
     }
 
     template<typename T>
-    STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator rend(initializer_list<T> lst)
+    STL_LOCAL_CONSTEXPR typename xinitializer_list<T>::const_iterator rend(xinitializer_list<T> lst)
     {
-      typedef std::reverse_iterator<typename initializer_list<T>::const_iterator> reverse_iterator_type;
+      typedef std::reverse_iterator<typename xinitializer_list<T>::const_iterator> reverse_iterator_type;
 
       return reverse_iterator_type(lst.begin());
     }

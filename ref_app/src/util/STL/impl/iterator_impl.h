@@ -14,14 +14,14 @@
 
   namespace std
   {
-    typedef xiterator::xinput_iterator_tag         input_iterator_tag;
-    typedef xiterator::xoutput_iterator_tag        output_iterator_tag;
-    typedef xiterator::xforward_iterator_tag       forward_iterator_tag;
-    typedef xiterator::xbidirectional_iterator_tag bidirectional_iterator_tag;
-    typedef xiterator::xrandom_access_iterator_tag random_access_iterator_tag;
+    typedef stl_local::xinput_iterator_tag         input_iterator_tag;
+    typedef stl_local::xoutput_iterator_tag        output_iterator_tag;
+    typedef stl_local::xforward_iterator_tag       forward_iterator_tag;
+    typedef stl_local::xbidirectional_iterator_tag bidirectional_iterator_tag;
+    typedef stl_local::xrandom_access_iterator_tag random_access_iterator_tag;
 
     template<typename iterator_type>
-    class iterator_traits : public xiterator::xiterator_traits<iterator_type> { };
+    class iterator_traits : public stl_local::xiterator_traits<iterator_type> { };
 
     template<typename my_category,
              typename my_value_type,

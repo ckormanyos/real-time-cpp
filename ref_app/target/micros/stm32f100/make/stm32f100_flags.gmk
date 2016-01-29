@@ -31,6 +31,10 @@ TGT_CPPFLAGS  = -std=c++11                                     \
                 -Wzero-as-null-pointer-constant                \
                 -I$(PATH_APP)/util/STL_C++17_Compatibility
 
+#                -ID:/boost/boost_1_59_0                        \
+#                -ID:/boost_fixed_point/include
+
+
 TGT_AFLAGS    =
 
 TGT_LFLAGS    =

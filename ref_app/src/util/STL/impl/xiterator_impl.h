@@ -16,7 +16,7 @@
 
   // Implement helper functions for some of <iterator>.
 
-  namespace xiterator
+  namespace stl_local
   {
     class xinput_iterator_tag {};
     class xoutput_iterator_tag {};

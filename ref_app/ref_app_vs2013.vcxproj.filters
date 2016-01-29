@@ -238,30 +238,6 @@
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f100\mcal_safety_dram.cpp">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_safety_dram.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_safety_dram.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\am335x\mcal_safety_dram.cpp">
-      <Filter>src\mcal\am335x</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\am335x\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\am335x</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f100\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
@@ -287,12 +263,6 @@
       <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f407\mcal_pwm.cpp">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f407\mcal_safety_dram.cpp">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f407\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f407\mcal_wdg.cpp">
@@ -328,12 +298,6 @@
     <ClCompile Include="src\mcal\rl78\mcal_pwm.cpp">
       <Filter>src\mcal\rl78</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rl78\mcal_safety_dram.cpp">
-      <Filter>src\mcal\rl78</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\rl78\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\rl78</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_wdg.cpp">
       <Filter>src\mcal\rl78</Filter>
     </ClCompile>
@@ -362,12 +326,6 @@
       <Filter>src\mcal\stm32f429</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f429\mcal_pwm.cpp">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f429\mcal_safety_dram.cpp">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32f429\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\stm32f429</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f429\mcal_wdg.cpp">
@@ -400,12 +358,6 @@
     <ClCompile Include="src\mcal\rx63n\mcal_pwm.cpp">
       <Filter>src\mcal\rx63n</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rx63n\mcal_safety_dram.cpp">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\rx63n\mcal_safety_rom_checksum.cpp">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\rx63n\mcal_wdg.cpp">
       <Filter>src\mcal\rx63n</Filter>
     </ClCompile>
@@ -428,12 +380,6 @@
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\pic32mx795fx\mcal_pwm.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_safety_dram.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\pic32mx795fx\mcal_wdg.cpp">
@@ -482,12 +428,6 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_pwm.cpp">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_safety_dram.cpp">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_safety_rom_checksum.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_spi.cpp">
@@ -816,18 +756,6 @@
     <ClInclude Include="src\util\STL\impl\type_traits_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f100\mcal_safety_dram.h">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_safety_dram.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_safety_dram.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_safety_dram.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\safety\memory\util_safety_dram_memory_refresh.h">
       <Filter>src\util\safety\memory</Filter>
     </ClInclude>
@@ -839,18 +767,6 @@
     </ClInclude>
     <ClInclude Include="src\util\safety\memory\util_safety_memory_base.h">
       <Filter>src\util\safety\memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f100\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\util\safety\time\util_safety_max_time_since_service.h">
       <Filter>src\util\safety\time</Filter>
@@ -892,12 +808,6 @@
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_reg_access.h">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\mcal_safety_dram.h">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\mcal_safety_rom_checksum.h">
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_ser.h">
@@ -972,12 +882,6 @@
     <ClInclude Include="src\mcal\rl78\mcal_reg_access.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\rl78\mcal_safety_dram.h">
-      <Filter>src\mcal\rl78</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rl78\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\rl78</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_ser.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
@@ -1032,12 +936,6 @@
     <ClInclude Include="src\mcal\stm32f429\mcal_reg_access.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\mcal_safety_dram.h">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f429\mcal_ser.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
@@ -1083,12 +981,6 @@
     <ClInclude Include="src\mcal\rx63n\mcal_reg_access.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\rx63n\mcal_safety_dram.h">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rx63n\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rx63n\mcal_ser.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
@@ -1128,12 +1020,6 @@
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_reg_access.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_safety_dram.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_safety_rom_checksum.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_ser.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
@@ -1171,12 +1057,6 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_reg_access.h">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_safety_dram.h">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_safety_rom_checksum.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_ser.h">

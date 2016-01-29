@@ -20,8 +20,6 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
              $(PATH_APP)/mcal/$(TGT)/mcal_osc                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_pwm                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_port                           \
-             $(PATH_APP)/mcal/$(TGT)/mcal_safety_dram                    \
-             $(PATH_APP)/mcal/$(TGT)/mcal_safety_rom_checksum            \
              $(PATH_APP)/mcal/$(TGT)/mcal_spi                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_wdg                            \
              $(PATH_APP)/os/os                                           \

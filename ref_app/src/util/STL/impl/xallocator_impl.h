@@ -17,7 +17,7 @@
 
   // Implement helper functions for some of std::allocator.
 
-  namespace xallocator
+  namespace stl_local
   {
     template<typename iterator_type, typename allocator_type>
     inline void xdestroy_range(iterator_type first, iterator_type last, allocator_type a)
