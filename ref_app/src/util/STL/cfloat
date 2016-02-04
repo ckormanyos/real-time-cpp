@@ -8,6 +8,6 @@
 #ifndef _CFLOAT_2015_07_06_
   #define _CFLOAT_2015_07_06_
 
-  #include "impl/cfloat_impl.h"
+  #include <float.h>
 
 #endif // _CFLOAT_2015_07_06_

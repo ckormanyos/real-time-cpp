@@ -8,6 +8,15 @@
 #ifndef _CSTDBOOL_2012_12_14_
   #define _CSTDBOOL_2012_12_14_
 
-  #include "impl/cstdbool_impl.h"
+  #include <stdbool.h>
+
+  #if !defined(__bool_true_false_are_defined)
+    #define __bool_true_false_are_defined 1
+  #endif
+
+  namespace std
+  {
+    using ::bool;
+  }
 
 #endif // _CSTDBOOL_2012_12_14_

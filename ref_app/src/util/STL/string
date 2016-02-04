@@ -8,7 +8,7 @@
 #ifndef _STRING_2010_02_23_
   #define _STRING_2010_02_23_
 
-  #include "impl/basic_string_impl.h"
+  #include <basic_string>
 
   namespace std
   {

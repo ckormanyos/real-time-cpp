@@ -6,7 +6,7 @@
 //
 
 #include "../_stl_local_constexpr.h"
-#include "../limits_impl.h"
+#include <limits>
 
 namespace float_limits
 {

@@ -8,6 +8,13 @@
 #ifndef _CSTDDEF_2010_02_23_
   #define _CSTDDEF_2010_02_23_
 
-  #include "impl/cstddef_impl.h"
+  #include <stddef.h>
+
+  namespace std
+  {
+    using ::size_t;
+    using ::ptrdiff_t;
+    using ::nullptr_t;
+  }
 
 #endif // _CSTDDEF_2010_02_23_

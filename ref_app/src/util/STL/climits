@@ -8,6 +8,6 @@
 #ifndef _CLIMITS_2015_07_06_
   #define _CLIMITS_2015_07_06_
 
-  #include "impl/climits_impl.h"
+  #include <limits.h>
 
 #endif // _CLIMITS_2015_07_06_

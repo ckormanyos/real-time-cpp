@@ -5,22 +5,22 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _XALLOCATOR_IMPL_2010_02_23_H_
-  #define _XALLOCATOR_IMPL_2010_02_23_H_
+#ifndef _ALLOCATOR_IMPL_2010_02_23_H_
+  #define _ALLOCATOR_IMPL_2010_02_23_H_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
   #endif
 
-  #include "cstddef_impl.h"
-  #include "iterator_impl.h"
+  #include <cstddef>
+  #include <iterator>
 
   // Implement helper functions for some of std::allocator.
 
-  namespace stl_local
+  namespace std
   {
     template<typename iterator_type, typename allocator_type>
-    inline void xdestroy_range(iterator_type first, iterator_type last, allocator_type a)
+    inline void destroy_range(iterator_type first, iterator_type last, allocator_type a)
     {
       while(first != last)
       {
@@ -30,7 +30,7 @@
     }
 
     template<typename iterator_type, typename allocator_type>
-    inline void xdeallocate_range(iterator_type first, iterator_type last, allocator_type a)
+    inline void deallocate_range(iterator_type first, iterator_type last, allocator_type a)
     {
       const std::size_t count = static_cast<std::size_t>(std::distance(first, last));
 
@@ -38,4 +38,4 @@
     }
   }
 
-#endif // _XALLOCATOR_IMPL_2010_02_23_H_
+#endif // _ALLOCATOR_IMPL_2010_02_23_H_

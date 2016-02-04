@@ -81,7 +81,7 @@
     // Check if the argument is smaller than epsilon().
     if(x < std::numeric_limits<std::float32_t>::epsilon())
     {
-      using stl_local::euler;
+      using xcmath::euler;
 
       return ((!b_neg) ? (FLOAT32_C(+1.0) / x) - euler<std::float32_t>()
                        : (FLOAT32_C(-1.0) / x) - euler<std::float32_t>());
@@ -96,7 +96,7 @@
     // Check if the argument is very close to +1 or +2?
     if(b_neg == false)
     {
-      using stl_local::near_integer;
+      using xcmath::near_integer;
 
       const bool is_near_one = near_integer(x, static_cast<std::uint_least8_t>(1U));
       const bool is_near_two = near_integer(x, static_cast<std::uint_least8_t>(2U));
@@ -133,7 +133,7 @@
     }
     else
     {
-      using stl_local::pi;
+      using xcmath::pi;
 
       const std::float32_t sin_pi_x = std::sin(pi<std::float32_t>() * x);
 

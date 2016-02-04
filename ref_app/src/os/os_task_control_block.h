@@ -8,7 +8,6 @@
 #ifndef _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
   #define _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
 
-  #include <array>
   #include <cstddef>
   #include <cstdint>
   #include <limits>

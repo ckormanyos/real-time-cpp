@@ -12,7 +12,7 @@
   #include <cstdint>
   #include <limits>
 
-  namespace stl_local
+  namespace xcmath
   {
     template<typename float_type>
     bool near_integer(const float_type& x, const std::uint_least8_t n)

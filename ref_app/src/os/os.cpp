@@ -6,6 +6,7 @@
 //
 
 #include <algorithm>
+#include <array>
 #include <iterator>
 #include <mcal_irq.h>
 #include <os/os.h>
