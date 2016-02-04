@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,18 +27,16 @@ namespace crt
 
 void crt::init_ctors()
 {
-  typedef std::uint16_t function_aligned_type;
-
-  for(volatile std::uint8_t* rom_source  = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_end));
-                             rom_source != static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(_ctors_begin));
-                             rom_source -= sizeof(function_aligned_type))
+  for(ctor_type::function_type* pf = _ctors_end - 1U; pf >= _ctors_begin; --pf)
   {
     // Note that particular care needs to be taken to read program
     // memory with the function mcal::cpu::read_program_memory().
 
-    // Acquire the next 16-bit ctor function address.
-    const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source - 2U);
-    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source - 1U);
+    volatile std::uint8_t* rom_source = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(pf));
+
+    // Acquire the individual bytes of the next 16-bit ctor function address.
+    const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source + 0U);
+    const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source + 1U);
 
     // Create the address of the ctor function.
     const ctor_type::function_type ctor_function_address
