@@ -17,13 +17,13 @@
   namespace std
   {
     template<typename compare_type>
-    const compare_type& min(const compare_type& a, const compare_type& b)
+    const compare_type& (min)(const compare_type& a, const compare_type& b)
     {
       return ((a < b) ? a : b);
     }
 
     template<typename compare_type, typename binary_predicate>
-    const compare_type& min(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
       return (compare_function(b, a) ? b : a);
     }
@@ -78,13 +78,13 @@
     }
 
     template<typename compare_type>
-    const compare_type& max(const compare_type& a, const compare_type& b)
+    const compare_type& (max)(const compare_type& a, const compare_type& b)
     {
       return ((a > b) ? a : b);
     }
 
     template<typename compare_type, typename binary_predicate>
-    const compare_type& max(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
     {
       return (compare_function(a, b) ? a : b);
     }
