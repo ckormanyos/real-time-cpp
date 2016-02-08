@@ -12,6 +12,7 @@
   #pragma GCC system_header
   #endif
 
+  #include "impl/_stl_local_constexpr.h"
   #include <cmath>
 
   // Implement std::complex for compilers that do not support it.
@@ -662,6 +663,16 @@
     {
       return (std::log(T(1.0F) + my_xt) - std::log(T(1.0F) - my_xt)) / T(2.0F);
     }
+
+    /*
+    STL_LOCAL_CONSTEXPR std::complex<float>       operator""if(long double imag_literal)        { return std::complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
+    STL_LOCAL_CONSTEXPR std::complex<double>      operator""i (long double imag_literal)        { return std::complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
+    STL_LOCAL_CONSTEXPR std::complex<long double> operator""il(long double imag_literal)        { return std::complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
+
+    STL_LOCAL_CONSTEXPR std::complex<float>       operator""if(unsigned long long imag_literal) { return std::complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
+    STL_LOCAL_CONSTEXPR std::complex<double>      operator""i (unsigned long long imag_literal) { return std::complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
+    STL_LOCAL_CONSTEXPR std::complex<long double> operator""il(unsigned long long imag_literal) { return std::complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
+    */
   }
 
 #endif // _COMPLEX_2012_02_20_

@@ -39,17 +39,19 @@ void crt::init_ram()
 
   std::for_each(static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)),
                 static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)) + size,
-                [&rom_source](memory_aligned_type& ram_destination)
+                [&rom_source](memory_aligned_type& data_ram_value)
                 {
                   // Note that particular care needs to be taken to read program
                   // memory with the function mcal::cpu::read_program_memory().
 
-                  // Acquire the next 16-bit address of the rom-source.
-                  const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source + 0U);
-                  const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source + 1U);
+                  // Acquire the next 16-bit rom-value located at the address
+                  // of the rom-source.
+                  const std::uint16_t const_rom_value =
+                    util::make_long(mcal::cpu::read_program_memory(rom_source + 0U),
+                                    mcal::cpu::read_program_memory(rom_source + 1U));
 
-                  // Copy the data from the rom-source to the ram-destination.
-                  ram_destination = util::make_long(addr_lo, addr_hi);
+                  // Copy the value from constant-rom to data-ram.
+                  data_ram_value = const_rom_value;
 
                   rom_source += 2U;
                 });

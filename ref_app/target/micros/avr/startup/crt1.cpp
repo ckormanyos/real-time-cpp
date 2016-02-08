@@ -29,15 +29,17 @@ void crt::init_ctors()
 {
   for(ctor_type::function_type* pf = _ctors_end - 1U; pf >= _ctors_begin; --pf)
   {
-    // Acquire the next 16-bit ctor function address.
+    // Acquire the next 16-bit ctor function pointer address.
     volatile std::uint8_t* rom_source = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(pf));
 
-    // Note that particular care needs to be taken to read program
+    // Extract the value of the function address.
+    // Note that particular care is taken to read program
     // memory with the function mcal::cpu::read_program_memory().
-    const std::uint16_t ctor_function_address = util::make_long(mcal::cpu::read_program_memory(rom_source + 0U),
-                                                                mcal::cpu::read_program_memory(rom_source + 1U));
+    const ctor_type::function_type ctor_function_address =
+      reinterpret_cast<const ctor_type::function_type>(util::make_long(mcal::cpu::read_program_memory(rom_source + 0U),
+                                                                       mcal::cpu::read_program_memory(rom_source + 1U)));
 
     // Call the ctor function.
-    (reinterpret_cast<const ctor_type::function_type>(ctor_function_address))();
+    ctor_function_address();
   }
 }
