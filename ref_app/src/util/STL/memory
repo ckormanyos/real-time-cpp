@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -51,7 +51,8 @@
       template<const std::uint_fast8_t inner_buffer_alignment>
       static void* do_allocate(const size_type size)
       {
-        STL_LOCAL_ALIGNAS(16) static buffer_type buffer;
+        STL_LOCAL_ALIGNAS(8) static buffer_type buffer;
+
         static std::uint8_t* get_ptr = buffer.data;
 
         // Get the newly allocated pointer.

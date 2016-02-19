@@ -232,7 +232,6 @@
       static       xelem_type& get      (      xtuple_type& t) { return t.t##NUM ; } \
       static const xelem_type& get_const(const xtuple_type& t) { return t.t##NUM ; } \
     }                                                                                \
-    /**/
 
     MAKE_XTUPLE_GET_HELPER(0);
     MAKE_XTUPLE_GET_HELPER(1);

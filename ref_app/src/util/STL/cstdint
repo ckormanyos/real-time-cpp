@@ -24,6 +24,9 @@
   #if !defined(INT64_C)
   #define INT64_C(x) ((signed long long) (x##LL))
   #endif
+  #if !defined(INTMAX_C)
+  #define INTMAX_C(x) ((signed long long) (x##LL))
+  #endif
 
   #if !defined(UINT8_C)
   #define UINT8_C(x) ((unsigned char) (x##U))
@@ -36,6 +39,9 @@
   #endif
   #if !defined(UINT64_C)
   #define UINT64_C(x) ((unsigned long long) (x##ULL))
+  #endif
+  #if !defined(UINTMAX_C)
+  #define UINTMAX_C(x) ((unsigned long long) (x##ULL))
   #endif
 
   // Implement the integer types having specified widths in <cstdint>

@@ -48,7 +48,7 @@
                                                                                length(len) { }
     };
 
-    // Namespace std inline versions of begin and end of initializer_list<T>.
+    // Namespace non-member versions of begin and end of initializer_list<T>.
     template<typename T>
     STL_LOCAL_CONSTEXPR typename initializer_list<T>::const_iterator begin(initializer_list<T> lst)
     {
