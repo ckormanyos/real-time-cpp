@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,26 +26,34 @@
     template<> class complex<long double>;
 
     // Forward template function definitions.
-    template<typename T> complex<T> sqrt (const complex<T>& my_xt);
-    template<typename T> complex<T> sin  (const complex<T>& my_xt);
-    template<typename T> complex<T> cos  (const complex<T>& my_xt);
-    template<typename T> complex<T> tan  (const complex<T>& my_xt);
-    template<typename T> complex<T> asin (const complex<T>& my_xt);
-    template<typename T> complex<T> acos (const complex<T>& my_xt);
-    template<typename T> complex<T> atan (const complex<T>& my_xt);
-    template<typename T> complex<T> exp  (const complex<T>& my_xt);
-    template<typename T> complex<T> log  (const complex<T>& my_xt);
-    template<typename T> complex<T> log10(const complex<T>& my_xt);
-    template<typename T> complex<T> pow  (const complex<T>& my_xt, int my_pn);
-    template<typename T> complex<T> pow  (const complex<T>& my_xt, const T& my_at);
-    template<typename T> complex<T> pow  (const complex<T>& my_xt, const complex<T>& my_at);
-    template<typename T> complex<T> pow  (const T& my_xt, const complex<T>& my_at);
-    template<typename T> complex<T> sinh (const complex<T>& my_xt);
-    template<typename T> complex<T> cosh (const complex<T>& my_xt);
-    template<typename T> complex<T> tanh (const complex<T>& my_xt);
-    template<typename T> complex<T> asinh(const complex<T>& my_xt);
-    template<typename T> complex<T> acosh(const complex<T>& my_xt);
-    template<typename T> complex<T> atanh(const complex<T>& my_xt);
+    template<typename T> T          real (const complex<T>&);
+    template<typename T> T          imag (const complex<T>&);
+    template<typename T> T          abs  (const complex<T>&);
+    template<typename T> T          arg  (const complex<T>&);
+    template<typename T> T          norm (const complex<T>&);
+    template<typename T> complex<T> conj (const complex<T>&);
+    template<typename T> complex<T> proj (const complex<T>&);
+    template<typename T> complex<T> polar(const complex<T>&, const T& = 0);
+    template<typename T> complex<T> sqrt (const complex<T>&);
+    template<typename T> complex<T> sin  (const complex<T>&);
+    template<typename T> complex<T> cos  (const complex<T>&);
+    template<typename T> complex<T> tan  (const complex<T>&);
+    template<typename T> complex<T> asin (const complex<T>&);
+    template<typename T> complex<T> acos (const complex<T>&);
+    template<typename T> complex<T> atan (const complex<T>&);
+    template<typename T> complex<T> exp  (const complex<T>&);
+    template<typename T> complex<T> log  (const complex<T>&);
+    template<typename T> complex<T> log10(const complex<T>&);
+    template<typename T> complex<T> pow  (const complex<T>&, int);
+    template<typename T> complex<T> pow  (const complex<T>&, const T&);
+    template<typename T> complex<T> pow  (const complex<T>&, const complex<T>&);
+    template<typename T> complex<T> pow  (const T&, const complex<T>&);
+    template<typename T> complex<T> sinh (const complex<T>&);
+    template<typename T> complex<T> cosh (const complex<T>&);
+    template<typename T> complex<T> tanh (const complex<T>&);
+    template<typename T> complex<T> asinh(const complex<T>&);
+    template<typename T> complex<T> acosh(const complex<T>&);
+    template<typename T> complex<T> atanh(const complex<T>&);
 
     template<typename T>
     class complex
@@ -54,101 +62,97 @@
       typedef T value_type;
 
       STL_LOCAL_CONSTEXPR complex(const value_type& re_ = value_type(),
-                                  const value_type& im_ = value_type()) : my_re(re_), my_im(im_) { }
+                                  const value_type& im_ = value_type()) : my_re(re_),
+                                                                          my_im(im_) { }
 
-      STL_LOCAL_CONSTEXPR complex(const complex& my_vt) : my_re(my_vt.real), my_im(my_vt.imag) { }
+      STL_LOCAL_CONSTEXPR complex(const complex& my_v) : my_re(my_v.real),
+                                                         my_im(my_v.imag) { }
 
       template<typename X>
-      STL_LOCAL_CONSTEXPR complex(const complex<X>& my_xt) : my_re(my_xt.real), my_im(my_xt.imag) { }
+      STL_LOCAL_CONSTEXPR complex(const complex<X>& my_z) : my_re(my_z.real),
+                                                            my_im(my_z.imag) { }
 
       STL_LOCAL_CONSTEXPR value_type real() const { return my_re; }
       STL_LOCAL_CONSTEXPR value_type imag() const { return my_im; }
 
-      void real(value_type my_vt) { my_re = my_vt; }
-      void imag(value_type my_vt) { my_im = my_vt; }
+      void real(value_type my_v) { my_re = my_v; }
+      void imag(value_type my_v) { my_im = my_v; }
 
-      complex<value_type>& operator=(value_type my_vt) { my_re = my_vt; my_im = value_type(0); return *this; }
-      complex<value_type>& operator=(const complex<value_type>& my_vt) { my_re = my_vt.my_re; my_im = my_vt.my_im; return *this; }
+      complex<value_type>& operator=(value_type my_v)                 { my_re = my_v;       my_im = value_type(0); return *this; }
+      complex<value_type>& operator=(const complex<value_type>& my_v) { my_re = my_v.my_re; my_im = my_v.my_im;    return *this; }
 
-      complex<value_type>& operator+=(value_type my_vt)
+      complex<value_type>& operator+=(value_type my_v)
       {
-        my_re += my_vt;
+        my_re += my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator-=(value_type my_vt)
+      complex<value_type>& operator-=(value_type my_v)
       {
-        my_re -= my_vt;
+        my_re -= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator*=(value_type my_vt)
+      complex<value_type>& operator*=(value_type my_v)
       {
-        my_re *= my_vt;
-        my_im *= my_vt;
+        my_re *= my_v;
+        my_im *= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator/=(value_type my_vt)
+      complex<value_type>& operator/=(value_type my_v)
       {
-        my_re /= my_vt;
-        my_im /= my_vt;
+        my_re /= my_v;
+        my_im /= my_v;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator=(const complex<X>& my_z)
       {
-        my_re = value_type(my_xt.my_re);
-        my_im = value_type(my_xt.my_im);
+        my_re = value_type(my_z.my_re);
+        my_im = value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator+=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator+=(const complex<X>& my_z)
       {
-        my_re += value_type(my_xt.my_re);
-        my_im += value_type(my_xt.my_im);
+        my_re += value_type(my_z.my_re);
+        my_im += value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator-=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator-=(const complex<X>& my_z)
       {
-        my_re -= value_type(my_xt.my_re);
-        my_im -= value_type(my_xt.my_im);
+        my_re -= value_type(my_z.my_re);
+        my_im -= value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator*=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator*=(const complex<X>& my_z)
       {
-        const value_type tmp_re((my_re * my_xt.my_re) - (my_im * my_xt.my_im));
-        const value_type tmp_im((my_re * my_xt.my_im) + (my_im * my_xt.my_re));
+        const value_type tmp_im((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        my_re = tmp_re;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
         my_im = tmp_im;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator/=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator/=(const complex<X>& my_z)
       {
-        using std::sqrt;
+        const value_type denominator = std::norm(my_z);
 
-        const value_type re_x(my_xt.my_re);
-        const value_type im_x(my_xt.my_im);
+        const value_type tmp_im = ((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        const value_type one_over_denom = value_type(1) / sqrt((re_x * re_x) + (im_x * im_x));
-
-        const value_type tmp_re = ((my_re * re_x) + (my_im * im_x)) * one_over_denom;
-        const value_type tmp_im = ((my_im * re_x) - (my_re * im_x)) * one_over_denom;
-
-        my_re = tmp_re;
-        my_im = tmp_im;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / denominator;
+        my_im = tmp_im / denominator;
 
         return *this;
       }
@@ -164,99 +168,94 @@
     public:
       typedef float value_type;
 
-      STL_LOCAL_CONSTEXPR complex(float re_ = 0.0F, float im_ = 0.0F) : my_re(re_), my_im(im_) { }
+      STL_LOCAL_CONSTEXPR complex(float re_ = 0.0F,
+                                  float im_ = 0.0F) : my_re(re_),
+                                                      my_im(im_) { }
 
-      explicit STL_LOCAL_CONSTEXPR complex(const complex<double>& my_d);
-      explicit STL_LOCAL_CONSTEXPR complex(const complex<long double>& my_ld);
+      explicit STL_LOCAL_CONSTEXPR complex(const complex<double>&);
+      explicit STL_LOCAL_CONSTEXPR complex(const complex<long double>&);
 
       STL_LOCAL_CONSTEXPR value_type real() const { return my_re; }
       STL_LOCAL_CONSTEXPR value_type imag() const { return my_im; }
 
-      void real(value_type my_vt) { my_re = my_vt; }
-      void imag(value_type my_vt) { my_im = my_vt; }
+      void real(value_type my_v) { my_re = my_v; }
+      void imag(value_type my_v) { my_im = my_v; }
 
-      complex<value_type>& operator=(value_type my_vt) { my_re = my_vt; my_im = value_type(0); return *this; }
-      complex<value_type>& operator=(const complex<value_type>& my_vt) { my_re = my_vt.my_re; my_im = my_vt.my_im; return *this; }
+      complex<value_type>& operator=(value_type my_v)                 { my_re = my_v;       my_im = value_type(0); return *this; }
+      complex<value_type>& operator=(const complex<value_type>& my_v) { my_re = my_v.my_re; my_im = my_v.my_im;   return *this; }
 
-      complex<value_type>& operator+=(value_type my_vt)
+      complex<value_type>& operator+=(value_type my_v)
       {
-        my_re += my_vt;
+        my_re += my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator-=(value_type my_vt)
+      complex<value_type>& operator-=(value_type my_v)
       {
-        my_re -= my_vt;
+        my_re -= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator*=(value_type my_vt)
+      complex<value_type>& operator*=(value_type my_v)
       {
-        my_re *= my_vt;
-        my_im *= my_vt;
+        my_re *= my_v;
+        my_im *= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator/=(value_type my_vt)
+      complex<value_type>& operator/=(value_type my_v)
       {
-        my_re /= my_vt;
-        my_im /= my_vt;
+        my_re /= my_v;
+        my_im /= my_v;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator=(const complex<X>& my_z)
       {
-        my_re = value_type(my_xt.my_re);
-        my_im = value_type(my_xt.my_im);
+        my_re = value_type(my_z.my_re);
+        my_im = value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator+=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator+=(const complex<X>& my_z)
       {
-        my_re += value_type(my_xt.my_re);
-        my_im += value_type(my_xt.my_im);
+        my_re += value_type(my_z.my_re);
+        my_im += value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator-=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator-=(const complex<X>& my_z)
       {
-        my_re -= value_type(my_xt.my_re);
-        my_im -= value_type(my_xt.my_im);
+        my_re -= value_type(my_z.my_re);
+        my_im -= value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator*=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator*=(const complex<X>& my_z)
       {
-        const value_type tmp_re((my_re * my_xt.my_re) - (my_im * my_xt.my_im));
-        const value_type tmp_im((my_re * my_xt.my_im) + (my_im * my_xt.my_re));
+        const value_type tmp_im((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        my_re = tmp_re;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
         my_im = tmp_im;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator/=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator/=(const complex<X>& my_z)
       {
-        using std::sqrt;
+        const value_type denominator = std::norm(my_z);
 
-        const value_type re_x(my_xt.my_re);
-        const value_type im_x(my_xt.my_im);
+        const value_type tmp_im = ((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        const value_type one_over_denom = value_type(1) / sqrt((re_x * re_x) + (im_x * im_x));
-
-        const value_type tmp_re = ((my_re * re_x) + (my_im * im_x)) * one_over_denom;
-        const value_type tmp_im = ((my_im * re_x) - (my_re * im_x)) * one_over_denom;
-
-        my_re = tmp_re;
-        my_im = tmp_im;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / denominator;
+        my_im = tmp_im / denominator;
 
         return *this;
       }
@@ -272,99 +271,96 @@
     public:
       typedef double value_type;
 
-      STL_LOCAL_CONSTEXPR complex(double re_ = 0.0, double im_ = 0.0) : my_re(re_), my_im(im_) { }
+      STL_LOCAL_CONSTEXPR complex(double re_ = 0.0,
+                                  double im_ = 0.0) : my_re(re_),
+                                                      my_im(im_) { }
 
-      explicit STL_LOCAL_CONSTEXPR complex(const complex<float>& my_d) : my_re(value_type( my_d.real())), my_im(value_type( my_d.imag())) { }
+      explicit STL_LOCAL_CONSTEXPR complex(const complex<float>& my_d) : my_re(value_type( my_d.real())),
+                                                                         my_im(value_type( my_d.imag())) { }
+
       explicit STL_LOCAL_CONSTEXPR complex(const complex<long double>& my_ld);
 
       STL_LOCAL_CONSTEXPR value_type real() const { return my_re; }
       STL_LOCAL_CONSTEXPR value_type imag() const { return my_im; }
 
-      void real(value_type my_vt) { my_re = my_vt; }
-      void imag(value_type my_vt) { my_im = my_vt; }
+      void real(value_type my_v) { my_re = my_v; }
+      void imag(value_type my_v) { my_im = my_v; }
 
-      complex<value_type>& operator=(value_type my_vt) { my_re = my_vt; my_im = value_type(0); return *this; }
-      complex<value_type>& operator=(const complex<value_type>& my_vt) { my_re = my_vt.my_re; my_im = my_vt.my_im; return *this; }
+      complex<value_type>& operator=(value_type my_v)                 { my_re = my_v;       my_im = value_type(0); return *this; }
+      complex<value_type>& operator=(const complex<value_type>& my_v) { my_re = my_v.my_re; my_im = my_v.my_im;   return *this; }
 
-      complex<value_type>& operator+=(value_type my_vt)
+      complex<value_type>& operator+=(value_type my_v)
       {
-        my_re += my_vt;
+        my_re += my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator-=(value_type my_vt)
+      complex<value_type>& operator-=(value_type my_v)
       {
-        my_re -= my_vt;
+        my_re -= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator*=(value_type my_vt)
+      complex<value_type>& operator*=(value_type my_v)
       {
-        my_re *= my_vt;
-        my_im *= my_vt;
+        my_re *= my_v;
+        my_im *= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator/=(value_type my_vt)
+      complex<value_type>& operator/=(value_type my_v)
       {
-        my_re /= my_vt;
-        my_im /= my_vt;
+        my_re /= my_v;
+        my_im /= my_v;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator=(const complex<X>& my_z)
       {
-        my_re = value_type(my_xt.my_re);
-        my_im = value_type(my_xt.my_im);
+        my_re = value_type(my_z.my_re);
+        my_im = value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator+=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator+=(const complex<X>& my_z)
       {
-        my_re += value_type(my_xt.my_re);
-        my_im += value_type(my_xt.my_im);
+        my_re += value_type(my_z.my_re);
+        my_im += value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator-=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator-=(const complex<X>& my_z)
       {
-        my_re -= value_type(my_xt.my_re);
-        my_im -= value_type(my_xt.my_im);
+        my_re -= value_type(my_z.my_re);
+        my_im -= value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator*=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator*=(const complex<X>& my_z)
       {
-        const value_type tmp_re((my_re * my_xt.my_re) - (my_im * my_xt.my_im));
-        const value_type tmp_im((my_re * my_xt.my_im) + (my_im * my_xt.my_re));
+        const value_type tmp_im((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        my_re = tmp_re;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
         my_im = tmp_im;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator/=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator/=(const complex<X>& my_z)
       {
-        using std::sqrt;
+        const value_type denominator = std::norm(my_z);
 
-        const value_type re_x(my_xt.my_re);
-        const value_type im_x(my_xt.my_im);
+        const value_type tmp_im = ((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        const value_type one_over_denom = value_type(1) / sqrt((re_x * re_x) + (im_x * im_x));
-
-        const value_type tmp_re = ((my_re * re_x) + (my_im * im_x)) * one_over_denom;
-        const value_type tmp_im = ((my_im * re_x) - (my_re * im_x)) * one_over_denom;
-
-        my_re = tmp_re;
-        my_im = tmp_im;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / denominator;
+        my_im = tmp_im / denominator;
 
         return *this;
       }
@@ -380,99 +376,97 @@
     public:
       typedef long double value_type;
 
-      STL_LOCAL_CONSTEXPR complex(value_type re_ = 0.0L, value_type im_ = 0.0L) : my_re(re_), my_im(im_) { }
+      STL_LOCAL_CONSTEXPR complex(value_type re_ = 0.0L,
+                                  value_type im_ = 0.0L) : my_re(re_),
+                                                           my_im(im_) { }
 
-      explicit STL_LOCAL_CONSTEXPR complex(const complex<float>&  f)    : my_re(value_type(f.real())), my_im(value_type(f.imag())) { }
-      explicit STL_LOCAL_CONSTEXPR complex(const complex<double>& my_d) : my_re(value_type(my_d.real())), my_im(value_type(my_d.imag())) { }
+      explicit STL_LOCAL_CONSTEXPR complex(const complex<float>&  f) : my_re(value_type(f.real())),
+                                                                       my_im(value_type(f.imag())) { }
+
+      explicit STL_LOCAL_CONSTEXPR complex(const complex<double>& my_d) : my_re(value_type(my_d.real())),
+                                                                          my_im(value_type(my_d.imag())) { }
 
       STL_LOCAL_CONSTEXPR value_type real() const { return my_re; }
       STL_LOCAL_CONSTEXPR value_type imag() const { return my_im; }
 
-      void real(value_type my_vt) { my_re = my_vt; }
-      void imag(value_type my_vt) { my_im = my_vt; }
+      void real(value_type my_v) { my_re = my_v; }
+      void imag(value_type my_v) { my_im = my_v; }
 
-      complex<value_type>& operator=(value_type my_vt) { my_re = my_vt; my_im = value_type(0); return *this; }
-      complex<value_type>& operator=(const complex<value_type>& my_vt) { my_re = my_vt.my_re; my_im = my_vt.my_im; return *this; }
+      complex<value_type>& operator=(value_type my_v)                 { my_re = my_v;       my_im = value_type(0); return *this; }
+      complex<value_type>& operator=(const complex<value_type>& my_v) { my_re = my_v.my_re; my_im = my_v.my_im; return *this; }
 
-      complex<value_type>& operator+=(value_type my_vt)
+      complex<value_type>& operator+=(value_type my_v)
       {
-        my_re += my_vt;
+        my_re += my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator-=(value_type my_vt)
+      complex<value_type>& operator-=(value_type my_v)
       {
-        my_re -= my_vt;
+        my_re -= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator*=(value_type my_vt)
+      complex<value_type>& operator*=(value_type my_v)
       {
-        my_re *= my_vt;
-        my_im *= my_vt;
+        my_re *= my_v;
+        my_im *= my_v;
 
         return *this;
       }
 
-      complex<value_type>& operator/=(value_type my_vt)
+      complex<value_type>& operator/=(value_type my_v)
       {
-        my_re /= my_vt;
-        my_im /= my_vt;
+        my_re /= my_v;
+        my_im /= my_v;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator=(const complex<X>& my_z)
       {
-        my_re = value_type(my_xt.my_re);
-        my_im = value_type(my_xt.my_im);
+        my_re = value_type(my_z.my_re);
+        my_im = value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator+=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator+=(const complex<X>& my_z)
       {
-        my_re += value_type(my_xt.my_re);
-        my_im += value_type(my_xt.my_im);
+        my_re += value_type(my_z.my_re);
+        my_im += value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator-=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator-=(const complex<X>& my_z)
       {
-        my_re -= value_type(my_xt.my_re);
-        my_im -= value_type(my_xt.my_im);
+        my_re -= value_type(my_z.my_re);
+        my_im -= value_type(my_z.my_im);
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator*=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator*=(const complex<X>& my_z)
       {
-        const value_type tmp_re((my_re * my_xt.my_re) - (my_im * my_xt.my_im));
-        const value_type tmp_im((my_re * my_xt.my_im) + (my_im * my_xt.my_re));
+        const value_type tmp_im((my_re * my_z.my_im) + (my_im * my_z.my_re));
 
-        my_re = tmp_re;
+        my_re = (my_re * my_z.my_re) - (my_im * my_z.my_im);
         my_im = tmp_im;
 
         return *this;
       }
 
-      template<typename X> complex<value_type>& operator/=(const complex<X>& my_xt)
+      template<typename X> complex<value_type>& operator/=(const complex<X>& my_z)
       {
-        using std::sqrt;
+        const value_type denominator = std::norm(my_z);
 
-        const value_type re_x(my_xt.my_re);
-        const value_type im_x(my_xt.my_im);
+        const value_type tmp_im = ((my_im * my_z.my_re) - (my_re * my_z.my_im));
 
-        const value_type one_over_denom = value_type(1) / sqrt((re_x * re_x) + (im_x * im_x));
-
-        const value_type tmp_re = ((my_re * re_x) + (my_im * im_x)) * one_over_denom;
-        const value_type tmp_im = ((my_im * re_x) - (my_re * im_x)) * one_over_denom;
-
-        my_re = tmp_re;
-        my_im = tmp_im;
+        my_re = ((my_re * my_z.my_re) + (my_im * my_z.my_im)) / denominator;
+        my_im = tmp_im / denominator;
 
         return *this;
       }
@@ -482,84 +476,94 @@
       value_type my_im;
     };
 
-    // These constructors are here because they need to come
-    // after the template specializations have been defined.
+    // These constructors are located here because they need to be
+    // implemented after the template specializations have been declared.
 
     STL_LOCAL_CONSTEXPR complex<float>::complex (const complex<double>& my_d) :       my_re(float ( my_d.real())), my_im(float ( my_d.imag())) { }
     STL_LOCAL_CONSTEXPR complex<float>::complex (const complex<long double>& my_ld) : my_re(float (my_ld.real())), my_im(float (my_ld.imag())) { }
     STL_LOCAL_CONSTEXPR complex<double>::complex(const complex<long double>& my_ld) : my_re(double(my_ld.real())), my_im(double(my_ld.imag())) { }
 
     // 26.4.7, values
-    template<typename T> T real(const complex<T>& my_xt) { return my_xt.real(); }
-    template<typename T> T imag(const complex<T>& my_xt) { return my_xt.imag(); }
-    template<typename T> T abs (const complex<T>& my_xt) { return std::sqrt((real(my_xt) * real(my_xt)) + (imag(my_xt) * imag(my_xt))); }
-    template<typename T> T arg (const complex<T>& my_xt);
-    template<typename T> T norm(const complex<T>& my_xt) { return (real(my_xt) * real(my_xt)) + (imag(my_xt) * imag(my_xt)); }
-    template<typename T> complex<T> conj (const complex<T>& my_xt);
-    template<typename T> complex<T> proj (const complex<T>& my_xt);
-    template<typename T> complex<T> polar(const T& my_xt, const T& = T(0.0F));
+    template<typename T> T real(const complex<T>& my_z) { return my_z.real(); }
+    template<typename T> T imag(const complex<T>& my_z) { return my_z.imag(); }
+    template<typename T> T abs (const complex<T>& my_z) { using std::sqrt;  return sqrt((real(my_z) * real(my_z)) + (imag(my_z) * imag(my_z))); }
+    template<typename T> T arg (const complex<T>& my_z) { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
+    template<typename T> T norm(const complex<T>& my_z) { return (real(my_z) * real(my_z)) + (imag(my_z) * imag(my_z)); }
+
+    template<typename T> complex<T> conj (const complex<T>& my_z) { return complex<T>(my_z.real(), -my_z.imag()); }
+
+    template<typename T> complex<T> proj (const complex<T>& my_z)
+    {
+      const T denominator = std::norm(my_z) + T(1.0F);
+
+      return std::complex<T>((T(2.0F) * my_z.real()) / denominator,
+                             (T(2.0F) * my_z.imag()) / denominator);
+    }
+
+    template<typename T> complex<T> polar(const T& my_rho, const T& my_theta = 0)
+    {
+      using std::sin;
+      using std::cos;
+
+      return complex<T>(my_rho * cos(my_theta), my_rho * sin(my_theta));
+    }
 
     // Global add, sub, mul, div.
-    template<typename T> complex<T> operator+(const complex<T>& my_ut, const complex<T>& my_vt) { return complex<T>(my_ut.real() + my_vt.real(), my_ut.imag() + my_vt.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& my_ut, const complex<T>& my_vt) { return complex<T>(my_ut.real() - my_vt.real(), my_ut.imag() - my_vt.imag()); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
+    template<typename T> complex<T> operator-(const complex<T>& my_u, const complex<T>& my_v) { return complex<T>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
 
-    template<typename T> complex<T> operator*(const complex<T>& my_ut, const complex<T>& my_vt)
+    template<typename T> complex<T> operator*(const complex<T>& my_u, const complex<T>& my_v)
     {
-      const typename complex<T>::value_type ur = my_ut.real();
-      const typename complex<T>::value_type ui = my_ut.imag();
-
-      const typename complex<T>::value_type vr = my_vt.real();
-      const typename complex<T>::value_type vi = my_vt.imag();
-
-      return complex<T>((ur * vr) - (ui * vi), (ur * vi) + (ui * vr));
+      return complex<T>((my_u.real() * my_v.real()) - (my_u.imag() * my_v.imag()),
+                        (my_u.real() * my_v.imag()) + (my_u.imag() * my_v.real()));
     }
 
-    template<typename T> complex<T> operator/(const complex<T>& my_ut, const complex<T>& my_vt)
+    template<typename T> complex<T> operator/(const complex<T>& my_u, const complex<T>& my_v)
     {
-      const T one_over_denom = T(1.0F) / std::norm(my_vt);
+      const T denominator = std::norm(my_v);
 
-      const T tmp_re = ((my_ut.real() * my_vt.real()) + (my_ut.imag() * my_vt.imag())) * one_over_denom;
-      const T tmp_im = ((my_ut.imag() * my_vt.real()) - (my_ut.real() * my_vt.imag())) * one_over_denom;
+      const T tmp_im = ((my_u.imag() * my_v.real()) - (my_u.real() * my_v.imag()));
 
-      return complex<T>(tmp_re, tmp_im);
+      return complex<T>(((my_u.real() * my_v.real()) + (my_u.imag() * my_v.imag())) / denominator,
+                          tmp_im / denominator);
     }
 
-    template<typename T> complex<T> operator+(const complex<T>& my_ut, const T& my_vt)  { return complex<T>(my_ut.real() + my_vt, my_ut.imag()); }
-    template<typename T> complex<T> operator-(const complex<T>& my_ut, const T& my_vt)  { return complex<T>(my_ut.real() - my_vt, my_ut.imag()); }
-    template<typename T> complex<T> operator*(const complex<T>& my_ut, const T& my_vt)  { return complex<T>(my_ut.real() * my_vt, my_ut.imag() * my_vt); }
-    template<typename T> complex<T> operator/(const complex<T>& my_ut, const T& my_vt)  { return complex<T>(my_ut.real() / my_vt, my_ut.imag() / my_vt); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() + my_v, my_u.imag()); }
+    template<typename T> complex<T> operator-(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() - my_v, my_u.imag()); }
+    template<typename T> complex<T> operator*(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<typename T> complex<T> operator/(const complex<T>& my_u, const T& my_v)  { return complex<T>(my_u.real() / my_v, my_u.imag() / my_v); }
 
-    template<typename T> complex<T> operator+(const T& my_ut, const complex<T>& my_vt) { return complex<T>(my_ut + my_vt.real(), my_vt.imag()); }
-    template<typename T> complex<T> operator-(const T& my_ut, const complex<T>& my_vt) { return complex<T>(my_ut - my_vt.real(), -my_vt.imag()); }
-    template<typename T> complex<T> operator*(const T& my_ut, const complex<T>& my_vt) { return complex<T>(my_ut * my_vt.real(), my_ut * my_vt.imag()); }
-    template<typename T> complex<T> operator/(const T& my_ut, const complex<T>& my_vt) { const T v_norm = norm(my_vt); return complex<T>((my_ut * my_vt.real()) / v_norm, (-my_ut * my_vt.imag()) / v_norm); }
+    template<typename T> complex<T> operator+(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u + my_v.real(), my_v.imag()); }
+    template<typename T> complex<T> operator-(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u - my_v.real(), -my_v.imag()); }
+    template<typename T> complex<T> operator*(const T& my_u, const complex<T>& my_v) { return complex<T>(my_u * my_v.real(), my_u * my_v.imag()); }
+    template<typename T> complex<T> operator/(const T& my_u, const complex<T>& my_v) { const T denominator = norm(my_v); return complex<T>((my_u * my_v.real()) / denominator, (-my_u * my_v.imag()) / denominator); }
 
     // Unary +/-
-    template<typename T> complex<T> operator+(const complex<T>& my_ut) { return my_ut; }
-    template<typename T> complex<T> operator-(const complex<T>& my_ut) { return complex<T>(-my_ut.real(), -my_ut.imag()); }
+    template<typename T> complex<T> operator+(const complex<T>& my_u) { return my_u; }
+    template<typename T> complex<T> operator-(const complex<T>& my_u) { return complex<T>(-my_u.real(), -my_u.imag()); }
 
     // Equality and inequality
-    template<typename T> bool operator==(const complex<T>& my_ut, const complex<T>& my_vt) { return ((my_ut.real() == my_vt.real()) && (my_ut.imag() == my_vt.imag())); }
-    template<typename T> bool operator!=(const complex<T>& my_ut, const complex<T>& my_vt) { return ((my_ut.real() != my_vt.real()) || (my_ut.imag() != my_vt.imag())); }
+    template<typename T> bool operator==(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<typename T> bool operator!=(const complex<T>& my_u, const complex<T>& my_v) { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
 
-    template<typename T> bool operator==(const complex<T>& my_ut, const T& my_vt) { return ((my_ut.real() == my_vt) && (my_ut.imag() == T(0))); }
-    template<typename T> bool operator!=(const complex<T>& my_ut, const T& my_vt) { return ((my_ut.real() != my_vt) || (my_ut.imag() != T(0))); }
+    template<typename T> bool operator==(const complex<T>& my_u, const T& my_v) { return ((my_u.real() == my_v) && (my_u.imag() == T(0))); }
+    template<typename T> bool operator!=(const complex<T>& my_u, const T& my_v) { return ((my_u.real() != my_v) || (my_u.imag() != T(0))); }
 
-    template<typename T> bool operator==(const T& my_ut, const complex<T>& my_vt) { return ((my_ut == my_vt.real()) && (my_vt.imag() == T(0))); }
-    template<typename T> bool operator!=(const T& my_ut, const complex<T>& my_vt) { return ((my_ut != my_vt.real()) || (my_vt.imag() != T(0))); }
+    template<typename T> bool operator==(const T& my_u, const complex<T>& my_v) { return ((my_u == my_v.real()) && (my_v.imag() == T(0))); }
+    template<typename T> bool operator!=(const T& my_u, const complex<T>& my_v) { return ((my_u != my_v.real()) || (my_v.imag() != T(0))); }
 
     namespace detail
     {
-      template<typename T> complex<T> multiply_by_i(const complex<T>& my_xt)
+      template<typename T> complex<T> multiply_by_i(const complex<T>& my_z)
       {
-        const T tmp_r = my_xt.real();
+        const T tmp_r = my_z.real();
 
-        return complex<T>(-my_xt.imag(), tmp_r);
+        return complex<T>(-my_z.imag(), tmp_r);
       }
     }
 
     // 26.4.8, transcendentals
-    template<typename T> complex<T> sqrt(const complex<T>& my_xt)
+    template<typename T> complex<T> sqrt(const complex<T>& my_z)
     {
       using std::fabs;
       using std::sqrt;
@@ -568,9 +572,9 @@
       //               (|I| / 2s, +-s) for R <  0
       // where s = sqrt{ [ |R| + sqrt(R^2 + I^2) ] / 2 },
       // and the +- sign is the same as the sign of I.
-      const T zr = my_xt.real();
-      const T s  = sqrt((fabs(zr) + std::abs(my_xt)) / T(2.0F));
-      const T zi = my_xt.imag();
+      const T zr = my_z.real();
+      const T s  = sqrt((fabs(zr) + std::abs(my_z)) / T(2.0F));
+      const T zi = my_z.imag();
 
       if(zr >= T(0.0F))
       {
@@ -584,96 +588,86 @@
       }
     }
 
-    template<typename T> complex<T> sin(const complex<T>& my_xt)
+    template<typename T> complex<T> sin(const complex<T>& my_z)
     {
       using std::sin;
       using std::cos;
       using std::sinh;
       using std::cosh;
 
-      const T sin_x  = sin (my_xt.real());
-      const T cos_x  = cos (my_xt.real());
-
-      const T sinh_y = sinh(my_xt.imag());
-      const T cosh_y = cosh(my_xt.imag());
-
-      return complex<T>(sin_x * cosh_y, cos_x * sinh_y);
+      return complex<T>(sin(my_z.real()) * cosh(my_z.imag()),
+                        cos(my_z.real()) * sinh(my_z.imag()));
     }
 
-    template<typename T> complex<T> cos(const complex<T>& my_xt)
+    template<typename T> complex<T> cos(const complex<T>& my_z)
     {
       using std::sin;
       using std::cos;
       using std::sinh;
       using std::cosh;
 
-      const T sin_x =  sin (my_xt.real());
-      const T cos_x =  cos (my_xt.real());
-
-      const T sinh_y = sinh(my_xt.imag());
-      const T cosh_y = cosh(my_xt.imag());
-
-      return complex<T>(cos_x * cosh_y, -(sin_x * sinh_y));
+      return complex<T>(  cos(my_z.real()) * cosh(my_z.imag()),
+                        -(sin(my_z.real()) * sinh(my_z.imag())));
     }
 
-    template<typename T> complex<T> tan(const complex<T>& my_xt)
+    template<typename T> complex<T> tan(const complex<T>& my_z)
     {
-      return std::sin(my_xt) / std::cos(my_xt);
+      return std::sin(my_z) / std::cos(my_z);
     }
 
-    template<typename T> complex<T> asin(const complex<T>& my_xt)
+    template<typename T> complex<T> asin(const complex<T>& my_z)
     {
-      return -detail::multiply_by_i(std::log(detail::multiply_by_i(my_xt) + std::sqrt(T(1.0F) - (my_xt * my_xt))));
+      return -detail::multiply_by_i(std::log(detail::multiply_by_i(my_z) + std::sqrt(T(1.0F) - (my_z * my_z))));
     }
 
-    template<typename T> complex<T> acos(const complex<T>& my_xt)
+    template<typename T> complex<T> acos(const complex<T>& my_z)
     {
-      return T(1.570796326794896619231321691639751442099L) - std::asin(my_xt);
+      return T(1.570796326794896619231321691639751442099L) - std::asin(my_z);
     }
 
-    template<typename T> complex<T> atan(const complex<T>& my_xt)
+    template<typename T> complex<T> atan(const complex<T>& my_z)
     {
-      const complex<T> izz = detail::multiply_by_i(my_xt);
+      const complex<T> izz = detail::multiply_by_i(my_z);
 
       return detail::multiply_by_i(std::log(T(1) - izz) - std::log(T(1) + izz)) / T(2.0F);
     }
 
-    template<typename T> complex<T> exp(const complex<T>& my_xt)
+    template<typename T> complex<T> exp(const complex<T>& my_z)
     {
+      using std::exp;
       using std::sin;
       using std::cos;
 
-      const T zi  = my_xt.imag();
-
-      const T szi = sin(zi);
-      const T czi = cos(zi);
-
-      return complex<T>(czi, szi) * std::exp(my_xt.real());
+      return complex<T>(cos(my_z.imag()), sin(my_z.imag())) * exp(my_z.real());
     }
 
-    template<typename T> complex<T> log(const complex<T>& my_xt)
+    template<typename T> complex<T> log(const complex<T>& my_z)
     {
-      return complex<T>(std::log(std::norm(my_xt)) / T(2.0F), std::atan2(my_xt.imag(), my_xt.real()));
+      using std::atan2;
+      using std::log;
+
+      return complex<T>(log(std::norm(my_z)) / T(2.0F),
+                        atan2(my_z.imag(), my_z.real()));
     }
 
-    template<typename T> complex<T> log10(const complex<T>& my_xt)
+    template<typename T> complex<T> log10(const complex<T>& my_z)
     {
-      return std::log(my_xt) / T(2.302585092994045684017991454684364207601L);
+      return std::log(my_z) / T(2.302585092994045684017991454684364207601L);
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_xt, int my_pn)
+    template<typename T> complex<T> pow(const complex<T>& my_z, int my_pn)
     {
-      if     (my_pn <  0) { return  T(1.0F) / pow(my_xt, -my_pn); }
+      if     (my_pn <  0) { return  T(1.0F) / pow(my_z, -my_pn); }
       else if(my_pn == 0) { return  T(1.0F); }
-      else if(my_pn == 1) { return  my_xt; }
-      else if(my_pn == 2) { return  my_xt * my_xt; }
-      else if(my_pn == 3) { return (my_xt * my_xt) * my_xt; }
-      else if(my_pn == 4) { const complex<T> x2 = my_xt * my_xt; return (x2 * x2); }
+      else if(my_pn == 1) { return  my_z; }
+      else if(my_pn == 2) { return  my_z * my_z; }
+      else if(my_pn == 3) { return (my_z * my_z) * my_z; }
+      else if(my_pn == 4) { const complex<T> x2 = my_z * my_z; return (x2 * x2); }
       else
       {
-        // The variable xn stores the binary powers of my_xt.
-        complex<T> result(((my_pn % 2) != 0) ? my_xt : complex<T>(T(1.0F)));
-        complex<T> xn    (my_xt);
+        // The variable xn stores the binary powers of my_z.
+        complex<T> result(((my_pn % 2) != 0) ? my_z : complex<T>(T(1.0F)));
+        complex<T> xn    (my_z);
 
         int p2 = my_pn;
 
@@ -695,74 +689,66 @@
       }
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_xt, const T& my_at)
+    template<typename T> complex<T> pow(const complex<T>& my_z, const T& my_a)
     {
-      std::exp(my_at * std::log(my_xt));
+      std::exp(my_a * std::log(my_z));
     }
 
-    template<typename T> complex<T> pow(const complex<T>& my_xt, const complex<T>& my_at)
+    template<typename T> complex<T> pow(const complex<T>& my_z, const complex<T>& my_a)
     {
-      std::exp(my_at * std::log(my_xt));
+      std::exp(my_a * std::log(my_z));
     }
 
-    template<typename T> complex<T> pow(const T& my_xt, const complex<T>& my_at)
+    template<typename T> complex<T> pow(const T& my_z, const complex<T>& my_a)
     {
-      std::exp(my_at * std::log(my_xt));
+      using std::log;
+
+      std::exp(my_a * log(my_z));
     }
 
-    template<typename T> complex<T> sinh(const complex<T>& my_xt)
+    template<typename T> complex<T> sinh(const complex<T>& my_z)
     {
       using std::sin;
       using std::cos;
       using std::sinh;
       using std::cosh;
 
-      const T sin_y =  sin (my_xt.imag());
-      const T cos_y =  cos (my_xt.imag());
-
-      const T sinh_x = sinh(my_xt.real());
-      const T cosh_x = cosh(my_xt.real());
-
-      return complex<T>(cos_y * sinh_x, cosh_x * sin_y);
+      return complex<T>(cos (my_z.imag()) * sinh(my_z.real()),
+                        cosh(my_z.real()) * sin (my_z.imag()));
     }
 
-    template<typename T> complex<T> cosh(const complex<T>& my_xt)
+    template<typename T> complex<T> cosh(const complex<T>& my_z)
     {
       using std::sin;
       using std::cos;
       using std::sinh;
       using std::cosh;
 
-      const T sin_y =  sin (my_xt.imag());
-      const T cos_y =  cos (my_xt.imag());
-
-      const T sinh_x = sinh(my_xt.real());
-      const T cosh_x = cosh(my_xt.real());
-
-      return complex<T>(cos_y * cosh_x, sin_y * sinh_x);
+      return complex<T>(cos(my_z.imag()) * cosh(my_z.real()),
+                        sin(my_z.imag()) * sinh(my_z.real()));
     }
 
-    template<typename T> complex<T> tanh(const complex<T>& my_xt)
+    template<typename T> complex<T> tanh(const complex<T>& my_z)
     {
-      return std::sinh(my_xt) / std::cosh(my_xt);
+      return std::sinh(my_z) / std::cosh(my_z);
     }
 
-    template<typename T> complex<T> asinh(const complex<T>& my_xt)
+    template<typename T> complex<T> asinh(const complex<T>& my_z)
     {
-      return std::log(my_xt + std::sqrt((my_xt * my_xt) + T(1.0F)));
+      return std::log(my_z + std::sqrt((my_z * my_z) + T(1.0F)));
     }
 
-    template<typename T> complex<T> acosh(const complex<T>& my_xt)
+    template<typename T> complex<T> acosh(const complex<T>& my_z)
     {
-      const complex<T> zp(my_xt.real() + T(1.0F), my_xt.imag());
-      const complex<T> zm(my_xt.real() - T(1.0F), my_xt.imag());
+      const complex<T> zp(my_z.real() + T(1.0F), my_z.imag());
+      const complex<T> zm(my_z.real() - T(1.0F), my_z.imag());
 
-      return std::log(my_xt + (zp * std::sqrt(zm / zp)));
+      return std::log(my_z + (zp * std::sqrt(zm / zp)));
     }
 
-    template<typename T> complex<T> atanh(const complex<T>& my_xt)
+    template<typename T> complex<T> atanh(const complex<T>& my_z)
     {
-      return (std::log(T(1.0F) + my_xt) - std::log(T(1.0F) - my_xt)) / T(2.0F);
+      return (std::log(T(1.0F) + my_z) - std::log(T(1.0F) - my_z)) / T(2.0F);
     }
 
     STL_LOCAL_CONSTEXPR std::complex<float>       operator""if(long double imag_literal)        { return std::complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
