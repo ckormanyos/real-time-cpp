@@ -1,3 +1,10 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2014.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
 # ------------------------------------------------------------------------------
 # 
 # Makefile
@@ -68,7 +75,6 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 AR        = $(GCC_TARGET)-ar
 AS        = $(GCC_TARGET)-g++
-CC        = $(GCC_TARGET)-g++
 CL        = $(GCC_TARGET)-g++
 CPPFILT   = $(GCC_TARGET)-c++filt
 NM        = $(GCC_TARGET)-nm
@@ -232,7 +238,6 @@ $(APP)_flash.hex : $(APP).elf
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
 	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
-	@-rm NUL
 
 
 # ------------------------------------------------------------------------------

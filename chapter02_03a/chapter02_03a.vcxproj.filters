@@ -75,9 +75,6 @@
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
-      <Filter>src\util\STL\impl</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_cmath_acosh.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
@@ -360,6 +357,9 @@
       <Filter>src\util\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_utype_helper.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_alignas.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>

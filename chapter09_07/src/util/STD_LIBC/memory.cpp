@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2011 - 2013.
+//  Copyright Christopher Kormanyos 2011 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <stddef.h>
-#include <stdint.h>
+#include <cstddef>
+#include <cstdint>
 
 // Implement some efficient memory functions from the standard C library.
 // If this file is included in the project, the linker will take these
@@ -17,7 +17,7 @@
 extern "C"
 void* memset(void* dst, int c, size_t n)
 {
-  uint8_t* the_dst = reinterpret_cast<uint8_t*>(dst);
+  std::uint8_t* the_dst = reinterpret_cast<std::uint8_t*>(dst);
 
   for( ; n > static_cast<size_t>(0U); --n)
   {
@@ -31,10 +31,10 @@ void* memset(void* dst, int c, size_t n)
 extern "C"
 void* memcpy(void* dst, const void* src, size_t n)
 {
-        uint8_t* the_dst = reinterpret_cast<      uint8_t*>(dst);
-  const uint8_t* the_src = reinterpret_cast<const uint8_t*>(src);
+        std::uint8_t* the_dst = reinterpret_cast<      std::uint8_t*>(dst);
+  const std::uint8_t* the_src = reinterpret_cast<const std::uint8_t*>(src);
 
-  for( ; n > static_cast<size_t>(0U); --n)
+  for( ; n > static_cast<std::size_t>(0U); --n)
   {
     *the_dst = *the_src;
     ++the_dst;
@@ -49,8 +49,8 @@ void* memmove(void* dst, const void* src, size_t n)
 {
   // The function memmove *does* work properly even when its operands overlap.
 
-        uint8_t* the_dst = reinterpret_cast<      uint8_t*>(dst);
-  const uint8_t* the_src = reinterpret_cast<const uint8_t*>(src);
+        std::uint8_t* the_dst = reinterpret_cast<      std::uint8_t*>(dst);
+  const std::uint8_t* the_src = reinterpret_cast<const std::uint8_t*>(src);
 
   // Check for a range overlap.
   if((the_src < the_dst) && (the_dst < (the_src + n)))
@@ -58,7 +58,7 @@ void* memmove(void* dst, const void* src, size_t n)
     the_dst += n;
     the_src += n;
 
-    for( ; n > static_cast<size_t>(0U); --n)
+    for( ; n > static_cast<std::size_t>(0U); --n)
     {
       // Perform a backwards copy.
       --the_dst;

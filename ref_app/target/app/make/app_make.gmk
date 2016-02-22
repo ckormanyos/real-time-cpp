@@ -45,12 +45,6 @@ PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
-# temporary files / helpers
-# ------------------------------------------------------------------------------
-HEX_MANIP_SCRIPT_FILE = $(PATH_TGT_MAKE)/$(TGT)_hex_manip_script.hxm
-
-
-# ------------------------------------------------------------------------------
 # include files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
@@ -93,7 +87,6 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 AR        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-ar.exe
 AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
-CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
 NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
@@ -256,6 +249,8 @@ $(APP)_nm.txt : $(APP).elf
 $(APP)_flash.hex : $(APP).elf
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
+	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
+
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)

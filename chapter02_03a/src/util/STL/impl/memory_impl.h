@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2015.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,6 +12,12 @@
   #include "cstddef_impl.h"
   #include "cstdint_impl.h"
 
+  #if defined(_MSC_VER)
+    #define STL_LOCAL_ALIGNAS(n)
+  #else
+    #define STL_LOCAL_ALIGNAS(n) alignas(n)
+  #endif
+
   // Provide the default placement versions of operator new.
   inline void* operator new  (size_t, void* my_p) noexcept { return my_p; }
   inline void* operator new[](size_t, void* my_p) noexcept { return my_p; }
@@ -22,18 +28,81 @@
     class allocator_base
     {
     public:
-      typedef std::size_t size_type;
+      typedef std::size_t    size_type;
+      typedef std::ptrdiff_t difference_type;
+
+      virtual ~allocator_base();
 
     protected:
-      allocator_base() { }
+      allocator_base() throw() { }
 
-      // The allocator's buffer size.
-      static STL_LOCAL_CONSTEXPR size_type buffer_size = 4U;
+      allocator_base(const allocator_base&) throw() { }
+
+      // The allocator's default buffer size.
+      static STL_LOCAL_CONSTEXPR size_type buffer_size = 64U;
+
+      // The allocator's buffer type.
+      struct buffer_type
+      {
+        std::uint8_t data[buffer_size];
+      };
 
       // The allocator's memory allocation.
-      static void* do_allocate(const size_type size);
+      template<const std::uint_fast8_t inner_buffer_alignment>
+      static void* do_allocate(const size_type size)
+      {
+        STL_LOCAL_ALIGNAS(16) static buffer_type buffer;
+        static std::uint8_t* get_ptr = buffer.data;
+
+        // Get the newly allocated pointer.
+        std::uint8_t* p = get_ptr;
+
+        // Increment the get-pointer for the next allocation.
+        // Be sure to handle the inner-buffer alignment.
+        const std::uint_fast8_t align_increment  = inner_buffer_alignment - std::uint_fast8_t(size % inner_buffer_alignment);
+        const size_type         buffer_increment = size + align_increment;
+
+        get_ptr += buffer_increment;
+
+        // Does this attempted allocation overflow the capacity of the buffer?
+        const bool is_overflow = (get_ptr >= (buffer.data + buffer_size));
+
+        if(is_overflow)
+        {
+          // The buffer has overflowed.
+
+          // Check if the requested size fits in the buffer.
+          if(buffer_increment <= buffer_size)
+          {
+            // The requested size fits in the buffer.
+
+            // Reset the allocated pointer to the bottom of the buffer
+            // and increment the next get-pointer.
+            p       = buffer.data;
+            get_ptr = buffer.data + buffer_increment;
+          }
+          else
+          {
+            // The requested size exceeds the capacity of the buffer.
+
+            // Set the return value of the failed allocation to nullptr
+            // and reset the get-pointer to its value before the allocation
+            // attempt.
+            p       = nullptr;
+            get_ptr = get_ptr - buffer_increment;
+          }
+        }
+
+        return static_cast<void*>(p);
+      }
+
+    private:
+      allocator_base& operator=(const allocator_base&);
     };
 
+    allocator_base::~allocator_base() { }
+
+    // Global comparison operators (required by the standard).
     inline bool operator==(const allocator_base&,
                            const allocator_base&) throw()
     {
@@ -46,11 +115,12 @@
       return false;
     }
 
-    template<typename T>
+    template<typename T,
+             const std::uint_fast8_t inner_buffer_alignment = UINT8_C(4)>
     class allocator;
 
-    template<>
-    class allocator<void> : public allocator_base
+    template<const std::uint_fast8_t inner_buffer_alignment>
+    class allocator<void, inner_buffer_alignment> : public allocator_base
     {
     public:
       typedef void              value_type;
@@ -58,29 +128,35 @@
       typedef const value_type* const_pointer;
 
       template<typename U>
-      struct rebind { typedef allocator<U> other; };
+      struct rebind { typedef allocator<U, inner_buffer_alignment> other; };
     };
 
-    template<typename T>
+    template<typename T,
+             const std::uint_fast8_t inner_buffer_alignment>
     class allocator : public allocator_base
     {
     public:
+      static_assert(sizeof(T) <= buffer_size,
+                    "The size of the allocation object can not exceed the buffer size.");
+
+      static_assert(inner_buffer_alignment <= buffer_size,
+                    "The granularity of the inner-buffer alignment can not exceed the buffer size.");
+
       typedef T                 value_type;
       typedef value_type*       pointer;
       typedef const value_type* const_pointer;
       typedef value_type&       reference;
       typedef const value_type& const_reference;
-      typedef std::ptrdiff_t    difference_type;
 
       allocator() throw() { }
 
-      allocator(const allocator&) throw() { }
+      allocator(const allocator&) throw() : allocator_base(allocator()) { }
 
-      template<typename U>
-      allocator(const allocator<U>&) throw() { }
+      template <typename U>
+      allocator(const allocator<U, inner_buffer_alignment>&) throw() { }
 
       template<typename U> 
-      struct rebind { typedef allocator<U> other; };
+      struct rebind { typedef allocator<U, inner_buffer_alignment> other; };
 
       size_type max_size() const throw()
       {
@@ -90,16 +166,19 @@
             pointer address(      reference x) const { return &x; }
       const_pointer address(const_reference x) const { return &x; }
 
-      pointer allocate(size_type num,
-                       allocator<void>::const_pointer = nullptr)
+      pointer allocate(size_type count,
+                       typename allocator<void, inner_buffer_alignment>::const_pointer = nullptr)
       {
-        void* p = do_allocate(num * sizeof(value_type));
+        const size_type chunk_size = count * sizeof(value_type);
+
+        void* p = do_allocate<inner_buffer_alignment>(chunk_size);
+
         return static_cast<pointer>(p);
       }
 
       void construct(pointer p, const value_type& x)
       {
-        new(static_cast<void*>(p)) value_type(x); 
+        new(static_cast<void*>(p)) value_type(x);
       }
 
       void destroy(pointer p) { p->~value_type(); }

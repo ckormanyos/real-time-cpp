@@ -228,10 +228,6 @@
     </ClCompile>
     <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp" />
     <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp" />
-    <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
@@ -406,6 +402,7 @@
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h" />
     <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h" />
     <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h" />
+    <ClInclude Include="src\util\utility\util_alignas.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />

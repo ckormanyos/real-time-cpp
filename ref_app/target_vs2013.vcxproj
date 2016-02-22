@@ -382,8 +382,10 @@
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk" />
     <None Include="target\app\make\app_make.gmk" />
+    <None Include="target\app\make\app_make_linux.gmk" />
     <None Include="target\app\make\app_rules.gmk" />
     <None Include="target\build\build.bat" />
+    <None Include="target\build\build.sh" />
     <None Include="target\micros\am335x\make\am335x.ld" />
     <None Include="target\micros\am335x\make\am335x_files.gmk" />
     <None Include="target\micros\am335x\make\am335x_flags.gmk" />

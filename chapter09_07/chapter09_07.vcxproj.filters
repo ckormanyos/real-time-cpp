@@ -66,9 +66,6 @@
     <ClCompile Include="src\sys\start\sys_start.cpp">
       <Filter>src\sys\start</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\memory_impl.cpp">
-      <Filter>src\util\STL\impl</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_cmath_acosh.cpp">
       <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
@@ -352,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="src\util\STL_C++17_Compatibility\stdfloat.h">
       <Filter>src\util\STL_C++17_Compatibility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_alignas.h">
+      <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
