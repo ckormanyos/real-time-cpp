@@ -1,8 +1,9 @@
 
 This is the companion code for the book "Real-Time C++".
 
-See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented and
-Template Microcontroller Programming (Springer, Heidelberg, 2013).
+See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
+and Template Microcontroller Programming, Second Edition
+(Springer, Heidelberg, 2015).
 
 Details on the Reference Application
 ------------------------------------
