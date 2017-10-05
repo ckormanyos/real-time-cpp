@@ -71,7 +71,7 @@
       #define STDFLOAT_MAXIMUM_AVAILABLE_WIDTH 64
       #undef  STDFLOAT_HAS_FLOAT64_NATIVE_TYPE
       #define STDFLOAT_HAS_FLOAT64_NATIVE_TYPE  1
-      #define FLOAT64_C(x)  (x ##F)
+      #define FLOAT64_C(x)  (x ## F)
       #define FLOAT_64_MIN  FLT_MIN
       #define FLOAT_64_MAX  FLT_MAX
     #elif((FLT_MANT_DIG == 64) && (FLT_MAX_EXP == 16384) && (STDFLOAT_HAS_FLOAT80_NATIVE_TYPE == 0))
