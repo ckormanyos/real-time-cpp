@@ -5,6 +5,8 @@ See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Second Edition
 (Springer, Heidelberg, 2015).
 
+New work on C++17 is underway for the reference application and the examples.
+
 Details on the Reference Application
 ------------------------------------
 
