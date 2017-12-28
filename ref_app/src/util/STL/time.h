@@ -5,12 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _TIME_2014_04_23_H_
-  #define _TIME_2014_04_23_H_
+#ifndef TIME_2014_04_23_H_
+  #define TIME_2014_04_23_H_
 
   // If the compiler has <time.h>, then include it for the type time_t.
   // Otherwise, we simply define time_t as unsigned int.
 
   typedef unsigned int time_t;
 
-#endif // _TIME_2014_04_23_H_
+#endif // TIME_2014_04_23_H_

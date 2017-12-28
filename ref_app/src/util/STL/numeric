@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _NUMERIC_2010_02_23_
-  #define _NUMERIC_2010_02_23_
+#ifndef NUMERIC_2010_02_23_
+  #define NUMERIC_2010_02_23_
 
   #include <iterator>
 
@@ -131,4 +131,4 @@
     }
   }
 
-#endif // _NUMERIC_2010_02_23_
+#endif // NUMERIC_2010_02_23_

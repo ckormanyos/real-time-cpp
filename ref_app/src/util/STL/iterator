@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ITERATOR_2010_02_23_
-  #define _ITERATOR_2010_02_23_
+#ifndef ITERATOR_2010_02_23_
+  #define ITERATOR_2010_02_23_
 
   #include <cstddef>
 
@@ -167,11 +167,17 @@
     template <typename container_type> inline auto  rend  (const container_type& c) -> decltype(c.rend())    { return c.rend(); }
     template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-    template <typename value_type, size_t N> inline value_type* begin(value_type(&c_array)[N]) { return &c_array[0U]; }
-    template <typename value_type, size_t N> inline value_type* end  (value_type(&c_array)[N]) { return &c_array[N]; }
+    template <typename value_type, size_t N> inline       value_type* begin (value_type(&c_array)[N]) { return &c_array[0U]; }
+    template <typename value_type, size_t N> inline       value_type* end   (value_type(&c_array)[N]) { return &c_array[N]; }
 
-    template <typename value_type, size_t N> inline value_type* rbegin(value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[N]); }
-    template <typename value_type, size_t N> inline value_type* rend  (value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[0U]); }
+    template <typename value_type, size_t N> inline const value_type* cbegin (value_type(&c_array)[N]) { return &c_array[0U]; }
+    template <typename value_type, size_t N> inline const value_type* cend   (value_type(&c_array)[N]) { return &c_array[N]; }
+
+    template <typename value_type, size_t N> inline       value_type* rbegin (value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[N]); }
+    template <typename value_type, size_t N> inline       value_type* rend   (value_type(&c_array)[N]) { return std::reverse_iterator<value_type*>(&c_array[0U]); }
+
+    template <typename value_type, size_t N> inline const value_type* crbegin(value_type(&c_array)[N]) { return std::reverse_iterator<const value_type*>(&c_array[N]); }
+    template <typename value_type, size_t N> inline const value_type* crend  (value_type(&c_array)[N]) { return std::reverse_iterator<const value_type*>(&c_array[0U]); }
   }
 
-#endif // _ITERATOR_2010_02_23_
+#endif // ITERATOR_2010_02_23_

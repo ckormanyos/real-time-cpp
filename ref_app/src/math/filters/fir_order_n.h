@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _FIR_ORDER_N_UNSIGNED_2012_03_27_H_
-  #define _FIR_ORDER_N_UNSIGNED_2012_03_27_H_
+#ifndef FIR_ORDER_N_UNSIGNED_2012_03_27_H_
+  #define FIR_ORDER_N_UNSIGNED_2012_03_27_H_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
@@ -18,7 +18,7 @@
 
   template<const std::size_t order,
            const std::size_t resol = 4U,
-           typename sample_t = std::uint16_t,
+           typename sample_t = std::int16_t,
            typename value_t  = sample_t,
            typename result_t = sample_t>
   class fir_order_n
@@ -2625,4 +2625,4 @@
     std::array<value_type, 49U> data;
   };
 
-#endif // _FIR_ORDER_N_UNSIGNED_2012_03_27_H_
+#endif // FIR_ORDER_N_UNSIGNED_2012_03_27_H_

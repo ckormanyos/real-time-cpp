@@ -87,7 +87,7 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 AR        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-ar.exe
 AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
-CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
+CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
 NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
 OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objdump.exe
@@ -105,8 +105,10 @@ SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
-C_INCLUDES = -I$(PATH_APP)                      \
-             -I$(PATH_APP)/mcal/$(TGT)
+C_INCLUDES = $(TGT_INCLUDES)                    \
+             -I$(PATH_APP)/mcal/$(TGT)          \
+             -I$(PATH_APP)
+
 
 GCCFLAGS    = $(C_INCLUDES)                     \
               $(TGT_CFLAGS)                     \
@@ -155,12 +157,13 @@ AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LFLAGS      = $(GCCFLAGS)                       \
+LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LFLAGS)                     \
               -x none                           \
               -nostdlib                         \
               -nostartfiles                     \
               -Wl,--gc-sections
+
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -216,7 +219,9 @@ version:
 	@$(ECHO) GNUmake version...
 	@$(MAKE) --version
 	@$(ECHO) GCC version...
-	@$(CL) -v
+	@$(CC) -xc++ -E -v -
+	@$(ECHO) Print compiler include paths...
+	@$(ECHO) $(C_INCLUDES)
 
 
 # ------------------------------------------------------------------------------
@@ -224,7 +229,7 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
 

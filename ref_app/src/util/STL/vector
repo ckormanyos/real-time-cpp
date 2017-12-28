@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _VECTOR_2010_02_23_
-  #define _VECTOR_2010_02_23_
+#ifndef VECTOR_2010_02_23_
+  #define VECTOR_2010_02_23_
 
   #include <algorithm>
   #include <initializer_list>
@@ -245,4 +245,4 @@
     };
   }
 
-#endif // _VECTOR_2010_02_23_
+#endif // VECTOR_2010_02_23_

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CONSTANTS_2012_01_09_H_
-  #define _CONSTANTS_2012_01_09_H_
+#ifndef CONSTANTS_2012_01_09_H_
+  #define CONSTANTS_2012_01_09_H_
 
   #include <cstdfloat>
 
@@ -82,4 +82,4 @@
     }
   }
 
-#endif // _CONSTANTS_2012_01_09_H_
+#endif // CONSTANTS_2012_01_09_H_

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_WDT_2010_04_10_H_
-  #define _MCAL_WDT_2010_04_10_H_
+#ifndef MCAL_WDT_2010_04_10_H_
+  #define MCAL_WDT_2010_04_10_H_
 
   extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
 
@@ -30,4 +30,4 @@
     }
   }
 
-#endif // _MCAL_WDT_2010_04_10_H_
+#endif // MCAL_WDT_2010_04_10_H_

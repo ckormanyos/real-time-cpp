@@ -5,12 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CONSTANT_FUNCTIONS_2013_01_02_H_
-  #define _CONSTANT_FUNCTIONS_2013_01_02_H_
+#ifndef CONSTANT_FUNCTIONS_2013_01_02_H_
+  #define CONSTANT_FUNCTIONS_2013_01_02_H_
 
   #include <cstdfloat>
   #include <cstdint>
   #include <limits>
+
   #include <math/constants/constants.h>
 
   namespace math
@@ -23,29 +24,30 @@
       template<typename T>
       inline constexpr T pow_imp2(T val, std::int32_t n)
       {
-        return ((std::int32_t(n & 1) != std::int32_t(1)) ? (pow_imp(val, n / 2) * pow_imp(val, n / 2)) * val
-                                                         :  pow_imp(val, n / 2));
+        return ((std::int32_t(n & INT32_C(1)) != INT32_C(1))
+          ? (pow_imp(val, n / 2) * pow_imp(val, n / 2)) * val
+          :  pow_imp(val, n / 2));
       }
 
       template<typename T>
       inline constexpr T pow_imp(T val, std::int32_t n)
       {
-        return ((n == 1) ? val
-                         : ((n == 2) ? val * val
-                                     : ((n == 3) ? val * val * val : pow_imp2(val, n))));
+        return ((n == INT32_C(1)) ? val
+                         : ((n == INT32_C(2)) ? val * val
+                                     : ((n == INT32_C(3)) ? (val * val) * val : pow_imp2(val, n))));
       }
 
       template<typename T>
       inline constexpr T pow(T val, std::int32_t n)
       {
-        return ((n < 0) ? 1 / pow_imp(val, -n)
-                        : ((n == 0) ? 1 : pow_imp(val, n)));
+        return ((n < INT32_C(0)) ? 1 / pow_imp(val, -n)
+                                 : ((n == INT32_C(0)) ? T(1) : pow_imp(val, n)));
       }
 
       template<typename T>
       inline constexpr T log2_order(T x)
       {
-        return ((x <= 1) ? 0 : 1 + log2_order(x / 2));
+        return ((x <= 1) ? T(0) : 1 + log2_order(x / 2));
       }
 
       template<typename F1, typename F2>
@@ -108,7 +110,6 @@
       template<typename T>
       inline constexpr T sqrt(T x)
       {
-        //static_assert(x >= 0, "This function should only be called in a constexpr context!");
         return newton<sqrt_f1<T>, sqrt_f2<T> >::eval(sqrt_estimate(x), x);
       }
 
@@ -191,4 +192,4 @@
     }
   }
 
-#endif // _CONSTANT_FUNCTIONS_2013_01_02_H_
+#endif // CONSTANT_FUNCTIONS_2013_01_02_H_

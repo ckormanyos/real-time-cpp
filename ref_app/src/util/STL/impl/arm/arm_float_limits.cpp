@@ -5,8 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "../_stl_local_constexpr.h"
 #include <limits>
+
+#include <impl/stl_local_constexpr.h>
 
 namespace float_limits
 {

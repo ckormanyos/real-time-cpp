@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_CPU_2009_02_14_H_
-  #define _MCAL_CPU_2009_02_14_H_
+#ifndef MCAL_CPU_2009_02_14_H_
+  #define MCAL_CPU_2009_02_14_H_
 
   #include <cstdint>
 
@@ -26,4 +26,4 @@
     }
   }
 
-#endif // _MCAL_CPU_2009_02_14_H_
+#endif // MCAL_CPU_2009_02_14_H_

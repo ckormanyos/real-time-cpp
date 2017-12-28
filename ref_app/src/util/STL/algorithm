@@ -1,37 +1,44 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ALGORITHM_2010_02_23_
-  #define _ALGORITHM_2010_02_23_
+#ifndef ALGORITHM_2010_02_23_
+  #define ALGORITHM_2010_02_23_
 
   #include <cstddef>
   #include <initializer_list>
+  #include <iterator>
+  #include <utility>
 
   // Implement some of <algorithm> for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 25.1.
 
   namespace std
   {
-    template<typename compare_type>
-    const compare_type& (min)(const compare_type& a, const compare_type& b)
+    template<typename value_type>
+    const value_type& (min)(const value_type& a,
+                            const value_type& b)
     {
       return ((a < b) ? a : b);
     }
 
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (min)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    template<typename value_type,
+             typename binary_function_type>
+    const value_type& (min)(const value_type&    a,
+                            const value_type&    b,
+                            binary_function_type binary_function)
     {
-      return (compare_function(b, a) ? b : a);
+      return (binary_function(b, a) ? b : a);
     }
 
     template<typename forward_iterator>
-    forward_iterator min_element(forward_iterator first, forward_iterator last)
+    forward_iterator min_element(forward_iterator first,
+                                 forward_iterator last)
     {
-      forward_iterator the_minimum_iterator = first;
+      forward_iterator minimum_value = first;
 
       if(first == last)
       {
@@ -42,21 +49,23 @@
 
         for( ; first != last; ++first)
         {
-          if((*first) < (*the_minimum_iterator))
+          if((*first) < (*minimum_value))
           {
-            the_minimum_iterator = first;
+            minimum_value = first;
           }
         }
       }
 
-      return the_minimum_iterator;
+      return minimum_value;
     }
 
     template<typename forward_iterator,
-             typename binary_predicate>
-    forward_iterator min_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+             typename binary_function_type>
+    forward_iterator min_element(forward_iterator     first,
+                                 forward_iterator     last,
+                                 binary_function_type binary_function)
     {
-      forward_iterator the_minimum_iterator = first;
+      forward_iterator minimum_value = first;
 
       if(first == last)
       {
@@ -67,32 +76,52 @@
 
         for( ; first != last; ++first)
         {
-          if(compare_function(*first, *the_minimum_iterator))
+          if(binary_function(*first, *minimum_value))
           {
-            the_minimum_iterator = first;
+            minimum_value = first;
           }
         }
       }
 
-      return the_minimum_iterator;
+      return minimum_value;
     }
 
-    template<typename compare_type>
-    const compare_type& (max)(const compare_type& a, const compare_type& b)
+    template<typename value_type>
+    value_type (min)(std::initializer_list<value_type> my_initializer_list)
+    {
+      return *std::min_element(my_initializer_list.begin(), my_initializer_list.end());
+    }
+
+    template<typename value_type,
+             typename binary_function_type>
+    value_type (min)(std::initializer_list<value_type> my_initializer_list,
+                     binary_function_type binary_function)
+    {
+      return *std::min_element(my_initializer_list.begin(),
+                               my_initializer_list.end(),
+                               binary_function);
+    }
+
+    template<typename value_type>
+    const value_type& (max)(const value_type& a,
+                            const value_type& b)
     {
       return ((a > b) ? a : b);
     }
 
-    template<typename compare_type, typename binary_predicate>
-    const compare_type& (max)(const compare_type& a, const compare_type& b, binary_predicate compare_function)
+    template<typename value_type,
+             typename binary_function_type>
+    const value_type& (max)(const value_type&    a,
+                            const value_type&    b,
+                            binary_function_type binary_function)
     {
-      return (compare_function(a, b) ? a : b);
+      return (binary_function(a, b) ? a : b);
     }
 
     template<typename forward_iterator>
     forward_iterator max_element(forward_iterator first, forward_iterator last)
     {
-      forward_iterator the_maximum_iterator = first;
+      forward_iterator maximum_value = first;
 
       if(first == last)
       {
@@ -103,21 +132,23 @@
 
         for( ; first != last; ++first)
         {
-          if((*first) > (*the_maximum_iterator))
+          if((*first) > (*maximum_value))
           {
-            the_maximum_iterator = first;
+            maximum_value = first;
           }
         }
       }
 
-      return the_maximum_iterator;
+      return maximum_value;
     }
 
     template<typename forward_iterator,
-             typename binary_predicate>
-    forward_iterator max_element(forward_iterator first, forward_iterator last, binary_predicate compare_function)
+             typename binary_function_type>
+    forward_iterator max_element(forward_iterator     first,
+                                 forward_iterator     last,
+                                 binary_function_type binary_function)
     {
-      forward_iterator the_maximum_iterator = first;
+      forward_iterator maximum_value = first;
 
       if(first == last)
       {
@@ -128,21 +159,57 @@
 
         for( ; first != last; ++first)
         {
-          if(compare_function(*the_maximum_iterator, *first))
+          if(binary_function(*maximum_value, *first))
           {
-            the_maximum_iterator = first;
+            maximum_value = first;
           }
         }
       }
 
-      return the_maximum_iterator;
+      return maximum_value;
+    }
+
+    template<typename value_type>
+    value_type (max)(std::initializer_list<value_type> my_initializer_list)
+    {
+      return *std::max_element(my_initializer_list.begin(), my_initializer_list.end());
+    }
+
+    template<typename value_type,
+             typename binary_function_type>
+    value_type (max)(std::initializer_list<value_type> my_initializer_list,
+                     binary_function_type binary_function)
+    {
+      return *std::max_element(my_initializer_list.begin(),
+                               my_initializer_list.end(),
+                               binary_function);
+    }
+
+    template<typename value_type>
+    std::pair<const value_type&,
+              const value_type&> (minmax)(const value_type& a,
+                                          const value_type& b)
+    {
+      return ((b < a) ? std::pair<const value_type&, const value_type&>(b, a)
+                      : std::pair<const value_type&, const value_type&>(a, b));
+    }
+
+    template<typename value_type,
+             typename binary_function_type>
+    std::pair<const value_type&,
+              const value_type&> (minmax)(const value_type&    a,
+                                          const value_type&    b,
+                                          binary_function_type binary_function)
+    {
+      return (binary_function(b, a) ? std::pair<const value_type&, const value_type&>(b, a)
+                                    : std::pair<const value_type&, const value_type&>(a, b));
     }
 
     template <typename input_iterator1, typename input_iterator2>
-    bool lexicographical_compare (input_iterator1 first1,
-                                  input_iterator1 last1,
-                                  input_iterator2 first2,
-                                  input_iterator2 last2)
+    bool lexicographical_compare(input_iterator1 first1,
+                                 input_iterator1 last1,
+                                 input_iterator2 first2,
+                                 input_iterator2 last2)
     {
       while(first1 != last1)
       {
@@ -162,8 +229,11 @@
       return (first2 != last2);
     }
 
-    template<typename input_iterator, typename output_iterator>
-    output_iterator copy(input_iterator first, input_iterator last, output_iterator result)
+    template<typename input_iterator,
+             typename output_iterator>
+    output_iterator copy(input_iterator  first,
+                         input_iterator  last,
+                         output_iterator result)
     {
       for( ; first != last; ++result, ++first)
       {
@@ -173,29 +243,60 @@
       return result;
     }
 
-    template<typename forward_iterator, typename value_type>
-    void fill(forward_iterator first, forward_iterator last, const value_type& value)
+    template<typename input_iterator,
+             typename output_iterator,
+             typename unary_function_type>
+    output_iterator copy_if(input_iterator      first,
+                            input_iterator      last,
+                            output_iterator     result,
+                            unary_function_type unary_function)
     {
-      const value_type tmp = value;
+      while(first != last)
+      {
+        if(unary_function(*first))
+        {
+          *result = *first;
 
+          ++result;
+        }
+
+        ++first;
+      }
+
+      return result;
+    }
+
+    template<typename forward_iterator,
+             typename value_type>
+    void fill(forward_iterator  first,
+              forward_iterator  last,
+              const value_type& value)
+    {
       for( ; first != last; ++first)
       {
-        *first = tmp;
+        *first = value;
       }
     }
 
-    template<typename output_iterator, typename difference_type, typename value_type>
-    output_iterator fill_n(output_iterator first, difference_type count, const value_type& value)
+    template<typename output_iterator,
+             typename size_type,
+             typename value_type>
+    output_iterator fill_n(output_iterator   first,
+                           size_type         count,
+                           const value_type& value)
     {
-      const output_iterator last = first + count;
+      const output_iterator last(first + count);
 
-      xfill(first, last, value);
+      fill(first, last, value);
 
       return last;
     }
 
-    template<typename forward_iterator, typename generator_type>
-    void generate(forward_iterator first, forward_iterator last, generator_type generator)
+    template<typename forward_iterator,
+             typename generator_type>
+    void generate(forward_iterator first,
+                  forward_iterator last,
+                  generator_type   generator)
     {
       while(first != last)
       {
@@ -205,8 +306,12 @@
       }
     }
 
-    template<typename output_iterator, typename size_type, typename generator_type>
-    output_iterator generate_n(output_iterator first, size_type count, generator_type generator)
+    template<typename output_iterator,
+             typename size_type,
+             typename generator_type>
+    output_iterator generate_n(output_iterator first,
+                               size_type       count,
+                               generator_type  generator)
     {
       for(size_type i = size_type(0); i < count; ++i)
       {
@@ -242,8 +347,11 @@
 
     template<typename input_iterator,
              typename output_iterator,
-             typename unary_operation>
-    output_iterator transform(input_iterator first, input_iterator last, output_iterator result, unary_operation unary_function)
+             typename unary_function_type>
+    output_iterator transform(input_iterator      first,
+                              input_iterator      last,
+                              output_iterator     result,
+                              unary_function_type unary_function)
     {
       for( ; first != last; ++first, ++result)
       {
@@ -256,8 +364,12 @@
     template<typename input_iterator1,
              typename input_iterator2,
              typename output_iterator,
-             typename binary_operation>
-    output_iterator transform(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2, output_iterator result, binary_operation binary_function)
+             typename binary_function_type>
+    output_iterator transform(input_iterator1      first1,
+                              input_iterator1      last1,
+                              input_iterator2      first2,
+                              output_iterator      result,
+                              binary_function_type binary_function)
     {
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
@@ -267,8 +379,11 @@
       return result;
     }
 
-    template<typename input_iterator1, typename input_iterator2>
-    bool equal(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
+    template<typename input_iterator1,
+             typename input_iterator2>
+    bool equal(input_iterator1 first1,
+               input_iterator1 last1,
+               input_iterator2 first2)
     {
       while(first1 != last1)
       {
@@ -284,10 +399,35 @@
       return (first1 == last1);
     }
 
-    template<typename iterator_type, typename function_type>
-    bool all_of(iterator_type first, iterator_type last, function_type function)
+    template<typename input_iterator1,
+             typename input_iterator2,
+             typename binary_function_type>
+    bool equal(input_iterator1      first1,
+               input_iterator1      last1,
+               input_iterator2      first2,
+               binary_function_type binary_function)
     {
-      while((first != last) && function(*first))
+      while(first1 != last1)
+      {
+        if(binary_function(*first1, *first2) == false)
+        {
+          break;
+        }
+
+        ++first1;
+        ++first2;
+      }
+
+      return (first1 == last1);
+    }
+
+    template<typename iterator_type,
+             typename unary_function_type>
+    bool all_of(iterator_type       first,
+                iterator_type       last,
+                unary_function_type unary_function)
+    {
+      while((first != last) && unary_function(*first))
       {
         ++first;
       }
@@ -295,10 +435,13 @@
       return (first == last);
     }
 
-    template<typename iterator_type, typename function_type>
-    bool any_of(iterator_type first, iterator_type last, function_type function)
+    template<typename iterator_type,
+             typename unary_function_type>
+    bool any_of(iterator_type       first,
+                iterator_type       last,
+                unary_function_type unary_function)
     {
-      while((first != last) && (function(*first) == false))
+      while((first != last) && (unary_function(*first) == false))
       {
         ++first;
       }
@@ -306,10 +449,13 @@
       return (first != last);
     }
 
-    template<typename iterator_type, typename function_type>
-    bool none_of(iterator_type first, iterator_type last, function_type function)
+    template<typename iterator_type,
+             typename unary_function_type>
+    bool none_of(iterator_type       first,
+                 iterator_type       last,
+                 unary_function_type unary_function)
     {
-      while((first != last) && (function(*first) == false))
+      while((first != last) && (unary_function(*first) == false))
       {
         ++first;
       }
@@ -317,21 +463,44 @@
       return (first == last);
     }
 
-    template<typename iterator_type, typename function_type>
-    function_type for_each(iterator_type first, iterator_type last, function_type function)
+    template<typename iterator_type,
+             typename unary_function_type>
+    unary_function_type for_each(iterator_type       first,
+                                 iterator_type       last,
+                                 unary_function_type unary_function)
     {
       for( ; first != last; ++first)
       {
-        function(*first);
+        unary_function(*first);
       }
 
-      return function;
+      return unary_function;
     }
 
-    template<typename input_iterator, typename predicate_type>
-    input_iterator find_if(input_iterator first, input_iterator last, predicate_type predicate)
+    template<typename iterator_type,
+             typename size_type,
+             typename unary_function_type>
+    iterator_type for_each_n(iterator_type       first,
+                             size_type           count,
+                             unary_function_type unary_function)
     {
-      while((first != last) && (!predicate(*first)))
+      for(size_type i = 0; i < count; ++i)
+      {
+        unary_function(*first);
+
+        ++first;
+      }
+
+      return first;
+    }
+
+    template<typename input_iterator,
+             typename unary_function_type>
+    input_iterator find_if(input_iterator      first,
+                           input_iterator      last,
+                           unary_function_type unary_function)
+    {
+      while((first != last) && (!unary_function(*first)))
       {
         ++first;
       }
@@ -339,10 +508,13 @@
       return first;
     }
 
-    template<typename input_iterator, typename predicate_type>
-    input_iterator find_if_not(input_iterator first, input_iterator last, predicate_type predicate)
+    template<typename input_iterator,
+             typename unary_function_type>
+    input_iterator find_if_not(input_iterator      first,
+                               input_iterator      last,
+                               unary_function_type unary_function)
     {
-      while((first != last) && predicate(*first))
+      while((first != last) && unary_function(*first))
       {
         ++first;
       }
@@ -350,8 +522,12 @@
       return first;
     }
 
-    template<typename input_iterator, typename T>
-    typename std::iterator_traits<input_iterator>::difference_type count(input_iterator first, input_iterator last, const T& value)
+    template<typename input_iterator,
+             typename value_type>
+    typename std::iterator_traits<input_iterator>::difference_type
+      count(input_iterator    first,
+            input_iterator    last,
+            const value_type& value)
     {
       typedef typename std::iterator_traits<input_iterator>::difference_type count_type;
 
@@ -370,8 +546,12 @@
       return count_value;
     }
 
-    template<typename input_iterator, typename predicate_type>
-    typename std::iterator_traits<input_iterator>::difference_type count_if(input_iterator first, input_iterator last, predicate_type predicate)
+    template<typename input_iterator,
+             typename unary_function_type>
+    typename std::iterator_traits<input_iterator>::difference_type
+      count_if(input_iterator      first,
+               input_iterator      last,
+               unary_function_type unary_function)
     {
       typedef typename std::iterator_traits<input_iterator>::difference_type count_type;
 
@@ -379,7 +559,7 @@
 
       while(first != last)
       {
-        if(predicate(*first))
+        if(unary_function(*first))
         {
           ++count_value;
         }
@@ -393,16 +573,16 @@
     template<typename forward_iterator,
              typename difference_type,
              typename value_type>
-    forward_iterator search_n(forward_iterator first,
-                              forward_iterator last,
-                              difference_type count_value,
+    forward_iterator search_n(forward_iterator  first,
+                              forward_iterator  last,
+                              difference_type   count_value,
                               const value_type& search_value)
     {
       forward_iterator limit = first;
 
-      difference_type i;
+      difference_type index;
 
-      for(i = difference_type(0); i < difference_type((last - first) - count_value); ++i)
+      for(index = difference_type(0); index < difference_type((last - first) - count_value); ++index)
       {
         ++limit;
       }
@@ -411,14 +591,14 @@
       {
         forward_iterator it = first;
 
-        i = difference_type(0);
+        index = difference_type(0);
 
         while(*it == search_value)
         {
           ++it;
-          ++i;
+          ++index;
 
-          if(i == count_value)
+          if(index == count_value)
           {
             return first;
           }
@@ -433,18 +613,18 @@
     template<typename forward_iterator,
              typename difference_type,
              typename value_type,
-             typename predicate_type>
-    forward_iterator search_n(forward_iterator first,
-                              forward_iterator last,
-                              difference_type count_value,
-                              const value_type& search_value,
-                              predicate_type predicate)
+             typename binary_function_type>
+    forward_iterator search_n(forward_iterator     first,
+                              forward_iterator     last,
+                              difference_type      count_value,
+                              const value_type&    search_value,
+                              binary_function_type binary_function)
     {
       forward_iterator limit = first;
 
-      difference_type i;
+      difference_type index;
 
-      for(i = difference_type(0); i < difference_type((last - first) - count_value); ++i)
+      for(index = difference_type(0); index < difference_type((last - first) - count_value); ++index)
       {
         ++limit;
       }
@@ -453,14 +633,14 @@
       {
         forward_iterator it = first;
 
-        i = difference_type(0);
+        index = difference_type(0);
 
-        while(pred(*it, search_value))
+        while(binary_function(*it, search_value))
         {
           ++it;
-          ++i;
+          ++index;
 
-          if(i == count_value)
+          if(index == count_value)
           {
             return first;
           }
@@ -473,19 +653,22 @@
     }
 
     template<typename swap_type>
-    void swap(swap_type& left, swap_type& right)
+    void swap(swap_type& left,
+              swap_type& right)
     {
       if(&left != &right)
       {
-        const swap_type tmp = left;
+        const swap_type tmp(left);
 
         left  = right;
         right = tmp;
       }
     }
 
-    template<typename input_iterator1, typename input_iterator2>
-    void iter_swap(input_iterator1 left, input_iterator2 right)
+    template<typename input_iterator1,
+             typename input_iterator2>
+    void iter_swap(input_iterator1 left,
+                   input_iterator2 right)
     {
       typedef typename std::iterator_traits<input_iterator1>::value_type left_type;
       typedef typename std::iterator_traits<input_iterator2>::value_type right_type;
@@ -496,8 +679,11 @@
       *right = right_type(tmp);
     }
 
-    template<typename input_iterator1, typename input_iterator2>
-    input_iterator2 swap_ranges(input_iterator1 first1, input_iterator1 last1, input_iterator2 first2)
+    template<typename input_iterator1,
+             typename input_iterator2>
+    input_iterator2 swap_ranges(input_iterator1 first1,
+                                input_iterator1 last1,
+                                input_iterator2 first2)
     {
       while(first1 != last1)
       {
@@ -510,11 +696,47 @@
       return first2;
     }
 
-    template<typename T, std::size_t N>
-    void swap(T(&left)[N], T(&right)[N])
+    template<typename value_type,
+             std::size_t N>
+    void swap(value_type(&left) [N],
+              value_type(&right)[N])
     {
       swap_ranges(&left[0U], &left[N], &right[0U]);
     }
+
+    template<typename random_access_iterator,
+             typename unary_function_type>
+    random_access_iterator partition(random_access_iterator first,
+                                     random_access_iterator last,
+                                     unary_function_type    unary_function)
+    {
+      for( ; ; ++first)
+      {
+        for( ; (first != last) && (unary_function(*first) == true); ++first)
+        {
+          ;
+        }
+
+        if(first == last)
+        {
+          break;
+        }
+
+        for( ; (first != --last) && (unary_function(*last) == false); )
+        {
+          ;
+        }
+
+        if(first == last)
+        {
+          break;
+        }
+
+        iter_swap(first, last);
+      }
+
+      return first;
+    }
   }
 
-#endif // _ALGORITHM_2010_02_23_
+#endif // ALGORITHM_2010_02_23_

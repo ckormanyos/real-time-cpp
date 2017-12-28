@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_OSC_DETAIL_2014_10_30_H_
-  #define _MCAL_OSC_DETAIL_2014_10_30_H_
+#ifndef MCAL_OSC_DETAIL_2014_10_30_H_
+  #define MCAL_OSC_DETAIL_2014_10_30_H_
 
   #include <algorithm>
   #include <cstdint>
@@ -47,4 +47,4 @@
     }
   } // namespace mcal::osc::detail
 
-#endif // _MCAL_OSC_DETAIL_2014_10_30_H_
+#endif // MCAL_OSC_DETAIL_2014_10_30_H_

@@ -5,14 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _TUPLE_2010_02_23_
-  #define _TUPLE_2010_02_23_
+#ifndef TUPLE_2010_02_23_
+  #define TUPLE_2010_02_23_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
   #endif
 
-  #include "impl/_stl_local_constexpr.h"
+  #include <impl/stl_local_constexpr.h>
   #include <cstddef>
   #include <type_traits>
   #include <utility>
@@ -395,4 +395,4 @@
     }
   }
 
-#endif // _TUPLE_2010_02_23_
+#endif // TUPLE_2010_02_23_

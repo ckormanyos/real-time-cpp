@@ -1,16 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+//  Copyright Christopher Kormanyos 2007 - 2017.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_RING_ALLOCATOR_2010_02_23_H_
-  #define _UTIL_RING_ALLOCATOR_2010_02_23_H_
+#ifndef UTIL_RING_ALLOCATOR_2010_02_23_H_
+  #define UTIL_RING_ALLOCATOR_2010_02_23_H_
 
   #include <cstddef>
   #include <cstdint>
   #include <memory>
+
   #include <util/utility/util_alignas.h>
 
   namespace util
@@ -28,69 +29,57 @@
 
       ring_allocator_base(const ring_allocator_base&) throw() { }
 
-      // The ring allocator's default buffer size.
-      static const size_type buffer_size = 64U;
-
       // The ring allocator's buffer type.
       struct buffer_type
       {
-        std::uint8_t data[buffer_size];
+        static const size_type size = 2048U;
+
+        std::uint8_t data[size];
+
+        buffer_type() : data() { }
       };
 
       // The ring allocator's memory allocation.
-      template<const std::uint_fast8_t inner_buffer_alignment>
-      static void* do_allocate(const size_type size)
+      template<const std::uint_fast8_t buffer_alignment>
+      static void* do_allocate(size_type chunk_size)
       {
         ALIGNAS(16) static buffer_type buffer;
+
         static std::uint8_t* get_ptr = buffer.data;
 
         // Get the newly allocated pointer.
         std::uint8_t* p = get_ptr;
 
         // Increment the get-pointer for the next allocation.
-        // Be sure to handle the inner-buffer alignment.
-        const std::uint_fast8_t align_increment  = inner_buffer_alignment - std::uint_fast8_t(size % inner_buffer_alignment);
-        const size_type         buffer_increment = size + align_increment;
+        // Be sure to handle the buffer alignment.
 
-        get_ptr += buffer_increment;
+        const std::uint_fast8_t misaligned_amount(chunk_size % buffer_alignment);
+
+        if(misaligned_amount != UINT8_C(0))
+        {
+          chunk_size += size_type(buffer_alignment - misaligned_amount);
+        }
+
+        get_ptr += chunk_size;
 
         // Does this attempted allocation overflow the capacity of the buffer?
-        const bool is_overflow = (get_ptr >= (buffer.data + buffer_size));
+        const bool is_overflow = (get_ptr >= (buffer.data + buffer_type::size));
 
         if(is_overflow)
         {
           // The buffer has overflowed.
 
-          // Check if the requested size fits in the buffer.
-          if(buffer_increment <= buffer_size)
-          {
-            // The requested size fits in the buffer.
-
-            // Reset the allocated pointer to the bottom of the buffer
-            // and increment the next get-pointer.
-            p       = buffer.data;
-            get_ptr = buffer.data + buffer_increment;
-          }
-          else
-          {
-            // The requested size exceeds the capacity of the buffer.
-
-            // Set the return value of the failed allocation to nullptr
-            // and reset the get-pointer to its value before the allocation
-            // attempt.
-            p       = nullptr;
-            get_ptr = get_ptr - buffer_increment;
-          }
+          // Reset the allocated pointer to the bottom of the buffer
+          // and increment the next get-pointer.
+          p       = &buffer.data[0U];
+          get_ptr = &buffer.data[chunk_size];
         }
 
         return static_cast<void*>(p);
       }
-
-    private:
-      ring_allocator_base& operator=(const ring_allocator_base&);
     };
 
-    ring_allocator_base::~ring_allocator_base() { }
+    inline ring_allocator_base::~ring_allocator_base() { }
 
     // Global comparison operators (required by the standard).
     inline bool operator==(const ring_allocator_base&,
@@ -106,11 +95,11 @@
     }
 
     template<typename T,
-             const std::uint_fast8_t inner_buffer_alignment = UINT8_C(4)>
+             const std::uint_fast8_t buffer_alignment = UINT8_C(16)>
     class ring_allocator;
 
-    template<const std::uint_fast8_t inner_buffer_alignment>
-    class ring_allocator<void, inner_buffer_alignment> : public ring_allocator_base
+    template<const std::uint_fast8_t buffer_alignment>
+    class ring_allocator<void, buffer_alignment> : public ring_allocator_base
     {
     public:
       typedef void              value_type;
@@ -118,19 +107,16 @@
       typedef const value_type* const_pointer;
 
       template<typename U>
-      struct rebind { typedef ring_allocator<U, inner_buffer_alignment> other; };
+      struct rebind { typedef ring_allocator<U, buffer_alignment> other; };
     };
 
     template<typename T,
-             const std::uint_fast8_t inner_buffer_alignment>
+             const std::uint_fast8_t buffer_alignment>
     class ring_allocator : public ring_allocator_base
     {
     public:
-      static_assert(sizeof(T) <= buffer_size,
+      static_assert(sizeof(T) <= buffer_type::size,
                     "The size of the allocation object can not exceed the buffer size.");
-
-      static_assert(inner_buffer_alignment <= buffer_size,
-                    "The granularity of the inner-buffer alignment can not exceed the buffer size.");
 
       typedef T                 value_type;
       typedef value_type*       pointer;
@@ -143,25 +129,25 @@
       ring_allocator(const ring_allocator&) throw() : ring_allocator_base(ring_allocator()) { }
 
       template <typename U>
-      ring_allocator(const ring_allocator<U, inner_buffer_alignment>&) throw() { }
+      ring_allocator(const ring_allocator<U, buffer_alignment>&) throw() { }
 
       template<typename U> 
-      struct rebind { typedef ring_allocator<U, inner_buffer_alignment> other; };
+      struct rebind { typedef ring_allocator<U, buffer_alignment> other; };
 
       size_type max_size() const throw()
       {
-        return buffer_size / sizeof(value_type);
+        return buffer_type::size / sizeof(value_type);
       }
 
             pointer address(      reference x) const { return &x; }
       const_pointer address(const_reference x) const { return &x; }
 
       pointer allocate(size_type count,
-                       typename ring_allocator<void, inner_buffer_alignment>::const_pointer = nullptr)
+                       typename ring_allocator<void, buffer_alignment>::const_pointer = nullptr)
       {
         const size_type chunk_size = count * sizeof(value_type);
 
-        void* p = do_allocate<inner_buffer_alignment>(chunk_size);
+        void* p = do_allocate<buffer_alignment>(chunk_size);
 
         return static_cast<pointer>(p);
       }
@@ -177,7 +163,7 @@
     };
   }
 
-#endif // _UTIL_RING_ALLOCATOR_2010_02_23_H_
+#endif // UTIL_RING_ALLOCATOR_2010_02_23_H_
 
 /*
 ///////////////////////////////////////////////////////////////////////////////

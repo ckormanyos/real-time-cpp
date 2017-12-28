@@ -6,8 +6,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_IRQ_2010_04_10_H_
-  #define _MCAL_IRQ_2010_04_10_H_
+#ifndef MCAL_IRQ_2010_04_10_H_
+  #define MCAL_IRQ_2010_04_10_H_
 
   #include <cstdint>
   #include <cstddef>
@@ -215,4 +215,4 @@
     }
   }
 
-#endif // _MCAL_IRQ_2010_04_10_H_
+#endif // MCAL_IRQ_2010_04_10_H_

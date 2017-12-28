@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTILITY_2010_02_23_
-  #define _UTILITY_2010_02_23_
+#ifndef UTILITY_2010_02_23_
+  #define UTILITY_2010_02_23_
 
   #include <cstddef>
   #include <utility>
@@ -168,4 +168,4 @@
     }
   }
 
-#endif // _UTILITY_2010_02_23_
+#endif // UTILITY_2010_02_23_

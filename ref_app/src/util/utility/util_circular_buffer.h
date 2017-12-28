@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_CIRCULAR_BUFFER_2007_11_22_H_
-  #define _UTIL_CIRCULAR_BUFFER_2007_11_22_H_
+#ifndef UTIL_CIRCULAR_BUFFER_2007_11_22_H_
+  #define UTIL_CIRCULAR_BUFFER_2007_11_22_H_
 
   #include <algorithm>
   #include <cstddef>
@@ -371,4 +371,4 @@
   }
 */
 
-#endif // _UTIL_CIRCULAR_BUFFER_2007_11_22_H_
+#endif // UTIL_CIRCULAR_BUFFER_2007_11_22_H_

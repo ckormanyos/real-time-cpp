@@ -1,5 +1,5 @@
-#ifndef _UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_
-  #define _UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_
+#ifndef UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_
+  #define UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_
 
   #include <mcal_irq.h>
   #include <util/safety/memory/util_safety_memory_base.h>
@@ -71,4 +71,4 @@
                                                            : memory_base_type::result_is_finished_and_wrong);
   }
 
-#endif // _UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_
+#endif // UTIL_SAFETY_DRAM_MEMORY_REFRESH_2013_11_22_H_

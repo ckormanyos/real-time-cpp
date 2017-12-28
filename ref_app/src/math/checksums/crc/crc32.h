@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CRC32_2015_01_26_H_
-  #define _CRC32_2015_01_26_H_
+#ifndef CRC32_2015_01_26_H_
+  #define CRC32_2015_01_26_H_
 
   #include <array>
   #include <cstdint>
@@ -79,4 +79,4 @@
   const std::uint32_t crc = math::checksums::crc32_mpeg2(data.cbegin(), data.cend());
   */
 
-#endif // _CRC32_2015_01_26_H_
+#endif // CRC32_2015_01_26_H_

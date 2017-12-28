@@ -75,7 +75,7 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 AR        = $(GCC_TARGET)-ar
 AS        = $(GCC_TARGET)-g++
-CL        = $(GCC_TARGET)-g++
+CC        = $(GCC_TARGET)-g++
 CPPFILT   = $(GCC_TARGET)-c++filt
 NM        = $(GCC_TARGET)-nm
 OBJDUMP   = $(GCC_TARGET)-objdump
@@ -143,7 +143,7 @@ AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LFLAGS      = $(GCCFLAGS)                       \
+LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LFLAGS)                     \
               -x none                           \
               -nostdlib                         \
@@ -204,7 +204,7 @@ version:
 	@$(ECHO) GNUmake version...
 	@$(MAKE) --version
 	@$(ECHO) GCC version...
-	@$(CL) -v
+	@$(CC) -xc++ -E -v -
 
 
 # ------------------------------------------------------------------------------
@@ -212,7 +212,7 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
 

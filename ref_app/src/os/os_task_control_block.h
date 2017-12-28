@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
-  #define _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
+#ifndef OS_TASK_CONTROL_BLOCK_2013_07_30_H_
+  #define OS_TASK_CONTROL_BLOCK_2013_07_30_H_
 
   #include <cstddef>
   #include <cstdint>
@@ -49,11 +49,11 @@
       task_control_block();
       task_control_block& operator=(const task_control_block&);
 
-      friend void os::start_os   ();
-      friend bool os::set_event  (const task_id_type, const event_type&);
-      friend void os::get_event  (event_type&);
-      friend void os::clear_event(const event_type&);
+      friend void start_os   ();
+      friend bool set_event  (const task_id_type, const event_type&);
+      friend void get_event  (event_type&);
+      friend void clear_event(const event_type&);
     };
   }
 
-#endif // _OS_TASK_CONTROL_BLOCK_2013_07_30_H_
+#endif // OS_TASK_CONTROL_BLOCK_2013_07_30_H_

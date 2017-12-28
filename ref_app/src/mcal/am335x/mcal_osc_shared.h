@@ -1,5 +1,5 @@
-#ifndef _MCAL_OSC_SHARED_2013_07_09_H_
-  #define _MCAL_OSC_SHARED_2013_07_09_H_
+#ifndef MCAL_OSC_SHARED_2013_07_09_H_
+  #define MCAL_OSC_SHARED_2013_07_09_H_
 
   #include <cstdint>
 
@@ -11,4 +11,4 @@
     static constexpr std::uint32_t idlest_mask       = UINT32_C(0x00030000);
   };
 
-#endif // _MCAL_OSC_SHARED_2013_07_09_H_
+#endif // MCAL_OSC_SHARED_2013_07_09_H_

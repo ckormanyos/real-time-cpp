@@ -1,20 +1,28 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _FIXED_POINT_2011_02_22_H_
-  #define _FIXED_POINT_2011_02_22_H_
+#ifndef FIXED_POINT_2011_02_22_H_
+  #define FIXED_POINT_2011_02_22_H_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
   #endif
 
-  #include <cstdint>
+  #define FIXED_POINT_DISABLE_IOSTREAM
+
   #include <cstddef>
+  #include <cstdint>
   #include <limits>
+
+  #if !defined(FIXED_POINT_DISABLE_IOSTREAM)
+    #include <istream>
+    #include <ostream>
+  #endif
+
   #include <util/utility/util_nothing.h>
   #include <util/utility/util_utype_helper.h>
 
@@ -72,6 +80,7 @@
     fixed_point(const unsigned long  n) : data(signed_value_type(n) << decimal_split)  { }
     fixed_point(const float&  f)        : data(signed_value_type(f * decimal_split_value)) { }
     fixed_point(const double& d)        : data(signed_value_type(d * decimal_split_value)) { }
+    fixed_point(const long double& l)   : data(signed_value_type(l * decimal_split_value)) { }
     fixed_point(const fixed_point& fp)  : data(fp.data) { }
 
     template<typename other_signed_type>
@@ -324,18 +333,19 @@
     static fixed_point value_one_over_ln2() { return fixed_point(internal(), signed_value_type(0x171547652ULL >> (32U - decimal_split))); }
 
     // Conversion operations.
-    float             to_float () const { return static_cast<float>(data)  / decimal_split_value; }
-    double            to_double() const { return static_cast<double>(data) / decimal_split_value; }
-    signed_value_type to_int   () const { return static_cast<signed_value_type>(data >> decimal_split); }
-    std::int8_t       to_int8  () const { return static_cast<std::int8_t>(to_int()); }
-    std::int16_t      to_int16 () const { return static_cast<std::int16_t>(to_int()); }
-    std::int32_t      to_int32 () const { return static_cast<std::int32_t>(to_int()); }
+    float             to_float      () const { return static_cast<float>      (data) / decimal_split_value; }
+    double            to_double     () const { return static_cast<double>     (data) / decimal_split_value; }
+    long double       to_long_double() const { return static_cast<long double>(data) / decimal_split_value; }
+    signed_value_type to_int        () const { return static_cast<signed_value_type>(data >> decimal_split); }
+    std::int8_t       to_int8       () const { return static_cast<std::int8_t>(to_int()); }
+    std::int16_t      to_int16      () const { return static_cast<std::int16_t>(to_int()); }
+    std::int32_t      to_int32      () const { return static_cast<std::int32_t>(to_int()); }
 
   private:
     signed_value_type data; // Internal data representation.
 
     // Internal structure for special constructor.
-    struct internal : util::nothing {};
+    typedef util::nothing internal;
 
     // Special private constructor from data representation.
     fixed_point(const internal&, const signed_value_type& n) : data(n) { }
@@ -379,10 +389,9 @@
     friend inline fixed_point operator++(fixed_point& u, int) { const fixed_point v(u); ++u; return v; }
     friend inline fixed_point operator--(fixed_point& u, int) { const fixed_point v(u); --u; return v; }
 
-    // Global unary operators of e_float reference.
-    friend inline       fixed_point  operator-(const fixed_point& u) { return fixed_point(internal(), -u.data); }
-    friend inline       fixed_point& operator+(      fixed_point& u) { return u; }
-    friend inline const fixed_point& operator+(const fixed_point& u) { return u; }
+    // Global unary operators of fixed_point reference.
+    friend inline fixed_point operator+(const fixed_point& self) { return fixed_point(self); }
+    friend inline fixed_point operator-(const fixed_point& self) { fixed_point tmp(self); tmp.data = -tmp.data; return tmp; }
 
     // Global add/sub/mul/div of const fixed_point reference with another.
     friend inline fixed_point operator+(const fixed_point& a, const fixed_point& b) { return fixed_point(internal(), a.data + b.data); }
@@ -420,20 +429,20 @@
     friend inline fixed_point operator*(const fixed_point& a, const signed int n) { return fixed_point(internal(), a.data * n); }
     friend inline fixed_point operator/(const fixed_point& a, const signed int n) { return fixed_point(internal(), a.data / n); }
 
-    friend inline fixed_point operator+(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data + (signed_value_type(n) << decimal_split)); }
-    friend inline fixed_point operator-(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data - (signed_value_type(n) << decimal_split)); }
-    friend inline fixed_point operator*(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data * n); }
-    friend inline fixed_point operator/(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data / n); }
+    friend inline fixed_point operator+(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data + signed_value_type(n << decimal_split)); }
+    friend inline fixed_point operator-(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data - signed_value_type(n << decimal_split)); }
+    friend inline fixed_point operator*(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data * signed_value_type(n)); }
+    friend inline fixed_point operator/(const fixed_point& a, const unsigned int n) { return fixed_point(internal(), a.data / signed_value_type(n)); }
 
     friend inline fixed_point operator+(const fixed_point& a, const signed long n) { return fixed_point(internal(), a.data + (signed_value_type(n) << decimal_split)); }
     friend inline fixed_point operator-(const fixed_point& a, const signed long n) { return fixed_point(internal(), a.data - (signed_value_type(n) << decimal_split)); }
     friend inline fixed_point operator*(const fixed_point& a, const signed long n) { return fixed_point(internal(), a.data * n); }
     friend inline fixed_point operator/(const fixed_point& a, const signed long n) { return fixed_point(internal(), a.data / n); }
 
-    friend inline fixed_point operator+(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data + (signed_value_type(n) << decimal_split)); }
-    friend inline fixed_point operator-(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data - (signed_value_type(n) << decimal_split)); }
-    friend inline fixed_point operator*(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data * n); }
-    friend inline fixed_point operator/(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data / n); }
+    friend inline fixed_point operator+(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data + signed_value_type(n << decimal_split)); }
+    friend inline fixed_point operator-(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data - signed_value_type(n << decimal_split)); }
+    friend inline fixed_point operator*(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data * signed_value_type(n)); }
+    friend inline fixed_point operator/(const fixed_point& a, const unsigned long n) { return fixed_point(internal(), a.data / signed_value_type(n)); }
 
     friend inline fixed_point operator+(const fixed_point& a, const float& f) { return fixed_point(a) += fixed_point(f); }
     friend inline fixed_point operator-(const fixed_point& a, const float& f) { return fixed_point(a) -= fixed_point(f); }
@@ -539,7 +548,7 @@
     template<typename other_signed_type> friend inline bool operator> (const fixed_point<other_signed_type>& b, const fixed_point& a) { return (std::int_least8_t(-a.cmp(b)) >  std::int_least8_t(0)); }
 
     // Include a few global sample fixed_point functions.
-    friend inline fixed_point abs(const fixed_point& x)
+    friend inline fixed_point fabs(const fixed_point& x)
     {
       return fixed_point(internal(), (x.data < signed_value_type(0) ? -x.data : x.data));
     }
@@ -712,6 +721,31 @@
       }
     }
 
+    friend inline fixed_point atan2(const fixed_point& y, const fixed_point& x)
+    {
+      // Handle the negative arguments and zero arguments.
+      const bool x_is_neg = (x.data < 0);
+
+      if(y.data == 0)
+      {
+        return ((!x_is_neg) ? fixed_point(0U) : value_pi());
+      }
+
+      const bool y_is_neg = (y.data < 0);
+
+      if(x.data == 0)
+      {
+        return ((!y_is_neg) ? value_pi_half() : -value_pi_half());
+      }
+
+      // Compute atan(y / x), thereby ignoring the sign of the arguments.
+      const fixed_point atan_term(atan(y / x));
+
+      // Determine the proper quadrant based on signs of x and y.
+      return ((y_is_neg == x_is_neg) ? ((!x_is_neg) ? atan_term : (atan_term - value_pi()))
+                                     : ((!x_is_neg) ? atan_term : (atan_term + value_pi())));
+    }
+
     friend inline fixed_point exp(const fixed_point& x)
     {
       const fixed_point x_over_ln2 = x * value_one_over_ln2();
@@ -811,6 +845,16 @@
       return result;
     }
 
+    friend inline fixed_point pow(const fixed_point& x, const int n)
+    {
+      return exp(fixed_point(n) * log(x));
+    }
+
+    friend inline fixed_point pow(const fixed_point& x, const fixed_point& a)
+    {
+      return exp(a * log(x));
+    }
+
     friend inline fixed_point tanh(const fixed_point& x)
     {
       // Compute exp(x) and exp(-x)
@@ -850,14 +894,53 @@
       static const bool tinyness_before   = false;
       static const std::float_round_style round_style = std::round_toward_zero;
 
-      static fixed_point min() throw()         { return fixed_point::value_min(); }
-      static fixed_point max() throw()         { return fixed_point::value_max(); }
+      static fixed_point (min)() throw()       { return fixed_point::value_min(); }
+      static fixed_point (max)() throw()       { return fixed_point::value_max(); }
       static fixed_point lowest() throw()      { return fixed_point::value_min(); }
       static fixed_point epsilon() throw()     { return fixed_point::value_eps(); }
       static fixed_point round_error() throw() { return fixed_point::value_half(); }
       static fixed_point infinity() throw()    { return fixed_point(internal(), signed_value_type(0)); }
       static fixed_point quiet_NaN() throw()   { return fixed_point(internal(), signed_value_type(0)); }
     };
+
+    #if !defined(FIXED_POINT_DISABLE_IOSTREAM)
+
+    template<typename char_type, typename traits_type>
+    friend std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& out,
+                                                                  const fixed_point& x)
+    {
+      typedef long double local_float_type;
+
+      std::basic_ostringstream<char_type, traits_type> ostr;
+
+      // Copy all ostream settings from out to local ostr.
+      ostr.flags(out.flags());
+      ostr.imbue(out.getloc());
+      ostr.precision(out.precision());
+
+      static_cast<void>(ostr << x.to_long_double());
+
+      return (out << ostr.str());
+    }
+
+    template<typename char_type, typename traits_type>
+    friend std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& in,
+                                                                  fixed_point& x)
+    {
+      typedef long double local_float_type;
+
+      local_float_type v;
+
+      // Receive a floating-point number from the input stream.
+      static_cast<void>(in >> v);
+
+      // Subsequently make a fixed-point object from it.
+      x = fixed_point(v);
+
+      return in;
+    }
+
+    #endif // !FIXED_POINT_DISABLE_IOSTREAM
   };
 
   // Define the four scalable fixed_point types.
@@ -892,4 +975,4 @@
     return sqrt<fixed_point_type>((x * x) + (y * y));
   }
 
-#endif // _FIXED_POINT_2011_02_22_H_
+#endif // FIXED_POINT_2011_02_22_H_

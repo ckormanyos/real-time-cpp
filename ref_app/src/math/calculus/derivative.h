@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _DERIVATIVE_2012_01_09_H_
-  #define _DERIVATIVE_2012_01_09_H_
+#ifndef DERIVATIVE_2012_01_09_H_
+  #define DERIVATIVE_2012_01_09_H_
 
   namespace math
   {
@@ -63,4 +63,4 @@
     }
   } // namespace math
 
-#endif // _DERIVATIVE_2012_01_09_H_
+#endif // DERIVATIVE_2012_01_09_H_

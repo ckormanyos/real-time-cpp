@@ -9,27 +9,31 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.8.3
+GCC_VERSION   = 6.3.1
 GCC_TARGET    = arm-none-eabi
 
-TGT_CFLAGS    = -O2                                            \
-                -finline-functions                             \
-                -finline-limit=16                              \
-                -mcpu=cortex-a8                                \
-                -march=armv7-a                                 \
-                -mtune=cortex-a8                               \
-                -marm                                          \
-                -mfloat-abi=hard                               \
-                -mfpu=neon                                     \
-                -ffast-math                                    \
-                -ftree-vectorize                               \
-                -mno-unaligned-access                          \
+
+TGT_CFLAGS    = -O2                                                               \
+                -finline-functions                                                \
+                -finline-limit=16                                                 \
+                -ffast-math                                                       \
+                -mcpu=cortex-a8                                                   \
+                -march=armv7-a                                                    \
+                -mtune=cortex-a8                                                  \
+                -marm                                                             \
+                -mfloat-abi=hard                                                  \
+                -mfpu=neon                                                        \
+                -mno-unaligned-access                                             \
                 -mno-long-calls
 
+TGT_CPPFLAGS  = -std=c++17                                                        \
+                -Wzero-as-null-pointer-constant
 
-TGT_CPPFLAGS  = -std=c++11                                     \
-                -Wzero-as-null-pointer-constant                \
-                -I$(PATH_APP)/util/STL_C++17_Compatibility
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
+
+ifeq ($(GCC_VERSION),6.3.1)
+TGT_INCLUDES += -Isrc/mcal/$(TGT)/_patch_gcc_$(GCC_VERSION)_for_arm_v7-ar-fpv3-hard
+endif
 
 TGT_AFLAGS    =
 

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _FUNCTIONAL_2013_08_30_
-  #define _FUNCTIONAL_2013_08_30_
+#ifndef FUNCTIONAL_2013_08_30_
+  #define FUNCTIONAL_2013_08_30_
 
   namespace std
   {
@@ -14,7 +14,7 @@
              typename result>
     struct unary_function
     {
-      typedef argument1 first_argument_type;
+      typedef argument1 argument_type;
       typedef result    result_type;
     };
 
@@ -73,6 +73,60 @@
       }
     };
 
+    template<typename T>
+    struct equal_to : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left == right);
+      }
+    };
+
+    template<typename T>
+    struct not_equal_to : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left != right);
+      }
+    };
+
+    template<typename T>
+    struct less : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left < right);
+      }
+    };
+
+    template<typename T>
+    struct less_equal : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left <= right);
+      }
+    };
+
+    template<typename T>
+    struct greater : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left > right);
+      }
+    };
+
+    template<typename T>
+    struct greater_equal : public binary_function<T, T, bool>
+    {
+      bool operator()(const T& left, const T& right) const
+      {
+        return (left >= right);
+      }
+    };
+
     template<typename function_type>
     class unary_binder : public std::unary_function<typename function_type::second_argument_type,
                                                     typename function_type::result_type>
@@ -114,59 +168,44 @@
       return std::unary_binder<function_type>(function, the_value);
     }
 
-    template<typename T>
-    struct equal_to
+    template<class function_type2>
+    class binder2nd : public unary_function<typename function_type2::first_argument_type,
+                                            typename function_type2::result_type>
     {
-      bool operator()(const T& left, const T& right) const
+    public:
+      typedef unary_function<typename function_type2::first_argument_type,
+                             typename function_type2::result_type> base_type;
+
+      typedef typename base_type::argument_type argument_type;
+      typedef typename base_type::result_type   result_type;
+
+      binder2nd(const function_type2& function,
+                const typename function_type2::second_argument_type& right)
+        : my_function(function),
+          my_value   (right) { }
+
+      result_type operator()(const argument_type& left) const
       {
-        return (left == right);
+        return my_function(left, my_value);
       }
+
+      result_type operator()(argument_type& left) const
+      {
+        return my_function(left, my_value);
+      }
+
+    protected:
+      function_type2                                my_function;
+      typename function_type2::second_argument_type my_value;
     };
 
-    template<typename T>
-    struct not_equal_to
+    template<typename function_type, typename T>
+    binder2nd<function_type> bind2nd(const function_type& function, const T& right)
     {
-      bool operator()(const T& left, const T& right) const
-      {
-        return (left != right);
-      }
-    };
+      typename function_type::second_argument_type value(right);
 
-    template<typename T>
-    struct less
-    {
-      bool operator()(const T& left, const T& right) const
-      {
-        return (left < right);
-      }
-    };
-
-    template<typename T>
-    struct less_equal
-    {
-      bool operator()(const T& left, const T& right) const
-      {
-        return (left <= right);
-      }
-    };
-
-    template<typename T>
-    struct greater
-    {
-      bool operator()(const T& left, const T& right) const
-      {
-        return (left > right);
-      }
-    };
-
-    template<typename T>
-    struct greater_equal
-    {
-      bool operator()(const T& left, const T& right) const
-      {
-        return (left >= right);
-      }
-    };
+      return binder2nd<function_type>(function, value);
+    }
   }
 
-#endif // _FUNCTIONAL_2013_08_30_
+#endif // FUNCTIONAL_2013_08_30_

@@ -22,8 +22,8 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _RATIO_2012_06_01_
-  #define _RATIO_2012_06_01_
+#ifndef RATIO_2012_06_01_
+  #define RATIO_2012_06_01_
 
   #include <cstdint>
 
@@ -248,4 +248,4 @@
   typedef ratio<1000000000000000000, 1> exa;
 } // namespace std
 
-#endif // _RATIO_2012_06_01_
+#endif // RATIO_2012_06_01_

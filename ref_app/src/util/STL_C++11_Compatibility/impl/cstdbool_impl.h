@@ -6,8 +6,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt ) 
 //
 
-#ifndef _CSTDBOOL_IMPL_2012_12_10_H_
-  #define _CSTDBOOL_IMPL_2012_12_10_H_
+#ifndef CSTDBOOL_IMPL_2012_12_10_H_
+  #define CSTDBOOL_IMPL_2012_12_10_H_
 
   #include <stdbool.h>
 
@@ -20,4 +20,4 @@
     using ::bool;
   }
 
-#endif // _CSTDBOOL_IMPL_2012_12_10_H_
+#endif // CSTDBOOL_IMPL_2012_12_10_H_

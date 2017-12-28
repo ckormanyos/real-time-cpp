@@ -31,9 +31,10 @@ SECTIONS
   {
     KEEP(*(.ivec))
   } > IVEC
-  .opt :
+
+  .opt_bytes :
   {
-    KEEP(*(.opt))
+    KEEP(*(.opt_bytes))
   } > OPT
 
   /* Program code (text), ISR vectors, read-only data and static ctors */

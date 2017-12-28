@@ -5,14 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _INITIALIZER_LIST_2012_02_14_H_
-  #define _INITIALIZER_LIST_2012_02_14_H_
+#ifndef INITIALIZER_LIST_2012_02_14_H_
+  #define INITIALIZER_LIST_2012_02_14_H_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
   #endif
 
-  #include "impl/_stl_local_constexpr.h"
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
+
   #include <cstddef>
   #include <iterator>
 
@@ -32,13 +34,13 @@
       typedef const T*    iterator;
       typedef const T*    const_iterator;
 
-      STL_LOCAL_CONSTEXPR initializer_list() noexcept : data  (nullptr),
-                                                        length(0U) { }
+      STL_LOCAL_CONSTEXPR initializer_list() STL_LOCAL_NOEXCEPT : data  (nullptr),
+                                                                  length(0U) { }
 
-      STL_LOCAL_CONSTEXPR size_type size() const noexcept { return length; }
+      STL_LOCAL_CONSTEXPR size_type size() const STL_LOCAL_NOEXCEPT { return length; }
 
-      STL_LOCAL_CONSTEXPR const_iterator begin() const noexcept { return data; }
-      STL_LOCAL_CONSTEXPR const_iterator end  () const noexcept { return data + length; }
+      STL_LOCAL_CONSTEXPR const_iterator begin() const STL_LOCAL_NOEXCEPT { return data; }
+      STL_LOCAL_CONSTEXPR const_iterator end  () const STL_LOCAL_NOEXCEPT { return data + length; }
 
     private:
       iterator  data;
@@ -80,4 +82,4 @@
     }
   }
 
-#endif // _INITIALIZER_LIST_2012_02_14_H_
+#endif // INITIALIZER_LIST_2012_02_14_H_

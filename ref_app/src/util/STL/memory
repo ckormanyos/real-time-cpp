@@ -5,10 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MEMORY_2010_02_23_
-  #define _MEMORY_2010_02_23_
+#ifndef MEMORY_2010_02_23_
+  #define MEMORY_2010_02_23_
 
-  #include "impl/_stl_local_constexpr.h"
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
+
   #include <cstddef>
   #include <cstdint>
 
@@ -19,8 +21,8 @@
   #endif
 
   // Provide the default placement versions of operator new.
-  inline void* operator new  (size_t, void* my_p) noexcept { return my_p; }
-  inline void* operator new[](size_t, void* my_p) noexcept { return my_p; }
+  inline void* operator new  (size_t, void* my_p) STL_LOCAL_NOEXCEPT { return my_p; }
+  inline void* operator new[](size_t, void* my_p) STL_LOCAL_NOEXCEPT { return my_p; }
 
   // Implement the standard allocator (std::allocator).
   namespace std
@@ -101,7 +103,7 @@
       allocator_base& operator=(const allocator_base&);
     };
 
-    allocator_base::~allocator_base() { }
+    inline allocator_base::~allocator_base() { }
 
     // Global comparison operators (required by the standard).
     inline bool operator==(const allocator_base&,
@@ -188,4 +190,4 @@
     };
   }
 
-#endif // _MEMORY_2010_02_23_
+#endif // MEMORY_2010_02_23_

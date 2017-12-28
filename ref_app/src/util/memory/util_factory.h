@@ -5,10 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_FACTORY_2012_02_19_H_
-  #define _UTIL_FACTORY_2012_02_19_H_
+#ifndef UTIL_FACTORY_2012_02_19_H_
+  #define UTIL_FACTORY_2012_02_19_H_
 
   #include <memory>
+
   #include <util/utility/util_noncopyable.h>
 
   namespace util
@@ -25,7 +26,7 @@
     };
 
     template<typename T,
-             typename alloc = std::allocator<T> >
+             typename alloc = std::allocator<T>>
     class factory
     {
     public:
@@ -56,7 +57,7 @@
     };
   }
 
-#endif // _UTIL_FACTORY_2012_02_19_H_
+#endif // UTIL_FACTORY_2012_02_19_H_
 
 /*
 #include <util/memory/util_factory.h>

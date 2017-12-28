@@ -1,7 +1,8 @@
-#ifndef _UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_
-  #define _UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_
+#ifndef UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_
+  #define UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_
 
   #include <cstdint>
+
   #include <util/utility/util_noncopyable.h>
   #include <util/utility/util_time.h>
 
@@ -36,4 +37,4 @@
     }
   }
 
-#endif // _UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_
+#endif // UTIL_SAFETY_MAX_TIME_BASE_2013_12_07_H_

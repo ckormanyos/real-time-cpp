@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef MCAL_REG_2010_04_10_H_
+  #define MCAL_REG_2010_04_10_H_
 
   #include <cstdint>
 
@@ -515,4 +515,4 @@
       constexpr std::uint32_t icu_ipr253     = UINT32_C(0x000873FD); // 8-bit register width : Interrupt source priority register 253
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+#endif // MCAL_REG_2010_04_10_H_

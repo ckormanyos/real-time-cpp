@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _OS_CFG_2011_10_20_H_
-  #define _OS_CFG_2011_10_20_H_
+#ifndef OS_CFG_2011_10_20_H_
+  #define OS_CFG_2011_10_20_H_
 
   #include <cstddef>
   #include <cstdint>
@@ -88,4 +88,4 @@
 
   static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
 
-#endif // _OS_CFG_2011_10_20_H_
+#endif // OS_CFG_2011_10_20_H_

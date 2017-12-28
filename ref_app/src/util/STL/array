@@ -5,10 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ARRAY_2010_02_23_
-  #define _ARRAY_2010_02_23_
+#ifndef ARRAY_2010_02_23_
+  #define ARRAY_2010_02_23_
 
-  #include <impl/_stl_local_constexpr.h>
+  #include <impl/stl_local_constexpr.h>
   #include <algorithm>
   #include <iterator>
   #include <type_traits>
@@ -170,4 +170,4 @@
     };
   } // namespace std
 
-#endif // _ARRAY_2010_02_23_
+#endif // ARRAY_2010_02_23_

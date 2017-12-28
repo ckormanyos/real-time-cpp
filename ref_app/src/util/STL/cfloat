@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CFLOAT_2015_07_06_
-  #define _CFLOAT_2015_07_06_
+#ifndef CFLOAT_2015_07_06_
+  #define CFLOAT_2015_07_06_
 
   #include <float.h>
 
-#endif // _CFLOAT_2015_07_06_
+#endif // CFLOAT_2015_07_06_

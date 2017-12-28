@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _XCMATH_IMPL_2014_01_11_H_
-  #define _XCMATH_IMPL_2014_01_11_H_
+#ifndef XCMATH_IMPL_2014_01_11_H_
+  #define XCMATH_IMPL_2014_01_11_H_
 
   #include <algorithm>
   #include <cstdint>
@@ -46,4 +46,4 @@
 
   }
 
-#endif // _XCMATH_IMPL_2014_01_11_H_
+#endif // XCMATH_IMPL_2014_01_11_H_

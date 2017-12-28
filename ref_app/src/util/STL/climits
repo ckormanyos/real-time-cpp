@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CLIMITS_2015_07_06_
-  #define _CLIMITS_2015_07_06_
+#ifndef CLIMITS_2015_07_06_
+  #define CLIMITS_2015_07_06_
 
   #include <limits.h>
 
-#endif // _CLIMITS_2015_07_06_
+#endif // CLIMITS_2015_07_06_

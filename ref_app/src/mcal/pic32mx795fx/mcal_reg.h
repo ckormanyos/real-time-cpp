@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef MCAL_REG_2010_04_10_H_
+  #define MCAL_REG_2010_04_10_H_
 
   #include <cstdint>
 
@@ -103,4 +103,4 @@
       constexpr std::uint32_t odcg     = UINT32_C(0xBF8861B0);   // 32-bit register.
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+#endif // MCAL_REG_2010_04_10_H_

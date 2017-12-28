@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _OS_2011_10_20_H_
-  #define _OS_2011_10_20_H_
+#ifndef OS_2011_10_20_H_
+  #define OS_2011_10_20_H_
 
   #include <cstdint>
   #include <limits>
@@ -21,4 +21,4 @@
     void clear_event(const event_type& event_to_clear);
   }
 
-#endif // _OS_2011_10_20_H_
+#endif // OS_2011_10_20_H_

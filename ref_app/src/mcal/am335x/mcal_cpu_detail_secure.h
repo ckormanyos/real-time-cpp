@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
-  #define _MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
+#ifndef MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
+  #define MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
 
   namespace mcal
   {
@@ -37,4 +37,4 @@
     }
   } // namespace mcal::cpu::detail
 
-#endif // _MCAL_CPU_DETAIL_SECURE_2014_06_12_H_
+#endif // MCAL_CPU_DETAIL_SECURE_2014_06_12_H_

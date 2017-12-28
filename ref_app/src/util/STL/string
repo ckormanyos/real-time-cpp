@@ -1,18 +1,40 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _STRING_2010_02_23_
-  #define _STRING_2010_02_23_
+#ifndef STRING_2010_02_23_
+  #define STRING_2010_02_23_
+
+  #if defined(__GNUC__)
+  #pragma GCC system_header
+  #endif
 
   #include <basic_string>
 
   namespace std
   {
-    typedef basic_string<char, char_traits<char>, allocator<char> > string;
+    using string = basic_string<char, char_traits<char>, allocator<char>>;
+
+    namespace literals
+    {
+      namespace string_literals
+      {
+        inline string operator"" s(const char* str, std::size_t len)
+        {
+          return std::string(str, str + len);
+        }
+      }
+
+      using string_literals::operator"" s;
+    }
+
+    namespace string_literals
+    {
+      using std::literals::string_literals::operator"" s;
+    }
   }
 
-#endif // _STRING_2010_02_23_
+#endif // STRING_2010_02_23_

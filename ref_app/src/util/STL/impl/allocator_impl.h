@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ALLOCATOR_IMPL_2010_02_23_H_
-  #define _ALLOCATOR_IMPL_2010_02_23_H_
+#ifndef ALLOCATOR_IMPL_2010_02_23_H_
+  #define ALLOCATOR_IMPL_2010_02_23_H_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
@@ -25,6 +25,7 @@
       while(first != last)
       {
         a.destroy(first);
+
         ++first;
       }
     }
@@ -38,4 +39,4 @@
     }
   }
 
-#endif // _ALLOCATOR_IMPL_2010_02_23_H_
+#endif // ALLOCATOR_IMPL_2010_02_23_H_

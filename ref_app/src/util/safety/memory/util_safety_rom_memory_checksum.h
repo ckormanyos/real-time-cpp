@@ -1,8 +1,9 @@
-#ifndef _UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
-  #define _UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
+#ifndef UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
+  #define UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
 
   #include <array>
   #include <limits>
+
   #include <mcal_cpu.h>
   #include <util/safety/memory/util_safety_memory_base.h>
   #include <util/utility/util_two_part_data_manipulation.h>
@@ -104,4 +105,4 @@
     crc32_result = std::uint32_t(crc32_result << 4) ^ crc32_lookup_table[std::uint_fast8_t((std::uint_fast8_t(crc32_result >> 28) & UINT8_C(0x0F)) ^ (std::uint_fast8_t(the_byte &  0x0FU)))];
   }
 
-#endif // _UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_
+#endif // UTIL_SAFETY_ROM_MEMORY_CHECKSUM_2013_11_27_H_

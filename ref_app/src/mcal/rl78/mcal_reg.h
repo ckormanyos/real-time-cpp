@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2010_04_10_H_
-  #define _MCAL_REG_2010_04_10_H_
+#ifndef MCAL_REG_2010_04_10_H_
+  #define MCAL_REG_2010_04_10_H_
 
   #include <cstdint>
 
@@ -114,4 +114,4 @@
       constexpr std::uint32_t if1l  = static_cast<std::uint32_t>(0xFFFE2U);
     }
   }
-#endif // _MCAL_REG_2010_04_10_H_
+#endif // MCAL_REG_2010_04_10_H_

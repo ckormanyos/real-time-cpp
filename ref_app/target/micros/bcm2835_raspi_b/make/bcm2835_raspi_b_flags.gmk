@@ -9,12 +9,13 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.8.3
+GCC_VERSION   = 6.3.1
 GCC_TARGET    = arm-none-eabi
 
 TGT_CFLAGS    = -O2                                            \
                 -finline-functions                             \
                 -finline-limit=16                              \
+                -ffast-math                                    \
                 -march=armv6zk                                 \
                 -mtune=arm1176jzf-s                            \
                 -marm                                          \
@@ -22,8 +23,9 @@ TGT_CFLAGS    = -O2                                            \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 
-TGT_CPPFLAGS  = -std=c++11                                     \
-                -I$(PATH_APP)/util/STL_C++17_Compatibility
+TGT_CPPFLAGS  = -std=c++17
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 

@@ -1,5 +1,5 @@
-#ifndef _UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
-  #define _UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
+#ifndef UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
+  #define UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
 
   #include <array>
   #include <cstdint>
@@ -117,4 +117,4 @@
     }
   }
 
-#endif // _UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_
+#endif // UTIL_SAFETY_MEMORY_BASE_2013_11_22_H_

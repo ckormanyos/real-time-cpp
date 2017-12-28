@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_TIME_2010_04_10_H_
-  #define _UTIL_TIME_2010_04_10_H_
+#ifndef UTIL_TIME_2010_04_10_H_
+  #define UTIL_TIME_2010_04_10_H_
 
   #include <cstdint>
   #include <limits>
@@ -113,4 +113,4 @@
     };
   }
 
-#endif // _UTIL_TIME_2010_04_10_H_
+#endif // UTIL_TIME_2010_04_10_H_

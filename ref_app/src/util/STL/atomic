@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _ATOMIC_2012_01_09_
-  #define _ATOMIC_2012_01_09_
+#ifndef ATOMIC_2012_01_09_
+  #define ATOMIC_2012_01_09_
 
   // Implement a small subset of the atomic library.
 
@@ -103,4 +103,4 @@
     template<> inline void atomic_store(volatile atomic_uchar*  addr, atomic_uchar  val) { *addr = val; }
   }
 
-#endif // _ATOMIC_2012_01_09_
+#endif // ATOMIC_2012_01_09_

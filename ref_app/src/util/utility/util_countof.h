@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_COUNTOF_2014_09_29_H_
-  #define _UTIL_COUNTOF_2014_09_29_H_
+#ifndef UTIL_COUNTOF_2014_09_29_H_
+  #define UTIL_COUNTOF_2014_09_29_H_
 
   #include <cstddef>
 
@@ -43,4 +43,4 @@
     #endif
   }
 
-#endif // _UTIL_COUNTOF_2014_09_29_H_
+#endif // UTIL_COUNTOF_2014_09_29_H_

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_WDG_WATCHDOG_2013_12_11_H_
-  #define _MCAL_WDG_WATCHDOG_2013_12_11_H_
+#ifndef MCAL_WDG_WATCHDOG_2013_12_11_H_
+  #define MCAL_WDG_WATCHDOG_2013_12_11_H_
 
   #include <mutex>
   #include <thread>
@@ -52,4 +52,4 @@
     }
   }
 
-#endif // _MCAL_WDG_WATCHDOG_2013_12_11_H_
+#endif // MCAL_WDG_WATCHDOG_2013_12_11_H_

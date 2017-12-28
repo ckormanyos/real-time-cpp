@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _INTEGRAL_2012_01_09_H_
-  #define _INTEGRAL_2012_01_09_H_
+#ifndef INTEGRAL_2012_01_09_H_
+  #define INTEGRAL_2012_01_09_H_
 
   #include <cmath>
 
@@ -93,4 +93,4 @@
   const float j2 = cyl_bessel_j(UINT8_C(2), 1.23F);
   */
 
-#endif // _INTEGRAL_2012_01_09_H_
+#endif // INTEGRAL_2012_01_09_H_

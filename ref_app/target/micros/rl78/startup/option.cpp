@@ -10,13 +10,13 @@
 #include <cstdint>
 
 extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt")));
+const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt_bytes")));
 
 extern "C"
-const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt"))) =
+const volatile std::uint8_t option_bytes[4U] __attribute__((section(".opt_bytes"))) =
 {
-  0x6E,
-  0xFF,
-  0xE8,
-  0x85
+  UINT8_C(0x6E),
+  UINT8_C(0xFF),
+  UINT8_C(0xE8),
+  UINT8_C(0x85)
 };

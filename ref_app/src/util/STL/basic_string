@@ -5,14 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _BASIC_STRING_N_2010_02_23_
-  #define _BASIC_STRING_N_2010_02_23_
+#ifndef BASIC_STRING_2010_02_23_
+  #define BASIC_STRING_2010_02_23_
 
   #if defined(__GNUC__)
   #pragma GCC system_header
   #endif
 
-  #include "impl/_stl_local_constexpr.h"
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
+
   #include <algorithm>
   #include <cstddef>
   #include <initializer_list>
@@ -42,6 +44,19 @@
 
         return (std::size_t) (p - first);
       }
+
+      static int compare(const char_type* first1, const char_type* first2, size_t count)
+      {
+        for( ; 0 < count; --count, ++first1, ++first2)
+        {
+          if(*first1 != *first2)
+          {
+            return ((*first1 < *first2) ? -1 : +1);
+          }
+        }
+
+        return 0;
+      }
     };
 
     template<>
@@ -51,6 +66,19 @@
       static std::size_t length(const char* first)
       {
         return ::strlen(first);
+      }
+
+      static int compare(const char* first1, const char* first2, size_t count)
+      {
+        for( ; 0 < count; --count, ++first1, ++first2)
+        {
+          if(*first1 != *first2)
+          {
+            return ((*first1 < *first2) ? -1 : +1);
+          }
+        }
+
+        return 0;
       }
     };
   }
@@ -251,8 +279,9 @@
       reference at(const size_type i)             { return my_first[i]; }
       const_reference at(const size_type i) const { return my_first[i]; }
 
-      bool      empty () const { return (my_first == my_last); }
-      size_type length() const { return static_cast<size_type>(std::distance(my_first, my_last)); }
+      bool      empty () const STL_LOCAL_NOEXCEPT { return (my_first == my_last); }
+      size_type length() const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
+      size_type size  () const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
 
       const_pointer c_str() const { return my_first; }
 
@@ -265,10 +294,70 @@
         return (the_lengths_are_equal && std::equal(my_first, my_last, other.my_first));
       }
 
+      int compare(const basic_string& other_string) const
+      {
+        const size_type my_size    = size();
+        const size_type other_size = other_string.size();
+
+        const bool      my_size_is_less = (my_size < other_size);
+        const size_type compare_size    = (my_size_is_less ? my_size : other_size);
+
+        int compare_result = traits_type::compare(my_first, other_string.my_first, compare_size);
+
+        if((compare_result == 0) && (my_size != other_size))
+        {
+          compare_result = (my_size_is_less ? -1 : +1);
+        }
+
+        return compare_result;
+      }
+
     private:
       iterator my_first;
       iterator my_last;
     };
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator==(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (left.compare(right) == 0);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator!=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(left == right));
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator<(const basic_string<T, char_traits, allocator_type>& left,
+                   const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (left.compare(right) < 0);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator>(const basic_string<T, char_traits, allocator_type>& left,
+                   const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator<=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(right < left));
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator>=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(left < right));
+    }
   }
 
-#endif // _BASIC_STRING_N_2010_02_23_
+#endif // BASIC_STRING_2010_02_23_

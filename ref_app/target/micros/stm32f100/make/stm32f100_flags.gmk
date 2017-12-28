@@ -9,12 +9,12 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.8.3
+GCC_VERSION   = 6.3.1
 GCC_TARGET    = arm-none-eabi
 
 TGT_CFLAGS    = -O2                                            \
                 -finline-functions                             \
-                -finline-limit=16                              \
+                -finline-limit=32                              \
                 -mcpu=cortex-m3                                \
                 -mtune=cortex-m3                               \
                 -mthumb                                        \
@@ -22,23 +22,15 @@ TGT_CFLAGS    = -O2                                            \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 
-#                -mfloat-abi=hard                               \
-#                -mfpu=vfp                                      \
 
-#                -mfloat-abi=soft                               \
+TGT_CPPFLAGS  = -std=c++17                                     \
+                -Wzero-as-null-pointer-constant
 
-TGT_CPPFLAGS  = -std=c++11                                     \
-                -Wzero-as-null-pointer-constant                \
-                -I$(PATH_APP)/util/STL_C++17_Compatibility
-
-#                -ID:/boost/boost_1_59_0                        \
-#                -ID:/boost_fixed_point/include
-
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
 TGT_LFLAGS    =
-#TGT_LFLAGS    = -L$(PATH_TOOLS_CC)/../$(GCC_TARGET)/lib/fpu
 
 IMAGE_FILE    = dummy.foo
 

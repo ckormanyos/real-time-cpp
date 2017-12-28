@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_IRQ_2014_09_20_H_
-  #define _MCAL_IRQ_2014_09_20_H_
+#ifndef MCAL_IRQ_2014_09_20_H_
+  #define MCAL_IRQ_2014_09_20_H_
 
   extern "C" void __int_vect_undef_instr_handler   () __attribute__((section(".text.isr1"),  interrupt("UNDEF"), used, noinline));
   extern "C" void __int_vect_sw_interrupt_handler  () __attribute__((section(".text.isr2"),  interrupt("SWI"),   used, noinline));
@@ -71,4 +71,4 @@
     }
   }
 
-#endif // _MCAL_IRQ_2014_09_20_H_
+#endif // MCAL_IRQ_2014_09_20_H_
