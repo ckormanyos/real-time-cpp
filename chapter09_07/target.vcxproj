@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)..\Bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)bin</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>

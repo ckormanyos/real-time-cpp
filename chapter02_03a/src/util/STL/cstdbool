@@ -5,9 +5,18 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDBOOL_2012_12_14_
-  #define _CSTDBOOL_2012_12_14_
+#ifndef CSTDBOOL_2012_12_14_
+  #define CSTDBOOL_2012_12_14_
 
-  #include "impl/cstdbool_impl.h"
+  #include <stdbool.h>
 
-#endif // _CSTDBOOL_2012_12_14_
+  #if !defined(__bool_true_false_are_defined)
+    #define __bool_true_false_are_defined 1
+  #endif
+
+  namespace std
+  {
+    using ::bool;
+  }
+
+#endif // CSTDBOOL_2012_12_14_

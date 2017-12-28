@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_
-  #define _MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_
+#ifndef MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_
+  #define MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_
 
   namespace mcal
   {
@@ -36,4 +36,4 @@
     }
   }
 
-#endif // _MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_
+#endif // MCAL_REG_ACCESS_TEMPLATE_2010_12_01_H_

@@ -31,8 +31,8 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _CHRONO_IMPL_2012_06_01_H_
-  #define _CHRONO_IMPL_2012_06_01_H_
+#ifndef CHRONO_IMPL_2012_06_01_H_
+  #define CHRONO_IMPL_2012_06_01_H_
 
   #include <cstdint>
   #include <ctime>
@@ -601,4 +601,4 @@
     } // namespace chrono
   } // namespace std
 
-#endif // _CHRONO_IMPL_2012_06_01_H_
+#endif // CHRONO_IMPL_2012_06_01_H_

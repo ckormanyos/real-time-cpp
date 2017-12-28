@@ -17,7 +17,7 @@ void mcal::init()
   //   mcal::port::init(nullptr);
   //   mcal::osc::init(nullptr);
 
-  mcal::gpt::init(nullptr);
-
   mcal::irq::init(nullptr);
+
+  mcal::gpt::init(nullptr);
 }

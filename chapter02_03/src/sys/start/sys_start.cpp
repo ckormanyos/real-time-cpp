@@ -16,7 +16,7 @@ namespace
   typedef util::timer<std::uint32_t> timer_type;
 }
 
-int main(void)
+int main()
 {
   // Initialize the mcal.
   mcal::init();

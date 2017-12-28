@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_PORT_2012_06_27_H_
-  #define _MCAL_PORT_2012_06_27_H_
+#ifndef MCAL_PORT_2012_06_27_H_
+  #define MCAL_PORT_2012_06_27_H_
 
   #include <mcal_reg_access.h>
 
@@ -16,7 +16,7 @@
     {
       typedef void config_type;
 
-      inline void init(const config_type*) { }
+      void init(const config_type*);
 
       template<typename addr_type,
                typename reg_type,
@@ -68,4 +68,4 @@
     }
   }
 
-#endif // _MCAL_PORT_2012_06_27_H_
+#endif // MCAL_PORT_2012_06_27_H_

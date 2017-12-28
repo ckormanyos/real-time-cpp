@@ -5,3 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_osc.h>
+
+void mcal::osc::init(const config_type*)
+{
+}

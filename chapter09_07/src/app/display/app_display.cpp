@@ -7,7 +7,9 @@
 //
 
 #include <cstdint>
+
 #include <mcal/mcal.h>
+#include <mcal/mcal_display_seven_segment.h>
 #include <util/utility/util_time.h>
 
 namespace app

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_NOTHING_2010_06_13_H_
-  #define _UTIL_NOTHING_2010_06_13_H_
+#ifndef UTIL_NOTHING_2010_06_13_H_
+  #define UTIL_NOTHING_2010_06_13_H_
 
   namespace util
   {
@@ -27,4 +27,4 @@
     inline bool operator>=(const nothing&, const nothing&) { return false; }
   }
 
-#endif // _UTIL_NOTHING_2010_06_13_H_
+#endif // UTIL_NOTHING_2010_06_13_H_

@@ -5,9 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CTIME_2012_06_01_
-  #define _CTIME_2012_06_01_
+#ifndef CTIME_2012_06_01_
+  #define CTIME_2012_06_01_
 
-  #include "impl/ctime_impl.h"
+  // Implement std::time_t of <ctime> for compilers that do not yet support it.
 
-#endif // _CTIME_2012_06_01_
+  #include <time.h>
+
+  namespace std
+  {
+    using ::time_t;
+  }
+
+#endif // CTIME_2012_06_01_

@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,6 +18,10 @@
 # ------------------------------------------------------------------------------
 
 
+# ------------------------------------------------------------------------------
+# Rule to compile C++ source file (*.cpp) to object file (*.o).
+# ------------------------------------------------------------------------------
+
 $(PATH_OBJ)/%.o : %.cpp
 	@$(ECHO) +++ compile: $< to $@
   # Compile the source file
@@ -31,6 +35,11 @@ $(PATH_OBJ)/%.o : %.cpp
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
 	@-$(CL) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
+
+# ------------------------------------------------------------------------------
+# Rule to compile C source file (*.c) to object file (*.o).
+# ------------------------------------------------------------------------------
+
 $(PATH_OBJ)/%.o : %.c
 	@$(ECHO) +++ compile: $< to $@
   # Compile the source file
@@ -43,6 +52,11 @@ $(PATH_OBJ)/%.o : %.c
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
 	@-$(CL) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
+
+
+# ------------------------------------------------------------------------------
+# Rule to assemble source file (*.s) to object file (*.o).
+# ------------------------------------------------------------------------------
 
 $(PATH_OBJ)/%.o : %.s
 	@$(ECHO) +++ assemble: $< to $@

@@ -1,0 +1,91 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef ANY_2017_11_07_
+  #define ANY_2017_11_07_
+
+  // Implement some of <any> for compilers that do not yet support it.
+  // This is a very naive (and only partial) implementation of std::any.
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
+  #include <new>
+
+  #if defined(ALIGNAS)
+    #undef ALIGNAS
+  #endif
+
+  #if defined(_MSC_VER)
+    #define ALIGNAS(N)
+  #else
+    #define ALIGNAS(N) alignas(N)
+  #endif
+
+  namespace std
+  {
+    class any;
+
+    template<typename value_type>
+    value_type any_cast(const any&);
+
+    class any
+    {
+    public:
+      any() : __my_size  (0U),
+              __my_memory(nullptr) { }
+
+      template<typename value_type>
+      any(value_type value) : __my_size  (sizeof(value_type)),
+                              __my_memory(new std::uint8_t[__my_size])
+      {
+        *reinterpret_cast<value_type*>(&__my_memory[0U]) = value_type(value);
+      }
+
+      any& operator=(const any& __other_any)
+      {
+        if(this != &__other_any)
+        {
+          if(__my_size != __other_any.__my_size)
+          {
+            delete [] __my_memory;
+
+            __my_size   = __other_any.__my_size;
+            __my_memory = new std::uint8_t[__my_size];
+          }
+
+          std::copy(&__other_any.__my_memory[0U],
+                    &__other_any.__my_memory[__my_size],
+                    &__my_memory[0U]);
+        }
+
+        return *this;
+      }
+
+      ~any()
+      {
+        delete [] __my_memory;
+      }
+
+    private:
+                  std::size_t   __my_size;
+      ALIGNAS(16) std::uint8_t* __my_memory;
+
+      template<typename value_type>
+      friend value_type any_cast(const any& any_instance);
+    };
+
+    template<typename value_type>
+    value_type any_cast(const any& any_instance)
+    {
+      return ((sizeof(value_type) == any_instance.__my_size)
+                 ? *reinterpret_cast<value_type*>(&any_instance.__my_memory[0U])
+                 : value_type());
+    }
+  }
+
+#endif // ANY_2017_11_07_

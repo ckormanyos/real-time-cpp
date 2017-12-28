@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _RATIO_2012_06_01_
-  #define _RATIO_2012_06_01_
+#ifndef RATIO_2012_06_01_
+  #define RATIO_2012_06_01_
 
   #include "impl/ratio_impl.h"
 
-#endif // _RATIO_2012_06_01_
+#endif // RATIO_2012_06_01_

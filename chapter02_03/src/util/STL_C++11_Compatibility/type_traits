@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _TYPE_TRAITS_2013_09_01_
-  #define _TYPE_TRAITS_2013_09_01_
+#ifndef TYPE_TRAITS_2013_09_01_
+  #define TYPE_TRAITS_2013_09_01_
 
   #include "impl/type_traits_impl.h"
 
-#endif // _TYPE_TRAITS_2013_09_01_
+#endif // TYPE_TRAITS_2013_09_01_

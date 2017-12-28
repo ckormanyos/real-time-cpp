@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_WDT_2010_04_10_H_
-  #define _MCAL_WDT_2010_04_10_H_
+#ifndef MCAL_WDT_2010_04_10_H_
+  #define MCAL_WDT_2010_04_10_H_
 
   extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));
 
@@ -20,8 +20,9 @@
 
       void init(const config_type*);
 
-      class secure final
+      struct secure final
       {
+      private:
         static void trigger();
 
         friend void ::sys::idle::task_func();
@@ -30,4 +31,4 @@
     }
   }
 
-#endif // _MCAL_WDT_2010_04_10_H_
+#endif // MCAL_WDT_2010_04_10_H_

@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDINT_2010_02_23_
-  #define _CSTDINT_2010_02_23_
+#ifndef CSTDINT_2010_02_23_
+  #define CSTDINT_2010_02_23_
 
   #include "impl/cstdint_impl.h"
 
-#endif // _CSTDINT_2010_02_23_
+#endif // CSTDINT_2010_02_23_

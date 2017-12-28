@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _TYPE_TRAITS_IMPL_2013_09_02_H_
-  #define _TYPE_TRAITS_IMPL_2013_09_02_H_
+#ifndef TYPE_TRAITS_IMPL_2013_09_02_H_
+  #define TYPE_TRAITS_IMPL_2013_09_02_H_
 
   namespace std
   {
@@ -43,4 +43,4 @@
     struct is_same<template_type1, template_type1> : true_type { };
   }
 
-#endif // _TYPE_TRAITS_IMPL_2013_09_02_H_
+#endif // TYPE_TRAITS_IMPL_2013_09_02_H_

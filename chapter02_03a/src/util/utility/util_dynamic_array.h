@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_DYNAMIC_ARRAY_2012_05_16_H_
-  #define _UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+#ifndef UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+  #define UTIL_DYNAMIC_ARRAY_2012_05_16_H_
 
   #include <algorithm>
   #include <initializer_list>
@@ -275,4 +275,4 @@
   const bool b_test = (a1 < a2);
   */
 
-#endif // _UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H_

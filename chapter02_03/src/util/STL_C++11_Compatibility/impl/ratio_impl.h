@@ -22,8 +22,8 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _RATIO_IMPL_2012_06_01_H_
-  #define _RATIO_IMPL_2012_06_01_H_
+#ifndef RATIO_IMPL_2012_06_01_H_
+  #define RATIO_IMPL_2012_06_01_H_
 
   #include <cstdint>
 
@@ -31,7 +31,7 @@
   {
 
   // helper functions
-  template<class T, T v>
+  template<typename T, T v>
   struct _integral_constant
   {
     static const T value = v;
@@ -248,4 +248,4 @@
   typedef ratio<1000000000000000000, 1> exa;
 } // namespace std
 
-#endif // _RATIO_IMPL_2012_06_01_H_
+#endif // RATIO_IMPL_2012_06_01_H_

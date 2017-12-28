@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_WDG_2010_04_10_H_
-  #define _MCAL_WDG_2010_04_10_H_
+#ifndef MCAL_WDG_2010_04_10_H_
+  #define MCAL_WDG_2010_04_10_H_
 
   namespace sys { namespace idle { void task_func(); } }
 
@@ -16,7 +16,7 @@
     {
       typedef void config_type;
 
-      inline void init(const config_type*) { }
+      void init(const config_type*);
 
       class secure final
       {
@@ -27,4 +27,4 @@
     }
   }
 
-#endif // _MCAL_WDG_2010_04_10_H_
+#endif // MCAL_WDG_2010_04_10_H_

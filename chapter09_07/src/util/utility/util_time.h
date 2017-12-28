@@ -5,9 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_TIME_2010_04_10_H_
-  #define _UTIL_TIME_2010_04_10_H_
+#ifndef UTIL_TIME_2010_04_10_H_
+  #define UTIL_TIME_2010_04_10_H_
 
+  #include <cstdint>
   #include <limits>
   #include <mcal_cpu.h>
   #include <mcal_gpt.h>
@@ -27,7 +28,7 @@
                     "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
 
     private:
-      static const tick_type timer_mask = static_cast<tick_type>((1ULL << (std::numeric_limits<tick_type>::digits - 1)) - 1ULL);
+      static const tick_type timer_mask = static_cast<tick_type>((UINTMAX_C(1) << (std::numeric_limits<tick_type>::digits - 1)) - UINTMAX_C(1));
 
     public:
       template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }
@@ -71,9 +72,23 @@
         return (delta <= timer_mask);
       }
 
+      bool timeout_of_specific_timepoint(const tick_type timepoint) const
+      {
+        const tick_type delta = timepoint - my_tick;
+
+        return (delta <= timer_mask);
+      }
+
       void set_mark()
       {
         my_tick = my_now();
+
+        return my_tick;
+      }
+
+      static tick_type get_mark()
+      {
+        return my_now();
       }
 
       tick_type get_ticks_since_mark() const
@@ -98,4 +113,4 @@
     };
   }
 
-#endif // _UTIL_TIME_2010_04_10_H_
+#endif // UTIL_TIME_2010_04_10_H_

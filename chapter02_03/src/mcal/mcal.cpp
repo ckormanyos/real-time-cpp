@@ -10,5 +10,6 @@
 void mcal::init()
 {
   mcal::irq::init(nullptr);
+
   mcal::gpt::init(nullptr);
 }

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDINT_IMPL_2010_02_23_H_
-  #define _CSTDINT_IMPL_2010_02_23_H_
+#ifndef CSTDINT_IMPL_2010_02_23_H_
+  #define CSTDINT_IMPL_2010_02_23_H_
 
   #include <stdint.h>
 
@@ -75,4 +75,4 @@
     using ::uintptr_t;
   }
 
-#endif // _CSTDINT_IMPL_2010_02_23_H_
+#endif // CSTDINT_IMPL_2010_02_23_H_

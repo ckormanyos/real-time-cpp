@@ -5,9 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _CSTDDEF_2010_02_23_
-  #define _CSTDDEF_2010_02_23_
+#ifndef CSTDDEF_2010_02_23_
+  #define CSTDDEF_2010_02_23_
 
-  #include "impl/cstddef_impl.h"
+  #include <stddef.h>
 
-#endif // _CSTDDEF_2010_02_23_
+  namespace std
+  {
+    using ::size_t;
+    using ::ptrdiff_t;
+    using ::nullptr_t;
+  }
+
+#endif // CSTDDEF_2010_02_23_

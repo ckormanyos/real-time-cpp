@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,21 +11,25 @@
 #include <mcal_gpt.h>
 
 // Implement std::chrono::high_resolution_clock::now()
-// for the standard library high-resolution clock.
+// for the standard library's high-resolution clock.
 namespace std
 {
   namespace chrono
   {
-    high_resolution_clock::time_point high_resolution_clock::now()
+    high_resolution_clock::time_point high_resolution_clock::now() UTIL_NOEXCEPT
     {
        // The source of the high-resolution clock is microseconds.
-       typedef std::chrono::time_point<high_resolution_clock, std::chrono::microseconds> microsecond_time_point_type;
+       using microsecond_time_point_type =
+         std::chrono::time_point<high_resolution_clock,
+                                 std::chrono::microseconds>;
 
        // Get the consistent system tick (having microsecond resolution).
-       const mcal::gpt::value_type microsecond_tick = mcal::gpt::secure::get_time_elapsed();
+       const mcal::gpt::value_type microsecond_tick =
+         mcal::gpt::secure::get_time_elapsed();
 
-       // Now obtain a time-point with microsecond resolution.
-       const microsecond_time_point_type time_point_in_microseconds = microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
+       // Obtain a time-point with microsecond resolution.
+       const auto time_point_in_microseconds =
+         microsecond_time_point_type(std::chrono::microseconds(microsecond_tick));
 
        // And return the corresponding duration with microsecond resolution.
        return time_point_cast<duration>(time_point_in_microseconds);
@@ -33,13 +37,18 @@ namespace std
   }
 }
 
-void* operator new(std::size_t size);
-void  operator delete(void*) noexcept;
+void  operator delete(void*)               UTIL_NOEXCEPT;
+void  operator delete(void*, unsigned int) UTIL_NOEXCEPT;
 
-void* operator new(std::size_t size)
+void* operator new(std::size_t size) UTIL_NOEXCEPT;
+
+void* operator new(std::size_t size) UTIL_NOEXCEPT
 {
-  volatile std::uint8_t  buffer[16U];
-  volatile std::uint8_t* get_ptr = &buffer[0U];
+  // This is a naive and not completely functional
+  // implementation of operator new(). In particular, there is
+  // no sensible momory management or reaction to buffer overflow.
+  volatile static std::uint8_t  buffer[8U];
+  volatile static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
   volatile std::uint8_t* p = get_ptr;
@@ -61,23 +70,25 @@ void* operator new(std::size_t size)
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
 
-void operator delete(void*) { }
+void operator delete(void*)               UTIL_NOEXCEPT { }
+void operator delete(void*, unsigned int) UTIL_NOEXCEPT { }
 
 extern "C"
 {
   // Declarations of patched functions.
 
-  // Provide user-supplied copies of certain functions declared in <stdlib.h> and <cstdlib>.
-  // Provide also user-supplied copies of certain empirically found library functions.
+  // Provide stubbed copies of certain functions declared in <stdlib.h> and <cstdlib>.
+  // Also provide stubbed copies of certain empirically found library functions
+  // and objects.
 
   typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
 
-  void        abort               ()               noexcept __attribute__((noreturn));
-  int         atexit              (void (*)(void)) noexcept;
-  int         at_quick_exit       (void (*)(void)) noexcept;
-  void        _Exit               (int)            noexcept __attribute__((noreturn));
-  void        exit                (int)                     __attribute__((noreturn));
-  void        quick_exit          (int)                     __attribute__((noreturn));
+  void        abort               ()           UTIL_NOEXCEPT __attribute__((noreturn));
+  int         atexit              (void (*)()) UTIL_NOEXCEPT;
+  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT;
+  void        _Exit               (int)        UTIL_NOEXCEPT __attribute__((noreturn));
+  void        exit                (int)                      __attribute__((noreturn));
+  void        quick_exit          (int)                      __attribute__((noreturn));
   int         _exit               (int);
   int         _isatty             (int);
   int         _lseek              (int, int, int);
@@ -95,10 +106,10 @@ extern "C"
 
   // Implementations of patched functions.
 
-  void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)(void)) noexcept           { return 0; }
-  int         at_quick_exit       (void (*)(void)) noexcept           { return 0; }
-  void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
+  void        abort               ()           UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
+  int         atexit              (void (*)()) UTIL_NOEXCEPT          { return 0; }
+  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT          { return 0; }
+  void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
   int         _exit               (int)                               { return -1; }
@@ -116,9 +127,20 @@ extern "C"
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
   void        __cxa_call_terminate(_Unwind_Exception*)                { }
 
-  // Provide some patched data.
-  char*         __env[1] = { nullptr };
-  char**        environ  = __env;
-  int           __errno;
-  unsigned char __fdlib_version;
+  // Provide some patched data values.
+  const char*  const __env[1U]       = { nullptr };
+  const char** const environ         = { nullptr };
+
+  int          __errno         = 0;
+  std::uint8_t __fdlib_version = UINT8_C(0);
 }
+
+// Provide some stubs for specific GCC error handling mechanisms.
+namespace std
+{
+  void __throw_length_error(char const*);
+  void __throw_logic_error (char const*);
+}
+
+void std::__throw_length_error(char const*) { }
+void std::__throw_logic_error (char const*) { }

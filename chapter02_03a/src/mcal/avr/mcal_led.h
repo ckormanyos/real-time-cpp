@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_LED_2010_09_14_H_
-  #define _MCAL_LED_2010_09_14_H_
+#ifndef MCAL_LED_2010_09_14_H_
+  #define MCAL_LED_2010_09_14_H_
 
   #include <cstdint>
   #include <mcal_port.h>
@@ -54,4 +54,4 @@
     }
   }
 
-#endif // _MCAL_LED_2010_09_14_H_
+#endif // MCAL_LED_2010_09_14_H_
