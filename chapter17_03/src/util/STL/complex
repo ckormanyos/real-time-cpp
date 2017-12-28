@@ -1260,15 +1260,31 @@
       return sinh(__my_z) / cosh(__my_z);
     }
 
-    #if defined(__GNUC__)
-    STL_LOCAL_CONSTEXPR complex<float>       operator""if(long double imag_literal)        { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
-    STL_LOCAL_CONSTEXPR complex<double>      operator""i (long double imag_literal)        { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
-    STL_LOCAL_CONSTEXPR complex<long double> operator""il(long double imag_literal)        { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
+    namespace literals
+    {
+      namespace complex_literals
+      {
+        STL_LOCAL_CONSTEXPR std::complex<float>       operator""if(unsigned long long __my_ul) { return std::complex<float>      (0.0F, static_cast<float>      (__my_ul)); }
+        STL_LOCAL_CONSTEXPR std::complex<double>      operator""i (unsigned long long __my_ul) { return std::complex<double>     (0.0,  static_cast<double>     (__my_ul)); }
+        STL_LOCAL_CONSTEXPR std::complex<long double> operator""il(unsigned long long __my_ul) { return std::complex<long double>(0.0L, static_cast<long double>(__my_ul)); }
 
-    STL_LOCAL_CONSTEXPR complex<float>       operator""if(unsigned long long imag_literal) { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
-    STL_LOCAL_CONSTEXPR complex<double>      operator""i (unsigned long long imag_literal) { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
-    STL_LOCAL_CONSTEXPR complex<long double> operator""il(unsigned long long imag_literal) { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
-    #endif
+        STL_LOCAL_CONSTEXPR std::complex<float>       operator""if(long double __my_ld)        { return std::complex<float>      (0.0F, static_cast<float>      (__my_ld)); }
+        STL_LOCAL_CONSTEXPR std::complex<double>      operator""i (long double __my_ld)        { return std::complex<double>     (0.0,  static_cast<double>     (__my_ld)); }
+        STL_LOCAL_CONSTEXPR std::complex<long double> operator""il(long double __my_ld)        { return std::complex<long double>(0.0L, static_cast<long double>(__my_ld)); }
+      }
+
+      using complex_literals::operator""if;
+      using complex_literals::operator""i;
+      using complex_literals::operator""il;
+
+    } // namespace std::literals::complex_literals
+
+    namespace complex_literals
+    {
+      using std::literals::complex_literals::operator""if;
+      using std::literals::complex_literals::operator""i;
+      using std::literals::complex_literals::operator""il;
+    } // namespace std::complex_literals
   } // namespace std
 
   /*
