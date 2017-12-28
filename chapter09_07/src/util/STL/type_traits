@@ -15,10 +15,11 @@
     typedef ::int32_t char32_t;
   #endif // _MSC_VER
 
-  #include <impl/stl_local_constexpr.h>
-
   #include <cstddef>
   #include <limits>
+
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
 
   // Implement some of <type_traits> for compilers that do not yet support it.
 
@@ -32,9 +33,9 @@
 
       static STL_LOCAL_CONSTEXPR value_type value = the_value;
 
-      typedef integral_constant<value_type, value> type;
+      typedef integral_constant type;
 
-      operator value_type() const
+      STL_LOCAL_CONSTEXPR operator value_type() const STL_LOCAL_NOEXCEPT
       {
         return value;
       }
