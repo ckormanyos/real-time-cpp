@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+
 #include <mcal_cpu.h>
-#include <util/utility/util_two_part_data_manipulation.h>
 
 extern "C"
 {
@@ -35,21 +35,17 @@ void crt::init_ram()
                                        - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
 
 
-  volatile std::uint8_t* rom_source = static_cast<volatile std::uint8_t*>(static_cast<volatile void*>(&_rom_data_begin));
+  std::uint8_t* rom_source = static_cast<std::uint8_t*>(static_cast<void*>(&_rom_data_begin));
 
   std::for_each(static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)),
                 static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)) + size,
                 [&rom_source](memory_aligned_type& ram_destination)
                 {
                   // Note that particular care needs to be taken to read program
-                  // memory with the function mcal::cpu::read_program_memory().
-
-                  // Acquire the next 16-bit address of the rom-source.
-                  const std::uint8_t addr_lo = mcal::cpu::read_program_memory(rom_source + 0U);
-                  const std::uint8_t addr_hi = mcal::cpu::read_program_memory(rom_source + 1U);
+                  // memory with the function mcal_cpu_read_program_memory_word().
 
                   // Copy the data from the rom-source to the ram-destination.
-                  ram_destination = util::make_long(addr_lo, addr_hi);
+                  ram_destination = mcal_cpu_read_program_memory_word(rom_source);
 
                   rom_source += 2U;
                 });

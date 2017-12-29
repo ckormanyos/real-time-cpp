@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+
 #include <mcal_cpu.h>
 
 extern "C"
@@ -21,7 +22,7 @@ extern "C"
 
 namespace crt
 {
-  void init_ram() __attribute__((section(".startup")));
+  void init_ram() __attribute__((section(".startup"), used, noinline));
 }
 
 void crt::init_ram()
@@ -46,7 +47,6 @@ void crt::init_ram()
                   // Copy the data from the rom-source to the ram-destination.
                   ram_destination = mcal_cpu_read_program_memory_word(rom_source);
 
-                  // Acquire the next 16-bit address of the rom-source.
                   rom_source += 2U;
                 });
 

@@ -1,4 +1,5 @@
-#  Copyright Christopher Kormanyos 2015 2018.
+#
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,16 +13,14 @@ GCC_VERSION   = 7.2.0
 GCC_TARGET    = avr
 
 TGT_CFLAGS    = -O2                                            \
-                -std=c++17                                     \
-                -finline-functions                             \
-                -finline-limit=16                              \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
+                -mrelax
+
+TGT_CPPFLAGS  = -std=c++17                                     \
                 -I$(PATH_APP)/util/STL                         \
                 -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
-TGT_LFLAGS    = -mrelax
-
-IMAGE_FILE    = dummy.foo
+TGT_LDFLAGS   =

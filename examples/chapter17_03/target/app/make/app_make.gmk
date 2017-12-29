@@ -132,7 +132,6 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wdouble-promotion                \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -O2                               \
               -ffunction-sections               \
               -fdata-sections
 
@@ -151,15 +150,16 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32
+              -ftemplate-depth=32               \
+              -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LFLAGS      = $(GCCFLAGS)                       \
-              $(TGT_LFLAGS)                     \
+LDFLAGS     = $(GCCFLAGS)                       \
+              $(TGT_LDFLAGS)                    \
               -x none                           \
               -nostdlib                         \
               -nostartfiles                     \
@@ -227,7 +227,7 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(CL) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
 

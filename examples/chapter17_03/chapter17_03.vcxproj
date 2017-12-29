@@ -477,11 +477,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h" />
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h" />
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h" />
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h" />
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h" />
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h" />
     <ClInclude Include="src\util\utility\util_alignas.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
@@ -658,11 +653,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="src\util\STL_C++11_Compatibility\chrono" />
-    <None Include="src\util\STL_C++11_Compatibility\cstdbool" />
-    <None Include="src\util\STL_C++11_Compatibility\cstdint" />
-    <None Include="src\util\STL_C++11_Compatibility\ratio" />
-    <None Include="src\util\STL_C++11_Compatibility\type_traits" />
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

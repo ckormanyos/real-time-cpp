@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,8 +14,8 @@ asm volatile(".extern __initial_stack_pointer");
 
 namespace crt
 {
-  void init_ram  () __attribute__((section(".startup")));
-  void init_ctors() __attribute__((section(".startup")));
+  void init_ram  () __attribute__((section(".startup"), used, noinline));
+  void init_ctors() __attribute__((section(".startup"), used, noinline));
 }
 
 extern "C" void __my_startup() __attribute__((section(".startup"), used, noinline));

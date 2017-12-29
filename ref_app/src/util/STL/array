@@ -8,6 +8,10 @@
 #ifndef ARRAY_2010_02_23_
   #define ARRAY_2010_02_23_
 
+  #if defined(__GNUC__)
+  #pragma GCC system_header
+  #endif
+
   #include <impl/stl_local_constexpr.h>
   #include <algorithm>
   #include <iterator>

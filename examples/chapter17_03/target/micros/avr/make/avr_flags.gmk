@@ -14,15 +14,13 @@ GCC_TARGET    = avr
 
 TGT_CFLAGS    = -O2                                            \
                 -mmcu=atmega328p                               \
-                -fsigned-char
+                -fsigned-char                                  \
+                -mrelax
 
 TGT_CPPFLAGS  = -std=c++17                                     \
-                -Wzero-as-null-pointer-constant                \
                 -I$(PATH_APP)/util/STL                         \
                 -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
-TGT_LFLAGS    = -mrelax
-
-IMAGE_FILE    = dummy.foo
+TGT_LDFLAGS   =

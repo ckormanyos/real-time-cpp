@@ -24,6 +24,7 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.ActiveCfg = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.Build.0 = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.ActiveCfg = target avr|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.Build.0 = target avr|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|Win32.Build.0 = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|x64.ActiveCfg = Debug|x64
@@ -34,7 +35,6 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.Build.0 = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.ActiveCfg = Release|x64
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
