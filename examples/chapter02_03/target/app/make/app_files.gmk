@@ -1,0 +1,10 @@
+# ------------------------------------------------------------------------------
+# List of the source files in the project
+# ------------------------------------------------------------------------------
+
+FILES_CPP  = $(PATH_APP)/mcal/mcal                             \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_irq                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led                  \
+             $(PATH_APP)/sys/start/sys_start
