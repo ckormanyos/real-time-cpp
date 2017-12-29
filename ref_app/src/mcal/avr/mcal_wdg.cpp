@@ -16,7 +16,7 @@ void mcal::wdg::init(const config_type*)
                       std::uint8_t,
                       mcal::reg::mcusr>::reg_get();
 
-  // At the moment, we make use of the MCU status register.
+  // At the moment, we do not make use of the MCU status register.
   // In the future, for example, we could query the reset reason.
   static_cast<void>(mcu_status_register);
 
@@ -50,7 +50,7 @@ void mcal::wdg::secure::trigger()
 }
 
 // This following function is not used.
-// It is kept as an example of *turning off*
+// It is, however, kept as an example of *turning off*
 // the wdt if wdton is set in the fuse bits.
 void mcal_wdg_turn_off_wdt_if_wdton_is_set();
 

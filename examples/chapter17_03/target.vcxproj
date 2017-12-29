@@ -106,9 +106,8 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
-    </NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />

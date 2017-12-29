@@ -199,23 +199,15 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">target\build\build.bat bcm2835_raspi_b clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">target\build\build.bat pic32mx795fx clean_all</NMakeCleanCommandLine>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">
-    </NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'" />
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">
-    </NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|Win32'">ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target pic32mx795fx|Win32'">ref_app.hex</NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -283,7 +275,7 @@
     </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++20_Compatibility $(SolutionDir)src\mcal\avr $(SolutionDir)src</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rl78</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rx63n</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
@@ -309,7 +301,8 @@
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
+    </IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rl78|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|Win32'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'" />

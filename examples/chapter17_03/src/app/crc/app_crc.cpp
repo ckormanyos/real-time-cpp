@@ -70,7 +70,9 @@ void app::crc::task_func()
     &app_crc_autosar_crc64
   }};
 
-  const std::array<std::any, 4U> results =
+  // Create an array of std::any containing
+  // the 8, 16, 32, 64 bit CRC control values.
+  const std::array<std::any, 4U> control_values =
   {{
     std::uint8_t (UINT8_C (0xDF)),
     std::uint16_t(UINT16_C(0x29B1)),
@@ -112,10 +114,10 @@ void app::crc::task_func()
 
   // Verify all CRC results.
   const volatile bool results_are_ok =
-    (   (checksums[0U]->get_result<std::uint8_t> () == std::any_cast<std::uint8_t> (results[0U]))
-     && (checksums[1U]->get_result<std::uint16_t>() == std::any_cast<std::uint16_t>(results[1U]))
-     && (checksums[2U]->get_result<std::uint32_t>() == std::any_cast<std::uint32_t>(results[2U]))
-     && (checksums[3U]->get_result<std::uint64_t>() == std::any_cast<std::uint64_t>(results[3U])));
+    (   (checksums[0U]->get_result<std::uint8_t> () == std::any_cast<std::uint8_t> (control_values[0U]))
+     && (checksums[1U]->get_result<std::uint16_t>() == std::any_cast<std::uint16_t>(control_values[1U]))
+     && (checksums[2U]->get_result<std::uint32_t>() == std::any_cast<std::uint32_t>(control_values[2U]))
+     && (checksums[3U]->get_result<std::uint64_t>() == std::any_cast<std::uint64_t>(control_values[3U])));
 
   if(results_are_ok == false)
   {

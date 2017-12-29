@@ -47,6 +47,7 @@ void crt::init_ram()
                   // Copy the data from the rom-source to the ram-destination.
                   ram_destination = mcal_cpu_read_program_memory_word(rom_source);
 
+                  // Acquire the next 16-bit address of the rom-source.
                   rom_source += 2U;
                 });
 

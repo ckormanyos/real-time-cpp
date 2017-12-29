@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2014.
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -106,12 +106,10 @@ SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
 # Tool parameters
 # ------------------------------------------------------------------------------
 C_INCLUDES = $(TGT_INCLUDES)                    \
-             -I$(PATH_APP)/mcal/$(TGT)          \
-             -I$(PATH_APP)
+             -I$(PATH_APP)                      \
+             -I$(PATH_APP)/mcal/$(TGT)
 
-
-GCCFLAGS    = $(C_INCLUDES)                     \
-              $(TGT_CFLAGS)                     \
+GCCFLAGS    = $(TGT_CFLAGS)                     \
               -g                                \
               -Wall                             \
               -Wextra                           \
@@ -122,6 +120,7 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wunused-parameter                \
               -Wuninitialized                   \
               -Wmissing-declarations            \
+              -Wshadow                          \
               -Wunreachable-code                \
               -Wswitch-default                  \
               -Wswitch-enum                     \
@@ -150,7 +149,8 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32
+              -ftemplate-depth=32               \
+              -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
@@ -158,12 +158,11 @@ AFLAGS      = $(GCCFLAGS)                       \
               -x assembler
 
 LDFLAGS     = $(GCCFLAGS)                       \
-              $(TGT_LFLAGS)                     \
+              $(TGT_LDFLAGS)                    \
               -x none                           \
               -nostdlib                         \
               -nostartfiles                     \
               -Wl,--gc-sections
-
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -216,12 +215,21 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
-	@$(ECHO) GNUmake version...
+	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
-	@$(ECHO) GCC version...
+	@$(ECHO) "\n"
+	@$(ECHO) +++ Print GCC version
 	@$(CC) -xc++ -E -v -
-	@$(ECHO) Print compiler include paths...
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
+	@$(ECHO) $(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES)))
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler definitions
+	@$(ECHO) $(C_DEFINES)
+	@$(ECHO)
 
 
 # ------------------------------------------------------------------------------

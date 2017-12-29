@@ -24,15 +24,14 @@ TGT_CFLAGS    = -O2                                            \
                 -mno-gpopt                                     \
                 -msoft-float                                   \
                 -mno-dsp                                       \
-                -mno-dspr2
+                -mno-dspr2                                     \
+                -mlong-calls
 
-
-TGT_CPPFLAGS  = -std=c++11                                     \
-                -Wzero-as-null-pointer-constant
+TGT_CPPFLAGS  = -std=c++11
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
-TGT_AFLAGS    = -mlong-calls
+TGT_AFLAGS    =
 
 TGT_LFLAGS    =
 

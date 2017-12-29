@@ -11,11 +11,13 @@
 void mcal::wdg::init(const config_type*)
 {
   // Read the MCU status register.
-  volatile const std::uint8_t mcu_status_register = mcal::reg::access<std::uint8_t,
-                                                                      std::uint8_t,
-                                                                      mcal::reg::mcusr>::reg_get();
+  volatile const std::uint8_t mcu_status_register =
+    mcal::reg::access<std::uint8_t,
+                      std::uint8_t,
+                      mcal::reg::mcusr>::reg_get();
 
-  // TBD: Make use of the MCU status register to query the reset reason.
+  // At the moment, we do not make use of the MCU status register.
+  // In the future, for example, we could query the reset reason.
   static_cast<void>(mcu_status_register);
 
   // Clear the MCU status register.
@@ -45,4 +47,32 @@ void mcal::wdg::init(const config_type*)
 void mcal::wdg::secure::trigger()
 {
   asm volatile("wdr");
+}
+
+// This following function is not used.
+// It is, however, kept as an example of *turning off*
+// the wdt if wdton is set in the fuse bits.
+void mcal_wdg_turn_off_wdt_if_wdton_is_set();
+
+void mcal_wdg_turn_off_wdt_if_wdton_is_set()
+{
+  asm volatile("wdr");
+
+  // Clear WDRF in the MCU status register.
+  mcal::reg::access<std::uint8_t,
+                    std::uint8_t,
+                    mcal::reg::mcusr,
+                    std::uint8_t(3U)>::bit_clr();
+
+  // Set WDCE and WDE.
+  mcal::reg::access<std::uint8_t,
+                    std::uint8_t,
+                    mcal::reg::wdtcsr,
+                    std::uint8_t(0x18U)>::reg_or();
+
+  // Turn off the WDT.
+  mcal::reg::access<std::uint8_t,
+                    std::uint8_t,
+                    mcal::reg::wdtcsr,
+                    std::uint8_t(0U)>::reg_set();
 }

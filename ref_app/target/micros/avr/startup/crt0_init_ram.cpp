@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+
 #include <mcal_cpu.h>
 
 extern "C"
@@ -21,7 +22,7 @@ extern "C"
 
 namespace crt
 {
-  void init_ram() __attribute__((section(".startup")));
+  void init_ram() __attribute__((section(".startup"), used, noinline));
 }
 
 void crt::init_ram()

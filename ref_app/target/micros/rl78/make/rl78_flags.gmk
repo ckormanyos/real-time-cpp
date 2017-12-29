@@ -17,13 +17,12 @@ TGT_CFLAGS    = -O2                                            \
                 -finline-limit=16                              \
                 -mmul=none
 
-TGT_CPPFLAGS  = -std=c++11                                     \
-                -Wzero-as-null-pointer-constant
+TGT_CPPFLAGS  = -std=c++11
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
-TGT_LFLAGS    = -nostdlib
+TGT_LFLAGS    =
 
 IMAGE_FILE    = dummy.foo

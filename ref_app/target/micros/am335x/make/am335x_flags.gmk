@@ -26,8 +26,7 @@ TGT_CFLAGS    = -O2                                                             
                 -mno-unaligned-access                                             \
                 -mno-long-calls
 
-TGT_CPPFLAGS  = -std=c++17                                                        \
-                -Wzero-as-null-pointer-constant
+TGT_CPPFLAGS  = -std=c++17
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 

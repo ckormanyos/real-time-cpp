@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,8 +20,9 @@
 
       void init(const config_type*);
 
-      class secure final
+      struct secure final
       {
+      private:
         static void trigger();
 
         friend void ::sys::idle::task_func();

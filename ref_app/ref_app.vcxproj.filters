@@ -71,9 +71,6 @@
     <Filter Include="src\util\STL\impl\avr">
       <UniqueIdentifier>{8d56caaf-763e-4cfe-a62b-2b1bdaee1be3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL_C++11_Compatibility">
-      <UniqueIdentifier>{20982b03-2390-4ddf-906f-bbc52686ae17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\am335x">
       <UniqueIdentifier>{9b5fd24e-5f56-4862-b157-28c2d59c7973}</UniqueIdentifier>
     </Filter>
@@ -91,9 +88,6 @@
     </Filter>
     <Filter Include="src\mcal\stm32f407">
       <UniqueIdentifier>{9ad2bd26-af7c-429d-b1ca-498f39c47053}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\STL_C++11_Compatibility\impl">
-      <UniqueIdentifier>{9f427a37-704f-4f54-a49f-4d9804e2579b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\mcal\rl78">
       <UniqueIdentifier>{f8af3f0f-5c80-41e7-88de-7809108140bd}</UniqueIdentifier>
@@ -756,12 +750,6 @@
     <ClInclude Include="src\util\utility\util_stopwatch.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\constants\constant_functions.h">
       <Filter>src\math\constants</Filter>
     </ClInclude>
@@ -815,15 +803,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_wdg.h">
       <Filter>src\mcal\rl78</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL\time.h">
       <Filter>src\util\STL</Filter>
@@ -1304,29 +1283,14 @@
     <None Include="src\util\STL\ctime">
       <Filter>src\util\STL</Filter>
     </None>
-    <None Include="src\util\STL_C++11_Compatibility\chrono">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\ratio">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
     <None Include="src\util\STL\functional">
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\type_traits">
       <Filter>src\util\STL</Filter>
     </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\type_traits">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
     <None Include="src\util\STL\cstdbool">
       <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdint">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
     </None>
     <None Include="src\util\STL\climits">
       <Filter>src\util\STL</Filter>
