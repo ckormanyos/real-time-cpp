@@ -14,7 +14,7 @@
   #define COMPLEX_2012_02_20_
 
   #if !defined(STD_COMPLEX_DISABLE_IOSTREAM)
-  #define STD_COMPLEX_DISABLE_IOSTREAM
+    #define STD_COMPLEX_DISABLE_IOSTREAM
   #endif
 
   #if defined(__GNUC__)

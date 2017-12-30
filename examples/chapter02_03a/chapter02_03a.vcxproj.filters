@@ -34,12 +34,6 @@
     <Filter Include="src\mcal\win32">
       <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL_C++11_Compatibility">
-      <UniqueIdentifier>{96a081d3-49bf-4a50-a375-a8107fb760ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\STL_C++11_Compatibility\impl">
-      <UniqueIdentifier>{a366dc4b-f9e4-4839-b7a6-a91fe70d160c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\os">
       <UniqueIdentifier>{a0f77d42-d217-4e17-b505-7e2b1acc3818}</UniqueIdentifier>
     </Filter>
@@ -167,21 +161,6 @@
     <ClInclude Include="src\mcal\win32\mcal_reg.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
-      <Filter>src\util\STL_C++11_Compatibility\impl</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -298,21 +277,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\util\STL_C++11_Compatibility\chrono">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdint">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\ratio">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\type_traits">
-      <Filter>src\util\STL_C++11_Compatibility</Filter>
-    </None>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
     </None>

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_ALIGNAS_2015_05_20_H_
-  #define _UTIL_ALIGNAS_2015_05_20_H_
+#ifndef UTIL_ALIGNAS_2015_05_20_H_
+  #define UTIL_ALIGNAS_2015_05_20_H_
 
   #if defined(_MSC_VER)
     #define ALIGNAS(n)
@@ -14,4 +14,4 @@
     #define ALIGNAS(n) alignas(n)
   #endif
 
-#endif // _UTIL_ALIGNAS_2015_05_20_H_
+#endif // UTIL_ALIGNAS_2015_05_20_H_

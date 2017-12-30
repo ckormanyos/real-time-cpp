@@ -11,6 +11,6 @@
   // If the compiler has <time.h>, then include it for the type time_t.
   // Otherwise, we simply define time_t as unsigned int.
 
-  typedef unsigned int time_t;
+  typedef long int time_t;
 
 #endif // TIME_2014_04_23_H_

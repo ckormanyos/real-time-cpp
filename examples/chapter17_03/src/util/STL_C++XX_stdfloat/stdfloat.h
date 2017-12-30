@@ -11,8 +11,8 @@
 // as described in N1703 (proposed for C via JTC1/SC22/WG14).
 // See: http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1703.pdf
 
-#ifndef _STDFLOAT_2014_01_09_H_
-  #define _STDFLOAT_2014_01_09_H_
+#ifndef STDFLOAT_2014_01_09_H_
+  #define STDFLOAT_2014_01_09_H_
 
   #include <float.h>
 
@@ -309,4 +309,4 @@
 
   #undef STDFLOAT_MAXIMUM_AVAILABLE_WIDTH
 
-#endif // _STDFLOAT_2014_01_09_H_
+#endif // STDFLOAT_2014_01_09_H_

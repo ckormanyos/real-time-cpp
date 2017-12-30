@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_NONCOPYABLE_2008_12_16_H_
-  #define _UTIL_NONCOPYABLE_2008_12_16_H_
+#ifndef UTIL_NONCOPYABLE_2008_12_16_H_
+  #define UTIL_NONCOPYABLE_2008_12_16_H_
 
   // Taken (with slight modification) from boost::noncopyable.
 
@@ -19,8 +19,8 @@
       protected:
 
       #if defined(__GNUC__)
-        constexpr noncopyable() { }
-        ~noncopyable() { }
+        constexpr noncopyable() = default;
+        ~noncopyable() = default;
       #else
         noncopyable() {}
         ~noncopyable() {}
@@ -43,4 +43,4 @@
     typedef my_noncopyable_namespace::noncopyable noncopyable;
   }
 
-#endif // _UTIL_NONCOPYABLE_2008_12_16_H_
+#endif // UTIL_NONCOPYABLE_2008_12_16_H_

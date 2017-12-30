@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_POINT_2008_11_22_H_
-  #define _UTIL_POINT_2008_11_22_H_
+#ifndef UTIL_POINT_2008_11_22_H_
+  #define UTIL_POINT_2008_11_22_H_
 
   namespace util
   {
@@ -92,4 +92,4 @@
     }
   }
 
-#endif // _UTIL_POINT_2008_11_22_H_
+#endif // UTIL_POINT_2008_11_22_H_

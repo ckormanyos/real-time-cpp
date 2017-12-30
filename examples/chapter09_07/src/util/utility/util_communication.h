@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_COMMUNICATION_2012_05_31_H_
-  #define _UTIL_COMMUNICATION_2012_05_31_H_
+#ifndef UTIL_COMMUNICATION_2012_05_31_H_
+  #define UTIL_COMMUNICATION_2012_05_31_H_
 
   #include <algorithm>
   #include <cstddef>
@@ -109,4 +109,4 @@
     communication<buffer_size>::~communication() { }
   }
 
-#endif // _UTIL_COMMUNICATION_2012_05_31_H_
+#endif // UTIL_COMMUNICATION_2012_05_31_H_

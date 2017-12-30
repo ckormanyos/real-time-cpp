@@ -63,7 +63,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)..\Bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)bin</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(OutDir)</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
@@ -106,9 +106,8 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
-    </NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|Win32'">
     </NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />

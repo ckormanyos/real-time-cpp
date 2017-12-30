@@ -10,6 +10,7 @@
 
   #include <cstdint>
   #include <limits>
+
   #include <mcal_cpu.h>
   #include <mcal_gpt.h>
 
@@ -31,7 +32,7 @@
       static const tick_type timer_mask = static_cast<tick_type>((UINTMAX_C(1) << (std::numeric_limits<tick_type>::digits - 1)) - UINTMAX_C(1));
 
     public:
-      template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }
+      template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return static_cast<tick_type>(value_microseconds); }
       template<typename other_tick_type> static tick_type milliseconds(const other_tick_type& value_milliseconds) { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
       template<typename other_tick_type> static tick_type seconds     (const other_tick_type& value_seconds     ) { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
       template<typename other_tick_type> static tick_type minutes     (const other_tick_type& value_minutes     ) { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }

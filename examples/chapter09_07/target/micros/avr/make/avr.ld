@@ -1,6 +1,6 @@
 
 /*
- Copyright Christopher Kormanyos 2007 - 2013.
+ Copyright Christopher Kormanyos 2007 - 2018.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega32P. */
 
-INPUT(libc.a libm.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
@@ -19,11 +19,11 @@ _rom_begin = 0x00000000;
 _rom_end   = 0x00007FEC;
 
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of (1/2)K */
+/* Set up a stack with a size of (3/4)K */
 _stack_begin = 0x800500;
 _stack_end   = 0x800800;
 
-/* The end of the 2K RAM stack */
+/* The initial stack pointer (top of stack) is at the top of the 2K RAM */
 __initial_stack_pointer = 0x800800;
 
 MEMORY
@@ -61,6 +61,7 @@ SECTIONS
     . = ALIGN(2);
     KEEP (*(SORT(.ctors)))
     _ctors_end = .;
+    . = ALIGN(2);
     *(.progmem*)
     . = ALIGN(2);
     *(.trampolines*)

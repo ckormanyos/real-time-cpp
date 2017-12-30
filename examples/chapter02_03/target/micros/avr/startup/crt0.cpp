@@ -24,17 +24,17 @@ void __my_startup()
 {
   // Load the sreg register.
   asm volatile("eor r1, r1");
-  asm volatile("out 0x3F, r1");
+  asm volatile("out 0x3f, r1");
 
   // Set the stack pointer.
   asm volatile("ldi r28, lo8(__initial_stack_pointer)");
   asm volatile("ldi r29, hi8(__initial_stack_pointer)");
 
   // Load the sph register (stack pointer high).
-  asm volatile("out 0x3E, r29");
+  asm volatile("out 0x3e, r29");
 
   // Load the spl register (stack pointer low).
-  asm volatile("out 0x3D, r28");
+  asm volatile("out 0x3d, r28");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();

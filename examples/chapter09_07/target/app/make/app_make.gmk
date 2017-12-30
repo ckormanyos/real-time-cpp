@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -73,7 +73,7 @@ LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 # ------------------------------------------------------------------------------
 # VPATH definition
 #
-# VPATH is required for the maker to find the C-/ASM-Source files.
+# VPATH is required for the maker to find the C/C++/ASM-Source files.
 # Extract the directory/module names from the file list with the dir
 # command and remove the duplicated directory names with the sort command.
 # FILES_PRJ is listed first to make sure that the source files in the project
@@ -88,7 +88,6 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 AR        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-ar.exe
 AS        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CC        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
-CL        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-g++.exe
 CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-c++filt.exe
 NM        = $(PATH_TOOLS_CC)\$(GCC_TARGET)-nm.exe
 OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_TARGET)-objdump.exe
@@ -106,11 +105,11 @@ SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
-C_INCLUDES = -I$(PATH_APP)                      \
+C_INCLUDES = $(TGT_INCLUDES)                    \
+             -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
-GCCFLAGS    = $(C_INCLUDES)                     \
-              $(TGT_CFLAGS)                     \
+GCCFLAGS    = $(TGT_CFLAGS)                     \
               -g                                \
               -Wall                             \
               -Wextra                           \
@@ -132,7 +131,6 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wdouble-promotion                \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -O2                               \
               -ffunction-sections               \
               -fdata-sections
 
@@ -151,15 +149,16 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32
+              -ftemplate-depth=32               \
+              -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LFLAGS      = $(GCCFLAGS)                       \
-              $(TGT_LFLAGS)                     \
+LDFLAGS     = $(GCCFLAGS)                       \
+              $(TGT_LDFLAGS)                    \
               -x none                           \
               -nostdlib                         \
               -nostartfiles                     \
@@ -216,10 +215,21 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
-	@$(ECHO) GNUmake version...
+	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
-	@$(ECHO) GCC version...
-	@$(CL) -v
+	@$(ECHO) "\n"
+	@$(ECHO) +++ Print GCC version
+	@$(CC) -xc++ -E -v -
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler include paths
+	@$(ECHO) $(C_INCLUDES)
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
+	@$(ECHO) $(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES)))
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler definitions
+	@$(ECHO) $(C_DEFINES)
+	@$(ECHO)
 
 
 # ------------------------------------------------------------------------------
@@ -227,7 +237,7 @@ version:
 # ------------------------------------------------------------------------------
 $(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CL) $(LFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+	@-$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
 
@@ -250,7 +260,7 @@ $(APP)_nm.txt : $(APP).elf
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).elf
-	@-$(ECHO) +++ creating hex and bin modules: $(APP).hex, etc.
+	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
 	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
 

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
-  #define _UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
+#ifndef UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
+  #define UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
 
   #include <util/utility/util_point.h>
 
@@ -58,4 +58,4 @@
     }
   }
 
-#endif // _UTIL_LINEAR_INTERPOLATE_2008_11_22_H_
+#endif // UTIL_LINEAR_INTERPOLATE_2008_11_22_H_

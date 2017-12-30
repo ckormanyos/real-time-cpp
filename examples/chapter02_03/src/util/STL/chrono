@@ -43,7 +43,7 @@
   #include <limits>
   #include <ratio>
 
-  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
 
   namespace std
   {
@@ -568,7 +568,7 @@
         static const bool is_steady = false;
 
         // !!! PLATFORM AND OS SPECIFIC IMPLEMENTATION !!!
-        static time_point now();
+        static time_point now() STL_LOCAL_NOEXCEPT;
       };
 
 
@@ -598,7 +598,7 @@
         static const bool is_steady = true;
 
         // !!! PLATFORM AND OS SPECIFIC IMPLEMENTATION !!!
-        static time_point now();
+        static time_point now() STL_LOCAL_NOEXCEPT;
       };
 
 

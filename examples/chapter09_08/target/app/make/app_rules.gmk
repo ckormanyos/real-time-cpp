@@ -30,11 +30,11 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and create an assembly listing using objdump,
   # ...and generate a dependency file (using the -MM flag),
   # ...and be sure to include the path in the dependency file.
-	@-$(CL) $(CPPFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(CC) $(CPPFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
 	@-$(OBJDUMP) -S -C $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
-	@-$(CL) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CC) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
 
 # ------------------------------------------------------------------------------
@@ -49,11 +49,11 @@ $(PATH_OBJ)/%.o : %.c
   # ...and create an assembly listing using objdump,
   # ...and generate a dependency file (using the -MM flag),
   # ...and be sure to include the path in the dependency file.
-	@-$(CC) $(CFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(CC) $(CFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
-	@-$(CL) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CC) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
 
 # ------------------------------------------------------------------------------
@@ -66,6 +66,6 @@ $(PATH_OBJ)/%.o : %.s
   # ...and reformat (using sed) any possible error/warning messages
   #    for the VisualStudio(R) output window,
   # ...and create an assembly listing using objdump
-	@-$(CL) $(AFLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(CC) $(AFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst

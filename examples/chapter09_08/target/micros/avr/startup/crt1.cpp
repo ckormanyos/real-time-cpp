@@ -31,7 +31,7 @@ void crt::init_ctors()
 
   for(std::uint8_t* rom_source  = static_cast<std::uint8_t*>(static_cast<void*>(_ctors_end));
                     rom_source != static_cast<std::uint8_t*>(static_cast<void*>(_ctors_begin));
-                             rom_source -= sizeof(function_aligned_type))
+                    rom_source -= sizeof(function_aligned_type))
   {
     // Note that particular care needs to be taken to read program
     // memory with the function mcal_cpu_read_program_memory_word().

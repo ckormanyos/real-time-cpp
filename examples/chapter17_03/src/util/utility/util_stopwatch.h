@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_STOPWATCH_2014_01_07_H_
-  #define _UTIL_STOPWATCH_2014_01_07_H_
+#ifndef UTIL_STOPWATCH_2014_01_07_H_
+  #define UTIL_STOPWATCH_2014_01_07_H_
 
   namespace util
   {
@@ -53,4 +53,4 @@
   //  const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(my_stopwatch.elapsed()).count();
   //  const auto elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(my_stopwatch.elapsed()).count();
 
-#endif // _UTIL_STOPWATCH_2014_01_07_H_
+#endif // UTIL_STOPWATCH_2014_01_07_H_

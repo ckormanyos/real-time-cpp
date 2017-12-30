@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_
-  #define _UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_
+#ifndef UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_
+  #define UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_
 
   // Provide a nullptr workaround for C++ compilers not yet supporting it.
 
@@ -37,4 +37,4 @@
 
   const nullptr_t nullptr = { };
 
-#endif // _UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_
+#endif // UTIL_NULL_PTR_WORKAROUND_2010_12_06_H_

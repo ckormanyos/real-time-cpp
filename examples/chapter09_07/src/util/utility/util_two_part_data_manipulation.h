@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
-  #define _UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
+#ifndef UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
+  #define UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
 
   #include <limits>
   #include <util/utility/util_utype_helper.h>
@@ -95,4 +95,4 @@
     }
   }
 
-#endif // _UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
+#endif // UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
