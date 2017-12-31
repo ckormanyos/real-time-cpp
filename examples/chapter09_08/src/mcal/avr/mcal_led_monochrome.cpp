@@ -12,10 +12,8 @@
 
 util::device::led_monochrome& mcal::led::led_monochrome0()
 {
-  using led_type = mcal::led::led_momochrome_board<mcal::reg::portb,
-                                                   UINT8_C(5)>;
-
-  static led_type the_led;
+  static mcal::led::led_momochrome_board<mcal::reg::portb,
+                                         UINT8_C(5)> the_led;
 
   return the_led;
 }

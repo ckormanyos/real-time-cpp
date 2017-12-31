@@ -12,10 +12,7 @@
 
 util::device::led_rgb& mcal::led::led_rgb0()
 {
-  using led_rgb_ws2812_type =
-    mcal::led::led_rgb_ws2812<mcal::reg::portb, 0U>;
-
-  static led_rgb_ws2812_type the_led;
+  static mcal::led::led_rgb_ws2812<mcal::reg::portb, 0U> the_led;
 
   return the_led;
 }

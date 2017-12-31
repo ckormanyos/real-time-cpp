@@ -114,22 +114,23 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
 
     create_window_is_ok &= redraw_window_is_ok;
 
-    const BOOL show_window_result_is_ok =
+    const bool show_window_result_is_ok =
       (ShowWindow(my_handle_to_window, SW_SHOW) == TRUE);
 
-    static_cast<void>(show_window_result_is_ok);
+    create_window_is_ok &= show_window_result_is_ok;
 
     // Initialize the RGB LED circle in the window with the initial RGB color.
     const bool draw_circle_led_rgb_is_ok =
       (   show_window_result_is_ok
        && draw_circle(100, 100, 72, 1, initial_rgb_color, true));
 
+    create_window_is_ok &= draw_circle_led_rgb_is_ok;
+
     // Initialize the monochrome LED in the window with green.
     const bool draw_circle_led_monochrome_is_ok =
       (   show_window_result_is_ok
        && draw_circle(290, 100, 72, 1, color_green, true));
 
-    create_window_is_ok &= draw_circle_led_rgb_is_ok;
     create_window_is_ok &= draw_circle_led_monochrome_is_ok;
   }
 
@@ -302,8 +303,11 @@ int WINAPI WinMain(HINSTANCE handle_to_instance, HINSTANCE, LPSTR, int)
 
   static_cast<void>(create_window_is_ok);
 
-  // Start the main system thread, which can be used for non-Windows work.
-  // It is in this thread, that the simulated multitasking environment runs.
+  // Start the main system thread, which is used
+  // for work not within the Win32 API.
+  // The simulated multitasking environment runs
+  // in this thread.
+
   std::thread sys_start_thread(mcal::led::sys_start_interface::my_sys_start);
 
   // Detach this process from its spawning thread object.
@@ -320,7 +324,7 @@ int WINAPI WinMain(HINSTANCE handle_to_instance, HINSTANCE, LPSTR, int)
 
     if(get_message_is_ok)
     {
-      // Process Windows messages.
+      // Process Win32 API messages.
       const bool is_window  = (IsWindow       (mcal::led::driver_pc::instance().get_handle_to_window()) == TRUE);
       const bool is_dlg_msg = (IsDialogMessage(mcal::led::driver_pc::instance().get_handle_to_window(), &message) == TRUE);
 
