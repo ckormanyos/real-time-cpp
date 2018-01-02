@@ -40,9 +40,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
   if((prescale % 4096U) == 0U)
   {
-    using namespace std::chrono_literals;
-
-    std::this_thread::sleep_for(3ms);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3U));
   }
   else
   {
