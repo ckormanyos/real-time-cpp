@@ -20,6 +20,7 @@ Global
 		target stm32f100|Win32 = target stm32f100|Win32
 		target stm32f407|Win32 = target stm32f407|Win32
 		target stm32f429|Win32 = target stm32f429|Win32
+		target stm32l152|Win32 = target stm32l152|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -35,6 +36,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f100|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f407|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f429|Win32.ActiveCfg = Release|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32l152|Win32.ActiveCfg = Release|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|Win32.ActiveCfg = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|Win32.ActiveCfg = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|Win32.ActiveCfg = target am335x|Win32
@@ -55,8 +57,13 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f407|Win32.Build.0 = target stm32f407|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f429|Win32.ActiveCfg = target stm32f429|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f429|Win32.Build.0 = target stm32f429|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32l152|Win32.ActiveCfg = target stm32l152|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32l152|Win32.Build.0 = target stm32l152|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F08E6547-39B7-434F-9B09-3BCC68313B2C}
 	EndGlobalSection
 EndGlobal

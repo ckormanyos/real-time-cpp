@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,27 +23,21 @@
       constexpr std::uint32_t nvic_base       = scs_base        + UINT32_C(0x00000100);
       constexpr std::uint32_t apb1periph_base = periph_base     + UINT32_C(0x00000000);
       constexpr std::uint32_t pwr_base        = apb1periph_base + UINT32_C(0x00007000);
-      constexpr std::uint32_t ahb1periph_base = periph_base     + UINT32_C(0x00020000);
-      constexpr std::uint32_t rcc_base        = ahb1periph_base + UINT32_C(0x00003800);
-      constexpr std::uint32_t flash_r_base    = ahb1periph_base + UINT32_C(0x00003C00);
+      constexpr std::uint32_t ahbperiph_base  = periph_base     + UINT32_C(0x00020000);
+      constexpr std::uint32_t rcc_base        = ahbperiph_base  + UINT32_C(0x00003800);
+      constexpr std::uint32_t flash_r_base    = ahbperiph_base  + UINT32_C(0x00003C00);
 
-      constexpr std::uint32_t spi_base        = apb1periph_base + UINT32_C(0x00003000);
+      constexpr std::uint32_t gpioa_base      = ahbperiph_base  + UINT32_C(0x0000);
+      constexpr std::uint32_t gpiob_base      = ahbperiph_base  + UINT32_C(0x0400);
+      constexpr std::uint32_t gpioc_base      = ahbperiph_base  + UINT32_C(0x0800);
+      constexpr std::uint32_t gpiod_base      = ahbperiph_base  + UINT32_C(0x0C00);
+      constexpr std::uint32_t gpioe_base      = ahbperiph_base  + UINT32_C(0x1000);
+      constexpr std::uint32_t gpiof_base      = ahbperiph_base  + UINT32_C(0x1400);
+      constexpr std::uint32_t gpiog_base      = ahbperiph_base  + UINT32_C(0x1800);
 
-      constexpr std::uint32_t gpioa_base      = ahb1periph_base + UINT32_C(0x0000);
-      constexpr std::uint32_t gpiob_base      = ahb1periph_base + UINT32_C(0x0400);
-      constexpr std::uint32_t gpioc_base      = ahb1periph_base + UINT32_C(0x0800);
-      constexpr std::uint32_t gpiod_base      = ahb1periph_base + UINT32_C(0x0C00);
-      constexpr std::uint32_t gpioe_base      = ahb1periph_base + UINT32_C(0x1000);
-      constexpr std::uint32_t gpiof_base      = ahb1periph_base + UINT32_C(0x1400);
-      constexpr std::uint32_t gpiog_base      = ahb1periph_base + UINT32_C(0x1800);
+      constexpr std::uint32_t tim4_base       = apb1periph_base + UINT32_C(0x0800);
 
-      constexpr std::uint32_t tim4_base       = periph_base     + UINT32_C(0x0800);
-
-      constexpr std::uint32_t iwdg_base       = periph_base     + UINT32_C(0x3000);
-
-      constexpr std::uint32_t spi3_base       = spi_base        + UINT32_C(0x00C00);
-      constexpr std::uint32_t spi2_base       = spi_base        + UINT32_C(0x00800);
-      constexpr std::uint32_t spi1_base       = spi_base        + UINT32_C(0x10000);
+      constexpr std::uint32_t iwdg_base       = apb1periph_base + UINT32_C(0x3000);
 
       // System registers.
       constexpr std::uint32_t scb_cpuid       = scb_base        + UINT32_C(0x0000);  // 32-bit register.
@@ -148,37 +142,6 @@
       constexpr std::uint32_t gpiog_lckr      = gpiog_base      + UINT32_C(0x001C);  // 32-bit register.
       constexpr std::uint32_t gpiog_afrl      = gpiog_base      + UINT32_C(0x0020);  // 32-bit register.
       constexpr std::uint32_t gpiog_afrh      = gpiog_base      + UINT32_C(0x0024);  // 32-bit register.
-
-      // SPI registers.
-      constexpr std::uint32_t spi1_cr1        = spi1_base       + UINT32_C(0x0000);  // 16-bit register.
-      constexpr std::uint32_t spi1_cr2        = spi1_base       + UINT32_C(0x0004);  // 16-bit register.
-      constexpr std::uint32_t spi1_sr         = spi1_base       + UINT32_C(0x0008);  // 16-bit register.
-      constexpr std::uint32_t spi1_dr         = spi1_base       + UINT32_C(0x000C);  // 16-bit register.
-      constexpr std::uint32_t spi1_crcpr      = spi1_base       + UINT32_C(0x0010);  // 16-bit register.
-      constexpr std::uint32_t spi1_rxcrcr     = spi1_base       + UINT32_C(0x0014);  // 16-bit register.
-      constexpr std::uint32_t spi1_txcrcr     = spi1_base       + UINT32_C(0x0018);  // 16-bit register.
-      constexpr std::uint32_t spi1_i2scfgr    = spi1_base       + UINT32_C(0x001C);  // 16-bit register.
-      constexpr std::uint32_t spi1_i2spr      = spi1_base       + UINT32_C(0x0020);  // 16-bit register.
-
-      constexpr std::uint32_t spi2_cr1        = spi2_base       + UINT32_C(0x0000);  // 16-bit register.
-      constexpr std::uint32_t spi2_cr2        = spi2_base       + UINT32_C(0x0004);  // 16-bit register.
-      constexpr std::uint32_t spi2_sr         = spi2_base       + UINT32_C(0x0008);  // 16-bit register.
-      constexpr std::uint32_t spi2_dr         = spi2_base       + UINT32_C(0x000C);  // 16-bit register.
-      constexpr std::uint32_t spi2_crcpr      = spi2_base       + UINT32_C(0x0010);  // 16-bit register.
-      constexpr std::uint32_t spi2_rxcrcr     = spi2_base       + UINT32_C(0x0014);  // 16-bit register.
-      constexpr std::uint32_t spi2_txcrcr     = spi2_base       + UINT32_C(0x0018);  // 16-bit register.
-      constexpr std::uint32_t spi2_i2scfgr    = spi2_base       + UINT32_C(0x001C);  // 16-bit register.
-      constexpr std::uint32_t spi2_i2spr      = spi2_base       + UINT32_C(0x0020);  // 16-bit register.
-
-      constexpr std::uint32_t spi3_cr1        = spi3_base       + UINT32_C(0x0000);  // 16-bit register.
-      constexpr std::uint32_t spi3_cr2        = spi3_base       + UINT32_C(0x0004);  // 16-bit register.
-      constexpr std::uint32_t spi3_sr         = spi3_base       + UINT32_C(0x0008);  // 16-bit register.
-      constexpr std::uint32_t spi3_dr         = spi3_base       + UINT32_C(0x000C);  // 16-bit register.
-      constexpr std::uint32_t spi3_crcpr      = spi3_base       + UINT32_C(0x0010);  // 16-bit register.
-      constexpr std::uint32_t spi3_rxcrcr     = spi3_base       + UINT32_C(0x0014);  // 16-bit register.
-      constexpr std::uint32_t spi3_txcrcr     = spi3_base       + UINT32_C(0x0018);  // 16-bit register.
-      constexpr std::uint32_t spi3_i2scfgr    = spi3_base       + UINT32_C(0x001C);  // 16-bit register.
-      constexpr std::uint32_t spi3_i2spr      = spi3_base       + UINT32_C(0x0020);  // 16-bit register.
 
       // Timer registers.
       constexpr std::uint32_t tim4_cr1        = tim4_base       + UINT32_C(0x0000);  // 16-bit register.
