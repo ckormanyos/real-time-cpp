@@ -26,11 +26,12 @@
 
         // See also ISO/IEC 13818-1:2000, Recommendation H.222.0 Annex A
 
-        // Define a local value_type.
+        // Define a local_value_type.
         typedef typename std::iterator_traits<input_iterator>::value_type local_value_type;
 
-        // Set the initial value and loop through the input data stream
-        // using a lambda function.
+        // Set the initial value. Also loop through
+        // the input data stream using accumulate
+        // in combination with a lambda function.
         return std::accumulate(
           first,
           last,

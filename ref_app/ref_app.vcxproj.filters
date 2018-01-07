@@ -146,6 +146,9 @@
     <Filter Include="src\mcal\stm32l152">
       <UniqueIdentifier>{719b20d2-fb59-44c0-ac84-cbba20ecf979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\functions">
+      <UniqueIdentifier>{62976de0-9569-4a72-af6f-e6c489a1dfb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1289,6 +1292,15 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32l152\mcal_wdg.h">
       <Filter>src\mcal\stm32l152</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\functions\math_functions_hypergeometric.h">
+      <Filter>src\math\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\functions\math_functions_legendre.h">
+      <Filter>src\math\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\functions\math_functions_bessel.h">
+      <Filter>src\math\functions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

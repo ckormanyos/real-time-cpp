@@ -99,7 +99,7 @@
       }
     }
 
-    // Copy assignment.
+    // Assignment operators.
     fixed_point& operator=(const          char  n) { data = signed_value_type(n) << decimal_split; return *this; }
     fixed_point& operator=(const   signed char  n) { data = signed_value_type(n) << decimal_split; return *this; }
     fixed_point& operator=(const unsigned char  n) { data = signed_value_type(n) << decimal_split; return *this; }
@@ -186,7 +186,7 @@
 
     fixed_point& operator/=(const fixed_point& v)
     {
-      // TBD: Need a faster division algorithm.
+      // TBD: Investigate other division algorithms.
 
       if(v.data == static_cast<signed_value_type>(0))
       {
@@ -254,7 +254,7 @@
 
     fixed_point& calculate_sqrt()
     {
-      // TBD: Need a faster square root algorithm.
+      // TBD: Investigate other square root algorithms.
 
       if(data < static_cast<signed_value_type>(0))
       {
@@ -792,7 +792,7 @@
       }
       else if(x2_data < unsigned_value_type(decimal_split_value))
       {
-        // Invert and negate for 0 < x < 1.
+        // Invert and negate for (0 < x < 1).
         return -log(1 / x);
       }
 
@@ -815,7 +815,7 @@
            * my_x2 + fixed_point(internal(), unsigned_value_type(0x1703C3967ULL >> (32U - decimal_split))))
            * my_x2;
 
-      // Account for 2^n, scale the result and return.
+      // Re-scale the result and return (be sure to account for 2^n).
       return (sum + n2) * value_ln2();
     }
 
@@ -885,7 +885,8 @@
       static const bool has_infinity      = false;
       static const bool has_quiet_NaN     = false;
       static const bool has_signaling_NaN = false;
-      static const std::float_denorm_style has_denorm = std::denorm_absent;
+      static const std::float_denorm_style has_denorm =
+                                            std::denorm_absent;
       static const bool has_denorm_loss   = false;
       static const bool is_iec559         = false;
       static const bool is_bounded        = true;
@@ -894,13 +895,13 @@
       static const bool tinyness_before   = false;
       static const std::float_round_style round_style = std::round_toward_zero;
 
-      static fixed_point (min)() throw()       { return fixed_point::value_min(); }
-      static fixed_point (max)() throw()       { return fixed_point::value_max(); }
-      static fixed_point lowest() throw()      { return fixed_point::value_min(); }
-      static fixed_point epsilon() throw()     { return fixed_point::value_eps(); }
+      static fixed_point (min)      () throw() { return fixed_point::value_min(); }
+      static fixed_point (max)      () throw() { return fixed_point::value_max(); }
+      static fixed_point lowest     () throw() { return fixed_point::value_min(); }
+      static fixed_point epsilon    () throw() { return fixed_point::value_eps(); }
       static fixed_point round_error() throw() { return fixed_point::value_half(); }
-      static fixed_point infinity() throw()    { return fixed_point(internal(), signed_value_type(0)); }
-      static fixed_point quiet_NaN() throw()   { return fixed_point(internal(), signed_value_type(0)); }
+      static fixed_point infinity   () throw() { return fixed_point(internal(), signed_value_type(0)); }
+      static fixed_point quiet_NaN  () throw() { return fixed_point(internal(), signed_value_type(0)); }
     };
 
     #if !defined(FIXED_POINT_DISABLE_IOSTREAM)
