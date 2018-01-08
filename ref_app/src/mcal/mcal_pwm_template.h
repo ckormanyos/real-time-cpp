@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2017.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,9 +9,9 @@
   #define MCAL_PWM_TEMPLATE_2017_10_13_H_
 
   #include <algorithm>
-  #include <atomic>
   #include <cstdint>
 
+  #include <mcal_irq.h>
   #include <mcal_port.h>
   #include <util/utility/util_noncopyable.h>
 
@@ -47,13 +47,23 @@
         virtual void set_duty(const duty_type duty)
         {
           // Set a new duty cycle in the shadow register.
-          std::atomic_store(&shadow, (std::min)(duty, my_resolution));
+          mcal::irq::disable_all();
+
+          shadow = static_cast<std::uint_fast8_t>((std::min)(duty, my_resolution));
+
+          mcal::irq::enable_all();
         }
 
         virtual duty_type get_duty() const
         {
           // Retrieve the duty cycle.
-          return std::atomic_load(&duty_cycle);
+          mcal::irq::disable_all();
+
+          const volatile std::uint_fast8_t the_duty = duty_cycle;
+
+          mcal::irq::enable_all();
+
+          return the_duty;
         }
 
         void service()
@@ -83,9 +93,9 @@
         }
 
       private:
-                 duty_type counter;
-        volatile duty_type duty_cycle;
-                 duty_type shadow;
+        duty_type counter;
+        duty_type duty_cycle;
+        duty_type shadow;
       };
     }
   }

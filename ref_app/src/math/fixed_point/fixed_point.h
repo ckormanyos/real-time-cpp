@@ -109,9 +109,8 @@
     fixed_point& operator=(const unsigned int   n) { data = signed_value_type(n) << decimal_split; return *this; }
     fixed_point& operator=(const   signed long  n) { data = signed_value_type(n) << decimal_split; return *this; }
     fixed_point& operator=(const unsigned long  n) { data = signed_value_type(n) << decimal_split; return *this; }
-
-    fixed_point& operator=(const float&  f) { data = signed_value_type(f * decimal_split_value); return *this; }
-    fixed_point& operator=(const double& d) { data = signed_value_type(d * decimal_split_value); return *this; }
+    fixed_point& operator=(const float&         f) { data = signed_value_type(f * decimal_split_value); return *this; }
+    fixed_point& operator=(const double&        d) { data = signed_value_type(d * decimal_split_value); return *this; }
 
     fixed_point& operator=(const fixed_point& fp)
     {

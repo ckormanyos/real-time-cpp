@@ -13,10 +13,10 @@
 
 void mcal::cpu::init()
 {
-  // Set the msion bit.
+  // Set the msion bit in the control register.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x00000100UL>::reg_or();
 
-  // Prepare the cfgr register.
+  // Prepare the configuration register.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x88FFC00CUL>::reg_and();
 
   // Prepare some clock bits.
@@ -25,7 +25,7 @@ void mcal::cpu::init()
   // Prepare some more clock bits.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0xFFFBFFFFUL>::reg_and();
 
-  // Prepare some pll bits.
+  // Prepare some clock/pll bits.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0xFF02FFFFUL>::reg_and();
 
   // Disable all interrupts and clear pending bits.
