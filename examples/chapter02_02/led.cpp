@@ -22,19 +22,26 @@ public:
       const bval_type b) : port(p),
                            bval(b)
   {
-    // Set the port pin to low.
-    *reinterpret_cast<volatile bval_type*>(port) &= static_cast<bval_type>(~bval);
+    // Set the port pin value to low.
+    *reinterpret_cast<volatile bval_type*>(port)
+      &= static_cast<bval_type>(~bval);
 
-    const bval_type pdir = port - 1U;
+    // Set the port pin direction to output.
 
-    // Set the port pin to output.
-    *reinterpret_cast<volatile bval_type*>(pdir) |= bval;
+    // Note that the address of the port direction
+    // register is one less than the address
+    // of the port value register.
+    const port_type pdir = port - 1U;
+
+    *reinterpret_cast<volatile bval_type*>(pdir)
+      |= bval;
   }
 
   void toggle() const
   {
     // Toggle the LED via direct memory access.
-    *reinterpret_cast<volatile bval_type*>(port) ^= bval;
+    *reinterpret_cast<volatile bval_type*>(port)
+      ^= bval;
   }
 
 private:
