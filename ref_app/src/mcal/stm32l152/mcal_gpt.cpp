@@ -46,7 +46,10 @@ void mcal::gpt::init(const config_type*)
     // on the free-running 16-bit timer4 with a frequency of 1MHz.
 
     // Power management: Enable the power for timer4.
-    mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_apb1enr, UINT32_C(0x00000004)>::reg_or();
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::rcc_apb1enr,
+                      UINT32_C(0x00000004)>::reg_or();
 
     // Compute the timer4 interrupt priority.
     const std::uint32_t aircr_value = mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::aircr>::reg_get();
@@ -82,8 +85,9 @@ void mcal::gpt::init(const config_type*)
     // Enable the timer4 update interrupt.
     mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_dier, UINT16_C(0x0001)>::reg_set();
 
-    // Set the timer prescaler to 24 resulting in a 1MHz frequency.
-    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, UINT16_C(24 - 1)>::reg_set();
+    // Set the timer prescaler to 31 resulting in a 1MHz frequency.
+    // TBD: The main clock and the peripheral clocks are not yet set properly.
+    mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_psc, UINT16_C(32 - 1)>::reg_set();
 
     // Set the auto-reload register for the entire 16-bit period of the timer.
     mcal::reg::access<std::uint32_t, std::uint16_t, mcal::reg::tim4_arr, UINT16_C(0xFFFF)>::reg_set();

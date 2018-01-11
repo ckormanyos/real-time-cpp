@@ -13,20 +13,47 @@
 
 void mcal::cpu::init()
 {
-  // Set the msion bit in the control register.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0x00000100UL>::reg_or();
+  // Set 64-bit access in flash_acr.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::flash_acr,
+                    2U>::bit_set();
 
-  // Prepare the configuration register.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0x88FFC00CUL>::reg_and();
+  // Verify 64-bit access in flash_acr.
+  const bool acc64_is_ok =
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::flash_acr,
+                      2U>::bit_get();
 
-  // Prepare some clock bits.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0xEEFEFFFEUL>::reg_and();
+  if(acc64_is_ok == false)
+  {
+    for(;;)
+    {
+      mcal::cpu::nop();
+    }
+  }
 
-  // Prepare some more clock bits.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, 0xFFFBFFFFUL>::reg_and();
+  // Set latency of 1 wait state in flash_acr.
+  mcal::reg::access<std::uint32_t,
+                    std::uint32_t,
+                    mcal::reg::flash_acr,
+                    0U>::bit_set();
 
-  // Prepare some clock/pll bits.
-  mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, 0xFF02FFFFUL>::reg_and();
+  // Verify latency access in flash_acr.
+  const bool latency_is_ok =
+    mcal::reg::access<std::uint32_t,
+                      std::uint32_t,
+                      mcal::reg::flash_acr,
+                      0U>::bit_get();
+
+  if(latency_is_ok == false)
+  {
+    for(;;)
+    {
+      mcal::cpu::nop();
+    }
+  }
 
   // Disable all interrupts and clear pending bits.
   mcal::reg::access<std::uint32_t, std::uint32_t, mcal::reg::rcc_cir, 0x00000000UL>::reg_set();

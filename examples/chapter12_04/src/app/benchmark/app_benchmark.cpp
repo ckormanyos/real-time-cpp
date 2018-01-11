@@ -122,7 +122,7 @@ void app::benchmark::task_func()
   // 1.583596313998374915091256357139915173598
 
   {
-    const std::array<std::float32_t, 4U> an =
+    const std::array<std::float32_t, 4U> ap =
     {{
       FLOAT32_C(3.0) / FLOAT32_C( 7.0),
       FLOAT32_C(3.0) / FLOAT32_C( 8.0),
@@ -130,7 +130,7 @@ void app::benchmark::task_func()
       FLOAT32_C(3.0) / FLOAT32_C(10.0)
     }};
 
-    const std::array<std::float32_t, 5U> bm =
+    const std::array<std::float32_t, 5U> bq =
     {{
       FLOAT32_C(7.0) / FLOAT32_C(13.0),
       FLOAT32_C(7.0) / FLOAT32_C(14.0),
@@ -140,10 +140,10 @@ void app::benchmark::task_func()
     }};
 
     app_benchmark_result_hypergeometric =
-      math::functions::hypergeometric_pfq(an.begin(),
-                                          an.end(),
-                                          bm.begin(),
-                                          bm.end(),
+      math::functions::hypergeometric_pfq(ap.cbegin(),
+                                          ap.cend(),
+                                          bq.cbegin(),
+                                          bq.cend(),
                                           math::constants::ln_two<std::float32_t>());
   }
 
