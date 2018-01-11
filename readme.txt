@@ -122,6 +122,10 @@ A GNU GCC port with a relatively high level of C++11 awareness such as
 GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
 the reference application.
 
+Some of the code snippets demonstrate language elements of not only C++11,
+but also C++14 and C++17. A compiler with C++17 support can be beneficial
+for success with *all* of the code snippets.
+
 In the reference application, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me
 and it might not be where you want it to be. Therefore, when using the
