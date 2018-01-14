@@ -13,20 +13,28 @@ namespace
            const unsigned_integral_type maximum_value = UINT32_C(10006730)>
   void compute_primes_via_sieve(std::vector<unsigned_integral_type>& primes)
   {
-    // Use a sieve algorithm to generate a uint8_t table representation
-    // of the primes. In this sieve, the logic is inverted. In other words,
-    // true means that the number is *not* prime.
+    // Use a sieve algorithm to generate
+    // a uint8 table of primes.
+    // In this sieve, the logic is inverted.
+    // In other words, true means that
+    // the number is *not* prime.
 
     // Note for tiny embedded systems: Use a bit-stream for storing
     // the sieve information. The performance will suffer,
     // but the storage requirements will be significantly reduced.
     std::vector<std::uint_fast8_t> sieve(maximum_value, 0U);
 
-    unsigned_integral_type i2;
+    using std::sqrt;
+    using std::floor;
+
+    const unsigned_integral_type imax =
+      static_cast<unsigned_integral_type>(floor(sqrt(static_cast<float>(maximum_value))));
 
     // Create the sieve of primes.
-    for(unsigned_integral_type i = 2U; (i2 = unsigned_integral_type(i * i)) < maximum_value; ++i)
+    for(unsigned_integral_type i = 2U; i < imax; ++i)
     {
+      const unsigned_integral_type i2 = unsigned_integral_type(i * i);
+
       if(sieve[i] == 0U)
       {
         for(unsigned_integral_type j = i2; j < maximum_value; j += i)
@@ -36,71 +44,72 @@ namespace
       }
     }
 
-    // Fill the prime numbers into the data table
-    // by extracting them from the sieve of primes.
-    std::uint32_t prime_number = UINT32_C(2);
-
-    const float x = static_cast<float>(maximum_value);
-
     // Calculate the upper limit of the number of primes expected.
-
     // See Eq. 3.7 in: J. Barkley Rosser and Lowell Schoenfeld,
     // "Approximate formulas for some functions of prime numbers",
-    // llinois J. Math. Volume 6, Issue 1 (1962), 64-94.
-    // This states that pi(x) < ((5 * x) / (4 * log(x))).
+    // Illinois J. Math. Volume 6, Issue 1 (1962), 64-94.
+    // This states that pi(x) < ((5 * x) / (4 * log(x))),
+    // where pi(x) is the distribution of primes over
+    // the real integral value x.
 
     // See also "Prime-counting function" at
     // http://en.wikipedia.org/wiki/Prime-counting_function
 
     using std::log;
 
+    const float x = static_cast<float>(maximum_value);
+
     const float upper_limit_of_number_of_primes = ((5.0F * x) / (4.0F * log(x)));
 
-    using prime_index_type = std::vector<unsigned_integral_type>::size_type;
+    primes.clear();
+    primes.resize(static_cast<unsigned_integral_type>(std::floor(upper_limit_of_number_of_primes)));
 
-    primes.resize(static_cast<prime_index_type>(std::floor(upper_limit_of_number_of_primes)));
+    // Fill the prime numbers into the data table
+    // by extracting them from the sieve of primes.
+    unsigned_integral_type prime_counter = 2U;
 
-    prime_index_type prime_index = 0U;
+    // Fill the prime numbers into the data table
+    // by extracting them from the sieve of primes.
+    unsigned_integral_type running_number = 2U;
 
-    std::for_each(sieve.cbegin() + prime_index_type(2U),
+    std::for_each(sieve.cbegin() + unsigned_integral_type(2U),
                   sieve.cend(),
-                  [&primes, &prime_number, &prime_index](const std::uint8_t& is_not_prime)
+                  [&primes, &running_number, &prime_counter](const std::uint8_t& is_not_prime)
                   {
                     if(is_not_prime == 0U)
                     {
-                      primes[prime_index] = prime_number;
+                      primes[prime_counter] = running_number;
 
-                      ++prime_index;
+                      ++prime_counter;
                     }
 
-                    ++prime_number;
+                    ++running_number;
                   });
   }
 }
 
 int main()
 {
-  using prime_integral_type = std::uint32_t;
-  //using prime_integral_type = std::uint16_t;
+  using unsigned_integral_prime_type = std::uint32_t;
 
-  std::vector<prime_integral_type> primes;
+  std::vector<unsigned_integral_prime_type> primes;
 
   // For the prime number 10,006,721, see also
   // D.N. Lehmer, "List of prime numbers from 1 to 10,006,721"
   // (Carnegie Institution of Washington, Washington D.C. 1914).
 
   // Note for tiny embedded systems: The 500th prime number
-  // is 3571. We can switch the number 10006730 to 3572
-  // in order to obtain 500 prime numbers.
+  // is 3571. We can, therefore, switch the upper limit
+  // from 10006730 to 3572 in order to obtain 500 prime numbers.
 
-  compute_primes_via_sieve<prime_integral_type, UINT32_C(10006730)>(primes);
-  //compute_primes_via_sieve<prime_integral_type, 3572U>(primes);
+  compute_primes_via_sieve<unsigned_integral_prime_type,
+                           unsigned_integral_prime_type(10006730ULL)>(primes);
 
   std::for_each(primes.cbegin(),
                 primes.cend(),
-                [](const prime_integral_type& the_prime)
+                [](const unsigned_integral_prime_type& the_prime)
                 {
-                  if(the_prime != prime_integral_type(0U))
+                  if(the_prime != unsigned_integral_prime_type(0U))
                   {
                     std::cout << the_prime << '\n';
                   }
