@@ -1,4 +1,4 @@
-// chapter_05_02-001_make_word.cpp
+// chapter05_02-001_make_word.cpp
 
 #include <cstdint>
 #include <iomanip>

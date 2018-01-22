@@ -5,7 +5,7 @@
 #include <iterator>
 #include <vector>
 
-// chapter03_02-003_fixed_size_integer_prime_numbers.cpp
+// chapter03_02-002a_explore_prime_numbers.cpp
 
 namespace
 {

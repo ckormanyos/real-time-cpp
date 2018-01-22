@@ -1,4 +1,4 @@
-// chapter_05_12-002_stirlings_approx.cpp
+// chapter05_12-003_stirlings_approx.cpp
 
 #include <cmath>
 #include <iomanip>

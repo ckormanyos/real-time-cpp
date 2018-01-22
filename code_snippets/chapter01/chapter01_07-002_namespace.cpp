@@ -7,9 +7,8 @@
 
 // chapter01_07-002_namespace.cpp
 
-#include <iostream>
-
 #include <cstdint>
+#include <iostream>
 
 using namespace std;
 

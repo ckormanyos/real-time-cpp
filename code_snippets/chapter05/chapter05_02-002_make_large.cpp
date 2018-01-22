@@ -1,4 +1,4 @@
-// chapter_05_02-001_make_large.cpp
+// chapter05_02-001_make_large.cpp
 
 #include <cstdint>
 #include <iomanip>

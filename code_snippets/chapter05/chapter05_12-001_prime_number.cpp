@@ -1,4 +1,4 @@
-// chapter_05_12-001_prime_number.cpp
+// chapter05_12-001_prime_number.cpp
 
 #include <cstdint>
 #include <iostream>

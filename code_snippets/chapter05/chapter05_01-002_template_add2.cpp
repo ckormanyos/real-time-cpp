@@ -1,4 +1,4 @@
-// chapter_05_01-002_template_add2.cpp
+// chapter05_01-002_template_add2.cpp
 
 #include <iostream>
 
