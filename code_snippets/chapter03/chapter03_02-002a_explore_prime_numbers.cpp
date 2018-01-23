@@ -7,6 +7,10 @@
 
 // chapter03_02-002a_explore_prime_numbers.cpp
 
+// In this code snippet, we explore the calculation
+// of the prime numbers up to and including 10,006,721.
+// A sieve method is used.
+
 namespace
 {
   template<typename unsigned_integral_type = std::uint32_t,
