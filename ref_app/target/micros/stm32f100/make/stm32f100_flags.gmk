@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2013.
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,7 +25,8 @@ TGT_CFLAGS    = -O2                                            \
 
 TGT_CPPFLAGS  = -std=c++17
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL                         \
+                -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 

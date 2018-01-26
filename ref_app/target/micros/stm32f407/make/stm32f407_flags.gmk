@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2017.
+#  Copyright Christopher Kormanyos 2007 - 2018.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,11 +26,8 @@ TGT_CFLAGS    = -O2                                                            \
 
 TGT_CPPFLAGS  = -std=c++17
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
-
-ifeq ($(GCC_VERSION),6.3.1)
-TGT_INCLUDES += -Isrc/mcal/$(TGT)/_patch_gcc_$(GCC_VERSION)_for_arm_v7e-mfpv4-sp-hard
-endif
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL                         \
+                -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
