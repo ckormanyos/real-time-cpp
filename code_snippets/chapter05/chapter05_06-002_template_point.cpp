@@ -23,6 +23,9 @@ public:
                                       my_y(y) { }
 };
 
+// A partial specialization of the point
+// class with x-axis having type std::uint8_t.
+
 template<typename y_type>
 class point<std::uint8_t, y_type>
 {

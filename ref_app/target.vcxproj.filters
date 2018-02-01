@@ -103,6 +103,15 @@
     <Filter Include="micros\stm32l152\startup">
       <UniqueIdentifier>{8390d2aa-8970-46fb-a030-12003da78359}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\atmega2560">
+      <UniqueIdentifier>{981e5c20-1cb2-47d6-8987-7a6ee473efff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\atmega2560\make">
+      <UniqueIdentifier>{5811fa00-3254-48e2-ad7c-1f0f728a9b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\atmega2560\startup">
+      <UniqueIdentifier>{655b96de-d2f6-4ab9-9e37-a70ae26780a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -225,6 +234,15 @@
     <None Include="target\micros\stm32l152\make\stm32l152_flags.gmk">
       <Filter>micros\stm32l152\make</Filter>
     </None>
+    <None Include="target\micros\atmega2560\make\atmega2560.ld">
+      <Filter>micros\atmega2560\make</Filter>
+    </None>
+    <None Include="target\micros\atmega2560\make\atmega2560_files.gmk">
+      <Filter>micros\atmega2560\make</Filter>
+    </None>
+    <None Include="target\micros\atmega2560\make\atmega2560_flags.gmk">
+      <Filter>micros\atmega2560\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -343,6 +361,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32l152\startup\int_vect.cpp">
       <Filter>micros\stm32l152\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega2560\startup\crt0.cpp">
+      <Filter>micros\atmega2560\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega2560\startup\crt0_init_ram.cpp">
+      <Filter>micros\atmega2560\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega2560\startup\crt1.cpp">
+      <Filter>micros\atmega2560\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega2560\startup\int_vect.cpp">
+      <Filter>micros\atmega2560\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

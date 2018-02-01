@@ -10,6 +10,8 @@
 #include <cstdint>
 #include <iostream>
 
+// Only the second template parameter
+// has a default types.
 template<typename x_type,
          typename y_type = std::uint16_t> // OK
 class point

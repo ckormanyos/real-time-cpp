@@ -149,6 +149,9 @@
     <Filter Include="src\math\functions">
       <UniqueIdentifier>{62976de0-9569-4a72-af6f-e6c489a1dfb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\atmega2560">
+      <UniqueIdentifier>{8fef6100-47d4-49d0-9a34-3e060e206eea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -492,6 +495,33 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32l152\mcal_wdg.cpp">
       <Filter>src\mcal\stm32l152</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_cpu.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_gpt.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_irq.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_led.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_osc.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_port.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_pwm.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_spi.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_wdg.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1301,6 +1331,45 @@
     </ClInclude>
     <ClInclude Include="src\math\functions\math_functions_bessel.h">
       <Filter>src\math\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_benchmark.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_cpu.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_gpt.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_irq.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_led.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_osc.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_port.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_pwm.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_reg.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_reg_access.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_ser.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_spi.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_wdg.h">
+      <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

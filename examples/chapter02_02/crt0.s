@@ -24,11 +24,11 @@ isr_vectors:
 __my_startup:
 
   eor  r1, r1
-  out  0x3f, r1         ; SREG
+  out  0x3f, r1         ; sreg
   ldi  r28,lo8(__initial_stack_pointer)
   ldi  r29,hi8(__initial_stack_pointer)
-  out  0x3E, r29        ; SPH
-  out  0x3D, r28        ; SPL
+  out  0x3e, r29        ; sph
+  out  0x3d, r28        ; spl
 
   ; Initialize the rom-to-ram data
   call __do_copy_data

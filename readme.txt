@@ -24,6 +24,7 @@ Supported Targets in the Reference Application
 The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
+  * ATMEL(R) AVR(R) Atmega2560
   * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
