@@ -6,8 +6,8 @@ and Template Microcontroller Programming, Second Edition
 (Springer, Heidelberg, 2015).
 
 New work on C++17 is underway for the reference application
-and the examples. This in in preparation of the 3rd edition
-of the book.
+and the examples. This is for the 3rd edition of the book
+currently in preparation.
 
 Details on the Reference Application
 ------------------------------------
