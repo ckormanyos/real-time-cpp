@@ -22,7 +22,7 @@ public:
 
   void toggle() const
   {
-    // Toggle the LED via direct memory access.
+    // Toggle the LED in the PC simulation.
     if(is_on)
     {
       std::cout << "LED is on" << std::endl;
