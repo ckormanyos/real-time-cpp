@@ -1,0 +1,171 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef UTILITY_2010_02_23_
+  #define UTILITY_2010_02_23_
+
+  #include <cstddef>
+  #include <utility>
+  #include <tuple>
+
+  // Implement some of <utility> for compilers that do not yet support it.
+
+  namespace std
+  {
+    template<typename T1,
+             typename T2>
+    class pair
+    {
+    public:
+      typedef T1 first_type;
+      typedef T2 second_type;
+
+      first_type  first;
+      second_type second;
+
+      pair() : first(T1()), second(T2()) { }
+
+      pair(const first_type& t1, const second_type& t2) : first (t1),
+                                                          second(t2) { }
+
+      pair(const pair& other) : first (other.first),
+                                second(other.second) { }
+
+      template<typename other_type1,
+               typename other_type2>
+      pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
+                                                      second(T2(p.second)) { }
+    };
+  }
+
+  namespace xpair_helper
+  {
+    template<int I, typename T>
+    class xget { };
+
+    template<typename T1, typename T2>
+    class xget<0, std::pair<T1, T2> >
+    {
+    public:
+      typedef       T1& nonconstant_reference_type;
+      typedef const T1&    constant_reference_type;
+
+      static nonconstant_reference_type my_value(      std::pair<T1, T2>& my_pair) { return my_pair.first; }
+      static    constant_reference_type my_value(const std::pair<T1, T2>& my_pair) { return my_pair.first; }
+    };
+
+    template<typename T1, typename T2>
+    class xget<1, std::pair<T1, T2> >
+    {
+    public:
+      typedef       T2& nonconstant_reference_type;
+      typedef const T2&    constant_reference_type;
+
+      static nonconstant_reference_type my_value(      std::pair<T1, T2>& my_pair) { return my_pair.second; }
+      static    constant_reference_type my_value(const std::pair<T1, T2>& my_pair) { return my_pair.second; }
+    };
+  }
+
+  namespace std
+  {
+    template<int I, typename T1, typename T2>
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::nonconstant_reference_type
+    get(std::pair<T1, T2>& my_pair)
+    {
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
+    }
+
+    template<int I, typename T1, typename T2>
+    typename xpair_helper::xget<I, std::pair<T1, T2> >::constant_reference_type
+    get(const std::pair<T1, T2>& my_pair)
+    {
+      return (xpair_helper::xget<I, std::pair<T1, T2> >::my_value(my_pair));
+    }
+
+    template<typename tuple_type>
+    class tuple_size;
+
+    template<std::size_t I, typename T>
+    class tuple_element;
+
+    template<typename T1, typename T2>
+    class tuple_element<0U, std::pair<T1, T2> >
+    {
+    public:
+      typedef T1 type;
+    };
+
+    template<typename T1, typename T2>
+    class tuple_element<1U, std::pair<T1, T2> >
+    {
+    public:
+      typedef T2 type;
+    };
+
+    template<typename T1, typename T2>
+    class tuple_size<std::pair<T1, T2> >
+    {
+    public:
+      static const std::size_t value = 2;
+    };
+
+    template<typename T1, typename T2>
+    void swap(std::pair<T1, T2>& left, std::pair<T1, T2>& right)
+    {
+      const std::pair<T1, T2> tmp(left);
+      left  = right;
+      right = tmp;
+    }
+
+    template<typename T1, typename T2>
+    bool operator==(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return ((left.first == right.first) && (left.second == right.second));
+    }
+
+    template<typename T1, typename T2>
+    bool operator!=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return ((left.first != right.first) || (left.second != right.second));
+    }
+
+    template<typename T1, typename T2>
+    bool operator<(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return ((left.first < right.first)
+               ? true
+               : ((right.first < left.first)
+                   ? false
+                   : ((left.second < right.second) ? true : false)));
+    }
+
+    template<typename T1, typename T2>
+    bool operator>(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename T1, typename T2>
+    bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return ((right < left) == false);
+    }
+
+    template<typename T1, typename T2>
+    bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
+    {
+      return ((left < right) == false);
+    }
+
+    template<typename T1, typename T2>
+    std::pair<T1, T2> make_pair(T1 value1, T2 value2)
+    {
+      return std::pair<T1, T2>(value1, value2);
+    }
+  }
+
+#endif // UTILITY_2010_02_23_

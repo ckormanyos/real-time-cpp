@@ -6,7 +6,7 @@
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Expressed with C++ for Atmega328P by Chris.
+// Expressed with C++ for Atmega2560 by Chris.
 
 #include <mcal/mcal.h>
 
@@ -51,8 +51,8 @@ void __my_startup()
   crt::init_ctors();
   mcal::wdg::secure::trigger();
 
-  // Call main (and never return).
-  asm volatile("rcall main");
+  // Jump to main (and never return).
+  asm volatile("jmp main");
 
   // Catch an unexpected return from main.
   for(;;)

@@ -1,0 +1,13 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2015.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CLIMITS_2015_07_06_
+  #define CLIMITS_2015_07_06_
+
+  #include <limits.h>
+
+#endif // CLIMITS_2015_07_06_

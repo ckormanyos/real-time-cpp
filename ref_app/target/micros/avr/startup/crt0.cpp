@@ -51,8 +51,8 @@ void __my_startup()
   crt::init_ctors();
   mcal::wdg::secure::trigger();
 
-  // Call main (and never return).
-  asm volatile("call main");
+  // Jump to main (and never return).
+  asm volatile("jmp main");
 
   // Catch an unexpected return from main.
   for(;;)

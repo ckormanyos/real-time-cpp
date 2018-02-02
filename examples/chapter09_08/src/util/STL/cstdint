@@ -1,0 +1,84 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CSTDINT_2010_02_23_
+  #define CSTDINT_2010_02_23_
+
+  #include <stdint.h>
+
+  // Implement some C macros that belong in <stdint.h> if they are not present.
+
+  #if !defined(INT8_C)
+  #define INT8_C(x) ((signed char) (x))
+  #endif
+  #if !defined(INT16_C)
+  #define INT16_C(x) ((signed int) (x))
+  #endif
+  #if !defined(INT32_C)
+  #define INT32_C(x) ((signed long) (x##L))
+  #endif
+  #if !defined(INT64_C)
+  #define INT64_C(x) ((signed long long) (x##LL))
+  #endif
+  #if !defined(INTMAX_C)
+  #define INTMAX_C(x) ((signed long long) (x##LL))
+  #endif
+
+  #if !defined(UINT8_C)
+  #define UINT8_C(x) ((unsigned char) (x##U))
+  #endif
+  #if !defined(UINT16_C)
+  #define UINT16_C(x) ((unsigned int) (x##U))
+  #endif
+  #if !defined(UINT32_C)
+  #define UINT32_C(x) ((unsigned long) (x##UL))
+  #endif
+  #if !defined(UINT64_C)
+  #define UINT64_C(x) ((unsigned long long) (x##ULL))
+  #endif
+  #if !defined(UINTMAX_C)
+  #define UINTMAX_C(x) ((unsigned long long) (x##ULL))
+  #endif
+
+  // Implement the integer types having specified widths in <cstdint>
+  // for compilers that do not yet support <cstdint>.
+
+  namespace std
+  {
+    using  ::int8_t;
+    using  ::int16_t;
+    using  ::int32_t;
+    using  ::int64_t;
+    using ::uint8_t;
+    using ::uint16_t;
+    using ::uint32_t;
+    using ::uint64_t;
+
+    using  ::int_least8_t;
+    using  ::int_least16_t;
+    using  ::int_least32_t;
+    using  ::int_least64_t;
+    using ::uint_least8_t;
+    using ::uint_least16_t;
+    using ::uint_least32_t;
+    using ::uint_least64_t;
+
+    using  ::int_fast8_t;
+    using  ::int_fast16_t;
+    using  ::int_fast32_t;
+    using  ::int_fast64_t;
+    using ::uint_fast8_t;
+    using ::uint_fast16_t;
+    using ::uint_fast32_t;
+    using ::uint_fast64_t;
+
+    using  ::intmax_t;
+    using ::uintmax_t;
+    using ::uintptr_t;
+  }
+
+#endif // CSTDINT_2010_02_23_

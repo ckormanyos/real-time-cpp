@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.2</ProjectVersion>
+    <ProjectGuid>{9c2d4315-d501-4961-b0d1-4cc0f4ab0d17}</ProjectGuid>
+    <avrdevice>ATmega328P</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>chapter09_07</AssemblyName>
+    <Name>chapter09_07</Name>
+    <RootNamespace>chapter09_07</RootNamespace>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolName xmlns="">AVR Simulator</ToolName>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <Channel xmlns="">
+        <host>127.0.0.1</host>
+        <port>54605</port>
+        <ssl>False</ssl>
+      </Channel>
+    </com_atmel_avrdbg_tool_simulator>
+    <avrtoolinterface />
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <OverrideVtorValue />
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <AsfVersion>3.0.1</AsfVersion>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <BootSegment>2</BootSegment>
+    <AsfFrameworkConfig>
+      <framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputFileName>chapter09_07</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../src</Value>
+      <Value>../src/util/STL</Value>
+      <Value>../src/mcal/avr</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+  <avrgcccpp.linker.memorysettings.InitialStack>0x800</avrgcccpp.linker.memorysettings.InitialStack>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputFileName>chapter09_07</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <ToolchainSettings>
+      <AvrGccCpp xmlns="">
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>../src</Value>
+            <Value>../src/util/STL</Value>
+            <Value>../src/Mcal/AVR</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app" />
+    <Folder Include="src\app\display" />
+    <Folder Include="src\os" />
+    <Folder Include="src\sys\idle" />
+    <Folder Include="src\sys\mon" />
+    <Folder Include="src\util\STL_C++11_Compatibility\impl" />
+    <Folder Include="src\util\STL_C++17_Compatibility" />
+    <Folder Include="src\util\STL_C++11_Compatibility" />
+    <Folder Include="target" />
+    <Folder Include="src" />
+    <Folder Include="src\mcal" />
+    <Folder Include="src\mcal\avr" />
+    <Folder Include="src\sys" />
+    <Folder Include="src\sys\start" />
+    <Folder Include="src\util" />
+    <Folder Include="src\util\STL" />
+    <Folder Include="src\util\STL\impl" />
+    <Folder Include="src\util\STL\impl\avr" />
+    <Folder Include="src\util\utility" />
+    <Folder Include="target\micros" />
+    <Folder Include="target\micros\avr" />
+    <Folder Include="target\micros\avr\startup" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\app\display\app_display.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_cpu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_cpu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_display.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_gpt.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_gpt.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_irq.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_irq.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_reg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_reg_access.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_display.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_reg_access_template.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_reg_dynamic_access_template.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_task_control_block.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_task_control_block.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\idle\sys_idle.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\mon\sys_mon.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\start\sys_start.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\algorithm_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\array_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\atomic_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\basic_string_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\char_traits_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\chrono_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\cmath_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\complex_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\cstdbool_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\cstddef_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\cstdint_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\ctime_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\functional_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\initializer_list_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\iterator_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\limits_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\memory_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\numeric_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\pair_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\ratio_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\tuple_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\type_traits_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\utility_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\vector_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xalgorithm_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xallocator_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xcmath_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xiterator_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xnumeric_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xutils_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\_stl_local_constexpr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\time.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++17_Compatibility\stdfloat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_alignas.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_bit_mask.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_circular_buffer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_communication.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_countof.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_dynamic_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_noncopyable.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_nothing.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_null_ptr_workaround.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_point.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_stopwatch.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_time.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_two_part_data_manipulation.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_utype_helper.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\util\STL\algorithm">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\array">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\atomic">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\basic_string">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cmath">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\complex">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdbool">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstddef">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdint">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\ctime">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\functional">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\initializer_list">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\iterator">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\limits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\memory">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\numeric">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\string">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\tuple">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\type_traits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\utility">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\cstdint">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++11_Compatibility\type_traits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
+</Project>
