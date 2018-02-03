@@ -194,7 +194,8 @@
         std::uint_fast16_t n;
 
         // Calculate the maximum number of iterations allowed.
-        const std::uint_fast16_t max_iteration = static_cast<std::uint_fast16_t>(std::numeric_limits<T>::digits10 * 10);
+        const std::uint_fast16_t max_iteration =
+          static_cast<std::uint_fast16_t>(std::numeric_limits<T>::digits10 * 10);
 
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
@@ -204,7 +205,12 @@
           if(count_of_a_terms_is_zero == false)
           {
             // Increment each of the pochhammer elements in {an}.
-            std::for_each(an.begin(), an.end(), [](T& a) { ++a; });
+            std::for_each(an.begin(),
+                          an.end(),
+                          [](T& a)
+                          {
+                            ++a;
+                          });
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
@@ -215,7 +221,12 @@
           if(count_of_b_terms_is_zero == false)
           {
             // Increment each of the pochhammer elements in {bm}.
-            std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });
+            std::for_each(bm.begin(),
+                          bm.end(),
+                          [](T& b)
+                          {
+                            ++b;
+                          });
 
             // Multiply the pochhammer product terms with the products of the
             // incremented pochhammer elements. This is a product of the form:
