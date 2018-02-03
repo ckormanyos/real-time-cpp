@@ -1371,6 +1371,9 @@
     <ClInclude Include="src\mcal\atmega2560\mcal_wdg.h">
       <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

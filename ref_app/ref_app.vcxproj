@@ -1833,6 +1833,7 @@
     <ClInclude Include="src\util\utility\util_communication.h" />
     <ClInclude Include="src\util\utility\util_countof.h" />
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />
+    <ClInclude Include="src\util\utility\util_dynamic_bitset.h" />
     <ClInclude Include="src\util\utility\util_linear_interpolate.h" />
     <ClInclude Include="src\util\utility\util_noexcept.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
