@@ -55,16 +55,12 @@
   // Configure the operating system tasks.
 
   // Use small prime numbers (representing microseconds) for task offsets.
-  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 50, 4000, 50}]
+  // Use Wolfram's Alpha or Mathematica(R): Table[Prime[n], {n, 25, 1000, 25}]
   // to obtain:
-  //   229,   541,   863,  1223,  1583,  1987,  2357,  2741,  3181,  3571,
-  //  3989,  4409,  4831,  5279,  5693,  6133,  6571,  6997,  7499,  7919,
-  //  8387,  8831,  9283,  9733, 10177, 10657, 11149, 11657, 12109, 12553,
-  // 13007, 13499, 13967, 14519, 14947, 15401, 15881, 16381, 16903, 17389,
-  // 17891, 18313, 18899, 19423, 19891, 20357, 20897, 21383, 21841, 22307,
-  // 22817, 23321, 23827, 24281, 24877, 25391, 25913, 26399, 26891, 27449,
-  // 27947, 28499, 28933, 29443, 30059, 30559, 31091, 31601, 32159, 32609,
-  // 33113, 33613, 34157, 34649, 35159, 35759, 36277, 36781, 37309, 37813
+  //    97,  229,  379,  541,  691,  863, 1039, 1223, 1427, 1583, 1777,
+  //  1987, 2153, 2357, 2557, 2741, 2953, 3181, 3371, 3571, 3769, 3989,
+  //  4201, 4409, 4637, 4831, 5039, 5279, 5483, 5693, 5881, 6133, 6337,
+  //  6571, 6793, 6997, 7237, 7499, 7687, 7919
 
   #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
 
@@ -74,15 +70,15 @@
       os::task_control_block(app::led::task_init,                                                \
                              app::led::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  2000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   229))),                    \
+                             os::timer_type::microseconds(UINT32_C(     0))),                    \
       os::task_control_block(app::benchmark::task_init,                                          \
                              app::benchmark::task_func,                                          \
                              os::timer_type::microseconds(UINT32_C(100000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   541))),                    \
+                             os::timer_type::microseconds(UINT32_C(   229))),                    \
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   863))),                    \
+                             os::timer_type::microseconds(UINT32_C(   541))),                    \
     }                                                                                            \
   }
 
