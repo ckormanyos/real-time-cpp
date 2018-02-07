@@ -29,7 +29,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|Win32.Build.0 = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target am335x|Win32.ActiveCfg = Release|Win32
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target atmega2560|Win32.ActiveCfg = target atmega2560|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target atmega2560|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target bcm2835_raspi_b|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target pic32mx795fx|Win32.ActiveCfg = Release|Win32
