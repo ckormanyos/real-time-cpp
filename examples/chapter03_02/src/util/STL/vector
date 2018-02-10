@@ -20,7 +20,7 @@
   namespace std
   {
     template<typename T,
-             typename alloc = std::allocator<T> >
+             typename alloc = std::allocator<T>>
     class vector
     {
     public:
@@ -37,9 +37,9 @@
       typedef std::reverse_iterator<iterator>          reverse_iterator;
       typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 
-      vector() : my_first(iterator(0U)),
-                 my_last (iterator(0U)),
-                 my_end  (iterator(0U)) { }
+      vector() : my_first(iterator(nullptr)),
+                 my_last (iterator(nullptr)),
+                 my_end  (iterator(nullptr)) { }
 
       explicit vector(size_type count) : my_first(allocator_type().allocate(count)),
                                          my_last (my_first + count),
@@ -67,10 +67,16 @@
       template<typename input_iterator>
       vector(input_iterator first,
              input_iterator last,
-             const allocator_type& a = allocator_type()) : my_first(allocator_type(a).allocate(static_cast<size_type>(std::distance(first, last)))),
-                                                           my_last (my_first + static_cast<size_type>(std::distance(first, last))),
+             const allocator_type& a = allocator_type()) : my_first(nullptr),
+                                                           my_last (nullptr),
                                                            my_end  (my_last)
       {
+        const size_type local_distance = std::distance(first, last);
+
+        my_first = allocator_type(a).allocate(local_distance);
+
+        my_last  = my_first + local_distance;
+
         std::copy(first, last, my_first);
       }
 
@@ -91,20 +97,21 @@
 
       ~vector()
       {
-        std::destroy_range(my_first, my_last, allocator_type());
-        std::deallocate_range(my_first, my_end, allocator_type());
+        std::destroy_range   (my_first, my_last, allocator_type());
+        std::deallocate_range(my_first, my_end,  allocator_type());
       }
 
       vector& operator=(const vector& other)
       {
-        const size_type sz = other.size();
+        const size_type other_size = other.size();
 
-        if(size() != sz)
+        if(size() != other_size)
         {
           clear();
-          my_first = allocator_type().allocate(sz);
-          my_last  = my_first + sz;
-          my_end   = my_first + sz;
+
+          my_first = allocator_type().allocate(other_size);
+          my_last  = my_first + other_size;
+          my_end   = my_first + other_size;
         }
 
         std::copy(other.begin(), other.end(), my_first);
@@ -114,14 +121,15 @@
 
       vector& operator=(std::initializer_list<T> lst)
       {
-        const size_type sz = lst.size();
+        const size_type list_size = lst.size();
 
-        if(size() != sz)
+        if(size() != list_size)
         {
           clear();
-          my_first = allocator_type().allocate(sz);
-          my_last  = my_first + sz;
-          my_end   = my_first + sz;
+
+          my_first = allocator_type().allocate(list_size);
+          my_last  = my_first + list_size;
+          my_end   = my_first + list_size;
         }
 
         std::copy(lst.begin(), lst.end(), my_first);
@@ -173,8 +181,9 @@
           iterator new_first = allocator_type().allocate(count);
 
           std::copy(my_first, my_last, new_first);
-          std::destroy_range(my_first, my_last, allocator_type());
-          std::deallocate_range(my_first, my_end, allocator_type());
+
+          std::destroy_range   (my_first, my_last, allocator_type());
+          std::deallocate_range(my_first, my_end,  allocator_type());
 
           my_last  = new_first + size();
           my_first = new_first;
@@ -184,7 +193,9 @@
 
       void resize(size_type count, const value_type& value = value_type())
       {
-        if     (count == size()) { }
+        if(count == size())
+        {
+        }
         else if(count <  size())
         {
           std::destroy_range(my_first + count, my_last, allocator_type());
@@ -205,6 +216,7 @@
       void assign(size_type count, const T& value)
       {
         resize(count);
+
         std::fill(my_first, my_last, value);
       }
 
@@ -212,6 +224,7 @@
       void assign(input_iterator first, input_iterator last)
       {
         resize(static_cast<size_type>(std::distance(first, last)));
+
         std::copy(first, last, my_first);
       }
 
@@ -222,17 +235,20 @@
         if(capacity() <= the_size)
         {
           const size_type count = the_size * 2U;
+
           reserve((std::max)(count, 4U));
         }
 
         *my_last = value;
+
         ++my_last;
       }
 
       void clear()
       {
-        std::destroy_range(my_first, my_last, allocator_type());
+        std::destroy_range   (my_first, my_last, allocator_type());
         std::deallocate_range(my_first, my_last, allocator_type());
+
         my_last = my_first;
       }
 
@@ -240,8 +256,6 @@
       iterator my_first; // begin()
       iterator my_last;  // end()
       iterator my_end;   // capacity()
-
-      static allocator_type get_allocator() { return allocator_type(); }
     };
   }
 

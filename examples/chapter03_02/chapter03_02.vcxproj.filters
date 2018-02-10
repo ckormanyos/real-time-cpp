@@ -293,6 +293,9 @@
     <ClInclude Include="src\mcal\win32\mcal_port.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\primes\primes.h">
+      <Filter>src\math\primes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

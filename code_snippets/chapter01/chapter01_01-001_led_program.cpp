@@ -16,23 +16,14 @@ class led
 {
 public:
   // The led class constructor.
-  led() : is_on(false)
-  {
-  }
+  led() : is_on(false) { }
 
   void toggle() const
   {
     // Toggle the LED in the PC simulation.
-    if(is_on)
-    {
-      std::cout << "LED is on" << std::endl;
-    }
-    else
-    {
-      std::cout << "LED is off" << std::endl;
-    }
-
     is_on = (!is_on);
+
+    std::cout << (is_on ? "LED is on" : "LED is off") << std::endl;
   }
 
 private:
@@ -42,7 +33,7 @@ private:
 
 namespace
 {
-  // Create led_b5 simulated on a PC.
+  // Create led_b5 (simulated on a PC).
   const led led_b5;
 }
 
