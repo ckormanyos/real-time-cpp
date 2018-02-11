@@ -79,17 +79,19 @@
 
     // Use a custom bitset to contain the sieve.
     // This can save a lot of storage space.
-    util::dynamic_bitset<maximum_value> sieve;
+    util::dynamic_bitset<maximum_value,
+                         util::ring_allocator<std::uint8_t>>
+    sieve;
 
-    for(local_value_type i = 2U; i < local_value_type(imax); ++i)
+    for(local_value_type outer_index_i = 2U; outer_index_i < local_value_type(imax); ++outer_index_i)
     {
-      const local_value_type i2 = std::size_t(i * i);
-
-      if(sieve.test(i) == false)
+      if(sieve.test(outer_index_i) == false)
       {
-        for(local_value_type j = i2; j < maximum_value; j += i)
+        const local_value_type i2 = outer_index_i * outer_index_i;
+
+        for(local_value_type inner_index_j = i2; inner_index_j < maximum_value; inner_index_j += outer_index_i)
         {
-          sieve.set(j);
+          sieve.set(inner_index_j);
         }
       }
     }

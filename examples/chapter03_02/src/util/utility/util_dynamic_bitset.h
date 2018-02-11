@@ -6,12 +6,10 @@
   #include <cstdint>
   #include <memory>
 
-  #include <util/memory/util_ring_allocator.h>
-
   namespace util
   {
     template<const std::size_t my_bit_count,
-             typename alloc = util::ring_allocator<std::uint8_t>>
+             typename alloc = std::allocator<std::uint8_t>>
     class dynamic_bitset
     {
     public:
@@ -20,11 +18,9 @@
       dynamic_bitset() : my_elem_count((my_bit_count / 8U) + (((my_bit_count % 8U) != 0U) ? 1U : 0U)),
                          my_memory    (allocator_type().allocate(my_elem_count))
       {
-        const std::uint8_t zero = UINT8_C(0);
-
         std::fill(my_memory,
                   my_memory + my_elem_count,
-                  zero);
+                  std::uint8_t(0U));
       }
 
       ~dynamic_bitset()
@@ -35,6 +31,19 @@
       void set(const std::size_t i)
       {
         my_memory[i / 8U] |= (UINT8_C(1) << (i % 8U));
+      }
+
+      void set()
+      {
+        for(std::uint_fast8_t i = 0U; (i < my_bit_count % 8U); ++i)
+        {
+          my_memory[my_elem_count - 1U] |= std::uint8_t(1U << i);
+        }
+
+        for(std::uint_fast8_t i = 0U; (i < (my_elem_count - 1U)); ++i)
+        {
+          my_memory[i] |= UINT8_C(0xFF);
+        }
       }
 
       void flip(const std::size_t i)
