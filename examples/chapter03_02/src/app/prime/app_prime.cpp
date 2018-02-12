@@ -50,7 +50,7 @@ void app::prime::task_init()
   // http://en.wikipedia.org/wiki/Prime-counting_function
 
   const float log_intergal_of_max_val =
-    math::primes::detail::log_integral_asymptotic_approximation(static_cast<float>(app_prime::maximum_value_of_primes));
+    math::primes::detail::log_integral_asym(static_cast<float>(app_prime::maximum_value_of_primes));
 
   using std::floor;
 
@@ -79,8 +79,8 @@ void app::prime::task_func()
                    return (the_prime != unsigned_integral_prime_type(0U));
                  });
 
-  // TBD: Try to find a way to make this line
-  //      independent of the number of primes.
+  // Potential improvement: Try to find a way to make
+  // the following line independent of the number of primes.
 
   const bool result_is_ok =
     ((*prime_iterator) == unsigned_integral_prime_type(541U));

@@ -13,9 +13,9 @@
 
   namespace detail {
 
-  float log_integral_asymptotic_approximation(const float x);
+  float log_integral_asym(const float x);
 
-  float log_integral_asymptotic_approximation(const float x)
+  float log_integral_asym(const float x)
   {
     // Compute an asymptotic approximation
     // of the log_integral function, li(x).
@@ -67,6 +67,7 @@
     // is *not* prime, whereas a value of 0 indicates
     // that the number is prime.
 
+    // Define a local value type.
     using local_value_type = typename std::iterator_traits<forward_iterator_type>::value_type;
 
     // Establish the upper limit of the sieving.
