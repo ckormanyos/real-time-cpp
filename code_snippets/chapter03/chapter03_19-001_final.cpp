@@ -10,20 +10,20 @@
 class base
 {
 public:
-  virtual ~base() { }
+  virtual ~base() = default;
 
   base& operator=(const base&) = default;
 
 protected:
-  base() { }
+  base() = default;
 };
 
 class derived final : public base
 {
 public:
-  derived() { }
+  derived() = default;
 
-  virtual ~derived() { }
+  virtual ~derived() = default;
 
   derived& operator=(const derived&) = default;
 };
