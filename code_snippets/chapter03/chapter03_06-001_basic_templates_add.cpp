@@ -23,10 +23,9 @@ const int   n = add(1, 2);
 const float f = add(1.2F, 3.4F);
 // f is 4.6.
 
-const std::string s
-              = add(std::string("abc"),
-                    std::string("xyz"));
-// s is "abcxyz".
+const std::string str = add(std::string("abc"),
+                            std::string("xyz"));
+// str is "abcxyz".
 
 int main()
 {
