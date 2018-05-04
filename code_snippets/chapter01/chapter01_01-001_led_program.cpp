@@ -12,12 +12,14 @@
 #include <cstdint>
 #include <iostream>
 
-class led
+class led final
 {
 public:
   // The led class constructor.
   led() : is_on(false) { }
 
+  ~led() = default;
+  
   void toggle() const
   {
     // Toggle the LED in the PC simulation.
