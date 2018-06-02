@@ -2,12 +2,8 @@
 This is the companion code for the book "Real-Time C++".
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
-and Template Microcontroller Programming, Second Edition
-(Springer, Heidelberg, 2015).
-
-New work on C++17 is underway for the reference application,
-the examples and the code snippets. This is for the 3rd edition
-of the book, currently in preparation.
+and Template Microcontroller Programming, Third Edition
+(Springer, Heidelberg, 2018).
 
 Details on the Reference Application
 ------------------------------------
