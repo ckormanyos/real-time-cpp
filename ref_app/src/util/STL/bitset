@@ -1,0 +1,35 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef BITSET_2018_06_10_
+  #define BITSET_2018_06_10_
+
+  #include <string>
+  #include <cstdint>
+
+  namespace std
+  {
+    template<const std::size_t N> class bitset
+    {
+    public:
+      bitset() { }
+
+      bitset(const unsigned long val) { }
+
+      template<typename charT,
+               typename traits,
+               typename Alloc>
+      explicit bitset(const std::basic_string<T, traits_type, alloc>& str,
+                      typename basic_string<T, traits_type, alloc>::size_type pos = 0,
+                      typename basic_string<T, traits_type, alloc>::size_type n =
+                        std::basic_string<T, traits_type, alloc>::npos)
+      {
+      }
+    };
+  }
+
+#endif // BITSET_2018_06_10_

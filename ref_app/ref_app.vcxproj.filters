@@ -1463,5 +1463,8 @@
     <None Include="src\util\STL\random">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\bitset">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
 </Project>

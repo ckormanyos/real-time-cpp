@@ -14,6 +14,19 @@
   #include <initializer_list>
   #include <vector>
 
+  /*
+  Portions of <random>. The following portions will be included:
+
+    linear_congruential_engine
+    mersenne_twister_engine
+    subtract_with_carry_engine
+    discard_block_engine
+    independent_bits_engine
+    shuffle_order_engine
+    [rand.predef]
+    uniform_int_distribution
+  */
+
   namespace std
   {
     class seed_seq
@@ -99,20 +112,20 @@
       std::vector<result_type> internal_sequence;
     };
 
-    template<typename unsigned_integral_type,
+    template<typename UIntType,
              size_t w,
              size_t n,
              size_t m,
              size_t r,
-             unsigned_integral_type a,
+             UIntType a,
              size_t u,
-             unsigned_integral_type d,
+             UIntType d,
              size_t s,
-             unsigned_integral_type b,
+             UIntType b,
              size_t t,
-             unsigned_integral_type c,
+             UIntType c,
              size_t l,
-             unsigned_integral_type f>
+             UIntType f>
     class mersenne_twister_engine
     {
     public:
@@ -153,7 +166,7 @@
                                       0xEFC60000U,
                                               18U,
                                       1812433253U>
-      mt19937;
+    mt19937;
   }
 
 #endif // RANDOM_2018_06_10_
