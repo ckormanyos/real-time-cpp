@@ -1460,5 +1460,8 @@
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
     </None>
+    <None Include="src\util\STL\random">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
 </Project>
