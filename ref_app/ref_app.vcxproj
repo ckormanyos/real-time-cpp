@@ -1542,7 +1542,6 @@
     <ClInclude Include="src\util\utility\util_noexcept.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />
-    <ClInclude Include="src\util\utility\util_null_ptr_workaround.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
     <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_swdm.h" />

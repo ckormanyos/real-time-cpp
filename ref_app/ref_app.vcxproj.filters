@@ -588,9 +588,6 @@
     <ClInclude Include="src\util\utility\util_nothing.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_null_ptr_workaround.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_time.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
