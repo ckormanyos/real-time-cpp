@@ -18,9 +18,12 @@
 
   namespace std
   {
-    template<const std::size_t my_bit_count> class bitset
+    template<const std::size_t my_bit_count>
+    class bitset
     {
     public:
+      using element_type = bool;
+
       STL_LOCAL_CONSTEXPR bitset() : my_memory()
       {
         std::fill(my_memory, my_memory + my_elem_count, 0U);
@@ -61,7 +64,7 @@
       {
       }
 
-      ~dynamic_bitset() = default;
+      ~bitset() = default;
 
       void set()
       {
