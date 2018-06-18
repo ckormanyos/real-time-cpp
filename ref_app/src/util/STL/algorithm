@@ -40,10 +40,7 @@
     {
       forward_iterator minimum_value = first;
 
-      if(first == last)
-      {
-      }
-      else
+      if(first != last)
       {
         ++first;
 
@@ -67,10 +64,7 @@
     {
       forward_iterator minimum_value = first;
 
-      if(first == last)
-      {
-      }
-      else
+      if(first != last)
       {
         ++first;
 
@@ -123,10 +117,7 @@
     {
       forward_iterator maximum_value = first;
 
-      if(first == last)
-      {
-      }
-      else
+      if(first != last)
       {
         ++first;
 
@@ -150,10 +141,7 @@
     {
       forward_iterator maximum_value = first;
 
-      if(first == last)
-      {
-      }
-      else
+      if(first != last)
       {
         ++first;
 
@@ -205,7 +193,8 @@
                                     : std::pair<const value_type&, const value_type&>(a, b));
     }
 
-    template <typename input_iterator1, typename input_iterator2>
+    template <typename input_iterator1,
+              typename input_iterator2>
     bool lexicographical_compare(input_iterator1 first1,
                                  input_iterator1 last1,
                                  input_iterator2 first2,
@@ -670,13 +659,13 @@
     void iter_swap(input_iterator1 left,
                    input_iterator2 right)
     {
-      typedef typename std::iterator_traits<input_iterator1>::value_type left_type;
-      typedef typename std::iterator_traits<input_iterator2>::value_type right_type;
+      typedef typename std::iterator_traits<input_iterator1>::value_type value_left_type;
+      typedef typename std::iterator_traits<input_iterator2>::value_type value_right_type;
 
-      const left_type tmp(*left);
+      const value_left_type tmp(*left);
 
-      *left  = left_type (*right);
-      *right = right_type(tmp);
+      *left  = value_left_type (*right);
+      *right = value_right_type(tmp);
     }
 
     template<typename input_iterator1,

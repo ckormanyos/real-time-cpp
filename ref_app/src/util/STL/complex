@@ -7,8 +7,7 @@
 
 // Implement templates for the standard complex class and
 // its associated functions. These are intended to be used
-// with both user-defined types as well as built-in float,
-// double and long double.
+// with the built-in types float, double and long double.
 
 #ifndef COMPLEX_2012_02_20_
   #define COMPLEX_2012_02_20_
