@@ -27,14 +27,12 @@ void do_something_with_the_stl()
   // Use std::transform.
   // Convert from decimal char to ASCII char.
 
-  std::transform(v.begin(),
-                 v.end(),
+  std::transform(v.cbegin(),
+                 v.cend(),
                  v.begin(),
-                 [](char& c) -> char
+                 [](const char& c) -> char
                  {
-                   c += 0x30;
-
-                   return c;
+                   return c + 0x30;
                  });
 
   for(std::vector<char>::size_type i = 0U; i < v.size(); ++i)
