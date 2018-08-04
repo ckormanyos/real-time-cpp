@@ -19,7 +19,7 @@ public:
   led() : is_on(false) { }
 
   ~led() = default;
-  
+
   void toggle() const
   {
     // Toggle the LED in the PC simulation.
