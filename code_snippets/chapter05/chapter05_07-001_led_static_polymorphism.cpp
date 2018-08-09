@@ -5,13 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter05_07-001_led_stytic_polymorphism.cpp
+// chapter05_07-001_led_static_polymorphism.cpp
 
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 
-class pwm final
+class pwm final // A placeholder pwm class used for exemplary purposes.
 {
 public:
   pwm(const std::uint8_t c) : channel(c) { }
@@ -40,6 +40,7 @@ public:
     // Toggle the LED port in the PC simulation.
     is_on = (!is_on);
 
+    // Show the PC simulated port LED.
     std::cout << "LED port(" << std::showbase << std::hex << unsigned(port) << "): ";
 
     std::cout << (is_on ? "is on" : "is off") << std::endl;
@@ -63,6 +64,7 @@ public:
     // Toggle the LED PWM in the PC simulation.
     is_on = (!is_on);
 
+    // Show the PC simulated pwm LED.
     std::cout << "LED pwm(" << std::dec << unsigned(my_pwm->get_channel()) << "): ";
 
     std::cout << (is_on ? "is on" : "is off") << std::endl;
