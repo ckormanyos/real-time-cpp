@@ -5,11 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter04_08-001_const_com_class.cpp
+// chapter04_08-003_poll_communication.cpp
 
+#include <chrono>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <thread>
 
 #define __attribute__(attr)
 
@@ -23,8 +25,7 @@ namespace mcal
   }
 }
 
-extern "C"
-void com_recv_isr() __attribute__((interrupt));
+void task_poll_communication();
 
 class communication
 {
@@ -69,24 +70,42 @@ private:
 
   const communication& operator=(const communication&) = delete;
 
-  friend void com_recv_isr();
+  friend void task_poll_communication();
 };
 
-bool wakeup(const communication& com) // Emohasize: com is a comst reference.
+extern communication com;
+
+void task_poll_communication()
 {
-  // Call the const send_byte function on a const reference.
-  return com.send_byte(0x12U);
+  for(;;)
+  {
+    if(com.recv_ready())
+    {
+      const std::uint8_t the_byte = com.recv_byte();
+
+      // Do something with the_byte.
+      std::cout << std::hex << std::showbase << "received byte: " << unsigned(the_byte) << std::endl;
+
+      break;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10U));
+
+    // Simulate receiving a byte.
+    *com.rbuf = 0x34U;
+
+    com.has_recv = true;
+  }
 }
 
-namespace
-{
-  // Instantiate a constant communication instance.
-  const communication com;
-}
+// Instantiate a non-constant communication instance.
+communication com;
 
 int main()
 {
-  const bool wakeup_is_ok = wakeup(com);
+  com.send_byte(0x12U);
 
-  std::cout << std::boolalpha << "wakeup_is_ok: " << wakeup_is_ok << std::endl;
+  std::thread com_recv_thread = std::thread(task_poll_communication);
+
+  com_recv_thread.join();
 }
