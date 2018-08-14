@@ -7,6 +7,7 @@
 
 // chapter03_21-001_mersenne_twister_19937.cpp
 
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
