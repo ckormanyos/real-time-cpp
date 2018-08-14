@@ -29,7 +29,7 @@ void do_something()
 
   std::copy(random_numbers,
             random_numbers + 3U,
-            std::ostream_iterator<std::uint16_t>(std::cout, ". "));
+            std::ostream_iterator<std::uint16_t>(std::cout, ", "));
 
   std::cout << std::endl;
 }
