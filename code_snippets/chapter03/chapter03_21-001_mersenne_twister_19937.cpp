@@ -89,3 +89,31 @@ int main()
     do_something();
   }
 }
+
+/*
+uint32_t crc32(uint32_t crc, uint8_t byte)
+{
+  int8_t i;
+
+  crc = crc ^ byte;
+
+  for(i = 7; i >= 0; --i)
+  {
+    crc = (crc >> 1) ^ (UINT32_C(0xEDB88320) & (-(crc & 1U)));
+  }
+
+  return crc;
+}
+
+void test()
+{
+  uint32_t reg = 0xffffffff;
+
+  //reg=crc32(reg,(uint8_t) '1');
+
+  reg=crc32(reg,(uint8_t)0x20);
+  reg=crc32(reg,(uint8_t)0x00);
+  reg=crc32(reg,(uint8_t)0x07);
+  reg=crc32(reg,(uint8_t)0x70);
+}
+*/
