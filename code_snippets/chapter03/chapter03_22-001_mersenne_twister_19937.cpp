@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter03_21-001_mersenne_twister_19937.cpp
+// chapter03_22-001_mersenne_twister_19937.cpp
 
 #include <algorithm>
 #include <chrono>
@@ -50,11 +50,11 @@ namespace local
        // and subsequently multiplying this value with (10.0^precision).
        int n_exp;
 
-       const result_type seed_as_integral_value =
-         result_type(std::frexp(seed.count(), &n_exp) * std::pow(10.0, std::numeric_limits<double>::digits10));
+       const std::uintmax_t seed_as_integral_value =
+         std::uintmax_t(std::frexp(seed.count(), &n_exp) * std::pow(10.0, std::numeric_limits<double>::digits10));
 
        // We now have a unique seed expressed as an integral value.
-       return seed_as_integral_value;
+       return result_type(seed_as_integral_value);
      }
 
      my_custom_random_device(const my_custom_random_device&) = delete;
@@ -89,31 +89,3 @@ int main()
     do_something();
   }
 }
-
-/*
-uint32_t crc32(uint32_t crc, uint8_t byte)
-{
-  int8_t i;
-
-  crc = crc ^ byte;
-
-  for(i = 7; i >= 0; --i)
-  {
-    crc = (crc >> 1) ^ (UINT32_C(0xEDB88320) & (-(crc & 1U)));
-  }
-
-  return crc;
-}
-
-void test()
-{
-  uint32_t reg = 0xffffffff;
-
-  //reg=crc32(reg,(uint8_t) '1');
-
-  reg=crc32(reg,(uint8_t)0x20);
-  reg=crc32(reg,(uint8_t)0x00);
-  reg=crc32(reg,(uint8_t)0x07);
-  reg=crc32(reg,(uint8_t)0x70);
-}
-*/
