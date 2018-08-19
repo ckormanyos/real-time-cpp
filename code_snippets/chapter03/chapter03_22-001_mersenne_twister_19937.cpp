@@ -76,14 +76,14 @@ namespace local
 
       const std::uint64_t data[8U] =
       {
-        std::uint8_t(current_now_as_integral_value <<  0),
-        std::uint8_t(current_now_as_integral_value <<  8),
-        std::uint8_t(current_now_as_integral_value << 16),
-        std::uint8_t(current_now_as_integral_value << 24),
-        std::uint8_t(current_now_as_integral_value << 32),
-        std::uint8_t(current_now_as_integral_value << 40),
-        std::uint8_t(current_now_as_integral_value << 48),
-        std::uint8_t(current_now_as_integral_value << 56),
+        std::uint8_t(current_now_as_integral_value >>  0),
+        std::uint8_t(current_now_as_integral_value >>  8),
+        std::uint8_t(current_now_as_integral_value >> 16),
+        std::uint8_t(current_now_as_integral_value >> 24),
+        std::uint8_t(current_now_as_integral_value >> 32),
+        std::uint8_t(current_now_as_integral_value >> 40),
+        std::uint8_t(current_now_as_integral_value >> 48),
+        std::uint8_t(current_now_as_integral_value >> 56),
       };
 
       // Initialize the CRC.
