@@ -9,12 +9,10 @@
 
 #include <algorithm>
 #include <chrono>
-#include <cmath>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <random>
-#include <string>
 
 namespace local
 {
@@ -43,6 +41,8 @@ namespace local
 
       std::uint64_t current_now_as_integral_value;
 
+      // Wait for std::chrono::high_resolution_clock::now()
+      // to differ from the last call of the seed.
       for(;;)
       {
         current_now_as_integral_value = 
@@ -110,8 +110,18 @@ namespace local
       // Finalize the CRC.
       crc64_we_value ^= UINT64_C(0xFFFFFFFFFFFFFFFF);
 
+      const result_type seed32 = static_cast<result_type>(crc64_we_value);
+
+      std::cout << "Seed is: 0x"
+                << std::hex
+                << std::setw(8)
+                << std::setfill(char('0'))
+                << std::uppercase
+                << seed32
+                << std::endl;
+
       // We now have a unique seed expressed as an integral value.
-      return result_type(crc64_we_value);
+      return seed32;
     }
 
     my_custom_random_device(const my_custom_random_device&) = delete;
@@ -133,9 +143,11 @@ void do_something()
     my_distribution(my_generator)
   };
 
-  std::cout << std::setw(5) << random_numbers[0U] << ", ";
-  std::cout << std::setw(5) << random_numbers[1U] << ", ";
-  std::cout << std::setw(5) << random_numbers[2U] << std::endl;
+  std::cout << "Random numbers in [1...1023): ";
+  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[0U] << ", ";
+  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[1U] << ", ";
+  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[2U] << std::endl;
+  std::cout << std::endl;
 }
 
 int main()
