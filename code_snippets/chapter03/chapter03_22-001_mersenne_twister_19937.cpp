@@ -23,50 +23,107 @@ namespace local
   class my_custom_random_device
   {
   public:
-     typedef std::uint32_t result_type;
+    typedef std::uint32_t result_type;
 
-     explicit my_custom_random_device(const std::string& token = "")
-     {
-       static_cast<void>(token.empty());
+    my_custom_random_device()
+    {
+      operator()();
+    }
 
-       this->operator()();
-     }
+    static result_type (min)() { return (std::numeric_limits<result_type>::min)(); }
+    static result_type (max)() { return (std::numeric_limits<result_type>::max)(); }
 
-     static result_type (min)() { return (std::numeric_limits<result_type>::min)(); }
-     static result_type (max)() { return (std::numeric_limits<result_type>::max)(); }
+    result_type operator()()
+    {
+      // Use the high-resolution clock to create the basis for a seed.
 
-     double entropy() const { return 4.0; }
+      static std::uint64_t previous_now_as_integral_value;
 
-     result_type operator()()
-     {
-       // Use the high resolution clock to create the seed.
-       const auto start = std::chrono::time_point<std::chrono::high_resolution_clock>();
-       const auto end   = std::chrono::high_resolution_clock::now();
+      using clock_type = std::chrono::high_resolution_clock;
 
-       const std::chrono::duration<double> seed = (end - start);
+      std::uint64_t current_now_as_integral_value;
 
-       // Obtain the seed as an integral value.
-       // This involves extracting the mantissa of the seed as a double
-       // and subsequently multiplying this value with (10.0^precision).
-       int n_exp;
+      for(;;)
+      {
+        current_now_as_integral_value = 
+          std::chrono::duration_cast<std::chrono::nanoseconds>(clock_type::now().time_since_epoch()).count();
 
-       const std::uintmax_t seed_as_integral_value =
-         std::uintmax_t(std::frexp(seed.count(), &n_exp) * std::pow(10.0, std::numeric_limits<double>::digits10));
+        if(previous_now_as_integral_value != current_now_as_integral_value)
+        {
+          break;
+        }
+      }
 
-       // We now have a unique seed expressed as an integral value.
-       return result_type(seed_as_integral_value);
-     }
+      previous_now_as_integral_value = current_now_as_integral_value;
 
-     my_custom_random_device(const my_custom_random_device&) = delete;
-     void operator=(const my_custom_random_device&) = delete;
+      // The high-resolution clock is basically a timer counting up.
+      // It could be somewhat deterministic and might suffer from entropy loss.
+      // We therefore run a simple CRC (in this case a bitwise CRC64 / WE)
+      // over current_now_as_integral_value to create the seed.
+
+      // Run CRC64 / WE over current_now_as_integral_value.
+
+      // CRC64 / WE
+      // width   : 64
+      // poly    : 0x42F0E1EBA9EA3693
+      // init    : 0xFFFFFFFFFFFFFFFF
+      // refin   : false
+      // refout  : false
+      // xorout  : 0xFFFFFFFFFFFFFFFF
+      // check   : 0x62EC59E3F1A4F00A
+      // residue : 0xFCACBEBD5931A992
+      // name    : CRC-64/WE
+
+      const std::uint64_t data[8U] =
+      {
+        std::uint8_t(current_now_as_integral_value <<  0),
+        std::uint8_t(current_now_as_integral_value <<  8),
+        std::uint8_t(current_now_as_integral_value << 16),
+        std::uint8_t(current_now_as_integral_value << 24),
+        std::uint8_t(current_now_as_integral_value << 32),
+        std::uint8_t(current_now_as_integral_value << 40),
+        std::uint8_t(current_now_as_integral_value << 48),
+        std::uint8_t(current_now_as_integral_value << 56),
+      };
+
+      // Initialize the CRC.
+      std::uint64_t crc64_we_value = UINT64_C(0xFFFFFFFFFFFFFFFF);
+
+      // Calculate the CRC, one byte and one bit at a time.
+      for(std::size_t i = 0U; i < 8U; ++i)
+      {
+        crc64_we_value ^= (std::uint64_t(data[i]) << (64 - 8));
+
+        for(std::uint_fast8_t bit = 8U; bit > 0U; --bit)
+        {
+          if(std::uint64_t(crc64_we_value & (1ULL << 63)) != 0U)
+          {
+            crc64_we_value = (crc64_we_value << 1) ^ UINT64_C(0x42F0E1EBA9EA3693);
+          }
+          else
+          {
+            crc64_we_value <<= 1;
+          }
+        }
+      }
+
+      // Finalize the CRC.
+      crc64_we_value ^= UINT64_C(0xFFFFFFFFFFFFFFFF);
+
+      // We now have a unique seed expressed as an integral value.
+      return result_type(crc64_we_value);
+    }
+
+    my_custom_random_device(const my_custom_random_device&) = delete;
+    void operator=(const my_custom_random_device&) = delete;
   };
 }
 
 void do_something()
 {
-  static local::my_custom_random_device               my_random_device;
-  static std::mt19937                                 my_generator(my_random_device());
-  static std::uniform_int_distribution<std::uint16_t> my_distribution(1, 1023);
+  local::my_custom_random_device               my_random_device;
+  std::mt19937                                 my_generator(my_random_device());
+  std::uniform_int_distribution<std::uint16_t> my_distribution(1, 1023);
 
   // Generate 3 pseudo-random numbers.
   const std::uint16_t random_numbers[3U] =
