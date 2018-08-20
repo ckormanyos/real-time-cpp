@@ -72,14 +72,14 @@ namespace detail
 
       const std::uint64_t data[8U] =
       {
-        std::uint8_t(current_now >>  0),
-        std::uint8_t(current_now >>  8),
-        std::uint8_t(current_now >> 16),
-        std::uint8_t(current_now >> 24),
-        std::uint8_t(current_now >> 32),
-        std::uint8_t(current_now >> 40),
-        std::uint8_t(current_now >> 48),
-        std::uint8_t(current_now >> 56),
+        static_cast<std::uint8_t>(current_now >>  0),
+        static_cast<std::uint8_t>(current_now >>  8),
+        static_cast<std::uint8_t>(current_now >> 16),
+        static_cast<std::uint8_t>(current_now >> 24),
+        static_cast<std::uint8_t>(current_now >> 32),
+        static_cast<std::uint8_t>(current_now >> 40),
+        static_cast<std::uint8_t>(current_now >> 48),
+        static_cast<std::uint8_t>(current_now >> 56),
       };
 
       // Initialize the CRC-64/WE.
