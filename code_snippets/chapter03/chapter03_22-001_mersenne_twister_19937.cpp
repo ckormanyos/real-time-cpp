@@ -17,7 +17,7 @@
 namespace detail
 {
   // Create a custom random device for seeding the pseudo-random number generator.
-  class random_integral_device
+  class random_integral_device final
   {
   public:
     typedef std::uint64_t result_type;
@@ -86,7 +86,7 @@ namespace detail
       std::uint64_t crc64_we_value = UINT64_C(0xFFFFFFFFFFFFFFFF);
 
       // Calculate the CRC-64/WE using a slow algorithm,
-      // one byte and one bit at a time.
+      // one byte at a time with one bit at a time.
       for(std::size_t i = 0U; i < 8U; ++i)
       {
         crc64_we_value ^= (std::uint64_t(data[i]) << (64 - 8));
@@ -109,7 +109,7 @@ namespace detail
 
       const result_type seed_result = crc64_we_value;
 
-      // We now have a unique seed expressed as an integral value.
+      // We now have a unique seed expressed as a 64-bit unsigned integral value.
       return seed_result;
     }
 
@@ -120,26 +120,26 @@ namespace detail
 
 void do_something()
 {
-        detail::random_integral_device               my_random_device;
-  const std::uint64_t                                my_random_seed_value(my_random_device());
-        std::mt19937                                 my_generator        (static_cast<std::uint32_t>(my_random_seed_value));
-        std::uniform_int_distribution<std::uint16_t> my_distribution     (1, 1023);
+        detail::random_integral_device               device;
+  const std::uint32_t                                seed(static_cast<std::uint32_t>(device()));
+        std::mt19937                                 generator(seed);
+        std::uniform_int_distribution<std::uint16_t> distribution(1, 1023);
 
   // Print the seed.
   std::cout << "Seed is: 0x"
             << std::hex
-            << std::setw(16)
+            << std::setw(8)
             << std::setfill(char('0'))
             << std::uppercase
-            << my_random_seed_value
+            << seed
             << ". ";
 
   // Generate 3 pseudo-random numbers in [1, 1023].
   const std::uint16_t random_numbers[3U] =
   {
-    my_distribution(my_generator),
-    my_distribution(my_generator),
-    my_distribution(my_generator)
+    distribution(generator),
+    distribution(generator),
+    distribution(generator)
   };
 
   std::cout << "Random numbers in [1, 1023]: ";
