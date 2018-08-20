@@ -58,10 +58,10 @@ namespace local
 
       // The high-resolution clock is basically a timer counting up.
       // It could be somewhat deterministic and might suffer from entropy loss.
-      // We therefore run a simple CRC (in this case a bitwise CRC64 / WE)
+      // We therefore run a simple CRC (in this case a bitwise CRC-64/WE)
       // over current_now_as_integral_value to create the seed.
 
-      // Run CRC64 / WE over current_now_as_integral_value.
+      // Run CRC-64/WE over the data bytes of current_now_as_integral_value.
 
       // CRC64 / WE
       // width   : 64
@@ -86,10 +86,11 @@ namespace local
         std::uint8_t(current_now_as_integral_value >> 56),
       };
 
-      // Initialize the CRC.
+      // Initialize the CRC-64/WE.
       std::uint64_t crc64_we_value = UINT64_C(0xFFFFFFFFFFFFFFFF);
 
-      // Calculate the CRC, one byte and one bit at a time.
+      // Calculate the CRC-64/WE using a slow algorithm,
+      // one byte and one bit at a time.
       for(std::size_t i = 0U; i < 8U; ++i)
       {
         crc64_we_value ^= (std::uint64_t(data[i]) << (64 - 8));
@@ -107,7 +108,7 @@ namespace local
         }
       }
 
-      // Finalize the CRC.
+      // Finalize the CRC-64/WE.
       crc64_we_value ^= UINT64_C(0xFFFFFFFFFFFFFFFF);
 
       const result_type seed32 = static_cast<result_type>(crc64_we_value);
