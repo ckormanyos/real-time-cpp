@@ -36,7 +36,8 @@ namespace detail
       using clock_type = std::chrono::high_resolution_clock;
 
       const std::uint64_t previous_now = 
-        static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(clock_type::now().time_since_epoch()).count());
+        static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>
+          (clock_type::now().time_since_epoch()).count());
 
       std::uint64_t current_now;
 
@@ -44,7 +45,8 @@ namespace detail
       for(;;)
       {
         current_now =
-          static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(clock_type::now().time_since_epoch()).count());
+          static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>
+            (clock_type::now().time_since_epoch()).count());
 
         if(current_now != previous_now)
         {
