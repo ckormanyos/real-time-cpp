@@ -17,7 +17,6 @@
 namespace detail
 {
   // Create a custom random device for seeding the pseudo-random number generator.
-  // Use a custom random device because the default is allowed to repeat values.
   class random_integral_device
   {
   public:
