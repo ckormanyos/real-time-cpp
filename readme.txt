@@ -29,7 +29,7 @@ The reference application supports the following targets:
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
   * Microchip(R) PIC(R)32 MIPS4K
-  * Raspberry Pi with ARM(R) 11
+  * Raspberry Pi with Arm11(TM)
 
 Cross Development in the Reference Application
 ----------------------------------------------
@@ -79,7 +79,7 @@ The Arm(R) Cortex(R)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portc.8.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
+The second Arm(R) Cortex(R)-M3 configuration (called "target stm32l152")
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on portb.6.
 
@@ -119,9 +119,9 @@ A GNU GCC port with a relatively high level of C++11 awareness such as
 GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
 the reference application.
 
-Some of the code snippets demonstrate language elements of not only C++11,
-but also C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
-can be beneficial for success with *all* of the code snippets.
+A few code snippets demonstrate language elements not only from C++11,
+but also from C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
+can be beneficial for success with all of the code snippets.
 
 In the reference application, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me
