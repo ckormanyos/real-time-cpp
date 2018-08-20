@@ -21,15 +21,15 @@ The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
-  * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
-  * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
-  * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
-  * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
-  * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
+  * ST Microelectronics(R) STM32F100 Arm(R) Cortex(R)-M3
+  * ST Microelectronics(R) STM32L152 Arm(R) Cortex(R)-M3
+  * ST Microelectronics(R) STM32F407 Arm(R) Cortex(R)-M4
+  * ST Microelectronics(R) STM32F429 Arm(R) Cortex(R)-M4
+  * BeagleBone with Texas Instruments(R) AM3359 Arm(R) A8
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
   * Microchip(R) PIC(R)32 MIPS4K
-  * Raspberry Pi with ARM(R) 11
+  * Raspberry Pi with Arm11(TM)
 
 Cross Development in the Reference Application
 ----------------------------------------------
@@ -75,19 +75,19 @@ be found in the target-directory and its subdirectories.
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
 The program toggles the yellow LED on portb.5.
 
-The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
+The Arm(R) Cortex(R)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portc.8.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
+The second Arm(R) Cortex(R)-M3 configuration (called "target stm32l152")
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on portb.6.
 
-The first ARM(R) Cortex(TM)-M4 configuration (called "target stm32f407") runs on
+The first Arm(R) Cortex(R)-M4 configuration (called "target stm32f407") runs on
 the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portd.15.
 
-The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
+The Arm(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
 for the BeagleBone that runs independently from any kind of *nix distro on
@@ -98,7 +98,7 @@ from SD-card into RAM memory and subsequently executed. When switching on
 the BeagleBone black, the boot button (S2) must be pressed while powering
 up the board. The program toggles the first user LED (LED1 on port1.21).
 
-The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
+The Arm11(TM) configuration (called "target bcm2835_raspi_b") runs on the
 RaspberryPi-B. This project creates a bare-metal program for the RaspberryPi.
 This program runs independently from any kind of *nix distro on the board.
 Our program is designed to boot the RaspberryPi from a raw binary file.
@@ -119,9 +119,9 @@ A GNU GCC port with a relatively high level of C++11 awareness such as
 GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
 the reference application.
 
-Some of the code snippets demonstrate language elements of not only C++11,
-but also C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
-can be beneficial for success with *all* of the code snippets.
+A few code snippets demonstrate language elements not only from C++11,
+but also from C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
+can be beneficial for success with all of the code snippets.
 
 In the reference application, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me
