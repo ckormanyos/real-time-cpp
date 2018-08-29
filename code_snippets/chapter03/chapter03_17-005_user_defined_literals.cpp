@@ -9,16 +9,20 @@
 
 #include <cmath>
 #include <complex>
+#include <iomanip>
 #include <iostream>
+#include <limits>
 
 using namespace std::complex_literals;
 
 const std::complex<double> z = 1.2 + 3.4i;
 
-// (13.9794,5.42282)
+// (13.979408806018, 5.4228154724634)
 const std::complex<double> s = std::sin(z);
 
 int main()
 {
-  std::cout << s << std::endl;
+  std::cout << std::setprecision(std::numeric_limits<double>::digits10)
+            << s
+            << std::endl;
 }
