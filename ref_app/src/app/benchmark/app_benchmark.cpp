@@ -14,11 +14,11 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 
-#define APP_BENCHMARK_TYPE_NONE           0
-#define APP_BENCHMARK_TYPE_CRC32          1
-#define APP_BENCHMARK_TYPE_FILTER         2
-#define APP_BENCHMARK_TYPE_FIXED_POINT    3
-#define APP_BENCHMARK_TYPE_STD_COMPLEX    4
+#define APP_BENCHMARK_TYPE_NONE                0
+#define APP_BENCHMARK_TYPE_CRC32               1
+#define APP_BENCHMARK_TYPE_FILTER              2
+#define APP_BENCHMARK_TYPE_FIXED_POINT         3
+#define APP_BENCHMARK_TYPE_STD_COMPLEX         4
 
 #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
 //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_CRC32
@@ -95,13 +95,22 @@
 #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_COMPLEX)
 
   #include <complex>
+  #include <limits>
 
   typedef std::complex<float> complex_type;
 
-  typedef complex_type::value_type float_type;
-
   extern complex_type x;
   extern complex_type y;
+
+  template<typename float_type>
+  bool is_close_fraction(const float_type f,
+                         const float_type control,
+                         const float_type tol = std::numeric_limits<float_type>::epsilon() * float_type(100.0L))
+  {
+    const float ratio = std::fabs(f / control);
+
+    return (std::abs(1.0F - ratio) < tol);
+  }
 
 #endif // APP_BENCHMARK_TYPE
 
@@ -181,6 +190,35 @@ void app::benchmark::task_func()
 
     port_type::set_pin_low();
     mcal::irq::enable_all();
+
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_COMPLEX)
+
+    mcal::irq::disable_all();
+    port_type::set_pin_high();
+
+    // 14.859343457123410999 + 5.259004469728472689 i
+    y = std::sin(x);
+
+    port_type::set_pin_low();
+    mcal::irq::enable_all();
+
+    const bool result_is_ok = (   is_close_fraction(y.real(), 14.859343457123410999F)
+                               && is_close_fraction(y.imag(),  5.259004469728472689F));
+
+    if(result_is_ok)
+    {
+      // The benchmark is OK.
+      // Perform one nop and leave.
+
+      mcal::cpu::nop();
+    }
+    else
+    {
+      // The benchmark result is not OK!
+      // Remain in a blocking loop and crash the system.
+
+      for(;;) { mcal::cpu::nop(); }
+    }
 
   #endif // APP_BENCHMARK_TYPE
 }
