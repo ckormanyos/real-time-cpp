@@ -18,8 +18,8 @@ _rom_begin = 0x00000000;
 _rom_end   = 0x00007FFC;
 
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of 1K */
-_stack_begin = 0x801C00;
+/* Set up a stack with a size of 2K */
+_stack_begin = 0x801800;
 _stack_end   = 0x802000;
 
 /* The initial stack pointer (top of stack) is at the top of the 8K RAM */

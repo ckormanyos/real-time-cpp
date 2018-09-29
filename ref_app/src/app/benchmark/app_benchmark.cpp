@@ -1,6 +1,5 @@
-
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,12 +18,14 @@
 #define APP_BENCHMARK_TYPE_FILTER              2
 #define APP_BENCHMARK_TYPE_FIXED_POINT         3
 #define APP_BENCHMARK_TYPE_STD_COMPLEX         4
+#define APP_BENCHMARK_TYPE_STD_WIDE_INTEGER    5
 
 #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
 //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_CRC32
 //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_FILTER
 //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_FIXED_POINT
 //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_STD_COMPLEX
+//#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_STD_WIDE_INTEGER
 
 #if(APP_BENCHMARK_TYPE != APP_BENCHMARK_TYPE_NONE)
 
@@ -55,11 +56,8 @@
   #define BOOST_FIXED_POINT_DISABLE_IOSTREAM
   #define BOOST_FIXED_POINT_DISABLE_MULTIPRECISION
 
-  #include <boost/fixed_point/fixed_point.hpp>
-  typedef boost::fixed_point::negatable<7, -24> numeric_type;
-
-  //#include <cmath>
-  //typedef float numeric_type;
+  #include <math/fixed_point/fixed_point.h>
+  typedef fixed_point<std::int32_t> numeric_type;
 
   namespace local
   {
@@ -110,6 +108,50 @@
     const float ratio = std::fabs(f / control);
 
     return (std::abs(1.0F - ratio) < tol);
+  }
+
+#elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_WIDE_INTEGER)
+
+  #include <math/wide_integer/uintwide_t.h>
+
+  using wide_integer_type = wide_integer::uint256_t;
+
+  namespace control
+  {
+    // Create two pseudo-random 256-bit unsigned integers.
+    //   Table[IntegerString[RandomInteger[{1, (2^256) - 1}], 16], 2]
+    //   {
+    //     F4DF741DE58BCB2F37F18372026EF9CBCFC456CB80AF54D53BDEED78410065DE,
+    //     166D63E0202B3D90ECCEAA046341AB504658F55B974A7FD63733ECF89DD0DF75
+    //   }
+    //
+    // And set a and b.
+    //   a = 0xF4DF741DE58BCB2F'37F18372026EF9CB'CFC456CB80AF54D5'3BDEED78410065DE
+    //   b = 0x166D63E0202B3D90'ECCEAA046341AB50'4658F55B974A7FD6'3733ECF89DD0DF75
+    //
+    // Multiply c = a * b.
+    //   a * b = 0xE491A360C57EB430'6C61F9A04F7F7D99'BE3676AAD2D71C55'92D5AE70F84AF076
+    //
+    // Divide d = a / b.
+    //   a / b = 0xA
+
+    wide_integer_type a = (  (wide_integer_type(UINT64_C(0x3BDEED78410065DE)) <<   0)
+                           | (wide_integer_type(UINT64_C(0xCFC456CB80AF54D5)) <<  64)
+                           | (wide_integer_type(UINT64_C(0x37F18372026EF9CB)) << 128)
+                           | (wide_integer_type(UINT64_C(0xF4DF741DE58BCB2F)) << 192));
+
+    wide_integer_type b = (  (wide_integer_type(UINT64_C(0x3733ECF89DD0DF75)) <<   0)
+                           | (wide_integer_type(UINT64_C(0x4658F55B974A7FD6)) <<  64)
+                           | (wide_integer_type(UINT64_C(0xECCEAA046341AB50)) << 128)
+                           | (wide_integer_type(UINT64_C(0x166D63E0202B3D90)) << 192));
+
+    wide_integer_type a_mul_b
+                        = (  (wide_integer_type(UINT64_C(0x92D5AE70F84AF076)) <<   0)
+                           | (wide_integer_type(UINT64_C(0xBE3676AAD2D71C55)) <<  64)
+                           | (wide_integer_type(UINT64_C(0x6C61F9A04F7F7D99)) << 128)
+                           | (wide_integer_type(UINT64_C(0xE491A360C57EB430)) << 192));
+
+    wide_integer_type a_div_b(std::uint16_t(0xAU));
   }
 
 #endif // APP_BENCHMARK_TYPE
@@ -204,6 +246,35 @@ void app::benchmark::task_func()
 
     const bool result_is_ok = (   is_close_fraction(y.real(), 14.859343457123410999F)
                                && is_close_fraction(y.imag(),  5.259004469728472689F));
+
+    if(result_is_ok)
+    {
+      // The benchmark is OK.
+      // Perform one nop and leave.
+
+      mcal::cpu::nop();
+    }
+    else
+    {
+      // The benchmark result is not OK!
+      // Remain in a blocking loop and crash the system.
+
+      for(;;) { mcal::cpu::nop(); }
+    }
+
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_WIDE_INTEGER)
+
+    mcal::irq::disable_all();
+    port_type::set_pin_high();
+
+    const wide_integer_type c = (control::a * control::b);
+    const wide_integer_type d = (control::a / control::b);
+
+    const bool result_is_ok =
+      ((c == control::a_mul_b) && (d == control::a_div_b));
+
+    port_type::set_pin_low();
+    mcal::irq::enable_all();
 
     if(result_is_ok)
     {

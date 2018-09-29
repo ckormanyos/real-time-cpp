@@ -12,7 +12,7 @@
 GCC_VERSION   = 7.2.0
 GCC_TARGET    = avr
 
-TGT_CFLAGS    = -O2                                            \
+TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
                 -mrelax

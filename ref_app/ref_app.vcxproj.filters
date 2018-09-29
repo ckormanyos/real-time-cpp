@@ -152,6 +152,9 @@
     <Filter Include="src\mcal\atmega2560">
       <UniqueIdentifier>{8fef6100-47d4-49d0-9a34-3e060e206eea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\wide_integer">
+      <UniqueIdentifier>{ca989bd6-465c-4ffe-b218-f82c14ce6146}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1370,6 +1373,9 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\wide_integer\uintwide_t.h">
+      <Filter>src\math\wide_integer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
