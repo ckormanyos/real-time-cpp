@@ -1,5 +1,5 @@
-#ifndef UINTWIDE_T_2018_09_22_H_
-  #define UINTWIDE_T_2018_09_22_H_
+#ifndef RECURSIVE_TEMPLATE_UINTWIDE_T_2018_09_22_H_
+  #define RECURSIVE_TEMPLATE_UINTWIDE_T_2018_09_22_H_
 
   ///////////////////////////////////////////////////////////////////
   //  Copyright Christopher Kormanyos 1999 - 2018.                 //
@@ -18,7 +18,7 @@
 
   #define WIDE_INTEGER_UINTWIDE_T_SUPPORT_IOSTREAM
 
-  namespace wide_integer { namespace detail {
+  namespace wide_integer { namespace recursive_template { namespace detail {
 
   // From an unsigned integral input parameter of type LT, extract
   // the low part of it. The type of the extracted low part is ST,
@@ -71,9 +71,9 @@
     return LT(LT(static_cast<LT>(hi) << std::numeric_limits<ST>::digits) | LT(lo));
   }
 
-  } } // namespace wide_integer::detail
+  } } } // namespace wide_integer::recursive_template::detail
 
-  namespace wide_integer {
+  namespace wide_integer { namespace recursive_template {
 
   template<typename ST, typename LT>
   class uintwide_t
@@ -120,11 +120,46 @@
       create_from_uintwide_t_having_greater_width(u);
     }
 
-    // Constructors from built-in unsigned integral types.
-    uintwide_t(const std::uint64_t u) { create_from_std_uint64_t(u); }
-    uintwide_t(const std::uint32_t u) { create_from_std_uint64_t(std::uint64_t(u)); }
-    uintwide_t(const std::uint16_t u) { create_from_std_uint64_t(std::uint64_t(u)); }
-    uintwide_t(const std::uint8_t  u) { create_from_std_uint64_t(std::uint64_t(u)); }
+    // Constructors from built-in unsigned integral types that
+    // are less wide than ushort_type or exactly as wide as ushort_type.
+    template<typename UnsignedIntegralType>
+    uintwide_t(const UnsignedIntegralType v,
+               typename std::enable_if<   std::is_fundamental<UnsignedIntegralType>::value
+                                       && std::is_integral   <UnsignedIntegralType>::value
+                                       && std::is_unsigned   <UnsignedIntegralType>::value
+                                       && (   std::numeric_limits<UnsignedIntegralType>::digits
+                                           <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
+    {
+      values[0U] = ushort_type(v);
+      values[1U] = values[2U] = values[3U] = std::uint_fast8_t(0U);
+    }
+
+    // Constructors from built-in unsigned integral types that
+    // are wider than ushort_type, and do not have exactly the
+    // same width as ushort_type.
+    template<typename UnsignedIntegralType>
+    uintwide_t(const UnsignedIntegralType v,
+               typename std::enable_if<   std::is_fundamental<UnsignedIntegralType>::value
+                                       && std::is_integral   <UnsignedIntegralType>::value
+                                       && std::is_unsigned   <UnsignedIntegralType>::value
+                                       && (  std::numeric_limits<ushort_type         >::digits
+                                           < std::numeric_limits<UnsignedIntegralType>::digits)>::type* = nullptr)
+    {
+      std::uint_fast32_t right_shift_amount_v = 0U;
+      std::uint_fast8_t  index_u              = 0U;
+
+      for( ; (index_u < 4U) && (right_shift_amount_v < std::uint_fast32_t(std::numeric_limits<UnsignedIntegralType>::digits)); ++index_u)
+      {
+        values[index_u] = ushort_type(v >> (int) right_shift_amount_v);
+
+        right_shift_amount_v += std::uint_fast32_t(std::numeric_limits<ushort_type>::digits);
+      }
+
+      for( ; index_u < 4U; ++index_u)
+      {
+        values[index_u] = ushort_type(0U);
+      }
+    }
 
     // Constructor from the internal data representation.
     uintwide_t(const representation_type& rep)
@@ -170,10 +205,10 @@
       // Unary addition function.
       ularge_type result_as_ularge_array[4U];
 
-      result_as_ularge_array[0U] =             ularge_type(values[0U]) + ularge_type(other.values[0U]);
-      result_as_ularge_array[1U] = ularge_type(ularge_type(values[1U]) + ularge_type(other.values[1U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[0U]));
-      result_as_ularge_array[2U] = ularge_type(ularge_type(values[2U]) + ularge_type(other.values[2U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[1U]));
-      result_as_ularge_array[3U] = ularge_type(ularge_type(values[3U]) + ularge_type(other.values[3U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[2U]));
+      result_as_ularge_array[0U] =  ularge_type(values[0U]) + ularge_type(other.values[0U]);
+      result_as_ularge_array[1U] = (ularge_type(values[1U]) + ularge_type(other.values[1U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[0U]));
+      result_as_ularge_array[2U] = (ularge_type(values[2U]) + ularge_type(other.values[2U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[1U]));
+      result_as_ularge_array[3U] = (ularge_type(values[3U]) + ularge_type(other.values[3U])) + ularge_type(detail::make_hi<ushort_type, ularge_type>(result_as_ularge_array[2U]));
 
       values[0U] = ushort_type(result_as_ularge_array[0U]);
       values[1U] = ushort_type(result_as_ularge_array[1U]);
@@ -517,50 +552,6 @@
   private:
     std::array<ushort_type, 4U> values;
 
-    void create_from_std_uint64_t(const std::uint64_t u)
-    {
-      bool init_01,   init_02,   init_03;
-      int  rshift_01, rshift_02, rshift_03;
-
-      using local_unsigned_integral_type = std::uint64_t;
-
-      switch(std::numeric_limits<local_unsigned_integral_type>::digits / std::numeric_limits<ushort_type>::digits)
-      {
-        case 0:
-        case 1:
-          init_01 = init_02 = init_03 = false;
-
-          rshift_01 = rshift_02 = rshift_03 = 0;
-
-          break;
-
-        case 2:
-          init_01 = true;
-          init_02 = init_03 = false;
-
-          rshift_01 = std::numeric_limits<ushort_type>::digits * 1;
-          rshift_02 = rshift_03 = 0;
-
-          break;
-
-        case 4:
-        default:
-          init_01 = init_02 = init_03 = true;
-
-          rshift_01 = std::numeric_limits<ushort_type>::digits * 1;
-          rshift_02 = std::numeric_limits<ushort_type>::digits * 2;
-          rshift_03 = std::numeric_limits<ushort_type>::digits * 3;
-
-          break;
-      }
-
-      values[0U] = ushort_type(u);
-
-      values[1U] = (init_01 ? ushort_type(u >> rshift_01) : ushort_type(0U));
-      values[2U] = (init_02 ? ushort_type(u >> rshift_02) : ushort_type(0U));
-      values[3U] = (init_03 ? ushort_type(u >> rshift_03) : ushort_type(0U));
-    }
-
     template<typename OtherST, typename OtherLT>
     void create_from_uintwide_t_having_smaller_width(const uintwide_t<OtherST, OtherLT>& v)
     {
@@ -617,7 +608,7 @@
 
         values[index_u] = ushort_type(val);
 
-        right_shift_amount_v += std::uint_fast32_t(std::numeric_limits<ST>::digits);
+        right_shift_amount_v += std::uint_fast32_t(std::numeric_limits<ushort_type>::digits);
 
         if(right_shift_amount_v >= std::uint_fast32_t(std::numeric_limits<OtherST>::digits))
         {
@@ -706,12 +697,12 @@
         }
       }
 
-      if(v_offset == local_uint_index_type(3U))
+      if(v_offset == local_uint_index_type(4U - 1U))
       {
         // The denominator has one single limb.
         // Use a one-dimensional division algorithm.
 
-              ularge_type long_numerator    =       values[3U];
+              ularge_type long_numerator    =       values[4U - 1U];
         const ushort_type short_denominator = other.values[0U];
 
         values[3U] /= short_denominator;
@@ -942,13 +933,14 @@
   };
 
   // Define some convenient unsigned wide integer types.
-  using uint128_t  = uintwide_t<         std::uint32_t,            std::uint64_t>;
-  using uint256_t  = uintwide_t<         std::uint64_t,   wide_integer::uint128_t>;
-  using uint512_t  = uintwide_t<wide_integer::uint128_t,  wide_integer::uint256_t>;
-  using uint1024_t = uintwide_t<wide_integer::uint256_t,  wide_integer::uint512_t>;
-  using uint2048_t = uintwide_t<wide_integer::uint512_t,  wide_integer::uint1024_t>;
-  using uint4096_t = uintwide_t<wide_integer::uint1024_t, wide_integer::uint2048_t>;
-  using uint8192_t = uintwide_t<wide_integer::uint2048_t, wide_integer::uint4096_t>;
+  using uint64_t   = uintwide_t<                             std::uint16_t,                                std::uint32_t>;
+  using uint128_t  = uintwide_t<                             std::uint32_t,                                std::uint64_t>;
+  using uint256_t  = uintwide_t<                             std::uint64_t,   wide_integer::recursive_template::uint128_t>;
+  using uint512_t  = uintwide_t<wide_integer::recursive_template::uint128_t,  wide_integer::recursive_template::uint256_t>;
+  using uint1024_t = uintwide_t<wide_integer::recursive_template::uint256_t,  wide_integer::recursive_template::uint512_t>;
+  using uint2048_t = uintwide_t<wide_integer::recursive_template::uint512_t,  wide_integer::recursive_template::uint1024_t>;
+  using uint4096_t = uintwide_t<wide_integer::recursive_template::uint1024_t, wide_integer::recursive_template::uint2048_t>;
+  using uint8192_t = uintwide_t<wide_integer::recursive_template::uint2048_t, wide_integer::recursive_template::uint4096_t>;
 
   // Prepare a base class for numeric_limits<> support.
   template<typename WideUnsignedIntegerType>
@@ -965,43 +957,36 @@
     static uintwide_type (min)() { return uintwide_type::limits_helper_min(); }
   };
 
-  } // namespace wide_integer
+  } } // namespace wide_integer::recursive_template
 
   namespace std {
 
   // Support for numeric_limits<>.
-  template<> class numeric_limits<wide_integer::uint128_t>  : public wide_integer::numeric_limits_base<wide_integer::uint128_t>  { };
-  template<> class numeric_limits<wide_integer::uint256_t>  : public wide_integer::numeric_limits_base<wide_integer::uint256_t>  { };
-  template<> class numeric_limits<wide_integer::uint512_t>  : public wide_integer::numeric_limits_base<wide_integer::uint512_t>  { };
-  template<> class numeric_limits<wide_integer::uint1024_t> : public wide_integer::numeric_limits_base<wide_integer::uint1024_t> { };
-  template<> class numeric_limits<wide_integer::uint2048_t> : public wide_integer::numeric_limits_base<wide_integer::uint2048_t> { };
-  template<> class numeric_limits<wide_integer::uint4096_t> : public wide_integer::numeric_limits_base<wide_integer::uint4096_t> { };
-  template<> class numeric_limits<wide_integer::uint8192_t> : public wide_integer::numeric_limits_base<wide_integer::uint8192_t> { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint128_t>  : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint128_t>  { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint256_t>  : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint256_t>  { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint512_t>  : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint512_t>  { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint1024_t> : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint1024_t> { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint2048_t> : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint2048_t> { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint4096_t> : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint4096_t> { };
+  template<> class numeric_limits<wide_integer::recursive_template::uint8192_t> : public wide_integer::recursive_template::numeric_limits_base<wide_integer::recursive_template::uint8192_t> { };
 
   } // namespace std
 
-  namespace wide_integer {
+  namespace wide_integer { namespace recursive_template {
 
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator+ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) += right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator- (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) -= right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator* (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) *= right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator/ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) /= right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator% (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) %= right; }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator+ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator+=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator- (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator-=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator* (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator*=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator/ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator/=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator% (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator%=(right); }
 
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator| (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) |= right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator^ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) ^= right; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator& (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return  uintwide_t<ST, LT>(left) &= right; }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator| (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator|=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator^ (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator^=(right); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator& (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right) { return uintwide_t<ST, LT>(left).operator&=(right); }
 
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator<<(const uintwide_t<ST, LT>& left, const int n)                     { return uintwide_t<ST, LT>(left) <<= n; }
-  template<typename ST, typename LT> uintwide_t<ST, LT> operator>>(const uintwide_t<ST, LT>& left, const int n)                     { return uintwide_t<ST, LT>(left) >>= n; }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator<<(const uintwide_t<ST, LT>& left, const int n)                     { return uintwide_t<ST, LT>(left).operator<<=(n); }
+  template<typename ST, typename LT> uintwide_t<ST, LT> operator>>(const uintwide_t<ST, LT>& left, const int n)                     { return uintwide_t<ST, LT>(left).operator>>=(n); }
 
-  template<typename ST, typename LT> bool operator==(const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left == right); }
-  template<typename ST, typename LT> bool operator< (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left == right); }
-  template<typename ST, typename LT> bool operator> (const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left == right); }
-  template<typename ST, typename LT> bool operator!=(const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left != right); }
-  template<typename ST, typename LT> bool operator<=(const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left <= right); }
-  template<typename ST, typename LT> bool operator>=(const uintwide_t<ST, LT>& left, const uintwide_t<ST, LT>& right)               { return (left >= right); }
+  } } // namespace wide_integer::recursive_template
 
-  } // namespace wide_integer
-
-#endif // UINTWIDE_T_2018_09_22_H_
+#endif // RECURSIVE_TEMPLATE_UINTWIDE_T_2018_09_22_H_

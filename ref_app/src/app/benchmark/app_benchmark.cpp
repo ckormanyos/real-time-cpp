@@ -112,9 +112,9 @@
 
 #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_STD_WIDE_INTEGER)
 
-  #include <math/wide_integer/uintwide_t.h>
+  #include <math/wide_integer/non_template_uint256_t.h>
 
-  using wide_integer_type = wide_integer::uint256_t;
+  using wide_integer_type = wide_integer::non_template::uint256_t;
 
   namespace control
   {
@@ -125,7 +125,7 @@
     //     166D63E0202B3D90ECCEAA046341AB504658F55B974A7FD63733ECF89DD0DF75
     //   }
     //
-    // And set a and b.
+    // Create two random 256-bit unsigned integers.
     //   a = 0xF4DF741DE58BCB2F'37F18372026EF9CB'CFC456CB80AF54D5'3BDEED78410065DE
     //   b = 0x166D63E0202B3D90'ECCEAA046341AB50'4658F55B974A7FD6'3733ECF89DD0DF75
     //
@@ -135,21 +135,35 @@
     // Divide d = a / b.
     //   a / b = 0xA
 
-    wide_integer_type a = (  (wide_integer_type(UINT64_C(0x3BDEED78410065DE)) <<   0)
-                           | (wide_integer_type(UINT64_C(0xCFC456CB80AF54D5)) <<  64)
-                           | (wide_integer_type(UINT64_C(0x37F18372026EF9CB)) << 128)
-                           | (wide_integer_type(UINT64_C(0xF4DF741DE58BCB2F)) << 192));
+    const wide_integer_type a
+    (
+      {
+        UINT64_C(0x3BDEED78410065DE),
+        UINT64_C(0xCFC456CB80AF54D5),
+        UINT64_C(0x37F18372026EF9CB),
+        UINT64_C(0xF4DF741DE58BCB2F)
+      }
+    );
 
-    wide_integer_type b = (  (wide_integer_type(UINT64_C(0x3733ECF89DD0DF75)) <<   0)
-                           | (wide_integer_type(UINT64_C(0x4658F55B974A7FD6)) <<  64)
-                           | (wide_integer_type(UINT64_C(0xECCEAA046341AB50)) << 128)
-                           | (wide_integer_type(UINT64_C(0x166D63E0202B3D90)) << 192));
+    const wide_integer_type b
+    (
+      {
+        UINT64_C(0x3733ECF89DD0DF75),
+        UINT64_C(0x4658F55B974A7FD6),
+        UINT64_C(0xECCEAA046341AB50),
+        UINT64_C(0x166D63E0202B3D90)
+      }
+    );
 
-    wide_integer_type a_mul_b
-                        = (  (wide_integer_type(UINT64_C(0x92D5AE70F84AF076)) <<   0)
-                           | (wide_integer_type(UINT64_C(0xBE3676AAD2D71C55)) <<  64)
-                           | (wide_integer_type(UINT64_C(0x6C61F9A04F7F7D99)) << 128)
-                           | (wide_integer_type(UINT64_C(0xE491A360C57EB430)) << 192));
+    const wide_integer_type a_mul_b
+    (
+      {
+        UINT64_C(0x92D5AE70F84AF076),
+        UINT64_C(0xBE3676AAD2D71C55),
+        UINT64_C(0x6C61F9A04F7F7D99),
+        UINT64_C(0xE491A360C57EB430)
+      }
+    );
 
     wide_integer_type a_div_b(std::uint16_t(0xAU));
   }
