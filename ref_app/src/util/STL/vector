@@ -222,7 +222,8 @@
         if(capacity() <= the_size)
         {
           const size_type count = the_size * 2U;
-          reserve((std::max)(count, 4U));
+
+          reserve((std::max)(count, size_type(4U)));
         }
 
         *my_last = value;

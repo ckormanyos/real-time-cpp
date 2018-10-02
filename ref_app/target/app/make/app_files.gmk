@@ -10,6 +10,12 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
+             $(PATH_APP)/app/benchmark/app_benchmark_complex             \
+             $(PATH_APP)/app/benchmark/app_benchmark_crc                 \
+             $(PATH_APP)/app/benchmark/app_benchmark_filter              \
+             $(PATH_APP)/app/benchmark/app_benchmark_fixed_point         \
+             $(PATH_APP)/app/benchmark/app_benchmark_float               \
+             $(PATH_APP)/app/benchmark/app_benchmark_wide_integer        \
              $(PATH_APP)/app/led/app_led                                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                            \

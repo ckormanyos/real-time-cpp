@@ -239,12 +239,15 @@
 
   #endif // __GNUC__ or not __GNUC__ stuff
 
-  // Provide certain functions that are often missing from <math.h>.
-  // Here, we patch some of these in an exemplary fashion for the
-  // proposed std::float32_t.
-  std::float32_t asinh (std::float32_t x);
-  std::float32_t acosh (std::float32_t x);
-  std::float32_t atanh (std::float32_t x);
-  std::float32_t tgamma(std::float32_t x);
+  namespace std
+  {
+    // Provide certain functions that are often missing from <math.h>.
+    // Here, we patch some of these in an exemplary fashion for the
+    // proposed std::float32_t.
+    float32_t asinh (std::float32_t x);
+    float32_t acosh (std::float32_t x);
+    float32_t atanh (std::float32_t x);
+    float32_t tgamma(std::float32_t x);
+  }
 
 #endif // CMATH_2010_02_23_

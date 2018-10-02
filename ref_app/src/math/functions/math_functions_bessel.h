@@ -28,7 +28,7 @@
         const T v_plus_one = v + 1;
 
         const T hypergeometric_0f1_term =
-          app::benchmark::hypergeometric_0f1(v_plus_one, -(x_half * x_half));
+          math::functions::hypergeometric_0f1(v_plus_one, -(x_half * x_half));
 
         using std::pow;
         using std::tgamma;

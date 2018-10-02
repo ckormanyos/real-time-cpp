@@ -1325,13 +1325,13 @@
     }
 
     #if defined(__GNUC__)
-    EXTENDED_COMPLEX_CONSTEXPR complex<float>       operator""if(long double imag_literal)        { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
-    EXTENDED_COMPLEX_CONSTEXPR complex<double>      operator""i (long double imag_literal)        { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
-    EXTENDED_COMPLEX_CONSTEXPR complex<long double> operator""il(long double imag_literal)        { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<float>       operator"" if(long double imag_literal)        { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<double>      operator"" i (long double imag_literal)        { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<long double> operator"" il(long double imag_literal)        { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
 
-    EXTENDED_COMPLEX_CONSTEXPR complex<float>       operator""if(unsigned long long imag_literal) { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
-    EXTENDED_COMPLEX_CONSTEXPR complex<double>      operator""i (unsigned long long imag_literal) { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
-    EXTENDED_COMPLEX_CONSTEXPR complex<long double> operator""il(unsigned long long imag_literal) { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<float>       operator"" if(unsigned long long imag_literal) { return complex<float>      {0.0F, static_cast<float>      (imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<double>      operator"" i (unsigned long long imag_literal) { return complex<double>     {0.0,  static_cast<double>     (imag_literal)}; }
+    EXTENDED_COMPLEX_CONSTEXPR complex<long double> operator"" il(unsigned long long imag_literal) { return complex<long double>{0.0L, static_cast<long double>(imag_literal)}; }
     #endif
   } // namespace extended_complex
 

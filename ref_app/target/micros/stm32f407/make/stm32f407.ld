@@ -8,7 +8,7 @@
 
 /* Linker script for STM32F4xx ARM(R) Cortex(TM)-M4 MCU */
 
-INPUT(libc.a libgcc.a libm.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)

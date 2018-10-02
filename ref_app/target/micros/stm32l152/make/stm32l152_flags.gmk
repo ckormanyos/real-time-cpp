@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 7.2.1
+GCC_VERSION   = 7.3.1
 GCC_TARGET    = arm-none-eabi
 
 TGT_CFLAGS    = -O2                                            \
@@ -25,8 +25,8 @@ TGT_CFLAGS    = -O2                                            \
 
 TGT_CPPFLAGS  = -std=c++17
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL                         \
-                -I$(PATH_APP)/util/STL_C++XX_stdfloat
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

@@ -15,7 +15,7 @@ OUTPUT_ARCH(avr:6)
 
 /* The beginning and end of the program ROM area. */
 _rom_begin = 0x00000000;
-_rom_end   = 0x00007FFC;
+_rom_end   = 0x0000FFFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 2K */
@@ -27,8 +27,8 @@ __initial_stack_pointer = 0x802000;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 4
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x1B00
+  ROM(rx)   : ORIGIN = 0, LENGTH = 64K - 4
+  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x1700
 }
 
 SECTIONS

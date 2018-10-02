@@ -36,10 +36,10 @@
 
         const T gamma_of_one_minus_u = tgamma(my_one - u);
 
-        const T hypergeometric_2f1_term = app::benchmark::hypergeometric_2f1(-v,
-                                                                              v + my_one,
-                                                                              my_one - u,
-                                                                             (my_one - x) / 2);
+        const T hypergeometric_2f1_term = math::functions::hypergeometric_2f1(-v,
+                                                                               v + my_one,
+                                                                               my_one - u,
+                                                                              (my_one - x) / 2);
 
         return (one_plus_x_over_one_minus_x_pow_u_half * hypergeometric_2f1_term) / gamma_of_one_minus_u;
       }

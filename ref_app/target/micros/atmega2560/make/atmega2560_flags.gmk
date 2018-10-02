@@ -12,15 +12,15 @@
 GCC_VERSION   = 7.2.0
 GCC_TARGET    = avr
 
-TGT_CFLAGS    = -O2                                            \
+TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega2560                               \
                 -fsigned-char                                  \
                 -mrelax
 
 TGT_CPPFLAGS  = -std=c++17
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL                         \
-                -I$(PATH_APP)/util/STL_C++XX_stdfloat
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

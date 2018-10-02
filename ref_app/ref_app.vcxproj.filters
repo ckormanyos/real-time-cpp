@@ -122,18 +122,6 @@
     <Filter Include="src\math\extended_complex">
       <UniqueIdentifier>{0f8d2031-bb2c-4616-ba26-9e801fbd3e64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard">
-      <UniqueIdentifier>{fdd9b1d9-48a2-4c35-bf3e-1aee8785214f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits">
-      <UniqueIdentifier>{1e06a96c-abe0-4fe8-b754-efb9992d712d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard">
-      <UniqueIdentifier>{450a181b-37b1-4b7b-8ee1-70ee3147a8ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits">
-      <UniqueIdentifier>{a874ae41-ec5c-47b6-919c-0e8452efd1cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard">
       <UniqueIdentifier>{3562087e-bf09-4f43-a927-df849ff8ef05}</UniqueIdentifier>
     </Filter>
@@ -525,6 +513,24 @@
     </ClCompile>
     <ClCompile Include="src\mcal\atmega2560\mcal_wdg.cpp">
       <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_filter.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_float.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_fixed_point.cpp">
+      <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1083,138 +1089,6 @@
     <ClInclude Include="src\util\utility\util_noexcept.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\atomic_word.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\basic_file.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++allocator.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++config.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++io.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++locale.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\cpu_defines.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\ctype_base.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\ctype_inline.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\cxxabi_tweaks.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\error_constants.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\extc++.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-default.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-posix.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-single.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\messages_members.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\opt_random.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\os_defines.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\stdc++.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\stdtr1c++.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\time_members.h">
-      <Filter>src\mcal\stm32f407\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\atomic_word.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\basic_file.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++allocator.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++config.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++io.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\c++locale.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\cpu_defines.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\ctype_base.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\ctype_inline.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\cxxabi_tweaks.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\error_constants.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\extc++.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-default.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-posix.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\gthr-single.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\messages_members.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\opt_random.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\os_defines.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\stdc++.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\stdtr1c++.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits\time_members.h">
-      <Filter>src\mcal\stm32f429\_patch_gcc_6.3.1_for_arm_v7e-mfpv4-sp-hard\bits</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\atomic_word.h">
       <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
     </ClInclude>
@@ -1382,6 +1256,15 @@
     </ClInclude>
     <ClInclude Include="src\math\wide_integer\non_template_uint256_t.h">
       <Filter>src\math\wide_integer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h">
+      <Filter>src\math\wide_integer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\benchmark\app_benchmark_detail.h">
+      <Filter>src\app\benchmark</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\benchmark\app_benchmark.h">
+      <Filter>src\app\benchmark</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

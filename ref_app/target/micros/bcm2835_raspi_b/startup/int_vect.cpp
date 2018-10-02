@@ -62,7 +62,7 @@ namespace int_vect
 
     static_cast<void>(load_address);
 
-    const std::uint32_t my_load_address_zero = UINT32_C(0);
+    volatile std::uint8_t* my_load_address_zero = nullptr;
 
     // The data below have been extracted from the lower interrupt
     // vector table code that is implemented in "int_vect_table.s".
@@ -86,6 +86,6 @@ namespace int_vect
     // Perform the copy of the lower interrupt vector table data.
     std::copy(std::begin(the_lower_interrupt_vector_table_data),
               std::end  (the_lower_interrupt_vector_table_data),
-              reinterpret_cast<volatile std::uint8_t*>(my_load_address_zero));
+              my_load_address_zero);
   }
 }

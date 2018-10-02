@@ -1,0 +1,30 @@
+
+#define EXTENDED_COMPLEX_DISABLE_IOSTREAM
+
+#include <app/benchmark/app_benchmark.h>
+#include <app/benchmark/app_benchmark_detail.h>
+#include <math/extended_complex/extended_complex.h>
+
+namespace
+{
+  using complex_type = extended_complex::complex<float>;
+}
+
+extern complex_type x;
+extern complex_type y;
+
+bool app::benchmark::run_complex()
+{
+  using std::sin;
+
+  // 14.859343457123410999 + 5.259004469728472689 i
+  y = sin(x);
+
+  const bool result_is_ok = (   detail::is_close_fraction(y.real(), 14.859343457123410999F)
+                             && detail::is_close_fraction(y.imag(),  5.259004469728472689F));
+
+  return result_is_ok;
+}
+
+complex_type x(1.23F, 3.45F);
+complex_type y;
