@@ -12,13 +12,14 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
-  #include <initializer_list>
   #include <limits>
   #include <type_traits>
 
-  #include <math/wide_integer/non_template_uint128_t.h>
+  #include <wide_integer/non_template_uint128_t.h>
 
-  #define WIDE_INTEGER_UINTWIDE_T_SUPPORT_IOSTREAM
+  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+    #include <iostream>
+  #endif
 
   namespace wide_integer { namespace non_template {
   // Forward declaration.
@@ -68,9 +69,9 @@
     // are less wide than ushort_type or exactly as wide as ushort_type.
     template<typename UnsignedIntegralType>
     uint256_t(const UnsignedIntegralType v,
-              typename std::enable_if<    std::is_fundamental<UnsignedIntegralType>::value
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)
+              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                       && (   std::numeric_limits<UnsignedIntegralType>::digits
                                           <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
     {
@@ -83,9 +84,9 @@
     // same width as ushort_type.
     template<typename UnsignedIntegralType>
     uint256_t(const UnsignedIntegralType v,
-              typename std::enable_if<    std::is_fundamental<UnsignedIntegralType>::value
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)
+              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                       && (  std::numeric_limits<ushort_type         >::digits
                                           < std::numeric_limits<UnsignedIntegralType>::digits)>::type* = nullptr)
     {
@@ -111,11 +112,13 @@
       std::copy(rep.cbegin(), rep.cend(), values.begin());
     }
 
-    // Constructor from an initializer list
-    // of four elements having type ushort_type.
-    uint256_t(const std::initializer_list<ushort_type>& init)
+    // Constructor from an initialization list.
+    template<const std::size_t N>
+    uint256_t(const ushort_type(&init)[N])
     {
-      std::copy(init.begin(), init.end(), values.begin());
+      static_assert(N <= std::size_t(4U), "Error: The initialization list has too many elements.");
+
+      std::copy(init, init + (std::min)(N, std::size_t(4U)), values.begin());
     }
 
     // Copy constructor.
@@ -123,6 +126,9 @@
     {
       std::copy(other.values.cbegin(), other.values.cend(), values.begin());
     }
+
+    // Move constructor.
+    uint256_t(uint256_t&& other) : values(static_cast<representation_type&&>(other.values)) { }
 
     // Assignment operator.
     uint256_t& operator=(const uint256_t& other)
@@ -490,11 +496,11 @@
 
     static uint256_t limits_helper_min()
     {
-      return uint256_t(std::uint16_t(0U));
+      return uint256_t(std::uint8_t(0U));
     }
 
   private:
-    std::array<ushort_type, 4U> values;
+    representation_type values;
 
     void create_from_std_uint64_t(const std::uint64_t u)
     {

@@ -12,11 +12,12 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
-  #include <initializer_list>
   #include <limits>
   #include <type_traits>
 
-  #define WIDE_INTEGER_UINTWIDE_T_SUPPORT_IOSTREAM
+  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+    #include <iostream>
+  #endif
 
   namespace wide_integer { namespace non_template {
   // Forward declaration.
@@ -113,9 +114,9 @@
     // are less wide than ushort_type or exactly as wide as ushort_type.
     template<typename UnsignedIntegralType>
     uint128_t(const UnsignedIntegralType v,
-              typename std::enable_if<    std::is_fundamental<UnsignedIntegralType>::value
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)
+              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                       && (   std::numeric_limits<UnsignedIntegralType>::digits
                                           <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
     {
@@ -128,9 +129,9 @@
     // same width as ushort_type.
     template<typename UnsignedIntegralType>
     uint128_t(const UnsignedIntegralType v,
-              typename std::enable_if<    std::is_fundamental<UnsignedIntegralType>::value
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                                      && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)
+              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                       && (  std::numeric_limits<ushort_type         >::digits
                                           < std::numeric_limits<UnsignedIntegralType>::digits)>::type* = nullptr)
     {
@@ -156,11 +157,13 @@
       std::copy(rep.cbegin(), rep.cend(), values.begin());
     }
 
-    // Constructor from an initializer list
-    // of four elements having type ushort_type.
-    uint128_t(const std::initializer_list<ushort_type>& init)
+    // Constructor from an initialization list.
+    template<const std::size_t N>
+    uint128_t(const ushort_type(&init)[N])
     {
-      std::copy(init.begin(), init.end(), values.begin());
+      static_assert(N <= std::size_t(4U), "Error: The initialization list has too many elements.");
+
+      std::copy(init, init + (std::min)(N, std::size_t(4U)), values.begin());
     }
 
     // Copy constructor.
@@ -168,6 +171,9 @@
     {
       std::copy(other.values.cbegin(), other.values.cend(), values.begin());
     }
+
+    // Move constructor.
+    uint128_t(uint128_t&& other) : values(static_cast<representation_type&&>(other.values)) { }
 
     // Assignment operator.
     uint128_t& operator=(const uint128_t& other)
@@ -535,55 +541,11 @@
 
     static uint128_t limits_helper_min()
     {
-      return uint128_t(std::uint16_t(0U));
+      return uint128_t(std::uint8_t(0U));
     }
 
   private:
-    std::array<ushort_type, 4U> values;
-
-    void create_from_std_uint64_t(const std::uint64_t u)
-    {
-      bool init_01,   init_02,   init_03;
-      int  rshift_01, rshift_02, rshift_03;
-
-      using local_unsigned_integral_type = std::uint64_t;
-
-      switch(std::numeric_limits<local_unsigned_integral_type>::digits / std::numeric_limits<ushort_type>::digits)
-      {
-        case 0:
-        case 1:
-          init_01 = init_02 = init_03 = false;
-
-          rshift_01 = rshift_02 = rshift_03 = 0;
-
-          break;
-
-        case 2:
-          init_01 = true;
-          init_02 = init_03 = false;
-
-          rshift_01 = std::numeric_limits<ushort_type>::digits * 1;
-          rshift_02 = rshift_03 = 0;
-
-          break;
-
-        case 4:
-        default:
-          init_01 = init_02 = init_03 = true;
-
-          rshift_01 = std::numeric_limits<ushort_type>::digits * 1;
-          rshift_02 = std::numeric_limits<ushort_type>::digits * 2;
-          rshift_03 = std::numeric_limits<ushort_type>::digits * 3;
-
-          break;
-      }
-
-      values[0U] = ushort_type(u);
-
-      values[1U] = (init_01 ? ushort_type(u >> rshift_01) : ushort_type(0U));
-      values[2U] = (init_02 ? ushort_type(u >> rshift_02) : ushort_type(0U));
-      values[3U] = (init_03 ? ushort_type(u >> rshift_03) : ushort_type(0U));
-    }
+    representation_type values;
 
     bool string_out(char*             strResult,
                     std::uint_fast8_t baseRep,

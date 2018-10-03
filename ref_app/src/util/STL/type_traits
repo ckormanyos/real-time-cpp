@@ -9,7 +9,6 @@
   #define TYPE_TRAITS_2013_09_01_
 
   #include <cstddef>
-  #include <limits>
 
   #include <impl/stl_local_constexpr.h>
   #include <impl/stl_local_noexcept.h>
@@ -106,8 +105,6 @@
     template<typename T> struct is_volatile             : std::false_type { };
     template<typename T> struct is_volatile<volatile T> : std::true_type  { };
 
-    template<typename T> struct is_signed         : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == true )> { };
-    template<typename T> struct is_unsigned       : std::integral_constant          <bool, (std::numeric_limits<T>::is_signed == false)> { };
     template<typename T> struct is_void           : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<T>::type>::value> { };
     template<typename T> struct is_null_pointer   : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<std::nullptr_t>::type>::value> { };
     template<typename T> struct is_integral       : traits_helper::is_integral      <typename remove_cv<T>::type> { };
@@ -121,6 +118,27 @@
     template<typename T> struct is_array<T[]>     : std::true_type  {};
     template<typename T, std::size_t N>
                          struct is_array<T[N]>    : std::true_type  {};
+  }
+
+  namespace traits_helper
+  {
+    template<typename T, bool = std::is_arithmetic<T>::value>
+    struct is_unsigned : std::integral_constant<bool, (T(0) < T(-1))> { };
+
+    template<typename T>
+    struct is_unsigned<T, false> : std::false_type { };
+
+    template<typename T,bool = std::is_arithmetic<T>::value>
+    struct is_signed : std::integral_constant<bool, (T(-1) < T(0))> { };
+
+    template<typename T>
+    struct is_signed<T,false> : std::false_type { };
+  }
+
+  namespace std
+  {
+    template<typename T> struct is_unsigned  : traits_helper::is_unsigned<T>::type { };
+    template<typename T> struct is_signed    : traits_helper::is_signed  <T>::type { };
   }
 
 #endif // TYPE_TRAITS_2013_09_01_

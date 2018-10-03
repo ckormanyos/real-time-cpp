@@ -12,11 +12,27 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
-  #include <initializer_list>
   #include <limits>
   #include <type_traits>
 
-  #define WIDE_INTEGER_UINTWIDE_T_SUPPORT_IOSTREAM
+  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+    #include <iostream>
+  #endif
+
+  namespace wide_integer { namespace recursive_template {
+  // Forward declaration.
+  template<typename ST,
+           typename LT>
+  class uintwide_t;
+  } }
+
+  namespace std
+  {
+    // Forward declaration: Support for numeric_limits<>.
+    template<typename ST,
+             typename LT>
+    class numeric_limits<wide_integer::recursive_template::uintwide_t<ST, LT>>;
+  }
 
   namespace wide_integer { namespace recursive_template { namespace detail {
 
@@ -124,14 +140,14 @@
     // are less wide than ushort_type or exactly as wide as ushort_type.
     template<typename UnsignedIntegralType>
     uintwide_t(const UnsignedIntegralType v,
-               typename std::enable_if<   std::is_fundamental<UnsignedIntegralType>::value
-                                       && std::is_integral   <UnsignedIntegralType>::value
-                                       && std::is_unsigned   <UnsignedIntegralType>::value
-                                       && (   std::numeric_limits<UnsignedIntegralType>::digits
-                                           <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
+              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
+                                      && (   std::numeric_limits<UnsignedIntegralType>::digits
+                                          <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
     {
       values[0U] = ushort_type(v);
-      values[1U] = values[2U] = values[3U] = std::uint_fast8_t(0U);
+      values[1U] = values[2U] = values[3U] = ushort_type(0U);
     }
 
     // Constructors from built-in unsigned integral types that
@@ -139,9 +155,9 @@
     // same width as ushort_type.
     template<typename UnsignedIntegralType>
     uintwide_t(const UnsignedIntegralType v,
-               typename std::enable_if<   std::is_fundamental<UnsignedIntegralType>::value
-                                       && std::is_integral   <UnsignedIntegralType>::value
-                                       && std::is_unsigned   <UnsignedIntegralType>::value
+               typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                       && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                       && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                        && (  std::numeric_limits<ushort_type         >::digits
                                            < std::numeric_limits<UnsignedIntegralType>::digits)>::type* = nullptr)
     {
@@ -155,10 +171,7 @@
         right_shift_amount_v += std::uint_fast32_t(std::numeric_limits<ushort_type>::digits);
       }
 
-      for( ; index_u < 4U; ++index_u)
-      {
-        values[index_u] = ushort_type(0U);
-      }
+      std::fill(values.begin() + index_u, values.end(), ushort_type(0U));
     }
 
     // Constructor from the internal data representation.
@@ -167,11 +180,13 @@
       std::copy(rep.cbegin(), rep.cend(), values.begin());
     }
 
-    // Constructor from an initializer list
-    // of four elements having type ushort_type.
-    uintwide_t(const std::initializer_list<ushort_type>& init)
+    // Constructor from an initialization list.
+    template<const std::size_t N>
+    uintwide_t(const ushort_type(&init)[N])
     {
-      std::copy(init.begin(), init.end(), values.begin());
+      static_assert(N <= std::size_t(4U), "Error: The initialization list has too many elements.");
+
+      std::copy(init, init + (std::min)(N, std::size_t(4U)), values.begin());
     }
 
     // Copy constructor.
@@ -179,6 +194,9 @@
     {
       std::copy(other.values.cbegin(), other.values.cend(), values.begin());
     }
+
+    // Move constructor.
+    uintwide_t(uintwide_t&& other) : values(static_cast<representation_type&&>(other.values)) { }
 
     // Assignment operator.
     uintwide_t& operator=(const uintwide_t& other)
@@ -546,11 +564,11 @@
 
     static uintwide_t limits_helper_min()
     {
-      return uintwide_t(std::uint16_t(0U));
+      return uintwide_t(std::uint8_t(0U));
     }
 
   private:
-    std::array<ushort_type, 4U> values;
+    representation_type values;
 
     template<typename OtherST, typename OtherLT>
     void create_from_uintwide_t_having_smaller_width(const uintwide_t<OtherST, OtherLT>& v)
@@ -682,7 +700,7 @@
         {
           // If the denominator is larger than the numerator,
           // then the result of the division is zero.
-          operator=(std::uint16_t(0U));
+          operator=(std::uint8_t(0U));
 
           return;
         }
@@ -691,7 +709,7 @@
         {
           // If the denominator is equal to the numerator,
           // then the result of the division is one.
-          operator=(std::uint16_t(1U));
+          operator=(std::uint8_t(1U));
 
           return;
         }
@@ -724,8 +742,8 @@
       {
         // Compute the normalization factor d.
         const ushort_type d =
-          detail::make_lo<ushort_type, ularge_type>(  ((ularge_type(std::uint16_t(1U))) << std::numeric_limits<ushort_type>::digits)
-                                                    /  (ularge_type(other.values[(4U - 1U) - v_offset]) + ularge_type(std::uint16_t(1U))));
+          detail::make_lo<ushort_type, ularge_type>(  ((ularge_type(std::uint8_t(1U))) << std::numeric_limits<ushort_type>::digits)
+                                                    /  (ularge_type(other.values[(4U - 1U) - v_offset]) + ularge_type(std::uint8_t(1U))));
 
         // Step D1(b), normalize u -> u * d = uu.
         // Note the added digit in uu and also that
@@ -855,7 +873,7 @@
 
             for(i = local_uint_index_type(0U); i <= n; ++i)
             {
-              t        = (ularge_type(uu[ul]) - ularge_type(nv[i])) - ularge_type(std::uint16_t(borrow));
+              t        = (ularge_type(uu[ul]) - ularge_type(nv[i])) - ularge_type(std::uint8_t(borrow));
               uu[ul]   =   detail::make_lo<ushort_type, ularge_type>(t);
               borrow   = ((detail::make_hi<ushort_type, ularge_type>(t) != ushort_type(0U)) ? 1U : 0U);
 
