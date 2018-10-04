@@ -10,6 +10,7 @@
   #include <type_traits>
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+  #include <iomanip>
   #include <istream>
   #include <ostream>
   #include <sstream>
@@ -393,7 +394,7 @@
       else if(n == 0) { ; }
       else
       {
-        if(n >= Digits2)
+        if(std::size_t(n) >= Digits2)
         {
           operator=(std::uint8_t(0U));
         }
@@ -431,7 +432,7 @@
       else if(n == 0) { ; }
       else
       {
-        if(n >= Digits2)
+        if(std::size_t(n) >= Digits2)
         {
           operator=(std::uint8_t(0U));
         }
