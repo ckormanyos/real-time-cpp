@@ -5,10 +5,9 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
+  #include <cstring>
   #include <limits>
   #include <type_traits>
-
-  #include <string.h>
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
     #include <iostream>
@@ -370,9 +369,37 @@
     uintwide_t& operator<<=(const int n)
     {
       // Left-shift operator.
+      if     (n <  0) { operator>>=(n); }
+      else if(n == 0) { ; }
+      else
+      {
+        if(n >= Digits2)
+        {
+          operator=(std::uint8_t(0U));
+        }
+        else
+        {
+          const std::size_t offset            = std::size_t(n) / std::size_t(std::numeric_limits<ushort_type>::digits);
+          const std::size_t left_shift_amount = std::size_t(n) % std::size_t(std::numeric_limits<ushort_type>::digits);
 
-      // TBD: Implement left-shift.
-      static_cast<void>(n);
+          std::copy_backward(values.data(),
+                             values.data() + (number_of_limbs - offset),
+                             values.data() +  number_of_limbs);
+
+          std::fill(values.begin(), values.begin() + offset, ushort_type(0U));
+
+          ushort_type part_from_previous_value = ushort_type(0U);
+
+          for(std::size_t i = offset; i < number_of_limbs; ++i)
+          {
+            const ushort_type t = values[i];
+
+            values[i] = (t << int(left_shift_amount)) | part_from_previous_value;
+
+            part_from_previous_value = ushort_type(t >> int(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
+          }
+        }
+      }
 
       return *this;
     }
@@ -380,9 +407,37 @@
     uintwide_t& operator>>=(const int n)
     {
       // Right-shift operator.
+      if     (n <  0) { operator<<=(n); }
+      else if(n == 0) { ; }
+      else
+      {
+        if(n >= Digits2)
+        {
+          operator=(std::uint8_t(0U));
+        }
+        else
+        {
+          const std::size_t offset            = std::size_t(n) / std::size_t(std::numeric_limits<ushort_type>::digits);
+          const std::size_t left_shift_amount = std::size_t(n) % std::size_t(std::numeric_limits<ushort_type>::digits);
 
-      // TBD: Implement right-shift.
-      static_cast<void>(n);
+          std::copy(values.begin() + offset,
+                    values.begin() + number_of_limbs,
+                    values.begin());
+
+          std::fill(values.rbegin(), values.rbegin() + offset, ushort_type(0U));
+
+          ushort_type part_from_previous_value = ushort_type(0U);
+
+          for(std::size_t i = ((number_of_limbs - 1U) - offset); std::ptrdiff_t(i) >= 0; --i)
+          {
+            const ushort_type t = values[i];
+
+            values[i] = (t >> int(left_shift_amount)) | part_from_previous_value;
+
+            part_from_previous_value = ushort_type(t << int(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
+          }
+        }
+      }
 
       return *this;
     }
@@ -413,29 +468,146 @@
       return uintwide_t(std::uint8_t(0U));
     }
 
+    bool wr_string(      char*             str_result,
+                   const std::uint_fast8_t base_rep     = 0x10U,
+                   const bool              show_base    = true,
+                   const bool              show_pos     = false,
+                   const bool              is_uppercase = true,
+                         std::size_t       field_width  = 0U,
+                   const char              fill_char    = char('0')) const
+    {
+            uintwide_t t   (*this);
+      const uintwide_t zero(std::uint8_t(0U));
+
+      bool wr_string_is_ok = true;
+
+      if(base_rep == 8U)
+      {
+      }
+      else if(base_rep == 16U)
+      {
+        const ushort_type mask(std::uint8_t(0xFU));
+
+        char str_temp[(32U + (Digits2 / 4U)) + 1U];
+
+        std::size_t pos = (sizeof(str_temp) - 1U);
+
+        if(t == zero)
+        {
+          --pos;
+
+          str_temp[pos] = char('0');
+        }
+        else
+        {
+          while(t != zero)
+          {
+            char c(t.values[0U] & mask);
+
+            if      (c <= 9)                            { c += char(0x30); }
+            else if((c >= char(10)) && (c <= char(15))) { c += (is_uppercase ? char(55) : char(87)); }
+
+            --pos;
+
+            str_temp[pos] = c;
+
+            t >>= 4;
+          }
+        }
+
+        if(show_base)
+        {
+          --pos;
+
+          str_temp[pos] = (is_uppercase ? char('X') : char('x'));
+        }
+
+        if(show_pos)
+        {
+          --pos;
+
+          str_temp[pos] = char('+');
+        }
+
+        if(field_width != 0U)
+        {
+          field_width = (std::min)(field_width, std::size_t(sizeof(str_temp) - 1U));
+
+          while(std::ptrdiff_t(pos) > std::ptrdiff_t((sizeof(str_temp) - 1U) - field_width))
+          {
+            --pos;
+
+            str_temp[pos] = fill_char;
+          }
+        }
+
+        str_temp[std::size_t(sizeof(str_temp) - 1U)] = char('\0');
+
+        std::strcpy(str_result, str_temp + pos);
+      }
+      else if(base_rep == 10U)
+      {
+        char str_temp[(20U + std::size_t((std::uintmax_t(Digits2) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U];
+
+        std::size_t pos = (sizeof(str_temp) - 1U);
+
+        if(t == zero)
+        {
+          --pos;
+
+          str_temp[pos] = char('0');
+        }
+        else
+        {
+          const uintwide_t ten(std::uint8_t(10U));
+
+          while(t != zero)
+          {
+            const uintwide_t t_temp(t);
+
+            t /= ten;
+
+            const char c((t_temp - (t * ten)).values[0U]);
+
+            --pos;
+
+            str_temp[pos] = c + char(0x30);
+          }
+        }
+
+        if(show_pos)
+        {
+          --pos;
+
+          str_temp[pos] = char('+');
+        }
+
+        if(field_width != 0U)
+        {
+          field_width = (std::min)(field_width, std::size_t(sizeof(str_temp) - 1U));
+
+          while(std::ptrdiff_t(pos) > std::ptrdiff_t((sizeof(str_temp) - 1U) - field_width))
+          {
+            --pos;
+
+            str_temp[pos] = fill_char;
+          }
+        }
+
+        str_temp[std::size_t(sizeof(str_temp) - 1U)] = char('\0');
+
+        std::strcpy(str_result, str_temp + pos);
+      }
+      else
+      {
+        wr_string_is_ok = false;
+      }
+
+      return wr_string_is_ok;
+    }
+
   private:
     representation_type values;
-
-    bool wr_string(      char*             str_result,
-                   const std::uint_fast8_t base_rep      = 0x10U,
-                   const bool              show_base     = true,
-                   const bool              show_pos      = false,
-                   const bool              is_upper_case = true,
-                   const std::size_t       field_width   = 0,
-                   const char              fill_pattern  = char('0')) const
-    {
-      // TBD: Implement extraction of string representation.
-
-      static_cast<void>(str_result);
-      static_cast<void>(base_rep);
-      static_cast<void>(show_base);
-      static_cast<void>(show_pos);
-      static_cast<void>(is_upper_case);
-      static_cast<void>(field_width);
-      static_cast<void>(fill_pattern);
-
-      return false;
-    }
 
     bool rd_string(const char* str_input)
     {

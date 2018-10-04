@@ -1,0 +1,20 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CSTRING_2018_10_04_
+  #define CSTRING_2018_10_04_
+
+  #include <stddef.h>
+  #include <string.h>
+
+  namespace std
+  {
+    inline ::size_t strlen(const char* str)                { return ::strlen(str); }
+    inline   char*  strcpy(char* p_dst, const char* p_src) { return ::strcpy(p_dst, p_src); }
+  }
+
+#endif // CSTRING_2018_10_04_

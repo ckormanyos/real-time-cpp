@@ -232,6 +232,23 @@
       return result;
     }
 
+    template<typename bidirectional_input__iterator1,
+             typename bidirectional_output_iterator2>
+    bidirectional_output_iterator2 copy_backward(bidirectional_input__iterator1 first1,
+                                                 bidirectional_input__iterator1 last1,
+                                                 bidirectional_output_iterator2 last2)
+    {
+      while (first1 != last1)
+      {
+        --last1;
+        --last2;
+
+        *last2 = *last1;
+      }
+
+      return last2;
+    }
+
     template<typename input_iterator,
              typename output_iterator,
              typename unary_function_type>
