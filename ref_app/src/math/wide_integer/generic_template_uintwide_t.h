@@ -10,7 +10,9 @@
   #include <type_traits>
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
-    #include <iostream>
+  #include <istream>
+  #include <ostream>
+  #include <sstream>
   #endif
 
   namespace wide_integer { namespace generic_template {
@@ -19,7 +21,25 @@
            typename LT,
            const std::size_t Digits2>
   class uintwide_t;
-  } }
+
+  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+
+  // Forward declarations of I/O streaming functions.
+  template<typename char_type, typename traits_type,
+           typename ST,
+           typename LT,
+           const std::size_t Digits2>
+  std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& out, const uintwide_t<ST, LT, Digits2>& x);
+
+  template<typename char_type, typename traits_type,
+           typename ST,
+           typename LT,
+           const std::size_t Digits2>
+  std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& in, uintwide_t<ST, LT, Digits2>& x);
+
+  #endif
+
+  } } // namespace wide_integer::generic_template
 
   namespace std
   {
@@ -615,10 +635,24 @@
 
       const std::size_t str_length = strlen(str_input);
 
-      bool str_input_is_hex = false;
+      std::uint_fast8_t base = 10U;
 
       std::size_t pos = 0U;
 
+      // Check for octal input.
+      if(str_length > 0U)
+      {
+        if(str_input[0U] == char('0'))
+        {
+          if(   (str_length > 1U)
+             && ((str_input[1U] >= char('0')) && (str_input[1U] <= char('8'))))
+          {
+            base = 8U;
+          }
+        }
+      }
+
+      // Check for hexadecimal input.
       if(str_length > 0U)
       {
         if(str_input[0U] == char('0'))
@@ -626,7 +660,7 @@
           if(   (str_length > 1U)
              && ((str_input[1U] == char('x')) || (str_input[1U] == char('X'))))
           {
-            str_input_is_hex = true;
+            base = 16U;
 
             pos = 2U;
           }
@@ -634,7 +668,7 @@
         else if(   str_input[0U] == char('x')
                 || str_input[0U] == char('X'))
         {
-          str_input_is_hex = true;
+          base = 16U;
 
           pos = 1U;
         }
@@ -650,11 +684,14 @@
 
         if(char_is_apostrophe == false)
         {
-          if(str_input_is_hex)
+          if(base == 8U)
           {
-            if     ((c >= char('a')) && (c <= char('f'))) { c -= (0x20 + 55); }
-            else if((c >= char('A')) && (c <= char('F'))) { c -=         55;  }
-            else if((c >= char('0')) && (c <= char('9'))) { c -=       0x30;  }
+          }
+          else if(base == 16U)
+          {
+            if     ((c >= char('a')) && (c <= char('f'))) { c -=   87; }
+            else if((c >= char('A')) && (c <= char('F'))) { c -=   55; }
+            else if((c >= char('0')) && (c <= char('9'))) { c -= 0x30; }
             else                                          { char_is_valid = false; }
 
             if(char_is_valid)
@@ -664,7 +701,7 @@
               values[0U] |= std::uint8_t(c);
             }
           }
-          else
+          else if(base == 10U)
           {
             if   ((c >= char('0')) && (c <= char('9'))) { c -= 0x30; }
             else                                        { char_is_valid = false; }
@@ -1031,6 +1068,73 @@
 
   template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator<<(const uintwide_t<ST, LT, Digits2>& left, const int n)                              { return uintwide_t<ST, LT, Digits2>(left).operator<<=(n); }
   template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator>>(const uintwide_t<ST, LT, Digits2>& left, const int n)                              { return uintwide_t<ST, LT, Digits2>(left).operator>>=(n); }
+
+  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
+
+  // Forward declarations of I/O streaming functions.
+  template<typename char_type, typename traits_type,
+           typename ST,
+           typename LT,
+           const std::size_t Digits2>
+  std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& out, const uintwide_t<ST, LT, Digits2>& x)
+  {
+    std::basic_ostringstream<char_type, traits_type> ostr;
+
+    const std::ios::fmtflags my_flags = out.flags();
+
+    const bool show_pos     = ((my_flags & std::ios::showpos)   == std::ios::showpos);
+    const bool show_base    = ((my_flags & std::ios::showbase)  == std::ios::showbase);
+    const bool is_uppercase = ((my_flags & std::ios::uppercase) == std::ios::uppercase);
+
+    std::uint_fast8_t base_rep;
+
+    if     ((my_flags & std::ios::hex) == std::ios::hex) { base_rep = 16U; }
+    else if((my_flags & std::ios::oct) == std::ios::oct) { base_rep =  8U; }
+    else                                                 { base_rep = 10U; }
+
+    const std::size_t field_width = std::size_t(out.width());
+    const char        fill_char   = out.fill();
+
+    if(base_rep == 8U)
+    {
+      ;
+    }
+    else if(base_rep == 16U)
+    {
+      char str_result[(32U + (Digits2 / 4U)) + 1U];
+
+      x.wr_string(str_result, base_rep, show_base, show_pos, is_uppercase, field_width, fill_char);
+
+      static_cast<void>(ostr << str_result);
+    }
+    else if(base_rep == 10U)
+    {
+      char str_result[(20U + std::size_t((std::uintmax_t(Digits2) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U];
+
+      x.wr_string(str_result, base_rep, show_base, show_pos, is_uppercase, field_width, fill_char);
+
+      static_cast<void>(ostr << str_result);
+    }
+
+    return (out << ostr.str());
+  }
+
+  template<typename char_type, typename traits_type,
+           typename ST,
+           typename LT,
+           const std::size_t Digits2>
+  std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& in, uintwide_t<ST, LT, Digits2>& x)
+  {
+    std::string str_in;
+
+    in >> str_in;
+
+    x = uintwide_t<ST, LT, Digits2>(str_in.c_str());
+
+    return in;
+  }
+
+  #endif
 
   } } // namespace wide_integer::generic_template
 
