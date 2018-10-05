@@ -1248,15 +1248,6 @@
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\wide_integer\recursive_template_uintwide_t.h">
-      <Filter>src\math\wide_integer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\wide_integer\non_template_uint128_t.h">
-      <Filter>src\math\wide_integer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\wide_integer\non_template_uint256_t.h">
-      <Filter>src\math\wide_integer</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h">
       <Filter>src\math\wide_integer</Filter>
     </ClInclude>

@@ -24,6 +24,10 @@ namespace
   //
   // Divide d = a / b.
   //   a / b = 0xA
+  //
+  // Imagine we would like to convert the hexadecimal representation of (a) to decimal representation.
+  //   BaseForm[16^^F4DF741DE58BCB2F37F18372026EF9CBCFC456CB80AF54D53BDEED78410065DE, 10]
+  //     = 110759143358351282101641069177673102752434240711955068314362470701265028408798
 
   const wide_integer_type a
   (

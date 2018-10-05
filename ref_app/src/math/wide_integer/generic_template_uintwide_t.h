@@ -23,6 +23,165 @@
            const std::size_t Digits2>
   class uintwide_t;
 
+  // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator+(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator-(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator*(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator/(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator%(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  // Forward declarations of non-member binary add, sub, mul, div, mod of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator+(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator-(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator*(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator/(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator%(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  // Forward declarations of non-member binary logic operations of (uintwide_t op IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator|(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator^(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator&(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator|(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator^(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator&(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  // Forward declarations of non-member shift functions of (uintwide_t shift IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator<<(const uintwide_t<ST, LT, Digits2>& u, const IntegralType n);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator>>(const uintwide_t<ST, LT, Digits2>& u, const IntegralType n);
+
+  // Forward declarations of non-member comparison functions of (uintwide_t cmp IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator==(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator!=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator> (const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator< (const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator>=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator<=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v);
+
+  // Forward declarations of non-member comparison functions of (IntegralType cmp uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator==(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator!=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator> (const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator< (const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator>=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator<=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v);
+
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
 
   // Forward declarations of I/O streaming functions.
@@ -111,6 +270,18 @@
       ((Digits2 != 0U) && ((Digits2 & (Digits2 - 1U)) == 0U));
   };
 
+  template<typename SignedIntegralType>   struct uint_type_helper                { using exact_unsigned_type = std::uintmax_t; };
+  template<>                              struct uint_type_helper<std::int8_t>   { using exact_unsigned_type = std::uint8_t; };
+  template<>                              struct uint_type_helper<std::int16_t>  { using exact_unsigned_type = std::uint16_t; };
+  template<>                              struct uint_type_helper<std::int32_t>  { using exact_unsigned_type = std::uint32_t; };
+  template<>                              struct uint_type_helper<std::int64_t>  { using exact_unsigned_type = std::uint64_t; };
+
+  template<typename UnsignedIntegralType> struct sint_type_helper                { using exact_signed_type   = std::intmax_t; };
+  template<>                              struct sint_type_helper<std::uint8_t>  { using exact_signed_type   = std::int8_t; };
+  template<>                              struct sint_type_helper<std::uint16_t> { using exact_signed_type   = std::int16_t; };
+  template<>                              struct sint_type_helper<std::uint32_t> { using exact_signed_type   = std::int32_t; };
+  template<>                              struct sint_type_helper<std::uint64_t> { using exact_signed_type   = std::int64_t; };
+
   } } } // namespace wide_integer::generic_template::detail
 
   namespace wide_integer { namespace generic_template {
@@ -121,17 +292,25 @@
   class uintwide_t
   {
   public:
-    static_assert(detail::verify_power_of_two<Digits2>::conditional_value == true,
-                  "Error: The Digits2 template parameter must be a power of 2");
+    // Helper variables for digit characteristics.
+    static const std::size_t my_digits   = Digits2;
+    static const std::size_t my_digits10 = static_cast<int>((std::uintmax_t(my_digits) * UINTMAX_C(301)) / 1000U);
+
+    static_assert(detail::verify_power_of_two<my_digits>::conditional_value == true,
+                  "Error: The digits template parameter must be a power of 2");
 
     // Class-local type definitions.
     using ushort_type = ST;
     using ularge_type = LT;
 
+    // The number of limbs.
     static const std::size_t number_of_limbs =
-      std::size_t(Digits2 / std::size_t(std::numeric_limits<ushort_type>::digits));
+      std::size_t(my_digits / std::size_t(std::numeric_limits<ushort_type>::digits));
 
     using representation_type = std::array<ushort_type, number_of_limbs>;
+
+    using double_width_type = uintwide_t<ST, LT, Digits2 * 2U>;
+    using half_width_type   = uintwide_t<ST, LT, Digits2 / 2U>;
 
     // Compile-time checks.
     static_assert(    (std::numeric_limits<ushort_type>::is_integer == true)
@@ -151,18 +330,18 @@
     // are less wide than ushort_type or exactly as wide as ushort_type.
     template<typename UnsignedIntegralType>
     uintwide_t(const UnsignedIntegralType v,
-              typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                                      && (std::is_integral   <UnsignedIntegralType>::value == true)
-                                      && (std::is_unsigned   <UnsignedIntegralType>::value == true)
-                                      && (   std::numeric_limits<UnsignedIntegralType>::digits
-                                          <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
+               typename std::enable_if<   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                                       && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                       && (std::is_unsigned   <UnsignedIntegralType>::value == true)
+                                       && (   std::numeric_limits<UnsignedIntegralType>::digits
+                                           <= std::numeric_limits<ushort_type         >::digits)>::type* = nullptr)
     {
       values[0U] = ushort_type(v);
 
       std::fill(values.begin() + 1U, values.end(), ushort_type(0U));
     }
 
-    // Constructors from built-in unsigned integral types that
+    // Constructor from built-in unsigned integral types that
     // are wider than ushort_type, and do not have exactly the
     // same width as ushort_type.
     template<typename UnsignedIntegralType>
@@ -184,6 +363,26 @@
       }
 
       std::fill(values.begin() + index_u, values.end(), ushort_type(0U));
+    }
+
+    // Constructor from built-in signed integral types.
+    template<typename SignedIntegralType>
+    uintwide_t(const SignedIntegralType v,
+               typename std::enable_if<   (std::is_fundamental<SignedIntegralType>::value == true)
+                                       && (std::is_integral   <SignedIntegralType>::value == true)
+                                       && (std::is_signed     <SignedIntegralType>::value == true)>::type* = nullptr)
+    {
+      const bool is_neg = (v < SignedIntegralType(0));
+
+      using local_unsigned_type =
+        typename detail::uint_type_helper<SignedIntegralType>::exact_unsigned_type;
+
+      const local_unsigned_type u =
+        ((is_neg == false) ? local_unsigned_type(v) : local_unsigned_type(-v));
+
+      operator=(uintwide_t(u));
+
+      if(is_neg) { negate(); }
     }
 
     // Constructor from the internal data representation.
@@ -230,14 +429,51 @@
       return *this;
     }
 
-    // Implement cast operators that cast to types having less width.
+    // Implement cast operators that cast to built-in integral types having less width.
     operator ushort_type() const { return values[0U]; }
     operator ularge_type() const { return detail::make_large<ushort_type, ularge_type>(values[0U], values[1U]); }
+
+    operator typename detail::sint_type_helper<ushort_type>::exact_signed_type() const { return typename detail::sint_type_helper<ushort_type>::exact_signed_type(values[0U]); }
+    operator typename detail::sint_type_helper<ularge_type>::exact_signed_type() const { return typename detail::sint_type_helper<ularge_type>::exact_signed_type(detail::make_large<ushort_type, ularge_type>(values[0U], values[1U])); }
+
+    // Implement cast operators that cast to the double-width type and the half-width type.
+    template<typename DummyUnsignedIntegralType = double_width_type,
+             typename = typename std::enable_if<   (std::is_same<DummyUnsignedIntegralType, double_width_type>::value == true)
+                                                && (Digits2 >= 128U)>::type>
+    operator double_width_type() const
+    {
+      double_width_type t_double_width(std::uint8_t(0U));
+
+      std::copy(values.cbegin(),
+                values.cend(),
+                t_double_width.representation().begin());
+
+      return t_double_width;
+    }
+
+    template<typename DummyUnsignedIntegralType = half_width_type,
+             typename = typename std::enable_if<   (std::is_same<DummyUnsignedIntegralType, half_width_type>::value == true)
+                                                && (Digits2 >= 256U)>::type>
+    operator half_width_type() const
+    {
+      half_width_type t_half_width;
+
+      std::copy(values.cbegin(),
+                values.cbegin() + (values.size() / 2U),
+                t_half_width.representation().begin());
+
+      return t_half_width;
+    }
 
     // Provide a user interface to the internal data representation.
           representation_type&  representation()       { return values; }
     const representation_type&  representation() const { return values; }
     const representation_type& crepresentation() const { return values; }
+
+    // Unary operators: not, plus and minus.
+    bool        operator!() const { return (compare(uintwide_t(std::uint8_t(0U))) == std::int_fast8_t(0)); }
+    uintwide_t& operator+() const { return *this; }
+    uintwide_t  operator-() const { const uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
     uintwide_t& operator+=(const uintwide_t& other)
     {
@@ -326,10 +562,10 @@
       return *this;
     }
 
-    const uintwide_t& operator++()
+    uintwide_t& operator++()
     {
       // Operator pre-increment.
-      std:size_t i = 0U;
+      std::size_t i = 0U;
 
       for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i) { ; }
 
@@ -338,10 +574,10 @@
       return *this;
     }
 
-    const uintwide_t& operator--()
+    uintwide_t& operator--()
     {
       // Operator pre-decrement.
-      std:size_t i = 0U;
+      std::size_t i = 0U;
 
       for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i) { ; }
 
@@ -353,6 +589,16 @@
     // Operators post-increment and post decrement.
     uintwide_t operator++(int) { uintwide_t w(*this); ++(*this); return w; }
     uintwide_t operator--(int) { uintwide_t w(*this); --(*this); return w; }
+
+    uintwide_t& operator~()
+    {
+      for(std::size_t i = 0U; i < number_of_limbs; ++i)
+      {
+        values[i] = ushort_type(~values[i]);
+      }
+
+      return *this;
+    }
 
     uintwide_t& operator|=(const uintwide_t& other)
     {
@@ -387,14 +633,17 @@
       return *this;
     }
 
-    uintwide_t& operator<<=(const int n)
+    template<typename IntegralType>
+    typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                            && (std::is_integral   <IntegralType>::value == true), uintwide_t>::type&
+    operator<<=(const IntegralType n)
     {
       // Left-shift operator.
       if     (n <  0) { operator>>=(n); }
       else if(n == 0) { ; }
       else
       {
-        if(std::size_t(n) >= Digits2)
+        if(std::size_t(n) >= my_digits)
         {
           operator=(std::uint8_t(0U));
         }
@@ -413,11 +662,13 @@
 
           for(std::size_t i = offset; i < number_of_limbs; ++i)
           {
+            using local_integral_type = IntegralType;
+
             const ushort_type t = values[i];
 
-            values[i] = (t << int(left_shift_amount)) | part_from_previous_value;
+            values[i] = (t << local_integral_type(left_shift_amount)) | part_from_previous_value;
 
-            part_from_previous_value = ushort_type(t >> int(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
+            part_from_previous_value = ushort_type(t >> local_integral_type(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
           }
         }
       }
@@ -425,14 +676,17 @@
       return *this;
     }
 
-    uintwide_t& operator>>=(const int n)
+    template<typename IntegralType>
+    typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                            && (std::is_integral   <IntegralType>::value == true), uintwide_t>::type&
+    operator>>=(const IntegralType n)
     {
       // Right-shift operator.
       if     (n <  0) { operator<<=(n); }
       else if(n == 0) { ; }
       else
       {
-        if(std::size_t(n) >= Digits2)
+        if(std::size_t(n) >= my_digits)
         {
           operator=(std::uint8_t(0U));
         }
@@ -445,17 +699,19 @@
                     values.begin() + number_of_limbs,
                     values.begin());
 
-          std::fill(values.rbegin(), values.rbegin() + offset, ushort_type(0U));
+          std::fill(values.rbegin(), values.rbegin() + std::ptrdiff_t(offset), ushort_type(0U));
 
           ushort_type part_from_previous_value = ushort_type(0U);
 
           for(std::size_t i = ((number_of_limbs - 1U) - offset); std::ptrdiff_t(i) >= 0; --i)
           {
+            using local_integral_type = IntegralType;
+
             const ushort_type t = values[i];
 
-            values[i] = (t >> int(left_shift_amount)) | part_from_previous_value;
+            values[i] = (t >> local_integral_type(left_shift_amount)) | part_from_previous_value;
 
-            part_from_previous_value = ushort_type(t << int(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
+            part_from_previous_value = ushort_type(t << local_integral_type(std::size_t(std::numeric_limits<ushort_type>::digits - left_shift_amount)));
           }
         }
       }
@@ -471,10 +727,7 @@
     bool operator<=(const uintwide_t& other) const { return (compare(other) <= std::int_fast8_t( 0)); }
     bool operator>=(const uintwide_t& other) const { return (compare(other) >= std::int_fast8_t( 0)); }
 
-    // Create helper variables and functions for supporting std::numeric_limits<>.
-    static const int limits_helper_digits   = Digits2;
-    static const int limits_helper_digits10 = static_cast<int>((std::uintmax_t(limits_helper_digits) * UINTMAX_C(301)) / 1000U);
-
+    // Helper functions for supporting std::numeric_limits<>.
     static uintwide_t limits_helper_max()
     {
       uintwide_t val;
@@ -509,7 +762,7 @@
       {
         const ushort_type mask(std::uint8_t(0xFU));
 
-        char str_temp[(32U + (Digits2 / 4U)) + 1U];
+        char str_temp[(32U + (my_digits / 4U)) + 1U];
 
         std::size_t pos = (sizeof(str_temp) - 1U);
 
@@ -541,6 +794,10 @@
           --pos;
 
           str_temp[pos] = (is_uppercase ? char('X') : char('x'));
+
+          --pos;
+
+          str_temp[pos] = char('0');
         }
 
         if(show_pos)
@@ -568,7 +825,7 @@
       }
       else if(base_rep == 10U)
       {
-        char str_temp[(20U + std::size_t((std::uintmax_t(Digits2) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U];
+        char str_temp[(20U + std::size_t((std::uintmax_t(my_digits) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U];
 
         std::size_t pos = (sizeof(str_temp) - 1U);
 
@@ -640,38 +897,48 @@
 
       std::size_t pos = 0U;
 
-      // Check for octal input.
-      if(str_length > 0U)
+      // Skip over a potential plus sign.
+      if((str_length > 0U) && (str_input[0U] == char('+')))
       {
-        if(str_input[0U] == char('0'))
-        {
-          if(   (str_length > 1U)
-             && ((str_input[1U] >= char('0')) && (str_input[1U] <= char('8'))))
-          {
-            base = 8U;
-          }
-        }
+        ++pos;
       }
 
-      // Check for hexadecimal input.
-      if(str_length > 0U)
+      // Perform a dynamic detection of the base.
+      if(str_length > (pos + 0U))
       {
-        if(str_input[0U] == char('0'))
+        const bool might_be_oct_or_hex = ((str_input[pos + 0U] == char('0')) && (str_length > (pos + 1U)));
+
+        if(might_be_oct_or_hex)
         {
-          if(   (str_length > 1U)
-             && ((str_input[1U] == char('x')) || (str_input[1U] == char('X'))))
+          if((str_input[pos + 1U] >= char('0')) && (str_input[pos + 1U] <= char('8')))
           {
+            // The input format is octal.
+            base = 8U;
+
+            pos += 1U;
+          }
+          else if((str_input[pos + 1U] == char('x')) || (str_input[pos + 1U] == char('X')))
+          {
+            // The input format is hexadecimal.
             base = 16U;
 
-            pos = 2U;
+            pos += 2U;
           }
         }
-        else if(   str_input[0U] == char('x')
-                || str_input[0U] == char('X'))
+/*
+        else if(   str_input[pos + 0U] == char('x')
+                || str_input[pos + 0U] == char('X'))
         {
+          // The input format is hexadecimal.
           base = 16U;
 
-          pos = 1U;
+          pos += 1U;
+        }
+*/
+        else if((str_input[pos + 0U] >= char('0')) && (str_input[pos + 0U] <= char('9')))
+        {
+          // The input format is decimal.
+          ;
         }
       }
 
@@ -679,7 +946,7 @@
 
       for( ; ((pos < str_length) && char_is_valid); ++pos)
       {
-        char c = str_input[pos];
+        std::uint8_t c = std::uint8_t(str_input[pos]);
 
         const bool char_is_apostrophe = (c == char(39));
 
@@ -687,31 +954,40 @@
         {
           if(base == 8U)
           {
+            if  ((c >= char('0')) && (c <= char('8'))) { c -= std::uint8_t(0x30U); }
+            else                                       { char_is_valid = false; }
+
+            if(char_is_valid)
+            {
+              operator<<=(3);
+
+              values[0U] |= std::uint8_t(c);
+            }
           }
           else if(base == 16U)
           {
-            if     ((c >= char('a')) && (c <= char('f'))) { c -=   87; }
-            else if((c >= char('A')) && (c <= char('F'))) { c -=   55; }
-            else if((c >= char('0')) && (c <= char('9'))) { c -= 0x30; }
-            else                                          { char_is_valid = false; }
+            if     ((c >= std::uint8_t('a')) && (c <= std::uint8_t('f'))) { c -= std::uint8_t(  87U); }
+            else if((c >= std::uint8_t('A')) && (c <= std::uint8_t('F'))) { c -= std::uint8_t(  55U); }
+            else if((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
+            else                                                          { char_is_valid = false; }
 
             if(char_is_valid)
             {
               operator<<=(4);
 
-              values[0U] |= std::uint8_t(c);
+              values[0U] |= c;
             }
           }
           else if(base == 10U)
           {
-            if   ((c >= char('0')) && (c <= char('9'))) { c -= 0x30; }
-            else                                        { char_is_valid = false; }
+            if   ((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
+            else                                                        { char_is_valid = false; }
 
             if(char_is_valid)
             {
               operator*=(10U);
 
-              values[0U] += std::uint8_t(c);
+              values[0U] += c;
             }
           }
         }
@@ -1014,17 +1290,24 @@
 
       return return_value;
     }
+
+    void negate()
+    {
+      operator~();
+
+      ++(*this);
+    }
   };
 
   // Define some convenient unsigned wide integer types.
-  using uint64_t    = uintwide_t<std::uint16_t, std::uint32_t,    64U>;
-  using uint128_t   = uintwide_t<std::uint32_t, std::uint64_t,   128U>;
-  using uint256_t   = uintwide_t<std::uint32_t, std::uint64_t,   256U>;
-  using uint512_t   = uintwide_t<std::uint32_t, std::uint64_t,   512U>;
-  using uint1024_t  = uintwide_t<std::uint32_t, std::uint64_t,  1024U>;
-  using uint2048_t  = uintwide_t<std::uint32_t, std::uint64_t,  2048U>;
-  using uint4096_t  = uintwide_t<std::uint32_t, std::uint64_t,  4096U>;
-  using uint8192_t  = uintwide_t<std::uint32_t, std::uint64_t,  8192U>;
+  using uint64_t   = uintwide_t<std::uint16_t, std::uint32_t,   64U>;
+  using uint128_t  = uintwide_t<std::uint32_t, std::uint64_t,  128U>;
+  using uint256_t  = uintwide_t<std::uint32_t, std::uint64_t,  256U>;
+  using uint512_t  = uintwide_t<std::uint32_t, std::uint64_t,  512U>;
+  using uint1024_t = uintwide_t<std::uint32_t, std::uint64_t, 1024U>;
+  using uint2048_t = uintwide_t<std::uint32_t, std::uint64_t, 2048U>;
+  using uint4096_t = uintwide_t<std::uint32_t, std::uint64_t, 4096U>;
+  using uint8192_t = uintwide_t<std::uint32_t, std::uint64_t, 8192U>;
 
   // Prepare a base class for numeric_limits<> support.
   template<typename WideUnsignedIntegerType>
@@ -1034,8 +1317,8 @@
     using uintwide_type = WideUnsignedIntegerType;
 
   public:
-    static const int digits   = uintwide_type::limits_helper_digits;
-    static const int digits10 = uintwide_type::limits_helper_digits10;
+    static const int digits   = static_cast<int>(uintwide_type::my_digits);
+    static const int digits10 = static_cast<int>(uintwide_type::my_digits10);
 
     static uintwide_type (max)() { return uintwide_type::limits_helper_max(); }
     static uintwide_type (min)() { return uintwide_type::limits_helper_min(); }
@@ -1067,8 +1350,164 @@
   template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator^ (const uintwide_t<ST, LT, Digits2>& left, const uintwide_t<ST, LT, Digits2>& right) { return uintwide_t<ST, LT, Digits2>(left).operator^=(right); }
   template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator& (const uintwide_t<ST, LT, Digits2>& left, const uintwide_t<ST, LT, Digits2>& right) { return uintwide_t<ST, LT, Digits2>(left).operator&=(right); }
 
-  template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator<<(const uintwide_t<ST, LT, Digits2>& left, const int n)                              { return uintwide_t<ST, LT, Digits2>(left).operator<<=(n); }
-  template<typename ST, typename LT, const std::size_t Digits2> uintwide_t<ST, LT, Digits2> operator>>(const uintwide_t<ST, LT, Digits2>& left, const int n)                              { return uintwide_t<ST, LT, Digits2>(left).operator>>=(n); }
+  // Non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator+(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator+=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator-(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator-=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator*(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator*=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator/(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator/=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator%(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator%=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  // Non-member binary add, sub, mul, div, mod of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator+(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator+=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator-(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator-=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator*(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator*=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator/(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator/=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator%(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator%=(v); }
+
+  // Forward declarations of non-member binary logic operations of (uintwide_t op IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator|(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator|=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator^(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator^=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator&(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return uintwide_t<ST, LT, Digits2>(u).operator&=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator|(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator|=(v); }
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator^(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator^=(v); }
+
+  // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator&(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator&=(v); }
+
+  // Non-member shift functions of (IntegralType shift IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator<<(const uintwide_t<ST, LT, Digits2>& u, const IntegralType n) { return uintwide_t<ST, LT, Digits2>(u).operator<<=(n); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), uintwide_t<ST, LT, Digits2>>::type
+  operator>>(const uintwide_t<ST, LT, Digits2>& u, const IntegralType n) { return uintwide_t<ST, LT, Digits2>(u).operator>>=(n); }
+
+  // Non-member comparison functions of (uintwide_t cmp IntegralType).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator==(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator==(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator!=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator!=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator> (const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator> (uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator< (const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator< (uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator>=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator>=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator<=(const uintwide_t<ST, LT, Digits2>& u, const IntegralType& v) { return u.operator<=(uintwide_t<ST, LT, Digits2>(v)); }
+
+  // Non-member comparison functions of (IntegralType cmp uintwide_t).
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator==(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator==(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator!=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator!=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator> (const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator> (v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator< (const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator< (v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator>=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator>=(v); }
+
+  template<typename IntegralType, typename ST, typename LT, const std::size_t Digits2>
+  typename std::enable_if<   (std::is_fundamental<IntegralType>::value == true)
+                          && (std::is_integral   <IntegralType>::value == true), bool>::type
+  operator<=(const IntegralType& u, const uintwide_t<ST, LT, Digits2>& v) { return uintwide_t<ST, LT, Digits2>(u).operator<=(v); }
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
 
