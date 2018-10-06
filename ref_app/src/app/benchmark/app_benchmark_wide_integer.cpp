@@ -74,12 +74,26 @@ namespace
   const wide_integer_type a_div_b(std::uint16_t(0xAU));
 }
 
-bool app::benchmark::run_wide_integer()
+bool app::benchmark::run_wide_integer_mul()
 {
+  static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
+                "Error: Wrong digit count for this example");
+
   const wide_integer_type c = (a * b);
+
+  const bool result_is_ok = (c == a_mul_b);
+
+  return result_is_ok;
+}
+
+bool app::benchmark::run_wide_integer_div()
+{
+  static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
+                "Error: Wrong digit count for this example");
+
   const wide_integer_type d = (a / b);
 
-  const bool result_is_ok = ((c == a_mul_b) && (d == a_div_b));
+  const bool result_is_ok = (d == a_div_b);
 
   return result_is_ok;
 }

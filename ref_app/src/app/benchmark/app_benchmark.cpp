@@ -71,7 +71,12 @@ void app::benchmark::task_func()
 
     #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
 
-    result_is_ok = app::benchmark::run_wide_integer();
+    static bool toggle_test_case = true;
+
+    result_is_ok = (toggle_test_case ? app::benchmark::run_wide_integer_mul()
+                                     : app::benchmark::run_wide_integer_div());
+
+    toggle_test_case = (!toggle_test_case);
 
     #endif
 
