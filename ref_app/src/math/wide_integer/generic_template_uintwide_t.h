@@ -218,15 +218,18 @@
   template<typename ST, typename LT>
   ST make_lo(const LT& u)
   {
+    using local_ushort_type = ST;
+    using local_ularge_type = LT;
+
     // Compile-time checks.
-    static_assert((    (std::numeric_limits<ST>::is_integer == true)
-                   &&  (std::numeric_limits<LT>::is_integer == true)
-                   &&  (std::numeric_limits<ST>::is_signed  == false)
-                   &&  (std::numeric_limits<LT>::is_signed  == false)
-                   && ((std::numeric_limits<ST>::digits * 2) == std::numeric_limits<LT>::digits)),
+    static_assert((    (std::numeric_limits<local_ushort_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ularge_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
+                   &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
+                   && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
                    "Error: Please check the characteristics of ushort_type and ularge_type");
 
-    return static_cast<ST>(u);
+    return static_cast<local_ushort_type>(u);
   }
 
   // From an unsigned integral input parameter of type LT,
@@ -235,15 +238,18 @@
   template<typename ST, typename LT>
   ST make_hi(const LT& u)
   {
+    using local_ushort_type = ST;
+    using local_ularge_type = LT;
+
     // Compile-time checks.
-    static_assert((    (std::numeric_limits<ST>::is_integer == true)
-                   &&  (std::numeric_limits<LT>::is_integer == true)
-                   &&  (std::numeric_limits<ST>::is_signed  == false)
-                   &&  (std::numeric_limits<LT>::is_signed  == false)
-                   && ((std::numeric_limits<ST>::digits * 2) == std::numeric_limits<LT>::digits)),
+    static_assert((    (std::numeric_limits<local_ushort_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ularge_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
+                   &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
+                   && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
                    "Error: Please check the characteristics of ushort_type and ularge_type");
 
-    return static_cast<ST>(u >> std::numeric_limits<ST>::digits);
+    return static_cast<local_ushort_type>(u >> std::numeric_limits<local_ushort_type>::digits);
   }
 
   // Create a composite unsigned integral value having type LT.
@@ -252,15 +258,18 @@
   template<typename ST, typename LT>
   LT make_large(const ST& lo, const ST& hi)
   {
+    using local_ushort_type = ST;
+    using local_ularge_type = LT;
+
     // Compile-time checks.
-    static_assert((    (std::numeric_limits<ST>::is_integer == true)
-                   &&  (std::numeric_limits<LT>::is_integer == true)
-                   &&  (std::numeric_limits<ST>::is_signed  == false)
-                   &&  (std::numeric_limits<LT>::is_signed  == false)
-                   && ((std::numeric_limits<ST>::digits * 2) == std::numeric_limits<LT>::digits)),
+    static_assert((    (std::numeric_limits<local_ushort_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ularge_type>::is_integer == true)
+                   &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
+                   &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
+                   && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
                    "Error: Please check the characteristics of ushort_type and ularge_type");
 
-    return LT(LT(static_cast<LT>(hi) << std::numeric_limits<ST>::digits) | LT(lo));
+    return local_ularge_type(local_ularge_type(static_cast<local_ularge_type>(hi) << std::numeric_limits<ST>::digits) | lo);
   }
 
   template<const std::size_t Digits2>
@@ -404,7 +413,8 @@
     template<const std::size_t N>
     uintwide_t(const ushort_type(&init)[N])
     {
-      static_assert(N <= number_of_limbs, "Error: The initialization list has too many elements.");
+      static_assert(N <= number_of_limbs,
+                    "Error: The initialization list has too many elements.");
 
       std::copy(init, init + (std::min)(N, number_of_limbs), values.begin());
     }
@@ -467,13 +477,19 @@
                                                  && (std::is_integral   <UnknownUnsignedBuiltInIntegralType>::value == true)
                                                  && (std::is_unsigned   <UnknownUnsignedBuiltInIntegralType>::value == true)
                                                  && (std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits <= std::numeric_limits<ushort_type>::digits))>::type>
-    operator UnknownUnsignedBuiltInIntegralType() const { return UnknownUnsignedBuiltInIntegralType(values[0U]); }
+    operator UnknownUnsignedBuiltInIntegralType() const
+    {
+      return UnknownUnsignedBuiltInIntegralType(values[0U]);
+    }
 
     // Implement a cast operator that casts to ularge_type.
     template<typename UnknownUnsignedBuiltInIntegralType,
              typename = typename std::enable_if<(   std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits >  std::numeric_limits<ushort_type>::digits
                                                  && std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits <= std::numeric_limits<ularge_type>::digits)>::type>
-    operator ularge_type() const { return detail::make_large<ushort_type, ularge_type>(values[0U], values[1U]); }
+    operator ularge_type() const
+    {
+      return detail::make_large<ushort_type, ularge_type>(values[0U], values[1U]);
+    }
 
     // Implement cast operators that cast to built-in
     // signed integral types having less width than *this.
@@ -505,6 +521,7 @@
     {
       return (is_zero() == false);
     }
+
     // Purposely delete the cast operator that casts to the half-width type.
     // This cast is deleted because it is a narrowing conversion.
     // There is an explicit constructor above for this conversion.
@@ -592,7 +609,7 @@
     uintwide_t& operator/=(const uintwide_t& other)
     {
       // Unary division function.
-      division_knuth(other);
+      division_and_remainder_knuth(other, nullptr);
 
       return *this;
     }
@@ -600,12 +617,11 @@
     uintwide_t& operator%=(const uintwide_t& other)
     {
       // Unary modulus function.
-      const uintwide_t u(*this);
+      uintwide_t remainder;
 
-      // TBD: Improve efficiency by calculating div/mod in the same subroutine.
-      division_knuth(other);
+      division_and_remainder_knuth(other, &remainder);
 
-      *this = u - (*this * other);
+      std::copy(remainder.values.cbegin(), remainder.values.cend(), values.begin());
 
       return *this;
     }
@@ -1099,7 +1115,7 @@
       return char_is_valid;
     }
 
-    void division_knuth(const uintwide_t& other)
+    void division_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder = nullptr)
     {
       // TBD: Consider cleaning up the unclear flow-control
       // caused by numerous return statements in this subroutine.
@@ -1129,12 +1145,22 @@
         // This also catches (0 / 0) and sets the maximum value for it.
         operator=(limits_helper_max());
 
+        if(remainder != nullptr)
+        {
+          *remainder = uintwide_t(std::uint8_t(0U));
+        }
+
         return;
       }
 
       if(u_offset == local_uint_index_type(number_of_limbs))
       {
         // The numerator is zero. Do nothing and return.
+
+        if(remainder != nullptr)
+        {
+          *remainder = uintwide_t(std::uint8_t(0U));
+        }
 
         return;
       }
@@ -1149,6 +1175,11 @@
         {
           // If the denominator is larger than the numerator,
           // then the result of the division is zero.
+          if(remainder != nullptr)
+          {
+            *remainder = *this;
+          }
+
           operator=(std::uint8_t(0U));
 
           return;
@@ -1159,6 +1190,11 @@
           // If the denominator is equal to the numerator,
           // then the result of the division is one.
           operator=(std::uint8_t(1U));
+
+          if(remainder != nullptr)
+          {
+            *remainder = uintwide_t(std::uint8_t(0U));
+          }
 
           return;
         }
@@ -1181,6 +1217,20 @@
           values[i] = detail::make_lo<ushort_type, ularge_type>(ularge_type(long_numerator / short_denominator));
 
           hi_part = values[i];
+        }
+
+        if(remainder != nullptr)
+        {
+          long_numerator = ularge_type(values[0U]) + ((long_numerator - ularge_type(ularge_type(short_denominator) * hi_part)) << std::numeric_limits<ushort_type>::digits);
+
+          *remainder = ushort_type(long_numerator >> std::numeric_limits<ushort_type>::digits);
+
+          if(u_offset != 0U)
+          {
+            std::fill(values.begin() + (number_of_limbs - 1U) - u_offset,
+                      values.end(),
+                      ushort_type(0U));
+          }
         }
 
         return;
@@ -1307,7 +1357,6 @@
             for(i = local_uint_index_type(0U); i < n; ++i)
             {
               t     = (ularge_type(vv[i]) * ularge_type(q_hat)) + ularge_type(carry);
-
               nv[i] = detail::make_lo<ushort_type, ularge_type>(t);
               carry = detail::make_hi<ushort_type, ularge_type>(t);
             }
@@ -1320,10 +1369,9 @@
 
             for(i = local_uint_index_type(0U); i <= n; ++i)
             {
-              t        = (ularge_type(uu[ul]) - ularge_type(nv[i])) - ularge_type(std::uint8_t(borrow));
-
-              uu[ul]   =   detail::make_lo<ushort_type, ularge_type>(t);
-              borrow   = ((detail::make_hi<ushort_type, ularge_type>(t) != ushort_type(0U)) ? 1U : 0U);
+              t      = (ularge_type(uu[ul]) - ularge_type(nv[i])) - ularge_type(std::uint8_t(borrow));
+              uu[ul] =   detail::make_lo<ushort_type, ularge_type>(t);
+              borrow = ((detail::make_hi<ushort_type, ularge_type>(t) != ushort_type(0U)) ? 1U : 0U);
 
               ++ul;
             }
@@ -1345,26 +1393,46 @@
               carry = 0U;
               ul    = uj - n;
 
+              //uu[local_uint_index_type(m - j)] += carry;
+
               for(i = local_uint_index_type(0U); i <= n; ++i)
               {
-                t        = (ularge_type(uu[ul]) + ularge_type(vv[i])) + ularge_type(carry);
+                t      = (ularge_type(uu[ul]) + ularge_type(vv[i])) + ularge_type(carry);
+                uu[ul] = detail::make_lo<ushort_type, ularge_type>(t);
+                carry  = detail::make_hi<ushort_type, ularge_type>(t);
 
-                uu[ul++] = detail::make_lo<ushort_type, ularge_type>(t);
-                carry    = detail::make_hi<ushort_type, ularge_type>(t);
+                ++ul;
               }
-
-              uu[local_uint_index_type(m - j)] += carry;
 
               --values[local_uint_index_type(m - j)];
             }
           }
         }
 
-        for(local_uint_index_type i = local_uint_index_type(m + 1U); i < local_uint_index_type(number_of_limbs); ++i)
+        // Clear the data elements that have not
+        // been computed in the division algorithm.
+        std::fill(values.begin() + (m + 1U), values.end(), ushort_type(0U));
+
+        if(remainder != nullptr)
         {
-          // Clear the data elements that have not
-          // been computed in the division algorithm.
-          values[i] = 0U;
+          if(d == 1)
+          {
+            std::copy(uu.cbegin(), uu.cbegin() + (number_of_limbs - v_offset), remainder->values.begin());
+          }
+          else
+          {
+            ushort_type previous_u = ushort_type(0U);
+
+            for(local_uint_index_type rl = n - 1U, ul = local_uint_index_type(number_of_limbs - (v_offset + 1U)); std::ptrdiff_t(rl) >= 0; --rl, --ul)
+            {
+              const ularge_type t = ularge_type(uu[ul] + ularge_type(ularge_type(previous_u) << std::numeric_limits<ushort_type>::digits));
+
+              remainder->values[rl] = detail::make_lo<ushort_type, ularge_type>(t / d);
+              previous_u            = ushort_type(t - ularge_type(ularge_type(d) * remainder->values[rl]));
+            }
+          }
+
+          std::fill(remainder->values.begin() + n, remainder->values.end(), ushort_type(0U));
         }
       }
     }
