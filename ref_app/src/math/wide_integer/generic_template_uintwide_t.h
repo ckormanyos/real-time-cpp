@@ -609,7 +609,7 @@
     uintwide_t& operator/=(const uintwide_t& other)
     {
       // Unary division function.
-      division_and_remainder_knuth(other, nullptr);
+      quotient_and_remainder_knuth(other, nullptr);
 
       return *this;
     }
@@ -619,7 +619,7 @@
       // Unary modulus function.
       uintwide_t remainder;
 
-      division_and_remainder_knuth(other, &remainder);
+      quotient_and_remainder_knuth(other, &remainder);
 
       std::copy(remainder.values.cbegin(), remainder.values.cend(), values.begin());
 
@@ -1083,6 +1083,18 @@
               values[0U] |= std::uint8_t(c);
             }
           }
+          else if(base == 10U)
+          {
+            if   ((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
+            else                                                        { char_is_valid = false; }
+
+            if(char_is_valid)
+            {
+              operator*=(10U);
+
+              values[0U] += c;
+            }
+          }
           else if(base == 16U)
           {
             if     ((c >= std::uint8_t('a')) && (c <= std::uint8_t('f'))) { c -= std::uint8_t(  87U); }
@@ -1097,25 +1109,13 @@
               values[0U] |= c;
             }
           }
-          else if(base == 10U)
-          {
-            if   ((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
-            else                                                        { char_is_valid = false; }
-
-            if(char_is_valid)
-            {
-              operator*=(10U);
-
-              values[0U] += c;
-            }
-          }
         }
       }
 
       return char_is_valid;
     }
 
-    void division_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder = nullptr)
+    void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder = nullptr)
     {
       // TBD: Consider cleaning up the unclear flow-control
       // caused by numerous return statements in this subroutine.
@@ -1227,7 +1227,7 @@
 
           if(u_offset != 0U)
           {
-            std::fill(values.begin() + (number_of_limbs - 1U) - u_offset,
+            std::fill(values.begin() + std::size_t((number_of_limbs - 1U) - u_offset),
                       values.end(),
                       ushort_type(0U));
           }
@@ -1241,7 +1241,7 @@
         // Compute the normalization factor d.
         const ushort_type d =
           detail::make_lo<ushort_type, ularge_type>(  ((ularge_type(std::uint8_t(1U))) << std::numeric_limits<ushort_type>::digits)
-                                                    /  (ularge_type(other.values[(number_of_limbs - 1U) - v_offset]) + ularge_type(std::uint8_t(1U))));
+                                                    /   ularge_type(ularge_type(other.values[(number_of_limbs - 1U) - v_offset]) + ushort_type(1U)));
 
         // Step D1(b), normalize u -> u * d = uu.
         // Note the added digit in uu and also that
@@ -1265,7 +1265,7 @@
 
           for(i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - u_offset); ++i)
           {
-            const ularge_type t = (ularge_type(values[i]) * ularge_type(d)) + ularge_type(carry);
+            const ularge_type t = ularge_type(ularge_type(values[i]) * d) + carry;
 
             uu[i] = detail::make_lo<ushort_type, ularge_type>(t);
             carry = detail::make_hi<ushort_type, ularge_type>(t);
@@ -1289,7 +1289,7 @@
 
           for(local_uint_index_type i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - v_offset); ++i)
           {
-            const ularge_type t = (ularge_type(other.values[i]) * ularge_type(d)) + ularge_type(carry);
+            const ularge_type t = ularge_type(ularge_type(other.values[i]) * d) + carry;
 
             vv[i] = detail::make_lo<ushort_type, ularge_type>(t);
             carry = detail::make_hi<ushort_type, ularge_type>(t);
@@ -1312,7 +1312,7 @@
 
           const local_uint_index_type uj     = (((number_of_limbs + 1U) - 1U) - u_offset) - j;
           const local_uint_index_type vj0    =   (number_of_limbs       - 1U) - v_offset;
-          const ularge_type           u_j_j1 = (ularge_type(uu[uj]) << std::numeric_limits<ushort_type>::digits) + ularge_type(uu[uj - 1U]);
+          const ularge_type           u_j_j1 = (ularge_type(uu[uj]) << std::numeric_limits<ushort_type>::digits) + uu[uj - 1U];
 
           ularge_type q_hat = ((uu[uj] == vv[vj0])
                                 ? ularge_type((std::numeric_limits<ushort_type>::max)())
@@ -1334,8 +1334,8 @@
               break;
             }
 
-            if(   (ularge_type(vv[vj0 - 1U]) * ularge_type(q_hat))
-               <= ((t << std::numeric_limits<ushort_type>::digits) + ularge_type(uu[uj - 2U])))
+            if(   ularge_type(ularge_type(vv[vj0 - 1U]) * q_hat)
+               <= ularge_type((t << std::numeric_limits<ushort_type>::digits) + uu[uj - 2U]))
             {
               break;
             }
@@ -1356,55 +1356,51 @@
 
             for(i = local_uint_index_type(0U); i < n; ++i)
             {
-              t     = (ularge_type(vv[i]) * ularge_type(q_hat)) + ularge_type(carry);
+              t     = ularge_type(ularge_type(vv[i]) * q_hat) + carry;
               nv[i] = detail::make_lo<ushort_type, ularge_type>(t);
               carry = detail::make_hi<ushort_type, ularge_type>(t);
             }
 
             nv[i] = carry;
 
-            // Subtract nv[0, ... n] from u[j, ... j + n].
-            local_uint_index_type borrow = 0U;
-            local_uint_index_type ul     = uj - n;
-
-            for(i = local_uint_index_type(0U); i <= n; ++i)
             {
-              t      = (ularge_type(uu[ul]) - ularge_type(nv[i])) - ularge_type(std::uint8_t(borrow));
-              uu[ul] =   detail::make_lo<ushort_type, ularge_type>(t);
-              borrow = ((detail::make_hi<ushort_type, ularge_type>(t) != ushort_type(0U)) ? 1U : 0U);
+              // Subtract nv[0, ... n] from u[j, ... j + n].
+              std::uint_fast8_t     borrow = 0U;
+              local_uint_index_type ul     = uj - n;
 
-              ++ul;
-            }
-
-            // Get the result data.
-            values[local_uint_index_type(m - j)] = detail::make_lo<ushort_type, ularge_type>(q_hat);
-
-            // Step D5: Test the remainder.
-            // Set the result value: Set result.m_data[m - j] = q_hat
-            // Condition: If u[j] < 0, in other words if the borrow
-            // is non-zero, then step D6 needs to be carried out.
-
-            if(borrow != 0U)
-            {
-              // Step D6: Add back.
-              // Add v[1, ... n] back to u[j, ... j + n],
-              // and decrease the result by 1.
-
-              carry = 0U;
-              ul    = uj - n;
-
-              //uu[local_uint_index_type(m - j)] += carry;
-
-              for(i = local_uint_index_type(0U); i <= n; ++i)
+              for(i = local_uint_index_type(0U); i <= n; ++i, ++ul)
               {
-                t      = (ularge_type(uu[ul]) + ularge_type(vv[i])) + ularge_type(carry);
-                uu[ul] = detail::make_lo<ushort_type, ularge_type>(t);
-                carry  = detail::make_hi<ushort_type, ularge_type>(t);
-
-                ++ul;
+                t      = ularge_type(ularge_type(uu[ul]) - nv[i]) - ushort_type(borrow);
+                uu[ul] =   detail::make_lo<ushort_type, ularge_type>(t);
+                borrow = ((detail::make_hi<ushort_type, ularge_type>(t) != ushort_type(0U)) ? 1U : 0U);
               }
 
-              --values[local_uint_index_type(m - j)];
+              // Get the result data.
+              values[local_uint_index_type(m - j)] = detail::make_lo<ushort_type, ularge_type>(q_hat);
+
+              // Step D5: Test the remainder.
+              // Set the result value: Set result.m_data[m - j] = q_hat.
+              // Use the condition (u[j] < 0), in other words if the borrow
+              // is non-zero, then step D6 needs to be carried out.
+
+              if(borrow != 0U)
+              {
+                // Step D6: Add back.
+                // Add v[1, ... n] back to u[j, ... j + n],
+                // and decrease the result by 1.
+
+                carry = 0U;
+                ul    = uj - n;
+
+                for(i = local_uint_index_type(0U); i <= n; ++i, ++ul)
+                {
+                  t      = ularge_type(ularge_type(uu[ul]) + vv[i]) + carry;
+                  uu[ul] = detail::make_lo<ushort_type, ularge_type>(t);
+                  carry  = detail::make_hi<ushort_type, ularge_type>(t);
+                }
+
+                --values[local_uint_index_type(0U)];
+              }
             }
           }
         }
@@ -1457,7 +1453,7 @@
       else
       {
         const bool left_is_greater_than_right =
-          ((values[std::size_t(element_index)] > other.values[std::size_t(element_index)]) ? true : false);
+          (values[std::size_t(element_index)] > other.values[std::size_t(element_index)]);
 
         return_value = (left_is_greater_than_right ? std::int_fast8_t(1) : std::int_fast8_t(-1));
       }
@@ -1715,13 +1711,11 @@
     const std::size_t field_width = std::size_t(out.width());
     const char        fill_char   = out.fill();
 
+    using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+
     if(base_rep == 8U)
     {
-      ;
-    }
-    else if(base_rep == 16U)
-    {
-      char str_result[(32U + (Digits2 / 4U)) + 1U];
+      char str_result[local_wide_integer_type::wr_string_max_buffer_size_oct];
 
       x.wr_string(str_result, base_rep, show_base, show_pos, is_uppercase, field_width, fill_char);
 
@@ -1729,7 +1723,15 @@
     }
     else if(base_rep == 10U)
     {
-      char str_result[(20U + std::size_t((std::uintmax_t(Digits2) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U];
+      char str_result[local_wide_integer_type::wr_string_max_buffer_size_dec];
+
+      x.wr_string(str_result, base_rep, show_base, show_pos, is_uppercase, field_width, fill_char);
+
+      static_cast<void>(ostr << str_result);
+    }
+    else if(base_rep == 16U)
+    {
+      char str_result[local_wide_integer_type::wr_string_max_buffer_size_hex];
 
       x.wr_string(str_result, base_rep, show_base, show_pos, is_uppercase, field_width, fill_char);
 
@@ -1752,7 +1754,9 @@
 
     in >> str_in;
 
-    x = uintwide_t<Digits2, ST, LT>(str_in.c_str());
+    using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+
+    x = local_wide_integer_type(str_in.c_str());
 
     return in;
   }
