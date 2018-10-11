@@ -599,6 +599,9 @@
             carry     = detail::make_hi<ushort_type, ularge_type>(t);
           }
         }
+
+        // TBD: Implement Karatsuba multiplication algorithm
+        // for medium digit counts.
       }
 
       std::copy(w.cbegin(), w.cend(), values.begin());
@@ -609,7 +612,7 @@
     uintwide_t& operator/=(const uintwide_t& other)
     {
       // Unary division function.
-      quotient_and_remainder_knuth(other, nullptr);
+      quotient_and_remainder_knuth(other);
 
       return *this;
     }
@@ -621,7 +624,9 @@
 
       quotient_and_remainder_knuth(other, &remainder);
 
-      std::copy(remainder.values.cbegin(), remainder.values.cend(), values.begin());
+      std::copy(remainder.values.cbegin(),
+                remainder.values.cend(),
+                values.begin());
 
       return *this;
     }
@@ -802,7 +807,9 @@
     {
       uintwide_t val;
 
-      std::fill(val.values.begin(), val.values.end(), (std::numeric_limits<ushort_type>::max)());
+      std::fill(val.values.begin(),
+                val.values.end(),
+                (std::numeric_limits<ushort_type>::max)());
 
       return val;
     }
@@ -960,8 +967,8 @@
           {
             char c(t.values[0U] & mask);
 
-            if      (c <= char( 9))                     { c += char(0x30); }
-            else if((c >= char(10)) && (c <= char(15))) { c += (is_uppercase ? char(55) : char(87)); }
+            if      (c <= char(  9))                      { c += char(0x30); }
+            else if((c >= char(0xA)) && (c <= char(0xF))) { c += (is_uppercase ? char(55) : char(87)); }
 
             --pos;
 
@@ -1383,7 +1390,7 @@
               // Use the condition (u[j] < 0), in other words if the borrow
               // is non-zero, then step D6 needs to be carried out.
 
-              if(borrow != 0U)
+              if(borrow != std::uint_fast8_t(0U))
               {
                 // Step D6: Add back.
                 // Add v[1, ... n] back to u[j, ... j + n],
@@ -1399,7 +1406,9 @@
                   carry  = detail::make_hi<ushort_type, ularge_type>(t);
                 }
 
-                --values[local_uint_index_type(0U)];
+                // A potential test case for uint512_t is:
+                //   QuotientRemainder[698937339790347543053797400564366118744312537138445607919548628175822115805812983955794321304304417541511379093392776018867245622409026835324102460829431,100041341335406267530943777943625254875702684549707174207105689918734693139781]
+                --values[local_uint_index_type(m - j)];
               }
             }
           }
@@ -1413,7 +1422,9 @@
         {
           if(d == 1)
           {
-            std::copy(uu.cbegin(), uu.cbegin() + (number_of_limbs - v_offset), remainder->values.begin());
+            std::copy(uu.cbegin(),
+                      uu.cbegin() + (number_of_limbs - v_offset),
+                      remainder->values.begin());
           }
           else
           {
@@ -1428,7 +1439,9 @@
             }
           }
 
-          std::fill(remainder->values.begin() + n, remainder->values.end(), ushort_type(0U));
+          std::fill(remainder->values.begin() + n,
+                    remainder->values.end(),
+                    ushort_type(0U));
         }
       }
     }
