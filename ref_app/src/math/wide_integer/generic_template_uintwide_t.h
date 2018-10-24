@@ -1,4 +1,4 @@
-#ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
+﻿#ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
   #define GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
 
   ///////////////////////////////////////////////////////////////////
@@ -526,17 +526,17 @@
                                                  && (my_digits >= 128U))>::type>
     operator double_width_type() const
     {
-      double_width_type my_double_width_instance;
+      double_width_type local_double_width_instance;
 
       std::copy(values.cbegin(),
                 values.cend(),
-                my_double_width_instance.representation().begin());
+                local_double_width_instance.representation().begin());
 
-      std::fill(my_double_width_instance.representation().begin() + number_of_limbs,
-                my_double_width_instance.representation().end(),
+      std::fill(local_double_width_instance.representation().begin() + number_of_limbs,
+                local_double_width_instance.representation().end(),
                 ushort_type(0U));
 
-      return my_double_width_instance;
+      return local_double_width_instance;
     }
 
     // Implement the Boolean cast operator that tests for zero/non-zero.
