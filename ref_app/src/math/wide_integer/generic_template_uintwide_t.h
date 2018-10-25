@@ -643,12 +643,12 @@
     }
 
     // Operators pre-increment and pre-decrement.
-    uintwide_t& operator++() { increment(); return *this; }
-    uintwide_t& operator--() { decrement(); return *this; }
+    uintwide_t& operator++() { preincrement(); return *this; }
+    uintwide_t& operator--() { predecrement(); return *this; }
 
     // Operators post-increment and post-decrement.
-    uintwide_t operator++(int) { uintwide_t w(*this); increment(); return w; }
-    uintwide_t operator--(int) { uintwide_t w(*this); decrement(); return w; }
+    uintwide_t operator++(int) { uintwide_t w(*this); preincrement(); return w; }
+    uintwide_t operator--(int) { uintwide_t w(*this); predecrement(); return w; }
 
     uintwide_t& operator~()
     {
@@ -1493,9 +1493,9 @@
       }
     }
 
-    void increment()
+    void preincrement()
     {
-      // Pre-increment.
+      // Implement pre-increment.
       std::size_t i = 0U;
 
       for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i) { ; }
@@ -1503,9 +1503,9 @@
       if(i == (values.size() - 1U)) { ++values[i]; }
     }
 
-    void decrement()
+    void predecrement()
     {
-      // Pre-decrement.
+      // Implement pre-decrement.
       std::size_t i = 0U;
 
       for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i) { ; }
@@ -1517,7 +1517,7 @@
     {
       bitwise_not();
 
-      increment();
+      preincrement();
     }
 
     bool is_zero() const
