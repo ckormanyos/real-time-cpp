@@ -1,4 +1,4 @@
-﻿#ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
+#ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
   #define GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
 
   ///////////////////////////////////////////////////////////////////
@@ -220,14 +220,16 @@
 
   namespace wide_integer { namespace generic_template { namespace detail {
 
-  // A local implementation of strcpy.
-  inline void strcpy(char* dst, const char* src)
+  // A local implementation of string copy.
+  inline char* strcpy_unsafe(char* dst, const char* src)
   {
     while((*dst++ = *src++) != char('\0')) { ; }
+
+    return dst;
   }
 
-  // A local implementation of strlen.
-  inline std::size_t strlen(const char* p_str)
+  // A local implementation of string length.
+  inline std::size_t strlen_unsafe(const char* p_str)
   {
     const char* p_str_copy;
 
@@ -526,17 +528,17 @@
                                                  && (my_digits >= 128U))>::type>
     operator double_width_type() const
     {
-      double_width_type local_double_width_instance;
+      double_width_type my_double_width_instance;
 
       std::copy(values.cbegin(),
                 values.cend(),
-                local_double_width_instance.representation().begin());
+                my_double_width_instance.representation().begin());
 
-      std::fill(local_double_width_instance.representation().begin() + number_of_limbs,
-                local_double_width_instance.representation().end(),
+      std::fill(my_double_width_instance.representation().begin() + number_of_limbs,
+                my_double_width_instance.representation().end(),
                 ushort_type(0U));
 
-      return local_double_width_instance;
+      return my_double_width_instance;
     }
 
     // Implement the Boolean cast operator that tests for zero/non-zero.
@@ -608,25 +610,10 @@
       // Unary multiplication function.
       std::array<ushort_type, number_of_limbs> w = {{ 0U }};
 
-      for(std::size_t j = 0; j < number_of_limbs; ++j)
-      {
-        if(other.values[j] != ushort_type(0U))
-        {
-          ushort_type carry = ushort_type(0U);
-
-          for(std::size_t i = 0U, iplusj = i + j; iplusj < number_of_limbs; ++i, ++iplusj)
-          {
-            const ularge_type t =
-              ularge_type(ularge_type(ularge_type(values[i]) * other.values[j]) + w[iplusj]) + carry;
-
-            w[iplusj] = detail::make_lo<ushort_type, ularge_type>(t);
-            carry     = detail::make_hi<ushort_type, ularge_type>(t);
-          }
-        }
-
-        // TBD: Implement Karatsuba multiplication algorithm
-        // for medium digit counts.
-      }
+      multiplication_loop_schoolbook(values.data(),
+                                     other.values.data(),
+                                     w.data(),
+                                     w.size());
 
       std::copy(w.cbegin(), w.cend(), values.begin());
 
@@ -655,40 +642,17 @@
       return *this;
     }
 
-    uintwide_t& operator++()
-    {
-      // Operator pre-increment.
-      std::size_t i = 0U;
+    // Operators pre-increment and pre-decrement.
+    uintwide_t& operator++() { increment(); return *this; }
+    uintwide_t& operator--() { decrement(); return *this; }
 
-      for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i) { ; }
-
-      if(i == (values.size() - 1U)) { ++values[i]; }
-
-      return *this;
-    }
-
-    uintwide_t& operator--()
-    {
-      // Operator pre-decrement.
-      std::size_t i = 0U;
-
-      for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i) { ; }
-
-      if(i == (values.size() - 1U)) { --values[i]; }
-
-      return *this;
-    }
-
-    // Operators post-increment and post decrement.
-    uintwide_t operator++(int) { uintwide_t w(*this); ++(*this); return w; }
-    uintwide_t operator--(int) { uintwide_t w(*this); --(*this); return w; }
+    // Operators post-increment and post-decrement.
+    uintwide_t operator++(int) { uintwide_t w(*this); increment(); return w; }
+    uintwide_t operator--(int) { uintwide_t w(*this); decrement(); return w; }
 
     uintwide_t& operator~()
     {
-      for(std::size_t i = 0U; i < number_of_limbs; ++i)
-      {
-        values[i] = ushort_type(~values[i]);
-      }
+      bitwise_not();
 
       return *this;
     }
@@ -914,7 +878,7 @@
 
         str_temp[std::size_t(sizeof(str_temp) - 1U)] = char('\0');
 
-        detail::strcpy(str_result, str_temp + pos);
+        detail::strcpy_unsafe(str_result, str_temp + pos);
       }
       else if(base_rep == 10U)
       {
@@ -969,7 +933,7 @@
 
         str_temp[std::size_t(sizeof(str_temp) - 1U)] = char('\0');
 
-        detail::strcpy(str_result, str_temp + pos);
+        detail::strcpy_unsafe(str_result, str_temp + pos);
       }
       else if(base_rep == 16U)
       {
@@ -1034,7 +998,7 @@
 
         str_temp[std::size_t(sizeof(str_temp) - 1U)] = char('\0');
 
-        detail::strcpy(str_result, str_temp + pos);
+        detail::strcpy_unsafe(str_result, str_temp + pos);
       }
       else
       {
@@ -1051,7 +1015,7 @@
     {
       std::fill(values.begin(), values.end(), ushort_type(0U));
 
-      const std::size_t str_length = detail::strlen(str_input);
+      const std::size_t str_length = detail::strlen_unsafe(str_input);
 
       std::uint_fast8_t base = 10U;
 
@@ -1144,6 +1108,29 @@
       }
 
       return char_is_valid;
+    }
+
+    static void multiplication_loop_schoolbook(      ushort_type* pu,
+                                               const ushort_type* pv,
+                                                     ushort_type* pw,
+                                               const std::size_t  count)
+    {
+      for(std::size_t j = 0U; j < count; ++j)
+      {
+        if(pv[j] != ushort_type(0U))
+        {
+          ushort_type carry = ushort_type(0U);
+
+          for(std::size_t i = 0U, iplusj = i + j; iplusj < count; ++i, ++iplusj)
+          {
+            const ularge_type t =
+              ularge_type(ularge_type(ularge_type(pu[i]) * pv[j]) + pw[iplusj]) + carry;
+
+            pw[iplusj] = detail::make_lo<ushort_type, ularge_type>(t);
+            carry      = detail::make_hi<ushort_type, ularge_type>(t);
+          }
+        }
+      }
     }
 
     void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder = nullptr)
@@ -1498,11 +1485,39 @@
       return return_value;
     }
 
+    void bitwise_not()
+    {
+      for(std::size_t i = 0U; i < number_of_limbs; ++i)
+      {
+        values[i] = ushort_type(~values[i]);
+      }
+    }
+
+    void increment()
+    {
+      // Pre-increment.
+      std::size_t i = 0U;
+
+      for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i) { ; }
+
+      if(i == (values.size() - 1U)) { ++values[i]; }
+    }
+
+    void decrement()
+    {
+      // Pre-decrement.
+      std::size_t i = 0U;
+
+      for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i) { ; }
+
+      if(i == (values.size() - 1U)) { --values[i]; }
+    }
+
     void negate()
     {
-      operator~();
+      bitwise_not();
 
-      ++(*this);
+      increment();
     }
 
     bool is_zero() const
