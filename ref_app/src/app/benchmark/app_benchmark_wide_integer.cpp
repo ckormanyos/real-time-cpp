@@ -8,7 +8,7 @@ namespace
 {
   using wide_integer_type = wide_integer::generic_template::uint256_t;
 
-  // Note: Some of the following comments use the Wolfram Language(R).
+  // Note: Some of the following comments use the Wolfram Language(TM).
   //
   // Create two pseudo-random 256-bit unsigned integers.
   //   Table[IntegerString[RandomInteger[{1, (2^256) - 1}], 16], 2]

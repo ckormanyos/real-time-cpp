@@ -435,7 +435,7 @@
       std::copy(rep.cbegin(), rep.cend(), values.begin());
     }
 
-    // Constructor from an initialization list (C-style array).
+    // Constructor from a C-style array.
     template<const std::size_t N>
     uintwide_t(const ushort_type(&init)[N])
     {
@@ -457,14 +457,14 @@
     template<typename UnknownUnsignedWideIntegralType = double_width_type>
     explicit uintwide_t(const UnknownUnsignedWideIntegralType& v,
                         typename std::enable_if<(   (std::is_same<UnknownUnsignedWideIntegralType, double_width_type>::value == true)
-                                                 && (my_digits >= 128U))>::type* = nullptr)
+                                                 && (128U <= my_digits))>::type* = nullptr)
     {
       std::copy(v.crepresentation().cbegin(),
                 v.crepresentation().cbegin() + (v.crepresentation().size() / 2U),
                 values.begin());
     }
 
-    // Constructor from constant character string.
+    // Constructor from a constant character string.
     uintwide_t(const char* str_input)
     {
       if(rd_string(str_input) == false)
@@ -498,21 +498,24 @@
     // Implement a cast operator that casts to ushort_type
     // or any built-in unsigned integral type that is less wide
     // than ushort_type.
-    template<typename UnknownUnsignedBuiltInIntegralType,
-             typename = typename std::enable_if<(   (std::is_fundamental<UnknownUnsignedBuiltInIntegralType>::value == true)
-                                                 && (std::is_integral   <UnknownUnsignedBuiltInIntegralType>::value == true)
-                                                 && (std::is_unsigned   <UnknownUnsignedBuiltInIntegralType>::value == true)
-                                                 && (std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits <= std::numeric_limits<ushort_type>::digits))>::type>
-    operator UnknownUnsignedBuiltInIntegralType() const
+    template<typename UnknownBuiltInUnsignedIntegralType,
+             typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::is_integral   <UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::is_unsigned   <UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits <= std::numeric_limits<ushort_type>::digits))>::type>
+    explicit operator UnknownBuiltInUnsignedIntegralType() const
     {
-      return UnknownUnsignedBuiltInIntegralType(values[0U]);
+      return UnknownBuiltInUnsignedIntegralType(values[0U]);
     }
 
     // Implement a cast operator that casts to ularge_type.
-    template<typename UnknownUnsignedBuiltInIntegralType,
-             typename = typename std::enable_if<(   std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits >  std::numeric_limits<ushort_type>::digits
-                                                 && std::numeric_limits<UnknownUnsignedBuiltInIntegralType>::digits <= std::numeric_limits<ularge_type>::digits)>::type>
-    operator ularge_type() const
+    template<typename UnknownBuiltInUnsignedIntegralType,
+             typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::is_integral   <UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::is_unsigned   <UnknownBuiltInUnsignedIntegralType>::value == true)
+                                                 && (std::numeric_limits<ushort_type>::digits <  std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits)
+                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits <= std::numeric_limits<ularge_type>::digits))>::type>
+    explicit operator ularge_type() const
     {
       return detail::make_large<ushort_type, ularge_type>(values[0U], values[1U]);
     }
@@ -528,24 +531,17 @@
                                                  && (my_digits >= 128U))>::type>
     operator double_width_type() const
     {
-      double_width_type my_double_width_instance;
+      double_width_type local_double_width_instance;
 
       std::copy(values.cbegin(),
                 values.cend(),
-                my_double_width_instance.representation().begin());
+                local_double_width_instance.representation().begin());
 
-      std::fill(my_double_width_instance.representation().begin() + number_of_limbs,
-                my_double_width_instance.representation().end(),
+      std::fill(local_double_width_instance.representation().begin() + number_of_limbs,
+                local_double_width_instance.representation().end(),
                 ushort_type(0U));
 
-      return my_double_width_instance;
-    }
-
-    // Implement the Boolean cast operator that tests for zero/non-zero.
-    // This cast operator returns true if the value of *this is non-zero.
-    operator bool() const
-    {
-      return (is_zero() == false);
+      return local_double_width_instance;
     }
 
     // Purposely delete the cast operator that casts to the half-width type.
@@ -555,13 +551,20 @@
              typename = typename std::enable_if<std::is_same<UnknownUnsignedWideIntegralType, half_width_type>::value == true>::type>
     operator half_width_type() const = delete;
 
+    // Implement the Boolean cast operator that tests for zero/non-zero.
+    // This cast operator returns true if the value of *this is non-zero.
+    operator bool() const
+    {
+      return (is_zero() == false);
+    }
+
     // Provide a user interface to the internal data representation.
           representation_type&  representation()       { return values; }
     const representation_type&  representation() const { return values; }
     const representation_type& crepresentation() const { return values; }
 
     // Unary operators: not, plus and minus.
-    bool        operator!() const { return is_zero(); }
+    bool        operator!() const { return (is_zero() == true); }
     uintwide_t& operator+() const { return *this; }
     uintwide_t  operator-() const { const uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
@@ -647,8 +650,8 @@
     uintwide_t& operator--() { predecrement(); return *this; }
 
     // Operators post-increment and post-decrement.
-    uintwide_t operator++(int) { uintwide_t w(*this); preincrement(); return w; }
-    uintwide_t operator--(int) { uintwide_t w(*this); predecrement(); return w; }
+    uintwide_t operator++(int) { const uintwide_t w(*this); preincrement(); return w; }
+    uintwide_t operator--(int) { const uintwide_t w(*this); predecrement(); return w; }
 
     uintwide_t& operator~()
     {
@@ -807,6 +810,7 @@
       return uintwide_t(std::uint8_t(0U));
     }
 
+    // String write function.
     bool wr_string(      char*             str_result,
                    const std::uint_fast8_t base_rep     = 0x10U,
                    const bool              show_base    = true,
@@ -1011,6 +1015,7 @@
   private:
     representation_type values;
 
+    // String read function.
     bool rd_string(const char* str_input)
     {
       std::fill(values.begin(), values.end(), ushort_type(0U));
@@ -1140,8 +1145,8 @@
 
       // Use Knuth's long division algorithm.
       // The loop-ordering of indexes in Knuth's original
-      // algorithm has been reversed due to the little-endian
-      // data format used here.
+      // algorithm has been reversed due to the data format
+      // used here.
 
       // See also:
       // D.E. Knuth, "The Art of Computer Programming, Volume 2:
@@ -1524,7 +1529,7 @@
     {
       return std::all_of(values.cbegin(),
                          values.cend(),
-                         [](const ushort_type& u) -> bool { return u == ushort_type(0U); });
+                         [](const ushort_type& u) -> bool { return (u == ushort_type(0U)); });
     }
   };
 
