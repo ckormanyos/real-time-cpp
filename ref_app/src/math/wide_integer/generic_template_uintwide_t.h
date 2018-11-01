@@ -1945,20 +1945,18 @@
       const std::size_t msb_pos = msb(m);
 
       // Obtain the initial value.
-      const std::size_t right_shift_amount =
-          std::size_t( std::numeric_limits<local_wide_integer_type>::digits - 1)
-        - std::size_t(msb_pos / 2U);
+      const std::size_t left_shift_amount =
+        ((std::size_t(msb_pos % 2U) == 0U) ? std::size_t((msb_pos + 0U) / 2U)
+                                           : std::size_t((msb_pos + 1U) / 2U));
 
-      local_wide_integer_type u((std::numeric_limits<local_wide_integer_type>::max)() >> right_shift_amount);
+      local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
 
       // Perform the iteration for square root.
       for(std::size_t i = 0U; i < 64U; ++i)
       {
         s = u;
 
-        const local_wide_integer_type t = s + (m / s);
-
-        u = t >> 1;
+        u = (s + (m / s)) >> 1;
 
         if(u >= s)
         {
@@ -1968,6 +1966,48 @@
     }
 
     return s;
+  }
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> rootk(const uintwide_t<Digits2, ST, LT>& m, const std::uint_fast8_t k)
+  {
+    // Calculate the k'th root.
+    using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+    using local_value_type        = typename local_wide_integer_type::value_type;
+
+    const bool argument_is_zero = std::all_of(m.crepresentation().cbegin(),
+                                              m.crepresentation().cend(),
+                                              [](const local_value_type& a) -> bool
+                                              {
+                                                return (a == 0U);
+                                              });
+
+    local_wide_integer_type s;
+
+    if(argument_is_zero)
+    {
+      s = local_wide_integer_type(std::uint_fast8_t(0U));
+    }
+    else
+    {
+      // TBD: Implement the calculation of the k'th root.
+
+      static_cast<void>(k);
+
+      s = local_wide_integer_type(std::uint_fast8_t(0U));
+    }
+
+    return s;
+  }
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> cbrt(const uintwide_t<Digits2, ST, LT>& m)
+  {
+    return rootk(m, 3U);
   }
 
   template<typename UnsignedIntegralType1,
@@ -2003,7 +2043,26 @@
     return (local_normal_width_type(x) % m);
   }
 
-  // TBD: Implement a GCD function.
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> gcd(const uintwide_t<Digits2, ST, LT>& a,
+                                  const uintwide_t<Digits2, ST, LT>& b)
+  {
+    // TBD: Implement a GCD function.
+
+    using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+    using local_value_type        = typename local_wide_integer_type::value_type;
+
+    const local_value_type dummy(0U);
+
+    static_cast<void>(dummy);
+
+    static_cast<void>(a.crepresentation().size());
+    static_cast<void>(b.crepresentation().size());
+
+    return local_wide_integer_type(std::uint_fast8_t(0U));
+  }
 
   } } // namespace wide_integer::generic_template
 
