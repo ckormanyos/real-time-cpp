@@ -208,6 +208,54 @@
 
   #endif
 
+  // Forward declarations of a variety of number-theoretical tools.
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  std::size_t lsb(const uintwide_t<Digits2, ST, LT>& x);
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  std::size_t msb(const uintwide_t<Digits2, ST, LT>& x);
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> sqrt(const uintwide_t<Digits2, ST, LT>& m);
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> cbrt(const uintwide_t<Digits2, ST, LT>& m);
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> rootk(const uintwide_t<Digits2, ST, LT>& m,
+                                    const std::uint_fast8_t k);
+
+  template<typename UnsignedIntegralType2,
+           const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> pow(const uintwide_t<Digits2, ST, LT>& b,
+                                  const UnsignedIntegralType2& p);
+
+  template<typename UnsignedIntegralType2,
+           const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> powm(const uintwide_t<Digits2, ST, LT>& b,
+                                   const UnsignedIntegralType2& p,
+                                   const uintwide_t<Digits2, ST, LT>& m);
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> gcd(const uintwide_t<Digits2, ST, LT>& a,
+                                  const uintwide_t<Digits2, ST, LT>& b);
+
   } } // namespace wide_integer::generic_template
 
   namespace std
@@ -1884,6 +1932,9 @@
   {
     // Calculate the position of the least-significant bit.
 
+    using local_const_iterator_type = typename uintwide_t<Digits2, ST, LT>::const_iterator;
+    using local_value_type          = typename uintwide_t<Digits2, ST, LT>::value_type;
+
     // TBD: Implement lsb.
     static_cast<void>(x.crepresentation().size());
 
@@ -1896,6 +1947,7 @@
   std::size_t msb(const uintwide_t<Digits2, ST, LT>& x)
   {
     // Calculate the position of the most-significant bit.
+
     using local_const_reverse_iterator_type = typename uintwide_t<Digits2, ST, LT>::const_reverse_iterator;
     using local_value_type                  = typename uintwide_t<Digits2, ST, LT>::value_type;
 
@@ -1905,8 +1957,10 @@
     {
       if((*ri & (std::numeric_limits<local_value_type>::max)()) != 0U)
       {
-        bpos =    detail::msb_helper(*ri)
-               + (std::size_t(std::numeric_limits<local_value_type>::digits) * std::size_t(x.crepresentation().crend() - (ri + 1U)));
+        const std::size_t offset = std::size_t((x.crepresentation().crend() - 1U) - ri);
+
+        bpos =   detail::msb_helper(*ri)
+               + std::size_t(std::size_t(std::numeric_limits<local_value_type>::digits) * offset);
 
         break;
       }
@@ -1946,12 +2000,16 @@
 
       // Obtain the initial value.
       const std::size_t left_shift_amount =
-        ((std::size_t(msb_pos % 2U) == 0U) ? std::size_t((msb_pos + 0U) / 2U)
-                                           : std::size_t((msb_pos + 1U) / 2U));
+        ((std::size_t(msb_pos % 2U) == 0U) ? 1U + std::size_t((msb_pos + 0U) / 2U)
+                                           : 1U + std::size_t((msb_pos + 1U) / 2U));
 
       local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
 
-      // Perform the iteration for square root.
+      // Perform the iteration for the square root.
+      // See Algorithm 1.13 SqrtInt, Sect. 1.5.1
+      // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+      // Cambridge University Press, 2011.
+
       for(std::size_t i = 0U; i < 64U; ++i)
       {
         s = u;
@@ -1971,9 +2029,19 @@
   template<const std::size_t Digits2,
            typename ST,
            typename LT>
-  uintwide_t<Digits2, ST, LT> rootk(const uintwide_t<Digits2, ST, LT>& m, const std::uint_fast8_t k)
+  uintwide_t<Digits2, ST, LT> cbrt(const uintwide_t<Digits2, ST, LT>& m)
+  {
+    return rootk(m, 3U);
+  }
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> rootk(const uintwide_t<Digits2, ST, LT>& m,
+                                    const std::uint_fast8_t k)
   {
     // Calculate the k'th root.
+
     using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
     using local_value_type        = typename local_wide_integer_type::value_type;
 
@@ -1992,34 +2060,91 @@
     }
     else
     {
-      // TBD: Implement the calculation of the k'th root.
+      // Obtain the initial guess via algorithms
+      // involving the position of the msb.
+      const std::size_t msb_pos = msb(m);
 
-      static_cast<void>(k);
+      // Obtain the initial value.
+      const std::size_t msb_pos_mod_k = msb_pos % k;
 
-      s = local_wide_integer_type(std::uint_fast8_t(0U));
+      const std::size_t left_shift_amount =
+        ((msb_pos_mod_k == 0U) ? 1U + std::size_t((msb_pos +                 0U ) / k)
+                               : 1U + std::size_t((msb_pos + (k - msb_pos_mod_k)) / k));
+
+      local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
+
+      // Perform the iteration for the k'th root.
+      // See Algorithm 1.14 RootInt, Sect. 1.5.2
+      // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+      // Cambridge University Press, 2011.
+
+      for(std::size_t i = 0U; i < 64U; ++i)
+      {
+        s = u;
+
+        local_wide_integer_type m_over_s_pow_k_minus_one = m;
+
+        for(std::size_t j = 0U; j < k - 1U; ++j)
+        {
+          m_over_s_pow_k_minus_one /= s;
+        }
+
+        u = (((k - 1U) * s) + m_over_s_pow_k_minus_one) / k;
+
+        if(u >= s)
+        {
+          break;
+        }
+      }
     }
 
     return s;
   }
 
-  template<const std::size_t Digits2,
+  template<typename UnsignedIntegralType2,
+           const std::size_t Digits2,
            typename ST,
            typename LT>
-  uintwide_t<Digits2, ST, LT> cbrt(const uintwide_t<Digits2, ST, LT>& m)
+  uintwide_t<Digits2, ST, LT> pow(const uintwide_t<Digits2, ST, LT>& b,
+                                  const UnsignedIntegralType2& p)
   {
-    return rootk(m, 3U);
+    // Calculate (b ^ p).
+
+    using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+
+    local_wide_integer_type x(std::uint8_t(1U));
+    local_wide_integer_type y(b);
+    UnsignedIntegralType2   p_local(p);
+
+    const UnsignedIntegralType2 zero(std::uint8_t(0U));
+
+    while(p_local > zero)
+    {
+      if(std::uint32_t(p_local) & 1U)
+      {
+        x = (x * y);
+      }
+
+      y = (y * y);
+
+      p_local >>= 1;
+    }
+
+    return x;
   }
 
-  template<typename UnsignedIntegralType1,
-           typename UnsignedIntegralType2 = UnsignedIntegralType1>
-  UnsignedIntegralType1 powm(const UnsignedIntegralType1& b,
-                             const UnsignedIntegralType2& p,
-                             const UnsignedIntegralType1& m)
+  template<typename UnsignedIntegralType2,
+           const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  uintwide_t<Digits2, ST, LT> powm(const uintwide_t<Digits2, ST, LT>& b,
+                                   const UnsignedIntegralType2& p,
+                                   const uintwide_t<Digits2, ST, LT>& m)
   {
     // Calculate (b ^ p) % m.
 
-    using local_double_width_type = typename UnsignedIntegralType1::double_width_type;
-    using local_normal_width_type = UnsignedIntegralType1;
+    using local_normal_width_type = uintwide_t<Digits2, ST, LT>;
+    using local_double_width_type = typename local_normal_width_type::double_width_type;
 
           local_double_width_type x(std::uint8_t(1U));
           local_double_width_type y(b);
