@@ -367,46 +367,53 @@
   template<>                              struct sint_type_helper<std::uint64_t> { using exact_signed_type   = std::int64_t; };
 
   template<typename UnsignedIntegralType>
-  std::size_t msb_helper(const UnsignedIntegralType&) { return 0U; }
-
-  template<>
-  inline std::size_t msb_helper<std::uint16_t>(const std::uint16_t& x)
+  std::size_t lsb_helper(const UnsignedIntegralType& x)
   {
-    std::uint_fast8_t r(0U);
-    std::uint16_t     u(x);
+    // Compile-time checks.
+    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
+                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
+                   "Error: Please check the characteristics of UnsignedIntegralType");
 
-    // Use O(log2[N]) binary-halving in an unrolled loop to find the msb.
-    if((u & UINT16_C(0x0000FF00)) != UINT16_C(0)) { u >>=  8; r |= UINT8_C( 8); }
-    if((u & UINT16_C(0x000000F0)) != UINT16_C(0)) { u >>=  4; r |= UINT8_C( 4); }
-    if((u & UINT16_C(0x0000000C)) != UINT16_C(0)) { u >>=  2; r |= UINT8_C( 2); }
-    if((u & UINT16_C(0x00000002)) != UINT16_C(0)) { u >>=  1; r |= UINT8_C( 1); }
+    using local_unsigned_integral_type = UnsignedIntegralType;
 
-    return std::size_t(r);
+    std::size_t i;
+
+    // This assumes that at least one bit is set.
+    // Otherwise saturation of the index will occur.
+    for(i = 0U; i < std::size_t(std::numeric_limits<local_unsigned_integral_type>::digits); ++i)
+    {
+      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
+      {
+        break;
+      }
+    }
+
+    return i;
   }
 
-  template<>
-  inline std::size_t msb_helper<std::uint32_t>(const std::uint32_t& x)
+  template<typename UnsignedIntegralType>
+  std::size_t msb_helper(const UnsignedIntegralType& x)
   {
-    std::uint_fast8_t r(0U);
-    std::uint32_t     u(x);
+    // Compile-time checks.
+    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
+                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
+                   "Error: Please check the characteristics of UnsignedIntegralType");
 
-    // Use O(log2[N]) binary-halving in an unrolled loop to find the msb.
-    if((u & UINT32_C(0xFFFF0000)) != UINT32_C(0)) { u >>= 16; r |= UINT8_C(16); }
-    if((u & UINT32_C(0x0000FF00)) != UINT32_C(0)) { u >>=  8; r |= UINT8_C( 8); }
-    if((u & UINT32_C(0x000000F0)) != UINT32_C(0)) { u >>=  4; r |= UINT8_C( 4); }
-    if((u & UINT32_C(0x0000000C)) != UINT32_C(0)) { u >>=  2; r |= UINT8_C( 2); }
-    if((u & UINT32_C(0x00000002)) != UINT32_C(0)) { u >>=  1; r |= UINT8_C( 1); }
+    using local_unsigned_integral_type = UnsignedIntegralType;
 
-    return std::size_t(r);
-  }
+    std::ptrdiff_t i;
 
-  template<>
-  inline std::size_t msb_helper<std::uint64_t>(const std::uint64_t& x)
-  {
-    const std::uint32_t hi_part = make_hi<std::uint32_t, std::uint64_t>(x);
+    // This assumes that at least one bit is set.
+    // Otherwise underflow of the index will occur.
+    for(i = std::ptrdiff_t(std::numeric_limits<local_unsigned_integral_type>::digits - 1); i >= 0; --i)
+    {
+      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
+      {
+        break;
+      }
+    }
 
-    return ((hi_part == 0U) ?        msb_helper(make_lo<std::uint32_t, std::uint64_t>(x))
-                            : (32U + msb_helper(hi_part)));
+    return std::size_t(i);
   }
 
   } } } // namespace wide_integer::generic_template::detail
@@ -665,7 +672,7 @@
     // Unary operators: not, plus and minus.
     bool        operator!() const { return (is_zero() == true); }
     uintwide_t& operator+() const { return *this; }
-    uintwide_t  operator-() const { const uintwide_t tmp(*this); tmp.negate(); return tmp; }
+    uintwide_t  operator-() const { uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
     uintwide_t& operator+=(const uintwide_t& other)
     {
@@ -1935,10 +1942,22 @@
     using local_const_iterator_type = typename uintwide_t<Digits2, ST, LT>::const_iterator;
     using local_value_type          = typename uintwide_t<Digits2, ST, LT>::value_type;
 
-    // TBD: Implement lsb.
-    static_cast<void>(x.crepresentation().size());
+    std::size_t bpos = 0U;
 
-    return 0U;
+    for(local_const_iterator_type it = x.crepresentation().cbegin(); it != x.crepresentation().cend(); ++it)
+    {
+      if((*it & (std::numeric_limits<local_value_type>::max)()) != 0U)
+      {
+        const std::size_t offset = std::size_t(it - x.crepresentation().cbegin());
+
+        bpos =   detail::lsb_helper(*it)
+               + std::size_t(std::size_t(std::numeric_limits<local_value_type>::digits) * offset);
+
+        break;
+      }
+    }
+
+    return bpos;
   }
 
   template<const std::size_t Digits2,
@@ -2174,19 +2193,58 @@
   uintwide_t<Digits2, ST, LT> gcd(const uintwide_t<Digits2, ST, LT>& a,
                                   const uintwide_t<Digits2, ST, LT>& b)
   {
-    // TBD: Implement a GCD function.
+    // Implement a binary GCD function.
+    // See Algorithm 1.18 BibaryGcd, Sect. 1.6.1
+    // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+    // Cambridge University Press, 2011.
 
     using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
-    using local_value_type        = typename local_wide_integer_type::value_type;
-
-    const local_value_type dummy(0U);
-
-    static_cast<void>(dummy);
 
     static_cast<void>(a.crepresentation().size());
     static_cast<void>(b.crepresentation().size());
 
     return local_wide_integer_type(std::uint_fast8_t(0U));
+
+    /*
+
+    TBD: Not yet correct.
+
+    local_wide_integer_type t      (std::uint_fast8_t(1U));
+    local_wide_integer_type a_local(a);
+    local_wide_integer_type b_local(b);
+
+    while(   ((a_local.crepresentation().front() % 2U) == 0U)
+          && ((b_local.crepresentation().front() % 2U) == 0U))
+    {
+      t <<= 1;
+      a_local >>= 1;
+      b_local >>= 1;
+    }
+
+    while((a_local.crepresentation().front() % 2U) == 0U)
+    {
+      a_local >>= 1;
+    }
+
+    while((b_local.crepresentation().front() % 2U) == 0U)
+    {
+      b_local >>= 1;
+    }
+
+    while(a_local != b_local)
+    {
+      const local_wide_integer_type abs_ab = ((a_local < b_local) ? (b_local - a_local) : (a_local - b_local));
+      const local_wide_integer_type min_ab = (std::min)(a_local, b_local);
+
+      a_local = abs_ab;
+      b_local = min_ab;
+
+      a_local >>= msb(a_local);
+    }
+
+    return t * a_local;
+
+    */
   }
 
   } } // namespace wide_integer::generic_template
