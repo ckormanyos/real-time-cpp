@@ -208,7 +208,13 @@
 
   #endif
 
-  // Forward declarations of a variety of number-theoretical tools.
+  // Forward declarations of various number-theoretical tools.
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  void swap(uintwide_t<Digits2, ST, LT>& x,
+            uintwide_t<Digits2, ST, LT>& y);
+
   template<const std::size_t Digits2,
            typename ST,
            typename LT>
@@ -414,6 +420,74 @@
     }
 
     return std::size_t(i);
+  }
+
+  template<typename ST>
+  ST integer_gcd_reduce_short(ST u, ST v)
+  {
+    // This implementation of GCD reduction is based on an
+    // adaptation of existing code from Boost.Multiprecision.
+
+    do
+    {
+      if(u > v)
+      {
+        std::swap(u, v);
+      }
+
+      if(u == v)
+      {
+        break;
+      }
+
+      v  -= u;
+      v >>= detail::lsb_helper(v);
+    }
+    while(true);
+
+    return u;
+  }
+
+  template<typename ST,
+           typename LT>
+  LT integer_gcd_reduce_large(LT u, LT v)
+  {
+    // This implementation of GCD reduction is based on an
+    // adaptation of existing code from Boost.Multiprecision.
+
+    using local_ushort_type = ST;
+    using local_ularge_type = LT;
+
+    do
+    {
+      if(u > v)
+      {
+        std::swap(u, v);
+      }
+
+      if(u == v)
+      {
+        break;
+      }
+
+      if(v <= local_ularge_type((std::numeric_limits<local_ushort_type>::max)()))
+      {
+        u = integer_gcd_reduce_short(local_ushort_type(v),
+                                     local_ushort_type(u));
+
+        break;
+      }
+
+      v -= u;
+
+      while((std::uint_fast8_t(v) & 1U) == 0U)
+      {
+        v >>= 1;
+      }
+    }
+    while(true);
+
+    return u;
   }
 
   } } } // namespace wide_integer::generic_template::detail
@@ -1928,9 +2002,26 @@
 
   } } // namespace wide_integer::generic_template
 
-  // Implement a variety of number-theoretical tools.
+  // Implement various number-theoretical tools.
 
   namespace wide_integer { namespace generic_template {
+
+  template<const std::size_t Digits2,
+           typename ST,
+           typename LT>
+  void swap(uintwide_t<Digits2, ST, LT>& x,
+            uintwide_t<Digits2, ST, LT>& y)
+  {
+    if(&x != &y)
+    {
+      using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+
+      const local_wide_integer_type tmp(x);
+
+      x = y;
+      y = tmp;
+    }
+  }
 
   template<const std::size_t Digits2,
            typename ST,
@@ -1939,8 +2030,9 @@
   {
     // Calculate the position of the least-significant bit.
 
-    using local_const_iterator_type = typename uintwide_t<Digits2, ST, LT>::const_iterator;
-    using local_value_type          = typename uintwide_t<Digits2, ST, LT>::value_type;
+    using local_wide_integer_type   = uintwide_t<Digits2, ST, LT>;
+    using local_const_iterator_type = typename local_wide_integer_type::const_iterator;
+    using local_value_type          = typename local_wide_integer_type::value_type;
 
     std::size_t bpos = 0U;
 
@@ -1967,8 +2059,9 @@
   {
     // Calculate the position of the most-significant bit.
 
-    using local_const_reverse_iterator_type = typename uintwide_t<Digits2, ST, LT>::const_reverse_iterator;
-    using local_value_type                  = typename uintwide_t<Digits2, ST, LT>::value_type;
+    using local_wide_integer_type           = uintwide_t<Digits2, ST, LT>;
+    using local_const_reverse_iterator_type = typename local_wide_integer_type::const_reverse_iterator;
+    using local_value_type                  = typename local_wide_integer_type::value_type;
 
     std::size_t bpos = 0U;
 
@@ -2193,58 +2286,69 @@
   uintwide_t<Digits2, ST, LT> gcd(const uintwide_t<Digits2, ST, LT>& a,
                                   const uintwide_t<Digits2, ST, LT>& b)
   {
-    // Implement a binary GCD function.
-    // See Algorithm 1.18 BibaryGcd, Sect. 1.6.1
-    // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
-    // Cambridge University Press, 2011.
+    // This implementation of GCD is based on an adaptation
+    // of existing code from Boost.Multiprecision.
 
     using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
+    using local_ushort_type       = typename local_wide_integer_type::ushort_type;
+    using local_ularge_type       = typename local_wide_integer_type::ularge_type;
 
-    static_cast<void>(a.crepresentation().size());
-    static_cast<void>(b.crepresentation().size());
+    // TBD: Handle arguments with value 0.
 
-    return local_wide_integer_type(std::uint_fast8_t(0U));
+    local_wide_integer_type u(a);
+    local_wide_integer_type v(b);
 
-    /*
+    // Let shift := lg K, where K is the greatest power of 2 dividing both u and v.
+    const std::size_t us = lsb(u);
+    const std::size_t vs = lsb(v);
 
-    TBD: Not yet correct.
+    const std::size_t shift = (std::min)(us, vs);
 
-    local_wide_integer_type t      (std::uint_fast8_t(1U));
-    local_wide_integer_type a_local(a);
-    local_wide_integer_type b_local(b);
+    u >>= us;
+    v >>= vs;
 
-    while(   ((a_local.crepresentation().front() % 2U) == 0U)
-          && ((b_local.crepresentation().front() % 2U) == 0U))
+    do
     {
-      t <<= 1;
-      a_local >>= 1;
-      b_local >>= 1;
+      // Now u and v are both odd, so diff(u, v) is even.
+      // Let u = min(u, v), v = diff(u, v) / 2.
+
+      if(u > v)
+      {
+        swap(u, v);
+      }
+
+      if(u == v)
+      {
+        break;
+      }
+
+      if(v <= (std::numeric_limits<local_ularge_type>::max)())
+      {
+        if(v <= (std::numeric_limits<local_ushort_type>::max)())
+        {
+          u = detail::integer_gcd_reduce_short(v.crepresentation().front(),
+                                               u.crepresentation().front());
+        }
+        else
+        {
+          const local_ularge_type i =
+            detail::make_large<local_ushort_type, local_ularge_type>(v.crepresentation()[0U], v.crepresentation()[1U]);
+
+          const local_ularge_type j =
+            detail::make_large<local_ushort_type, local_ularge_type>(u.crepresentation()[0U], u.crepresentation()[1U]);
+
+          u = detail::integer_gcd_reduce_large<local_ushort_type>(i, j);
+        }
+
+        break;
+      }
+
+      v  -= u;
+      v >>= lsb(v);
     }
+    while(true);
 
-    while((a_local.crepresentation().front() % 2U) == 0U)
-    {
-      a_local >>= 1;
-    }
-
-    while((b_local.crepresentation().front() % 2U) == 0U)
-    {
-      b_local >>= 1;
-    }
-
-    while(a_local != b_local)
-    {
-      const local_wide_integer_type abs_ab = ((a_local < b_local) ? (b_local - a_local) : (a_local - b_local));
-      const local_wide_integer_type min_ab = (std::min)(a_local, b_local);
-
-      a_local = abs_ab;
-      b_local = min_ab;
-
-      a_local >>= msb(a_local);
-    }
-
-    return t * a_local;
-
-    */
+    return (u << shift);
   }
 
   } } // namespace wide_integer::generic_template
