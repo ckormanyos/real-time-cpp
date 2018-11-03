@@ -2291,62 +2291,83 @@
     using local_ushort_type       = typename local_wide_integer_type::ushort_type;
     using local_ularge_type       = typename local_wide_integer_type::ularge_type;
 
-    // TBD: Handle arguments with value 0.
-
     local_wide_integer_type u(a);
     local_wide_integer_type v(b);
 
-    // Let shift := lg K, where K is the greatest power of 2 dividing both u and v.
-    const std::size_t us = lsb(u);
-    const std::size_t vs = lsb(v);
+    local_wide_integer_type result;
 
-    const std::size_t shift = (std::min)(us, vs);
-
-    u >>= us;
-    v >>= vs;
-
-    do
+    if(u == v)
     {
-      // Now u and v are both odd, so diff(u, v) is even.
-      // Let u = min(u, v), v = diff(u, v) / 2.
-
-      if(u > v)
-      {
-        swap(u, v);
-      }
-
-      if(u == v)
-      {
-        break;
-      }
-
-      if(v <= (std::numeric_limits<local_ularge_type>::max)())
-      {
-        if(v <= (std::numeric_limits<local_ushort_type>::max)())
-        {
-          u = detail::integer_gcd_reduce_short(v.crepresentation().front(),
-                                               u.crepresentation().front());
-        }
-        else
-        {
-          const local_ularge_type i =
-            detail::make_large<local_ushort_type, local_ularge_type>(v.crepresentation()[0U], v.crepresentation()[1U]);
-
-          const local_ularge_type j =
-            detail::make_large<local_ushort_type, local_ularge_type>(u.crepresentation()[0U], u.crepresentation()[1U]);
-
-          u = detail::integer_gcd_reduce_large<local_ushort_type>(i, j);
-        }
-
-        break;
-      }
-
-      v  -= u;
-      v >>= lsb(v);
+      // This handles (u = v) and also (u = v = 0).
+      result = u;
     }
-    while(true);
+    else if(v == 0U)
+    {
+      // This handles (v = 0) with (u != 0).
+      result = u;
+    }
+    else if(u == 0U)
+    {
+      // This handles (u = 0) with (v != 0).
+      result = v;
+    }
+    else
+    {
+      // Let shift := lg K, where K is the greatest
+      // power of 2 dividing both u and v.
+      const std::size_t us = lsb(u);
+      const std::size_t vs = lsb(v);
 
-    return (u << shift);
+      const std::size_t shift = (std::min)(us, vs);
+
+      u >>= us;
+      v >>= vs;
+
+      do
+      {
+        // Now u and v are both odd, so diff(u, v) is even.
+        // Let u = min(u, v), v = diff(u, v) / 2.
+
+        if(u > v)
+        {
+          swap(u, v);
+        }
+
+        if(u == v)
+        {
+          break;
+        }
+
+        if(v <= (std::numeric_limits<local_ularge_type>::max)())
+        {
+          if(v <= (std::numeric_limits<local_ushort_type>::max)())
+          {
+            u = detail::integer_gcd_reduce_short(v.crepresentation().front(),
+                                                 u.crepresentation().front());
+          }
+          else
+          {
+            const local_ularge_type i =
+              detail::make_large<local_ushort_type, local_ularge_type>(v.crepresentation()[0U], v.crepresentation()[1U]);
+
+            const local_ularge_type j =
+              detail::make_large<local_ushort_type, local_ularge_type>(u.crepresentation()[0U], u.crepresentation()[1U]);
+
+            u = detail::integer_gcd_reduce_large<local_ushort_type>(i, j);
+          }
+
+          break;
+        }
+
+        v  -= u;
+        v >>= lsb(v);
+      }
+      while(true);
+
+      result = (u << shift);
+    }
+
+    return result;
   }
 
   } } // namespace wide_integer::generic_template
