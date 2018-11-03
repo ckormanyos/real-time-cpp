@@ -559,8 +559,7 @@
                typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
                                         && (std::is_integral   <UnsignedIntegralType>::value == true)
                                         && (std::is_unsigned   <UnsignedIntegralType>::value == true)
-                                        && (   std::numeric_limits<UnsignedIntegralType>::digits
-                                            <= std::numeric_limits<ushort_type         >::digits))>::type* = nullptr)
+                                        && (std::numeric_limits<UnsignedIntegralType>::digits <= std::numeric_limits<ushort_type>::digits))>::type* = nullptr)
     {
       values[0U] = ushort_type(v);
 
@@ -575,8 +574,7 @@
                typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
                                         && (std::is_integral   <UnsignedIntegralType>::value == true)
                                         && (std::is_unsigned   <UnsignedIntegralType>::value == true)
-                                        && (  std::numeric_limits<ushort_type         >::digits
-                                            < std::numeric_limits<UnsignedIntegralType>::digits))>::type* = nullptr)
+                                        && (std::numeric_limits<UnsignedIntegralType>::digits > std::numeric_limits<ushort_type>::digits))>::type* = nullptr)
     {
       std::uint_fast32_t right_shift_amount_v = 0U;
       std::uint_fast8_t  index_u              = 0U;
@@ -692,7 +690,7 @@
              typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInUnsignedIntegralType>::value == true)
                                                  && (std::is_integral   <UnknownBuiltInUnsignedIntegralType>::value == true)
                                                  && (std::is_unsigned   <UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::numeric_limits<ushort_type>::digits <  std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits)
+                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits >  std::numeric_limits<ushort_type>::digits)
                                                  && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits <= std::numeric_limits<ularge_type>::digits))>::type>
     explicit operator ularge_type() const
     {
@@ -701,8 +699,8 @@
 
     // Implement cast operators that cast to built-in
     // signed integral types having less width than *this.
-    operator typename detail::sint_type_helper<ushort_type>::exact_signed_type() const { return typename detail::sint_type_helper<ushort_type>::exact_signed_type(values[0U]); }
-    operator typename detail::sint_type_helper<ularge_type>::exact_signed_type() const { return typename detail::sint_type_helper<ularge_type>::exact_signed_type(detail::make_large<ushort_type, ularge_type>(values[0U], values[1U])); }
+    explicit operator typename detail::sint_type_helper<ushort_type>::exact_signed_type() const { return typename detail::sint_type_helper<ushort_type>::exact_signed_type(values[0U]); }
+    explicit operator typename detail::sint_type_helper<ularge_type>::exact_signed_type() const { return typename detail::sint_type_helper<ularge_type>::exact_signed_type(detail::make_large<ushort_type, ularge_type>(values[0U], values[1U])); }
 
     // Implement the cast operator that casts to the double-width type.
     template<typename UnknownUnsignedWideIntegralType = double_width_type,
@@ -729,7 +727,7 @@
     // constructor above for this conversion.
     template<typename UnknownUnsignedWideIntegralType = half_width_type,
              typename = typename std::enable_if<std::is_same<UnknownUnsignedWideIntegralType, half_width_type>::value == true>::type>
-    operator half_width_type() const = delete;
+    explicit operator half_width_type() const = delete;
 
     // Implement the Boolean cast operator that tests for zero/non-zero.
     // This cast operator returns true if the value of *this is non-zero.
