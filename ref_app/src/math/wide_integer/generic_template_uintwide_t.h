@@ -275,6 +275,13 @@
 
   namespace wide_integer { namespace generic_template { namespace detail {
 
+  // Helper templates for selecting integral types.
+  template<const std::size_t BitCount> struct int_type_helper      { using exact_unsigned_type = std::uintmax_t; using exact_signed_type = std::intmax_t; };
+  template<>                           struct int_type_helper< 8U> { using exact_unsigned_type = std::uint8_t;   using exact_signed_type = std::int8_t;   };
+  template<>                           struct int_type_helper<16U> { using exact_unsigned_type = std::uint16_t;  using exact_signed_type = std::int16_t;  };
+  template<>                           struct int_type_helper<32U> { using exact_unsigned_type = std::uint32_t;  using exact_signed_type = std::int32_t;  };
+  template<>                           struct int_type_helper<64U> { using exact_unsigned_type = std::uint64_t;  using exact_signed_type = std::int64_t;  };
+
   // A local implementation of string copy.
   inline char* strcpy_unsafe(char* dst, const char* src)
   {
@@ -308,7 +315,7 @@
                    &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
                    &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
                    && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
-                   "Error: Please check the characteristics of ushort_type and ularge_type");
+                   "Error: Please check the characteristics of the template parameters ST and LT");
 
     return static_cast<local_ushort_type>(u);
   }
@@ -328,7 +335,7 @@
                    &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
                    &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
                    && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
-                   "Error: Please check the characteristics of ushort_type and ularge_type");
+                   "Error: Please check the characteristics of the template parameters ST and LT");
 
     return static_cast<local_ushort_type>(u >> std::numeric_limits<local_ushort_type>::digits);
   }
@@ -348,7 +355,7 @@
                    &&  (std::numeric_limits<local_ushort_type>::is_signed  == false)
                    &&  (std::numeric_limits<local_ularge_type>::is_signed  == false)
                    && ((std::numeric_limits<local_ushort_type>::digits * 2) == std::numeric_limits<local_ularge_type>::digits)),
-                   "Error: Please check the characteristics of ushort_type and ularge_type");
+                   "Error: Please check the characteristics of the template parameters ST and LT");
 
     return local_ularge_type(local_ularge_type(static_cast<local_ularge_type>(hi) << std::numeric_limits<ST>::digits) | lo);
   }
@@ -359,18 +366,6 @@
     static const bool conditional_value =
       ((Digits2 != 0U) && ((Digits2 & (Digits2 - 1U)) == 0U));
   };
-
-  template<typename SignedIntegralType>   struct uint_type_helper                { using exact_unsigned_type = std::uintmax_t; };
-  template<>                              struct uint_type_helper<std::int8_t>   { using exact_unsigned_type = std::uint8_t; };
-  template<>                              struct uint_type_helper<std::int16_t>  { using exact_unsigned_type = std::uint16_t; };
-  template<>                              struct uint_type_helper<std::int32_t>  { using exact_unsigned_type = std::uint32_t; };
-  template<>                              struct uint_type_helper<std::int64_t>  { using exact_unsigned_type = std::uint64_t; };
-
-  template<typename UnsignedIntegralType> struct sint_type_helper                { using exact_signed_type   = std::intmax_t; };
-  template<>                              struct sint_type_helper<std::uint8_t>  { using exact_signed_type   = std::int8_t; };
-  template<>                              struct sint_type_helper<std::uint16_t> { using exact_signed_type   = std::int16_t; };
-  template<>                              struct sint_type_helper<std::uint32_t> { using exact_signed_type   = std::int32_t; };
-  template<>                              struct sint_type_helper<std::uint64_t> { using exact_signed_type   = std::int64_t; };
 
   template<typename UnsignedIntegralType>
   std::size_t lsb_helper(const UnsignedIntegralType& x)
@@ -428,7 +423,7 @@
     // This implementation of GCD reduction is based on an
     // adaptation of existing code from Boost.Multiprecision.
 
-    do
+    for(;;)
     {
       if(u > v)
       {
@@ -443,7 +438,6 @@
       v  -= u;
       v >>= detail::lsb_helper(v);
     }
-    while(true);
 
     return u;
   }
@@ -458,7 +452,7 @@
     using local_ushort_type = ST;
     using local_ularge_type = LT;
 
-    do
+    for(;;)
     {
       if(u > v)
       {
@@ -485,7 +479,6 @@
         v >>= 1;
       }
     }
-    while(true);
 
     return u;
   }
@@ -514,7 +507,7 @@
                    &&  (std::numeric_limits<ushort_type>::is_signed  == false)
                    &&  (std::numeric_limits<ularge_type>::is_signed  == false)
                    && ((std::numeric_limits<ushort_type>::digits * 2) == std::numeric_limits<ularge_type>::digits)),
-                   "Error: Please check the characteristics of ushort_type and ularge_type");
+                   "Error: Please check the characteristics of the template parameters ST and LT");
 
     // Helper constants for the digit characteristics.
     static const std::size_t my_digits   = Digits2;
@@ -539,12 +532,6 @@
     // Types that have half or double the width of *this.
     using half_width_type   = uintwide_t<my_digits / 2U, ST, LT>;
     using double_width_type = uintwide_t<my_digits * 2U, ST, LT>;
-
-    // Define the maximum buffer sizes for extracting
-    // octal, decimal and hexadecimal string representations.
-    static const std::size_t wr_string_max_buffer_size_oct = (16U + (my_digits / 3U)) + std::size_t(((my_digits % 3U) != 0U) ? 1U : 0U) + 1U;
-    static const std::size_t wr_string_max_buffer_size_hex = (32U + (my_digits / 4U)) + 1U;
-    static const std::size_t wr_string_max_buffer_size_dec = (20U + std::size_t((std::uintmax_t(my_digits) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U;
 
     // Default destructor.
     ~uintwide_t() = default;
@@ -596,13 +583,13 @@
                                         && (std::is_integral   <SignedIntegralType>::value == true)
                                         && (std::is_signed     <SignedIntegralType>::value == true))>::type* = nullptr)
     {
-      const bool is_neg = (v < SignedIntegralType(0));
+      using local_signed_integral_type   = SignedIntegralType;
+      using local_unsigned_integral_type = typename detail::int_type_helper<std::numeric_limits<local_signed_integral_type>::digits + 1>::exact_unsigned_type;
 
-      using local_unsigned_type =
-        typename detail::uint_type_helper<SignedIntegralType>::exact_unsigned_type;
+      const bool is_neg = (v < local_signed_integral_type(0));
 
-      const local_unsigned_type u =
-        ((is_neg == false) ? local_unsigned_type(v) : local_unsigned_type(-v));
+      const local_unsigned_integral_type u =
+        ((is_neg == false) ? local_unsigned_integral_type(v) : local_unsigned_integral_type(-v));
 
       operator=(uintwide_t(u));
 
@@ -672,35 +659,50 @@
       return *this;
     }
 
-    // Implement a cast operator that casts to ushort_type
-    // or any built-in unsigned integral type that is less wide
-    // than ushort_type.
-    template<typename UnknownBuiltInUnsignedIntegralType,
-             typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::is_integral   <UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::is_unsigned   <UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits <= std::numeric_limits<ushort_type>::digits))>::type>
-    explicit operator UnknownBuiltInUnsignedIntegralType() const
+    // Implement a cast operator that casts to any
+    // built-in signed or unsigned integral type.
+    template<typename UnknownBuiltInIntegralType,
+             typename = typename std::enable_if<
+                          (   (std::is_fundamental<UnknownBuiltInIntegralType>::value == true)
+                           && (std::is_integral   <UnknownBuiltInIntegralType>::value == true))>::type>
+    explicit operator UnknownBuiltInIntegralType() const
     {
-      return UnknownBuiltInUnsignedIntegralType(values[0U]);
-    }
+      using local_unknown_integral_type  = UnknownBuiltInIntegralType;
 
-    // Implement a cast operator that casts to ularge_type.
-    template<typename UnknownBuiltInUnsignedIntegralType,
-             typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::is_integral   <UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::is_unsigned   <UnknownBuiltInUnsignedIntegralType>::value == true)
-                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits >  std::numeric_limits<ushort_type>::digits)
-                                                 && (std::numeric_limits<UnknownBuiltInUnsignedIntegralType>::digits <= std::numeric_limits<ularge_type>::digits))>::type>
-    explicit operator ularge_type() const
-    {
-      return detail::make_large<ushort_type, ularge_type>(values[0U], values[1U]);
-    }
+      using local_unsigned_integral_type =
+        typename detail::int_type_helper<
+          std::numeric_limits<local_unknown_integral_type>::is_signed
+            ? std::numeric_limits<local_unknown_integral_type>::digits + 1
+            : std::numeric_limits<local_unknown_integral_type>::digits + 0>::exact_unsigned_type;
 
-    // Implement cast operators that cast to built-in
-    // signed integral types having less width than *this.
-    explicit operator typename detail::sint_type_helper<ushort_type>::exact_signed_type() const { return typename detail::sint_type_helper<ushort_type>::exact_signed_type(values[0U]); }
-    explicit operator typename detail::sint_type_helper<ularge_type>::exact_signed_type() const { return typename detail::sint_type_helper<ularge_type>::exact_signed_type(detail::make_large<ushort_type, ularge_type>(values[0U], values[1U])); }
+      local_unsigned_integral_type cast_result;
+
+      const std::uint_fast8_t digits_ratio = 
+        std::uint_fast8_t(  std::numeric_limits<local_unsigned_integral_type>::digits
+                          / std::numeric_limits<value_type>::digits);
+
+      switch(digits_ratio)
+      {
+        case 0:
+        case 1:
+          cast_result = static_cast<local_unsigned_integral_type>(values[0U]);
+          break;
+
+        default:
+          cast_result = 0U;
+
+          for(std::uint_fast8_t i = 0U; i < digits_ratio; ++i)
+          {
+            const local_unsigned_integral_type u =
+              local_unsigned_integral_type(values[i]) << (std::numeric_limits<value_type>::digits * int(i));
+
+            cast_result |= u;
+          }
+          break;
+      }
+
+      return local_unknown_integral_type(cast_result);
+    }
 
     // Implement the cast operator that casts to the double-width type.
     template<typename UnknownUnsignedWideIntegralType = double_width_type,
@@ -726,7 +728,9 @@
     // it is a narrowing conversion. There is an explicit
     // constructor above for this conversion.
     template<typename UnknownUnsignedWideIntegralType = half_width_type,
-             typename = typename std::enable_if<std::is_same<UnknownUnsignedWideIntegralType, half_width_type>::value == true>::type>
+             typename = typename std::enable_if<
+                          std::is_same<UnknownUnsignedWideIntegralType,
+                                       half_width_type>::value == true>::type>
     explicit operator half_width_type() const = delete;
 
     // Implement the Boolean cast operator that tests for zero/non-zero.
@@ -789,14 +793,14 @@
     uintwide_t& operator*=(const uintwide_t& other)
     {
       // Unary multiplication function.
-      std::array<ushort_type, number_of_limbs> w = {{ 0U }};
+      std::array<ushort_type, number_of_limbs> result = {{ 0U }};
 
       multiplication_loop_schoolbook(values.data(),
                                      other.values.data(),
-                                     w.data(),
-                                     w.size());
+                                     result.data(),
+                                     result.size());
 
-      values = w;
+      values = result;
 
       return *this;
     }
@@ -804,7 +808,7 @@
     uintwide_t& operator/=(const uintwide_t& other)
     {
       // Unary division function.
-      quotient_and_remainder_knuth(other);
+      quotient_and_remainder_knuth(other, nullptr);
 
       return *this;
     }
@@ -816,9 +820,7 @@
 
       quotient_and_remainder_knuth(other, &remainder);
 
-      std::copy(remainder.values.cbegin(),
-                remainder.values.cend(),
-                values.begin());
+      values = remainder.values;
 
       return *this;
     }
@@ -833,6 +835,7 @@
 
     uintwide_t& operator~()
     {
+      // Bitwise NOT.
       bitwise_not();
 
       return *this;
@@ -987,6 +990,12 @@
     {
       return uintwide_t(std::uint8_t(0U));
     }
+
+    // Define the maximum buffer sizes for extracting
+    // octal, decimal and hexadecimal string representations.
+    static const std::size_t wr_string_max_buffer_size_oct = (16U + (my_digits / 3U)) + std::size_t(((my_digits % 3U) != 0U) ? 1U : 0U) + 1U;
+    static const std::size_t wr_string_max_buffer_size_hex = (32U + (my_digits / 4U)) + 1U;
+    static const std::size_t wr_string_max_buffer_size_dec = (20U + std::size_t((std::uintmax_t(my_digits) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U;
 
     // Write string function.
     bool wr_string(      char*             str_result,
@@ -1315,7 +1324,7 @@
       }
     }
 
-    void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder = nullptr)
+    void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder)
     {
       // TBD: Consider cleaning up the unclear flow-control
       // caused by numerous return statements in this subroutine.
@@ -1680,9 +1689,15 @@
       // Implement pre-increment.
       std::size_t i = 0U;
 
-      for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i) { ; }
+      for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i)
+      {
+        ;
+      }
 
-      if(i == (values.size() - 1U)) { ++values[i]; }
+      if(i == (values.size() - 1U))
+      {
+        ++values[i];
+      }
     }
 
     void predecrement()
@@ -1690,9 +1705,15 @@
       // Implement pre-decrement.
       std::size_t i = 0U;
 
-      for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i) { ; }
+      for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i)
+      {
+        ;
+      }
 
-      if(i == (values.size() - 1U)) { --values[i]; }
+      if(i == (values.size() - 1U))
+      {
+        --values[i];
+      }
     }
 
     void negate()
@@ -1706,7 +1727,10 @@
     {
       return std::all_of(values.cbegin(),
                          values.cend(),
-                         [](const ushort_type& u) -> bool { return (u == ushort_type(0U)); });
+                         [](const ushort_type& u) -> bool
+                         {
+                           return (u == ushort_type(0U));
+                         });
     }
   };
 
@@ -1720,31 +1744,34 @@
   using uint4096_t = uintwide_t<4096U>;
   using uint8192_t = uintwide_t<8192U>;
 
-  // Prepare a base class for numeric_limits<> support.
+  // Insert a base class for numeric_limits<> support.
+  // This class inherits from std::numeric_limits<unsigned int>
+  // in order to obtian the generalized limits of an unsigned type.
+
   template<typename WideUnsignedIntegerType>
-  class numeric_limits_base : public std::numeric_limits<unsigned int>
+  class numeric_limits_uintwide_t_base : public std::numeric_limits<unsigned int>
   {
   private:
-    using local_uintwide_type = WideUnsignedIntegerType;
+    using local_wide_integer_type = WideUnsignedIntegerType;
 
   public:
-    static const int digits   = static_cast<int>(local_uintwide_type::my_digits);
-    static const int digits10 = static_cast<int>(local_uintwide_type::my_digits10);
+    static const int digits   = static_cast<int>(local_wide_integer_type::my_digits);
+    static const int digits10 = static_cast<int>(local_wide_integer_type::my_digits10);
 
-    static local_uintwide_type (max)() { return local_uintwide_type::limits_helper_max(); }
-    static local_uintwide_type (min)() { return local_uintwide_type::limits_helper_min(); }
+    static local_wide_integer_type (max)() { return local_wide_integer_type::limits_helper_max(); }
+    static local_wide_integer_type (min)() { return local_wide_integer_type::limits_helper_min(); }
   };
 
   } } // namespace wide_integer::generic_template
 
   namespace std
   {
-    // Specialization of std::numeric_limits<>.
+    // Implement a specialization of std::numeric_limits<uintwide_t<...>>.
     template<const std::size_t Digits2,
              typename ST,
              typename LT>
     class numeric_limits<wide_integer::generic_template::uintwide_t<Digits2, ST, LT>>
-      : public wide_integer::generic_template::numeric_limits_base<wide_integer::generic_template::uintwide_t<Digits2, ST, LT>> { };
+      : public wide_integer::generic_template::numeric_limits_uintwide_t_base<wide_integer::generic_template::uintwide_t<Digits2, ST, LT>> { };
   }
 
   namespace wide_integer { namespace generic_template {
@@ -2155,55 +2182,71 @@
     using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
     using local_value_type        = typename local_wide_integer_type::value_type;
 
-    const bool argument_is_zero = std::all_of(m.crepresentation().cbegin(),
-                                              m.crepresentation().cend(),
-                                              [](const local_value_type& a) -> bool
-                                              {
-                                                return (a == 0U);
-                                              });
-
     local_wide_integer_type s;
 
-    if(argument_is_zero)
+    if(k < 2U)
     {
-      s = local_wide_integer_type(std::uint_fast8_t(0U));
+      s = m;
+    }
+    else if(k == 2U)
+    {
+      s = sqrt(m);
     }
     else
     {
-      // Obtain the initial guess via algorithms
-      // involving the position of the msb.
-      const std::size_t msb_pos = msb(m);
+      const bool argument_is_zero = std::all_of(m.crepresentation().cbegin(),
+                                                m.crepresentation().cend(),
+                                                [](const local_value_type& a) -> bool
+                                                {
+                                                  return (a == 0U);
+                                                });
 
-      // Obtain the initial value.
-      const std::size_t msb_pos_mod_k = msb_pos % k;
-
-      const std::size_t left_shift_amount =
-        ((msb_pos_mod_k == 0U) ? 1U + std::size_t((msb_pos +                 0U ) / k)
-                               : 1U + std::size_t((msb_pos + (k - msb_pos_mod_k)) / k));
-
-      local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
-
-      // Perform the iteration for the k'th root.
-      // See Algorithm 1.14 RootInt, Sect. 1.5.2
-      // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
-      // Cambridge University Press, 2011.
-
-      for(std::size_t i = 0U; i < 64U; ++i)
+      if(argument_is_zero)
       {
-        s = u;
+        s = local_wide_integer_type(std::uint_fast8_t(0U));
+      }
+      else
+      {
+        // Obtain the initial guess via algorithms
+        // involving the position of the msb.
+        const std::size_t msb_pos = msb(m);
 
-        local_wide_integer_type m_over_s_pow_k_minus_one = m;
+        // Obtain the initial value.
+        const std::size_t msb_pos_mod_k = msb_pos % k;
 
-        for(std::size_t j = 0U; j < k - 1U; ++j)
+        const std::size_t left_shift_amount =
+          ((msb_pos_mod_k == 0U) ? 1U + std::size_t((msb_pos +                 0U ) / k)
+                                 : 1U + std::size_t((msb_pos + (k - msb_pos_mod_k)) / k));
+
+        local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
+
+        // Perform the iteration for the k'th root.
+        // See Algorithm 1.14 RootInt, Sect. 1.5.2
+        // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+        // Cambridge University Press, 2011.
+
+        const local_wide_integer_type k_minus_one(k - 1U);
+
+        for(std::size_t i = 0U; i < 64U; ++i)
         {
-          m_over_s_pow_k_minus_one /= s;
-        }
+          s = u;
 
-        u = (((k - 1U) * s) + m_over_s_pow_k_minus_one) / k;
+          local_wide_integer_type m_over_s_pow_k_minus_one = m;
 
-        if(u >= s)
-        {
-          break;
+          for(std::size_t j = 0U; j < k - 1U; ++j)
+          {
+            // Use a loop here to divide by s^(k - 1) because
+            // without a loop, s^(k - 1) is likely to overflow.
+
+            m_over_s_pow_k_minus_one /= s;
+          }
+
+          u = ((s * k_minus_one) + m_over_s_pow_k_minus_one) / k;
+
+          if(u >= s)
+          {
+            break;
+          }
         }
       }
     }
@@ -2284,7 +2327,7 @@
   uintwide_t<Digits2, ST, LT> gcd(const uintwide_t<Digits2, ST, LT>& a,
                                   const uintwide_t<Digits2, ST, LT>& b)
   {
-    // This implementation of GCD is based on an adaptation
+    // This implementation of GCD is an adaptation
     // of existing code from Boost.Multiprecision.
 
     using local_wide_integer_type = uintwide_t<Digits2, ST, LT>;
@@ -2315,15 +2358,20 @@
     {
       // Let shift := lg K, where K is the greatest
       // power of 2 dividing both u and v.
-      const std::size_t us = lsb(u);
-      const std::size_t vs = lsb(v);
 
-      const std::size_t shift = (std::min)(us, vs);
+      std::size_t left_shift_amount;
 
-      u >>= us;
-      v >>= vs;
+      {
+        const std::size_t u_shift = lsb(u);
+        const std::size_t v_shift = lsb(v);
 
-      do
+        left_shift_amount = (std::min)(u_shift, v_shift);
+
+        u >>= u_shift;
+        v >>= v_shift;
+      }
+
+      for(;;)
       {
         // Now u and v are both odd, so diff(u, v) is even.
         // Let u = min(u, v), v = diff(u, v) / 2.
@@ -2342,18 +2390,24 @@
         {
           if(v <= (std::numeric_limits<local_ushort_type>::max)())
           {
-            u = detail::integer_gcd_reduce_short(v.crepresentation().front(),
-                                                 u.crepresentation().front());
+            u = detail::integer_gcd_reduce_short(v.crepresentation()[0U],
+                                                 u.crepresentation()[0U]);
           }
           else
           {
-            const local_ularge_type i =
-              detail::make_large<local_ushort_type, local_ularge_type>(v.crepresentation()[0U], v.crepresentation()[1U]);
+            const local_ularge_type v_large =
+              detail::make_large<local_ushort_type,
+                                 local_ularge_type>(v.crepresentation()[0U],
+                                                    v.crepresentation()[1U]);
 
-            const local_ularge_type j =
-              detail::make_large<local_ushort_type, local_ularge_type>(u.crepresentation()[0U], u.crepresentation()[1U]);
+            const local_ularge_type u_large =
+              detail::make_large<local_ushort_type,
+                                 local_ularge_type>(u.crepresentation()[0U],
+                                                    u.crepresentation()[1U]);
 
-            u = detail::integer_gcd_reduce_large<local_ushort_type>(i, j);
+            u = detail::integer_gcd_reduce_large<local_ushort_type,
+                                                 local_ularge_type>(v_large,
+                                                                    u_large);
           }
 
           break;
@@ -2362,9 +2416,8 @@
         v  -= u;
         v >>= lsb(v);
       }
-      while(true);
 
-      result = (u << shift);
+      result = (u << left_shift_amount);
     }
 
     return result;
