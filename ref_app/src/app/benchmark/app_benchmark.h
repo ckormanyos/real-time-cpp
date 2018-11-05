@@ -19,13 +19,12 @@
 
   namespace app { namespace benchmark {
 
-  bool run_complex         ();
-  bool run_crc             ();
-  bool run_filter          ();
-  bool run_fixed_point     ();
-  bool run_float           ();
-  bool run_wide_integer_mul();
-  bool run_wide_integer_div();
+  bool run_complex     ();
+  bool run_crc         ();
+  bool run_filter      ();
+  bool run_fixed_point ();
+  bool run_float       ();
+  bool run_wide_integer();
 
   } } // namespace app:::benchmark
 

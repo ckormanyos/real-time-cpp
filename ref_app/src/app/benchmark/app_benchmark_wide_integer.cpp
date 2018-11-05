@@ -35,28 +35,40 @@ namespace
 
   wide_integer_type c;
   wide_integer_type d;
+
+  bool run_wide_integer_mul()
+  {
+    static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
+                  "Error: Incorrect digit count for this example");
+
+    c = (a * b);
+
+    const bool result_is_ok = (c == a_mul_b);
+
+    return result_is_ok;
+  }
+
+  bool run_wide_integer_div()
+  {
+    static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
+                  "Error: Incorrect digit count for this example");
+
+    d = (a / b);
+
+    const bool result_is_ok = (d == a_div_b);
+
+    return result_is_ok;
+  }
 }
 
-bool app::benchmark::run_wide_integer_mul()
+bool app::benchmark::run_wide_integer()
 {
-  static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
-                "Error: Incorrect digit count for this example");
+  static bool toggle_test_case = true;
 
-  c = (a * b);
+  const bool result_is_ok = (toggle_test_case ? run_wide_integer_mul()
+                                              : run_wide_integer_div());
 
-  const bool result_is_ok = (c == a_mul_b);
-
-  return result_is_ok;
-}
-
-bool app::benchmark::run_wide_integer_div()
-{
-  static_assert(std::numeric_limits<wide_integer_type>::digits == 256,
-                "Error: Incorrect digit count for this example");
-
-  d = (a / b);
-
-  const bool result_is_ok = (d == a_div_b);
+  toggle_test_case = (!toggle_test_case);
 
   return result_is_ok;
 }

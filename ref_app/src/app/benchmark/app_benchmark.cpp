@@ -38,11 +38,9 @@ void app::benchmark::task_init()
 
 void app::benchmark::task_func()
 {
-  bool result_is_ok;
-
   #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
 
-  result_is_ok = true;
+  const bool result_is_ok = true;
 
   #else
 
@@ -51,32 +49,27 @@ void app::benchmark::task_func()
 
     #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
 
-    result_is_ok = app::benchmark::run_complex();
+    const bool result_is_ok = app::benchmark::run_complex();
 
     #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
 
-    result_is_ok = app::benchmark::run_crc();
+    const bool result_is_ok = app::benchmark::run_crc();
 
     #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
 
-    result_is_ok = app::benchmark::run_filter();
+    const bool result_is_ok = app::benchmark::run_filter();
 
     #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
 
-    result_is_ok = app::benchmark::run_fixed_point();
+    const bool result_is_ok = app::benchmark::run_fixed_point();
 
     #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
 
-    result_is_ok = app::benchmark::run_float();
+    const bool result_is_ok = app::benchmark::run_float();
 
     #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
 
-    static bool toggle_test_case = true;
-
-    result_is_ok = (toggle_test_case ? app::benchmark::run_wide_integer_mul()
-                                     : app::benchmark::run_wide_integer_div());
-
-    toggle_test_case = (!toggle_test_case);
+    const bool result_is_ok = app::benchmark::run_wide_integer();
 
     #endif
 
