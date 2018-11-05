@@ -1268,7 +1268,7 @@
             {
               operator*=(10U);
 
-              values[0U] += c;
+              operator+=(c);
             }
           }
           else if(base == 16U)
