@@ -6,12 +6,13 @@
 
 namespace
 {
-  using wide_integer_type = wide_integer::generic_template::uint256_t;
+  using wide_integer_type =
+    wide_integer::generic_template::uintwide_t<256U, std::uint16_t>;
 
   // Note: Some of the following comments use the Wolfram Language(TM).
   //
   // Create two pseudo-random 256-bit unsigned integers.
-  //   Table[IntegerString[RandomInteger[{1, (2^256) - 1}], 16], 2]
+  //   Table[IntegerString[RandomInteger[(2^256) - 1], 16], 2]
   //   {
   //     F4DF741DE58BCB2F37F18372026EF9CBCFC456CB80AF54D53BDEED78410065DE,
   //     166D63E0202B3D90ECCEAA046341AB504658F55B974A7FD63733ECF89DD0DF75

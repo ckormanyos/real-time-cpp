@@ -11,7 +11,7 @@
 GCC_VERSION   = 7.3.1
 GCC_TARGET    = arm-none-eabi
 
-TGT_CFLAGS    = -O2                                            \
+TGT_CFLAGS    = -Os                                            \
                 -finline-functions                             \
                 -finline-limit=32                              \
                 -mcpu=cortex-m3                                \
