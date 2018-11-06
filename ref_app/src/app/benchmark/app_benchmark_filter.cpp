@@ -6,10 +6,11 @@
 namespace
 {
   using filter_type = fir_order_n<17U, 64U, std::int16_t, std::int32_t>;
+  using sample_type = typename filter_type::sample_type;
 }
 
-extern       filter_type  f;
-extern const std::int16_t sample;
+extern       filter_type f;
+extern const sample_type sample;
 
 bool app::benchmark::run_filter()
 {
@@ -40,5 +41,5 @@ bool app::benchmark::run_filter()
   return result_is_ok;
 }
 
-      filter_type  f;
-const std::int16_t sample(100);
+      filter_type f;
+const sample_type sample(100);

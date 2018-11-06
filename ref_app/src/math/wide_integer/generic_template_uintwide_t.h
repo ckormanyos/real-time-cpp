@@ -196,13 +196,17 @@
            typename traits_type,
            const std::size_t Digits2,
            typename LimbType>
-  std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& out, const uintwide_t<Digits2, LimbType>& x);
+  std::basic_ostream<char_type,
+                     traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& out,
+                                              const uintwide_t<Digits2, LimbType>& x);
 
   template<typename char_type,
            typename traits_type,
            const std::size_t Digits2,
            typename LimbType>
-  std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& in, uintwide_t<Digits2, LimbType>& x);
+  std::basic_istream<char_type,
+                     traits_type>& operator>>(std::basic_istream<char_type, traits_type>& in,
+                                              uintwide_t<Digits2, LimbType>& x);
 
   #endif
 
@@ -264,13 +268,21 @@
   namespace wide_integer { namespace generic_template { namespace detail {
 
   // Helper templates for selecting integral types.
-  template<const std::size_t BitCount> struct int_type_helper      { using exact_unsigned_type = std::uintmax_t; using exact_signed_type = std::intmax_t; };
-  template<>                           struct int_type_helper< 8U> { using exact_unsigned_type = std::uint8_t;   using exact_signed_type = std::int8_t;   };
-  template<>                           struct int_type_helper<16U> { using exact_unsigned_type = std::uint16_t;  using exact_signed_type = std::int16_t;  };
-  template<>                           struct int_type_helper<32U> { using exact_unsigned_type = std::uint32_t;  using exact_signed_type = std::int32_t;  };
-  template<>                           struct int_type_helper<64U> { using exact_unsigned_type = std::uint64_t;  using exact_signed_type = std::int64_t;  };
+  template<const std::size_t BitCount> struct int_type_helper
+  {
+    static_assert(BitCount <= 64,
+                  "Error: The design of int_type_helper is not intended for BitCount exceeding 64");
 
-  // A local implementation of string copy.
+    using exact_unsigned_type = std::uintmax_t;
+    using exact_signed_type   = std::intmax_t;
+  };
+
+  template<> struct int_type_helper< 8U> { using exact_unsigned_type = std::uint8_t;   using exact_signed_type = std::int8_t;   };
+  template<> struct int_type_helper<16U> { using exact_unsigned_type = std::uint16_t;  using exact_signed_type = std::int16_t;  };
+  template<> struct int_type_helper<32U> { using exact_unsigned_type = std::uint32_t;  using exact_signed_type = std::int32_t;  };
+  template<> struct int_type_helper<64U> { using exact_unsigned_type = std::uint64_t;  using exact_signed_type = std::int64_t;  };
+
+  // Use a local implementation of string copy.
   inline char* strcpy_unsafe(char* dst, const char* src)
   {
     while((*dst++ = *src++) != char('\0')) { ; }
@@ -278,7 +290,7 @@
     return dst;
   }
 
-  // A local implementation of string length.
+  // Use a local implementation of string length.
   inline std::size_t strlen_unsafe(const char* p_str)
   {
     const char* p_str_copy;
@@ -723,20 +735,12 @@
                                        half_width_type>::value == true>::type>
     operator half_width_type() const = delete;
 
-    // Implement the Boolean cast operator that tests for zero/non-zero.
-    // This cast operator returns true if the value of *this is non-zero.
-    operator bool() const
-    {
-      return (is_zero() == false);
-    }
-
     // Provide a user interface to the internal data representation.
           representation_type&  representation()       { return values; }
     const representation_type&  representation() const { return values; }
     const representation_type& crepresentation() const { return values; }
 
     // Unary operators: not, plus and minus.
-    bool        operator!() const { return (is_zero() == true); }
     uintwide_t& operator+() const { return *this; }
     uintwide_t  operator-() const { uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
@@ -1601,7 +1605,13 @@
                 }
 
                 // A potential test case for uint512_t is:
-                //   QuotientRemainder[698937339790347543053797400564366118744312537138445607919548628175822115805812983955794321304304417541511379093392776018867245622409026835324102460829431,100041341335406267530943777943625254875702684549707174207105689918734693139781]
+                //   QuotientRemainder
+                //     [698937339790347543053797400564366118744312537138445607919548628175822115805812983955794321304304417541511379093392776018867245622409026835324102460829431,
+                //      100041341335406267530943777943625254875702684549707174207105689918734693139781]
+                //
+                //     {6986485091668619828842978360442127600954041171641881730123945989288792389271,
+                //      100041341335406267530943777943625254875702684549707174207105689918734693139780}
+
                 --values[local_uint_index_type(m - j)];
               }
             }
@@ -1672,7 +1682,7 @@
     {
       for(std::size_t i = 0U; i < number_of_limbs; ++i)
       {
-        values[i] = ushort_type(~values[i]);
+        values[i] = value_type(~values[i]);
       }
     }
 
@@ -1681,7 +1691,7 @@
       // Implement pre-increment.
       std::size_t i = 0U;
 
-      for( ; (i < (values.size() - 1U)) && (++values[i] == ushort_type(0U)); ++i)
+      for( ; (i < (values.size() - 1U)) && (++values[i] == value_type(0U)); ++i)
       {
         ;
       }
@@ -1697,7 +1707,7 @@
       // Implement pre-decrement.
       std::size_t i = 0U;
 
-      for( ; (i < (values.size() - 1U)) && (values[i]-- == ushort_type(0U)); ++i)
+      for( ; (i < (values.size() - 1U)) && (values[i]-- == value_type(0U)); ++i)
       {
         ;
       }
@@ -1719,9 +1729,9 @@
     {
       return std::all_of(values.cbegin(),
                          values.cend(),
-                         [](const ushort_type& u) -> bool
+                         [](const value_type& u) -> bool
                          {
-                           return (u == ushort_type(0U));
+                           return (u == value_type(0U));
                          });
     }
   };
@@ -1738,7 +1748,7 @@
 
   // Insert a base class for numeric_limits<> support.
   // This class inherits from std::numeric_limits<unsigned int>
-  // in order to obtian the generalized limits of an unsigned type.
+  // in order to provide limits for a non-specific unsigned type.
 
   template<typename WideUnsignedIntegerType>
   class numeric_limits_uintwide_t_base : public std::numeric_limits<unsigned int>
@@ -2029,10 +2039,10 @@
     {
       using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
 
-      const local_wide_integer_type tmp(x);
+      const local_wide_integer_type tmp_x(x);
 
       x = y;
-      y = tmp;
+      y = tmp_x;
     }
   }
 
