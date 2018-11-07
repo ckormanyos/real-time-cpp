@@ -2409,6 +2409,206 @@
     return result;
   }
 
+  template<const std::size_t Digits2,
+           typename LimbType = std::uint32_t>
+  class default_random_engine
+  {
+  public:
+    // TBD: Verify that the initializations of my_state and my_inc
+    // in this class are robust and agree with the PCG theory.
+
+    using result_type = uintwide_t<Digits2, LimbType>;
+    using value_type  = std::uint32_t;
+
+    static const value_type default_seed = 0U;
+
+    default_random_engine() : my_state(default_seed),
+                              my_inc  ((std::uint64_t(0U) << 1U) | 1U)
+    {
+      step();
+    }
+
+    explicit default_random_engine(const value_type seed1,
+                                   const value_type seed2 = 0U) : my_state( crc64_we(seed1)),
+                                                                  my_inc  ((crc64_we(seed2) << 1) | 1U)
+    {
+      step();
+    }
+
+    result_type operator()()
+    {
+      result_type result(std::uint_fast8_t(0U));
+
+      for(std::size_t i = 0U; i < std::numeric_limits<result_type>::digits / std::numeric_limits<value_type>::digits; ++i)
+      {
+        const std::uint64_t previous_state = my_state;
+
+        step();
+
+        const value_type value =
+          rotate(std::uint32_t   (((previous_state >> 18U) ^ previous_state) >> 27U),
+                 std::int_fast8_t  (previous_state >> 59U));
+
+        result |= value;
+
+        if(i < (std::numeric_limits<result_type>::digits / std::numeric_limits<value_type>::digits) - 1)
+        {
+          result <<= std::numeric_limits<value_type>::digits;
+        }
+      }
+
+      return result;
+    }
+
+  private:
+    std::uint64_t my_state;
+    std::uint64_t my_inc;
+
+    static const std::uint64_t default_multiplier = UINT64_C(6364136223846793005);
+
+    void step()
+    {
+      my_state = std::uint64_t(std::uint64_t(my_state * default_multiplier) + my_inc);
+    }
+
+    static value_type rotate(value_type value, std::int_fast8_t rot)
+    {
+      return (value >> rot) | (value << std::int_fast8_t(std::uint_fast8_t(-rot) & 31U));
+    }
+
+    std::uint64_t crc64_we(const value_type v)
+    {
+      // Extract the data bytes of new_seed now into an array...
+      std::array<std::uint8_t, std::numeric_limits<value_type>::digits / 8U> data;
+
+      for(std::uint_fast8_t i = 0U; i < data.size(); ++ i)
+      {
+        data[i] = std::uint8_t(v >> (i * 8U));
+      }
+
+      std::uint64_t crc = UINT64_C(0xFFFFFFFFFFFFFFFF);
+
+      // Perform modulo-2 division, one byte at a time.
+      for(std::size_t byte = 0U; byte < data.size(); ++byte)
+      {
+        // Bring the next byte into the result.
+        crc ^= (std::uint64_t(data[byte]) << (std::numeric_limits<std::uint64_t>::digits - 8U));
+
+        // Perform a modulo-2 division, one bit at a time.
+        for(std::int_fast8_t bit = 8; bit > 0; --bit)
+        {
+          // Divide the current data bit.
+          if((crc & (std::uintmax_t(1U) << (std::numeric_limits<std::uint64_t>::digits - 1U))) != 0U)
+          {
+            crc = std::uint64_t(crc << 1) ^ UINT64_C(0x42F0E1EBA9EA3693);
+          }
+          else
+          {
+            crc <<= 1;
+          }
+        }
+      }
+
+      return std::uint64_t(crc ^ UINT64_C(0xFFFFFFFFFFFFFFFF));
+    }
+  };
+
+  template<const std::size_t Digits2,
+           typename LimbType = std::uint32_t>
+  class uniform_int_distribution final
+  {
+  public:
+    using result_type = uintwide_t<Digits2, LimbType>;
+
+    struct param_type final
+    {
+    public:
+      param_type(const result_type& a = (std::numeric_limits<result_type>::min)(),
+                 const result_type& b = (std::numeric_limits<result_type>::max)())
+        : param_a(a),
+          param_b(b) { }
+
+      ~param_type() = default;
+
+      param_type(const param_type& other_params) : param_a(other_params.param_a),
+                                                   param_b(other_params.param_b) { }
+
+      param_type& operator=(const param_type& other_params)
+      {
+        if(this != &other_params)
+        {
+          param_a = other_params.param_a;
+          param_b = other_params.param_b;
+        }
+
+        return *this;
+      }
+
+      const result_type& get_a() const { return param_a; }
+      const result_type& get_b() const { return param_b; }
+
+      void set_a(const result_type& a) { param_a = a; }
+      void set_b(const result_type& b) { param_b = b; }
+
+    private:
+      result_type param_a;
+      result_type param_b;
+    };
+
+    uniform_int_distribution() : my_params() { }
+
+    explicit uniform_int_distribution(const result_type& a,
+                                      const result_type& b = (std::numeric_limits<result_type>::max)())
+        : my_params(param_type(a, b)) { }
+
+    explicit uniform_int_distribution(const param_type& other_params)
+      : my_params(other_params) { }
+
+    ~uniform_int_distribution() = default;
+
+    void params(const param_type& new_params)
+    {
+      my_params.set_a(new_params.get_a());
+      my_params.set_b(new_params.get_b());
+    }
+
+    const param_type& params() const { return my_params; }
+
+    template<typename GeneratorType>
+    result_type operator()(GeneratorType& generator)
+    {
+      return generate(generator, my_params);
+    }
+
+    template<typename GeneratorType>
+    result_type operator()(GeneratorType& generator,
+                           const param_type& local_params)
+    {
+      return generate(generator, local_params);
+    }
+
+  private:
+    param_type my_params;
+
+    template<typename GeneratorType>
+    result_type generate(GeneratorType& generator,
+                         const param_type& local_params)
+    {
+      result_type result = generator();
+
+      if(   (local_params.get_a() != (std::numeric_limits<result_type>::min)())
+         || (local_params.get_b() != (std::numeric_limits<result_type>::max)()))
+      {
+        result_type range = (local_params.get_b() - local_params.get_a());
+        ++range;
+
+        result = (result % (range)) + local_params.get_a();
+      }
+
+      return result;
+    }
+  };
+
   } } // namespace wide_integer::generic_template
 
 #endif // GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
