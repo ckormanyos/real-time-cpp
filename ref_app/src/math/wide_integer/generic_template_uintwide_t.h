@@ -687,10 +687,12 @@
       {
         case 0:
         case 1:
+          // The input parameter is less wide or equally as wide as the limb width.
           cast_result = static_cast<local_unsigned_integral_type>(values[0U]);
           break;
 
         default:
+          // The input parameter is wider than the limb width.
           cast_result = 0U;
 
           for(std::uint_fast8_t i = 0U; i < digits_ratio; ++i)
@@ -2410,7 +2412,7 @@
   }
 
   template<const std::size_t Digits2,
-           typename LimbType = std::uint32_t>
+           typename LimbType>
   class default_random_engine
   {
   public:
@@ -2422,16 +2424,16 @@
 
     static const value_type default_seed = 0U;
 
-    default_random_engine() : my_state(default_seed),
-                              my_inc  ((std::uint64_t(0U) << 1U) | 1U)
+    explicit default_random_engine(const value_type seed = default_seed)
+      : my_state(0U),
+        my_inc  (0U)
     {
-      step();
-    }
+      const std::uint64_t initstate = crc64_we(seed);
+      const std::uint64_t initseq   = 0U;
 
-    explicit default_random_engine(const value_type seed1,
-                                   const value_type seed2 = 0U) : my_state( crc64_we(seed1)),
-                                                                  my_inc  ((crc64_we(seed2) << 1) | 1U)
-    {
+      my_inc = std::uint64_t(initseq << 1) | 1U;
+      step();
+      my_state += initstate;
       step();
     }
 
@@ -2439,22 +2441,63 @@
     {
       result_type result(std::uint_fast8_t(0U));
 
-      for(std::size_t i = 0U; i < std::numeric_limits<result_type>::digits / std::numeric_limits<value_type>::digits; ++i)
+      using local_result_value_type = typename result_type::value_type;
+
+      const std::size_t digits_ratio = 
+        std::size_t(  std::numeric_limits<local_result_value_type>::digits
+                    / std::numeric_limits<value_type>::digits);
+
+      switch(digits_ratio)
       {
-        const std::uint64_t previous_state = my_state;
+        case 0:
+          // The limbs in the wide integer result are less wide than
+          // the 32-bit width of the random number generator result.
+          {
+            const std::size_t digits_ratio_inverse = 
+              std::size_t(  std::numeric_limits<value_type>::digits
+                          / std::numeric_limits<local_result_value_type>::digits);
 
-        step();
+            auto it = result.representation().begin();
 
-        const value_type value =
-          rotate(std::uint32_t   (((previous_state >> 18U) ^ previous_state) >> 27U),
-                 std::int_fast8_t  (previous_state >> 59U));
+            while(it < result.representation().end())
+            {
+              const value_type value = next_random_value();
 
-        result |= value;
+              for(std::size_t j = 0U; j < digits_ratio_inverse; ++j)
+              {
+                *(it + j) |= local_result_value_type(value >> (j * std::size_t(std::numeric_limits<local_result_value_type>::digits)));
+              }
 
-        if(i < (std::numeric_limits<result_type>::digits / std::numeric_limits<value_type>::digits) - 1)
-        {
-          result <<= std::numeric_limits<value_type>::digits;
-        }
+              it += digits_ratio_inverse;
+            }
+          }
+          break;
+
+        case 1:
+          // The limbs in the wide integer result are equally as wide as
+          // the 32-bit width of the random number generator result.
+          for(auto it = result.representation().begin(); it != result.representation().end(); ++it)
+          {
+            *it = next_random_value();
+          }
+          break;
+
+        default:
+          // The limbs in the wide integer result are wider than
+          // the 32-bit width of the random number generator result.
+          for(auto it = result.representation().begin(); it != result.representation().end(); ++it)
+          {
+            for(std::size_t j = 0U; j < digits_ratio; ++j)
+            {
+              const local_result_value_type value = local_result_value_type(next_random_value());
+
+              const std::size_t left_shift_amount =
+                std::size_t(j * std::size_t(std::numeric_limits<value_type>::digits));
+
+              (*it) |= local_result_value_type(value << left_shift_amount);
+            }
+          }
+          break;
       }
 
       return result;
@@ -2465,6 +2508,19 @@
     std::uint64_t my_inc;
 
     static const std::uint64_t default_multiplier = UINT64_C(6364136223846793005);
+
+    value_type next_random_value()
+    {
+      const std::uint64_t previous_state = my_state;
+
+      step();
+
+      const value_type next_value =
+        rotate(value_type      (((previous_state >> 18U) ^ previous_state) >> 27U),
+               std::int_fast8_t  (previous_state >> 59U));
+
+      return next_value;
+    }
 
     void step()
     {
@@ -2514,7 +2570,7 @@
   };
 
   template<const std::size_t Digits2,
-           typename LimbType = std::uint32_t>
+           typename LimbType>
   class uniform_int_distribution final
   {
   public:
@@ -2602,7 +2658,7 @@
         result_type range = (local_params.get_b() - local_params.get_a());
         ++range;
 
-        result = (result % (range)) + local_params.get_a();
+        result = (result % range) + local_params.get_a();
       }
 
       return result;
