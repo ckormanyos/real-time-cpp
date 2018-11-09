@@ -2292,26 +2292,45 @@
     using local_normal_width_type = uintwide_t<Digits2, LimbType>;
     using local_double_width_type = typename local_normal_width_type::double_width_type;
 
-          local_double_width_type   x(std::uint8_t(1U));
-          local_double_width_type   y(b);
-          OtherUnsignedIntegralType p_local(p);
+    local_normal_width_type   result;
+
+    const OtherUnsignedIntegralType zero   (std::uint8_t(0U));
+          local_double_width_type   y      (b);
     const local_double_width_type   m_local(m);
 
-    const OtherUnsignedIntegralType zero(std::uint8_t(0U));
-
-    while(!(p_local == zero))
+    if(p == zero)
     {
-      if(std::uint32_t(p_local) & 1U)
+      result = local_normal_width_type((m != 1U) ? std::uint8_t(1U) : std::uint8_t(0U));
+    }
+    else if(p == 1U)
+    {
+      result = b % m;
+    }
+    else if(p == 2U)
+    {
+      result = local_normal_width_type((y * y) % m_local);
+    }
+    else
+    {
+      local_double_width_type   x      (std::uint8_t(1U));
+      OtherUnsignedIntegralType p_local(p);
+
+      while(!(p_local == zero))
       {
-        x = (x * y) % m_local;
+        if(std::uint32_t(p_local) & 1U)
+        {
+          x = (x * y) % m_local;
+        }
+
+        y = (y * y) % m_local;
+
+        p_local >>= 1;
       }
 
-      y = (y * y) % m_local;
-
-      p_local >>= 1;
+      result = local_normal_width_type(x);
     }
 
-    return local_normal_width_type(x);
+    return result;
   }
 
   template<const std::size_t Digits2,
