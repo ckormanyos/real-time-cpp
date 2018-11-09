@@ -243,11 +243,11 @@
   uintwide_t<Digits2, LimbType> pow(const uintwide_t<Digits2, LimbType>& b,
                                     const UnsignedIntegralType2& p);
 
-  template<typename UnsignedIntegralType2,
+  template<typename OtherUnsignedIntegralType,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> powm(const uintwide_t<Digits2, LimbType>& b,
-                                     const UnsignedIntegralType2& p,
+                                     const OtherUnsignedIntegralType&     p,
                                      const uintwide_t<Digits2, LimbType>& m);
 
   template<const std::size_t Digits2,
@@ -271,7 +271,7 @@
   template<const std::size_t BitCount> struct int_type_helper
   {
     static_assert(BitCount <= 64,
-                  "Error: The design of int_type_helper is not intended for BitCount exceeding 64");
+                  "Error: int_type_helper is not intended to be used for BitCount exceeding 64");
 
     using exact_unsigned_type = std::uintmax_t;
     using exact_signed_type   = std::intmax_t;
@@ -526,10 +526,10 @@
     using value_type = typename representation_type::value_type;
 
     // The iterator types of the internal data representation.
-    using iterator               = typename std::array<ushort_type, number_of_limbs>::iterator;
-    using const_iterator         = typename std::array<ushort_type, number_of_limbs>::const_iterator;
-    using reverse_iterator       = typename std::array<ushort_type, number_of_limbs>::reverse_iterator;
-    using const_reverse_iterator = typename std::array<ushort_type, number_of_limbs>::const_reverse_iterator;
+    using iterator               = typename std::array<value_type, number_of_limbs>::iterator;
+    using const_iterator         = typename std::array<value_type, number_of_limbs>::const_iterator;
+    using reverse_iterator       = typename std::array<value_type, number_of_limbs>::reverse_iterator;
+    using const_reverse_iterator = typename std::array<value_type, number_of_limbs>::const_reverse_iterator;
 
     // Types that have half or double the width of *this.
     using half_width_type   = uintwide_t<my_digits / 2U, ushort_type>;
@@ -2280,11 +2280,11 @@
     return x;
   }
 
-  template<typename UnsignedIntegralType2,
+  template<typename OtherUnsignedIntegralType,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> powm(const uintwide_t<Digits2, LimbType>& b,
-                                     const UnsignedIntegralType2& p,
+                                     const OtherUnsignedIntegralType&     p,
                                      const uintwide_t<Digits2, LimbType>& m)
   {
     // Calculate (b ^ p) % m.
@@ -2292,14 +2292,14 @@
     using local_normal_width_type = uintwide_t<Digits2, LimbType>;
     using local_double_width_type = typename local_normal_width_type::double_width_type;
 
-          local_double_width_type x(std::uint8_t(1U));
-          local_double_width_type y(b);
-          UnsignedIntegralType2   p_local(p);
-    const local_double_width_type m_local(m);
+          local_double_width_type   x(std::uint8_t(1U));
+          local_double_width_type   y(b);
+          OtherUnsignedIntegralType p_local(p);
+    const local_double_width_type   m_local(m);
 
-    const UnsignedIntegralType2 zero(std::uint8_t(0U));
+    const OtherUnsignedIntegralType zero(std::uint8_t(0U));
 
-    while(p_local > zero)
+    while(!(p_local == zero))
     {
       if(std::uint32_t(p_local) & 1U)
       {
@@ -2311,7 +2311,7 @@
       p_local >>= 1;
     }
 
-    return (local_normal_width_type(x) % m);
+    return local_normal_width_type(x);
   }
 
   template<const std::size_t Digits2,
@@ -2333,21 +2333,23 @@
 
     if(u == v)
     {
-      // This handles (u = v) and also (u = v = 0).
+      // This handles cases having (u = v) and also (u = v = 0).
       result = u;
     }
     else if(v == 0U)
     {
-      // This handles (v = 0) with (u != 0).
+      // This handles cases having (v = 0) with (u != 0).
       result = u;
     }
     else if(u == 0U)
     {
-      // This handles (u = 0) with (v != 0).
+      // This handles cases having (u = 0) with (v != 0).
       result = v;
     }
     else
     {
+      // Now we handle cases having (u != 0) and (v != 0).
+
       // Let shift := lg K, where K is the greatest
       // power of 2 dividing both u and v.
 
@@ -2416,19 +2418,23 @@
   class default_random_engine
   {
   public:
-    // TBD: Verify that the initializations of my_state and my_inc
-    // in this class are robust and agree with the PCG theory.
+    // Use a fast and efficient PCG-family random number generator.
 
     using result_type = uintwide_t<Digits2, LimbType>;
     using value_type  = std::uint32_t;
 
     static const value_type default_seed = 0U;
 
-    explicit default_random_engine(const value_type seed = default_seed)
+    explicit default_random_engine(const value_type new_seed = default_seed)
       : my_state(0U),
         my_inc  (0U)
     {
-      const std::uint64_t initstate = crc64_we(seed);
+      seed(new_seed);
+    }
+
+    void seed(const value_type new_seed = default_seed)
+    {
+      const std::uint64_t initstate = crc64_we(new_seed);
       const std::uint64_t initseq   = 0U;
 
       my_inc = std::uint64_t(initseq << 1) | 1U;
@@ -2529,7 +2535,8 @@
 
     static value_type rotate(value_type value, std::int_fast8_t rot)
     {
-      return (value >> rot) | (value << std::int_fast8_t(std::uint_fast8_t(-rot) & 31U));
+      return value_type(value_type(value >> rot)
+                                | (value << std::int_fast8_t(std::uint_fast8_t(-rot) & 31U)));
     }
 
     std::uint64_t crc64_we(const value_type v)
@@ -2655,10 +2662,11 @@
       if(   (local_params.get_a() != (std::numeric_limits<result_type>::min)())
          || (local_params.get_b() != (std::numeric_limits<result_type>::max)()))
       {
-        result_type range = (local_params.get_b() - local_params.get_a());
+        result_type range(local_params.get_b() - local_params.get_a());
         ++range;
 
-        result = (result % range) + local_params.get_a();
+        result %= range;
+        result += local_params.get_a();
       }
 
       return result;
