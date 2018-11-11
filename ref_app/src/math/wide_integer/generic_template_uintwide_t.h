@@ -2249,35 +2249,54 @@
     return s;
   }
 
-  template<typename UnsignedIntegralType2,
+  template<typename OtherUnsignedIntegralType,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> pow(const uintwide_t<Digits2, LimbType>& b,
-                                    const UnsignedIntegralType2& p)
+                                    const OtherUnsignedIntegralType&     p)
   {
     // Calculate (b ^ p).
 
     using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
 
-    local_wide_integer_type x(std::uint8_t(1U));
-    local_wide_integer_type y(b);
-    UnsignedIntegralType2   p_local(p);
+    local_wide_integer_type result;
 
-    const UnsignedIntegralType2 zero(std::uint8_t(0U));
+    const OtherUnsignedIntegralType zero(std::uint8_t(0U));
 
-    while(p_local > zero)
+    if(p == zero)
     {
-      if(std::uint32_t(p_local) & 1U)
+      result = local_wide_integer_type(std::uint8_t(1U));
+    }
+    else if(p == 1U)
+    {
+      result = b;
+    }
+    else if(p == 2U)
+    {
+      result  = b;
+      result *= b;
+    }
+    else
+    {
+      result = local_wide_integer_type(std::uint8_t(1U));
+
+      local_wide_integer_type y      (b);
+      local_wide_integer_type p_local(p);
+
+      while(!(p_local == zero))
       {
-        x = (x * y);
+        if(std::uint_fast8_t(p_local) & 1U)
+        {
+          result *= y;
+        }
+
+        y *= y;
+
+        p_local >>= 1;
       }
-
-      y = (y * y);
-
-      p_local >>= 1;
     }
 
-    return x;
+    return result;
   }
 
   template<typename OtherUnsignedIntegralType,
@@ -2292,8 +2311,7 @@
     using local_normal_width_type = uintwide_t<Digits2, LimbType>;
     using local_double_width_type = typename local_normal_width_type::double_width_type;
 
-    local_normal_width_type   result;
-
+          local_normal_width_type   result;
     const OtherUnsignedIntegralType zero   (std::uint8_t(0U));
           local_double_width_type   y      (b);
     const local_double_width_type   m_local(m);
@@ -2308,7 +2326,9 @@
     }
     else if(p == 2U)
     {
-      result = local_normal_width_type((y * y) % m_local);
+      y *= y;
+
+      result = local_normal_width_type(y %= m_local);
     }
     else
     {
@@ -2317,12 +2337,14 @@
 
       while(!(p_local == zero))
       {
-        if(std::uint32_t(p_local) & 1U)
+        if(std::uint_fast8_t(p_local) & 1U)
         {
-          x = (x * y) % m_local;
+          x *= y;
+          x %= m_local;
         }
 
-        y = (y * y) % m_local;
+        y *= y;
+        y %= m_local;
 
         p_local >>= 1;
       }
@@ -2558,10 +2580,14 @@
                                 | (value << std::int_fast8_t(std::uint_fast8_t(-rot) & 31U)));
     }
 
-    std::uint64_t crc64_we(const value_type v)
+    template<typename UnsignedIntegralType>
+    std::uint64_t crc64_we(const UnsignedIntegralType v)
     {
-      // Extract the data bytes of new_seed now into an array...
-      std::array<std::uint8_t, std::numeric_limits<value_type>::digits / 8U> data;
+      // Calculate a bitwise CRC64/WE over the
+      // individual bytes of the input parameter v.
+
+      // Extract the bytes of v into an array.
+      std::array<std::uint8_t, std::numeric_limits<UnsignedIntegralType>::digits / 8U> data;
 
       for(std::uint_fast8_t i = 0U; i < data.size(); ++ i)
       {
@@ -2597,12 +2623,12 @@
 
   template<const std::size_t Digits2,
            typename LimbType>
-  class uniform_int_distribution final
+  class uniform_int_distribution
   {
   public:
     using result_type = uintwide_t<Digits2, LimbType>;
 
-    struct param_type final
+    struct param_type
     {
     public:
       param_type(const result_type& a = (std::numeric_limits<result_type>::min)(),
@@ -2646,12 +2672,24 @@
     explicit uniform_int_distribution(const param_type& other_params)
       : my_params(other_params) { }
 
+    uniform_int_distribution(const uniform_int_distribution& other_distribution)
+      : my_params(other_distribution.my_params) { }
+
     ~uniform_int_distribution() = default;
+
+    uniform_int_distribution& operator=(const uniform_int_distribution& other_distribution)
+    {
+      if(this != &other_distribution)
+      {
+        my_params = other_distribution.my_params;
+      }
+
+      return *this;
+    }
 
     void params(const param_type& new_params)
     {
-      my_params.set_a(new_params.get_a());
-      my_params.set_b(new_params.get_b());
+      my_params = new_params;
     }
 
     const param_type& params() const { return my_params; }
@@ -2663,34 +2701,189 @@
     }
 
     template<typename GeneratorType>
-    result_type operator()(GeneratorType& generator,
-                           const param_type& local_params)
+    result_type operator()(GeneratorType& input_generator,
+                           const param_type& input_params)
     {
-      return generate(generator, local_params);
+      return generate(input_generator, input_params);
     }
 
   private:
     param_type my_params;
 
     template<typename GeneratorType>
-    result_type generate(GeneratorType& generator,
-                         const param_type& local_params)
+    result_type generate(GeneratorType& input_generator,
+                         const param_type& input_params)
     {
-      result_type result = generator();
+      result_type result = input_generator();
 
-      if(   (local_params.get_a() != (std::numeric_limits<result_type>::min)())
-         || (local_params.get_b() != (std::numeric_limits<result_type>::max)()))
+      if(   (input_params.get_a() != (std::numeric_limits<result_type>::min)())
+         || (input_params.get_b() != (std::numeric_limits<result_type>::max)()))
       {
-        result_type range(local_params.get_b() - local_params.get_a());
+        result_type range(input_params.get_b() - input_params.get_a());
         ++range;
 
         result %= range;
-        result += local_params.get_a();
+        result += input_params.get_a();
       }
 
       return result;
     }
   };
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator==(const uniform_int_distribution<Digits2, LimbType>& lhs,
+                  const uniform_int_distribution<Digits2, LimbType>& rhs)
+  {
+    return (   (lhs.params().get_a() == rhs.params().get_a())
+            && (lhs.params().get_b() == rhs.params().get_b()));
+  }
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator!=(const uniform_int_distribution<Digits2, LimbType>& lhs,
+                  const uniform_int_distribution<Digits2, LimbType>& rhs)
+  {
+    return (   (lhs.params().get_a() != rhs.params().get_a())
+            || (lhs.params().get_b() != rhs.params().get_b()));
+  }
+
+  template<typename DistributionType,
+           typename GeneratorType,
+           const std::size_t Digits2,
+           typename LimbType>
+  bool miller_rabin(const uintwide_t<Digits2, LimbType>& n,
+                    const std::size_t                    number_of_trials,
+                    DistributionType&                    distribution,
+                    GeneratorType&                       generator)
+  {
+    // This Miller-Rabin primality test is loosely based on
+    // an adaptation of some code from Boost.Multiprecision.
+    // The Boost.Multiprecision code can be found here:
+    // https://www.boost.org/doc/libs/1_68_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+
+    using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
+
+    static_assert(std::numeric_limits<local_wide_integer_type>::digits >= 128,
+                  "Error: This subroutine requires 128 bits or more.");
+
+    const std::uint16_t n16(n);
+
+    if((n16 == 2U) && (n == 2U))
+    {
+      // Trivial special case.
+      return true;
+    }
+
+    if((std::uint_fast8_t(n16) & 1U) == 0U)
+    {
+      // n is even.
+      return false;
+    }
+
+    {
+      // Exclude prime factors from 3...101.
+      static const local_wide_integer_type prime_factors_003_to_101("116431182179248680450031658440253681535");
+
+      if(gcd(n, prime_factors_003_to_101) != 1U)
+      {
+        return false;
+      }
+    }
+
+    {
+      // Exclude prime factors from 103...191.
+      static const local_wide_integer_type prime_factors_103_to_191("4427049191765375003566122136910523977");
+
+      if(gcd(n, prime_factors_103_to_191) != 1U)
+      {
+        return false;
+      }
+    }
+
+    {
+      // Exclude prime factors from 193...227.
+      constexpr std::uint64_t pp = UINT64_C(80814592450549);
+
+      constexpr std::array<std::uint_fast8_t, 6U> small_factors =
+      {{
+        UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211),
+        UINT8_C(223), UINT8_C(227)
+      }};
+
+      const std::uint64_t m(n % pp);
+
+      for(std::size_t i = 0U; i < small_factors.size(); ++i)
+      {
+        if((m % small_factors[i]) == 0U)
+        {
+          return false;
+        }
+      }
+    }
+
+    const local_wide_integer_type nm1(n - 1U);
+
+    // Perform a single Fermat test which will
+    // exclude many non-prime candidates.
+
+    // We know n is greater than 227 because we have already
+    // excluded all small factors up to and including 227.
+    local_wide_integer_type q(std::uint_fast8_t(228U));
+
+    if(powm(q, nm1, n) != 1U)
+    {
+      return false;
+    }
+
+    const std::size_t k = lsb(nm1);
+    q = nm1 >> k;
+
+    const typename DistributionType::param_type params(local_wide_integer_type(2U),
+                                                       local_wide_integer_type(n - 2U));
+
+    // Execute the random trials.
+    for(std::size_t i = 0U; i < number_of_trials; ++i)
+    {
+      local_wide_integer_type x = distribution(generator, params);
+      local_wide_integer_type y = powm(x, q, n);
+
+      std::size_t j = 0U;
+
+      // TBD: The following code seems convoluded and it is difficult
+      // to understand this code. Can this while-loop and all returns
+      // and breaks be written in a more intuitive and understandable form?
+      while(true)
+      {
+        if(y == nm1)
+        {
+          break;
+        }
+
+        if(y == 1U)
+        {
+          if(j == 0U)
+          {
+            break;
+          }
+
+          return false;
+        }
+
+        ++j;
+
+        if(j == k)
+        {
+          return false;
+        }
+
+        y = powm(y, 2U, n);
+      }
+    }
+
+    // Probably prime.
+    return true;
+  }
 
   } } // namespace wide_integer::generic_template
 
