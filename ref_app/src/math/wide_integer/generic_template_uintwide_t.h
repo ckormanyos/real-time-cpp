@@ -2764,61 +2764,113 @@
 
     using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
 
-    static_assert(std::numeric_limits<local_wide_integer_type>::digits >= 128,
-                  "Error: This subroutine requires 128 bits or more.");
+    const std::uint_fast8_t n8(n);
 
-    const std::uint16_t n16(n);
-
-    if((n16 == 2U) && (n == 2U))
+    if((n8 == 2U) && (n == 2U))
     {
-      // Trivial special case.
+      // Trivial special case of (n = 2).
       return true;
     }
 
-    if((std::uint_fast8_t(n16) & 1U) == 0U)
+    if((n8 & 1U) == 0U)
     {
-      // n is even.
+      // Not prime because n is even.
       return false;
     }
 
+    if((n8 <= 233U) && (n <= 233U))
     {
-      // Exclude prime factors from 3...101.
-      static const local_wide_integer_type prime_factors_003_to_101("116431182179248680450031658440253681535");
+      // Table[Prime[i], {i, 2, 51}] =
+      // {
+      //     3,   5,   7,  11,  13,  17,  19,  23,
+      //    29,  31,  37,  41,  43,  47,  53,  59,
+      //    61,  67,  71,  73,  79,  83,  89,  97,
+      //   101, 103, 107, 109, 113, 127, 131, 137,
+      //   139, 149, 151, 157, 163, 167, 173, 179,
+      //   181, 191, 193, 197, 199, 211, 223, 227,
+      //   229, 233
+      // }
 
-      if(gcd(n, prime_factors_003_to_101) != 1U)
-      {
-        return false;
-      }
-    }
-
-    {
-      // Exclude prime factors from 103...191.
-      static const local_wide_integer_type prime_factors_103_to_191("4427049191765375003566122136910523977");
-
-      if(gcd(n, prime_factors_103_to_191) != 1U)
-      {
-        return false;
-      }
-    }
-
-    {
-      // Exclude prime factors from 193...227.
-      constexpr std::uint64_t pp = UINT64_C(80814592450549);
-
-      constexpr std::array<std::uint_fast8_t, 6U> small_factors =
+      // Exclude pure small primes from 3...233.
+      constexpr std::array<std::uint_fast8_t, 50U> small_primes = 
       {{
-        UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211),
-        UINT8_C(223), UINT8_C(227)
+        UINT8_C(  3), UINT8_C(  5), UINT8_C(  7), UINT8_C( 11), UINT8_C( 13), UINT8_C( 17), UINT8_C( 19), UINT8_C( 23),
+        UINT8_C( 29), UINT8_C( 31), UINT8_C( 37), UINT8_C( 41), UINT8_C( 43), UINT8_C( 47), UINT8_C( 53), UINT8_C( 59),
+        UINT8_C( 61), UINT8_C( 67), UINT8_C( 71), UINT8_C( 73), UINT8_C( 79), UINT8_C( 83), UINT8_C( 89), UINT8_C( 97),
+        UINT8_C(101), UINT8_C(103), UINT8_C(107), UINT8_C(109), UINT8_C(113), UINT8_C(127), UINT8_C(131), UINT8_C(137),
+        UINT8_C(139), UINT8_C(149), UINT8_C(151), UINT8_C(157), UINT8_C(163), UINT8_C(167), UINT8_C(173), UINT8_C(179),
+        UINT8_C(181), UINT8_C(191), UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211), UINT8_C(223), UINT8_C(227),
+        UINT8_C(229), UINT8_C(233)
       }};
 
-      const std::uint64_t m(n % pp);
+      return std::binary_search(small_primes.cbegin(),
+                                small_primes.cend(),
+                                n8);
+    }
 
-      for(std::size_t i = 0U; i < small_factors.size(); ++i)
+    // Check small factors.
+    {
+      // Product[Prime[i], {i,   2,  16}] = 16294579238595022365
+      // Exclude small prime factors from { 3 ...  53 }.
+      constexpr std::uint64_t pp0 = UINT64_C(16294579238595022365);
+
+      const std::uint64_t m0(n % pp0);
+
+      if(detail::integer_gcd_reduce_large(m0, pp0) != 1U)
       {
-        if((m % small_factors[i]) == 0U)
-        {
-          return false;
-        }
+        return false;
+      }
+    }
+
+    {
+      // Product[Prime[i], {i,  17,  26}] = 7145393598349078859
+      // Exclude small prime factors from { 59 ... 101 }.
+      constexpr std::uint64_t pp1 = UINT64_C(7145393598349078859);
+
+      const std::uint64_t m1(n % pp1);
+
+      if(detail::integer_gcd_reduce_large(m1, pp1) != 1U)
+      {
+        return false;
+      }
+    }
+
+    {
+      // Product[Prime[i], {i,  27,  35}] = 6408001374760705163
+      // Exclude small prime factors from { 103 ... 149 }.
+      constexpr std::uint64_t pp2 = UINT64_C(6408001374760705163);
+
+      const std::uint64_t m2(n % pp2);
+
+      if(detail::integer_gcd_reduce_large(m2, pp2) != 1U)
+      {
+        return false;
+      }
+    }
+
+    {
+      // Product[Prime[i], {i,  36,  43}] = 690862709424854779
+      // Exclude small prime factors from { 151 ... 191 }.
+      constexpr std::uint64_t pp3 = UINT64_C(690862709424854779);
+
+      const std::uint64_t m3(n % pp3);
+
+      if(detail::integer_gcd_reduce_large(m3, pp3) != 1U)
+      {
+        return false;
+      }
+    }
+
+    {
+      // Product[Prime[i], {i,  44,  51}] = 4312024209383942993
+      // Exclude small prime factors from { 193 ... 233 }.
+      constexpr std::uint64_t pp4 = UINT64_C(4312024209383942993);
+
+      const std::uint64_t m4(n % pp4);
+
+      if(detail::integer_gcd_reduce_large(m4, pp4) != 1U)
+      {
+        return false;
       }
     }
 
@@ -2827,9 +2879,10 @@
     // Perform a single Fermat test which will
     // exclude many non-prime candidates.
 
-    // We know n is greater than 227 because we have already
-    // excluded all small factors up to and including 227.
-    local_wide_integer_type q(std::uint_fast8_t(228U));
+    // We know now that n is greater than 234 because
+    // we have already excluded all small factors
+    // up to and including 234.
+    local_wide_integer_type q(std::uint_fast8_t(234U));
 
     if(powm(q, nm1, n) != 1U)
     {
@@ -2852,7 +2905,7 @@
 
       // TBD: The following code seems convoluded and it is difficult
       // to understand this code. Can this while-loop and all returns
-      // and breaks be written in a more intuitive and understandable form?
+      // and breaks be written in a more intuitive and clear form?
       while(true)
       {
         if(y == nm1)
