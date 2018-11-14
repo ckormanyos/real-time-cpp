@@ -12,7 +12,7 @@ namespace
   static_assert(std::numeric_limits<uint256_t>::digits == 256,
                 "Error: Incorrect digit count for this example");
 
-  // Note: Some of the following comments use the Wolfram Language(TM).
+  // Note: Some of the comments in this file use the Wolfram Language(TM).
   //
   // Create two pseudo-random 256-bit unsigned integers.
   //   Table[IntegerString[RandomInteger[(2^256) - 1], 16], 2]

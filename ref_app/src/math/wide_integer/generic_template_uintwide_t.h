@@ -8,6 +8,8 @@
   //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
   ///////////////////////////////////////////////////////////////////
 
+  // Note: Some of the comments in this file use the Wolfram Language(TM).
+
   #include <algorithm>
   #include <array>
   #include <cstddef>
@@ -882,7 +884,7 @@
       {
         if(std::size_t(n) >= my_digits)
         {
-          operator=(std::uint8_t(0U));
+          std::fill(values.begin(), values.end(), value_type(0U));
         }
         else
         {
@@ -928,7 +930,7 @@
       {
         if(std::size_t(n) >= my_digits)
         {
-          operator=(std::uint8_t(0U));
+          std::fill(values.begin(), values.end(), value_type(0U));
         }
         else
         {
@@ -2778,29 +2780,27 @@
       return false;
     }
 
-    if((n8 <= 233U) && (n <= 233U))
+    if((n8 <= 227U) && (n <= 227U))
     {
-      // Table[Prime[i], {i, 2, 51}] =
+      // Table[Prime[i], {i, 2, 49}] =
       // {
       //     3,   5,   7,  11,  13,  17,  19,  23,
       //    29,  31,  37,  41,  43,  47,  53,  59,
       //    61,  67,  71,  73,  79,  83,  89,  97,
       //   101, 103, 107, 109, 113, 127, 131, 137,
       //   139, 149, 151, 157, 163, 167, 173, 179,
-      //   181, 191, 193, 197, 199, 211, 223, 227,
-      //   229, 233
+      //   181, 191, 193, 197, 199, 211, 223, 227
       // }
 
-      // Exclude pure small primes from 3...233.
-      constexpr std::array<std::uint_fast8_t, 50U> small_primes = 
+      // Exclude pure small primes from 3...227.
+      constexpr std::array<std::uint_fast8_t, 48U> small_primes = 
       {{
         UINT8_C(  3), UINT8_C(  5), UINT8_C(  7), UINT8_C( 11), UINT8_C( 13), UINT8_C( 17), UINT8_C( 19), UINT8_C( 23),
         UINT8_C( 29), UINT8_C( 31), UINT8_C( 37), UINT8_C( 41), UINT8_C( 43), UINT8_C( 47), UINT8_C( 53), UINT8_C( 59),
         UINT8_C( 61), UINT8_C( 67), UINT8_C( 71), UINT8_C( 73), UINT8_C( 79), UINT8_C( 83), UINT8_C( 89), UINT8_C( 97),
         UINT8_C(101), UINT8_C(103), UINT8_C(107), UINT8_C(109), UINT8_C(113), UINT8_C(127), UINT8_C(131), UINT8_C(137),
         UINT8_C(139), UINT8_C(149), UINT8_C(151), UINT8_C(157), UINT8_C(163), UINT8_C(167), UINT8_C(173), UINT8_C(179),
-        UINT8_C(181), UINT8_C(191), UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211), UINT8_C(223), UINT8_C(227),
-        UINT8_C(229), UINT8_C(233)
+        UINT8_C(181), UINT8_C(191), UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211), UINT8_C(223), UINT8_C(227)
       }};
 
       return std::binary_search(small_primes.cbegin(),
@@ -2810,7 +2810,7 @@
 
     // Check small factors.
     {
-      // Product[Prime[i], {i,   2,  16}] = 16294579238595022365
+      // Product[Prime[i], {i, 2, 16}] = 16294579238595022365
       // Exclude small prime factors from { 3 ...  53 }.
       constexpr std::uint64_t pp0 = UINT64_C(16294579238595022365);
 
@@ -2823,7 +2823,7 @@
     }
 
     {
-      // Product[Prime[i], {i,  17,  26}] = 7145393598349078859
+      // Product[Prime[i], {i, 17, 26}] = 7145393598349078859
       // Exclude small prime factors from { 59 ... 101 }.
       constexpr std::uint64_t pp1 = UINT64_C(7145393598349078859);
 
@@ -2836,7 +2836,7 @@
     }
 
     {
-      // Product[Prime[i], {i,  27,  35}] = 6408001374760705163
+      // Product[Prime[i], {i, 27, 35}] = 6408001374760705163
       // Exclude small prime factors from { 103 ... 149 }.
       constexpr std::uint64_t pp2 = UINT64_C(6408001374760705163);
 
@@ -2849,7 +2849,7 @@
     }
 
     {
-      // Product[Prime[i], {i,  36,  43}] = 690862709424854779
+      // Product[Prime[i], {i, 36, 43}] = 690862709424854779
       // Exclude small prime factors from { 151 ... 191 }.
       constexpr std::uint64_t pp3 = UINT64_C(690862709424854779);
 
@@ -2862,9 +2862,9 @@
     }
 
     {
-      // Product[Prime[i], {i,  44,  51}] = 4312024209383942993
-      // Exclude small prime factors from { 193 ... 233 }.
-      constexpr std::uint64_t pp4 = UINT64_C(4312024209383942993);
+      // Product[Prime[i], {i, 44, 49}] = 80814592450549
+      // Exclude small prime factors from { 193 ... 227 }.
+      constexpr std::uint64_t pp4 = UINT64_C(80814592450549);
 
       const std::uint64_t m4(n % pp4);
 
@@ -2879,10 +2879,10 @@
     // Perform a single Fermat test which will
     // exclude many non-prime candidates.
 
-    // We know now that n is greater than 234 because
+    // We know now that n is greater than 227 because
     // we have already excluded all small factors
-    // up to and including 234.
-    local_wide_integer_type q(std::uint_fast8_t(234U));
+    // up to and including 227.
+    local_wide_integer_type q(std::uint_fast8_t(228U));
 
     if(powm(q, nm1, n) != 1U)
     {
