@@ -8,8 +8,6 @@
   //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
   ///////////////////////////////////////////////////////////////////
 
-  // Note: Some of the comments in this file use the Wolfram Language(TM).
-
   #include <algorithm>
   #include <array>
   #include <cstddef>
@@ -32,6 +30,13 @@
   template<const std::size_t Digits2,
            typename LimbType = std::uint32_t>
   class uintwide_t;
+
+  // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator+(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator-(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator*(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator/(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator%(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
@@ -85,6 +90,11 @@
                            && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType>>::type
   operator%(const IntegralType& u, const uintwide_t<Digits2, LimbType>& v);
 
+  // Forward declarations of non-member binary logic operations of (uintwide_t op uintwide_t).
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator|(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator^(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator&(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+
   // Forward declarations of non-member binary logic operations of (uintwide_t op IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
@@ -127,6 +137,14 @@
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType>>::type
   operator>>(const uintwide_t<Digits2, LimbType>& u, const IntegralType n);
+
+  // Forward declarations of non-member comparison functions of (uintwide_t cmp uintwide_t).
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
@@ -239,29 +257,57 @@
   uintwide_t<Digits2, LimbType> rootk(const uintwide_t<Digits2, LimbType>& m,
                                       const std::uint_fast8_t k);
 
-  template<typename UnsignedIntegralType2,
+  template<typename OtherUnsignedIntegralTypeP,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> pow(const uintwide_t<Digits2, LimbType>& b,
-                                    const UnsignedIntegralType2& p);
+                                    const OtherUnsignedIntegralTypeP&    p);
 
-  template<typename OtherUnsignedIntegralType,
+  template<typename OtherUnsignedIntegralTypeP,
+           typename OtherUnsignedIntegralTypeM,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> powm(const uintwide_t<Digits2, LimbType>& b,
-                                     const OtherUnsignedIntegralType&     p,
-                                     const uintwide_t<Digits2, LimbType>& m);
+                                     const OtherUnsignedIntegralTypeP&    p,
+                                     const OtherUnsignedIntegralTypeM&    m);
 
   template<const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> gcd(const uintwide_t<Digits2, LimbType>& a,
                                     const uintwide_t<Digits2, LimbType>& b);
 
+  template<const std::size_t Digits2,
+           typename LimbType>
+  class default_random_engine;
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  class uniform_int_distribution;
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator==(const uniform_int_distribution<Digits2, LimbType>& lhs,
+                  const uniform_int_distribution<Digits2, LimbType>& rhs);
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator!=(const uniform_int_distribution<Digits2, LimbType>& lhs,
+                  const uniform_int_distribution<Digits2, LimbType>& rhs);
+
+  template<typename DistributionType,
+           typename GeneratorType,
+           const std::size_t Digits2,
+           typename LimbType>
+  bool miller_rabin(const uintwide_t<Digits2, LimbType>& n,
+                    const std::size_t                    number_of_trials,
+                    DistributionType&                    distribution,
+                    GeneratorType&                       generator);
+
   } } // namespace wide_integer::generic_template
 
   namespace std
   {
-    // Forward declaration: Support for numeric_limits<>.
+    // Forward declaration of numeric_limits<uintwide_t>.
     template<const std::size_t Digits2,
              typename LimbType>
     class numeric_limits<wide_integer::generic_template::uintwide_t<Digits2, LimbType>>;
@@ -302,14 +348,14 @@
     return std::size_t(p_str_copy - p_str);
   }
 
-  // From an unsigned integral input parameter of type LT,
-  // extract the low part of it. The type of the extracted
-  // low part is ST, which has half the width of LT.
-
   template<typename ST,
            typename LT = typename detail::int_type_helper<std::size_t(std::numeric_limits<ST>::digits * 2)>::exact_unsigned_type>
   ST make_lo(const LT& u)
   {
+    // From an unsigned integral input parameter of type LT,
+    // extract the low part of it. The type of the extracted
+    // low part is ST, which has half the width of LT.
+
     using local_ushort_type = ST;
     using local_ularge_type = LT;
 
@@ -324,13 +370,14 @@
     return static_cast<local_ushort_type>(u);
   }
 
-  // From an unsigned integral input parameter of type LT,
-  // extract the high part of it. The type of the extracted
-  // high part is ST, which has half the width of LT.
   template<typename ST,
            typename LT = typename detail::int_type_helper<std::size_t(std::numeric_limits<ST>::digits * 2)>::exact_unsigned_type>
   ST make_hi(const LT& u)
   {
+    // From an unsigned integral input parameter of type LT,
+    // extract the high part of it. The type of the extracted
+    // high part is ST, which has half the width of LT.
+
     using local_ushort_type = ST;
     using local_ularge_type = LT;
 
@@ -345,13 +392,14 @@
     return static_cast<local_ushort_type>(u >> std::numeric_limits<local_ushort_type>::digits);
   }
 
-  // Create a composite unsigned integral value having type LT.
-  // Two constituents are used having type ST, whereby the
-  // width of ST is half the width of LT.
   template<typename ST,
            typename LT = typename detail::int_type_helper<std::size_t(std::numeric_limits<ST>::digits * 2)>::exact_unsigned_type>
   LT make_large(const ST& lo, const ST& hi)
   {
+    // Create a composite unsigned integral value having type LT.
+    // Two constituents are used having type ST, whereby the
+    // width of ST is half the width of LT.
+
     using local_ushort_type = ST;
     using local_ularge_type = LT;
 
@@ -1781,12 +1829,14 @@
 
   namespace wide_integer { namespace generic_template {
 
+  // Non-member binary add, sub, mul, div, mod of (uintwide_t op uintwide_t).
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator+ (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator+=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator- (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator-=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator* (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator*=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator/ (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator/=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator% (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator%=(right); }
 
+  // Non-member binary logic operations of (uintwide_t op uintwide_t).
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator| (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator|=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator^ (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator^=(right); }
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator& (const uintwide_t<Digits2, LimbType>& left, const uintwide_t<Digits2, LimbType>& right) { return uintwide_t<Digits2, LimbType>(left).operator&=(right); }
@@ -1885,6 +1935,14 @@
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType>>::type
   operator>>(const uintwide_t<Digits2, LimbType>& u, const IntegralType n) { return uintwide_t<Digits2, LimbType>(u).operator>>=(n); }
+
+  // Non-member comparison functions of (uintwide_t cmp uintwide_t).
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator==(v); }
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator!=(v); }
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator> (v); }
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator< (v); }
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator>=(v); }
+  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator<=(v); }
 
   // Non-member comparison functions of (uintwide_t cmp IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
@@ -2251,11 +2309,11 @@
     return s;
   }
 
-  template<typename OtherUnsignedIntegralType,
+  template<typename OtherUnsignedIntegralTypeP,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> pow(const uintwide_t<Digits2, LimbType>& b,
-                                    const OtherUnsignedIntegralType&     p)
+                                    const OtherUnsignedIntegralTypeP&    p)
   {
     // Calculate (b ^ p).
 
@@ -2263,7 +2321,7 @@
 
     local_wide_integer_type result;
 
-    const OtherUnsignedIntegralType zero(std::uint8_t(0U));
+    const OtherUnsignedIntegralTypeP zero(std::uint8_t(0U));
 
     if(p == zero)
     {
@@ -2301,22 +2359,23 @@
     return result;
   }
 
-  template<typename OtherUnsignedIntegralType,
+  template<typename OtherUnsignedIntegralTypeP,
+           typename OtherUnsignedIntegralTypeM,
            const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> powm(const uintwide_t<Digits2, LimbType>& b,
-                                     const OtherUnsignedIntegralType&     p,
-                                     const uintwide_t<Digits2, LimbType>& m)
+                                     const OtherUnsignedIntegralTypeP&    p,
+                                     const OtherUnsignedIntegralTypeM&    m)
   {
     // Calculate (b ^ p) % m.
 
     using local_normal_width_type = uintwide_t<Digits2, LimbType>;
     using local_double_width_type = typename local_normal_width_type::double_width_type;
 
-          local_normal_width_type   result;
-    const OtherUnsignedIntegralType zero   (std::uint8_t(0U));
-          local_double_width_type   y      (b);
-    const local_double_width_type   m_local(m);
+          local_normal_width_type    result;
+    const OtherUnsignedIntegralTypeP zero   (std::uint8_t(0U));
+          local_double_width_type    y      (b);
+    const local_double_width_type    m_local(m);
 
     if(p == zero)
     {
@@ -2334,8 +2393,8 @@
     }
     else
     {
-      local_double_width_type   x      (std::uint8_t(1U));
-      OtherUnsignedIntegralType p_local(p);
+      local_double_width_type    x      (std::uint8_t(1U));
+      OtherUnsignedIntegralTypeP p_local(p);
 
       while(!(p_local == zero))
       {
@@ -2763,6 +2822,8 @@
     // an adaptation of some code from Boost.Multiprecision.
     // The Boost.Multiprecision code can be found here:
     // https://www.boost.org/doc/libs/1_68_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+
+    // Note: Some comments in this subroutine use the Wolfram Language(TM).
 
     using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
 
