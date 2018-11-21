@@ -139,12 +139,12 @@
   operator>>(const uintwide_t<Digits2, LimbType>& u, const IntegralType n);
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp uintwide_t).
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
+  template<const std::size_t Digits2, typename LimbType> bool operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
@@ -307,7 +307,7 @@
 
   namespace std
   {
-    // Forward declaration of numeric_limits<uintwide_t>.
+    // Forward declaration of specialization of std::numeric_limits<uintwide_t>.
     template<const std::size_t Digits2,
              typename LimbType>
     class numeric_limits<wide_integer::generic_template::uintwide_t<Digits2, LimbType>>;
@@ -315,11 +315,19 @@
 
   namespace wide_integer { namespace generic_template { namespace detail {
 
+  template<const std::size_t Digits2>
+  struct verify_power_of_two
+  {
+    static const bool conditional_value =
+      ((Digits2 != 0U) && ((Digits2 & (Digits2 - 1U)) == 0U));
+  };
+
   // Helper templates for selecting integral types.
   template<const std::size_t BitCount> struct int_type_helper
   {
-    static_assert(BitCount <= 64,
-                  "Error: int_type_helper is not intended to be used for BitCount exceeding 64");
+    static_assert((   ((BitCount >= 8U) && (BitCount <= 64U))
+                   && (verify_power_of_two<BitCount>::conditional_value == true)),
+                  "Error: int_type_helper is not intended to be used for this BitCount");
 
     using exact_unsigned_type = std::uintmax_t;
     using exact_signed_type   = std::intmax_t;
@@ -413,13 +421,6 @@
 
     return local_ularge_type(local_ularge_type(static_cast<local_ularge_type>(hi) << std::numeric_limits<ST>::digits) | lo);
   }
-
-  template<const std::size_t Digits2>
-  struct verify_power_of_two
-  {
-    static const bool conditional_value =
-      ((Digits2 != 0U) && ((Digits2 & (Digits2 - 1U)) == 0U));
-  };
 
   template<typename UnsignedIntegralType>
   std::size_t lsb_helper(const UnsignedIntegralType& x)
@@ -1820,7 +1821,7 @@
 
   namespace std
   {
-    // Implement a specialization of std::numeric_limits<uintwide_t<...>>.
+    // Specialization of std::numeric_limits<uintwide_t>.
     template<const std::size_t Digits2,
              typename LimbType>
     class numeric_limits<wide_integer::generic_template::uintwide_t<Digits2, LimbType>>
@@ -1937,12 +1938,12 @@
   operator>>(const uintwide_t<Digits2, LimbType>& u, const IntegralType n) { return uintwide_t<Digits2, LimbType>(u).operator>>=(n); }
 
   // Non-member comparison functions of (uintwide_t cmp uintwide_t).
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator==(v); }
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator!=(v); }
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator> (v); }
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator< (v); }
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator>=(v); }
-  template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator<=(v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator==(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator==(v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator!=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator!=(v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator> (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator> (v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator< (const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator< (v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator>=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator>=(v); }
+  template<const std::size_t Digits2, typename LimbType> bool operator<=(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v) { return u.operator<=(v); }
 
   // Non-member comparison functions of (uintwide_t cmp IntegralType).
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
