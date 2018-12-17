@@ -25,4 +25,6 @@ void mcal::init()
   mcal::pwm::init(nullptr);
 
   mcal::cpu::post_init();
+
+  mcal::eep::init(nullptr);
 }

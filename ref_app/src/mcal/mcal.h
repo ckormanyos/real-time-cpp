@@ -9,6 +9,7 @@
   #define MCAL_2011_10_20_H_
 
   #include <mcal_cpu.h>
+  #include <mcal_eep.h>
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
   #include <mcal_led.h>
