@@ -66,5 +66,10 @@ int main()
   for(;;)
   {
     led_b5.toggle();
+
+    // Some boards have a slower LED electrical
+    // response on the port. Optionally activate
+    // delay loop if LED toggle is not visible.
+    //for(volatile std::uint8_t delay = UINT8_C(0); delay < UINT8_C(10); ++delay) { ; }
   }
 }
