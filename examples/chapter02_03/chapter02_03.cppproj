@@ -206,10 +206,19 @@
     <Compile Include="src\sys\start\sys_start.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\allocator_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\stl_local_noexcept.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\time.h">
