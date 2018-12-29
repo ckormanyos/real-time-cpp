@@ -11,9 +11,9 @@
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
-    <AssemblyName>chapter02_03a</AssemblyName>
-    <Name>chapter02_03a</Name>
-    <RootNamespace>chapter02_03a</RootNamespace>
+    <AssemblyName>chapter09_07</AssemblyName>
+    <Name>chapter09_07</Name>
+    <RootNamespace>chapter09_07</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
@@ -56,7 +56,7 @@
     <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputFileName>chapter02_03a</OutputFileName>
+    <OutputFileName>chapter09_07</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
@@ -99,7 +99,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputFileName>chapter02_03a</OutputFileName>
+    <OutputFileName>chapter09_07</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>

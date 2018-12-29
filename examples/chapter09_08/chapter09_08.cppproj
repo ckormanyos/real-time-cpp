@@ -11,9 +11,9 @@
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
-    <AssemblyName>chapter06_01</AssemblyName>
-    <Name>chapter06_01</Name>
-    <RootNamespace>chapter06_01</RootNamespace>
+    <AssemblyName>chapter09_08</AssemblyName>
+    <Name>chapter09_08</Name>
+    <RootNamespace>chapter09_08</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
@@ -56,7 +56,7 @@
     <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputFileName>chapter06_01</OutputFileName>
+    <OutputFileName>chapter09_08</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
@@ -99,7 +99,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputFileName>chapter06_01</OutputFileName>
+    <OutputFileName>chapter09_08</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
@@ -144,10 +144,6 @@
   <ItemGroup>
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
-    <Folder Include="src\app\benchmark" />
-    <Folder Include="src\math\" />
-    <Folder Include="src\math\checksums" />
-    <Folder Include="src\math\checksums\crc" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -171,13 +167,7 @@
     <Folder Include="target\micros\avr\startup" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\app\benchmark\app_benchmark.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\app\led\app_led.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\math\checksums\crc\crc32_mpeg2.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.cpp">
@@ -198,10 +188,25 @@
     <Compile Include="src\mcal\avr\mcal_irq.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_led.cpp">
+    <Compile Include="src\mcal\avr\mcal_led_monochrome.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_led.h">
+    <Compile Include="src\mcal\avr\mcal_led_monochrome_board.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb_board.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb_board.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_sys_start_interface.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_sys_start_interface.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
@@ -214,6 +219,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_board.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -235,6 +249,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_led_monochrome.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_led_rgb.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_pwm_base.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_access_template.h">
