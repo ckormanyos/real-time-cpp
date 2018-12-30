@@ -25,6 +25,7 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
+  * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
   * Renesas(R) RL78/G13
   * Renesas(R) RX600

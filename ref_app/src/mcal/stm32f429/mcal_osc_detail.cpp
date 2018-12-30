@@ -12,14 +12,15 @@
 mcal::osc::detail::stm32f4xx_clock_settings::stm32f4xx_clock_settings(const std::uint16_t f_pll,
                                                                       const std::uint8_t  f_hsx)
 {
-  param_p = UINT8_C(2);
-
   std::uint16_t f_vco           = UINT16_C(0);
   std::uint16_t delta_f_vco_min = (std::numeric_limits<std::uint16_t>::max)();
 
+  // Initialize the parameter p.
+  param_p = UINT8_C(2);
+
   // Use an iterative analysis to find the optimal value of f_vco in
-  // relation to the specified range of the vco and the value of param_p.
-  // Thereby select the optimal value of param_p.
+  // relation to the specified range of the vco and the value of p.
+  // Thereby select the optimal value of p.
   for(std::uint8_t param_p_this = UINT8_C(2); param_p_this <= UINT8_C(8); param_p_this += UINT8_C(2))
   {
     const std::uint16_t       f_vco_this = f_pll * param_p_this;
@@ -81,6 +82,4 @@ mcal::osc::detail::stm32f4xx_clock_settings::stm32f4xx_clock_settings(const std:
   param_n = f_vco;
 }
 
-mcal::osc::detail::stm32f4xx_clock_settings::~stm32f4xx_clock_settings()
-{
-}
+mcal::osc::detail::stm32f4xx_clock_settings::~stm32f4xx_clock_settings() { }

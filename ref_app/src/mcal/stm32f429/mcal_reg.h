@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -153,7 +153,7 @@
       constexpr std::uint32_t tim4_ccmr1      = tim4_base       + UINT32_C(0x0018);  // 16-bit register.
       constexpr std::uint32_t tim4_ccmr2      = tim4_base       + UINT32_C(0x001C);  // 16-bit register.
       constexpr std::uint32_t tim4_ccer       = tim4_base       + UINT32_C(0x0020);  // 16-bit register.
-      constexpr std::uint32_t tim4_cnt        = tim4_base       + UINT32_C(0x0024);  // 15-bit register.
+      constexpr std::uint32_t tim4_cnt        = tim4_base       + UINT32_C(0x0024);  // 16-bit register.
       constexpr std::uint32_t tim4_psc        = tim4_base       + UINT32_C(0x0028);  // 16-bit register.
       constexpr std::uint32_t tim4_arr        = tim4_base       + UINT32_C(0x002C);  // 16-bit register.
       constexpr std::uint32_t tim4_rcr        = tim4_base       + UINT32_C(0x0030);  // 16-bit register.
