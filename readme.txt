@@ -88,6 +88,10 @@ The first ARM(R) Cortex(TM)-M4 configuration (called "target stm32f407") runs on
 the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portd.15.
 
+Another ARM(R) Cortex(TM)-M4 configuration (called "target stm32f446") runs on
+the STM32F446 Nucleo-64 board commercially available from ST Microelectronics(R).
+The program toggles the green LED on porta.5.
+
 The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
