@@ -248,9 +248,6 @@
     <Compile Include="src\os\os_cfg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\os\os_debug_monitor_cfg.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\os\os_task_control_block.cpp">
       <SubType>compile</SubType>
     </Compile>
