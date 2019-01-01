@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>6.2</ProjectVersion>
+    <ProjectVersion>7.0</ProjectVersion>
     <ProjectGuid>{9c2d4315-d501-4961-b0d1-4cc0f4ab0d17}</ProjectGuid>
     <avrdevice>ATmega328P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
@@ -48,21 +48,29 @@
         <documentation help="" />
         <offline-documentation help="" />
         <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.37" />
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
+    <ResetRule>0</ResetRule>
+    <EraseKey />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputFileName>ref_app</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
+        <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega328p"</avrgcc.common.Device>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
         <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
         <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
         <avrgcccpp.compiler.directories.IncludePaths>
@@ -70,24 +78,23 @@
             <Value>../src</Value>
             <Value>../src/mcal/avr</Value>
             <Value>../src/util/STL</Value>
-            <Value>../src/util/STL_C++17_Compatibility</Value>
+            <Value>../src/util/STL_C++XX_stdfloat</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
         <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-O3 -Wall -Wextra -pedantic -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=32 -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ffunction-sections -fdata-sections</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
+        <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
         <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
-        <avrgcccpp.linker.libraries.Libraries>
-          <ListValues>
-            <Value>libm</Value>
-            <Value>libc</Value>
-            <Value>libgcc</Value>
-          </ListValues>
-        </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.memorysettings.InitialStack>0x800</avrgcccpp.linker.memorysettings.InitialStack>
-        <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,--gc-sections -Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
+        <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
+        <avrgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+          </ListValues>
+        </avrgcccpp.assembler.general.IncludePaths>
       </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
@@ -96,60 +103,75 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <ToolchainSettings>
       <AvrGccCpp>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>../src</Value>
-      <Value>../src/mcal/avr</Value>
-      <Value>../src/util/STL</Value>
-      <Value>../src/util/STL_C++17_Compatibility</Value>
-    </ListValues>
-  </avrgcccpp.compiler.directories.IncludePaths>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
-  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++0x -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
-  <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
-  <avrgcccpp.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.Libraries>
-  <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,--gc-sections -Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-</AvrGccCpp>
+        <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega328p"</avrgcc.common.Device>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>../src</Value>
+            <Value>../src/mcal/avr</Value>
+            <Value>../src/util/STL</Value>
+            <Value>../src/util/STL_C++XX_stdfloat</Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
+        <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
+        <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
+        <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
+        <avrgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+          </ListValues>
+        </avrgcccpp.assembler.general.IncludePaths>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src" />
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
     <Folder Include="src\app\benchmark" />
-    <Folder Include="src\mcal" />
-    <Folder Include="src\mcal\avr" />
+    <Folder Include="src\math\" />
+    <Folder Include="src\math\calculus\" />
+    <Folder Include="src\math\checksums\" />
+    <Folder Include="src\math\checksums\crc" />
+    <Folder Include="src\math\constants" />
+    <Folder Include="src\math\extended_complex\" />
+    <Folder Include="src\math\filters\" />
+    <Folder Include="src\math\fixed_point\" />
+    <Folder Include="src\math\functions" />
+    <Folder Include="src\math\wide_integer" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
+    <Folder Include="src\util\memory" />
+    <Folder Include="src\util\STD_LIBC\" />
+    <Folder Include="src\util\STL_C++XX_stdfloat\" />
+    <Folder Include="target" />
+    <Folder Include="src" />
+    <Folder Include="src\mcal" />
+    <Folder Include="src\mcal\avr" />
     <Folder Include="src\sys" />
     <Folder Include="src\sys\start" />
     <Folder Include="src\util" />
-    <Folder Include="src\util\memory" />
-    <Folder Include="src\util\debug_monitor" />
-    <Folder Include="src\util\STL_C++11_Compatibility\impl" />
-    <Folder Include="src\util\STL_C++17_Compatibility" />
-    <Folder Include="src\util\STL_C++11_Compatibility" />
     <Folder Include="src\util\STL" />
     <Folder Include="src\util\STL\impl" />
     <Folder Include="src\util\STL\impl\avr" />
     <Folder Include="src\util\utility" />
-    <Folder Include="target" />
     <Folder Include="target\micros" />
     <Folder Include="target\micros\avr" />
     <Folder Include="target\micros\avr\make" />
@@ -162,6 +184,42 @@
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\math\calculus\derivative.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\calculus\integral.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\checksums\crc\crc32.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\constants\constants.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\constants\constant_functions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\extended_complex\extended_complex.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\filters\fir_order_n.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\fixed_point\fixed_point.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\functions\math_functions_bessel.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\functions\math_functions_hypergeometric.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\functions\math_functions_legendre.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\wide_integer\generic_template_uintwide_t.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_benchmark.h">
       <SubType>compile</SubType>
     </Compile>
@@ -169,6 +227,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_eep.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_gpt.cpp">
@@ -237,6 +301,9 @@
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\mcal_pwm_template.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\mcal_reg_access_template.h">
       <SubType>compile</SubType>
     </Compile>
@@ -267,12 +334,6 @@
     <Compile Include="src\sys\start\sys_start.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\debug_monitor\util_single_pin_debug_monitor.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\debug_monitor\util_single_pin_debug_monitor_base.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\memory\util_factory.h">
       <SubType>compile</SubType>
     </Compile>
@@ -285,13 +346,10 @@
     <Compile Include="src\util\memory\util_static_allocator.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\algorithm_impl.h">
+    <Compile Include="src\util\STD_LIBC\memory.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\array_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\atomic_impl.h">
+    <Compile Include="src\util\STL\impl\allocator_impl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
@@ -300,121 +358,25 @@
     <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\basic_string_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cfloat_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\char_traits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\chrono_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\climits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cmath_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
+    <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\complex_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cstdbool_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cstddef_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\cstdint_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\ctime_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\functional_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\initializer_list_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\iterator_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\limits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\memory_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\numeric_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\pair_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\ratio_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\tuple_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\type_traits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\utility_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\vector_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\xalgorithm_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\xallocator_impl.h">
+    <Compile Include="src\util\STL\impl\stl_local_noexcept.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\xcmath_impl.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\xiterator_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\xnumeric_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\xutils_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL\impl\_stl_local_constexpr.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\STL\time.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL_C++11_Compatibility\impl\chrono_impl.h">
+    <Compile Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdbool_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL_C++11_Compatibility\impl\cstdint_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL_C++11_Compatibility\impl\ratio_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL_C++11_Compatibility\impl\type_traits_impl.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL_C++17_Compatibility\stdfloat.h">
+    <Compile Include="src\util\utility\util_alignas.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_bit_mask.h">
@@ -426,10 +388,19 @@
     <Compile Include="src\util\utility\util_communication.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_countof.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_dynamic_array.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_dynamic_bitset.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_noexcept.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_noncopyable.h">
@@ -438,22 +409,19 @@
     <Compile Include="src\util\utility\util_nothing.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\utility\util_null_ptr_workaround.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\utility\util_point.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_stopwatch.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\utility\util_swdm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\utility\util_time.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_two_part_data_manipulation.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\utility\util_type.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_utype_helper.h">
@@ -474,6 +442,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\any">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\array">
@@ -507,6 +478,9 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\cstdint">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdlib">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\ctime">
@@ -548,22 +522,7 @@
     <None Include="src\util\STL\vector">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\util\STL_C++11_Compatibility\chrono">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdbool">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\cstdint">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\ratio">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++11_Compatibility\type_traits">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++17_Compatibility\cstdfloat">
+    <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
       <SubType>compile</SubType>
     </None>
     <None Include="target\micros\avr\make\avr.ld">
