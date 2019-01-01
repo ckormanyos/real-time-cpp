@@ -65,10 +65,10 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x0034, reserved
   __pend_sv_handler,         // 0x0038, pending svc
   __sys_tick_handler,        // 0x003C, system tick handler
-  __vector_unused_irq,       // 0x0040, wwdg window watchdog
-  __vector_unused_irq,       // 0x0044, pvd pvd through exti line detection
-  __vector_unused_irq,       // 0x0048, tamp_stamp tamper and timestamp on exti line
-  __vector_unused_irq,       // 0x004C, rtc_wkup rtc wakeup through the exti line
+  __vector_unused_irq,       // 0x0040, window watchdog
+  __vector_unused_irq,       // 0x0044, pvd through exti line detection
+  __vector_unused_irq,       // 0x0048, tamp_stamp on exti line
+  __vector_unused_irq,       // 0x004C, rtc_wkup wakeup through the exti line
   __vector_unused_irq,       // 0x0050, flash
   __vector_unused_irq,       // 0x0054, rcc
   __vector_unused_irq,       // 0x0058, exti0 line0
@@ -83,16 +83,16 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x007C, dma1 stream4
   __vector_unused_irq,       // 0x0080, dma1 stream5
   __vector_unused_irq,       // 0x0084, dma1 stream6
-  __vector_unused_irq,       // 0x0088, adc adc1, adc2 and adc3 global
+  __vector_unused_irq,       // 0x0088, adc1, adc2 and adc3 global
   __vector_unused_irq,       // 0x008C, can1_tx
   __vector_unused_irq,       // 0x0090, can1_rx0
   __vector_unused_irq,       // 0x0094, can1_rx1
   __vector_unused_irq,       // 0x0098, can1_sce
   __vector_unused_irq,       // 0x009C, exti9_5 exti line[9:5]
-  __vector_unused_irq,       // 0x00A0, tim1_brk_tim9 tim1 break and tim9
-  __vector_unused_irq,       // 0x00A4, tim1_up_tim10 tim1 update and tim10
-  __vector_unused_irq,       // 0x00A8, tim1_trg_com_tim11 tim1 trigger and commutation, and tim11
-  __vector_unused_irq,       // 0x00AC, tim1_cc tim1 capture compare
+  __vector_unused_irq,       // 0x00A0, tim1 break and tim9
+  __vector_unused_irq,       // 0x00A4, tim1 update and tim10
+  __vector_unused_irq,       // 0x00A8, tim1 trigger and commutation, and tim11
+  __vector_unused_irq,       // 0x00AC, tim1 capture compare
   __vector_unused_irq,       // 0x00B0, tim2
   __vector_unused_irq,       // 0x00B4, tim3
   __vector_timer4,           // 0x00B8, tim4
@@ -105,12 +105,12 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x00D4, usart1
   __vector_unused_irq,       // 0x00D8, usart2
   __vector_unused_irq,       // 0x00DC, usart3
-  __vector_unused_irq,       // 0x00E0, exti15_10 exti line[15:10]
-  __vector_unused_irq,       // 0x00E4, rtc_alarm rtc alarms (a and b) through exti line
-  __vector_unused_irq,       // 0x00E8, otg_fs wkup usb on-the-go fs wakeup through exti line
-  __vector_unused_irq,       // 0x00EC, tim8_brk_tim12 tim8 break and tim12
-  __vector_unused_irq,       // 0x00F0, tim8_up_tim13 tim8 update and tim13
-  __vector_unused_irq,       // 0x00F4, tim8_trg_com_tim14 tim8 trigger and commutation, and tim14
+  __vector_unused_irq,       // 0x00E0, exti line[15:10]
+  __vector_unused_irq,       // 0x00E4, rtc alarms (a and b) through exti line
+  __vector_unused_irq,       // 0x00E8, usb on-the-go fs wakeup through exti line
+  __vector_unused_irq,       // 0x00EC, tim8 break and tim12
+  __vector_unused_irq,       // 0x00F0, tim8 update and tim13
+  __vector_unused_irq,       // 0x00F4, tim8 trigger and commutation, and tim14
   __vector_unused_irq,       // 0x00F8, tim8 capture compare
   __vector_unused_irq,       // 0x00FC, dma1_stream7
   __vector_unused_irq,       // 0x0100, fmc
@@ -119,7 +119,7 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x010C, spi3
   __vector_unused_irq,       // 0x0110, uart4
   __vector_unused_irq,       // 0x0114, uart5
-  __vector_unused_irq,       // 0x0118, tim6_dac tim6, dac1 and dac2 underrun error
+  __vector_unused_irq,       // 0x0118, tim6_dac, dac1 and dac2 underrun error
   __vector_unused_irq,       // 0x011C, tim7
   __vector_unused_irq,       // 0x0120, dma2 stream0
   __vector_unused_irq,       // 0x0124, dma2 stream1
@@ -132,17 +132,17 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x0140, can2_rx0
   __vector_unused_irq,       // 0x0144, can2_rx1
   __vector_unused_irq,       // 0x0148, can2_sce
-  __vector_unused_irq,       // 0x014C, otg_fs usb on the go fs
+  __vector_unused_irq,       // 0x014C, usb on the go fs
   __vector_unused_irq,       // 0x0150, dma2 stream5
   __vector_unused_irq,       // 0x0154, dma2 stream6
   __vector_unused_irq,       // 0x0158, dma2 stream7
   __vector_unused_irq,       // 0x015C, usart6 usart6
   __vector_unused_irq,       // 0x0160, i2c3 event
   __vector_unused_irq,       // 0x0164, i2c3 error
-  __vector_unused_irq,       // 0x0168, otg_hs_ep1_out usb on the go hs end point 1 out
-  __vector_unused_irq,       // 0x016C, otg_hs_ep1_in usb on the go hs end point 1 in
-  __vector_unused_irq,       // 0x0170, otg_hs_wkup usb on the go hs wakeup through exti
-  __vector_unused_irq,       // 0x0174, otg_hs usb on the go hs
+  __vector_unused_irq,       // 0x0168, usb on the go hs end point 1 out
+  __vector_unused_irq,       // 0x016C, usb on the go hs end point 1 in
+  __vector_unused_irq,       // 0x0170, usb on the go hs wakeup through exti
+  __vector_unused_irq,       // 0x0174, usb on the go hs
   __vector_unused_irq,       // 0x0178, dcmi
   __vector_unused_irq,       // 0x017C, reserved
   __vector_unused_irq,       // 0x0180, reserved
