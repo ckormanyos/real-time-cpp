@@ -18,15 +18,15 @@ void do_something()
   // Capture x and y by reference.
   // The lambda expression has no input parameters.
   // The lambda expression returns the float value
-  // of the hypotenuse.
-
-  const float h
-    = [&x, &y]() -> float
-      {
-        return std::sqrt((x * x) + (y * y));
-      }();
+  // of the hypotenuse h.
 
   // The value of h is 5.
+  const float h =
+    [&x, &y]() -> float
+    {
+      return std::sqrt((x * x) + (y * y));
+    }();
+
   std::cout << "h: " << h << std::endl;
 }
 
