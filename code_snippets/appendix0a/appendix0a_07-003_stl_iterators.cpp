@@ -22,25 +22,30 @@ void do_something()
 
   container_type cnt = {{ 1, 2, 3 }};
 
-        iterator_type nonconst_iterator  = cnt.begin();
-  const_iterator_type    const_iterator1 = cnt.begin();
-  const_iterator_type    const_iterator2 = cnt.cbegin();
+  iterator_type nonconst_iterator =
+    cnt.begin();
 
-  // Write of non-constant iterator is OK.
+  const_iterator_type const_iterator1 =
+    cnt.begin();
+
+  const_iterator_type const_iterator2 =
+    cnt.cbegin();
+
+  // Write via non-constant iterator: OK.
   *(nonconst_iterator) = 5;
 
-  // Read of constant iterator is OK.
-  int five_1 = *const_iterator1; // OK.
-  int five_2 = *const_iterator2; // OK.
+  // Read via constant iterator: OK.
+  const int n1 = *const_iterator1; // OK.
+  const int n2 = *const_iterator2; // OK.
 
-  // Write of constant iterator is not OK.
-  //*(const_iterator1) = 5; // Error!
+  // Write via constant iterator: Error.
+  //*(const_iterator1) = 5;
 
-  // Write of constant iterator is not OK.
-  //*(const_iterator2) = 5; // Error!
+  // Write via constant iterator: Error!
+  //*(const_iterator2) = 5;
 
-  std::cout << "five_1: " << five_1 << std::endl;
-  std::cout << "five_2: " << five_2 << std::endl;
+  std::cout << "n1: " << n1 << std::endl;
+  std::cout << "n2: " << n2 << std::endl;
 }
 
 int main()
