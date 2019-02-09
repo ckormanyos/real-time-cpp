@@ -5,17 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-001_static_cast.cpp
+// chapter0a_04-001_static_assert.cpp
 
 #include <iostream>
 
-float f = 3.1415926535'8979323846'264338328F;
+static_assert(true, "ok");
 
-// The value of n is 3.
-int n = static_cast<int>(f);
+// This static_assert should result in a compile-time error.
+//static_assert(false, "not ok");
 
 int main()
 {
-  std::cout << "f: " << f << std::endl;
-  std::cout << "n: " << n << std::endl;
+  std::cout << "static_assert: ok" << std::endl;
 }

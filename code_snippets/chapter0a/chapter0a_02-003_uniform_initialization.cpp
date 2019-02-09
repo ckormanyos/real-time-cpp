@@ -5,17 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-001_static_cast.cpp
+// chapter0a_02-001_uniform_initialization.cpp
 
 #include <iostream>
 
-float f = 3.1415926535'8979323846'264338328F;
+int n { 123 };
 
-// The value of n is 3.
-int n = static_cast<int>(f);
+float f { 3.1415926535'8979323846F };
 
 int main()
 {
-  std::cout << "f: " << f << std::endl;
   std::cout << "n: " << n << std::endl;
+  std::cout << "f: " << f << std::endl;
 }

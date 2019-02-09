@@ -5,17 +5,28 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-001_static_cast.cpp
+// chapter0a_02-004_uniform_initialization.cpp
 
 #include <iostream>
 
-float f = 3.1415926535'8979323846'264338328F;
+struct point
+{
+  point(const int x = 0,
+        const int y = 0) : my_x{x},
+                            my_y{y} { }
 
-// The value of n is 3.
-int n = static_cast<int>(f);
+  int my_x;
+  int my_y;
+};
+
+point pt
+{
+  123,
+  456
+};
 
 int main()
 {
-  std::cout << "f: " << f << std::endl;
-  std::cout << "n: " << n << std::endl;
+  std::cout << "pt.my_x: " << pt.my_x << std::endl;
+  std::cout << "pt.my_y: " << pt.my_y << std::endl;
 }

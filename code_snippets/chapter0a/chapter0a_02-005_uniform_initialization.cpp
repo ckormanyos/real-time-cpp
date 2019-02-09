@@ -5,17 +5,31 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-001_static_cast.cpp
+// chapter0a_02-005_uniform_initialization.cpp
 
+#include <array>
 #include <iostream>
+#include <vector>
 
-float f = 3.1415926535'8979323846'264338328F;
+std::array<int, 3U> a
+{
+  { 1, 2, 3 }
+};
 
-// The value of n is 3.
-int n = static_cast<int>(f);
+std::vector<char> v
+{
+  { 'a', 'b', 'c' }
+};
 
 int main()
 {
-  std::cout << "f: " << f << std::endl;
-  std::cout << "n: " << n << std::endl;
+  for(int element_a : a)
+  {
+    std::cout << element_a << std::endl;
+  }
+
+  for(char element_v : v)
+  {
+    std::cout << element_v << std::endl;
+  }
 }
