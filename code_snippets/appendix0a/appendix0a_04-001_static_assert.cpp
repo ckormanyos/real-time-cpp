@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_04-001_static_assert.cpp
+// appendix0a_04-001_static_assert.cpp
 
 #include <iostream>
 

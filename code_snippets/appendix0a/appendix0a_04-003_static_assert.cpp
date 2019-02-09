@@ -5,16 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_04-002_static_assert.cpp
+// appendix0a_04-003_static_assert.cpp
 
 #include <iostream>
 
 constexpr unsigned int version = 3U;
 
-// Print error message if version is less than 2.
-static_assert(version >= 2U, "Version is too low!");
+// Print default error message if version is not 3.
+static_assert(version == 3U);
 
 int main()
 {
-  std::cout << "version >= 2U: ok" << std::endl;
+  std::cout << "version == 3U: ok" << std::endl;
 }

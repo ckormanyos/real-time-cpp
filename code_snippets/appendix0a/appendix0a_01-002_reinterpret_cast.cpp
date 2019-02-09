@@ -5,16 +5,15 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-002_reinterpret_cast.cpp
+// appendix0a_01-002_reinterpret_cast.cpp
 
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 
-// chapter0a_01-002_reinterpret_cast.cpp
-
-// Here, port b is uint8 with a statically determined address.
-// The address of portb is determined by the compiler/linker.
+// Here, portb is of type std::uint8_t having
+// a statically determined address, where the
+// address is determined by the compiler/linker.
 std::uint8_t portb;
 
 int main()

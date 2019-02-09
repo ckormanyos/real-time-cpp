@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_02-002_uniform_initialization.cpp
+// appendix0a_02-002_uniform_initialization.cpp
 
 #include <iostream>
 

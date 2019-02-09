@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_05-001_numeric_limits.cpp
+// appendix0a_05-001_numeric_limits.cpp
 
 // NOTE: This file contains a non-standard extension
 // of namespace std for purpose of example only.

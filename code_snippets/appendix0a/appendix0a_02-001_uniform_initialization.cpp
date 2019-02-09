@@ -5,16 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_04-003_static_assert.cpp
+// appendix0a_02-001_uniform_initialization.cpp
 
 #include <iostream>
 
-constexpr unsigned int version = 3U;
+int n { 123 };
 
-// Print default error message if version is not 3.
-static_assert(version == 3U);
+float f { 3.1415926535'8979323846F };
 
 int main()
 {
-  std::cout << "version == 3U: ok" << std::endl;
+  std::cout << "n: " << n << std::endl;
+  std::cout << "f: " << f << std::endl;
 }

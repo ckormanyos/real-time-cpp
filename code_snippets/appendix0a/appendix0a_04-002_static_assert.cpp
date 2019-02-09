@@ -5,17 +5,16 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_01-001_static_cast.cpp
+// appendix0a_04-002_static_assert.cpp
 
 #include <iostream>
 
-float f = 3.1415926535'8979323846'264338328F;
+constexpr unsigned int version = 3U;
 
-// The value of n is 3.
-int n = static_cast<int>(f);
+// Print error message if version is less than 2.
+static_assert(version >= 2U, "Version is too low!");
 
 int main()
 {
-  std::cout << "f: " << f << std::endl;
-  std::cout << "n: " << n << std::endl;
+  std::cout << "version >= 2U: ok" << std::endl;
 }

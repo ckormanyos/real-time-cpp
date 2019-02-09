@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_03-001_function_overloading.cpp
+// appendix0a_03-001_function_overloading.cpp
 
 #include <iostream>
 

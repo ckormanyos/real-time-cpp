@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_05-002_numeric_limits.cpp
+// appendix0a_05-002_numeric_limits.cpp
 
 #include <cstdint>
 #include <limits>
@@ -38,8 +38,8 @@ constexpr std::uint64_t hi64 =
 
 int main()
 {
-  std::cout << "hi08: 0x" << std::hex << std::setfill(char('0')) << std::setw( 2) << std::uintmax_t(hi08) << std::endl;
-  std::cout << "hi16: 0x" << std::hex << std::setfill(char('0')) << std::setw( 4) << std::uintmax_t(hi16) << std::endl;
-  std::cout << "hi32: 0x" << std::hex << std::setfill(char('0')) << std::setw( 8) << std::uintmax_t(hi32) << std::endl;
-  std::cout << "hi64: 0x" << std::hex << std::setfill(char('0')) << std::setw(16) << std::uintmax_t(hi64) << std::endl;
+  std::cout << "hi08: 0x" << std::hex << std::uppercase << std::setw( 2) << std::setfill(char('0')) << std::uintmax_t(hi08) << std::endl;
+  std::cout << "hi16: 0x" << std::hex << std::uppercase << std::setw( 4) << std::setfill(char('0')) << std::uintmax_t(hi16) << std::endl;
+  std::cout << "hi32: 0x" << std::hex << std::uppercase << std::setw( 8) << std::setfill(char('0')) << std::uintmax_t(hi32) << std::endl;
+  std::cout << "hi64: 0x" << std::hex << std::uppercase << std::setw(16) << std::setfill(char('0')) << std::uintmax_t(hi64) << std::endl;
 }

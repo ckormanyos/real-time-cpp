@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_13-003_tuple_get_by_type.cpp
+// appendix0a_13-003_tuple_get_by_type.cpp
 
 #include <tuple>
 #include <iostream>

@@ -5,31 +5,28 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_02-005_uniform_initialization.cpp
+// appendix0a_02-004_uniform_initialization.cpp
 
-#include <array>
 #include <iostream>
-#include <vector>
 
-std::array<int, 3U> a
+struct point
 {
-  { 1, 2, 3 }
+  point(const int x = 0,
+        const int y = 0) : my_x{x},
+                            my_y{y} { }
+
+  int my_x;
+  int my_y;
 };
 
-std::vector<char> v
+point pt
 {
-  { 'a', 'b', 'c' }
+  123,
+  456
 };
 
 int main()
 {
-  for(int element_a : a)
-  {
-    std::cout << element_a << std::endl;
-  }
-
-  for(char element_v : v)
-  {
-    std::cout << element_v << std::endl;
-  }
+  std::cout << "pt.my_x: " << pt.my_x << std::endl;
+  std::cout << "pt.my_y: " << pt.my_y << std::endl;
 }

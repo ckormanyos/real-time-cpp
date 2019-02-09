@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter0a_17-001_structured_binding_declarations.cpp
+// appendix0a_17-001_structured_binding_declarations.cpp
 
 #include <algorithm>
 #include <iostream>
