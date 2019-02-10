@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// appendix0a_13-001_tuple_basics.cpp
+// appendix0a_13-002_tuple_assign.cpp
 
 #include <iostream>
 #include <tuple>
@@ -14,8 +14,10 @@ void do_something()
 {
   using tuple_type = std::tuple<float, char, int>;
 
-  // Make a tuple from float, char and int.
-  tuple_type t(1.23F, char('a'), 456);
+  tuple_type t;
+
+  // Assign the tuple t using std::make_tuple.
+  t = std::make_tuple(1.23F, char('a'), 456);
 
   // Get element 0 of the tuple (1.23F).
   const float f = std::get<0>(t);
@@ -29,18 +31,6 @@ void do_something()
   std::cout << "f from tuple t : " << f << std::endl;
   std::cout << "c from tuple t : " << c << std::endl;
   std::cout << "n from tuple t : " << n << std::endl;
-
-  // Obtain a the type of a tuple element.
-  using tuple_float_type =
-    std::tuple_element<0, tuple_type>::type;
-
-  static_assert(std::is_same<float,
-                tuple_float_type>::value);
-
-  // Get the size of the tuple.
-  int size = std::tuple_size<tuple_type>::value;
-
-  std::cout << "size of tuple t: " << size << std::endl;
 }
 
 int main()
