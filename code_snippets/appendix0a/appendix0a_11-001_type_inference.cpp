@@ -5,12 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// appendix0a_11-001_type_inference.cpp
+// appendix0a_10-002_initializer_list.cpp
 
 #include <cstdint>
 #include <initializer_list>
 #include <iostream>
-#include <numeric>
+
+// appendix0a_11-001_type_inference.cpp
 
 // The type of n is int.
 auto n = 3;
@@ -26,9 +27,5 @@ auto lst =
 
 int main()
 {
-  std::cout << "n: " << n << std::endl;
-
-  std::cout << "u: " << std::uint32_t(u) << std::endl;
-
-  std::cout << "sum: " << std::accumulate(lst.begin(), lst.end(), 0) << std::endl;
+  std::cout << "sum: " << sum << std::endl;
 }
