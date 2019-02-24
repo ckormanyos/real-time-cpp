@@ -137,7 +137,8 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32
+              -ftemplate-depth=32               \
+              -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
@@ -145,7 +146,7 @@ AFLAGS      = $(GCCFLAGS)                       \
               -x assembler
 
 LDFLAGS     = $(GCCFLAGS)                       \
-              $(TGT_LFLAGS)                     \
+              $(TGT_LDFLAGS)                    \
               -x none                           \
               -nostdlib                         \
               -nostartfiles                     \

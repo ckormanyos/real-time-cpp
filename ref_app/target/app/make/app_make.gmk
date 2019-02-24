@@ -142,6 +142,7 @@ CFLAGS      = $(GCCFLAGS)                       \
 CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
               -x c++                            \
+              -fno-rtti                         \
               -fstrict-enums                    \
               -fno-use-cxa-atexit               \
               -fno-use-cxa-get-exception-ptr    \

@@ -36,7 +36,7 @@
           first,
           last,
           UINT32_C(0xFFFFFFFF),
-          [](std::uint32_t& crc, const local_value_type& data) -> std::uint32_t
+          [](std::uint32_t crc, const local_value_type& data) -> std::uint32_t
           {
             // CRC32/MPEG2 Table based on nibbles.
             const std::array<std::uint32_t, 16U> table =
@@ -56,7 +56,7 @@
             std::uint_fast8_t index;
 
             // Perform the CRC32/MPEG2 algorithm.
-            index = ((std::uint_fast8_t(crc  >> 28)) ^ (std::uint_fast8_t(the_byte >>  4))) & UINT8_C(0x0F);
+            index = ((std::uint_fast8_t(crc >> 28)) ^ (std::uint_fast8_t(the_byte >>  4))) & UINT8_C(0x0F);
 
             crc   = std::uint32_t(std::uint32_t(crc << 4) & UINT32_C(0xFFFFFFF0)) ^ table[index];
 

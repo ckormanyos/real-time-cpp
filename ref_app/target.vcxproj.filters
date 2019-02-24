@@ -121,6 +121,15 @@
     <Filter Include="micros\stm32f446\startup">
       <UniqueIdentifier>{a80ed04d-f118-4417-82bb-954d4a5faf28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa32">
+      <UniqueIdentifier>{07f4f72b-d45f-439f-880d-6756cb21b73f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa32\startup">
+      <UniqueIdentifier>{53e83863-577c-4d22-8e58-93f6c9f2c1f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa32\_make">
+      <UniqueIdentifier>{dd0fe2a6-0b42-4cee-a106-84f66171e078}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -260,6 +269,15 @@
     </None>
     <None Include="target\micros\stm32f446\make\stm32f446_flags.gmk">
       <Filter>micros\stm32f446\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\xtensa32.ld">
+      <Filter>micros\xtensa32\_make</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\xtensa32_files.gmk">
+      <Filter>micros\xtensa32\_make</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\xtensa32_flags.gmk">
+      <Filter>micros\xtensa32\_make</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +421,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f446\startup\int_vect.cpp">
       <Filter>micros\stm32f446\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\crt0.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\crt0_init_ram.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\crt1.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\int_vect.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
