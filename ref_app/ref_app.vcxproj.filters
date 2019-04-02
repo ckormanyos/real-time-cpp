@@ -1140,15 +1140,6 @@
     <ClInclude Include="src\util\utility\util_swdm.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_debug_monitor.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f100\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\mcal_debug_monitor.h">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\extended_complex\extended_complex.h">
       <Filter>src\math\extended_complex</Filter>
     </ClInclude>
