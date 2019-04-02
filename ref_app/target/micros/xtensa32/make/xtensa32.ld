@@ -13,21 +13,20 @@ INPUT(libc.a libm.a libgcc.a)
 /* TBD: Finish the linker definition file. */
 /* See also *.ld in a location such as: */
 /* C:\Users\christopher\AppData\Local\Arduino15\packages\esp32\hardware\esp32\1.0.1\tools\sdk\ld */
+/* See also https://exploreembedded.com/wiki/Setting_up_Bare_Metal_Development_Toolchain_for_ESP32 */
+/* See also: https://github.com/nkolban/esp32-snippets */
 
-/* The beginning and end of the program ROM area */
-/* Set up a ROM area with a size of 32K - 4 - 18 */
-_rom_begin = 0x400D0018;
-_rom_end   = 0x400D7FFC;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x400D0018, LENGTH = 32K - 4 - 18
-  RAM(rwx) : ORIGIN = 0x3FFB0000, LENGTH = 0x8000
+  IVEC(rx) : ORIGIN = 0x40000000, LENGTH = 1024
+  ROM(rx)  : ORIGIN = 0x40210000, LENGTH = 32K - 4
+  RAM(rwx) : ORIGIN = 0x40100000, LENGTH = 0x8000
 }
 
 SECTIONS
 {
-  . = 0x400D0018;
+  . = 0x40000000;
   . = ALIGN(4);
 
   /* ISR vectors */
@@ -36,7 +35,10 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > IVEC = 0xAAAA
+
+  . = 0x40210000;
+  . = ALIGN(4);
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -63,7 +65,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  . = 0x3FFB0000;
+  . = 0x40100000;
   . = ALIGN(4);
 
   /* The ROM-to-RAM initialized data section */
