@@ -18,6 +18,9 @@
       constexpr std::uint32_t periph_base     = UINT32_C(0x40000000);
       constexpr std::uint32_t scs_base        = UINT32_C(0xE000E000);
 
+      // System tick base address.
+      constexpr std::uint32_t stk_base        = UINT32_C(0xE000E010);
+
       // Individual unit base addresses.
       constexpr std::uint32_t scb_base        = scs_base        + UINT32_C(0x00000D00);
       constexpr std::uint32_t nvic_base       = scs_base        + UINT32_C(0x00000100);
@@ -177,6 +180,12 @@
       constexpr std::uint32_t nvic_icpr       = nvic_base       + UINT32_C(0x0180);  // 32-bit registers : Interrupt clear pending registers.
       constexpr std::uint32_t nvic_iabr       = nvic_base       + UINT32_C(0x0200);  // 32-bit registers : Interrupt active bit registers.
       constexpr std::uint32_t nvic_ip         = nvic_base       + UINT32_C(0x0300);  //  8-bit registers : Interrupt priority registers (each one 8 bits wide).
+
+      // System tick registers.
+      constexpr std::uint32_t stk_ctrl        = stk_base        + UINT32_C(0x0000); // Privileged: SysTick control and status register.
+      constexpr std::uint32_t stk_load        = stk_base        + UINT32_C(0x0004); // Privileged: SysTick reload value register.
+      constexpr std::uint32_t stk_val         = stk_base        + UINT32_C(0x0008); // Privileged: SysTick current value register.
+      constexpr std::uint32_t stk_calib       = stk_base        + UINT32_C(0x000C); // Privileged: SysTick calibration value register.
     }
   }
 
