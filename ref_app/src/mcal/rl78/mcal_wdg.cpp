@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 #include <mcal_wdg.h>
 
 void mcal::wdg::init(const config_type*)

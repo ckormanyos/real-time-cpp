@@ -7,7 +7,7 @@
 //
 
 #include <mcal_gpt.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {
@@ -41,7 +41,7 @@ void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1()
   system_tick += timer1_period_in_microseconds;
 
   // Clear the timer1 interrupt request flag.
-  mcal::reg::access<std::uint32_t,
+  mcal::reg::reg_access_static<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::ifs0,
                     UINT32_C(4)>::bit_clr();
@@ -52,46 +52,46 @@ void mcal::gpt::init(const config_type*)
   if(gpt_is_initialized() == false)
   {
     // Setup timer1 for basic operation with a prescaler of 1.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::t1con,
-                      UINT32_C(0)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::t1con,
+                                 UINT32_C(0)>::reg_set();
 
     // Set the timer1 period.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::pr1,
-                      static_cast<std::uint32_t>(timer1_period_in_ticks)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::pr1,
+                                 static_cast<std::uint32_t>(timer1_period_in_ticks)>::reg_set();
 
     // Set the timer1 interrupt priority to 6.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::ipc1,
-                      static_cast<std::uint32_t>(UINT32_C(6) << 2)>::reg_or();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::ipc1,
+                                 static_cast<std::uint32_t>(UINT32_C(6) << 2)>::reg_or();
 
     // Set the timer1 interrupt subpriority to 0.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::ipc1,
-                      static_cast<std::uint32_t>(~UINT32_C(3))>::reg_and();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::ipc1,
+                                 static_cast<std::uint32_t>(~UINT32_C(3))>::reg_and();
 
     // Clear the timer1 interrupt request flag.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::ifs0,
-                      UINT32_C(4)>::bit_clr();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::ifs0,
+                                 UINT32_C(4)>::bit_clr();
 
     // Enable the timer1 interrupt.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::iec0,
-                      UINT32_C(4)>::bit_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::iec0,
+                                 UINT32_C(4)>::bit_set();
 
     // Start timer1 counting.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::t1con,
-                      UINT32_C(15)>::bit_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::t1con,
+                                 UINT32_C(15)>::bit_set();
 
     gpt_is_initialized() = true;
   }
@@ -107,11 +107,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint16_t timer_register_type;
 
     // Do the first read of the timer1 counter and the system tick.
-    const timer_register_type   tmr1_cnt_1 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
+    const timer_register_type   tmr1_cnt_1 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the timer1 counter.
-    const timer_register_type   tmr1_cnt_2 = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
+    const timer_register_type   tmr1_cnt_2 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tmr1>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick

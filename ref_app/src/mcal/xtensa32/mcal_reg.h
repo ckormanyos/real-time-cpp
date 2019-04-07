@@ -19,4 +19,7 @@
     }
   }
 
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2019_02_24_H_

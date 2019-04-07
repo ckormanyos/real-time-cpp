@@ -8,7 +8,7 @@
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {
@@ -33,16 +33,16 @@ extern "C" void __vector_timer7();
 void __vector_timer7()
 {
   // Disable the dmtimer7 interrupts.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::dmtimer7::irqenable_clr,
-                    UINT32_C(7)>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::dmtimer7::irqenable_clr,
+                               UINT32_C(7)>::reg_set();
 
   // Clear the status of the dmtimer7 interrupt flags.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::dmtimer7::irqstatus,
-                    UINT32_C(7)>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::dmtimer7::irqstatus,
+                               UINT32_C(7)>::reg_set();
 
   // Increment the 64-bit system tick with the timer7 reload value
   // divided by the timer7 frequency. This represents a time span
@@ -50,31 +50,31 @@ void __vector_timer7()
   system_tick += std::uint32_t(timer7_reload_value / timer7_frequency_khz);
 
   // Signal the end of the dmtimer7 interrupt.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::dmtimer7::irq_eoi,
-                    UINT32_C(0)>::bit_clr();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::dmtimer7::irq_eoi,
+                               UINT32_C(0)>::bit_clr();
 
   // Enable the dmtimer7 interrupts.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::dmtimer7::irqenable_set,
-                    UINT32_C(1)>::bit_set();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::dmtimer7::irqenable_set,
+                               UINT32_C(1)>::bit_set();
 }
 
 void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::dmtimer7::tsicr,
-                      UINT32_C(6)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::dmtimer7::tsicr,
+                                 UINT32_C(6)>::reg_set();
 
-    while(mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::dmtimer7::tiocp_cfg,
-                            UINT32_C(0)>::bit_get())
+    while(mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::dmtimer7::tiocp_cfg,
+                                       UINT32_C(0)>::bit_get())
     {
       mcal::cpu::nop();
     }
@@ -85,43 +85,44 @@ void mcal::gpt::init(const config_type*)
                                                         mcal::irq::interrupt_descriptor::route_to_irq>();
 
     // Enable the dmtimer7 overflow interrupt.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::dmtimer7::irqenable_set,
-                      UINT32_C(2)>::reg_msk<UINT32_C(7)>();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::dmtimer7::irqenable_set,
+                                 UINT32_C(2)>::reg_msk<UINT32_C(7)>();
 
     // Set the dmtimer7 counter register.
-    while(mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::dmtimer7::twps,
-                            UINT32_C(0)>::bit_get())
+    while(mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::dmtimer7::twps,
+                                       UINT32_C(0)>::bit_get())
     {
       mcal::cpu::nop();
     }
 
     // Set the dmtimer7 reload register.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::dmtimer7::tcrr,
-                      static_cast<std::uint32_t>(UINT64_C(0x100000000) - timer7_reload_value)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::dmtimer7::tcrr,
+                                 static_cast<std::uint32_t>(UINT64_C(0x100000000) - timer7_reload_value)>::reg_set();
 
-    while(mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            mcal::reg::dmtimer7::twps,
-                            UINT32_C(0)>::bit_get())
+    while(mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::dmtimer7::twps,
+                                       UINT32_C(0)>::bit_get())
     {
       mcal::cpu::nop();
     }
 
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::dmtimer7::tldr,
-                      static_cast<std::uint32_t>(UINT64_C(0x100000000) - timer7_reload_value)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::dmtimer7::tldr,
+                                 static_cast<std::uint32_t>(UINT64_C(0x100000000) - timer7_reload_value)>::reg_set();
 
     // Setup auto reload mode and start dmtimer7, with no prescaler.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t, mcal::reg::dmtimer7::tclr,
-                      UINT32_C(3)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::dmtimer7::tclr,
+                                 UINT32_C(3)>::reg_set();
 
     gpt_is_initialized() = true;
   }
@@ -137,11 +138,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint32_t timer_register_type;
 
     // Do the first read of the dmtimer7 counter and the system tick.
-    const timer_register_type tim7_cnt_1   = timer7_reload_value + mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
+    const timer_register_type tim7_cnt_1   = timer7_reload_value + mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the dmtimer7 counter.
-    const timer_register_type tim7_cnt_2   = timer7_reload_value + mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
+    const timer_register_type tim7_cnt_2   = timer7_reload_value + mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick

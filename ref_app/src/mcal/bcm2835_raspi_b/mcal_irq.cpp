@@ -8,7 +8,7 @@
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 void mcal::irq::init(const config_type*)
 {
@@ -43,9 +43,10 @@ void mcal::irq::secure::int_vect_irq_handler_callback()
   // Query and clear the active interrupt bit(s).
 
   // Query the interrupt source.
-  const std::uint32_t pending_irq_value = mcal::reg::access<std::uint32_t,
-                                                            std::uint32_t,
-                                                            mcal::reg::rpi_interrupt_irq_basic_pending>::reg_get();
+  const std::uint32_t pending_irq_value =
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rpi_interrupt_irq_basic_pending>::reg_get();
 
   const bool pending_bit_00_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 0)) != UINT32_C(0));
   const bool pending_bit_01_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 1)) != UINT32_C(0));

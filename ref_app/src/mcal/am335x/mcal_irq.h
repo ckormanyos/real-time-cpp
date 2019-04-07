@@ -11,7 +11,8 @@
 
   #include <cstdint>
   #include <cstddef>
-  #include <mcal_reg_access.h>
+
+  #include <mcal_reg.h>
 
   namespace mcal
   {
@@ -63,10 +64,10 @@
           constexpr std::uint32_t intc_ilr_reg_addr = std::uint32_t(  mcal::reg::intc::ilr_base_0x80
                                                                     + std::uint32_t(isr_number * UINT32_C(4)));
 
-          mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            intc_ilr_reg_addr,
-                            std::uint32_t(priority_bits | routing_bits)>::reg_set();
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       intc_ilr_reg_addr,
+                                       std::uint32_t(priority_bits | routing_bits)>::reg_set();
 
           // Enable the interrupt by setting the appropriate bits
           // in the corresponding mir_clear register.
@@ -76,10 +77,10 @@
                                                                      + std::uint32_t(intc_sys_reg_index * UINT32_C(0x20))
                                                                      + mcal::reg::intc::sys::mir_clear);
 
-          mcal::reg::access<std::uint32_t,
-                            std::uint32_t,
-                            intc_sys_reg_addr,
-                            intc_sys_reg_bpos>::bit_set();
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       intc_sys_reg_addr,
+                                       intc_sys_reg_bpos>::bit_set();
         }
 
         static constexpr number_type isr_id_emuint             = number_type(  0U);

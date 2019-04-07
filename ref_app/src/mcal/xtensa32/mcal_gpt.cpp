@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include <mcal_gpt.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {

@@ -15,7 +15,6 @@
   #include <mcal_led.h>
   #include <mcal_port.h>
   #include <mcal_pwm.h>
-  #include <mcal_reg_access.h>
   #include <mcal_ser.h>
   #include <mcal_spi.h>
   #include <mcal_wdg.h>

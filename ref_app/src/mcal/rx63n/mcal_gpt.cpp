@@ -6,7 +6,7 @@
 //
 
 #include <mcal_gpt.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {
@@ -37,54 +37,54 @@ void mcal::gpt::init(const config_type*)
   {
     // Protection off
     // SYSTEM.PRCR.WORD = 0xA503u;
-    mcal::reg::access<std::uint32_t,
-                      std::uint16_t,
-                      mcal::reg::prcr,
-                      UINT16_C(0xA503)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint16_t,
+                                 mcal::reg::prcr,
+                                 UINT16_C(0xA503)>::reg_set();
 
     // Activate timer0/timer1 by clearing bit-5 in the module-stop register.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::mstpcra,
-                      UINT8_C(5)>::bit_clr();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::mstpcra,
+                                 UINT8_C(5)>::bit_clr();
 
     // Protection on
     // SYSTEM.PRCR.WORD = 0xA500u;
-    mcal::reg::access<std::uint32_t,
-                      std::uint16_t,
-                      mcal::reg::prcr,
-                      UINT16_C(0xA500)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint16_t,
+                                 mcal::reg::prcr,
+                                 UINT16_C(0xA500)>::reg_set();
 
     // Set timer0 to have an interrupt on overflow.
-    mcal::reg::access<std::uint32_t,
-                      std::uint8_t,
-                      mcal::reg::tmr0_tcr,
-                      UINT8_C(0x20)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint8_t,
+                                 mcal::reg::tmr0_tcr,
+                                 UINT8_C(0x20)>::reg_set();
 
     // Enable the timer0 overflow interrupt at ier15.4.
-    mcal::reg::access<std::uint32_t,
-                      std::uint8_t,
-                      mcal::reg::icu_ier15,
-                      UINT8_C(0x04)>::bit_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint8_t,
+                                 mcal::reg::icu_ier15,
+                                 UINT8_C(0x04)>::bit_set();
 
     // Set the timer0 overflow interrupt priority to 7.
-    mcal::reg::access<std::uint32_t,
-                      std::uint8_t,
-                      mcal::reg::icu_ipr170,
-                      UINT8_C(0x07)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint8_t,
+                                 mcal::reg::icu_ipr170,
+                                 UINT8_C(0x07)>::reg_set();
 
     // Select the internal clock (not external) with the value 8.
     // Also select a prescaler of 32 with the value 3.
-    mcal::reg::access<std::uint32_t,
-                      std::uint8_t,
-                      mcal::reg::tmr0_tccr,
-                      static_cast<std::uint8_t>(UINT8_C(0x08) | UINT8_C(0x03))>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint8_t,
+                                 mcal::reg::tmr0_tccr,
+                                 static_cast<std::uint8_t>(UINT8_C(0x08) | UINT8_C(0x03))>::reg_set();
 
     // Start timer0 counting up.
-    mcal::reg::access<std::uint32_t,
-                      std::uint16_t,
-                      mcal::reg::cmt_cmstr0,
-                      UINT16_C(0x01)>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint16_t,
+                                 mcal::reg::cmt_cmstr0,
+                                 UINT16_C(0x01)>::reg_set();
 
     gpt_is_initialized() = true;
   }
@@ -100,11 +100,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint8_t  timer_register_type;
 
     // Do the first read of the timer0 counter and the system tick.
-    const timer_register_type timer_cnt_1  = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
+    const timer_register_type timer_cnt_1  = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the timer0 counter.
-    const timer_register_type timer_cnt_2  = mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
+    const timer_register_type timer_cnt_2  = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tmr0_tcnt>::reg_get();
 
     // Perform the consistency check.
     mcal::gpt::value_type consistent_microsecond_tick =

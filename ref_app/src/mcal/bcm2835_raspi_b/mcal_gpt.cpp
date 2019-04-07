@@ -7,7 +7,7 @@
 //
 
 #include <mcal_gpt.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {
@@ -54,10 +54,10 @@ namespace
 void mcal::gpt::detail::rpi_armtimer_interrupt_callback()
 {
   // ARM Timer IRQ pending: Clear the rpi_arm timer interrupt request bit.
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::rpi_armtimer_irq_clear,
-                    UINT32_C(1)>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rpi_armtimer_irq_clear,
+                               UINT32_C(1)>::reg_set();
 
   // Increment the system tick.
   system_tick += static_cast<std::uint32_t>(static_cast<std::uint32_t>(system_timer_reload) + UINT32_C(1));
@@ -71,13 +71,13 @@ void mcal::gpt::init(const config_type*)
 
     // Setup the rpi_arm timer period.
     // Timer frequency = (Clock / 1) * 0x10000.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::rpi_armtimer_load,
-                      system_timer_reload>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rpi_armtimer_load,
+                                 system_timer_reload>::reg_set();
 
     // Setup the rpi_arm timer control register.
-    mcal::reg::access<std::uint32_t,
+    mcal::reg::reg_access_static<std::uint32_t,
                       std::uint32_t,
                       mcal::reg::rpi_armtimer_control,
                       (  rpi_armtimer_ctrl_enable
@@ -85,10 +85,10 @@ void mcal::gpt::init(const config_type*)
                        | rpi_armtimer_ctrl_prescale_1)>::reg_set();
 
     // Enable the rpi_arm timer interrupt.
-    mcal::reg::access<std::uint32_t,
-                      std::uint32_t,
-                      mcal::reg::rpi_interrupt_enable_basic_irqs,
-                      rpi_basic_arm_timer_irq>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rpi_interrupt_enable_basic_irqs,
+                                 rpi_basic_arm_timer_irq>::reg_set();
   }
 }
 
@@ -102,11 +102,11 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint16_t timer_register_type;
 
     // Do the first read of the rpi_arm timer value and the system tick.
-    const timer_register_type   tmr_tick_1 = system_timer_reload - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
+    const timer_register_type   tmr_tick_1 = system_timer_reload - mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the rpi_arm timer value.
-    const timer_register_type   tmr_tick_2 = system_timer_reload - mcal::reg::access<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
+    const timer_register_type   tmr_tick_2 = system_timer_reload - mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::rpi_armtimer_value>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick

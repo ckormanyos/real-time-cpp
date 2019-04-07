@@ -5,14 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 #include <mcal_wdg.h>
 
 void mcal::wdg::init(const config_type*)
 {
   // Read the MCU status register.
   volatile const std::uint8_t mcu_status_register =
-    mcal::reg::access<std::uint8_t,
+    mcal::reg::reg_access_static<std::uint8_t,
                       std::uint8_t,
                       mcal::reg::mcusr>::reg_get();
 
@@ -21,7 +21,7 @@ void mcal::wdg::init(const config_type*)
   static_cast<void>(mcu_status_register);
 
   // Clear the MCU status register.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::mcusr,
                     std::uint8_t(0U)>::reg_set();
@@ -30,7 +30,7 @@ void mcal::wdg::init(const config_type*)
   asm volatile("wdr");
 
   // Set the watchdog timer period and activate the watchdog timer.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::wdtcsr,
                     std::uint8_t(0x18U)>::reg_set();
@@ -38,7 +38,7 @@ void mcal::wdg::init(const config_type*)
   // See Chapter 11.9.2, Table 11-2: Watchdog Timer Prescale Select.
   // Select WDP3:WDP0 in WDTCSR to binary 0011, resulting in a watchdog
   // period of approximately 125ms.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::wdtcsr,
                     std::uint8_t(0x0BU)>::reg_set();
@@ -59,19 +59,19 @@ void mcal_wdg_turn_off_wdt_if_wdton_is_set()
   asm volatile("wdr");
 
   // Clear WDRF in the MCU status register.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::mcusr,
                     std::uint8_t(3U)>::bit_clr();
 
   // Set WDCE and WDE.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::wdtcsr,
                     std::uint8_t(0x18U)>::reg_or();
 
   // Turn off the WDT.
-  mcal::reg::access<std::uint8_t,
+  mcal::reg::reg_access_static<std::uint8_t,
                     std::uint8_t,
                     mcal::reg::wdtcsr,
                     std::uint8_t(0U)>::reg_set();

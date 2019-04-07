@@ -196,4 +196,7 @@
     }
   }
 
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2018_01_06_H_

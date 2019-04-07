@@ -83,4 +83,8 @@
       constexpr std::uint8_t eearh  = 0x22U + sfr_offset;
     }
   }
+
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2010_04_10_H_

@@ -9,7 +9,7 @@
 
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 void mcal::osc::init(const config_type*)
 {

@@ -6,7 +6,7 @@
 //
 
 #include <mcal_wdg.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 void mcal::wdg::init(const config_type*)
 {

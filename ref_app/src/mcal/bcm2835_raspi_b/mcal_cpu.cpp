@@ -8,7 +8,7 @@
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 #include <mcal_wdg.h>
 
 namespace mcal

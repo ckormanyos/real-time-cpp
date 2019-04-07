@@ -10,7 +10,7 @@
 #include <mcal_irq.h>
 #include <mcal_port.h>
 #include <mcal_spi.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 mcal::spi::spi_communication mcal::spi::the_spi;
 
@@ -30,20 +30,20 @@ namespace
   {
     // Enable the spi end-of-transmission interrupt
     // by setting the spie bit in the spcr register.
-    mcal::reg::access<std::uint8_t,
-                      std::uint8_t,
-                      mcal::reg::spcr,
-                      7U>::bit_set();
+    mcal::reg::reg_access_static<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::spcr,
+                                 7U>::bit_set();
   }
 
   void disable_rx_tx_interrupt()
   {
     // Disable the spi end-of-transmission interrupt
     // by clearing the spie bit in the spcr register.
-    mcal::reg::access<std::uint8_t,
-                      std::uint8_t,
-                      mcal::reg::spcr,
-                      7U>::bit_clr();
+    mcal::reg::reg_access_static<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::spcr,
+                                 7U>::bit_clr();
   }
 }
 
@@ -56,10 +56,10 @@ mcal::spi::spi_communication::spi_communication() : send_is_active(false),
                                      | mcal::reg::bval3
                                      | mcal::reg::bval5;
 
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::ddrb,
-                    pdir_mask>::reg_or();
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::ddrb,
+                               pdir_mask>::reg_or();
 
   // Enable spi as master mode, clock idle to high, etc.
   // Set the spi clock to f_osc/64 = (1/4)MHz.
@@ -69,10 +69,10 @@ mcal::spi::spi_communication::spi_communication() : send_is_active(false),
                                      | mcal::reg::bval4
                                      | mcal::reg::bval6;
 
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::spcr,
-                    spcr_mask>::reg_set();
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::spcr,
+                               spcr_mask>::reg_set();
 
   // Set the chip-select-not ports to output high.
   portd0_type::set_pin_high();
@@ -107,7 +107,7 @@ bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
     }
 
     // Send the first byte over spi.
-    mcal::reg::dynamic_access<std::uint8_t,
+    mcal::reg::reg_access_dynamic<std::uint8_t,
                               std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
 
     // Enable the spi rx/tx interrupt.
@@ -181,7 +181,7 @@ void __vector_17()
   // The spi interrupt is on end-of-transmission.
 
   // Receive the byte from the previous transmission.
-  const std::uint8_t byte_to_recv = mcal::reg::access<std::uint8_t,
+  const std::uint8_t byte_to_recv = mcal::reg::reg_access_static<std::uint8_t,
                                                       std::uint8_t,
                                                       mcal::reg::spdr>::reg_get();
 
@@ -214,7 +214,7 @@ void __vector_17()
     // Send the next byte if there is at least one in the send queue.
     const std::uint8_t byte_to_send = mcal::spi::the_spi.send_buffer.out();
 
-    mcal::reg::dynamic_access<std::uint8_t,
+    mcal::reg::reg_access_dynamic<std::uint8_t,
                               std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
   }
 }

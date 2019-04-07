@@ -6,7 +6,7 @@
 //
 
 #include <mcal_port.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 void mcal::port::init(const config_type*)
 {
@@ -22,8 +22,8 @@ void mcal::port::init(const config_type*)
   // So we have:
   // (portb + portc + portd) = (0x02 + 0x04 + 0x08) = 0x0E.
 
-  mcal::reg::access<std::uint32_t,
-                    std::uint32_t,
-                    mcal::reg::rcc_ahb1enr,
-                    UINT32_C(0x0E)>::reg_or();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_ahb1enr,
+                               UINT32_C(0x0E)>::reg_or();
 }

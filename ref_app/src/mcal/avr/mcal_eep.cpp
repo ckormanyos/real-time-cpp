@@ -1,15 +1,15 @@
 #include <mcal_cpu.h>
 #include <mcal_eep.h>
-#include <mcal_reg_access.h>
+#include <mcal_reg.h>
 
 namespace
 {
   bool mcal_eep_is_busy()
   {
-    return (mcal::reg::access<std::uint8_t,
-                              std::uint8_t,
-                              mcal::reg::eecr,
-                              UINT8_C(1)>::bit_get() == true);
+    return (mcal::reg::reg_access_static<std::uint8_t,
+                                         std::uint8_t,
+                                         mcal::reg::eecr,
+                                         UINT8_C(1)>::bit_get() == true);
   }
 }
 
@@ -25,24 +25,24 @@ void mcal::eep::write(const address_type addr, const std::uint8_t data)
   }
 
   // Write the address register.
-  mcal::reg::dynamic_access<std::uint8_t,
+  mcal::reg::reg_access_dynamic<std::uint8_t,
                             address_type>::reg_set(mcal::reg::eear, addr);
 
   // Write the data register.
-  mcal::reg::dynamic_access<std::uint8_t,
+  mcal::reg::reg_access_dynamic<std::uint8_t,
                             std::uint8_t>::reg_set(mcal::reg::eedr, data);
 
   // Set eecr.eempe (bit 2).
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::eecr,
-                    UINT8_C(2)>::bit_set();
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::eecr,
+                               UINT8_C(2)>::bit_set();
 
   // Set eecr.eepe (bit 1).
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::eecr,
-                    UINT8_C(1)>::bit_set();
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::eecr,
+                               UINT8_C(1)>::bit_set();
 }
 
 std::uint8_t mcal::eep::read(const address_type addr)
@@ -53,19 +53,19 @@ std::uint8_t mcal::eep::read(const address_type addr)
   }
 
   // Write the address register.
-  mcal::reg::dynamic_access<std::uint8_t,
-                            address_type>::reg_set(mcal::reg::eear, addr);
+  mcal::reg::reg_access_dynamic<std::uint8_t,
+                                address_type>::reg_set(mcal::reg::eear, addr);
 
   // Set eecr.eere (bit 0).
-  mcal::reg::access<std::uint8_t,
-                    std::uint8_t,
-                    mcal::reg::eecr,
-                    UINT8_C(0)>::bit_set();
+  mcal::reg::reg_access_static<std::uint8_t,
+                               std::uint8_t,
+                               mcal::reg::eecr,
+                               UINT8_C(0)>::bit_set();
 
   // Read one data byte.
-  const std::uint8_t data = mcal::reg::access<std::uint8_t,
-                                              std::uint8_t,
-                                              mcal::reg::eedr>::reg_get();
+  const std::uint8_t data = mcal::reg::reg_access_static<std::uint8_t,
+                                                        std::uint8_t,
+                                                        mcal::reg::eedr>::reg_get();
 
   return data;
 }

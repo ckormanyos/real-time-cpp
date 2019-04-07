@@ -642,20 +642,11 @@
     <ClInclude Include="src\mcal\avr\mcal_pwm.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_reg_access.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_ser.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\mcal.h">
       <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_cpu.h">
       <Filter>src\mcal\win32</Filter>
@@ -715,9 +706,6 @@
       <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_pwm.h">
-      <Filter>src\mcal\stm32f100</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f100\mcal_reg_access.h">
       <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_ser.h">
@@ -813,9 +801,6 @@
     <ClInclude Include="src\mcal\am335x\mcal_reg.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\am335x\mcal_reg_access.h">
-      <Filter>src\mcal\am335x</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\am335x\mcal_ser.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
@@ -855,9 +840,6 @@
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_cpu.h">
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
@@ -880,9 +862,6 @@
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_reg.h">
-      <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f407\mcal_reg_access.h">
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_ser.h">
@@ -939,9 +918,6 @@
     <ClInclude Include="src\mcal\rl78\mcal_reg.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\rl78\mcal_reg_access.h">
-      <Filter>src\mcal\rl78</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_ser.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
@@ -982,9 +958,6 @@
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f429\mcal_reg.h">
-      <Filter>src\mcal\stm32f429</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f429\mcal_reg_access.h">
       <Filter>src\mcal\stm32f429</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f429\mcal_ser.h">
@@ -1029,9 +1002,6 @@
     <ClInclude Include="src\mcal\rx63n\mcal_reg.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\rx63n\mcal_reg_access.h">
-      <Filter>src\mcal\rx63n</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rx63n\mcal_ser.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
@@ -1068,9 +1038,6 @@
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_reg.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_reg_access.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\pic32mx795fx\mcal_ser.h">
       <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
@@ -1105,9 +1072,6 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_reg.h">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_reg_access.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_ser.h">
@@ -1254,9 +1218,6 @@
     <ClInclude Include="src\mcal\stm32l152\mcal_reg.h">
       <Filter>src\mcal\stm32l152</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32l152\mcal_reg_access.h">
-      <Filter>src\mcal\stm32l152</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32l152\mcal_ser.h">
       <Filter>src\mcal\stm32l152</Filter>
     </ClInclude>
@@ -1300,9 +1261,6 @@
       <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\atmega2560\mcal_reg.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_reg_access.h">
       <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\atmega2560\mcal_ser.h">
@@ -1365,9 +1323,6 @@
     <ClInclude Include="src\mcal\stm32f446\mcal_reg.h">
       <Filter>src\mcal\stm32f446</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32f446\mcal_reg_access.h">
-      <Filter>src\mcal\stm32f446</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f446\mcal_ser.h">
       <Filter>src\mcal\stm32f446</Filter>
     </ClInclude>
@@ -1407,9 +1362,6 @@
     <ClInclude Include="src\mcal\xtensa32\mcal_reg.h">
       <Filter>src\mcal\xtensa32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\mcal_reg_access.h">
-      <Filter>src\mcal\xtensa32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\mcal_ser.h">
       <Filter>src\mcal\xtensa32</Filter>
     </ClInclude>
@@ -1418,6 +1370,15 @@
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\mcal_wdg.h">
       <Filter>src\mcal\xtensa32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_reg.h">
+      <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

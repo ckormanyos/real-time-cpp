@@ -114,4 +114,8 @@
       constexpr std::uint32_t if1l  = static_cast<std::uint32_t>(0xFFFE2U);
     }
   }
+
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2010_04_10_H_

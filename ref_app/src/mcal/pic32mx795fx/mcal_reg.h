@@ -103,4 +103,8 @@
       constexpr std::uint32_t odcg     = UINT32_C(0xBF8861B0);   // 32-bit register.
     }
   }
+
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2010_04_10_H_
