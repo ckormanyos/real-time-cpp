@@ -13,10 +13,6 @@
 #ifndef EXTENDED_COMPLEX_2016_02_22_
   #define EXTENDED_COMPLEX_2016_02_22_
 
-  #if defined(__GNUC__)
-    #pragma GCC system_header
-  #endif
-
   #if defined(_MSC_VER) && (_MSC_VER <= 1800)
     #define EXTENDED_COMPLEX_CONSTEXPR
   #else

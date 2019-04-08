@@ -8,10 +8,6 @@
 #ifndef ALLOCATOR_IMPL_2010_02_23_H_
   #define ALLOCATOR_IMPL_2010_02_23_H_
 
-  #if defined(__GNUC__)
-  #pragma GCC system_header
-  #endif
-
   #include <cstddef>
   #include <iterator>
 

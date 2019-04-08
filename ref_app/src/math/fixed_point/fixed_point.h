@@ -8,10 +8,6 @@
 #ifndef FIXED_POINT_2011_02_22_H_
   #define FIXED_POINT_2011_02_22_H_
 
-  #if defined(__GNUC__)
-  #pragma GCC system_header
-  #endif
-
   #define FIXED_POINT_DISABLE_IOSTREAM
 
   #include <cstddef>
@@ -129,7 +125,7 @@
       const bool other_has_more_digits = (fixed_point<other_signed_type>::decimal_split > decimal_split);
 
       data = (other_has_more_digits ? signed_value_type(other.data >> (other_decimal_split - decimal_split))
-                                    : signed_value_type(other.data) << (decimal_split - other_decimal_split));
+                                    : signed_value_type(other.data << (decimal_split - other_decimal_split)));
 
       return *this;
     }
@@ -148,8 +144,8 @@
       const bool self_is_neg  = (  data < static_cast<signed_value_type>(0));
       const bool other_is_neg = (v.data < static_cast<signed_value_type>(0));
 
-      const unsigned_value_type u_self  = ((!self_is_neg)  ?   data :   -data);
-      const unsigned_value_type v_other = ((!other_is_neg) ? v.data : -v.data);
+      const unsigned_value_type u_self  = unsigned_value_type((!self_is_neg)  ?   data :   -data);
+      const unsigned_value_type v_other = unsigned_value_type((!other_is_neg) ? v.data : -v.data);
 
       // TBD: Needs compiler support for conditional compilation.
       if(std::numeric_limits<unsigned_value_type>::digits <= 16)
@@ -171,8 +167,9 @@
         const unsigned_value_type lower_self_upper_other = static_cast<unsigned_value_type>(self_lower) * other_upper;
         const unsigned_short_type lower_self_lower_other = static_cast<unsigned_short_type>(static_cast<unsigned_value_type>(static_cast<unsigned_value_type>(self_lower) * other_lower) >> decimal_split);
 
-        data =   static_cast<unsigned_value_type>(static_cast<unsigned_value_type>(self_upper * v_other))
-               + static_cast<unsigned_value_type>(lower_self_upper_other + lower_self_lower_other);
+        data =
+          signed_value_type(  static_cast<unsigned_value_type>(static_cast<unsigned_value_type>(self_upper * v_other))
+                            + static_cast<unsigned_value_type>(lower_self_upper_other + lower_self_lower_other));
       }
 
       if(self_is_neg != other_is_neg)
@@ -195,8 +192,8 @@
       const bool a_is_neg = (  data < static_cast<signed_value_type>(0));
       const bool b_is_neg = (v.data < static_cast<signed_value_type>(0));
 
-      unsigned_value_type a = (!a_is_neg ?   data :   -data);
-      unsigned_value_type b = (!b_is_neg ? v.data : -v.data);
+      unsigned_value_type a = unsigned_value_type((!a_is_neg) ?   data :   -data);
+      unsigned_value_type b = unsigned_value_type((!b_is_neg) ? v.data : -v.data);
 
       const bool a_is_larger = (a > b);
 

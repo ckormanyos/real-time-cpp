@@ -122,12 +122,6 @@
     <Filter Include="src\math\extended_complex">
       <UniqueIdentifier>{0f8d2031-bb2c-4616-ba26-9e801fbd3e64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard">
-      <UniqueIdentifier>{3562087e-bf09-4f43-a927-df849ff8ef05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits">
-      <UniqueIdentifier>{0a8408cb-4f61-483e-8ebc-ee16e0e14229}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL_C++XX_stdfloat">
       <UniqueIdentifier>{56776e10-f1a6-42e5-bfff-6d5b3a20b327}</UniqueIdentifier>
     </Filter>
@@ -1121,72 +1115,6 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_noexcept.h">
       <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\atomic_word.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\basic_file.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\c++allocator.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\c++config.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\c++io.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\c++locale.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\cpu_defines.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\ctype_base.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\ctype_inline.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\cxxabi_tweaks.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\error_constants.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\extc++.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\gthr.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\gthr-default.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\gthr-posix.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\gthr-single.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\messages_members.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\opt_random.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\os_defines.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\stdc++.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\stdtr1c++.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits\time_members.h">
-      <Filter>src\mcal\am335x\_patch_gcc_6.3.1_for_arm_v7-ar-fpv3-hard\bits</Filter>
     </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>

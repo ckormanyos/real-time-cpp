@@ -8,10 +8,6 @@
 #ifndef INITIALIZER_LIST_2012_02_14_H_
   #define INITIALIZER_LIST_2012_02_14_H_
 
-  #if defined(__GNUC__)
-  #pragma GCC system_header
-  #endif
-
   #include <impl/stl_local_constexpr.h>
   #include <impl/stl_local_noexcept.h>
 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,10 +7,6 @@
 
 #ifndef FIR_ORDER_N_UNSIGNED_2012_03_27_H_
   #define FIR_ORDER_N_UNSIGNED_2012_03_27_H_
-
-  #if defined(__GNUC__)
-  #pragma GCC system_header
-  #endif
 
   #include <cstdint>
   #include <array>
@@ -68,7 +64,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1);
@@ -79,7 +75,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -122,7 +118,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2);
@@ -133,7 +129,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -176,7 +172,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3);
@@ -187,7 +183,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -230,7 +226,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4);
@@ -241,7 +237,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -284,7 +280,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5);
@@ -295,7 +291,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -338,7 +334,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6);
@@ -349,7 +345,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -392,7 +388,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7);
@@ -403,7 +399,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -446,7 +442,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8);
@@ -457,7 +453,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -500,7 +496,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9);
@@ -511,7 +507,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -554,7 +550,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10);
@@ -565,7 +561,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -608,7 +604,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11);
@@ -619,7 +615,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -662,7 +658,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12);
@@ -673,7 +669,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -716,7 +712,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13);
@@ -727,7 +723,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -770,7 +766,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14);
@@ -781,7 +777,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -824,7 +820,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15);
@@ -835,7 +831,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -878,7 +874,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16);
@@ -889,7 +885,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -932,7 +928,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = (value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17);
@@ -943,7 +939,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -986,7 +982,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18);
@@ -997,7 +993,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1040,7 +1036,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19);
@@ -1051,7 +1047,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1094,7 +1090,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20);
@@ -1105,7 +1101,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1148,7 +1144,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21);
@@ -1159,7 +1155,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1202,7 +1198,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22);
@@ -1213,7 +1209,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1256,7 +1252,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23);
@@ -1267,7 +1263,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1310,7 +1306,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24);
@@ -1321,7 +1317,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1364,7 +1360,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25);
@@ -1375,7 +1371,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1418,7 +1414,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26);
@@ -1429,7 +1425,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1472,7 +1468,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27);
@@ -1483,7 +1479,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1526,7 +1522,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28);
@@ -1537,7 +1533,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1580,7 +1576,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29);
@@ -1591,7 +1587,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1634,7 +1630,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30);
@@ -1645,7 +1641,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1688,7 +1684,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31);
@@ -1699,7 +1695,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1742,7 +1738,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32);
@@ -1753,7 +1749,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1796,7 +1792,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33);
@@ -1807,7 +1803,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1850,7 +1846,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34);
@@ -1861,7 +1857,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1904,7 +1900,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35);
@@ -1915,7 +1911,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -1958,7 +1954,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36);
@@ -1969,7 +1965,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2012,7 +2008,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37);
@@ -2023,7 +2019,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2066,7 +2062,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38);
@@ -2077,7 +2073,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2120,7 +2116,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39);
@@ -2131,7 +2127,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2174,7 +2170,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40);
@@ -2185,7 +2181,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2228,7 +2224,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41);
@@ -2239,7 +2235,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2282,7 +2278,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42);
@@ -2293,7 +2289,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2336,7 +2332,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43);
@@ -2347,7 +2343,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2390,7 +2386,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44);
@@ -2401,7 +2397,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2444,7 +2440,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45);
@@ -2455,7 +2451,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2498,7 +2494,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46);
@@ -2509,7 +2505,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2552,7 +2548,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46) + value_type(data[47U] * B47);
@@ -2563,7 +2559,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
@@ -2606,7 +2602,7 @@
                 data.begin());
 
       // Store the new sample at top of delay line.
-      *(data.end() - 1U) = value_type(x) * resol;
+      *(data.end() - 1U) = value_type(value_type(x) * value_type(resol));
 
       // Calculate the FIR algorithm.
       const value_type new_val = value_type(data[0U] * B0) + value_type(data[1U] * B1) + value_type(data[2U] * B2) + value_type(data[3U] * B3) + value_type(data[4U] * B4) + value_type(data[5U] * B5) + value_type(data[6U] * B6) + value_type(data[7U] * B7) + value_type(data[8U] * B8) + value_type(data[9U] * B9) + value_type(data[10U] * B10) + value_type(data[11U] * B11) + value_type(data[12U] * B12) + value_type(data[13U] * B13) + value_type(data[14U] * B14) + value_type(data[15U] * B15) + value_type(data[16U] * B16) + value_type(data[17U] * B17) + value_type(data[18U] * B18) + value_type(data[19U] * B19) + value_type(data[20U] * B20) + value_type(data[21U] * B21) + value_type(data[22U] * B22) + value_type(data[23U] * B23) + value_type(data[24U] * B24) + value_type(data[25U] * B25) + value_type(data[26U] * B26) + value_type(data[27U] * B27) + value_type(data[28U] * B28) + value_type(data[29U] * B29) + value_type(data[30U] * B30) + value_type(data[31U] * B31) + value_type(data[32U] * B32) + value_type(data[33U] * B33) + value_type(data[34U] * B34) + value_type(data[35U] * B35) + value_type(data[36U] * B36) + value_type(data[37U] * B37) + value_type(data[38U] * B38) + value_type(data[39U] * B39) + value_type(data[40U] * B40) + value_type(data[41U] * B41) + value_type(data[42U] * B42) + value_type(data[43U] * B43) + value_type(data[44U] * B44) + value_type(data[45U] * B45) + value_type(data[46U] * B46) + value_type(data[47U] * B47) + value_type(data[48U] * B48);
@@ -2617,7 +2613,7 @@
 
     result_type get_result() const
     {
-      return ((result >= result_type(0)) ? (result + (resol / 2U)) / resol : (result - (resol / 2U)) / resol);
+      return ((result >= result_type(0)) ? (result + result_type(resol / 2U)) / result_type(resol) : (result - result_type(resol / 2U)) / result_type(resol));
     }
 
   private:
