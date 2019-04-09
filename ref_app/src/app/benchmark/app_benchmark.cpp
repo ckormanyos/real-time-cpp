@@ -55,6 +55,10 @@ void app::benchmark::task_func()
 
     const bool result_is_ok = app::benchmark::run_crc();
 
+    #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
+
+    const bool result_is_ok = app::benchmark::run_fast_math();
+
     #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
 
     const bool result_is_ok = app::benchmark::run_filter();

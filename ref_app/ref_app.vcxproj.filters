@@ -143,6 +143,9 @@
     <Filter Include="src\mcal\xtensa32">
       <UniqueIdentifier>{ec382c45-8f06-4478-bd50-c4aae4165e7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\fast_math">
+      <UniqueIdentifier>{21eb30fc-adf8-47ab-b3e2-8bdc73ab3d9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -603,6 +606,9 @@
     </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\mcal_wdg.cpp">
       <Filter>src\mcal\xtensa32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp">
+      <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1307,6 +1313,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_reg.h">
       <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\fast_math\fast_math.h">
+      <Filter>src\math\fast_math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

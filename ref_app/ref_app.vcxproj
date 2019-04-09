@@ -188,6 +188,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_filter.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fixed_point.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_float.cpp" />
@@ -744,6 +745,7 @@
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\constants\constant_functions.h" />
     <ClInclude Include="src\math\extended_complex\extended_complex.h" />
+    <ClInclude Include="src\math\fast_math\fast_math.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />
     <ClInclude Include="src\math\fixed_point\fixed_point.h" />
     <ClInclude Include="src\math\functions\math_functions_bessel.h" />

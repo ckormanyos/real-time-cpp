@@ -614,37 +614,37 @@
     {
       namespace chrono_literals
       {
-        inline std::chrono::nanoseconds                             operator"" ns (unsigned long long __my_ns)  { return chrono::nanoseconds (__my_ns); }
-        inline std::chrono::microseconds                            operator"" us (unsigned long long __my_us)  { return chrono::microseconds(__my_us); }
-        inline std::chrono::milliseconds                            operator"" ms (unsigned long long __my_ms)  { return chrono::milliseconds(__my_ms); }
-        inline std::chrono::seconds                                 operator"" s  (unsigned long long __my_s)   { return chrono::seconds     (__my_s); }
-        inline std::chrono::minutes                                 operator"" min(unsigned long long __my_min) { return chrono::minutes     (__my_min); }
-        inline std::chrono::hours                                   operator"" h  (unsigned long long __my_h)   { return chrono::hours       (__my_h); }
+        inline std::chrono::nanoseconds                             operator""ns (unsigned long long __my_ns)  { return chrono::nanoseconds (__my_ns); }
+        inline std::chrono::microseconds                            operator""us (unsigned long long __my_us)  { return chrono::microseconds(__my_us); }
+        inline std::chrono::milliseconds                            operator""ms (unsigned long long __my_ms)  { return chrono::milliseconds(__my_ms); }
+        inline std::chrono::seconds                                 operator""s  (unsigned long long __my_s)   { return chrono::seconds     (__my_s); }
+        inline std::chrono::minutes                                 operator""min(unsigned long long __my_min) { return chrono::minutes     (__my_min); }
+        inline std::chrono::hours                                   operator""h  (unsigned long long __my_h)   { return chrono::hours       (__my_h); }
 
-        inline std::chrono::duration<long double, std::nano>        operator"" ns (long double __my_ns)         { return std::chrono::duration<long double, std::nano>       (__my_ns); }
-        inline std::chrono::duration<long double, std::micro>       operator"" us (long double __my_us)         { return std::chrono::duration<long double, std::milli>      (__my_us); }
-        inline std::chrono::duration<long double, std::milli>       operator"" ms (long double __my_ms)         { return std::chrono::duration<long double, std::milli>      (__my_ms); }
-        inline std::chrono::duration<long double, std::ratio<1>>    operator"" s  ( long double __my_s)         { return std::chrono::duration<long double, std::ratio<1>>   (__my_s); }
-        inline std::chrono::duration<long double, std::ratio<60>>   operator"" min( long double __my_min)       { return std::chrono::duration<long double, std::ratio<60>>  (__my_min); }
-        inline std::chrono::duration<long double, std::ratio<3600>> operator"" h  ( long double __my_h)         { return std::chrono::duration<long double, std::ratio<3600>>(__my_h); }
+        inline std::chrono::duration<long double, std::nano>        operator""ns (long double __my_ns)         { return std::chrono::duration<long double, std::nano>       (__my_ns); }
+        inline std::chrono::duration<long double, std::micro>       operator""us (long double __my_us)         { return std::chrono::duration<long double, std::milli>      (__my_us); }
+        inline std::chrono::duration<long double, std::milli>       operator""ms (long double __my_ms)         { return std::chrono::duration<long double, std::milli>      (__my_ms); }
+        inline std::chrono::duration<long double, std::ratio<1>>    operator""s  ( long double __my_s)         { return std::chrono::duration<long double, std::ratio<1>>   (__my_s); }
+        inline std::chrono::duration<long double, std::ratio<60>>   operator""min( long double __my_min)       { return std::chrono::duration<long double, std::ratio<60>>  (__my_min); }
+        inline std::chrono::duration<long double, std::ratio<3600>> operator""h  ( long double __my_h)         { return std::chrono::duration<long double, std::ratio<3600>>(__my_h); }
       }
 
-      using chrono_literals::operator"" ns;
-      using chrono_literals::operator"" us;
-      using chrono_literals::operator"" ms;
-      using chrono_literals::operator"" s;
-      using chrono_literals::operator"" min;
-      using chrono_literals::operator"" h;
+      using chrono_literals::operator""ns;
+      using chrono_literals::operator""us;
+      using chrono_literals::operator""ms;
+      using chrono_literals::operator""s;
+      using chrono_literals::operator""min;
+      using chrono_literals::operator""h;
     }
 
     namespace chrono_literals
     {
-      using std::literals::chrono_literals::operator"" ns;
-      using std::literals::chrono_literals::operator"" us;
-      using std::literals::chrono_literals::operator"" ms;
-      using std::literals::chrono_literals::operator"" s;
-      using std::literals::chrono_literals::operator"" min;
-      using std::literals::chrono_literals::operator"" h;
+      using std::literals::chrono_literals::operator""ns;
+      using std::literals::chrono_literals::operator""us;
+      using std::literals::chrono_literals::operator""ms;
+      using std::literals::chrono_literals::operator""s;
+      using std::literals::chrono_literals::operator""min;
+      using std::literals::chrono_literals::operator""h;
     }
   } // namespace std
 

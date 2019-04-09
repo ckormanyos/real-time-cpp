@@ -9,7 +9,9 @@
   #define CSTRING_2018_10_04_
 
   #include <stddef.h>
-  #include <string.h>
+
+  extern "C" size_t strlen(const char*);
+  extern "C" char*  strcpy(char*, const char*);
 
   namespace std
   {
