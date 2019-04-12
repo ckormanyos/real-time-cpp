@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2010 - 2018.
+//  Copyright Christopher Kormanyos 2010 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -30,6 +30,7 @@
     // extracts the components of a 4-byte value stored
     // in IEEE754 single-precision float format.
 
+    // Note that the cast in the following line breaks strict alignment rules.
     const uint32_t i = *(const uint32_t*) (&x);
 
     const uint32_t raw_mantissa = (uint32_t) (i & (uint32_t) (((uint32_t) (1UL) << 23) - 1UL));
@@ -59,9 +60,12 @@
 
     // Make the initial guess of the inverse square root.
     // The constant differs slightly from the original value.
+
+    // Note that the cast in the following line breaks strict alignment rules.
     const uint32_t i =
       (uint32_t) 0X5F375A86ULL - (uint32_t) ((*(const uint32_t*) ((const void*) &x)) >> 1);
 
+    // Note that the cast in the following line breaks strict alignment rules.
     fast_math_float32_t y = *(const fast_math_float32_t*) ((const void*) &i);
 
     // Perform the first Newton iteration.
@@ -119,7 +123,7 @@
         // log(a) =~  (a - 1) - (a - 1)^2 / 2
         const fast_math_float32_t delta_one = x - (fast_math_float32_t) 1.0F;
 
-        log_alpha = delta_one * (1.0F - (fast_math_float32_t) 0.5F * delta_one);
+        log_alpha = delta_one * ((fast_math_float32_t) 1.0F - (fast_math_float32_t) 0.5F * delta_one);
       }
       else
       {
@@ -146,6 +150,23 @@
 
     const fast_math_float32_t alpha = x - ((fast_math_float32_t) 0.6931471806F * n);
 
+    #if 0
+    // Use a polynomial approximation.
+    // exp(x) - 1 = approx.   0.99792060811054451 x
+    //                      + 0.49948832659208106 x^2
+    //                      + 0.17621882066892929 x^3
+    //                      + 0.04348249331418186 x^4
+    // in the range -1 < x <= +1. These coefficients
+    // have been specifically derived for this work.
+
+    const fast_math_float32_t series_of_alpha =
+              (fast_math_float32_t) 1.0F
+      + ((((  (fast_math_float32_t) 0.04348249331418186F * alpha
+            + (fast_math_float32_t) 0.17621882066892929F) * alpha
+            + (fast_math_float32_t) 0.49948832659208106F) * alpha
+            + (fast_math_float32_t) 0.99792060811054451F) * alpha);
+    #endif
+
     // PadeApproximant[Exp[a], {a, 0, {2, 2}}]
     // FullSimplify[%]
     //
@@ -156,6 +177,17 @@
             (fast_math_float32_t)  1.0F
       + (  ((fast_math_float32_t) 12.0F * alpha)
          / ((fast_math_float32_t) 12.0F + (alpha * (alpha - (fast_math_float32_t) 6.0F))));
+
+    #if 0
+    // PadeApproximant[Exp[a], {a, 0, {1, 1}}]]
+    // FullSimplify[%]
+    //          4
+    // e^a =~ ----- - 1
+    //        2 - a
+    const fast_math_float32_t series_of_alpha =
+      (   (fast_math_float32_t) 4.0F
+       / ((fast_math_float32_t) 2.0F - alpha)) - (fast_math_float32_t) 1.0F;
+    #endif
 
     return ((n >= 0) ? series_of_alpha * (fast_math_float32_t) (uint32_t(1UL) <<   n)
                      : series_of_alpha / (fast_math_float32_t) (uint32_t(1UL) << (-n)));
