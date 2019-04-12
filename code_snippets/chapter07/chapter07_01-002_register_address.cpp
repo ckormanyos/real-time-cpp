@@ -7,31 +7,22 @@
 
 // chapter07_01-002_register_address.cpp
 
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
-namespace mcal
-{
-  struct reg
-  {
-    static uint8_t simulated_address_of_portb_at_0x25;
-  };
-}
-
-// The simulated portb.
-uint8_t mcal::reg::simulated_address_of_portb_at_0x25;
+static std::uint8_t simulated_register_portb;
 
 void do_something()
 {
   // Set portb to 0.
-  *reinterpret_cast<volatile std::uint8_t*>(&mcal::reg::simulated_address_of_portb_at_0x25) = UINT8_C(0);
+  *reinterpret_cast<volatile std::uint8_t*>(&simulated_register_portb) = UINT8_C(0);
 }
 
 int main()
 {
   do_something();
 
-  std::cout << "mcal::reg::simulated_address_of_portb_at_0x25: "
-            << unsigned(mcal::reg::simulated_address_of_portb_at_0x25)
+  std::cout << "simulated_register_portb: "
+            << unsigned(simulated_register_portb)
             << std::endl;
 }

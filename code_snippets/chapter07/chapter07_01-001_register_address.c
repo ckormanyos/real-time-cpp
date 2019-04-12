@@ -10,10 +10,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-static uint8_t simulated_address_of_portb_at_0x25;
+static uint8_t simulated_register_portb;
 
 // The simulated address of portb.
-#define REG_PORTB ((uintptr_t) &simulated_address_of_portb_at_0x25)
+#define REG_PORTB ((uintptr_t) &simulated_register_portb)
 
 void do_something()
 {
@@ -25,6 +25,6 @@ int main()
 {
   do_something();
 
-  printf("simulated_address_of_portb_at_0x25: %d\n",
-         (unsigned) simulated_address_of_portb_at_0x25);
+  printf("simulated_register_portb: %d\n",
+         (unsigned) simulated_register_portb);
 }
