@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter07_02-001_register_access.cpp
+// chapter07_02-003_register_access.cpp
 
 #include <iostream>
 #include <cstdint>
@@ -21,23 +21,26 @@ struct reg_access_dynamic
   }
 };
 
-// The simulated portb.
-std::uint8_t simulated_register_portb;
-
-const std::uintptr_t address =
-  reinterpret_cast<std::uintptr_t>(&simulated_register_portb);
+// The simulated timer0 compare0 register.
+std::uint16_t simulated_register_tm0cmp0;
 
 void do_something()
 {
-  // Set portb to 0.
-  reg_access_dynamic<std::uintptr_t, std::uint8_t>::reg_set(address, 0x0U);
+  const std::uintptr_t address_tm0cmp0 =
+    reinterpret_cast<std::uintptr_t>(&simulated_register_tm0cmp0);
+
+  // Set the simulated timer0 compare0 register
+  // at address 0xFFFFF694UL to value (32,000 - 1).
+  *reinterpret_cast<volatile std::uint16_t*>
+    (address_tm0cmp0 /*for example, at address 0xFFFFF694UL*/) =
+    std::uint16_t(32000UL - 1UL);
 }
 
 int main()
 {
   do_something();
 
-  std::cout << "simulated_register_portb: "
-            << unsigned(simulated_register_portb)
+  std::cout << "simulated_register_tm0cmp0: "
+            << unsigned(simulated_register_tm0cmp0)
             << std::endl;
 }

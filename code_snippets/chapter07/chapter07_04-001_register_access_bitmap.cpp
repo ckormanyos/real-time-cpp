@@ -5,21 +5,24 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter07_02-001_register_access.cpp
+// chapter07_04-001_register_access_bitmap.cpp
 
+#include <iomanip>
 #include <iostream>
 #include <cstdint>
 
-template<typename addr_type,
-         typename reg_type>
-struct reg_access_dynamic
+typedef struct bit8_type
 {
-  static void reg_set(const addr_type addr,
-                      const reg_type val)
-  {
-    *reinterpret_cast<volatile reg_type*>(addr) = val;
-  }
-};
+  std::uint8_t b0 : 1;
+  std::uint8_t b1 : 1;
+  std::uint8_t b2 : 1;
+  std::uint8_t b3 : 1;
+  std::uint8_t b4 : 1;
+  std::uint8_t b5 : 1;
+  std::uint8_t b6 : 1;
+  std::uint8_t b7 : 1;
+}
+bit8_type;
 
 // The simulated portb.
 std::uint8_t simulated_register_portb;
@@ -29,8 +32,8 @@ const std::uintptr_t address =
 
 void do_something()
 {
-  // Set portb to 0.
-  reg_access_dynamic<std::uintptr_t, std::uint8_t>::reg_set(address, 0x0U);
+  // Set the simulated portb.5.
+  reinterpret_cast<volatile bit8_type*>(address)->b5 = 1U;
 }
 
 int main()
@@ -38,6 +41,9 @@ int main()
   do_something();
 
   std::cout << "simulated_register_portb: "
+            << std::hex
+            << "0x"
+            << std::setw(2)
             << unsigned(simulated_register_portb)
             << std::endl;
 }

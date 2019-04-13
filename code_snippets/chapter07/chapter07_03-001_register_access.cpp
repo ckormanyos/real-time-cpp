@@ -5,8 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter07_02-001_register_access.cpp
+// chapter07_03-001_register_access.cpp
 
+#include <iomanip>
 #include <iostream>
 #include <cstdint>
 
@@ -19,6 +20,12 @@ struct reg_access_dynamic
   {
     *reinterpret_cast<volatile reg_type*>(addr) = val;
   }
+
+  static void reg_or (const addr_type addr,
+                      const reg_type val)
+  {
+    *reinterpret_cast<volatile reg_type*>(addr) |= val;
+  }
 };
 
 // The simulated portb.
@@ -30,7 +37,7 @@ const std::uintptr_t address =
 void do_something()
 {
   // Set portb to 0.
-  reg_access_dynamic<std::uintptr_t, std::uint8_t>::reg_set(address, 0x0U);
+  reg_access_dynamic<std::uintptr_t, std::uint8_t>::reg_or(address, 0x20U);
 }
 
 int main()
@@ -38,6 +45,9 @@ int main()
   do_something();
 
   std::cout << "simulated_register_portb: "
+            << std::hex
+            << "0x"
+            << std::setw(2)
             << unsigned(simulated_register_portb)
             << std::endl;
 }
