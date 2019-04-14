@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter07_03-003_register_access.cpp
+// chapter06_09-001_typedef_reg_access.cpp
 
 #include <iomanip>
 #include <iostream>
@@ -39,8 +39,11 @@ const std::uintptr_t address =
 
 void do_something()
 {
+  // Use a typedef to save tedious typing work.
+  typedef reg_access_dynamic<std::uintptr_t, std::uint8_t> port_type;
+
   // Toggle the simulated portb.5.
-  reg_access_dynamic<std::uintptr_t, std::uint8_t>::bit_not(address, 5u);
+  port_type::bit_not(address, 5u);
 }
 
 int main()
@@ -51,7 +54,6 @@ int main()
             << std::hex
             << "0x"
             << std::setw(2)
-            << std::setfill(char('0'))
             << unsigned(simulated_register_portb)
             << std::endl;
 }
