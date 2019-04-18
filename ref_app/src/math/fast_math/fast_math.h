@@ -161,7 +161,7 @@
 
     const fast_math_float32_t series_of_alpha =
               (fast_math_float32_t) 1.0F
-      + ((((  (fast_math_float32_t) 0.04348249331418186F * alpha
+      + ((((  (fast_math_float32_t) 0.04348249331418186F  * alpha
             + (fast_math_float32_t) 0.17621882066892929F) * alpha
             + (fast_math_float32_t) 0.49948832659208106F) * alpha
             + (fast_math_float32_t) 0.99792060811054451F) * alpha);

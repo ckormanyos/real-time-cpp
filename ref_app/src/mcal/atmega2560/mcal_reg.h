@@ -74,6 +74,13 @@
 
       // Watchdog registers
       constexpr std::uint8_t wdtcsr = 0x60U;
+
+      // Eeprom registers
+      constexpr std::uint8_t eecr   = 0x1FU + sfr_offset;
+      constexpr std::uint8_t eedr   = 0x20U + sfr_offset;
+      constexpr std::uint8_t eear   = 0x21U + sfr_offset;
+      constexpr std::uint8_t eearl  = 0x21U + sfr_offset;
+      constexpr std::uint8_t eearh  = 0x22U + sfr_offset;
     }
   }
 

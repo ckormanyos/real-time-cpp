@@ -63,9 +63,10 @@ std::uint8_t mcal::eep::read(const address_type addr)
                                UINT8_C(0)>::bit_set();
 
   // Read one data byte.
-  const std::uint8_t data = mcal::reg::reg_access_static<std::uint8_t,
-                                                        std::uint8_t,
-                                                        mcal::reg::eedr>::reg_get();
+  const std::uint8_t data =
+    mcal::reg::reg_access_static<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::eedr>::reg_get();
 
   return data;
 }
