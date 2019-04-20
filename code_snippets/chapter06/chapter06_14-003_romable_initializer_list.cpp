@@ -15,9 +15,9 @@ namespace
 {
   constexpr std::initializer_list<char>
   version_string
-  (
+  {
     { '1', '.', '2', '3', '\0' }
-  );
+  };
 }
 
 static_assert(

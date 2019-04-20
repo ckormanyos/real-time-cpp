@@ -12,11 +12,11 @@
 #include <vector>
 
 std::vector<char>
-  v( { '1', '.', '2', '3', '\0' } );
+  v{ { '1', '.', '2', '3', '\0' } };
 
 int main()
 {
   std::cout << "v.data(): "
-            << v.data()
+            <<  v.data()
             << std::endl;
 }
