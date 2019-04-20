@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter08_02-002_static_init_bss.cpp
+// chapter08_02-003_static_init_data.cpp
 
 #include <algorithm>
 #include <cstdint>
