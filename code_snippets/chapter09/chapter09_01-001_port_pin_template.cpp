@@ -37,6 +37,8 @@ class port_pin
 public:
   static void set_direction_output(const addr_type address)
   {
+    std::cout << "Set the port pin direction to output." << std::endl;
+
     // Set the port pin direction to output.
     pin_is_output = true;
 
@@ -47,6 +49,8 @@ public:
 
   static void set_direction_input(const addr_type address)
   {
+    std::cout << "Set the port pin direction to input." << std::endl;
+
     // Set the port pin direction to input.
     pin_is_output = true;
 
@@ -57,6 +61,8 @@ public:
 
   static void set_pin_high(const addr_type address)
   {
+    std::cout << "Set the port pin output value to high." << std::endl;
+
     // Set the port output value to high.
     pin_is_high = true;
 
@@ -65,6 +71,8 @@ public:
 
   static void set_pin_low(const addr_type address)
   {
+    std::cout << "Set the port pin output value to low." << std::endl;
+
     // Set the port output value to low.
     pin_is_high = false;
 
@@ -73,6 +81,8 @@ public:
 
   static bool read_input_value(const addr_type address)
   {
+    std::cout << "Read the port pin input value." << std::endl;
+
     // Read the port input value.
     const bool pin_input_value_is_high =
       ((pin_is_output == false) && (pin_is_high == true));
@@ -82,6 +92,8 @@ public:
 
   static void toggle(const addr_type address)
   {
+    std::cout << "Toggle the port pin output value." << std::endl;
+
     // Toggle the port output value.
     port_register_type::bit_not(address, bpos);
   }
@@ -103,27 +115,27 @@ template<typename addr_type,
          const reg_type bpos>
 bool port_pin<addr_type, reg_type, bpos>::pin_is_high;
 
-// The simulated portb.
-std::uint8_t simulated_register_portb;
+// The simulated portd.
+std::uint8_t simulated_register_portd;
 
 const std::uintptr_t address =
-  reinterpret_cast<std::uintptr_t>(&simulated_register_portb);
+  reinterpret_cast<std::uintptr_t>(&simulated_register_portd);
 
 void do_something()
 {
-  // Toggle the simulated portb.5.
-  using simulated_port_b5_type =
-    port_pin<std::uintptr_t, std::uint8_t, 5U>;
+  // Toggle the simulated portd.0.
+  using simulated_port_d0_type =
+    port_pin<std::uintptr_t, std::uint8_t, 0U>;
 
-  simulated_port_b5_type::set_pin_high(address);
-  simulated_port_b5_type::set_direction_output(address);
+  simulated_port_d0_type::set_pin_high(address);
+  simulated_port_d0_type::set_direction_output(address);
 
   const bool pin_input_value_is_high =
-    simulated_port_b5_type::read_input_value(address);
+    simulated_port_d0_type::read_input_value(address);
 
   static_cast<void>(pin_input_value_is_high);
 
-  simulated_port_b5_type::toggle(address);
+  simulated_port_d0_type::toggle(address);
 }
 
 int main() noexcept
