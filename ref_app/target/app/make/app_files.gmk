@@ -29,6 +29,7 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
              $(PATH_APP)/mcal/$(TGT)/mcal_spi                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_wdg                            \
              $(PATH_APP)/mcal/mcal                                       \
+             $(PATH_APP)/mcal/mcal_cpu_read_program_memory               \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                    \
              $(PATH_APP)/os/os                                           \
              $(PATH_APP)/os/os_task_control_block                        \

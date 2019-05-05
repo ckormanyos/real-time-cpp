@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -34,7 +34,6 @@ void crt::init_ram()
   const std::size_t size = std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
                                        - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
 
-
   std::uint8_t* rom_source = static_cast<std::uint8_t*>(static_cast<void*>(&_rom_data_begin));
 
   std::for_each(static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)),
@@ -42,10 +41,11 @@ void crt::init_ram()
                 [&rom_source](memory_aligned_type& ram_destination)
                 {
                   // Note that particular care needs to be taken to read program
-                  // memory with the function mcal_cpu_read_program_memory_word().
+                  // memory with the function mcal::cpu::read_program_memory().
 
                   // Copy the data from the rom-source to the ram-destination.
-                  ram_destination = mcal_cpu_read_program_memory_word(rom_source);
+                  ram_destination =
+                    mcal::cpu::read_program_memory(reinterpret_cast<std::uint16_t*>(rom_source));
 
                   // Acquire the next 16-bit address of the rom-source.
                   rom_source += 2U;

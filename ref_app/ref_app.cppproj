@@ -274,9 +274,6 @@
     <Compile Include="src\mcal\avr\mcal_reg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_reg_access.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_ser.h">
       <SubType>compile</SubType>
     </Compile>
@@ -298,16 +295,28 @@
     <Compile Include="src\mcal\mcal.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\mcal_cpu_progmem_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_cpu_progmem_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_cpu_read_program_memory.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_cpu_read_program_memory.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_pwm_template.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_reg_access_template.h">
+    <Compile Include="src\mcal\mcal_reg_access_dynamic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_reg_dynamic_access_template.h">
+    <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os.cpp">

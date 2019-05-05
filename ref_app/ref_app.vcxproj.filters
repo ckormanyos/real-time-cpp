@@ -538,9 +538,6 @@
     <ClCompile Include="src\mcal\avr\mcal_eep.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_eep.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
@@ -639,6 +636,9 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32l152\mcal_eep.cpp">
       <Filter>src\mcal\stm32l152</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\mcal_cpu_read_program_memory.cpp">
+      <Filter>src\mcal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1377,6 +1377,15 @@
     <ClInclude Include="src\mcal\stm32l152\mcal_eep.h">
       <Filter>src\mcal\stm32l152</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\mcal_cpu_progmem_array.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_cpu_progmem_iterator.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_cpu_read_program_memory.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -1470,6 +1479,9 @@
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\cstring">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\integer_sequence">
       <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>

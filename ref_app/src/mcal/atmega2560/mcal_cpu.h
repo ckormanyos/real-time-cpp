@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,74 +8,106 @@
 #ifndef MCAL_CPU_2009_02_14_H_
   #define MCAL_CPU_2009_02_14_H_
 
-  #if defined(__cplusplus)
   #include <cstdint>
-  #else
-  #include <stdint.h>
-  #endif
+  #include <type_traits>
 
   #include <avr/pgmspace.h>
 
-  #if defined(__cplusplus)
-  namespace mcal
+  #define MY_PROGMEM PROGMEM
+
+  namespace mcal { namespace cpu {
+
+  void init();
+
+  inline void post_init() { }
+
+  inline void nop() { asm volatile("nop"); }
+
+  template<typename ProgramMemoryType>
+  ProgramMemoryType read_program_memory(
+    const ProgramMemoryType* pointer_to_program_memory,
+    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+                                   && (sizeof(ProgramMemoryType) != 1U)
+                                   && (sizeof(ProgramMemoryType) != 2U)
+                                   && (sizeof(ProgramMemoryType) != 4U)
+                                   && (sizeof(ProgramMemoryType) != 8U))>::type* = nullptr)
   {
-    namespace cpu
+    using local_programmemory_type = ProgramMemoryType;
+
+    local_programmemory_type x;
+
+    for(std::size_t i = 0U; i < sizeof(local_programmemory_type); ++i)
     {
-      void init();
+      const std::uint8_t next_memory_byte =
+        pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + i);
 
-      inline void post_init() { }
-
-      inline void nop() { asm volatile("nop"); }
+      *(reinterpret_cast<std::uint8_t*>(&x) + i) = next_memory_byte;
     }
-  }
-  #endif
 
-  #if defined(__cplusplus)
-  extern "C"
+    return x;
+  }
+
+  template<typename ProgramMemoryType>
+  ProgramMemoryType read_program_memory(
+    const ProgramMemoryType* pointer_to_program_memory,
+    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+                                   && (sizeof(ProgramMemoryType) == 1U))>::type* = nullptr)
   {
-  #endif
+    using local_programmemory_type = ProgramMemoryType;
 
-  inline uint8_t  mcal_cpu_read_program_memory_byte(const uint8_t* pointer_to_program_memory)
+    const local_programmemory_type x = pgm_read_byte(pointer_to_program_memory);
+
+    return x;
+  }
+
+  template<typename ProgramMemoryType>
+  ProgramMemoryType read_program_memory(
+    const ProgramMemoryType* pointer_to_program_memory,
+    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+                                   && (sizeof(ProgramMemoryType) == 2U))>::type* = nullptr)
   {
-    const uint16_t memory_address = (uint16_t) pointer_to_program_memory;
+    using local_programmemory_type = ProgramMemoryType;
 
-    return pgm_read_byte(memory_address);
+    const local_programmemory_type x = pgm_read_word(pointer_to_program_memory);
+
+    return x;
   }
 
-  inline uint16_t mcal_cpu_read_program_memory_word (const uint8_t* pointer_to_program_memory)
+  template<typename ProgramMemoryType>
+  ProgramMemoryType read_program_memory(
+    const ProgramMemoryType* pointer_to_program_memory,
+    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+                                   && (sizeof(ProgramMemoryType) == 4U))>::type* = nullptr)
   {
-    const uint16_t memory_address = (uint16_t) pointer_to_program_memory;
+    using local_programmemory_type = ProgramMemoryType;
 
-    return pgm_read_word(memory_address);
+    const local_programmemory_type x = pgm_read_dword(pointer_to_program_memory);
+
+    return x;
   }
 
-  inline uint32_t mcal_cpu_read_program_memory_dword(const uint8_t* pointer_to_program_memory)
+  template<typename ProgramMemoryType>
+  ProgramMemoryType read_program_memory(
+    const ProgramMemoryType* pointer_to_program_memory,
+    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
+                                   && (sizeof(ProgramMemoryType) == 8U))>::type* = nullptr)
   {
-    const uint16_t memory_address = (uint16_t) pointer_to_program_memory;
+    using local_programmemory_type = ProgramMemoryType;
 
-    return pgm_read_dword(memory_address);
+    local_programmemory_type x;
+
+    *(reinterpret_cast<std::uint8_t*>(&x) + 0U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 0U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 1U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 1U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 2U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 2U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 3U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 3U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 4U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 4U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 5U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 5U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 6U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 6U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 7U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 7U);
+
+    return x;
   }
 
-  inline uint64_t mcal_cpu_read_program_memory_qword(const uint8_t* pointer_to_program_memory)
-  {
-    const uint16_t memory_address = (uint16_t) pointer_to_program_memory;
-
-    uint64_t result_of_read;
-
-    *(((uint8_t*) &result_of_read) + 0U) = pgm_read_byte(memory_address + 0U);
-    *(((uint8_t*) &result_of_read) + 1U) = pgm_read_byte(memory_address + 1U);
-    *(((uint8_t*) &result_of_read) + 2U) = pgm_read_byte(memory_address + 2U);
-    *(((uint8_t*) &result_of_read) + 3U) = pgm_read_byte(memory_address + 3U);
-    *(((uint8_t*) &result_of_read) + 4U) = pgm_read_byte(memory_address + 4U);
-    *(((uint8_t*) &result_of_read) + 5U) = pgm_read_byte(memory_address + 5U);
-    *(((uint8_t*) &result_of_read) + 6U) = pgm_read_byte(memory_address + 6U);
-    *(((uint8_t*) &result_of_read) + 7U) = pgm_read_byte(memory_address + 7U);
-
-    return result_of_read;
-  }
-
-  #if defined(__cplusplus)
-  }
-  #endif
+  } } // namespace mcal::cpu
 
 #endif // MCAL_CPU_2009_02_14_H_
