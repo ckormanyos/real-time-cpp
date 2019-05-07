@@ -12,7 +12,7 @@
 
   #include <mcal_cpu.h>
 
-  // Implement a specialized iterator type for read-only program memory.
+  // Implement specialized iterator types for read-only program memory.
 
   namespace mcal { namespace cpu { namespace progmem {
 

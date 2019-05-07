@@ -37,20 +37,22 @@
     using value_type             = T;
     using const_pointer          = const value_type*;
     using const_reference        = const value_type;
-    using const_iterator         = mcal::cpu::progmem::forward_iterator<const value_type*>;
-    using const_reverse_iterator = mcal::cpu::progmem::reverse_iterator<const_iterator>;
-
-    const value_type elems[N];
+    using const_iterator         = mcal::cpu::progmem::forward_iterator<const_pointer>;
+    using const_reverse_iterator = mcal::cpu::progmem::reverse_iterator<const_pointer>;
 
     static MCAL_CPU_PROGMEM_CONSTEXPR size_type static_size = N;
 
+    const value_type elems[static_size];
+
+    ~array() = default;
+
     MCAL_CPU_PROGMEM_CONSTEXPR const_iterator begin() const { return const_iterator(elems); }
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator end  () const { return const_iterator(elems + N); }
+    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator end  () const { return const_iterator(elems + static_size); }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_iterator cbegin() const { return begin(); }
     MCAL_CPU_PROGMEM_CONSTEXPR const_iterator cend  () const { return end(); }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + N); }
+    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + static_size); }
     MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator crbegin() const { return rbegin(); }
@@ -58,9 +60,8 @@
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference at(const size_type i) const
     {
-      const value_type x = mcal::cpu::read_program_memory(elems + i);
-
-      return x;
+      return (((static_size > 0U) && (i < N)) ? mcal::cpu::read_program_memory(elems + i)
+                                              : value_type());
     }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference operator[](const size_type i) const
@@ -75,31 +76,36 @@
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference back() const
     {
-      return at(N - 1U);
+      return ((static_size > 0U) ? at(static_size - 1U) : value_type());
     }
 
-    static MCAL_CPU_PROGMEM_CONSTEXPR size_type size()     { return N; }
-    static MCAL_CPU_PROGMEM_CONSTEXPR bool empty()         { return false; }
-    static MCAL_CPU_PROGMEM_CONSTEXPR size_type max_size() { return N; }
+    MCAL_CPU_PROGMEM_CONSTEXPR size_type size    () const { return   static_size; }
+    MCAL_CPU_PROGMEM_CONSTEXPR bool      empty   () const { return ((static_size > 0U) == false); }
+    MCAL_CPU_PROGMEM_CONSTEXPR size_type max_size() const { return   static_size; }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_iterator data() const
     {
       return const_iterator(elems);
     }
+
+  private:
+    array() = delete;
+    array(const array&) = delete;
+    array& operator=(const array&) = delete;
   };
 
   template<typename T, size_t N>
   bool operator==(const array<T, N>& left, const array<T, N>& right)
   {
-    return std::equal(left.begin(), left.end(), right.begin());
+    return std::equal(left.cbegin(), left.cend(), right.cbegin());
   }
 
   template<typename T, size_t N>
   bool operator<(const array<T, N>& left, const array<T, N>& right)
   {
-    return std::lexicographical_compare(left.begin(),
-                                        left.end(),
-                                        right.begin(),
+    return std::lexicographical_compare(left.cbegin(),
+                                        left.cend(),
+                                        right.cbegin(),
                                         right.end());
   }
 
@@ -131,9 +137,8 @@
   class tuple_size;
 
   template<typename T, typename std::size_t N>
-  class tuple_size<mcal::cpu::progmem::array<T, N>> : public std::integral_constant<std::size_t, N>
-  {
-  };
+  class tuple_size<mcal::cpu::progmem::array<T, N>>
+    : public std::integral_constant<std::size_t, N> { };
 
   template<const std::size_t N, typename T>
   class tuple_element;
