@@ -10,10 +10,8 @@
 
   #include <algorithm>
   #include <cstddef>
-  #include <iterator>
   #include <type_traits>
 
-  #include <mcal_cpu.h>
   #include <mcal/mcal_cpu_progmem_iterator.h>
 
   #if defined(__GNUC__) || (defined(_MSC_VER) && (_MSC_VER >= 1900))
@@ -60,8 +58,12 @@
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference at(const size_type i) const
     {
-      return (((static_size > 0U) && (i < N)) ? mcal::cpu::read_program_memory(elems + i)
-                                              : value_type());
+      const bool index_is_in_range = ((empty() == false) && (i < static_size));
+
+      const_reference value_at_index =
+        (index_is_in_range ? *(cbegin() + difference_type(i)) : value_type());
+
+      return value_at_index;
     }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference operator[](const size_type i) const
@@ -76,12 +78,12 @@
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_reference back() const
     {
-      return ((static_size > 0U) ? at(static_size - 1U) : value_type());
+      return ((empty() == false) ? at(static_size - 1U) : value_type());
     }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR size_type size    () const { return   static_size; }
-    MCAL_CPU_PROGMEM_CONSTEXPR bool      empty   () const { return ((static_size > 0U) == false); }
-    MCAL_CPU_PROGMEM_CONSTEXPR size_type max_size() const { return   static_size; }
+    MCAL_CPU_PROGMEM_CONSTEXPR size_type size    () const { return  static_size; }
+    MCAL_CPU_PROGMEM_CONSTEXPR bool      empty   () const { return (static_size == 0U); }
+    MCAL_CPU_PROGMEM_CONSTEXPR size_type max_size() const { return  static_size; }
 
     MCAL_CPU_PROGMEM_CONSTEXPR const_iterator data() const
     {
@@ -144,8 +146,8 @@
   class tuple_element;
 
   template<const std::size_t I,
-            typename T,
-            const std::size_t N>
+           typename T,
+           const std::size_t N>
   class tuple_element<I, mcal::cpu::progmem::array<T, N>>
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");

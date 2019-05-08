@@ -8,7 +8,7 @@
 #ifndef MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
   #define MCAL_PROGMEM_ITERATOR_2019_05_04_
 
-  #include <cstdint>
+  #include <cstddef>
 
   #include <mcal_cpu.h>
 
@@ -57,18 +57,13 @@
     using difference_type   = IteratorDifferenceType;
     using pointer           = IteratorPointerType;
     using reference         = IteratorReferenceType;
-
-    iterator() = default;
-    iterator(const iterator&) = default;
-    ~iterator() = default;
-    iterator& operator=(const iterator&) = default;
   };
 
   template <typename iterator_type>
   class forward_iterator
     : public iterator<typename iterator_traits<iterator_type>::iterator_category,
                       typename iterator_traits<iterator_type>::value_type,
-                      std::size_t,
+                      typename iterator_traits<iterator_type>::difference_type,
                       typename iterator_traits<iterator_type>::pointer,
                       typename iterator_traits<iterator_type>::reference>
   {
@@ -76,7 +71,7 @@
     using base_class_type =
       iterator<typename iterator_traits<iterator_type>::iterator_category,
                typename iterator_traits<iterator_type>::value_type,
-               std::size_t,
+               typename iterator_traits<iterator_type>::difference_type,
                typename iterator_traits<iterator_type>::pointer,
                typename iterator_traits<iterator_type>::reference>;
 
@@ -247,21 +242,17 @@
   }
 
   // See ISO/IEC 14882:2011, near the end of Section 24.3.
-  template <typename container_type> inline auto  begin (const container_type& c) -> decltype(c.begin())   { return c.begin(); }
   template <typename container_type> inline auto cbegin (const container_type& c) -> decltype(c.cbegin())  { return c.cbegin(); }
-  template <typename container_type> inline auto  end   (const container_type& c) -> decltype(c.end())     { return c.end(); }
   template <typename container_type> inline auto cend   (const container_type& c) -> decltype(c.cend())    { return c.cend(); }
 
-  template <typename container_type> inline auto  rbegin(const container_type& c) -> decltype(c.rbegin())  { return c.rbegin(); }
   template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
-  template <typename container_type> inline auto  rend  (const container_type& c) -> decltype(c.rend())    { return c.rend(); }
   template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-  template <typename value_type, size_t N> inline const mcal::cpu::progmem::forward_iterator<const value_type*> cbegin (value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<const value_type*>(&c_array[0U]); }
-  template <typename value_type, size_t N> inline const mcal::cpu::progmem::forward_iterator<const value_type*> cend   (value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<const value_type*>(&c_array[N]); }
+  template <typename value_type, size_t N> inline const mcal::cpu::progmem::forward_iterator<const value_type*> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<const value_type*>(&c_array[0U]); }
+  template <typename value_type, size_t N> inline const mcal::cpu::progmem::forward_iterator<const value_type*> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<const value_type*>(&c_array[N]); }
 
-  template <typename value_type, size_t N> inline const mcal::cpu::progmem::reverse_iterator<const value_type*> crbegin(value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<const value_type*>(&c_array[N]); }
-  template <typename value_type, size_t N> inline const mcal::cpu::progmem::reverse_iterator<const value_type*> crend  (value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<const value_type*>(&c_array[0U]); }
+  template <typename value_type, size_t N> inline const mcal::cpu::progmem::reverse_iterator<const value_type*> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<const value_type*>(&c_array[N]); }
+  template <typename value_type, size_t N> inline const mcal::cpu::progmem::reverse_iterator<const value_type*> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<const value_type*>(&c_array[0U]); }
 
   } } } // namespace mcal::cpu::progmem
 
