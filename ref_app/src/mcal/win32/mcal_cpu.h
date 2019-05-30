@@ -24,7 +24,7 @@
   template<typename ProgramMemoryType>
   ProgramMemoryType read_program_memory(
     const ProgramMemoryType* pointer_to_program_memory,
-    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == false)
                                    && (sizeof(ProgramMemoryType) != 1U)
                                    && (sizeof(ProgramMemoryType) != 2U)
                                    && (sizeof(ProgramMemoryType) != 4U)
@@ -48,7 +48,7 @@
   template<typename ProgramMemoryType>
   ProgramMemoryType read_program_memory(
     const ProgramMemoryType* pointer_to_program_memory,
-    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
                                    && (sizeof(ProgramMemoryType) == 1U))>::type* = nullptr)
   {
     using local_programmemory_type = ProgramMemoryType;
@@ -61,7 +61,7 @@
   template<typename ProgramMemoryType>
   ProgramMemoryType read_program_memory(
     const ProgramMemoryType* pointer_to_program_memory,
-    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
                                    && (sizeof(ProgramMemoryType) == 2U))>::type* = nullptr)
   {
     using local_programmemory_type = ProgramMemoryType;
@@ -83,7 +83,7 @@
   template<typename ProgramMemoryType>
   ProgramMemoryType read_program_memory(
     const ProgramMemoryType* pointer_to_program_memory,
-    const typename std::enable_if<(    (std::is_fundamental<ProgramMemoryType>::value == true)
+    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
                                    && (sizeof(ProgramMemoryType) == 4U))>::type* = nullptr)
   {
     using local_programmemory_type = ProgramMemoryType;
