@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter05_10-002_metaprogram_inner_product.cpp
+// chapter05_10-003_metaprogram_inner_product.cpp
 
 #include <array>
 #include <cstddef>

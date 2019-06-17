@@ -241,8 +241,6 @@
       iterator my_first; // begin()
       iterator my_last;  // end()
       iterator my_end;   // capacity()
-
-      static allocator_type get_allocator() { return allocator_type(); }
     };
   }
 

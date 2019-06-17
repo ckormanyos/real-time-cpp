@@ -116,7 +116,10 @@
       typedef const value_type* const_pointer;
 
       template<typename U>
-      struct rebind { typedef static_allocator<U, buffer_alignment> other; };
+      struct rebind
+      {
+        using other = static_allocator<U, buffer_alignment>;
+      };
     };
 
     template<typename T,
@@ -141,7 +144,10 @@
       static_allocator(const static_allocator<U, buffer_alignment>&) throw() { }
 
       template<typename U> 
-      struct rebind { typedef static_allocator<U, buffer_alignment> other; };
+      struct rebind
+      {
+        using other = static_allocator<U, buffer_alignment>;
+      };
 
       size_type max_size() const throw()
       {

@@ -227,7 +227,8 @@
   template<typename input_iterator>
   typename iterator_traits<input_iterator>::difference_type distance(input_iterator first, input_iterator last)
   {
-    typedef typename iterator_traits<input_iterator>::difference_type distance_type;
+    using distance_type =
+      typename iterator_traits<input_iterator>::difference_type;
 
     distance_type the_distance(0);
 
@@ -241,7 +242,6 @@
     return the_distance;
   }
 
-  // See ISO/IEC 14882:2011, near the end of Section 24.3.
   template <typename container_type> inline auto cbegin (const container_type& c) -> decltype(c.cbegin())  { return c.cbegin(); }
   template <typename container_type> inline auto cend   (const container_type& c) -> decltype(c.cend())    { return c.cend(); }
 

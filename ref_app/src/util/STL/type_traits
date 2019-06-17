@@ -65,22 +65,37 @@
   namespace std
   {
     template<bool,
-             typename any_value_type = void>
+             typename the_value_type = void>
     struct enable_if { };
 
-    template<typename any_value_type>
-    struct enable_if<true, any_value_type>
+    template<typename the_value_type>
+    struct enable_if<true, the_value_type>
     {
-      typedef any_value_type type;
+      typedef the_value_type type;
     };
 
-    template<typename any_value_type_left,
-             typename any_value_type_right>
+    template<const bool boolean_value,
+             typename true_type,
+             typename false_type>
+    struct conditional
+    {
+      typedef true_type type;
+    };
+
+    template<class true_type,
+             class false_type>
+    struct conditional<false, true_type, false_type>
+    {
+      typedef false_type type;
+    };
+
+    template<typename the_value_type1,
+             typename the_value_type2>
     struct is_same : false_type { };
 
-    template<typename any_value_type_left>
-    struct is_same<any_value_type_left,
-                   any_value_type_left> : true_type { };
+    template<typename the_value_type1>
+    struct is_same<the_value_type1,
+                   the_value_type1> : true_type { };
 
     template<typename T> struct remove_const                      { typedef T type; };
     template<typename T> struct remove_const<const T>             { typedef T type; };
