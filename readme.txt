@@ -21,6 +21,7 @@ The reference application supports the following targets:
   * Win32 in both Release and Debug modes
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
+  * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
   * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
@@ -75,6 +76,9 @@ be found in the target-directory and its subdirectories.
 
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
 The program toggles the yellow LED on portb.5.
+
+The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
+called "target lpc1124" toggles the LED on port0.8. 
 
 The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
