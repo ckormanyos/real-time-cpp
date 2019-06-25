@@ -6,7 +6,7 @@
 //
 
 #ifndef MCAL_CONFIG_2019_06_25_H_
-  #define MCAL_BENCHMARK_2019_06_25_H_
+  #define MCAL_CONFIG_2019_06_25_H_
 
   #include <cstdint>
   #include <mcal_osc.h>
@@ -41,4 +41,4 @@
     }
   }
 
-#endif // MCAL_BENCHMARK_2019_06_25_H_
+#endif // MCAL_CONFIG_2019_06_25_H_

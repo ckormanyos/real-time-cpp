@@ -361,6 +361,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\lpc11c24\mcal_cpu.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_eep.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_gpt.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_irq.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_led.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_osc.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_port.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_pwm.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_spi.cpp" />
+    <ClCompile Include="src\mcal\lpc11c24\mcal_wdg.cpp" />
     <ClCompile Include="src\mcal\mcal_cpu_read_program_memory.cpp" />
     <ClCompile Include="src\mcal\pic32mx795fx\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -1011,6 +1021,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\lpc11c24\mcal_benchmark.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_config.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_cpu.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_eep.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_gpt.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_irq.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_led.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_osc.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_port.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_pwm.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_reg.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_ser.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_spi.h" />
+    <ClInclude Include="src\mcal\lpc11c24\mcal_wdg.h" />
     <ClInclude Include="src\mcal\mcal_cpu_progmem_array.h" />
     <ClInclude Include="src\mcal\mcal_cpu_progmem_iterator.h" />
     <ClInclude Include="src\mcal\mcal_cpu_read_program_memory.h" />

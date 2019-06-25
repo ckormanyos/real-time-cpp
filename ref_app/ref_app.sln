@@ -15,6 +15,7 @@ Global
 		target atmega2560|Win32 = target atmega2560|Win32
 		target avr|Win32 = target avr|Win32
 		target bcm2835_raspi_b|Win32 = target bcm2835_raspi_b|Win32
+		target lpc11c24|Win32 = target lpc11c24|Win32
 		target pic32mx795fx|Win32 = target pic32mx795fx|Win32
 		target rl78|Win32 = target rl78|Win32
 		target rx63n|Win32 = target rx63n|Win32
@@ -34,6 +35,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target atmega2560|Win32.ActiveCfg = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|Win32.ActiveCfg = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target bcm2835_raspi_b|Win32.ActiveCfg = Debug|Win32
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target lpc11c24|Win32.ActiveCfg = Release|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target pic32mx795fx|Win32.ActiveCfg = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rl78|Win32.ActiveCfg = Debug|Win32
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rx63n|Win32.ActiveCfg = Debug|Win32
@@ -53,6 +55,8 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|Win32.Build.0 = target avr|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target bcm2835_raspi_b|Win32.ActiveCfg = target bcm2835_raspi_b|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target bcm2835_raspi_b|Win32.Build.0 = target bcm2835_raspi_b|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target lpc11c24|Win32.ActiveCfg = target lpc11c24|Win32
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target lpc11c24|Win32.Build.0 = target lpc11c24|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target pic32mx795fx|Win32.ActiveCfg = target pic32mx795fx|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target pic32mx795fx|Win32.Build.0 = target pic32mx795fx|Win32
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|Win32.ActiveCfg = target rl78|Win32

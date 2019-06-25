@@ -15,7 +15,6 @@ GCC_TARGET    = arm-none-eabi
 TGT_CFLAGS    = -O2                                                           \
                 -finline-functions                                            \
                 -finline-limit=16                                             \
-                -ffast-math                                                   \
                 -mcpu=cortex-m4                                               \
                 -mtune=cortex-m4                                              \
                 -mthumb                                                       \
