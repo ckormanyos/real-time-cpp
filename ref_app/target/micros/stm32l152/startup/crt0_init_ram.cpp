@@ -29,11 +29,12 @@ void crt::init_ram()
 
   // Copy the data segment initializers from ROM to RAM.
   // Note that all data segments are aligned by 4.
-  const std::size_t size = std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
-                                       - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
+  const std::size_t size_data =
+    std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
+                - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
 
   std::copy(static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)),
-            static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)) + size,
+            static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)) + size_data,
             static_cast<      memory_aligned_type*>(static_cast<      void*>(&_data_begin)));
 
   // Clear the bss segment.

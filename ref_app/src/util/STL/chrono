@@ -610,6 +610,9 @@
     // The String Literals Section
     //
 
+    #if defined(__GNUC__) && (__GNUC__ < 5)
+    #else
+
     namespace literals
     {
       namespace chrono_literals
@@ -646,6 +649,8 @@
       using std::literals::chrono_literals::operator""min;
       using std::literals::chrono_literals::operator""h;
     }
+
+    #endif // __GNUC__ >= 5
   } // namespace std
 
 #endif // CHRONO_2012_06_01_

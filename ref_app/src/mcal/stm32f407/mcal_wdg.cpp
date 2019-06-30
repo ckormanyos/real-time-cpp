@@ -13,7 +13,7 @@
 void mcal::wdg::init(const config_type*)
 {
   // Write access to the IWDG_PR and IWDG_RLR registers is protected
-  // Register access  unlock protection
+  // Register access unlock protection
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::iwdg_kr,

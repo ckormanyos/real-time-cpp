@@ -8,8 +8,8 @@
 
 #include <mcal_cpu.h>
 
-extern "C" void __attribute__((nomips16, interrupt, used, noinline)) __vector_unused_irq();
-extern "C" void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1    ();
+extern "C" void __attribute__((nomips16, used, noinline)) __vector_unused_irq();
+extern "C" void __attribute__((nomips16, used, noinline)) __vector_timer1    ();
 
 #if defined(QUOTE)
 #undef QUOTE
@@ -94,7 +94,7 @@ DECLARE_INTERRUPT(61, __vector_unused_irq); // unused                           
 DECLARE_INTERRUPT(62, __vector_unused_irq); // unused                           62
 DECLARE_INTERRUPT(63, __vector_unused_irq); // unused                           63
 
-void __attribute__((nomips16, interrupt, used, noinline)) __vector_unused_irq()
+void __attribute__((nomips16, used, noinline)) __vector_unused_irq()
 {
   for(;;)
   {

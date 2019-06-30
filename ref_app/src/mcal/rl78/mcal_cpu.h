@@ -15,7 +15,7 @@
 
   namespace mcal { namespace cpu {
 
-  inline void init();
+  void init();
 
   inline void post_init() { }
 

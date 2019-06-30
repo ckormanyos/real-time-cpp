@@ -33,9 +33,9 @@ namespace
                 "The timer1 microsecond period must evenly divide the timer1 tick period.");
 }
 
-extern "C" void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1();
+extern "C" void __attribute__((nomips16, used, noinline)) __vector_timer1();
 
-void __attribute__((nomips16, interrupt, used, noinline)) __vector_timer1()
+extern "C" void __attribute__((nomips16, used, noinline)) __vector_timer1()
 {
   // Increment the system tick.
   system_tick += timer1_period_in_microseconds;

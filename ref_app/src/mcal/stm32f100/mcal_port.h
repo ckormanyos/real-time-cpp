@@ -31,8 +31,8 @@
           // Set the port pin control bits for output, push-pull, 50MHz in the new register value.
           // Set the port for digital output.
           mcal::reg::reg_access_dynamic<addr_type, reg_type>::reg_msk(pdir,
-                                                                  reg_type(0x3UL) << pdir_shift_offset,
-                                                                  reg_type(0xFUL) << pdir_shift_offset);
+                                                                      reg_type(0x3UL) << pdir_shift_offset,
+                                                                      reg_type(0xFUL) << pdir_shift_offset);
         }
 
         static void set_direction_input()

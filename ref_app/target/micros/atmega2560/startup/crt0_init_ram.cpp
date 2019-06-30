@@ -31,13 +31,14 @@ void crt::init_ram()
 
   // Copy the data segment initializers from rom-to-ram.
   // Note that all data segments are aligned by 2.
-  const std::size_t size = std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
-                                       - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
+  const std::size_t size_data =
+    std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
+                - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
 
   std::uint8_t* rom_source = static_cast<std::uint8_t*>(static_cast<void*>(&_rom_data_begin));
 
   std::for_each(static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)),
-                static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)) + size,
+                static_cast<memory_aligned_type*>(static_cast<void*>(&_data_begin)) + size_data,
                 [&rom_source](memory_aligned_type& ram_destination)
                 {
                   // Note that particular care needs to be taken to read program

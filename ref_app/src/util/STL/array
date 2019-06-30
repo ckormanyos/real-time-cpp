@@ -41,8 +41,8 @@
 
       static STL_LOCAL_CONSTEXPR size_type static_size = N;
 
-      STL_LOCAL_CONSTEXPR iterator begin() { return elems; }
-      STL_LOCAL_CONSTEXPR iterator end  () { return elems + N; }
+                          iterator begin() { return elems; }
+                          iterator end  () { return elems + N; }
 
       STL_LOCAL_CONSTEXPR const_iterator begin() const { return elems; }
       STL_LOCAL_CONSTEXPR const_iterator end  () const { return elems + N; }
@@ -50,8 +50,8 @@
       STL_LOCAL_CONSTEXPR const_iterator cbegin() const { return elems; }
       STL_LOCAL_CONSTEXPR const_iterator cend  () const { return elems + N; }
 
-      STL_LOCAL_CONSTEXPR reverse_iterator rbegin() { return reverse_iterator(elems + N); }
-      STL_LOCAL_CONSTEXPR reverse_iterator rend  () { return reverse_iterator(elems); }
+                          reverse_iterator rbegin() { return reverse_iterator(elems + N); }
+                          reverse_iterator rend  () { return reverse_iterator(elems); }
 
       STL_LOCAL_CONSTEXPR const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + N); }
       STL_LOCAL_CONSTEXPR const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
@@ -59,16 +59,16 @@
       STL_LOCAL_CONSTEXPR const_reverse_iterator crbegin() const { return const_reverse_iterator(elems + N); }
       STL_LOCAL_CONSTEXPR const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
-      STL_LOCAL_CONSTEXPR reference operator[](const size_type i)             { return elems[i]; }
+                          reference operator[](const size_type i)             { return elems[i]; }
       STL_LOCAL_CONSTEXPR const_reference operator[](const size_type i) const { return elems[i]; }
 
-      STL_LOCAL_CONSTEXPR reference at(const size_type i)             { return elems[i]; }
+                          reference at(const size_type i)             { return elems[i]; }
       STL_LOCAL_CONSTEXPR const_reference at(const size_type i) const { return elems[i]; }
 
-      STL_LOCAL_CONSTEXPR reference front()             { return elems[0U]; }
+                          reference front()             { return elems[0U]; }
       STL_LOCAL_CONSTEXPR const_reference front() const { return elems[0U]; }
 
-      STL_LOCAL_CONSTEXPR reference back()             { return elems[N - 1U]; }
+                          reference back()             { return elems[N - 1U]; }
       STL_LOCAL_CONSTEXPR const_reference back() const { return elems[N - 1U]; }
 
       static STL_LOCAL_CONSTEXPR size_type size()     { return N; }
@@ -82,7 +82,7 @@
       }
 
       STL_LOCAL_CONSTEXPR const_pointer data() const { return elems; }
-      STL_LOCAL_CONSTEXPR pointer data()             { return elems; }
+                          pointer data()             { return elems; }
 
       pointer c_array() { return elems; }
 

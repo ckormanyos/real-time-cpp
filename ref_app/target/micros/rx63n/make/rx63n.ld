@@ -13,13 +13,13 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_ARCH(rx)
 
 /* The beginning and end of the program ROM area */
-_rom_begin = 0xFFFC0000;
-_rom_end   = 0xFFFCFFFC;
+__rom_begin = 0xFFFC0000;
+__rom_end   = 0xFFFCFFFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 4K */
-_stack_begin = 0x00007000;
-_stack_end   = 0x00008000;
+__stack_begin = 0x00007000;
+__stack_end   = 0x00008000;
 
 __initial_stack_pointer = 0x00008000;
 
@@ -40,24 +40,24 @@ SECTIONS
   .data :
   {
     . = ALIGN(4);
-    _data_begin = . ;
+    __data_begin = . ;
     *(.data)
     . = ALIGN(4);
     *(.data.*)
     . = ALIGN(4);
-    _data_end = . ;
+    __data_end = . ;
   } > RAM AT > ROM
 
   /* The uninitialized (zero-cleared) data section */
   .bss :
   {
     . = ALIGN(4);
-    _bss_begin = .;
+    __bss_begin = .;
     *(.bss)
     . = ALIGN(4);
     *(.bss*)
     . = ALIGN(4);
-    _bss_end = . ;
+    __bss_end = . ;
   } > RAM
 
   . = 0xFFFC0000;
@@ -66,7 +66,7 @@ SECTIONS
   .ivec_user :
   {
     . = ALIGN(4);
-    _vectors_begin = . ;
+    __vectors_begin = . ;
     KEEP(*(.vectors_user))
   } > IVEC_USER
 
@@ -84,12 +84,12 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
-    _ctors_begin = . ;
+    __ctors_begin = . ;
     KEEP (*(SORT(.init_array.*)))
     . = ALIGN(4);
     KEEP (*(.init_array))
     . = ALIGN(4);
-    _ctors_end = . ;
+    __ctors_end = . ;
   } > ROM
 
   . = 0xFFFFFFD0;
@@ -100,5 +100,5 @@ SECTIONS
     KEEP(*(.vectors_fixed))
   } > IVEC_FIXED
 
-  _rom_data_begin = LOADADDR(.data);
+  __rom_data_begin = LOADADDR(.data);
 }

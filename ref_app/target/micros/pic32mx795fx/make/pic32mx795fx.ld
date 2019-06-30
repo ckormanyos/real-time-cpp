@@ -10,7 +10,7 @@
 
 INPUT(libc.a libm.a libgcc.a)
 
-OUTPUT_FORMAT("elf32-tradlittlemips")
+OUTPUT_FORMAT("elf32-tradbigmips")
 OUTPUT_ARCH("mips")
 ENTRY(__my_startup_entry)
 
