@@ -49,12 +49,16 @@ void app::prime::task_init()
   // See also the article "Prime-counting function" at:
   // http://en.wikipedia.org/wiki/Prime-counting_function
 
-  const float log_intergal_of_max_val =
-    math::primes::detail::log_integral_asym(static_cast<float>(app_prime::maximum_value_of_primes));
+  // Example:
+  // N[LogIntegral[542]] = 108.5080795
+
+  const float upper_limit_of_number_of_primes_as_float =
+    math::primes::detail::log_integral_asym(static_cast<float>(app_prime::maximum_value_of_primes)) - 1.04516F;
 
   using std::floor;
 
-  upper_limit_of_number_of_primes = static_cast<std::size_t>(floor(log_intergal_of_max_val)) - 2U;
+  upper_limit_of_number_of_primes =
+    static_cast<std::size_t>(upper_limit_of_number_of_primes_as_float);
 }
 
 void app::prime::task_func()
@@ -69,7 +73,9 @@ void app::prime::task_func()
   // Use a port pin to provide a real-time measurement.
   app_prime_port_type::set_pin_high();
 
-  math::primes::compute_primes_via_sieve<app_prime::maximum_value_of_primes>(primes.begin());
+  math::primes::compute_primes_via_sieve<app_prime::maximum_value_of_primes,
+                                         typename primes_container_type::iterator,
+                                         util::ring_allocator<void*>>(primes.begin());
 
   const auto prime_iterator =
     std::find_if(primes.crbegin(),

@@ -30,7 +30,7 @@
       ring_allocator_base(const ring_allocator_base&) throw() { }
 
       // The ring allocator's default buffer size.
-      static const size_type buffer_size = 512U;
+      static const size_type buffer_size = 768U;
 
       // The ring allocator's buffer type.
       struct buffer_type

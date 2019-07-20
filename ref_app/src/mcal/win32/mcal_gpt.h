@@ -27,7 +27,7 @@
       typedef void          config_type;
       typedef std::uint32_t value_type;
 
-      void init(const config_type*);
+      inline void init(const config_type*) { }
 
       class secure final
       {

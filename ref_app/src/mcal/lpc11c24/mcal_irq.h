@@ -17,7 +17,7 @@
     {
       typedef void config_type;
       void init(const config_type*);
-      void set_handler_priority(int32_t irq, uint32_t priority);
+      void set_handler_priority(const std::int32_t irq, const std::uint32_t priority);
 
       inline void enable_all () { asm volatile("cpsie i"); }
       inline void disable_all() { asm volatile("cpsid i"); }

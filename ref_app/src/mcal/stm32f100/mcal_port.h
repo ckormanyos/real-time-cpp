@@ -30,9 +30,11 @@
           // Clear all the port pin control bits in the new register value.
           // Set the port pin control bits for output, push-pull, 50MHz in the new register value.
           // Set the port for digital output.
-          mcal::reg::reg_access_dynamic<addr_type, reg_type>::reg_msk(pdir,
-                                                                      reg_type(0x3UL) << pdir_shift_offset,
-                                                                      reg_type(0xFUL) << pdir_shift_offset);
+          mcal::reg::reg_access_static<
+            addr_type,
+            reg_type,
+            pdir,
+            reg_type(0x3UL << pdir_shift)>::template reg_msk<reg_type(0xFUL << pdir_shift)>();
         }
 
         static void set_direction_input()
@@ -41,9 +43,11 @@
           // Clear all the port pin control bits in the new register value.
           // Set the port pin control bits for input in the new register value.
           // Set the port for digital input.
-          mcal::reg::reg_access_dynamic<addr_type, reg_type>::reg_msk(pdir,
-                                                                  reg_type(0x4UL) << pdir_shift_offset,
-                                                                  reg_type(0xFUL) << pdir_shift_offset);
+          mcal::reg::reg_access_static<
+            addr_type,
+            reg_type,
+            pdir,
+            reg_type(0x4UL << pdir_shift)>::template reg_msk<reg_type(0xFUL << pdir_shift)>();
         }
 
         static void set_pin_high()
@@ -71,12 +75,10 @@
         }
 
       private:
-        static constexpr bool is_in_high_byte = (bpos >= 8U);
-
-        static constexpr addr_type pdir = addr_type(port - addr_type(is_in_high_byte ? 8U : 12U));
+        static constexpr addr_type pdir = addr_type(port - addr_type((bpos >= 8U) ? 8U : 12U));
         static constexpr addr_type pinp = addr_type(port - 4U);
 
-        static constexpr reg_type pdir_shift_offset = reg_type((bpos - reg_type(is_in_high_byte ? 8U : 0U)) * 4U);
+        static constexpr reg_type pdir_shift = reg_type((bpos - reg_type((bpos >= 8U) ? 8U : 0U)) * 4U);
       };
     }
   }

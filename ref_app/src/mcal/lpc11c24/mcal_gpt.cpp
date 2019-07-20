@@ -42,23 +42,30 @@ void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
-    std::uint32_t systick_load_val = (mcal::osc::get_sys_clk_rate() / mcal::config::systick_hz) & 0xFFFFFFUL;
+    const std::uint32_t systick_load_val =
+      std::uint32_t(mcal::osc::get_sys_clk_rate() / mcal::config::systick_hz) & UINT32_C(0x00FFFFFF);
 
     // set reload register
-    mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::systick_load, systick_load_val - 1);
+    mcal::reg::reg_access_dynamic<std::uint32_t,
+                                  std::uint32_t>::reg_set(mcal::reg::systick_load, systick_load_val - 1);
 
     // set nvic priority
-    mcal::irq::set_handler_priority(mcal::irq::systick_irqn, (1<< mcal::irq::nvic_priority_bits) - 1);
+    mcal::irq::set_handler_priority(mcal::irq::systick_irqn,
+                                    std::uint32_t(std::uint32_t(UINT32_C(1) << mcal::irq::nvic_priority_bits) - UINT32_C(1)));
 
     // load counter value
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::systick_val, 0>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::systick_val,
+                                 UINT32_C(0)>::reg_set();
 
     // enable IRQ and timer
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, 
-                                 mcal::reg::systick_ctrl, 
-                                 systick_ctrl_clksource | 
-                                 systick_ctrl_tickint | 
-                                 systick_ctrl_enable>::reg_set();
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::systick_ctrl,
+                                 std::uint32_t(  systick_ctrl_clksource
+                                               | systick_ctrl_tickint
+                                               | systick_ctrl_enable)>::reg_set();
 
     gpt_is_initialized() = true;
   }
@@ -74,11 +81,15 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     typedef std::uint16_t timer_register_type;
 
     // Do the first read of the systick counter and the system tick variable.
-    const timer_register_type   sys_tick_cnt_1 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::systick_val>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick;
+    const timer_register_type   sys_tick_cnt_1 = mcal::reg::reg_access_static<timer_address_type,
+                                                                              timer_register_type,
+                                                                              mcal::reg::systick_val>::reg_get();
+    const mcal::gpt::value_type sys_tick_1     = system_tick;
 
     // Do the second read of the systick counter.
-    const timer_register_type   sys_tick_cnt_2 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::systick_val>::reg_get();
+    const timer_register_type   sys_tick_cnt_2 = mcal::reg::reg_access_static<timer_address_type,
+                                                                              timer_register_type,
+                                                                              mcal::reg::systick_val>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick

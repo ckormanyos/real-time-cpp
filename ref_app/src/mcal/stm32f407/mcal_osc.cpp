@@ -72,7 +72,10 @@ namespace
                                    UINT32_C(0x00009400)>::reg_or();
 
       // Enable the pll via setting the pllon bit of the rcc_cr register.
-      mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(0x01000000)>::reg_or();
+      mcal::reg::reg_access_static<std::uint32_t,
+                                   std::uint32_t,
+                                   mcal::reg::rcc_cr,
+                                   UINT32_C(0x01000000)>::reg_or();
 
       // Wait until the pll is locked.
       while(mcal::reg::reg_access_static<std::uint32_t,

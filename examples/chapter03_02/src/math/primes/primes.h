@@ -6,7 +6,6 @@
   #include <limits>
   #include <vector>
 
-  #include <util/memory/util_ring_allocator.h>
   #include <util/utility/util_dynamic_bitset.h>
 
   namespace math { namespace primes {
@@ -58,7 +57,8 @@
   } // namespace math::primes::detail
 
   template<const std::size_t maximum_value,
-           typename forward_iterator_type>
+           typename forward_iterator_type,
+           typename alloc>
   void compute_primes_via_sieve(forward_iterator_type first)
   {
     // Use a sieve algorithm to generate a table of primes.
@@ -68,7 +68,11 @@
     // that the number is prime.
 
     // Define a local value type.
-    using local_value_type = typename std::iterator_traits<forward_iterator_type>::value_type;
+    using local_value_type =
+      typename std::iterator_traits<forward_iterator_type>::value_type;
+
+    using local_allocator_type =
+      typename alloc::template rebind<local_value_type>::other;
 
     // Establish the upper limit of the sieving.
     using std::sqrt;
@@ -81,18 +85,18 @@
     // Use a custom bitset to contain the sieve.
     // This can save a lot of storage space.
     util::dynamic_bitset<maximum_value,
-                         util::ring_allocator<std::uint8_t>>
-    sieve;
+                         std::uint8_t,
+                         local_allocator_type> sieve;
 
-    for(local_value_type outer_index_i = 2U; outer_index_i < local_value_type(imax); ++outer_index_i)
+    for(local_value_type i = 2U; i < local_value_type(imax); ++i)
     {
-      if(sieve.test(outer_index_i) == false)
+      if(sieve.test(i) == false)
       {
-        const local_value_type i2 = outer_index_i * outer_index_i;
+        const local_value_type i2 = i * i;
 
-        for(local_value_type inner_index_j = i2; inner_index_j < maximum_value; inner_index_j += outer_index_i)
+        for(local_value_type j = i2; j < maximum_value; j += i)
         {
-          sieve.set(inner_index_j);
+          sieve.set(j);
         }
       }
     }
