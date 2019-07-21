@@ -9,7 +9,8 @@
 # File list of the AM335x ARM(R) A8 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_cpu_detail                   \
+FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu_detail                   \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu_detail_secure            \
              $(PATH_APP)/util/STD_LIBC/memory                          \
              $(PATH_APP)/util/STL/impl/arm/arm_float_limits            \

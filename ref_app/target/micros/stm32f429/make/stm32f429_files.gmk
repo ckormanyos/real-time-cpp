@@ -9,7 +9,8 @@
 # File list of the stm32f429 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_osc_detail                   \
+FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_osc_detail                   \
              $(PATH_APP)/util/STD_LIBC/memory                          \
              $(PATH_APP)/util/STL/impl/arm/arm_float_limits            \
              $(PATH_APP)/util/STL/impl/cmath_impl_gamma                \

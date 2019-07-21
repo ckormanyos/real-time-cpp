@@ -73,15 +73,27 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 # Development tools
 # ------------------------------------------------------------------------------
-AR        = $(GCC_TARGET)-ar
-AS        = $(GCC_TARGET)-g++
-CC        = $(GCC_TARGET)-g++
-CPPFILT   = $(GCC_TARGET)-c++filt
-NM        = $(GCC_TARGET)-nm
-OBJDUMP   = $(GCC_TARGET)-objdump
-OBJCOPY   = $(GCC_TARGET)-objcopy
-READELF   = $(GCC_TARGET)-readelf
-SIZE      = $(GCC_TARGET)-size
+ifeq ($(GCC_PREFIX),)
+AR        = ar
+AS        = g++
+CC        = g++
+CPPFILT   = c++filt
+NM        = nm
+OBJDUMP   = objdump
+OBJCOPY   = objcopy
+READELF   = readelf
+SIZE      = size
+else
+AR        = $(GCC_PREFIX)-ar
+AS        = $(GCC_PREFIX)-g++
+CC        = $(GCC_PREFIX)-g++
+CPPFILT   = $(GCC_PREFIX)-c++filt
+NM        = $(GCC_PREFIX)-nm
+OBJDUMP   = $(GCC_PREFIX)-objdump
+OBJCOPY   = $(GCC_PREFIX)-objcopy
+READELF   = $(GCC_PREFIX)-readelf
+SIZE      = $(GCC_PREFIX)-size
+endif
 
 ECHO      = echo
 MAKE      = make
@@ -97,8 +109,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
-GCCFLAGS    = $(C_INCLUDES)                     \
-              $(TGT_CFLAGS)                     \
+GCCFLAGS    = $(TGT_CFLAGS)                     \
               -g                                \
               -Wall                             \
               -Wextra                           \
@@ -109,6 +120,7 @@ GCCFLAGS    = $(C_INCLUDES)                     \
               -Wunused-parameter                \
               -Wuninitialized                   \
               -Wmissing-declarations            \
+              -Wshadow                          \
               -Wunreachable-code                \
               -Wswitch-default                  \
               -Wswitch-enum                     \
@@ -148,15 +160,14 @@ AFLAGS      = $(GCCFLAGS)                       \
 LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
-              -nostdlib                         \
-              -nostartfiles                     \
-              -Wl,--gc-sections
+              -Wl,--gc-sections                 \
+              -Wl,-Map,$(APP).map
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
 # ------------------------------------------------------------------------------
 .PHONY: all
-all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).elf
+all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).$(TGT_SUFFIX)
 
 
 # ------------------------------------------------------------------------------
@@ -203,44 +214,55 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
-	@$(ECHO) GNUmake version...
+	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
-	@$(ECHO) GCC version...
+	@$(ECHO)
+	@$(ECHO) +++ Print GCC version
 	@$(CC) -v
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler include paths
+	@$(ECHO) $(C_INCLUDES)
+	@$(ECHO)
+	@$(ECHO) +++ Print compiler definitions
+	@$(ECHO) $(C_DEFINES)
+	@$(ECHO)
 
 
 # ------------------------------------------------------------------------------
 # link/locate application and generate an assembly list file
 # ------------------------------------------------------------------------------
-$(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
-	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+$(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
+	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
+	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
+	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------
 # parse the object files to obtain symbol information, and create a size summary
 # ------------------------------------------------------------------------------
-$(APP)_nm.txt : $(APP).elf
+$(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ parsing symbols with nm to generate: $(APP)_nm.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf > $(APP)_nm.txt
+	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) > $(APP)_nm.txt
 	@-$(ECHO) +++ demangling symbols with c++filt to generate: $(APP)_cppfilt.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf | $(CPPFILT) > $(APP)_cppfilt.txt
+	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) | $(CPPFILT) > $(APP)_cppfilt.txt
 	@-$(ECHO) +++ parsing symbols with readelf to generate: $(APP)_readelf.txt
-	@-$(READELF) --syms $(APP).elf > $(APP)_readelf.txt
+ifeq ($(TGT_SUFFIX),elf)
+	@-$(READELF) --syms $(APP).$(TGT_SUFFIX) > $(APP)_readelf.txt
+else
+	@-$(ECHO) +++ not available for: $(APP).$(TGT_SUFFIX).
+endif
 	@-$(ECHO) +++ creating size summary table with size to generate: $(APP)_size.txt
-	@-$(SIZE) -A -t $(APP).elf > $(APP)_size.txt
+	@-$(SIZE) -A -t $(APP).$(TGT_SUFFIX) > $(APP)_size.txt
 
 
 # ------------------------------------------------------------------------------
 # create hex mask
 # ------------------------------------------------------------------------------
-$(APP)_flash.hex : $(APP).elf
+$(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
-	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
-
+	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
+	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)

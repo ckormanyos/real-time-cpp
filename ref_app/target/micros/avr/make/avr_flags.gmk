@@ -11,6 +11,9 @@
 
 GCC_VERSION   = 7.2.0
 GCC_TARGET    = avr
+GCC_PREFIX    = avr
+
+TGT_SUFFIX    = elf
 
 TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega328p                               \
@@ -24,4 +27,7 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   =
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -T $(LINKER_DEFINITION_FILE)
+

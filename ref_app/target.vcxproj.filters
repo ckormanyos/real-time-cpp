@@ -127,9 +127,6 @@
     <Filter Include="micros\xtensa32\startup">
       <UniqueIdentifier>{53e83863-577c-4d22-8e58-93f6c9f2c1f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\xtensa32\_make">
-      <UniqueIdentifier>{dd0fe2a6-0b42-4cee-a106-84f66171e078}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\lpc11c24">
       <UniqueIdentifier>{1bcdbfbf-86cd-4aee-ae23-4d7d5ed9cad2}</UniqueIdentifier>
     </Filter>
@@ -138,6 +135,18 @@
     </Filter>
     <Filter Include="micros\lpc11c24\startup">
       <UniqueIdentifier>{3f300f03-33a2-470e-928e-dc620fd5485f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\x86_64-w64-mingw32">
+      <UniqueIdentifier>{73125d5a-08cb-4db7-906c-eec7d4cdb72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\x86_64-w64-mingw32\make">
+      <UniqueIdentifier>{b8efd83a-7cd5-4ba7-82b4-763bdc2c567f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\x86_64-w64-mingw32\startup">
+      <UniqueIdentifier>{80cb37c7-9856-4bf9-8bc4-2b91611ab9f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa32\make">
+      <UniqueIdentifier>{dd0fe2a6-0b42-4cee-a106-84f66171e078}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -280,13 +289,13 @@
       <Filter>micros\stm32f446\make</Filter>
     </None>
     <None Include="target\micros\xtensa32\make\xtensa32.ld">
-      <Filter>micros\xtensa32\_make</Filter>
+      <Filter>micros\xtensa32\make</Filter>
     </None>
     <None Include="target\micros\xtensa32\make\xtensa32_files.gmk">
-      <Filter>micros\xtensa32\_make</Filter>
+      <Filter>micros\xtensa32\make</Filter>
     </None>
     <None Include="target\micros\xtensa32\make\xtensa32_flags.gmk">
-      <Filter>micros\xtensa32\_make</Filter>
+      <Filter>micros\xtensa32\make</Filter>
     </None>
     <None Include="target\micros\lpc11c24\make\lpc11c24.ld">
       <Filter>micros\lpc11c24\make</Filter>
@@ -296,6 +305,15 @@
     </None>
     <None Include="target\micros\lpc11c24\make\lpc11c24_flags.gmk">
       <Filter>micros\lpc11c24\make</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

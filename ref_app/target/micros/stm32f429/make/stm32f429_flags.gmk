@@ -11,6 +11,9 @@
 
 GCC_VERSION   = 8.2.1
 GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
 
 TGT_CFLAGS    = -O2                                                           \
                 -finline-functions                                            \
@@ -31,6 +34,8 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   =
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -T $(LINKER_DEFINITION_FILE)
 
 IMAGE_FILE    = dummy.foo
