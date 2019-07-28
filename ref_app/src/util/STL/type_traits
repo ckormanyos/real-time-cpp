@@ -156,4 +156,34 @@
     template<typename T> struct is_signed    : traits_helper::is_signed  <T>::type { };
   }
 
+  namespace traits_helper
+  {
+    template <class T>
+    struct type_identity { using type = T; };
+
+    template <class T>
+    auto try_add_lvalue_reference(int) -> type_identity<T&>;
+
+    template <class T>
+    auto try_add_lvalue_reference(...) -> type_identity<T>;
+
+    template <class T>
+    auto try_add_rvalue_reference(int) -> type_identity<T&&>;
+
+    template <class T>
+    auto try_add_rvalue_reference(...) -> type_identity<T>;
+  }
+
+  namespace std
+  {
+    template <class T>
+    struct add_lvalue_reference : decltype(traits_helper::try_add_lvalue_reference<T>(0)) { };
+
+    template <class T>
+    struct add_rvalue_reference : decltype(traits_helper::try_add_rvalue_reference<T>(0)) { };
+
+    template<typename T>
+    typename std::add_rvalue_reference<T>::type declval();
+  }
+
 #endif // TYPE_TRAITS_2013_09_01_

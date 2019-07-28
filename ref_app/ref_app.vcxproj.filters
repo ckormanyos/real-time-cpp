@@ -1634,5 +1634,8 @@
     <None Include="src\util\STL\cstring">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\span">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
 </Project>
