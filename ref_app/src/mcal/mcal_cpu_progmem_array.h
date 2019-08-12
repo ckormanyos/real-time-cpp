@@ -14,49 +14,45 @@
 
   #include <mcal/mcal_cpu_progmem_iterator.h>
 
-  #if defined(__GNUC__) || (defined(_MSC_VER) && (_MSC_VER >= 1900))
-    #define MCAL_CPU_PROGMEM_CONSTEXPR constexpr
-  #else
-    #define MCAL_CPU_PROGMEM_CONSTEXPR const
-  #endif
-
   // Implement most of std::array for compilers that do not yet support it.
   // See ISO/IEC 14882:2011 Chapter 23.3.2.
 
   namespace mcal { namespace cpu { namespace progmem {
 
-  template<typename T, size_t N>
+  template<typename T, std::size_t N>
   class array
   {
+  private:
+    static constexpr std::size_t static_size = N;
+
   public:
     // Standard container-local type definitions.
-    using size_type              = std::size_t;
-    using difference_type        = std::ptrdiff_t;
-    using value_type             = T;
-    using const_pointer          = const value_type*;
-    using const_reference        = const value_type;
-    using const_iterator         = mcal::cpu::progmem::forward_iterator<const_pointer>;
-    using const_reverse_iterator = mcal::cpu::progmem::reverse_iterator<const_pointer>;
+    using const_iterator         = mcal::cpu::progmem::forward_iterator<T>;
+    using const_reverse_iterator = mcal::cpu::progmem::reverse_iterator<const_iterator>;
 
-    static MCAL_CPU_PROGMEM_CONSTEXPR size_type static_size = N;
+    using size_type              = std::size_t;
+    using difference_type        = typename const_iterator::difference_type;
+    using value_type             = typename const_iterator::value_type;
+    using const_pointer          = typename const_iterator::pointer;
+    using const_reference        = typename const_iterator::reference;
 
     const value_type elems[static_size];
 
     ~array() = default;
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator begin() const { return const_iterator(elems); }
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator end  () const { return const_iterator(elems + static_size); }
+    constexpr const_iterator begin() const { return const_iterator(elems); }
+    constexpr const_iterator end  () const { return const_iterator(elems + static_size); }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator cbegin() const { return begin(); }
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator cend  () const { return end(); }
+    constexpr const_iterator cbegin() const { return begin(); }
+    constexpr const_iterator cend  () const { return end(); }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + static_size); }
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
+    constexpr const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + static_size); }
+    constexpr const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator crbegin() const { return rbegin(); }
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reverse_iterator crend  () const { return rend(); }
+    constexpr const_reverse_iterator crbegin() const { return rbegin(); }
+    constexpr const_reverse_iterator crend  () const { return rend(); }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reference at(const size_type i) const
+    constexpr const_reference at(const size_type i) const
     {
       const bool index_is_in_range = ((empty() == false) && (i < static_size));
 
@@ -66,28 +62,28 @@
       return value_at_index;
     }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reference operator[](const size_type i) const
+    constexpr const_reference operator[](const size_type i) const
     {
       return at(i);
     }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reference front() const
+    constexpr const_reference front() const
     {
       return at(0U);
     }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_reference back() const
+    constexpr const_reference back() const
     {
       return ((empty() == false) ? at(static_size - 1U) : value_type());
     }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR size_type size    () const { return  static_size; }
-    MCAL_CPU_PROGMEM_CONSTEXPR bool      empty   () const { return (static_size == 0U); }
-    MCAL_CPU_PROGMEM_CONSTEXPR size_type max_size() const { return  static_size; }
+    constexpr size_type size    () const { return  static_size; }
+    constexpr bool      empty   () const { return (static_size == 0U); }
+    constexpr size_type max_size() const { return  static_size; }
 
-    MCAL_CPU_PROGMEM_CONSTEXPR const_iterator data() const
+    constexpr const_pointer data() const
     {
-      return const_iterator(elems);
+      return const_pointer(elems);
     }
 
   private:

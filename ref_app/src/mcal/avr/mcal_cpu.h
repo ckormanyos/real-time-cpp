@@ -55,7 +55,8 @@
   {
     using local_programmemory_type = ProgramMemoryType;
 
-    const local_programmemory_type x = pgm_read_byte(pointer_to_program_memory);
+    const local_programmemory_type x =
+      pgm_read_byte(reinterpret_cast<std::uint16_t>(pointer_to_program_memory));
 
     return x;
   }
@@ -68,7 +69,8 @@
   {
     using local_programmemory_type = ProgramMemoryType;
 
-    const local_programmemory_type x = pgm_read_word(pointer_to_program_memory);
+    const local_programmemory_type x =
+      pgm_read_word(reinterpret_cast<std::uint16_t>(pointer_to_program_memory));
 
     return x;
   }
@@ -81,7 +83,8 @@
   {
     using local_programmemory_type = ProgramMemoryType;
 
-    const local_programmemory_type x = pgm_read_dword(pointer_to_program_memory);
+    const local_programmemory_type x =
+      pgm_read_dword(reinterpret_cast<std::uint16_t>(pointer_to_program_memory));
 
     return x;
   }
@@ -95,15 +98,14 @@
     using local_programmemory_type = ProgramMemoryType;
 
     local_programmemory_type x;
-
-    *(reinterpret_cast<std::uint8_t*>(&x) + 0U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 0U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 1U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 1U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 2U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 2U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 3U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 3U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 4U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 4U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 5U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 5U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 6U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 6U);
-    *(reinterpret_cast<std::uint8_t*>(&x) + 7U) = pgm_read_byte(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 7U);
+    *(reinterpret_cast<std::uint8_t*>(&x) + 0U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 0U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 1U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 1U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 2U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 2U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 3U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 3U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 4U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 4U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 5U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 5U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 6U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 6U));
+    *(reinterpret_cast<std::uint8_t*>(&x) + 7U) = pgm_read_byte(reinterpret_cast<std::uint16_t>(reinterpret_cast<const std::uint8_t*>(pointer_to_program_memory) + 7U));
 
     return x;
   }
