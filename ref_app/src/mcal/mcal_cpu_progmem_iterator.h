@@ -17,12 +17,15 @@
   namespace mcal { namespace cpu { namespace progmem {
 
   template<typename T>
-  struct pointer_wrapper
+  class pointer_wrapper
   {
+  public:
     using value_type = T;
     using pointer    = const value_type*;
 
-    explicit pointer_wrapper(pointer x = nullptr) : ptr(x) { }
+    pointer_wrapper() { }
+
+    pointer_wrapper(pointer x) : ptr(x) { }
 
     template<typename OtherPointerType>
     constexpr pointer_wrapper(const pointer_wrapper<OtherPointerType>& other)
@@ -42,11 +45,6 @@
 
     constexpr value_type operator*() const
     {
-      return get();
-    }
-
-    constexpr value_type get() const
-    {
       return mcal::cpu::read_program_memory(ptr);
     }
 
@@ -62,19 +60,40 @@
     pointer_wrapper& operator+=(std::size_t n) { ptr += n; return *this; }
     pointer_wrapper& operator-=(std::size_t n) { ptr -= n; return *this; }
 
+  private:
     pointer ptr;
+
+    friend inline typename std::size_t
+    operator-(const pointer_wrapper& x,
+              const pointer_wrapper& y)
+    {
+      return (x.current.ptr - y.current.ptr);
+    }
+
+    friend inline pointer_wrapper
+    operator+(std::size_t n,
+              const pointer_wrapper& x)
+    {
+      return pointer_wrapper(x.current.ptr + n);
+    }
+
+    friend inline bool operator< (const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr <  y.ptr); }
+    friend inline bool operator<=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr <= y.ptr); }
+    friend inline bool operator==(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr == y.ptr); }
+    friend inline bool operator!=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr != y.ptr); }
+    friend inline bool operator>=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr >= y.ptr); }
+    friend inline bool operator> (const pointer_wrapper& x, const pointer_wrapper& y) { return (x.ptr >  y.ptr); }
   };
 
-  class input_iterator_tag                                             { };
-  class output_iterator_tag                                            { };
-  class forward_iterator_tag       : public input_iterator_tag         { };
-  class bidirectional_iterator_tag : public forward_iterator_tag       { };
-  class random_access_iterator_tag : public bidirectional_iterator_tag { };
+  struct input_iterator_tag                                             { };
+  struct output_iterator_tag                                            { };
+  struct forward_iterator_tag       : public input_iterator_tag         { };
+  struct bidirectional_iterator_tag : public forward_iterator_tag       { };
+  struct random_access_iterator_tag : public bidirectional_iterator_tag { };
 
   template<typename iterator_type>
-  class iterator_traits
+  struct iterator_traits
   {
-  public:
     typedef typename iterator_type::difference_type   difference_type;
     typedef typename iterator_type::value_type        value_type;
     typedef typename iterator_type::const_pointer     const_pointer;
@@ -83,9 +102,8 @@
   };
 
   template<typename T>
-  class iterator_traits<const T*>
+  struct iterator_traits<const T*>
   {
-  public:
     typedef std::size_t                 difference_type;
     typedef T                           value_type;
     typedef pointer_wrapper<value_type> const_pointer;
@@ -130,12 +148,14 @@
     using reference         = typename base_class_type::reference;
     using iterator_category = typename base_class_type::iterator_category;
 
-    explicit constexpr forward_iterator(typename pointer::pointer x = nullptr)
+    forward_iterator() { }
+
+    constexpr forward_iterator(pointer x)
       : current(x) { }
 
     template<typename OtherIteratorType>
     constexpr forward_iterator(const forward_iterator<OtherIteratorType>& other)
-      : current(static_cast<typename pointer::pointer>(other.current)) { }
+      : current(static_cast<pointer>(other.current)) { }
 
     ~forward_iterator() = default;
 
@@ -156,7 +176,7 @@
 
     constexpr reference operator[](difference_type n) const
     {
-      return *pointer(current.ptr + n);
+      return *pointer(current + n);
     }
 
     forward_iterator& operator++() { ++current; return *this; }
@@ -165,8 +185,8 @@
     forward_iterator operator++(int) { forward_iterator tmp = *this; ++current; return tmp; }
     forward_iterator operator--(int) { forward_iterator tmp = *this; --current; return tmp; }
 
-    forward_iterator operator+(difference_type n) const { return forward_iterator(current.ptr + n); }
-    forward_iterator operator-(difference_type n) const { return forward_iterator(current.ptr - n); }
+    forward_iterator operator+(difference_type n) const { return forward_iterator(current + n); }
+    forward_iterator operator-(difference_type n) const { return forward_iterator(current - n); }
 
     forward_iterator& operator+=(difference_type n) { current += n; return *this; }
     forward_iterator& operator-=(difference_type n) { current -= n; return *this; }
@@ -174,12 +194,12 @@
   private:
     pointer current;
 
-    friend inline bool operator< (const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr <  y.current.ptr); }
-    friend inline bool operator<=(const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr <= y.current.ptr); }
-    friend inline bool operator==(const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr == y.current.ptr); }
-    friend inline bool operator!=(const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr != y.current.ptr); }
-    friend inline bool operator>=(const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr >= y.current.ptr); }
-    friend inline bool operator> (const forward_iterator& x, const forward_iterator& y) { return (x.current.ptr >  y.current.ptr); }
+    friend inline bool operator< (const forward_iterator& x, const forward_iterator& y) { return (x.current <  y.current); }
+    friend inline bool operator<=(const forward_iterator& x, const forward_iterator& y) { return (x.current <= y.current); }
+    friend inline bool operator==(const forward_iterator& x, const forward_iterator& y) { return (x.current == y.current); }
+    friend inline bool operator!=(const forward_iterator& x, const forward_iterator& y) { return (x.current != y.current); }
+    friend inline bool operator>=(const forward_iterator& x, const forward_iterator& y) { return (x.current >= y.current); }
+    friend inline bool operator> (const forward_iterator& x, const forward_iterator& y) { return (x.current >  y.current); }
 
     friend inline typename forward_iterator::difference_type
     operator-(const forward_iterator& x,
@@ -203,12 +223,10 @@
   typename mcal::cpu::progmem::iterator_traits<input_iterator>::difference_type
   distance(input_iterator first, input_iterator last)
   {
-    using distance_type =
+    using local_difference_type =
       typename mcal::cpu::progmem::iterator_traits<input_iterator>::difference_type;
 
-    const distance_type the_distance(last - first);
-
-    return the_distance;
+    return local_difference_type(last - first);
   }
 
   template <typename container_type> inline auto cbegin (const container_type& c) -> decltype(c.cbegin())  { return c.cbegin(); }
