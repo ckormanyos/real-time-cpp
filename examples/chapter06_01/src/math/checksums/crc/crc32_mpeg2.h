@@ -43,10 +43,11 @@
     // Loop through the input data stream.
     while(first != last)
     {
+      using std::iterator_traits;
+
       // Define a local value_type.
-      typedef typename
-      std::iterator_traits<input_iterator>::value_type
-      value_type;
+      using value_type =
+      typename iterator_traits<input_iterator>::value_type;
 
       const value_type value = (*first) & UINT8_C(0xFF);
 

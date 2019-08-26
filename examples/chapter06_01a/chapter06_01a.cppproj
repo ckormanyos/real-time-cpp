@@ -178,6 +178,9 @@
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\math\checksums\crc\crc32_mpeg2.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\math\checksums\crc\crc32_mpeg2.h">
       <SubType>compile</SubType>
     </Compile>

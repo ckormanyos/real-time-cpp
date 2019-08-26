@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <mcal_cpu.h>
+#include <mcal/memory/mcal_memory_progmem_access.h>
 
 extern "C"
 {
@@ -42,11 +42,11 @@ void crt::init_ram()
                 [&rom_source](memory_aligned_type& ram_destination)
                 {
                   // Note that particular care needs to be taken to read program
-                  // memory with the function mcal::cpu::read_program_memory().
+                  // memory with the function mcal::memory::progmem::read().
 
                   // Copy the data from the rom-source to the ram-destination.
                   ram_destination =
-                    mcal::cpu::read_program_memory(reinterpret_cast<std::uint16_t*>(rom_source));
+                    mcal::memory::progmem::read(reinterpret_cast<std::uint16_t*>(rom_source));
 
                   // Acquire the next 16-bit address of the rom-source.
                   rom_source += 2U;

@@ -14,6 +14,8 @@
 
   namespace math { namespace checksums { namespace crc {
 
+  extern const mcal::memory::progmem::array<std::uint32_t, 16U> table MY_PROGMEM;
+
   template<typename input_iterator>
   std::uint32_t crc32_mpeg2(input_iterator first,
                             input_iterator last)
@@ -25,19 +27,6 @@
 
     // ISO/IEC 13818-1:2000
     // Recommendation H.222.0 Annex A
-
-    // CRC-32/MPEG-2 Table based on nibbles.
-    static const mcal::memory::progmem::array<std::uint32_t, 16U> table MY_PROGMEM =
-    {{
-      UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
-      UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
-      UINT32_C(0x130476DC), UINT32_C(0x17C56B6B),
-      UINT32_C(0x1A864DB2), UINT32_C(0x1E475005),
-      UINT32_C(0x2608EDB8), UINT32_C(0x22C9F00F),
-      UINT32_C(0x2F8AD6D6), UINT32_C(0x2B4BCB61),
-      UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
-      UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
-    }};
 
     // Set the initial value.
     std::uint32_t crc = UINT32_C(0xFFFFFFFF);
@@ -79,6 +68,7 @@
 
     return crc;
   }
-  }}} // namespace math::checksums::crc
+
+  } } } // namespace math::checksums::crc
 
 #endif // CRC32_MPEG2_2018_01_07_H_

@@ -25,11 +25,6 @@ namespace app
 namespace
 {
   using app_crc_measurement_port_type = mcal::benchmark::benchmark_port_type;
-
-  const mcal::memory::progmem::array<std::uint8_t, 9U> app_benchmark_test_values MY_PROGMEM =
-  {{
-    0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
-  }};
 }
 
 void app::benchmark::task_init()
@@ -40,6 +35,11 @@ void app::benchmark::task_init()
 
 void app::benchmark::task_func()
 {
+  static const mcal::memory::progmem::array<std::uint8_t, 9U> app_benchmark_test_values MY_PROGMEM =
+  {{
+    0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
+  }};
+
   // Disable all interrupts before each calculation
   // in order to provide for a clean time measurement.
   mcal::irq::disable_all();

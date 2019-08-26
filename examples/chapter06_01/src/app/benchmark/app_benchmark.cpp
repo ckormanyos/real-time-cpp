@@ -57,7 +57,7 @@ void app::benchmark::task_func()
   mcal::irq::enable_all();
 
   // Verify the CRC result.
-  const volatile bool results_are_ok = (app_benchmark_crc_result == 0x0376E6E7);
+  const bool results_are_ok = (app_benchmark_crc_result == UINT32_C(0x0376E6E7));
 
   if(results_are_ok == false)
   {

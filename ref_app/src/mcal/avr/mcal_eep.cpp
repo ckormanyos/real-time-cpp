@@ -26,11 +26,11 @@ void mcal::eep::write(const address_type addr, const std::uint8_t data)
 
   // Write the address register.
   mcal::reg::reg_access_dynamic<std::uint8_t,
-                            address_type>::reg_set(mcal::reg::eear, addr);
+                                address_type>::reg_set(mcal::reg::eear, addr);
 
   // Write the data register.
   mcal::reg::reg_access_dynamic<std::uint8_t,
-                            std::uint8_t>::reg_set(mcal::reg::eedr, data);
+                                std::uint8_t>::reg_set(mcal::reg::eedr, data);
 
   // Set eecr.eempe (bit 2).
   mcal::reg::reg_access_static<std::uint8_t,

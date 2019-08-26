@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-#include <mcal_cpu.h>
+#include <mcal/memory/mcal_memory_progmem_access.h>
 #include <util/utility/util_utype_helper.h>
 
 extern "C"
@@ -40,7 +40,7 @@ void crt::init_ctors()
 
     // Acquire the next constructor function address.
     const function_aligned_integral_type ctor_function_address =
-      mcal::cpu::read_program_memory(reinterpret_cast<function_aligned_integral_type*>(rom_source - sizeof(function_aligned_integral_type)));
+      mcal::memory::progmem::read(reinterpret_cast<function_aligned_integral_type*>(rom_source - sizeof(function_aligned_integral_type)));
 
     // Call the constructor function.
     (reinterpret_cast<const ctor_type::function_type>(ctor_function_address))();

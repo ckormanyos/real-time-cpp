@@ -166,9 +166,6 @@
     <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\mcal.cpp">
-      <Filter>src\mcal</Filter>
-    </ClCompile>
     <ClCompile Include="src\sys\idle\sys_idle.cpp">
       <Filter>src\sys\idle</Filter>
     </ClCompile>
@@ -177,12 +174,6 @@
     </ClCompile>
     <ClCompile Include="src\sys\start\sys_start.cpp">
       <Filter>src\sys\start</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_led.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\os\os.cpp">
       <Filter>src\os</Filter>
@@ -216,9 +207,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_pwm.cpp">
       <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_pwm.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f100\mcal_pwm.cpp">
       <Filter>src\mcal\stm32f100</Filter>
@@ -261,12 +249,6 @@
     </ClCompile>
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <Filter>src\util\STD_LIBC</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f407\mcal_cpu.cpp">
       <Filter>src\mcal\stm32f407</Filter>
@@ -496,33 +478,6 @@
     <ClCompile Include="src\mcal\stm32l152\mcal_wdg.cpp">
       <Filter>src\mcal\stm32l152</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_cpu.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_gpt.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_irq.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_led.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_osc.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_port.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_pwm.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_spi.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_wdg.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
@@ -543,9 +498,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_eep.cpp">
       <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_eep.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f446\mcal_cpu.cpp">
       <Filter>src\mcal\stm32f446</Filter>
@@ -613,9 +565,6 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\atmega2560\mcal_eep.cpp">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_eep.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
@@ -642,9 +591,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32l152\mcal_eep.cpp">
       <Filter>src\mcal\stm32l152</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\mcal_cpu_read_program_memory.cpp">
-      <Filter>src\mcal</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\lpc11c24\mcal_cpu.cpp">
       <Filter>src\mcal\lpc11c24</Filter>
@@ -709,6 +655,57 @@
     <ClCompile Include="src\mcal\x86_64-w64-mingw32\mcal_spi.cpp">
       <Filter>src\mcal\x86_64-w64-mingw32</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\mcal.cpp">
+      <Filter>src\mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_eep.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_led.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_pwm.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_cpu.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_eep.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_gpt.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_irq.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_led.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_osc.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_port.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_pwm.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_spi.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega2560\mcal_wdg.cpp">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -744,18 +741,6 @@
     <ClInclude Include="src\mcal\avr\mcal_ser.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_cpu.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_gpt.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_irq.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_bit_mask.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
@@ -773,15 +758,6 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_utype_helper.h">
       <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_led.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_pwm.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_ser.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\os\os.h">
       <Filter>src\os</Filter>
@@ -819,14 +795,8 @@
     <ClInclude Include="src\mcal\avr\mcal_osc.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_wdg.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_spi.h">
       <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_spi.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_spi.h">
       <Filter>src\mcal\stm32f100</Filter>
@@ -860,9 +830,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_port.h">
       <Filter>src\mcal\stm32f100</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_port.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_linear_interpolate.h">
       <Filter>src\util\utility</Filter>
@@ -936,9 +903,6 @@
     <ClInclude Include="src\util\safety\time\util_safety_max_time_base.h">
       <Filter>src\util\safety\time</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_cpu.h">
       <Filter>src\mcal\stm32f407</Filter>
     </ClInclude>
@@ -980,9 +944,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f407\mcal_benchmark.h">
       <Filter>src\mcal\stm32f407</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_benchmark.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_benchmark.h">
       <Filter>src\mcal\stm32f100</Filter>
@@ -1215,9 +1176,6 @@
     <ClInclude Include="src\util\STL\impl\xcmath_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_pwm_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_noexcept.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
@@ -1269,42 +1227,6 @@
     <ClInclude Include="src\math\functions\math_functions_bessel.h">
       <Filter>src\math\functions</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_benchmark.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_cpu.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_gpt.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_irq.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_led.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_osc.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_port.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_pwm.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_reg.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_ser.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_spi.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_wdg.h">
-      <Filter>src\mcal\atmega2560</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
@@ -1319,9 +1241,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_eep.h">
       <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_eep.h">
-      <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f446\mcal_benchmark.h">
       <Filter>src\mcal\stm32f446</Filter>
@@ -1404,20 +1323,8 @@
     <ClInclude Include="src\mcal\xtensa32\mcal_wdg.h">
       <Filter>src\mcal\xtensa32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\fast_math\fast_math.h">
       <Filter>src\math\fast_math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\atmega2560\mcal_eep.h">
-      <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_eep.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
@@ -1445,15 +1352,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32l152\mcal_eep.h">
       <Filter>src\mcal\stm32l152</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_cpu_progmem_array.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_cpu_progmem_iterator.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_cpu_read_program_memory.h">
-      <Filter>src\mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\lpc11c24\mcal_benchmark.h">
       <Filter>src\mcal\lpc11c24</Filter>
@@ -1538,6 +1436,108 @@
     </ClInclude>
     <ClInclude Include="src\mcal\x86_64-w64-mingw32\mcal_osc.h">
       <Filter>src\mcal\x86_64-w64-mingw32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_pwm_template.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_benchmark.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_cpu.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_eep.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_gpt.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_irq.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_led.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_port.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_pwm.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_reg.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_ser.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_spi.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_wdg.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_benchmark.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_cpu.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_eep.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_gpt.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_irq.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_led.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_memory_progmem.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_osc.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_port.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_pwm.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_reg.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_ser.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_spi.h">
+      <Filter>src\mcal\atmega2560</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega2560\mcal_wdg.h">
+      <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

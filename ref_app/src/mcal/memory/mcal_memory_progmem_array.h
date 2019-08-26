@@ -12,12 +12,12 @@
   #include <cstddef>
   #include <type_traits>
 
-  #include <mcal/mcal_cpu_progmem_iterator.h>
+  #include <mcal/memory/mcal_memory_progmem_iterator.h>
 
-  // Implement most of std::array for compilers that do not yet support it.
+  // Implement most of std::array for read-only program memory.
   // See ISO/IEC 14882:2011 Chapter 23.3.2.
 
-  namespace mcal { namespace cpu { namespace progmem {
+  namespace mcal { namespace memory { namespace progmem {
 
   template<typename T, std::size_t N>
   class array
@@ -27,8 +27,8 @@
 
   public:
     // Standard container-local type definitions.
-    using const_iterator         = mcal::cpu::progmem::forward_iterator<T>;
-    using const_reverse_iterator = mcal::cpu::progmem::reverse_iterator<const_iterator>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T>;
+    using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
 
     using size_type              = std::size_t;
     using difference_type        = typename const_iterator::difference_type;
@@ -135,7 +135,7 @@
   class tuple_size;
 
   template<typename T, typename std::size_t N>
-  class tuple_size<mcal::cpu::progmem::array<T, N>>
+  class tuple_size<mcal::memory::progmem::array<T, N>>
     : public std::integral_constant<std::size_t, N> { };
 
   template<const std::size_t N, typename T>
@@ -144,13 +144,13 @@
   template<const std::size_t I,
            typename T,
            const std::size_t N>
-  class tuple_element<I, mcal::cpu::progmem::array<T, N>>
+  class tuple_element<I, mcal::memory::progmem::array<T, N>>
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
 
     typedef T type;
   };
 
-  } } } // namespace mcal::cpu::progmem
+  } } } // namespace mcal::memory::progmem
 
 #endif // MCAL_CPU_PROGMEM_ARRAY_2019_05_04_

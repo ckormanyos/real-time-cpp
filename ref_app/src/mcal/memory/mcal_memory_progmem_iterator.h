@@ -11,10 +11,11 @@
   #include <cstddef>
 
   #include <mcal_cpu.h>
+  #include <mcal/memory/mcal_memory_progmem_access.h>
 
   // Implement specialized iterator types for read-only program memory.
 
-  namespace mcal { namespace cpu { namespace progmem {
+  namespace mcal { namespace memory { namespace progmem {
 
   template<typename T>
   class pointer_wrapper
@@ -45,7 +46,7 @@
 
     constexpr value_type operator*() const
     {
-      return mcal::cpu::read_program_memory(ptr);
+      return mcal::memory::progmem::read(ptr);
     }
 
     pointer_wrapper& operator++() { ++ptr; return *this; }
@@ -127,19 +128,19 @@
 
   template<typename T>
   class forward_iterator
-    : public mcal::cpu::progmem::iterator<std::random_access_iterator_tag,
-                                          T,
-                                          std::size_t,
-                                          pointer_wrapper<T>,
-                                          T>
+    : public mcal::memory::progmem::iterator<std::random_access_iterator_tag,
+                                             T,
+                                             std::size_t,
+                                             pointer_wrapper<T>,
+                                             T>
   {
   private:
     using base_class_type =
-      mcal::cpu::progmem::iterator<std::random_access_iterator_tag,
-                                   T,
-                                   std::size_t,
-                                   pointer_wrapper<T>,
-                                   T>;
+      mcal::memory::progmem::iterator<std::random_access_iterator_tag,
+                                      T,
+                                      std::size_t,
+                                      pointer_wrapper<T>,
+                                      T>;
 
   public:
     using value_type        = typename base_class_type::value_type;
@@ -220,11 +221,11 @@
   using reverse_iterator = std::reverse_iterator<iterator_type>;
 
   template<typename input_iterator>
-  typename mcal::cpu::progmem::iterator_traits<input_iterator>::difference_type
+  typename mcal::memory::progmem::iterator_traits<input_iterator>::difference_type
   distance(input_iterator first, input_iterator last)
   {
     using local_difference_type =
-      typename mcal::cpu::progmem::iterator_traits<input_iterator>::difference_type;
+      typename mcal::memory::progmem::iterator_traits<input_iterator>::difference_type;
 
     return local_difference_type(last - first);
   }
@@ -235,12 +236,12 @@
   template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
   template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-  template <typename value_type, std::size_t N> inline const mcal::cpu::progmem::forward_iterator<value_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<value_type>(&c_array[0U]); }
-  template <typename value_type, std::size_t N> inline const mcal::cpu::progmem::forward_iterator<value_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::forward_iterator<value_type>(&c_array[N]); }
+  template <typename value_type, std::size_t N> inline const mcal::memory::progmem::forward_iterator<value_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type>(&c_array[0U]); }
+  template <typename value_type, std::size_t N> inline const mcal::memory::progmem::forward_iterator<value_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type>(&c_array[N]); }
 
-  template <typename value_type, std::size_t N> inline const mcal::cpu::progmem::reverse_iterator<mcal::cpu::progmem::forward_iterator<value_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<mcal::cpu::progmem::forward_iterator<value_type>>(&c_array[N]); }
-  template <typename value_type, std::size_t N> inline const mcal::cpu::progmem::reverse_iterator<mcal::cpu::progmem::forward_iterator<value_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::cpu::progmem::reverse_iterator<mcal::cpu::progmem::forward_iterator<value_type>>(&c_array[0U]); }
+  template <typename value_type, std::size_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type>>(&c_array[N]); }
+  template <typename value_type, std::size_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type>>(&c_array[0U]); }
 
-  } } } // namespace mcal::cpu::progmem
+  } } } // namespace mcal::memory::progmem
 
 #endif // MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
