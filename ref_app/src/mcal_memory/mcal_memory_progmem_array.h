@@ -12,7 +12,7 @@
   #include <cstddef>
   #include <type_traits>
 
-  #include <mcal/memory/mcal_memory_progmem_iterator.h>
+  #include <mcal_memory/mcal_memory_progmem_iterator.h>
 
   // Implement most of std::array for read-only program memory.
   // See ISO/IEC 14882:2011 Chapter 23.3.2.
@@ -27,7 +27,7 @@
 
   public:
     // Standard container-local type definitions.
-    using const_iterator         = mcal::memory::progmem::forward_iterator<T>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, std::uintptr_t>;
     using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
 
     using size_type              = std::size_t;
@@ -40,19 +40,19 @@
 
     ~array() = default;
 
-    constexpr const_iterator begin() const { return const_iterator(elems); }
-    constexpr const_iterator end  () const { return const_iterator(elems + static_size); }
+    const_iterator begin() const { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
+    const_iterator end  () const { return const_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
 
-    constexpr const_iterator cbegin() const { return begin(); }
-    constexpr const_iterator cend  () const { return end(); }
+    const_iterator cbegin() const { return begin(); }
+    const_iterator cend  () const { return end(); }
 
-    constexpr const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + static_size); }
-    constexpr const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(MCAL_PROGMEM_ADDRESSOF(elems[static_size])); }
+    const_reverse_iterator rend  () const { return const_reverse_iterator(MCAL_PROGMEM_ADDRESSOF(elems[0U])); }
 
-    constexpr const_reverse_iterator crbegin() const { return rbegin(); }
-    constexpr const_reverse_iterator crend  () const { return rend(); }
+    const_reverse_iterator crbegin() const { return rbegin(); }
+    const_reverse_iterator crend  () const { return rend(); }
 
-    constexpr const_reference at(const size_type i) const
+    const_reference at(const size_type i) const
     {
       const bool index_is_in_range = ((empty() == false) && (i < static_size));
 
@@ -62,17 +62,17 @@
       return value_at_index;
     }
 
-    constexpr const_reference operator[](const size_type i) const
+    const_reference operator[](const size_type i) const
     {
       return at(i);
     }
 
-    constexpr const_reference front() const
+    const_reference front() const
     {
       return at(0U);
     }
 
-    constexpr const_reference back() const
+    const_reference back() const
     {
       return ((empty() == false) ? at(static_size - 1U) : value_type());
     }
@@ -81,9 +81,9 @@
     constexpr bool      empty   () const { return (static_size == 0U); }
     constexpr size_type max_size() const { return  static_size; }
 
-    constexpr const_pointer data() const
+    const_pointer data() const
     {
-      return const_pointer(elems);
+      return const_pointer(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
     }
 
   private:

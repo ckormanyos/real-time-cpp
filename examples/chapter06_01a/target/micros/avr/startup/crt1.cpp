@@ -7,18 +7,23 @@
 
 #include <cstdint>
 
-#include <mcal/memory/mcal_memory_progmem_access.h>
+#include <mcal_memory/mcal_memory_progmem_access.h>
 #include <util/utility/util_utype_helper.h>
 
 extern "C"
 {
-  struct ctor_type
+  struct constructor_function_type
   {
-    typedef void(*function_type)();
+    using pointer = void(*)(void);
+
+    using size_type =
+      util::utype_helper<sizeof(pointer) * 8U>::exact_type;
+
+    static constexpr size_type static_size = static_cast<size_type>(sizeof(size_type));
   };
 
-  extern ctor_type::function_type _ctors_end[];
-  extern ctor_type::function_type _ctors_begin[];
+  extern constructor_function_type::pointer _ctors_end[];
+  extern constructor_function_type::pointer _ctors_begin[];
 }
 
 namespace crt
@@ -28,21 +33,19 @@ namespace crt
 
 void crt::init_ctors()
 {
-  using function_aligned_integral_type =
-    util::utype_helper<sizeof(void(*)(void)) * 8U>::exact_type;
-
-  for(std::uint8_t* rom_source  = static_cast<std::uint8_t*>(static_cast<void*>(_ctors_end));
-                    rom_source != static_cast<std::uint8_t*>(static_cast<void*>(_ctors_begin));
-                    rom_source -= sizeof(function_aligned_integral_type))
+  for(constructor_function_type::size_type rom_source
+                  = reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_end));
+      rom_source  > reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_begin));
+      rom_source -= constructor_function_type::static_size)
   {
     // Note that particular care needs to be taken to read program
     // memory with the function mcal::cpu::read_program_memory.
 
     // Acquire the next constructor function address.
-    const function_aligned_integral_type ctor_function_address =
-      mcal::memory::progmem::read(reinterpret_cast<function_aligned_integral_type*>(rom_source - sizeof(function_aligned_integral_type)));
+    const constructor_function_type::size_type pf =
+      mcal::memory::progmem::read<constructor_function_type::size_type>(rom_source - constructor_function_type::static_size);
 
     // Call the constructor function.
-    (reinterpret_cast<const ctor_type::function_type>(ctor_function_address))();
+    (reinterpret_cast<const constructor_function_type::pointer>(pf))();
   }
 }

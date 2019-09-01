@@ -10,7 +10,7 @@
 
   #include <cstdint>
 
-  #include <mcal/memory/mcal_memory_progmem_array.h>
+  #include <mcal_memory/mcal_memory_progmem_array.h>
 
   namespace math { namespace checksums { namespace crc {
 
