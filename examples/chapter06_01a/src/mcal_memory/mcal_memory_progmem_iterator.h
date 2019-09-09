@@ -8,155 +8,12 @@
 #ifndef MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
   #define MCAL_PROGMEM_ITERATOR_2019_05_04_
 
-  #include <mcal_memory/mcal_memory_progmem_access.h>
+  #include <mcal_memory/mcal_memory_detail.h>
+  #include <mcal_memory/mcal_memory_progmem_ptr.h>
 
   // Implement specialized iterator types for read-only program memory.
 
   namespace mcal { namespace memory { namespace progmem {
-
-  template<typename ValueType,
-           typename AddressType>
-  class progmem_ptr
-  {
-  private:
-    using value_type   = ValueType;
-    using address_type = AddressType;
-
-  public:
-    progmem_ptr() { }
-
-    explicit constexpr progmem_ptr(const address_type& addr) : my_address(addr) { }
-
-    constexpr progmem_ptr(progmem_ptr& x) : my_address(x.my_address) { }
-
-    template<typename OtherValueType, typename OtherAddressType>
-    constexpr progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType>& other)
-      : my_address(other.my_address) { }
-
-    ~progmem_ptr() = default;
-
-    progmem_ptr& operator=(const progmem_ptr& other)
-    {
-      if(this != &other)
-      {
-        my_address = other.my_address;
-      }
-
-      return *this;
-    }
-
-    constexpr value_type operator*() const
-    {
-      return mcal::memory::progmem::read<value_type>(my_address);
-    }
-
-    progmem_ptr& operator++() { my_address += sizeof(value_type); return *this; }
-    progmem_ptr& operator--() { my_address -= sizeof(value_type); return *this; }
-
-    progmem_ptr operator++(int) { progmem_ptr tmp = *this; my_address += sizeof(value_type); return tmp; }
-    progmem_ptr operator--(int) { progmem_ptr tmp = *this; my_address -= sizeof(value_type); return tmp; }
-
-    progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + (n * sizeof(value_type))); }
-    progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - (n * sizeof(value_type))); }
-
-    progmem_ptr& operator+=(address_type n) { my_address += (n * sizeof(value_type)); return *this; }
-    progmem_ptr& operator-=(address_type n) { my_address -= (n * sizeof(value_type)); return *this; }
-
-  private:
-    address_type my_address;
-
-    friend inline address_type operator-(const progmem_ptr& x, const progmem_ptr& y)
-    {
-      return (x.my_address - y.my_address) / sizeof(value_type);
-    }
-
-    friend inline progmem_ptr operator+(address_type n, const progmem_ptr& x)
-    {
-      return progmem_ptr(x.my_address + (n * sizeof(value_type)));
-    }
-
-    friend inline bool operator< (const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address <  y.my_address); }
-    friend inline bool operator<=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address <= y.my_address); }
-    friend inline bool operator==(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address == y.my_address); }
-    friend inline bool operator!=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address != y.my_address); }
-    friend inline bool operator>=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address >= y.my_address); }
-    friend inline bool operator> (const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address >  y.my_address); }
-  };
-
-  template<typename ValueType,
-           typename AddressType>
-  class pointer_wrapper
-  {
-  public:
-    using value_type   = ValueType;
-    using address_type = AddressType;
-
-    using pointer = progmem_ptr<value_type, address_type>;
-
-    pointer_wrapper() { }
-
-    explicit constexpr pointer_wrapper(const address_type& addr) : my_ptr(addr) { }
-
-    constexpr pointer_wrapper(const pointer& ptr) : my_ptr(ptr) { }
-
-    constexpr pointer_wrapper(const pointer_wrapper& x) : my_ptr(x.my_ptr) { }
-
-    template<typename OtherPointerType,
-             typename OtherAddressType>
-    constexpr pointer_wrapper(const pointer_wrapper<OtherPointerType, OtherAddressType>& other)
-      : my_ptr(other.my_ptr) { }
-
-    ~pointer_wrapper() = default;
-
-    pointer_wrapper& operator=(const pointer_wrapper& other)
-    {
-      if(this != &other)
-      {
-        my_ptr = other.my_ptr;
-      }
-
-      return *this;
-    }
-
-    constexpr value_type operator*() const
-    {
-      return *my_ptr;
-    }
-
-    pointer_wrapper& operator++() { ++my_ptr; return *this; }
-    pointer_wrapper& operator--() { ++my_ptr; return *this; }
-
-    pointer_wrapper operator++(int) { pointer_wrapper tmp = *this; ++my_ptr; return tmp; }
-    pointer_wrapper operator--(int) { pointer_wrapper tmp = *this; ++my_ptr; return tmp; }
-
-    pointer_wrapper operator+(address_type n) const { return pointer_wrapper(my_ptr + n); }
-    pointer_wrapper operator-(address_type n) const { return pointer_wrapper(my_ptr - n); }
-
-    pointer_wrapper& operator+=(address_type n) { my_ptr += n; return *this; }
-    pointer_wrapper& operator-=(address_type n) { my_ptr -= n; return *this; }
-
-  private:
-    pointer my_ptr;
-
-    friend inline address_type operator-(const pointer_wrapper& x,
-                                         const pointer_wrapper& y)
-    {
-      return (x.my_ptr - y.my_ptr);
-    }
-
-    friend inline pointer_wrapper operator+(address_type n,
-                                            const pointer_wrapper& x)
-    {
-      return progmem_ptr(x.my_ptr + n);
-    }
-
-    friend inline bool operator< (const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr <  y.my_ptr); }
-    friend inline bool operator<=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr <= y.my_ptr); }
-    friend inline bool operator==(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr == y.my_ptr); }
-    friend inline bool operator!=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr != y.my_ptr); }
-    friend inline bool operator>=(const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr >= y.my_ptr); }
-    friend inline bool operator> (const pointer_wrapper& x, const pointer_wrapper& y) { return (x.my_ptr >  y.my_ptr); }
-  };
 
   struct input_iterator_tag                                             { };
   struct output_iterator_tag                                            { };
@@ -176,29 +33,26 @@
 
   template<typename ValueType,
            typename AddressType>
-  struct iterator_traits<const pointer_wrapper<ValueType, AddressType>>
+  struct iterator_traits<const mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>>
   {
-    using difference_type   = std::size_t;
-    using address_type      = AddressType;
-    using value_type        = ValueType;
-    using const_pointer     = pointer_wrapper<value_type, address_type>;
+    using const_pointer     = const mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>;
+    using difference_type   = typename const_pointer::size_type;
+    using address_type      = typename const_pointer::address_type;
+    using value_type        = typename const_pointer::value_type;
     using const_reference   = value_type;
     using iterator_category = random_access_iterator_tag;
   };
 
   template<typename IteratorCategoryType,
-           typename IteratorValueType,
-           typename IteratorDifferenceType = std::size_t,
-           typename address_type           = std::uintptr_t,
-           typename IteratorPointerType    = pointer_wrapper<IteratorValueType, address_type>,
-           typename IteratorReferenceType  = IteratorValueType>
+           typename ValueType,
+           typename AddressType>
   struct iterator
   {
     using iterator_category = IteratorCategoryType;
-    using value_type        = IteratorValueType;
-    using difference_type   = IteratorDifferenceType;
-    using pointer           = pointer_wrapper<IteratorValueType, address_type>;
-    using reference         = IteratorReferenceType;
+    using pointer           = mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>;
+    using value_type        = typename pointer::value_type;
+    using difference_type   = typename pointer::size_type;
+    using reference         = value_type;
   };
 
   template<typename ValueType,
@@ -206,19 +60,13 @@
   class forward_iterator
     : public mcal::memory::progmem::iterator<std::random_access_iterator_tag,
                                              ValueType,
-                                             std::size_t,
-                                             AddressType,
-                                             pointer_wrapper<ValueType, AddressType>,
-                                             ValueType>
+                                             AddressType>
   {
   private:
     using base_class_type =
       mcal::memory::progmem::iterator<std::random_access_iterator_tag,
                                       ValueType,
-                                      std::size_t,
-                                      AddressType,
-                                      pointer_wrapper<ValueType, AddressType>,
-                                      ValueType>;
+                                      AddressType>;
 
   public:
     using value_type        = typename base_class_type::value_type;
@@ -315,11 +163,11 @@
   template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
   template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-  template <typename value_type, std::size_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[0U]); }
-  template <typename value_type, std::size_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[N]); }
+  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[0U]); }
+  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[N]); }
 
-  template <typename value_type, std::size_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[N]); }
-  template <typename value_type, std::size_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[0U]); }
+  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[N]); }
+  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[0U]); }
 
   } } } // namespace mcal::memory::progmem
 

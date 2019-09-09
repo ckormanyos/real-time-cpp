@@ -1470,15 +1470,6 @@
     <ClInclude Include="src\mcal\atmega2560\mcal_wdg.h">
       <Filter>src\mcal\atmega2560</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\x86_64-w64-mingw32\mcal_progmem.h">
       <Filter>src\mcal\x86_64-w64-mingw32</Filter>
     </ClInclude>
@@ -1523,6 +1514,21 @@
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\mcal_progmem.h">
       <Filter>src\mcal\xtensa32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_detail.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@
 #ifndef MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H_
   #define MCAL_MEMORY_PROGMEM_ACCESS_2019_08_17_H_
 
+  #include <cstddef>
   #include <cstdint>
   #include <type_traits>
 
@@ -15,60 +16,60 @@
 
   namespace mcal { namespace memory { namespace progmem {
 
-  template<typename ProgramMemoryType>
-  ProgramMemoryType read(
+  template<typename ValueType>
+  ValueType read(
     const mcal_progmem_uintptr_t src_addr,
-    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == false)
-                                   && (sizeof(ProgramMemoryType) != 1U)
-                                   && (sizeof(ProgramMemoryType) != 2U)
-                                   && (sizeof(ProgramMemoryType) != 4U)
-                                   && (sizeof(ProgramMemoryType) != 8U))>::type* = nullptr)
+    const typename std::enable_if<(   (std::is_fundamental<ValueType>::value == false)
+                                   && (sizeof(ValueType) != 1U)
+                                   && (sizeof(ValueType) != 2U)
+                                   && (sizeof(ValueType) != 4U)
+                                   && (sizeof(ValueType) != 8U))>::type* = nullptr)
   {
-    using local_programmemory_type = ProgramMemoryType;
+    using local_value_type = ValueType;
 
-    local_programmemory_type dest;
+    local_value_type dest;
 
-    for(size_t i = 0U; i < sizeof(ProgramMemoryType); ++i)
+    for(std::size_t i = 0U; i < sizeof(ValueType); ++i)
     {
-      *(((uint8_t*) dest) + i) =
-        mcal_memory_progmem_read_byte(src_addr + i);
+      *(((std::uint8_t*) MCAL_PROGMEM_ADDRESSOF(dest)) + i) =
+        mcal_memory_progmem_read_byte(mcal_progmem_uintptr_t(src_addr + i));
     }
 
     return dest;
   }
 
-  template<typename ProgramMemoryType>
-  ProgramMemoryType read(
+  template<typename ValueType>
+  ValueType read(
     const mcal_progmem_uintptr_t src_addr,
-    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
-                                   && (sizeof(ProgramMemoryType) == 1U))>::type* = nullptr)
+    const typename std::enable_if<(   (std::is_fundamental<ValueType>::value == true)
+                                   && (sizeof(ValueType) == 1U))>::type* = nullptr)
   {
     return mcal_memory_progmem_read_byte(src_addr);
   }
 
-  template<typename ProgramMemoryType>
-  ProgramMemoryType read(
+  template<typename ValueType>
+  ValueType read(
     const mcal_progmem_uintptr_t src_addr,
-    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
-                                   && (sizeof(ProgramMemoryType) == 2U))>::type* = nullptr)
+    const typename std::enable_if<(   (std::is_fundamental<ValueType>::value == true)
+                                   && (sizeof(ValueType) == 2U))>::type* = nullptr)
   {
     return mcal_memory_progmem_read_word(src_addr);
   }
 
-  template<typename ProgramMemoryType>
-  ProgramMemoryType read(
+  template<typename ValueType>
+  ValueType read(
     const mcal_progmem_uintptr_t src_addr,
-    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
-                                   && (sizeof(ProgramMemoryType) == 4U))>::type* = nullptr)
+    const typename std::enable_if<(   (std::is_fundamental<ValueType>::value == true)
+                                   && (sizeof(ValueType) == 4U))>::type* = nullptr)
   {
     return mcal_memory_progmem_read_dword(src_addr);
   }
 
-  template<typename ProgramMemoryType>
-  ProgramMemoryType read(
+  template<typename ValueType>
+  ValueType read(
     const mcal_progmem_uintptr_t src_addr,
-    const typename std::enable_if<(   (std::is_fundamental<ProgramMemoryType>::value == true)
-                                   && (sizeof(ProgramMemoryType) == 8U))>::type* = nullptr)
+    const typename std::enable_if<(   (std::is_fundamental<ValueType>::value == true)
+                                   && (sizeof(ValueType) == 8U))>::type* = nullptr)
   {
     return mcal_memory_progmem_read_qword(src_addr);
   }

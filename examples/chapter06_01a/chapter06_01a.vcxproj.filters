@@ -287,9 +287,6 @@
     <ClInclude Include="src\util\memory\util_static_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_progmem.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -319,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_progmem.h">
       <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_detail.h">
+      <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

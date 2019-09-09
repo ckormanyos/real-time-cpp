@@ -424,7 +424,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal\mcal.h" />
-    <ClInclude Include="src\mcal\mcal_progmem.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_template.h" />
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h" />
     <ClInclude Include="src\mcal\win32\mcal_benchmark.h" />
@@ -437,9 +436,11 @@
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_detail.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />

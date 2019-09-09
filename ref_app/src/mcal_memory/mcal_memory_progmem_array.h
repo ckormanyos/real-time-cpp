@@ -19,18 +19,17 @@
 
   namespace mcal { namespace memory { namespace progmem {
 
-  template<typename T, std::size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   class array
   {
   private:
-    static constexpr std::size_t static_size = N;
+    static constexpr mcal_progmem_uintptr_t static_size = N;
 
   public:
     // Standard container-local type definitions.
-    using const_iterator         = mcal::memory::progmem::forward_iterator<T, std::uintptr_t>;
+    using size_type              = mcal_progmem_uintptr_t;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
     using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
-
-    using size_type              = std::size_t;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;
     using const_pointer          = typename const_iterator::pointer;
@@ -92,13 +91,13 @@
     array& operator=(const array&) = delete;
   };
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator==(const array<T, N>& left, const array<T, N>& right)
   {
     return std::equal(left.cbegin(), left.cend(), right.cbegin());
   }
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator<(const array<T, N>& left, const array<T, N>& right)
   {
     return std::lexicographical_compare(left.cbegin(),
@@ -107,25 +106,25 @@
                                         right.end());
   }
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator!=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((left == right) == false);
   }
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator>(const array<T, N>& left, const array<T, N>& right)
   {
     return (right < left);
   }
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator>=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((left < right) == false);
   }
 
-  template<typename T, size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   bool operator<=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((right < left) == false);
@@ -134,16 +133,16 @@
   template<typename T>
   class tuple_size;
 
-  template<typename T, typename std::size_t N>
+  template<typename T, mcal_progmem_uintptr_t N>
   class tuple_size<mcal::memory::progmem::array<T, N>>
-    : public std::integral_constant<std::size_t, N> { };
+    : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
 
-  template<const std::size_t N, typename T>
+  template<const mcal_progmem_uintptr_t N, typename T>
   class tuple_element;
 
-  template<const std::size_t I,
+  template<const mcal_progmem_uintptr_t I,
            typename T,
-           const std::size_t N>
+           const mcal_progmem_uintptr_t N>
   class tuple_element<I, mcal::memory::progmem::array<T, N>>
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
