@@ -155,6 +155,7 @@
     <Folder Include="src\math\fixed_point\" />
     <Folder Include="src\math\functions" />
     <Folder Include="src\math\wide_integer" />
+    <Folder Include="src\mcal_memory" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -265,6 +266,9 @@
     <Compile Include="src\mcal\avr\mcal_port.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_progmem.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -295,18 +299,6 @@
     <Compile Include="src\mcal\mcal.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_cpu_progmem_array.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\mcal_cpu_progmem_iterator.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\mcal_cpu_read_program_memory.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\mcal_cpu_read_program_memory.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -317,6 +309,21 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_access_static.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_address_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os.cpp">

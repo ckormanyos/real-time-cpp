@@ -148,7 +148,7 @@
     <Folder Include="src\math\" />
     <Folder Include="src\math\checksums" />
     <Folder Include="src\math\checksums\crc" />
-    <Folder Include="src\mcal\memory" />
+    <Folder Include="src\mcal_memory\" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -211,9 +211,6 @@
     <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -224,6 +221,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_progmem.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -247,22 +247,25 @@
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_progmem.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\mcal_reg_access_template.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\memory\mcal_memory_progmem_access.h">
+    <Compile Include="src\mcal_memory\mcal_memory_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\memory\mcal_memory_progmem_array.h">
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_access.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\memory\mcal_memory_progmem_iterator.h">
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\os\os.cpp">

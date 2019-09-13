@@ -1515,9 +1515,6 @@
     <ClInclude Include="src\mcal\xtensa32\mcal_progmem.h">
       <Filter>src\mcal\xtensa32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_detail.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
@@ -1528,6 +1525,9 @@
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_address_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>

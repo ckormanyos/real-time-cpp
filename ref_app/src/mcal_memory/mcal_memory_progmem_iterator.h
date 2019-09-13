@@ -8,7 +8,7 @@
 #ifndef MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
   #define MCAL_PROGMEM_ITERATOR_2019_05_04_
 
-  #include <mcal_memory/mcal_memory_detail.h>
+  #include <mcal_memory/mcal_memory_address_ptr.h>
   #include <mcal_memory/mcal_memory_progmem_ptr.h>
 
   // Implement specialized iterator types for read-only program memory.
@@ -33,9 +33,9 @@
 
   template<typename ValueType,
            typename AddressType>
-  struct iterator_traits<const mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>>
+  struct iterator_traits<const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>>
   {
-    using const_pointer     = const mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>;
+    using const_pointer     = const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
     using difference_type   = typename const_pointer::size_type;
     using address_type      = typename const_pointer::address_type;
     using value_type        = typename const_pointer::value_type;
@@ -49,7 +49,7 @@
   struct iterator
   {
     using iterator_category = IteratorCategoryType;
-    using pointer           = mcal::memory::detail::wrapped_ptr<progmem_ptr<ValueType, AddressType>>;
+    using pointer           = mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
     using value_type        = typename pointer::value_type;
     using difference_type   = typename pointer::size_type;
     using reference         = value_type;
