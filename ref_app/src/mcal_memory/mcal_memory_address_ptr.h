@@ -10,25 +10,29 @@
 
   namespace mcal { namespace memory {
 
-  template<typename PointerType>
+  template<typename AddressPointerType>
   class address_ptr
   {
-  public:
-    using pointer      = PointerType;
-    using value_type   = typename pointer::value_type;
+  private:
+    using pointer      = AddressPointerType;
     using address_type = typename pointer::address_type;
-    using size_type    = typename pointer::address_type;
+
+  public:
+    using value_type   = typename pointer::value_type;
+    using size_type    = address_type;
+
+    static const size_type static_size = sizeof(value_type);
 
     address_ptr() { }
 
-    explicit constexpr address_ptr(const address_type& addr) : my_ptr(addr) { }
+    explicit address_ptr(const address_type addr) : my_ptr(addr) { }
 
-    constexpr address_ptr(const pointer& ptr) : my_ptr(ptr) { }
+    address_ptr(const pointer& ptr) : my_ptr(ptr) { }
 
-    constexpr address_ptr(const address_ptr& x) : my_ptr(x.my_ptr) { }
+    address_ptr(const address_ptr& x) : my_ptr(x.my_ptr) { }
 
-    template<typename OtherPointerType>
-    constexpr address_ptr(const OtherPointerType& other)
+    template<typename OtherAddressPointerType>
+    address_ptr(const OtherAddressPointerType& other)
       : my_ptr(other.my_ptr) { }
 
     ~address_ptr() = default;
@@ -39,26 +43,31 @@
       {
         my_ptr = other.my_ptr;
       }
-
+    
       return *this;
     }
 
-    constexpr value_type operator*() const
+    const value_type operator*() const
     {
       return *my_ptr;
     }
 
-    address_ptr& operator++() { ++my_ptr; return *this; }
-    address_ptr& operator--() { ++my_ptr; return *this; }
+    value_type operator*()
+    {
+      return *my_ptr;
+    }
 
-    address_ptr operator++(int) { address_ptr tmp = *this; ++my_ptr; return tmp; }
-    address_ptr operator--(int) { address_ptr tmp = *this; ++my_ptr; return tmp; }
+    address_ptr& operator++() { my_ptr += static_size; return *this; }
+    address_ptr& operator--() { my_ptr -= static_size; return *this; }
 
-    address_ptr operator+(address_type n) const { return address_ptr(my_ptr + n); }
-    address_ptr operator-(address_type n) const { return address_ptr(my_ptr - n); }
+    address_ptr operator++(int) { address_ptr tmp = *this; my_ptr += static_size; return tmp; }
+    address_ptr operator--(int) { address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
 
-    address_ptr& operator+=(address_type n) { my_ptr += n; return *this; }
-    address_ptr& operator-=(address_type n) { my_ptr -= n; return *this; }
+    address_ptr operator+(address_type n) const { return (my_ptr + (n * static_size)); }
+    address_ptr operator-(address_type n) const { return (my_ptr - (n * static_size)); }
+
+    address_ptr& operator+=(address_type n) { my_ptr += (n * static_size); return *this; }
+    address_ptr& operator-=(address_type n) { my_ptr -= (n * static_size); return *this; }
 
   private:
     pointer my_ptr;
@@ -66,13 +75,13 @@
     friend inline address_type operator-(const address_ptr& x,
                                          const address_ptr& y)
     {
-      return (x.my_ptr - y.my_ptr);
+      return (x.my_ptr - y.my_ptr) / static_size;
     }
 
     friend inline address_ptr operator+(address_type n,
-                                            const address_ptr& x)
+                                        const address_ptr& x)
     {
-      return address_ptr(x.my_ptr + n);
+      return address_ptr(x.my_ptr + (n * static_size));
     }
 
     friend inline bool operator< (const address_ptr& x, const address_ptr& y) { return (x.my_ptr <  y.my_ptr); }

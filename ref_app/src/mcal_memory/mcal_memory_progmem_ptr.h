@@ -24,12 +24,12 @@
 
     progmem_ptr() { }
 
-    explicit constexpr progmem_ptr(const address_type& addr) : my_address(addr) { }
+    explicit progmem_ptr(const address_type& addr) : my_address(addr) { }
 
-    constexpr progmem_ptr(progmem_ptr& x) : my_address(x.my_address) { }
+    progmem_ptr(progmem_ptr& x) : my_address(x.my_address) { }
 
     template<typename OtherValueType, typename OtherAddressType>
-    constexpr progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType>& other)
+    progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType>& other)
       : my_address(other.my_address) { }
 
     ~progmem_ptr() = default;
@@ -44,34 +44,34 @@
       return *this;
     }
 
-    constexpr value_type operator*() const
+    const value_type operator*() const
     {
       return mcal::memory::progmem::read<value_type>(my_address);
     }
 
-    progmem_ptr& operator++() { my_address += sizeof(value_type); return *this; }
-    progmem_ptr& operator--() { my_address -= sizeof(value_type); return *this; }
+    const progmem_ptr& operator++() { ++my_address; return *this; }
+    const progmem_ptr& operator--() { --my_address; return *this; }
 
-    progmem_ptr operator++(int) { progmem_ptr tmp = *this; my_address += sizeof(value_type); return tmp; }
-    progmem_ptr operator--(int) { progmem_ptr tmp = *this; my_address -= sizeof(value_type); return tmp; }
+    progmem_ptr operator++(int) { progmem_ptr tmp = *this; ++my_address; return tmp; }
+    progmem_ptr operator--(int) { progmem_ptr tmp = *this; --my_address; return tmp; }
 
-    progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + (n * sizeof(value_type))); }
-    progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - (n * sizeof(value_type))); }
+    progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + n); }
+    progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - n); }
 
-    progmem_ptr& operator+=(address_type n) { my_address += (n * sizeof(value_type)); return *this; }
-    progmem_ptr& operator-=(address_type n) { my_address -= (n * sizeof(value_type)); return *this; }
+    const progmem_ptr& operator+=(address_type n) { my_address += n; return *this; }
+    const progmem_ptr& operator-=(address_type n) { my_address -= n; return *this; }
 
   private:
     address_type my_address;
 
     friend inline address_type operator-(const progmem_ptr& x, const progmem_ptr& y)
     {
-      return (x.my_address - y.my_address) / sizeof(value_type);
+      return (x.my_address - y.my_address);
     }
 
     friend inline progmem_ptr operator+(address_type n, const progmem_ptr& x)
     {
-      return progmem_ptr(x.my_address + (n * sizeof(value_type)));
+      return progmem_ptr(x.my_address + n);
     }
 
     friend inline bool operator< (const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address <  y.my_address); }

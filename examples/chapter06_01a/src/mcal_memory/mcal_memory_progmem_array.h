@@ -19,7 +19,7 @@
 
   namespace mcal { namespace memory { namespace progmem {
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   class array
   {
   private:
@@ -91,7 +91,7 @@
     array& operator=(const array&) = delete;
   };
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   bool operator==(const array<T, N>& left, const array<T, N>& right)
   {
     return std::equal(left.cbegin(), left.cend(), right.cbegin());
@@ -106,25 +106,25 @@
                                         right.end());
   }
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   bool operator!=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((left == right) == false);
   }
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   bool operator>(const array<T, N>& left, const array<T, N>& right)
   {
     return (right < left);
   }
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   bool operator>=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((left < right) == false);
   }
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   bool operator<=(const array<T, N>& left, const array<T, N>& right)
   {
     return ((right < left) == false);
@@ -133,7 +133,7 @@
   template<typename T>
   class tuple_size;
 
-  template<typename T, mcal_progmem_uintptr_t N>
+  template<typename T, const mcal_progmem_uintptr_t N>
   class tuple_size<mcal::memory::progmem::array<T, N>>
     : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
 

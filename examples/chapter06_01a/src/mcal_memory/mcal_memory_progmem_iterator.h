@@ -97,18 +97,18 @@
       return *this;
     }
 
-    constexpr reference operator*() const
+    const reference operator*() const
     {
       return operator[](0U);
     }
 
-    constexpr reference operator[](difference_type n) const
+    const reference operator[](difference_type n) const
     {
       return *pointer(current + n);
     }
 
-    forward_iterator& operator++() { ++current; return *this; }
-    forward_iterator& operator--() { --current; return *this; }
+    const forward_iterator& operator++() { ++current; return *this; }
+    const forward_iterator& operator--() { --current; return *this; }
 
     forward_iterator operator++(int) { forward_iterator tmp = *this; ++current; return tmp; }
     forward_iterator operator--(int) { forward_iterator tmp = *this; --current; return tmp; }
@@ -116,8 +116,8 @@
     forward_iterator operator+(difference_type n) const { return forward_iterator(current + n); }
     forward_iterator operator-(difference_type n) const { return forward_iterator(current - n); }
 
-    forward_iterator& operator+=(difference_type n) { current += n; return *this; }
-    forward_iterator& operator-=(difference_type n) { current -= n; return *this; }
+    const forward_iterator& operator+=(difference_type n) { current += n; return *this; }
+    const forward_iterator& operator-=(difference_type n) { current -= n; return *this; }
 
   private:
     pointer current;
@@ -163,11 +163,11 @@
   template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
   template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[0U]); }
-  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::forward_iterator<value_type, address_type> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, address_type>((address_type) &c_array[N]); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
 
-  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[N]); }
-  template <typename value_type, mcal_progmem_uintptr_t N, typename address_type> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, address_type>>((address_type) &c_array[0U]); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
 
   } } } // namespace mcal::memory::progmem
 
