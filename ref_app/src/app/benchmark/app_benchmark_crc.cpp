@@ -13,8 +13,8 @@ bool app::benchmark::run_crc()
   }};
 
   const std::uint32_t app_benchmark_crc =
-    math::checksums::crc32_mpeg2(app_benchmark_crc_data.cbegin(),
-                                 app_benchmark_crc_data.cend());
+    math::checksums::crc::crc32_mpeg2(app_benchmark_crc_data.cbegin(),
+                                      app_benchmark_crc_data.cend());
 
   const bool result_is_ok = (app_benchmark_crc == UINT32_C(0x0376E6E7));
 

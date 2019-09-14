@@ -19,10 +19,11 @@
   class progmem_ptr
   {
   public:
-    using value_type   = ValueType;
-    using address_type = AddressType;
+    using value_type      = ValueType;
+    using reference       = value_type;
+    using address_type    = AddressType;
 
-    progmem_ptr() { }
+    progmem_ptr() = delete;
 
     explicit progmem_ptr(const address_type& addr) : my_address(addr) { }
 
@@ -44,7 +45,7 @@
       return *this;
     }
 
-    const value_type operator*() const
+    const reference operator*() const
     {
       return mcal::memory::progmem::read<value_type>(my_address);
     }
@@ -52,8 +53,8 @@
     const progmem_ptr& operator++() { ++my_address; return *this; }
     const progmem_ptr& operator--() { --my_address; return *this; }
 
-    progmem_ptr operator++(int) { progmem_ptr tmp = *this; ++my_address; return tmp; }
-    progmem_ptr operator--(int) { progmem_ptr tmp = *this; --my_address; return tmp; }
+    progmem_ptr operator++(int) { const progmem_ptr tmp = *this; ++my_address; return tmp; }
+    progmem_ptr operator--(int) { const progmem_ptr tmp = *this; --my_address; return tmp; }
 
     progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + n); }
     progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - n); }

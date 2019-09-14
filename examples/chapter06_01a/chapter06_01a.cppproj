@@ -178,10 +178,10 @@
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\math\checksums\crc\crc32_mpeg2.cpp">
+    <Compile Include="src\math\checksums\crc\crc32.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\math\checksums\crc\crc32_mpeg2.h">
+    <Compile Include="src\math\checksums\crc\crc32.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_benchmark.h">

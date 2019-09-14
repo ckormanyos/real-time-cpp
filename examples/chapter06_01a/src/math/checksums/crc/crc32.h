@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CRC32_MPEG2_2018_01_07_H_
-  #define CRC32_MPEG2_2018_01_07_H_
+#ifndef CRC32_2018_01_07_H_
+  #define CRC32_2018_01_07_H_
 
   #include <cstdint>
 
@@ -14,7 +14,7 @@
 
   namespace math { namespace checksums { namespace crc {
 
-  extern const mcal::memory::progmem::array<std::uint32_t, 16U> table MY_PROGMEM;
+  extern const mcal::memory::progmem::array<std::uint32_t, 16U> crc32_mpeg2_table MY_PROGMEM;
 
   template<typename input_iterator>
   std::uint32_t crc32_mpeg2(input_iterator first,
@@ -34,11 +34,8 @@
     // Loop through the input data stream.
     while(first != last)
     {
-      using std::iterator_traits;
-
       // Define a local value_type.
-      using value_type =
-      typename iterator_traits<input_iterator>::value_type;
+      using value_type = typename std::iterator_traits<input_iterator>::value_type;
 
       const value_type value = (*first) & UINT8_C(0xFF);
 
@@ -53,7 +50,7 @@
 
       crc =   std::uint32_t(  std::uint32_t(crc << 4)
                             & UINT32_C(0xFFFFFFF0))
-            ^ table[index];
+            ^ crc32_mpeg2_table[index];
 
       index = (  (std::uint_fast8_t(crc >> 28))
                ^ (std::uint_fast8_t(byte))
@@ -61,7 +58,7 @@
 
       crc =   std::uint32_t(  std::uint32_t(crc << 4)
                             & UINT32_C(0xFFFFFFF0))
-            ^ table[index];
+            ^ crc32_mpeg2_table[index];
 
       ++first;
     }
@@ -71,4 +68,4 @@
 
   } } } // namespace math::checksums::crc
 
-#endif // CRC32_MPEG2_2018_01_07_H_
+#endif // CRC32_2018_01_07_H_

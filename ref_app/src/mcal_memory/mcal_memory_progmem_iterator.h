@@ -24,23 +24,27 @@
   template<typename iterator_type>
   struct iterator_traits
   {
-    typedef typename iterator_type::difference_type   difference_type;
-    typedef typename iterator_type::value_type        value_type;
-    typedef typename iterator_type::const_pointer     const_pointer;
-    typedef typename iterator_type::const_reference   const_reference;
-    typedef typename iterator_type::iterator_category iterator_category;
+    using pointer           = typename iterator_type::pointer;
+    using difference_type   = typename iterator_type::difference_type;
+    using value_type        = typename iterator_type::value_type;
+    using reference         = typename iterator_type::reference;
+    using iterator_category = typename iterator_type::iterator_category;
   };
 
   template<typename ValueType,
            typename AddressType>
   struct iterator_traits<const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>>
   {
-    using const_pointer     = const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
-    using difference_type   = typename const_pointer::size_type;
-    using address_type      = typename const_pointer::address_type;
-    using value_type        = typename const_pointer::value_type;
-    using const_reference   = value_type;
-    using iterator_category = random_access_iterator_tag;
+  private:
+    using iterator_type =
+      const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
+
+  public:
+    using pointer           = typename iterator_type::pointer;
+    using difference_type   = typename iterator_type::difference_type;
+    using value_type        = typename iterator_type::value_type;
+    using reference         = typename iterator_type::reference;
+    using iterator_category = typename iterator_type::iterator_category;
   };
 
   template<typename IteratorCategoryType,
@@ -48,24 +52,24 @@
            typename AddressType>
   struct iterator
   {
-    using iterator_category = IteratorCategoryType;
     using pointer           = mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
-    using value_type        = typename pointer::value_type;
-    using difference_type   = typename pointer::size_type;
-    using reference         = value_type;
+    using difference_type   = const typename pointer::size_type;
+    using value_type        = const typename pointer::value_type;
+    using reference         = const typename pointer::value_type;
+    using iterator_category = IteratorCategoryType;
   };
 
   template<typename ValueType,
            typename AddressType>
   class forward_iterator
-    : public mcal::memory::progmem::iterator<std::random_access_iterator_tag,
-                                             ValueType,
+    : public mcal::memory::progmem::iterator<random_access_iterator_tag,
+                                             const ValueType,
                                              AddressType>
   {
   private:
     using base_class_type =
-      mcal::memory::progmem::iterator<std::random_access_iterator_tag,
-                                      ValueType,
+      mcal::memory::progmem::iterator<random_access_iterator_tag,
+                                      const ValueType,
                                       AddressType>;
 
   public:
@@ -83,7 +87,7 @@
 
     template<typename OtherIteratorType, typename OtherValueType>
     constexpr forward_iterator(const forward_iterator<OtherIteratorType, OtherValueType>& other)
-      : current(static_cast<pointer>(other.current)) { }
+      : current(static_cast<const pointer>(other.current)) { }
 
     ~forward_iterator() = default;
 
@@ -104,14 +108,14 @@
 
     const reference operator[](difference_type n) const
     {
-      return *pointer(current + n);
+      return *static_cast<const pointer>(current + n);
     }
 
     const forward_iterator& operator++() { ++current; return *this; }
     const forward_iterator& operator--() { --current; return *this; }
 
-    forward_iterator operator++(int) { forward_iterator tmp = *this; ++current; return tmp; }
-    forward_iterator operator--(int) { forward_iterator tmp = *this; --current; return tmp; }
+    forward_iterator operator++(int) { const forward_iterator tmp = *this; ++current; return tmp; }
+    forward_iterator operator--(int) { const forward_iterator tmp = *this; --current; return tmp; }
 
     forward_iterator operator+(difference_type n) const { return forward_iterator(current + n); }
     forward_iterator operator-(difference_type n) const { return forward_iterator(current - n); }
@@ -163,11 +167,11 @@
   template <typename container_type> inline auto crbegin(const container_type& c) -> decltype(c.crbegin()) { return c.crbegin(); }
   template <typename container_type> inline auto crend  (const container_type& c) -> decltype(c.crend())   { return c.crend(); }
 
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const forward_iterator<value_type, mcal_progmem_uintptr_t> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const forward_iterator<value_type, mcal_progmem_uintptr_t> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
 
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return mcal::memory::progmem::reverse_iterator<mcal::memory::progmem::forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
 
   } } } // namespace mcal::memory::progmem
 

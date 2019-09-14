@@ -1,7 +1,7 @@
-#include <math/checksums/crc/crc32_mpeg2.h>
+#include <math/checksums/crc/crc32.h>
 
 // CRC-32/MPEG-2 Table based on nibbles.
-const mcal::memory::progmem::array<std::uint32_t, 16U> math::checksums::crc::table MY_PROGMEM =
+const mcal::memory::progmem::array<std::uint32_t, 16U> math::checksums::crc::crc32_mpeg2_table MY_PROGMEM =
 {{
   UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
   UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),

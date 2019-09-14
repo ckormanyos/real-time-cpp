@@ -19,21 +19,18 @@
 
   public:
     using value_type   = typename pointer::value_type;
+    using reference    = typename pointer::reference;
     using size_type    = address_type;
 
     static const size_type static_size = sizeof(value_type);
 
-    address_ptr() { }
+    address_ptr() = default;
 
     explicit address_ptr(const address_type addr) : my_ptr(addr) { }
 
     address_ptr(const pointer& ptr) : my_ptr(ptr) { }
 
     address_ptr(const address_ptr& x) : my_ptr(x.my_ptr) { }
-
-    template<typename OtherAddressPointerType>
-    address_ptr(const OtherAddressPointerType& other)
-      : my_ptr(other.my_ptr) { }
 
     ~address_ptr() = default;
 
@@ -47,27 +44,27 @@
       return *this;
     }
 
-    const value_type operator*() const
+    reference operator*()
     {
       return *my_ptr;
     }
 
-    value_type operator*()
+    const reference operator*() const
     {
       return *my_ptr;
     }
 
-    address_ptr& operator++() { my_ptr += static_size; return *this; }
-    address_ptr& operator--() { my_ptr -= static_size; return *this; }
+    const address_ptr& operator++() { my_ptr += static_size; return *this; }
+    const address_ptr& operator--() { my_ptr -= static_size; return *this; }
 
-    address_ptr operator++(int) { address_ptr tmp = *this; my_ptr += static_size; return tmp; }
-    address_ptr operator--(int) { address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
+    address_ptr operator++(int) { const address_ptr tmp = *this; my_ptr += static_size; return tmp; }
+    address_ptr operator--(int) { const address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
 
     address_ptr operator+(address_type n) const { return (my_ptr + (n * static_size)); }
     address_ptr operator-(address_type n) const { return (my_ptr - (n * static_size)); }
 
-    address_ptr& operator+=(address_type n) { my_ptr += (n * static_size); return *this; }
-    address_ptr& operator-=(address_type n) { my_ptr -= (n * static_size); return *this; }
+    const address_ptr& operator+=(address_type n) { my_ptr += (n * static_size); return *this; }
+    const address_ptr& operator-=(address_type n) { my_ptr -= (n * static_size); return *this; }
 
   private:
     pointer my_ptr;

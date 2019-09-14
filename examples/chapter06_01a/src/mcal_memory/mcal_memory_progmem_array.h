@@ -28,12 +28,12 @@
   public:
     // Standard container-local type definitions.
     using size_type              = mcal_progmem_uintptr_t;
-    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<const T, size_type>;
     using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;
-    using const_pointer          = typename const_iterator::pointer;
-    using const_reference        = typename const_iterator::reference;
+    using pointer                = typename const_iterator::pointer;
+    using reference              = typename const_iterator::reference;
 
     const value_type elems[static_size];
 
@@ -51,27 +51,27 @@
     const_reverse_iterator crbegin() const { return rbegin(); }
     const_reverse_iterator crend  () const { return rend(); }
 
-    const_reference at(const size_type i) const
+    const reference at(const size_type i) const
     {
       const bool index_is_in_range = ((empty() == false) && (i < static_size));
 
-      const_reference value_at_index =
+      const reference value_at_index =
         (index_is_in_range ? *(cbegin() + difference_type(i)) : value_type());
 
       return value_at_index;
     }
 
-    const_reference operator[](const size_type i) const
+    const reference operator[](const size_type i) const
     {
       return at(i);
     }
 
-    const_reference front() const
+    const reference front() const
     {
       return at(0U);
     }
 
-    const_reference back() const
+    const reference back() const
     {
       return ((empty() == false) ? at(static_size - 1U) : value_type());
     }
@@ -80,9 +80,9 @@
     constexpr bool      empty   () const { return (static_size == 0U); }
     constexpr size_type max_size() const { return  static_size; }
 
-    const_pointer data() const
+    const pointer data() const
     {
-      return const_pointer(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
+      return static_cast<const pointer>(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
     }
 
   private:
