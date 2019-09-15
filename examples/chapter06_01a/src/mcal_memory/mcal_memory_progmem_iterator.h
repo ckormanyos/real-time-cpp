@@ -24,9 +24,9 @@
   template<typename iterator_type>
   struct iterator_traits
   {
-    using pointer           = typename iterator_type::pointer;
     using difference_type   = typename iterator_type::difference_type;
     using value_type        = typename iterator_type::value_type;
+    using pointer           = typename iterator_type::pointer;
     using reference         = typename iterator_type::reference;
     using iterator_category = typename iterator_type::iterator_category;
   };
@@ -40,9 +40,9 @@
       const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
 
   public:
-    using pointer           = typename iterator_type::pointer;
     using difference_type   = typename iterator_type::difference_type;
     using value_type        = typename iterator_type::value_type;
+    using pointer           = typename iterator_type::pointer;
     using reference         = typename iterator_type::reference;
     using iterator_category = typename iterator_type::iterator_category;
   };
@@ -81,12 +81,12 @@
 
     forward_iterator() { }
 
-    explicit constexpr forward_iterator(const AddressType& addr) : current(addr) { }
+    explicit forward_iterator(const AddressType& addr) : current(addr) { }
 
-    constexpr forward_iterator(const pointer& x) : current(x) { }
+    forward_iterator(const pointer x) : current(x) { }
 
     template<typename OtherIteratorType, typename OtherValueType>
-    constexpr forward_iterator(const forward_iterator<OtherIteratorType, OtherValueType>& other)
+    forward_iterator(const forward_iterator<OtherIteratorType, OtherValueType>& other)
       : current(static_cast<const pointer>(other.current)) { }
 
     ~forward_iterator() = default;
@@ -101,24 +101,26 @@
       return *this;
     }
 
-    const reference operator*() const
+    reference operator*() const
     {
       return operator[](0U);
     }
 
-    const reference operator[](difference_type n) const
+    reference operator[](difference_type n) const
     {
-      return *static_cast<const pointer>(current + n);
+      const pointer const_pointer_to_current_plus_n = current + n;
+
+      return reference(*const_pointer_to_current_plus_n);
     }
 
     const forward_iterator& operator++() { ++current; return *this; }
     const forward_iterator& operator--() { --current; return *this; }
 
-    forward_iterator operator++(int) { const forward_iterator tmp = *this; ++current; return tmp; }
-    forward_iterator operator--(int) { const forward_iterator tmp = *this; --current; return tmp; }
+    const forward_iterator operator++(int) { const forward_iterator tmp = *this; ++current; return tmp; }
+    const forward_iterator operator--(int) { const forward_iterator tmp = *this; --current; return tmp; }
 
-    forward_iterator operator+(difference_type n) const { return forward_iterator(current + n); }
-    forward_iterator operator-(difference_type n) const { return forward_iterator(current - n); }
+    const forward_iterator operator+(difference_type n) const { return forward_iterator(current + n); }
+    const forward_iterator operator-(difference_type n) const { return forward_iterator(current - n); }
 
     const forward_iterator& operator+=(difference_type n) { current += n; return *this; }
     const forward_iterator& operator-=(difference_type n) { current -= n; return *this; }

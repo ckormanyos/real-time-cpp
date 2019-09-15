@@ -8,9 +8,9 @@
 #ifndef MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H_
   #define MCAL_MEMORY_PROGMEM_PTR_2019_09_08_H_
 
-  #include <mcal_memory/mcal_memory_progmem_access.h>
+  #include <mcal_memory/mcal_memory_progmem_ref.h>
 
-  // Implement specialized iterator types for read-only program memory.
+  // Implement a specialized pointer type for read-only program memory.
 
   namespace mcal { namespace memory { namespace progmem {
 
@@ -19,8 +19,8 @@
   class progmem_ptr
   {
   public:
-    using value_type      = ValueType;
-    using reference       = value_type;
+    using reference       = progmem_ref<ValueType, AddressType>;
+    using value_type      = typename reference::value_type;
     using address_type    = AddressType;
 
     progmem_ptr() = delete;
@@ -47,17 +47,17 @@
 
     const reference operator*() const
     {
-      return mcal::memory::progmem::read<value_type>(my_address);
+      return reference(my_address);
     }
 
     const progmem_ptr& operator++() { ++my_address; return *this; }
     const progmem_ptr& operator--() { --my_address; return *this; }
 
-    progmem_ptr operator++(int) { const progmem_ptr tmp = *this; ++my_address; return tmp; }
-    progmem_ptr operator--(int) { const progmem_ptr tmp = *this; --my_address; return tmp; }
+    const progmem_ptr operator++(int) { const progmem_ptr tmp = *this; ++my_address; return tmp; }
+    const progmem_ptr operator--(int) { const progmem_ptr tmp = *this; --my_address; return tmp; }
 
-    progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + n); }
-    progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - n); }
+    const progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + n); }
+    const progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - n); }
 
     const progmem_ptr& operator+=(address_type n) { my_address += n; return *this; }
     const progmem_ptr& operator-=(address_type n) { my_address -= n; return *this; }

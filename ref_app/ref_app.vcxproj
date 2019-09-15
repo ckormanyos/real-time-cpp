@@ -1671,6 +1671,7 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />

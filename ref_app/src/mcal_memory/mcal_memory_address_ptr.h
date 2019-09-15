@@ -10,11 +10,11 @@
 
   namespace mcal { namespace memory {
 
-  template<typename AddressPointerType>
+  template<typename PointerType>
   class address_ptr
   {
   private:
-    using pointer      = AddressPointerType;
+    using pointer      = PointerType;
     using address_type = typename pointer::address_type;
 
   public:
