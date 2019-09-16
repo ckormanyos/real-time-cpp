@@ -1,20 +1,18 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2007 - 2016.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CRC32_2018_01_07_H_
-  #define CRC32_2018_01_07_H_
+#ifndef CRC32_2015_01_26_H_
+  #define CRC32_2015_01_26_H_
 
+  #include <array>
   #include <cstdint>
-
-  #include <mcal_memory/mcal_memory_progmem_array.h>
+  #include <numeric>
 
   namespace math { namespace checksums { namespace crc {
-
-  extern const mcal::memory::progmem::array<std::uint32_t, 16U> crc32_mpeg2_table MY_PROGMEM;
 
   template<typename input_iterator>
   std::uint32_t crc32_mpeg2(input_iterator first,
@@ -28,44 +26,58 @@
     // ISO/IEC 13818-1:2000
     // Recommendation H.222.0 Annex A
 
-    // Set the initial value.
-    std::uint32_t crc = UINT32_C(0xFFFFFFFF);
 
-    // Loop through the input data stream.
-    while(first != last)
-    {
-      // Define a local value_type.
-      using value_type = typename std::iterator_traits<input_iterator>::value_type;
+    // Define a local value_type.
+    using value_type = typename std::iterator_traits<input_iterator>::value_type;
 
-      const value_type value = (*first) & UINT8_C(0xFF);
+    // Set the initial value. Also loop through
+    // the input data stream using accumulate
+    // in combination with a lambda function.
+    return std::accumulate(
+      first,
+      last,
+      UINT32_C(0xFFFFFFFF),
+      [](std::uint32_t crc, const value_type& data) -> std::uint32_t
+      {
+        // CRC32/MPEG2 Table based on nibbles.
+        const std::array<std::uint32_t, 16U> table MY_PROGMEM =
+        {{
+          UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
+          UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
+          UINT32_C(0x130476DC), UINT32_C(0x17C56B6B),
+          UINT32_C(0x1A864DB2), UINT32_C(0x1E475005),
+          UINT32_C(0x2608EDB8), UINT32_C(0x22C9F00F),
+          UINT32_C(0x2F8AD6D6), UINT32_C(0x2B4BCB61),
+          UINT32_C(0x350C9B64), UINT32_C(0x31CD86D3),
+          UINT32_C(0x3C8EA00A), UINT32_C(0x384FBDBD)
+        }};
 
-      const std::uint_fast8_t byte = uint_fast8_t(value);
+        const std::uint_fast8_t the_byte = uint_fast8_t(data & UINT8_C(0xFF));
 
-      std::uint_fast8_t index;
+        std::uint_fast8_t index;
 
-      // Perform the CRC-32/MPEG-2 algorithm.
-      index = (  (std::uint_fast8_t(crc  >> 28))
-               ^ (std::uint_fast8_t(byte >>  4))
-              ) & UINT8_C(0x0F);
+        // Perform the CRC32/MPEG2 algorithm.
+        index = ((std::uint_fast8_t(crc >> 28)) ^ (std::uint_fast8_t(the_byte >>  4))) & UINT8_C(0x0F);
 
-      crc =   std::uint32_t(  std::uint32_t(crc << 4)
-                            & UINT32_C(0xFFFFFFF0))
-            ^ crc32_mpeg2_table[index];
+            crc   = std::uint32_t(std::uint32_t(crc << 4) & UINT32_C(0xFFFFFFF0)) ^ table[index];
 
-      index = (  (std::uint_fast8_t(crc >> 28))
-               ^ (std::uint_fast8_t(byte))
-              ) & UINT8_C(0x0F);
+            index = ((std::uint_fast8_t(crc >> 28)) ^ (std::uint_fast8_t(the_byte))) & UINT8_C(0x0F);
 
-      crc =   std::uint32_t(  std::uint32_t(crc << 4)
-                            & UINT32_C(0xFFFFFFF0))
-            ^ crc32_mpeg2_table[index];
+            crc   = std::uint32_t(std::uint32_t(crc << 4) & UINT32_C(0xFFFFFFF0)) ^ table[index];
 
-      ++first;
-    }
+            return crc;
+          });
+      }
+  } } }
 
-    return crc;
-  }
+  /*
+  const std::array<std::uint8_t, 9U> data =
+  {{
+    0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
+  }};
 
-  } } } // namespace math::checksums::crc
+  // The crc32 reference value is 0x0376E6E7.
+  const std::uint32_t crc = math::checksums::crc32_mpeg2(data.cbegin(), data.cend());
+  */
 
-#endif // CRC32_2018_01_07_H_
+#endif // CRC32_2015_01_26_H_
