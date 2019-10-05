@@ -1,0 +1,2406 @@
+Appendix A
+A Tutorial for Real-Time C++
+This appendix presents a short tutorial on C++. It is not intended to be a complete
+language tutorial, but rather a brief introduction to the most important parts of C++
+for programming real-time embedded systems.
+A.1 C++ Cast Operators
+C++ has four template cast operators. The code below, for instance, uses the
+static_cast operator to cast from float to int.
+float f = 3.14159265358979323846F;
+int n = static_cast<int>(f); // The value is 3
+The code sequence below uses the reinterpret_cast operator to set bit–5
+in the microcontroller port register portb.
+// The address of portb is 0x25.
+constexpr std::uint8_t portb = UINT8_C(0x25);
+// Cast std::uint8_t to std::uint8_t*.
+volatile std::uint8_t* pb =
+reinterpret_cast<volatile std::uint8_t*>(portb);
+// Set portb.5.
+*pb |= UINT8_C(0x20);
+The reinterpret_cast operator is sometimes considered unsafe because
+it can convert unrelated types. For a detailed description of the potential dangers of
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+319
+320 Appendix A: A Tutorial for Real-Time C++
+reinterpret_cast, see Eckel [1], Chap. 3, in the subsection on
+reinterpret_cast. For direct memory access in microcontroller programming, however, reinterpret_cast can be considered safe and appropriate.
+This book only uses the static_cast and reinterpret_cast cast operators. C++ also has the dynamic_cast and const_cast operators. The
+dynamic_cast operator converts pointers and references. It also performs a
+costly but robust runtime check to ensure that the result of the cast is valid. The
+const_cast operator can change the constness or volatile qualification of an
+object by either setting or removing its const or volatile attribute.
+A.2 Uniform Initialization Syntax
+C++ has a syntax for fully uniform type initialization that works on any object.
+It was introduced with C++11. Uniform initialization syntax can be used alongside traditional constructor initialization with parentheses and initialization with
+operator= alike.
+Uniform initialization syntax uses curly braces to hold the initial values. The
+code below, for instance, initializes built-in types with uniform initialization syntax.
+int n { 123 };
+float f { 3.1415926535’8979323846F };
+Aggregate types can also be initialized with uniform initialization syntax. The
+code below initializes a structure with two data members.
+struct my_struct
+{
+int n;
+float f;
+my_struct(const int n_ = 0,
+const float& f_ = 0.0F) : n(n_),
+f(f_) { }
+};
+my_struct instance
+{
+123, // Initial value of n.
+3.14159265358979323846F // Initial value of f.
+};
+Appendix A: A Tutorial for Real-Time C++ 321
+In certain situations the compiler can also deduce the type of an object based on
+uniform initialization syntax. For example,
+struct my_struct
+{
+// ...
+};
+my_struct function()
+{
+// The compiler correctly deduces the return type.
+return
+{
+456,
+0.5772156649’0153286061F
+};
+}
+Uniform initialization syntax can be used in the constructor initialization list of
+a class type as well as to initialize an instance of a class type. For instance,
+struct point
+{
+point(const int x_ = 0,
+const int y_ = 0) : x{x_},
+y{y_} { }
+int x;
+int y;
+};
+point pt
+{
+123,
+456
+};
+In addition, uniform initialization syntax can be used to conveniently initialize STL containers such as std::array and std::vector (Sect. A.6). Some
+examples are shown below.
+322 Appendix A: A Tutorial for Real-Time C++
+std::array<int, 3U> a
+{
+{ 1, 2, 3 }
+};
+std::vector<char> v
+{
+{ ’a’, ’b’, ’c’ }
+};
+A.3 Overloading
+Function overloading in C++ allows for the creation of several functions with the
+same name but different types of input and output parameters. For example,
+// The area of a rectangle.
+float area(const float& length,
+const float& width)
+{
+return length * width;
+}
+// The area of a circle.
+float area(const float& radius)
+{
+constexpr float pi = 3.14159265358979323846F;
+return (pi * radius) * radius;
+}
+Global functions and local functions as well as class member functions can be
+overloaded. It is essential, however, not to confuse class member overloading with
+dynamic polymorphism and the runtime virtual function mechanism, described in
+Sect. 4.4.
+Appendix A: A Tutorial for Real-Time C++ 323
+A.4 Compile-Time Assert
+The static_assert facility checks a constant expression at compile time. The
+syntax of static_assert is
+static_assert(expression, message);
+Here, expression is a condition to be checked by the compiler and message
+contains potentially useful diagnostic text. If the result of expression tests
+true, then static_assert does nothing. Compilation continues unabatedly.
+If the result of expression tests false, then a compiler error ensues and the
+message text is shown like a regular compiler error.
+static_assert can be used to perform compile-time diagnostics. This can
+be convenient for checking platform-specific requirements. For example,
+constexpr unsigned int version = 3U;
+// Print error message if version is less than 2.
+static_assert(version >= 2U, "Version is too low!");
+In this example, static_assert ensures that version is 2 or higher and
+issues a compiler error if not.
+A.5 Numeric Limits
+The C++ standard library supports numeric limits of built-in types in its <limits>
+header. The <limits> library provides the std::numeric_limits template
+and provides specializations for both built-in floating-point and integer types as well
+as bool. The member variable is_specialized is true for a specialization
+of std::numeric_limits.
+The synopsis of the std::numeric_limits template class is shown below.
+namespace std
+{
+template<class T>
+class numeric_limits
+{
+public:
+static constexpr bool is_specialized = false;
+static constexpr T min () { return T(); }
+static constexpr T max () { return T(); }
+324 Appendix A: A Tutorial for Real-Time C++
+static constexpr T lowest() { return T(); }
+static constexpr int digits = 0;
+static constexpr int digits10 = 0;
+static constexpr int max_digits10 = 0;
+static constexpr bool is_signed = false;
+static constexpr bool is_integer = false;
+static constexpr bool is_exact = false;
+static constexpr int radix = 0;
+static constexpr T epsilon() { return T(); }
+static constexpr T round_error() { return T(); }
+static constexpr int min_exponent = 0;
+static constexpr int min_exponent10 = 0;
+static constexpr int max_exponent = 0;
+static constexpr int max_exponent10 = 0;
+static constexpr bool has_infinity = false;
+static constexpr bool has_quiet_NaN = false;
+static constexpr bool has_signaling_NaN = false;
+static constexpr float_denorm_style has_denorm
+= denorm_absent;
+static constexpr bool has_denorm_loss = false;
+static constexpr T infinity () { return T(); }
+static constexpr T quiet_NaN () { return T(); }
+static constexpr T signaling_NaN() { return T(); }
+static constexpr T denorm_min () { return T(); }
+static constexpr bool is_iec559 = false;
+static constexpr bool is_bounded = false;
+static constexpr bool is_modulo = false;
+static constexpr bool traps = false;
+static constexpr bool tinyness_before = false;
+static constexpr float_round_style round_style
+= round_toward_zero;
+};
+}
+The specialization of std::numeric_limits for int on a platform with
+32–bit int, for example, might be implemented as follows.
+Appendix A: A Tutorial for Real-Time C++ 325
+namespace std
+{
+template<>
+class numeric_limits<int>
+{
+public:
+static constexpr bool is_specialized = true;
+static constexpr int min() { return 0; }
+static constexpr int max()
+{ return +2147483647; }
+static constexpr int lowest()
+{ return -2147483648; }
+static constexpr int digits = 32;
+static constexpr int digits10 = 9;
+static constexpr int max_digits10 = 9;
+static constexpr bool is_signed = false;
+static constexpr bool is_integer = true;
+static constexpr bool is_exact = true;
+static constexpr int radix = 2;
+static constexpr int epsilon() { return 0; }
+static constexpr int round_error()
+{ return 0; }
+static constexpr int min_exponent = 0;
+static constexpr int min_exponent10 = 0;
+static constexpr int max_exponent = 0;
+static constexpr int max_exponent10 = 0;
+static constexpr bool has_infinity = false;
+static constexpr bool has_quiet_NaN = false;
+static constexpr bool has_signaling_NaN = false;
+static constexpr float_denorm_style has_denorm
+= denorm_absent;
+static constexpr bool has_denorm_loss = false;
+static constexpr int infinity () { return 0; }
+static constexpr int quiet_NaN() { return 0; }
+static constexpr int signaling_NaN()
+{ return 0; }
+static constexpr int denorm_min() { return 0; }
+static constexpr bool is_iec559 = false;
+static constexpr bool is_bounded = false;
+326 Appendix A: A Tutorial for Real-Time C++
+static constexpr bool is_modulo = false;
+static constexpr bool traps = false;
+static constexpr bool tinyness_before = false;
+static constexpr float_round_style round_style
+= round_toward_zero;
+};
+}
+The std::numeric_limits templates allow the programmer to query information about the numeric limits of built-in types. For example,
+constexpr int n_max = std::numeric_limits<int>::max();
+Numeric limits can be conveniently used in other templates. For example,
+template<typename unsigned_type>
+struct hi_bit
+{
+// The bit-position of the high bit.
+static constexpr int bpos
+= std::numeric_limits<unsigned_type>::digits - 1;
+// The value of the type with the high-bit set.
+static constexpr unsigned_type value
+= static_cast<unsigned_type>(1) << bpos;
+};
+The scalable hi_bit template structure provides compile-time constant values.
+For instance,
+constexpr std::uint8_t hi08 =
+hi_bit<std::uint8_t>::value; // (1 << 7)
+constexpr std::uint16_t hi16 =
+hi_bit<std::uint16_t>::value; // (1 << 15)
+constexpr std::uint32_t hi32 =
+hi_bit<std::uint32_t>::value; // (1 << 31)
+constexpr std::uint64_t hi64 =
+hi_bit<std::uint64_t>::value; // (1 << 63)
+Appendix A: A Tutorial for Real-Time C++ 327
+Specializations of std::numeric_limits can also be written to provide
+information about the numeric limits of user-defined types.
+A.6 STL Containers
+The C++ standard library has a collection of container types in its STL. Containers
+store multiple elements in a single object. There are various kinds of containers in
+the STL. Some are optimized for fast random access, others for fast insertion and
+deletion, etc. The choice of which container to use depends on the programming
+situation at hand.
+The most prevalent STL containers appearing in this book are the standard
+sequential containers:
+• std::array is a fixed-length sequential array aligned in memory.
+• std::vector is similar to std::array. The std::vector container,
+however, does not have fixed-length. Instead, a vector has a size that can be
+dynamically changed at any time during its lifetime. The std::vector container is designed for fast random access at any index within its range.
+• std::deque is a double-ended queue. It is designed for fast insertion and deletion at the front and back ends.
+• std::list is a sequence that can be bidirectionally traversed, but lacks random
+access. The std::list container supports fast insertion and deletion anywhere
+in the sequence.
+• std::forward_list is like std::list, but it can only be traversed in the
+forward direction.
+• std::basic_string, std::string and std::wstring are used to
+store character-based sequences (i.e., strings). Even though strings do not fulfill all the formal requirements for sequential STL containers, many programmers
+think of strings as sequential containers.
+The STL also includes associative containers such as std::set, std::-
+multiset, std::map, and std::multimap. Associative containers are not
+sequentially ordered but rather use an internal mapping scheme such as lookup with
+a key-and-value mechanism.
+The STL also includes a collection of standard adapters such as std::stack,
+std::queue and std::priority_queue. These provide different interfaces
+by adapting the functionality of existing standard sequential containers.
+STL containers are templated, meaning they have strong generic character. Containers have various constructors, a destructor and a selection of member functions.
+Using STL containers is straightforward. For example,
+328 Appendix A: A Tutorial for Real-Time C++
+#include <vector>
+void do_something()
+{
+// Create v with three elements having value 0.
+std::vector<int> v(3U, 0);
+// Set the values in v to (1,2,3).
+v[0U] = 1;
+v[1U] = 2;
+v[2U] = 3;
+// The initial size is 3.
+std::vector<int>::size_type s = v.size();
+v.push_back(4);
+// The size is now 4.
+s = v.size();
+int v0 = v.at(0U); // Value of v0 is 1.
+int v3 = v.back(); // Value of v3 is 4.
+// Copy constructor from another vector.
+std::vector<int> v2(v);
+// Constructor from other input iterators.
+std::vector<int> v3(v.begin(), v.end());
+// Support for operator=().
+std::vector<int> v4 = v;
+}
+This code creates a vector of integers, an std::vector<int>, called v. The
+vector v is initially created with three elements set to zero. The three elements are
+subsequently set to (1, 2, 3) using the index operator (operator[]). A fourth
+element with a value of 4 is pushed back onto the back end of the vector using
+the member function push_back(). The code sample also illustrates some of
+std::vector’s other convenient methods such as size(), at() and back().
+Containers can be copy constructed, created from another sequence of iterators
+and copy assigned. Additional member functions of containers include other access
+functions and sequence operations such as insertion, assignment, etc. See [5, 7] for
+complete documentation of containers and their member functions.
+Appendix A: A Tutorial for Real-Time C++ 329
+Templated containers use member type definitions to define common member
+types. An example is std::vector’s size_type, shown above. Other common
+member types of containers include iterator types, pointer types, reference types and
+a value type. Again, consult [5, 7] for complete documentation of these.
+STL containers are useful for embedded systems programming and are used
+extensively in this book and its companion code. Containers facilitate program organization and data localization. Containers of base class pointers or references allow
+for powerful sequential polymorphism. Containers are particularly useful in combination with STL algorithms (Sect. A.8).
+A.7 STL Iterators
+An iterator is an object designed for traversing through the elements of sequential
+containers and accessing their values. Iterators can be used to read and write the
+elements of standard STL containers. In particular, each standard STL container
+facilitates manipulation of its elements via iterators by providing dedicated iterator types and standardized iterator functions such as begin() and end(). For
+example,
+#include <vector>
+void do_something()
+{
+// Set v to (1,2,3).
+std::vector<int> v( { 1, 2, 3 } );
+// Declare an iterator for std::vector<int>.
+std::vector<int>::iterator it;
+// Add 5 to each element in v.
+for(it = v.begin(); it != v.end(); ++it)
+{
+*it += 5;
+}
+// Now v is (6,7,8).
+}
+This code uses std::vector’s iterator type to walk through v in the
+range from v.begin() to the element just before v.end(). The loop statement
+adds 5 to each of v’s elements.
+330 Appendix A: A Tutorial for Real-Time C++
+An iterator pair that delimits a range in a sequence from First to Last is
+denoted by
+
+First, Last
+, (A.1)
+where established convention mandates that First points to the first element in
+the sequence and Last points to the element that is 1 increment past the final element. The STL’s standard algorithms (Sect. A.8) use this convention. Using this
+convention consistently ensures compatibility with the STL and other code. The
+code sample below uses a range of input iterators with std::copy().
+#include <algorithm>
+#include <array>
+#include <vector>
+void do_something()
+{
+// Initialized src with (101, 101, 101).
+const std::vector<int> src(3U, 101);
+// Uninitialized dst.
+std::array<int, 3U> dst;
+// Copy from vector src to array dst.
+// dst now also contains (101, 101, 101).
+std::copy(src.begin(), src.end(), dst.begin());
+}
+All iterators support incrementing (++) to advance the iterator to the next element
+in the sequence. Some STL iterators support decrementing (--) to lower the iterator to the previous element. In general, the pre-increment and pre-decrement forms
+of (++) and (--) are more efficient than the post-increment and post-decrement
+forms. Many programmers, therefore, preferentially use the pre-forms in situations
+for which pre and post are functionally identical. All STL iterators use the dereferencing operator (*) or the member selection operator (->) for element access.
+C++ has several categories of iterators including (among others) forward iterators, bidirectional iterators and random access iterators.
+There is a clear distinction between constant iterators and non-constant iterators. In particular, constant iterators are limited to read-only access. Non-constant
+iterators can read and write container elements.
+Appendix A: A Tutorial for Real-Time C++ 331
+container_type::iterator nonconst_iterator1
+= cnt.begin();
+container_type::const_iterator const_iterator2
+= cnt.begin();
+container_type::const_iterator const_iterator3
+= cnt.cbegin();
+*nonconst_iterator1 = 1; // OK
+*const_iterator2 = 2; // Error!
+*const_iterator3 = 3; // Error!
+The “c” in cbegin() emphasizes that the iterator iterates over constant elements, as in const_iterator. Some special container member iterator functions such as begin() and end() are overridden, having both constant as well
+as non-constant versions. Others like cbegin() and cend() are solely constant.
+The STL has several iterator classes that can be used standalone or as base classes
+for custom iterators. The standard iterator classes are defined in <iterator>.
+A.8 STL Algorithms
+The STL has an extensive collection of templated algorithms specifically designed
+to operate on a range of iterators in a generic way. Most of the standard algorithms
+are defined in <algorithm> and some others are defined in <numeric> and
+<memory>.
+STL algorithms are highly versatile because they can be used generically with
+any kind of iterator—even with regular pointers. The standard algorithms can simplify many common coding situations by transferring program complexity from the
+user code to the STL. More information on STL algorithms can be found in [2, 5,
+7].
+There are several categories of algorithms including:
+• non-modifying sequence operations like std::all_of(), std::count(),
+std::for_each(), std::search(), etc,
+• mutating sequence operations that modify the elements in the range including
+algorithms such as std::copy(), std::move(), std::fill() and the
+like.
+• sorting algorithms,
+• binary search algorithms operating on sorted ranges,
+• merge operations that act on sorted ranges,
+• heap operations,
+332 Appendix A: A Tutorial for Real-Time C++
+• and comparison operations including algorithms such as the minimax functions
+std::min() and std::max() and the generalized alphabetical compare
+algorithm std::lexicographical_compare().
+A typical function prototype of an STL algorithm is shown below.
+template<typename iterator_type,
+typename function_type>
+function_type std::for_each(iterator_type first,
+iterator_type last,
+function_type function);
+This is the function prototype of std::for_each(), which was also shown
+in Sect. 5.8. The std::for_each() algorithm applies its function parameter
+(function) to each element in the range
+first, last
+We will now present several examples showing how to use STL algorithms.
+#include <algorithm>
+#include <vector>
+namespace
+{
+void add_five(int& elem)
+{
+elem += 5;
+}
+}
+void do_something()
+{
+std::vector<int> v(3U);
+// Set v to (1,2,3).
+v[0U] = 1;
+v[1U] = 2;
+v[2U] = 3;
+// Now v is (6,7,8).
+std::for_each(v.begin(), v.end(), add_five);
+}
+In this example, the add_five() subroutine is called for each element in the
+range
+v.begin(), v.end()
+. An algorithm’s function parameter can be a function with static linkage that has non-subroutine-local scope.
+Appendix A: A Tutorial for Real-Time C++ 333
+It is also possible to use a dedicated class type for an algorithm’s function parameter. This is called a functor, or a function object. In order to work properly, the
+functor must support the function call operator, operator(). Dedicated function
+objects incur overhead. It only makes sense to use one if its advantages (i.e., encapsulation, data localization and reduction of complexity) justify its costs.
+An example using a functor struct is shown below. Also in this code sample,
+5 is added to each element in v using std::for_each().
+#include <algorithm>
+#include <vector>
+struct add_five
+{
+add_five() { }
+void operator()(int& elem)
+{
+elem += 5;
+}
+};
+void do_something()
+{
+std::vector<int> v(3U);
+// Set v to (1,2,3).
+v[0U] = 1;
+v[1U] = 2;
+v[2U] = 3;
+std::for_each(v.begin(), v.end(), add_five());
+// Now v is (6,7,8).
+}
+Algorithms can use a so-called lambda expression (Sect. A.9) for the function
+object. For example,
+#include <algorithm>
+#include <vector>
+void do_something()
+{
+334 Appendix A: A Tutorial for Real-Time C++
+std::vector<int> v(3U);
+// Set v to (1,2,3).
+v[0U] = 1;
+v[1U] = 2;
+v[2U] = 3;
+std::for_each(v.begin(),
+v.end(),
+[](int& elem)
+{
+elem += 5;
+});
+// Now v is (6,7,8).
+}
+Lambda expressions are efficient and elegant when used with algorithms because
+they integrate the entire functionality of the function object within the algorithm’s
+call parameters. This also facilitates compiler optimization, see Sect. 6.18.
+To complete the examples in this section, we will briefly look ahead to Sect. A.10
+and initialize the vector with an std::initializer_list.
+#include <algorithm>
+#include <initializer_list>
+#include <vector>
+void do_something()
+{
+// Set v to (1,2,3).
+std::vector<int> v( { 1, 2, 3 } );
+std::for_each(v.begin(),
+v.end(),
+[](int& elem)
+{
+elem += 5;
+});
+// Now v is (6,7,8).
+}
+Appendix A: A Tutorial for Real-Time C++ 335
+In this coding example, the combined use of a standard algorithm, a lambda expression and an initializer list provides for a high degree of coding efficiency and performance in C++.
+There are many algorithms in the STL and most developers do not rigorously
+maintain a complete mental list of all available algorithms and in which situations
+to use them. The most important things to remember about the standard algorithms
+are that there even are standard algorithms in the first place and where to find help
+about them, for example, with help functions, additional literature, etc.
+A.9 Lambda Expressions
+A lambda expression is an anonymous function that has a body but does not have a
+name. Lambda expressions are stylistically eloquent and can be optimized particularly well when used with the standard algorithms of the STL.
+A C++ lambda expression has the form shown below [8].
+[capture](arguments) -> return-type { body }
+We have already used lambda expressions with STL algorithms previously in
+this book. Lambda expressions can also be used as standalone function objects. The
+lambda expression shown below, for example, computes the float value of the
+hypotenuse,
+h =
+
+x2 + y2 . (A.2)
+#include <cmath>
+void do_something()
+{
+const float x = 3.0F;
+const float y = 4.0F;
+// Capture x and y by reference.
+// The lambda expression has no input parameters.
+// The lambda expression returns the float value
+// of the hypotenuse.
+const float h
+= [&x, &y]() -> float
+{
+return std::sqrt((x * x) + (y * y));
+336 Appendix A: A Tutorial for Real-Time C++
+}();
+// The value of h is 5.0F.
+}
+The local variables x and y are captured by reference. The body of the anonymous function is implemented within the scope of the curly braces. The trailing set
+of parentheses after the closing curly brace effects the function call.
+A.10 Initializer Lists
+C++11 added several useful templated container classes to the STL. One of these
+is std::initializer_list. An initializer list is a sequential list of constant
+objects or values. Elements in an initializer list must be type-identical or typeconvertible. STL containers can be conveniently initialized with an initializer list.
+These convenient kinds of initializations were not possible prior to the inclusion of
+std::initializer_list in the STL.
+The following pseudo-code sequences, for example, use an std::initializer_list to initialize a (non-specified) STL container with constant values.
+// Initialization with the container’s operator=.
+container c1 = { 1, 2, 3 };
+// Initialization with the container’s ctor.
+container c2( { 1, 2, 3 } );
+// Initialization with uniform initialization syntax.
+container c3 { { 1, 2, 3 } };
+Functions can accept initializer lists as parameters. In addition, initializer lists
+support iterators. For example,
+#include <initializer_list>
+#include <numeric>
+constexpr std::initializer_list<int> lst {1, 2, 3};
+const int sum = std::accumulate(std::begin(lst),
+std::end(lst),
+0);
+Appendix A: A Tutorial for Real-Time C++ 337
+Initializer lists are quite useful for embedded systems programming because, just
+like tuples, they provide a way to group objects while incurring low code overhead. Because their values are potentially compile-time constant, initializer lists
+lend themselves well to inlining and template metaprogramming.
+A.11 Type Inference with Auto
+What follows is a note for C and traditional C++ programmers. The meaning of
+the auto keyword drastically changed as C++ evolved from C++03 to C++11 and
+beyond. The original legacy auto keyword was used, in both C as well as C++03
+and C++98, as a qualifier for local variables. It was a hint to the compiler to preferentially store a local variable on the stack instead of in a CPU register.
+C++11, C++14 and later, however, use the auto keyword for automatic compiletime type inference. For example,
+auto n = 3; // n is int.
+auto u = std::uint8_t(3U); // u is std::uint8_t.
+// A bit more complicated... Here, the type
+// of collection is std::initializer_list<int>.
+auto collection { 1, 2, 3 };
+Type inference can reduce the complexity of code. In particular, instead of writing long iterator type names such as this:
+for(std::array<int>::const_iterator i = a.cbegin();
+i != a.cend();
+++i)
+{
+// ...
+}
+automatic type inference with auto can be used like this:
+for(auto i = a.cbegin(); i != a.cend(); ++i)
+{
+// ...
+}
+338 Appendix A: A Tutorial for Real-Time C++
+This can be made even more generic and flexible with the STL’s range access
+template functions std::cbegin() and std::cend(). See, for example,
+Sect. 24.6.5 in [4]. In particular,
+for(auto i = std::cbegin(a); i != std::cend(a); ++i)
+{
+// ...
+}
+This type of construction comes in handy for, among other things, generic template programming.
+A.12 Range-Based for (:)
+C++11 added a simplified range-based for(:) short-hand notation for iterating
+over the elements of a list. This simplified range-based iteration statement allows
+for easy navigation through a list of elements. For example,
+std::vector<char> v( {1, 2, 3} );
+for(char& c : v)
+{
+c += static_cast<char>(0x30);
+}
+This simplified loop basically means, iterate over every character in v, and add
+0x30 to each one. The traditional for(;;)-loop and the for_each() algorithm
+still work and can be used for the same things. The new shorthand of the range-based
+for(:)-loop is, however, potentially more convenient and terse.
+Range-based for(:)-loops work for C-style arrays, initializer lists, and any
+type that has the normal begin() and end() functions. This includes all of the
+standard library containers that have begin() and end().
+A.13 Tuple
+A tuple is the generalization of an ordered group of objects, such as a pair or a triple,
+a quadruple, a quin-tuple, a sex-tuple, etc. While other programming languages such
+as Python and Perl have had tuples for quite a while, they are relatively new in C++,
+available with C++11. Tuples are implemented as template classes. The template
+parameters of a tuple define the number of tuple objects and their types.
+For example, a tuple consisting of three objects, a float, a char and an int,
+can be created and used as shown below.
+Appendix A: A Tutorial for Real-Time C++ 339
+#include <tuple>
+typedef std::tuple<float, char, int> tuple_type;
+void do_something()
+{
+// Make a tuple of a float, char and an int.
+tuple_type t(1.23F, char(’a’), 123);
+// Get element number 1 of the tuple (’a’).
+char c = std::get<1>(t);
+// Get element number 2 of the tuple (123).
+int n = std::get<2>(t);
+// Use the type member of tuple_element to obtain
+// the float value of the zero’th tuple element.
+std::tuple_element<0, tuple_type>::type val
+= std::get<0>(t);
+// Get the size of the tuple.
+int size = std::tuple_size<tuple_type>::value;
+}
+Tuples can be created and initialized with their ctor using appropriate arguments.
+tuple also provides a default ctor which uses the default ctors of its respective elements. The Nth element of an ordered tuple or a reference thereto can be
+retrieved with the template std::get() function. STL’s std::tuple_size
+wraps the tuple element count by storing the number of elements in its member
+variable value. The std::tuple_element template wraps the type of a tuple
+element. Note in the listing that a convenient type definition has been used in order
+to avoid typing long and complicated tuple types.
+Tuples can be copy assigned with operator=. They can also be copy constructed. Copy and assign use member-wise assignment. Copy and assign also
+require that for each element pair the destination can be converted from the source.
+Tuples can be assigned using STL’s std::make_tuple() facility. For example, the tuple in the listing above could be created with std::make_tuple().
+In particular,
+#include <tuple>
+typedef std::tuple<float, char, int> tuple_type;
+tuple_type t = std::make_tuple(1.23F, char(’a’), 123);
+340 Appendix A: A Tutorial for Real-Time C++
+Tuples can be compared. Comparison functions use relational operators and perform pair-wise comparison. Comparison stops when the first element pair comparison yields true.
+The code sample below shows tuple copy and compare.
+#include <string>
+#include <tuple>
+void do_something()
+{
+std::tuple<int, std::string> t1(123, "identical");
+std::tuple<int, std::string> t2 = t1;
+std::tuple<int, std::string> t3(t1);
+bool result;
+result = (t1 == t2); // true
+result = (t1 == t3); // true
+std::get<0>(t2) += 1; // 123 -> 124
+result = (t2 > t1); // true
+// Transform identical -> xdentical
+std::get<1>(t3).at(0U) = ’x’;
+result = (t3 > t1); // true
+}
+Tuples are immensely useful because they can group collections of objects
+together in a single representation. At the same time, tuples incur a minimum of
+code overhead because tuple elements are partly or completely available at compiletime. In particular, the template facilities std::get(), std::tuple_size
+and std::tuple_element can be optimized particularly well at compile time.
+Tuples lend themselves readily to template design and template metaprogramming,
+see Sect. 5.10.
+A.14 Regular Expressions
+Support for lexical parsing of regular expressions in C++ is implemented in the
+<regex> library. A complete implementation of <regex> involves extensive
+templates and a significant amount of object code. Therefore, <regex> is often
+too large-scale for most microcontroller projects.
+Microcontroller programming, however, usually involves other associated PCbased programs and utilities used for a variety of purposes such as manipulating
+Appendix A: A Tutorial for Real-Time C++ 341
+files, automatic code generation, designing specialized language parsers, etc. Lexical parsing with regular expressions can drastically simplify the implementations
+of these programs. Therefore, the microcontroller programmer should have basic
+competence with <regex>.
+Consider a regular expression designed for parsing a composite string composed
+of three substrings. The first substring is an alphanumeric name including underscores. The second substring is a hexadecimal number. The third substring is a
+base–10 unsigned integer. For example,
+_My_Variable123 03FFB004 4
+A regular expression for parsing this composite string is shown below:
+const std::regex
+rx( std::string("([_0-9a-zA-Z]+)") // Alnum name.
++ std::string("[[:space:]]+") // 1+ spaces.
++ std::string("([0-9a-fA-F]+)") // Hex integer.
++ std::string("[[:space:]]+") // 1+ spaces.
++ std::string("([0-9]+)")); // Base-10 int.
+This regular expression (rx) uses POSIX syntax [3]. The <regex> library supports several syntaxes, POSIX being the default. The first, third and fifth strings in
+the definition of the regular expression are enclosed in parentheses. The parentheses indicate a capture group of the regular expression. A capture group contains
+an expression which should be caught, in other words stored, when checking for a
+regular expression match.
+A program showing how to use this regular expression is shown in the sample
+code below.
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <regex>
+#include <string>
+int main()
+{
+const std::regex rx( std::string("([_0-9a-zA-Z]+)")
++ std::string("[[:space:]]+")
++ std::string("([0-9a-fA-F]+)")
++ std::string("[[:space:]]+")
++ std::string("([0-9]+)"));
+342 Appendix A: A Tutorial for Real-Time C++
+const std::string str("_My_Variable123 03FFB004 4");
+std::match_results<std::string::const_iterator> mr;
+if(std::regex_match(str, mr, rx))
+{
+std::copy(mr.begin(),
+mr.end(),
+std::ostream_iterator
+<std::string>(std::cout, "\n"));
+}
+}
+The regex_match() function is a Boolean subroutine with three input parameters. There are six different overwritten forms of regex_match(). The form
+used in the listing checks if its input string, str, identically matches its input regular
+expression, rx. If the regular expression matches, then regex_match() returns
+true. The match results, mr, contain the results of the regular expression match.
+The output of the program is:
+_My_Variable123 03FFB004 4
+_My_Variable123
+03FFB004
+4
+A successful match has N + 1 elements in the match results, where N is the
+number of capture groups in the regular expression. The 0th match result contains
+the entire string submitted to the match. In this example, there are four elements in
+the match results, one for the input string and three for the capture groups.
+Regular expressions are templated. For example, std::regex is actually a
+type definition for std::basic_regex<char>. Therefore, regular expressions
+can be used with strings or sequences of other types. In addition, match_results
+are templated and support iterators allowing for convenient manipulation with STL
+standard algorithms.
+Additional information on std::regex can be found in [6]. Even though this
+reference describes the Boost.Regex library, it is also applicable here because
+std::regex originates from Boost.
+Appendix A: A Tutorial for Real-Time C++ 343
+References
+1. B. Eckel, Thinking in C++ Volume 1: Introduction to Standard C++, 2nd edn (Pearson Prentice Hall, Upper Saddle River, 2000)
+2. B. Eckel, Thinking in C++ Volume 2: Practical Programming (Pearson Prentice Hall, Upper
+Saddle River, 2004)
+3. ISO/IEC, ISO/IEC 9945:2003: Information Technology-Portable Operating System Interface
+(POSIX) (International Organization for Standardization, Geneva, 2003)
+4. ISO/IEC, ISO/IEC 14882:2011: Information Technology-Programming Languages—C++
+(International Organization for Standardization, Geneva, 2011)
+5. N.M. Josuttis, The C++ Standard Library: A Tutorial and Reference, 2nd edn. (AddisonWesley, Boston, 2011)
+6. B. Karlsson, Beyond the C++ Standard Library: An Introduction to Boost (Addison-Wesley,
+Boston, 2005)
+7. R. Lischner, STL Pocket Reference (O’Reilly, Sebastopol, 2004)
+8. Wikipedia, Anonymous Function (2012), http://en.wikipedia.org/wiki/Anonymous_function
+Appendix B
+A Robust Real-Time C++ Environment
+Real-time programming is characterized by demanding performance, size and safety
+constraints. This, combined with the large scope of the C++ language and a potentially complex set of development tools, can make the creation of high-quality realtime C++ software a truly challenging endeavor. In the harsh world of real-time
+C++, the stability of the development environment can contribute to the overall
+quality of the software as much or even more than the actual coding itself. This
+chapter discusses various aspects related to the robust real-time C++ environment.
+B.1 Addressing the Challenges of Real-Time C++
+Microcontroller software is usually cost-sensitive, safety-critical or both and demands the utmost in efficiency and robustness. The development environment and
+the executable program usually run on separate systems. In addition, flashing the
+microcontroller generally uses a connection with a hardware interface for in-system
+programming (ISP) with an on-chip debugger or an in-circuit emulator (ICE). This
+can make it particularly difficult to visualize, debug and test microcontroller software.
+When addressing the challenges of real-time C++ programming, it may be best
+to start with a simple project and build up tools, coding competence and a collection
+of re-usable software components steadily and methodically. The brief checklist
+below describes some considerations that need to be made when doing real-time
+C++ programming.
+• Select the right microcontroller for the application. Consider performance and
+cost aspects. Decide if the application needs a cost-sensitive 8–bit microcontroller
+or a more powerful, more expensive 32–bit or 64–bit microcontroller. Try to estimate how much program memory and RAM are needed and select the microcontroller accordingly. If future versions of the application are planned, it may be
+advisable to use a scalable microcontroller family that includes pin-compatible
+chip derivatives accommodating potential extensions of functionality.
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+345
+346 Appendix B: A Robust Real-Time C++ Environment
+• Get a microcontroller prototype up and running. Students and hobbyists may be
+well served with a commercially available microcontroller starter kit including a
+board, a debug interface and a demo compiler. Using a starter kit can ease the
+learning curve by providing a functioning set of hardware, software and code
+examples, all in one package. If working in a production environment, try to
+ensure that a functioning prototype board is available early in the development
+cycle.
+• Obtain a high-quality C++ compiler. Compiler availability can be an issue and
+successful development mandates that a good C++ compiler is available for the
+microcontroller. GCC is cost free and known for having a high degree of language standards conformance. Professionally supplied compilers might beat the
+performance of GCC, particularly for low-level hardware programming requiring intimate knowledge of the microcontroller architecture. At the same time,
+professionally supplied compilers tend to be prohibitively expensive for students
+and hobbyists. Those interested in assessing compiler price and performance may
+want to carry out market research in combination with compiler benchmarks for
+the domain of the application.
+• Depending on project necessities, make sure a microcontroller programmer, a
+simulator, a debugger or an ICE, or several of these are available. If other test
+and measurement devices such as an oscilloscope or logic analyzer are required,
+verify that the equipment is available. One should verify that the equipment works
+and that one has basic knowledge of how to use it, or knows where to find help
+if not.
+• Design and use a software architecture (Sect.B.2). The architecture significantly
+influences the overall quality of the entire software. When doing any robust microcontroller programming in C++, it is essential to use a layered software architecture that shields the application layer from the low-level hardware-specific, nonportable register manipulation code. In this way, application software can be used
+and re-used, thereby improving portability and localizing the work of switching
+the microcontroller to the hardware layer.
+• Establish coding competence. C++ is a rich, multifaceted language. If working
+alone, try to learn the C++ language as best as possible through independent
+study. Keep in touch with other programmers and best-practice in the community e.g., via Internet forums, additional literature, etc.
+• Software reliability can be improved by adhering to established coding guidelines, such as [2]. Conforming to guidelines can be mandatory when working in
+a professional setting where proving reliability to customers may be required in
+an assessment or audit situation. When working on projects that demand high
+reliability, consider using a static syntax checker in addition to the compiler.
+• Build up a library of re-usable code. Programming microcontrollers in C++ can be
+a long-term process based on years of effort. Over the course of time, a body of reusable, portable code can be built up for programming situations that repeatedly
+arise. Some examples of components that I have collected in my own libraries, and
+partially in this book, include register manipulation mechanisms (Chap. 7), custom allocators (Chap. 10), timers (Sect. 15.3), multitasking schedulers (Chap. 11),
+Appendix B: A Robust Real-Time C++ Environment 347
+filter functions (Chap. 14), mathematical functions (Chap. 12), convenient utilities
+(Chap. 15), etc.
+B.2 Software Architecture
+No matter how small or large a given software may be, it is essential to use a good,
+properly sized software architecture. The architecture may contribute to the overall
+quality of the software more strongly than any other factor. Programming skill and
+elegance of implementation alone can only augment software quality, not create
+it. The combination of solid architecture and competent coding ultimately leads to
+success in real-time C++.
+When working in a project with a documented software architecture, one is
+not merely programming but engaging in software engineering and system design
+instead. Metaphorically speaking, software architecture comprises the foundation,
+floors and walls of the project; the code being the plaster, paint and furniture. In the
+absence of a stable and robust architecture, even good code will, in time, erode and
+crumble under its own weight.
+Designing a software architecture can start with a simple block diagram of the
+major software layers and components such as the one shown in Fig. B.1. Initially,
+this can be a rudimentary hand-sketched diagram. Create the corresponding directories and files and fill them with preliminary namespaces, classes and functions
+that embody the most important interfaces. At first, classes and functions can be
+A Microcontroller Software Architecture
+Microcontroller Abstraction Layer
+Oscillator Watchdog Timer Serial
+System Layer
+Startup Monitor Debug Idle
+Application Layer
+Appl_1 Appl_2
+Operating System
+Utilities
+Fig. B.1 A layered microcontroller software architecture is shown
+348 Appendix B: A Robust Real-Time C++ Environment
+Table B.1 The runtime limits for a system with three priority classes are shown
+Priority class Design target
+(µs)
+Worst-case maximum
+(µs)
+High-priority interrupts < 10  25
+Low-priority interrupts < 40  100
+All tasks < 500  1,000
+incomplete skeletons. Implementation details can be added later. Try to ensure that
+names of namespaces, classes, functions, etc. have recognizable associations with
+the architecture sketch.
+Software architecture need not be complicated. A straightforward one with a few
+clearly defined layers is usually best. Consider, once again, the software architecture
+shown in Fig. B.1. This architecture consists of three layers that have successively
+higher levels of abstraction.
+The MCAL contains microcontroller-specific peripheral drivers such as timer,
+watchdog or communication interfaces. Intermediate system-level software such as
+startup routines and monitor functions can be implemented in the System Layer. The
+Application Layer contains high-level application software. Modules in the application layer should be kept entirely portable. The operating system and project utilities can be used by all three layers in the architecture. Over the years, I have had
+good results with this kind of layered architecture in numerous projects with varying
+application size.
+When developing a software architecture, try to achieve easy-to-understand modularity and object granularity. Avoid overly long files, classes and subroutines.
+It may take a few iterations until the architecture and functional granularity feel
+right. Time invested in designing software architecture is, however, time spent well
+because the architecture provides for long-lasting organization in a project that may
+potentially be worked on for years.
+B.3 Establishing and Adhering to Runtime Limits
+Microcontroller programming is time critical and things tend to go wrong if the
+software has unpredictable timing. For example, a late response from a communication attempt might be just as bad as the wrong response, regardless of its content.
+To address this problem, it can be helpful to establish runtime limits and adhere to
+them.
+This can be done by identifying the priority classes of tasks and interrupts in
+the system and defining runtime constraints for them. Table B.1, for example, lists
+potential runtime limits selected for a system with three priority classes: highpriority interrupts, low-priority interrupts and the task-level priority. The runtime
+constraints are given in a form indicating a typical value representing the design
+Appendix B: A Robust Real-Time C++ Environment 349
+target and a maximum limit which should never be exceeded and only sporadically
+neared under worst-case load conditions.
+When designing an embedded microcontroller system, the most time consuming
+software processes should be identified up front and designed with a temporal granularity that facilitates an even distribution of the work load. In general, it is poor
+form to program with blocking calls that engage the CPU for long time spans such
+as hundreds of microseconds or even several milliseconds. It is much better to program short, fast sequences in a multitasking environment that process information
+or service a state machine quickly and rapidly relinquish control to other processes
+in the system. Interrupt service routines should be held terse and efficient. Keeping the runtime within the established limits generally leads to a more predictable
+software with higher quality and reliability.
+References
+1. W. van Hagen, The Definitive Guide to GCC (Apress, Berkeley, 2006)
+2. Programming Research Ltd., High Integrity C++ Coding Standard Version 4.0 (2015), http://
+www.codingstandard.com/HICPPCM/index.html
+Appendix C
+Building and Installing GNU GCC Cross
+Compilers
+There are several reasons one might want to build GCC [4], such as to obtain the
+newest version of the compilers or to enable additional language features or other
+languages. This appendix provides step-by-step instructions for building a GNU
+GCC cross compiler for our target with the 8–bit microcontroller. GCC can be most
+easily built on ∗nix-like systems. In this example, the build is done in MinGW/MSYS [10] using standard GNU auto-tools configure scripts and make procedures.
+The methods in this chapter can easily be adapted for building a cross compiler
+targeted to another microcontroller architecture.
+C.1 The GCC Prerequisites
+Building GCC has prerequisites [5]. This means that certain libraries must be
+installed and available to the build system before GCC can be built. If any prerequisites are missing, these either need to be installed or built from source before
+building GCC. At the time of writing this book, the prerequisites for building GCC
+include:
+• GMP [7], the GNU multiprecision library.
+• MPFR [6, 12], the GNU multiprecision floating-point library.
+• MPC [11], a C library for the multiprecision arithmetic of complex numbers.
+• PPL, the Parma Polyhedra Library [1], used for abstract geometrical polyhedron
+representation.
+• Binutils [3], the binary utilities for the cross compiler such as linker, assembler,
+object dump, C++ name demangler, etc.
+The prerequisites for building GCC evolve over time. At the time of writing the
+second edition of this book, the prerequisites for building GCC include:
+• GMP [7], the GNU multiprecision library.
+• MPFR [6, 12], the GNU multiprecision floating-point library.
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+351
+352 Appendix C: Building and Installing GNU GCC Cross Compilers
+• MPC [11], a C library for the multiprecision arithmetic of complex numbers.
+• ISL [9], the integer set library used for manipulating sets of integers. GCC uses
+ISL for its graphite loop optimizations [5]. Building ISL requires an installed
+CLooG library [2], another software library used for polyhedron analysis.
+• Binutils [3], the binary utilities for the cross compiler such as linker, assembler,
+object dump, C++ name demangler, etc.
+It may seem odd that GCC has prerequisites for such exotic mathematical functions as multiprecision floating-point numbers and geometrical polyhedron representations. The multiprecision functions in GMP, MPFR and MPC are needed by
+GCC for compile-time calculation of floating-point mathematical expressions. The
+geometrical polyhedron representations in PPL (or ISL) are used for high-level optimizations including program loop analysis, parallelization and vectorization.
+Perhaps the binary utilities should be considered part of the compiler rather than
+a prerequisite. Here, we will call the binary utilities a prerequisite simply because
+the build of GCC needs to use them. This, in turn, means that the binary utilities
+need to be built and installed prior to building GCC.
+C.2 Getting Started
+Building the GCC prerequisites and GCC can take several hours of manual work. At
+times, this work can be tedious involving intricate command lines, detailed operating system operations and careful monitoring. It may, therefore, be best to undertake
+building the GCC prerequisites and GCC only if ample time and peace of mind are
+available for this kind of endeavor. The process of building, installing and using
+GCC constitutes a rich topic, see [4, 8].
+Sometimes building a GNU cross compiler works. At other times, it does not.
+There are several reasons why building GCC might fail. The prerequisites might
+be absent or improperly built. The binary utilities or the compiler sources might
+be flawed for the particular compiler version and target. Very experienced compiler
+builders often patch the sources of a new compiler version, thereby correcting minor
+flaws. The strategy thereby is to integrate the patches in a compiler bug-fix in a later
+subversion.
+Middle-of-the-road compiler builders and users should probably avoid such
+advanced compiler development as patching the sources. It may, therefore, be necessary to do a bit of trial-and-error work in order to find a combination of prerequisites, binary utilities and a compiler version that harmoniously build together. The
+components selected in this appendix have been successfully built.
+The entire build session including all the prerequisites, the binary utilities and
+GCC can best be organized within a single root directory. It is not a good idea to
+perform the build of a given component in its own source tree directory. For each
+component, therefore, we use two directories, one for the component’s source tree
+and another sibling object directory next to the source tree in which the build is
+carried out.
+Appendix C: Building and Installing GNU GCC Cross Compilers 353
+We begin by creating a root directory for all the builds. Here, for example, we
+will use the directory /home/tmp as the root directory for performing the builds.
+• Create the directory /home/tmp.
+C.3 Building GMP
+We will now build GMP version 5.0.5 in MinGW/MSYS.
+• cd /home/tmp
+• Get the GMP sources and unpack them in /home/tmp.
+• Perform the command mkdir objdir-gmp-5.0.5 in order to make the
+GMP sibling directory.
+• cd objdir-gmp-5.0.5
+The source tree of GMP should be in the GMP source directory:
+/home/tmp/gmp-5.0.5
+We should now be in the GMP sibling object directory:
+/home/tmp/objdir-gmp-5.0.5
+In the objdir-gmp-5.0.5 GMP sibling object directory, configure GMP
+with the following command:
+../gmp-5.0.5/configure --prefix=/usr/local \
+--build=i686-pc-mingw32 --disable-shared \
+--enable-static --enable-cxx CPPFLAGS="-fexceptions"
+This configuration defines the characteristics that will be used when building
+GMP. It defines the prefix where the build results will be installed, specifies the build
+system and instructs the build to create static libraries, not dynamic link libraries.
+In the objdir-gmp-5.0.5 GMP sibling object directory, make GMP with
+the command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-gmp-5.0.5 GMP sibling object directory, install GMP with
+the command:
+make install
+354 Appendix C: Building and Installing GNU GCC Cross Compilers
+C.4 Building MPFR
+We will now build MPFR version 3.1.1 in MinGW/MSYS.
+• cd /home/tmp
+• Get the MPFR sources and unpack them in /home/tmp.
+• Perform the command mkdir objdir-mpfr-3.1.1 in order to make the
+MPFR sibling directory.
+• cd objdir-mpfr-3.1.1
+The source tree of MPFR should be in the MPFR source directory:
+/home/tmp/mpfr-3.1.1
+We should now be in the MPFR sibling object directory:
+/home/tmp/objdir-mpfr-3.1.1
+In the objdir-mpfr-3.1.1 MPFR sibling object directory, configure MPFR
+with the following command:
+../mpfr-3.1.1/configure --prefix=/usr/local \
+--build=i686-pc-mingw32 --disable-shared \
+--enable-static --with-gmp=/usr/local
+This configuration defines the characteristics that will be used when building
+MPFR. It defines the prefix where the build results will be installed, specifies the
+build system and instructs the build to create static libraries, not dynamic link
+libraries. The configuration also tells the build of MPFR where the installation of
+GMP can be found.
+In the objdir-mpfr-3.1.1 MPFR sibling object directory, make MPFR
+with the command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-mpfr-3.1.1 MPFR sibling object directory, install MPFR
+with the command:
+make install
+Appendix C: Building and Installing GNU GCC Cross Compilers 355
+C.5 Building MPC
+We will now build MPC version 0.9 in MinGW/MSYS.
+• cd /home/tmp
+• Get the MPC sources and unpack them in /home/tmp.
+• Perform the command mkdir objdir-mpc-0.9 in order to make the MPC
+sibling directory.
+• cd objdir-mpc-0.9
+The source tree of MPC should be in the MPC source directory:
+/home/tmp/mpc-0.9
+We should now be in the MPC sibling object directory:
+/home/tmp/objdir-mpc-0.9
+In the objdir-mpc-0.9 MPC sibling object directory, configure MPC with
+the following command:
+../mpc-0.9/configure --prefix=/usr/local \
+--build=i686-pc-mingw32 --disable-shared \
+--enable-static --with-gmp=/usr/local \
+--with-mpfr=/usr/local
+This configuration defines the characteristics that will be used when building
+MPC. It defines the prefix where the build results will be installed, specifies the build
+system and instructs the build to create static libraries, not dynamic link libraries.
+The configuration also tells the build of MPC where the installations of GMP and
+MPFR can be found.
+In the objdir-mpc-0.9 MPC sibling object directory, make MPC with the
+command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-mpc-0.9 MPC sibling object directory, install MPC with the
+command:
+make install
+356 Appendix C: Building and Installing GNU GCC Cross Compilers
+C.6 Building PPL
+We will now build PPL version 0.12.1 in MinGW/MSYS.
+• cd /home/tmp
+• Get the PPL sources and unpack them in /home/tmp.
+• Perform the command mkdir objdir-ppl-0.12.1 in order to make the
+PPL sibling directory.
+• cd objdir-ppl-0.12.1
+The source tree of PPL should be in the PPL source directory:
+/home/tmp/ppl-0.12.1
+We should now be in the PPL sibling object directory:
+/home/tmp/objdir-ppl-0.12.1
+In the objdir-ppl-0.12.1 PPL sibling object directory, configure PPL with
+the following command:
+../ppl-0.12.1/configure --prefix=/usr/local \
+--build=i686-pc-mingw32 --disable-shared \
+--enable-static CPPFLAGS="-fexceptions" \
+--with-gmp=/usr/local
+This configuration defines the characteristics that will be used when building
+PPL. It defines the prefix where the build results will be installed, specifies the build
+system and instructs the build to create static libraries, not dynamic link libraries.
+The configuration also tells the build of PPL where the installation of GMP can be
+found.
+In the objdir-ppl-0.12.1 PPL sibling object directory, make PPL with the
+command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-ppl-0.12.1 PPL sibling object directory, install PPL with
+the command:
+make install
+Appendix C: Building and Installing GNU GCC Cross Compilers 357
+C.7 Building ISL
+Building ISL in MinGW/MSYS (and CLooG if necessary) follow the same schema
+as described above for PPL. Separate up-to-date instructions for building ISL and
+CLooG can be found in the Internet.
+C.8 Building the Binary Utilities for the Cross Compiler
+We will now build the binary utilities (binutils) version 2.22 in MinGW/MSYS. The
+binary utilities provide tools needed by the cross compiler such as the assembler,
+the linker, the library archiver and assorted utilities for manipulating binary files in
+ELF binary format.
+In this example, the binary utilities will be specifically built in preparation for
+building GCC version 4.6.2 for the --target=avr-unknown-elf cross target.
+• cd /home/tmp
+• Get the binutils sources and unpack them in /home/tmp.
+• Perform mkdir objdir-binutils-2.22-avr-unknown-elf in order
+to make the binutils sibling directory.
+• cd objdir-binutils-2.22-avr-unknown-elf
+The source tree of the binutils should be in the binutils source directory:
+/home/tmp/binutils-2.22
+We should now be in the binutils sibling object directory:
+/home/tmp/objdir-binutils-2.22-avr-unknown-elf
+In the objdir-binutils-2.22-avr-unknown-elf binutils sibling object directory, configure the binutils with the following command:
+../binutils-2.22/configure \
+--prefix=/usr/local/gcc-4.6.2-avr-unknown-elf \
+--target=avr-unknown-elf --build=i686-pc-mingw32 \
+--disable-__cxa_atexit --disable-nls \
+--disable-threads --disable-shared \
+--enable-static --disable-win32-registry \
+--disable-sjlj-exceptions --with-dwarf2 \
+--with-gmp=/usr/local --with-mpfr=/usr/local \
+--with-mpc=/usr/local --with-ppl=/usr/local
+358 Appendix C: Building and Installing GNU GCC Cross Compilers
+This configuration defines the characteristics that will be used when building
+the binutils. It defines the prefix where the build results will be installed, specifies the build system and instructs the build to create static libraries, not dynamic
+link libraries. For building the binutils, there are additional configuration flags for
+compiler details. The configuration also tells the build of the binutils where the
+installations of GMP, MPFR, MPC and PPL can be found.
+In the objdir-binutils-2.22-avr-unknown-elf binutils sibling object
+directory, make the binutils with the command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-binutils-2.22-avr-unknown-elf binutils sibling object
+directory, install the binutils with the command:
+make install
+C.9 Building the Cross Compiler
+We will now build GCC version 4.6.2 in MinGW/MSYS. GCC will be built for the
+--target=avr-unknown-elf cross target. GCC will be built with the newlib
+library [13].
+• cd /home/tmp
+• Get the GCC sources and unpack them in /home/tmp.
+• Get the newlib sources and unpack them in /home/tmp.
+• Perform the command mkdir objdir-gcc-4.6.2-avr-unknown-elf
+in order to make the GCC sibling directory.
+The source tree of the GCC should be in the GCC source directory:
+/home/tmp/gcc-4.6.2
+After unpacking GCC and newlib, the newlib sources need to be copied to the
+GCC source tree. For newlib version 1.20.0, for example,
+cd /home/tmp/newlib-1.20.0
+cp -r newlib libgloss ../gcc-4.6.2
+Return to the GCC sibling object directory for building GCC with:
+cd /home/tmp/objdir-gcc-4.6.2-avr-unknown-elf
+Appendix C: Building and Installing GNU GCC Cross Compilers 359
+We should now be in the GCC sibling object directory:
+/home/tmp/objdir-gcc-4.6.2-avr-unknown-elf
+In the objdir-gcc-4.6.2-avr-unknown-elf GCC sibling object directory, configure GCC with the following command:
+../gcc-4.6.2/configure \
+--prefix=/usr/local/gcc-4.6.2-avr-unknown-elf \
+--target=avr-unknown-elf --build=i686-pc-mingw32 \
+--enable-languages=c,c++ --with-newlib \
+--disable-__cxa_atexit --disable-nls \
+--disable-threads --disable-shared --enable-static \
+--disable-win32-registry --disable-sjlj-exceptions \
+--with-dwarf2 --with-gmp=/usr/local \
+--with-mpfr=/usr/local --with-mpc=/usr/local \
+--with-ppl=/usr/local
+This configuration defines the characteristics that will be used when building
+GCC. It defines the prefix where the build results will be installed, specifies the build
+system and instructs the build to create static libraries, not dynamic link libraries.
+There are additional configuration flags for compiler details including the languages
+to build (C and C++) and to use newlib. The configuration also tells the build of GCC
+where the installations of GMP, MPFR, MPC and PPL can be found.
+In the objdir-gcc-4.6.2-avr-unknown-elf GCC sibling object directory, make GCC with the command:
+make --jobs=2
+This will take a while. The optional --jobs=2 flag indicates that two processes
+should be used to speed up the build. It is also possible to use more processes.
+In the objdir-gcc-4.6.2-avr-unknown-elf GCC sibling object directory, install GCC with the command:
+make install
+C.10 Using the Cross Compiler
+We will now assume that the work of building the GCC prerequisites and GCC has
+been successfully completed. If this is the case, the GCC build results should be
+located in the installation directory:
+/usr/local/gcc-4.6.2-avr-unknown-elf
+360 Appendix C: Building and Installing GNU GCC Cross Compilers
+Note, however, that the /usr directory in MinGW/MSYS could be an alias for
+a directory such as /msys/1.0.
+We will now investigate the structure of the build results. In particular, two versions of the compiler should have been installed. There should be one version with
+tools having decorated names and a second version with tools having undecorated,
+plain names.
+In /usr/local/gcc-4.6.2-avr-unknown-elf, the installation directory, there should be versions of the tools with decorated names. For example, the
+version of g++ with a decorated name is:
+bin/avr-unknown-elf-g++.exe
+In /usr/local/gcc-4.6.2-avr-unknown-elf, the installation directory, there should also be versions of the tools with undecorated names. For example, the version of g++ with an undecorated name is:
+avr-unknown-elf/bin/g++.exe
+Both the decorated version of the toolchain as well as the undecorated one function equivalently. It is, however, best to use only one of them at one time. Consider
+which version of the toolchain to use for cross development and use it consistently.
+When using GCC, it can be convenient to add the path of the compiler executables to the PATH variable of the shell. In MinGW/MSYS, path information for the
+cross compiler can be added to the PATH variable in the file /etc/profile. In
+other ∗nix-like systems, path information for the cross compiler can added to the
+PATH variable in the file /home/.bashrc.
+Some developers recommend not moving an installation of GCC. It is, however,
+possible to move a fully-built installation of GCC to another location provided the
+entire directory tree of the compiler is moved. In our example, for instance, this
+means moving all files, directories, etc. in gcc-4.6.2-avr-unknown-elf/*
+from their installed location to another place as a cohesive unit.
+A GCC installation that has been built in MinGW/MSYS can also be used outside of the MinGW/MSYS environment, for example, by employing another command line interface. When doing so, it is necessary to include several dynamic link
+libraries from the MinGW/MSYS installation in the path of the compiler’s binaries
+or in the build environment. This technique is used in the reference project of the
+companion code.
+Appendix C: Building and Installing GNU GCC Cross Compilers 361
+References
+1. BUGSENG, Parma Polyhedra Library (PPL) (2012), http://www.bugseng.com/products/ppl
+2. CLooG, Chunky Loop Generator (2015), http://www.cloog.org
+3. Free Software Foundation, GNU Binutils (2011), http://www.gnu.org/software/binutils
+4. Free Software Foundation, GNU Compiler Collection Version 4.6.2 (2012), http://gcc.gnu.org
+5. Free Software Foundation, Prerequisites for GCC (2015), http://gcc.gnu.org/install/prerequisites.
+html
+6. L. Fousse, G. Hanrot, V. Lefèvre, P. Pélissier, P. Zimmermann, MPFR: A Multiple-Precision
+Binary Floating-Point Library with Correct Rounding, ACM Trans. Math. Soft. 33(2), (2007)
+7. GMP, GNU Multiple Precision Arithmetic Library (2012), http://gmplib.org
+8. W. van Hagen, The Definitive Guide to GCC (Apress, Berkeley, 2006)
+9. ISL, Integer Set Library (2015), http://isl.gforge.inria.fr
+10. MinGW, Home of the MinGW and MSYS Projects (2012), http://www.mingw.org
+11. MPC, GNU MPC (2012), http://www.multiprecision.org
+12. MPFR, GNU MPFR Library (2013), http://www.mpfr.org
+13. Red Hat, Newlib (2013), http://sourceware.org/newlib
+Appendix D
+Building a Microcontroller Circuit
+This appendix provides details on assembling the microcontroller circuit depicted in
+Fig. 2.1. Information on the circuit, the schematic and its assembly on a solderless
+prototyping breadboard are included.
+D.1 The Circuit Schematic
+Recall the microcontroller circuit on the prototyping breadboard first presented in
+Sect. 2.1, Fig. 2.1. The corresponding schematic for this circuit is shown in Fig. D.1
+on the following page. This is a simple microcontroller circuit that can be assembled
+with just a handful of components.
+Our microcontroller circuit consists of the following three main circuit groups:
+1. 5 V Regulator
+2. Microcontroller and Peripheries
+3. JTAG Connector
+The 5 V regulator group is shown in the upper right of the schematic. It is responsible for converting an input voltage ranging from about +8 V ... 24 V to the +5 V
+TTL voltage required by the microcontroller. The ideal input voltage range is around
++9 V ... 12 V.
+Moving counterclockwise, down and to the left, we encounter the second circuit
+group, which is the microcontroller and its peripheries. This circuit group contains
+the microcontroller, its crystal quartz oscillator circuit, a reset push-button and the
+LED D1. Note that the LED D1 in our circuit diagram here is the same LED that
+was first presented in the LED program of Chap. 1, see Fig. 1.1.
+The third circuit group located to the right and above the circuit label is the JTAG
+connector. This is a six-pin connection that can interface to a commercially available
+SPITM programmer or JTAG ICE debugger.
+A microcontroller circuit assembled on a breadboard generally does not have the
+robustness necessary for high-volume production. Circuit assembly on a solderless
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+363
+364 Appendix D: Building a Microcontroller Circuit
+C3
+22pF
+22pF
+16
+MHz
+GND
+GND
+GND
+GND
+GND
+GND
+GND
+GND
+GND
+C4
+Q1
+1
+10
++5V
++5V
++5V
++5V
+C6
+68nF
+Vcc 7
+8
+RST
+RST
+XTAL 2
+XTAL 1
+MOSI
+MOSI
+MISO
+MISO
+SCK
+SCK
+9
+17
+18
+19
+IC1
+R1
+750Ω
+15KΩ
+D1
+GREEN
+R3 750Ω
+R2
+INPUT
++9....12V
+SWITCH 1
+D3
+IN 4002
+C5 C1
+68nF 1μF
+C2
+2μF
+IC 2
+LM 7805
+IN OUT
++ D2
+RED
+CON 1
+02 04 06
+01 03 05
+Breadboard
+ATMega® 328P
+ATMega®328P Christopher Kormanyos
+04-Aug-2012
++
+Fig. D.1 The schematic of our target system is shown
+prototyping breadboard does, however, provide adequate quality for microcontroller
+benchmarking and compiler testing.
+The part list for our microcontroller circuit is provided in Table. D.1. All of the
+components needed for our microcontroller circuit should be available at any good
+electronics store.
+D.2 Assembling the Circuit on a Breadboard
+Our microcontroller circuit assembled with discrete components on a solderless prototyping breadboard is shown in Fig. D.2. The three main circuit groups are highlighted in rectangular boxes.
+Circuit assembly uses standard breadboard methods. See, for example, Sects. 3.2–
+3.3 in [2] for additional information on working with a breadboard. An effort should
+be made to keep wire connections as short as possible and flat on the breadboard.
+In general, try prevent wire crossings as far as possible. Optionally, a kit containing
+pre-formed wires, isolated and bent for the breadboard slots, can be conveniently
+used for some connections.
+For other connections, it may be better to make custom-length isolated wires.
+AWG–22 [3] conducting wire cut to length and appropriately bent for the slots
+Appendix D: Building a Microcontroller Circuit 365
+Table D.1 The discrete components in our microcontroller circuit are listed
+Label Type Value Function
+D3 1N4002-type rectifier 100 V Short-circuit protection
+IC2 7805 voltage regulator +5 V Linear voltage regulator in
+TO–220 package [5]
+C1 Electrolytic capacitor 1μF Input stabilization
+C2 Electrolytic capacitor 2 μF +5 V stabilization
+R1, R2 1/ 4 Watt resistor 750  LED current limitation
+D2 LED red 5–10 mA Power indicator
+C5, C6 Ceramic capacitor 68 nF High-frequency filter
+IC1 ATMEL® AVR® ATmega328P [1] – 8–bit microcontroller in
+DIL–28 package [4]
+D1 LED green 5–10 mA User LED on pin 17
+Q1 Quartz 16 MHz Oscillator circuit
+C3, C4 Ceramic capacitor 10 pF Oscillator circuit
+R3 1/ 4 Watt resistor 15 k +5 V pull-up on reset
+SWITCH1 Mini push-button – Manual reset button
+CON1 6-pin 2.54 mm connector – SPITM connector
+is suitable for breadboard connections. AWG–22 wire has a diameter of approximately 0.6 mm. Custom breadboard wires can be isolated with commercially available skinny, round silicon tubes or small heat-shrink tubing.
+Critical circuit components requiring high electromagnetic stability benefit from
+short, soldered connections. In our circuit on the breadboard, for example, the quartz
+periphery and the JTAG SPITM connector have been fitted on secondary snap-on
+boards built with soldered connections.
+Fig. D.2 Our
+microcontroller circuit
+assembled with discrete
+components on a breadboard
+is shown
+366 Appendix D: Building a Microcontroller Circuit
+In addition, overall stability of the board can be improved by keeping capacitors
+physically near the components they are meant to stabilize. For example, C1 and C2
+are placed near the +5 V voltage regulator, C5 is close to the input rectifier and C6
+is tight on the microcontroller VCC and GND pins.
+Assembling a microcontroller circuit on a breadboard requires reliable work. It is
+best to work methodically, properly fitting one circuit group at a time. A volt meter
+can be used to check the proper placement of the components and their electrical
+connections.
+References
+1. ATMEL®, 8-bit ATMEL® Microcontroller with 4/8/16/32K Bytes In-System Programmable
+Flash (ATmega48A, ATmega48PA, ATmega88A, ATmega88PA, ATmega168A, ATmega168PA,
+ATmega328, ATmega328P), Rev. 8271D-AVR-05/11 (ATMEL®, 2011)
+2. M. Schmidt, ARDUINO®: A Quick-Start Guide (Pragmatic Programmers, Raleigh, 2011)
+3. Wikipedia, American wire gauge (2012), http://en.wikipedia.org/wiki/American_wire_gauge
+4. Wikipedia, Dual in-line package (2012), http://en.wikipedia.org/wiki/Dual_in-line_package
+5. Wikipedia, TO-220 (2012), http://en.wikipedia.org/wiki/TO-220
+Glossary
+Bootloader A bootloader is a small program, the job of which is to program
+another application via communication with another part of memory and/or
+another device.
+Build Build is the process of building a software project including compiling
+the sources, linking them, extracting the executable program and optionally programming it into the microcontroller memory.
+Debug Debug means finding and removing software defects caused by errors or
+flaws in coding, design, timing characteristics or any other mistake.
+Flash, flashing Flashing is the act of programming an executable program into
+the FLASH program memory of the microcontroller.
+Flashed Flashed is the state of the FLASH program memory of the microcontroller having undergone flash programming.
+Heap The term heap commonly refers to a pool of computer memory typically
+used for dynamic memory allocation and deallocation.
+Multitasking Multitasking is a programming technique used to distribute the
+work of a computer program among more than one task or process, thereby
+potentially improving program robustness via carefully designed temporal and
+functional distribution.
+Stack A stack is a linear chunk of computer memory usually used for storing local
+variables and preserving register contents within one or more (possibly nested)
+subroutine or interrupt call(s).
+Standard library The standard library refers to the C++ standard library (as
+specified in ISO/IEC 14882:2014), which is an extensive collection of types,
+functions, classes, generic containers and algorithms.
+Startup code The startup code is the part of the program that runs before the
+main() subroutine. The startup code is responsible for initializing RAM and
+static constructors and subsequently calling main().
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+367
+Index
+Symbols
+<algorithm>, 44, 89, 199, 205, 301, 306,
+308
+<algorithm>, 331–334, 341
+<algorithm>, 330
+<array>, 41, 44, 45, 176, 199, 204, 276
+<array>
+partial implementation of, 308
+<array>, 330
+<atomic>, 46, 209
+<chrono>, 49, 167, 209, 299, 312
+<cmath>, 214
+<cmath>, 215, 218
+<condition_variable>, 209
+<cstddef>, 308
+<cstdint>, 34, 35, 38, 39, 41, 44, 46,
+176, 276, 306
+<cstdint>, 22, 24, 27
+partial implementation of, 306
+<cstdint>, 3, 12, 14
+<cstdlib>, 214
+<cstdlib>, 218
+<initializer_list>, 334
+<initializer_list>, 301
+<iostream>, 341
+<iterator>, 301
+<iterator>, 341
+<limits>, 43
+<limits>, 323
+<limits>, 215
+<math.h>, 218
+<memory>, 301
+<memory>, 331
+<mutex>, 209
+<numeric>, 127
+<numeric>, 45
+<numeric>, 331
+<pthread.h>, 210
+<ratio>, 209
+<regex>, 341
+<stdint.h>, 306
+<stdint.h>, 15
+<stdlib.h>, 218
+<string>, 341
+<thread>, 209
+<tuple>, 96
+<tuple>, 338
+<vector>, 89
+<vector>, 330, 332–334
+#define, 133, 135
+__attribute__, 65, 124, 125, 160
+#define, 18
+#include, 5, 6, 12
+Numbers
+1N4002-type rectifier, 365
+7805 voltage regulator, 365
+A
+Abstract class, 61
+Access control, 10
+ADC
+see analog-digital converter, 120
+add() template function, 75
+algorithm (STL) see STL algorithms, 331
+Algorithmic complexity, 108
+linear, 108
+logarithmic, 108
+quadratic, 108
+Allocator
+std::allocator, 189
+and STL containers, 188
+© Springer-Verlag Berlin Heidelberg 2015
+C. Kormanyos, Real-Time C++, DOI 10.1007/978-3-662-47810-3
+369
+370 Index
+custom, 126, 188, 189
+ring_allocator, 190
+Americal wire guage (AWG), 178, 364
+Analog-digital converter (ADC), 120, 268,
+274
+optimizing circuit of, 120
+Apéry’s constant, ζ (3), 217
+Archimedes’ constant, π, 47, 99, 213, 216,
+217, 248, 250
+Architecture (of software), 347
+AUTOSAR architecture, 12
+layered, 347
+MCAL, 12
+Area
+of circle, 213, 248, 322
+of rectangle, 322
+Array, C-style, 11
+and inner product, 95
+and range-based for(:), 338
+and std::array, 43
+Assembly
+dedicated file, 113
+GCC inline syntax, 113
+in startup code, 145
+inline, 112
+Assembly listing, 109
+from objdump, 110
+mangled names in, 111
+auto keyword, 313
+auto keyword, 337
+AUTOSAR, 12
+AWG (American wire gauge), 178, 364
+B
+bash (∗nix shell), 112
+Big-O notation, 108
+Binary literal, 47
+Binary utilities (binutils), 110, 351, 352
+build, 357
+Bit-field, 140
+Bitwise constant, 122
+bool, 36
+Boost, 296
+and C++ standardization, 297
+Boost.Math, 225
+Boost.Multiprecision, 225
+Boost.Regex, 342
+Boost.Thread, 210
+circular_buffer, 297
+noncopyable, 65
+Boot
+microcontroller boot time, 26
+Braced initialization syntax
+see uniform initialization syntax, 11
+Breadboard, 19, 363
+working with, 364
+Built-in types, 6
+and numeric limits, 43, 326
+and std::complex, 225
+and uniform initialization syntax, 320
+as template parameter, 75
+as variadic template parameter, 92
+C99 compatibility, 308
+fixed-point emulation of, 244
+initialization of global, 151
+C
+C, 315
+C99, 15, 116, 218, 308, 315
+embedded extensions, 315
+similar syntax of C and C++, 6
+standard library, 315
+C++
+C++03, 315
+C++11, 297, 315
+C++14, 315
+C++98, 315
+object-oriented programming, 51
+syntax of, 6
+tutorial, 319
+C++ standard library
+see standard library, C++, 5
+C++11, 315
+-std=c++11 GCC flag, 22
+consistency with C99, 214
+constexpr, 231
+thread library, 210
+TR1, 315
+uniform initialization syntax, 11
+variadic template, 91
+C++11
+auto keyword, 337
+evolution from C++03 to C++11, 337
+initializer list, 336
+range-based for(:), 338
+tuple, 338
+type inference, 337
+uniform initialization syntax, 320
+C++14, 315
+-std=c++14 GCC flag, 22
+binary literal, 47
+digit separator, 46
+standard user-defined literals, 49
+variable template, 99
+Index 371
+c++filt program, 112
+C-linkage, 69, 163
+C-style
+arrays, 11, 43
+block comments, 6
+direct memory access, 17
+preprocessor macros, 77
+register access, 133
+static, 14
+structures, 38
+structures with bit-fields, 140
+union, 140
+Capacitor
+ceramic, 365
+electrolytic, 365
+Cartesian space
+R2, 38, 82
+R3, 45
+Cast operators, C++, 319
+const_cast, 320
+dynamic_cast, 320
+reinterpret_cast, 319
+reinterpret_cast, 10, 17
+static_cast, 319
+char, 6
+circular_buffer class, 172, 292
+Class, 6, 38
+base class, 52
+class hierarchy, 52
+class types, 6
+derived class, 52
+template class types, 82
+Class relationships, 62
+has-a, 62
+is-a, 62
+uses-a, 63
+CLooG, 352
+Coding style
+and the STL, 91
+Comment
+block form ( /* ... */ ), 6
+slash-slash form ( // ... ), 6
+source-level, 6
+use sparingly, 114
+Common subexpression elimination, 104
+Companion code
+chapter02_02 sample project, 20
+chapter02_03 sample project, 24
+chapter02_03a sample project, 26,
+182
+chapter09_07 sample project, 178
+Compile-time assert
+see static_assert, 323
+Compile-time constant
+see constant, compile-time, 17
+const_cast, 320
+Constant
+bitwise, 122
+const correctness, 68
+generalized constant expressions, 17, 41
+Constant folding, 18, 31, 69, 129, 135, 136,
+231, 248, 269
+Constant, compile-time, 17, 41
+and metaprogramming, 94
+and shift-and-add, 120
+and user-defined suffixes, 48
+constexpr, 17, 41
+mathematical constants, 216
+register addresses, 134
+static const members, 68
+with std::tuple_size, 98
+constexpr
+superior to #define, 135
+constexpr, 41
+constexpr, 17
+superior to #define, 18
+Constructor, 6
+initialization code in, 7
+initialization list, 7
+private, 284
+protected, 53, 62
+Container
+custom dynamic_array, 301
+STL see STL containers, 327
+CORDIC algorithms, 259
+CPU performance, 106
+8-bit compared with 32-bit, 106
+load monitor, 176
+CRC32 algorithm, 103
+benchmark results space/speed, 104
+benchmark results two CPUs, 107
+CRC32 / MPEG–2, 103
+Cross compiler, 20, 351
+D
+delete keyword, 64
+delete keyword, 284
+delete operator, 126, 185
+Derivative
+central difference rules, 232
+of a function, 232
+derivative() template function, 233
+Destructor, 53
+explicit call, 187
+virtual, 53
+372 Index
+Digit separator, 46
+Digital filter, 263
+cascaded filters, 278
+filter design tool, 274
+FIR, 263, 269
+floating-point, 263
+integer, 266
+order 1, 266
+order 10 high-pass FIR, 279
+order 17 low-pass FIR, 274
+order 5 low-pass FIR, 271
+tap (coefficient), 270
+worked-Out examples, 274
+Digital signal processor (DSP), 109, 263
+DIL–28 package, 365
+Direct memory access, 3, 5, 10, 16, 66, 133,
+164, 320
+Dot-product, 45, 130
+double, 6, 85, 213, 232
+and Gamma function, 220
+and std::complex, 225
+in C++ standard, 213
+in IEEE–754 specification, 214
+precision of, 214
+versus fixed-point, 250
+with digital filter, 264
+Double-precision, 214
+dynamic_cast, 320
+dynamic_array class, 301
+E
+Elementary functions, 100, 218
+floating-point timing, 218
+in <cmath> and <cstdlib>, 218
+ELF binary format, 23, 110, 357
+Euler-Mascheroni constant, γ , 216, 217,
+221
+Exception
+and memory management, 193
+std::bad_alloc, 185
+std::bad_alloc, 126, 195
+std::length_error, 195
+std::out_of_range, 224
+explicit keyword, 55
+extern "C" (C-linkage), 65, 69
+extern "C" (C-linkage), 144, 160, 163
+F
+F, set of floating-point numbers, 215
+factorial meta-structure, 93
+Factory, 91
+factory() variadic template, 92
+filter see digital filter, 263
+Fixed-point, 241
+arithmetic, 241
+efficiency of, 241, 242, 252
+number, 241
+Q-notation for, 242
+transcendental functions, 250
+Fixed-Size integer types, 34
+Fixed-size integer types
+and improving portability, 15
+implementation of, 306
+in <cstdint>, 34
+in<cstdint>, 306
+fixed_point class, 244
+std::numeric_limits for, 260
+synopsis of, 244
+using the, 247
+float, 6, 85, 213, 220, 232
+and Gamma function, 220
+and std::complex, 225
+in C++ standard, 213
+in IEEE–754 specification, 214
+precision of, 214
+versus fixed-point, 250
+with digital filter, 264
+Floating-point
+efficiency aspects of, 219
+elementary function timing, 218
+floating-point arithmetic, 213
+floating-point unit (FPU), 214
+Fortran 77, 225
+and special functions, 225
+FPU (floating-point unit), 214, 241, 265
+Friend (of class), 69
+and class access level, 69
+and data encapsulation, 71
+example of, 69
+G
+Gamma function (x), 100, 219
+float version, 220
+polynomial approximation O(10−8),
+221
+Stirling’s approximation, 100, 224
+Taylor series, 221
+GAS (GNU assembler), 113
+GCC (GNU compiler collection)
+attribute syntax, 161
+building, 351
+building the LED program with, 19
+C++ standards adherence of, 104
+cross compiler, 352
+Index 373
+errors and warnings, 27
+optimization with, 103
+warning options, 28
+GCC prerequisites, 351
+binutils, 351, 352
+CLooG, 352
+GMP, 351
+ISL, 352
+MPC, 351, 352
+MPFR, 351
+PPL, 351
+Generic programming
+and LED toggle mechanism, 87
+and templates, 75, 78
+and variable template, 99
+numerical, 231
+STL as example of, 89
+tuples and metaprogramming, 96
+GMP (GNU multiple-precision library), 351
+building, 353
+H
+Heap, 126, 185
+fragmentation, 186
+Heat-shrink tubing, 365
+HEX-file, 23
+format, 23
+high_resolution_clock
+in std::chrono, 167, 312
+Horner, method of, 216
+I
+IEEE–754 specification, 214, 231
+In-circuit emulator (ICE), 23, 345
+In-system programming (ISP), 23
+In-system programming (ISP), 345
+Include syntax, 6
+Infinity, 214
+Inheritance, 11, 38, 57
+access control of, 11, 58
+private, 58
+Initialization
+and uninitialized objects, 152
+RAM, 145, 146
+singleton instance, 153
+static constructor, 12, 145, 147
+static initialization rules, 151
+Inner product, 45, 94, 130
+inner_product meta-structure, 94
+int, 6
+Integral
+of a function, 236
+recursive trapezoid rule, 236
+Interpolation
+see linear interpolation, 289
+Interrupt, 160
+__timer0_cmp_a_isr, 123
+and C-linkage, 69, 163
+frame, 123, 161
+global disable, 113
+global enable, 113, 160
+programming in C++, 160
+service routine, 124, 160
+syntax for, 161
+unused interrupt handler, 163
+vector table, 162
+ISL
+build, 357
+ISL (integer set library), 352
+Iteration
+in range-based for(:), 338
+Newton, 259
+statement, 6
+with STL iterator, 329
+iterator (STL) see STL iterators, 329
+J
+JTAG
+connector, 363
+debugger, 23
+flash tool, 23
+Jump
+in interrupt vector table, 164
+to main(), 144, 154
+L
+Lambda expression, 89, 149, 200, 234, 277,
+333, 335
+optimization with, 128
+LED, 3, 51
+circuit, 3, 52
+dimming, 52
+LED program, 3
+LED program, build the, 20
+LED program, flash the, 23
+LED program, reset the, 26
+LED program, run the, 26
+on breadboard, 3, 24, 363, 365
+led class, 5, 6
+led_base class, 52
+led_port class, 52, 53
+led_pwm class, 52, 54
+led_ template class, 29
+374 Index
+Linear interpolation, 289
+Linker
+definition file, 149
+definition file, example, 149
+Logarithm of two, log 2, 216, 217
+long, 6
+long double, 85, 213, 232
+and Gamma function, 220
+and std::complex, 225
+in C++ standard, 213
+precision of, 214
+with digital filter, 264
+long double, 213
+Loop unrolling, 93, 104, 129, 130
+metaprogramming, 130
+M
+main(), 5, 15
+and C++ standard, 16
+in startup code, 145
+jump to, 12, 145, 154
+never return to, 154
+typical example of, 155
+unexpected return from, 155
+make_large(). template function, 77
+MAKE_WORD() preprocessor macro, 77
+Map file, 110
+g++ command line for, 110
+mangled names in, 111
+Mathematical constants, 216
+and digit separators, 47
+Apéry’s constant, ζ (3), 217
+Archimedes’ constant, π, 47, 217
+constexpr templates for, 217
+Euler-Mascheroni constant, γ , 217
+logarithm of two, log 2, 217
+natural logarithmic base, e, 100, 217
+Pythagoras’ constant, √2, 217
+Mathematical functions
+absolute value, 218
+and Fortran 77, 225
+Bessel, 225
+elementary functions, 218
+exponential, 218, 250
+Gamma function, (x), 219
+hyperbolic, 218
+logarithmic, 218, 250
+power, 218
+rounding, 218
+sinc function, 215
+special functions, 219
+trigonometric, 218, 250
+MCAL (microcontroller abstraction layer),
+3, 12, 25, 37, 124, 134, 156, 166,
+206, 288, 348
+Member (data member)
+constant data member, 10
+in constructor initialization list, 8, 10
+static const integral, 18, 68
+Member (method/function member), 6
+constant methods, 65
+Member (of class type), 6
+Memory
+customized management, 126
+dynamic allocation, 126, 185
+FLASH, 23
+flashing a program, 20, 23
+handling limitations, 195
+Metaprogramming, 93
+compile-time evaluation, 93
+factorial meta-structure, 93
+inner_product meta-structure, 94
+loop unrolling, 93, 130
+MinGW/MSYS
+building binutils in, 357
+building CLooG in, 357
+building GCC in, 351, 358
+building GMP in, 353
+building ISL in, 357
+building MPC in, 355
+building MPFR in, 354
+building PPL in, 356
+building the LED program in, 19
+PATH variable in, 360
+MKS (meter, kilogram, second), 48
+MPC, 351, 352
+build, 355
+MPFR, 351
+build, 354
+Multitasking, 25, 199
+and system design, 349
+basic, 199
+C++ thread support, 209
+extended, 206
+preemptive, 208, 209
+preemptive, pros and cons, 208
+start in main(), 156, 206
+Multitasking scheduler, 113, 156, 199
+scheduler(), 205
+scheduling algorithm, 199
+start in main(), 156, 206
+task control block, 202
+task list, 204
+task timing, 201
+mutable, 10, 65
+Index 375
+Mutex, 208
+N
+Name mangling, 111
+demangling, 112
+namespace, 5, 13
+anonymous, 5, 14, 37
+program organization with, 37
+std namespace, 13
+NaN (not-a-number), 214, 252
+Native (natural) integer types, 116
+Natural logarithmic base, e, 100, 216, 217
+new operator, 126, 185
+placement, 186, 188
+Newlib, 358
+build GCC with, 358
+copy to GCC source tree, 358
+Newton iteration, 259
+nm (the names program), 112
+Non-Copyable class mechanism, 64
+Non-copyable class mechanism, 170, 284
+noncopyable class, 58, 65, 284
+in Boost, 65
+Nop operation, 113, 163
+nothing structure, 281
+as place-holder, 281
+in fixed_point class, 282
+in triple class, 283
+nullptr, 40
+replaces NULL, 40
+Numeric algorithms (STL)
+see STL numeric, 45
+Numeric limits, 43, 78, 215, 323
+and subnormals, 214
+specialization for fixed_point, 260
+specialization of, 244, 323
+specialization for 32–bit int, 324
+std::numeric_limits synopsis,
+323
+numeric_limits in std
+see numeric limits, 323
+O
+Object file
+absolute, 22, 23
+crt0.o, 22
+led.elf, 22
+led.o, 22
+Object-Oriented programming, 51
+Opcode
+and bit operations, 137
+generated by compiler, 109
+in assembly listings, 109
+jump, 164
+width of for differenct CPUs, 107
+Operating system, 208
+FreeRTOS, 208
+LaBrosse’s, 208
+Optimization
+and tuples, 340
+common subexpression elimination, 104
+compiler settings, 103
+constant folding, 18, 31, 69, 129, 135,
+136, 231, 248, 269
+CRC32 benchmark, 103
+hardware dimensioning, 120
+lambda expressions, 128
+loop unrolling, 93, 104, 129, 130
+metaprogramming, 130
+minimize interrupt frame, 123
+native integer types, 117
+ROM-able objects, 122, 315
+shift-and-add, 119
+space, 103
+space versus speed, 104
+speed, 103
+Oscillator circuit
+capacitor in, 365
+quartz in, 365
+Overload, 322
+function overloading, 322
+math functions in <cmath>, 100, 218
+new delete, 186
+operator overloading, 6
+overloading assignment, 65, 244
+P
+Package
+10-pin 7-segment display, 178
+DIL–28, 365
+TO–220, 365
+point class, 38
+template version, 82
+Polymorphism
+dynamic, 38, 53, 59, 110, 322
+dynamic, example of, 59
+dynamic, overhead of, 60
+static, 75, 86
+static versus dynamic, 88
+static, example of, 88
+Pop opcode, 126
+port, I/O
+driver class, 157
+LED on port, 3, 4, 52
+376 Index
+registers, 133
+toggle for loud error, 163
+POSIX, 210
+regular expression syntax, 341
+threads (pthreads), 210
+Power jack, 26
+PPL, 351
+build, 356
+Priority
+class (of program parts), 348
+of tasks in multitasking, 200, 205
+Pull-up resistor, 365
+Pulse-width modulated signal (PWM), 52,
+167
+driver class, 167
+pure virtual see virtual, 61
+Push opcode, 124, 126
+pwm class, 55
+pwm_type class, 167
+Pythagoras’ constant, √2, 216, 217
+Q
+Q-notation (for fixed-point), 242
+Quadratic equation, 234
+derivative of, 235
+Quadruple-precision, 214
+Quartz, 365
+R
+R, set of real numbers, 214
+R2, two-dimensional Cartesian space, 38,
+82
+R3, three-dimensional Cartesian space, 45
+range-based for (:), 338
+range-based for(:)
+applicable uses of, 338
+readelf program, 110
+reg_access structure, 135, 137
+Register, 133
+access, 133
+access template, 135, 137
+address, 133
+Regular expression, 340
+Boost.Regex, 342
+capture group, 341
+POSIX syntax, 341
+reinterpret_cast, 319
+potential dangers of, 320
+reinterpret_cast
+in the LED program, 10, 17
+Reset button, 26, 365
+Resistor, 4, 121, 178, 365
+ring_allocator class, 192
+ROM-able, 122, 315
+S
+Scope
+and static initialization rules, 151
+delimited with curly braces, 6, 33
+file-level, 14, 146
+file-level via anonymous namespace, 14
+global, 70
+non-subroutine-local, 332
+of for(;;)-loop, 34
+of the C++ language, 345
+Scope resolution operator (::), 9
+and using directive, 14
+with class members, 9
+with namespaces, 14
+Seven-segment display, 157, 178
+Shift-and-add, 119
+CORDIC algorithms, 259
+in digital filters, 269, 273, 274
+replace multiply and divide, 119
+short, 6
+Short-circuit protection, 365
+Sine function
+complex argument, 225
+sin constexpr version, 229
+derivative of, 234
+fixed-point version, 250
+fixed-point version (naive), 249
+float version, 218
+in fixed-point cosine, 256
+in fixed-point tangent, 256
+in sinc function, 216
+in reflection of Gamma, 221
+Single-precision, 214
+Singleton instance, 153, 182
+SPITM , 171
+driver class, 172
+SPITM
+connector, 365
+SPITM
+flash tool, 23
+spi_communication class, 172
+Standard library, C, 315
+Standard library, C++, 5, 15
+algorithms see STL algorithms, 331
+atomic operations, 46
+containers see STL containers, 327
+fixed-size integer types, 34
+iterators see STL iterators, 329
+limits see numeric limits, 43
+Index 377
+namespace std, 13
+numeric see STL numeric, 45
+Standard user-defined literals, 49
+Startup code, 12, 26, 143
+customized, 143
+Static
+constructor initialization, 143, 147
+initialization, 16, 151
+ROM-to-RAM static initialization, 143,
+145
+zero-clear static initialization, 145
+static, 12
+and singleton instance, 153
+and uninitialized objects, 152
+C-style, 14
+constructors, 16
+member function, 31
+non-subroutine-local, 152
+static const member, 18
+static
+non-subroutine-local, 332
+static_assert, 323
+static_cast, 319
+static_assert, 42
+static_assert, 77, 270
+static_cast
+and explicit downcast, 59
+Stirling’s approximation, 100, 224
+STL (standard template library), 89
+efficiency, 91
+portability, 91
+use consistently, 126
+using with microcontrollers, 89, 91
+STL algorithms, 44, 89, 331
+and lambda expressions, 89
+and STL containers, 329
+categories of, 331
+minimax, 44, 306, 310
+std::all_of(), 331
+std::all_of(), 44
+std::copy(), 44
+std::count(), 331
+std::fill(), 44
+std::for_each(), 331–333
+std::for_each(), 44, 89, 128, 148,
+199, 276, 299
+std::lower_bound(), 291
+std::search(), 331
+STL containers, 43, 89, 327, 338
+std::array, 42, 43, 45, 95, 122, 176,
+204, 264, 265, 292, 299, 308
+std::array, 321, 327, 337
+std::basic_string, 327
+std::deque, 327
+std::forward_list, 327
+std::initializer_list, 336
+std::list, 327
+std::string, 49, 76, 122
+std::string, 327, 340, 341
+std::vector, 89, 95, 96, 172, 188,
+189, 299
+std::vector, 321, 327, 328, 332
+std::wstring, 327
+STL iterators, 43, 89, 291, 306, 329
+categories of, 330
+constant, 330
+in dynamic_array class, 301
+in task-list priority, 205
+non-constant, 330
+range in sequence, 129, 330
+std::reverse_iterator, 149
+STL numeric, 45
+std::accumulate(), 45
+std::inner_product(), 45
+Structure, 6
+bit-field, 140
+bit-mapped, 140
+bit-mapped, non-portable, 142
+C-style, 140
+data structure, 11
+difference between classes/structures,
+11
+Subnormal numbers, 214, 252
+infinity, 214, 252
+NaN, 214, 252
+Suffix
+user-defined suffixes, 48
+System-tick, 164
+system_tick variable, 123, 164
+T
+task_control_block class, 202
+task_list (of task control blocks), 204
+Template, 39, 75
+and scalability, 39, 77
+and static polymorphism, 86
+and the STL, 89
+class member functions, 79
+class types, 82
+default parameters, 83
+functions, 75
+metaprogramming, 93
+parameter, 75
+scalability, 129
+specialization, 85
+378 Index
+specialization, partial, 86
+variable template, 99
+variadic, 91
+Template parameter
+see template, parameter, 75
+tgamma()
+float implementation, 223
+in C++ standard, 220
+numerical results, 224
+Thread
+Boost.Thread, 210
+C++ thread support, 209
+POSIX threads (<pthread.h>), 210
+TO–220 package, 365
+Tuple, 337, 338
+and generic metaprogramming, 96
+std::get() facility, 97
+std::get() facility, 340
+std::make_tuple facility, 339
+std::tuple_element facility, 340
+std::tuple_size facility, 340
+std::tuple_size facility, 98
+things tuple, 96
+Type inference see auto keyword, 337
+typedef, 10
+in the LED program, 3
+simplify code with, 114
+U
+Underscore
+in GCC attribute syntax, 161
+Uniform initialization syntax, 11, 320
+and aggregate types, 320
+and built-in types, 320
+and std::initializer_list, 89
+and STL containers, 321
+in constructor initialization list, 321
+Union, 6
+C-style, 140
+with bit-mapped structure, 140
+User-Defined literals, 48
+User-defined literals, 210
+using directive, 14
+V
+Variable
+local variables, 33
+variable template, 99
+Variable template, 99
+and generic programming, 99
+Variadic template, 91
+and operator..., 92
+example of, 92
+parameter pack, 92
+Virtual
+pure virtual, abstract, 61
+virtual
+destructor, 53
+member function, 53
+override, 53
+using the virtual keyword, 54
+Virtual function mechanism, 53, 322
+and dynamic polymorphism, 53
+overhead of, 60
+unavailable in the base class, 71
+Volt meter, 366
+Voltage divider, 120
