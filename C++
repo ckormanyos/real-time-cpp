@@ -1,0 +1,312 @@
+Real-time meets the Standard Template Library
+Any C++ developer who has progressed beyond “cout << "hello world" << ebd1l ” has encountered the standard template Library, or STL.
+
+The Standard Template Library, exceptions, templates, interfaces, and other features of the language are very important to C++ developers, but can easily be misused in ways that are not real-time- friendly, and have side effects that might not be obvious to real-time developers thinking of moving from C to C++.
+
+As you know, the STL is a collection of C++ data structures and algorithms that are part of all C++ implementations.  As you might expect for any general-purpose library, it encompasses a wide range of functionality, and has various tradeoffs when used in real-time systems, many but not all of which are documented by the specification, reference material such as Stroustrup’s The C++ Programming Language , and on the web (i.e. the STL references I refer to in this document, courtesy SGI and others).
+
+std::vector
+A typical discussion of the STL starts with the vector class, and so shall ours.  vector is often used as a starting point because it is one of the simplest STL classes, whose functionality can be summarized fairly completely as “a dynamic resizing array”.  
+
+This simplicity also helps make it a very efficient container, which is one reason that it might catch the eye of a real-time developer. The main reason it should be prominent in the real-time developer’s repertoire, however, is a feature unique to vector among STL classes:  specified memory management.
+
+Unlike other STL containers, vector has a method, reserve, to manually allocate memory, and an associated method, capacity, to retrieve the amount of memory currently allocated (which may or, more likely, may not match the size of the vector).  This allows you, as a real-time developer, to explicitly follow the important real-time design practice of allocating all memory “up front”, before it is needed, and allows you to limit your use of the vector’s dynamic resizing functionality
+to non-time-critical threads.
+
+This, in turn, allows your time-critical code to take advantage of the vector’s efficient member access functionality, without worrying about the vector using the memory manager behind the scenes.  Avoiding the memory manager in real-time code is obviously desirable, as this is typically a shared resource with associated priority inversion and non-determinism concerns.
+
+A noteworthy example of where STL fails to provide this memory management functionality is deque.  This class adds constant-time insertion/removal from the front of the container, and is therefore often appropriate for representing queues and FIFOs – a particularly useful abstraction in real-time and embedded software, as these concepts map well to hardware behaviors.
+
+However, deque is frustrating because unlike vector (but like most STL types) it does not offer a reserve operation to manually request memory. This unfortunate omission makes this seemingly useful container inappropriate in real-time software without special care.
+
+During the discussion and illustration of reserve above, you may have observed that there is no unreserve operation.  In fact, there is no vector API specifically provided to deallocate unused memory reserved in a vector.  In The C++ Programming Language , section 16.3.8, Stroustrup describes the mechanism for this as a “small trick”:
+
+  vector tmp = v; // copy of v with default capacity
+  v.swap(tmp); // now v has the default capacity
+
+Note that vector::clear is specified to be equivalent of vector::erase(begin(), end()) , which does not free memory.  Some non-compliant implementations of clear simply do a swap with an empty vector as an optimization, which does free memory.
+
+One important caveat with the use of vector in real-time systems is the standard library’s special handling of vectors of the C++ Boolean type, that is, vector .  Unlike the above illustration, a vector of bool is stored bit-packed, an optimization to save memory since an entire byte or word is not needed to store a Boolean value.
+
+This is of interest to real-time developers because we deal with bits often (when talking to hardware) and memory is at a premium (so the space savings of bit packing is attractive).  As you can see, however, you will quickly run into issues with this specialized behavior.  
+
+For example, code that works fine on other vectors will not work (may not compile, may crash, etc.) with vectors of bools, because you cannot get an ordinary reference to a bool that is contained in a vector – you need to use the contained proxy class vector<bool>::reference. More subtly, much of the efficiency and simplicity that are so important to the usefulness of vector are lost in this specialization, resulting in unexpected performance penalties.
+
+Note that the term “specialized” above has specific meaning in C++ template code: it means someone (in this case, the library itself) has explicitly implemented a version of the template for the given type, overriding the normal template behavior for that type.  The past and future of this particular specialization are discussed widely on the web.
+
+The bottom line is that it was introduced as much to be an example of certain language features as to solve actual problems; it doesn’t cleanly solve the problems it was intended to solve; and the standards committee has been trying for years now to find a good way to undo this mistake.  The easiest  rule is to simply avoid it; the STL also defines a bitset class which is more appropriate in most use cases.
+
+std::list
+We’ll continue with the conventional flow of STL conversation and move on to the linked list type, list.  This is the STL doubly-linked list type, and it provides part of the key functionality you expect from such a data structure: chiefly, inserting/removing elements from the list does not invalidate iterators to elements other than those directly affected by the operation at hand. 
+
+There is another significant part of what real-time developers need from this container that does not meet expectations, however: each insertion/removal operation using the STL standard insert and erase methods may access the memory manager.  This makes these operations, which are specified as “amortized constant time”, non-deterministic.
+
+The first and simplest way to work around this memory access is to use the list::splice method. Splicing lists allows you to move elements or sections of a list to another list, usually in constant time, without memory management.  This method allows real-time threads to manage a list deterministically, leaving any non-deterministic initialization or cleanup to non-time-critical threads. For example, the real-time thread might process a list element and then splice it out of the “active” list and into a “completed” list, and a housekeeping thread would then be responsible for taking care of the “completed” items, including freeing the list elements.
+
+Another solution is to move away from the basic STL list and use an intrusive list implementation that avoids hidden memory management in the list class entirely.  While STL lists allow the use of a custom allocator that could also give the developer better control over allocations, as we shall see below writing a custom STL allocator is sufficiently complex as to be unreasonable for most situations.  
+
+By contrast, an intrusive implementation such as Boost.Intrusive works by including the necessary list management overhead directly in the contained elements, making memory management explicit without the hassle of a custom allocator.  
+
+Conveniently, intrusive containers can largely comply with the STL interface for the equivalent types.  There are a few notable exceptions, such as limitations on having a node in multiple intrusive containers at once, which mean the STL containers are preferred where possible; if an intrusive container is appropriate, its documentation will generally spell out any differences from the STL interface.
+
+When you put an element of type T into an STL container like a list, you get the behavior shown in the Figure below:
+
+
+
+If you don’t want the data to be copied (for example, because it is non-copyable, or a polymorphic type, or inefficient to copy), you’ll end up putting a pointer to your data into the container shown in the f igure below:
+
+
+
+In this case there is still a memory allocation when you use the STL container, because the pointer itself must be copied into the container.  An intrusive implementation avoids this by tracking the “container node” data, such as a list’s next and previous pointers, inside the node type itself as shown in the f igure below:
+
+
+
+Of course, the drawback is that the container node data “intrudes” into your element type. Intrusive containers allow you to work around this by providing wrappers or base classes for the node data as shown in the figure below:
+
+
+
+Even so, there are important limitations of this approach, chiefly, that you are now responsible for synchronizing the lifetime of the data node with its use in the container.  Overall, intrusive container types are an important part of the real-time C++ developer’s toolbox, but are not necessarily appropriate in all situations.
+
+As a real-time developer you may also want to consider adding slist to your toolbox.  This is the STL singly-linked list type, and it can be useful in performance sensitive applications where bidirectional iteration of the list is not needed. A node in a singly-linked list is smaller in  memory, and can be updated with fewer operations, than a node in a doubly-linked list like list .
+
+On the other hand, while slist does provide all the usual operators for STL containers such as insert and erase, these methods must by STL convention affect the element in front of the iterator passed to the method.  
+
+Clearly, this involves a pathologically slow list iteration, so slist offers new member functions insert_after and erase_after , which can run in constant time (instead of having to iterate the list to find the element before the specified iterator, it operates on elements immediately after the iterator, which are easy to find).
+
+Another implication of the lack of a reverse iterator in slist is that splice is no longer constant time, and in fact may be very slow like insert and erase, making this useful list method inappropriate for slist .  Use splice_after , an slist-friendly equivalent, instead.
+
+Dealing with associative containers
+The STL provides a very attractive library of associative containers which provide the ability to efficiently look up a particular element, either by using the element itself as the key (set) or by using an arbitrarily-typed key paired with each value (map).  Both of these associative container types have variants that allow multiple elements of the same key (i.e. multiset), and variants that look up keys in a hash table instead of the default tree (i.e. hash_map) to provide faster lookups at the cost of being unsorted (and, therefore, inappropriate for use in STL algorithms such as set_difference).
+
+All this is a long-winded way to say that the STL associative containers provide a lot of really powerful functionality in a fairly simple interface which is familiar to anyone who uses vector and list.
+
+At this point, you are no doubt recalling the quotes from the beginning of the paper, about C++’s tendency to abstract complex functionality and the resulting non-real-time-friendly hiding of memory allocations and code bloat.  The associative containers are where we really start to feel this pain.  The simplest example of this, which might really catch a C developer off guard, is the following snippet:
+
+  void set_value(map& m, int key)
+  {
+    m[key] = “value”; // allocates memory
+  }
+
+That is, what appears to be a simple assignment with operator[] will allocate memory (unless m already contains key), a classic example of C++ being a “language that likes to hide things like memory allocations behind your back ” just as Torvalds claimed.  
+
+This situation is even worse for real-time systems with these containers, because the allocations and associated deallocations are of unpredictable (but probably small) size, and are allowed by spec to happen at unpredictable times.  This leads not only to non-determinism, priority inversion, and all the issues you immediately think of when considering memory management on real-time systems, but also to unusually severe memory fragmentation and cache locality problems.
+
+The above example illustrates another domain where the associative containers start to cause unexpected problems: code size.  In real-time and embedded systems, code size hits the bottom line fairly quickly, as it affects hardware requirements like disk footprint, memory usage, boot time, and CPU specs like cache size.
+
+We’ll discuss this in greater detail below since this problem can affect C++ code for various reasons and there are tools to help diagnose and fix this problem, but map provides a good opportunity to introduce the issues.
+
+Consider the snippet above, the one-line function set_value .  Compiling this one line function with the VxWorks 6.3 version of g++ results in a 55,440-byte binary without debugging symbols (which, it should be noted, requires some #includ e and using directives that are not shown).
+
+By contrast, a similar C function that uses key to index m as a plain array of char* ’s compiles to 828 bytes (not exactly a fair comparison when it comes to functionality, of course, but the magnitude of the difference is illustrative).  There are various reasons for this discussed later, but one big part of it is all the “magic” hidden in the STL libraries.  To whet your appetite, consider this excerpt from one tool we can use to investigate such problems, which reports the sizes of symbols in a binary:
+
+0000035c W std::_Tree<…>:: Buynode(…)
+000003a4 W std::_Tree<…>::insert(…)
+000004b0 W std::string::_Copy(…) 00000718 W std::_Tree<…>::insert(…)
+00000a74 W std::_Tree<…>::_Insert(…)
+
+The first column is the size of the each function.  These are just the 5 largest functions (the largest is 2,676 bytes, decimal) out of the 101 symbols generated by that simple code snippet; again by contrast, the binary output from the similar C code generates just a single function, set_value itself, with 64 bytes of code.  
+
+Although the “bloat” is obvious in this trivial example, it’s important to be aware of tools you can use to track down these issues – even here, set_value itself in the C++ code is 112 bytes, not really much more code than the C version, and only 1 of the 5 largest symbols implement a type we explicitly used in the code (string ), which may give you an initial idea of how difficult it can be to find and fix excessive code size issues caused by misuse of libraries like the STL.
+
+A final concern with map relative to our problem domain is that it can be difficult to use in an exception-safe way.  The reason for this is that map insertion is usually done with the convenient operator[] , which has two effects: creating the new key/value pair in the map, and assigning the value to it. Care must be taken to handle failures in either step without causing problems for the other step.
+
+Some of these issues are inherent to the power of the associative containers, and will affect any code that implements the hash table or red-black tree data structures that form the foundation of the STL containers. Put another way: if you need this functionality, you’re going to have a lot of code to implement it.  
+
+STL is, all things considered, a fairly efficient implementation of the functionality provided, and I wouldn’t generally recommend attempting to implement it yourself. That said, there are tools you can apply to mitigate the drawbacks of these classes, either by careful use of the types provided or by getting STL-like functionality from another implementation that solves a specific use case.
+
+One way to attack these problems is with an intrusive container. Boost.Intrusive implements some of the associative containers, and my colleague Irwan Djajadi implemented an STL-like set of intrusive containers (“ITL”), including an intrusive map implementation which we use to control the memory allocations associated with a map.
+
+An intrusive map is more complicated than an intrusive list, because internally it uses a red-black  tree, so every node has a color and three pointers (parent, left child, and right child). In addition, the container node for the intrusive map includes the key used to reference the data.  (Why?  The point of having a map is to associate a key with a piece of data, but the point of the intrusive container is to avoid allocating memory.  Thus, the implementation must copy the key into the container node embedded in your data.)
+
+One important note here is that if the type of the key you use is complex data structure that allocates memory during its copy operation, inserting into the intrusive map will allocate memory during the key copy operation after all, so this type of key must be avoided.
+
+The discussion of intrusive lists above included a general illustration of non-intrusive containers which also applies to the associative containers. By comparison, the following illustration shows an intrusive map with several nodes, where each node already contains all the data needed to be used in the map, even when it is not present in the map:
+
+ 
+This intrusive map type addresses the memory allocation concerns discussed above such as memory manager contention, fragmentation, and hidden allocations. A custom map implementation like this may also address some of the code size issues, since it may be permissible to leave some of the STL functionality unimplemented, though our intrusive map class is fairly complete so we would not expect much improvement in this area.  
+
+Additional benefits include the fact that insertion can now provide a no-throw guarantee, and dramatically improved performance in applications that allow this type of map as shown in the f igure below:
+
+
+
+As with an intrusive list class, there are limits to when you can and should use intrusive associative containers.  If your elements need to exist in many containers at once, the “intruding” data for each container will start to be problematic.  You need to synchronize the lifetime of the elements with their participation in the container. And it’s also worth noting that some containers (like a vector) have requirements that are incompatible with an intrusive implementation.
+
+We discussed above that careful use of the existing STL associative containers can also be a viable solution for some of the drawbacks.  For example, let’s take a closer look at the problems that might arise due to map’s convenient assignment operation, which actually does two separate operations (map allocation and value copy) in one line:
+
+  my_map[key] = new X;
+
+This, or any other map insertion with operator[] whose right-hand-side can throw, can leave the map in a state where the new key/value was created but never assigned to.  The compiler is free to evaluate the left-hand-side first, creating the new object in the map, before encountering the exception. You can try to get around this with a smart pointer, but you still must be careful. For example, you might try:
+
+  std::auto_ptr value(new X);
+  my_map[key] = value.release();
+
+This doesn’t solve the problem, because the compiler is also free to evaluate the sides of the assignment in the other order, which would result in the smart pointer losing control of the new object before it is successfully copied into the map. If the map’s operator[] then throws (due to out-of-memory conditions), the new object is leaked.  The safest solution is to use that same smart pointer, but release only after the assignment succeeds:
+
+  my_map[key] = value.get();
+  value.release();
+
+Similar logic is appropriate in various other STL container operations where both an allocation and an assignment happen “at once” in the typical implementation. For example, uses of vector::push_back may benefit from this type of careful coding.
+
+Giving real-tine C++ a Boost
+I’ve already alluded more than once to Boost,a popular source of free, peer-reviewed C++ libraries. Boost librariesare generally licensed for use in both open- and closed-sourceprojects and are designed to work well with the STL.
+
+For many purposes, Boost classes are de facto standards – in fact,several Boost libraries have already been adopted into the C++standard, and many more are being considered for future adoption. Formany C++ developers, Boost is as much a part of the C++ environment ascore language features like the STL itself, so it’s important forreal-time developers to also consider which Boost classes might beappropriate for real-time applications.
+
+Like the STL, Boost is a wide-ranging collection of tools, andreviewing them all is far beyond the scope of this paper.  There arelibraries that work at the preprocessor level, providing usefulfunctionality ranging from static assertions to entire meta-programminglanguages; there are libraries that provide OS abstractions such asmultithreading, date/time, and file system support (which may requiresome porting effort to adapt to real-time systems); there areheavyweight “toolbox” libraries that implement parsers and the like;and there are STL-like data structures and algorithms.  The main areaof interest for this paper is the last category.
+
+The shared_ptr class, in Boost’s most commonly used library, Smart Pointers, offers a simple way to safely manage the lifetime of dynamically allocated objects.  Unlike C++’s native auto_ptr type, a shared_ptr can be stored in a container.  This functionality is so useful that Boost recommends to use the syntax “shared_ptr p(new T); ” whenever using new (instead of “T* p = new T;” ). 
+
+There are notable concerns with using shared_ptr ’s in real-time systems, however: it has those dreaded hidden memory allocations, and it may (does, on RTOS’s) use a mutex to ensure atomicity of its reference count.
+
+Fortunately, you can use simple techniques to prevent theseproblems.  These techniques will become familiar to you as you get morecomfortable using C++ in real-time systems, because they also work invarious other situations when using the STL and other languagefeatures. 
+
+The first technique is the use of swap . A swap method is provided on Boost and STL containers to switch thecontents of two containers, is always no-throw, and is typically(though not always) very efficient.  You can use shared_ptr::swap in your real-time code and implement a non-real-time “garbage can” (or recycling bin, if you prefer), a separate shared_ptr object that takes the swapped content and deletes it at the next non-time-critical opportunity.
+
+The second technique is using references, including references intocontainers, to avoid unnecessary copies.  You’ve probably alreadybecome familiar with passing by reference even in C, where it’s alwaysdone using a pointer, but C++’s reference syntax (i.e., T& )offers additional power and convenience; in this case, by allowing youto safely work on elements in a container directly, without incurring ashared_ptr copy (and thus avoiding the mutex).  Similarly, it is often appropriate to pass a shared_ptr by const& , for the same reason.
+
+Another option from the Boost shared pointer library, intrusive_ptr,can help address the shared_ptr concerns, at the cost of somedeveloper convenience.  In this case, the developer using the classspecifies the reference counting mechanism, which allows you toimplement a strategy appropriate for real-time systems.
+
+Other STL-like classes offered by Boost provide containers that can be very useful in real-time applications:
+
+Boost.Array: a very simple C array wrapper, providing the STL-like methods and memory management of a vector without the overhead of supporting dynamic resizing.
+Boost Pool: includes an STL Standard Allocator (more on these shortly) that uses a pooled allocation mechanism, very useful for optimizing the case of many small allocations.  This type of custom allocator could solve a variety of ills related to dynamic resizing STL containers, but beware: the pooled allocator itself will do hidden memory allocations to resize the pool if needed, and preventing this requires overriding the lower-level allocator used by the pool to cause dynamic allocations to fail. Since the pool is global, causing dynamic allocation to fail would limit it to being used by one container (the first one that uses it), rendering it far less useful.
+Boost.Pointer Container: provides an STL-like container to manage heap-allocated (i.e., pointer) objects. Avoids the overhead of object copies or shared_ptr while still managing the lifetime of the contained objects in an exception-safe way.
+
+
+STL allocators for memory management
+Earlier in the paper, Ialluded to the possibility of using the STL’s custom allocator featureto address the memory management concerns associated with some of thecontainers.  
+
+Developers who have done some basic digging into the details of theSTL are no doubt aware of an optional template parameter to most STLtypes, which specifies a class to use for memory allocation whenconstructing objects of the templatized type.  For example, if std::vector is a vector of integers with the default allocator, std::vector , MyAllocator> is a vector of integers which uses MyAllocator to manage its memory.
+
+By description, this feature sounds extremely appealing forreal-time applications. For example, it could be used to cause dynamicresizing of a map to fail long before the system runs out of memory, or store a vector in shared memory, or retrieve the memory needed for list elements from a pre-allocated pool.  And indeed, a custom allocatorcan do this (in fact, a pooled allocator is one of the most commonlyattempted uses of the feature; recall the Boost Pool Library describedabove).
+
+However, making a general-purpose allocator that handles all thebehaviors for allocating and freeing memory needed by STL containersrequires care, skill, and extreme patience.  The details are beyondthe scope of this paper, but you can get the general idea – at least,the general idea of the complexity – from web pages such as at  CodeGuru .   
+
+Real-time meets exceptions
+Although this paper uses thesimilarities between kernel mode development and real-time developmentto highlight various points about the use of C++ in real-time systems,one area where real-time systems veer off the path of desktop kernelsentirely is exception support.  
+
+C++ is disallowed generally in Linux kernels; but even in Windows,where C++ is mostly well-supported, only a non-C++ variant ofexceptions (structured exception handling) is allowed. Real-timeoperating systems, on the other hand, do generally support C++exceptions. On a desktop OS, most of the development is done in usermode where exceptions are well-supported, so the vendors have littlemotivation to support exceptions in the kernel, especially consideringthe additional risks to the stability of their OS.  
+
+However, on an RTOS, all developers are in the same “kernel” boat,so the vendors must support exceptions, as there is no separate modethat supports C++ development for those who demand it.
+
+The risks that the desktop kernel mode decision-makers have optedto avoid are legitimate and do apply to real-time systems. Exceptions can put large objects on the stack, a critical and oftentightly limited resource. Misuse of exceptions can cause performanceproblems and provide a perhaps overly convenient way to crash thesystem if not caught.  And, to echo a refrain seen elsewhere in thispaper, they can cause code bloat.
+
+On the other hand, exceptions provide a powerful mechanism toensure that errors are handled consistently.  Much of the “bloat” thatmight be observed with exceptions can be traded off against theknowledge that it provides error-checking code that you probablyshould have had all along, but was easy to overlook without exceptionsin the picture.  
+
+Pervasive use of exception-based code and related idioms makes iteasier to write high-quality transactional code that can offer a strong contractwith users or other components, ensuring that operations eithersucceed, or fail in such a way that your component is back in the stateit was before the transaction was attempted – a very usefulguarantee in embedded systems that must run for extended periods withlittle opportunity for user interaction to handle problems.
+
+It makes sense to be cautious about using a relativelyresource-hungry feature of the language like exceptions inresource-limited real-time systems. Some real-time platforms, such asVxWorks,  are particularly susceptible to problems related toexception handling, and exceptions should be avoided in your “innerloop” and other performance-critical code where the overhead ofexceptions is most noticeable.  The case that is especiallyproblematic on VxWorks is the (normally recommended) combination ofexceptions with stack objects used for RIIA resource management.Consider:
+
+  #include
+
+
+  class Automatic
+  {
+   public:
+     Automatic();
+     virtual ~Automatic();
+ };
+
+
+  void justAuto()
+ {
+    Automatic automatic;
+ }
+
+
+  void justThrow()
+ {
+   throw std::exception();
+ }
+
+
+  void butBothMakesLargeCode()
+ {
+   Automatic automatic;
+    throw std::exception();
+  }
+
+This snippet shows three very simple functions.  If I told you thatthe function that just has an automatic object in it compiles to about20 lines of assembly, and the function that just throws an exceptioncompiles to about 20 lines of assembly (both true), you would probablyexpect that the function which does both compiles to about 40 lines ofassembly.  And you would be right, on some platforms.  
+
+But compilers are free to implement exception handling in a varietyof ways – in VxWorks’ case, choosing a behavior of GCC (with dynamicsetjmp-longjmp code, as opposed to static unwinding tables) that addssetup and teardown code.  This adds overhead even when an exceptionis not thrown that balloons those 40 lines of assembly to 70. As youmight imagine, this significantly affects performance of small functionsthat use exceptions and automatic objects, making exceptionsinappropriate for such functions on this popular real-time platform.
+
+Another exception-related feature to be wary of is the throw specifier .  This is an optional keyword provided with a function declaration that describes what exceptions that function may throw.
+
+It looks like a useful tool that might allow you to take advantageof constraints on which functions can throw which exceptions andsimplify your code, but the implementation is necessarily limited tothe point where most commentators recommend against the use of thefeature entirely.  
+
+The root problem is that C++ has to support existing code that doesnot use any throw specifier, and which might throw any exception, ornone at all – the lack of a specifier provides no information andmust be interpreted by the compiler as “can throw anything”. 
+
+This bubbles up into any code that calls into that code, and soon, such that enforcing throw specifiers at compile time isimpossible.  You may see where this is going: throw specifiers are infact enforced at run time, with additional (hidden) code added by thecompiler to turn exceptions which violate throw specifiers into callsinto the std::unexpected handler routine – a routine which is providedno context for what triggered it and is therefore nearly useless.  
+
+The bottom line: you get larger code size and still no useful wayto prevent or handle unexpected exceptions. Throw specifiers should not be used.  The possible (though unlikely) exception is throw() ,which means “throws nothing” and can be used by the compiler to makesome slight optimizations when calling such functions, but even this isprobably not generally useful.  
+
+A better option, considering that the throw specifier is largely for documentation, is to use a macro such as NOTHROW ,defined to nothing, for this purpose.  This also makes it easy toexperiment with enabling the throw specifier to see if your compileractually gives you a worthwhile benefit from it (if nothing else, youmight try enabling it in debug builds to let certain compilers checkyour virtual function hierarchies for consistency in thisdocumentation).
+
+Real time meets templates
+During the discussion of Boostand the STL, we mentioned that both of these libraries make extensiveuse of the C++ template feature and alluded to more general problemswith code size caused by templates.
+
+First of all, the good side: templates are a useful tool forreal-time systems despite their drawbacks, because they provide anative mechanism to implement compile-time polymorphism, allowing codewhich would otherwise have to make a run-time decision to avoid that performance overhead.  
+
+This, along with the extensive use of templates in critical librarieslike the STL, means that we need this weapon in our arsenal whenusing C++ on real-time platforms.  The other good news is that therehas been a lot of improvement over the last few years in how C++compilers handle templates.
+
+A simple example of what a template user should be aware of is toimagine code that instantiates the “same” class several times – wherethe “same” class is actually a template class with different templateparameters. For example, consider a function which uses STL vectors. Let’s set the “base cost” of a vector as the cost of oneinstantiation, i.e., a single std::vector .  
+
+One compiler (g++ 3.4.4) creates a 9,464-byte code block in thiscase.  The incremental cost of more vectors of integer is small – thesame code block when using three such vectors is only 416 byteslarger.  But if the vector is instantiated with a different type, sothat your three vectors are, say, std::vector, std::vector, and std::vector , the size delta is 4,000 bytes.
+
+This code size change is completely invisible in your code that usesthe vector class, so it’s something you need to explicitly thinkabout when using template classes generally.
+
+If you are writing a template class, a common technique to reduceredundant code is to have your template type wrap a non-template classthat does the bulk of the implementation (and thus has the bulk of thecode).  
+
+Some of your template class’s methods are likely to be identicalbetween different instantiations, and a smart linker will collapsethem, and the few pieces of instance- specific code should besignificantly smaller in size than a separate instance of the entirefunctionality, while still providing all the instance-specific behavior(such as type safety) that you require from your template interface. A simple example is shown below:
+
+  struct tGetterBase
+ {
+   tGetterBase(void *val) : m_val(val) {}
+    void *get() const { return m_val; }
+ private:
+   void *m_val;
+ };
+
+
+  template
+ struct tGetter : private tGetterBase
+ {
+   tGetter(T *val) : tGetterBase(val) {}
+    T* get() const
+   {
+     return static_cast(tGetterBase::get());
+   }
+ };
+
+Most STL implementations use this technique on pointer types and container nodes.
+
+The GNU toolchain includes several tools I find very useful fortracking down issues related to code size, especially when usingcomplex libraries like the STL, or large static libraries, where thecauses of increased code size may be essentially invisible in theclient code. In particular, I commend to you the following: 
+
+ld –cref (cross-reference table); 
+nm -C —size-sort (C++ symbol demangling and sorting by function size); and
+size (break down binary size by segment)
+The cross-reference table allows you to trace the dependencies ofyour functions and determine, for example, why a given object ispulled in from a static library.  This is important for doing code sizeanalysis since GCC includes the entire object in that case, even ifonly one function is used.
+
+The ability to sort functions by size allows you to quickly deducewhich functions are contributing excessively to your code size.  Thisis particularly useful in C++ code, especially in combination withautomatic C++ demangling, because so often, the largest functions arethe result of a hidden use of templates and not readily apparent whenreviewing the code itself.  
+
+The size utility is a higher-level quick view of your binary’ssegments, and can help determine whether the actual code, or otherdata in your binary, is responsible for code size problems.
+
+Real time meets inheritance
+One of the main features thatdraws developers to C++ is the ease of use it provides for object-oriented behavior like inheritance and polymorphism.   These populardesign techniques are quite painful to implement in C, so applicationswhere C++ might otherwise be avoided may use C++ simply because ofits native support for class hierarchies.
+
+Real-time developers (all C++ developers, actually, but especiallythose on resource-constrained, timing-sensitive platforms) should beaware, however, that behavior like virtual function calls implieshidden performance penalties beyond what you might have heard in anintroductory C++ class.  
+
+Specifically, overuse of inheritance – and thus, unnecessary virtualfunctions – causes your code’s memory usage to bounce back and forthbetween the location in memory where your object was instantiated,and the likely quite different location where the virtual functionlookup table for each class is stored.  
+
+The problem is that C++ stores the virtual method lookup table, or vtable,per class, not per object. As your code flow encounters an objectthat uses inheritance, it must access the vtable to look up thevirtual function, then access the object again for its per- instancedata.  
+
+For your real-time system, this can be disastrous, as your cachemay not be able to keep both the instructions (from one part ofmemory), data (from another part of memory), and vtable (from yet adifferent part of memory) in cache together – clearly making this muchmore expensive than the “just another pointer dereference!” mostpeople weigh when considering a vtable lookup.  
+
+The simple solution is simply to use virtual interfaces only whereyou really need an interface, not just as a “low cost” convenience. Onembedded platforms, that cost is probably higher than expected.
+
+Pointer to implementation problems
+Another popular C++ interface idiom with similar drawbacks is the use of the “pointer to implementation”, or “pImpl”,data object in a class.  The problem with this idiom is similar tothe above: your code is accessing one object (the containing object) inone part of memory, then has to jump to a completely different areaof memory, spilling useful data out of the cache to make room for anobject that was dynamically allocated without regard to cachelocality. 
+
+There are (somewhat complex) variations of the idiom that can help with this if you really need it, such as that proposed at Herb Sutter's GotW.ca  It is typically possible to avoid this idiom in performance-sensitivecode, however, since the use case for it is at your interface toexternal clients, which usually isn’t your time-critical “inner loop”code.
+
+Similarly, the “pointer to data” concept – where a C++ developerhides an internal data class by storing it only by pointer (as opposedto containing it with normal aggregation) – also has poor cachelocality, requiring the code to find some data (such as the pointeritself) in one part of memory where the containing object exists, andother closely related data (the dynamically- allocated object)entirely elsewhere.
