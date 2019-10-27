@@ -1,8 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2019.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
-//       Copyright Christopher Kormanyos 2014 - 2019.
-// Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file LICENSE_1_0.txt or copy at
-//          http://www.boost.org/LICENSE_1_0.txt)
+// chapter10_08-001_pi_millions_with_boost.cpp
 
 // This program can be used to compute millions of digits of pi.
 // In fact, it has been used to compute more than one billion
@@ -31,7 +34,7 @@ namespace pi { namespace millions { namespace detail {
 
 // *****************************************************************************
 // Function    : template<typename float_type>
-//               const float_type& calculate_pi_template(const bool progress_is_printed_to_cout)
+//               const float_type& calculate_pi_template(const bool print_progress)
 //
 // Description : Compute pi using a quadratically convergent Gauss AGM,
 //               in the Schoenhage variant. For a description of the algorithm,
@@ -47,7 +50,7 @@ namespace pi { namespace millions { namespace detail {
 //
 // *****************************************************************************
 template<typename float_type>
-const float_type& pi(const bool print_progress_to_cout = false)
+const float_type& pi(const bool print_progress = false)
 {
   static bool is_init;
 
@@ -92,10 +95,13 @@ const float_type& pi(const bool print_progress_to_cout = false)
 
       s += iterate_term;
 
-      // Extract the base-10 order of magnitude for a rough estimate of
-      // the number of base-10 digits that have been obtained in this
-      // iteration. Here, we produce a short printout of the iteration
-      // term that is subsequently parsed with a regular expression
+      // Extract the base-10 order of magnitude
+      // to estimate the base-10 digits in this
+      // iteration.
+
+      // Here, we produce a short printout
+      // of the iteration term that is subsequently
+      // parsed with a regular expression
       // for extracting the base-10 order.
 
       // Note: We are only extracting a few digits from iterate_term.
@@ -107,28 +113,35 @@ const float_type& pi(const bool print_progress_to_cout = false)
       const bool is_match =
         std::regex_match(str_iterate_term, mr, rx);
 
-      const std::uint64_t approximate_digits10_of_iteration_term =
+      const std::uint64_t digits10_iterate =
         (is_match ? (std::max)(boost::lexical_cast<std::uint64_t>(mr[1U]), std::uint64_t(0U))
                   : UINT64_C(0));
 
-      if(print_progress_to_cout)
+      if(print_progress)
       {
-        std::cout << "Approximate base-10 digits of this iteration : "
+        std::cout << "Base-10 digits of iteration "
+                  << std::right
+                  << std::setw(3)
+                  << k
+                  << ": "
                   << std::right
                   << std::setw(12)
-                  << approximate_digits10_of_iteration_term
+                  << digits10_iterate
                   << '\n';
       }
 
-      // Test the approximate base-10 digits of this iteration term.
-      // If we have attained about half of the total desired digits
-      // with this iteration term, then the calculation is finished
+      // Test the approximate base-10 digits
+      // of this iteration term.
+
+      // If we have attained at least half or more
+      // of the total desired digits with this
+      // iteration, the calculation is finished
       // because the change from the next iteration will be
       // insignificantly small.
-      BOOST_CONSTEXPR_OR_CONST std::uint64_t digits10_iteration_goal =
+      BOOST_CONSTEXPR_OR_CONST std::uint64_t digits10_iterate_goal =
         static_cast<std::uint64_t>((static_cast<std::uint64_t>(std::numeric_limits<float_type>::digits10) + 1LL) / 2LL) + 16LL;
 
-      if(approximate_digits10_of_iteration_term > digits10_iteration_goal)
+      if(digits10_iterate > digits10_iterate_goal)
       {
         break;
       }
@@ -140,15 +153,15 @@ const float_type& pi(const bool print_progress_to_cout = false)
       ss.str(std::string());
     }
 
-    if(print_progress_to_cout)
+    if(print_progress)
     {
-      std::cout << "The iteration loop is done, compute the inverse" << '\n';
+      std::cout << "Iteration loop done, compute inverse" << '\n';
     }
 
     val_pi += bB;
     val_pi /= s;
 
-    if(print_progress_to_cout)
+    if(print_progress)
     {
       std::cout << "The pi calculation is done." << '\n';
     }
@@ -160,7 +173,7 @@ const float_type& pi(const bool print_progress_to_cout = false)
 template<typename float_type>
 std::ostream& report_pi_timing(std::ostream& os, const float elapsed)
 {
-  return os << "============================================================" << '\n'
+  return os << "=================================================" << '\n'
             << "Computed "
             << static_cast<std::uint64_t>(std::numeric_limits<float_type>::digits10 - 1)
             << " digits of pi.\n"
@@ -170,7 +183,7 @@ std::ostream& report_pi_timing(std::ostream& os, const float elapsed)
             << elapsed
             << " seconds"
             << '\n'
-            << "============================================================"
+            << "================================================="
             << '\n';
 }
 
@@ -227,8 +240,6 @@ void print_pi(std::ostream& os)
 
   BOOST_CONSTEXPR_OR_CONST char* char_set_separator   = " ";
   BOOST_CONSTEXPR_OR_CONST char* char_group_separator = "\n";
-  //BOOST_CONSTEXPR_OR_CONST char* char_set_separator   = "";
-  //BOOST_CONSTEXPR_OR_CONST char* char_group_separator = "";
 
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_set   = 10U;
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_line  = digits_per_set * 5U;

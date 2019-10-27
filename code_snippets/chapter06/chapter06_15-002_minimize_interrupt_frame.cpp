@@ -37,9 +37,9 @@ void simulated_timer_thread()
 
 int main()
 {
- std::thread t1 { simulated_timer_thread };
+  std::thread t1 { simulated_timer_thread };
 
- t1.join();
+  t1.join();
 }
 
 void increment_system_tick()
