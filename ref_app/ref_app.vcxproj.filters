@@ -152,6 +152,9 @@
     <Filter Include="src\mcal_memory">
       <UniqueIdentifier>{bbd1e291-4ee6-416b-8df5-24ed707324da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\host">
+      <UniqueIdentifier>{069e32de-cf68-440e-9742-c4a776f49af0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -687,6 +690,39 @@
     </ClCompile>
     <ClCompile Include="src\mcal\atmega2560\mcal_wdg.cpp">
       <Filter>src\mcal\atmega2560</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_cpu.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_eep.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_gpt.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_irq.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_led.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_osc.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_port.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_pwm.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_spi.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_wdg.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_wdg_watchdog.cpp">
+      <Filter>src\mcal\host</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1532,6 +1568,51 @@
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_benchmark.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_cpu.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_eep.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_gpt.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_irq.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_led.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_osc.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_port.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_progmem.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_pwm.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_reg.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_ser.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_spi.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_wdg.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_wdg_watchdog.h">
+      <Filter>src\mcal\host</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
