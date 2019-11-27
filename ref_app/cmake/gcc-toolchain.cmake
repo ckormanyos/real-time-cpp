@@ -28,8 +28,7 @@ endif()
 
 message(STATUS "Triple ................. ${TRIPLE}")
 
-
-STRING(REGEX REPLACE "^([A-Za-z0-9_]+)" "\\1" target_arch "${TRIPLE}")
+STRING(REGEX REPLACE "^([a-zA-Z0-9]+).*" "\\1" target_arch "${TRIPLE}")
 message(STATUS "Triple Arch ............ ${target_arch}")
 
 set(CMAKE_SYSTEM_NAME Generic)
@@ -62,7 +61,7 @@ set(CMAKE_AR ${TRIPLE}-ar)
 set(CMAKE_ASM_COMPILER ${TRIPLE}-gcc)
 set(CMAKE_CC_COMPILER ${TRIPLE}-gcc)
 
-if("${TRIPLE}" STREQUAL "x86_64-w64-mingw32" AND "${TARGET}" STREQUAL "posix")
+if("${TRIPLE}" STREQUAL "x86_64-w64-mingw32" AND "${TARGET}" STREQUAL "host")
     set(CMAKE_CXX_COMPILER ${TRIPLE}-g++-posix)
 else()
     set(CMAKE_CXX_COMPILER ${TRIPLE}-g++)
