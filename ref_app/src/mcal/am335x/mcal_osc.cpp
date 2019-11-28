@@ -96,7 +96,7 @@ void osc_detail::core_pll_init()
   // clkoutm6  = clkdcoldo / m6 = 2000 /  4 =  500
 
   // See also:
-  // https://github.com/kientzle/u-boot-beaglebone-freebsd/blob/ee5d61417b5553094cf784cb4164837f0544611f/arch/arm/include/asm/arch-ti81xx/clocks_am335x.h
+  // https://github.com/kientzle/u-boot-beaglebone-freebsd
 
   constexpr std::uint32_t mcu_core_pll_m  =  UINT32_C(1000);
   constexpr std::uint32_t mcu_core_pll_n  =  UINT32_C(mcu_clkinp - 1);
