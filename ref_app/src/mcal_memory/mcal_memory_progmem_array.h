@@ -84,11 +84,6 @@
     {
       return static_cast<const pointer>(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
     }
-
-  private:
-    array() = delete;
-    array(const array&) = delete;
-    array& operator=(const array&) = delete;
   };
 
   template<typename T, const mcal_progmem_uintptr_t N>
