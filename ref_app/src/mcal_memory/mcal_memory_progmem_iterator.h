@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
+#ifndef MCAL_PROGMEM_ITERATOR_2019_05_04_
   #define MCAL_PROGMEM_ITERATOR_2019_05_04_
 
   #include <mcal_memory/mcal_memory_address_ptr.h>
