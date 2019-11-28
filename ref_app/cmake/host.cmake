@@ -50,10 +50,6 @@ else()
             -mtune=native
         )
 
-        if(NOT MINGW)
-            list(APPEND _TARGET_CFLAGS -m32) # force 32-bit compilation
-        endif()
-
         set(TARGET_AFLAGS "")
 
         set(_TARGET_LDFLAGS -pthread)
