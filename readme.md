@@ -85,6 +85,10 @@ cmake ../ref_app -DTARGET=host
 cmake --build . --config Debug --target ALL_BUILD
 ```
 
+OR...
+Following *nix pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
+should work too.
+
 Target Details
 --------------
 
