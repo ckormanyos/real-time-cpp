@@ -70,8 +70,8 @@ will be placed in the bin directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
 
-To build master branch via Visual Studio on Win10 x64
-----------------------------------------------
+To build master branch with CMake via Visual Studio host on Win10 x64
+---------------------------------------------------------------------
 
 Win+R, cmd, enter
 
