@@ -70,6 +70,21 @@ will be placed in the bin directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
 
+To build master branch via Visual Studio on Win10 x64
+----------------------------------------------
+
+Win+R, cmd, enter
+
+If VS variable is not set by default (default install), open Visual Studio Build Window
+
+```C
+cd real-time-cpp
+mkdir build
+cd build
+cmake ../ref_app -DTARGET=host
+cmake --build . --config Debug --target ALL_BUILD
+```
+
 Target Details
 --------------
 
