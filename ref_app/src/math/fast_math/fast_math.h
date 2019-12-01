@@ -31,7 +31,14 @@
     // in IEEE754 single-precision float format.
 
     // Note that the cast in the following line breaks strict alignment rules.
+    #if defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+    #endif
     const uint32_t i = *(const uint32_t*) (&x);
+    #if defined(__GNUC__)
+    #pragma GCC diagnostic pop
+    #endif
 
     const uint32_t raw_mantissa = (uint32_t) (i & (uint32_t) (((uint32_t) (1UL) << 23) - 1UL));
     const uint32_t raw_exponent = (uint32_t) ((uint32_t) (i >> 23) & (uint32_t) 0xFFUL);

@@ -20,12 +20,12 @@ TGT_CFLAGS    = -O2                                            \
                 -finline-limit=16                              \
                 -mips32r2                                      \
                 -march=m4k                                     \
-                -EB                                            \
+                -EL                                            \
                 -mlong-calls                                   \
                 -mno-extern-sdata                              \
                 -mno-local-sdata                               \
                 -mno-gpopt                                     \
-                -mhard-float                                   \
+                -msoft-float                                   \
                 -mno-dsp                                       \
                 -mno-dspr2                                     \
                 -mlong-calls

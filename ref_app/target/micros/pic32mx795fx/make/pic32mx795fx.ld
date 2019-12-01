@@ -8,9 +8,9 @@
 
 /* Linker script for Microchip(R) PIC32MX795x. */
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libc.a)
 
-OUTPUT_FORMAT("elf32-tradbigmips")
+OUTPUT_FORMAT("elf32-tradlittlemips")
 OUTPUT_ARCH("mips")
 ENTRY(__my_startup_entry)
 
