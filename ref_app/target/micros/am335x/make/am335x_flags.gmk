@@ -18,9 +18,8 @@ TGT_SUFFIX    = elf
 TGT_CFLAGS    = -O2                                                               \
                 -finline-functions                                                \
                 -finline-limit=16                                                 \
-                -ffast-math                                                       \
-                -mcpu=cortex-a8                                                   \
                 -march=armv7-a                                                    \
+                -mcpu=cortex-a8                                                   \
                 -mtune=cortex-a8                                                  \
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
