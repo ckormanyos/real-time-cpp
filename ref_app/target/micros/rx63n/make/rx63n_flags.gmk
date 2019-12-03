@@ -9,9 +9,9 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 4.9.0
-GCC_TARGET    = rx-unknown-elf
-GCC_PREFIX    = rx-unknown-elf
+GCC_VERSION   = 8.3.0
+GCC_TARGET    = rx-elf
+GCC_PREFIX    = rx-elf
 
 TGT_SUFFIX    = elf
 
