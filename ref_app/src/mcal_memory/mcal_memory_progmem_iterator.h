@@ -91,15 +91,7 @@
 
     ~forward_iterator() = default;
 
-    forward_iterator& operator=(forward_iterator& other)
-    {
-      if(this != &other)
-      {
-        current = other.current;
-      }
-
-      return *this;
-    }
+    forward_iterator& operator=(forward_iterator& other) = default;
 
     reference operator*() const
     {
