@@ -91,7 +91,7 @@
 
     ~forward_iterator() = default;
 
-    forward_iterator& operator=(forward_iterator& other) = default;
+    forward_iterator& operator=(forward_iterator&) = default;
 
     reference operator*() const
     {
