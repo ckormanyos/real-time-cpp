@@ -28,7 +28,7 @@
   public:
     // Standard container-local type definitions.
     using size_type              = mcal_progmem_uintptr_t;
-    using const_iterator         = mcal::memory::progmem::forward_iterator<const T, size_type>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
     using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;

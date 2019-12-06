@@ -63,13 +63,13 @@
            typename AddressType>
   class forward_iterator
     : public mcal::memory::progmem::iterator<random_access_iterator_tag,
-                                             const ValueType,
+                                             ValueType,
                                              AddressType>
   {
   private:
     using base_class_type =
       mcal::memory::progmem::iterator<random_access_iterator_tag,
-                                      const ValueType,
+                                      ValueType,
                                       AddressType>;
 
   public:
