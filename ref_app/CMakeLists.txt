@@ -40,6 +40,33 @@ if(NOT NAME)
 endif()
 
 # ------------------------------------------------------------------------------
+# default tool names if not using Toolchain file
+# ------------------------------------------------------------------------------
+if(NOT OBJDUMP)
+    set(OBJDUMP objdump)
+endif()
+
+if(NOT NM)
+    set(NM nm)
+endif()
+
+if(NOT READELF)
+    if(NOT APPLE)
+        set(READLEF readelf)
+    else()
+        set(READLEF otool)
+    endif()
+endif()
+
+if(NOT CPPFILT)
+    set(CPPFILT c++filt)
+endif()
+
+if(NOT SIZE)
+    set(SIZE size)
+endif()
+
+# ------------------------------------------------------------------------------
 # paths
 # ------------------------------------------------------------------------------
 set(PATH_APP          src)
@@ -74,11 +101,7 @@ include(${TARGET})
 set(CMAKE_CC_FLAGS "${CFLAGS} ${TARGET_CFLAGS}" CACHE STRING "" FORCE)
 set(CMAKE_ASM_FLAGS "${AFLAGS} ${TARGET_CFLAGS} ${TARGET_AFLAGS}" CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS "${CPPFLAGS} ${TARGET_CFLAGS} ${TARGET_CPPFLAGS}" CACHE STRING "" FORCE)
-if(NOT MSVC)
-    set(CMAKE_EXE_LINKER_FLAGS "${LDFLAGS} -Wl,-Map,${APP}.map ${TARGET_LDFLAGS}" CACHE STRING "" FORCE)
-else()
-    set(CMAKE_EXE_LINKER_FLAGS "${LDFLAGS} ${TARGET_LDFLAGS}" CACHE STRING "" FORCE)
-endif()
+set(CMAKE_EXE_LINKER_FLAGS "${LDFLAGS} ${TARGET_LDFLAGS}" CACHE STRING "" FORCE)
 
 # ------------------------------------------------------------------------------
 # app files
@@ -151,45 +174,38 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
 
         COMMENT "Generating Post Build Artifacts"
 
-        # ------------------------------------------------------------------------------
         # generate assembly listing
-        # ------------------------------------------------------------------------------
-        # generating assembly list file: ${APP}.lss
         COMMAND ${OBJDUMP} -h -S ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}.lss
 
-        # ------------------------------------------------------------------------------
-        # parse the object files to obtain symbol information, and create a size summary
-        # ------------------------------------------------------------------------------
         # parsing symbols with nm to generate: ${APP}_nm.txt
-        COMMAND ${NM} --numeric-sort --print-size ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_nm.txt
+        COMMAND ${NM} --numeric-sort ${PARSE_SYMBOL_OPTIONS} ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_nm.txt
 
         # demangling symbols with c++filt to generate: ${APP}_cppfilt.txt
-        COMMAND ${NM} --numeric-sort --print-size ${APP}${CMAKE_EXECUTABLE_SUFFIX} | ${CPPFILT} > ${APP}_cppfilt.txt
-
-        # parsing symbols with readelf to generate: ${APP}_readelf.txt
-        COMMAND ${READELF} --syms ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_readelf.txt
+        COMMAND ${NM} --numeric-sort ${PARSE_SYMBOL_OPTIONS} ${APP}${CMAKE_EXECUTABLE_SUFFIX} | ${CPPFILT} > ${APP}_cppfilt.txt
 
         # creating size summary table with size to generate: ${APP}_size.txt
         COMMAND ${SIZE} -A -t ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_size.txt
 
-        # ------------------------------------------------------------------------------
-        # create hex mask
-        # ------------------------------------------------------------------------------
+        # parsing symbols with readelf to generate: ${APP}_readelf.txt
+        COMMAND ${POSTBUILD_GEN_SYMBOL_LISTING}
+
         # creating hex module: ${APP}.hex
-        COMMAND ${OBJCOPY} -O ihex ${APP}${CMAKE_EXECUTABLE_SUFFIX} ${APP}.hex
-        COMMAND ${OBJCOPY} -S -O binary ${APP}${CMAKE_EXECUTABLE_SUFFIX} ${APP}.bin
+        COMMAND ${POSTBUILD_GEN_HEX}
+
+        # creating hex module: ${APP}.bin
+        COMMAND ${POSTBUILD_GEN_BIN}
     )
 
     install(FILES
 
         ${CMAKE_BINARY_DIR}/${APP}${CMAKE_EXECUTABLE_SUFFIX}
-        ${CMAKE_BINARY_DIR}/${APP}.hex
-        ${CMAKE_BINARY_DIR}/${APP}.bin
-        ${CMAKE_BINARY_DIR}/${APP}.map
         ${CMAKE_BINARY_DIR}/${APP}.lss
         ${CMAKE_BINARY_DIR}/${APP}_cppfilt.txt
-        ${CMAKE_BINARY_DIR}/${APP}_readelf.txt
         ${CMAKE_BINARY_DIR}/${APP}_size.txt
+        ${MAP_FILE}
+        ${SYMBOL_LISTING_FILE}
+        ${HEX_FILE}
+        ${BIN_FILE}
 
         DESTINATION
         
