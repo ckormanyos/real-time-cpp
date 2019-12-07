@@ -18,7 +18,9 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * Win32 in both Release and Debug modes
+  * VC x86/x64 in both Release and Debug modes
+  * MinGW x86_64-w64-mingw32
+  * Special target "host" which is the host's native running environment
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
