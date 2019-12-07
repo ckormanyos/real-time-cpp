@@ -37,7 +37,16 @@ set(TARGET_INCLUDES
     ${PATH_APP}/util/STL_C++XX_stdfloat
 )
 
-if (CMAKE_C_COMPILER_ID MATCHES "Clang")
+if ((CMAKE_CXX_COMPILER_ID MATCHES "AppleClang") OR 
+    (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
+
+    set(_TARGET_CFLAGS
+        -finline-functions
+    )
+
+    set(TARGET_AFLAGS "")
+
+    set(_TARGET_LDFLAGS -pthread)
 
 else()
 
@@ -71,10 +80,10 @@ else()
 
     endif()
 
-    string(REPLACE ";" " " TARGET_CFLAGS "${_TARGET_CFLAGS}")
-    string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
-
 endif()
+
+string(REPLACE ";" " " TARGET_CFLAGS "${_TARGET_CFLAGS}")
+string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/${TARGET}/mcal_wdg_watchdog

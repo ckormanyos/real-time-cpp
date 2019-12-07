@@ -23,7 +23,9 @@
 #
 
 IF(NOT TRIPLE)
-  set(TRIPLE arm-none-eabi)
+    set(GCC_TOOLCHAIN_PREFIX "")
+else()
+    set(GCC_TOOLCHAIN_PREFIX ${TRIPLE}-)
 endif()
 
 message(STATUS "Triple ................. ${TRIPLE}")
@@ -42,7 +44,7 @@ elseif(UNIX OR APPLE)
 endif()
 
 execute_process(
-  COMMAND ${UTIL_SEARCH_CMD} ${TRIPLE}-g++
+  COMMAND ${UTIL_SEARCH_CMD} ${GCC_TOOLCHAIN_PREFIX}-g++
   OUTPUT_VARIABLE BINUTILS_PATH
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
@@ -57,23 +59,23 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-set(CMAKE_AR ${TRIPLE}-ar)
-set(CMAKE_ASM_COMPILER ${TRIPLE}-gcc)
-set(CMAKE_CC_COMPILER ${TRIPLE}-gcc)
+set(CMAKE_AR ${GCC_TOOLCHAIN_PREFIX}ar)
+set(CMAKE_ASM_COMPILER ${GCC_TOOLCHAIN_PREFIX}gcc)
+set(CMAKE_CC_COMPILER ${GCC_TOOLCHAIN_PREFIX}gcc)
 
-if("${TRIPLE}" STREQUAL "x86_64-w64-mingw32" AND "${TARGET}" STREQUAL "host")
-    set(CMAKE_CXX_COMPILER ${TRIPLE}-g++-posix)
+if("${GCC_TOOLCHAIN_PREFIX}" STREQUAL "x86_64-w64-mingw32" AND "${TARGET}" STREQUAL "host")
+    set(CMAKE_CXX_COMPILER ${GCC_TOOLCHAIN_PREFIX}g++-posix)
 else()
-    set(CMAKE_CXX_COMPILER ${TRIPLE}-g++)
+    set(CMAKE_CXX_COMPILER ${GCC_TOOLCHAIN_PREFIX}g++)
 endif()
 
 
-set(CPPFILT ${TRIPLE}-c++filt)
-set(NM ${TRIPLE}-nm)
-set(OBJDUMP ${TRIPLE}-objdump)
-set(OBJCOPY ${TRIPLE}-objcopy)
-set(READELF ${TRIPLE}-readelf)
-set(SIZE ${TRIPLE}-size)
+set(CPPFILT ${GCC_TOOLCHAIN_PREFIX}c++filt)
+set(NM ${GCC_TOOLCHAIN_PREFIX}nm)
+set(OBJDUMP ${GCC_TOOLCHAIN_PREFIX}objdump)
+set(OBJCOPY ${GCC_TOOLCHAIN_PREFIX}objcopy)
+set(READELF ${GCC_TOOLCHAIN_PREFIX}readelf)
+set(SIZE ${GCC_TOOLCHAIN_PREFIX}size)
 
 
 set(GCCFLAGS
@@ -128,7 +130,21 @@ set(_AFLAGS ${GCCFLAGS}
 set(_LDFLAGS ${GCCFLAGS}
     -x none
     -Wl,--gc-sections
+    -Wl,-Map,${APP}.map
 )
+
+set(PARSE_SYMBOL_OPTIONS --print-size)
+
+# Postbuild binutil commands
+set(POSTBUILD_GEN_SYMBOL_LISTING ${READELF} --syms ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_readelf.txt)
+set(POSTBUILD_GEN_HEX ${OBJCOPY} -O ihex ${APP}${CMAKE_EXECUTABLE_SUFFIX} ${APP}.hex)
+set(POSTBUILD_GEN_BIN ${OBJCOPY} -S -O binary ${APP}${CMAKE_EXECUTABLE_SUFFIX} ${APP}.bin)
+
+# Install Files
+set(MAP_FILE ${CMAKE_BINARY_DIR}/${APP}.map)
+set(SYMBOL_LISTING_FILE ${CMAKE_BINARY_DIR}/${APP}_readelf.txt)
+set(HEX_FILE ${CMAKE_BINARY_DIR}/${APP}.hex)
+set(BIN_FILE ${CMAKE_BINARY_DIR}/${APP}.bin)
 
 # remove list item delimeter
 string(REPLACE ";" " " CFLAGS "${_CFLAGS}")
