@@ -18,7 +18,7 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * VC, MinGW, or other *nix-like gemeric host
+  * VC, MinGW, or other *nix-like generic host
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
