@@ -18,9 +18,7 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * VC x86/x64 in both Release and Debug modes
-  * MinGW x86_64-w64-mingw32
-  * Special target "host" which is the host's native running environment
+  * VC, MinGW, *nix* or similar gemeric host
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
@@ -38,7 +36,7 @@ The reference application supports the following targets:
 Cross Development in the Reference Application
 ----------------------------------------------
 
-The reference application uses cross-development based on *nix-like make
+The reference application uses cross-development based on *nix*-like make
 tools in combination with Microsoft(R) Visual Studio(R). Tool chains
 are not available in this repo (see below for further details).
 
