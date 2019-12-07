@@ -99,6 +99,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
@@ -1321,6 +1323,9 @@
     <ClInclude Include="src\math\checksums\crc\crc32.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\constants\constant_functions.h" />
+    <ClInclude Include="src\math\constants\pi_spigot_base.h" />
+    <ClInclude Include="src\math\constants\pi_spigot_single.h" />
+    <ClInclude Include="src\math\constants\pi_spigot_state.h" />
     <ClInclude Include="src\math\extended_complex\extended_complex.h" />
     <ClInclude Include="src\math\fast_math\fast_math.h" />
     <ClInclude Include="src\math\filters\fir_order_n.h" />

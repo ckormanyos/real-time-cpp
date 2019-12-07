@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,10 +19,10 @@
   #include <mcal_spi.h>
   #include <mcal_wdg.h>
 
-  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
+  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 64)
                 && (std::numeric_limits<mcal::gpt::value_type>::is_integer == true)
                 && (std::numeric_limits<mcal::gpt::value_type>::is_signed  == false),
-                "The gpt value type must be an unsigned integer type having at least 32 bits.");
+                "The gpt value type must be an unsigned integer type having at least 64 bits.");
 
   namespace mcal
   {

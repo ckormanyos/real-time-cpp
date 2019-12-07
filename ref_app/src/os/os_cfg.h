@@ -11,6 +11,7 @@
   #include <cstddef>
   #include <cstdint>
   #include <limits>
+
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
@@ -21,9 +22,9 @@
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led              { void task_init(); void task_func(); } }
-  namespace app { namespace benchmark        { void task_init(); void task_func(); } }
-  namespace sys { namespace mon              { void task_init(); void task_func(); } }
+  namespace app { namespace led       { void task_init(); void task_func(); } }
+  namespace app { namespace benchmark { void task_init(); void task_func(); } }
+  namespace sys { namespace mon       { void task_init(); void task_func(); } }
 
   namespace os
   {
@@ -78,7 +79,7 @@
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   541))),                    \
+                             os::timer_type::microseconds(UINT32_C(   379))),                    \
     }                                                                                            \
   }
 

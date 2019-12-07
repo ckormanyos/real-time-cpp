@@ -1617,6 +1617,15 @@
     <ClInclude Include="src\mcal\host\mcal_wdg_watchdog.h">
       <Filter>src\mcal\host</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\constants\pi_spigot_base.h">
+      <Filter>src\math\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\constants\pi_spigot_single.h">
+      <Filter>src\math\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\constants\pi_spigot_state.h">
+      <Filter>src\math\constants</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

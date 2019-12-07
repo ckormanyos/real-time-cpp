@@ -1,18 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <array>
-#include <cstdint>
-#include <limits>
-
 #include <app/benchmark/app_benchmark.h>
 #include <mcal_benchmark.h>
 #include <mcal_cpu.h>
-#include <mcal_irq.h>
 
 namespace
 {
@@ -32,58 +27,58 @@ void app::benchmark::task_init()
 {
   #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
   #else
+  // Set the benchmark port pin direction to output.
   port_type::set_direction_output();
   #endif
 }
 
 void app::benchmark::task_func()
 {
+  // Set the benchmark port pin level to high.
+  port_type::set_pin_high();
+
+  // Run the benchmark (if enabled via compiler switch).
+
   #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
 
   const bool result_is_ok = true;
 
-  #else
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
 
-    mcal::irq::disable_all();
-    port_type::set_pin_high();
+  const bool result_is_ok = app::benchmark::run_complex();
 
-    #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
 
-    const bool result_is_ok = app::benchmark::run_complex();
+  const bool result_is_ok = app::benchmark::run_crc();
 
-    #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
+  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
 
-    const bool result_is_ok = app::benchmark::run_crc();
+  const bool result_is_ok = app::benchmark::run_fast_math();
 
-    #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
+  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
 
-    const bool result_is_ok = app::benchmark::run_fast_math();
+  const bool result_is_ok = app::benchmark::run_filter();
 
-    #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
 
-    const bool result_is_ok = app::benchmark::run_filter();
+  const bool result_is_ok = app::benchmark::run_fixed_point();
 
-    #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
+  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
 
-    const bool result_is_ok = app::benchmark::run_fixed_point();
+  const bool result_is_ok = app::benchmark::run_float();
 
-    #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
 
-    const bool result_is_ok = app::benchmark::run_float();
-
-    #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
-
-    const bool result_is_ok = app::benchmark::run_wide_integer();
-
-    #endif
-
-    port_type::set_pin_low();
-    mcal::irq::enable_all();
+  const bool result_is_ok = app::benchmark::run_wide_integer();
 
   #endif
 
+  // Set the benchmark port pin level to low.
+  port_type::set_pin_low();
+
   if(result_is_ok == false)
   {
+    // Purposefully crash the system (watchdog) if the benchmark fails.
     for(;;)
     {
       mcal::cpu::nop();
