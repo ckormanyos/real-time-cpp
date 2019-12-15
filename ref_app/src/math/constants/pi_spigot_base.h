@@ -7,6 +7,7 @@
 #ifndef PI_SPIGOT_BASE_2019_11_24_H_
   #define PI_SPIGOT_BASE_2019_11_24_H_
 
+  #include <algorithm>
   #include <cstdint>
 
   namespace math { namespace constants {
@@ -80,7 +81,7 @@
 
     pi_spigot_base(const pi_spigot_base&) = delete;
 
-    virtual ~pi_spigot_base() { }
+    virtual ~pi_spigot_base() = default;
 
     pi_spigot_base& operator=(const pi_spigot_base&) = delete;
 
@@ -97,6 +98,11 @@
     std::uintmax_t get_operation_count() const
     {
       return my_operation_count;
+    }
+
+    std::uint32_t get_output_digit_count() const
+    {
+      return (std::min)(my_j, get_output_static_size());
     }
 
   protected:

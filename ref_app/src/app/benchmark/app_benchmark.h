@@ -16,6 +16,7 @@
   #define APP_BENCHMARK_TYPE_FIXED_POINT         5
   #define APP_BENCHMARK_TYPE_FLOAT               6
   #define APP_BENCHMARK_TYPE_WIDE_INTEGER        7
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT           8
 
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -25,6 +26,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_FIXED_POINT
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_FLOAT
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_WIDE_INTEGER
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_PI_SPIGOT
 
   namespace app { namespace benchmark {
 
@@ -35,6 +37,7 @@
   bool run_fixed_point ();
   bool run_float       ();
   bool run_wide_integer();
+  bool run_pi_spigot   ();
 
   } } // namespace app:::benchmark
 

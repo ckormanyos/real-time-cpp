@@ -5,7 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 
 #include <app/benchmark/app_benchmark.h>

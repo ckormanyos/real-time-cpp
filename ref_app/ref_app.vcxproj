@@ -311,6 +311,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_filter.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fixed_point.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_float.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />
     <ClCompile Include="src\mcal\am335x\mcal_cpu.cpp">

@@ -10,9 +10,7 @@
 #ifndef PI_SPIGOT_SINGLE_2019_05_12_H_
   #define PI_SPIGOT_SINGLE_2019_05_12_H_
 
-  #include <algorithm>
-
-  #include <pi_spigot_base.h>
+  #include <math/constants/pi_spigot_base.h>
 
   namespace math { namespace constants {
 
@@ -27,9 +25,9 @@
                                            LoopDigit>;
 
   public:
-    pi_spigot_single() { }
+    pi_spigot_single() = default;
 
-    virtual ~pi_spigot_single() { }
+    virtual ~pi_spigot_single() = default;
 
     template<typename ItIn,
              typename ItOut>

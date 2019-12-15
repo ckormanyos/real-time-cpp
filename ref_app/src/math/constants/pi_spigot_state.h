@@ -10,8 +10,6 @@
 #ifndef PI_SPIGOT_STATE_2019_05_12_H_
   #define PI_SPIGOT_STATE_2019_05_12_H_
 
-  #include <algorithm>
-
   #include <math/constants/pi_spigot_base.h>
 
   namespace math { namespace constants {
