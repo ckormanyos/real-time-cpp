@@ -1,9 +1,9 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2019.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
+///////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 1999 - 2019.                 //
+//  Distributed under the Boost Software License,                //
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
+///////////////////////////////////////////////////////////////////
 
 #ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
   #define GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
@@ -840,14 +840,15 @@
     uintwide_t& operator*=(const uintwide_t& other)
     {
       // Unary multiplication function.
-      std::array<ushort_type, number_of_limbs> result = {{ 0U }};
+      std::array<ushort_type, number_of_limbs> result;
 
-      multiplication_loop_schoolbook(values.data(),
-                                     other.values.data(),
-                                     result.data(),
-                                     result.size());
+      multiplication_loop_schoolbook_half<number_of_limbs>(values.data(),
+                                                           other.values.data(),
+                                                           result.data());
 
-      values = result;
+      std::copy(result.cbegin(),
+                result.cbegin() + number_of_limbs,
+                values.begin());
 
       return *this;
     }
@@ -1245,6 +1246,34 @@
       return wr_string_is_ok;
     }
 
+    std::int_fast8_t compare(const uintwide_t& other) const
+    {
+      std::int_fast8_t return_value;
+      std::ptrdiff_t   element_index;
+
+      for(element_index = std::ptrdiff_t(number_of_limbs - 1U); element_index >= std::ptrdiff_t(0); --element_index)
+      {
+        if(values[std::size_t(element_index)] != other.values[std::size_t(element_index)])
+        {
+          break;
+        }
+      }
+
+      if(element_index == std::ptrdiff_t(-1))
+      {
+        return_value = std::int_fast8_t(0);
+      }
+      else
+      {
+        const bool left_is_greater_than_right =
+          (values[std::size_t(element_index)] > other.values[std::size_t(element_index)]);
+
+        return_value = (left_is_greater_than_right ? std::int_fast8_t(1) : std::int_fast8_t(-1));
+      }
+
+      return return_value;
+    }
+
   private:
     representation_type values;
 
@@ -1348,18 +1377,20 @@
       return char_is_valid;
     }
 
-    static void multiplication_loop_schoolbook(      ushort_type* pu,
-                                               const ushort_type* pv,
-                                                     ushort_type* pw,
-                                               const std::size_t  count)
+    template<const std::size_t ResultLimbCount>
+    static void multiplication_loop_schoolbook_half(const ushort_type* pu,
+                                                    const ushort_type* pv,
+                                                          ushort_type* pw)
     {
-      for(std::size_t j = 0U; j < count; ++j)
+      std::fill(pw, pw + ResultLimbCount, ushort_type(0U));
+
+      for(std::size_t j = 0U; j < ResultLimbCount; ++j)
       {
         if(pv[j] != ushort_type(0U))
         {
           ushort_type carry = ushort_type(0U);
 
-          for(std::size_t i = 0U, iplusj = i + j; iplusj < count; ++i, ++iplusj)
+          for(std::size_t i = 0U, iplusj = i + j; iplusj < ResultLimbCount; ++i, ++iplusj)
           {
             const ularge_type t =
               ularge_type(ularge_type(ularge_type(pu[i]) * pv[j]) + pw[iplusj]) + carry;
@@ -1370,6 +1401,17 @@
         }
       }
     }
+
+    //template<const std::size_t ResultLimbCount>
+    //static void multiplication_loop_karatsuba(const ushort_type* pu,
+    //                                          const ushort_type* pv,
+    //                                                ushort_type* pw)
+    //{
+    //  // TBD: Not yet implemented.
+    //  static_cast<void>(pu);
+    //  static_cast<void>(pv);
+    //  static_cast<void>(pw);
+    //}
 
     void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder)
     {
@@ -1703,34 +1745,6 @@
       }
     }
 
-    std::int_fast8_t compare(const uintwide_t& other) const
-    {
-      std::int_fast8_t return_value;
-      std::ptrdiff_t   element_index;
-
-      for(element_index = std::ptrdiff_t(number_of_limbs - 1U); element_index >= std::ptrdiff_t(0); --element_index)
-      {
-        if(values[std::size_t(element_index)] != other.values[std::size_t(element_index)])
-        {
-          break;
-        }
-      }
-
-      if(element_index == std::ptrdiff_t(-1))
-      {
-        return_value = std::int_fast8_t(0);
-      }
-      else
-      {
-        const bool left_is_greater_than_right =
-          (values[std::size_t(element_index)] > other.values[std::size_t(element_index)]);
-
-        return_value = (left_is_greater_than_right ? std::int_fast8_t(1) : std::int_fast8_t(-1));
-      }
-
-      return return_value;
-    }
-
     void bitwise_not()
     {
       for(std::size_t i = 0U; i < number_of_limbs; ++i)
@@ -1790,14 +1804,16 @@
   };
 
   // Define some convenient unsigned wide integer types.
-  using uint64_t   = uintwide_t<  64U, std::uint16_t>;
-  using uint128_t  = uintwide_t< 128U>;
-  using uint256_t  = uintwide_t< 256U>;
-  using uint512_t  = uintwide_t< 512U>;
-  using uint1024_t = uintwide_t<1024U>;
-  using uint2048_t = uintwide_t<2048U>;
-  using uint4096_t = uintwide_t<4096U>;
-  using uint8192_t = uintwide_t<8192U>;
+  using uint64_t    = uintwide_t<  64U, std::uint16_t>;
+  using uint128_t   = uintwide_t< 128U>;
+  using uint256_t   = uintwide_t< 256U>;
+  using uint512_t   = uintwide_t< 512U>;
+  using uint1024_t  = uintwide_t<1024U>;
+  using uint2048_t  = uintwide_t<2048U>;
+  using uint4096_t  = uintwide_t<4096U>;
+  using uint8192_t  = uintwide_t<8192U>;
+  using uint16384_t = uintwide_t<16384U>;
+  using uint32768_t = uintwide_t<32768U>;
 
   // Insert a base class for numeric_limits<> support.
   // This class inherits from std::numeric_limits<unsigned int>
@@ -1816,6 +1832,14 @@
     static local_wide_integer_type (max)() { return local_wide_integer_type::limits_helper_max(); }
     static local_wide_integer_type (min)() { return local_wide_integer_type::limits_helper_min(); }
   };
+
+  template<class T>
+  struct is_integral : public std::is_integral<T> { };
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  struct is_integral<wide_integer::generic_template::uintwide_t<Digits2, LimbType>>
+    : public std::integral_constant<bool, true> { };
 
   } } // namespace wide_integer::generic_template
 
@@ -2516,34 +2540,176 @@
     return result;
   }
 
+  class random_pcg32_fast_base
+  {
+  protected:
+    static constexpr bool is_mcg = false;
+
+  public:
+    using internal_type = std::uint64_t;
+
+    virtual ~random_pcg32_fast_base() = default;
+
+  protected:
+    explicit random_pcg32_fast_base(const internal_type = internal_type()) { }
+
+    random_pcg32_fast_base(const random_pcg32_fast_base&) = default;
+
+    random_pcg32_fast_base& operator=(const random_pcg32_fast_base&) = default;
+
+    template<typename ArithmeticType>
+    static ArithmeticType rotr(const ArithmeticType& value_being_shifted,
+                               const std::size_t     bits_to_shift)
+    {
+      const std::size_t left_shift_amount =
+        std::numeric_limits<ArithmeticType>::digits - bits_to_shift;
+
+      const ArithmeticType part1 = ((bits_to_shift > 0U) ? ArithmeticType(value_being_shifted >> bits_to_shift)     : value_being_shifted);
+      const ArithmeticType part2 = ((bits_to_shift > 0U) ? ArithmeticType(value_being_shifted << left_shift_amount) : 0U);
+
+      return ArithmeticType(part1 | part2);
+    }
+
+    template<typename xtype,
+             typename internal_type>
+    struct xsh_rr_mixin
+    {
+      static xtype output(const internal_type internal_value)
+      {
+        using bitcount_t = std::size_t;
+
+        constexpr bitcount_t bits         = bitcount_t(sizeof(internal_type) * 8U);
+        constexpr bitcount_t xtypebits    = bitcount_t(sizeof(xtype) * 8U);
+        constexpr bitcount_t sparebits    = bits - xtypebits;
+        constexpr bitcount_t wantedopbits =   ((xtypebits >= 128U) ? 7U
+                                            : ((xtypebits >=  64U) ? 6U
+                                            : ((xtypebits >=  32U) ? 5U
+                                            : ((xtypebits >=  16U) ? 4U
+                                            :                        3U))));
+
+        constexpr bitcount_t opbits       = ((sparebits >= wantedopbits) ? wantedopbits : sparebits);
+        constexpr bitcount_t amplifier    = wantedopbits - opbits;
+        constexpr bitcount_t mask         = (1ULL << opbits) - 1U;
+        constexpr bitcount_t topspare     = opbits;
+        constexpr bitcount_t bottomspare  = sparebits - topspare;
+        constexpr bitcount_t xshift       = (topspare + xtypebits) / 2U;
+
+        const bitcount_t rot =
+          ((opbits != 0U) ? (bitcount_t(internal_value >> (bits - opbits)) & mask)
+                          : 0U);
+
+        const bitcount_t amprot = (rot << amplifier) & mask;
+
+        const internal_type internal_value_xor = internal_value ^ internal_type(internal_value >> xshift);
+
+        const xtype result = rotr(xtype(internal_value_xor >> bottomspare), amprot);
+
+        return result;
+      }
+    };
+  };
+
+  class random_pcg32_fast : public random_pcg32_fast_base
+  {
+  private:
+    static constexpr internal_type default_multiplier = static_cast<internal_type>(6364136223846793005ULL);
+    static constexpr internal_type default_increment  = static_cast<internal_type>(1442695040888963407ULL);
+
+  public:
+    using result_type = std::uint32_t;
+
+    static constexpr internal_type default_seed = static_cast<internal_type>(0xCAFEF00DD15EA5E5ULL);
+
+    explicit random_pcg32_fast(const internal_type state = default_seed)
+      : random_pcg32_fast_base(state),
+        my_inc  (default_increment),
+        my_state(is_mcg ? state | internal_type(3U) : bump(state + increment())) { }
+
+    random_pcg32_fast(const random_pcg32_fast& other)
+      : random_pcg32_fast_base(other),
+        my_inc  (other.my_inc),
+        my_state(other.my_state) { }
+
+    virtual ~random_pcg32_fast() = default;
+
+    random_pcg32_fast& operator=(const random_pcg32_fast& other)
+    {
+      static_cast<void>(random_pcg32_fast_base::operator=(other));
+
+      if(this != &other)
+      {
+        my_inc   = other.my_inc;
+        my_state = other.my_state;
+      }
+
+      return *this;
+    }
+
+    void seed(const internal_type state = default_seed)
+    {
+      my_inc = default_increment;
+
+      my_state = (is_mcg ? state | internal_type(3U) : bump(state + increment()));
+    }
+
+    result_type operator()()
+    {
+      const result_type value =
+        xsh_rr_mixin<result_type, internal_type>::output(base_generate0());
+
+      return value;
+    }
+
+  private:
+    internal_type my_inc;
+    internal_type my_state;
+
+    internal_type multiplier() const
+    {
+      return default_multiplier;
+    }
+
+    internal_type increment() const
+    {
+      return default_increment;
+    }
+
+    internal_type bump(const internal_type state)
+    {
+      return internal_type(state * multiplier()) + increment();
+    }
+
+    internal_type base_generate0()
+    {
+      const internal_type old_state = my_state;
+
+      my_state = bump(my_state);
+
+      return old_state;
+    }
+  };
+
   template<const std::size_t Digits2,
            typename LimbType>
   class default_random_engine
   {
   public:
-    // Use a fast and efficient PCG-family random number generator.
-
     using result_type = uintwide_t<Digits2, LimbType>;
-    using value_type  = std::uint32_t;
 
-    static const value_type default_seed = 0U;
+    static const random_pcg32_fast::internal_type default_seed = random_pcg32_fast::default_seed;
 
-    explicit default_random_engine(const value_type new_seed = default_seed)
-      : my_state(0U),
-        my_inc  (0U)
+    default_random_engine() : my_rng(default_seed) { }
+
+    explicit default_random_engine(const std::uint64_t new_seed)
+      : my_rng(new_seed) { }
+
+    default_random_engine(const default_random_engine&) = default;
+
+    ~default_random_engine() = default;
+
+    void seed(random_pcg32_fast::internal_type new_seed = default_seed)
     {
-      seed(new_seed);
-    }
-
-    void seed(const value_type new_seed = default_seed)
-    {
-      const std::uint64_t initstate = crc64_we(new_seed);
-      const std::uint64_t initseq   = 0U;
-
-      my_inc = std::uint64_t(initseq << 1) | 1U;
-      step();
-      my_state += initstate;
-      step();
+      my_rng.seed(new_seed);
     }
 
     result_type operator()()
@@ -2554,7 +2720,7 @@
 
       const std::size_t digits_ratio = 
         std::size_t(  std::numeric_limits<local_result_value_type>::digits
-                    / std::numeric_limits<value_type>::digits);
+                    / std::numeric_limits<random_pcg32_fast::result_type>::digits);
 
       switch(digits_ratio)
       {
@@ -2563,14 +2729,14 @@
           // the 32-bit width of the random number generator result.
           {
             const std::size_t digits_ratio_inverse = 
-              std::size_t(  std::numeric_limits<value_type>::digits
+              std::size_t(  std::numeric_limits<random_pcg32_fast::result_type>::digits
                           / std::numeric_limits<local_result_value_type>::digits);
 
             auto it = result.representation().begin();
 
             while(it < result.representation().end())
             {
-              const value_type value = next_random_value();
+              const random_pcg32_fast::result_type value = next_random_value();
 
               for(std::size_t j = 0U; j < digits_ratio_inverse; ++j)
               {
@@ -2601,7 +2767,7 @@
               const local_result_value_type value = local_result_value_type(next_random_value());
 
               const std::size_t left_shift_amount =
-                std::size_t(j * std::size_t(std::numeric_limits<value_type>::digits));
+                std::size_t(j * std::size_t(std::numeric_limits<random_pcg32_fast::result_type>::digits));
 
               (*it) |= local_result_value_type(value << left_shift_amount);
             }
@@ -2612,76 +2778,42 @@
       return result;
     }
 
+    void discard(unsigned long long z)
+    {
+      for(unsigned long long i = 0U; i < z; ++i)
+      {
+         // TBD: Can the state be advanced without the loop?
+         my_rng();
+      }
+    }
+
+    static result_type (min)() { return (std::numeric_limits<result_type>::min)(); }
+    static result_type (max)() { return (std::numeric_limits<result_type>::max)(); }
+
   private:
-    std::uint64_t my_state;
-    std::uint64_t my_inc;
+    random_pcg32_fast my_rng;
 
-    static const std::uint64_t default_multiplier = UINT64_C(6364136223846793005);
-
-    value_type next_random_value()
+    random_pcg32_fast::result_type next_random_value()
     {
-      const std::uint64_t previous_state = my_state;
-
-      step();
-
-      const value_type next_value =
-        rotate(value_type      (((previous_state >> 18U) ^ previous_state) >> 27U),
-               std::int_fast8_t  (previous_state >> 59U));
-
-      return next_value;
-    }
-
-    void step()
-    {
-      my_state = std::uint64_t(std::uint64_t(my_state * default_multiplier) + my_inc);
-    }
-
-    static value_type rotate(value_type value, std::int_fast8_t rot)
-    {
-      return value_type(value_type(value >> rot)
-                                | (value << std::int_fast8_t(std::uint_fast8_t(-rot) & 31U)));
-    }
-
-    template<typename UnsignedIntegralType>
-    std::uint64_t crc64_we(const UnsignedIntegralType v)
-    {
-      // Calculate a bitwise CRC64/WE over the
-      // individual bytes of the input parameter v.
-
-      // Extract the bytes of v into an array.
-      std::array<std::uint8_t, std::numeric_limits<UnsignedIntegralType>::digits / 8U> data;
-
-      for(std::uint_fast8_t i = 0U; i < data.size(); ++ i)
-      {
-        data[i] = std::uint8_t(v >> (i * 8U));
-      }
-
-      std::uint64_t crc = UINT64_C(0xFFFFFFFFFFFFFFFF);
-
-      // Perform modulo-2 division, one byte at a time.
-      for(std::size_t byte = 0U; byte < data.size(); ++byte)
-      {
-        // Bring the next byte into the result.
-        crc ^= (std::uint64_t(data[byte]) << (std::numeric_limits<std::uint64_t>::digits - 8U));
-
-        // Perform a modulo-2 division, one bit at a time.
-        for(std::int_fast8_t bit = 8; bit > 0; --bit)
-        {
-          // Divide the current data bit.
-          if((crc & (std::uintmax_t(1U) << (std::numeric_limits<std::uint64_t>::digits - 1U))) != 0U)
-          {
-            crc = std::uint64_t(crc << 1) ^ UINT64_C(0x42F0E1EBA9EA3693);
-          }
-          else
-          {
-            crc <<= 1;
-          }
-        }
-      }
-
-      return std::uint64_t(crc ^ UINT64_C(0xFFFFFFFFFFFFFFFF));
+      return my_rng();
     }
   };
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator==(const default_random_engine<Digits2, LimbType>& lhs,
+                  const default_random_engine<Digits2, LimbType>& rhs)
+  {
+    return true;
+  }
+
+  template<const std::size_t Digits2,
+           typename LimbType>
+  bool operator!=(const default_random_engine<Digits2, LimbType>& lhs,
+                  const default_random_engine<Digits2, LimbType>& rhs)
+  {
+    return false;
+  }
 
   template<const std::size_t Digits2,
            typename LimbType>
@@ -2723,9 +2855,23 @@
     private:
       result_type param_a;
       result_type param_b;
+
+      friend inline bool operator==(const param_type& lhs,
+                                    const param_type& rhs)
+      {
+        return (   (lhs.param_a == rhs.param_a)
+                && (lhs.param_b == rhs.param_b));
+      }
+
+      friend inline bool operator!=(const param_type& lhs,
+                                    const param_type& rhs)
+      {
+        return (   (lhs.param_a != rhs.param_a)
+                || (lhs.param_b != rhs.param_b));
+      }
     };
 
-    uniform_int_distribution() : my_params() { }
+    uniform_int_distribution() : my_params(result_type(0U)) { }
 
     explicit uniform_int_distribution(const result_type& a,
                                       const result_type& b = (std::numeric_limits<result_type>::max)())
@@ -2734,27 +2880,21 @@
     explicit uniform_int_distribution(const param_type& other_params)
       : my_params(other_params) { }
 
-    uniform_int_distribution(const uniform_int_distribution& other_distribution)
-      : my_params(other_distribution.my_params) { }
+    uniform_int_distribution(const uniform_int_distribution& other_distribution) = delete;
 
     ~uniform_int_distribution() = default;
 
-    uniform_int_distribution& operator=(const uniform_int_distribution& other_distribution)
-    {
-      if(this != &other_distribution)
-      {
-        my_params = other_distribution.my_params;
-      }
+    uniform_int_distribution& operator=(const uniform_int_distribution&) = delete;
 
-      return *this;
-    }
-
-    void params(const param_type& new_params)
+    void param(const param_type& new_params)
     {
       my_params = new_params;
     }
 
-    const param_type& params() const { return my_params; }
+    const param_type& param() const { return my_params; }
+
+    result_type a() const { return my_params.get_a(); }
+    result_type b() const { return my_params.get_b(); }
 
     template<typename GeneratorType>
     result_type operator()(GeneratorType& generator)
@@ -2797,8 +2937,7 @@
   bool operator==(const uniform_int_distribution<Digits2, LimbType>& lhs,
                   const uniform_int_distribution<Digits2, LimbType>& rhs)
   {
-    return (   (lhs.params().get_a() == rhs.params().get_a())
-            && (lhs.params().get_b() == rhs.params().get_b()));
+    return (lhs.param() == rhs.param());
   }
 
   template<const std::size_t Digits2,
@@ -2806,8 +2945,7 @@
   bool operator!=(const uniform_int_distribution<Digits2, LimbType>& lhs,
                   const uniform_int_distribution<Digits2, LimbType>& rhs)
   {
-    return (   (lhs.params().get_a() != rhs.params().get_a())
-            || (lhs.params().get_b() != rhs.params().get_b()));
+    return (lhs.param() != rhs.param());
   }
 
   template<typename DistributionType,
@@ -3001,5 +3139,20 @@
   }
 
   } } // namespace wide_integer::generic_template
+
+  namespace wide_integer {
+
+  bool example001_mul_div();
+  bool example001a_div_mod();
+  bool example002_shl_shr();
+  bool example003_sqrt();
+  bool example004_rootk_pow();
+  bool example005_powm();
+  bool example006_gcd();
+  bool example007_random_generator();
+  bool example008_miller_rabin_prime();
+  bool example009_compare_mul_with_boost();
+
+  } // namespace wide_integer
 
 #endif // GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
