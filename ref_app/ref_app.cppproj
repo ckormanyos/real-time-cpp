@@ -42,15 +42,15 @@
     <BootSegment>2</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.37" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
     <ResetRule>0</ResetRule>
     <EraseKey />
@@ -182,6 +182,36 @@
     <Compile Include="src\app\benchmark\app_benchmark.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_complex.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_crc.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_detail.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fast_math.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_filter.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_fixed_point.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_float.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_wide_integer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -198,6 +228,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\math\constants\constant_functions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\constants\pi_spigot_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\constants\pi_spigot_single.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\constants\pi_spigot_state.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\math\extended_complex\extended_complex.h">
