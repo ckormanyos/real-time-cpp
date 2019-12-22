@@ -23,8 +23,20 @@ namespace app
   }
 }
 
+extern "C" void __sys_tick_handler();
+extern "C" uint32_t SysTick_Config(uint32_t ticks);
+
+void __sys_tick_handler()
+{
+  port_type::toggle_pin();
+}
+
 void app::benchmark::task_init()
 {
+  port_type::set_direction_output();
+
+  SysTick_Config(UINT32_C(0x01000000));
+
   #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
   #else
   // Set the benchmark port pin direction to output.
@@ -34,8 +46,10 @@ void app::benchmark::task_init()
 
 void app::benchmark::task_func()
 {
+  #if(APP_BENCHMARK_TYPE != APP_BENCHMARK_TYPE_NONE)
   // Set the benchmark port pin level to high.
   port_type::set_pin_high();
+  #endif
 
   // Run the benchmark (if enabled via compiler switch).
 
@@ -77,8 +91,10 @@ void app::benchmark::task_func()
 
   #endif
 
+  #if(APP_BENCHMARK_TYPE != APP_BENCHMARK_TYPE_NONE)
   // Set the benchmark port pin level to low.
   port_type::set_pin_low();
+  #endif
 
   if(result_is_ok == false)
   {

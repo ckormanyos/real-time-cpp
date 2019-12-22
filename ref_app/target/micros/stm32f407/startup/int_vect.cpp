@@ -33,7 +33,7 @@ extern "C" void __usage_fault_handler() { for(;;) { mcal::cpu::nop(); } }
 extern "C" void __svc_handler        () { for(;;) { mcal::cpu::nop(); } }
 extern "C" void __debug_mon_handler  () { for(;;) { mcal::cpu::nop(); } }
 extern "C" void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __sys_tick_handler   () { for(;;) { mcal::cpu::nop(); } }
+//extern "C" void __sys_tick_handler   () { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
