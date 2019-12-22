@@ -31,7 +31,7 @@
            typename LimbType = std::uint32_t>
   class uintwide_t;
 
-  // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
+  // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op uintwide_t).
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator+(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator-(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
   template<const std::size_t Digits2, typename LimbType> uintwide_t<Digits2, LimbType> operator*(const uintwide_t<Digits2, LimbType>& u, const uintwide_t<Digits2, LimbType>& v);
@@ -422,121 +422,6 @@
     return local_ularge_type(local_ularge_type(static_cast<local_ularge_type>(hi) << std::numeric_limits<ST>::digits) | lo);
   }
 
-  template<typename UnsignedIntegralType>
-  std::size_t lsb_helper(const UnsignedIntegralType& x)
-  {
-    // Compile-time checks.
-    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
-                   "Error: Please check the characteristics of UnsignedIntegralType");
-
-    using local_unsigned_integral_type = UnsignedIntegralType;
-
-    std::size_t i;
-
-    // This assumes that at least one bit is set.
-    // Otherwise saturation of the index will occur.
-    for(i = 0U; i < std::size_t(std::numeric_limits<local_unsigned_integral_type>::digits); ++i)
-    {
-      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
-      {
-        break;
-      }
-    }
-
-    return i;
-  }
-
-  template<typename UnsignedIntegralType>
-  std::size_t msb_helper(const UnsignedIntegralType& x)
-  {
-    // Compile-time checks.
-    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
-                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
-                   "Error: Please check the characteristics of UnsignedIntegralType");
-
-    using local_unsigned_integral_type = UnsignedIntegralType;
-
-    std::ptrdiff_t i;
-
-    // This assumes that at least one bit is set.
-    // Otherwise underflow of the index will occur.
-    for(i = std::ptrdiff_t(std::numeric_limits<local_unsigned_integral_type>::digits - 1); i >= 0; --i)
-    {
-      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
-      {
-        break;
-      }
-    }
-
-    return std::size_t(i);
-  }
-
-  template<typename ST>
-  ST integer_gcd_reduce_short(ST u, ST v)
-  {
-    // This implementation of GCD reduction is based on an
-    // adaptation of existing code from Boost.Multiprecision.
-
-    for(;;)
-    {
-      if(u > v)
-      {
-        std::swap(u, v);
-      }
-
-      if(u == v)
-      {
-        break;
-      }
-
-      v  -= u;
-      v >>= detail::lsb_helper(v);
-    }
-
-    return u;
-  }
-
-  template<typename LT>
-  LT integer_gcd_reduce_large(LT u, LT v)
-  {
-    // This implementation of GCD reduction is based on an
-    // adaptation of existing code from Boost.Multiprecision.
-
-    using local_ularge_type = LT;
-    using local_ushort_type = typename detail::int_type_helper<std::size_t(std::numeric_limits<local_ularge_type>::digits / 2)>::exact_unsigned_type;
-
-    for(;;)
-    {
-      if(u > v)
-      {
-        std::swap(u, v);
-      }
-
-      if(u == v)
-      {
-        break;
-      }
-
-      if(v <= local_ularge_type((std::numeric_limits<local_ushort_type>::max)()))
-      {
-        u = integer_gcd_reduce_short(local_ushort_type(v),
-                                     local_ushort_type(u));
-
-        break;
-      }
-
-      v -= u;
-
-      while((std::uint_fast8_t(v) & 1U) == 0U)
-      {
-        v >>= 1;
-      }
-    }
-
-    return u;
-  }
-
   } } } // namespace wide_integer::generic_template::detail
 
   namespace wide_integer { namespace generic_template {
@@ -563,12 +448,14 @@
                    "Error: Please check the characteristics of the template parameters ST and LT");
 
     // Helper constants for the digit characteristics.
-    static const std::size_t my_digits   = Digits2;
-    static const std::size_t my_digits10 = static_cast<int>((std::uintmax_t(my_digits) * UINTMAX_C(301)) / 1000U);
+    static constexpr std::size_t my_digits   = Digits2;
+    static constexpr std::size_t my_digits10 = static_cast<int>((std::uintmax_t(my_digits) * UINTMAX_C(301)) / 1000U);
 
     // The number of limbs.
-    static const std::size_t number_of_limbs =
+    static constexpr std::size_t number_of_limbs =
       std::size_t(my_digits / std::size_t(std::numeric_limits<ushort_type>::digits));
+
+    static constexpr std::size_t number_of_limbs_karatsuba_threshold = 129U;
 
     // The type of the internal data representation.
     using representation_type = std::array<ushort_type, number_of_limbs>;
@@ -586,8 +473,9 @@
     using half_width_type   = uintwide_t<my_digits / 2U, ushort_type>;
     using double_width_type = uintwide_t<my_digits * 2U, ushort_type>;
 
-    // Default destructor.
-    ~uintwide_t() = default;
+    template<const std::size_t NumberOfLimbs,
+             typename EnableType>
+    friend struct eval_mul_unary_helper;
 
     // Default constructor.
     uintwide_t() = default;
@@ -692,6 +580,9 @@
 
     // Move constructor.
     uintwide_t(uintwide_t&& other) : values(static_cast<representation_type&&>(other.values)) { }
+
+    // Default destructor.
+    ~uintwide_t() = default;
 
     // Assignment operator.
     uintwide_t& operator=(const uintwide_t& other)
@@ -800,18 +691,13 @@
     uintwide_t& operator+=(const uintwide_t& other)
     {
       // Unary addition function.
-      std::array<ularge_type, number_of_limbs> result_as_ularge_array;
+      const ushort_type carry = eval_add_n(values.data(),
+                                           values.data(),
+                                           other.values.data(),
+                                           number_of_limbs,
+                                           ushort_type(0U));
 
-      ushort_type carry(0U);
-
-      for(std::size_t i = 0U; i < number_of_limbs; ++i)
-      {
-        result_as_ularge_array[i] = ularge_type(ularge_type(values[i]) + other.values[i]) + carry;
-
-        carry = detail::make_hi<ushort_type>(result_as_ularge_array[i]);
-
-        values[i] = ushort_type(result_as_ularge_array[i]);
-      }
+      static_cast<void>(carry);
 
       return *this;
     }
@@ -819,32 +705,32 @@
     uintwide_t& operator-=(const uintwide_t& other)
     {
       // Unary subtraction function.
-      std::array<ularge_type, number_of_limbs> result_as_ularge_array;
+      const ushort_type has_borrow = eval_subtract_n(values.data(),
+                                                     values.data(),
+                                                     other.values.data(),
+                                                     number_of_limbs,
+                                                     false);
 
-      bool has_borrow = false;
-
-      for(std::size_t i = 0U; i < number_of_limbs; ++i)
-      {
-        result_as_ularge_array[i] = ularge_type(values[i]) - other.values[i];
-
-        if(has_borrow) { --result_as_ularge_array[i]; }
-
-        has_borrow = (detail::make_hi<ushort_type>(result_as_ularge_array[i]) != ushort_type(0U));
-
-        values[i] = ushort_type(result_as_ularge_array[i]);
-      }
+      static_cast<void>(has_borrow);
 
       return *this;
     }
 
     uintwide_t& operator*=(const uintwide_t& other)
     {
-      // Unary multiplication function.
+      eval_mul_unary_helper<number_of_limbs>::eval_mul_unary(*this, other);
+
+      return *this;
+    }
+
+    uintwide_t& mul_by_limb(const ushort_type v)
+    {
       std::array<ushort_type, number_of_limbs> result;
 
-      multiplication_loop_schoolbook_half<number_of_limbs>(values.data(),
-                                                           other.values.data(),
-                                                           result.data());
+      eval_multiply_1d(result.data(),
+                       values.data(),
+                       v,
+                       number_of_limbs);
 
       std::copy(result.cbegin(),
                 result.cbegin() + number_of_limbs,
@@ -856,7 +742,7 @@
     uintwide_t& operator/=(const uintwide_t& other)
     {
       // Unary division function.
-      quotient_and_remainder_knuth(other, nullptr);
+      eval_divide_knuth(other, nullptr);
 
       return *this;
     }
@@ -866,7 +752,7 @@
       // Unary modulus function.
       uintwide_t remainder;
 
-      quotient_and_remainder_knuth(other, &remainder);
+      eval_divide_knuth(other, &remainder);
 
       values = remainder.values;
 
@@ -1136,11 +1022,15 @@
 
           while(t.is_zero() == false)
           {
+            // TBD: Try to generally improve efficiency and reduce
+            // the number of temporaries and the count of operations
+            // on them in the conversion to decimal string.
+
             const uintwide_t t_temp(t);
 
             t /= ten;
 
-            char c = char(ushort_type((t_temp - (t * ten)).values[0U]));
+            char c = char((t_temp - (uintwide_t(t).mul_by_limb(10U))).values[0U]);
 
             if(c <= char(9)) { c += char(0x30); }
 
@@ -1248,12 +1138,22 @@
 
     std::int_fast8_t compare(const uintwide_t& other) const
     {
-      std::int_fast8_t return_value;
+      const std::int_fast8_t cmp_result = compare_ranges(values.data(), other.values.data(), number_of_limbs);
+
+      return cmp_result;
+    }
+
+  private:
+    representation_type values;
+
+    static std::int_fast8_t compare_ranges(const ushort_type* a, const ushort_type* b, const std::size_t count)
+    {
+      std::int_fast8_t cmp_result;
       std::ptrdiff_t   element_index;
 
-      for(element_index = std::ptrdiff_t(number_of_limbs - 1U); element_index >= std::ptrdiff_t(0); --element_index)
+      for(element_index = std::ptrdiff_t(count - 1U); element_index >= std::ptrdiff_t(0); --element_index)
       {
-        if(values[std::size_t(element_index)] != other.values[std::size_t(element_index)])
+        if(a[std::size_t(element_index)] != b[std::size_t(element_index)])
         {
           break;
         }
@@ -1261,159 +1161,366 @@
 
       if(element_index == std::ptrdiff_t(-1))
       {
-        return_value = std::int_fast8_t(0);
+        cmp_result = std::int_fast8_t(0);
       }
       else
       {
         const bool left_is_greater_than_right =
-          (values[std::size_t(element_index)] > other.values[std::size_t(element_index)]);
+          (a[std::size_t(element_index)] > b[std::size_t(element_index)]);
 
-        return_value = (left_is_greater_than_right ? std::int_fast8_t(1) : std::int_fast8_t(-1));
+        cmp_result = (left_is_greater_than_right ? std::int_fast8_t(1) : std::int_fast8_t(-1));
       }
 
-      return return_value;
+      return cmp_result;
     }
 
-  private:
-    representation_type values;
-
-    // Read string function.
-    bool rd_string(const char* str_input)
+    template<const std::size_t NumberOfLimbs,
+             typename EnableType = void>
+    struct eval_mul_unary_helper
     {
-      std::fill(values.begin(), values.end(), ushort_type(0U));
+      static void eval_mul_unary(uintwide_t&, const uintwide_t&) { }
+    };
 
-      const std::size_t str_length = detail::strlen_unsafe(str_input);
-
-      std::uint_fast8_t base = 10U;
-
-      std::size_t pos = 0U;
-
-      // Skip over a potential plus sign.
-      if((str_length > 0U) && (str_input[0U] == char('+')))
-      {
-        ++pos;
-      }
-
-      // Perform a dynamic detection of the base.
-      if(str_length > (pos + 0U))
-      {
-        const bool might_be_oct_or_hex = ((str_input[pos + 0U] == char('0')) && (str_length > (pos + 1U)));
-
-        if(might_be_oct_or_hex)
-        {
-          if((str_input[pos + 1U] >= char('0')) && (str_input[pos + 1U] <= char('8')))
-          {
-            // The input format is octal.
-            base = 8U;
-
-            pos += 1U;
-          }
-          else if((str_input[pos + 1U] == char('x')) || (str_input[pos + 1U] == char('X')))
-          {
-            // The input format is hexadecimal.
-            base = 16U;
-
-            pos += 2U;
-          }
-        }
-        else if((str_input[pos + 0U] >= char('0')) && (str_input[pos + 0U] <= char('9')))
-        {
-          // The input format is decimal.
-          ;
-        }
-      }
-
-      bool char_is_valid = true;
-
-      for( ; ((pos < str_length) && char_is_valid); ++pos)
-      {
-        std::uint8_t c = std::uint8_t(str_input[pos]);
-
-        const bool char_is_apostrophe = (c == char(39));
-
-        if(char_is_apostrophe == false)
-        {
-          if(base == 8U)
-          {
-            if  ((c >= char('0')) && (c <= char('8'))) { c -= std::uint8_t(0x30U); }
-            else                                       { char_is_valid = false; }
-
-            if(char_is_valid)
-            {
-              operator<<=(3);
-
-              values[0U] |= std::uint8_t(c);
-            }
-          }
-          else if(base == 10U)
-          {
-            if   ((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
-            else                                                        { char_is_valid = false; }
-
-            if(char_is_valid)
-            {
-              operator*=(10U);
-
-              operator+=(c);
-            }
-          }
-          else if(base == 16U)
-          {
-            if     ((c >= std::uint8_t('a')) && (c <= std::uint8_t('f'))) { c -= std::uint8_t(  87U); }
-            else if((c >= std::uint8_t('A')) && (c <= std::uint8_t('F'))) { c -= std::uint8_t(  55U); }
-            else if((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
-            else                                                          { char_is_valid = false; }
-
-            if(char_is_valid)
-            {
-              operator<<=(4);
-
-              values[0U] |= c;
-            }
-          }
-        }
-      }
-
-      return char_is_valid;
-    }
-
-    template<const std::size_t ResultLimbCount>
-    static void multiplication_loop_schoolbook_half(const ushort_type* pu,
-                                                    const ushort_type* pv,
-                                                          ushort_type* pw)
+    template<const std::size_t NumberOfLimbs>
+    struct eval_mul_unary_helper<NumberOfLimbs,
+                                 typename std::enable_if<(NumberOfLimbs < uintwide_t::number_of_limbs_karatsuba_threshold)>::type>
     {
-      std::fill(pw, pw + ResultLimbCount, ushort_type(0U));
-
-      for(std::size_t j = 0U; j < ResultLimbCount; ++j)
+      static void eval_mul_unary(uintwide_t& u, const uintwide_t& v)
       {
-        if(pv[j] != ushort_type(0U))
+        // Unary multiplication function type schoolbook multiplication,
+        // but only the half-pyramid thereof for n*n->n bit multiply.
+
+        std::array<ushort_type, NumberOfLimbs> result;
+
+        eval_multiply_nhalf(result.data(),
+                            u.values.data(),
+                            v.values.data(),
+                            NumberOfLimbs);
+
+        std::copy(result.cbegin(),
+                  result.cbegin() + NumberOfLimbs,
+                  u.values.begin());
+      }
+    };
+
+    template<const std::size_t NumberOfLimbs>
+    struct eval_mul_unary_helper<NumberOfLimbs,
+                                 typename std::enable_if<(NumberOfLimbs >= uintwide_t::number_of_limbs_karatsuba_threshold)>::type>
+    {
+      static void eval_mul_unary(uintwide_t& u, const uintwide_t& v)
+      {
+        // Unary multiplication function type Karatsuba multiplication.
+
+        std::array<ushort_type, NumberOfLimbs * 2U> result;
+        std::array<ushort_type, NumberOfLimbs * 4U> t;
+
+        eval_multiply_kara(result.data(),
+                           u.values.data(),
+                           v.values.data(),
+                           NumberOfLimbs,
+                           t.data());
+
+        std::copy(result.cbegin(),
+                  result.cbegin() + NumberOfLimbs,
+                  u.values.begin());
+      }
+    };
+
+    static ushort_type eval_add_n(      ushort_type* r,
+                                  const ushort_type* u,
+                                  const ushort_type* v,
+                                  const std::size_t  count,
+                                  const ushort_type  carry_in = 0U)
+    {
+      ushort_type carry_out = carry_in;
+
+      for(std::size_t i = 0U; i < count; ++i)
+      {
+        const ularge_type uv_as_ularge = ularge_type(ularge_type(u[i]) + v[i]) + carry_out;
+
+        carry_out = detail::make_hi<ushort_type>(uv_as_ularge);
+
+        r[i] = ushort_type(uv_as_ularge);
+      }
+
+      return carry_out;
+    }
+
+    static bool eval_subtract_n(      ushort_type* r,
+                                const ushort_type* u,
+                                const ushort_type* v,
+                                const std::size_t  count,
+                                const bool         has_borrow_in = false)
+    {
+      bool has_borrow_out = has_borrow_in;
+
+      for(std::size_t i = 0U; i < count; ++i)
+      {
+        ularge_type uv_as_ularge = ularge_type(u[i]) - v[i];
+
+        if(has_borrow_out)
         {
-          ushort_type carry = ushort_type(0U);
+          --uv_as_ularge;
+        }
 
-          for(std::size_t i = 0U, iplusj = i + j; iplusj < ResultLimbCount; ++i, ++iplusj)
+        has_borrow_out = (detail::make_hi<ushort_type>(uv_as_ularge) != ushort_type(0U));
+
+        r[i] = ushort_type(uv_as_ularge);
+      }
+
+      return has_borrow_out;
+    }
+
+    static void eval_multiply_nhalf(      ushort_type* r,
+                                    const ushort_type* u,
+                                    const ushort_type* v,
+                                    const std::size_t  count)
+    {
+      std::fill(r, r + count, ushort_type(0U));
+
+      for(std::size_t j = 0U; j < count; ++j)
+      {
+        if(v[j] != ushort_type(0U))
+        {
+          ularge_type carry = 0U;
+
+          for(std::size_t i = 0U; i < (count - j); ++i)
           {
-            const ularge_type t =
-              ularge_type(ularge_type(ularge_type(pu[i]) * pv[j]) + pw[iplusj]) + carry;
+            carry += ularge_type(ularge_type(u[i]) * v[j]);
+            carry += r[i + j];
 
-            pw[iplusj] = detail::make_lo<ushort_type>(t);
-            carry      = detail::make_hi<ushort_type>(t);
+            r[i + j] = detail::make_lo<ushort_type>(carry);
+            carry    = detail::make_hi<ushort_type>(carry);
           }
         }
       }
     }
 
-    //template<const std::size_t ResultLimbCount>
-    //static void multiplication_loop_karatsuba(const ushort_type* pu,
-    //                                          const ushort_type* pv,
-    //                                                ushort_type* pw)
-    //{
-    //  // TBD: Not yet implemented.
-    //  static_cast<void>(pu);
-    //  static_cast<void>(pv);
-    //  static_cast<void>(pw);
-    //}
+    static void eval_multiply_n(      ushort_type* r,
+                                const ushort_type* u,
+                                const ushort_type* v,
+                                const std::size_t  count)
+    {
+      std::fill(r, r + (count * 2U), ushort_type(0U));
 
-    void quotient_and_remainder_knuth(const uintwide_t& other, uintwide_t* remainder)
+      for(std::size_t j = 0U; j < count; ++j)
+      {
+        if(v[j] != ushort_type(0U))
+        {
+          std::size_t i = 0U;
+
+          ularge_type carry = 0U;
+
+          for( ; i < count; ++i)
+          {
+            carry += ularge_type(ularge_type(u[i]) * v[j]);
+            carry += r[i + j];
+
+            r[i + j] = detail::make_lo<ushort_type>(carry);
+            carry    = detail::make_hi<ushort_type>(carry);
+          }
+
+          r[i + j] = ushort_type(carry);
+        }
+      }
+    }
+
+    static ushort_type eval_multiply_1d(      ushort_type* r,
+                                        const ushort_type* u,
+                                        const ushort_type  v,
+                                        const std::size_t  count)
+    {
+      std::fill(r, r + count, ushort_type(0U));
+
+      ularge_type carry = 0U;
+
+      if(v != ushort_type(0U))
+      {
+        for(std::size_t i = 0U ; i < count; ++i)
+        {
+          carry += ularge_type(ularge_type(u[i]) * v);
+          carry += r[i];
+
+          r[i]  = detail::make_lo<ushort_type>(carry);
+          carry = detail::make_hi<ushort_type>(carry);
+        }
+      }
+
+      return ushort_type(carry);
+    }
+
+    static void eval_multiply_kara_propagate_carry(ushort_type* t, const std::size_t n, const ushort_type carry)
+    {
+      std::size_t i = 0U;
+
+      ushort_type carry_out = carry;
+
+      while((i < n) && (carry_out != 0U))
+      {
+        const ularge_type uv_as_ularge = ularge_type(t[i]) + carry_out;
+
+        carry_out = detail::make_hi<ushort_type>(uv_as_ularge);
+
+        t[i] = ushort_type(uv_as_ularge);
+
+        ++i;
+      }
+    }
+
+    static void eval_multiply_kara_propagate_borrow(ushort_type* t, const std::size_t n, const bool has_borrow)
+    {
+      std::size_t i = 0U;
+
+      bool has_borrow_out = has_borrow;
+
+      while((i < n) && (has_borrow_out == true))
+      {
+        ularge_type uv_as_ularge = ularge_type(t[i]);
+
+        if(has_borrow_out)
+        {
+          --uv_as_ularge;
+        }
+
+        has_borrow_out = (detail::make_hi<ushort_type>(uv_as_ularge) != ushort_type(0U));
+
+        t[i] = ushort_type(uv_as_ularge);
+
+        ++i;
+      }
+    }
+
+    static void eval_multiply_kara(      ushort_type* r,
+                                   const ushort_type* u,
+                                   const ushort_type* v,
+                                   const std::size_t  n,
+                                         ushort_type* t)
+    {
+      if(n == 32U)
+      {
+        eval_multiply_n(r, u, v, n);
+      }
+      else
+      {
+        // The Karatsuba multipliation computes the product of u*v as:
+        // [b^N + b^(N/2)] u1*v1 + [b^(N/2)](u1 - u0)(v0 - v1) + [b^(N/2) + 1] u0*v0
+
+        // Here we visualize u and v in two components 0,1 corresponding
+        // to the high and low order parts, respectively.
+
+        // TBD: A subproblem: Deal with the subproblem getting negative,
+        // and consider the overhead for calculating the complements.
+        // Boost kara mul branch: z = (u1+u0)*(v1+v0) - u1*v1 - u0*v0
+        // This code:             z =  u1*v1 + u0*v0 - |u1-u0|*|v0-v1|
+
+        // Step 1
+        // Calculate u1*v1 and store it in the upper part of r.
+        // Calculate u0*v0 and store it in the lower part of r.
+        // copy r to t0.
+
+        // Step 2
+        // Add u1*v1 (which is t2) to the middle two-quarters of r (which is r1)
+        // Add u0*v0 (which is t0) to the middle two-quarters of r (which is r1)
+
+        // Step 3
+        // Calculate |u1-u0| in t0 and note the sign (i.e., the borrow flag)
+
+        // Step 4
+        // Calculate |v0-v1| in t1 and note the sign (i.e., the borrow flag)
+
+        // Step 5
+        // Call kara mul to calculate |u1-u0|*|v0-v1| in (t2),
+        // while using temporary storage in t4.
+
+        // Step 6
+        // Check the borrow signs. If u1-u0 and v0-v1 have the same signs,
+        // then add |u1-u0|*|v0-v1| to r1, otherwise subtract it from r1.
+
+        const std::size_t  nh = n / 2U;
+
+        const ushort_type* u0 = u + 0U;
+        const ushort_type* u1 = u + nh;
+        const ushort_type* u2 = u + n;
+
+        const ushort_type* v0 = v + 0U;
+        const ushort_type* v1 = v + nh;
+
+              ushort_type* r0 = r + 0U;
+              ushort_type* r1 = r + nh;
+              ushort_type* r2 = r + n;
+              ushort_type* r3 = r + (n + nh);
+              ushort_type* r4 = r + (n + n);
+
+              ushort_type* t0 = t + 0U;
+              ushort_type* t1 = t + nh;
+              ushort_type* t2 = t + n;
+              ushort_type* t4 = t + (n + n);
+
+        // Step 1
+        //   u1*v1 -> r2
+        //   u0*v0 -> r0
+        //   r -> t0
+        eval_multiply_kara(r2, u1, v1, nh, t0);
+        eval_multiply_kara(r0, u0, v0, nh, t0);
+        std::copy(r0, r4, t0);
+
+        // Step 2
+        //   r1 += u1*v1
+        //   r1 += u0*v0
+        ushort_type carry;
+        carry = eval_add_n(r1, r1, t2, n);
+        eval_multiply_kara_propagate_carry(r3, nh, carry);
+        carry = eval_add_n(r1, r1, t0, n);
+        eval_multiply_kara_propagate_carry(r3, nh, carry);
+
+        // Step 3
+        //   |u1-u0| -> t0
+        const std::int_fast8_t cmp_result_u1u0 = compare_ranges(u1, u0, nh);
+        if(cmp_result_u1u0 == 1)
+        {
+          static_cast<void>(eval_subtract_n(t0, u1, u0, nh));
+        }
+        else if(cmp_result_u1u0 == -1)
+        {
+          static_cast<void>(eval_subtract_n(t0, u0, u1, nh));
+        }
+
+        // Step 4
+        //   |v0-v1| -> t1
+        const std::int_fast8_t cmp_result_v0v1 = compare_ranges(v0, v1, nh);
+
+        if(cmp_result_v0v1 == 1)
+        {
+          static_cast<void>(eval_subtract_n(t1, v0, v1, nh));
+        }
+        else if(cmp_result_v0v1 == -1)
+        {
+          static_cast<void>(eval_subtract_n(t1, v1, v0, nh));
+        }
+
+        // Step 5
+        //   |u1-u0|*|v0-v1| -> t2
+        eval_multiply_kara(t2, t0, t1, nh, t4);
+
+        // Step 6
+        //   either r1 += |u1-u0|*|v0-v1|
+        //   or     r1 -= |u1-u0|*|v0-v1|
+        if((cmp_result_u1u0 * cmp_result_v0v1) == 1)
+        {
+          carry = eval_add_n(r1, r1, t2, n);
+
+          eval_multiply_kara_propagate_carry(r3, nh, carry);
+        }
+        else if((cmp_result_u1u0 * cmp_result_v0v1) == -1)
+        {
+          const bool has_borrow = eval_subtract_n(r1, r1, t2, n);
+
+          eval_multiply_kara_propagate_borrow(r3, nh, has_borrow);
+        }
+      }
+    }
+
+    void eval_divide_knuth(const uintwide_t& other, uintwide_t* remainder)
     {
       // TBD: Consider cleaning up the unclear flow-control
       // caused by numerous return statements in this subroutine.
@@ -1745,6 +1852,106 @@
       }
     }
 
+    // Read string function.
+    bool rd_string(const char* str_input)
+    {
+      std::fill(values.begin(), values.end(), ushort_type(0U));
+
+      const std::size_t str_length = detail::strlen_unsafe(str_input);
+
+      std::uint_fast8_t base = 10U;
+
+      std::size_t pos = 0U;
+
+      // Skip over a potential plus sign.
+      if((str_length > 0U) && (str_input[0U] == char('+')))
+      {
+        ++pos;
+      }
+
+      // Perform a dynamic detection of the base.
+      if(str_length > (pos + 0U))
+      {
+        const bool might_be_oct_or_hex = ((str_input[pos + 0U] == char('0')) && (str_length > (pos + 1U)));
+
+        if(might_be_oct_or_hex)
+        {
+          if((str_input[pos + 1U] >= char('0')) && (str_input[pos + 1U] <= char('8')))
+          {
+            // The input format is octal.
+            base = 8U;
+
+            pos += 1U;
+          }
+          else if((str_input[pos + 1U] == char('x')) || (str_input[pos + 1U] == char('X')))
+          {
+            // The input format is hexadecimal.
+            base = 16U;
+
+            pos += 2U;
+          }
+        }
+        else if((str_input[pos + 0U] >= char('0')) && (str_input[pos + 0U] <= char('9')))
+        {
+          // The input format is decimal.
+          ;
+        }
+      }
+
+      bool char_is_valid = true;
+
+      for( ; ((pos < str_length) && char_is_valid); ++pos)
+      {
+        std::uint8_t c = std::uint8_t(str_input[pos]);
+
+        const bool char_is_apostrophe = (c == char(39));
+
+        if(char_is_apostrophe == false)
+        {
+          if(base == 8U)
+          {
+            if  ((c >= char('0')) && (c <= char('8'))) { c -= std::uint8_t(0x30U); }
+            else                                       { char_is_valid = false; }
+
+            if(char_is_valid)
+            {
+              operator<<=(3);
+
+              values[0U] |= std::uint8_t(c);
+            }
+          }
+          else if(base == 10U)
+          {
+            if   ((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
+            else                                                        { char_is_valid = false; }
+
+            if(char_is_valid)
+            {
+              mul_by_limb(10U);
+
+              operator+=(c);
+            }
+          }
+          else if(base == 16U)
+          {
+            if     ((c >= std::uint8_t('a')) && (c <= std::uint8_t('f'))) { c -= std::uint8_t(  87U); }
+            else if((c >= std::uint8_t('A')) && (c <= std::uint8_t('F'))) { c -= std::uint8_t(  55U); }
+            else if((c >= std::uint8_t('0')) && (c <= std::uint8_t('9'))) { c -= std::uint8_t(0x30U); }
+            else                                                          { char_is_valid = false; }
+
+            if(char_is_valid)
+            {
+              operator<<=(4);
+
+              values[0U] |= c;
+            }
+          }
+        }
+      }
+
+      return char_is_valid;
+    }
+
     void bitwise_not()
     {
       for(std::size_t i = 0U; i < number_of_limbs; ++i)
@@ -1880,7 +2087,12 @@
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType>>::type
-  operator*(const uintwide_t<Digits2, LimbType>& u, const IntegralType& v) { return uintwide_t<Digits2, LimbType>(u).operator*=(uintwide_t<Digits2, LimbType>(v)); }
+  operator*(const uintwide_t<Digits2, LimbType>& u, const IntegralType& v)
+  {
+    // TBD: Make separate functions for signed/unsigned IntegralType.
+    // TBD: And subsequently use the optimized mul_by_limb function where appropriate.
+    return uintwide_t<Digits2, LimbType>(u).operator*=(uintwide_t<Digits2, LimbType>(v));
+  }
 
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
@@ -1906,7 +2118,12 @@
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType>>::type
-  operator*(const IntegralType& u, const uintwide_t<Digits2, LimbType>& v) { return uintwide_t<Digits2, LimbType>(u).operator*=(v); }
+  operator*(const IntegralType& u, const uintwide_t<Digits2, LimbType>& v)
+  {
+    // TBD: Make separate functions for signed/unsigned IntegralType.
+    // TBD: And subsequently use the optimized mul_by_limb function where appropriate.
+    return uintwide_t<Digits2, LimbType>(u).operator*=(v);
+  }
 
   template<typename IntegralType, const std::size_t Digits2, typename LimbType>
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
@@ -2116,6 +2333,60 @@
   // Implement various number-theoretical tools.
 
   namespace wide_integer { namespace generic_template {
+
+  namespace detail {
+
+  template<typename UnsignedIntegralType>
+  std::size_t lsb_helper(const UnsignedIntegralType& x)
+  {
+    // Compile-time checks.
+    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
+                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
+                   "Error: Please check the characteristics of UnsignedIntegralType");
+
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    std::size_t i;
+
+    // This assumes that at least one bit is set.
+    // Otherwise saturation of the index will occur.
+    for(i = 0U; i < std::size_t(std::numeric_limits<local_unsigned_integral_type>::digits); ++i)
+    {
+      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
+      {
+        break;
+      }
+    }
+
+    return i;
+  }
+
+  template<typename UnsignedIntegralType>
+  std::size_t msb_helper(const UnsignedIntegralType& x)
+  {
+    // Compile-time checks.
+    static_assert((   (std::numeric_limits<UnsignedIntegralType>::is_integer == true)
+                   && (std::numeric_limits<UnsignedIntegralType>::is_signed  == false)),
+                   "Error: Please check the characteristics of UnsignedIntegralType");
+
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    std::ptrdiff_t i;
+
+    // This assumes that at least one bit is set.
+    // Otherwise underflow of the index will occur.
+    for(i = std::ptrdiff_t(std::numeric_limits<local_unsigned_integral_type>::digits - 1); i >= 0; --i)
+    {
+      if((x & UnsignedIntegralType(local_unsigned_integral_type(1U) << i)) != 0U)
+      {
+        break;
+      }
+    }
+
+    return std::size_t(i);
+  }
+
+  }
 
   template<const std::size_t Digits2,
            typename LimbType>
@@ -2441,6 +2712,75 @@
     return result;
   }
 
+  namespace detail {
+
+  template<typename ST>
+  ST integer_gcd_reduce_short(ST u, ST v)
+  {
+    // This implementation of GCD reduction is based on an
+    // adaptation of existing code from Boost.Multiprecision.
+
+    for(;;)
+    {
+      if(u > v)
+      {
+        std::swap(u, v);
+      }
+
+      if(u == v)
+      {
+        break;
+      }
+
+      v  -= u;
+      v >>= detail::lsb_helper(v);
+    }
+
+    return u;
+  }
+
+  template<typename LT>
+  LT integer_gcd_reduce_large(LT u, LT v)
+  {
+    // This implementation of GCD reduction is based on an
+    // adaptation of existing code from Boost.Multiprecision.
+
+    using local_ularge_type = LT;
+    using local_ushort_type = typename detail::int_type_helper<std::size_t(std::numeric_limits<local_ularge_type>::digits / 2)>::exact_unsigned_type;
+
+    for(;;)
+    {
+      if(u > v)
+      {
+        std::swap(u, v);
+      }
+
+      if(u == v)
+      {
+        break;
+      }
+
+      if(v <= local_ularge_type((std::numeric_limits<local_ushort_type>::max)()))
+      {
+        u = integer_gcd_reduce_short(local_ushort_type(v),
+                                     local_ushort_type(u));
+
+        break;
+      }
+
+      v -= u;
+
+      while((std::uint_fast8_t(v) & 1U) == 0U)
+      {
+        v >>= 1;
+      }
+    }
+
+    return u;
+  }
+
+  }
+
   template<const std::size_t Digits2,
            typename LimbType>
   uintwide_t<Digits2, LimbType> gcd(const uintwide_t<Digits2, LimbType>& a,
@@ -2561,13 +2901,20 @@
     static ArithmeticType rotr(const ArithmeticType& value_being_shifted,
                                const std::size_t     bits_to_shift)
     {
+      const std::size_t bits_to_shift_limited_to_arithmetic_range =
+        (std::min)(static_cast<std::size_t>(std::numeric_limits<ArithmeticType>::digits),
+                   bits_to_shift);
+
       const std::size_t left_shift_amount =
-        std::numeric_limits<ArithmeticType>::digits - bits_to_shift;
+        std::numeric_limits<ArithmeticType>::digits - bits_to_shift_limited_to_arithmetic_range;
 
-      const ArithmeticType part1 = ((bits_to_shift > 0U) ? ArithmeticType(value_being_shifted >> bits_to_shift)     : value_being_shifted);
-      const ArithmeticType part2 = ((bits_to_shift > 0U) ? ArithmeticType(value_being_shifted << left_shift_amount) : 0U);
+      const ArithmeticType result =
+        ((bits_to_shift_limited_to_arithmetic_range > 0U)
+           ? (  ArithmeticType(value_being_shifted >> bits_to_shift_limited_to_arithmetic_range)
+              | ArithmeticType(value_being_shifted << left_shift_amount))
+           : value_being_shifted);
 
-      return ArithmeticType(part1 | part2);
+      return result;
     }
 
     template<typename xtype,
