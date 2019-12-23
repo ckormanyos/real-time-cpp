@@ -473,10 +473,6 @@
     using half_width_type   = uintwide_t<my_digits / 2U, ushort_type>;
     using double_width_type = uintwide_t<my_digits * 2U, ushort_type>;
 
-    template<const std::size_t NumberOfLimbs,
-             typename EnableType>
-    friend struct eval_mul_unary_helper;
-
     // Default constructor.
     uintwide_t() = default;
 
@@ -718,7 +714,7 @@
 
     uintwide_t& operator*=(const uintwide_t& other)
     {
-      eval_mul_unary_helper<number_of_limbs>::eval_mul_unary(*this, other);
+      eval_mul_unary<number_of_limbs>(*this, other);
 
       return *this;
     }
@@ -1176,55 +1172,48 @@
 
     template<const std::size_t NumberOfLimbs,
              typename EnableType = void>
-    struct eval_mul_unary_helper
-    {
-      static void eval_mul_unary(uintwide_t&, const uintwide_t&) { }
-    };
+    static void eval_mul_unary(uintwide_t&, const uintwide_t&, EnableType);
 
     template<const std::size_t NumberOfLimbs>
-    struct eval_mul_unary_helper<NumberOfLimbs,
-                                 typename std::enable_if<(NumberOfLimbs < uintwide_t::number_of_limbs_karatsuba_threshold)>::type>
+    static void eval_mul_unary(      uintwide_t& u,
+                               const uintwide_t& v,
+                               typename std::enable_if<(NumberOfLimbs < uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
     {
-      static void eval_mul_unary(uintwide_t& u, const uintwide_t& v)
-      {
-        // Unary multiplication function type schoolbook multiplication,
-        // but only the half-pyramid thereof for n*n->n bit multiply.
+      // Unary multiplication function using schoolbook multiplication,
+      // but only half of the n*n algorithm is used for or n*n->n bit multiply.
 
-        std::array<ushort_type, NumberOfLimbs> result;
+      std::array<ushort_type, NumberOfLimbs> result;
 
-        eval_multiply_nhalf(result.data(),
-                            u.values.data(),
-                            v.values.data(),
-                            NumberOfLimbs);
+      eval_multiply_nhalf(result.data(),
+                          u.values.data(),
+                          v.values.data(),
+                          NumberOfLimbs);
 
-        std::copy(result.cbegin(),
-                  result.cbegin() + NumberOfLimbs,
-                  u.values.begin());
-      }
-    };
+      std::copy(result.cbegin(),
+                result.cbegin() + NumberOfLimbs,
+                u.values.begin());
+    }
 
     template<const std::size_t NumberOfLimbs>
-    struct eval_mul_unary_helper<NumberOfLimbs,
-                                 typename std::enable_if<(NumberOfLimbs >= uintwide_t::number_of_limbs_karatsuba_threshold)>::type>
+    static void eval_mul_unary(      uintwide_t& u,
+                               const uintwide_t& v,
+                               typename std::enable_if<(NumberOfLimbs >= uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
     {
-      static void eval_mul_unary(uintwide_t& u, const uintwide_t& v)
-      {
-        // Unary multiplication function type Karatsuba multiplication.
+      // Unary multiplication function using Karatsuba multiplication.
 
-        std::array<ushort_type, NumberOfLimbs * 2U> result;
-        std::array<ushort_type, NumberOfLimbs * 4U> t;
+      std::array<ushort_type, NumberOfLimbs * 2U> result;
+      std::array<ushort_type, NumberOfLimbs * 4U> t;
 
-        eval_multiply_kara(result.data(),
-                           u.values.data(),
-                           v.values.data(),
-                           NumberOfLimbs,
-                           t.data());
+      eval_multiply_kara(result.data(),
+                          u.values.data(),
+                          v.values.data(),
+                          NumberOfLimbs,
+                          t.data());
 
-        std::copy(result.cbegin(),
-                  result.cbegin() + NumberOfLimbs,
-                  u.values.begin());
-      }
-    };
+      std::copy(result.cbegin(),
+                result.cbegin() + NumberOfLimbs,
+                u.values.begin());
+    }
 
     static ushort_type eval_add_n(      ushort_type* r,
                                   const ushort_type* u,
