@@ -315,12 +315,14 @@
 
   namespace wide_integer { namespace generic_template { namespace detail {
 
-  template<const std::size_t Digits2>
-  struct verify_power_of_two
-  {
-    static const bool conditional_value =
-      ((Digits2 != 0U) && ((Digits2 & (Digits2 - 1U)) == 0U));
-  };
+  template<const std::size_t Digits2> struct verify_power_of_two     { static constexpr bool conditional_value = verify_power_of_two<Digits2 / 2U>::conditional_value; };
+  template<>                          struct verify_power_of_two<2U> { static constexpr bool conditional_value = true; };
+  template<>                          struct verify_power_of_two<0U> { static constexpr bool conditional_value = false; };
+
+  template<const std::size_t Digits2> struct verify_power_of_two_times_three     { static constexpr bool conditional_value = verify_power_of_two_times_three<Digits2 / 2U>::conditional_value; };
+  template<>                          struct verify_power_of_two_times_three<3U> { static constexpr bool conditional_value = true; };
+  template<>                          struct verify_power_of_two_times_three<2U> { static constexpr bool conditional_value = true; };
+  template<>                          struct verify_power_of_two_times_three<0U> { static constexpr bool conditional_value = false; };
 
   // Helper templates for selecting integral types.
   template<const std::size_t BitCount> struct int_type_helper
@@ -431,10 +433,6 @@
   class uintwide_t
   {
   public:
-    // Verify that the Digits2 template parameter is a power of 2.
-    static_assert(detail::verify_power_of_two<Digits2>::conditional_value == true,
-                  "Error: The Digits2 template parameter must be a power of 2");
-
     // Class-local type definitions.
     using ushort_type = LimbType;
     using ularge_type = typename detail::int_type_helper<std::size_t(std::numeric_limits<ushort_type>::digits * 2)>::exact_unsigned_type;
@@ -455,7 +453,15 @@
     static constexpr std::size_t number_of_limbs =
       std::size_t(my_digits / std::size_t(std::numeric_limits<ushort_type>::digits));
 
-    static constexpr std::size_t number_of_limbs_karatsuba_threshold = 129U;
+    static constexpr std::size_t number_of_limbs_karatsuba_threshold = std::size_t(128U + 1U);
+
+    // Verify that the Digits2 template parameter (my_digits) is 2^n or (3*2^n),
+    // and that there are at least 16 or 24 binary digits, and that the number of
+    // binary digits is an exact multiple of the number of limbs.
+    static_assert(   (detail::verify_power_of_two_times_three<my_digits>::conditional_value == true)
+                  && ((my_digits >= 16U) || (my_digits >= 24U))
+                  && (my_digits == (number_of_limbs * std::size_t(std::numeric_limits<ushort_type>::digits))),
+                  "Error: Digits2 must be (2^n) or 3*(2^n), 16 or 24 or larger, and exactly divisible by limb count");
 
     // The type of the internal data representation.
     using representation_type = std::array<ushort_type, number_of_limbs>;
@@ -714,7 +720,7 @@
 
     uintwide_t& operator*=(const uintwide_t& other)
     {
-      eval_mul_unary<number_of_limbs>(*this, other);
+      eval_mul_unary(*this, other);
 
       return *this;
     }
@@ -1170,48 +1176,53 @@
       return cmp_result;
     }
 
-    template<const std::size_t NumberOfLimbs,
-             typename EnableType = void>
-    static void eval_mul_unary(uintwide_t&, const uintwide_t&, EnableType);
-
-    template<const std::size_t NumberOfLimbs>
-    static void eval_mul_unary(      uintwide_t& u,
-                               const uintwide_t& v,
-                               typename std::enable_if<(NumberOfLimbs < uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
+    template<const std::size_t OtherDigits2,
+             typename OtherLimbType>
+    friend inline void eval_mul_unary(      uintwide_t<OtherDigits2, OtherLimbType>& u,
+                                      const uintwide_t<OtherDigits2, OtherLimbType>& v,
+                                      typename std::enable_if<((OtherDigits2 / std::numeric_limits<OtherLimbType>::digits) < uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
     {
       // Unary multiplication function using schoolbook multiplication,
       // but only half of the n*n algorithm is used for or n*n->n bit multiply.
+      using local_ushort_type = typename uintwide_t<OtherDigits2, OtherLimbType>::ushort_type;
 
-      std::array<ushort_type, NumberOfLimbs> result;
+      constexpr std::size_t local_number_of_limbs = uintwide_t<OtherDigits2, OtherLimbType>::number_of_limbs;
 
-      eval_multiply_nhalf(result.data(),
-                          u.values.data(),
-                          v.values.data(),
-                          NumberOfLimbs);
+      std::array<local_ushort_type, local_number_of_limbs> result;
+
+      eval_multiply_n_by_n_to_lo_half(result.data(),
+                                      u.values.data(),
+                                      v.values.data(),
+                                      local_number_of_limbs);
 
       std::copy(result.cbegin(),
-                result.cbegin() + NumberOfLimbs,
+                result.cbegin() + local_number_of_limbs,
                 u.values.begin());
     }
 
-    template<const std::size_t NumberOfLimbs>
-    static void eval_mul_unary(      uintwide_t& u,
-                               const uintwide_t& v,
-                               typename std::enable_if<(NumberOfLimbs >= uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
+    template<const std::size_t OtherDigits2,
+             typename OtherLimbType>
+    friend inline void eval_mul_unary(      uintwide_t<OtherDigits2, OtherLimbType>& u,
+                                      const uintwide_t<OtherDigits2, OtherLimbType>& v,
+                                      typename std::enable_if<((OtherDigits2 / std::numeric_limits<OtherLimbType>::digits) >= uintwide_t::number_of_limbs_karatsuba_threshold)>::type* = nullptr)
     {
       // Unary multiplication function using Karatsuba multiplication.
 
-      std::array<ushort_type, NumberOfLimbs * 2U> result;
-      std::array<ushort_type, NumberOfLimbs * 4U> t;
+      using local_ushort_type = typename uintwide_t<OtherDigits2, OtherLimbType>::ushort_type;
+
+      constexpr std::size_t local_number_of_limbs = uintwide_t<OtherDigits2, OtherLimbType>::number_of_limbs;
+
+      std::array<local_ushort_type, local_number_of_limbs * 2U> result;
+      std::array<local_ushort_type, local_number_of_limbs * 4U> t;
 
       eval_multiply_kara(result.data(),
-                          u.values.data(),
-                          v.values.data(),
-                          NumberOfLimbs,
-                          t.data());
+                         u.values.data(),
+                         v.values.data(),
+                         local_number_of_limbs,
+                         t.data());
 
       std::copy(result.cbegin(),
-                result.cbegin() + NumberOfLimbs,
+                result.cbegin() + local_number_of_limbs,
                 u.values.begin());
     }
 
@@ -1260,10 +1271,10 @@
       return has_borrow_out;
     }
 
-    static void eval_multiply_nhalf(      ushort_type* r,
-                                    const ushort_type* u,
-                                    const ushort_type* v,
-                                    const std::size_t  count)
+    static void eval_multiply_n_by_n_to_lo_half(      ushort_type* r,
+                                                const ushort_type* u,
+                                                const ushort_type* v,
+                                                const std::size_t  count)
     {
       std::fill(r, r + count, ushort_type(0U));
 
@@ -1385,12 +1396,18 @@
                                    const std::size_t  n,
                                          ushort_type* t)
     {
-      if(n == 32U)
+      if((n == 32U) || (n == 48U))
       {
+        static_cast<void>(t);
+
         eval_multiply_n(r, u, v, n);
       }
       else
       {
+        // Based on "Algorithm 1.3 KaratsubaMultiply", Sect. 1.3.2, page 5
+        // of R.P. Brent and P. Zimmermann, "Modern Computer Arithmetic",
+        // Cambridge University Press (2011).
+
         // The Karatsuba multipliation computes the product of u*v as:
         // [b^N + b^(N/2)] u1*v1 + [b^(N/2)](u1 - u0)(v0 - v1) + [b^(N/2) + 1] u0*v0
 
@@ -1508,6 +1525,51 @@
         }
       }
     }
+
+    static void eval_multiply_toomcook3(      ushort_type* r,
+                                        const ushort_type* u,
+                                        const ushort_type* v,
+                                        const std::size_t  n,
+                                              ushort_type* t)
+    {
+      if(n == 3072U)
+      {
+        // TBD: Tune the threshold for the transition
+        // from Toom-Cook3 back to base case Karatsuba.
+
+        // Base case Karatsuba multiplication.
+        eval_multiply_kara(r, u, v, n, t);
+      }
+      else
+      {
+        // Based on "Algorithm 1.4 ToomCook3", Sect. 1.3.3, page 7 of
+        // R.P. Brent and P. Zimmermann, "Modern Computer Arithmetic",
+        // Cambridge University Press (2011).
+
+        // TBD: Toom-Cook3
+      }
+    }
+
+    static void eval_multiply_toomcook4(      ushort_type* r,
+                                        const ushort_type* u,
+                                        const ushort_type* v,
+                                        const std::size_t  n,
+                                              ushort_type* t)
+    {
+      if(n == 2048U)
+      {
+        // TBD: Tune the threshold for the transition
+        // from Toom-Cook4 back to base case Karatsuba.
+
+        // Base case Karatsuba multiplication.
+        eval_multiply_kara(r, u, v, n, t);
+      }
+      else
+      {
+        // TBD: Toom-Cook4
+      }
+    }
+
 
     void eval_divide_knuth(const uintwide_t& other, uintwide_t* remainder)
     {
