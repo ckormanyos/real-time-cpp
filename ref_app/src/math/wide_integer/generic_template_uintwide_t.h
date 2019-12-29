@@ -13,6 +13,7 @@
   #include <cstddef>
   #include <cstdint>
   #include <cstring>
+  #include <initializer_list>
   #include <iterator>
   #include <limits>
   #include <type_traits>
@@ -330,20 +331,31 @@
       ;
   };
 
-  template<const std::uint_fast32_t Digits2> struct verify_sloanes_a029750_with_a_few_gaps
+  template<const std::uint_fast32_t Digits2> struct verify_power_of_two_times_granularity_one_sixty_fourth
   {
-    // See Sloane's A029750: List of numbers of the form 2^n times 1, 3, 5 or 7.
-    // Remove, however, from the list values 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 20, 28
+    // List of numbers used to identify the form 2^n times 1...63.
     static constexpr bool conditional_value =
-      (   ((Digits2 == 16U) || (Digits2 == 24U) || (Digits2 >= 32U))
-       && (   verify_power_of_two<Digits2 / 1U>::conditional_value
-           || verify_power_of_two<Digits2 / 3U>::conditional_value
-           || verify_power_of_two<Digits2 / 5U>::conditional_value
-           || verify_power_of_two<Digits2 / 7U>::conditional_value));
+       (   verify_power_of_two<Digits2 /  1U>::conditional_value || verify_power_of_two<Digits2 /  3U>::conditional_value
+        || verify_power_of_two<Digits2 /  5U>::conditional_value || verify_power_of_two<Digits2 /  7U>::conditional_value
+        || verify_power_of_two<Digits2 /  9U>::conditional_value || verify_power_of_two<Digits2 / 11U>::conditional_value
+        || verify_power_of_two<Digits2 / 13U>::conditional_value || verify_power_of_two<Digits2 / 15U>::conditional_value
+        || verify_power_of_two<Digits2 / 17U>::conditional_value || verify_power_of_two<Digits2 / 19U>::conditional_value
+        || verify_power_of_two<Digits2 / 21U>::conditional_value || verify_power_of_two<Digits2 / 23U>::conditional_value
+        || verify_power_of_two<Digits2 / 25U>::conditional_value || verify_power_of_two<Digits2 / 27U>::conditional_value
+        || verify_power_of_two<Digits2 / 29U>::conditional_value || verify_power_of_two<Digits2 / 31U>::conditional_value
+        || verify_power_of_two<Digits2 / 33U>::conditional_value || verify_power_of_two<Digits2 / 35U>::conditional_value
+        || verify_power_of_two<Digits2 / 37U>::conditional_value || verify_power_of_two<Digits2 / 39U>::conditional_value
+        || verify_power_of_two<Digits2 / 41U>::conditional_value || verify_power_of_two<Digits2 / 43U>::conditional_value
+        || verify_power_of_two<Digits2 / 45U>::conditional_value || verify_power_of_two<Digits2 / 47U>::conditional_value
+        || verify_power_of_two<Digits2 / 49U>::conditional_value || verify_power_of_two<Digits2 / 51U>::conditional_value
+        || verify_power_of_two<Digits2 / 53U>::conditional_value || verify_power_of_two<Digits2 / 55U>::conditional_value
+        || verify_power_of_two<Digits2 / 57U>::conditional_value || verify_power_of_two<Digits2 / 59U>::conditional_value
+        || verify_power_of_two<Digits2 / 61U>::conditional_value || verify_power_of_two<Digits2 / 63U>::conditional_value);
   };
 
-  // Helper templates for selecting integral types.
-  template<const std::uint_fast32_t BitCount> struct int_type_helper
+  template<const std::uint_fast32_t BitCount,
+           typename EnableType = void>
+  struct int_type_helper
   {
     static_assert((   ((BitCount >= 8U) && (BitCount <= 64U))
                    && (verify_power_of_two<BitCount>::conditional_value == true)),
@@ -353,10 +365,10 @@
     using exact_signed_type   = std::intmax_t;
   };
 
-  template<> struct int_type_helper< 8U> { using exact_unsigned_type = std::uint8_t;   using exact_signed_type = std::int8_t;   };
-  template<> struct int_type_helper<16U> { using exact_unsigned_type = std::uint16_t;  using exact_signed_type = std::int16_t;  };
-  template<> struct int_type_helper<32U> { using exact_unsigned_type = std::uint32_t;  using exact_signed_type = std::int32_t;  };
-  template<> struct int_type_helper<64U> { using exact_unsigned_type = std::uint64_t;  using exact_signed_type = std::int64_t;  };
+  template<const std::uint_fast32_t BitCount> struct int_type_helper<BitCount, typename std::enable_if<                     (BitCount <=  8U)>::type> { using exact_unsigned_type = std::uint8_t;  using exact_signed_type = std::int8_t;   };
+  template<const std::uint_fast32_t BitCount> struct int_type_helper<BitCount, typename std::enable_if<(BitCount >=  9U) && (BitCount <= 16U)>::type> { using exact_unsigned_type = std::uint16_t; using exact_signed_type = std::int16_t;   };
+  template<const std::uint_fast32_t BitCount> struct int_type_helper<BitCount, typename std::enable_if<(BitCount >= 17U) && (BitCount <= 32U)>::type> { using exact_unsigned_type = std::uint32_t; using exact_signed_type = std::int32_t;   };
+  template<const std::uint_fast32_t BitCount> struct int_type_helper<BitCount, typename std::enable_if<(BitCount >= 33U) && (BitCount <= 64U)>::type> { using exact_unsigned_type = std::uint64_t; using exact_signed_type = std::int64_t;   };
 
   // Use a local implementation of string copy.
   inline char* strcpy_unsafe(char* dst, const char* src)
@@ -474,13 +486,13 @@
     static constexpr std::uint_fast32_t number_of_limbs_karatsuba_threshold = std::uint_fast32_t(128U + 1U);
 
     // Verify that the Digits2 template parameter (my_digits):
-    //   * Is equal to 1,2,3,5, or 7 times 2^n (with a few gaps), see also Sloanes A029750.
-    //   * And that there are at least 16 or 24 binary digits.
+    //   * Is equal to 2^n times 1...63.
+    //   * And that there are at least 16, 24 or 32 binary digits.
     //   * And that the number of binary digits is an exact multiple of the number of limbs.
-    static_assert(   (detail::verify_sloanes_a029750_with_a_few_gaps<my_digits>::conditional_value == true)
+    static_assert(   (detail::verify_power_of_two_times_granularity_one_sixty_fourth<my_digits>::conditional_value == true)
                   && ((my_digits >= 16U) || (my_digits >= 24U))
                   && (my_digits == (number_of_limbs * std::uint_fast32_t(std::numeric_limits<ushort_type>::digits))),
-                  "Error: Digits2 must be 1,2,3,5, or 7 times 2^n (with a few gaps), 16 or 24 or larger, and exactly divisible by limb count");
+                  "Error: Digits2 must be 2^n times 1...63 (with n >= 3), while being 16, 24, 32 or larger, and exactly divisible by limb count");
 
     // The type of the internal data representation.
     using representation_type = std::array<ushort_type, number_of_limbs>;
@@ -562,6 +574,16 @@
     uintwide_t(const representation_type& other_rep)
     {
       std::copy(other_rep.cbegin(), other_rep.cend(), values.begin());
+    }
+
+    // Constructor from initializer list of limbs.
+    uintwide_t(std::initializer_list<ushort_type> lst)
+    {
+      const std::uint_fast32_t sz = (std::min)(std::uint_fast32_t(lst.size()),
+                                               std::uint_fast32_t(values.size()));
+
+      std::copy(lst.begin(), lst.begin() + sz, values.begin());
+      std::fill(values.begin() + sz, values.end(), 0U);
     }
 
     // Constructor from a C-style array.
@@ -700,8 +722,7 @@
 
     // Implement the cast operator that casts to the double-width type.
     template<typename UnknownUnsignedWideIntegralType = double_width_type,
-             typename = typename std::enable_if<(   (std::is_same<UnknownUnsignedWideIntegralType, double_width_type>::value == true)
-                                                 && (my_digits >= 128U))>::type>
+             typename = typename std::enable_if<(std::is_same<UnknownUnsignedWideIntegralType, double_width_type>::value == true)>::type>
     operator double_width_type() const
     {
       double_width_type local_double_width_instance;
@@ -975,9 +996,9 @@
 
     // Define the maximum buffer sizes for extracting
     // octal, decimal and hexadecimal string representations.
-    static const std::uint_fast32_t wr_string_max_buffer_size_oct = (16U + (my_digits / 3U)) + std::uint_fast32_t(((my_digits % 3U) != 0U) ? 1U : 0U) + 1U;
-    static const std::uint_fast32_t wr_string_max_buffer_size_hex = (32U + (my_digits / 4U)) + 1U;
-    static const std::uint_fast32_t wr_string_max_buffer_size_dec = (20U + std::uint_fast32_t((std::uintmax_t(my_digits) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U;
+    static constexpr std::uint_fast32_t wr_string_max_buffer_size_oct = (16U + (my_digits / 3U)) + std::uint_fast32_t(((my_digits % 3U) != 0U) ? 1U : 0U) + 1U;
+    static constexpr std::uint_fast32_t wr_string_max_buffer_size_hex = (32U + (my_digits / 4U)) + 1U;
+    static constexpr std::uint_fast32_t wr_string_max_buffer_size_dec = (20U + std::uint_fast32_t((std::uintmax_t(my_digits) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U;
 
     // Write string function.
     bool wr_string(      char*             str_result,
@@ -1312,10 +1333,10 @@
       return has_borrow_out;
     }
 
-    static void eval_multiply_n_by_n_to_lo_part(      ushort_type* r,
-                                                const ushort_type* a,
-                                                const ushort_type* b,
-                                                const std::uint_fast32_t  count)
+    static void eval_multiply_n_by_n_to_lo_part(      ushort_type*       r,
+                                                const ushort_type*       a,
+                                                const ushort_type*       b,
+                                                const std::uint_fast32_t count)
     {
       std::memset(r, 0, count * sizeof(ushort_type));
 
@@ -1337,10 +1358,10 @@
       }
     }
 
-    static void eval_multiply_n_by_n_to_2n(      ushort_type* r,
-                                           const ushort_type* a,
-                                           const ushort_type* b,
-                                           const std::uint_fast32_t  count)
+    static void eval_multiply_n_by_n_to_2n(      ushort_type*       r,
+                                           const ushort_type*       a,
+                                           const ushort_type*       b,
+                                           const std::uint_fast32_t count)
     {
       std::memset(r, 0, (count * 2U) * sizeof(ushort_type));
 
@@ -1366,10 +1387,10 @@
       }
     }
 
-    static ushort_type eval_multiply_1d(      ushort_type* r,
-                                        const ushort_type* a,
-                                        const ushort_type  b,
-                                        const std::uint_fast32_t  count)
+    static ushort_type eval_multiply_1d(      ushort_type*       r,
+                                        const ushort_type*       a,
+                                        const ushort_type        b,
+                                        const std::uint_fast32_t count)
     {
       std::memset(r, 0, count * sizeof(ushort_type));
 
@@ -1431,16 +1452,13 @@
       }
     }
 
-    static void eval_multiply_kara_n_by_n_to_2n(      ushort_type* r,
-                                                const ushort_type* a,
-                                                const ushort_type* b,
-                                                const std::uint_fast32_t  n,
-                                                      ushort_type* t)
+    static void eval_multiply_kara_n_by_n_to_2n(      ushort_type*       r,
+                                                const ushort_type*       a,
+                                                const ushort_type*       b,
+                                                const std::uint_fast32_t n,
+                                                      ushort_type*       t)
     {
-      if(   (n == 32U)
-         || (n == 40U)
-         || (n == 48U)
-         || (n == 56U))
+      if((n >= 32U) && (n <= 63U))
       {
         static_cast<void>(t);
 
@@ -2136,8 +2154,8 @@
     using local_wide_integer_type = WideUnsignedIntegerType;
 
   public:
-    static const int digits   = static_cast<int>(local_wide_integer_type::my_digits);
-    static const int digits10 = static_cast<int>(local_wide_integer_type::my_digits10);
+    static constexpr int digits   = static_cast<int>(local_wide_integer_type::my_digits);
+    static constexpr int digits10 = static_cast<int>(local_wide_integer_type::my_digits10);
 
     static local_wide_integer_type (max)() { return local_wide_integer_type::limits_helper_max(); }
     static local_wide_integer_type (min)() { return local_wide_integer_type::limits_helper_min(); }
@@ -2593,8 +2611,9 @@
 
       // Obtain the initial value.
       const std::uint_fast32_t left_shift_amount =
-        ((std::uint_fast32_t(msb_pos % 2U) == 0U) ? 1U + std::uint_fast32_t((msb_pos + 0U) / 2U)
-                                           : 1U + std::uint_fast32_t((msb_pos + 1U) / 2U));
+        ((std::uint_fast32_t(msb_pos % 2U) == 0U)
+          ? 1U + std::uint_fast32_t((msb_pos + 0U) / 2U)
+          : 1U + std::uint_fast32_t((msb_pos + 1U) / 2U));
 
       local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
 
@@ -2623,7 +2642,71 @@
            typename LimbType>
   uintwide_t<Digits2, LimbType> cbrt(const uintwide_t<Digits2, LimbType>& m)
   {
-    return rootk(m, 3U);
+    // Calculate the cube root.
+
+    using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
+    using local_value_type        = typename local_wide_integer_type::value_type;
+
+    local_wide_integer_type s;
+
+    const bool argument_is_zero = std::all_of(m.crepresentation().cbegin(),
+                                              m.crepresentation().cend(),
+                                              [](const local_value_type& a) -> bool
+                                              {
+                                                return (a == 0U);
+                                              });
+
+    if(argument_is_zero)
+    {
+      s = local_wide_integer_type(std::uint_fast8_t(0U));
+    }
+    else
+    {
+      // Obtain the initial guess via algorithms
+      // involving the position of the msb.
+      const std::uint_fast32_t msb_pos = msb(m);
+
+      // Obtain the initial value.
+      const std::uint_fast32_t msb_pos_mod_3 = msb_pos % 3;
+
+      const std::uint_fast32_t left_shift_amount =
+        ((msb_pos_mod_3 == 0U)
+          ? 1U + std::uint_fast32_t((msb_pos +                  0U ) / 3U)
+          : 1U + std::uint_fast32_t((msb_pos + (3U - msb_pos_mod_3)) / 3U));
+
+      local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
+
+      // Perform the iteration for the k'th root.
+      // See Algorithm 1.14 RootInt, Sect. 1.5.2
+      // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+      // Cambridge University Press, 2011.
+
+      const std::uint_fast32_t three_minus_one(3U - 1U);
+
+      for(std::uint_fast32_t i = 0U; i < 64U; ++i)
+      {
+        s = u;
+
+        local_wide_integer_type m_over_s_pow_3_minus_one = m;
+
+        for(std::uint_fast32_t j = 0U; j < 3U - 1U; ++j)
+        {
+          // Use a loop here to divide by s^(3 - 1) because
+          // without a loop, s^(3 - 1) is likely to overflow.
+
+          m_over_s_pow_3_minus_one /= s;
+        }
+
+        u = ((s * three_minus_one) + m_over_s_pow_3_minus_one) / 3U;
+
+        if(u >= s)
+        {
+          break;
+        }
+      }
+    }
+
+    return s;
   }
 
   template<const std::uint_fast32_t Digits2,
@@ -2669,8 +2752,9 @@
         const std::uint_fast32_t msb_pos_mod_k = msb_pos % k;
 
         const std::uint_fast32_t left_shift_amount =
-          ((msb_pos_mod_k == 0U) ? 1U + std::uint_fast32_t((msb_pos +                 0U ) / k)
-                                 : 1U + std::uint_fast32_t((msb_pos + (k - msb_pos_mod_k)) / k));
+          ((msb_pos_mod_k == 0U)
+            ? 1U + std::uint_fast32_t((msb_pos +                 0U ) / k)
+            : 1U + std::uint_fast32_t((msb_pos + (k - msb_pos_mod_k)) / k));
 
         local_wide_integer_type u(local_wide_integer_type(std::uint_fast8_t(1U)) << left_shift_amount);
 
@@ -2679,7 +2763,7 @@
         // in R.P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
         // Cambridge University Press, 2011.
 
-        const local_wide_integer_type k_minus_one(k - 1U);
+        const std::uint_fast32_t k_minus_one(k - 1U);
 
         for(std::uint_fast32_t i = 0U; i < 64U; ++i)
         {
@@ -3170,7 +3254,7 @@
 
       const std::uint_fast32_t digits_ratio = 
         std::uint_fast32_t(  std::numeric_limits<local_result_value_type>::digits
-                    / std::numeric_limits<random_pcg32_fast::result_type>::digits);
+                           / std::numeric_limits<random_pcg32_fast::result_type>::digits);
 
       switch(digits_ratio)
       {
@@ -3180,7 +3264,7 @@
           {
             const std::uint_fast32_t digits_ratio_inverse = 
               std::uint_fast32_t(  std::numeric_limits<random_pcg32_fast::result_type>::digits
-                          / std::numeric_limits<local_result_value_type>::digits);
+                                 / std::numeric_limits<local_result_value_type>::digits);
 
             auto it = result.representation().begin();
 
@@ -3596,6 +3680,7 @@
   bool example001a_div_mod();
   bool example002_shl_shr();
   bool example003_sqrt();
+  bool example003a_cbrt();
   bool example004_rootk_pow();
   bool example005_powm();
   bool example006_gcd();
