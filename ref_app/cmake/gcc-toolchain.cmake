@@ -36,6 +36,12 @@ message(STATUS "Triple Arch ............ ${target_arch}")
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR ${target_arch})
 
+if(NOT APP)
+    set(APP ref_app)
+endif()
+if(NOT NAME)
+    set(NAME ${TARGET})
+endif()
 
 if(MINGW OR CYGWIN OR WIN32)
     set(UTIL_SEARCH_CMD where)
@@ -44,7 +50,7 @@ elseif(UNIX OR APPLE)
 endif()
 
 execute_process(
-  COMMAND ${UTIL_SEARCH_CMD} ${GCC_TOOLCHAIN_PREFIX}-g++
+  COMMAND ${UTIL_SEARCH_CMD} ${GCC_TOOLCHAIN_PREFIX}g++
   OUTPUT_VARIABLE BINUTILS_PATH
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
