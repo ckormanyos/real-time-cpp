@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -37,99 +37,124 @@
 
       // Constructors.
       dynamic_array() : elem_count(0U),
-                        elems     (allocator_type().allocate(1U))
-      {
-        elems[0U] = value_type();
-      }
+                        elems     (nullptr) { }
 
       dynamic_array(size_type count) : elem_count(count),
-                                       elems     (allocator_type().allocate((std::max)(size_type(1U), elem_count)))
+                                       elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
       {
-        if(elem_count > size_type(0U))
+        for(auto it_self = begin(); it_self != end(); ++it_self)
         {
-          std::fill_n(begin(), elem_count, value_type());
-        }
-        else
-        {
-          elems[0U] = value_type();
+          allocator_type().construct(it_self, value_type());
         }
       }
 
       dynamic_array(size_type count,
                     const value_type& v,
-                    const allocator_type& a = allocator_type()) : elem_count(count),
-                                                                  elems     (allocator_type(a).allocate((std::max)(size_type(1U), elem_count)))
+                    const allocator_type& a = allocator_type())
+        : elem_count(count),
+          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        if(elem_count > size_type(0U))
+        for(auto it_self = begin(); it_self != end(); ++it_self)
         {
-          std::fill_n(begin(), elem_count, v);
-        }
-        else
-        {
-          elems[0U] = value_type();
+          allocator_type(a).construct(it_self, v);
         }
       }
 
-      dynamic_array(const dynamic_array& other) : elem_count(other.size()),
-                                                  elems     (allocator_type().allocate((std::max)(size_type(1U), elem_count)))
+      dynamic_array(const dynamic_array& other)
+        : elem_count(other.size()),
+          elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
       {
-        if(elem_count > size_type(0U))
+        const auto it_other = other.cbegin();
+
+        for(auto it_self = begin(); it_self != end(); ++it_self)
         {
-          std::copy(other.begin(), other.end(), begin());
-        }
-        else
-        {
-          elems[0U] = value_type();
+          allocator_type().construct(it_self, *it_other++);
         }
       }
 
       template<typename input_iterator>
       dynamic_array(input_iterator first,
                     input_iterator last,
-                    const allocator_type& a = allocator_type()) : elem_count(static_cast<size_type>(std::distance(first, last))),
-                                                                  elems     (allocator_type(a).allocate((std::max)(size_type(1U), elem_count)))
+                    const allocator_type& a = allocator_type())
+        : elem_count(static_cast<size_type>(std::distance(first, last))),
+          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        if(elem_count > size_type(0U))
+        for(auto it_self = begin(); it_self != end(); ++it_self)
         {
-          std::copy(first, last, begin());
-        }
-        else
-        {
-          elems[0U] = value_type();
+          allocator_type(a).construct(it_self, *first++);
         }
       }
 
       dynamic_array(std::initializer_list<T> lst,
-                    const allocator_type& a = allocator_type()) : elem_count(lst.size()),
-                                                                  elems     (allocator_type(a).allocate((std::max)(size_type(1U), elem_count)))
+                    const allocator_type& a = allocator_type())
+        : elem_count(lst.size()),
+          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        if(elem_count > size_type(0U))
+        const auto it_lst = lst-begin();
+
+        for(auto it_self = begin(); it_self != end(); ++it_self)
         {
-          std::copy(lst.begin(), lst.end(), begin());
-        }
-        else
-        {
-          elems[0U] = value_type();
+          allocator_type(a).construct(it_self, *it_lst++);
         }
       }
 
+      // Move constructor.
+      dynamic_array(dynamic_array&& other) : elem_count(other.elem_count),
+                                             elems     (other.elems)
+      {
+        other.elem_count = 0U;
+        other.elems      = nullptr;
+      }
+
       // Destructor.
-      ~dynamic_array()
+      virtual ~dynamic_array()
       {
         // Destroy the elements and deallocate the range.
         if(elem_count > size_type(0U))
         {
-          for(pointer p = elems; p != (elems + size()); ++p)
+          for(pointer p = elems; p != (elems + elem_count); ++p)
           {
             allocator_type().destroy(p);
           }
 
           allocator_type().deallocate(elems, elem_count);
         }
-        else
+      }
+
+      // Assignment operator.
+      dynamic_array& operator=(const dynamic_array& other)
+      {
+        if(this != &other)
         {
-          allocator_type().deallocate(elems, size_type(1U));
+          std::copy(other.elems,
+                    other.elems + (std::min)(elem_count, other.elem_count),
+                    elems);
         }
+
+        return *this;
+      }
+
+      // Move assignment operator.
+      dynamic_array& operator=(dynamic_array&& other)
+      {
+        // Destroy the elements and deallocate the range.
+        if(elem_count > size_type(0U))
+        {
+          for(pointer p = elems; p != (elems + elem_count); ++p)
+          {
+            allocator_type().destroy(p);
+          }
+
+          allocator_type().deallocate(elems, elem_count);
+        }
+
+        elem_count = other.elem_count;
+        elems      = other.elems;
+
+        other.elem_count = 0U;
+        other.elems      = nullptr;
+
+        return *this;
       }
 
       // Iterator members:
@@ -146,10 +171,16 @@
       const_reverse_iterator crbegin() const { return const_reverse_iterator(elems + elem_count); }
       const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
+      // Raw pointer access.
+      pointer data()
+      {
+        return elems;
+      }
+
       // Size and capacity.
       size_type size    () const { return elem_count; }
       size_type max_size() const { return elem_count; }
-      bool      empty   () const { return false; }
+      bool      empty   () const { return (elem_count == 0U); }
 
       // Element access members.
       reference       operator[](const size_type i)       { return elems[i]; }
@@ -169,22 +200,19 @@
 
       void swap(dynamic_array& other)
       {
-        const size_type count = (std::min)(elem_count, other.size());
+        const size_type tmp_elem_count = elem_count;
+        const pointer   tmp_elems      = elems;
 
-        std::swap_ranges(begin(), begin() + count, other.begin());
+        elem_count = other.elem_count;
+        elems      = other.elems;
 
-        if(count < elem_count)
-        {
-          std::fill(begin() + count, end(), value_type());
-        }
+        other.elem_count = tmp_elem_count;
+        other.elems      = tmp_elems;
       }
 
     private:
-      const size_type elem_count;
-      pointer         elems;
-
-      // dynamic_array can not be copied with operator=().
-      dynamic_array& operator=(const dynamic_array&);
+      mutable size_type elem_count;
+      pointer           elems;
     };
 
     template<typename T, typename alloc>
@@ -262,17 +290,5 @@
       x.swap(y);
     }
   }
-
-  /*
-  #include <util/memory/util_ring_allocator.h>
-  #include <util/utility/util_dynamic_array.h>
-
-  typedef util::dynamic_array<int, util::ring_allocator<int>> dynamic_array_type;
-
-  const dynamic_array_type a1( { 1, 2, 3 } );
-  const dynamic_array_type a2( { 1, 2, 4 } );
-
-  const bool b_test = (a1 < a2);
-  */
 
 #endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H_
