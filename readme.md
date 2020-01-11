@@ -1,5 +1,5 @@
 
-This is the companion code for the book "Real-Time C++".
+## This is the companion code for the book "Real-Time C++".
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
