@@ -1,4 +1,5 @@
 # Example chapter02_02
+# The LED program
 
 This example implements the LED program (blinky) for the
 target with the 8-bit microcontroller. This example has
