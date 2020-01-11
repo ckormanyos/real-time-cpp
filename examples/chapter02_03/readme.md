@@ -34,3 +34,31 @@ Project workspaces providing code visualization
 and single-click build are provided for both
 VC as well as Atmel Studio.
 
+# Blinking Frequency
+
+In the LED program with timing, the blinking is controlled directly
+from the `main` subroutine of the program. The blinking
+frequency is approximately 1/2Hz, controlled by a timer dely.
+The blinking loop can be found in the file `sys_start.cpp`.
+It is reproduced below within its contect in `main`.
+Please note the MCAL initialization, which is essential
+for initializing clocks and interrupts. It is this layer
+that needs to be modified when porting to other microcontroller
+systems.
+
+```
+int main()
+{
+  // Initialize the mcal.
+  mcal::init();
+
+  // Toggle led0 forever.
+  for(;;)
+  {
+    led_b5.toggle();
+
+    // Wait 1 second in a blocking delay.
+    timer_type::blocking_delay(timer_type::seconds(1U));
+  }
+}
+```
