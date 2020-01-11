@@ -1,5 +1,5 @@
 # Example chapter02_03
-# The LED program with cooperative multitasking scheduler
+# The LED program with timing
 
 This example implements the LED program (with timing) for the
 target with the 8-bit microcontroller.
