@@ -34,7 +34,7 @@ The steps of the build include the following.
 
 In the LED program, the blinking is controlled directly
 from the `main` subroutine of the program. The blinking
-frequency is as fast as tha microcontroller can execute
+frequency will be as fast as tha microcontroller can execute
 the given toggle code, which will be too fast to resolve.
 
 Use the commented out loop in the program to slow down
