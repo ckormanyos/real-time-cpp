@@ -30,6 +30,34 @@ The steps of the build include the following.
 - Extract  : name information    : from bin/led.elf
 - Extract  : demangled names     : from bin/led.elf
 
+# Blinking Frequency
+
+In the LED program, the blinking is controlled directly
+from the `main` subroutine of the program. The blinking
+frequency is as fast as tha microcontroller can execute
+the given toggle code, which will be too fast to resolve.
+
+Use the commented out loop in the program to slow down
+the blinking for easier observation. The commented out
+loop is reproduced below within its contect in `main`.
+It is the line starting with `for(volatile std::uint8_t delay`...).
+
+```
+int main()
+{
+  // Toggle led_b5 in a loop forever.
+  for(;;)
+  {
+    led_b5.toggle();
+
+    // Some boards have a slower LED electrical
+    // response on the port. Optionally activate
+    // delay loop if LED toggle is not visible.
+    //for(volatile std::uint8_t delay = UINT8_C(0); delay < UINT8_C(10); ++delay) { ; }
+  }
+}
+```
+
 # In `Win*`
 The `Win*` batch file searches for a pre-installed instance
 of the avr-g++ tool chain. 
