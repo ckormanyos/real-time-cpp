@@ -9,7 +9,8 @@ the LED on an Arduino board or an Arduino-compatible board.
 Building the example can be done with command batch
 or shell script. There is also CMake support.
 
-The build executes several actions and to study this build
+The build executes several straightforward actions in
+a very clear sequence of steps. In fact, to study this build
 is a great way to gain introductory skills in manually
 calling embedded tools and making more complicated builds
 on your own in the future.
