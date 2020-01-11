@@ -56,6 +56,6 @@ Building the Example chapter02_02 project can be done with a bash shell
 such as:
 
 ```
-## bash will typically use the dirname command, such this it is equivalent to:  ./build.sh /usr/bin avr
+## bash will typically use dirname, so this might be equivalent to: ./build.sh /usr/bin avr
 ./build.sh "$(dirname $(which avr-g++))" avr
 ```
