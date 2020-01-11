@@ -1,4 +1,4 @@
-# Example chapter02_02
+# Example chapter02_03
 # The LED program with timing
 
 This example implements the LED program (with timing) for the
@@ -27,7 +27,6 @@ parameters is shown below.
 ```
 Target\Build\Build.bat avr rebuild
 ```
-
 
 # With VC or Atmel Studio
 
