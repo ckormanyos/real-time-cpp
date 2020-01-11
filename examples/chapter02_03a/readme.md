@@ -1,16 +1,16 @@
 # Example chapter02_03a
-# The LED program with timing
+# The LED program with cooperative multitasking scheduler
 
-This example implements the LED program (with
-a tiny cooperative multitasking scheduler) for the
+This example implements the LED program with
+a tiny cooperative multitasking scheduler for the
 target with the 8-bit microcontroller.
 This example is similar to the previous example02_03.
 This example, however, includes a tiny
 cooperative multitasking scheduler for managing
 the tasks that ultimately control the timing and delays
 of the LED blinking. This example contains some techniques
-that are described in later chapters. It does, however,
-provide intuitive insight at an early stage into
+that are described in later chapters of the book. It does,
+however, provide intuitive insight at an early stage into
 a more complete form of project.
 
 Building the example can be done with GNUmake
@@ -23,7 +23,7 @@ Project workspaces providing code visualization
 and single-click build are provided for both
 VC as well as Atmel Studio.
 
-# Blinking Frequency
+# Application Description
 
 In the LED program with timing, the blinking is controlled
 in the application task `app::led::task_func`
