@@ -23,3 +23,4 @@ A digital oscilloscope is used to measure the port toggle.
 The measurement shows a toggle period of approximately
 310ns, which agrees with the claim in the book.
 
+![homemade system](/images/2020-01-12.pdf)
