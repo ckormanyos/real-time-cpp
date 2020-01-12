@@ -19,8 +19,10 @@ to resolve.
 
 The images below show the the LED program with
 template LED class running on a homemade target system.
-A digital oscilloscope is used to measure the port toggle.
-The measurement shows a toggle period of approximately
+A manually executed digital oscilloscope measurement is used
+to capture the runtime of the port toggle.
+The measurement shows a toggle runtime of approximately
 310ns, which agrees with the claim in the book.
 
-![Digital Measurement](./images/2020-01-12.pdf)
+![Running on homemade system](./images/measurement.pdf)
+![Digital measurement](./images/2020-01-12.pdf)
