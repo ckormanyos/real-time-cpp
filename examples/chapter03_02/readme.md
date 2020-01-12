@@ -45,11 +45,10 @@ hobbyists alike. In the prime number theorem,
 the prime counting function
 is related to the logarithmic integral function via
 
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}\left(x\right)\,-\,\pi\left(x\right)\,=\,O\left(\sqrt{x}\log{x}\right)">,
+<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)-\pi(x)=O(\sqrt{x}\log{x})">,
 
 where
 
-<img src="https://render.githubusercontent.com/render/math?=\text{Li}\left(x\right)\,=\,\text{li}\left(x\right)-\text{li}\left(2\right)">.
-
+<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">.
 
 See also [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
