@@ -3,7 +3,7 @@
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
-(Springer, Heidelberg, 2018).
+(Springer, Heidelberg, 2018). ISBN 9783662567173
 
 Details on the Reference Application
 ------------------------------------
