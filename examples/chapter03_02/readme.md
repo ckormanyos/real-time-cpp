@@ -40,7 +40,7 @@ with the input `Prime[100]`.
 
 # Prime Counting Function
 
-The prime counting functions fascinates mathematicians and
+The prime counting function fascinates mathematicians and
 hobbyists alike. In the prime number theorem,
 the prime counting function
 is related to the logarithmic integral function via
@@ -55,4 +55,4 @@ and
 
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
-See also the article on the [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
+See also this article on the [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
