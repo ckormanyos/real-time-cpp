@@ -3,7 +3,7 @@
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
-(Springer, Heidelberg, 2018).
+(Springer, Heidelberg, 2018). ISBN 9783662567173
 
 Details on the Reference Application
 ------------------------------------
@@ -18,7 +18,7 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * VC, MinGW, or other *nix-like generic host
+  * VC, MinGW, or other `*nix`-like generic host
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
@@ -36,7 +36,7 @@ The reference application supports the following targets:
 Cross Development in the Reference Application
 ----------------------------------------------
 
-The reference application uses cross-development based on *nix-like make
+The reference application uses cross-development based on `*nix`-like make
 tools in combination with Microsoft(R) Visual Studio(R). Tool chains
 are not available in this repo (see below for further details).
 
@@ -55,7 +55,7 @@ To get started with the reference application, start Visual Studio(R) 2017
 (or later) and open the solution ref_app.sln. Select the desired
 configuration. Then rebuild the entire solution. Note that the build in
 Visual Studio(R) makes heavy use of cross development using a project
-workspace of type "external makefile" to invoke GNUmake (via batch file)
+workspace of type external makefile to invoke GNUmake (via batch file)
 in combination with several makefiles.
 
 CMake files have also been created for each supported target.
@@ -86,7 +86,7 @@ cmake --build . --config Debug --target ALL_BUILD
 ```
 
 OR...
-Following *nix pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
+Following `*nix` pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
 should work too.
 
 Target Details
@@ -120,7 +120,7 @@ The program toggles the green LED on porta.5.
 The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
-for the BeagleBone that runs independently from any kind of *nix distro on
+for the BeagleBone that runs independently from any kind of `*nix` distro on
 the board. Our program is designed to boot the BeagleBone from a raw binary file
 called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a
 special boot header comprised of two 32-bit integers. The program is loaded
@@ -130,7 +130,7 @@ up the board. The program toggles the first user LED (LED1 on port1.21).
 
 The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
 RaspberryPi-B. This project creates a bare-metal program for the RaspberryPi.
-This program runs independently from any kind of *nix distro on the board.
+This program runs independently from any kind of `*nix` distro on the board.
 Our program is designed to boot the RaspberryPi from a raw binary file.
 The raw binary file is called "kernel.img" and it is stored on a FAT32 SDHC
 microcard. The kernel.img file is stored on the SD card together with two

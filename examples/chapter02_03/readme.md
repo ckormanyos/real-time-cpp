@@ -34,7 +34,7 @@ Project workspaces providing code visualization
 and single-click build are provided for both
 VC as well as Atmel Studio.
 
-# Blinking Frequency
+# Application Description
 
 In the LED program with timing, the blinking is controlled directly
 from the `main` subroutine of the program. The blinking
