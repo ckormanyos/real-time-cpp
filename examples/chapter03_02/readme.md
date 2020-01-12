@@ -49,7 +49,7 @@ is related to the logarithmic integral function via
 
 where
 
-<img src="https://render.githubusercontent.com/render/math?\text{Li}\left(x\right)\,=\,\text{li}\left(x\right)-\text{li}\left(2\right)">.
+<img src="https://render.githubusercontent.com/render/math?=\text{Li}\left(x\right)\,=\,\text{li}\left(x\right)-\text{li}\left(2\right)">.
 
 
 See also [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
