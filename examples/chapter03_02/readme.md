@@ -49,6 +49,10 @@ is related to the logarithmic integral function via
 
 where
 
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">.
+<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">
 
-See also [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
+and
+
+<img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
+
+See also the article on the [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
