@@ -1,5 +1,5 @@
 # Example Chapter06_01
-# Integer Types Having Fixed Widths and Prime Numbers
+# A CRC Benchmark
 
 Example chapter06_01 illustrates certain optimization
 techniques through the calculation of a standard
@@ -7,10 +7,12 @@ CRC32 checksum (cycle redundancy check).
 
 # CRC-32/MPEG-2
 
-For this example, we select the popular CRC-32/MPEG-2.
-A potential C++11 implementation is shown in the code below.
+For the benchmark in this example, we select the popular CRC-32/MPEG-2.
+A potential C++11 implementation of this checksum is shown in the code below.
 The CRC32 calculation is performed with a table-driven
-method based on 4-bit nibbles. The table is also shown below.
+method based on 4-bit nibbles. The table having
+16 individual 32 bit unsigned integer entries is clearly visible
+in the code.
 
 ```
 template<typename input_iterator>
@@ -66,9 +68,10 @@ std::uint32_t crc32_mpeg2(input_iterator first,
 
 One of the standard tests of a CRC is to compute the checksum
 of the digits
-<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">,
-where the digits are not decimal values but the ASCII representations
-instead. In other words, the CRC is computed of
+<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">.
+Please note here that the digits are not decimal values.
+THey are the ASCII representations instead. In other words,
+the standard CRC test computes the checksum of a byte array such as
 
 ```
 static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
@@ -78,7 +81,7 @@ static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
 ```
 
 for which the wxpected result is
-<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">.
+<img src="https://render.githubusercontent.com/render/math?math=0x0376E6E7">.
 
 # CRC Catalog
 
