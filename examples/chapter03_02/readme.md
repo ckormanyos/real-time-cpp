@@ -27,9 +27,9 @@ constexpr std::uint32_t prime_664999 = UINT32_C(10’006’721);
 # Application Description
 
 In the running code of Example03_02, the first 100 prime numbers are
-calculated with a sieve method.
-Prime number calculation is integrated within the application
-task of the software in the cooperative multitasking scheduler.
+calculated with a sieve method. The sieve-based prime number calculation
+is realized within the application task of the software in the
+cooperative multitasking scheduler.
 
 We note that the
 <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
