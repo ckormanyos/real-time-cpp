@@ -17,13 +17,13 @@ The blinking frequency will be as fast as the microcontroller
 can execute the given toggle code, which will be too fast
 to resolve.
 
-The images below show the the LED program with
-template LED class running on a homemade target system.
+The images below show the the template-based blinky LED
+class running on a homemade target system.
 A manually executed digital oscilloscope measurement is used
 to capture the runtime of the port toggle.
 The measurement shows a toggle runtime of approximately
 310ns, which agrees with the claim in the book.
 
-![Running on homemade system](./images/measurement.pdf)
+![Template -based blinky running on a homemade system](./images/measurement.pdf)
 
 ![Digital measurement](./images/2020-01-12.pdf)
