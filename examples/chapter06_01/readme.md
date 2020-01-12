@@ -89,8 +89,9 @@ of the the expected result.
 
 The benchmark port pin `portd.3` is toggled high
 prior to the CRC calculation and low following the calculation.
-This provides a measurrable time pulse for digital time capture
-on the oscilloscpoe.
+This provides a time pulse that can easily be measured
+on the oscilloscpoe. For the 8-bit target, expect
+a CRC runtime of approximately 300 microseconds.
 
 The benchmark port definition can be located in the file
 `mcal/avr/mcal_benchmark.h`, and is similar to the code snippet below.
