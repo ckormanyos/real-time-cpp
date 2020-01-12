@@ -55,7 +55,7 @@ To get started with the reference application, start Visual Studio(R) 2017
 (or later) and open the solution ref_app.sln. Select the desired
 configuration. Then rebuild the entire solution. Note that the build in
 Visual Studio(R) makes heavy use of cross development using a project
-workspace of type external makefile to invoke GNUmake (via batch file)
+workspace of type "external makefile" to invoke GNUmake (via batch file)
 in combination with several makefiles.
 
 CMake files have also been created for each supported target.
