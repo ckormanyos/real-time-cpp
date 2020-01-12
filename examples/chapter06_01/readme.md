@@ -70,7 +70,7 @@ One of the standard tests of a CRC is to compute the checksum
 of the digits
 <img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">.
 Please note here that the digits are not decimal values.
-THey are the ASCII representations instead. In other words,
+They are the ASCII representations instead. In other words,
 the standard CRC test computes the checksum of a byte array such as
 
 ```
@@ -80,8 +80,33 @@ static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
 }};
 ```
 
-for which the wxpected result is
-<img src="https://render.githubusercontent.com/render/math?math=0x0376E6E7">.
+for which the wxpected result is `0x0376E6E7`.
+
+The application benchmark task `app::benchmark::task_func`
+computes the CRC32. THe computation is run to completion
+in each and every task call and includes verification
+of the the expected result.
+
+The benchmark port pin `portd.3` is toggled high
+prior to the CRC calculation and low following the calculation.
+This provides a measurrable time pulse for digital time capture
+on the oscilloscpoe.
+
+The benchmark port definition can be located in the file
+`mcal/avr/mcal_benchmark.h`, and is similar to the code snippet below.
+
+```
+namespace mcal
+{
+  namespace benchmark
+  {
+    typedef mcal::port::port_pin<std::uint8_t,
+                                 std::uint8_t,
+                                 mcal::reg::portd,
+                                 UINT8_C(3)> benchmark_port_type;
+  }
+}
+```
 
 # CRC Catalog
 
