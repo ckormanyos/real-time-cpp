@@ -86,4 +86,4 @@ for which the wxpected result is
 # CRC Catalog
 
 Look here for a very complete and up-to-date
-[CRC catalog](http://http://reveng.sourceforge.net/crc-catalogue/).
+[CRC catalog](http://reveng.sourceforge.net/crc-catalogue).
