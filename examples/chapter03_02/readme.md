@@ -30,11 +30,11 @@ In the running code of Example03_02, the first 100 prime numbers are
 calculated with a sieve method.
 Prime number calculation is integrated within the application
 task of the software in the cooperative multitasking scheduler.
+
 We note that the
 <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
 prime number is
 <img src="https://render.githubusercontent.com/render/math?math=541">.
-
 This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.com)
 with the input `Prime[100]`.
 
@@ -43,8 +43,8 @@ with the input `Prime[100]`.
 The prime counting functions fascinates mathematicians and
 hobbyists alike. In the prime number theorem,
 the prime counting function
-<img src="https://render.githubusercontent.com/render/math?math=\pi(x)">
 is related to the logarithmic integral function via
 
 <img src="https://render.githubusercontent.com/render/math?math=\text{Li}\left(x\right)\,-\,\pi\left(x\right)\,=\,O\left(\sqrt{x}\log{x}\right)">
 
+See also [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
