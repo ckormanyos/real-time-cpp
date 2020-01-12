@@ -56,3 +56,18 @@ and
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
 See also this article on the [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
+
+So for the
+<img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
+prime number, which is
+<img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
+how close is the prime number theorem?
+
+For the input
+
+```
+N[(LogIntegral[10006721] - LogIntegral[2])/664999, 20]
+```
+
+[WolframAlpha](http://www.wolframalpha.com) gives
+<img src="https://render.githubusercontent.com/render/math?math=1.0005042653265034897">.
