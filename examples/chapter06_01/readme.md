@@ -80,7 +80,7 @@ static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
 }};
 ```
 
-for which the wxpected result is `0x0376E6E7`.
+for which the expected result is `0x0376E6E7`.
 
 The application benchmark task `app::benchmark::task_func`
 computes the CRC32. THe computation is run to completion
