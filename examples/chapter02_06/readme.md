@@ -25,4 +25,5 @@ The measurement shows a toggle runtime of approximately
 310ns, which agrees with the claim in the book.
 
 ![Running on homemade system](./images/measurement.pdf)
+
 ![Digital measurement](./images/2020-01-12.pdf)
