@@ -21,6 +21,10 @@ A complete rebuild of this project and subsequent analysis
 of the map files reveals that the data objects
 have been successfully placed in ROM program code.
 In other words, they have been _ROM_'ed.
+As it turns out, _ROM_-ing constant data requires somewhat
+intricate programming for the avr-gcc tool chain in particular.
+This example puts some formal C++11-style structure around this
+architectural characteristic.
 
 # Application Description
 
