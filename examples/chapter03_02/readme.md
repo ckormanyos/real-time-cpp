@@ -56,6 +56,11 @@ ten million primes. In this case, it might make sense to first
 approximate the upper bound of sieving with the prime counting function
 before beginning the sieve iteration.
 
+# A PC-Based example
+
+A PC-based program helps to
+[!../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp](explore prime numbers)
+
 # Prime Counting Function
 
 The prime counting function fascinates mathematicians and
