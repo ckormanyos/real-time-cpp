@@ -49,8 +49,11 @@ series approximation of the lograithmic integral function is used for this.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
-Although the exact upper limit of 100 is already known at the outset,
-it is common practice to approximate this before beginning
+Although both the exact number of 100 primes as well as
+the value 541 of the
+<img src="https://render.githubusercontent.com/render/math?math=100^{th}">
+prime are known at the outset,
+it is common practice to approximate these before beginning
 a sieve calculation of primes. Imagine, for instance, calculating
 ten million primes. In this case, it might make sense to first
 approximate the upper bound of sieving with the prime counting function
