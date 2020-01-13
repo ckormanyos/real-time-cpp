@@ -59,7 +59,7 @@ before beginning the sieve iteration.
 # A PC-Based example
 
 A beat little PC-based program from the code snippets area helps to
-[explore prime numbers](http://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp)
+[explore prime numbers](../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp)
 
 # Prime Counting Function
 
