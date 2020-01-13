@@ -24,6 +24,11 @@ is of type `constexpr`, which is compile-time constant.
 constexpr std::uint32_t prime_664999 = UINT32_C(10’006’721);
 ```
 
+Although this example may seem trivial, it shows us that fixed-width
+types such as `std::uint32_t` and macros such as `UINT32_C` can
+facilitate portability, especially when used consistentyl throughout
+the code in the project.
+
 # Application Description
 
 In the running code of Example03_02, the first 100 prime numbers are
@@ -37,6 +42,15 @@ prime number is
 <img src="https://render.githubusercontent.com/render/math?math=541">.
 This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.com)
 with the input `Prime[100]`.
+
+The example begins by querying the number of entries required
+in the sieve to calculate the prime 541. A simple Taylor series
+approximation of the lograithmic integral function is used for this.
+Instead of 100, the approximation returns 108, which is
+adequately close to the desired limit and large enough.
+Although the exact upper limit of 100 is already known at the outset,
+it is common practice to approximate this before beginning
+a sieve calculation of primes.
 
 # Prime Counting Function
 
