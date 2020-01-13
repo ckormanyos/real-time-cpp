@@ -24,14 +24,14 @@ is of type `constexpr`, which is compile-time constant.
 constexpr std::uint32_t prime_664999 = UINT32_C(10’006’721);
 ```
 
-Although this example may seem trivial, it shows us that fixed-width
+Although this example is quite straightforward, it shows that fixed-width
 types such as `std::uint32_t` and macros such as `UINT32_C` can
 facilitate portability, especially when used consistently throughout
 the entire code in the project.
 
 # Application Description
 
-In the running code of Example03_02, the first 100 prime numbers are
+In the running code of example chapter03_02, the first 100 prime numbers are
 calculated with a sieve method. The sieve-based prime number calculation
 is realized within the application task of the software in the
 cooperative multitasking scheduler.
