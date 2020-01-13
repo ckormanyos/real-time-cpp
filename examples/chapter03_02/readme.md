@@ -59,7 +59,7 @@ before beginning the sieve iteration.
 # A PC-Based example
 
 A beat little PC-based program from the code snippets area helps to
-[http://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp](explore prime numbers)
+[explore prime numbers](http://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp)
 
 # Prime Counting Function
 
@@ -78,7 +78,8 @@ and
 
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
-See also this article on the [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
+See also this article on the
+[Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
 
 So for the
 <img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
