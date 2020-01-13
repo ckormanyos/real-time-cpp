@@ -44,8 +44,8 @@ This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.co
 with the input `Prime[100]`.
 
 The example begins by querying the number of entries required
-in the sieve to calculate the prime 541. A simple Taylor series
-approximation of the lograithmic integral function is used for this.
+in the sieve to calculate the prime 541. A simple divergent asymptotic
+series approximation of the lograithmic integral function is used for this.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
