@@ -64,7 +64,7 @@
         : elem_count(other.size()),
           elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
       {
-        const auto it_other = other.cbegin();
+        auto it_other = other.cbegin();
 
         for(auto it_self = begin(); it_self != end(); ++it_self)
         {
@@ -90,7 +90,7 @@
         : elem_count(lst.size()),
           elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        const auto it_lst = lst-begin();
+        auto it_lst = lst.begin();
 
         for(auto it_self = begin(); it_self != end(); ++it_self)
         {
