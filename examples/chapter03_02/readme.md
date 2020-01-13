@@ -26,8 +26,8 @@ constexpr std::uint32_t prime_664999 = UINT32_C(10’006’721);
 
 Although this example may seem trivial, it shows us that fixed-width
 types such as `std::uint32_t` and macros such as `UINT32_C` can
-facilitate portability, especially when used consistentyl throughout
-the code in the project.
+facilitate portability, especially when used consistently throughout
+the entire code in the project.
 
 # Application Description
 
@@ -48,9 +48,13 @@ in the sieve to calculate the prime 541. A simple Taylor series
 approximation of the lograithmic integral function is used for this.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
+
 Although the exact upper limit of 100 is already known at the outset,
 it is common practice to approximate this before beginning
-a sieve calculation of primes.
+a sieve calculation of primes. Imagine, for instance, calculating
+ten million primes. In this case, it might make sense to first
+approximate the upper bound of sieving with the prime counting function
+before beginning the sieve iteration.
 
 # Prime Counting Function
 
