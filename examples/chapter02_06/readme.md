@@ -27,3 +27,5 @@ The measurement shows a toggle runtime of approximately
 ![Template -based blinky running on a homemade system](./images/measurement.pdf)
 
 ![Digital measurement](./images/2020-01-12.pdf)
+
+![Digital measurement2](./images/measurement2.pdf)
