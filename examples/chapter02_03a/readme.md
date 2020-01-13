@@ -4,8 +4,8 @@
 This example implements the LED program with
 a tiny cooperative multitasking scheduler for the
 target with the 8-bit microcontroller.
-This example is similar to the previous example02_03.
-This example, however, includes a tiny
+This example is similar to the previous example chapter02_03.
+Example chapter02_03a, however, includes a tiny
 cooperative multitasking scheduler for managing
 the tasks that ultimately control the timing and delays
 of the LED blinking. This example contains some techniques
@@ -16,7 +16,7 @@ a more complete form of project.
 Building the example can be done with GNUmake
 in the command batch or shell script,
 as is the case for all examples including and above
-example02_02. The results of the build will be stored
+example chapter02_02. The results of the build will be stored
 in the `bin` directory.
 
 Project workspaces providing code visualization
