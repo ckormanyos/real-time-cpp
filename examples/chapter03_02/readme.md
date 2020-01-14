@@ -36,10 +36,8 @@ calculated with a sieve method. The sieve-based prime number calculation
 is realized within the application task of the software in the
 cooperative multitasking scheduler.
 
-We note that the
-<img src="https://render.githubusercontent.com/render/math?math=100^{th}">
-prime number is
-<img src="https://render.githubusercontent.com/render/math?math=541">.
+We note that the <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
+prime number is <img src="https://render.githubusercontent.com/render/math?math=541">.
 This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.com)
 with the input `Prime[100]`.
 
@@ -50,8 +48,7 @@ Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
 Although both the exact number of 100 primes as well as
-the value 541 of the
-<img src="https://render.githubusercontent.com/render/math?math=100^{th}">
+the value 541 of the <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
 prime are known at the outset,
 it is common practice to approximate these before beginning
 a sieve calculation of primes. Imagine, for instance, calculating
@@ -80,18 +77,22 @@ In other words the ratio
 
 asymptotically approaches 1 for large x.
 
-Here <img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
-with
+Here
+
+<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
+
+and
+
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
 See also this article on the
 [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
 
-So for the
-<img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
-prime number, which is
-<img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
-how close is the ratio in the prime number theorem to 1 at this numerical point?
+So for the <img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
+prime number, which is <img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
+how close is the ratio in the prime number theorem
+to <img src="https://render.githubusercontent.com/render/math?math=1">
+at this numerical point?
 
 For the input
 
