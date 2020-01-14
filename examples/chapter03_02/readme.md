@@ -8,10 +8,9 @@ integer types.
 
 # Fixed-Width Integer Types
 
-The code below asserts that the
-<img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
-prime number is
-<img src="https://render.githubusercontent.com/render/math?math=10,006,721">.
+The code below asserts that
+the <img src="https://render.githubusercontent.com/render/math?math=664999^{th}">
+prime number is <img src="https://render.githubusercontent.com/render/math?math=10006721">.
 This integer is stored in a fixed width
 unsigned integer variable having 32 bits. The storage
 is of type `constexpr`, which is compile-time constant.
@@ -75,7 +74,8 @@ In other words the ratio
 
 <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1">
 
-asymptotically approaches 1 for large x.
+asymptotically approaches <img src="https://render.githubusercontent.com/render/math?math=1">
+for large x.
 
 Here
 
@@ -88,8 +88,8 @@ and
 See also this article on the
 [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
 
-So for the <img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
-prime number, which is <img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
+So for the <img src="https://render.githubusercontent.com/render/math?math=664999^{th}">
+prime number, which is <img src="https://render.githubusercontent.com/render/math?math=10006721">,
 how close is the ratio in the prime number theorem
 to <img src="https://render.githubusercontent.com/render/math?math=1">
 at this numerical point?
