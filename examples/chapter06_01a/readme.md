@@ -8,7 +8,7 @@ benchmark data, however, are ROM-able.
 # ROM-ing the Table and Data
 
 Close examination of map files created in the
-previous example06_01 reveals that both the benchmark data
+previous example chapter06_01 reveals that both the benchmark data
 <img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">
 as well as the CRC32/MPEG2 `table` are stored in
 static RAM.
@@ -23,7 +23,7 @@ have been successfully placed in ROM program code.
 In other words, they have been _ROM_'ed.
 As it turns out, _ROM_-ing constant data can at times require
 somewhat intricate programming. In particular, this is the case
-for the avr-gcc tool chain. Example chapter06_01a puts some
+for the gcc-avr tool chain. Example chapter06_01a puts some
 semi-formal structure (in C++11-style) around this architectural
 characteristic.
 
