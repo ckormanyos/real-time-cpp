@@ -4,12 +4,13 @@
 Example chapter09_07 makes use of object oriented
 programming methods to control a seven segment display.
 
-# Controlling the RGB LED
+# Controlling the Display
 
 In this example, port pins are used to control a
 seven segment single-character display. As in most other examples,
 both a hardware version for the target system as well as a simlulated
-PC version are available.
+PC version are available. The PC version writes its
+character to the output console.
 
 # Application Description
 
