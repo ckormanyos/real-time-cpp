@@ -78,14 +78,10 @@ In other words the ratio
 
 <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1">
 
-asymptotically approaches one for large x.
+asymptotically approaches 1 for large x.
 
-Here
-
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
-
-where
-
+Here <img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
+with
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
 See also this article on the
@@ -95,7 +91,7 @@ So for the
 <img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
 prime number, which is
 <img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
-how close is the ratio in the prime number theorem at this numerical point?
+how close is the ratio in the prime number theorem to 1 at this numerical point?
 
 For the input
 
