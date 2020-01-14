@@ -67,17 +67,24 @@ A nifty little PC-based sieving program from the code snippets area helps to
 # Prime Counting Function
 
 The prime counting function fascinates mathematicians and
-hobbyists alike. In the prime number theorem,
+hobbyists alike. In the prime number theorem, under
+assumption that the famous Riemann hypothesis is true,
 the prime counting function
 is related to the logarithmic integral function via
 
 <img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)-\pi(x)=O(\sqrt{x}\log{x})">,
 
+In other words the ratio
+
+<img src="https://render.githubusercontent.com/render/math?math=\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1">
+
+asymptotically approaches one for large x.
+
+Here
+
+<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
+
 where
-
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">
-
-and
 
 <img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
 
@@ -88,7 +95,7 @@ So for the
 <img src="https://render.githubusercontent.com/render/math?math=664,999^{th}">
 prime number, which is
 <img src="https://render.githubusercontent.com/render/math?math=10,006,721">,
-how close is the prime number theorem?
+how close is the ratio in the prime number theorem at this numerical point?
 
 For the input
 
