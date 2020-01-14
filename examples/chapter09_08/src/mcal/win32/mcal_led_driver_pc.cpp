@@ -318,28 +318,41 @@ int WINAPI WinMain(HINSTANCE handle_to_instance, HINSTANCE, LPSTR, int)
   // Enter the Windows message loop.
   while(get_message_is_ok)
   {
+    Sleep(0U);
+
     MSG message;
 
-    get_message_is_ok = (GetMessage(&message, nullptr, 0U, 0U) == TRUE);
+    const BOOL peek_message_result = PeekMessage(&message, nullptr, 0U, 0U, PM_NOREMOVE);
 
-    if(get_message_is_ok)
+    const bool peek_message_has_message = (peek_message_result == TRUE);
+
+    if(peek_message_has_message == false)
     {
-      // Process Win32 API messages.
-      const bool is_window  = (IsWindow       (mcal::led::driver_pc::instance().get_handle_to_window()) == TRUE);
-      const bool is_dlg_msg = (IsDialogMessage(mcal::led::driver_pc::instance().get_handle_to_window(), &message) == TRUE);
+      Sleep(3U);
+    }
+    else
+    {
+      Sleep(0U);
 
-      if(   (is_window  == FALSE)
-         || (is_dlg_msg == FALSE))
+      get_message_is_ok = (GetMessage(&message, nullptr, 0U, 0U) == TRUE);
+
+      if(get_message_is_ok)
       {
-        const bool translate_message_is_ok = (TranslateMessage(&message) == TRUE);
-        const bool dispatch__message_is_ok = (DispatchMessage (&message) == TRUE);
+        // Process Win32 API messages.
+        const bool is_window  = (IsWindow       (mcal::led::driver_pc::instance().get_handle_to_window()) == TRUE);
+        const bool is_dlg_msg = (IsDialogMessage(mcal::led::driver_pc::instance().get_handle_to_window(), &message) == TRUE);
 
-        static_cast<void>(translate_message_is_ok);
-        static_cast<void>(dispatch__message_is_ok);
+        if(   (is_window  == FALSE)
+           || (is_dlg_msg == FALSE))
+        {
+          const bool translate_message_is_ok = (TranslateMessage(&message) == TRUE);
+          const bool dispatch__message_is_ok = (DispatchMessage (&message) == TRUE);
+
+          static_cast<void>(translate_message_is_ok);
+          static_cast<void>(dispatch__message_is_ok);
+        }
       }
     }
-
-    Sleep(3U);
   }
 
   return 0;
