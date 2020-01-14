@@ -80,10 +80,11 @@ static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
 }};
 ```
 
-for which the expected result is `0x0376E6E7`.
+The expected result of the CRC-32/MPEG-2 of these
+data bytes is `0x0376E6E7`.
 
 The application benchmark task `app::benchmark::task_func`
-computes the CRC32. THe computation is run to completion
+computes the CRC-32/MPEG-2. The computation is run to completion
 in each and every task call and includes verification
 of the the expected result.
 
