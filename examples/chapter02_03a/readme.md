@@ -40,3 +40,17 @@ void app::led::task_func()
   }
 }
 ```
+
+The multitasking scheduler combined with utilities such as
+timer and LED objects allow for convenient, intuitive
+programming that is both straightforward to implement
+as well as simple to comprehend. In this small snippet
+from the application task, for instance it is intuitively
+clear that Led0 is toggled once per second.
+
+Cross development is also used. This means that
+the application layer runs both on the PC as well
+as in the embedded target. On the PC, the LED
+toggle is expressed with text on the standard output
+console, while the target system controls the actual
+hardware used LED that is present on the board.
