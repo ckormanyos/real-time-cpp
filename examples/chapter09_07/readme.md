@@ -65,3 +65,5 @@ and the application layer code. This makes it possible
 to run the same application code on both the PC as well
 as the embedded target.
 Cross development
+
+![Display application task in action on the PC simuation](./images/seven_segment.pdf)
