@@ -63,7 +63,8 @@ Object oriented design with several layers of abstraction
 allows for a clean separation between hardware dependencies
 and the application layer code. This makes it possible
 to run the same application code on both the PC as well
-as the embedded target.
-Cross development
+as the embedded target. This method exenplifies how useful
+cross development can be for writing error-free portable
+application layer code.
 
 ![Display application task in action on the PC simuation](./images/seven_segment.pdf)
