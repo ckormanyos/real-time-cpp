@@ -62,5 +62,5 @@ output console. The expected message text is
 
 
 ```
-login_key is 1,2,3,
+login_key is x1,x2,x3,
 ```
