@@ -17,7 +17,7 @@ book but extend these in rudimentary ways to include
 a main subroutine and usually some sensible short messages
 to the output console.
 
-Consider, for instance, the code snippet `chapter03_11-001_array.cpp`
+Consider, for instance, the code snippet `chapter03_11-001_array.cpp`.
 
 ```
 ///////////////////////////////////////////////////////////////////////////////
