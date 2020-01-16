@@ -7,6 +7,9 @@ and Template Microcontroller Programming, Third Edition
 
 ## Code Snippets
 
+The code snippets are organized according to chapter
+and section.
+
 Each code snippet in intended to be a complete standalone
 C++ project that compiles and runs on a PC. The code
 snippets correspond to individual code samples in the
