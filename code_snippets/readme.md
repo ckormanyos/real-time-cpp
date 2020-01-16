@@ -67,5 +67,5 @@ The expected message text is
 
 
 ```
-login_key is x1,x2,x3,
+login_key is 0x1,0x2,0x3,
 ```
