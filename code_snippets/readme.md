@@ -61,7 +61,9 @@ int main()
 This code snippet portrays simple use of `std::array`.
 An array named `login_key` is created and initialized
 with the data bytes `1,2,3`. The bytes are printed to the
-output console. The expected message text is
+output console.
+
+The expected message text is
 
 
 ```
