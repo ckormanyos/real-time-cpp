@@ -22,9 +22,9 @@ Cylindrical Bessel functions of complex-valued argument
 <img src="https://render.githubusercontent.com/render/math?math={z}">
 and complex-valued order
 <img src="https://render.githubusercontent.com/render/math?math={\nu}">,
-for instance, have the Taylor series representation
+for instance, have a
+[Bessel function Taylor series representation](http://http://functions.wolfram.com/Bessel-TypeFunctions/BesselJ/06/01/04/01/01)
 
-<img src="https://render.githubusercontent.com/render/math?math=J_{\nu}(z)=(\frac{1}{2}z)^{\nu}{\sum_{k\,=\,0}^{\infty}}\frac{((-z/4)^{2})^{k}}{k!\,\Gamma({\nu}+k+1)}">
 
 # Application Description
 
