@@ -1,8 +1,10 @@
 # Example Chapter17_03
 # Traditional C Language Code in a Modern C++ Project
 
-Example chapter17_03 shows some methods that allow
-using traditional C language code in a modern C++ project.
+Example chapter17_03 depicts some methods that potentially allow
+the successful use of traditional C-language code within a
+modern C++ project.
+
 Example chapter17_03 assumes that there is a useful
 library of well-tested, efficient and trusted C-language code
 available in the local project domain and it is desired to make
