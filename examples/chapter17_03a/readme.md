@@ -1,5 +1,5 @@
 # Example Chapter17_03a
-# Traditional C-Language in a Modern C++, Time Slices
+# Traditional C-Language in Modern C++, Using Time Slices
 
 Example chapter17_03a is almost identical with
 example chapter17_03. It performs the same CRC calculations
