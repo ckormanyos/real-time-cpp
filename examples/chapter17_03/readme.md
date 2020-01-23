@@ -14,10 +14,10 @@ use of this code within a modern C++ project.
 
 In order to emulate this situation, we have built up a
 little library of CRC functions that are specified in the
-[AUTOSAR](www.autosar.org) architecture that is ubiquitously used
-in embedded systems projects in the automotive industry.
-The library includes well-known CRC variants having results
-in widths of 8, 16, 32 and 64 bits.
+[AUTOSAR](www.autosar.org) architecture. This architecture
+is ubiquitously used in embedded systems projects in the
+automotive industry. The CRC library features well-known
+CRC variants with results having widths of 8, 16, 32 and 64 bits.
 
 A C-language interface to an 8-bit CRC is shown below.
 
@@ -58,7 +58,7 @@ void Crc08_Finalize    (Crc08_Context_Type* Crc_Context);
 
 # Application Description
 
-On top of the existing C-language CRC library is built a skinny
+On top of the existing C-language CRC library we have built a skinny
 object-oriented C++ wrapper class architecture that
 allows the CRC objects to be used effectively in a
 modern C++ envorinment. The application benchmark task,
