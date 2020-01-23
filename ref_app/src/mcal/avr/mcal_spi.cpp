@@ -1,55 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2015.
+//  Copyright Christopher Kormanyos 2012 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-/*
 #include <mcal_cpu.h>
-#include <mcal_irq.h>
-#include <mcal_port.h>
-#include <mcal_spi.h>
 #include <mcal_reg.h>
+#include <mcal_spi.h>
 
-mcal::spi::spi_communication mcal::spi::the_spi;
+#if 0
+#include <util/utility/util_time.h>
+#endif
 
-namespace
+void mcal::spi::init(const mcal::spi::config_type*)
 {
-  typedef mcal::port::port_pin<std::uint8_t,
-                               std::uint8_t,
-                               mcal::reg::portd,
-                               0U> portd0_type;
-
-  typedef mcal::port::port_pin<std::uint8_t,
-                               std::uint8_t,
-                               mcal::reg::portd,
-                               1U> portd1_type;
-
-  void enable_rx_tx_interrupt()
-  {
-    // Enable the spi end-of-transmission interrupt
-    // by setting the spie bit in the spcr register.
-    mcal::reg::reg_access_static<std::uint8_t,
-                                 std::uint8_t,
-                                 mcal::reg::spcr,
-                                 7U>::bit_set();
-  }
-
-  void disable_rx_tx_interrupt()
-  {
-    // Disable the spi end-of-transmission interrupt
-    // by clearing the spie bit in the spcr register.
-    mcal::reg::reg_access_static<std::uint8_t,
-                                 std::uint8_t,
-                                 mcal::reg::spcr,
-                                 7U>::bit_clr();
-  }
-}
-
-mcal::spi::spi_communication::spi_communication() : send_is_active(false),
-                                                    channel(0U)
-{
+#if 0
   // Set the special port pins ss, mosi and sck to output.
   // Do this even though the ss pin will not be used.
   constexpr std::uint8_t pdir_mask =   mcal::reg::bval2
@@ -62,8 +28,8 @@ mcal::spi::spi_communication::spi_communication() : send_is_active(false),
                                pdir_mask>::reg_or();
 
   // Enable spi as master mode, clock idle to high, etc.
-  // Set the spi clock to f_osc/64 = (1/4)MHz.
-  constexpr std::uint8_t spcr_mask =   mcal::reg::bval1
+  // Set the spi clock to f_osc/16 = 1MHz.
+  constexpr std::uint8_t spcr_mask =   mcal::reg::bval0
                                      | mcal::reg::bval2
                                      | mcal::reg::bval3
                                      | mcal::reg::bval4
@@ -73,149 +39,60 @@ mcal::spi::spi_communication::spi_communication() : send_is_active(false),
                                std::uint8_t,
                                mcal::reg::spcr,
                                spcr_mask>::reg_set();
-
-  // Set the chip-select-not ports to output high.
-  portd0_type::set_pin_high();
-  portd0_type::set_direction_output();
-
-  portd1_type::set_pin_high();
-  portd1_type::set_direction_output();
-}
-
-mcal::spi::spi_communication::~spi_communication()
-{
+#endif
 }
 
 bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
 {
-  mcal::irq::disable_all();
+#if 0
+  bool result_is_ok;
 
-  // If the spi is idle, begin transmission.
-  if(send_is_active == false)
+  if(mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::spsr, UINT8_C(7)>::reg_get() == true)
   {
-    // Set the send-active flag.
-    send_is_active = true;
-
-    // Set the chip-select-not for the appropriate channel to low.
-    if(channel == static_cast<std::uint8_t>(1U))
-    {
-      portd1_type::set_pin_low();
-    }
-    else
-    {
-      portd0_type::set_pin_low();
-    }
-
-    // Send the first byte over spi.
-    mcal::reg::reg_access_dynamic<std::uint8_t,
-                              std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
-
-    // Enable the spi rx/tx interrupt.
-    enable_rx_tx_interrupt();
-
-    mcal::irq::enable_all();
+    result_is_ok = false;
   }
   else
   {
-    // A transmission is already in progress.
-    // Pack the next byte-to-send into the send-buffer.
-    send_buffer.in(byte_to_send);
+    using local_timer_type = util::timer<std::uint16_t>;
 
-    mcal::irq::enable_all();
+    // Send the byte over spi.
+    mcal::reg::reg_access_dynamic<std::uint8_t,
+                                  std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
+
+    const local_timer_type transmission_has_timeout_timer(local_timer_type::milliseconds(10U));
+
+    // Wait for transmission complete.
+    while(   (mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::spsr, UINT8_C(7)>::reg_get() == false)
+          && (transmission_has_timeout_timer.timeout() == false))
+    {
+      mcal::cpu::nop();
+    }
+
+    result_is_ok = (transmission_has_timeout_timer.timeout() == false);
+
+    if(result_is_ok)
+    {
+      recv_buffer_is_full = true;
+
+      const volatile std::uint8_t dummy_read =
+        mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::spsr>::reg_get();
+
+      static_cast<void>(dummy_read);
+
+      communication_buffer_depth_one_byte::recv_buffer =
+        mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::spdr>::reg_get();
+    }
   }
+
+  return result_is_ok;
+#endif
 
   return true;
 }
 
-bool mcal::spi::spi_communication::recv(std::uint8_t& byte_to_recv)
+util::communication_base& mcal::spi::spi0()
 {
-  disable_rx_tx_interrupt();
+  static mcal::spi::spi_communication com;
 
-  byte_to_recv = recv_buffer.out();
-
-  enable_rx_tx_interrupt();
-
-  return true;
+  return com;
 }
-
-mcal::spi::spi_communication::size_type mcal::spi::spi_communication::recv_ready() const
-{
-  disable_rx_tx_interrupt();
-
-  // Get the count of bytes in the receive buffer.
-  const size_type count = recv_buffer.size();
-
-  enable_rx_tx_interrupt();
-
-  return count;
-}
-
-bool mcal::spi::spi_communication::idle() const
-{
-  disable_rx_tx_interrupt();
-
-  const bool is_active = send_is_active;
-
-  enable_rx_tx_interrupt();
-
-  return (is_active == false);
-}
-
-bool mcal::spi::spi_communication::select_channel(const std::uint8_t ch)
-{
-  // Support for two channels 0 and 1.
-  if(ch <= static_cast<std::uint8_t>(2U))
-  {
-    channel = ch;
-
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-void __vector_17()
-{
-  // The spi interrupt is on end-of-transmission.
-
-  // Receive the byte from the previous transmission.
-  const std::uint8_t byte_to_recv = mcal::reg::reg_access_static<std::uint8_t,
-                                                      std::uint8_t,
-                                                      mcal::reg::spdr>::reg_get();
-
-  mcal::spi::the_spi.recv_buffer.in(byte_to_recv);
-
-  const bool send_buffer_is_empty = mcal::spi::the_spi.send_buffer.empty();
-
-  if(send_buffer_is_empty)
-  {
-    // The send-buffer is empty and reception from
-    // the previous (final) transmission is done.
-    // Deactivate the send-active flag.
-    mcal::spi::the_spi.send_is_active = false;
-
-    // Reset the chip-select-not on the channel to high.
-    if(mcal::spi::the_spi.channel == static_cast<std::uint8_t>(1U))
-    {
-      portd1_type::set_pin_high();
-    }
-    else
-    {
-      portd0_type::set_pin_high();
-    }
-
-    // Disable the spi rx/tx interrupt.
-    disable_rx_tx_interrupt();
-  }
-  else
-  {
-    // Send the next byte if there is at least one in the send queue.
-    const std::uint8_t byte_to_send = mcal::spi::the_spi.send_buffer.out();
-
-    mcal::reg::reg_access_dynamic<std::uint8_t,
-                              std::uint8_t>::reg_set(mcal::reg::spdr, byte_to_send);
-  }
-}
-*/

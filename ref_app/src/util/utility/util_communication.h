@@ -11,7 +11,6 @@
   #include <algorithm>
   #include <cstddef>
   #include <cstdint>
-  #include <util/utility/util_circular_buffer.h>
 
   namespace util
   {
@@ -86,27 +85,48 @@
       }
 
     protected:
-      communication_base() { }
+      communication_base() noexcept { }
     };
 
-    template<const std::size_t buffer_size = 16U>
-    class communication : public communication_base
+    class communication_buffer_depth_one_byte : public communication_base
     {
     public:
-      typedef util::circular_buffer<std::uint8_t, buffer_size> buffer_type;
+      typedef std::uint8_t buffer_type;
 
-      virtual ~communication();
+      virtual ~communication_buffer_depth_one_byte() { }
+
+      virtual bool recv(std::uint8_t& byte_to_recv)
+      {
+        const bool recv_is_ok = recv_buffer_is_full;
+
+        if(recv_is_ok)
+        {
+          byte_to_recv = recv_buffer;
+
+          recv_buffer_is_full = false;
+        }
+
+        return recv_is_ok;
+      }
+
+      virtual size_type recv_ready() const
+      {
+        return (recv_buffer_is_full ? 1U : 0U);
+      }
+
+      virtual bool idle() const
+      {
+        return true;
+      }
 
     protected:
-      communication() : send_buffer(),
-                        recv_buffer() { }
+      communication_buffer_depth_one_byte() noexcept
+        : recv_buffer        (),
+          recv_buffer_is_full(false) { }
 
-      buffer_type send_buffer;
       buffer_type recv_buffer;
+      bool        recv_buffer_is_full;
     };
-
-    template<const std::size_t buffer_size>
-    communication<buffer_size>::~communication() { }
   }
 
 #endif // UTIL_COMMUNICATION_2012_05_31_H_

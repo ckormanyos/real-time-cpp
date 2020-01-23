@@ -155,6 +155,9 @@
     <Filter Include="src\mcal\host">
       <UniqueIdentifier>{069e32de-cf68-440e-9742-c4a776f49af0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\app\com">
+      <UniqueIdentifier>{7c7e0dfc-dbc0-4736-ae0b-671d74feb336}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -729,6 +732,9 @@
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\com\app_com.cpp">
+      <Filter>src\app\com</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1628,6 +1634,9 @@
     </ClInclude>
     <ClInclude Include="src\math\constants\pi_spigot_state.h">
       <Filter>src\math\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_random_pcg32.h">
+      <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

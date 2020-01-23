@@ -23,6 +23,7 @@
 
   // Declare all of the task initializations and the task functions.
   namespace app { namespace led       { void task_init(); void task_func(); } }
+  namespace app { namespace com       { void task_init(); void task_func(); } }
   namespace app { namespace benchmark { void task_init(); void task_func(); } }
   namespace sys { namespace mon       { void task_init(); void task_func(); } }
 
@@ -33,6 +34,7 @@
     typedef enum enum_task_id
     {
       task_id_app_led,
+      task_id_app_com,
       task_id_app_benchmark,
       task_id_sys_mon,
       task_id_end
@@ -72,14 +74,18 @@
                              app::led::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  2000)),                     \
                              os::timer_type::microseconds(UINT32_C(     0))),                    \
+      os::task_control_block(app::com::task_init,                                                \
+                             app::com::task_func,                                                \
+                             os::timer_type::microseconds(UINT32_C(  5000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   229))),                    \
       os::task_control_block(app::benchmark::task_init,                                          \
                              app::benchmark::task_func,                                          \
                              os::timer_type::microseconds(UINT32_C(  5000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   229))),                    \
+                             os::timer_type::microseconds(UINT32_C(   379))),                    \
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   379))),                    \
+                             os::timer_type::microseconds(UINT32_C(   541))),                    \
     }                                                                                            \
   }
 
