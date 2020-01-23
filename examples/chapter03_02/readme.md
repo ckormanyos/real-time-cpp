@@ -2,9 +2,9 @@
 # Integer Types Having Fixed Widths and Prime Numbers
 
 Example chapter03_02 focuses on integer types having fixed widths.
-The example uses a fascinating calculation of prime numbers in order
-to emphasize the usefullness and portability of fixed-width
-integer types.
+The example gets into a fascinating calculation of prime numbers
+that is simultaneously intended to emphasize the usefullness
+and portability of fixed-width integer types.
 
 # Fixed-Width Integer Types
 
@@ -30,8 +30,8 @@ the entire code in the project.
 
 # Application Description
 
-In the running code of example chapter03_02, the first 100 prime numbers are
-calculated with a sieve method. The sieve-based prime number calculation
+In the example chapter03_02, the first 100 prime numbers are calculated
+with a sieve method. The sieve-based prime number calculation
 is realized within the application task of the software in the
 cooperative multitasking scheduler.
 
