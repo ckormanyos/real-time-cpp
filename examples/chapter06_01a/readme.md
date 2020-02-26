@@ -21,11 +21,22 @@ A complete rebuild of this project and subsequent analysis
 of the map files reveals that the data objects
 have been successfully placed in ROM program code.
 In other words, they have been _ROM_'ed.
+
 As it turns out, _ROM_-ing constant data can at times require
 somewhat intricate programming. In particular, this is the case
 for the gcc-avr tool chain. Example chapter06_01a puts some
 semi-formal structure (in C++11-style) around this architectural
 characteristic.
+
+# Examine the Map File
+
+Examination of the map file can lead to insightful understanding
+of what gets placed in which parts of the memory of a microcontroller
+project. The image of a memory map from example chapter06_01
+shows us that the data objects mentioned above have, in fact,
+been have been _ROM_'ed.
+
+![Objects in ROM](./images/romdata.jpg)
 
 # Application Description
 
