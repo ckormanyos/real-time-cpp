@@ -33,10 +33,11 @@ characteristic.
 Examination of the map file can lead to insightful understanding
 of what objects get placed in which parts of the memory of a microcontroller
 project. How much memory do objects and subroutines require?
-Where are they located? These questions are answerde at least partly in the map file.
+Where are they located? Answers to these questions can often
+(at least partly) be found in the map file.
 
-The image of a memory map from example chapter06_01a for the
-8-bit target shows us that the data objects mentioned above have,
+The partial image of a memory map file from example chapter06_01a for
+the 8-bit target shows us that the data objects mentioned above have,
 in fact, been _ROM_'ed.
 
 ![Objects in ROM](./images/romdata.jpg)
