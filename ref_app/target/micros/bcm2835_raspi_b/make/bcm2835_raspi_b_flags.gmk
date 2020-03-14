@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 8.2.1
+GCC_VERSION   = 9.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -21,8 +21,9 @@ TGT_CFLAGS    = -O2                                            \
                 -ffast-math                                    \
                 -march=armv6zk                                 \
                 -mtune=arm1176jzf-s                            \
-                -marm                                          \
-                -mfloat-abi=soft                               \
+                -mfpu=neon-fp-armv8                            \
+                -funsafe-math-optimizations                    \
+                -mfloat-abi=hard                               \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 

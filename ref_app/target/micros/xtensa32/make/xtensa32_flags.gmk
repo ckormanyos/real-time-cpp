@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2018 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,7 +9,10 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 5.2.0
+# http://vivonomicon.com/2019/03/30/getting-started-with-bare-metal-esp32-programming
+# http://github.com/espressif/esp-idf
+
+GCC_VERSION   = 8.2.0
 GCC_TARGET    = xtensa-esp32-elf
 GCC_PREFIX    = xtensa-esp32-elf
 
@@ -23,7 +26,7 @@ TGT_CFLAGS    = -Os                                                            \
                 -fstack-protector                                              \
                 -fstrict-volatile-bitfields
 
-TGT_CPPFLAGS  = -std=c++14
+TGT_CPPFLAGS  = -std=c++17
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
                 -I$(PATH_APP)/util/STL
