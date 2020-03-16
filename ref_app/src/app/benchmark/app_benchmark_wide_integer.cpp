@@ -5,9 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
+
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 
-#include <app/benchmark/app_benchmark.h>
 #include <math/wide_integer/generic_template_uintwide_t.h>
 
 namespace
@@ -125,3 +128,5 @@ bool app::benchmark::run_wide_integer()
 
   return result_is_ok;
 }
+
+#endif // APP_BENCHMARK_TYPE_WIDE_INTEGER

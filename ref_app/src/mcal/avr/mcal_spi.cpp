@@ -85,9 +85,11 @@ bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
   }
 
   return result_is_ok;
-#endif
+#else
+  static_cast<void>(byte_to_send);
 
   return true;
+#endif
 }
 
 util::communication_base& mcal::spi::spi0()

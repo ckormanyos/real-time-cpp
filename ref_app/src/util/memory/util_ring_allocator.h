@@ -32,7 +32,7 @@
       // The ring allocator's buffer type.
       struct buffer_type
       {
-        static const size_type size = 32U;
+        static const size_type size = 64U;
 
         std::uint8_t data[size];
 

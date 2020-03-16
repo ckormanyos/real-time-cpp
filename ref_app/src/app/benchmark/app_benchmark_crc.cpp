@@ -8,6 +8,9 @@
 #include <cstdint>
 
 #include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
+
 #include <math/checksums/crc/crc32.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
 
@@ -26,3 +29,5 @@ bool app::benchmark::run_crc()
 
   return result_is_ok;
 }
+
+#endif // APP_BENCHMARK_TYPE_CRC

@@ -6,9 +6,12 @@
 //
 
 
+#include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
+
 #define FIXED_POINT_DISABLE_IOSTREAM
 
-#include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/calculus/derivative.h>
 #include <math/fixed_point/fixed_point.h>
@@ -50,3 +53,5 @@ fixed_point_type global_a = fixed_point_type(12) / 10;
 fixed_point_type global_b = fixed_point_type(34) / 10;
 fixed_point_type global_c = fixed_point_type(56) / 10;
 fixed_point_type global_d;
+
+#endif // APP_BENCHMARK_TYPE_FIXED_POINT

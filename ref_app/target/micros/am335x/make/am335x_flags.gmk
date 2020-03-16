@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 8.2.1
+GCC_VERSION   = 9.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -19,8 +19,6 @@ TGT_CFLAGS    = -O2                                                             
                 -finline-functions                                                \
                 -finline-limit=16                                                 \
                 -march=armv7-a                                                    \
-                -mcpu=cortex-a8                                                   \
-                -mtune=cortex-a8                                                  \
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
                 -mfpu=neon                                                        \

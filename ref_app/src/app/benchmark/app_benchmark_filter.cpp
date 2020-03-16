@@ -8,6 +8,9 @@
 #include <cstdint>
 
 #include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
+
 #include <math/filters/fir_order_n.h>
 
 namespace
@@ -50,3 +53,5 @@ bool app::benchmark::run_filter()
 
       filter_type f;
 const sample_type sample(100);
+
+#endif // APP_BENCHMARK_TYPE_FILTER

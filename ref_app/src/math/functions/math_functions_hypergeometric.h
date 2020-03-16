@@ -233,7 +233,7 @@
 
           using std::fabs;
 
-          if((n > UINT16_C(5)) && (fabs(next_term) < tolerance))
+          if((n > UINT16_C(3)) && (fabs(next_term) < tolerance))
           {
             break;
           }

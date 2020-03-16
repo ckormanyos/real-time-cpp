@@ -101,9 +101,6 @@
     <Filter Include="src\mcal\rx63n">
       <UniqueIdentifier>{29c51b64-7573-4787-9512-d668e5d8e0d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\pic32mx795fx">
-      <UniqueIdentifier>{0a764d8d-e956-4aca-a762-550fcb433896}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\bcm2835_raspi_b">
       <UniqueIdentifier>{7b9388d6-f502-4205-b264-1d91355a71bf}</UniqueIdentifier>
     </Filter>
@@ -373,30 +370,6 @@
     <ClCompile Include="src\mcal\rx63n\mcal_wdg.cpp">
       <Filter>src\mcal\rx63n</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_cpu.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_gpt.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_irq.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_led.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_osc.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_port.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_pwm.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_wdg.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\stm32f407\mcal_spi.cpp">
       <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
@@ -405,9 +378,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_spi.cpp">
       <Filter>src\mcal\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_spi.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_spi.cpp">
       <Filter>src\mcal\rl78</Filter>
@@ -576,9 +546,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\am335x\mcal_eep.cpp">
       <Filter>src\mcal\am335x</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\pic32mx795fx\mcal_eep.cpp">
-      <Filter>src\mcal\pic32mx795fx</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_eep.cpp">
       <Filter>src\mcal\rl78</Filter>
@@ -1101,42 +1068,6 @@
     <ClInclude Include="src\mcal\rx63n\mcal_wdg.h">
       <Filter>src\mcal\rx63n</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_benchmark.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_cpu.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_gpt.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_irq.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_led.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_osc.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_port.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_pwm.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_reg.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_ser.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_spi.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_wdg.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_benchmark.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClInclude>
@@ -1362,9 +1293,6 @@
     <ClInclude Include="src\mcal\am335x\mcal_eep.h">
       <Filter>src\mcal\am335x</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_eep.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_eep.h">
       <Filter>src\mcal\rl78</Filter>
     </ClInclude>
@@ -1535,9 +1463,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\lpc11c24\mcal_progmem.h">
       <Filter>src\mcal\lpc11c24</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\pic32mx795fx\mcal_progmem.h">
-      <Filter>src\mcal\pic32mx795fx</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rl78\mcal_progmem.h">
       <Filter>src\mcal\rl78</Filter>

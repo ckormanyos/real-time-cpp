@@ -76,15 +76,6 @@
     <Filter Include="micros\rx63n\startup">
       <UniqueIdentifier>{145ad14c-97bb-4f35-b080-b38e0b3694be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\pic32mx795fx">
-      <UniqueIdentifier>{07c0fd40-d9f8-40c7-a363-c7bac2234b3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\pic32mx795fx\make">
-      <UniqueIdentifier>{2a5d7844-e062-45e6-8369-554fb830cf6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\pic32mx795fx\startup">
-      <UniqueIdentifier>{233d3e07-73e6-456c-ad85-eee1754c294b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\bcm2835_raspi_b">
       <UniqueIdentifier>{4041bfb9-b914-4b7c-a460-4ea024a343cc}</UniqueIdentifier>
     </Filter>
@@ -234,15 +225,6 @@
     <None Include="target\micros\rx63n\make\rx63n_flags.gmk">
       <Filter>micros\rx63n\make</Filter>
     </None>
-    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx.ld">
-      <Filter>micros\pic32mx795fx\make</Filter>
-    </None>
-    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_files.gmk">
-      <Filter>micros\pic32mx795fx\make</Filter>
-    </None>
-    <None Include="target\micros\pic32mx795fx\make\pic32mx795fx_flags.gmk">
-      <Filter>micros\pic32mx795fx\make</Filter>
-    </None>
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b.ld">
       <Filter>micros\bcm2835_raspi_b\make</Filter>
     </None>
@@ -391,21 +373,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\rx63n\startup\int_vect.cpp">
       <Filter>micros\rx63n\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0.cpp">
-      <Filter>micros\pic32mx795fx\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\pic32mx795fx\startup\crt0_init_ram.cpp">
-      <Filter>micros\pic32mx795fx\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\pic32mx795fx\startup\crt1.cpp">
-      <Filter>micros\pic32mx795fx\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\pic32mx795fx\startup\int_vect.cpp">
-      <Filter>micros\pic32mx795fx\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\pic32mx795fx\startup\config.cpp">
-      <Filter>micros\pic32mx795fx\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rl78\startup\option.cpp">
       <Filter>micros\rl78\startup</Filter>
