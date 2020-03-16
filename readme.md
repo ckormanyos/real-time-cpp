@@ -30,7 +30,6 @@ The reference application supports the following targets:
   * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
-  * Microchip(R) PIC(R)32 MIPS4K
   * Raspberry Pi with ARM(R) 11
 
 Cross Development in the Reference Application
