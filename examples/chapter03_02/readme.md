@@ -30,7 +30,7 @@ the entire code in the project.
 
 # Application Description
 
-In the example chapter03_02, the first 100 prime numbers are calculated
+In example chapter03_02, the first 100 prime numbers are calculated
 with a sieve method. The sieve-based prime number calculation
 is realized within the application task of the software in the
 cooperative multitasking scheduler.
@@ -41,8 +41,8 @@ This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.co
 with the input `Prime[100]`.
 
 The example begins by querying the number of entries required
-in the sieve to calculate the prime 541. A simple divergent asymptotic
-series approximation of the lograithmic integral function is used for this.
+in the sieve to calculate the prime 541. For this, a simple divergent
+asymptotic series approximation of the lograithmic integral function is used.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
