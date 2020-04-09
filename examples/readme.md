@@ -11,6 +11,8 @@ Example ![chapter02_02](./chapter02_02) The LED program This example implements 
 
 Example ![chapter02_03](./chapter02_03) The LED program with timing. This example implements the LED program (with timing) for the target with the 8-bit microcontroller.
 
+TBD: Finish the examples summary list.
+
 ## Further Information on the Examples
 
 For further informatin on the examples, see the readme notes
