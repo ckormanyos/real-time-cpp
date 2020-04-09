@@ -7,9 +7,9 @@ and Template Microcontroller Programming, Third Edition
 
 ## Summary of the Examples
 
-Example chapter02_02 The LED program This example implements the LED program (blinky) for the target with the 8-bit microcontroller.
+Example ![chapter02_02](./chapter02_02) The LED program This example implements the LED program (blinky) for the target with the 8-bit microcontroller.
 
-Example chapter02_03 The LED program with timing. This example implements the LED program (with timing) for the target with the 8-bit microcontroller.
+Example ![chapter02_03](./chapter02_03) The LED program with timing. This example implements the LED program (with timing) for the target with the 8-bit microcontroller.
 
 ## Further Information on the Examples
 
