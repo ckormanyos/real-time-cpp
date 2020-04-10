@@ -5,11 +5,9 @@ Example chapter17_03a is almost identical with
 example chapter17_03. It performs the same CRC calculations
 and uses essentially the same code technical methods
 for accessing traditional C-language code within a
-modern C++ project.
-
-Example chapter17_03a, however, distribute the CRC calculations
-over multitasking using time slices to process one single byte
-at a time, per task schedule call.
+modern C++ project. Example chapter17_03a, however,
+distributes the CRC calculations over multitasking using
+time slices to process one single byte at a time, per task schedule call.
 
 # Application Description
 
