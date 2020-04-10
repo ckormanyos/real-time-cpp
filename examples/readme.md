@@ -16,7 +16,40 @@ This example implements the LED program (with timing) for the target with the 8-
 Example ![chapter02_03a](./chapter02_03a) The LED program with cooperative multitasking scheduler.\
 This example implements the LED program with a tiny cooperative multitasking scheduler for the target with the 8-bit microcontroller.
 
-TBD: Finish the examples summary list.
+Example ![chapter02_06](./chapter02_06) The Led Program (with template LED class).\
+This example implements the LED program with a template LED class for the target with the 8-bit microcontroller.
+
+Example ![chapter03_02](./chapter03_02) Integer Types Having Fixed Widths and Prime Numbers.\
+This example focuses on integer types having fixed widths using a fascinating calculation
+of prime numbers that is simultaneously intended to emphasize the usefullness and portability
+of fixed-width integer types.
+
+Example ![chapter06_01](./chapter06_01) A CRC Benchmark.\
+This example illustrates certain optimization techniques through the calculation
+of a standard CRC32 checksum (cycle redundancy check).
+
+Example ![chapter06_01a](./chapter06_01a) A CRC Benchmark with ROM-based Table and Data.\
+This example has essentially the same functionality as example chapter06_01.
+The checksum table and benchmark data, however, are ROM-able.
+
+Example ![chapter09_07](./chapter09_07) Controlling a Seven Segment Display.\
+This example makes use of object oriented programming methods to control a seven segment display.
+
+Example ![chapter09_08](./chapter09_08) Controlling an RGB LED.\
+This example utilizes object oriented programming techniques to control an RGB LED.
+
+Example ![chapter12_04](./chapter12_04) Floating-Point Calculations.\
+This example performs a variety of floating-point calculations
+of selected special functions of pure and applied mathematics.
+
+Example ![chapter17_03](./chapter17_03) Traditional C Language Code in a Modern C++ Project.\
+This example depicts some methods that potentially allow the successful use
+of traditional C-language code within a modern C++ project.
+
+Example ![chapter17_03a](./chapter17_03a) Traditional C-Language in Modern C++, Using Time Slices.\
+This example is almost identical with example chapter17_03. It performs
+the same CRC calculations and uses essentially the same code technical methods
+for accessing traditional C-language code within a modern C++ project.
 
 ## Further Information on the Examples
 
