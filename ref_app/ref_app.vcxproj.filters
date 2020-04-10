@@ -697,9 +697,6 @@
     <ClCompile Include="src\mcal\host\mcal_wdg_watchdog.cpp">
       <Filter>src\mcal\host</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STD_LIBC\soft_fp.cpp">
-      <Filter>src\util\STD_LIBC</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
