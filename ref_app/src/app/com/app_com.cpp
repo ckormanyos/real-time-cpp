@@ -46,5 +46,10 @@ void app::com::task_func()
 
   const random_engine_type::result_type app_com_random_value32 = app_com_random_device();
 
-  mcal::spi::spi0().send(static_cast<std::uint8_t>(app_com_random_value32));
+  for(std::uint_fast8_t i = 0U; i < 4U; ++i)
+  {
+    const std::uint8_t next_byte(app_com_random_value32 >> (i * 8U));
+
+    mcal::spi::spi0().send(next_byte);
+  }
 }

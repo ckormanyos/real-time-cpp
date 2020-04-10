@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <array>
 #include <algorithm>
 #include <cstdint>
 
@@ -34,8 +35,8 @@ namespace
 
   using pi_spigot_type = math::constants::pi_spigot_state<21U, 9U>;
 
-  std::uint32_t app_benchmark_pi_spigot_in_[pi_spigot_type::get_input__static_size()];
-  std::uint8_t  app_benchmark_pi_spigot_out[pi_spigot_type::get_output_static_size()];
+  std::array<std::uint32_t, pi_spigot_type::get_input__static_size()> app_benchmark_pi_spigot_in_;
+  std::array<std::uint8_t,  pi_spigot_type::get_output_static_size()> app_benchmark_pi_spigot_out;
 
   pi_spigot_type app_benchmark_pi_spigot_object;
 
@@ -53,8 +54,8 @@ bool app::benchmark::run_pi_spigot()
     app_benchmark_pi_spigot_out[0U] = 0U;
   }
 
-  app_benchmark_pi_spigot_object.calculate(app_benchmark_pi_spigot_in_,
-                                           app_benchmark_pi_spigot_out);
+  app_benchmark_pi_spigot_object.calculate(app_benchmark_pi_spigot_in_.data(),
+                                           app_benchmark_pi_spigot_out.data());
 
   bool result_is_ok = true;
 

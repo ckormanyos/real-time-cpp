@@ -1693,6 +1693,8 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h" />
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />

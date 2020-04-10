@@ -19,7 +19,7 @@
     public:
       typedef std::size_t size_type;
 
-      virtual ~communication_base() { }
+      virtual ~communication_base() = default;
 
       virtual bool send           (const std::uint8_t byte_to_send) = 0;
       virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
@@ -27,8 +27,7 @@
       virtual bool idle           () const = 0;
 
       template<typename send_iterator_type>
-      bool send_n(send_iterator_type first,
-                  send_iterator_type last)
+      bool send_n(send_iterator_type first, send_iterator_type last)
       {
         bool send_result = true;
 
@@ -49,8 +48,7 @@
       }
 
       template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first,
-                  size_type count)
+      bool recv_n(recv_iterator_type first, size_type count)
       {
         const size_type count_to_recv = (std::min)(count, recv_ready());
 
@@ -85,7 +83,7 @@
       }
 
     protected:
-      communication_base() noexcept { }
+      communication_base() = default;
     };
 
     class communication_buffer_depth_one_byte : public communication_base
@@ -93,7 +91,7 @@
     public:
       typedef std::uint8_t buffer_type;
 
-      virtual ~communication_buffer_depth_one_byte() { }
+      virtual ~communication_buffer_depth_one_byte() = default;
 
       virtual bool recv(std::uint8_t& byte_to_recv)
       {
@@ -114,13 +112,8 @@
         return (recv_buffer_is_full ? 1U : 0U);
       }
 
-      virtual bool idle() const
-      {
-        return true;
-      }
-
     protected:
-      communication_buffer_depth_one_byte() noexcept
+      communication_buffer_depth_one_byte()
         : recv_buffer        (),
           recv_buffer_is_full(false) { }
 

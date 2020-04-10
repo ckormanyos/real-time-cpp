@@ -7,22 +7,15 @@
 
 #include <mcal_spi.h>
 
+#include <mcal_spi/mcal_spi_software_dummy.h>
+
 void mcal::spi::init(const mcal::spi::config_type*)
 {
 }
 
-bool mcal::spi::spi_communication::send(const std::uint8_t byte_to_send)
-{
-  const bool send_is_ok = true;
-
-  static_cast<void>(byte_to_send);
-
-  return send_is_ok;
-}
-
 util::communication_base& mcal::spi::spi0()
 {
-  static mcal::spi::spi_communication com;
+  static mcal::spi::spi_software_dummy com;
 
   return com;
 }

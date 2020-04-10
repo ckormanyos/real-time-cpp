@@ -155,6 +155,9 @@
     <Filter Include="src\app\com">
       <UniqueIdentifier>{7c7e0dfc-dbc0-4736-ae0b-671d74feb336}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_spi">
+      <UniqueIdentifier>{78643af6-533c-4eee-844d-f58523c836bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1562,6 +1565,12 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_random_pcg32.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h">
+      <Filter>src\mcal_spi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h">
+      <Filter>src\mcal_spi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,7 @@
       // The static allocator's buffer type.
       struct buffer_type
       {
-        static const size_type size = 32U;
+        static constexpr size_type size = 64U;
 
         std::uint8_t data[size];
 

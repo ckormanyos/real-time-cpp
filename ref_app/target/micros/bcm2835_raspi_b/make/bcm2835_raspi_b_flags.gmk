@@ -19,6 +19,7 @@ TGT_CFLAGS    = -O2                                            \
                 -finline-functions                             \
                 -finline-limit=16                              \
                 -ffast-math                                    \
+                -fomit-frame-pointer                           \
                 -march=armv6zk                                 \
                 -mtune=arm1176jzf-s                            \
                 -mfpu=neon-fp-armv8                            \

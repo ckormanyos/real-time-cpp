@@ -42,15 +42,15 @@
     <BootSegment>2</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <ResetRule>0</ResetRule>
     <EraseKey />
@@ -143,6 +143,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app" />
+    <Folder Include="src\app\com\" />
     <Folder Include="src\app\led" />
     <Folder Include="src\app\benchmark" />
     <Folder Include="src\math\" />
@@ -156,6 +157,7 @@
     <Folder Include="src\math\functions" />
     <Folder Include="src\math\wide_integer" />
     <Folder Include="src\mcal_memory" />
+    <Folder Include="src\mcal_spi" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -210,6 +212,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_wide_integer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\com\app_com.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\led\app_led.cpp">
@@ -368,6 +373,12 @@
     <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_spi\mcal_spi_software_port_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\os\os.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -419,6 +430,9 @@
     <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
       <SubType>compile</SubType>
     </Compile>
@@ -468,6 +482,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_point.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_random_pcg32.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_stopwatch.h">
