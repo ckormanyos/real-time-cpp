@@ -50,6 +50,8 @@ Example ![chapter17_03a](./chapter17_03a) Traditional C-Language in Modern C++, 
 This example is almost identical with example chapter17_03. It performs
 the same CRC calculations and uses essentially the same code technical methods
 for accessing traditional C-language code within a modern C++ project.
+Example chapter17_03a, however, distributes the CRC calculations
+over multitasking using time slices.
 
 ## Further Information on the Examples
 
