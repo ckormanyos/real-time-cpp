@@ -436,6 +436,7 @@
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />

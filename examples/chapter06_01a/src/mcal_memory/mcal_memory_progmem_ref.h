@@ -28,7 +28,7 @@
 
     ~progmem_ref() = default;
 
-    explicit operator value_type() const
+    operator value_type() const
     {
       return read<value_type>(my_address);
     }

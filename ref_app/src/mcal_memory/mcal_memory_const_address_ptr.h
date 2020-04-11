@@ -39,6 +39,11 @@
       return *my_ptr;
     }
 
+    const reference operator[](const size_type i) const
+    {
+      return *(my_ptr + (i * static_size));
+    }
+
     const const_address_ptr& operator++() { my_ptr += static_size; return *this; }
     const const_address_ptr& operator--() { my_ptr -= static_size; return *this; }
 

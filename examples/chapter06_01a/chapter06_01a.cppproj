@@ -42,15 +42,15 @@
     <BootSegment>2</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <ResetRule>0</ResetRule>
     <EraseKey />
@@ -251,6 +251,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_progmem_access.h">

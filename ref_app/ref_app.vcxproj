@@ -1684,6 +1684,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />

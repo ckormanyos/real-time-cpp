@@ -298,6 +298,9 @@
     <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -308,9 +311,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_port.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_progmem.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.cpp">
@@ -355,7 +355,10 @@
     <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal_memory\mcal_memory_address_ptr.h">
+    <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_progmem_access.h">

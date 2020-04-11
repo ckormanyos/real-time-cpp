@@ -1569,6 +1569,9 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
