@@ -22,21 +22,21 @@
       typedef std::size_t    size_type;
       typedef std::ptrdiff_t difference_type;
 
-      virtual ~ring_allocator_base();
+      virtual ~ring_allocator_base() = default;
 
     protected:
-      ring_allocator_base() throw() { }
+      ring_allocator_base() noexcept = default;
 
-      ring_allocator_base(const ring_allocator_base&) throw() { }
+      ring_allocator_base(const ring_allocator_base&) noexcept = default;
 
       // The ring allocator's buffer type.
       struct buffer_type
       {
-        static constexpr size_type size = 64U;
+        static constexpr size_type size = 32U;
 
         std::uint8_t data[size];
 
-        buffer_type() : data() { }
+        buffer_type() noexcept : data() { }
       };
 
       // The ring allocator's memory allocation.
@@ -79,17 +79,15 @@
       }
     };
 
-    inline ring_allocator_base::~ring_allocator_base() { }
-
     // Global comparison operators (required by the standard).
     inline bool operator==(const ring_allocator_base&,
-                           const ring_allocator_base&) throw()
+                           const ring_allocator_base&) noexcept
     {
       return true;
     }
 
     inline bool operator!=(const ring_allocator_base&,
-                           const ring_allocator_base&) throw()
+                           const ring_allocator_base&) noexcept
     {
       return false;
     }
@@ -127,12 +125,12 @@
       typedef value_type&       reference;
       typedef const value_type& const_reference;
 
-      ring_allocator() throw() { }
+      ring_allocator() noexcept = default;
 
-      ring_allocator(const ring_allocator&) throw() : ring_allocator_base(ring_allocator()) { }
+      ring_allocator(const ring_allocator&) noexcept : ring_allocator_base(ring_allocator()) { }
 
       template <typename U>
-      ring_allocator(const ring_allocator<U, buffer_alignment>&) throw() { }
+      ring_allocator(const ring_allocator<U, buffer_alignment>&) noexcept { }
 
       template<typename U> 
       struct rebind
@@ -140,7 +138,7 @@
         using other = ring_allocator<U, buffer_alignment>;
       };
 
-      size_type max_size() const throw()
+      size_type max_size() const noexcept
       {
         return buffer_type::size / sizeof(value_type);
       }
@@ -158,14 +156,14 @@
         return static_cast<pointer>(p);
       }
 
-      void construct(pointer p, const value_type& x)
+      void construct(pointer p, const value_type& x) noexcept
       {
         new(static_cast<void*>(p)) value_type(x);
       }
 
-      void destroy(pointer p) { p->~value_type(); }
+      void destroy(pointer p) noexcept { p->~value_type(); }
 
-      void deallocate(pointer, size_type) { }
+      void deallocate(pointer, size_type) noexcept { }
     };
   }
 

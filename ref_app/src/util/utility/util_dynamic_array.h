@@ -172,7 +172,7 @@
       const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
       // Raw pointer access.
-      pointer data()
+      pointer data() noexcept
       {
         return elems;
       }

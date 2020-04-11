@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2019 - 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #ifndef MCAL_MEMORY_PROGMEM_REF_2019_09_15_H_
   #define MCAL_MEMORY_PROGMEM_REF_2019_09_15_H_
 
@@ -17,6 +24,8 @@
 
     explicit progmem_ref(const address_type& address) : my_address(address) { }
 
+    progmem_ref(const progmem_ref& other) : my_address(other.my_address) { }
+
     ~progmem_ref() = default;
 
     explicit operator value_type() const
@@ -33,7 +42,7 @@
     progmem_ref& operator=(const progmem_ref&) = delete;
     progmem_ref& operator=(const value_type&) = delete;
 
-    explicit operator value_type() = delete;
+    operator value_type() = delete;
   };
 
   } } } // namespace mcal::memory::progmem
