@@ -398,7 +398,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_progmem.h">
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -431,11 +431,11 @@
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
     <ClInclude Include="src\mcal\win32\mcal_led.h" />
     <ClInclude Include="src\mcal\win32\mcal_port.h" />
-    <ClInclude Include="src\mcal\win32\mcal_progmem.h" />
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
-    <ClInclude Include="src\mcal_memory\mcal_memory_address_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />

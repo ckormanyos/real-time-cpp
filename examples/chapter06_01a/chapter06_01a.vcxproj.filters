@@ -296,6 +296,12 @@
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\checksums\crc\crc32.h">
+      <Filter>src\math\checksums\crc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
@@ -305,23 +311,17 @@
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_progmem.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_progmem.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_memory\mcal_memory_address_ptr.h">
-      <Filter>src\mcal_memory</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\checksums\crc\crc32.h">
-      <Filter>src\math\checksums\crc</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

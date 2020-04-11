@@ -1,14 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_CPU_PROGMEM_ITERATOR_2019_05_04_
+#ifndef MCAL_PROGMEM_ITERATOR_2019_05_04_
   #define MCAL_PROGMEM_ITERATOR_2019_05_04_
 
-  #include <mcal_memory/mcal_memory_address_ptr.h>
+  #include <iterator>
+
+  #include <mcal_memory/mcal_memory_const_address_ptr.h>
   #include <mcal_memory/mcal_memory_progmem_ptr.h>
 
   // Implement specialized iterator types for read-only program memory.
@@ -33,11 +35,11 @@
 
   template<typename ValueType,
            typename AddressType>
-  struct iterator_traits<const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>>
+  struct iterator_traits<const mcal::memory::const_address_ptr<progmem_ptr<ValueType, AddressType>>>
   {
   private:
     using iterator_type =
-      const mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
+      const mcal::memory::const_address_ptr<progmem_ptr<ValueType, AddressType>>;
 
   public:
     using difference_type   = typename iterator_type::difference_type;
@@ -52,7 +54,7 @@
            typename AddressType>
   struct iterator
   {
-    using pointer           = mcal::memory::address_ptr<progmem_ptr<ValueType, AddressType>>;
+    using pointer           = mcal::memory::const_address_ptr<progmem_ptr<ValueType, AddressType>>;
     using difference_type   = const typename pointer::size_type;
     using value_type        = const typename pointer::value_type;
     using reference         = const typename pointer::value_type;
@@ -63,13 +65,13 @@
            typename AddressType>
   class forward_iterator
     : public mcal::memory::progmem::iterator<random_access_iterator_tag,
-                                             const ValueType,
+                                             ValueType,
                                              AddressType>
   {
   private:
     using base_class_type =
       mcal::memory::progmem::iterator<random_access_iterator_tag,
-                                      const ValueType,
+                                      ValueType,
                                       AddressType>;
 
   public:
@@ -85,32 +87,22 @@
 
     forward_iterator(const pointer x) : current(x) { }
 
-    template<typename OtherIteratorType, typename OtherValueType>
-    forward_iterator(const forward_iterator<OtherIteratorType, OtherValueType>& other)
-      : current(static_cast<const pointer>(other.current)) { }
+    //template<typename OtherIteratorType, typename OtherValueType>
+    //forward_iterator(const forward_iterator<OtherIteratorType, OtherValueType>& other)
+    //  : current(static_cast<const pointer>(other.current)) { }
 
     ~forward_iterator() = default;
 
-    forward_iterator& operator=(forward_iterator& other)
-    {
-      if(this != &other)
-      {
-        current = other.current;
-      }
-
-      return *this;
-    }
+    forward_iterator& operator=(forward_iterator&) = default;
 
     reference operator*() const
     {
-      return operator[](0U);
+      return reference(*current);
     }
 
     reference operator[](difference_type n) const
     {
-      const pointer const_pointer_to_current_plus_n = current + n;
-
-      return reference(*const_pointer_to_current_plus_n);
+      return reference(*(current + n));
     }
 
     const forward_iterator& operator++() { ++current; return *this; }
@@ -150,9 +142,6 @@
     }
   };
 
-  template<typename iterator_type>
-  using reverse_iterator = std::reverse_iterator<iterator_type>;
-
   template<typename input_iterator>
   typename mcal::memory::progmem::iterator_traits<input_iterator>::difference_type
   distance(input_iterator first, input_iterator last)
@@ -172,8 +161,8 @@
   template <typename value_type, const mcal_progmem_uintptr_t N> inline const forward_iterator<value_type, mcal_progmem_uintptr_t> cbegin (const value_type(&c_array)[N] MY_PROGMEM) { return forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
   template <typename value_type, const mcal_progmem_uintptr_t N> inline const forward_iterator<value_type, mcal_progmem_uintptr_t> cend   (const value_type(&c_array)[N] MY_PROGMEM) { return forward_iterator<value_type, mcal_progmem_uintptr_t>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
 
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
-  template <typename value_type, const mcal_progmem_uintptr_t N> inline const reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const std::reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crbegin(const value_type(&c_array)[N] MY_PROGMEM) { return std::reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[N])); }
+  template <typename value_type, const mcal_progmem_uintptr_t N> inline const std::reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>> crend  (const value_type(&c_array)[N] MY_PROGMEM) { return std::reverse_iterator<forward_iterator<value_type, mcal_progmem_uintptr_t>>((mcal_progmem_uintptr_t) MCAL_PROGMEM_ADDRESSOF(c_array[0U])); }
 
   } } } // namespace mcal::memory::progmem
 

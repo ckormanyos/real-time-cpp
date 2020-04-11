@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,6 +10,7 @@
 
   #include <algorithm>
   #include <cstddef>
+  #include <iterator>
   #include <type_traits>
 
   #include <mcal_memory/mcal_memory_progmem_iterator.h>
@@ -28,12 +29,12 @@
   public:
     // Standard container-local type definitions.
     using size_type              = mcal_progmem_uintptr_t;
-    using const_iterator         = mcal::memory::progmem::forward_iterator<const T, size_type>;
-    using const_reverse_iterator = mcal::memory::progmem::reverse_iterator<const_iterator>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;
-    using pointer                = typename const_iterator::pointer;
-    using reference              = typename const_iterator::reference;
+    using const_pointer          = typename const_iterator::pointer;
+    using const_reference        = typename const_iterator::reference;
 
     const value_type elems[static_size];
 
@@ -51,27 +52,27 @@
     const_reverse_iterator crbegin() const { return rbegin(); }
     const_reverse_iterator crend  () const { return rend(); }
 
-    const reference at(const size_type i) const
+    const_reference at(const size_type i) const
     {
       const bool index_is_in_range = ((empty() == false) && (i < static_size));
 
-      const reference value_at_index =
+      const_reference value_at_index =
         (index_is_in_range ? *(cbegin() + difference_type(i)) : value_type());
 
       return value_at_index;
     }
 
-    const reference operator[](const size_type i) const
+    const_reference operator[](const size_type i) const
     {
       return at(i);
     }
 
-    const reference front() const
+    const_reference front() const
     {
       return at(0U);
     }
 
-    const reference back() const
+    const_reference back() const
     {
       return ((empty() == false) ? at(static_size - 1U) : value_type());
     }
@@ -80,15 +81,10 @@
     constexpr bool      empty   () const { return (static_size == 0U); }
     constexpr size_type max_size() const { return  static_size; }
 
-    const pointer data() const
+    const_pointer data() const
     {
-      return static_cast<const pointer>(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
+      return static_cast<const_pointer>(MCAL_PROGMEM_ADDRESSOF(elems[0U]));
     }
-
-  private:
-    array() = delete;
-    array(const array&) = delete;
-    array& operator=(const array&) = delete;
   };
 
   template<typename T, const mcal_progmem_uintptr_t N>
