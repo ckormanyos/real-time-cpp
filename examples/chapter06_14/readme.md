@@ -47,4 +47,4 @@ in fact, been _ROM_'ed.
 The same standard CRC checksum and verification
 is carried out in the `app::benchmark::task_func`
 function. Slight sylistic differences between the algorithms in
-example06_01 and example06_01a reflect no functional change.
+example06_01 and example06_14 reflect no functional change.
