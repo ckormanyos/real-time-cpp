@@ -28,7 +28,7 @@ Example ![chapter06_01](./chapter06_01) A CRC Benchmark.\
 This example illustrates certain optimization techniques through the calculation
 of a standard CRC32 checksum (cycle redundancy check).
 
-Example ![chapter06_01a](./chapter06_01a) A CRC Benchmark with ROM-based Table and Data.\
+Example ![chapter06_14](./chapter06_14) A CRC Benchmark with ROM-based Table and Data.\
 This example has essentially the same functionality as example chapter06_01.
 The checksum table and benchmark data, however, are ROM-able.
 
