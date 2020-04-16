@@ -36,7 +36,7 @@ project. How much memory do objects and subroutines require?
 Where are they located? Answers to these questions can often
 (at least partly) be found in the map file.
 
-The partial image of a memory map file from example chapter06_01a for
+The partial image of a memory map file from example chapter06_14 for
 the 8-bit target shows us that the data objects mentioned above have,
 in fact, been _ROM_'ed.
 
