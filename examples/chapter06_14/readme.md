@@ -1,7 +1,7 @@
-# Example Chapter06_01a
+# Example Chapter06_14
 # A CRC Benchmark with ROM-based Table and Data
 
-Example chapter06_01a has essentially the same functionality
+Example chapter06_14 has essentially the same functionality
 as example chapter06_01. The checksum table and
 benchmark data, however, are ROM-able.
 
@@ -13,7 +13,7 @@ previous example chapter06_01 reveals that both the benchmark data
 as well as the CRC32/MPEG2 `table` are stored in
 static RAM.
 
-The present example chapter06_01a purposely places
+The present example chapter06_14 purposely places
 these objects in program ROM code and uses a specialized
 "ROM iterator" to access their data.
 
@@ -24,7 +24,7 @@ In other words, they have been _ROM_'ed.
 
 As it turns out, _ROM_-ing constant data can at times require
 somewhat intricate programming. In particular, this is the case
-for the gcc-avr tool chain. Example chapter06_01a puts some
+for the gcc-avr tool chain. Example chapter06_14 puts some
 semi-formal structure (in C++11-style) around this architectural
 characteristic.
 
