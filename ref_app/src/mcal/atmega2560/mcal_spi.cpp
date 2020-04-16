@@ -17,18 +17,18 @@ void mcal::spi::init(const mcal::spi::config_type*)
 
 util::communication_base& mcal::spi::spi0()
 {
-  using local_port_pin_mosi_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, 0U>;
-  using local_port_pin_miso_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, 1U>;
-  using local_port_pin_sck__type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, 2U>;
-  using local_port_pin_csn__type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portd, 3U>;
+  using local_port_pin_sck__type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, 3U>;
+  using local_port_pin_miso_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, 2U>;
+  using local_port_pin_mosi_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portc, 1U>;
+  using local_port_pin_csn0_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, mcal::reg::portb, 2U>;
 
-  using local_spi_software_driver_type =
-    mcal::spi::spi_software_port_driver<local_port_pin_mosi_type,
+  using mcal_spi_channel0_type =
+    mcal::spi::spi_software_port_driver<local_port_pin_sck__type,
                                         local_port_pin_miso_type,
-                                        local_port_pin_sck__type,
-                                        local_port_pin_csn__type>;
+                                        local_port_pin_mosi_type,
+                                        local_port_pin_csn0_type>;
 
-  static local_spi_software_driver_type com;
+  static mcal_spi_channel0_type com0;
 
-  return com;
+  return com0;
 }

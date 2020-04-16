@@ -23,8 +23,13 @@
 
       virtual bool send           (const std::uint8_t byte_to_send) = 0;
       virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
-      virtual size_type recv_ready() const = 0;
-      virtual bool idle           () const = 0;
+      virtual bool select         () const = 0;
+      virtual bool deselect       () const = 0;
+
+      virtual bool select_channel(const std::size_t)
+      {
+        return true;
+      }
 
       template<typename send_iterator_type>
       bool send_n(send_iterator_type first, send_iterator_type last)
@@ -48,9 +53,9 @@
       }
 
       template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first, size_type count)
+      bool recv_n(recv_iterator_type first, const size_type count)
       {
-        const size_type count_to_recv = (std::min)(count, recv_ready());
+        const size_type count_to_recv = count;
 
         recv_iterator_type last = first + count_to_recv;
 
@@ -95,30 +100,74 @@
 
       virtual bool recv(std::uint8_t& byte_to_recv)
       {
-        const bool recv_is_ok = recv_buffer_is_full;
+        byte_to_recv = recv_buffer;
 
-        if(recv_is_ok)
-        {
-          byte_to_recv = recv_buffer;
-
-          recv_buffer_is_full = false;
-        }
-
-        return recv_is_ok;
-      }
-
-      virtual size_type recv_ready() const
-      {
-        return (recv_buffer_is_full ? 1U : 0U);
+        return true;
       }
 
     protected:
       communication_buffer_depth_one_byte()
-        : recv_buffer        (),
-          recv_buffer_is_full(false) { }
+        : recv_buffer(0U) { }
 
       buffer_type recv_buffer;
-      bool        recv_buffer_is_full;
+    };
+
+    template<const std::size_t channel_count>
+    class communication_multi_channel : public communication_base
+    {
+    private:
+      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
+
+    public:
+      communication_multi_channel(communication_base** p_com_channels)
+        : my_com_channels(),
+          my_index       (0U)
+      {
+        for(std::size_t i = 0U; i < channel_count; ++i)
+        {
+          my_com_channels[i] = p_com_channels[i];
+        }
+      }
+
+      ~communication_multi_channel() = default;
+
+      virtual bool send(const std::uint8_t byte_to_send)
+      {
+        return my_com_channels[my_index]->send(byte_to_send);
+      }
+
+      virtual bool recv(std::uint8_t& byte_to_recv)
+      {
+        return my_com_channels[my_index]->recv(byte_to_recv);
+      }
+
+      virtual bool select() const
+      {
+        return my_com_channels[my_index]->select();
+      }
+
+      virtual bool deselect() const
+      {
+        return my_com_channels[my_index]->deselect();
+      }
+
+      virtual bool select_channel(const std::size_t index)
+      {
+        const bool select_channel_is_ok = (index < channel_count);
+
+        if(select_channel_is_ok)
+        {
+          my_index = index;
+        }
+
+        return select_channel_is_ok;
+      }
+
+    private:
+      communication_base* my_com_channels[channel_count];
+      std::size_t         my_index;
+
+      communication_multi_channel() = delete;
     };
   }
 

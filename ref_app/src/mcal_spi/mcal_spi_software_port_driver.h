@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #ifndef MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H_
   #define MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H_
 
@@ -62,9 +69,9 @@
 
   } // namespace detail
 
-  template<typename port_pin_mosi_type,
+  template<typename port_pin_sck__type,
            typename port_pin_miso_type,
-           typename port_pin_sck__type,
+           typename port_pin_mosi_type,
            typename port_pin_csn__type,
            const std::size_t nop_count = 1U>
   class spi_software_port_driver : private util::noncopyable,
@@ -76,89 +83,73 @@
   public:
     // This class implements the SPI protocol with CPOL=0, CPHA=1.
 
-    spi_software_port_driver() : transceive_in_progress(false)
+    spi_software_port_driver()
     {
-      port_pin_mosi_type::set_pin_low();
-      port_pin_mosi_type::set_direction_output();
-
-      port_pin_miso_type::set_direction_input();
+      port_pin_csn__type::set_pin_high();
+      port_pin_csn__type::set_direction_output();
 
       port_pin_sck__type::set_pin_low();
       port_pin_sck__type::set_direction_output();
 
-      port_pin_csn__type::set_pin_high();
-      port_pin_csn__type::set_direction_output();
+      port_pin_mosi_type::set_pin_low();
+      port_pin_mosi_type::set_direction_output();
+
+      port_pin_miso_type::set_direction_input();
     }
 
     virtual ~spi_software_port_driver() = default;
 
     virtual bool send(const std::uint8_t byte_to_send)
     {
-      bool result_send_is_ok;
+      std::uint8_t bit_mask = std::uint8_t(0x80U);
 
-      if(idle())
+      mcal::irq::disable_all();
+
+      base_class_type::recv_buffer = 0U;
+
+      for(std::uint_fast8_t i = 0U; i < 8U; ++i)
       {
-        mcal::irq::disable_all();
+        const bool mosi_write_is_high = (std::uint_fast8_t(byte_to_send & bit_mask) != 0U);
 
-        transceive_in_progress = true;
+        (mosi_write_is_high ? port_pin_mosi_type::set_pin_high()
+                            : port_pin_mosi_type::set_pin_low());
 
-        port_pin_csn__type::set_pin_low();
+        port_pin_sck__type::set_pin_high();
+
         detail::spi_nop_maker<nop_count>::execute_n();
 
-        for(std::uint_fast8_t i = 0U; i < 8U; ++i)
-        {
-          const std::uint8_t bit_mask = std::uint8_t(1U << ((8U - 1U) - i));
+        const bool miso_read__is_high = port_pin_miso_type::read_input_value();
 
-          if(std::uint_fast8_t(byte_to_send & bit_mask) != 0U)
-          {
-            port_pin_mosi_type::set_pin_high();
-          }
-          else
-          {
-            port_pin_mosi_type::set_pin_low();
-          }
+        (miso_read__is_high ? base_class_type::recv_buffer |= bit_mask
+                            : base_class_type::recv_buffer &= std::uint8_t(~bit_mask));
 
-          port_pin_sck__type::set_pin_high();
-          detail::spi_nop_maker<nop_count>::execute_n();
+        bit_mask >>= 1U;
 
-          port_pin_sck__type::set_pin_low();
-
-          if(port_pin_miso_type::read_input_value())
-          {
-            base_class_type::recv_buffer |= bit_mask;
-          }
-          else
-          {
-            base_class_type::recv_buffer &= std::uint8_t(~bit_mask);
-          }
-        }
-
-        detail::spi_nop_maker<nop_count>::execute_n();
-        port_pin_csn__type::set_pin_high();
-
-        base_class_type::recv_buffer_is_full = true;
-
-        transceive_in_progress = false;
-
-        mcal::irq::enable_all();
-
-        result_send_is_ok = idle();
-      }
-      else
-      {
-        result_send_is_ok = false;
+        port_pin_sck__type::set_pin_low();
       }
 
-      return result_send_is_ok;
+      mcal::irq::enable_all();
+
+      return true;
     }
 
-    virtual bool idle() const
+    virtual bool select() const
     {
-      return (transceive_in_progress == false);
+      port_pin_csn__type::set_pin_low();
+
+      detail::spi_nop_maker<nop_count>::execute_n();
+
+      return true;
     }
 
-  private:
-    bool transceive_in_progress;
+    virtual bool deselect() const
+    {
+      detail::spi_nop_maker<nop_count>::execute_n();
+
+      port_pin_csn__type::set_pin_high();
+
+      return true;
+    }
   };
 
   } } // namespace mcal::spi

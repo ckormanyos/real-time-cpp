@@ -12,7 +12,7 @@
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
     <AssemblyName>chapter06_01a</AssemblyName>
-    <Name>chapter06_01a</Name>
+    <Name>chapter06_14</Name>
     <RootNamespace>chapter06_01a</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
