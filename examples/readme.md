@@ -29,7 +29,7 @@ This example illustrates certain optimization techniques through the calculation
 of a standard CRC32 checksum (cycle redundancy check).
 
 Example ![chapter06_14](./chapter06_14) A CRC Benchmark with ROM-based Table and Data.\
-This example has essentially the same functionality as example chapter06_01.
+This example features essentially the same functionality as example chapter06_01.
 The checksum table and benchmark data, however, are ROM-able.
 
 Example ![chapter09_07](./chapter09_07) Controlling a Seven Segment Display.\
@@ -47,7 +47,7 @@ This example depicts some methods that potentially allow the successful use
 of traditional C-language code within a modern C++ project.
 
 Example ![chapter17_03a](./chapter17_03a) Traditional C-Language in Modern C++, Using Time Slices.\
-This example is almost identical with example chapter17_03. It performs
+This example is almost identical with example chapter17_03. In fact, it performs
 the same CRC calculations and uses essentially the same code technical methods
 for accessing traditional C-language code within a modern C++ project.
 Example chapter17_03a, however, distributes the CRC calculations
