@@ -23,6 +23,7 @@ The reference application supports the following targets:
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
   * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
+  * ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
@@ -104,7 +105,11 @@ The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portc.8.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
+The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l100c")
+runs on the STM32L100 DISCOVERY board commercially available from
+ST Microelectronics(R). The program toggles the blue LED on portc.8.
+
+The third ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on portb.6.
 
