@@ -8,14 +8,6 @@
 #include <mcal_led.h>
 #include <iostream>
 
-namespace mcal
-{
-  namespace led
-  {
-    const led_type led0;
-  }
-}
-
 void mcal::led::led::toggle() const
 {
   // Toggle the LED state.
@@ -30,4 +22,11 @@ void mcal::led::led::toggle() const
   {
     std::cout << "LED is off" << std::endl;
   }
+}
+
+const mcal::led::led_type& mcal::led::led0()
+{
+  static const led_type l0;
+
+  return l0;
 }

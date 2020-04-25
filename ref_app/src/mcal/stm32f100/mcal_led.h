@@ -50,7 +50,7 @@
                   mcal::reg::gpioc_odr,
                   UINT32_C(8)> led_type;
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

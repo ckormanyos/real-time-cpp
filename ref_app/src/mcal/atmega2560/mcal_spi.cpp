@@ -26,7 +26,8 @@ util::communication_base& mcal::spi::spi0()
     mcal::spi::spi_software_port_driver<local_port_pin_sck__type,
                                         local_port_pin_miso_type,
                                         local_port_pin_mosi_type,
-                                        local_port_pin_csn0_type>;
+                                        local_port_pin_csn0_type,
+                                        0U>;
 
   static mcal_spi_channel0_type com0;
 

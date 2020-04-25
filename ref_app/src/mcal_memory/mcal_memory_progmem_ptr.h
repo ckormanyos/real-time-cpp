@@ -15,72 +15,114 @@
   namespace mcal { namespace memory { namespace progmem {
 
   template<typename ValueType,
-           typename AddressType>
+           typename AddressType,
+           typename AddressDifferenceType>
   class progmem_ptr
   {
-  public:
-    using reference    = progmem_ref<ValueType, AddressType>;
-    using value_type   = typename reference::value_type;
+  private:
     using address_type = AddressType;
 
-    progmem_ptr() = delete;
+  public:
+    using reference       = progmem_ref<ValueType, AddressType, AddressDifferenceType>;
+    using value_type      = typename reference::value_type;
+    using size_type       = typename reference::size_type;
+    using difference_type = typename reference::difference_type;
 
-    explicit progmem_ptr(const address_type& addr) : my_address(addr) { }
+    progmem_ptr() noexcept : my_address() { }
 
-    progmem_ptr(progmem_ptr& x) : my_address(x.my_address) { }
+    explicit constexpr progmem_ptr(address_type addr) noexcept
+      : my_address(addr) { }
 
-    template<typename OtherValueType, typename OtherAddressType>
-    progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType>& other)
+    progmem_ptr(const progmem_ptr& other) noexcept
       : my_address(other.my_address) { }
 
-    ~progmem_ptr() = default;
+    progmem_ptr(progmem_ptr&& other) noexcept
+      : my_address(other.my_address) { }
 
-    progmem_ptr& operator=(const progmem_ptr& other)
+    template<typename OtherValueType,
+             typename OtherAddressType,
+             typename OtherAddressDifferenceType>
+    progmem_ptr(const progmem_ptr<OtherValueType, OtherAddressType, OtherAddressDifferenceType>& other) noexcept
+      : my_address(other.my_address) { }
+
+    ~progmem_ptr() noexcept { }
+
+    progmem_ptr& operator=(const progmem_ptr& other) noexcept
     {
-      if(this != &other)
-      {
-        my_address = other.my_address;
-      }
+      my_address = other.my_address;
 
       return *this;
     }
 
-    const reference operator*() const
+    progmem_ptr& operator=(progmem_ptr&& other) noexcept
+    {
+      my_address = other.my_address;
+
+      return *this;
+    }
+
+    const reference operator*() const noexcept
     {
       return reference(my_address);
     }
 
-    const progmem_ptr& operator++() { ++my_address; return *this; }
-    const progmem_ptr& operator--() { --my_address; return *this; }
+    const progmem_ptr& operator++() noexcept { ++my_address; return *this; }
+    const progmem_ptr& operator--() noexcept { --my_address; return *this; }
 
-    const progmem_ptr operator++(int) { const progmem_ptr tmp = *this; ++my_address; return tmp; }
-    const progmem_ptr operator--(int) { const progmem_ptr tmp = *this; --my_address; return tmp; }
+    const progmem_ptr operator++(int) noexcept { const progmem_ptr tmp = *this; ++my_address; return tmp; }
+    const progmem_ptr operator--(int) noexcept { const progmem_ptr tmp = *this; --my_address; return tmp; }
 
-    const progmem_ptr operator+(address_type n) const { return progmem_ptr(my_address + n); }
-    const progmem_ptr operator-(address_type n) const { return progmem_ptr(my_address - n); }
+    const progmem_ptr operator+(difference_type n) const noexcept
+    {
+      const address_type addr = ((n < 0) ? my_address - size_type(-n)
+                                         : my_address + size_type(n));
 
-    const progmem_ptr& operator+=(address_type n) { my_address += n; return *this; }
-    const progmem_ptr& operator-=(address_type n) { my_address -= n; return *this; }
+      return progmem_ptr(addr);
+    }
+
+    const progmem_ptr operator-(difference_type n) const noexcept
+    {
+      const address_type addr = ((n < 0) ? my_address + size_type(-n)
+                                         : my_address - size_type(n));
+
+      return progmem_ptr(addr);
+    }
+
+    const progmem_ptr& operator+=(difference_type n) noexcept
+    {
+      my_address = ((n < 0) ? my_address - size_type(-n)
+                            : my_address + size_type(n));
+
+      return *this;
+    }
+
+    const progmem_ptr& operator-=(difference_type n) noexcept
+    {
+      my_address = ((n < 0) ? my_address + size_type(-n)
+                            : my_address - size_type(n));
+
+      return *this;
+    }
 
   private:
     address_type my_address;
 
-    friend inline address_type operator-(const progmem_ptr& x, const progmem_ptr& y)
+    friend inline difference_type operator-(const progmem_ptr& x, const progmem_ptr& y) noexcept
     {
       return (x.my_address - y.my_address);
     }
 
-    friend inline progmem_ptr operator+(address_type n, const progmem_ptr& x)
+    friend inline progmem_ptr operator+(difference_type n, const progmem_ptr& x) noexcept
     {
       return progmem_ptr(x.my_address + n);
     }
 
-    friend inline bool operator< (const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address <  y.my_address); }
-    friend inline bool operator<=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address <= y.my_address); }
-    friend inline bool operator==(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address == y.my_address); }
-    friend inline bool operator!=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address != y.my_address); }
-    friend inline bool operator>=(const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address >= y.my_address); }
-    friend inline bool operator> (const progmem_ptr& x, const progmem_ptr& y) { return (x.my_address >  y.my_address); }
+    friend inline bool operator< (const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address <  y.my_address); }
+    friend inline bool operator<=(const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address <= y.my_address); }
+    friend inline bool operator==(const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address == y.my_address); }
+    friend inline bool operator!=(const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address != y.my_address); }
+    friend inline bool operator>=(const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address >= y.my_address); }
+    friend inline bool operator> (const progmem_ptr& x, const progmem_ptr& y) noexcept { return (x.my_address >  y.my_address); }
   };
 
   } } } // namespace mcal::memory::progmem

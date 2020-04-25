@@ -44,7 +44,6 @@
   #include <mcal_irq.h>
 
   #include <util/utility/util_communication.h>
-  #include <util/utility/util_noncopyable.h>
 
   namespace mcal { namespace spi {
 
@@ -73,9 +72,8 @@
            typename port_pin_miso_type,
            typename port_pin_mosi_type,
            typename port_pin_csn__type,
-           const std::size_t nop_count = 1U>
-  class spi_software_port_driver : private util::noncopyable,
-                                   public util::communication_buffer_depth_one_byte
+           const std::size_t nop_count>
+  class spi_software_port_driver : public util::communication_buffer_depth_one_byte
   {
   private:
     using base_class_type = util::communication_buffer_depth_one_byte;
@@ -86,26 +84,25 @@
     spi_software_port_driver()
     {
       port_pin_csn__type::set_pin_high();
-      port_pin_csn__type::set_direction_output();
-
       port_pin_sck__type::set_pin_low();
-      port_pin_sck__type::set_direction_output();
-
       port_pin_mosi_type::set_pin_low();
-      port_pin_mosi_type::set_direction_output();
 
+      port_pin_csn__type::set_direction_output();
+      port_pin_sck__type::set_direction_output();
+      port_pin_mosi_type::set_direction_output();
       port_pin_miso_type::set_direction_input();
     }
 
     virtual ~spi_software_port_driver() = default;
 
+  private:
     virtual bool send(const std::uint8_t byte_to_send)
     {
-      std::uint8_t bit_mask = std::uint8_t(0x80U);
-
-      mcal::irq::disable_all();
+      std::uint_fast8_t bit_mask = std::uint8_t(0x80U);
 
       base_class_type::recv_buffer = 0U;
+
+      mcal::irq::disable_all();
 
       for(std::uint_fast8_t i = 0U; i < 8U; ++i)
       {
@@ -115,13 +112,12 @@
                             : port_pin_mosi_type::set_pin_low());
 
         port_pin_sck__type::set_pin_high();
-
         detail::spi_nop_maker<nop_count>::execute_n();
 
-        const bool miso_read__is_high = port_pin_miso_type::read_input_value();
-
-        (miso_read__is_high ? base_class_type::recv_buffer |= bit_mask
-                            : base_class_type::recv_buffer &= std::uint8_t(~bit_mask));
+        if(port_pin_miso_type::read_input_value())
+        {
+          base_class_type::recv_buffer |= bit_mask;
+        }
 
         bit_mask >>= 1U;
 
@@ -133,23 +129,8 @@
       return true;
     }
 
-    virtual bool select() const
-    {
-      port_pin_csn__type::set_pin_low();
-
-      detail::spi_nop_maker<nop_count>::execute_n();
-
-      return true;
-    }
-
-    virtual bool deselect() const
-    {
-      detail::spi_nop_maker<nop_count>::execute_n();
-
-      port_pin_csn__type::set_pin_high();
-
-      return true;
-    }
+    virtual void   select() { port_pin_csn__type::set_pin_low (); }
+    virtual void deselect() { port_pin_csn__type::set_pin_high(); }
   };
 
   } } // namespace mcal::spi

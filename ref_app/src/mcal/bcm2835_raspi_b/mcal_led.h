@@ -25,7 +25,7 @@
         mutable bool led_is_on;
       };
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

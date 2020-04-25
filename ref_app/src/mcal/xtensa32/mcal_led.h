@@ -53,7 +53,7 @@
                   mcal::reg::dummy,
                   UINT32_C(5)> led_type;
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

@@ -139,6 +139,15 @@
     <Filter Include="micros\xtensa32\make">
       <UniqueIdentifier>{dd0fe2a6-0b42-4cee-a106-84f66171e078}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32l100c">
+      <UniqueIdentifier>{0399d925-ef3d-49da-b726-10b72de92f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32l100c\make">
+      <UniqueIdentifier>{2c2a4e67-a3d2-495c-a5c3-41d7ce86329e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32l100c\startup">
+      <UniqueIdentifier>{99d996cc-6d36-4b80-b627-519672f5e94f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -297,6 +306,15 @@
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld">
       <Filter>micros\x86_64-w64-mingw32\make</Filter>
     </None>
+    <None Include="target\micros\stm32l100c\make\stm32l100c.ld">
+      <Filter>micros\stm32l100c\make</Filter>
+    </None>
+    <None Include="target\micros\stm32l100c\make\stm32l100c_files.gmk">
+      <Filter>micros\stm32l100c\make</Filter>
+    </None>
+    <None Include="target\micros\stm32l100c\make\stm32l100c_flags.gmk">
+      <Filter>micros\stm32l100c\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -448,6 +466,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\lpc11c24\startup\int_vect.cpp">
       <Filter>micros\lpc11c24\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l100c\startup\crt0.cpp">
+      <Filter>micros\stm32l100c\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l100c\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32l100c\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l100c\startup\crt1.cpp">
+      <Filter>micros\stm32l100c\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
+      <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

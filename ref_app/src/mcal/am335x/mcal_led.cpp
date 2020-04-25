@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,10 +7,9 @@
 
 #include <mcal_led.h>
 
-namespace mcal
+const mcal::led::led_type& mcal::led::led0()
 {
-  namespace led
-  {
-    const led_type led0;
-  }
+  static const led_type l0;
+
+  return l0;
 }

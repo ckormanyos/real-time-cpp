@@ -51,7 +51,7 @@
                   mcal::reg::gpio1_base,
                   UINT32_C(21)> led_type;
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

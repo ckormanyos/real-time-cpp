@@ -50,7 +50,7 @@
                   mcal::reg::p7,
                   UINT8_C(5)> led_type;
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

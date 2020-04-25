@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,39 +12,34 @@
   #include <cstddef>
   #include <cstdint>
 
+  #include <util/utility/util_noncopyable.h>
+
   namespace util
   {
-    class communication_base
+    class communication_base : private util::noncopyable
     {
     public:
-      typedef std::size_t size_type;
-
       virtual ~communication_base() = default;
 
-      virtual bool send           (const std::uint8_t byte_to_send) = 0;
-      virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
-      virtual bool select         () const = 0;
-      virtual bool deselect       () const = 0;
+      virtual bool recv(std::uint8_t& byte_to_recv) = 0;
 
-      virtual bool select_channel(const std::size_t)
-      {
-        return true;
-      }
+      virtual void   select() = 0;
+      virtual void deselect() = 0;
+
+      virtual bool select_channel(const std::size_t) { return true; }
 
       template<typename send_iterator_type>
       bool send_n(send_iterator_type first, send_iterator_type last)
       {
+        using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
+
         bool send_result = true;
 
         while(first != last)
         {
-          typedef typename
-          std::iterator_traits<send_iterator_type>::value_type
-          send_value_type;
-
           const send_value_type value(*first);
 
-          send_result &= send(std::uint8_t(value));
+          send_result &= this->send(std::uint8_t(value));
 
           ++first;
         }
@@ -52,43 +47,14 @@
         return send_result;
       }
 
-      template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first, const size_type count)
-      {
-        const size_type count_to_recv = count;
-
-        recv_iterator_type last = first + count_to_recv;
-
-        bool recv_result = true;
-
-        while(first != last)
-        {
-          std::uint8_t byte_to_recv;
-
-          recv_result &= recv(byte_to_recv);
-
-          typedef typename
-          std::iterator_traits<recv_iterator_type>::value_type
-          recv_value_type;
-
-          *first = recv_value_type(byte_to_recv);
-
-          ++first;
-        }
-
-        return recv_result;
-      }
-
-      template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first, recv_iterator_type last)
-      {
-        const size_type count_to_recv = size_type(std::distance(first, last));
-
-        return recv_n(first, count_to_recv);
-      }
-
     protected:
       communication_base() = default;
+
+    private:
+      virtual bool send(const std::uint8_t byte_to_send) = 0;
+
+      template<const std::size_t channel_count>
+      friend class communication_multi_channel;
     };
 
     class communication_buffer_depth_one_byte : public communication_base
@@ -98,18 +64,18 @@
 
       virtual ~communication_buffer_depth_one_byte() = default;
 
+    protected:
+      communication_buffer_depth_one_byte() : recv_buffer(0U) { }
+
+      buffer_type recv_buffer;
+
+    private:
       virtual bool recv(std::uint8_t& byte_to_recv)
       {
         byte_to_recv = recv_buffer;
 
         return true;
       }
-
-    protected:
-      communication_buffer_depth_one_byte()
-        : recv_buffer(0U) { }
-
-      buffer_type recv_buffer;
     };
 
     template<const std::size_t channel_count>
@@ -131,6 +97,12 @@
 
       ~communication_multi_channel() = default;
 
+    private:
+      communication_base* my_com_channels[channel_count];
+      std::size_t         my_index;
+
+      communication_multi_channel() = delete;
+
       virtual bool send(const std::uint8_t byte_to_send)
       {
         return my_com_channels[my_index]->send(byte_to_send);
@@ -141,15 +113,8 @@
         return my_com_channels[my_index]->recv(byte_to_recv);
       }
 
-      virtual bool select() const
-      {
-        return my_com_channels[my_index]->select();
-      }
-
-      virtual bool deselect() const
-      {
-        return my_com_channels[my_index]->deselect();
-      }
+      virtual void   select() { my_com_channels[my_index]->select(); }
+      virtual void deselect() { my_com_channels[my_index]->deselect(); }
 
       virtual bool select_channel(const std::size_t index)
       {
@@ -162,12 +127,6 @@
 
         return select_channel_is_ok;
       }
-
-    private:
-      communication_base* my_com_channels[channel_count];
-      std::size_t         my_index;
-
-      communication_multi_channel() = delete;
     };
   }
 

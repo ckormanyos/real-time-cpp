@@ -5,10 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_port.h>
 #include <mcal_spi.h>
 
-#include <mcal_spi/mcal_spi_software_port_driver.h>
+#include <mcal_spi/mcal_spi_software_dummy.h>
 
 void mcal::spi::init(const mcal::spi::config_type*)
 {
@@ -16,18 +15,7 @@ void mcal::spi::init(const mcal::spi::config_type*)
 
 util::communication_base& mcal::spi::spi0()
 {
-  using local_port_pin_mosi_type = mcal::port::port_pin;
-  using local_port_pin_miso_type = mcal::port::port_pin;
-  using local_port_pin_sck__type = mcal::port::port_pin;
-  using local_port_pin_csn__type = mcal::port::port_pin;
+  static mcal::spi::spi_software_dummy com0;
 
-  using local_spi_software_driver_type =
-    mcal::spi::spi_software_port_driver<local_port_pin_mosi_type,
-                                        local_port_pin_miso_type,
-                                        local_port_pin_sck__type,
-                                        local_port_pin_csn__type>;
-
-  static local_spi_software_driver_type com;
-
-  return com;
+  return com0;
 }

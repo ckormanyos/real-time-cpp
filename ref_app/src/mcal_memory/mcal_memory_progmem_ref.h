@@ -15,20 +15,25 @@
   namespace mcal { namespace memory { namespace progmem {
 
   template<typename ValueType,
-           typename AddressType>
+           typename AddressType,
+           typename AddressDifferenceType>
   class progmem_ref
   {
-  public:
+  private:
     using address_type = AddressType;
-    using value_type   = ValueType;
 
-    explicit progmem_ref(const address_type& address) : my_address(address) { }
+  public:
+    using value_type      = ValueType;
+    using size_type       = address_type;
+    using difference_type = AddressDifferenceType;
 
-    progmem_ref(const progmem_ref& other) : my_address(other.my_address) { }
+    explicit constexpr progmem_ref(address_type address) noexcept : my_address(address) { }
 
-    ~progmem_ref() = default;
+    progmem_ref(const progmem_ref& other) noexcept : my_address(other.my_address) { }
 
-    operator value_type() const
+    ~progmem_ref() noexcept = default;
+
+    operator value_type() const noexcept
     {
       return read<value_type>(my_address);
     }
@@ -41,8 +46,6 @@
     // This class is read only.
     progmem_ref& operator=(const progmem_ref&) = delete;
     progmem_ref& operator=(const value_type&) = delete;
-
-    operator value_type() = delete;
   };
 
   } } } // namespace mcal::memory::progmem

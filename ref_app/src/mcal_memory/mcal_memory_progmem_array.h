@@ -20,7 +20,8 @@
 
   namespace mcal { namespace memory { namespace progmem {
 
-  template<typename T, const mcal_progmem_uintptr_t N>
+  template<typename T,
+           const mcal_progmem_uintptr_t N>
   class array
   {
   private:
@@ -28,9 +29,9 @@
 
   public:
     // Standard container-local type definitions.
-    using size_type              = mcal_progmem_uintptr_t;
-    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, mcal_progmem_uintptr_t, mcal_progmem_ptrdiff_t>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+    using size_type              = mcal_progmem_uintptr_t;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;
     using const_pointer          = typename const_iterator::pointer;

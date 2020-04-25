@@ -1,0 +1,40 @@
+#
+#  Copyright Christopher Kormanyos 2020.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 9.2.1
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_CFLAGS    = -O2                                            \
+                -finline-functions                             \
+                -finline-limit=32                              \
+                -mcpu=cortex-m3                                \
+                -mtune=cortex-m3                               \
+                -mthumb                                        \
+                -mfloat-abi=soft                               \
+                -mno-unaligned-access                          \
+                -mno-long-calls
+
+
+TGT_CPPFLAGS  = -std=c++17
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+                -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -T $(LINKER_DEFINITION_FILE)
+
+IMAGE_FILE    = dummy.foo

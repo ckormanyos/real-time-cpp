@@ -22,13 +22,13 @@
     using address_type = AddressType;
     using value_type   = ValueType;
 
-    explicit progmem_ref(const address_type& address) : my_address(address) { }
+    explicit constexpr progmem_ref(address_type address) noexcept : my_address(address) { }
 
-    progmem_ref(const progmem_ref& other) : my_address(other.my_address) { }
+    progmem_ref(const progmem_ref& other) noexcept : my_address(other.my_address) { }
 
-    ~progmem_ref() = default;
+    ~progmem_ref() noexcept = default;
 
-    operator value_type() const
+    operator value_type() const noexcept
     {
       return read<value_type>(my_address);
     }

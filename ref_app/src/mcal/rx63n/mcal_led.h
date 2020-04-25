@@ -50,7 +50,7 @@
                   mcal::reg::port2_pdr,
                   UINT8_C(4)> led_type;
 
-      extern const led_type led0;
+      const led_type& led0();
     }
   }
 

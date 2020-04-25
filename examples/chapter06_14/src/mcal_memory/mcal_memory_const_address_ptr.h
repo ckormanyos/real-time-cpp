@@ -22,63 +22,80 @@
     using reference    = typename pointer::reference;
     using size_type    = address_type;
 
-    static const size_type static_size = sizeof(value_type);
+    static constexpr size_type static_size = sizeof(value_type);
 
-    const_address_ptr() = default;
+    explicit constexpr const_address_ptr(address_type addr = 0U) noexcept
+      : my_ptr(addr) { }
 
-    explicit const_address_ptr(const address_type addr) : my_ptr(addr) { }
+    constexpr const_address_ptr(pointer ptr) noexcept : my_ptr(ptr) { }
 
-    const_address_ptr(const pointer& ptr) : my_ptr(ptr) { }
+    const_address_ptr(const const_address_ptr& other) noexcept
+      : my_ptr(other.my_ptr) { }
 
-    const_address_ptr(const const_address_ptr& other) : my_ptr(other.my_ptr) { }
+    const_address_ptr(const_address_ptr&& other) noexcept
+      : my_ptr(other.my_ptr) { }
 
-    ~const_address_ptr() = default;
+    ~const_address_ptr() noexcept { }
 
-    const reference operator*() const
+    const_address_ptr& operator=(const const_address_ptr& other)
     {
-      return *my_ptr;
+      my_ptr = other.my_ptr;
+
+      return *this;
     }
 
-    const reference operator[](const size_type i) const
+    const_address_ptr& operator=(const_address_ptr&& other)
+    {
+      my_ptr = other.my_ptr;
+
+      return *this;
+    }
+
+    const reference operator*() const noexcept
+    {
+      const reference value = *my_ptr;
+
+      return value;
+    }
+
+    const reference operator[](const size_type i) const noexcept
     {
       return *(my_ptr + (i * static_size));
     }
 
-    const const_address_ptr& operator++() { my_ptr += static_size; return *this; }
-    const const_address_ptr& operator--() { my_ptr -= static_size; return *this; }
+    const const_address_ptr& operator++() noexcept { my_ptr += static_size; return *this; }
+    const const_address_ptr& operator--() noexcept { my_ptr -= static_size; return *this; }
 
-    const_address_ptr operator++(int) { const const_address_ptr tmp = *this; my_ptr += static_size; return tmp; }
-    const_address_ptr operator--(int) { const const_address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
+    const_address_ptr operator++(int) noexcept { const const_address_ptr tmp = *this; my_ptr += static_size; return tmp; }
+    const_address_ptr operator--(int) noexcept { const const_address_ptr tmp = *this; my_ptr -= static_size; return tmp; }
 
-    const_address_ptr operator+(address_type n) const { return (my_ptr + (n * static_size)); }
-    const_address_ptr operator-(address_type n) const { return (my_ptr - (n * static_size)); }
+    const_address_ptr operator+(address_type n) const noexcept { return (my_ptr + (n * static_size)); }
+    const_address_ptr operator-(address_type n) const noexcept { return (my_ptr - (n * static_size)); }
 
-    const const_address_ptr& operator+=(address_type n) { my_ptr += (n * static_size); return *this; }
-    const const_address_ptr& operator-=(address_type n) { my_ptr -= (n * static_size); return *this; }
+    const const_address_ptr& operator+=(address_type n) noexcept { my_ptr += (n * static_size); return *this; }
+    const const_address_ptr& operator-=(address_type n) noexcept { my_ptr -= (n * static_size); return *this; }
 
   private:
     pointer my_ptr;
 
-    const_address_ptr& operator=(const const_address_ptr&) = delete;
-
     friend inline address_type operator-(const const_address_ptr& x,
-                                         const const_address_ptr& y)
+                                         const const_address_ptr& y) noexcept
     {
       return (x.my_ptr - y.my_ptr) / static_size;
     }
 
     friend inline const_address_ptr operator+(address_type n,
-                                        const const_address_ptr& x)
+                                        const const_address_ptr& x) noexcept
     {
       return const_address_ptr(x.my_ptr + (n * static_size));
     }
 
-    friend inline bool operator< (const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr <  y.my_ptr); }
-    friend inline bool operator<=(const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr <= y.my_ptr); }
-    friend inline bool operator==(const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr == y.my_ptr); }
-    friend inline bool operator!=(const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr != y.my_ptr); }
-    friend inline bool operator>=(const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr >= y.my_ptr); }
-    friend inline bool operator> (const const_address_ptr& x, const const_address_ptr& y) { return (x.my_ptr >  y.my_ptr); }
+    friend inline bool operator< (const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr <  y.my_ptr); }
+    friend inline bool operator<=(const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr <= y.my_ptr); }
+    friend inline bool operator==(const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr == y.my_ptr); }
+    friend inline bool operator!=(const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr != y.my_ptr); }
+    friend inline bool operator>=(const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr >= y.my_ptr); }
+    friend inline bool operator> (const const_address_ptr& x, const const_address_ptr& y) noexcept { return (x.my_ptr >  y.my_ptr); }
   };
 
   } } // namespace mcal::memory
