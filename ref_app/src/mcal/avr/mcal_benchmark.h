@@ -9,6 +9,7 @@
   #define MCAL_BENCHMARK_2014_04_16_H_
 
   #include <cstdint>
+
   #include <mcal_port.h>
   #include <mcal_reg.h>
 

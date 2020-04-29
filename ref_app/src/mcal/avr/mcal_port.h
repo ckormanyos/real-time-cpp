@@ -12,12 +12,12 @@
 
   #include <mcal_reg.h>
 
-  void mcal_port_extender_set_direction_output(const uint8_t bpos);
-  void mcal_port_extender_set_direction_input (const uint8_t bpos);
-  void mcal_port_extender_set_pin_high        (const uint8_t bpos);
-  void mcal_port_extender_set_pin_low         (const uint8_t bpos);
-  bool mcal_port_extender_read_input_value    (const uint8_t bpos);
-  void mcal_port_extender_toggle_pin          (const uint8_t bpos);
+  void mcal_port_expander_set_direction_output(const uint8_t bpos);
+  void mcal_port_expander_set_direction_input (const uint8_t bpos);
+  void mcal_port_expander_set_pin_high        (const uint8_t bpos);
+  void mcal_port_expander_set_pin_low         (const uint8_t bpos);
+  bool mcal_port_expander_read_input_value    (const uint8_t bpos);
+  void mcal_port_expander_toggle_pin          (const uint8_t bpos);
 
   namespace mcal
   {
@@ -76,15 +76,15 @@
       };
 
       template<const std::uint8_t bpos>
-      class port_pin_extender
+      class port_pin_expander
       {
       public:
-        static void set_direction_output() {        mcal_port_extender_set_direction_output(bpos); }
-        static void set_direction_input () {        mcal_port_extender_set_direction_input (bpos); }
-        static void set_pin_high        () {        mcal_port_extender_set_pin_high        (bpos); }
-        static void set_pin_low         () {        mcal_port_extender_set_pin_low         (bpos); }
-        static bool read_input_value    () { return mcal_port_extender_read_input_value    (bpos); }
-        static void toggle_pin          () {        mcal_port_extender_toggle_pin          (bpos); }
+        static void set_direction_output() {        mcal_port_expander_set_direction_output(bpos); }
+        static void set_direction_input () {        mcal_port_expander_set_direction_input (bpos); }
+        static void set_pin_high        () {        mcal_port_expander_set_pin_high        (bpos); }
+        static void set_pin_low         () {        mcal_port_expander_set_pin_low         (bpos); }
+        static bool read_input_value    () { return mcal_port_expander_read_input_value    (bpos); }
+        static void toggle_pin          () {        mcal_port_expander_toggle_pin          (bpos); }
       };
     }
   }

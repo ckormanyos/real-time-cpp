@@ -376,6 +376,21 @@
     <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_access.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_ref.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
       <SubType>compile</SubType>
     </Compile>

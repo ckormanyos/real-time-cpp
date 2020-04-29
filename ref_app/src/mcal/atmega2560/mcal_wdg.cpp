@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,6 +7,11 @@
 
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
+
+// This following function is not used.
+// It is, however, kept as an example of *turning off*
+// the wdt if wdton is set in the fuse bits.
+void mcal_wdg_turn_off_wdt_if_wdton_is_set();
 
 void mcal::wdg::init(const config_type*)
 {
@@ -48,11 +53,6 @@ void mcal::wdg::secure::trigger()
 {
   asm volatile("wdr");
 }
-
-// This following function is not used.
-// It is, however, kept as an example of *turning off*
-// the wdt if wdton is set in the fuse bits.
-void mcal_wdg_turn_off_wdt_if_wdton_is_set();
 
 void mcal_wdg_turn_off_wdt_if_wdton_is_set()
 {

@@ -31,9 +31,6 @@
     <Filter Include="src\util\STL\impl\avr">
       <UniqueIdentifier>{8d56caaf-763e-4cfe-a62b-2b1bdaee1be3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\win32">
-      <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\os">
       <UniqueIdentifier>{a0f77d42-d217-4e17-b505-7e2b1acc3818}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,24 @@
     <Filter Include="src\math\primes">
       <UniqueIdentifier>{3fb05a5e-c4f3-489c-90bc-1a9385f5730c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\stm32l100c">
+      <UniqueIdentifier>{8f17cb85-8b54-46a2-87bd-7ed39e3ec772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\host">
+      <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal_led">
+      <UniqueIdentifier>{1e953718-cb8e-4b6b-aab4-b609fe3eadfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal_pwm">
+      <UniqueIdentifier>{c6e48c4c-982e-44a0-861e-7d27c7fa3b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal_spi">
+      <UniqueIdentifier>{5b56c736-2de6-4c51-ba2a-3723dd7730b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal_memory">
+      <UniqueIdentifier>{907aa414-512d-4762-9b8f-e02e16cd72b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -90,11 +105,50 @@
     <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <Filter>src\mcal</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
-      <Filter>src\mcal\avr</Filter>
+    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
+      <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
-      <Filter>src\mcal\avr</Filter>
+    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
+      <Filter>src\util\STD_LIBC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\led\app_led.cpp">
+      <Filter>src\app\led</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\prime\app_prime.cpp">
+      <Filter>src\app\prime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_gpt.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_irq.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_led.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_osc.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_port.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_pwm.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_spi.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_wdg.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_wdg_watchdog.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_cpu.cpp">
+      <Filter>src\mcal\host</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\host\mcal_eep.cpp">
+      <Filter>src\mcal\host</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_irq.cpp">
       <Filter>src\mcal\avr</Filter>
@@ -108,35 +162,53 @@
     <ClCompile Include="src\mcal\avr\mcal_port.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_pwm.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_spi.cpp">
+      <Filter>src\mcal\avr</Filter>
+    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_wdg.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
-      <Filter>src\mcal\win32</Filter>
+    <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
+      <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_led.cpp">
-      <Filter>src\mcal\win32</Filter>
+    <ClCompile Include="src\mcal\avr\mcal_eep.cpp">
+      <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_wdg.cpp">
-      <Filter>src\mcal\win32</Filter>
+    <ClCompile Include="src\mcal\avr\mcal_gpt.cpp">
+      <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
-      <Filter>src\mcal\win32</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_osc.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_port.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
-      <Filter>src\util\STD_LIBC</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\led\app_led.cpp">
-      <Filter>src\app\led</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_spi.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp">
-      <Filter>src\mcal\win32</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\prime\app_prime.cpp">
-      <Filter>src\app\prime</Filter>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_eep.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_irq.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l100c\mcal_led.cpp">
+      <Filter>src\mcal\stm32l100c</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,54 +266,6 @@
     <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_cpu.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_gpt.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_irq.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_osc.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_port.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_reg.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_reg_access.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_wdg.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_cpu.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_gpt.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_irq.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_led.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_wdg.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\utility\util_alignas.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
@@ -284,20 +308,209 @@
     <ClInclude Include="src\mcal\mcal_progmem.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_benchmark.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_port.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\primes\primes.h">
       <Filter>src\math\primes</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_gpt.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_irq.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_led.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_memory_progmem.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_osc.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_port.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_pwm.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_reg.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_ser.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_spi.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_wdg.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_wdg_watchdog.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_benchmark.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_cpu.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\host\mcal_eep.h">
+      <Filter>src\mcal\host</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_gpt.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_irq.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_led.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_osc.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_port.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_pwm.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_pwm_timer1.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_reg.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_ser.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_spi.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_wdg.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_cpu.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_eep.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_memory_progmem.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_osc.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_port.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_pwm.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_reg.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_ser.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_spi.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_wdg.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_benchmark.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_cpu.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_eep.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_gpt.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_irq.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l100c\mcal_led.h">
+      <Filter>src\mcal\stm32l100c</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_console.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_pwm.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_console.h">
+      <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_dummy.h">
+      <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_base.h">
+      <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h">
+      <Filter>src\mcal_spi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h">
+      <Filter>src\mcal_spi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_sram_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

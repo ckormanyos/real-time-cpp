@@ -6,10 +6,21 @@
 //
 
 #include <mcal_led.h>
+#include <mcal_led/mcal_led_port.h>
 
-const mcal::led::led_type& mcal::led::led0()
+mcal::led::led_base& mcal::led::led0()
 {
-  static const led_type l0;
+  // The user LED on the stm32f446 Nucleo-64 board:
+  // - porta.5: green
+
+  using led0_port_type = mcal::port::port_pin<std::uint32_t,
+                                              std::uint32_t,
+                                              mcal::reg::gpioa_base,
+                                              UINT32_C(5)>;
+
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
+
+  static led0_led_type l0;
 
   return l0;
 }

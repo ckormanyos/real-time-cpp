@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_CPU_PROGMEM_ARRAY_2019_05_04_
-  #define MCAL_CPU_PROGMEM_ARRAY_2019_05_04_
+#ifndef MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_
+  #define MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_
 
   #include <algorithm>
   #include <cstddef>
@@ -20,7 +20,8 @@
 
   namespace mcal { namespace memory { namespace progmem {
 
-  template<typename T, const mcal_progmem_uintptr_t N>
+  template<typename T,
+           const mcal_progmem_uintptr_t N>
   class array
   {
   private:
@@ -28,9 +29,9 @@
 
   public:
     // Standard container-local type definitions.
-    using size_type              = mcal_progmem_uintptr_t;
-    using const_iterator         = mcal::memory::progmem::forward_iterator<T, size_type>;
+    using const_iterator         = mcal::memory::progmem::forward_iterator<T, mcal_progmem_uintptr_t, mcal_progmem_ptrdiff_t>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+    using size_type              = mcal_progmem_uintptr_t;
     using difference_type        = typename const_iterator::difference_type;
     using value_type             = typename const_iterator::value_type;
     using const_pointer          = typename const_iterator::pointer;
@@ -127,19 +128,19 @@
   }
 
   template<typename T>
-  class tuple_size;
+  struct tuple_size;
 
   template<typename T, const mcal_progmem_uintptr_t N>
-  class tuple_size<mcal::memory::progmem::array<T, N>>
+  struct tuple_size<mcal::memory::progmem::array<T, N>>
     : public std::integral_constant<mcal_progmem_uintptr_t, N> { };
 
   template<const mcal_progmem_uintptr_t N, typename T>
-  class tuple_element;
+  struct tuple_element;
 
   template<const mcal_progmem_uintptr_t I,
            typename T,
            const mcal_progmem_uintptr_t N>
-  class tuple_element<I, mcal::memory::progmem::array<T, N>>
+  struct tuple_element<I, mcal::memory::progmem::array<T, N>>
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
 
@@ -148,4 +149,4 @@
 
   } } } // namespace mcal::memory::progmem
 
-#endif // MCAL_CPU_PROGMEM_ARRAY_2019_05_04_
+#endif // MCAL_MEMORY_PROGMEM_ARRAY_2019_05_04_H_

@@ -31,15 +31,13 @@
       template<typename send_iterator_type>
       bool send_n(send_iterator_type first, send_iterator_type last)
       {
-        using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
-
         bool send_result = true;
 
         while(first != last)
         {
-          const send_value_type value(*first);
+          using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
-          send_result &= this->send(std::uint8_t(value));
+          send_result &= this->send(std::uint8_t(send_value_type(*first)));
 
           ++first;
         }
@@ -47,12 +45,12 @@
         return send_result;
       }
 
+      virtual bool send(const std::uint8_t byte_to_send) = 0;
+
     protected:
       communication_base() = default;
 
     private:
-      virtual bool send(const std::uint8_t byte_to_send) = 0;
-
       template<const std::size_t channel_count>
       friend class communication_multi_channel;
     };
@@ -97,12 +95,6 @@
 
       ~communication_multi_channel() = default;
 
-    private:
-      communication_base* my_com_channels[channel_count];
-      std::size_t         my_index;
-
-      communication_multi_channel() = delete;
-
       virtual bool send(const std::uint8_t byte_to_send)
       {
         return my_com_channels[my_index]->send(byte_to_send);
@@ -127,6 +119,12 @@
 
         return select_channel_is_ok;
       }
+
+    private:
+      communication_base* my_com_channels[channel_count];
+      std::size_t         my_index;
+
+      communication_multi_channel() = delete;
     };
   }
 

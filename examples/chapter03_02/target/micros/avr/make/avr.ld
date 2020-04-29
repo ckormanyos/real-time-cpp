@@ -14,27 +14,26 @@ OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
 /* The beginning and end of the program ROM area. */
-/* Leave 4 bytes for the 32-bit checksum plus 0x10 extra bytes free. */
 _rom_begin = 0x00000000;
-_rom_end   = 0x00007FEC;
+_rom_end   = 0x00007FFC;
 
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of (3/4)K */
-_stack_begin = 0x800500;
-_stack_end   = 0x800800;
+/* Set up a stack with a size of 0x300=(3/4)K */
+_stack_begin = 0x00800500;
+_stack_end   = 0x00800800;
 
 /* The initial stack pointer (top of stack) is at the top of the 2K RAM */
-__initial_stack_pointer = 0x800800;
+__initial_stack_pointer = 0x00800800;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 0x14
-  RAM(rw!x) : ORIGIN = 0x800100, LENGTH = 0x0400
+  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 4
+  RAM(rw!x) : ORIGIN = 0x00800100, LENGTH = 0x00000500 - 0x00000100
 }
 
 SECTIONS
 {
-  . = 0x0;
+  . = 0x00000000;
   . = ALIGN(2);
 
   /* ISR vectors */
@@ -77,7 +76,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  .= 0x800100;
+  .= 0x00800100;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */
