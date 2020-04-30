@@ -146,6 +146,7 @@
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
     <Folder Include="src\app\benchmark" />
+    <Folder Include="src\mcal_led\" />
     <Folder Include="src\mcal_pwm" />
     <Folder Include="src\mcal_spi" />
     <Folder Include="src\mcal_memory" />
@@ -175,6 +176,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\led\app_led.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\led\app_led.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_benchmark.h">
@@ -208,12 +212,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_led.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_port.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_pwm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
@@ -276,6 +274,18 @@
     <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_led\mcal_led_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
@@ -297,7 +307,28 @@
     <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_access.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_sram_ref.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_pwm\mcal_pwm_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_dummy.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
