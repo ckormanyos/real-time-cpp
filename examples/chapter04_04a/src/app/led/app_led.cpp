@@ -29,7 +29,9 @@ namespace
 
   timer_type app_led_timer(app_led_one_sec);
 
-  std::array<std::reference_wrapper<mcal::led::led_base>, 5U> app_led_base_class_refs =
+  using app_led_ref_type = std::reference_wrapper<mcal::led::led_base>;
+
+  std::array<app_led_ref_type, 5U> app_led_base_class_refs =
   {{
     mcal::led::led0(),
     mcal::led::led1(),
@@ -49,7 +51,7 @@ bool app::led::get_state_is_ok() noexcept
   {
     app_led_state_is_ok &= std::all_of(app_led_base_class_refs.cbegin(),
                                        app_led_base_class_refs.cend(),
-                                       [](mcal::led::led_base& led) -> bool
+                                       [](typename app_led_ref_type::type& led) -> bool
                                        {
                                          return (led.state_is_on() == true);
                                        });
@@ -58,7 +60,7 @@ bool app::led::get_state_is_ok() noexcept
   {
     app_led_state_is_ok &= std::all_of(app_led_base_class_refs.cbegin(),
                                        app_led_base_class_refs.cend(),
-                                       [](mcal::led::led_base& led) -> bool
+                                       [](typename app_led_ref_type::type& led) -> bool
                                        {
                                          return (led.state_is_on() == false);
                                        });
@@ -69,7 +71,7 @@ bool app::led::get_state_is_ok() noexcept
 
 void app::led::task_init()
 {
-  for(mcal::led::led_base& led : app_led_base_class_refs)
+  for(typename app_led_ref_type::type& led : app_led_base_class_refs)
   {
     led.toggle();
   }
@@ -83,7 +85,7 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(app_led_one_sec);
 
-    for(mcal::led::led_base& led : app_led_base_class_refs)
+    for(typename app_led_ref_type::type& led : app_led_base_class_refs)
     {
       led.toggle();
     }

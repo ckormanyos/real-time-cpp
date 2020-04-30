@@ -53,8 +53,8 @@
     static constexpr std::uint8_t reg_olata    = UINT8_C(0x14);  // MCP23x17 Output Latch Register
     static constexpr std::uint8_t reg_olatb    = UINT8_C(0x15);  // 1 = Latch High, 0 = Latch Low (default) Reading Returns Latch State, Not Port Value!
 
-    static constexpr std::uint8_t cmd_write    = (0b01000000U);
-    static constexpr std::uint8_t cmd__read    = (0b01000001U);
+    static constexpr std::uint8_t cmd_write    = UINT8_C(0x40);
+    static constexpr std::uint8_t cmd__read    = UINT8_C(0x41);
 
     static constexpr std::uint8_t addr_max     = UINT8_C(7);
 
@@ -67,7 +67,7 @@
         my_pdir       (0xFFFF),    // Default I/O mode is input (input is high) --> 0xFFFF
         my_port       (0x0000)     // Default output state is low --> 0x0000
      {
-       static constexpr std::uint8_t addr_enable = (0b00001000U);
+       static constexpr std::uint8_t addr_enable = UINT8_C(0x08);
 
        write_byte(reg_iocona, addr_enable);
      }

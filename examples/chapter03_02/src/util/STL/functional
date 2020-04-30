@@ -16,8 +16,8 @@
   {
     namespace xfunctional_impl
     {
-      template <typename T> constexpr T& func_ref_or_move(T& t) noexcept { return t; }
-      template <typename T> void func_ref_or_move(T&&) = delete;
+      template <typename T> constexpr T& func_ref_or_moveref(T& t) noexcept { return t; }
+      template <typename T> void func_ref_or_moveref(T&&) = delete;
     }
 
     template<typename T>
@@ -27,10 +27,10 @@
       typedef T type;
 
       template<typename U,
-               class = decltype(xfunctional_impl::func_ref_or_move<T>(std::declval<U>()),
+               class = decltype(xfunctional_impl::func_ref_or_moveref<T>(std::declval<U>()),
                                 std::enable_if_t<(std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value == false)>())>
-      constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_move<T>(std::forward<U>(u))))
-        : my_ptr(std::addressof(xfunctional_impl::func_ref_or_move<T>(std::forward<U>(u)))) { }
+      constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u))))
+        : my_ptr(std::addressof(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u)))) { }
 
       reference_wrapper(const reference_wrapper&) noexcept = default;
 
@@ -50,8 +50,8 @@
       T* my_ptr;
     };
 
-    template<typename T>
-    reference_wrapper(T&) -> reference_wrapper<T>;
+    //template<typename T>
+    //reference_wrapper(T&) -> reference_wrapper<T>;
 
     template<typename T>
     struct identity
