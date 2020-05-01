@@ -15,9 +15,9 @@ being considered more specialized than elementary
 transecndental functions like trigonometric functions,
 logarithmic functions, exponential functions and the like.
 
-Many special functions, although very difficult to calculate
-over wide parameter and argument ranges have remarkably
-simple small-argument approximations such as Taylor series.
+Many special functions, although they can be very difficult to calculate
+over wide parameter and argument ranges, have remarkably
+simple small-argument approximations such as a modest Taylor series.
 Cylindrical Bessel functions of complex-valued argument
 <img src="https://render.githubusercontent.com/render/math?math={z}">
 and complex-valued order
