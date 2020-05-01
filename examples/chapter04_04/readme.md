@@ -67,8 +67,7 @@ as an external port expaneder chip.
 
 Some of the port connections are tabulated below.
 
-| Pin on        | Port Expander    | Electrical              |
-| Port Expander | Function         | Connection              |
+| Port Expander Pin | Expander Function | Connection         |
 | ------------- | ---------------- | ----------              |
 |    9          | VDD              | +5V                     |
 |    10         | VSS              | GND                     |
