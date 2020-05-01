@@ -53,7 +53,7 @@ namespace
 
     using std::fabs;
 
-    const float_type delta = fabs(static_cast<float_type>(FLOATMAX_C(1.0)) - ratio);
+    const float_type delta = fabs(static_cast<float_type>(FLOATMAX_C(1.0)) - fabs(ratio));
 
     return (delta < tolerance);
   }
