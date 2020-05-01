@@ -26,13 +26,14 @@ of fixed-width integer types.
 
 Example ![chapter04_04](./chapter04_04) LED Objects and Polymorphism.\
 This example exhibits object oriented polymorphism through
-an intuitive LED class hierarchy. Base class pointers are used
-in combination with dynamic polymorphism.
+an intuitive LED class hierarchy. Base class pointers stored in an
+`std::array` are used in combination with dynamic polymorphism.
 
 Example ![chapter04_04a](./chapter04_04a) LED Objects and Polymorphism via References.\
 This example exhibits object oriented polymorphism in essentially the same
-way as in chapter04_04. In chapter04_04a, however, we use base class
-references instead of base class pointers to access object oriented polymorphism.
+way as in example chapter04_04. In example chapter04_04a, however, we use base class
+references instead of base class pointers stored in an `std::array`
+in order to utilitze object oriented polymorphism.
 
 Example ![chapter06_01](./chapter06_01) A CRC Benchmark.\
 This example illustrates certain optimization techniques through the calculation
