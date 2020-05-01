@@ -68,3 +68,9 @@ how useful cross development can be for writing error-free,
 portable application layer code.
 
 ![Display application task in action on the PC simuation](./images/seven_segment.pdf)
+
+# Hardware Setup
+
+The hardware setup is pictured in the image below.
+
+![](./images/board7.jpg)
