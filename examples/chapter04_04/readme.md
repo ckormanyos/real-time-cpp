@@ -58,12 +58,24 @@ void app::led::task_func()
 
 # Hardware Setup
 
+The five discrete LEDs in this example are fitted and setup
+in the following way:
+
+| LED        | Port                           | Details                                                  |
+| ---------- | ------------------------------ | -------------------------------------------------------- |
+| LED0       | microcontroller `portb.5`      | port toggle high / low, 750 Ohm                          |
+| LED1       | microcontroller `portb.1`      | Timer A, PWM duty cycle 100% / 0%, 750 Ohm               |
+| LED2       | portexpander pin `GPA0`        | port toggle high / low, soft SPI(TM) chip drive, 750 Ohm |
+| LED3       | portexpander pin `GPA1`        | port toggle high / low, soft SPI(TM) chip drive, 750 Ohm |
+| LED4       | portexpander pin `GPA2`        | port toggle high / low, soft SPI(TM) chip drive, 750 Ohm |
+
+
 The hardware setup is pictured in the image below.
 
 ![](./images/board4.jpg)
 
 In this example, we use ports from both the microcontroller as well
-as an external port expaneder chip.
+as an external port expander chip.
 
 Some of the port connections are tabulated below.
 
