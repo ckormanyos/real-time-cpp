@@ -77,7 +77,7 @@ The hardware setup is pictured in the image below.
 In this example, we use ports from both the microcontroller as well
 as an external port expander chip.
 
-Some of the port connections are tabulated below.
+The connections of the port expander chip are tabulated below.
 
 | Port Expander Pin | Expander Function | Connection         |
 | ------------- | ---------------- | ----------              |
