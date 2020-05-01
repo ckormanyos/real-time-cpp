@@ -58,11 +58,28 @@ void app::led::task_func()
 
 # Hardware Setup
 
-Here is the ![hardware setup](./images/board4.jpg).
+The hardware setup is pictured in the image below.
+
+![](./images/board4.jpg)
 
 In this example, we use ports from both the microcontroller as well
 as an external port expaneder chip.
 
-Some of the port connections are listed below:
+Some of the port connections are tabulated below.
 
-
+| Pin on        | Port Expander    | Electrical              |
+| Port Expander | Function         | Connection              |
+| ------------- | ---------------- | ----------              |
+|    9          | VDD              | +5V                     |
+|    10         | VSS              | GND                     |
+|    11         | CS (NOT)         | `portc.4`               |
+|    12         | SCK              | `portc.3`               |
+|    13         | SI               | `portc.1`               |
+|    14         | SO               | `portc.2`               |
+|    15         | A0               | +5V                     |
+|    16         | A1               | +5V                     |
+|    17         | A2               | +5V                     |
+|    18         | RESET (NOT)      | 15 kOhm to +5V pullup over switch to GND |
+|    21         | GPA0             | 750 Ohm to LED2         |
+|    22         | GPA1             | 750 Ohm to LED3         |
+|    23         | GPA2             | 750 Ohm to LED4         |
