@@ -53,3 +53,8 @@ void app::led::task_func()
   }
 }
 ```
+
+# Hardware Setup
+
+The hardware setup for example chapter04_04a is the same as that of
+example chapter04_04.
