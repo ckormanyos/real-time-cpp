@@ -29,7 +29,7 @@ This example exhibits object oriented polymorphism through
 an intuitive LED class hierarchy. Base class pointers are used
 in combination with dynamic polymorphism.
 
-Example ![chapter04_04a](./chapter04_04a) LED Objects and Polymorphism Via References.\
+Example ![chapter04_04a](./chapter04_04a) LED Objects and Polymorphism via References.\
 This example exhibits object oriented polymorphism in essentially the same
 way as in chapter04_04. In chapter04_04a, however, we use base class
 references instead of base class pointers to access object oriented polymorphism.
