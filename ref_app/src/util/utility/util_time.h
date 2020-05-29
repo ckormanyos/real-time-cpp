@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,8 +10,9 @@
 
   #include <cstdint>
   #include <limits>
-  #include <mcal_cpu.h>
+
   #include <mcal_gpt.h>
+  #include <mcal_wdg.h>
 
   namespace util
   {
@@ -19,7 +20,7 @@
     class timer
     {
     public:
-      typedef unsigned_tick_type tick_type;
+      using tick_type = unsigned_tick_type;
 
       static_assert(std::numeric_limits<tick_type>::is_signed == false,
                     "the timer tick_type must be unsigned");
@@ -102,14 +103,17 @@
 
         while(false == t_delay.timeout())
         {
-          mcal::cpu::nop();
+          mcal::wdg::secure::trigger();
         }
       }
 
     private:
       tick_type my_tick;
 
-      static tick_type my_now() { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed()); }
+      static tick_type my_now()
+      {
+        return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
+      }
     };
   }
 

@@ -332,12 +332,6 @@
     <ClInclude Include="src\app\led\app_led.h">
       <Filter>src\app\led</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_port.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_pwm.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>

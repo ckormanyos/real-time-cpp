@@ -49,11 +49,6 @@ void mcal::wdg::init(const config_type*)
                                std::uint8_t(0x0BU)>::reg_set();
 }
 
-void mcal::wdg::secure::trigger()
-{
-  asm volatile("wdr");
-}
-
 void mcal_wdg_turn_off_wdt_if_wdton_is_set()
 {
   asm volatile("wdr");

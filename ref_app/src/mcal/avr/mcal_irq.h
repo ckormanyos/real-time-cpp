@@ -16,8 +16,8 @@
 
       void init(const config_type*);
 
-      inline void enable_all () { asm volatile("sei"); }
-      inline void disable_all() { asm volatile("cli"); }
+      inline void enable_all () noexcept { asm volatile("sei"); }
+      inline void disable_all() noexcept { asm volatile("cli"); }
     }
   }
 

@@ -120,6 +120,72 @@
       my_state_is_ok &= write_word(reg_gpioa, my_port);
     }
 
+    void set_porta(const std::uint8_t porta_value)
+    {
+      my_port &= std::uint8_t(~UINT8_C(0xFF));
+      my_port |= porta_value;
+
+      my_state_is_ok &= write_word(reg_gpioa, my_port);
+    }
+
+    void set_portb(const std::uint8_t portb_value)
+    {
+      my_port &= std::uint16_t(~UINT16_C(0xFF00));
+
+      my_port |= std::uint16_t(std::uint16_t(portb_value) << 8U);
+
+      my_state_is_ok &= write_word(reg_gpioa, my_port);
+    }
+
+    void set_port(const std::uint16_t port_value)
+    {
+      my_port = port_value;
+
+      my_state_is_ok &= write_word(reg_gpioa, my_port);
+    }
+
+    void set_porta_direction_output()
+    {
+      my_pdir &= std::uint8_t(~UINT8_C(0xFF));
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
+    void set_portb_direction_output()
+    {
+      my_pdir &= std::uint16_t(~UINT16_C(0xFF00));
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
+    void set_port_direction_output()
+    {
+      my_pdir = UINT16_C(0x0000);
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
+    void set_porta_direction_input()
+    {
+      my_pdir |= std::uint8_t(UINT8_C(0xFF));
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
+    void set_portb_direction_input()
+    {
+      my_pdir |= std::uint16_t(UINT16_C(0xFF00));
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
+    void set_port_direction_input()
+    {
+      my_pdir = UINT16_C(0xFFFF);
+
+      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+    }
+
     bool state_is_ok() const noexcept
     {
       return my_state_is_ok;

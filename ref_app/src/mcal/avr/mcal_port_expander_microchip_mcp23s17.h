@@ -5,21 +5,18 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PORT_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
-  #define MCAL_PORT_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
+#ifndef MCAL_PORT_WORD_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
+  #define MCAL_PORT_WORD_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
 
-  #include <algorithm>
-  #include <array>
-
-  #include <util/utility/util_communication.h>
-  #include <util/utility/util_noncopyable.h>
+  #include <mcal_spi.h>
   #include <util/utility/util_two_part_data_manipulation.h>
 
-  namespace mcal { namespace port { namespace expander {
+  namespace mcal { namespace port {
 
-  class port_expander_microchip_mcp23s17 : private util::noncopyable
+  template<const std::uint8_t hardware_address>
+  class port_regs_expander_microchip_mcp23s17
   {
-  private:
+  protected:
     static constexpr std::uint8_t reg_iodira   = UINT8_C(0x00);  // MCP23x17 I/O Direction Register
     static constexpr std::uint8_t reg_iodirb   = UINT8_C(0x01);  // 1 = Input (default), 0 = Output
 
@@ -58,165 +55,153 @@
 
     static constexpr std::uint8_t addr_max     = UINT8_C(7);
 
-  public:
-    port_expander_microchip_mcp23s17(util::communication_base& com,
-                                          const std::uint8_t address = 0U)
-      : my_com        (com),
-        my_address    ((std::min)(addr_max, address)),
-        my_state_is_ok(true),
-        my_pdir       (0xFFFF),    // Default I/O mode is input (input is high) --> 0xFFFF
-        my_port       (0x0000)     // Default output state is low --> 0x0000
-     {
-       static constexpr std::uint8_t addr_enable = UINT8_C(0x08);
+    static constexpr std::uint8_t addr_enable  = UINT8_C(0x08);
 
-       write_byte(reg_iocona, addr_enable);
-     }
+    static constexpr std::uint8_t my_address   = ((hardware_address > addr_max) ? addr_max : hardware_address);
 
-    ~port_expander_microchip_mcp23s17() = default;
+    static constexpr std::uint8_t my_cmd_write = std::uint8_t(UINT8_C(0x40) | std::uint8_t(my_address << 1U));
+    static constexpr std::uint8_t my_cmd__read = std::uint8_t(UINT8_C(0x41) | std::uint8_t(my_address << 1U));
 
-    void set_direction_output(const std::uint8_t bpos)
+  protected:
+    port_regs_expander_microchip_mcp23s17(util::communication_base& com) noexcept
+      : my_com(com)
     {
-      my_pdir &= (~(UINT16_C(1) << bpos));
-
-      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+      // Set the address-enable bit.
+      my_com.select();
+      my_com.send(my_cmd_write);
+      my_com.send(reg_iocona);
+      my_com.send(addr_enable);
+      my_com.deselect();
     }
 
-    void set_direction_input(const std::uint8_t bpos)
+    std::uint16_t read__word(const std::uint8_t reg)
     {
-      my_pdir |= (UINT16_C(1) << bpos);
+      std::uint8_t byte_to_read_lo = std::uint8_t();
+      std::uint8_t byte_to_read_hi = std::uint8_t();
 
-      my_state_is_ok &= write_word(reg_iodira, my_pdir);
+      my_com.select();
+      my_com.send(my_cmd__read);
+      my_com.send(reg);
+      my_com.send(UINT8_C(0));
+      my_com.recv(byte_to_read_lo);
+      my_com.send(UINT8_C(0));
+      my_com.recv(byte_to_read_hi);
+      my_com.deselect();
+
+      return util::make_long(byte_to_read_lo, byte_to_read_hi);
     }
 
-    void set_pin_high(const std::uint8_t bpos)
+    void write_word(const std::uint8_t reg, const std::uint16_t word_to_write) noexcept
     {
-      my_port |= (UINT16_C(1) << bpos);
-
-      my_state_is_ok &= write_word(reg_gpioa, my_port);
-    }
-
-    void set_pin_low(const std::uint8_t bpos)
-    {
-      my_port &= (~(UINT16_C(1) << bpos));
-
-      my_state_is_ok &= write_word(reg_gpioa, my_port);
-    }
-
-    bool read_input_value(const std::uint8_t bpos)
-    {
-      std::uint16_t value;
-
-      my_state_is_ok &= read__word(reg_gpioa, value);
-
-      const std::uint_fast8_t bval = std::uint_fast8_t((value >> bpos) & UINT8_C(1));
-
-      return (bval != UINT8_C(0));
-    }
-
-    void toggle_pin(const std::uint8_t bpos)
-    {
-      my_port ^= (UINT16_C(1) << bpos);
-
-      my_state_is_ok &= write_word(reg_gpioa, my_port);
-    }
-
-    bool state_is_ok() const noexcept
-    {
-      return my_state_is_ok;
+      my_com.select();
+      my_com.send(my_cmd_write);
+      my_com.send(reg);
+      my_com.send(util::lo_part<std::uint8_t>(word_to_write));
+      my_com.send(util::hi_part<std::uint8_t>(word_to_write));
+      my_com.deselect();
     }
 
   private:
     util::communication_base& my_com;
-    const std::uint8_t        my_address;
-    bool                      my_state_is_ok;
-    std::uint16_t             my_pdir;
-    std::uint16_t             my_port;
-
-    bool read__byte(const std::uint8_t reg, std::uint8_t& byte_to_read)
-    {
-      const std::array<std::uint8_t, 4U> cmd =
-      {{
-        std::uint8_t(cmd__read | std::uint8_t(my_address << 1U)),
-        reg,
-        UINT8_C(0xFF)
-      }};
-
-      my_com.select();
-      const bool send_is_ok = my_com.send_n(cmd.cbegin(), cmd.cend());
-      my_com.deselect();
-
-      std::uint8_t value;
-      const bool recv_is_ok = my_com.recv(value);
-
-      byte_to_read = (recv_is_ok ? value : UINT8_C(0));
-
-      return (send_is_ok && recv_is_ok);
-    }
-
-    bool read__word(const std::uint8_t reg, std::uint16_t& word_to_read)
-    {
-      const std::array<std::uint8_t, 4U> cmd =
-      {{
-        std::uint8_t(cmd__read | std::uint8_t(my_address << 1U)),
-        reg,
-        UINT8_C(0xFF),
-        UINT8_C(0xFF)
-      }};
-
-      std::uint8_t dummy_lo = std::uint8_t();
-      std::uint8_t dummy_hi = std::uint8_t();
-
-      bool send_is_ok = true;
-      bool recv_is_ok = true;
-
-      my_com.select();
-      send_is_ok &= my_com.send_n(cmd.cbegin(), cmd.cbegin() + 3U);
-      recv_is_ok &= my_com.recv(dummy_lo);
-      send_is_ok &= my_com.send_n(cmd.cbegin() + 3U, cmd.cend());
-      recv_is_ok &= my_com.recv(dummy_hi);
-      my_com.deselect();
-
-      word_to_read = (recv_is_ok ? util::make_long(dummy_lo, dummy_hi) : UINT16_C(0));
-
-      return (send_is_ok && recv_is_ok);
-    }
-
-    bool write_byte(const std::uint8_t reg, const std::uint8_t byte_to_write)
-    {
-      const std::array<std::uint8_t, 3U> cmd =
-      {{
-        std::uint8_t(cmd_write | std::uint8_t(my_address << 1U)),
-        reg,
-        byte_to_write
-      }};
-
-      my_com.select();
-      const bool send_is_ok = my_com.send_n(cmd.cbegin(), cmd.cend());
-      my_com.deselect();
-
-      return send_is_ok;
-    }
-
-    bool write_word(const std::uint8_t reg, const std::uint16_t word_to_write)
-    {
-      const std::array<std::uint8_t, 4U> cmd =
-      {{
-        std::uint8_t(cmd_write | std::uint8_t(my_address << 1U)),
-        reg,
-        util::lo_part<std::uint8_t>(word_to_write),
-        util::hi_part<std::uint8_t>(word_to_write)
-      }};
-
-      my_com.select();
-      const bool send_is_ok = my_com.send_n(cmd.cbegin(), cmd.cend());
-      my_com.deselect();
-
-      return send_is_ok;
-    }
-
-    port_expander_microchip_mcp23s17() = delete;
   };
 
-  } } } // namespace mcal::port::expander
+  template<const std::uint8_t hardware_address>
+  class port_word_expander_microchip_mcp23s17
+    : public port_regs_expander_microchip_mcp23s17<hardware_address>
+  {
+  private:
+    using base_class_type = port_regs_expander_microchip_mcp23s17<hardware_address>;
 
-#endif // MCAL_PORT_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_
+  public:
+    port_word_expander_microchip_mcp23s17(util::communication_base& com) noexcept
+      : base_class_type(com) { }
+
+    void set_port(const std::uint16_t port_value) noexcept
+    {
+      base_class_type::write_word(base_class_type::reg_gpioa, port_value);
+    }
+
+    void set_direction_output() noexcept
+    {
+      // Set all ports to output (default is input 0xFFFF).
+      base_class_type::write_word(base_class_type::reg_iodira, UINT16_C(0x0000));
+    }
+
+    void set_direction_input() noexcept
+    {
+      // Set all ports to input (default is input 0xFFFF).
+      base_class_type::write_word(base_class_type::reg_iodira, UINT16_C(0xFFFF));
+    }
+  };
+
+  template<const std::uint8_t hardware_address>
+  class port_pin_expander_microchip_mcp23s17
+    : public port_regs_expander_microchip_mcp23s17<hardware_address>
+  {
+  private:
+    // This implementation uses read-modify-write sequences
+    // to access port direction and value registers.
+    // It is designed this way in order to avoid member
+    // variables, even though read-modify-write might
+    // be slower than some other potential implementations.
+
+    using base_class_type = port_regs_expander_microchip_mcp23s17<hardware_address>;
+
+  public:
+    port_pin_expander_microchip_mcp23s17(util::communication_base& com) noexcept
+      : base_class_type(com) { }
+
+
+    virtual ~port_pin_expander_microchip_mcp23s17() = default;
+
+    void set_direction_output(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t dir = base_class_type::read__word(base_class_type::reg_iodira);
+
+      base_class_type::write_word(base_class_type::reg_iodira,
+                                  std::uint16_t(dir & std::uint16_t(~std::uint16_t(1ULL << bpos))));
+    }
+
+    void set_direction_input(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t dir = base_class_type::read__word(base_class_type::reg_iodira);
+
+      base_class_type::write_word(base_class_type::reg_iodira,
+                                  std::uint16_t(dir | std::uint16_t(1ULL << bpos)));
+    }
+
+    void set_pin_high(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t val = base_class_type::read__word(base_class_type::reg_gpioa);
+
+      base_class_type::write_word(base_class_type::reg_gpioa,
+                                  std::uint16_t(val | std::uint16_t(1ULL << bpos)));
+    }
+
+    void set_pin_low(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t val = base_class_type::read__word(base_class_type::reg_gpioa);
+
+      base_class_type::write_word(base_class_type::reg_gpioa,
+                                  std::uint16_t(val & std::uint16_t(~std::uint16_t(1ULL << bpos))));
+    }
+
+    bool read_input_value(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t val = base_class_type::read__word(base_class_type::reg_gpioa);
+
+      return (std::uint_fast8_t((val >> bpos) & UINT8_C(1)) != UINT8_C(0));
+    }
+
+    void toggle_pin(const std::uint8_t bpos) noexcept
+    {
+      const std::uint16_t val = base_class_type::read__word(base_class_type::reg_gpioa);
+
+      base_class_type::write_word(base_class_type::reg_gpioa,
+                                  std::uint16_t(val ^ std::uint16_t(1ULL << bpos)));
+    }
+  };
+
+  } } // namespace mcal::port
+
+#endif // MCAL_PORT_WORD_EXPANDER_MICROCHIP_MCP23S17_2020_04_21_H_

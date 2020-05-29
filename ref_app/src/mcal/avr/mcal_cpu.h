@@ -18,7 +18,7 @@
 
       inline void post_init() { }
 
-      inline void nop() { asm volatile("nop"); }
+      inline void nop() noexcept { asm volatile("nop"); }
     }
   }
 

@@ -103,30 +103,27 @@
 
     virtual bool send(const std::uint8_t byte_to_send)
     {
-      std::uint_fast8_t bit_mask = std::uint8_t(0x80U);
-
       base_class_type::recv_buffer = 0U;
 
       mcal::irq::disable_all();
 
-      for(std::uint_fast8_t i = 0U; i < 8U; ++i)
+      for(std::uint_fast8_t bit_mask = UINT8_C(0x80); bit_mask != UINT8_C(0); bit_mask >>= 1U)
       {
-        const bool mosi_write_is_high = (std::uint_fast8_t(byte_to_send & bit_mask) != 0U);
-
-        (mosi_write_is_high ? port_pin_mosi_type::set_pin_high()
-                            : port_pin_mosi_type::set_pin_low());
+        ((std::uint_fast8_t(byte_to_send & bit_mask) != UINT8_C(0)) ? port_pin_mosi_type::set_pin_high()
+                                                                    : port_pin_mosi_type::set_pin_low());
 
         port_pin_sck__type::set_pin_high();
+
+        detail::spi_nop_maker<nop_count>::execute_n();
+
+        port_pin_sck__type::set_pin_low();
+
         detail::spi_nop_maker<nop_count>::execute_n();
 
         if(port_pin_miso_type::read_input_value())
         {
           base_class_type::recv_buffer |= bit_mask;
         }
-
-        bit_mask >>= 1U;
-
-        port_pin_sck__type::set_pin_low();
       }
 
       mcal::irq::enable_all();
@@ -134,7 +131,7 @@
       return true;
     }
 
-    virtual void   select() { port_pin_csn__type::set_pin_low (); }
+    virtual void   select() { port_pin_csn__type::set_pin_low(); }
     virtual void deselect() { port_pin_csn__type::set_pin_high(); }
   };
 

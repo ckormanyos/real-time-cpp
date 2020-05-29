@@ -143,7 +143,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app" />
-    <Folder Include="src\app\com\" />
     <Folder Include="src\app\led" />
     <Folder Include="src\app\benchmark" />
     <Folder Include="src\math\" />
@@ -212,9 +211,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_wide_integer.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\app\com\app_com.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\led\app_led.cpp">
@@ -301,6 +297,12 @@
     <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_memory_sram_parallel_cypress_cy62158e.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_memory_sram_parallel_cypress_cy62167gn.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -313,10 +315,25 @@
     <Compile Include="src\mcal\avr\mcal_port.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_pin_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_word.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_timer1.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -346,7 +363,7 @@
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_pwm_template.h">
+    <Compile Include="src\mcal\mcal_helper.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_access_dynamic.h">
