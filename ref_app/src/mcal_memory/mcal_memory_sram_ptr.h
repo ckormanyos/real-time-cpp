@@ -25,7 +25,9 @@
     using address_type      = AddressType;
 
   public:
-    using reference         = sram_ref<ValueType, AddressType, AddressDifferenceType>;
+    using reference         = sram_ref<ValueType,
+                                       AddressType,
+                                       AddressDifferenceType>;
     using value_type        = typename reference::value_type;
     using size_type         = typename reference::size_type;
     using difference_type   = typename reference::difference_type;
