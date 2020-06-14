@@ -24,6 +24,10 @@ is derived from a communication base class that provides
 a uniform interface for rudimentary byte read and write
 functions.
 
+Hardware adressing is used and the port expander chip
+in this particular configuration is hard-wired to address 7
+via +5V on the three pins `A0` ... `A2*`.
+
 # Application Description
 
 The application places five LED base class pointers in an
@@ -83,7 +87,8 @@ The hardware setup is pictured in the image below.
 ![](./images/board4.jpg)
 
 In this example, we use ports from both the microcontroller as well
-as an external port expander chip.
+as an external port expander chip. The port expander address
+is hard-wired to 7 via +5V on each of the three pins `A0` ... `A2`.
 
 The connections of the port expander chip are tabulated below.
 
