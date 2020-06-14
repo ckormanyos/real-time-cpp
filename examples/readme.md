@@ -1,5 +1,5 @@
 
-## These examples are motivated from the book "Real-Time C++".
+## These examples are motivated by the book "Real-Time C++".
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
