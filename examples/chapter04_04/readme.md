@@ -16,6 +16,14 @@ one microcontroller port and three other ports on an external
 serial SPI(TM) port axpander chip of type MICROCHIP(R) MCP23S17.
 The PWM based LED is toggled via the dimming of the PWM duty cycle.
 
+The port expander chip is controlled with SPI(TM).
+In this particular example, an all-software bus has been
+developed using four microcontroller port pins toggled
+manually. This SPI(TM) communication class itself
+is derived from a communication base class that provides
+a uniform interface for rudimentary byte read and write
+functions.
+
 # Application Description
 
 The application places five LED base class pointers in an
