@@ -24,9 +24,9 @@ is derived from a communication base class that provides
 a uniform interface for rudimentary byte read and write
 functions.
 
-Hardware adressing is used and the port expander chip
+Hardware adressing is used on the port expander chip
 in this particular configuration is hard-wired to address 7
-via +5V on the three pins `A0` ... `A2*`.
+via +5V on the three pins `A0` ... `A2`.
 
 # Application Description
 
