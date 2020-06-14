@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter16_07-001_custom_random_device.cpp
+// chapter16_07-001_random_engine.cpp
 
 #include <array>
 #include <chrono>
@@ -15,33 +15,35 @@
 #include <limits>
 #include <random>
 
-class custom_random_device
+namespace mcal { namespace random {
+
+class random_engine
 {
 public:
-  using value_type = std::uint32_t;
+  using result_type = std::uint32_t;
 
-  custom_random_device() { }
+  random_engine() { }
 
-  ~custom_random_device() = default;
+  ~random_engine() = default;
 
-  custom_random_device& operator=
-    (const custom_random_device&) = delete;
+  random_engine& operator=
+    (const random_engine&) = delete;
 
   std::uint_fast8_t entropy() const
   {
     return 4U;
   }
 
-  value_type operator()()
+  result_type operator()()
   {
     using clock_type =
       std::chrono::high_resolution_clock;
 
-    const value_type basis_for_seed =
-      value_type(
+    const result_type basis_for_seed =
+      result_type(
         clock_type::now().time_since_epoch().count());
 
-    return value_type(crc32_mpeg2(basis_for_seed));
+    return result_type(crc32_mpeg2(basis_for_seed));
   }
 
 private:
@@ -87,11 +89,13 @@ private:
   }
 };
 
+} } // namespace mcal::random
+
 void do_something()
 {
-        custom_random_device                    device;
-  const std::uint32_t                           seed(device());
-        std::mt19937                            generator(seed);
+        mcal::random::random_engine                       rng;
+  const typename mcal::random::random_engine::result_type seed(rng());
+        std::mt19937                                      generator(seed);
         std::uniform_int_distribution<unsigned> distribution(1U, 1023U);
 
   // Print the seed.
