@@ -42,7 +42,7 @@ fi
 
 CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions"
 CPPFLAGS="-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
-CINCLUDES="-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++17_Compatibility"
+CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr"
 
 echo
 echo "Building with        : build.bat"
@@ -114,21 +114,21 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros
 echo "Compile  : int_vect.cpp to bin/int_vect.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
-echo "Link     : objects to bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/app_display.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_display.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_07.elf
+echo "Link     : objects to bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/app_display.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_display.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter04_04.elf
 
 echo
-echo "Extract  : executable hex file : from bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter09_07.elf bin/chapter09_07.hex
+echo "Extract  : executable hex file : from bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter09_07.elf bin/chapter04_04.hex
 
-echo "Extract  : assembly list file  : from bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-objdump -h -S bin/chapter09_07.elf > bin/chapter09_07.lss
+echo "Extract  : assembly list file  : from bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-objdump -h -S bin/chapter09_07.elf > bin/chapter04_04.lss
 
-echo "Extract  : size information    : from bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter09_07.elf > bin/chapter09_07_size.txt
+echo "Extract  : size information    : from bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter04_04.elf > bin/chapter04_04_size.txt
 
-echo "Extract  : name information    : from bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_07.elf > bin/chapter09_07_nm.txt
+echo "Extract  : name information    : from bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter04_04.elf > bin/chapter04_04_nm.txt
 
-echo "Extract  : demangled names     : from bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_07.elf | $TOOL_PATH/$TOOL_PREFIX-c++filt > bin/chapter09_07_cppfilt.txt
+echo "Extract  : demangled names     : from bin/chapter04_04.elf"
+$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter04_04.elf | $TOOL_PATH/$TOOL_PREFIX-c++filt > bin/chapter04_04_cppfilt.txt
