@@ -48,7 +48,7 @@ bool app::led::get_state_is_ok() noexcept
   {
     app_led_state_is_ok &= std::all_of(app_led_base_class_pointers.cbegin(),
                                        app_led_base_class_pointers.cend(),
-                                       [](auto* p_led) -> bool
+                                       [](mcal::led::led_base* p_led) -> bool
                                        {
                                          return (p_led->state_is_on() == true);
                                        });
@@ -57,7 +57,7 @@ bool app::led::get_state_is_ok() noexcept
   {
     app_led_state_is_ok &= std::all_of(app_led_base_class_pointers.cbegin(),
                                        app_led_base_class_pointers.cend(),
-                                       [](auto* p_led) -> bool
+                                       [](mcal::led::led_base* p_led) -> bool
                                        {
                                          return (p_led->state_is_on() == false);
                                        });
@@ -82,7 +82,7 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(app_led_one_sec);
 
-    for(auto& p_led : app_led_base_class_pointers)
+    for(mcal::led::led_base* p_led : app_led_base_class_pointers)
     {
       p_led->toggle();
     }

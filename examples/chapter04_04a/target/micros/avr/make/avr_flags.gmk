@@ -20,7 +20,7 @@ TGT_CFLAGS    = -Os                                            \
                 -fsigned-char                                  \
                 -mrelax
 
-TGT_CPPFLAGS  = -std=c++17
+TGT_CPPFLAGS  = -std=c++11
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
