@@ -23,7 +23,7 @@
 #
 # Usage example A (from *nix shell)
 # cd /usr/local/real-time-cpp/examples/chapter04_04
-# ./build.sh /usr/local/real-time-cpp/examples/chapter04_04/tools/Util/MinGW/msys/1.0/local/gcc-7.2.0-avr/bin avr
+# ./build.sh /usr/local/real-time-cpp/examples/chapter04_04/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
 # cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter04_04

@@ -23,8 +23,7 @@ namespace
   }
 }
 
-extern "C"
-void __vector_16() __attribute__((signal, used, externally_visible));
+extern "C" void __vector_16() __attribute__((signal, used, externally_visible));
 
 void __vector_16()
 {

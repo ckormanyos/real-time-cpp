@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2015 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CRC32_MPEG2_2018_01_07_H_
-  #define CRC32_MPEG2_2018_01_07_H_
+#ifndef CRC32_MPEG2_2015_01_26_H_
+  #define CRC32_MPEG2_2015_01_26_H_
 
   #include <cstdint>
 
@@ -24,8 +24,8 @@
     // ISO/IEC 13818-1:2000
     // Recommendation H.222.0 Annex A
 
-    // CRC-32/MPEG-2 Table based on nibbles.
-    const std::array<std::uint32_t, 16U> table =
+    // CRC32/MPEG2 Table based on nibbles.
+    constexpr std::array<std::uint32_t, 16U> table =
     {{
       UINT32_C(0x00000000), UINT32_C(0x04C11DB7),
       UINT32_C(0x09823B6E), UINT32_C(0x0D4326D9),
@@ -46,8 +46,7 @@
       using std::iterator_traits;
 
       // Define a local value_type.
-      using value_type =
-      typename iterator_traits<input_iterator>::value_type;
+      using value_type = typename iterator_traits<input_iterator>::value_type;
 
       const value_type value = (*first) & UINT8_C(0xFF);
 
@@ -77,6 +76,8 @@
 
     return crc;
   }
-  }}} // namespace math::checksums::crc
 
-#endif // CRC32_MPEG2_2018_01_07_H_
+  } } } // namespace math::checksums::crc
+
+#endif // CRC32_MPEG2_2015_01_26_H_
+

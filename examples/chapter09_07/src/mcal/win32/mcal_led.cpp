@@ -8,18 +8,19 @@
 #include <mcal_led.h>
 #include <iostream>
 
-namespace mcal
+const mcal::led::led_type& mcal::led::led0()
 {
-  namespace led
-  {
-    const led_type led0;
-  }
+  static mcal::led::led l0;
+
+  return l0;
 }
 
 void mcal::led::led::toggle() const
 {
   // Toggle the LED state.
   is_on = (!is_on);
+
+  std::cout << std::string(32U, ' ') + "\r";
 
   // Print the LED state.
   if(is_on)

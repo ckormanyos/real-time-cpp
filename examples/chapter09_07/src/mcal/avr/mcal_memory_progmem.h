@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2019 - 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #ifndef MCAL_MEMORY_PROGMEM_2019_08_17_H_
   #define MCAL_MEMORY_PROGMEM_2019_08_17_H_
 
@@ -12,8 +19,8 @@
   {
   #endif
 
-  typedef uint16_t mcal_progmem_uintptr_t;
-  typedef  int16_t mcal_progmem_ptrdiff_t;
+  typedef uintptr_t mcal_progmem_uintptr_t;
+  typedef ptrdiff_t mcal_progmem_ptrdiff_t;
 
   #define MCAL_PROGMEM_ADDRESSOF(x) ((mcal_progmem_uintptr_t) (&(x)))
 

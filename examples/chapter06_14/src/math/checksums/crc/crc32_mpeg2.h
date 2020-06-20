@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2015 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef CRC32_2015_01_26_H_
-  #define CRC32_2015_01_26_H_
+#ifndef CRC32_MPEG2_2015_01_26_H_
+  #define CRC32_MPEG2_2015_01_26_H_
 
   #include <cstdint>
 
@@ -48,9 +48,7 @@
       using std::iterator_traits;
 
       // Define a local value_type.
-      using value_type =
-        typename
-        iterator_traits<input_iterator>::value_type;
+      using value_type = typename iterator_traits<input_iterator>::value_type;
 
       const value_type value = (*first) & UINT8_C(0xFF);
 
@@ -81,7 +79,7 @@
     return crc;
   }
 
-  } } }
+  } } } // namespace math::checksums::crc
 
-#endif // CRC32_2015_01_26_H_
+#endif // CRC32_MPEG2_2015_01_26_H_
 

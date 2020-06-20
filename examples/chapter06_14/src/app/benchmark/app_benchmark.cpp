@@ -11,7 +11,7 @@
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
-#include <math/checksums/crc/crc32.h>
+#include <math/checksums/crc/crc32_mpeg2.h>
 
 namespace app
 {

@@ -70,6 +70,9 @@
     <Filter Include="src\app\benchmark">
       <UniqueIdentifier>{ab3fddef-bfed-4afa-9c01-e6417ec909ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_memory">
+      <UniqueIdentifier>{acd556a6-ae8c-4a66-82c4-3a0b8fc10e1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -134,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="src\app\led\app_led.cpp">
       <Filter>src\app\led</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp">
       <Filter>src\app\benchmark</Filter>
@@ -284,9 +284,6 @@
     <ClInclude Include="src\util\memory\util_static_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_progmem.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -296,8 +293,38 @@
     <ClInclude Include="src\mcal\win32\mcal_port.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\checksums\crc\crc32_mpeg2.h">
+    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\crc\crc32.h">
       <Filter>src\math\checksums\crc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
