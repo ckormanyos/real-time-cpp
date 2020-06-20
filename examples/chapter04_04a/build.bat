@@ -13,11 +13,11 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter04_04a"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter04_04a\tools\Util\MinGW\msys\1.0\local\gcc-7.2.0-avr\bin" avr
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter04_04a\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter04_04a"
-@rem build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
+@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1

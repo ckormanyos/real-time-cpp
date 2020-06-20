@@ -11,9 +11,16 @@
 @rem Usage:
 @rem build.bat directory_of_gcc_bin avr
 @rem For example,
-@rem build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
+@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
 @rem
 
+@rem Usage example A,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
+
+@rem Usage example B,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_02"
+@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
 
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2

@@ -22,6 +22,14 @@
 # ./build.sh /usr/bin avr
 #
 
+# Usage example A (from *nix shell)
+# cd /usr/local/real-time-cpp/examples/chapter02_02
+# ./build.sh /usr/local/real-time-cpp/examples/chapter02_02/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+
+# Usage example B (from Win* shell such as in Git for Win*)
+# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_02
+# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter02_02/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
         TOOL_PATH="$(dirname $(which avr-g++))"
