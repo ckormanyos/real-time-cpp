@@ -66,11 +66,11 @@ just prior to and after the call of the prime sieve cacle task.
 A straightofrward digital oscilloscope measurement provides
 a timing indication for the runtime of the prime sieve cycle task.
 
-A running hardware setup is shown in the picture below.\\
+A running hardware setup is shown in the picture below.
 
 ![](./images/board03_02.jpg)
 
-The runtime of the prime sieve cycle task is depicted below.\\
+The runtime of the prime sieve cycle task is depicted below.
 
 ![](./images/scope03_02.jpg)
 
