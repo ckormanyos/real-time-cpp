@@ -57,8 +57,6 @@ before beginning the sieve iteration.
 
 # Running the Setup
 
-The following picture shows a self-made ![running hardware setup](./images/board03_02.jpg)
-
 The prime sieve cycle task `void app::prime::task_func()` runs every 50ms.
 The approximate runtime of each task call required for the
 entire sieve calculation of 100 prime numbers is approximately 5ms.
@@ -68,8 +66,13 @@ just prior to and after the call of the prime sieve cacle task.
 A straightofrward digital oscilloscope measurement provides
 a timing indication for the runtime of the prime sieve cycle task.
 
-The following image depicts the 
-![runtime of the prime sieve cycle task](./images/scope03_02.jpg)
+A running hardware setup is shown in the picture below.\\
+
+![](./images/board03_02.jpg)
+
+The runtime of the prime sieve cycle task is depicted below.\\
+
+![](./images/scope03_02.jpg)
 
 # A PC-Based example
 
