@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2019.
+//  Copyright Christopher Kormanyos 2013.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_REG_ACCESS_DYNAMIC_2013_12_13_H_
-  #define MCAL_REG_ACCESS_DYNAMIC_2013_12_13_H_
+#ifndef MCAL_REG_DYNAMIC_ACCESS_TEMPLATE_2013_12_13_H_
+  #define MCAL_REG_DYNAMIC_ACCESS_TEMPLATE_2013_12_13_H_
 
   namespace mcal
   {
@@ -14,7 +14,7 @@
     {
       template<typename register_address_type,
                typename register_value_type>
-      struct reg_access_dynamic final
+      struct dynamic_access final
       {
         static register_value_type
                     reg_get(const register_address_type address) { return *reinterpret_cast<volatile register_value_type*>(address); }
@@ -34,4 +34,4 @@
     }
   }
 
-#endif // MCAL_REG_ACCESS_DYNAMIC_2013_12_13_H_
+#endif // MCAL_REG_DYNAMIC_ACCESS_TEMPLATE_2013_12_13_H_

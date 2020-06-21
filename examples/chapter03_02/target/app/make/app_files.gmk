@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2007 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,14 +12,11 @@
 FILES_CPP  = $(PATH_APP)/app/led/app_led                                 \
              $(PATH_APP)/app/prime/app_prime                             \
              $(PATH_APP)/mcal/$(TGT)/mcal_cpu                            \
-             $(PATH_APP)/mcal/$(TGT)/mcal_eep                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_irq                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_led                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_osc                            \
-             $(PATH_APP)/mcal/$(TGT)/mcal_pwm                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_port                           \
-             $(PATH_APP)/mcal/$(TGT)/mcal_spi                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_wdg                            \
              $(PATH_APP)/mcal/mcal                                       \
              $(PATH_APP)/os/os                                           \
