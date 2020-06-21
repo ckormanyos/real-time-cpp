@@ -45,7 +45,7 @@ CPPFLAGS="-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-g
 CINCLUDES="-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++17_Compatibility"
 
 echo
-echo "Building with        : build.bat"
+echo "Building with        : build.sh"
 echo "Using tool path      : $TOOL_PATH"
 echo "Using tool prefix    : $TOOL_PREFIX"
 echo "Remove bin directory : bin/"
