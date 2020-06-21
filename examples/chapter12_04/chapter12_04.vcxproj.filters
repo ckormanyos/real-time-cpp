@@ -70,6 +70,9 @@
     <Filter Include="src\math\constants">
       <UniqueIdentifier>{f3aa969b-8da6-4d0f-ac20-7940faedc846}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_memory">
+      <UniqueIdentifier>{df5781cb-9e5b-4f3c-8e93-6f82e1d6c93f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -134,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="src\app\led\app_led.cpp">
       <Filter>src\app\led</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp">
-      <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp">
       <Filter>src\app\benchmark</Filter>
@@ -287,9 +287,6 @@
     <ClInclude Include="src\util\memory\util_static_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_progmem.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -310,6 +307,27 @@
     </ClInclude>
     <ClInclude Include="src\math\constants\constants.h">
       <Filter>src\math\constants</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
