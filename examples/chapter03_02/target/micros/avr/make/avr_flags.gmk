@@ -9,6 +9,8 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
+# See also: https://blog.zakkemble.net/avr-gcc-builds/
+
 GCC_VERSION   = 9.2.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
