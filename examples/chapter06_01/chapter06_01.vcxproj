@@ -208,6 +208,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_wdg.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp" />
