@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc32.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc32_Initialize(Crc32_Context_Type* Crc_Context)
 {
@@ -69,7 +68,7 @@ void Crc32_ProcessBytes(const uint8_t*      DataIn,
                                  ^ ((uint8_t) DataIn[LoopCnt])));
 
     const uint32_t TableValue =
-      mcal_cpu_read_program_memory_dword((const uint8_t*) &Crc32_Table[DataIndex]);
+      mcal_memory_progmem_read_dword((mcal_progmem_uintptr_t) &Crc32_Table[DataIndex]);
 
     Crc_Context->Crc_Value = (uint32_t) (Crc_Context->Crc_Value >> 8U) ^ TableValue;
   }

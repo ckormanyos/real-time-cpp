@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc16.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc16_Initialize(Crc16_Context_Type* Crc_Context)
 {
@@ -69,7 +68,7 @@ void Crc16_ProcessBytes(const uint8_t*      DataIn,
                                  ^ ((uint8_t) DataIn[LoopCnt])));
 
     const uint16_t TableValue =
-      mcal_cpu_read_program_memory_word((const uint8_t*) &Crc16_Table[DataIndex]);
+      mcal_memory_progmem_read_word((mcal_progmem_uintptr_t) &Crc16_Table[DataIndex]);
 
     Crc_Context->Crc_Value = (uint16_t) (Crc_Context->Crc_Value << 8) ^ TableValue;
   }
