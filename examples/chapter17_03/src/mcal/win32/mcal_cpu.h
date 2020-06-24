@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,39 +8,19 @@
 #ifndef MCAL_CPU_2009_02_14_H_
   #define MCAL_CPU_2009_02_14_H_
 
+  #define MY_PROGMEM
 
-  #if defined(__cplusplus)
   #include <cstdint>
-  #else
-  #include <stdint.h>
-  #endif
+  #include <type_traits>
 
-  #if defined(__cplusplus)
-  namespace mcal
-  {
-    namespace cpu
-    {
-      inline void init() { }
+  namespace mcal { namespace cpu {
 
-      inline void post_init() { }
+  void init();
 
-      inline void nop() { }
-    }
-  }
-  #endif
+  inline void post_init() { }
 
-  #if defined(__cplusplus)
-  extern "C"
-  {
-  #endif
+  inline void nop() { }
 
-  uint8_t  mcal_cpu_read_program_memory_byte (const uint8_t* pointer_to_program_memory);
-  uint16_t mcal_cpu_read_program_memory_word (const uint8_t* pointer_to_program_memory);
-  uint32_t mcal_cpu_read_program_memory_dword(const uint8_t* pointer_to_program_memory);
-  uint64_t mcal_cpu_read_program_memory_qword(const uint8_t* pointer_to_program_memory);
-
-  #if defined(__cplusplus)
-  }
-  #endif
+  } } // namespace mcal::cpu
 
 #endif // MCAL_CPU_2009_02_14_H_

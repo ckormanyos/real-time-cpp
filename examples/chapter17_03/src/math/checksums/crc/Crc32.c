@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc32.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc32_Initialize(Crc32_Context_Type* Crc_Context)
 {
@@ -26,7 +25,7 @@ void Crc32_ProcessBytes(const uint8_t*      DataIn,
   {
     /* CRC-32/AUTOSAR Table based on 32-bit DWORDs. */
 
-    static const uint32_t Crc32_Table[256U] MCAL_PROGMEM =
+    static const uint32_t Crc32_Table[256U] MY_PROGMEM =
     {
       UINT32_C(0x00000000), UINT32_C(0x30850FF5), UINT32_C(0x610A1FEA), UINT32_C(0x518F101F), UINT32_C(0xC2143FD4), UINT32_C(0xF2913021), UINT32_C(0xA31E203E), UINT32_C(0x939B2FCB), 
       UINT32_C(0x159615F7), UINT32_C(0x25131A02), UINT32_C(0x749C0A1D), UINT32_C(0x441905E8), UINT32_C(0xD7822A23), UINT32_C(0xE70725D6), UINT32_C(0xB68835C9), UINT32_C(0x860D3A3C), 
@@ -69,7 +68,7 @@ void Crc32_ProcessBytes(const uint8_t*      DataIn,
                       ^ ((uint_fast8_t) DataIn[LoopCnt]));
 
     const uint32_t TableValue =
-      mcal_cpu_read_program_memory_dword((const uint8_t*) &Crc32_Table[(uint8_t) DataIndex]);
+      mcal_memory_progmem_read_dword((mcal_progmem_uintptr_t) &Crc32_Table[(uint8_t) DataIndex]);
 
     Crc_Context->Crc32_Value = (uint32_t) (Crc_Context->Crc32_Value >> 8U) ^ TableValue;
   }

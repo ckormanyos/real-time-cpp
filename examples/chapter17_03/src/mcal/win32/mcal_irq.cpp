@@ -5,11 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_REG_ACCESS_2010_04_10_H_
-  #define MCAL_REG_ACCESS_2010_04_10_H_
+#include <mcal_irq.h>
 
-  #include <mcal_reg.h>
-  #include <mcal/mcal_reg_access_template.h>
-  #include <mcal/mcal_reg_dynamic_access_template.h>
-
-#endif // MCAL_REG_ACCESS_2010_04_10_H_
+void mcal::irq::init(const config_type*)
+{
+  mcal::irq::enable_all();
+}
