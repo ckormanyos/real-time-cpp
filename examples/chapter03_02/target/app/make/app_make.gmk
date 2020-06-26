@@ -122,7 +122,6 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)/mcal/$(TGT)
 
 GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -C                                \
               -g                                \
               -Wall                             \
               -Wextra                           \

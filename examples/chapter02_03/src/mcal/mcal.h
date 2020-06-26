@@ -12,16 +12,16 @@
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
   #include <mcal_led.h>
-  #include <mcal_reg_access.h>
+  #include <mcal_reg.h>
 
-   static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
+  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
                 && (std::numeric_limits<mcal::gpt::value_type>::is_integer == true)
                 && (std::numeric_limits<mcal::gpt::value_type>::is_signed  == false),
-                "the gpt value type must be an unsigned integer type having at least 32 bits");
+                "The gpt value type must be an unsigned integer type having at least 32 bits");
 
- namespace mcal
- {
-   void init();
- }
+  namespace mcal
+  {
+    void init();
+  }
 
 #endif // MCAL_2011_10_20_H_

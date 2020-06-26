@@ -12,8 +12,8 @@
 00000066 T __ctors_end
 00000066 t __tablejump__
 0000006e 00000012 T main
-00000080 0000001c t _GLOBAL__sub_I_main
-0000009c A __data_load_start
+00000080 00000012 t _GLOBAL__sub_I_main
+00000092 A __data_load_start
 00800100 B __bss_start
 00800100 D __data_end
 00800100 D __data_start

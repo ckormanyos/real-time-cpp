@@ -28,12 +28,12 @@ Address of section .data set to 0x800100
                 0x0000000000000064                . = ALIGN (0x2)
  *(.startup)
 
-.text           0x0000000000000064       0x38
+.text           0x0000000000000064       0x2e
                 0x0000000000000064                __ctors_start = .
  *(.ctors)
  .ctors         0x0000000000000064        0x2 bin/led.o
                 0x0000000000000066                . = ALIGN (0x2)
- *(SORT(.ctors))
+ *(SORT_BY_NAME(.ctors))
                 0x0000000000000066                __ctors_end = .
  *(.progmem*)
                 0x0000000000000066                . = ALIGN (0x2)
@@ -45,13 +45,13 @@ Address of section .data set to 0x800100
  .text          0x0000000000000066        0x8 bin/crt0.o
                 0x000000000000006e                . = ALIGN (0x2)
  *(.text*)
- .text.startup  0x000000000000006e       0x2e bin/led.o
+ .text.startup  0x000000000000006e       0x24 bin/led.o
                 0x000000000000006e                main
-                0x000000000000009c                . = ALIGN (0x2)
+                0x0000000000000092                . = ALIGN (0x2)
                 0x0000000000800100                . = 0x800100
                 0x0000000000800100                . = ALIGN (0x2)
 
-.data           0x0000000000800100        0x0 load address 0x000000000000009c
+.data           0x0000000000800100        0x0 load address 0x0000000000000092
                 0x0000000000800100                __data_start = .
  *(.data)
  .data          0x0000000000800100        0x0 bin/led.o
@@ -69,7 +69,7 @@ Address of section .data set to 0x800100
  *(.rodata*)
                 0x0000000000800100                __data_end = .
 
-.bss            0x0000000000800100        0x2 load address 0x000000000000009c
+.bss            0x0000000000800100        0x2 load address 0x0000000000000092
                 0x0000000000800100                __bss_start = .
  *(.bss)
  .bss           0x0000000000800100        0x2 bin/led.o
@@ -80,7 +80,7 @@ Address of section .data set to 0x800100
                 0x0000000000800102                . = ALIGN (0x2)
  *(.bss*)
                 0x0000000000800102                __bss_end = .
-                0x000000000000009c                __data_load_start = LOADADDR (.data)
+                0x0000000000000092                __data_load_start = LOADADDR (.data)
 LOAD bin/led.o
 LOAD bin/crt0.o
 OUTPUT(bin/led.elf elf32-avr)

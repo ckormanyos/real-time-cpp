@@ -123,6 +123,9 @@
     <ClCompile Include="src\util\STD_LIBC\memory.cpp">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
@@ -140,9 +143,6 @@
     <ClInclude Include="src\mcal\mcal.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -153,9 +153,6 @@
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_irq.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_reg.h">
@@ -272,7 +269,19 @@
     <ClInclude Include="src\util\utility\util_type.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
+    <ClInclude Include="src\mcal\win32\mcal_benchmark.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
   </ItemGroup>

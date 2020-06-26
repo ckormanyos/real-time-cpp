@@ -97,7 +97,7 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/
 echo "Compile  : os.cpp to bin/os.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/os/os.cpp -o bin/os.o
 
-echo "Compile  : os.cpp to bin/os_task_control_block.o".
+echo "Compile  : os.cpp to bin/os_task_control_block.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/os/os_task_control_block.cpp -o bin/os_task_control_block.o
 
 echo "Compile  : sys_idle.cpp to bin/sys_idle.o"

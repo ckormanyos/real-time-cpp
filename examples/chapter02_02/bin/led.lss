@@ -3,17 +3,17 @@ bin/led.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  0000009c  00000110  2**0
+  0 .data         00000000  00800100  00000092  00000106  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   1 .isr_vectors  00000004  00000000  00000000  00000074  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .startup      00000060  00000004  00000004  00000078  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  3 .text         00000038  00000064  00000064  000000d8  2**1
+  3 .text         0000002e  00000064  00000064  000000d8  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  4 .bss          00000002  00800100  0000009c  00000110  2**0
+  4 .bss          00000002  00800100  00000092  00000106  2**0
                   ALLOC
-  5 .comment      00000011  00000000  00000000  00000110  2**0
+  5 .comment      00000011  00000000  00000000  00000106  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .isr_vectors:
@@ -40,7 +40,7 @@ Disassembly of section .startup:
   22:	11 e0       	ldi	r17, 0x01	; 1
   24:	a0 e0       	ldi	r26, 0x00	; 0
   26:	b1 e0       	ldi	r27, 0x01	; 1
-  28:	ec e9       	ldi	r30, 0x9C	; 156
+  28:	e2 e9       	ldi	r30, 0x92	; 146
   2a:	f0 e0       	ldi	r31, 0x00	; 0
   2c:	02 c0       	rjmp	.+4      	; 0x32 <__do_copy_data+0x10>
   2e:	05 90       	lpm	r0, Z+
@@ -86,9 +86,9 @@ Disassembly of section .text:
   6c:	09 94       	ijmp
 
 0000006e <main>:
-  6e:	e0 91 00 01 	lds	r30, 0x0100	; 0x800100 <__data_end>
-  72:	f0 e0       	ldi	r31, 0x00	; 0
-  74:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <__data_end+0x1>
+  6e:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <__data_end+0x1>
+  72:	e0 91 00 01 	lds	r30, 0x0100	; 0x800100 <__data_end>
+  76:	f0 e0       	ldi	r31, 0x00	; 0
   78:	80 81       	ld	r24, Z
   7a:	89 27       	eor	r24, r25
   7c:	80 83       	st	Z, r24
@@ -102,10 +102,5 @@ Disassembly of section .text:
   88:	80 e2       	ldi	r24, 0x20	; 32
   8a:	81 83       	std	Z+1, r24	; 0x01
   8c:	2d 98       	cbi	0x05, 5	; 5
-  8e:	e0 81       	ld	r30, Z
-  90:	e1 50       	subi	r30, 0x01	; 1
-  92:	f0 e0       	ldi	r31, 0x00	; 0
-  94:	80 81       	ld	r24, Z
-  96:	80 62       	ori	r24, 0x20	; 32
-  98:	80 83       	st	Z, r24
-  9a:	08 95       	ret
+  8e:	25 9a       	sbi	0x04, 5	; 4
+  90:	08 95       	ret

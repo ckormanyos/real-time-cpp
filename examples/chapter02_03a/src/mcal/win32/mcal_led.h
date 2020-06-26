@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_LED_2010_09_14_H_
-  #define _MCAL_LED_2010_09_14_H_
+#ifndef MCAL_LED_2010_09_14_H_
+  #define MCAL_LED_2010_09_14_H_
 
   #include <util/utility/util_noncopyable.h>
 
@@ -27,8 +27,8 @@
 
       typedef led led_type;
 
-      extern const led_type led0;
+      extern const led_type led_b5;
     }
   }
 
-#endif // _MCAL_LED_2010_09_14_H_
+#endif // MCAL_LED_2010_09_14_H_
