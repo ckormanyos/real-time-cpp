@@ -144,6 +144,9 @@
     <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">
@@ -221,9 +224,6 @@
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_reg_access.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_wdg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -237,9 +237,6 @@
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_led.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_wdg.h">
@@ -328,6 +325,15 @@
     </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
       <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_reg.h">
+      <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

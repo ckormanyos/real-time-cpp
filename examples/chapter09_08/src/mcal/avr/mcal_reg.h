@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -57,7 +57,9 @@
       constexpr std::uint8_t tccr1b = 0x81U;
       constexpr std::uint8_t tcnt1l = 0x84U;
       constexpr std::uint8_t tcnt1h = 0x85U;
-      constexpr std::uint8_t ocr1a  = 0x88U;
+      constexpr std::uint8_t icr1   = 0x86U;  // 16-bit register
+      constexpr std::uint8_t ocr1a  = 0x88U;  // 16-bit register
+      constexpr std::uint8_t ocr1b  = 0x8AU;  // 16-bit register
       constexpr std::uint8_t timsk1 = 0x6FU;
 
       constexpr std::uint8_t tifr2  = 0x17U + sfr_offset;
@@ -74,6 +76,17 @@
 
       // Watchdog registers
       constexpr std::uint8_t wdtcsr = 0x60U;
+
+      // Eeprom registers
+      constexpr std::uint8_t eecr   = 0x1FU + sfr_offset;
+      constexpr std::uint8_t eedr   = 0x20U + sfr_offset;
+      constexpr std::uint8_t eear   = 0x21U + sfr_offset;
+      constexpr std::uint8_t eearl  = 0x21U + sfr_offset;
+      constexpr std::uint8_t eearh  = 0x22U + sfr_offset;
     }
   }
+
+  #include <mcal/mcal_reg_access_dynamic.h>
+  #include <mcal/mcal_reg_access_static.h>
+
 #endif // MCAL_REG_2010_04_10_H_

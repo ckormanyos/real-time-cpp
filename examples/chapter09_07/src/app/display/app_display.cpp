@@ -33,7 +33,7 @@ namespace
 
 void app::display::task_init()
 {
-  mcal::led::led0().toggle();
+  mcal::led::led0.toggle();
 
   mcal::display::display0().write_dp(app_display_dp_on);
 
@@ -47,7 +47,7 @@ void app::display::task_func()
     app_display_timer.start_interval(timer_type::seconds(1U));
 
     // Toggle the user LED at 1/2Hz.
-    mcal::led::led0().toggle();
+    mcal::led::led0.toggle();
 
     // The index runs from 0...F and is used to express
     // the character that is to be written on the display.

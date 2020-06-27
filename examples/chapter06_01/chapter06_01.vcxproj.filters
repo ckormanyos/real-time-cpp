@@ -141,6 +141,9 @@
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">

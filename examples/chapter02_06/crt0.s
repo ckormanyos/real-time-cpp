@@ -1,5 +1,5 @@
 ;
-;  Copyright Christopher Kormanyos 2007 - 2014.
+;  Copyright Christopher Kormanyos 2007 - 2020.
 ;  Distributed under the Boost Software License,
 ;  Version 1.0. (See accompanying file LICENSE_1_0.txt
 ;  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,17 +19,16 @@ isr_vectors:
 .extern main
 
 .section .startup,"ax",@progbits
-.weak __my_startup
 .func __my_startup
 
 __my_startup:
 
   eor  r1, r1
-  out  0x3f, r1         ; SREG
+  out  0x3f, r1         ; sreg
   ldi  r28,lo8(__initial_stack_pointer)
   ldi  r29,hi8(__initial_stack_pointer)
-  out  0x3E, r29        ; SPH
-  out  0x3D, r28        ; SPL
+  out  0x3e, r29        ; sph
+  out  0x3d, r28        ; spl
 
   ; Initialize the rom-to-ram data
   call __do_copy_data
@@ -60,7 +59,6 @@ __my_startup:
 
 .global __do_copy_data
 
-.weak  __do_copy_data
 .func  __do_copy_data
 
 __do_copy_data:
@@ -89,7 +87,6 @@ __do_copy_data:
 
 .global __do_clear_bss
 
-.weak  __do_clear_bss
 .func  __do_clear_bss
 
 __do_clear_bss:
@@ -117,7 +114,6 @@ __do_clear_bss:
 .extern __tablejump__
 
 .section .startup,"ax",@progbits
-.weak  __do_global_ctors
 .func  __do_global_ctors
 
 __do_global_ctors:
@@ -145,7 +141,6 @@ __do_global_ctors:
 
 .section .text
 
-.weak  __tablejump__
 .func  __tablejump__
 
 __tablejump__:

@@ -193,6 +193,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
@@ -218,6 +219,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -233,8 +238,16 @@
     <ClInclude Include="src\mcal\win32\mcal_gpt.h" />
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
     <ClInclude Include="src\mcal\win32\mcal_led.h" />
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h" />
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h" />
     <ClInclude Include="src\util\STL\impl\allocator_impl.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

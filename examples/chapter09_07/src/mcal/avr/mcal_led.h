@@ -9,10 +9,7 @@
   #define MCAL_LED_2010_09_14_H_
 
   #include <cstdint>
-
   #include <mcal_port.h>
-  #include <mcal_reg.h>
-
   #include <util/utility/util_noncopyable.h>
 
   namespace mcal
@@ -53,7 +50,7 @@
                   mcal::reg::portb,
                   UINT8_C(5)> led_type;
 
-      const led_type& led0();
+      extern const led_type led0;
     }
   }
 

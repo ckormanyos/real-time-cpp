@@ -253,6 +253,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_driver_pc.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_monochrome.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_monochrome_pc.cpp" />
@@ -260,6 +261,7 @@
     <ClCompile Include="src\mcal\win32\mcal_led_rgb_pc.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_sys_start_interface.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_wdg.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp" />
     <ClCompile Include="src\os\os.cpp" />
     <ClCompile Include="src\os\os_task_control_block.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
@@ -313,6 +315,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_osc.h">
@@ -370,10 +378,12 @@
     <ClInclude Include="src\mcal\win32\mcal_led_monochrome_pc.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_rgb_pc.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_sys_start_interface.h" />
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h" />
     <ClInclude Include="src\mcal\win32\mcal_port.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg.h" />
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
+    <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />

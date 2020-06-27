@@ -150,6 +150,12 @@
     <ClCompile Include="src\mcal\avr\mcal_led_rgb_board.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">
@@ -340,6 +346,15 @@
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_pwm.h">
       <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
+      <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@
   #include <cstddef>
   #include <cstdint>
   #include <limits>
+
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.

@@ -226,9 +226,6 @@
     <Compile Include="src\mcal\avr\mcal_reg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_reg_access.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_wdg.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -244,10 +241,10 @@
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_reg_access_template.h">
+    <Compile Include="src\mcal\mcal_reg_access_dynamic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_reg_dynamic_access_template.h">
+    <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">

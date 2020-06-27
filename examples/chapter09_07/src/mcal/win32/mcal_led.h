@@ -27,7 +27,7 @@
 
       typedef led led_type;
 
-      const led_type& led0();
+      extern const led_type led0;
     }
   }
 

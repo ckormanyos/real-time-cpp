@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014.
+@rem Copyright Christopher Kormanyos 2014 - 2020.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,16 +10,22 @@
 @rem
 @rem Usage:
 @rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
-@rem For example,
-@rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
-@rem
+
+@rem Usage example A,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03a"
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03a\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
+
+@rem Usage example B,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_03a"
+@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
+
 
 @set TOOL_PATH=%1
 @set TOOL_PREFIX=%2
 
-@set CFLAGS=-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions
+@set CFLAGS=-C -Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
 @set CPPFLAGS=-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-@set CINCLUDES=-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++17_Compatibility
+@set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
 
 @echo.
 @echo.Building with        : build.bat
@@ -27,7 +33,7 @@
 @echo.Using tool prefix    : %TOOL_PREFIX%
 @echo.Create bin directory : bin\
 @if not exist bin mkdir bin
-@echo.Clean  bin directory : bin\*.o bin\chapter02_03*.*
+@echo.Clean  bin directory : bin\*.o bin\chapter02_03a*.*
 @if exist bin\*.o del /Q bin\*.o
 @if exist bin\chapter02_03a*.* del /Q bin\chapter02_03a*.*
 @echo.
@@ -90,7 +96,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
 @echo.Link     : objects to bin/chapter02_03a.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03a.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter02_03a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter02_03a.elf
 
 @echo.
 @echo.Extract  : executable hex file : from bin/chapter02_03a.elf

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014.
+# Copyright Christopher Kormanyos 2014 - 2020.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,7 +21,6 @@
 # For example,
 # ./build.sh /usr/bin avr
 #
-
 # Usage example A (from *nix shell)
 # cd /usr/local/real-time-cpp/examples/chapter02_02
 # ./build.sh /usr/local/real-time-cpp/examples/chapter02_02/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr

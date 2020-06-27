@@ -21,7 +21,7 @@ int main()
   // Initialize the mcal.
   mcal::init();
 
-  // Toggle led0 forever.
+  // Toggle led_b5 forever.
   for(;;)
   {
     led_b5.toggle();

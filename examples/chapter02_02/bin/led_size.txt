@@ -3,9 +3,9 @@ section        size      addr
 .data             0   8388864
 .isr_vectors      4         0
 .startup         96         4
-.text            56       100
+.text            46       100
 .bss              2   8388864
 .comment         17         0
-Total           175
+Total           165
 
 

@@ -12,7 +12,7 @@ namespace mcal
 {
   namespace led
   {
-    const led_type led0;
+    const led_type led_b5;
   }
 }
 

@@ -12,7 +12,7 @@
   #include <mcal_gpt.h>
   #include <mcal_irq.h>
   #include <mcal_led.h>
-  #include <mcal_reg_access.h>
+  #include <mcal_reg.h>
   #include <mcal_wdg.h>
 
   static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 32)
