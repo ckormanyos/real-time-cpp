@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_wdg.h>
+#include <mcal_wdg_watchdog.h>
 
 void mcal::wdg::init(const config_type*)
 {
@@ -13,4 +13,5 @@ void mcal::wdg::init(const config_type*)
 
 void mcal::wdg::secure::trigger()
 {
+  mcal::wdg::watchdog::the_watchdog.reset_watchdog_timer();
 }
