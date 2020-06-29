@@ -3,7 +3,7 @@
 
 Example chapter04_04 uses an intuitive LED class hierarchy
 to exemplify object oriented design and polymorphism.
-In this example, five LEDs in total havind three individual kinds
+In this example, five LEDs in total having three individual kinds
 of port control are toggled in near unison with a frequency
 of approximately 1/2Hz.
 
@@ -23,10 +23,6 @@ manually. This SPI(TM) communication class itself
 is derived from a communication base class that provides
 a uniform interface for rudimentary byte read and write
 functions.
-
-Hardware adressing is used on the port expander chip
-in this particular configuration is hard-wired to address 7
-via +5V on the three pins `A0` ... `A2`.
 
 # Application Description
 
@@ -81,14 +77,11 @@ in the following way:
 | LED3       | port expander pin `GPA1`    | port toggle high / low, SPI(TM) software drive, 750 Ohm |
 | LED4       | port expander pin `GPA2`    | port toggle high / low, SPI(TM) software drive, 750 Ohm |
 
-
-The hardware setup is pictured in the image below.
-
-![](./images/board4.jpg)
-
 In this example, we use ports from both the microcontroller as well
-as an external port expander chip. The port expander address
-is hard-wired to 7 via +5V on each of the three pins `A0` ... `A2`.
+as an external port expander chip. Hardware adressing is used
+on the port expander chip. The port expander address is
+hard-wired to the value 7 via connecting each of the three
+pins `A0` ... `A2` to +5V.
 
 The connections of the port expander chip are tabulated below.
 
@@ -107,3 +100,7 @@ The connections of the port expander chip are tabulated below.
 |    21         | GPA0             | 750 Ohm to LED2         |
 |    22         | GPA1             | 750 Ohm to LED3         |
 |    23         | GPA2             | 750 Ohm to LED4         |
+
+The hardware setup is pictured in the image below.
+
+![](./images/board4.jpg)
