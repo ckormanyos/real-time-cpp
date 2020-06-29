@@ -77,11 +77,6 @@ in the following way:
 | LED3       | port expander pin `GPA1`    | port toggle high / low, SPI(TM) software drive, 750 Ohm |
 | LED4       | port expander pin `GPA2`    | port toggle high / low, SPI(TM) software drive, 750 Ohm |
 
-
-The hardware setup is pictured in the image below.
-
-![](./images/board4.jpg)
-
 In this example, we use ports from both the microcontroller as well
 as an external port expander chip. Hardware adressing is used
 on the port expander chip. The port expander address is
@@ -105,3 +100,7 @@ The connections of the port expander chip are tabulated below.
 |    21         | GPA0             | 750 Ohm to LED2         |
 |    22         | GPA1             | 750 Ohm to LED3         |
 |    23         | GPA2             | 750 Ohm to LED4         |
+
+The hardware setup is pictured in the image below.
+
+![](./images/board4.jpg)
