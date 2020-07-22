@@ -28,8 +28,7 @@
   private:
     using timer_type = util::timer<std::uint32_t>;
 
-    template<const typename timer_type::tick_type blocking_delay_value>
-    static void blocking_delay()
+    static void blocking_delay(const typename timer_type::tick_type blocking_delay_value)
     {
       timer_type::blocking_delay(blocking_delay_value);
     }
@@ -51,13 +50,13 @@
 
       port_pin_e___type::set_pin_low();
 
-      blocking_delay<timer_type::milliseconds(15U)>();  // Set a timer which is at least 15ms from system start.
+      blocking_delay(timer_type::milliseconds(15U));    // Set a timer which is at least 15ms from system start.
       command(UINT8_C(0x30));                           // Command 0x30 = Wake up
-      blocking_delay<timer_type::milliseconds(7U)>();   // Must wait 5ms, busy flag not available.
+      blocking_delay(timer_type::milliseconds(7U));     // Must wait 5ms, busy flag not available.
       command(UINT8_C(0x30));                           // Command 0x30 = Wake up 2
-      blocking_delay<timer_type::microseconds(200U)>(); // Must wait 160us, busy flag not available
+      blocking_delay(timer_type::microseconds(200U));   // Must wait 160us, busy flag not available
       command(UINT8_C(0x30));                           // Command 0x30 = Wake up 3
-      blocking_delay<timer_type::microseconds(200U)>(); // Must wait 160us, busy flag not available
+      blocking_delay(timer_type::microseconds(200U));   // Must wait 160us, busy flag not available
       command(UINT8_C(0x38));                           // Function set: 8-bit/2-line
       command(UINT8_C(0x10));                           // Set cursor
       command(UINT8_C(0x0C));                           // Display ON; Cursor ON
@@ -71,21 +70,29 @@
       return true;
     }
 
-    virtual bool write(const char* pstr,
-                       const std::uint_fast8_t length,
-                       const std::uint_fast8_t line_index)
+    virtual bool write_n(const char* pstr,
+                         const std::uint_fast8_t length,
+                         const std::uint_fast8_t line_index,
+                         const bool do_clear_line)
     {
       bool write_is_ok;
 
       if((pstr != nullptr) && (length > 0U))
       {
         // Clear the line and reset the address to the line.
-        clear_line(line_index);
+        if(do_clear_line)
+        {
+          clear_line(line_index);
+        }
+        else
+        {
+          set_line_index(line_index);
+        }
 
         // Write the line at line_index.
         for(std::uint_fast8_t i = 0U; i < (std::min)(std::uint_fast8_t(16U), length); ++i)
         {
-          write_char(std::uint8_t(pstr[i]));
+          write(std::uint8_t(pstr[i]));
         }
 
         write_is_ok = true;
@@ -124,19 +131,19 @@
       // Clear the line at line_index.
       for(std::uint_fast8_t i = 0U; i < 20U; ++i)
       {
-        write_char(std::uint8_t(char(' ')));
+        write(std::uint8_t(char(' ')));
       }
 
       set_line_index(line_index);
     }
 
-    void write_char(const std::uint8_t i)
+    void write(const std::uint8_t i)
     {
       P1_set(i);                                        // P1 = i;   // Put data on the output Port
       port_pin_rs__type::set_pin_high();                // D_I =1;   // D/I=HIGH : send data
       port_pin_rw__type::set_pin_low();                 // R_W =0;   // R/W=LOW : Write
       port_pin_e___type::set_pin_high();                // E = 1;
-      blocking_delay<timer_type::microseconds(10U)>();  // Delay(1); //enable pulse width >= 300ns
+      blocking_delay(timer_type::microseconds(10U));    // Delay(1); //enable pulse width >= 300ns
       port_pin_e___type::set_pin_low();                 // E = 0;    //Clock enable: falling edge
     }
 
@@ -146,9 +153,9 @@
       port_pin_rs__type::set_pin_low();                 // D_I =0;   //D/I=LOW : send instruction
       port_pin_rw__type::set_pin_low();                 // R_W =0;   //R/W=LOW : Write
       port_pin_e___type::set_pin_high();                // E = 1;
-      blocking_delay<timer_type::microseconds(10U)>();  // Delay(1); //enable pulse width >= 300ns
+      blocking_delay(timer_type::microseconds(10U));    // Delay(1); //enable pulse width >= 300ns
       port_pin_e___type::set_pin_low();                 // E = 0;    //Clock enable: falling edge
-      blocking_delay<timer_type::microseconds(40U)>();
+      blocking_delay(timer_type::microseconds(40U));
     }
 
     void P1_set(const std::uint8_t c)
