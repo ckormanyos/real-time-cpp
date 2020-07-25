@@ -6,15 +6,7 @@
 //
 
 #include <mcal_pwm.h>
-#include <mcal_pwm_timer1.h>
 
-mcal::pwm::pwm_base& mcal::pwm::pwm0() noexcept
+void mcal::pwm::init(const mcal::pwm::config_type*)
 {
-  static mcal::pwm::pwm_timer1 pwm;
-
-  static const volatile bool init_is_ok = pwm.init();
-
-  static_cast<void>(init_is_ok);
-
-  return pwm;
 }

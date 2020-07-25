@@ -16,9 +16,7 @@
     {
       typedef void config_type;
 
-      inline void init(const config_type*) { }
-
-      mcal::pwm::pwm_base& pwm0() noexcept;
+      void init(const config_type*);
     }
   }
 

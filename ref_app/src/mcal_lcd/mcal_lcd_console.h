@@ -15,19 +15,19 @@
 
     virtual ~lcd_console() = default;
 
-    virtual bool write_n(const char* pstr,
-                         const std::uint_fast8_t length,
-                         const std::uint_fast8_t line_index,
-                         const bool do_clear_line)
+    virtual bool write(const char* pstr,
+                       const std::uint_fast8_t length,
+                       const std::uint_fast8_t line_index)
     {
       static_cast<void>(line_index);
-      static_cast<void>(do_clear_line);
 
       bool write_is_ok;
 
       if((pstr != nullptr) && (length > 0U))
       {
-        std::cout << std::string(pstr, pstr + length) << std::endl;
+        const std::string str(pstr, pstr + length);
+
+        std::cout << str << std::endl;
 
         write_is_ok = true;
       }

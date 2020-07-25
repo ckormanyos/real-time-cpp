@@ -15,6 +15,12 @@ void mcal_wdg_turn_off_wdt_if_wdton_is_set();
 
 void mcal::wdg::init(const config_type*)
 {
+  #if 0
+
+  mcal_wdg_turn_off_wdt_if_wdton_is_set();
+
+  #else
+
   // Read the MCU status register.
   volatile const std::uint8_t mcu_status_register =
     mcal::reg::reg_access_static<std::uint8_t,
@@ -41,12 +47,14 @@ void mcal::wdg::init(const config_type*)
                                std::uint8_t(0x18U)>::reg_set();
 
   // See Chapter 11.9.2, Table 11-2: Watchdog Timer Prescale Select.
-  // Select WDP3:WDP0 in WDTCSR to binary 0011, resulting in a watchdog
-  // period of approximately 125ms.
+  // Select WDP3:WDP0 in WDTCSR to binary 0b0011, resulting
+  // in a watchdog period of approximately 125ms.
   mcal::reg::reg_access_static<std::uint8_t,
                                std::uint8_t,
                                mcal::reg::wdtcsr,
-                               std::uint8_t(0x0BU)>::reg_set();
+                               std::uint8_t(0x08U) | std::uint8_t(0x03U)>::reg_set();
+
+  #endif
 }
 
 void mcal_wdg_turn_off_wdt_if_wdton_is_set()
