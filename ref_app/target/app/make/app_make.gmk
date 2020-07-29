@@ -45,17 +45,20 @@ PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
-# include files
+# the application
+# ------------------------------------------------------------------------------
+APP = $(PATH_BIN)/ref_app
+
+IMAGE_FILE = $(APP).bin
+
+
+# ------------------------------------------------------------------------------
+# include the target-specific make files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
 include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
 include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 
-
-# ------------------------------------------------------------------------------
-# the application
-# ------------------------------------------------------------------------------
-APP = $(PATH_BIN)/ref_app
 
 # ------------------------------------------------------------------------------
 # object files
@@ -251,6 +254,7 @@ $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 
 
 # ------------------------------------------------------------------------------

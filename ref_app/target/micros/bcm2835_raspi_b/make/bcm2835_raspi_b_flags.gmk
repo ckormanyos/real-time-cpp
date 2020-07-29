@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2014.
+#  Copyright Christopher Kormanyos 2014 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,21 +16,20 @@ GCC_PREFIX    = arm-none-eabi
 TGT_SUFFIX    = elf
 
 TGT_CFLAGS    = -O2                                            \
-                -finline-functions                             \
-                -finline-limit=16                              \
-                -ffast-math                                    \
-                -fomit-frame-pointer                           \
+                -marm                                          \
+                -mcpu=arm1176jzf-s                             \
                 -march=armv6zk                                 \
-                -mtune=arm1176jzf-s                            \
-                -mfpu=neon-fp-armv8                            \
-                -funsafe-math-optimizations                    \
-                -mfloat-abi=hard                               \
-                -mno-unaligned-access                          \
-                -mno-long-calls
+                -mfpu=vfpv2                                    \
+                -mfloat-abi=hard
+
 
 TGT_CPPFLAGS  = -std=c++17
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Firmware/Mcal/gpio   \
+                -I$(PATH_APP)/mcal/$(TGT)/Firmware/Mcal/mcu    \
+                -I$(PATH_APP)/mcal/$(TGT)/Firmware/Mcal/pwr    \
+                -I$(PATH_APP)/mcal/$(TGT)/Firmware/Std         \
+                -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
@@ -39,4 +38,4 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -T $(LINKER_DEFINITION_FILE)
 
-IMAGE_FILE    = kernel.img
+IMAGE_FILE   := $(PATH_BIN)/kernel.img

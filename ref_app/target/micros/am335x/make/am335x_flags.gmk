@@ -37,4 +37,4 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -T $(LINKER_DEFINITION_FILE)
 
-IMAGE_FILE    = MLO
+IMAGE_FILE   := $(PATH_BIN)/MLO

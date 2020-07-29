@@ -20,10 +20,10 @@ void mcal::port::init(const config_type*)
   // 0x40 = portg
   // ------------
   // So we have:
-  // (porta + 0) = (0x01 + 0x00) = 0x01.
+  // (porta + portc) = (0x01 + 0x04) = 0x05.
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_ahb1enr,
-                               UINT32_C(0x01) >::reg_or();
+                               UINT32_C(0x05) >::reg_or();
 }

@@ -18,6 +18,7 @@
   #endif
 
   typedef uintptr_t mcal_progmem_uintptr_t;
+  typedef ptrdiff_t mcal_progmem_ptrdiff_t;
 
   #define MCAL_PROGMEM_ADDRESSOF(x) ((mcal_progmem_uintptr_t) (&(x)))
 

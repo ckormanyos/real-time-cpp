@@ -13,6 +13,7 @@
   #define MY_PROGMEM
 
   typedef uintptr_t mcal_progmem_uintptr_t;
+  typedef ptrdiff_t mcal_progmem_ptrdiff_t;
 
   #if defined(__cplusplus)
   extern "C"

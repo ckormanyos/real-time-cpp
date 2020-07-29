@@ -12,24 +12,8 @@
 
 void mcal::irq::init(const config_type*)
 {
-  // Enable all global interrupts.
+  // Enable all global (maskable) interrupts.
   mcal::irq::enable_all();
-}
-
-void mcal::irq::enable_all()
-{
-  // Enable all maskable interrupts.
-  asm volatile("mrs r1, cpsr");
-  asm volatile("bic r1, r1, #0x80");
-  asm volatile("msr cpsr_c, r1");
-}
-
-void mcal::irq::disable_all()
-{
-  // Disable all maskable interrupts.
-  asm volatile("mrs r1, cpsr");
-  asm volatile("orr r1, r1, #0x80");
-  asm volatile("msr cpsr_c, r1");
 }
 
 void mcal::irq::secure::int_vect_undef_instr_handler_callback   () { for(;;) { mcal::cpu::nop(); } }
@@ -84,12 +68,6 @@ void mcal::irq::secure::int_vect_irq_handler_callback()
   // TBD: Implement potential support for GPU and additional interrupts.
 }
 
-void mcal::irq::secure::int_vect_fiq_handler_callback           () { }
-void mcal::irq::secure::int_vect_future_08_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_09_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_10_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_11_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_12_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_13_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_14_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_future_15_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
+void mcal::irq::secure::int_vect_fiq_handler_callback()
+{
+}

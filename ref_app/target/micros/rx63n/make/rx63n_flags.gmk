@@ -35,5 +35,3 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -T $(LINKER_DEFINITION_FILE)
-
-IMAGE_FILE    = dummy.foo

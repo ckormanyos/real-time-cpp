@@ -572,13 +572,13 @@
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b.ld" />
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_files.gmk" />
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_flags.gmk" />
-    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect_table.s" />
     <None Include="target\micros\avr\make\avr.ld" />
     <None Include="target\micros\avr\make\avr_files.gmk" />
     <None Include="target\micros\avr\make\avr_flags.gmk" />
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
+    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect_table.s" />
     <None Include="target\micros\lpc11c24\make\lpc11c24.ld" />
     <None Include="target\micros\lpc11c24\make\lpc11c24_files.gmk" />
     <None Include="target\micros\lpc11c24\make\lpc11c24_flags.gmk" />
@@ -625,8 +625,8 @@
     <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0.cpp" />
     <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\int_vect.cpp" />
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt1.cpp" />

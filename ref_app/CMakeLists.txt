@@ -128,7 +128,6 @@ set(app_src
     ${PATH_APP}/app/benchmark/app_benchmark_float
     ${PATH_APP}/app/benchmark/app_benchmark_pi_spigot
     ${PATH_APP}/app/benchmark/app_benchmark_wide_integer
-    ${PATH_APP}/app/com/app_com
     ${PATH_APP}/app/led/app_led
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu
     ${PATH_APP}/mcal/${TARGET}/mcal_eep
