@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -57,7 +57,9 @@
       constexpr std::uint8_t tccr1b = 0x81U;
       constexpr std::uint8_t tcnt1l = 0x84U;
       constexpr std::uint8_t tcnt1h = 0x85U;
-      constexpr std::uint8_t ocr1a  = 0x88U;
+      constexpr std::uint8_t icr1   = 0x86U;  // 16-bit register
+      constexpr std::uint8_t ocr1a  = 0x88U;  // 16-bit register
+      constexpr std::uint8_t ocr1b  = 0x8AU;  // 16-bit register
       constexpr std::uint8_t timsk1 = 0x6FU;
 
       constexpr std::uint8_t tifr2  = 0x17U + sfr_offset;

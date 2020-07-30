@@ -53,6 +53,7 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
+    ${PATH_APP}/util/STL/impl/rl78/rl78_float_limits
     ${PATH_APP}/util/STL/impl/cmath_impl_gamma
     ${PATH_APP}/util/STL/impl/cmath_impl_hyperbolic
     ${PATH_TGT}/startup/crt0

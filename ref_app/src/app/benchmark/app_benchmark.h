@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -30,14 +30,24 @@
 
   namespace app { namespace benchmark {
 
-  bool run_complex     ();
-  bool run_crc         ();
-  bool run_fast_math   ();
-  bool run_filter      ();
-  bool run_fixed_point ();
-  bool run_float       ();
+  #if  (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
+  bool run_complex();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
+  bool run_crc();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
+  bool run_fast_math();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
+  bool run_filter();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
+  bool run_fixed_point();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
+  bool run_float();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
   bool run_wide_integer();
-  bool run_pi_spigot   ();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT)
+  bool run_pi_spigot();
+  #endif
 
   } } // namespace app:::benchmark
 

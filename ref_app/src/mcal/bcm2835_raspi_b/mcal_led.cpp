@@ -1,40 +1,60 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014.
+//  Copyright Christopher Kormanyos 2014 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <cstddef>
-#include <cstdint>
 #include <mcal_led.h>
-#include <mcal_reg.h>
+#include <mcal_led/mcal_led_base.h>
 
-mcal::led::led_type::led_type() : led_is_on(false)
+#include <gpio.h>
+
+namespace mcal { namespace led {
+
+class led_gpio_status_led final : public mcal::led::led_base
 {
-  // Write 1 to the GPIO16 init nibble in the Function Select 1 GPIO
-  // peripheral register to enable GPIO16 as an output.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio_gpfsel1, UINT32_C(18)>::bit_set();
-
-  // Set the GPIO16 output high (turn the OK LED off).
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio_gpset0, UINT32_C(16)>::bit_set();
-}
-
-void mcal::led::led_type::toggle() const
-{
-  // Toggle the LED state.
-  // Note here that the logic of the led is inverted.
-
-  (led_is_on ? mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio_gpset0, UINT32_C(16)>::bit_set()
-             : mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio_gpclr0, UINT32_C(16)>::bit_set());
-
-  led_is_on = (!led_is_on);
-}
-
-namespace mcal
-{
-  namespace led
+public:
+  led_gpio_status_led() : is_on(false)
   {
-    const led_type led0;
+    switch_led_off();
   }
+
+  virtual ~led_gpio_status_led() = default;
+
+  void toggle()
+  {
+    // Toggle the LED state.
+    // Note here that the logic of the led is inverted.
+
+    (is_on ? switch_led_off() : switch_led_on());
+  }
+
+  virtual bool state_is_on() const { return is_on; }
+
+private:
+  bool is_on;
+
+  void switch_led_on()
+  {
+    ::gpio_ClrPin(GPIO_STATUS_LED);
+
+    is_on = true;
+  }
+
+  void switch_led_off()
+  {
+    ::gpio_SetPin(GPIO_STATUS_LED);
+
+    is_on = false;
+  }
+};
+
+} } // namespace mcal::led
+
+mcal::led::led_base& mcal::led::led0()
+{
+  static mcal::led::led_gpio_status_led l0;
+
+  return l0;
 }

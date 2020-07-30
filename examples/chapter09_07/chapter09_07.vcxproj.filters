@@ -61,6 +61,9 @@
     <Filter Include="src\util\device">
       <UniqueIdentifier>{313d7d26-2a6e-4873-8341-d60314b32b39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_memory">
+      <UniqueIdentifier>{e7709712-154f-4430-810a-96cd4ab2100e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -135,12 +138,15 @@
     <ClCompile Include="src\mcal\avr\mcal_display_seven_segment.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_cpu.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_bit_mask.h">
@@ -212,9 +218,6 @@
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_reg_access.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_wdg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -231,9 +234,6 @@
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_reg.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_wdg.h">
@@ -281,9 +281,6 @@
     <ClInclude Include="src\util\memory\util_static_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\device\util_device_display_base.h">
       <Filter>src\util\device</Filter>
     </ClInclude>
@@ -298,6 +295,39 @@
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_display_board.h">
       <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

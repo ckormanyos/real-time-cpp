@@ -1,23 +1,23 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if defined(__GNUC__) || (defined(_WIN32) && (_MSC_VER <= 1700))
+#include <cmath>
+#include <cstdfloat>
+#include <cstdint>
+#include "xcmath_impl.h"
 
-  #include <cmath>
-  #include <cstdfloat>
-  #include <cstdint>
-  #include "xcmath_impl.h"
+// Here, we compute the tgamma function for std::float32_t.
+// This provides an example of a portable special function
+// calculation using floating-point type definitions having
+// specified widths from the proposed <cstdfloat>.
 
-  // Here, we compute the tgamma function for std::float32_t.
-  // This provides an example of a portable special function
-  // calculation using floating-point type definitions having
-  // specified widths from the proposed <cstdfloat>.
-
-  namespace detail
+namespace std
+{
+  namespace xcmath_impl
   {
     std::float32_t tgamma_inverse_taylor_series   (std::float32_t);
     std::float32_t tgamma_polynomial_approximation(std::float32_t);
@@ -60,85 +60,81 @@
     }
   }
 
-  namespace std
+  std::float32_t tgamma(std::float32_t);
+}
+
+std::float32_t std::tgamma(std::float32_t x)
+{
+  // Use a positive argument for the Gamma calculation.
+  const bool b_neg = (x < 0);
+
+  x = ((!b_neg) ? x : -x);
+
+  // Check if the argument is pure zero or indistinguishably close to zero.
+  if(x < (std::numeric_limits<std::float32_t>::min)())
   {
-    std::float32_t tgamma(std::float32_t);
+    return std::numeric_limits<std::float32_t>::quiet_NaN();
   }
 
-  std::float32_t std::tgamma(std::float32_t x)
+  // Check if the argument is smaller than epsilon().
+  if(x < std::numeric_limits<std::float32_t>::epsilon())
   {
-    // Use a positive argument for the Gamma calculation.
-    const bool b_neg = (x < 0);
+    using std::xcmath_impl::euler;
 
-    x = ((!b_neg) ? x : -x);
+    return ((!b_neg) ? (FLOAT32_C(+1.0) / x) - euler<std::float32_t>()
+                      : (FLOAT32_C(-1.0) / x) - euler<std::float32_t>());
+  }
 
-    // Check if the argument is pure zero or indistinguishably close to zero.
-    if(x < (std::numeric_limits<std::float32_t>::min)())
+  // Check for overflow.
+  if(x > FLOAT32_C(35.04))
+  {
+    return std::numeric_limits<std::float32_t>::infinity();
+  }
+
+  // Check if the argument is very close to +1 or +2?
+  if(b_neg == false)
+  {
+    using std::xcmath_impl::near_integer;
+
+    const bool is_near_one = near_integer(x, static_cast<std::uint_least8_t>(1U));
+    const bool is_near_two = near_integer(x, static_cast<std::uint_least8_t>(2U));
+
+    if(is_near_one || is_near_two)
     {
-      return std::numeric_limits<std::float32_t>::quiet_NaN();
-    }
-
-    // Check if the argument is smaller than epsilon().
-    if(x < std::numeric_limits<std::float32_t>::epsilon())
-    {
-      using xcmath::euler;
-
-      return ((!b_neg) ? (FLOAT32_C(+1.0) / x) - euler<std::float32_t>()
-                       : (FLOAT32_C(-1.0) / x) - euler<std::float32_t>());
-    }
-
-    // Check for overflow.
-    if(x > FLOAT32_C(35.04))
-    {
-      return std::numeric_limits<std::float32_t>::infinity();
-    }
-
-    // Check if the argument is very close to +1 or +2?
-    if(b_neg == false)
-    {
-      using xcmath::near_integer;
-
-      const bool is_near_one = near_integer(x, static_cast<std::uint_least8_t>(1U));
-      const bool is_near_two = near_integer(x, static_cast<std::uint_least8_t>(2U));
-
-      if(is_near_one || is_near_two)
-      {
-        return FLOAT32_C(1.0);
-      }
-    }
-
-    // Evaluate the number of recursions needed in order to reach
-    // the range 0 < x < 1, and scale the argument accordingly.
-    const std::uint_least8_t n_recur = static_cast<std::uint_least8_t>(std::floor(x));
-
-    x -= n_recur;
-
-    // Obtain an approximation of tgamma(x), where x has
-    // perhaps been negated and/or scaled to a lower value.
-    std::float32_t gamma_value = ((x < FLOAT32_C(0.1)) ? detail::tgamma_inverse_taylor_series(x)
-                                                       : detail::tgamma_polynomial_approximation(x));
-
-    // Scale up the result via recursion if necessary.
-    for(std::uint_least8_t k = static_cast<std::uint_least8_t>(0U); k < n_recur; ++k)
-    {
-      gamma_value *= x;
-
-      ++x;
-    }
-
-    // Return (and possibly reflect) the result.
-    if(false == b_neg)
-    {
-      return gamma_value;
-    }
-    else
-    {
-      using xcmath::pi;
-
-      const std::float32_t sin_pi_x = std::sin(pi<std::float32_t>() * x);
-
-      return -pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
+      return FLOAT32_C(1.0);
     }
   }
 
-#endif
+  // Evaluate the number of recursions needed in order to reach
+  // the range 0 < x < 1, and scale the argument accordingly.
+  const std::uint_least8_t n_recur = static_cast<std::uint_least8_t>(std::floor(x));
+
+  x -= n_recur;
+
+  // Obtain an approximation of tgamma(x), where x has
+  // perhaps been negated and/or scaled to a lower value.
+  std::float32_t gamma_value = ((x < FLOAT32_C(0.1)) ? std::xcmath_impl::tgamma_inverse_taylor_series(x)
+                                                      : std::xcmath_impl::tgamma_polynomial_approximation(x));
+
+  // Scale up the result via recursion if necessary.
+  for(std::uint_least8_t k = static_cast<std::uint_least8_t>(0U); k < n_recur; ++k)
+  {
+    gamma_value *= x;
+
+    ++x;
+  }
+
+  // Return (and possibly reflect) the result.
+  if(false == b_neg)
+  {
+    return gamma_value;
+  }
+  else
+  {
+    using std::xcmath_impl::pi;
+
+    const std::float32_t sin_pi_x = std::sin(pi<std::float32_t>() * x);
+
+    return -pi<std::float32_t>() / ((x * gamma_value) * sin_pi_x);
+  }
+}

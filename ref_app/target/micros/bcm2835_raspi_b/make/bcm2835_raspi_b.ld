@@ -1,6 +1,5 @@
-
 /*
- Copyright Christopher Kormanyos 2014.
+ Copyright Christopher Kormanyos 2014 - 2020.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,76 +14,41 @@ OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
 _rom_begin = 0x00008000;
-_rom_end   = 0x00026000;
+_rom_end   = 0x00010000;
 
 /* The beginning of the RAM area */
-_ram_begin = 0x00026000;
+_ram_begin = 0x00010000;
 
-/* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of 4K */
-_stack_begin = 0x00027000;
-_stack_end   = 0x00028000;
+/* Set up the stacks with sizes of 4K */
 
-/* The end of the stack */
-__initial_stack_pointer = 0x00028000;
+__SYS_STACK_SIZE = 4K;
+__SVC_STACK_SIZE = 4K;
+__ABT_STACK_SIZE = 4K;
+__UND_STACK_SIZE = 4K;
+__IRQ_STACK_SIZE = 4K;
+__FIQ_STACK_SIZE = 4K;
+
 
 MEMORY
 {
-  VECLO(rwx) : ORIGIN = 0x00000000, LENGTH = 0x00000040
-  VECHI(rwx) : ORIGIN = 0x00008000, LENGTH = 0x00000040
-  ISR  (rwx) : ORIGIN = 0x00008040, LENGTH = 0x000003C0
-  ROM  (rwx) : ORIGIN = 0x00008400, LENGTH = 0x0001DC00 - 4
-  RAM  (rwx) : ORIGIN = 0x00026000, LENGTH = 0x00001000
+  ROM   (rwx) : ORIGIN = 0x00008000, LENGTH = 0x00008000
+  RAM   (rwx) : ORIGIN = 0x00010000, LENGTH = 0x00008000
+  STACKS(rwx) : ORIGIN = 0x00018000, LENGTH = 0x00006000
 }
 
 SECTIONS
 {
-  . = 0x0000;
+  . = 0x00008000;
   . = ALIGN(4);
 
-  /* Interrupt vectors low: The low interrupt vector table at address 0x0000. */
-  .text.veclo :
+  /* Interrupt vector table */
+  .intvect :
   {
-    *(.text.veclo)
+    PROVIDE(__INTVECT_BASE_ADDRESS = .) ;
+    *(.intvect)
     . = ALIGN(4);
-    KEEP(*(.text.veclo))
-  } > VECLO
-
-  . = _rom_begin;
-  . = ALIGN(4);
-
-  /* Interrupt vectors high: The high interrupt vector table at address 0x8000. */
-  .text.vechi :
-  {
-    *(.text.vechi)
-    . = ALIGN(4);
-    KEEP(*(.text.vechi))
-  } > VECHI
-
-  /* Interrupt service routines: The interrupt service routines are at fixed addresses. */
-  .text.isr1  : { *(.text.isr1)  . = ALIGN(0x40); KEEP(*(.text.isr1))  } > ISR
-  .text.isr2  : { *(.text.isr2)  . = ALIGN(0x40); KEEP(*(.text.isr2))  } > ISR
-  .text.isr3  : { *(.text.isr3)  . = ALIGN(0x40); KEEP(*(.text.isr3))  } > ISR
-  .text.isr4  : { *(.text.isr4)  . = ALIGN(0x40); KEEP(*(.text.isr4))  } > ISR
-  .text.isr5  : { *(.text.isr5)  . = ALIGN(0x40); KEEP(*(.text.isr5))  } > ISR
-  .text.isr6  : { *(.text.isr6)  . = ALIGN(0x40); KEEP(*(.text.isr6))  } > ISR
-  .text.isr7  : { *(.text.isr7)  . = ALIGN(0x40); KEEP(*(.text.isr7))  } > ISR
-  .text.isr8  : { *(.text.isr8)  . = ALIGN(0x40); KEEP(*(.text.isr8))  } > ISR
-  .text.isr9  : { *(.text.isr9)  . = ALIGN(0x40); KEEP(*(.text.isr9))  } > ISR
-  .text.isr10 : { *(.text.isr10) . = ALIGN(0x40); KEEP(*(.text.isr10)) } > ISR
-  .text.isr11 : { *(.text.isr11) . = ALIGN(0x40); KEEP(*(.text.isr11)) } > ISR
-  .text.isr12 : { *(.text.isr12) . = ALIGN(0x40); KEEP(*(.text.isr12)) } > ISR
-  .text.isr13 : { *(.text.isr13) . = ALIGN(0x40); KEEP(*(.text.isr13)) } > ISR
-  .text.isr14 : { *(.text.isr14) . = ALIGN(0x40); KEEP(*(.text.isr14)) } > ISR
-  .text.isr15 : { *(.text.isr15) . = ALIGN(0x40); KEEP(*(.text.isr15)) } > ISR
-
-  /* Startup: This is the startup code. */
-  .text.startup :
-  {
-    *(.text.startup)
-    . = ALIGN(0x10);
-    KEEP(*(.text.startup))
-  } > ROM = 0xAAAA
+    KEEP(*(.intvect))
+  } > ROM
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -94,6 +58,8 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(SORT(.init_array)))
     _ctors_end = .;
+    *(.progmem*)
+    . = ALIGN(2);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -109,7 +75,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  . = _ram_begin;
+  . = 0x00010000;
   . = ALIGN(4);
 
   /* The ROM-to-RAM initialized data section */
@@ -137,6 +103,51 @@ SECTIONS
     KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
+
+  . = 0x00018000;
+  . = ALIGN(4);
+
+  /* user-system mode stack definition */
+  .stack_sys :
+  {
+    . = ALIGN(MAX(__SYS_STACK_SIZE , .), 8);
+    PROVIDE(__SYS_STACK_TOP = .) ;
+  } > STACKS
+
+  /* Supervisor mode stack definition */
+  .stack_svc :
+  {
+    . = ALIGN(MAX(__SVC_STACK_SIZE , .), 8);
+    PROVIDE(__SVC_STACK_TOP = .) ;
+  } > STACKS
+
+  /* Abort mode stack definition */
+  .stack_abt :
+  {
+    . = ALIGN(MAX(__ABT_STACK_SIZE , .), 8);
+    PROVIDE(__ABT_STACK_TOP = .) ;
+  } > STACKS
+
+  /* Undefined mode stack definition */
+  .stack_und :
+  {
+    . = ALIGN(MAX(__UND_STACK_SIZE , .), 8);
+    PROVIDE(__UND_STACK_TOP = .) ;
+  } > STACKS
+
+  /* Interrupt mode stack definition */
+  .stack_irq :
+  {
+    . = ALIGN(MAX(__IRQ_STACK_SIZE , .), 8);
+    PROVIDE(__IRQ_STACK_TOP = .) ;
+  } > STACKS
+
+  /* Fast interrupt mode stack definition */
+  .stack_fiq :
+  {
+    . = ALIGN(MAX(__FIQ_STACK_SIZE , .), 8);
+    PROVIDE(__FIQ_STACK_TOP = .) ;
+  } > STACKS
 
   _rom_data_begin = LOADADDR(.data);
 }

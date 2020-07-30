@@ -1,6 +1,5 @@
-
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +26,7 @@ namespace
 
 void app::led::task_init()
 {
-  mcal::led::led0.toggle();
+  mcal::led::led0().toggle();
 }
 
 void app::led::task_func()
@@ -36,6 +35,6 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(timer_type::seconds(1U));
 
-    mcal::led::led0.toggle();
+    mcal::led::led0().toggle();
   }
 }

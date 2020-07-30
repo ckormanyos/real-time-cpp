@@ -74,12 +74,12 @@
                              os::timer_type::microseconds(UINT32_C(     0))),                    \
       os::task_control_block(app::benchmark::task_init,                                          \
                              app::benchmark::task_func,                                          \
-                             os::timer_type::microseconds(UINT32_C(  5000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   229))),                    \
+                             os::timer_type::microseconds(UINT32_C(100000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   379))),                    \
       os::task_control_block(sys::mon::task_init,                                                \
                              sys::mon::task_func,                                                \
                              os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   379))),                    \
+                             os::timer_type::microseconds(UINT32_C(   541))),                    \
     }                                                                                            \
   }
 

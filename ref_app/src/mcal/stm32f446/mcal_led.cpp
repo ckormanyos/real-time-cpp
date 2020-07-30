@@ -1,16 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <mcal_led.h>
+#include <mcal_led/mcal_led_port.h>
 
-namespace mcal
+mcal::led::led_base& mcal::led::led0()
 {
-  namespace led
-  {
-    const led_type led0;
-  }
+  // The user LED on the stm32f446 Nucleo-64 board:
+  // - porta.5: green
+
+  using led0_port_type = mcal::port::port_pin<std::uint32_t,
+                                              std::uint32_t,
+                                              mcal::reg::gpioa_base,
+                                              UINT32_C(5)>;
+
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
+
+  static led0_led_type l0;
+
+  return l0;
 }

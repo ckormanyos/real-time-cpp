@@ -8,7 +8,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 8.2.1
+GCC_VERSION   = 9.3.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -36,5 +36,3 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -T $(LINKER_DEFINITION_FILE)
-
-IMAGE_FILE    = dummy.foo

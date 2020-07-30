@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc64.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc64_Initialize(Crc64_Context_Type* Crc_Context)
 {
@@ -26,7 +25,7 @@ void Crc64_ProcessBytes(const uint8_t*      DataIn,
   {
     /* CRC-64/XZ Table based on 64-bit QWORDs. */
 
-    static const uint64_t Crc64_Table[256U] MCAL_PROGMEM =
+    static const uint64_t Crc64_Table[256U] MY_PROGMEM =
     {
       UINT64_C(0x0000000000000000), UINT64_C(0xB32E4CBE03A75F6F), UINT64_C(0xF4843657A840A05B), UINT64_C(0x47AA7AE9ABE7FF34), UINT64_C(0x7BD0C384FF8F5E33), UINT64_C(0xC8FE8F3AFC28015C), UINT64_C(0x8F54F5D357CFFE68), UINT64_C(0x3C7AB96D5468A107), 
       UINT64_C(0xF7A18709FF1EBC66), UINT64_C(0x448FCBB7FCB9E309), UINT64_C(0x0325B15E575E1C3D), UINT64_C(0xB00BFDE054F94352), UINT64_C(0x8C71448D0091E255), UINT64_C(0x3F5F08330336BD3A), UINT64_C(0x78F572DAA8D1420E), UINT64_C(0xCBDB3E64AB761D61), 
@@ -69,7 +68,7 @@ void Crc64_ProcessBytes(const uint8_t*      DataIn,
                       ^ ((uint_fast8_t) DataIn[LoopCnt]));
 
     const uint64_t TableValue =
-      mcal_cpu_read_program_memory_qword((const uint8_t*) &Crc64_Table[(uint8_t) DataIndex]);
+      mcal_memory_progmem_read_qword((mcal_progmem_uintptr_t) &Crc64_Table[(uint8_t) DataIndex]);
 
     Crc_Context->Crc64_Value = (uint64_t) (Crc_Context->Crc64_Value >> 8U) ^ TableValue;
   }

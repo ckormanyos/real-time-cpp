@@ -5,10 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
 
 #define EXTENDED_COMPLEX_DISABLE_IOSTREAM
 
-#include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/extended_complex/extended_complex.h>
 
@@ -35,3 +37,5 @@ bool app::benchmark::run_complex()
 
 complex_type x(1.23F, 3.45F);
 complex_type y;
+
+#endif // APP_BENCHMARK_TYPE_COMPLEX

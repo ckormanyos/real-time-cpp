@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc64.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc64_Initialize(Crc64_Context_Type* Crc_Context)
 {
@@ -69,7 +68,7 @@ void Crc64_ProcessBytes(const uint8_t*      DataIn,
                                  ^ ((uint8_t) DataIn[LoopCnt])));
 
     const uint64_t TableValue =
-      mcal_cpu_read_program_memory_qword((const  uint8_t*) &Crc64_Table[DataIndex]);
+      mcal_memory_progmem_read_qword((mcal_progmem_uintptr_t) &Crc64_Table[DataIndex]);
 
     Crc_Context->Crc_Value = (uint64_t) (Crc_Context->Crc_Value >> 8U) ^ TableValue;
   }

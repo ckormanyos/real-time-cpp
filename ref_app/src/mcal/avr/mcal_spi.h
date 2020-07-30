@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2015.
+//  Copyright Christopher Kormanyos 2012 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,53 +8,16 @@
 #ifndef MCAL_SPI_2012_05_24_H_
   #define MCAL_SPI_2012_05_24_H_
 
-  namespace mcal
-  {
-    namespace spi
-    {
-      typedef void config_type;
-
-      inline void init(const config_type*) { }
-    }
-  }
-
-  /*
-  #include <iterator>
   #include <util/utility/util_communication.h>
 
-  extern "C" void __vector_17() __attribute__((signal, used, externally_visible));
+  namespace mcal { namespace spi {
 
-  namespace mcal
-  {
-    namespace spi
-    {
-      typedef void config_type;
+  typedef void config_type;
 
-      inline void init(const config_type*) { }
+  void init(const config_type*);
 
-      class spi_communication : public util::communication<16U>
-      {
-      public:
-        spi_communication();
-        virtual ~spi_communication();
+  util::communication_base& spi0();
 
-        virtual bool send           (const std::uint8_t byte_to_send);
-        virtual bool recv           (std::uint8_t& byte_to_recv);
-        virtual size_type recv_ready() const;
-        virtual bool idle           () const;
-
-        bool select_channel(const std::uint8_t ch);
-
-      private:
-        volatile bool send_is_active;
-        std::uint8_t  channel;
-
-        friend void ::__vector_17();
-      };
-
-      extern spi_communication the_spi;
-    }
-  }
-  */
+  } }
 
 #endif // MCAL_SPI_2012_05_24_H_

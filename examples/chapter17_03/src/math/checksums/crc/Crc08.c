@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc08.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc08_Initialize(Crc08_Context_Type* Crc_Context)
 {
@@ -26,7 +25,7 @@ void Crc08_ProcessBytes(const uint8_t*      DataIn,
   {
     /* CRC-8/AUTOSAR Table based on 8-bit BYTEs. */
 
-    static const uint8_t Crc08_Table[256U] MCAL_PROGMEM =
+    static const uint8_t Crc08_Table[256U] MY_PROGMEM =
     {
       UINT8_C(0x00), UINT8_C(0x2F), UINT8_C(0x5E), UINT8_C(0x71), UINT8_C(0xBC), UINT8_C(0x93), UINT8_C(0xE2), UINT8_C(0xCD),
       UINT8_C(0x57), UINT8_C(0x78), UINT8_C(0x09), UINT8_C(0x26), UINT8_C(0xEB), UINT8_C(0xC4), UINT8_C(0xB5), UINT8_C(0x9A),
@@ -68,8 +67,7 @@ void Crc08_ProcessBytes(const uint8_t*      DataIn,
       (uint_fast8_t) (  Crc_Context->Crc08_Value
                       ^ DataIn[LoopCnt]);
 
-    const uint8_t TableValue =
-      mcal_cpu_read_program_memory_byte((const uint8_t*) &Crc08_Table[(uint8_t) DataIndex]);
+    const uint8_t TableValue = mcal_memory_progmem_read_byte((mcal_progmem_uintptr_t) &Crc08_Table[(uint8_t) DataIndex]);
 
     Crc_Context->Crc08_Value = TableValue;
   }

@@ -26,7 +26,7 @@ namespace
 
 void app::led::task_init()
 {
-  mcal::led::led0.toggle();
+  mcal::led::led_b5.toggle();
 }
 
 void app::led::task_func()
@@ -35,6 +35,6 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(timer_type::seconds(1U));
 
-    mcal::led::led0.toggle();
+    mcal::led::led_b5.toggle();
   }
 }

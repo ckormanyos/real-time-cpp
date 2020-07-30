@@ -21,21 +21,21 @@
     public:
       typedef std::size_t size_type;
 
-      virtual ~static_allocator_base();
+      virtual ~static_allocator_base() = default;
 
     protected:
-      static_allocator_base() throw() { }
+      static_allocator_base() noexcept = default;
 
-      static_allocator_base(const static_allocator_base&) throw() { }
+      static_allocator_base(const static_allocator_base&) noexcept = default;
 
       // The static allocator's buffer type.
       struct buffer_type
       {
-        static const size_type size = 32U;
+        static constexpr size_type size = 640U;
 
         std::uint8_t data[size];
 
-        buffer_type() : data() { }
+        buffer_type() noexcept : data() { }
       };
 
       // The static allocator's memory allocation.
@@ -88,17 +88,15 @@
       }
     };
 
-    inline static_allocator_base::~static_allocator_base() { }
-
     // Global comparison operators (required by the standard).
     inline bool operator==(const static_allocator_base&,
-                           const static_allocator_base&) throw()
+                           const static_allocator_base&) noexcept
     {
       return true;
     }
 
     inline bool operator!=(const static_allocator_base&,
-                           const static_allocator_base&) throw()
+                           const static_allocator_base&) noexcept
     {
       return false;
     }
@@ -136,12 +134,12 @@
       typedef value_type&       reference;
       typedef const value_type& const_reference;
 
-      static_allocator() throw() { }
+      static_allocator() noexcept = default;
 
-      static_allocator(const static_allocator&) throw() : static_allocator_base(static_allocator()) { }
+      static_allocator(const static_allocator&) noexcept : static_allocator_base(static_allocator()) { }
 
       template <typename U>
-      static_allocator(const static_allocator<U, buffer_alignment>&) throw() { }
+      static_allocator(const static_allocator<U, buffer_alignment>&) noexcept { }
 
       template<typename U> 
       struct rebind
@@ -149,7 +147,7 @@
         using other = static_allocator<U, buffer_alignment>;
       };
 
-      size_type max_size() const throw()
+      size_type max_size() const noexcept
       {
         size_type remaining;
         bool      is_overflow;
@@ -185,14 +183,14 @@
         return static_cast<pointer>(p);
       }
 
-      void construct(pointer p, const value_type& x)
+      void construct(pointer p, const value_type& x) noexcept
       {
         new(static_cast<void*>(p)) value_type(x);
       }
 
-      void destroy(pointer p) { p->~value_type(); }
+      void destroy(pointer p) noexcept { p->~value_type(); }
 
-      void deallocate(pointer, size_type) { }
+      void deallocate(pointer, size_type) noexcept { }
     };
   }
 

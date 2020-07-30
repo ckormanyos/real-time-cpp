@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014.
+@rem Copyright Christopher Kormanyos 2014 - 2020.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,10 +9,15 @@
 
 @rem
 @rem Usage:
-@rem build.bat directory_of_gcc_bin avr
-@rem For example,
-@rem build.bat "C:\Program Files (x86)\gcc-4.8.1-avr\bin" avr
-@rem
+@rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
+
+@rem Usage example A,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_06"
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_06\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
+
+@rem Usage example B,
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter02_06"
+@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1

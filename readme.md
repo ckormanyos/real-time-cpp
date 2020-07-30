@@ -1,9 +1,9 @@
 
-This is the companion code for the book "Real-Time C++".
+## This is the companion code for the book "Real-Time C++".
 
 See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
-(Springer, Heidelberg, 2018).
+(Springer, Heidelberg, 2018). ISBN 9783662567173
 
 Details on the Reference Application
 ------------------------------------
@@ -18,11 +18,12 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * VC, MinGW, or other *nix-like generic host
+  * VC, MinGW, or other `*nix`-like generic host
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
   * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
+  * ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
@@ -30,13 +31,12 @@ The reference application supports the following targets:
   * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
-  * Microchip(R) PIC(R)32 MIPS4K
   * Raspberry Pi with ARM(R) 11
 
 Cross Development in the Reference Application
 ----------------------------------------------
 
-The reference application uses cross-development based on *nix-like make
+The reference application uses cross-development based on `*nix`-like make
 tools in combination with Microsoft(R) Visual Studio(R). Tool chains
 are not available in this repo (see below for further details).
 
@@ -86,7 +86,7 @@ cmake --build . --config Debug --target ALL_BUILD
 ```
 
 OR...
-Following *nix pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
+Following `*nix` pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
 should work too.
 
 Target Details
@@ -105,7 +105,11 @@ The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on portc.8.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
+The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l100c")
+runs on the STM32L100 DISCOVERY board commercially available from
+ST Microelectronics(R). The program toggles the blue LED on portc.8.
+
+The third ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on portb.6.
 
@@ -120,7 +124,7 @@ The program toggles the green LED on porta.5.
 The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
-for the BeagleBone that runs independently from any kind of *nix distro on
+for the BeagleBone that runs independently from any kind of `*nix` distro on
 the board. Our program is designed to boot the BeagleBone from a raw binary file
 called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a
 special boot header comprised of two 32-bit integers. The program is loaded
@@ -130,7 +134,7 @@ up the board. The program toggles the first user LED (LED1 on port1.21).
 
 The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
 RaspberryPi-B. This project creates a bare-metal program for the RaspberryPi.
-This program runs independently from any kind of *nix distro on the board.
+This program runs independently from any kind of `*nix` distro on the board.
 Our program is designed to boot the RaspberryPi from a raw binary file.
 The raw binary file is called "kernel.img" and it is stored on a FAT32 SDHC
 microcard. The kernel.img file is stored on the SD card together with two

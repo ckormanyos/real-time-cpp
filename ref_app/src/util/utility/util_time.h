@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,8 +10,9 @@
 
   #include <cstdint>
   #include <limits>
-  #include <mcal_cpu.h>
+
   #include <mcal_gpt.h>
+  #include <mcal_wdg.h>
 
   namespace util
   {
@@ -19,7 +20,7 @@
     class timer
     {
     public:
-      typedef unsigned_tick_type tick_type;
+      using tick_type = unsigned_tick_type;
 
       static_assert(std::numeric_limits<tick_type>::is_signed == false,
                     "the timer tick_type must be unsigned");
@@ -31,13 +32,13 @@
       static const tick_type timer_mask = static_cast<tick_type>((UINTMAX_C(1) << (std::numeric_limits<tick_type>::digits - 1)) - UINTMAX_C(1));
 
     public:
-      template<typename other_tick_type> static tick_type microseconds(const other_tick_type& value_microseconds) { return value_microseconds; }
-      template<typename other_tick_type> static tick_type milliseconds(const other_tick_type& value_milliseconds) { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
-      template<typename other_tick_type> static tick_type seconds     (const other_tick_type& value_seconds     ) { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
-      template<typename other_tick_type> static tick_type minutes     (const other_tick_type& value_minutes     ) { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
-      template<typename other_tick_type> static tick_type hours       (const other_tick_type& value_hours       ) { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
-      template<typename other_tick_type> static tick_type days        (const other_tick_type& value_days        ) { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
-      template<typename other_tick_type> static tick_type weeks       (const other_tick_type& value_weeks       ) { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
+      template<typename other_tick_type> static constexpr tick_type microseconds(other_tick_type value_microseconds) { return value_microseconds; }
+      template<typename other_tick_type> static constexpr tick_type milliseconds(other_tick_type value_milliseconds) { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
+      template<typename other_tick_type> static constexpr tick_type seconds     (other_tick_type value_seconds     ) { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
+      template<typename other_tick_type> static constexpr tick_type minutes     (other_tick_type value_minutes     ) { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
+      template<typename other_tick_type> static constexpr tick_type hours       (other_tick_type value_hours       ) { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
+      template<typename other_tick_type> static constexpr tick_type days        (other_tick_type value_days        ) { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
+      template<typename other_tick_type> static constexpr tick_type weeks       (other_tick_type value_weeks       ) { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
 
       timer() : my_tick(0U) { }
 
@@ -102,14 +103,17 @@
 
         while(false == t_delay.timeout())
         {
-          mcal::cpu::nop();
+          mcal::wdg::secure::trigger();
         }
       }
 
     private:
       tick_type my_tick;
 
-      static tick_type my_now() { return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed()); }
+      static tick_type my_now()
+      {
+        return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
+      }
     };
   }
 

@@ -35,13 +35,21 @@ project(ref_app VERSION "${REALTIME_CPP_VERSION}" LANGUAGES CXX ASM)
 message(STATUS "Generator .............. ${CMAKE_GENERATOR}")
 message(STATUS "Build Type ............. ${CMAKE_BUILD_TYPE}")
 
+# ------------------------------------------------------------------------------
+# defaults for host build
+# ------------------------------------------------------------------------------
+if(NOT APP)
+    set(APP ref_app)
+endif()
+
+if(NOT TARGET)
+    set(TARGET host)
+endif()
+
 if(NOT NAME)
     set(NAME ${TARGET})
 endif()
 
-# ------------------------------------------------------------------------------
-# default tool names if not using Toolchain file
-# ------------------------------------------------------------------------------
 if(NOT OBJDUMP)
     set(OBJDUMP objdump)
 endif()
@@ -64,6 +72,10 @@ endif()
 
 if(NOT SIZE)
     set(SIZE size)
+endif()
+
+if(NOT APPLE)
+    set(SIZE_OPTIONS -A -t)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -185,7 +197,7 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
         COMMAND ${NM} --numeric-sort ${PARSE_SYMBOL_OPTIONS} ${APP}${CMAKE_EXECUTABLE_SUFFIX} | ${CPPFILT} > ${APP}_cppfilt.txt
 
         # creating size summary table with size to generate: ${APP}_size.txt
-        COMMAND ${SIZE} -A -t ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_size.txt
+        COMMAND ${SIZE} ${SIZE_OPTIONS} ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_size.txt
 
         # parsing symbols with readelf to generate: ${APP}_readelf.txt
         COMMAND ${POSTBUILD_GEN_SYMBOL_LISTING}

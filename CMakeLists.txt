@@ -47,12 +47,9 @@ set(TARGET_CFG_LIST
     atmega2560|atmega2560|avr
     atmega328p|avr|avr
 
-    pic|pic32mx795fx|mips-mti-elf
-
     rl78|rl78|rl78-elf
 
-    # app_benchmark_crc.cpp:13:4: error: could not convert...
-    #rx63n|rx63n|rx-elf
+    rx63n|rx63n|rx-elf
 
     xtensa32|xtensa32|xtensa-esp32-elf
 

@@ -1,16 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // ATMEL(R) AVR(R) startup code.
-// Expressed with C++ for Atmega328P by Chris.
+// Expressed with C++ for AtmegaX by Chris.
 
 #include <mcal/mcal.h>
 
-asm volatile(".extern __initial_stack_pointer");
+asm(".extern __initial_stack_pointer");
 
 namespace crt
 {
@@ -36,7 +36,8 @@ void __my_startup()
   // Load the spl register (stack pointer low).
   asm volatile("out 0x3d, r28");
 
-  // Chip init: Watchdog, port, and oscillator.
+  // CPU Initialization, including watchdog,
+  // port, oscillators and other clocks.
   mcal::cpu::init();
 
   // Initialize statics from ROM to RAM.
@@ -46,13 +47,13 @@ void __my_startup()
   // Call all ctor initializations.
   crt::init_ctors();
 
-  // Call main (and never return).
-  asm volatile("call main");
+  // Jump to main (and never return).
+  asm volatile("jmp main");
 
   // Catch an unexpected return from main.
   for(;;)
   {
     // Replace with a loud error if desired.
-    mcal::cpu::nop();
+    ;
   }
 }

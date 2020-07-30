@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014.
+# Copyright Christopher Kormanyos 2014 - 2020.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,6 +21,13 @@
 # For example,
 # ./build.sh /usr/bin avr
 #
+# Usage example A (from *nix shell)
+# cd /usr/local/real-time-cpp/examples/chapter09_07
+# ./build.sh /usr/local/real-time-cpp/examples/chapter09_07/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+
+# Usage example B (from Win* shell such as in Git for Win*)
+# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_07
+# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_07/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
@@ -40,12 +47,12 @@ else
     TOOL_PREFIX="$2"
 fi
 
-CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions"
+CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
 CPPFLAGS="-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
-CINCLUDES="-Isrc -Isrc/mcal/avr -Isrc/util/STL -Isrc/util/STL_C++11_Compatibility -Isrc/util/STL_C++17_Compatibility"
+CINCLUDES="-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr"
 
 echo
-echo "Building with        : build.bat"
+echo "Building with        : build.sh"
 echo "Using tool path      : $TOOL_PATH"
 echo "Using tool prefix    : $TOOL_PREFIX"
 echo "Remove bin directory : bin/"
@@ -66,8 +73,8 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/mcal
 echo "Compile  : mcal_cpu.cpp to bin/mcal_cpu.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_cpu.cpp -o bin/mcal_cpu.o
 
-echo "Compile  : mcal_display.cpp to bin/mcal_display.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_display.cpp -o bin/mcal_display.o
+echo "Compile  : mcal_display_seven_segment.cpp to bin/mcal_display_seven_segment.o"
+$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_display_seven_segment.cpp -o bin/mcal_display_seven_segment.o
 
 echo "Compile  : mcal_gpt.cpp to bin/mcal_gpt.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_gpt.cpp -o bin/mcal_gpt.o
@@ -115,7 +122,7 @@ echo "Compile  : int_vect.cpp to bin/int_vect.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
 echo "Link     : objects to bin/chapter09_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/app_display.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_display.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_07.elf
+$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter09_07.map bin/app_display.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_display_seven_segment.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_07.elf
 
 echo
 echo "Extract  : executable hex file : from bin/chapter09_07.elf"

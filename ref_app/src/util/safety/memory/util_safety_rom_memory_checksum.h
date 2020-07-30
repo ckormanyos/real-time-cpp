@@ -5,6 +5,7 @@
   #include <limits>
 
   #include <mcal_cpu.h>
+  #include <mcal_memory/mcal_memory_progmem_access.h>
   #include <util/safety/memory/util_safety_memory_base.h>
   #include <util/utility/util_two_part_data_manipulation.h>
 
@@ -72,10 +73,10 @@
             const std::size_t memory_list_count>
   void util::safety::rom_memory_checksum<memory_address_type, memory_list_count>::finalize()
   {
-    const std::uint8_t expected_result_byte0 = mcal::cpu::read_program_memory(reinterpret_cast<volatile std::uint8_t*>(address_of_result + 3U));
-    const std::uint8_t expected_result_byte1 = mcal::cpu::read_program_memory(reinterpret_cast<volatile std::uint8_t*>(address_of_result + 2U));
-    const std::uint8_t expected_result_byte2 = mcal::cpu::read_program_memory(reinterpret_cast<volatile std::uint8_t*>(address_of_result + 1U));
-    const std::uint8_t expected_result_byte3 = mcal::cpu::read_program_memory(reinterpret_cast<volatile std::uint8_t*>(address_of_result + 0U));
+    const std::uint8_t expected_result_byte0 = mcal::memory::progmem::read(address_of_result + 3U);
+    const std::uint8_t expected_result_byte1 = mcal::memory::progmem::read(address_of_result + 2U);
+    const std::uint8_t expected_result_byte2 = mcal::memory::progmem::read(address_of_result + 1U);
+    const std::uint8_t expected_result_byte3 = mcal::memory::progmem::read(address_of_result + 0U);
 
     const std::uint32_t expected_result =
       util::make_long(util::make_long(expected_result_byte0, expected_result_byte1),

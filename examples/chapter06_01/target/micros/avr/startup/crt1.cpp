@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,17 +7,23 @@
 
 #include <cstdint>
 
-#include <mcal_cpu.h>
+#include <mcal_memory/mcal_memory_progmem_access.h>
+#include <util/utility/util_utype_helper.h>
 
 extern "C"
 {
-  struct ctor_type
+  struct constructor_function_type
   {
-    typedef void(*function_type)();
+    using pointer = void(*)(void);
+
+    using size_type =
+      util::utype_helper<sizeof(pointer) * 8U>::exact_type;
+
+    static constexpr size_type static_size = static_cast<size_type>(sizeof(size_type));
   };
 
-  extern ctor_type::function_type _ctors_end[];
-  extern ctor_type::function_type _ctors_begin[];
+  extern constructor_function_type::pointer _ctors_end[];
+  extern constructor_function_type::pointer _ctors_begin[];
 }
 
 namespace crt
@@ -27,20 +33,19 @@ namespace crt
 
 void crt::init_ctors()
 {
-  typedef std::uint16_t function_aligned_type;
-
-  for(std::uint8_t* rom_source  = static_cast<std::uint8_t*>(static_cast<void*>(_ctors_end));
-                    rom_source != static_cast<std::uint8_t*>(static_cast<void*>(_ctors_begin));
-                    rom_source -= sizeof(function_aligned_type))
+  for(constructor_function_type::size_type rom_source
+                  = reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_end));
+      rom_source  > reinterpret_cast<constructor_function_type::size_type>(static_cast<void*>(_ctors_begin));
+      rom_source -= constructor_function_type::static_size)
   {
     // Note that particular care needs to be taken to read program
-    // memory with the function mcal_cpu_read_program_memory_word().
+    // memory with the function mcal::cpu::read_program_memory.
 
-    // Acquire the next 16-bit ctor function address.
-    const ctor_type::function_type ctor_function_address =
-      reinterpret_cast<const ctor_type::function_type>(mcal_cpu_read_program_memory_word(rom_source - 2U));
+    // Acquire the next constructor function address.
+    const constructor_function_type::size_type pf =
+      mcal::memory::progmem::read<constructor_function_type::size_type>(rom_source - constructor_function_type::static_size);
 
-    // Call the ctor function.
-    ctor_function_address();
+    // Call the constructor function.
+    (reinterpret_cast<constructor_function_type::pointer>(pf))();
   }
 }

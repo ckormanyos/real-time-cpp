@@ -17,10 +17,7 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<std::uint32_t,
-                                   std::uint32_t,
-                                   mcal::reg::dummy,
-                                   UINT32_C(9)> benchmark_port_type;
+      typedef mcal::port::port_pin benchmark_port_type;
     }
   }
 

@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2007 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -55,7 +55,7 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 # ------------------------------------------------------------------------------
 # the application
 # ------------------------------------------------------------------------------
-APP = $(PATH_BIN)/chapter17_03a
+APP = $(PATH_BIN)/chapter17_03
 
 # ------------------------------------------------------------------------------
 # object files
@@ -160,15 +160,14 @@ AFLAGS      = $(GCCFLAGS)                       \
 LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
-              -nostdlib                         \
-              -nostartfiles                     \
-              -Wl,--gc-sections
+              -Wl,--gc-sections                 \
+              -Wl,-Map,$(APP).map
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
 # ------------------------------------------------------------------------------
 .PHONY: all
-all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).elf
+all: clean_prj version $(APP)_flash.hex $(APP)_nm.txt $(APP).$(TGT_SUFFIX)
 
 
 # ------------------------------------------------------------------------------
@@ -217,9 +216,9 @@ version:
   # Print the GNU make version and the compiler version
 	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
-	@$(ECHO) "\n"
+	@$(ECHO)
 	@$(ECHO) +++ Print GCC version
-	@$(CC) -xc++ -E -v -
+	@$(CC) -v
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
@@ -235,35 +234,34 @@ version:
 # ------------------------------------------------------------------------------
 # link/locate application and generate an assembly list file
 # ------------------------------------------------------------------------------
-$(APP).elf : $(LINKER_DEFINITION_FILE) $(FILES_O)
-	@-$(ECHO) +++ linking application to generate: $(APP).elf
-	@-$(CC) $(LDFLAGS) $(FILES_O) -Wl,-T$(LINKER_DEFINITION_FILE),-Map,$(APP).map -o $(APP).elf
+$(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
+	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
+	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).elf > $(APP).lss
+	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------
 # parse the object files to obtain symbol information, and create a size summary
 # ------------------------------------------------------------------------------
-$(APP)_nm.txt : $(APP).elf
+$(APP)_nm.txt : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ parsing symbols with nm to generate: $(APP)_nm.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf > $(APP)_nm.txt
+	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) > $(APP)_nm.txt
 	@-$(ECHO) +++ demangling symbols with c++filt to generate: $(APP)_cppfilt.txt
-	@-$(NM) --numeric-sort --print-size $(APP).elf | $(CPPFILT) > $(APP)_cppfilt.txt
+	@-$(NM) --numeric-sort --print-size $(APP).$(TGT_SUFFIX) | $(CPPFILT) > $(APP)_cppfilt.txt
 	@-$(ECHO) +++ parsing symbols with readelf to generate: $(APP)_readelf.txt
-	@-$(READELF) --syms $(APP).elf > $(APP)_readelf.txt
+	@-$(READELF) --syms $(APP).$(TGT_SUFFIX) > $(APP)_readelf.txt
 	@-$(ECHO) +++ creating size summary table with size to generate: $(APP)_size.txt
-	@-$(SIZE) -A -t $(APP).elf > $(APP)_size.txt
+	@-$(SIZE) -A -t $(APP).$(TGT_SUFFIX) > $(APP)_size.txt
 
 
 # ------------------------------------------------------------------------------
 # create hex mask
 # ------------------------------------------------------------------------------
-$(APP)_flash.hex : $(APP).elf
+$(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
-	@-$(OBJCOPY) -O ihex $(APP).elf $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).elf $(APP).bin
-
+	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
+	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)

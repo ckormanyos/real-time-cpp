@@ -6,8 +6,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 #include <math/checksums/crc/Crc16.h>
-#include <mcal_cpu.h>
-#include <mcal/mcal_progmem.h>
+#include <mcal_memory_progmem.h>
 
 void Crc16_Initialize(Crc16_Context_Type* Crc_Context)
 {
@@ -26,7 +25,7 @@ void Crc16_ProcessBytes(const uint8_t*      DataIn,
   {
     /* CRC-16/CCITT-FALSE Table based on 16-bit WORDs. */
 
-    static const uint16_t Crc16_Table[256U] MCAL_PROGMEM =
+    static const uint16_t Crc16_Table[256U] MY_PROGMEM =
     {
       UINT16_C(0x0000), UINT16_C(0x1021), UINT16_C(0x2042), UINT16_C(0x3063), UINT16_C(0x4084), UINT16_C(0x50A5), UINT16_C(0x60C6), UINT16_C(0x70E7),
       UINT16_C(0x8108), UINT16_C(0x9129), UINT16_C(0xA14A), UINT16_C(0xB16B), UINT16_C(0xC18C), UINT16_C(0xD1AD), UINT16_C(0xE1CE), UINT16_C(0xF1EF),
@@ -69,7 +68,7 @@ void Crc16_ProcessBytes(const uint8_t*      DataIn,
                       ^ ((uint_fast8_t) DataIn[LoopCnt]));
 
     const uint16_t TableValue =
-      mcal_cpu_read_program_memory_word((const uint8_t*) &Crc16_Table[(uint8_t) DataIndex]);
+      mcal_memory_progmem_read_word((mcal_progmem_uintptr_t) &Crc16_Table[(uint8_t) DataIndex]);
 
     Crc_Context->Crc16_Value = (uint16_t) (Crc_Context->Crc16_Value << 8) ^ TableValue;
   }

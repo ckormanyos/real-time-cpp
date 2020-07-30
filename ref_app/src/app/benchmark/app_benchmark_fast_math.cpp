@@ -6,9 +6,12 @@
 //
 
 
+#include <app/benchmark/app_benchmark.h>
+
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
+
 #define FAST_MATH_IMPLEMENT_SPECIALIZED_SQRT
 
-#include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/fast_math/fast_math.h>
 
@@ -45,3 +48,5 @@ bool app::benchmark::run_fast_math()
 
 float_type xx = 2.34F;
 float_type yy;
+
+#endif // APP_BENCHMARK_TYPE_FAST_MATH

@@ -6,7 +6,7 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the stm32f407 files in the project
+# File list of the x86_64-w64-mingw32 files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_wdg_watchdog

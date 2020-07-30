@@ -17,6 +17,8 @@
 extern "C"
 void* memset(void* dst, int c, size_t n)
 {
+  // Convert the value c to unsigned char and copy it to the destination n times.
+
   std::uint8_t* the_dst = reinterpret_cast<std::uint8_t*>(dst);
 
   for( ; n > static_cast<size_t>(0U); --n)

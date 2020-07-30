@@ -70,6 +70,9 @@
     <Filter Include="src\app\crc">
       <UniqueIdentifier>{ab3fddef-bfed-4afa-9c01-e6417ec909ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_memory">
+      <UniqueIdentifier>{eda9eb38-93ed-4f56-9c51-ddf37615c79f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="src\math\checksums\crc\Crc64.c">
       <Filter>src\math\checksums\crc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\win32\mcal_irq.cpp">
+      <Filter>src\mcal\win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +257,6 @@
     <ClInclude Include="src\mcal\win32\mcal_led.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\win32\mcal_reg_access.h">
-      <Filter>src\mcal\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_wdg.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
@@ -328,6 +331,36 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\crc\Crc64.h">
       <Filter>src\math\checksums\crc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <Filter>src\mcal_memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_reg.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_memory_progmem.h">
+      <Filter>src\mcal\avr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

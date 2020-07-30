@@ -39,7 +39,7 @@ void crt::init_ctors()
       rom_source -= constructor_function_type::static_size)
   {
     // Note that particular care needs to be taken to read program
-    // memory with the function mcal::cpu::read_program_memory.
+    // memory with the function mcal::memory::progmem::read.
 
     // Acquire the next constructor function address.
     const constructor_function_type::size_type pf =

@@ -26,14 +26,8 @@ namespace
   }
 }
 
-// TBD: Do we really need interrupt attributes here?
-extern "C" void __vector_timer4() __attribute__((interrupt));
-
 extern "C" void __vector_timer4()
 {
-  // Clear the interrupt request bit.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, UINT16_C(0x0000)>::reg_set();
-
   // Increment the 64-bit system tick with 0x10000, representing (2^16) microseconds.
   system_tick += UINT32_C(0x10000);
 }
