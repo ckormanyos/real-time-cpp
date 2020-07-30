@@ -15,7 +15,7 @@
     namespace reg
     {
       // Port registers.
-      constexpr std::uint32_t gpio_base      = UINT32_C(0x20200000);
+      constexpr std::uint32_t gpio_base                         = UINT32_C(0x20200000);
 
       constexpr std::uint32_t gpio_gpfsel0                      = gpio_base + (UINT32_C(4) *  0);
       constexpr std::uint32_t gpio_gpfsel1                      = gpio_base + (UINT32_C(4) *  1);
@@ -46,6 +46,12 @@
       constexpr std::uint32_t gpio_gppud                        = gpio_base + (UINT32_C(4) * 37);
       constexpr std::uint32_t gpio_gppudclk0                    = gpio_base + (UINT32_C(4) * 38);
       constexpr std::uint32_t gpio_gppudclk1                    = gpio_base + (UINT32_C(4) * 39);
+
+      // System timer registers.
+      constexpr std::uint32_t system_timer_base                 = UINT32_C(0x20003000);
+      constexpr std::uint32_t system_timer_cs                   = system_timer_base + UINT32_C(0x00);
+      constexpr std::uint32_t system_timer_clo                  = system_timer_base + UINT32_C(0x04);
+      constexpr std::uint32_t system_timer_chi                  = system_timer_base + UINT32_C(0x08);
 
       // ARM timer registers.
       constexpr std::uint32_t rpi_armtimer_base                 = UINT32_C(0x2000B400);

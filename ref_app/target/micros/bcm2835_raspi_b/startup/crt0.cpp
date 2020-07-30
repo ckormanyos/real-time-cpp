@@ -92,11 +92,6 @@ extern "C" void __my_startup()
   crt::init_ctors();
   mcal::wdg::secure::trigger();
 
-  //for(;;)
-  //{
-  //  ::gpio_ClrPin(GPIO_STATUS_LED);
-  //}
-
   // Jump to main (and never return).
   asm volatile("b main");
 
