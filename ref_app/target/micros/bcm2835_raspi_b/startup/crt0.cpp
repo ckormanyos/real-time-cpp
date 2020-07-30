@@ -10,9 +10,9 @@
 
 #include <cstdint>
 
-#include <mcal/mcal.h>
-
-#include <gpio.h>
+#include <mcal_cpu.h>
+#include <mcal_irq.h>
+#include <mcal_wdg.h>
 
 namespace crt
 {
@@ -20,9 +20,7 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup() __attribute__((used, noinline));
-
-void __my_startup()
+extern "C" void __my_startup()
 {
   /* The ARM1176JZF-S is started in supervisor mode with interrupt disabled */
   /* Setup the stack pointer for the supervisor mode */

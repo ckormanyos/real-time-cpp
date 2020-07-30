@@ -16,13 +16,13 @@ void mcal::irq::init(const config_type*)
   mcal::irq::enable_all();
 }
 
-void mcal::irq::secure::int_vect_undef_instr_handler_callback   () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_sw_interrupt_handler_callback  () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_prefetch_abort_handler_callback() { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_data_abort_handler_callback    () { for(;;) { mcal::cpu::nop(); } }
-void mcal::irq::secure::int_vect_unused_05_handler_callback     () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __int_vect_undef_instr_handler   () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __int_vect_sw_interrupt_handler  () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __int_vect_prefetch_abort_handler() { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __int_vect_data_abort_handler    () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __int_vect_unused_05_handler     () { for(;;) { mcal::cpu::nop(); } }
 
-void mcal::irq::secure::int_vect_irq_handler_callback()
+extern "C" void __int_vect_irq_handler()
 {
   // Query and clear the active interrupt bit(s).
 
@@ -32,42 +32,40 @@ void mcal::irq::secure::int_vect_irq_handler_callback()
                                  std::uint32_t,
                                  mcal::reg::rpi_interrupt_irq_basic_pending>::reg_get();
 
-  const bool pending_bit_00_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 0)) != UINT32_C(0));
-  const bool pending_bit_01_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 1)) != UINT32_C(0));
-  const bool pending_bit_02_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 2)) != UINT32_C(0));
-  const bool pending_bit_03_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 3)) != UINT32_C(0));
-  const bool pending_bit_06_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 6)) != UINT32_C(0));
-  const bool pending_bit_07_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 7)) != UINT32_C(0));
-  const bool pending_bit_08_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 8)) != UINT32_C(0));
-  const bool pending_bit_09_is_set = (static_cast<std::uint32_t>(pending_irq_value & static_cast<std::uint32_t>(UINT32_C(1) << 9)) != UINT32_C(0));
+  const bool pending_bit_00_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 0U)) != UINT32_C(0));
+  const bool pending_bit_01_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 1U)) != UINT32_C(0));
+  const bool pending_bit_02_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 2U)) != UINT32_C(0));
+  const bool pending_bit_03_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 3U)) != UINT32_C(0));
+  const bool pending_bit_06_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 6U)) != UINT32_C(0));
+  const bool pending_bit_07_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 7U)) != UINT32_C(0));
+  const bool pending_bit_08_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 8U)) != UINT32_C(0));
+  const bool pending_bit_09_is_set = (std::uint32_t(pending_irq_value & std::uint32_t(1ULL << 9U)) != UINT32_C(0));
 
   // ARM Timer IRQ pending: Call the rpi_arm timer callback function in mcal::gpt.
   if(pending_bit_00_is_set) { mcal::gpt::detail::rpi_armtimer_interrupt_callback(); }
 
   // ARM Mailbox IRQ pending: Not yet needed.
-  if(pending_bit_01_is_set) { }
+  if(pending_bit_01_is_set) { mcal::cpu::nop(); }
 
   // ARM Doorbell 0 IRQ pending: Not yet needed.
-  if(pending_bit_02_is_set) { }
+  if(pending_bit_02_is_set) { mcal::cpu::nop(); }
 
   // ARM Doorbell 1 IRQ pending: Not yet needed.
-  if(pending_bit_03_is_set) { }
+  if(pending_bit_03_is_set) { mcal::cpu::nop(); }
 
   // Illegal access type 1 IRQ pending: Not yet needed.
-  if(pending_bit_06_is_set) { }
+  if(pending_bit_06_is_set) { mcal::cpu::nop(); }
 
   // Illegal access type 0 IRQ pending: Not yet needed.
-  if(pending_bit_07_is_set) { }
+  if(pending_bit_07_is_set) { mcal::cpu::nop(); }
 
   // One or more bits set in pending register 1: Not yet needed.
-  if(pending_bit_08_is_set) { }
+  if(pending_bit_08_is_set) { mcal::cpu::nop(); }
 
   // One or more bits set in pending register 2: Not yet needed.
-  if(pending_bit_09_is_set) { }
+  if(pending_bit_09_is_set) { mcal::cpu::nop(); }
 
   // TBD: Implement potential support for GPU and additional interrupts.
 }
 
-void mcal::irq::secure::int_vect_fiq_handler_callback()
-{
-}
+extern "C" void __int_vect_fiq_handler() { mcal::cpu::nop(); }

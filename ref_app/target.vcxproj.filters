@@ -312,7 +312,7 @@
     <None Include="target\micros\stm32l100c\make\stm32l100c_flags.gmk">
       <Filter>micros\stm32l100c\make</Filter>
     </None>
-    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect_table.s">
+    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect.s">
       <Filter>micros\bcm2835_raspi_b\startup</Filter>
     </None>
   </ItemGroup>
@@ -475,9 +475,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
       <Filter>micros\stm32l100c\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\int_vect.cpp">
-      <Filter>micros\bcm2835_raspi_b\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
