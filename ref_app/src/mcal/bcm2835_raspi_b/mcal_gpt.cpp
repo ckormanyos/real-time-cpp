@@ -1,6 +1,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,30 +14,40 @@
 
 namespace
 {
-  mcal::gpt::value_type mcal_gpt_system_tick_initial_count;
-
-  // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
-
-  bool& gpt_is_initialized() __attribute__((used, noinline));
-
-  bool& gpt_is_initialized()
-  {
-    static bool is_init = bool();
-
-    return is_init;
-  }
-
   struct mcal_gpt_system_tick final : private util::noncopyable
   {
+  public:
+    mcal_gpt_system_tick() = delete;
+
+    ~mcal_gpt_system_tick() = delete;
+
+    static void init()
+    {
+      initial_count = get_consistent_microsecond_tick();
+    }
+
+    static std::uint64_t get_tick()
+    {
+      const std::uint64_t elapsed = get_consistent_microsecond_tick() - initial_count;
+
+      return elapsed;
+    }
+
   private:
+    static std::uint64_t initial_count;
+
     static std::uint32_t lo() {  return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system_timer_clo>::reg_get(); }
     static std::uint32_t hi() {  return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system_timer_chi>::reg_get(); }
 
-  public:
-    static std::uint64_t get_tick()
+    static std::uint64_t get_consistent_microsecond_tick()
     {
-      // Return the system tick using a multiple read to ensure data consistency.
+      // Return the (elapsed) system tick using a multiple read
+      // to ensure data consistency. The system tick representing
+      // the elapsed time is used because the system tick timer
+      // has already been initialized by the Raspberry Pi's bootloader.
+      // This means that by the time the bare-metal software actually
+      // starts up, the system tick timer will have already increased
+      // to some non-zero value represented here by initial_count.
 
       const std::uint32_t lo0 = lo();
       const std::uint32_t hi0 = hi();
@@ -49,6 +59,17 @@ namespace
       return consistent_microsecond_tick;
     }
   };
+
+  std::uint64_t mcal_gpt_system_tick::initial_count;
+
+  bool& gpt_is_initialized() __attribute__((used, noinline));
+
+  bool& gpt_is_initialized()
+  {
+    static bool is_init = bool();
+
+    return is_init;
+  }
 }
 
 void mcal::gpt::init(const config_type*)
@@ -57,15 +78,13 @@ void mcal::gpt::init(const config_type*)
   {
     gpt_is_initialized() = true;
 
-    mcal_gpt_system_tick_initial_count = mcal_gpt_system_tick::get_tick();
+    mcal_gpt_system_tick::init();
   }
 }
 
 mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 {
-  const std::uint64_t elapsed =
-    (gpt_is_initialized() ? std::uint64_t(mcal_gpt_system_tick::get_tick() - mcal_gpt_system_tick_initial_count)
-                          : UINT64_C(0));
+  const std::uint64_t elapsed = (gpt_is_initialized() ? mcal_gpt_system_tick::get_tick() : UINT64_C(0));
 
   return mcal::gpt::value_type(elapsed);
 }
