@@ -7,8 +7,7 @@
 
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_base.h>
-
-#include <gpio.h>
+#include <mcal_port.h>
 
 namespace mcal { namespace led {
 
@@ -37,14 +36,14 @@ private:
 
   void switch_led_on()
   {
-    ::gpio_ClrPin(GPIO_STATUS_LED);
+    ::mcal_port_pin_clr(GPIO_STATUS_LED);
 
     is_on = true;
   }
 
   void switch_led_off()
   {
-    ::gpio_SetPin(GPIO_STATUS_LED);
+    ::mcal_port_pin_set(GPIO_STATUS_LED);
 
     is_on = false;
   }
