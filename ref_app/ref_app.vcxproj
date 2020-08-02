@@ -357,7 +357,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.c" />
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.cpp" />
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_spi.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1812,6 +1812,7 @@
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_console.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
     <ClInclude Include="src\mcal_led\mcal_led_pwm.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />

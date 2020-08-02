@@ -14,38 +14,7 @@
   #include <stdint.h>
   #endif
 
-  #if defined(__cplusplus)
-  namespace mcal
-  {
-    namespace port
-    {
-      typedef void config_type;
-      void init(const config_type*);
-
-      class port_pin
-      {
-      public:
-        static void set_direction_output() { }
-        static void set_direction_input() { }
-        static void set_pin_high() { }
-        static void set_pin_low() { }
-        static bool read_input_value() { return false; }
-        static void toggle_pin() { }
-      };
-    }
-  }
-  #endif
-
-  #if defined(__cplusplus)
-  #include <cstdint>
-  #else
-  #include <stdint.h>
-  #endif
-
-  #if defined(__cplusplus)
-  extern "C"
-  {
-  #endif
+  #include <mcal_reg.h>
 
   #define GPIO_PIN02_H03      (uint8_t) (0x02U)
   #define GPIO_PIN03_H05      (uint8_t) (0x03U)
@@ -75,6 +44,97 @@
   #define GPIO_PIN21_H40      (uint8_t) (0x21U)
 
   #define GPIO_STATUS_LED     (uint8_t) (0x47U)
+
+  #if defined(__cplusplus)
+  namespace mcal
+  {
+    namespace port
+    {
+      typedef void config_type;
+      void init(const config_type*);
+
+      class port_pin_base
+      {
+      protected:
+        static constexpr std::uint32_t GPFSEL0_ADDR         = UINT32_C(0x20200000);
+
+        static constexpr std::uint32_t GPIO_PIN_X_INPUT     = UINT32_C(0);
+        static constexpr std::uint32_t GPIO_PIN_X_OUTPUT    = UINT32_C(1);
+
+        static constexpr std::uint32_t GPCLR0_ADDR          = UINT32_C(0x20200028);
+        static constexpr std::uint32_t GPCLR1_ADDR          = UINT32_C(0x2020002C);
+
+        static constexpr std::uint32_t GPSET0_ADDR          = UINT32_C(0x2020001C);
+        static constexpr std::uint32_t GPSET1_ADDR          = UINT32_C(0x20200020);
+
+        static constexpr std::uint32_t GPIO_NO_EFFECT       = UINT32_C(0);
+        static constexpr std::uint32_t GPIO_SET_GPIO_PIN_X  = UINT32_C(1);
+      };
+
+      template<const std::uint8_t PortPin>
+      class port_pin : public port_pin_base
+      {
+      private:
+        static bool pin_is_high;
+
+        static constexpr std::uint32_t port    = (std::uint32_t) ((PortPin & 0xF0U) >> 4u);
+        static constexpr std::uint32_t pin     = (std::uint32_t) (PortPin & 0x0FU);
+        static constexpr std::uint32_t pos     = (std::uint32_t) ((port * 10U) + pin);
+        static constexpr std::uint32_t addfsel = (std::uint32_t) (GPFSEL0_ADDR + (std::uint32_t) (4U * port));
+        static constexpr std::uint32_t valfout = (std::uint32_t) GPIO_PIN_X_OUTPUT << (pin * 3U);
+
+        static constexpr std::uint32_t addclr  = (std::uint32_t) ((PortPin < 0x32U) ? GPCLR0_ADDR : GPCLR1_ADDR);
+        static constexpr std::uint32_t valclr  = (std::uint32_t) ((std::uint32_t) GPIO_SET_GPIO_PIN_X << ((pos < 32U) ? (pos) : (pos - 32U)));
+
+        static constexpr std::uint32_t addset  = (std::uint32_t) ((PortPin < 0x32U) ? GPSET0_ADDR : GPSET1_ADDR);
+        static constexpr std::uint32_t valset  = (std::uint32_t) ((std::uint32_t) GPIO_SET_GPIO_PIN_X << ((pos < 32u) ? (pos) : (pos - 32u)));
+
+      public:
+        static void set_direction_output()
+        {
+          mcal_reg_access32_reg_or(addfsel, valfout);
+        }
+
+        static void set_direction_input() { }
+
+        static void set_pin_high()
+        {
+          mcal_reg_access32_reg_or(addset, valset);
+
+          pin_is_high = true;
+        }
+
+        static void set_pin_low()
+        {
+          mcal_reg_access32_reg_or(addclr, valclr);
+
+          pin_is_high = false;
+        }
+
+        static bool read_input_value() { return false; }
+
+        static void toggle_pin()
+        {
+          (pin_is_high ? set_pin_low() : set_pin_high());
+        }
+      };
+
+      template<const std::uint8_t PortPin>
+      bool port_pin<PortPin>::pin_is_high;
+    }
+  }
+  #endif
+
+  #if defined(__cplusplus)
+  #include <cstdint>
+  #else
+  #include <stdint.h>
+  #endif
+
+  #if defined(__cplusplus)
+  extern "C"
+  {
+  #endif
 
   void mcal_port_pin_clr(uint8_t PortPin);
   void mcal_port_pin_set(uint8_t PortPin);

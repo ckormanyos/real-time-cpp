@@ -739,7 +739,7 @@
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.c">
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1718,6 +1718,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal_lcd\mcal_lcd_classic_st7066.h">
       <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h">
+      <Filter>src\mcal_led</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
