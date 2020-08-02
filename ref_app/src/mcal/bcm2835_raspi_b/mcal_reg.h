@@ -8,8 +8,13 @@
 #ifndef MCAL_REG_2010_04_10_H_
   #define MCAL_REG_2010_04_10_H_
 
+  #if defined(__cplusplus)
   #include <cstdint>
+  #else
+  #include <stdint.h>
+  #endif
 
+  #if defined(__cplusplus)
   namespace mcal
   {
     namespace reg
@@ -84,5 +89,29 @@
 
   #include <mcal/mcal_reg_access_dynamic.h>
   #include <mcal/mcal_reg_access_static.h>
+  #endif
+
+  #if defined(__cplusplus)
+  extern "C"
+  {
+  #endif
+
+  void     mcal_reg_access32_write(uint32_t address, uint32_t value) __attribute__((naked));
+  uint32_t mcal_reg_access32_read (uint32_t address)                 __attribute__((naked));
+
+  static inline void     mcal_reg_access32_reg_set(uint32_t address, uint32_t value) { mcal_reg_access32_write(address, value); }
+  static inline void     mcal_reg_access32_reg_and(uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & value)); }
+  static inline void     mcal_reg_access32_reg_or (uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | value)); }
+  static inline void     mcal_reg_access32_reg_not(uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) (~value))); }
+  static inline uint32_t mcal_reg_access32_reg_get(uint32_t address)                 { return mcal_reg_access32_read(address); }
+
+  static inline void     mcal_reg_access32_bit_set(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | (uint32_t) (1ULL << bpos))); }
+  static inline void     mcal_reg_access32_bit_clr(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) ~((uint32_t) (1ULL << bpos)))); }
+  static inline void     mcal_reg_access32_bit_not(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r ^ (uint32_t) (1ULL << bpos))); }
+  static inline unsigned mcal_reg_access32_bit_get(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); return (((uint32_t) ((r >> bpos) & 1U) != 0U) ? 1U : 0U); }
+
+  #if defined(__cplusplus)
+  }
+  #endif
 
 #endif // MCAL_REG_2010_04_10_H_

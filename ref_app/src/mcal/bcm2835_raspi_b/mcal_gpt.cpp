@@ -49,9 +49,9 @@ namespace
       // starts up, the system tick timer will have already increased
       // to some non-zero value represented here by initial_count.
 
-      const std::uint32_t lo0 = lo();
-      const std::uint32_t hi0 = hi();
-      const std::uint32_t lo1 = lo();
+      const volatile std::uint32_t lo0 = lo();
+      const volatile std::uint32_t hi0 = hi();
+      const volatile std::uint32_t lo1 = lo();
 
       const std::uint64_t consistent_microsecond_tick =
         ((lo1 >= lo0) ? util::make_long(lo0, hi0) : util::make_long(lo1, hi()));

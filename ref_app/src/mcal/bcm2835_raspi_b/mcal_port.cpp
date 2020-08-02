@@ -6,7 +6,6 @@
 //
 
 #include <mcal_port.h>
-#include <mcal_reg.h>
 
 void mcal::port::init(const config_type*)
 {

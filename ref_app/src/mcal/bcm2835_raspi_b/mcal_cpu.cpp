@@ -11,8 +11,6 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-#include <pwr.h>
-
 void mcal::cpu::init()
 {
   mcal::wdg::init(nullptr);
@@ -22,8 +20,4 @@ void mcal::cpu::init()
 
 void mcal::cpu::post_init()
 {
-  while(TRUE != bcm2835_setpower(POWER_USB, TRUE))
-  {
-    ;
-  }
 }
