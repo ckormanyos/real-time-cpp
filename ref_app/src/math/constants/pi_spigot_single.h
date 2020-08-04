@@ -61,7 +61,7 @@
             ((base_class_type::my_j == UINT32_C(0)) ? base_class_type::d_init : input_first[std::uint32_t(i)]);
 
           base_class_type::my_d +=
-            std::uint64_t(std::uint64_t(di) * base_class_type::pow10(base_class_type::loop_digit));
+            std::uint64_t(std::uint64_t(di) * detail::pow10<base_class_type::loop_digit>::value);
 
           const std::uint32_t b =
             std::uint32_t(std::uint32_t(i) * UINT32_C(2)) + UINT32_C(1);

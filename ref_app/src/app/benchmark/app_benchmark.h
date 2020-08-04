@@ -17,6 +17,7 @@
   #define APP_BENCHMARK_TYPE_FLOAT               6
   #define APP_BENCHMARK_TYPE_WIDE_INTEGER        7
   #define APP_BENCHMARK_TYPE_PI_SPIGOT           8
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE    9
 
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -27,6 +28,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_FLOAT
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_WIDE_INTEGER
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_PI_SPIGOT
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE
 
   namespace app { namespace benchmark {
 
@@ -47,6 +49,8 @@
   bool run_wide_integer();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT)
   bool run_pi_spigot();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE)
+  bool run_pi_spigot_single();
   #endif
 
   } } // namespace app:::benchmark

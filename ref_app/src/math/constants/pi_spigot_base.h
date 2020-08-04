@@ -12,6 +12,23 @@
 
   namespace math { namespace constants {
 
+  namespace detail
+  {
+
+  template<const std::uint32_t LoopDigit>
+  struct pow10
+  {
+    static constexpr std::uint32_t value = pow10<LoopDigit - 1U>::value * UINT32_C(10);
+  };
+
+  template<>
+  struct pow10<0U>
+  {
+    static constexpr std::uint32_t value = 1U;
+  };
+
+  } // namespace detail
+
   template<const std::uint32_t ResultDigit,
            const std::uint32_t LoopDigit>
   class pi_spigot_base
@@ -69,12 +86,7 @@
       return std::uint32_t(x * std::uint32_t((std::uint32_t(UINT32_C(10) * loop_digit) / UINT32_C(3)) + UINT32_C(1))) / loop_digit;
     }
 
-    static constexpr std::uint32_t pow10(std::uint32_t n)
-    {
-      return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10(n - UINT32_C(1)) * UINT32_C(10));
-    }
-
-    static constexpr std::uint32_t d_init = pow10(loop_digit) / UINT32_C(5);
+    static constexpr std::uint32_t d_init = detail::pow10<loop_digit>::value / UINT32_C(5);
 
   public:
     using output_value_type = std::uint8_t;
@@ -126,15 +138,15 @@
       // of digits have a form such as: 3141, 5926, ..., etc.
 
       const std::uint32_t next_digits =
-        my_c + std::uint32_t(my_d / pow10(loop_digit));
+        my_c + std::uint32_t(my_d / detail::pow10<loop_digit>::value);
 
-      my_c = std::uint32_t(my_d % pow10(loop_digit));
+      my_c = std::uint32_t(my_d % detail::pow10<loop_digit>::value);
 
       const std::uint32_t n =
         (std::min)(loop_digit,
                     std::uint32_t(result_digit - my_j));
 
-      std::uint32_t scale10 = pow10(loop_digit - UINT32_C(1));
+      std::uint32_t scale10 = detail::pow10<loop_digit - UINT32_C(1)>::value;
 
       for(std::size_t i = std::size_t(0U); i < std::size_t(n); ++i)
       {
