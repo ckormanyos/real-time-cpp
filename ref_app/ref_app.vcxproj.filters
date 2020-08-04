@@ -742,8 +742,8 @@
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f407\mcal_core_sys_tick.cpp">
-      <Filter>src\mcal\stm32f407</Filter>
+    <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp">
+      <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

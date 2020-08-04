@@ -21,8 +21,8 @@ uint32_t mcal_reg_access32_read(uint32_t address)
   asm
   (
     "mov r2, #0                  \t\n\
-     mcr p15, 0, r2, c7, c10, 5  \t\n\
      ldr r0, [r0]                \t\n\
+     mcr p15, 0, r2, c7, c10, 5  \t\n\
      bx lr"
   );
 }
