@@ -8,16 +8,16 @@
 #ifndef MCAL_LED_PORT_INVERTED_2020_08_02_H_
   #define MCAL_LED_PORT_INVERTED_2020_08_02_H_
 
-  #include <mcal_led/mcal_led_base.h>
+  #include <mcal_led/mcal_led_boolean_state_base.h>
   #include <mcal_port.h>
 
   namespace mcal { namespace led {
 
   template<typename port_type>
-  class led_port_inverted : public mcal::led::led_base
+  class led_port_inverted : public mcal::led::led_boolean_state_base
   {
   public:
-    led_port_inverted() : is_on(false)
+    led_port_inverted()
     {
       port_type::set_pin_high();
       port_type::set_direction_output();
@@ -25,18 +25,13 @@
 
     virtual ~led_port_inverted() = default;
 
+  private:
     virtual void toggle()
     {
-      // Toggle the LED state.
-      is_on = (!is_on);
+      led_boolean_state_base::toggle();
 
       port_type::toggle_pin();
     }
-
-    virtual bool state_is_on() const { return is_on; }
-
-  private:
-    bool is_on;
   };
 
   } } // namespace mcal::led
