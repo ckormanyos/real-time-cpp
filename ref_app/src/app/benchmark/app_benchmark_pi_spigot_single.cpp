@@ -33,7 +33,7 @@ namespace
     9U
   }};
 
-  using pi_spigot_type = math::constants::pi_spigot_single<101U, 9U>;
+  using pi_spigot_type = math::constants::pi_spigot_single<21U, 9U>;
 
   std::array<std::uint32_t, pi_spigot_type::get_input__static_size()> app_benchmark_pi_spigot_in_;
   std::array<std::uint8_t,  pi_spigot_type::get_output_static_size()> app_benchmark_pi_spigot_out;

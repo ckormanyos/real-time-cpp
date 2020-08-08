@@ -72,8 +72,8 @@
     // of 9, 8 or 4 digits per loop, corresponding
     // to the template parameter loop_digit.
 
-    static constexpr std::uint32_t result_digit = ResultDigit;
-    static constexpr std::uint32_t loop_digit   = LoopDigit;
+    static const std::uint32_t result_digit = ResultDigit;
+    static const std::uint32_t loop_digit   = LoopDigit;
 
     static_assert(result_digit <= UINT32_C(1001001),
                   "Error: result_digit exceeds its limit of 1,001,001");
@@ -104,7 +104,7 @@
 
     static constexpr std::uint32_t get_input__static_size()
     {
-      return input_scale(get_output_static_size());
+      return input_scale(result_digit);
     }
 
     std::uintmax_t get_operation_count() const
@@ -159,6 +159,9 @@
       my_output_count += n;
     }
   };
+
+  template<const std::uint32_t ResultDigit, const std::uint32_t LoopDigit> const std::uint32_t pi_spigot_base<ResultDigit, LoopDigit>::result_digit;
+  template<const std::uint32_t ResultDigit, const std::uint32_t LoopDigit> const std::uint32_t pi_spigot_base<ResultDigit, LoopDigit>::loop_digit;
 
   } } // namespace math::constants
 
