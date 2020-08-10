@@ -9,7 +9,6 @@
   #define MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H_
 
   #include <mcal_led/mcal_led_base.h>
-  #include <mcal_port.h>
 
   namespace mcal { namespace led {
 
