@@ -137,7 +137,7 @@ RaspberryPi (PiZero) single core controller.
 This project creates a bare-metal program for the PiZero.
 This program runs independently from any kind of `*nix` distro on the board.
 Our program is designed to boot the PiZero from a raw binary file.
-The raw binary file is called "kernel.img" and it is stored on a FAT32 SDHC
+The raw binary file is called _kernel.img_ and it is stored on a FAT32 SDHC
 microcard. The program _objcopy_ can be used to extract raw binary
 from a ELF-file using the output flags `-O binary`.
 The kernel.img file is stored on the SD card together with
