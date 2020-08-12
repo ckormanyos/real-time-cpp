@@ -1887,6 +1887,7 @@
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
+    <ClInclude Include="src\util\utility\util_random_linear_congruential_engine.h" />
     <ClInclude Include="src\util\utility\util_random_pcg32.h" />
     <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_swdm.h" />
