@@ -1728,9 +1728,6 @@
     <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h">
       <Filter>src\mcal_led</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_random_linear_congruential_engine.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
