@@ -23,6 +23,11 @@
 
     virtual ~led_pwm() = default;
 
+    virtual bool state_is_on() const { return (my_pwm.get_duty() > 0U); }
+
+  private:
+    mcal::pwm::pwm_base& my_pwm;
+
     virtual void toggle()
     {
       // Toggle the duty cycle.
@@ -30,11 +35,6 @@
 
       my_pwm.set_duty(new_duty);
     }
-
-    virtual bool state_is_on() const { return (my_pwm.get_duty() > 0U); }
-
-  private:
-    mcal::pwm::pwm_base& my_pwm;
   };
 
   } } // namespace mcal::led

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,98 +8,16 @@
 #ifndef RANDOM_2018_06_10_
   #define RANDOM_2018_06_10_
 
-  #include <algorithm>
   #include <cstddef>
   #include <cstdint>
-  #include <initializer_list>
-  #include <vector>
+  #include <limits>
 
-  // Implement portions of <random> for compilers that do not have it.
+  // Implement some of <random> for compilers that do not yet support it.
+
+  extern "C" unsigned int  my_hardware_random_device_generator(void);
+  extern "C" unsigned char my_hardware_random_device_entropy  (void);
 
   namespace std {
-
-  class seed_seq
-  {
-  public:
-    using result_type = uint_least32_t;
-
-    seed_seq() : internal_sequence() { }
-
-    template<typename T>
-    seed_seq(const std::initializer_list<T>& init_list)
-      : internal_sequence(init_list.begin(), init_list.end()) { }
-
-    template<typename input_iterator_type>
-    seed_seq(input_iterator_type first, input_iterator_type last)
-      : internal_sequence(first, last) { }
-
-    template<typename random_iterator_type>
-    void generate(random_iterator_type first, random_iterator_type last) const
-    {
-      typedef typename std::iterator_traits<random_iterator_type>::value_type value_type;
-
-      std::fill(first, last, static_cast<value_type>(0x8B8B8B8BU));
-
-      std::size_t s = internal_sequence.size();
-
-      std::size_t n = last - first;
-
-      std::size_t t = (n >= 623) ? 11 :
-                      (n >=  68) ?  7 :
-                      (n >=  39) ?  5 :
-                      (n >=   7) ?  3 :
-                      (n - 1)/2;
-
-      std::size_t p = (n - t) / 2;
-      std::size_t q = p + t;
-      std::size_t m = (std::max)(s + 1, n);
-
-      value_type mask = 0xFFFFFFFFU;
-      for(std::size_t k = 0; k < m; ++k)
-      {
-        value_type r1(*(first + (k % n)) ^ *(first + ((k + p) % n)) ^ *(first + (((k + n) - 1) % n)));
-
-        r1 = r1 ^ (r1 >> 27);
-        r1 = (r1 * 1664525U) & mask;
-
-        value_type r2(r1 + ((k == 0) ? s :
-                            (k <= s) ? k % n + internal_sequence[k - 1] :
-                            (k % n)));
-
-        *(first + ((k + p) % n)) = (*(first + ((k + p) % n)) + r1) & mask;
-        *(first + ((k + q) % n)) = (*(first + ((k + q) % n)) + r2) & mask;
-        *(first + (k % n)) = r2;
-      }
-
-      for(std::size_t k = m; k < m + n; ++k)
-      {
-        value_type r3((*(first + (k % n)) + *(first + ((k + p) % n)) + *(first + (k+n-1)%n)) & mask);
-
-        r3 = r3 ^ (r3 >> 27);
-        r3 = (r3 * 1566083941U) & mask;
-
-        value_type r4 = static_cast<value_type>(r3 - (k % n));
-
-        *(first + ((k + p) % n)) ^= r3;
-        *(first + ((k + q) % n)) ^= r4;
-        *(first +  (k % n)) = r4;
-      }
-    }
-
-    template<typename output_iterator_type>
-    void param(output_iterator_type destination) const
-    {
-      static_cast<void>(destination);
-    }
-
-    size_t size() const { return internal_sequence.size(); }
-
-    seed_seq(const seed_seq&) = delete;
-    void operator=(const seed_seq&) = delete;
-
-  private:
-    std::vector<result_type> internal_sequence;
-  };
 
   template <class UnsignedIntegralType,
             UnsignedIntegralType AxValue,
@@ -135,12 +53,12 @@
 
     static constexpr result_type(min)() noexcept
     {
-      return (CxValue == 0) ? result_type(1U) : result_type(0U);
+      return ((CxValue == 0) ? result_type(1U) : result_type(0U));
     }
 
     static constexpr result_type(max)() noexcept
     {
-      return static_cast<result_type>(MxValue - 1U);
+      return result_type(MxValue - 1U);
     }
 
     static constexpr result_type default_seed = 1U;
@@ -179,10 +97,398 @@
       result_type my_previous;
   };
 
-  using min_stdrand = linear_congruential_engine<std::uint_fast32_t,
-                                                 UINT32_C(48271),
-                                                 UINT32_C(0),
-                                                 UINT32_C(2147483647)>;
+  template <class UnsignedIntegralType,
+            const UnsignedIntegralType WxParam,
+            const UnsignedIntegralType SxParam,
+            const UnsignedIntegralType RxParam>
+  class subtract_with_carry_engine
+  {
+  public:
+    // TBD: Implementation.
+  };
+
+  template<typename T,
+           const std::size_t NumElemsHalf>
+  struct twister_buffer
+  {
+  protected:
+    using value_type = T;
+
+  public:
+    virtual ~twister_buffer() = default;
+
+    twister_buffer(twister_buffer&) = default;
+
+    twister_buffer& operator=(const twister_buffer&) = default;
+
+    bool is_equal(const twister_buffer& right) const
+    {
+      const value_type* last1 = elems + my_idx;
+      const value_type* last2 = right.elems + right.my_idx;
+
+      const value_type* first;
+      const value_type* last;
+      const value_type* other;
+
+      const bool right_is_high = (my_base() < right.my_base());
+
+      if(right_is_high)
+      {
+        first = right.elems + right.my_base();
+        last  = last2;
+        other = elems + my_base();
+      }
+      else
+      {
+        first = elems + my_base();
+        last  = last1;
+        other = right.elems + right.my_base();
+      }
+
+      std::ptrdiff_t n0 = NumElemsHalf;
+
+      while(0 < n0)
+      {
+        const value_type* p_limit =
+          ((first < last) ? last
+                          : (right_is_high ? right.elems + (2U * NumElemsHalf) : elems + (2U * NumElemsHalf)));
+
+        n0 -= (p_limit - first);
+
+        while(first != p_limit)
+        {
+          if(*first++ != *other++)
+          {
+            return false;
+          }
+        }
+
+        first = other;
+        last  = (right_is_high ? last1       : last2);
+        other = (right_is_high ? right.elems : elems);
+
+        right_is_high  = (!right_is_high);
+      }
+
+      return true;
+    }
+
+  protected:
+    std::uint32_t my_idx;
+    value_type    elems[2U * NumElemsHalf];
+
+    twister_buffer() : my_idx(),
+                       elems () { }
+
+    value_type at(std::int32_t i) const
+    {
+      return elems[my_base(i)];
+    }
+
+    std::uint32_t my_base(std::int32_t i = 0) const
+    {
+      return ((i += my_idx) < NumElemsHalf ? (i + NumElemsHalf) : (i - NumElemsHalf));
+    }
+  };
+
+  template<typename      T,
+           std::intmax_t WordBits,
+           std::intmax_t NumState,
+           std::intmax_t ParamM,
+           std::intmax_t ParamR,
+           T             MatrixA,
+           std::intmax_t ValueU,
+           std::intmax_t ValueS,
+           T             ValueB,
+           std::intmax_t ValueT,
+           T             ValueC,
+           std::intmax_t ValueL>
+  class mersenne_twister : public twister_buffer<T, (std::size_t) NumState>
+  {
+  private:
+    using base_class_type = twister_buffer<T, (std::size_t) NumState>;
+
+  protected:
+    using result_type = typename base_class_type::value_type;
+
+  public:
+    static constexpr std::intmax_t num_state   = NumState;
+    static constexpr std::intmax_t word_bits   = WordBits;
+    static constexpr std::intmax_t shift_size  = ParamM;
+    static constexpr std::intmax_t mask_bits   = ParamR;
+    static constexpr result_type   parameter_a = MatrixA;
+    static constexpr std::intmax_t value_u     = ValueU;
+    static constexpr std::intmax_t value_s     = ValueS;
+    static constexpr result_type   value_b     = ValueB;
+    static constexpr std::intmax_t value_t     = ValueT;
+    static constexpr result_type   value_c     = ValueC;
+    static constexpr std::intmax_t value_l     = ValueL;
+
+    static constexpr result_type default_seed  = 5489U;
+
+    explicit mersenne_twister(result_type x0 = default_seed,
+                              result_type dx = word_mask,
+                              result_type fx = (result_type) 1812433253ULL)
+      : my_value_dx(dx)
+    {
+      seed(x0, fx);
+    }
+
+    void seed(result_type s  = default_seed,
+              result_type fx = (result_type) 1812433253ULL)
+    {
+      result_type prev = base_class_type::elems[0] = s & word_mask;
+
+      for(std::int32_t i = 1; i < num_state; ++i)
+      {
+        prev = base_class_type::elems[i]
+             = ((result_type) i + fx * (prev ^ (prev >> (word_bits - 2U)))) & word_mask;
+      }
+
+      base_class_type::my_idx = num_state;
+    }
+
+    static constexpr result_type (min)() noexcept
+    {
+      return 0U;
+    }
+
+    static constexpr result_type (max)() noexcept
+    {
+      return word_mask;
+    }
+
+    result_type operator()()
+    {
+      result_type  tmp;
+      std::int32_t kk;
+
+      if(base_class_type::my_idx == num_state)
+      {
+        for(kk = num_state; kk < 2 * num_state; ++kk)
+        {
+          tmp = (base_class_type::elems[kk - num_state] & hi_mask) | (base_class_type::elems[kk - num_state + 1] & lo_mask);
+
+          base_class_type::elems[kk] = (tmp >> 1U) ^ (((tmp & 1U) != 0U) ? MatrixA : 0U) ^ base_class_type::elems[kk - num_state + ParamM];
+        }
+      }
+      else if(base_class_type::my_idx >= (2U * num_state))
+      {
+        for(kk = 0; kk < num_state - ParamM; ++kk)
+        {
+          tmp = (base_class_type::elems[kk + num_state] & hi_mask) | (base_class_type::elems[kk + num_state + 1] & lo_mask);
+
+          base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[kk + num_state + ParamM];
+        }
+
+        for( ; kk < num_state - 1; ++kk)
+        {
+          tmp = (base_class_type::elems[kk +num_state] & hi_mask) | (base_class_type::elems[kk + num_state + 1] & lo_mask);
+
+          base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[kk - num_state + ParamM];
+        }
+
+        tmp = (base_class_type::elems[kk + num_state] & hi_mask) | (base_class_type::elems[0] & lo_mask);
+
+        base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[ParamM - 1];
+
+        base_class_type::my_idx = 0U;
+      }
+
+      result_type result = base_class_type::elems[base_class_type::my_idx++] & word_mask;
+
+      result ^= (result >> value_u)  &  my_value_dx;
+      result ^= (result << value_s)  &  value_b;
+      result ^= (result << value_t)  &  value_c;
+      result ^= (result & word_mask) >> value_l;
+
+      return result;
+    }
+
+    void discard(unsigned long long n_skip)
+    {
+      for( ; 0 < n_skip; --n_skip)
+      {
+        const result_type r_skip = (this->operator())();
+
+        static_cast<void>(r_skip);
+      }
+    }
+
+  private:
+    result_type my_value_dx;
+
+    static constexpr result_type word_mask = ~((~result_type(0U) << (word_bits - 1U)) << 1U);
+    static constexpr result_type hi_mask   = (word_mask << ParamR) & word_mask;
+    static constexpr result_type lo_mask   = ~hi_mask & word_mask;
+  };
+
+  template<typename       T,
+           std::uintmax_t WordBits,
+           std::uintmax_t NumState,
+           std::uintmax_t ParamM,
+           std::uintmax_t ParamR,
+           T              MatrixA,
+           std::uintmax_t ValueU,
+           T              ValueD,
+           std::uintmax_t ValueS,
+           T              ValueB,
+           std::uintmax_t ValueT,
+           T              ValueC,
+           std::uintmax_t ValueL,
+           T              FMul>
+  class mersenne_twister_engine
+    : public mersenne_twister<T,
+                              (std::intmax_t) WordBits,
+                              (std::intmax_t) NumState,
+                              (std::intmax_t) ParamM,
+                              (std::intmax_t) ParamR,
+                              MatrixA,
+                              (std::intmax_t) ValueU,
+                              (std::intmax_t) ValueS,
+                              ValueB,
+                              (std::intmax_t) ValueT,
+                              ValueC,
+                              (std::intmax_t) ValueL>
+  {
+  private:
+    using base_class_type = mersenne_twister<T,
+                                             (std::intmax_t) WordBits,
+                                             (std::intmax_t) NumState,
+                                             (std::intmax_t) ParamM,
+                                             (std::intmax_t) ParamR,
+                                             MatrixA,
+                                             (std::intmax_t) ValueU,
+                                             (std::intmax_t) ValueS,
+                                             ValueB,
+                                             (std::intmax_t) ValueT,
+                                             ValueC,
+                                             (std::intmax_t) ValueL>;
+
+  public:
+    static constexpr unsigned long long word_max = (((1ULL << (base_class_type::word_bits - 1U)) - 1U) << 1U) + 1U;
+
+    using result_type = typename base_class_type::result_type;
+
+    static constexpr bool parameter_check_is_ok = 
+      (   (0                          <  ParamM)
+       && (ParamM                     <= NumState)
+       && (2U                         <  base_class_type::word_bits)
+       && (ParamR                     <= base_class_type::word_bits)
+       && (base_class_type::value_u   <= base_class_type::word_bits)
+       && (base_class_type::value_s   <= base_class_type::word_bits)
+       && (base_class_type::value_t   <= base_class_type::word_bits)
+       && (base_class_type::value_l   <= base_class_type::word_bits)
+       && (base_class_type::word_bits <= std::numeric_limits<result_type>::digits)
+       && (MatrixA                    <= word_max)
+       && (base_class_type::value_b   <= word_max)
+       && (base_class_type::value_c   <= word_max)
+       && (ValueD                     <= word_max)
+       && (FMul                       <= word_max));
+
+    static_assert(parameter_check_is_ok,
+                  "Error: Invalid template parameters for mersenne_twister_engine");
+
+    static constexpr std::uintmax_t shift_size                = ParamM;
+    static constexpr std::uintmax_t mask_bits                 = ParamR;
+    static constexpr result_type    initialization_multiplier = FMul;
+    static constexpr result_type    default_seed              = 5489U;
+
+    explicit mersenne_twister_engine(result_type x0 = default_seed)
+      : base_class_type(x0, ValueD, initialization_multiplier) { }
+
+    void seed(result_type s = default_seed)
+    {
+      base_class_type::seed(s, initialization_multiplier);
+    }
+
+    static constexpr result_type (min)() noexcept
+    {
+      return (base_class_type::min)();
+    }
+
+    static constexpr result_type (max)() noexcept
+    {
+      return (base_class_type::max)();
+    }
+  };
+
+  using mt19937 = mersenne_twister_engine<std::uint32_t,
+                                          32UL,
+                                          624UL,
+                                          397UL,
+                                          31UL,
+                                          0x9908B0DFUL,
+                                          11UL,
+                                          0xFFFFFFFFUL,
+                                          7UL,
+                                          0x9D2C5680UL,
+                                          15UL,
+                                          0xEFC60000UL,
+                                          18UL,
+                                          1812433253UL>;
+
+  using mt19937_64 = mersenne_twister_engine<std::uint_fast64_t,
+                                             64ULL,
+                                             312ULL,
+                                             156ULL,
+                                             31ULL,
+                                             0xB5026F5AA96619E9ULL,
+                                             29ULL,
+                                             0x5555555555555555ULL,
+                                             17ULL,
+                                             0x71D67FFFEDA60000ULL,
+                                             37ULL,
+                                             0xFFF7EEE000000000ULL,
+                                             43ULL,
+                                             6364136223846793005ULL>;
+
+  using minstd_rand0 = linear_congruential_engine<std::uint_fast32_t,
+                                                  UINT32_C(16807),
+                                                  UINT32_C(0),
+                                                  UINT32_C(2147483647)>;
+
+  using minstd_rand  = linear_congruential_engine<std::uint_fast32_t,
+                                                  UINT32_C(48271),
+                                                  UINT32_C(0),
+                                                  UINT32_C(2147483647)>;
+
+  using default_random_engine = mt19937;
+
+  class random_device
+  {
+  public:
+    using result_type = unsigned int;
+
+    random_device() { }
+
+    explicit random_device(const char*) { }
+
+    static constexpr result_type(min)() noexcept
+    {
+      return result_type(0U);
+    }
+
+    static constexpr result_type(max)() noexcept
+    {
+      return static_cast<result_type>(std::uintmax_t(-1));
+    }
+
+    // Not conformant with the standard return type of float.
+    unsigned char entropy() const noexcept
+    {
+      return my_hardware_random_device_entropy();
+    }
+
+    result_type operator()()
+    {
+      return my_hardware_random_device_generator();
+    }
+
+    random_device(const random_device&) = delete;
+    random_device& operator=(const random_device&) = delete;
+  };
+
   }
 
 #endif // RANDOM_2018_06_10_

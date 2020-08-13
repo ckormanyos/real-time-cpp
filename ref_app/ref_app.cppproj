@@ -462,6 +462,9 @@
     <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
       <SubType>compile</SubType>
     </Compile>
