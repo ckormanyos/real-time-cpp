@@ -1,16 +1,36 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2020.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+// \author (c) Christopher Kormanyos 2018 - 2020
+//
+// \license The MIT License (MIT)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 #ifndef RANDOM_2018_06_10_
   #define RANDOM_2018_06_10_
 
+  #include <algorithm>
   #include <cstddef>
   #include <cstdint>
   #include <limits>
+  #include <numeric>
+  #include <type_traits>
 
   // Implement some of <random> for compilers that do not yet support it.
 
@@ -19,441 +39,1283 @@
 
   namespace std {
 
-  template <class UnsignedIntegralType,
-            UnsignedIntegralType AxValue,
-            UnsignedIntegralType CxValue,
-            UnsignedIntegralType MxValue>
-  UnsignedIntegralType linear_congruential_value(UnsignedIntegralType previous) noexcept
+  namespace __detail {
+
+  template<typename _UIntType,
+            size_t __w,
+            bool = __w < static_cast<size_t>
+            (std::numeric_limits<_UIntType>::digits)>
+  struct _Shift
   {
-    const std::uint64_t multiplier = std::uint64_t(std::uint64_t(previous) * AxValue) + CxValue;
-
-    return UnsignedIntegralType(multiplier % MxValue);
-  }
-
-  template <class UnsignedIntegralType, UnsignedIntegralType CxValue, UnsignedIntegralType MxValue>
-  UnsignedIntegralType linear_congruential_seed(UnsignedIntegralType s) noexcept
-  {
-    return s;
-  }
-
-  template <typename UnsignedIntegralType,
-            const UnsignedIntegralType AxValue,
-            const UnsignedIntegralType CxValue,
-            const UnsignedIntegralType MxValue>
-  class linear_congruential_engine
-  {
-  public:
-    static_assert((MxValue == 0) || ((AxValue < MxValue) && (CxValue < MxValue)),
-                  "Error: Bad parameters for linear_congruential_engine");
-
-    using result_type                       = UnsignedIntegralType;
-    static constexpr result_type multiplier = AxValue;
-    static constexpr result_type increment  = CxValue;
-    static constexpr result_type modulus    = MxValue;
-
-    static constexpr result_type(min)() noexcept
-    {
-      return ((CxValue == 0) ? result_type(1U) : result_type(0U));
-    }
-
-    static constexpr result_type(max)() noexcept
-    {
-      return result_type(MxValue - 1U);
-    }
-
-    static constexpr result_type default_seed = 1U;
-
-    linear_congruential_engine() noexcept
-      : my_previous(linear_congruential_seed<result_type, CxValue, MxValue>(default_seed)) { }
-
-    explicit linear_congruential_engine(result_type s) noexcept
-      : my_previous(linear_congruential_seed<result_type, CxValue, MxValue>(s)) { }
-
-    void seed(result_type s = default_seed) noexcept
-    {
-      my_previous = linear_congruential_seed<result_type, CxValue, MxValue>(s);
-    }
-
-    result_type operator()() noexcept
-    {
-      my_previous = linear_congruential_value<result_type, AxValue, CxValue, MxValue>(my_previous);
-
-      return my_previous;
-    }
-
-    void discard(unsigned long long skip) noexcept
-    {
-      result_type tmp = my_previous;
-
-      for( ; 0U < skip; --skip)
-      {
-        tmp = linear_congruential_value<UnsignedIntegralType, AxValue, CxValue, MxValue>(tmp);
-      }
-
-      my_previous = tmp;
-    }
-
-  private:
-      result_type my_previous;
+    static const _UIntType __value = 0;
   };
 
-  template <class UnsignedIntegralType,
-            const UnsignedIntegralType WxParam,
-            const UnsignedIntegralType SxParam,
-            const UnsignedIntegralType RxParam>
-  class subtract_with_carry_engine
+  template<typename _UIntType,
+            size_t __w>
+  struct _Shift<_UIntType, __w, true>
   {
-  public:
-    // TBD: Implementation.
+    static const _UIntType __value = _UIntType(1) << __w;
   };
 
-  template<typename T,
-           const std::size_t NumElemsHalf>
-  struct twister_buffer
+  template<int __s,
+            int __which =   ((__s <= CHAR_BIT * sizeof (int))
+                          +  (__s <= CHAR_BIT * sizeof (long))
+                          + (__s <= CHAR_BIT * sizeof (long long))
+                          /* assume long long no bigger than __int128 */
+                          + (__s <= 128))>
+  struct _Select_uint_least_t
   {
-  protected:
-    using value_type = T;
+    static_assert(__which < 0, /* needs to be dependent */
+                  "sorry, would be too much trouble for a slow result");
+  };
 
-  public:
-    virtual ~twister_buffer() = default;
+  template<int __s>
+  struct _Select_uint_least_t<__s, 4>
+  {
+    typedef unsigned int type;
+  };
 
-    twister_buffer(twister_buffer&) = default;
+  template<int __s>
+  struct _Select_uint_least_t<__s, 3>
+  {
+    typedef unsigned long type;
+  };
 
-    twister_buffer& operator=(const twister_buffer&) = default;
+  template<int __s>
+  struct _Select_uint_least_t<__s, 2>
+  {
+    typedef unsigned long long type;
+  };
 
-    bool is_equal(const twister_buffer& right) const
+  // Assume a != 0, a < m, c < m, x < m.
+  template<typename _Tp,
+            _Tp __m,
+            _Tp __a,
+            _Tp __c,
+            bool __big_enough = (!(__m & (__m - 1)) || (_Tp(-1) - __c) / __a >= __m - 1),
+            bool __schrage_ok = __m % __a < __m / __a>
+  struct _Mod
+  {
+    typedef _Tp _Tp2;
+    static _Tp
+
+    __calc(_Tp __x)
     {
-      const value_type* last1 = elems + my_idx;
-      const value_type* last2 = right.elems + right.my_idx;
+      return static_cast<_Tp>((_Tp2(__a) * __x + __c) % __m);
+    }
+  };
 
-      const value_type* first;
-      const value_type* last;
-      const value_type* other;
-
-      const bool right_is_high = (my_base() < right.my_base());
-
-      if(right_is_high)
+  // Schrage.
+  template<typename _Tp, _Tp __m, _Tp __a, _Tp __c>
+  struct _Mod<_Tp, __m, __a, __c, false, true>
+  {
+    // General case for x = (ax + c) mod m -- use Schrage's algorithm
+    // to avoid integer overflow.
+    //
+    // Preconditions:  a > 0, m > 0.
+    //
+    // Note: only works correctly for __m % __a < __m / __a.
+    static _Tp __calc(_Tp __x)
+    {
+      if (__a == 1)
       {
-        first = right.elems + right.my_base();
-        last  = last2;
-        other = elems + my_base();
+        __x %= __m;
       }
       else
       {
-        first = elems + my_base();
-        last  = last1;
-        other = right.elems + right.my_base();
-      }
+        static const _Tp __q = __m / __a;
+        static const _Tp __r = __m % __a;
 
-      std::ptrdiff_t n0 = NumElemsHalf;
+        _Tp __t1 = __a * (__x % __q);
+        _Tp __t2 = __r * (__x / __q);
 
-      while(0 < n0)
-      {
-        const value_type* p_limit =
-          ((first < last) ? last
-                          : (right_is_high ? right.elems + (2U * NumElemsHalf) : elems + (2U * NumElemsHalf)));
-
-        n0 -= (p_limit - first);
-
-        while(first != p_limit)
+        if (__t1 >= __t2)
         {
-          if(*first++ != *other++)
-          {
-            return false;
-          }
+          __x = __t1 - __t2;
         }
-
-        first = other;
-        last  = (right_is_high ? last1       : last2);
-        other = (right_is_high ? right.elems : elems);
-
-        right_is_high  = (!right_is_high);
+        else
+        {
+          __x = __m - __t2 + __t1;
+        }
       }
 
-      return true;
-    }
+      if (__c != 0)
+      {
+        const _Tp __d = __m - __x;
 
-  protected:
-    std::uint32_t my_idx;
-    value_type    elems[2U * NumElemsHalf];
+        if (__d > __c)
+        {
+          __x += __c;
+        }
+        else
+        {
+          __x = __c - __d;
+        }
+      }
 
-    twister_buffer() : my_idx(),
-                       elems () { }
-
-    value_type at(std::int32_t i) const
-    {
-      return elems[my_base(i)];
-    }
-
-    std::uint32_t my_base(std::int32_t i = 0) const
-    {
-      return ((i += my_idx) < NumElemsHalf ? (i + NumElemsHalf) : (i - NumElemsHalf));
+      return __x;
     }
   };
 
-  template<typename      T,
-           std::intmax_t WordBits,
-           std::intmax_t NumState,
-           std::intmax_t ParamM,
-           std::intmax_t ParamR,
-           T             MatrixA,
-           std::intmax_t ValueU,
-           std::intmax_t ValueS,
-           T             ValueB,
-           std::intmax_t ValueT,
-           T             ValueC,
-           std::intmax_t ValueL>
-  class mersenne_twister : public twister_buffer<T, (std::size_t) NumState>
+  // Special cases:
+  // - for m == 2^n or m == 0, unsigned integer overflow is safe.
+  // - a * (m - 1) + c fits in _Tp, there is no overflow.
+  template<typename _Tp, _Tp __m, _Tp __a, _Tp __c, bool __s>
+  struct _Mod<_Tp, __m, __a, __c, true, __s>
   {
-  private:
-    using base_class_type = twister_buffer<T, (std::size_t) NumState>;
-
-  protected:
-    using result_type = typename base_class_type::value_type;
-
-  public:
-    static constexpr std::intmax_t num_state   = NumState;
-    static constexpr std::intmax_t word_bits   = WordBits;
-    static constexpr std::intmax_t shift_size  = ParamM;
-    static constexpr std::intmax_t mask_bits   = ParamR;
-    static constexpr result_type   parameter_a = MatrixA;
-    static constexpr std::intmax_t value_u     = ValueU;
-    static constexpr std::intmax_t value_s     = ValueS;
-    static constexpr result_type   value_b     = ValueB;
-    static constexpr std::intmax_t value_t     = ValueT;
-    static constexpr result_type   value_c     = ValueC;
-    static constexpr std::intmax_t value_l     = ValueL;
-
-    static constexpr result_type default_seed  = 5489U;
-
-    explicit mersenne_twister(result_type x0 = default_seed,
-                              result_type dx = word_mask,
-                              result_type fx = (result_type) 1812433253ULL)
-      : my_value_dx(dx)
+    static _Tp __calc(_Tp __x)
     {
-      seed(x0, fx);
-    }
+      _Tp __res = __a * __x + __c;
 
-    void seed(result_type s  = default_seed,
-              result_type fx = (result_type) 1812433253ULL)
-    {
-      result_type prev = base_class_type::elems[0] = s & word_mask;
-
-      for(std::int32_t i = 1; i < num_state; ++i)
+      if (__m)
       {
-        prev = base_class_type::elems[i]
-             = ((result_type) i + fx * (prev ^ (prev >> (word_bits - 2U)))) & word_mask;
+        __res %= __m;
       }
 
-      base_class_type::my_idx = num_state;
+      return __res;
+    }
+  };
+
+  template<typename _Tp,
+           _Tp __m,
+           _Tp __a = 1,
+           _Tp __c = 0>
+  inline _Tp __mod(_Tp __x)
+  {
+    return _Mod<_Tp, __m, __a, __c>::__calc(__x);
+  }
+
+  template<typename _InputIterator,
+           typename _OutputIterator,
+           typename _Tp>
+  _OutputIterator __normalize(_InputIterator  __first,
+                              _InputIterator  __last,
+                              _OutputIterator __result,
+                              const _Tp& __factor)
+  {
+    for (; __first != __last; ++__first, ++__result)
+    {
+      *__result = *__first / __factor;
     }
 
-    static constexpr result_type (min)() noexcept
+    return __result;
+  }
+
+  } // namespace __detail
+
+  // These classes define objects which provide random
+  // or pseudorandom numbers, either from a discrete or
+  // a continuous interval.
+
+  // Generate pseudorandom numbers via linear function
+  //   x_{i+1} -> (ax_{i} + c) % m
+  //
+  // The template parameter _UIntType must be an unsigned
+  // integral type large enough to store values up to (__m-1).
+  // If the template parameter __m is 0, the modulus __m used is
+  // std::numeric_limits<_UIntType>::max() + 1. Otherwise,
+  // the template parameters __a and __c must be less than __m.
+
+  template<typename _UIntType,
+           _UIntType __a,
+           _UIntType __c,
+           _UIntType __m>
+  class linear_congruential_engine
+  {
+  private:
+    static_assert(std::is_unsigned<_UIntType>::value,
+                  "result_type must be an unsigned integral type");
+
+    static_assert(__m == 0u || (__a < __m && __c < __m),
+                  "template argument substituting __m out of bounds");
+
+  public:
+    typedef _UIntType result_type;
+
+    static const result_type multiplier   = __a;
+    static const result_type increment    = __c;
+    static const result_type modulus      = __m;
+    static const result_type default_seed = 1u;
+
+    explicit linear_congruential_engine(result_type __s = default_seed)
     {
-      return 0U;
+      seed(__s);
     }
 
-    static constexpr result_type (max)() noexcept
+    template<typename _Sseq,
+             typename = typename std::enable_if<!std::is_same<_Sseq, linear_congruential_engine>::value>::type>
+    explicit linear_congruential_engine(_Sseq& __q)
     {
-      return word_mask;
+      seed(__q);
+    }
+
+    void seed(result_type __s = default_seed);
+
+    static constexpr result_type min()
+    {
+      return __c == 0u ? 1u : 0u;
+    }
+
+    static constexpr result_type max()
+    {
+      return __m - 1u;
+    }
+
+    void discard(unsigned long long __z)
+    {
+      for (; __z != 0ULL; --__z)
+      {
+        (*this)();
+      }
     }
 
     result_type operator()()
     {
-      result_type  tmp;
-      std::int32_t kk;
+      _M_x = __detail::__mod<_UIntType, __m, __a, __c>(_M_x);
 
-      if(base_class_type::my_idx == num_state)
-      {
-        for(kk = num_state; kk < 2 * num_state; ++kk)
-        {
-          tmp = (base_class_type::elems[kk - num_state] & hi_mask) | (base_class_type::elems[kk - num_state + 1] & lo_mask);
-
-          base_class_type::elems[kk] = (tmp >> 1U) ^ (((tmp & 1U) != 0U) ? MatrixA : 0U) ^ base_class_type::elems[kk - num_state + ParamM];
-        }
-      }
-      else if(base_class_type::my_idx >= (2U * num_state))
-      {
-        for(kk = 0; kk < num_state - ParamM; ++kk)
-        {
-          tmp = (base_class_type::elems[kk + num_state] & hi_mask) | (base_class_type::elems[kk + num_state + 1] & lo_mask);
-
-          base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[kk + num_state + ParamM];
-        }
-
-        for( ; kk < num_state - 1; ++kk)
-        {
-          tmp = (base_class_type::elems[kk +num_state] & hi_mask) | (base_class_type::elems[kk + num_state + 1] & lo_mask);
-
-          base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[kk - num_state + ParamM];
-        }
-
-        tmp = (base_class_type::elems[kk + num_state] & hi_mask) | (base_class_type::elems[0] & lo_mask);
-
-        base_class_type::elems[kk] = (tmp >> 1) ^ (tmp & 1 ? MatrixA : 0) ^ base_class_type::elems[ParamM - 1];
-
-        base_class_type::my_idx = 0U;
-      }
-
-      result_type result = base_class_type::elems[base_class_type::my_idx++] & word_mask;
-
-      result ^= (result >> value_u)  &  my_value_dx;
-      result ^= (result << value_s)  &  value_b;
-      result ^= (result << value_t)  &  value_c;
-      result ^= (result & word_mask) >> value_l;
-
-      return result;
+      return _M_x;
     }
 
-    void discard(unsigned long long n_skip)
+    friend bool operator==(const linear_congruential_engine& __lhs,
+                           const linear_congruential_engine& __rhs)
     {
-      for( ; 0 < n_skip; --n_skip)
-      {
-        const result_type r_skip = (this->operator())();
-
-        static_cast<void>(r_skip);
-      }
+      return (__lhs._M_x == __rhs._M_x);
     }
 
   private:
-    result_type my_value_dx;
-
-    static constexpr result_type word_mask = ~((~result_type(0U) << (word_bits - 1U)) << 1U);
-    static constexpr result_type hi_mask   = (word_mask << ParamR) & word_mask;
-    static constexpr result_type lo_mask   = ~hi_mask & word_mask;
+    _UIntType _M_x;
   };
 
-  template<typename       T,
-           std::uintmax_t WordBits,
-           std::uintmax_t NumState,
-           std::uintmax_t ParamM,
-           std::uintmax_t ParamR,
-           T              MatrixA,
-           std::uintmax_t ValueU,
-           T              ValueD,
-           std::uintmax_t ValueS,
-           T              ValueB,
-           std::uintmax_t ValueT,
-           T              ValueC,
-           std::uintmax_t ValueL,
-           T              FMul>
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+  inline bool operator!=(const std::linear_congruential_engine<_UIntType,
+                                                               __a,
+                                                               __c,
+                                                               __m>& __lhs,
+                         const std::linear_congruential_engine<_UIntType,
+                                                               __a,
+                                                               __c,
+                                                               __m>& __rhs)
+  {
+    return !(__lhs == __rhs);
+  }
+
+  // A generalized feedback shift register discrete random number generator.
+  //
+  // This algorithm avoids multiplication and division and is designed to be
+  // friendly to a pipelined architecture.  If the parameters are chosen
+  // correctly, this generator will produce numbers with a very long period and
+  // fairly good apparent entropy, although still not cryptographically strong.
+  //
+  // The best way to use this generator is with the predefined mt19937 class.
+  //
+  // This algorithm was originally invented by Makoto Matsumoto and
+  // Takuji Nishimura.
+  //
+  // __w  Word size, the number of bits in each element of 
+  //      the state vector.
+  // __n  The degree of recursion.
+  // __m  The period parameter.
+  // __r  The separation point bit index.
+  // __a  The last row of the twist matrix.
+  // __u  The first right-shift tempering matrix parameter.
+  // __d  The first right-shift tempering matrix mask.
+  // __s  The first left-shift tempering matrix parameter.
+  // __b  The first left-shift tempering matrix mask.
+  // __t  The second left-shift tempering matrix parameter.
+  // __c  The second left-shift tempering matrix mask.
+  // __l  The second right-shift tempering matrix parameter.
+  // __f  Initialization multiplier.
+
+  template<typename  _UIntType,
+           size_t    __w,
+           size_t    __n,
+           size_t    __m,
+           size_t    __r,
+           _UIntType __a,
+           size_t    __u,
+           _UIntType __d,
+           size_t    __s,
+           _UIntType __b,
+           size_t    __t,
+           _UIntType __c,
+           size_t    __l,
+           _UIntType __f>
   class mersenne_twister_engine
-    : public mersenne_twister<T,
-                              (std::intmax_t) WordBits,
-                              (std::intmax_t) NumState,
-                              (std::intmax_t) ParamM,
-                              (std::intmax_t) ParamR,
-                              MatrixA,
-                              (std::intmax_t) ValueU,
-                              (std::intmax_t) ValueS,
-                              ValueB,
-                              (std::intmax_t) ValueT,
-                              ValueC,
-                              (std::intmax_t) ValueL>
   {
   private:
-    using base_class_type = mersenne_twister<T,
-                                             (std::intmax_t) WordBits,
-                                             (std::intmax_t) NumState,
-                                             (std::intmax_t) ParamM,
-                                             (std::intmax_t) ParamR,
-                                             MatrixA,
-                                             (std::intmax_t) ValueU,
-                                             (std::intmax_t) ValueS,
-                                             ValueB,
-                                             (std::intmax_t) ValueT,
-                                             ValueC,
-                                             (std::intmax_t) ValueL>;
+    static_assert(std::is_unsigned<_UIntType>::value,
+                  "result_type must be an unsigned integral type");
+
+    static_assert(1u <= __m && __m <= __n,
+                  "template argument substituting __m out of bounds");
+
+    static_assert(__r <= __w, "template argument substituting __r out of bound");
+    static_assert(__u <= __w, "template argument substituting __u out of bound");
+    static_assert(__s <= __w, "template argument substituting __s out of bound");
+    static_assert(__t <= __w, "template argument substituting __t out of bound");
+    static_assert(__l <= __w, "template argument substituting __l out of bound");
+    static_assert(__w <= std::numeric_limits<_UIntType>::digits,
+                  "template argument substituting __w out of bound");
+    static_assert(__a <= (__detail::_Shift<_UIntType, __w>::__value - 1),
+                  "template argument substituting __a out of bound");
+    static_assert(__b <= (__detail::_Shift<_UIntType, __w>::__value - 1),
+                  "template argument substituting __b out of bound");
+    static_assert(__c <= (__detail::_Shift<_UIntType, __w>::__value - 1),
+                  "template argument substituting __c out of bound");
+    static_assert(__d <= (__detail::_Shift<_UIntType, __w>::__value - 1),
+                  "template argument substituting __d out of bound");
+    static_assert(__f <= (__detail::_Shift<_UIntType, __w>::__value - 1),
+                  "template argument substituting __f out of bound");
 
   public:
-    static constexpr unsigned long long word_max = (((1ULL << (base_class_type::word_bits - 1U)) - 1U) << 1U) + 1U;
+    typedef _UIntType result_type;
 
-    using result_type = typename base_class_type::result_type;
+    static const size_t      word_size                 = __w;
+    static const size_t      state_size                = __n;
+    static const size_t      shift_size                = __m;
+    static const size_t      mask_bits                 = __r;
+    static const result_type xor_mask                  = __a;
+    static const size_t      tempering_u               = __u;
+    static const result_type tempering_d               = __d;
+    static const size_t      tempering_s               = __s;
+    static const result_type tempering_b               = __b;
+    static const size_t      tempering_t               = __t;
+    static const result_type tempering_c               = __c;
+    static const size_t      tempering_l               = __l;
+    static const result_type initialization_multiplier = __f;
+    static const result_type default_seed = 5489u;
 
-    static constexpr bool parameter_check_is_ok = 
-      (   (0                          <  ParamM)
-       && (ParamM                     <= NumState)
-       && (2U                         <  base_class_type::word_bits)
-       && (ParamR                     <= base_class_type::word_bits)
-       && (base_class_type::value_u   <= base_class_type::word_bits)
-       && (base_class_type::value_s   <= base_class_type::word_bits)
-       && (base_class_type::value_t   <= base_class_type::word_bits)
-       && (base_class_type::value_l   <= base_class_type::word_bits)
-       && (base_class_type::word_bits <= std::numeric_limits<result_type>::digits)
-       && (MatrixA                    <= word_max)
-       && (base_class_type::value_b   <= word_max)
-       && (base_class_type::value_c   <= word_max)
-       && (ValueD                     <= word_max)
-       && (FMul                       <= word_max));
-
-    static_assert(parameter_check_is_ok,
-                  "Error: Invalid template parameters for mersenne_twister_engine");
-
-    static constexpr std::uintmax_t shift_size                = ParamM;
-    static constexpr std::uintmax_t mask_bits                 = ParamR;
-    static constexpr result_type    initialization_multiplier = FMul;
-    static constexpr result_type    default_seed              = 5489U;
-
-    explicit mersenne_twister_engine(result_type x0 = default_seed)
-      : base_class_type(x0, ValueD, initialization_multiplier) { }
-
-    void seed(result_type s = default_seed)
+    // constructors and member function
+    explicit mersenne_twister_engine(result_type __sd = default_seed)
     {
-      base_class_type::seed(s, initialization_multiplier);
+      seed(__sd);
     }
 
-    static constexpr result_type (min)() noexcept
+    template<typename _Sseq,
+              typename = typename std::enable_if<!std::is_same<_Sseq, mersenne_twister_engine>::value>::type>
+    explicit mersenne_twister_engine(_Sseq& __q)
     {
-      return (base_class_type::min)();
+      seed(__q);
     }
 
-    static constexpr result_type (max)() noexcept
+    void seed(result_type __sd = default_seed);
+
+    static constexpr result_type min()
     {
-      return (base_class_type::max)();
+      return 0;
     }
+
+    static constexpr result_type max()
+    {
+      return __detail::_Shift<_UIntType, __w>::__value - 1;
+    }
+
+    void discard(unsigned long long __z);
+
+    result_type operator()();
+
+    friend bool operator==(const mersenne_twister_engine& __lhs,
+                            const mersenne_twister_engine& __rhs)
+    {
+      return (   std::equal(__lhs._M_x, __lhs._M_x + state_size, __rhs._M_x)
+              && __lhs._M_p == __rhs._M_p);
+    }
+
+  private:
+    _UIntType _M_x[state_size];
+    size_t    _M_p;
+
+    void _M_gen_rand();
   };
 
-  using mt19937 = mersenne_twister_engine<std::uint32_t,
-                                          32UL,
-                                          624UL,
-                                          397UL,
-                                          31UL,
-                                          0x9908B0DFUL,
-                                          11UL,
-                                          0xFFFFFFFFUL,
-                                          7UL,
-                                          0x9D2C5680UL,
-                                          15UL,
-                                          0xEFC60000UL,
-                                          18UL,
-                                          1812433253UL>;
+  template<typename _UIntType,
+           size_t    __w,
+           size_t    __n,
+           size_t    __m,
+           size_t    __r,
+           _UIntType __a,
+           size_t    __u,
+           _UIntType __d,
+           size_t    __s,
+           _UIntType __b,
+           size_t    __t,
+           _UIntType __c,
+           size_t    __l,
+           _UIntType __f>
+  inline bool operator!=(const std::mersenne_twister_engine<_UIntType,
+                                                            __w,
+                                                            __n,
+                                                            __m,
+                                                            __r,
+                                                            __a,
+                                                            __u,
+                                                            __d,
+                                                            __s,
+                                                            __b,
+                                                            __t,
+                                                            __c,
+                                                            __l,
+                                                            __f>& __lhs,
+                         const std::mersenne_twister_engine<_UIntType,
+                                                            __w,
+                                                            __n,
+                                                            __m,
+                                                            __r,
+                                                            __a,
+                                                            __u,
+                                                            __d,
+                                                            __s,
+                                                            __b,
+                                                            __t,
+                                                            __c,
+                                                            __l,
+                                                            __f>& __rhs)
+  {
+    return !(__lhs == __rhs);
+  }
 
-  using mt19937_64 = mersenne_twister_engine<std::uint_fast64_t,
-                                             64ULL,
-                                             312ULL,
-                                             156ULL,
-                                             31ULL,
-                                             0xB5026F5AA96619E9ULL,
-                                             29ULL,
-                                             0x5555555555555555ULL,
-                                             17ULL,
-                                             0x71D67FFFEDA60000ULL,
-                                             37ULL,
-                                             0xFFF7EEE000000000ULL,
-                                             43ULL,
-                                             6364136223846793005ULL>;
+  // Marsaglia-Zaman generator.
+  //
+  // This is a model of a Generalized Fibonacci discrete random number
+  // generator, sometimes referred to as the SWC generator.
+  //
+  // A discrete random number generator that produces pseudorandom
+  // numbers using:
+  //   x_{i} -> (x_{i - s} - x_{i - r} - carry_{i-1}) % m 
+  //
 
-  using minstd_rand0 = linear_congruential_engine<std::uint_fast32_t,
-                                                  UINT32_C(16807),
-                                                  UINT32_C(0),
-                                                  UINT32_C(2147483647)>;
+  template<typename _UIntType,
+           size_t __w,
+           size_t __s,
+           size_t __r>
+  class subtract_with_carry_engine
+  {
+  private:
+    static_assert(std::is_unsigned<_UIntType>::value,
+                  "result_type must be an unsigned integral type");
 
-  using minstd_rand  = linear_congruential_engine<std::uint_fast32_t,
-                                                  UINT32_C(48271),
-                                                  UINT32_C(0),
-                                                  UINT32_C(2147483647)>;
+    static_assert(0u < __s && __s < __r, "0 < s < r");
 
-  using default_random_engine = mt19937;
+    static_assert(0u < __w && __w <= std::numeric_limits<_UIntType>::digits,
+                  "template argument substituting __w out of bounds");
+
+  public:
+    typedef _UIntType result_type;
+
+    // parameter values
+    static const size_t      word_size    = __w;
+    static const size_t      short_lag    = __s;
+    static const size_t      long_lag     = __r;
+    static const result_type default_seed = (result_type) 19780503ULL;
+
+    explicit subtract_with_carry_engine(result_type __sd = default_seed)
+    {
+      seed(__sd);
+    }
+
+    template<typename _Sseq, typename = typename
+             std::enable_if<!std::is_same<_Sseq, subtract_with_carry_engine>::value>::type>
+    explicit subtract_with_carry_engine(_Sseq& __q)
+    {
+      seed(__q);
+    }
+
+    void seed(result_type __sd = default_seed);
+
+    static constexpr result_type min() { return 0; }
+
+    static constexpr result_type max()
+    {
+      return __detail::_Shift<_UIntType, __w>::__value - 1;
+    }
+
+    result_type operator()()
+    {
+      // Derive short lag index from current index.
+      std::int32_t __ps = (std::int32_t) _M_p - (std::int32_t) short_lag;
+
+      if(__ps < 0)
+      {
+        __ps += (std::int32_t) long_lag;
+      }
+
+      // Calculate new x(i) without overflow or division.
+      // NB: Thanks to the requirements for _UIntType, _M_x[_M_p] + _M_carry
+      // cannot overflow.
+      _UIntType __xi;
+
+      if(_M_x[__ps] >= _M_x[_M_p] + _M_carry)
+      {
+        __xi = _M_x[__ps] - _M_x[_M_p] - _M_carry;
+
+        _M_carry = 0;
+      }
+      else
+      {
+        __xi = (__detail::_Shift<_UIntType, __w>::__value - _M_x[_M_p] - _M_carry + _M_x[__ps]);
+
+        _M_carry = 1;
+      }
+
+      _M_x[_M_p] = __xi;
+
+      // Adjust current index to loop around in ring buffer.
+      if (++_M_p >= long_lag)
+      {
+        _M_p = 0;
+      }
+
+      return __xi;
+    }
+
+    void discard(unsigned long long __z)
+    {
+      for (; __z != 0ULL; --__z)
+      {
+        (*this)();
+      }
+    }
+
+    friend inline bool operator==(const subtract_with_carry_engine& __lhs,
+                                  const subtract_with_carry_engine& __rhs)
+    {
+      return (   std::equal(__lhs._M_x, __lhs._M_x + long_lag, __rhs._M_x)
+              && __lhs._M_carry == __rhs._M_carry
+              && __lhs._M_p == __rhs._M_p);
+    }
+
+  private:
+    _UIntType  _M_x[long_lag];
+    _UIntType  _M_carry;    ///< The carry
+    size_t     _M_p;      ///< Current index of x(i - r).
+  };
+
+  template<typename _UIntType,
+           size_t __w,
+           size_t __s,
+           size_t __r>
+  inline bool operator!=(const std::subtract_with_carry_engine<_UIntType,
+                                                               __w,
+                                                               __s,
+                                                               __r>& __lhs,
+                         const std::subtract_with_carry_engine<_UIntType,
+                                                               __w,
+                                                               __s,
+                                                               __r>& __rhs)
+  {
+    return !(__lhs == __rhs);
+  }
+
+
+  // Produces random numbers from some base engine
+  // by discarding blocks of data.
+
+  template<typename _RandomNumberEngine,
+           size_t __p,
+           size_t __r>
+  class discard_block_engine
+  {
+  private:
+    static_assert(1 <= __r && __r <= __p,
+                  "template argument substituting __r out of bounds");
+
+  public:
+    typedef typename _RandomNumberEngine::result_type result_type;
+
+    static const size_t block_size = __p;
+    static const size_t used_block = __r;
+
+    discard_block_engine() : _M_b(), _M_n(0) { }
+
+    explicit discard_block_engine(const _RandomNumberEngine& __rng)
+      : _M_b(__rng),
+        _M_n(0) { }
+
+    explicit discard_block_engine(_RandomNumberEngine&& __rng)
+      : _M_b(std::move(__rng)),
+             _M_n(0) { }
+
+    explicit discard_block_engine(result_type __s)
+      : _M_b(__s),
+        _M_n(0) { }
+
+    template<typename _Sseq,
+             typename = typename std::enable_if<(   !std::is_same<_Sseq, discard_block_engine>::value
+                                                 && !std::is_same<_Sseq, _RandomNumberEngine >::value)>::type>
+    explicit discard_block_engine(_Sseq& __q)
+      : _M_b(__q),
+        _M_n(0) { }
+
+    void seed()
+    {
+      _M_b.seed();
+      _M_n = 0;
+    }
+
+    void seed(result_type __s)
+    {
+      _M_b.seed(__s);
+      _M_n = 0;
+    }
+
+    template<typename _Sseq>
+    void seed(_Sseq& __q)
+    {
+      _M_b.seed(__q);
+      _M_n = 0;
+    }
+
+    const _RandomNumberEngine& base() const noexcept
+    {
+      return _M_b;
+    }
+
+    static constexpr result_type min()
+    {
+      return _RandomNumberEngine::min();
+    }
+
+    static constexpr result_type max()
+    {
+      return _RandomNumberEngine::max();
+    }
+
+    void discard(unsigned long long __z)
+    {
+      for (; __z != 0ULL; --__z)
+      {
+        (*this)();
+      }
+    }
+
+    result_type operator()();
+
+    friend bool operator==(const discard_block_engine& __lhs,
+                           const discard_block_engine& __rhs)
+    {
+      return    __lhs._M_b == __rhs._M_b
+             && __lhs._M_n == __rhs._M_n;
+    }
+
+  private:
+    _RandomNumberEngine _M_b;
+    size_t _M_n;
+  };
+
+  /**
+   * @brief Compares two %discard_block_engine random number generator
+   *        objects of the same type for inequality.
+   *
+   * @param __lhs A %discard_block_engine random number generator object.
+   * @param __rhs Another %discard_block_engine random number generator
+   *              object.
+   *
+   * @returns true if the infinite sequences of generated values
+   *          would be different, false otherwise.
+   */
+  template<typename _RandomNumberEngine, size_t __p, size_t __r>
+    inline bool
+    operator!=(const std::discard_block_engine<_RandomNumberEngine, __p,
+         __r>& __lhs,
+         const std::discard_block_engine<_RandomNumberEngine, __p,
+         __r>& __rhs)
+    { return !(__lhs == __rhs); }
+
+
+  /**
+   * @brief Produces random numbers by combining random numbers from some
+   * base engine to produce random numbers with a specifies number of bits
+   * @p __k.
+   */
+  template<typename _RandomNumberEngine, size_t __k>
+    class shuffle_order_engine
+    {
+      static_assert(1u <= __k, "template argument substituting "
+        "__k out of bound");
+
+    public:
+      /** The type of the generated random value. */
+      typedef typename _RandomNumberEngine::result_type result_type;
+
+      static constexpr size_t table_size = __k;
+
+      /**
+       * @brief Constructs a default %shuffle_order_engine engine.
+       *
+       * The underlying engine is default constructed as well.
+       */
+      shuffle_order_engine()
+      : _M_b()
+      { _M_initialize(); }
+
+      /**
+       * @brief Copy constructs a %shuffle_order_engine engine.
+       *
+       * Copies an existing base class random number generator.
+       * @param __rng An existing (base class) engine object.
+       */
+      explicit
+      shuffle_order_engine(const _RandomNumberEngine& __rng)
+      : _M_b(__rng)
+      { _M_initialize(); }
+
+      /**
+       * @brief Move constructs a %shuffle_order_engine engine.
+       *
+       * Copies an existing base class random number generator.
+       * @param __rng An existing (base class) engine object.
+       */
+      explicit
+      shuffle_order_engine(_RandomNumberEngine&& __rng)
+      : _M_b(std::move(__rng))
+      { _M_initialize(); }
+
+      /**
+       * @brief Seed constructs a %shuffle_order_engine engine.
+       *
+       * Constructs the underlying generator engine seeded with @p __s.
+       * @param __s A seed value for the base class engine.
+       */
+      explicit
+      shuffle_order_engine(result_type __s)
+      : _M_b(__s)
+      { _M_initialize(); }
+
+      /**
+       * @brief Generator construct a %shuffle_order_engine engine.
+       *
+       * @param __q A seed sequence.
+       */
+      template<typename _Sseq, typename = typename
+  std::enable_if<!std::is_same<_Sseq, shuffle_order_engine>::value
+           && !std::is_same<_Sseq, _RandomNumberEngine>::value>
+         ::type>
+        explicit
+        shuffle_order_engine(_Sseq& __q)
+        : _M_b(__q)
+        { _M_initialize(); }
+
+      /**
+       * @brief Reseeds the %shuffle_order_engine object with the default seed
+                for the underlying base class generator engine.
+       */
+      void
+      seed()
+      {
+  _M_b.seed();
+  _M_initialize();
+      }
+
+      /**
+       * @brief Reseeds the %shuffle_order_engine object with the default seed
+       *        for the underlying base class generator engine.
+       */
+      void
+      seed(result_type __s)
+      {
+  _M_b.seed(__s);
+  _M_initialize();
+      }
+
+      /**
+       * @brief Reseeds the %shuffle_order_engine object with the given seed
+       *        sequence.
+       * @param __q A seed generator function.
+       */
+      template<typename _Sseq>
+        void
+        seed(_Sseq& __q)
+        {
+    _M_b.seed(__q);
+    _M_initialize();
+  }
+
+      /**
+       * Gets a const reference to the underlying generator engine object.
+       */
+      const _RandomNumberEngine&
+      base() const noexcept
+      { return _M_b; }
+
+      /**
+       * Gets the minimum value in the generated random number range.
+       */
+      static constexpr result_type
+      min()
+      { return _RandomNumberEngine::min(); }
+
+      /**
+       * Gets the maximum value in the generated random number range.
+       */
+      static constexpr result_type
+      max()
+      { return _RandomNumberEngine::max(); }
+
+      /**
+       * Discard a sequence of random numbers.
+       */
+      void
+      discard(unsigned long long __z)
+      {
+  for (; __z != 0ULL; --__z)
+    (*this)();
+      }
+
+      /**
+       * Gets the next value in the generated random number sequence.
+       */
+      result_type
+      operator()();
+
+      /**
+       * Compares two %shuffle_order_engine random number generator objects
+       * of the same type for equality.
+       *
+       * @param __lhs A %shuffle_order_engine random number generator object.
+       * @param __rhs Another %shuffle_order_engine random number generator
+       *              object.
+       *
+       * @returns true if the infinite sequences of generated values
+       *          would be equal, false otherwise.
+      */
+      friend bool
+      operator==(const shuffle_order_engine& __lhs,
+     const shuffle_order_engine& __rhs)
+      { return (__lhs._M_b == __rhs._M_b
+    && std::equal(__lhs._M_v, __lhs._M_v + __k, __rhs._M_v)
+    && __lhs._M_y == __rhs._M_y); }
+
+    private:
+      void _M_initialize()
+      {
+  for (size_t __i = 0; __i < __k; ++__i)
+    _M_v[__i] = _M_b();
+  _M_y = _M_b();
+      }
+
+      _RandomNumberEngine _M_b;
+      result_type _M_v[__k];
+      result_type _M_y;
+    };
+
+  /**
+   * Compares two %shuffle_order_engine random number generator objects
+   * of the same type for inequality.
+   *
+   * @param __lhs A %shuffle_order_engine random number generator object.
+   * @param __rhs Another %shuffle_order_engine random number generator
+   *              object.
+   *
+   * @returns true if the infinite sequences of generated values
+   *          would be different, false otherwise.
+   */
+  template<typename _RandomNumberEngine, size_t __k>
+    inline bool
+    operator!=(const std::shuffle_order_engine<_RandomNumberEngine,
+         __k>& __lhs,
+         const std::shuffle_order_engine<_RandomNumberEngine,
+         __k>& __rhs)
+    { return !(__lhs == __rhs); }
+
+  // chris: Implementations
+
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+    constexpr _UIntType
+    linear_congruential_engine<_UIntType, __a, __c, __m>::multiplier;
+
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+    constexpr _UIntType
+    linear_congruential_engine<_UIntType, __a, __c, __m>::increment;
+
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+    constexpr _UIntType
+    linear_congruential_engine<_UIntType, __a, __c, __m>::modulus;
+
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+    constexpr _UIntType
+    linear_congruential_engine<_UIntType, __a, __c, __m>::default_seed;
+
+  /**
+   * Seeds the LCR with integral value @p __s, adjusted so that the
+   * ring identity is never a member of the convergence set.
+   */
+  template<typename _UIntType, _UIntType __a, _UIntType __c, _UIntType __m>
+    void
+    linear_congruential_engine<_UIntType, __a, __c, __m>::
+    seed(result_type __s)
+    {
+      if ((__detail::__mod<_UIntType, __m>(__c) == 0)
+    && (__detail::__mod<_UIntType, __m>(__s) == 0))
+  _M_x = 1;
+      else
+  _M_x = __detail::__mod<_UIntType, __m>(__s);
+    }
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::word_size;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::state_size;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::shift_size;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::mask_bits;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::xor_mask;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_u;
+   
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_d;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_s;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_b;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_t;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_c;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr size_t
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::tempering_l;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::
+                                              initialization_multiplier;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    constexpr _UIntType
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::default_seed;
+
+  template<typename _UIntType,
+     size_t __w, size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    void
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::
+    seed(result_type __sd)
+    {
+      _M_x[0] = __detail::__mod<_UIntType,
+  __detail::_Shift<_UIntType, __w>::__value>(__sd);
+
+      for (size_t __i = 1; __i < state_size; ++__i)
+  {
+    _UIntType __x = _M_x[__i - 1];
+    __x ^= __x >> (__w - 2);
+    __x *= __f;
+    __x += __detail::__mod<_UIntType, __n>(__i);
+    _M_x[__i] = __detail::__mod<_UIntType,
+      __detail::_Shift<_UIntType, __w>::__value>(__x);
+  }
+      _M_p = state_size;
+    }
+
+  template<typename _UIntType, size_t __w,
+     size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    void
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::
+    _M_gen_rand(void)
+    {
+      const _UIntType __upper_mask = (~_UIntType()) << __r;
+      const _UIntType __lower_mask = ~__upper_mask;
+
+      for (size_t __k = 0; __k < (__n - __m); ++__k)
+        {
+    _UIntType __y = ((_M_x[__k] & __upper_mask)
+         | (_M_x[__k + 1] & __lower_mask));
+    _M_x[__k] = (_M_x[__k + __m] ^ (__y >> 1)
+           ^ ((__y & 0x01) ? __a : 0));
+        }
+
+      for (size_t __k = (__n - __m); __k < (__n - 1); ++__k)
+  {
+    _UIntType __y = ((_M_x[__k] & __upper_mask)
+         | (_M_x[__k + 1] & __lower_mask));
+    _M_x[__k] = (_M_x[__k + (__m - __n)] ^ (__y >> 1)
+           ^ ((__y & 0x01) ? __a : 0));
+  }
+
+      _UIntType __y = ((_M_x[__n - 1] & __upper_mask)
+           | (_M_x[0] & __lower_mask));
+      _M_x[__n - 1] = (_M_x[__m - 1] ^ (__y >> 1)
+           ^ ((__y & 0x01) ? __a : 0));
+      _M_p = 0;
+    }
+
+  template<typename _UIntType, size_t __w,
+     size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    void
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::
+    discard(unsigned long long __z)
+    {
+      while (__z > state_size - _M_p)
+  {
+    __z -= state_size - _M_p;
+    _M_gen_rand();
+  }
+      _M_p += __z;
+    }
+
+  template<typename _UIntType, size_t __w,
+     size_t __n, size_t __m, size_t __r,
+     _UIntType __a, size_t __u, _UIntType __d, size_t __s,
+     _UIntType __b, size_t __t, _UIntType __c, size_t __l,
+     _UIntType __f>
+    typename
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::result_type
+    mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d,
+          __s, __b, __t, __c, __l, __f>::
+    operator()()
+    {
+      // Reload the vector - cost is O(n) amortized over n calls.
+      if (_M_p >= state_size)
+  _M_gen_rand();
+
+      // Calculate o(x(i)).
+      result_type __z = _M_x[_M_p++];
+      __z ^= (__z >> __u) & __d;
+      __z ^= (__z << __s) & __b;
+      __z ^= (__z << __t) & __c;
+      __z ^= (__z >> __l);
+
+      return __z;
+    }
+
+  template<typename _UIntType, size_t __w, size_t __s, size_t __r>
+  const size_t subtract_with_carry_engine<_UIntType, __w, __s, __r>::word_size;
+
+  template<typename _UIntType, size_t __w, size_t __s, size_t __r>
+  const size_t subtract_with_carry_engine<_UIntType, __w, __s, __r>::short_lag;
+
+  template<typename _UIntType, size_t __w, size_t __s, size_t __r>
+  const size_t subtract_with_carry_engine<_UIntType, __w, __s, __r>::long_lag;
+
+  template<typename _UIntType, size_t __w, size_t __s, size_t __r>
+  const _UIntType subtract_with_carry_engine<_UIntType, __w, __s, __r>::default_seed;
+
+  template<typename _UIntType, size_t __w, size_t __s, size_t __r>
+  void subtract_with_carry_engine<_UIntType, __w, __s, __r>::seed(result_type __value)
+  {
+    std::linear_congruential_engine<result_type, 40014u, 0u, 2147483563u>
+    __lcg(__value == 0u ? default_seed : __value);
+
+    const size_t __n = (__w + 31) / 32;
+
+    for (size_t __i = 0; __i < long_lag; ++__i)
+    {
+      _UIntType __sum = 0u;
+      _UIntType __factor = 1u;
+
+      for(size_t __j = 0; __j < __n; ++__j)
+      {
+         __sum += __detail::__mod<uint_least32_t,
+                                  __detail::_Shift<uint_least32_t, 32>::__value>(__lcg()) * __factor;
+
+         __factor *= __detail::_Shift<_UIntType, 32>::__value;
+      }
+
+      _M_x[__i] = __detail::__mod<_UIntType, __detail::_Shift<_UIntType, __w>::__value>(__sum);
+    }
+
+    _M_carry = (_M_x[long_lag - 1] == 0) ? 1 : 0;
+    _M_p = 0;
+  }
+
+  template<typename _RandomNumberEngine, size_t __p, size_t __r>
+  const size_t discard_block_engine<_RandomNumberEngine, __p, __r>::block_size;
+
+  template<typename _RandomNumberEngine, size_t __p, size_t __r>
+  const size_t discard_block_engine<_RandomNumberEngine, __p, __r>::used_block;
+
+  template<typename _RandomNumberEngine, size_t __p, size_t __r>
+  typename discard_block_engine<_RandomNumberEngine, __p, __r>::result_type
+  discard_block_engine<_RandomNumberEngine, __p, __r>::operator()()
+  {
+    if (_M_n >= used_block)
+    {
+      _M_b.discard(block_size - _M_n);
+      _M_n = 0;
+    }
+
+    ++_M_n;
+
+    return _M_b();
+  }
+
+  template<typename _RandomNumberEngine, size_t __k>
+    constexpr size_t
+    shuffle_order_engine<_RandomNumberEngine, __k>::table_size;
+
+  template<typename _RandomNumberEngine, size_t __k>
+    typename shuffle_order_engine<_RandomNumberEngine, __k>::result_type
+    shuffle_order_engine<_RandomNumberEngine, __k>::
+    operator()()
+    {
+      size_t __j = __k * ((_M_y - _M_b.min())
+        / (_M_b.max() - _M_b.min() + 1.0L));
+      _M_y = _M_v[__j];
+      _M_v[__j] = _M_b();
+
+      return _M_y;
+    }
+
+  // chris: types
+
+  /**
+   * The classic Minimum Standard rand0 of Lewis, Goodman, and Miller.
+   */
+  typedef linear_congruential_engine<uint_fast32_t, 16807UL, 0UL, 2147483647UL>
+  minstd_rand0;
+
+  /**
+   * An alternative LCR (Lehmer Generator function).
+   */
+  typedef linear_congruential_engine<uint_fast32_t, 48271UL, 0UL, 2147483647UL>
+  minstd_rand;
+
+  /**
+   * The classic Mersenne Twister.
+   *
+   * Reference:
+   * M. Matsumoto and T. Nishimura, Mersenne Twister: A 623-Dimensionally
+   * Equidistributed Uniform Pseudo-Random Number Generator, ACM Transactions
+   * on Modeling and Computer Simulation, Vol. 8, No. 1, January 1998, pp 3-30.
+   */
+  typedef mersenne_twister_engine<
+    uint_fast32_t,
+    32, 624, 397, 31,
+    0x9908b0dfUL, 11,
+    0xffffffffUL, 7,
+    0x9d2c5680UL, 15,
+    0xefc60000UL, 18, 1812433253UL> mt19937;
+
+  /**
+   * An alternative Mersenne Twister.
+   */
+  typedef mersenne_twister_engine<
+    uint_fast64_t,
+    64, 312, 156, 31,
+    0xb5026f5aa96619e9ULL, 29,
+    0x5555555555555555ULL, 17,
+    0x71d67fffeda60000ULL, 37,
+    0xfff7eee000000000ULL, 43,
+    6364136223846793005ULL> mt19937_64;
+
+  typedef subtract_with_carry_engine<uint_fast32_t, 24, 10, 24>
+    ranlux24_base;
+
+  typedef subtract_with_carry_engine<uint_fast64_t, 48, 5, 12>
+    ranlux48_base;
+
+  typedef discard_block_engine<ranlux24_base, 223, 23> ranlux24;
+
+  typedef discard_block_engine<ranlux48_base, 389, 11> ranlux48;
+
+  typedef shuffle_order_engine<minstd_rand0, 256> knuth_b;
+
+  typedef minstd_rand0 default_random_engine;
 
   class random_device
   {
@@ -471,7 +1333,7 @@
 
     static constexpr result_type(max)() noexcept
     {
-      return static_cast<result_type>(std::uintmax_t(-1));
+      return (result_type) std::uintmax_t(-1);
     }
 
     // Not conformant with the standard return type of float.
@@ -492,3 +1354,66 @@
   }
 
 #endif // RANDOM_2018_06_10_
+
+#if 0
+#include <random>
+
+#include <mcal/mcal.h>
+#include <os/os.h>
+
+template<typename RandomEngineType>
+typename RandomEngineType::result_type get_10000th_default_seed_rnd()
+{
+  using random_engine_type = RandomEngineType;
+
+  random_engine_type eng;
+
+  eng.discard(10000U - 1U);
+
+  const typename random_engine_type::result_type rnd = eng();
+
+  return rnd;
+}
+
+extern "C" int main()
+{
+  // Initialize the microcontroller abstraction layer.
+  mcal::init();
+
+  using random_engine_type_0 = std::minstd_rand0;
+  using random_engine_type_1 = std::minstd_rand;
+  using random_engine_type_2 = std::mt19937;
+  using random_engine_type_3 = std::ranlux24;
+  using random_engine_type_4 = std::knuth_b;
+  using random_engine_type_5 = std::mt19937_64;
+  using random_engine_type_6 = std::ranlux48;
+
+  const typename random_engine_type_0::result_type rnd_0 = get_10000th_default_seed_rnd<random_engine_type_0>();
+  const typename random_engine_type_1::result_type rnd_1 = get_10000th_default_seed_rnd<random_engine_type_1>();
+  const typename random_engine_type_2::result_type rnd_2 = get_10000th_default_seed_rnd<random_engine_type_2>();
+  const typename random_engine_type_3::result_type rnd_3 = get_10000th_default_seed_rnd<random_engine_type_3>();
+  const typename random_engine_type_4::result_type rnd_4 = get_10000th_default_seed_rnd<random_engine_type_4>();
+  const typename random_engine_type_5::result_type rnd_5 = get_10000th_default_seed_rnd<random_engine_type_5>();
+  const typename random_engine_type_6::result_type rnd_6 = get_10000th_default_seed_rnd<random_engine_type_6>();
+
+  const bool result_0_is_ok = (rnd_0 == UINT32_C(         1043618065)); // std::minstd_rand0
+  const bool result_1_is_ok = (rnd_1 == UINT32_C(          399268537)); // std::minstd_rand
+  const bool result_2_is_ok = (rnd_2 == UINT32_C(         4123659995)); // std::mt19937
+  const bool result_3_is_ok = (rnd_3 == UINT32_C(            9901578)); // std::ranlux24
+  const bool result_4_is_ok = (rnd_4 == UINT32_C(         1112339016)); // std::knuth_b
+  const bool result_5_is_ok = (rnd_5 == UINT64_C(9981545732273789042)); // std::mt19937_64
+  const bool result_6_is_ok = (rnd_6 == UINT64_C(    249142670248501)); // std::ranlux48
+
+  // Start the multitasking scheduler, and never return.
+  if(   result_0_is_ok
+     && result_1_is_ok
+     && result_2_is_ok
+     && result_3_is_ok
+     && result_4_is_ok
+     && result_5_is_ok
+     && result_6_is_ok)
+  {
+    os::start_os();
+  }
+}
+#endif
