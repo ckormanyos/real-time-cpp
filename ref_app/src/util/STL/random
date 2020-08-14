@@ -1692,13 +1692,15 @@ template<typename UnsignedIntegralType,
 
     static constexpr result_type(max)() noexcept
     {
-      return (result_type) std::uintmax_t(-1);
+      return (result_type) std::uintmax_t(INTMAX_C(-1));
     }
 
-    // Not conformant with the standard return type of float.
-    unsigned char entropy() const noexcept
+    // Not conformant with the standard return type of double.
+    float entropy() const noexcept
     {
-      return my_hardware_random_device_entropy();
+      const unsigned char e = my_hardware_random_device_entropy();
+
+      return ((e > 32U) ? 32.0F : float(e));
     }
 
     result_type operator()()
@@ -1713,66 +1715,3 @@ template<typename UnsignedIntegralType,
   }
 
 #endif // RANDOM_2018_06_10_
-
-#if 0
-#include <random>
-
-#include <mcal/mcal.h>
-#include <os/os.h>
-
-template<typename RandomEngineType>
-typename RandomEngineType::result_type get_10000th_default_seed_rnd()
-{
-  using random_engine_type = RandomEngineType;
-
-  random_engine_type eng;
-
-  eng.discard(10000U - 1U);
-
-  const typename random_engine_type::result_type rnd = eng();
-
-  return rnd;
-}
-
-extern "C" int main()
-{
-  // Initialize the microcontroller abstraction layer.
-  mcal::init();
-
-  using random_engine_type_0 = std::minstd_rand0;
-  using random_engine_type_1 = std::minstd_rand;
-  using random_engine_type_2 = std::mt19937;
-  using random_engine_type_3 = std::ranlux24;
-  using random_engine_type_4 = std::knuth_b;
-  using random_engine_type_5 = std::mt19937_64;
-  using random_engine_type_6 = std::ranlux48;
-
-  const typename random_engine_type_0::result_type rnd_0 = get_10000th_default_seed_rnd<random_engine_type_0>();
-  const typename random_engine_type_1::result_type rnd_1 = get_10000th_default_seed_rnd<random_engine_type_1>();
-  const typename random_engine_type_2::result_type rnd_2 = get_10000th_default_seed_rnd<random_engine_type_2>();
-  const typename random_engine_type_3::result_type rnd_3 = get_10000th_default_seed_rnd<random_engine_type_3>();
-  const typename random_engine_type_4::result_type rnd_4 = get_10000th_default_seed_rnd<random_engine_type_4>();
-  const typename random_engine_type_5::result_type rnd_5 = get_10000th_default_seed_rnd<random_engine_type_5>();
-  const typename random_engine_type_6::result_type rnd_6 = get_10000th_default_seed_rnd<random_engine_type_6>();
-
-  const bool result_0_is_ok = (rnd_0 == UINT32_C(         1043618065)); // std::minstd_rand0
-  const bool result_1_is_ok = (rnd_1 == UINT32_C(          399268537)); // std::minstd_rand
-  const bool result_2_is_ok = (rnd_2 == UINT32_C(         4123659995)); // std::mt19937
-  const bool result_3_is_ok = (rnd_3 == UINT32_C(            9901578)); // std::ranlux24
-  const bool result_4_is_ok = (rnd_4 == UINT32_C(         1112339016)); // std::knuth_b
-  const bool result_5_is_ok = (rnd_5 == UINT64_C(9981545732273789042)); // std::mt19937_64
-  const bool result_6_is_ok = (rnd_6 == UINT64_C(    249142670248501)); // std::ranlux48
-
-  // Start the multitasking scheduler, and never return.
-  if(   result_0_is_ok
-     && result_1_is_ok
-     && result_2_is_ok
-     && result_3_is_ok
-     && result_4_is_ok
-     && result_5_is_ok
-     && result_6_is_ok)
-  {
-    os::start_os();
-  }
-}
-#endif
