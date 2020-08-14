@@ -149,6 +149,7 @@
     <Folder Include="src\math\calculus\" />
     <Folder Include="src\math\checksums\" />
     <Folder Include="src\math\checksums\crc" />
+    <Folder Include="src\math\checksums\hash" />
     <Folder Include="src\math\constants" />
     <Folder Include="src\math\extended_complex\" />
     <Folder Include="src\math\filters\" />
@@ -207,7 +208,13 @@
     <Compile Include="src\app\benchmark\app_benchmark_float.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_hash.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_wide_integer.cpp">
@@ -223,6 +230,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\math\checksums\crc\crc32.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\checksums\hash\hash_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\checksums\hash\hash_detail.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\checksums\hash\hash_sha1.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\math\constants\constants.h">
@@ -460,6 +476,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\cmath_impl_gamma.cpp">

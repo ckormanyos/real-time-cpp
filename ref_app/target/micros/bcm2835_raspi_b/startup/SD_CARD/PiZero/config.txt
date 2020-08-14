@@ -1,7 +1,7 @@
 enable_jtag_gpio=1
 disable_splash=1
 force_turbo=1
-arm_freq=1200
+arm_freq=1000
 gpu_freq=600
 sdram_freq=600
 over_voltage=8

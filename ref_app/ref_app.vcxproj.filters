@@ -167,6 +167,9 @@
     <Filter Include="src\mcal_lcd">
       <UniqueIdentifier>{eb8e327c-4b2e-4c04-962e-89d209a466a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\checksums\hash">
+      <UniqueIdentifier>{e2fcdd5d-c51e-43d0-99e2-fcc3d661473c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -743,6 +746,12 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
+      <Filter>src\util\STL\impl\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_hash.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1727,6 +1736,15 @@
     </ClInclude>
     <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h">
       <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_base.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_detail.h">
+      <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_sha1.h">
+      <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

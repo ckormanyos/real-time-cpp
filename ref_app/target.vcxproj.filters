@@ -148,6 +148,12 @@
     <Filter Include="micros\stm32l100c\startup">
       <UniqueIdentifier>{99d996cc-6d36-4b80-b627-519672f5e94f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\startup\SD_CARD">
+      <UniqueIdentifier>{c2f430f9-0b5e-4a53-84e8-81546089efe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\startup\SD_CARD\PiZero">
+      <UniqueIdentifier>{a32f6b71-97b1-472a-8d7b-9e0ca74c54d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -315,6 +321,15 @@
     <None Include="target\micros\bcm2835_raspi_b\startup\int_vect.s">
       <Filter>micros\bcm2835_raspi_b\startup</Filter>
     </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\bootcode.bin">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\kernel.img">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\start.elf">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -476,5 +491,10 @@
     <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
       <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </Text>
   </ItemGroup>
 </Project>

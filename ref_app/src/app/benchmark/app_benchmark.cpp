@@ -93,6 +93,10 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_pi_spigot_single();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH)
+
+  const bool result_is_ok = app::benchmark::run_hash();
+
   #endif
 
   #if(APP_BENCHMARK_TYPE != APP_BENCHMARK_TYPE_NONE)

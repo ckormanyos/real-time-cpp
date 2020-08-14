@@ -153,6 +153,12 @@
 
     template<typename T>
     using remove_cvref_t = typename remove_cvref<T>::type;
+
+    template<typename T>
+    constexpr remove_reference_t<T>&& move(T&& arg) noexcept
+    {
+      return static_cast<remove_reference_t<T>&&>(arg);
+    }
   }
 
   namespace traits_helper
