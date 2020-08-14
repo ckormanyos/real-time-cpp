@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter03_22-001_mersenne_twister_19937
+// chapter03_22-001_mersenne_twister_19937.cpp
 
 #include <cstdint>
 #include <ctime>
