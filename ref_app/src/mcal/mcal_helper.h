@@ -16,28 +16,28 @@
 
   namespace mcal { namespace helper {
 
-  template<const std::uint8_t nop_count>
-  struct nop_maker
+  template<const std::uint_fast16_t nop_count>
+  typename std::enable_if<(1U < nop_count) && (nop_count <= 12U), void>::type nop_maker()
   {
-    static void execute_n() noexcept
-    {
-      nop_maker<nop_count - 1U>::execute_n();
+    nop_maker<nop_count - 1U>();
 
+    mcal::cpu::nop();
+  }
+
+  template<const std::uint_fast16_t nop_count>
+  typename std::enable_if<(nop_count == 1U), void>::type nop_maker() { mcal::cpu::nop(); }
+
+  template<const std::uint_fast16_t nop_count>
+  typename std::enable_if<(nop_count == 0U), void>::type nop_maker() { }
+
+  template<const std::uint_fast16_t nop_count>
+  typename std::enable_if<(12U < nop_count), void>::type nop_maker()
+  {
+    for(std::uint_fast16_t i = 0U; i < nop_count; ++i)
+    {
       mcal::cpu::nop();
     }
-  };
-
-  template<>
-  struct nop_maker<UINT8_C(1)>
-  {
-    static void execute_n() noexcept { mcal::cpu::nop(); }
-  };
-
-  template<>
-  struct nop_maker<UINT8_C(0)>
-  {
-    static void execute_n() noexcept { }
-  };
+  }
 
   template<const bool has_disable_enable_interrupts>
   void disable_all_interrupts(const bool = has_disable_enable_interrupts,

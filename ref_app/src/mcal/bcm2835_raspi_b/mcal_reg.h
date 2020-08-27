@@ -19,8 +19,43 @@
   {
     namespace reg
     {
+      constexpr std::uint32_t io_base                           = UINT32_C(0x20000000);
+
+      // System timer registers.
+      constexpr std::uint32_t system_timer_base                 = io_base + UINT32_C(0x00003000);
+      constexpr std::uint32_t system_timer_cs                   = system_timer_base + UINT32_C(0x00);
+      constexpr std::uint32_t system_timer_clo                  = system_timer_base + UINT32_C(0x04);
+      constexpr std::uint32_t system_timer_chi                  = system_timer_base + UINT32_C(0x08);
+
+      // ARM timer registers.
+      constexpr std::uint32_t rpi_armtimer_base                 = io_base + UINT32_C(0x0000B400);
+
+      constexpr std::uint32_t rpi_armtimer_load                 = rpi_armtimer_base + UINT32_C(0x00);
+      constexpr std::uint32_t rpi_armtimer_value                = rpi_armtimer_base + UINT32_C(0x04);
+      constexpr std::uint32_t rpi_armtimer_control              = rpi_armtimer_base + UINT32_C(0x08);
+      constexpr std::uint32_t rpi_armtimer_irq_clear            = rpi_armtimer_base + UINT32_C(0x0C);
+      constexpr std::uint32_t rpi_armtimer_raw_irq              = rpi_armtimer_base + UINT32_C(0x10);
+      constexpr std::uint32_t rpi_armtimer_maskedirq            = rpi_armtimer_base + UINT32_C(0x14);
+      constexpr std::uint32_t rpi_armtimer_reload               = rpi_armtimer_base + UINT32_C(0x18);
+      constexpr std::uint32_t rpi_armtimer_pre_divider          = rpi_armtimer_base + UINT32_C(0x1C);
+      constexpr std::uint32_t rpi_armtimer_free_running_counter = rpi_armtimer_base + UINT32_C(0x20);
+
+      // Interrupt controller registers.
+      constexpr std::uint32_t rpi_interrupt_controller_base     = io_base + UINT32_C(0x0000B200);
+
+      constexpr std::uint32_t rpi_interrupt_irq_basic_pending   = rpi_interrupt_controller_base + UINT32_C(0x00);
+      constexpr std::uint32_t rpi_interrupt_irq_pending_1       = rpi_interrupt_controller_base + UINT32_C(0x04);
+      constexpr std::uint32_t rpi_interrupt_irq_pending_2       = rpi_interrupt_controller_base + UINT32_C(0x08);
+      constexpr std::uint32_t rpi_interrupt_fiq_control         = rpi_interrupt_controller_base + UINT32_C(0x0C);
+      constexpr std::uint32_t rpi_interrupt_enable_irqs_1       = rpi_interrupt_controller_base + UINT32_C(0x10);
+      constexpr std::uint32_t rpi_interrupt_enable_irqs_2       = rpi_interrupt_controller_base + UINT32_C(0x14);
+      constexpr std::uint32_t rpi_interrupt_enable_basic_irqs   = rpi_interrupt_controller_base + UINT32_C(0x18);
+      constexpr std::uint32_t rpi_interrupt_disable_irqs_1      = rpi_interrupt_controller_base + UINT32_C(0x1C);
+      constexpr std::uint32_t rpi_interrupt_disable_irqs_2      = rpi_interrupt_controller_base + UINT32_C(0x20);
+      constexpr std::uint32_t rpi_interrupt_disable_basic_irqs  = rpi_interrupt_controller_base + UINT32_C(0x24);
+
       // Port registers.
-      constexpr std::uint32_t gpio_base                         = UINT32_C(0x20200000);
+      constexpr std::uint32_t gpio_base                         = io_base + UINT32_C(0x00200000);
 
       constexpr std::uint32_t gpio_gpfsel0                      = gpio_base + (UINT32_C(4) *  0);
       constexpr std::uint32_t gpio_gpfsel1                      = gpio_base + (UINT32_C(4) *  1);
@@ -51,39 +86,6 @@
       constexpr std::uint32_t gpio_gppud                        = gpio_base + (UINT32_C(4) * 37);
       constexpr std::uint32_t gpio_gppudclk0                    = gpio_base + (UINT32_C(4) * 38);
       constexpr std::uint32_t gpio_gppudclk1                    = gpio_base + (UINT32_C(4) * 39);
-
-      // System timer registers.
-      constexpr std::uint32_t system_timer_base                 = UINT32_C(0x20003000);
-      constexpr std::uint32_t system_timer_cs                   = system_timer_base + UINT32_C(0x00);
-      constexpr std::uint32_t system_timer_clo                  = system_timer_base + UINT32_C(0x04);
-      constexpr std::uint32_t system_timer_chi                  = system_timer_base + UINT32_C(0x08);
-
-      // ARM timer registers.
-      constexpr std::uint32_t rpi_armtimer_base                 = UINT32_C(0x2000B400);
-
-      constexpr std::uint32_t rpi_armtimer_load                 = rpi_armtimer_base + UINT32_C(0x00);
-      constexpr std::uint32_t rpi_armtimer_value                = rpi_armtimer_base + UINT32_C(0x04);
-      constexpr std::uint32_t rpi_armtimer_control              = rpi_armtimer_base + UINT32_C(0x08);
-      constexpr std::uint32_t rpi_armtimer_irq_clear            = rpi_armtimer_base + UINT32_C(0x0C);
-      constexpr std::uint32_t rpi_armtimer_raw_irq              = rpi_armtimer_base + UINT32_C(0x10);
-      constexpr std::uint32_t rpi_armtimer_maskedirq            = rpi_armtimer_base + UINT32_C(0x14);
-      constexpr std::uint32_t rpi_armtimer_reload               = rpi_armtimer_base + UINT32_C(0x18);
-      constexpr std::uint32_t rpi_armtimer_pre_divider          = rpi_armtimer_base + UINT32_C(0x1C);
-      constexpr std::uint32_t rpi_armtimer_free_running_counter = rpi_armtimer_base + UINT32_C(0x20);
-
-      // Interrupt controller registers.
-      constexpr std::uint32_t rpi_interrupt_controller_base     = UINT32_C(0x2000B200);
-
-      constexpr std::uint32_t rpi_interrupt_irq_basic_pending   = rpi_interrupt_controller_base + UINT32_C(0x00);
-      constexpr std::uint32_t rpi_interrupt_irq_pending_1       = rpi_interrupt_controller_base + UINT32_C(0x04);
-      constexpr std::uint32_t rpi_interrupt_irq_pending_2       = rpi_interrupt_controller_base + UINT32_C(0x08);
-      constexpr std::uint32_t rpi_interrupt_fiq_control         = rpi_interrupt_controller_base + UINT32_C(0x0C);
-      constexpr std::uint32_t rpi_interrupt_enable_irqs_1       = rpi_interrupt_controller_base + UINT32_C(0x10);
-      constexpr std::uint32_t rpi_interrupt_enable_irqs_2       = rpi_interrupt_controller_base + UINT32_C(0x14);
-      constexpr std::uint32_t rpi_interrupt_enable_basic_irqs   = rpi_interrupt_controller_base + UINT32_C(0x18);
-      constexpr std::uint32_t rpi_interrupt_disable_irqs_1      = rpi_interrupt_controller_base + UINT32_C(0x1C);
-      constexpr std::uint32_t rpi_interrupt_disable_irqs_2      = rpi_interrupt_controller_base + UINT32_C(0x20);
-      constexpr std::uint32_t rpi_interrupt_disable_basic_irqs  = rpi_interrupt_controller_base + UINT32_C(0x24);
     }
   }
 
@@ -96,19 +98,19 @@
   {
   #endif
 
-  void     mcal_reg_access32_write(uint32_t address, uint32_t value) __attribute__((naked));
-  uint32_t mcal_reg_access32_read (uint32_t address)                 __attribute__((naked));
+  void     mcal_reg_access32_write(const uint32_t address, const uint32_t value) __attribute__((naked));
+  uint32_t mcal_reg_access32_read (const uint32_t address)                       __attribute__((naked));
 
-  static inline void     mcal_reg_access32_reg_set(uint32_t address, uint32_t value) { mcal_reg_access32_write(address, value); }
-  static inline void     mcal_reg_access32_reg_and(uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & value)); }
-  static inline void     mcal_reg_access32_reg_or (uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | value)); }
-  static inline void     mcal_reg_access32_reg_not(uint32_t address, uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) (~value))); }
-  static inline uint32_t mcal_reg_access32_reg_get(uint32_t address)                 { return mcal_reg_access32_read(address); }
+  static inline void     mcal_reg_access32_reg_set(const uint32_t address, const uint32_t value) { mcal_reg_access32_write(address, value); }
+  static inline void     mcal_reg_access32_reg_and(const uint32_t address, const uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & value)); }
+  static inline void     mcal_reg_access32_reg_or (const uint32_t address, const uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | value)); }
+  static inline void     mcal_reg_access32_reg_not(const uint32_t address, const uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) (~value))); }
+  static inline uint32_t mcal_reg_access32_reg_get(const uint32_t address)                       { return mcal_reg_access32_read(address); }
 
-  static inline void     mcal_reg_access32_bit_set(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | (uint32_t) (1ULL << bpos))); }
-  static inline void     mcal_reg_access32_bit_clr(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) ~((uint32_t) (1ULL << bpos)))); }
-  static inline void     mcal_reg_access32_bit_not(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r ^ (uint32_t) (1ULL << bpos))); }
-  static inline unsigned mcal_reg_access32_bit_get(uint32_t address, uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); return (((uint32_t) ((r >> bpos) & 1U) != 0U) ? 1U : 0U); }
+  static inline void     mcal_reg_access32_bit_set(const uint32_t address, const uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r | (uint32_t) (1ULL << bpos))); }
+  static inline void     mcal_reg_access32_bit_clr(const uint32_t address, const uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & (uint32_t) ~((uint32_t) (1ULL << bpos)))); }
+  static inline void     mcal_reg_access32_bit_not(const uint32_t address, const uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r ^ (uint32_t) (1ULL << bpos))); }
+  static inline unsigned mcal_reg_access32_bit_get(const uint32_t address, const uint32_t bpos)  { const uint32_t r = mcal_reg_access32_read(address); return (((uint32_t) ((r >> bpos) & 1U) != 0U) ? 1U : 0U); }
 
   #if defined(__cplusplus)
   }

@@ -19,21 +19,27 @@ _rom_end   = 0x00010000;
 /* The beginning of the RAM area */
 _ram_begin = 0x00010000;
 
-/* Set up the stacks with sizes of 4K */
+/* Set up the various stacks with total size of 16K. */
 
-__SYS_STACK_SIZE = 4K;
-__SVC_STACK_SIZE = 4K;
-__ABT_STACK_SIZE = 4K;
-__UND_STACK_SIZE = 4K;
-__IRQ_STACK_SIZE = 4K;
-__FIQ_STACK_SIZE = 4K;
+__SYS_STACK_SIZE = 0x3800;
+__SVC_STACK_SIZE = 0x0200;
+__ABT_STACK_SIZE = 0x0100;
+__UND_STACK_SIZE = 0x0100;
+__IRQ_STACK_SIZE = 0x0200;
+__FIQ_STACK_SIZE = 0x0200;
 
+/* Set up the memory regions. */
 
 MEMORY
 {
   ROM   (rwx) : ORIGIN = 0x00008000, LENGTH = 0x00008000
-  RAM   (rwx) : ORIGIN = 0x00010000, LENGTH = 0x00008000
-  STACKS(rwx) : ORIGIN = 0x00018000, LENGTH = 0x00006000
+  RAM   (rwx) : ORIGIN = 0x00010000, LENGTH = 0x00004000
+  STACKS(rwx) : ORIGIN = 0x00014000, LENGTH =   __SYS_STACK_SIZE
+                                              + __SVC_STACK_SIZE
+                                              + __ABT_STACK_SIZE
+                                              + __UND_STACK_SIZE
+                                              + __IRQ_STACK_SIZE
+                                              + __FIQ_STACK_SIZE
 }
 
 SECTIONS
@@ -46,9 +52,17 @@ SECTIONS
   {
     PROVIDE(__INTVECT_BASE_ADDRESS = .) ;
     *(.intvect)
-    . = ALIGN(4);
+    . = ALIGN(0x10);
     KEEP(*(.intvect))
-  } > ROM
+  } > ROM = 0x5555
+
+  /* Startup: This is where the program starts. */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0xAAAA
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -104,7 +118,7 @@ SECTIONS
     _bss_end = .;
   } > RAM
 
-  . = 0x00018000;
+  . = 0x00014000;
   . = ALIGN(4);
 
   /* user-system mode stack definition */

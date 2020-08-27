@@ -7,7 +7,10 @@
 
 #include <mcal_spi.h>
 
-#include <mcal_spi/mcal_spi_software_dummy.h>
+#include <mcal_port_pin_dummy.h>
+#include <mcal_spi.h>
+
+#include <mcal_spi/mcal_spi_software_port_driver.h>
 
 void mcal::spi::init(const mcal::spi::config_type*)
 {
@@ -15,7 +18,19 @@ void mcal::spi::init(const mcal::spi::config_type*)
 
 util::communication_base& mcal::spi::spi0()
 {
-  static mcal::spi::spi_software_dummy com;
+  using local_port_pin_sck__type = mcal::port::port_pin<mcal::port::gpio_pin18_h12>;
+  using local_port_pin_mosi_type = mcal::port::port_pin<mcal::port::gpio_pin19_h35>;
+  using local_port_pin_csn__type = mcal::port::port_pin<mcal::port::gpio_pin16_h36>;
 
-  return com;
+  using mcal_spi_channel0_type =
+    mcal::spi::spi_software_port_driver<local_port_pin_sck__type,
+                                        local_port_pin_mosi_type,
+                                        local_port_pin_csn__type,
+                                        mcal::port::port_pin_dummy,
+                                        32U,
+                                        false>;
+
+  static mcal_spi_channel0_type com0;
+
+  return com0;
 }

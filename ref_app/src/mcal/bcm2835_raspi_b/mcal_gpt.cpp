@@ -48,12 +48,35 @@ namespace
       // starts up, the system tick timer will have already increased
       // to some non-zero value represented here by initial_count.
 
-      const volatile std::uint32_t lo0 = lo();
-      const volatile std::uint32_t hi0 = hi();
-      const volatile std::uint32_t lo1 = lo();
+      // Since we have no information on the detailed ticking order
+      // of clo and chi, we read the high counter and the low conter
+      // successively until a consistent 64-bit tick has been obtained.
 
-      const std::uint64_t consistent_microsecond_tick =
-        ((lo1 >= lo0) ? util::make_long(lo0, hi0) : util::make_long(lo1, hi()));
+      volatile std::uint32_t chi_1;
+      volatile std::uint32_t clo_1;
+      volatile std::uint32_t chi_2;
+      volatile std::uint32_t clo_2;
+
+      mcal::gpt::value_type consistent_microsecond_tick = mcal::gpt::value_type(0U);
+
+      for(;;)
+      {
+        // Do the first read of the high counter and the low conter.
+        chi_1 = hi();
+        clo_1 = lo();
+
+        // Do the second read of the high counter and the low conter.
+        clo_2 = lo();
+        chi_2 = hi();
+
+        // Perform a consistency check.
+        if((chi_2 == chi_1) && (clo_2 >= clo_1))
+        {
+          consistent_microsecond_tick = util::make_long(clo_2, chi_2);
+
+          break;
+        }
+      }
 
       return consistent_microsecond_tick;
     }

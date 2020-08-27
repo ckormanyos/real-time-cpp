@@ -10,7 +10,3 @@
 void mcal::wdg::init(const config_type*)
 {
 }
-
-void mcal::wdg::secure::trigger()
-{
-}

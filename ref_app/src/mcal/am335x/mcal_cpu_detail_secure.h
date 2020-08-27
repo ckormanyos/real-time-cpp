@@ -20,7 +20,7 @@
         {
           static constexpr std::uint32_t tlb_base_address = UINT32_C(0x4030C000);
 
-          static void initialize_neon_and_vfp      ();
+          static void initialize_vfp_unit          ();
           static void invalidate_caches            ();
           static void clear_branch_prediction_array();
           static void invalidate_tlb               ();

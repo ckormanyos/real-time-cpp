@@ -742,9 +742,6 @@
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_reg.cpp">
-      <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
@@ -1746,6 +1743,12 @@
     <ClInclude Include="src\math\checksums\hash\hash_sha1.h">
       <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_port_pin_dummy.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.h">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -1843,6 +1846,12 @@
     </None>
     <None Include="src\util\STL\span">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\mcal\bcm2835_raspi_b\mcal_reg.s">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </None>
+    <None Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.s">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </None>
   </ItemGroup>
 </Project>

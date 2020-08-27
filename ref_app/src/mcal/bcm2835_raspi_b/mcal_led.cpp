@@ -10,7 +10,7 @@
 
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_port_type = mcal::port::port_pin<GPIO_STATUS_LED>;
+  using led0_port_type = mcal::port::port_pin<mcal::port::gpio_status_led>;
 
   using led0_led_type = mcal::led::led_port_inverted<led0_port_type>;
 
