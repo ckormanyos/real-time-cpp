@@ -16,7 +16,7 @@
 
   void init(const config_type*);
 
-  extern util::communication_base& spi0();
+  util::communication_base& spi0();
 
   } }
 

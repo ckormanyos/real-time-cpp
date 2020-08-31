@@ -6,7 +6,7 @@
 ;//
 
 
-.section .intvect, "ax"
+.section .isr_vector, "ax"
 
 b __my_startup
 b __int_vect_undef_instr_handler

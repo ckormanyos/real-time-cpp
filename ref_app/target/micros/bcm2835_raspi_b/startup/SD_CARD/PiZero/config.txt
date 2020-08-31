@@ -1,3 +1,2 @@
-arm_freq=1000
 gpu_freq=600
 gpu_mem=32

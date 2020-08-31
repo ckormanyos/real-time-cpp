@@ -48,12 +48,12 @@ SECTIONS
   . = ALIGN(4);
 
   /* Interrupt vector table */
-  .intvect :
+  .isr_vector :
   {
     PROVIDE(__INTVECT_BASE_ADDRESS = .) ;
-    *(.intvect)
+    *(.isr_vector)
     . = ALIGN(0x10);
-    KEEP(*(.intvect))
+    KEEP(*(.isr_vector))
   } > ROM = 0x5555
 
   /* Startup: This is where the program starts. */
