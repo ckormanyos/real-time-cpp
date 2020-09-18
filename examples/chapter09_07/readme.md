@@ -73,6 +73,6 @@ running in a console.
 
 # Hardware Setup
 
-The hardware setup is pictured in the image below.
+The hardware setup is shown in the image below.
 
 ![](./images/board7.jpg)
