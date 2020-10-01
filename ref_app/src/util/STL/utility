@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,6 +10,7 @@
 
   #include <cstddef>
   #include <tuple>
+  #include <type_traits>
 
   // Implement some of <utility> for compilers that do not yet support it.
 
@@ -17,17 +18,26 @@
   {
     // Forward declaration of std::identity, which is implemented in <functional>.
     template<typename T>
-    struct identity;
+    struct identity
+    {
+      using type = T;
+    };
+
+    template<typename T>
+    constexpr T&& forward(remove_reference_t<T>& arg) noexcept
+    {
+      return static_cast<T&&>(arg);
+    }
+
+    template<typename T>
+    constexpr T&& forward(remove_reference_t<T>&& arg) noexcept
+    {
+      return static_cast<T&&>(arg);
+    }
   }
 
   namespace std
   {
-    template <typename T>
-    T&& forward(typename identity<T>::type& param)
-    {
-      return static_cast<T&&>(param);
-    }
-
     template<typename T1,
              typename T2>
     class pair

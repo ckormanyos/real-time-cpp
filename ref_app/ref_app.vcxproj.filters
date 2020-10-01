@@ -1461,9 +1461,6 @@
     <ClInclude Include="src\math\constants\pi_spigot_state.h">
       <Filter>src\math\constants</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_random_pcg32.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h">
       <Filter>src\mcal_spi</Filter>
     </ClInclude>
@@ -1748,6 +1745,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.h">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_narrow_cast.h">
+      <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

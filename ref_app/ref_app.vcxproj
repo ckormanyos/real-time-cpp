@@ -1895,11 +1895,11 @@
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h" />
     <ClInclude Include="src\util\utility\util_linear_interpolate.h" />
+    <ClInclude Include="src\util\utility\util_narrow_cast.h" />
     <ClInclude Include="src\util\utility\util_noexcept.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
-    <ClInclude Include="src\util\utility\util_random_pcg32.h" />
     <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_swdm.h" />
     <ClInclude Include="src\util\utility\util_time.h" />
