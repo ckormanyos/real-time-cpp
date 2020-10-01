@@ -67,10 +67,12 @@ as the embedded target. These kinds of methods exemplify
 how useful cross development can be for writing error-free,
 portable application layer code.
 
-![Display application task in action on the PC simuation](./images/seven_segment.pdf)
+The screenshot in this link shows the PC simulation of the
+![display application task](./images/seven_segment.pdf)
+running in a console.
 
 # Hardware Setup
 
-The hardware setup is pictured in the image below.
+The hardware setup is shown in the image below.
 
 ![](./images/board7.jpg)

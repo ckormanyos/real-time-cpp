@@ -20,38 +20,38 @@
   {
   #endif
 
-  typedef uintptr_t mcal_progmem_uintptr_t;
-  typedef ptrdiff_t mcal_progmem_ptrdiff_t;
+  typedef uint_farptr_t mcal_progmem_uintptr_t;
+  typedef  int_farptr_t mcal_progmem_ptrdiff_t;
 
   #define MCAL_PROGMEM_ADDRESSOF(x) ((mcal_progmem_uintptr_t) (&(x)))
 
   static inline uint8_t mcal_memory_progmem_read_byte(const mcal_progmem_uintptr_t src)
   {
-    return pgm_read_byte(src);
+    return pgm_read_byte_far(src);
   }
 
   static inline uint16_t mcal_memory_progmem_read_word(const mcal_progmem_uintptr_t src)
   {
-    return pgm_read_word(src);
+    return pgm_read_word_far(src);
   }
 
   static inline uint32_t mcal_memory_progmem_read_dword(const mcal_progmem_uintptr_t src)
   {
-    return pgm_read_dword(src);
+    return pgm_read_dword_far(src);
   }
 
   static inline uint64_t mcal_memory_progmem_read_qword(const mcal_progmem_uintptr_t src)
   {
     uint64_t dest;
 
-    *(((uint8_t*) &dest) + 0U) = pgm_read_byte(src + 0U);
-    *(((uint8_t*) &dest) + 1U) = pgm_read_byte(src + 1U);
-    *(((uint8_t*) &dest) + 2U) = pgm_read_byte(src + 2U);
-    *(((uint8_t*) &dest) + 3U) = pgm_read_byte(src + 3U);
-    *(((uint8_t*) &dest) + 4U) = pgm_read_byte(src + 4U);
-    *(((uint8_t*) &dest) + 5U) = pgm_read_byte(src + 5U);
-    *(((uint8_t*) &dest) + 6U) = pgm_read_byte(src + 6U);
-    *(((uint8_t*) &dest) + 7U) = pgm_read_byte(src + 7U);
+    *(((uint8_t*) &dest) + 0U) = pgm_read_byte_far(src + 0U);
+    *(((uint8_t*) &dest) + 1U) = pgm_read_byte_far(src + 1U);
+    *(((uint8_t*) &dest) + 2U) = pgm_read_byte_far(src + 2U);
+    *(((uint8_t*) &dest) + 3U) = pgm_read_byte_far(src + 3U);
+    *(((uint8_t*) &dest) + 4U) = pgm_read_byte_far(src + 4U);
+    *(((uint8_t*) &dest) + 5U) = pgm_read_byte_far(src + 5U);
+    *(((uint8_t*) &dest) + 6U) = pgm_read_byte_far(src + 6U);
+    *(((uint8_t*) &dest) + 7U) = pgm_read_byte_far(src + 7U);
 
     return dest;
   }

@@ -6,6 +6,7 @@
 //
 
 #include <mcal_cpu.h>
+#include <mcal_cpu_detail_secure.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_reg.h>
@@ -16,6 +17,8 @@ void mcal::cpu::init()
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
+
+  detail::init();
 }
 
 void mcal::cpu::post_init()

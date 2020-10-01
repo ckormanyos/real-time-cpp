@@ -20,7 +20,7 @@ extern "C"
 
 namespace crt
 {
-  void init_ram();
+  void init_ram  () __attribute__((section(".startup"), used, noinline));
 }
 
 void crt::init_ram()

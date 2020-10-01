@@ -67,9 +67,9 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     const timer_register_type tim0_cnt_2   = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
 
     // Perform the consistency check.
-    const mcal::gpt::value_type consistent_microsecond_tick
-      = ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(tim0_cnt_1 >> 1U))
-                                    : mcal::gpt::value_type(system_tick | std::uint8_t(tim0_cnt_2 >> 1U)));
+    const mcal::gpt::value_type consistent_microsecond_tick =
+      ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | std::uint8_t(tim0_cnt_1 >> 1U))
+                                  : mcal::gpt::value_type(system_tick | std::uint8_t(tim0_cnt_2 >> 1U)));
 
     return consistent_microsecond_tick;
   }

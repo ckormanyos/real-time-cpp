@@ -1,7 +1,8 @@
 
 ## These examples are motivated by the book "Real-Time C++".
 
-See : C.M. Kormanyos, Real-Time C++: Efficient Object-Oriented
+See : C.M. Kormanyos, [Real-Time C++](http://www.springer.com/9783662567173):
+Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 

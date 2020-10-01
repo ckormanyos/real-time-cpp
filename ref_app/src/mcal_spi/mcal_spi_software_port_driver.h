@@ -20,7 +20,7 @@
            typename port_pin_mosi_type,
            typename port_pin_csn__type,
            typename port_pin_miso_type,
-           const std::uint8_t nop_count,
+           const std::uint_fast16_t nop_count,
            const bool has_disable_enable_interrupts>
   class spi_software_port_driver : public util::communication_buffer_depth_one_byte
   {
@@ -70,10 +70,10 @@
         mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
 
         port_pin_sck__type::set_pin_high();
-        mcal::helper::nop_maker<nop_count>::execute_n();
+        mcal::helper::nop_maker<nop_count>();
 
         port_pin_sck__type::set_pin_low ();
-        mcal::helper::nop_maker<nop_count>::execute_n();
+        mcal::helper::nop_maker<nop_count>();
 
         if(port_pin_miso_type::read_input_value())
         {

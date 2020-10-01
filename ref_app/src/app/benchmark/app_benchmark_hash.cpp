@@ -20,7 +20,9 @@ bool app::benchmark::run_hash()
 
   static const std::array<std::uint8_t, 3U> app_benchmark_hash_data =
   {{
-    0x61U, 0x62U, 0x63U
+    (std::uint8_t) ((char) 'a'),
+    (std::uint8_t) ((char) 'b'),
+    (std::uint8_t) ((char) 'c')
   }};
 
   static const mcal::memory::progmem::array<std::uint8_t,
@@ -35,7 +37,7 @@ bool app::benchmark::run_hash()
   hash_type h;
 
   h.hash(app_benchmark_hash_data.data(),
-         static_cast<typename hash_type::count_type>(app_benchmark_hash_data.size()));
+         (typename hash_type::count_type) app_benchmark_hash_data.size());
 
   typename hash_type::result_type r;
 
