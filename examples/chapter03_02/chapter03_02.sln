@@ -12,21 +12,17 @@ Global
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
 		target avr|x64 = target avr|x64
-		target stm32l100c|x64 = target stm32l100c|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|x64.ActiveCfg = target avr|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Release|x64.ActiveCfg = target avr|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.ActiveCfg = target avr|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.Build.0 = target avr|x64
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32l100c|x64.ActiveCfg = target stm32l100c|x64
-		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32l100c|x64.Build.0 = target stm32l100c|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|x64.ActiveCfg = Debug|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|x64.Build.0 = Debug|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.Build.0 = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.ActiveCfg = Release|x64
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32l100c|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
