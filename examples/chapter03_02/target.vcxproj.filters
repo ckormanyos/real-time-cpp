@@ -22,15 +22,6 @@
     <Filter Include="micros\avr\startup">
       <UniqueIdentifier>{3500d006-2e46-4281-adcb-a55d324a5d8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\stm32l100c">
-      <UniqueIdentifier>{671bc7bf-305b-4547-91b3-db5f654b2652}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\stm32l100c\make">
-      <UniqueIdentifier>{539cda2b-3ef8-4ac5-b12c-3ad3311ab448}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\stm32l100c\startup">
-      <UniqueIdentifier>{360a5824-76ab-4097-9723-07b58b607c99}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -54,15 +45,6 @@
     <None Include="target\micros\avr\make\avr_flags.gmk">
       <Filter>micros\avr\make</Filter>
     </None>
-    <None Include="target\micros\stm32l100c\make\stm32l100c.ld">
-      <Filter>micros\stm32l100c\make</Filter>
-    </None>
-    <None Include="target\micros\stm32l100c\make\stm32l100c_files.gmk">
-      <Filter>micros\stm32l100c\make</Filter>
-    </None>
-    <None Include="target\micros\stm32l100c\make\stm32l100c_flags.gmk">
-      <Filter>micros\stm32l100c\make</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\avr\startup\crt0.cpp">
@@ -76,18 +58,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\avr\startup\int_vect.cpp">
       <Filter>micros\avr\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\stm32l100c\startup\crt0_init_ram.cpp">
-      <Filter>micros\stm32l100c\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\stm32l100c\startup\crt1.cpp">
-      <Filter>micros\stm32l100c\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
-      <Filter>micros\stm32l100c\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\stm32l100c\startup\crt0.cpp">
-      <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
