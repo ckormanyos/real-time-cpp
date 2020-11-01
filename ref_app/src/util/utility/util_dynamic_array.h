@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2012 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,17 +36,12 @@
       typedef       std::reverse_iterator<const_iterator> const_reverse_iterator;
 
       // Constructors.
-      dynamic_array() : elem_count(0U),
-                        elems     (nullptr) { }
+      constexpr dynamic_array() : elem_count(0U),
+                                  elems     (nullptr) { }
 
-      dynamic_array(size_type count) : elem_count(count),
-                                       elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
-      {
-        for(auto it_self = begin(); it_self != end(); ++it_self)
-        {
-          allocator_type().construct(it_self, value_type());
-        }
-      }
+      constexpr dynamic_array(size_type count)
+        : elem_count(count),
+          elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr) { }
 
       dynamic_array(size_type count,
                     const value_type& v,
@@ -54,22 +49,14 @@
         : elem_count(count),
           elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        for(auto it_self = begin(); it_self != end(); ++it_self)
-        {
-          allocator_type(a).construct(it_self, v);
-        }
+        fill(v);
       }
 
       dynamic_array(const dynamic_array& other)
         : elem_count(other.size()),
           elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
       {
-        auto it_other = other.cbegin();
-
-        for(auto it_self = begin(); it_self != end(); ++it_self)
-        {
-          allocator_type().construct(it_self, *it_other++);
-        }
+        std::copy(other.elems, other.elems + elem_count, elems);
       }
 
       template<typename input_iterator>
@@ -79,10 +66,7 @@
         : elem_count(static_cast<size_type>(std::distance(first, last))),
           elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        for(auto it_self = begin(); it_self != end(); ++it_self)
-        {
-          allocator_type(a).construct(it_self, *first++);
-        }
+        std::copy(first, last, elems);
       }
 
       dynamic_array(std::initializer_list<T> lst,
@@ -90,12 +74,7 @@
         : elem_count(lst.size()),
           elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
       {
-        auto it_lst = lst.begin();
-
-        for(auto it_self = begin(); it_self != end(); ++it_self)
-        {
-          allocator_type(a).construct(it_self, *it_lst++);
-        }
+        std::copy(lst.begin(), lst.end(), elems);
       }
 
       // Move constructor.
@@ -110,15 +89,7 @@
       virtual ~dynamic_array()
       {
         // Destroy the elements and deallocate the range.
-        if(elem_count > size_type(0U))
-        {
-          for(pointer p = elems; p != (elems + elem_count); ++p)
-          {
-            allocator_type().destroy(p);
-          }
-
-          allocator_type().deallocate(elems, elem_count);
-        }
+        allocator_type().deallocate(elems, elem_count);
       }
 
       // Assignment operator.
@@ -137,16 +108,8 @@
       // Move assignment operator.
       dynamic_array& operator=(dynamic_array&& other)
       {
-        // Destroy the elements and deallocate the range.
-        if(elem_count > size_type(0U))
-        {
-          for(pointer p = elems; p != (elems + elem_count); ++p)
-          {
-            allocator_type().destroy(p);
-          }
-
-          allocator_type().deallocate(elems, elem_count);
-        }
+        // Deallocate the elements and deallocate the range.
+        allocator_type().deallocate(elems, elem_count);
 
         elem_count = other.elem_count;
         elems      = other.elems;
@@ -172,14 +135,19 @@
       const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
       // Raw pointer access.
-      pointer data() noexcept
+      pointer data()
+      {
+        return elems;
+      }
+
+      const_pointer data() const
       {
         return elems;
       }
 
       // Size and capacity.
-      size_type size    () const { return elem_count; }
-      size_type max_size() const { return elem_count; }
+      size_type size    () const { return  elem_count; }
+      size_type max_size() const { return  elem_count; }
       bool      empty   () const { return (elem_count == 0U); }
 
       // Element access members.
@@ -196,7 +164,10 @@
       const_reference at(const size_type i) const { return ((i < elem_count) ? elems[i] : elems[0U]); }
 
       // Element manipulation members.
-      void fill(const value_type& v) { std::fill_n(begin(), elem_count, v); }
+      void fill(const value_type& v)
+      {
+        std::fill_n(begin(), elem_count, v);
+      }
 
       void swap(dynamic_array& other)
       {
@@ -210,7 +181,7 @@
         other.elems      = tmp_elems;
       }
 
-    private:
+    protected:
       mutable size_type elem_count;
       pointer           elems;
     };

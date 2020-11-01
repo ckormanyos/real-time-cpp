@@ -24,11 +24,17 @@
       // Individual unit base addresses.
       constexpr std::uint32_t scb_base        = scs_base        + UINT32_C(0x00000D00);
       constexpr std::uint32_t nvic_base       = scs_base        + UINT32_C(0x00000100);
+      constexpr std::uint32_t sys_tick_base   = scs_base        + UINT32_C(0x00000010);
       constexpr std::uint32_t apb1periph_base = periph_base     + UINT32_C(0x00000000);
       constexpr std::uint32_t pwr_base        = apb1periph_base + UINT32_C(0x00007000);
       constexpr std::uint32_t ahbperiph_base  = periph_base     + UINT32_C(0x00020000);
       constexpr std::uint32_t rcc_base        = ahbperiph_base  + UINT32_C(0x00003800);
       constexpr std::uint32_t flash_r_base    = ahbperiph_base  + UINT32_C(0x00003C00);
+
+      constexpr std::uint32_t sys_tick_ctrl   = sys_tick_base   + UINT32_C(0x00000000);
+      constexpr std::uint32_t sys_tick_load   = sys_tick_base   + UINT32_C(0x00000004);
+      constexpr std::uint32_t sys_tick_val    = sys_tick_base   + UINT32_C(0x00000008);
+      constexpr std::uint32_t sys_tick_cal    = sys_tick_base   + UINT32_C(0x0000000C);
 
       constexpr std::uint32_t gpioa_base      = ahbperiph_base  + UINT32_C(0x0000);
       constexpr std::uint32_t gpiob_base      = ahbperiph_base  + UINT32_C(0x0400);

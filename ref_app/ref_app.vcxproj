@@ -900,6 +900,10 @@
     <ClInclude Include="src\math\functions\math_functions_bessel.h" />
     <ClInclude Include="src\math\functions\math_functions_hypergeometric.h" />
     <ClInclude Include="src\math\functions\math_functions_legendre.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_helper.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_karatsuba.h" />
     <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h" />
     <ClInclude Include="src\mcal\am335x\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -1858,6 +1862,7 @@
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />
     <ClInclude Include="src\util\memory\util_factory.h" />
+    <ClInclude Include="src\util\memory\util_n_slot_array_allocator.h" />
     <ClInclude Include="src\util\memory\util_placed_pointer.h" />
     <ClInclude Include="src\util\memory\util_ring_allocator.h" />
     <ClInclude Include="src\util\memory\util_static_allocator.h" />
