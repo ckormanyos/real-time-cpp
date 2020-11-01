@@ -48,7 +48,7 @@
 
   template<const bool has_disable_enable_interrupts>
   void enable_all_interrupts(const bool = has_disable_enable_interrupts,
-                              const typename std::enable_if<(has_disable_enable_interrupts == true)>::type* = nullptr) noexcept
+                             const typename std::enable_if<(has_disable_enable_interrupts == true)>::type* = nullptr) noexcept
   {
     mcal::irq::enable_all();
   }

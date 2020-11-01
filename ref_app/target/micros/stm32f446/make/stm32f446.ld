@@ -54,7 +54,7 @@ SECTIONS
     KEEP (*(SORT(.init_array)))
     _ctors_end = .;
     *(.progmem*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)

@@ -75,7 +75,7 @@
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)
                            && (std::is_unsigned   <IntegralType>::value == true)
-                           && std::numeric_limits<IntegralType>::digits <= (std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType>::limb_type>::type
+                           && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType>::limb_type>::type
   operator%(const uintwide_t<Digits2, LimbType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType>
@@ -326,7 +326,7 @@
            const std::uint_fast32_t Digits2,
            typename LimbType>
   bool miller_rabin(const uintwide_t<Digits2, LimbType>& n,
-                    const std::uint_fast32_t                    number_of_trials,
+                    const std::uint_fast32_t             number_of_trials,
                     DistributionType&                    distribution,
                     GeneratorType&                       generator);
 
@@ -736,7 +736,9 @@
           for(std::uint_fast8_t i = 0U; i < digits_ratio; ++i)
           {
             const local_unsigned_integral_type u =
-              local_unsigned_integral_type(values[i]) << (std::numeric_limits<limb_type>::digits * int(i));
+              ((typename representation_type::size_type(i) < values.size())
+                ? local_unsigned_integral_type(values[i]) << (std::numeric_limits<limb_type>::digits * int(i))
+                : 0U);
 
             cast_result |= u;
           }
@@ -976,99 +978,113 @@
       }
     }
 
-    template<typename IntegralType>
-    typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                             && (std::is_integral   <IntegralType>::value == true)), uintwide_t>::type&
-    operator<<=(const IntegralType n)
+    template<typename SignedIntegralType>
+    typename std::enable_if<(   (std::is_fundamental<SignedIntegralType>::value == true)
+                             && (std::is_integral   <SignedIntegralType>::value == true)
+                             && (std::is_signed     <SignedIntegralType>::value == true)), uintwide_t>::type&
+    operator<<=(const SignedIntegralType n)
     {
       // Left-shift operator.
-      if     (n <  0) { operator>>=(n); }
-      else if(n == 0) { ; }
+      if(n <  0)
+      {
+        operator>>=(-n);
+      }
+      else if(n == 0)
+      {
+        ;
+      }
+      else if(std::uint_fast32_t(n) >= my_digits)
+      {
+        std::fill(values.begin(), values.end(), limb_type(0U));
+      }
       else
       {
-        if(std::uint_fast32_t(n) >= my_digits)
-        {
-          std::fill(values.begin(), values.end(), limb_type(0U));
-        }
-        else
-        {
-          const std::uint_fast32_t offset            = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
-          const std::uint_fast32_t left_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t offset            = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t left_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
 
-          if(offset > 0U)
-          {
-            std::copy_backward(values.data(),
-                               values.data() + (number_of_limbs - offset),
-                               values.data() +  number_of_limbs);
-
-            std::fill(values.begin(), values.begin() + offset, limb_type(0U));
-          }
-
-          limb_type part_from_previous_value = limb_type(0U);
-
-          using local_integral_type = IntegralType;
-
-          if(left_shift_amount != local_integral_type(0U))
-          {
-            for(std::uint_fast32_t i = offset; i < number_of_limbs; ++i)
-            {
-              const limb_type t = values[i];
-
-              values[i] = (t << local_integral_type(left_shift_amount)) | part_from_previous_value;
-
-              part_from_previous_value = limb_type(t >> local_integral_type(std::uint_fast32_t(std::numeric_limits<limb_type>::digits - left_shift_amount)));
-            }
-          }
-        }
+        shl(offset, left_shift_amount);
       }
 
       return *this;
     }
 
-    template<typename IntegralType>
-    typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                             && (std::is_integral   <IntegralType>::value == true)), uintwide_t>::type&
-    operator>>=(const IntegralType n)
+    template<typename UnsignedIntegralType>
+    typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                             && (std::is_integral   <UnsignedIntegralType>::value == true)
+                             && (std::is_signed     <UnsignedIntegralType>::value == false)), uintwide_t>::type&
+    operator<<=(const UnsignedIntegralType n)
     {
-      // Right-shift operator.
-      if     (n <  0) { operator<<=(n); }
-      else if(n == 0) { ; }
+      // Left-shift operator.
+      if(n == 0)
+      {
+        ;
+      }
+      else if(std::uint_fast32_t(n) >= my_digits)
+      {
+        std::fill(values.begin(), values.end(), limb_type(0U));
+      }
       else
       {
-        if(std::uint_fast32_t(n) >= my_digits)
-        {
-          std::fill(values.begin(), values.end(), limb_type(0U));
-        }
-        else
-        {
-          const std::uint_fast32_t offset             = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
-          const std::uint_fast32_t right_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t offset            = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t left_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
 
-          if(offset > 0U)
-          {
-            std::copy(values.begin() + offset,
-                      values.begin() + number_of_limbs,
-                      values.begin());
+        shl(offset, left_shift_amount);
+      }
 
-            std::fill(values.end() - offset, values.end(), limb_type(0U));
-          }
+      return *this;
+    }
 
-          limb_type part_from_previous_value = limb_type(0U);
+    template<typename SignedIntegralType>
+    typename std::enable_if<(   (std::is_fundamental<SignedIntegralType>::value == true)
+                             && (std::is_integral   <SignedIntegralType>::value == true)
+                             && (std::is_signed     <SignedIntegralType>::value == true)), uintwide_t>::type&
+    operator>>=(const SignedIntegralType n)
+    {
+      // Right-shift operator.
+      if(n <  0)
+      {
+        operator<<=(-n);
+      }
+      else if(n == 0)
+      {
+        ;
+      }
+      else if(std::uint_fast32_t(n) >= my_digits)
+      {
+        std::fill(values.begin(), values.end(), limb_type(0U));
+      }
+      else
+      {
+        const std::uint_fast32_t offset             = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t right_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
 
-          using local_integral_type = IntegralType;
+        shr(offset, right_shift_amount);
+      }
 
-          if(right_shift_amount != local_integral_type(0U))
-          {
-            for(std::int_fast32_t i = std::int_fast32_t((number_of_limbs - 1U) - offset); i >= 0; --i)
-            {
-              const limb_type t = values[std::uint_fast32_t(i)];
+      return *this;
+    }
 
-              values[std::uint_fast32_t(i)] = (t >> local_integral_type(right_shift_amount)) | part_from_previous_value;
+    template<typename UnsignedIntegralType>
+    typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
+                             && (std::is_integral   <UnsignedIntegralType>::value == true)
+                             && (std::is_signed     <UnsignedIntegralType>::value == false)), uintwide_t>::type&
+    operator>>=(const UnsignedIntegralType n)
+    {
+      // Right-shift operator.
+      if(n == 0)
+      {
+        ;
+      }
+      else if(std::uint_fast32_t(n) >= my_digits)
+      {
+        std::fill(values.begin(), values.end(), limb_type(0U));
+      }
+      else
+      {
+        const std::uint_fast32_t offset             = std::uint_fast32_t(n) / std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
+        const std::uint_fast32_t right_shift_amount = std::uint_fast32_t(n) % std::uint_fast32_t(std::numeric_limits<limb_type>::digits);
 
-              part_from_previous_value = limb_type(t << local_integral_type(std::uint_fast32_t(std::numeric_limits<limb_type>::digits - right_shift_amount)));
-            }
-          }
-        }
+        shr(offset, right_shift_amount);
       }
 
       return *this;
@@ -1415,6 +1431,7 @@
 
       constexpr std::uint_fast32_t local_number_of_limbs = uintwide_t<OtherDigits2, LimbType>::number_of_limbs;
 
+      // TBD: Can use specialized allocator or memory pool for these arrays.
       std::array<limb_type, local_number_of_limbs * 2U> result;
       std::array<limb_type, local_number_of_limbs * 4U> t;
 
@@ -1599,7 +1616,7 @@
                                                 const std::uint_fast32_t n,
                                                       limb_type*       t)
     {
-      if((n >= 32U) && (n <= 63U))
+      if(n <= 32U)
       {
         static_cast<void>(t);
 
@@ -2085,6 +2102,62 @@
       }
     }
 
+    void shl(const std::uint_fast32_t offset, const std::uint_fast32_t left_shift_amount)
+    {
+      if(offset > 0U)
+      {
+        std::copy_backward(values.data(),
+                            values.data() + (number_of_limbs - offset),
+                            values.data() +  number_of_limbs);
+
+        std::fill(values.begin(), values.begin() + offset, limb_type(0U));
+      }
+
+      limb_type part_from_previous_value = limb_type(0U);
+
+      using local_integral_type = std::uint_fast32_t;
+
+      if(left_shift_amount != local_integral_type(0U))
+      {
+        for(std::uint_fast32_t i = offset; i < number_of_limbs; ++i)
+        {
+          const limb_type t = values[i];
+
+          values[i] = (t << local_integral_type(left_shift_amount)) | part_from_previous_value;
+
+          part_from_previous_value = limb_type(t >> local_integral_type(std::uint_fast32_t(std::numeric_limits<limb_type>::digits - left_shift_amount)));
+        }
+      }
+    }
+
+    void shr(const std::uint_fast32_t offset, const std::uint_fast32_t right_shift_amount)
+    {
+      if(offset > 0U)
+      {
+        std::copy(values.begin() + offset,
+                  values.begin() + number_of_limbs,
+                  values.begin());
+
+        std::fill(values.end() - offset, values.end(), limb_type(0U));
+      }
+
+      limb_type part_from_previous_value = limb_type(0U);
+
+      using local_integral_type = std::uint_fast32_t;
+
+      if(right_shift_amount != local_integral_type(0U))
+      {
+        for(std::int_fast32_t i = std::int_fast32_t((number_of_limbs - 1U) - offset); i >= 0; --i)
+        {
+          const limb_type t = values[std::uint_fast32_t(i)];
+
+          values[std::uint_fast32_t(i)] = (t >> local_integral_type(right_shift_amount)) | part_from_previous_value;
+
+          part_from_previous_value = limb_type(t << local_integral_type(std::uint_fast32_t(std::numeric_limits<limb_type>::digits - right_shift_amount)));
+        }
+      }
+    }
+
     // Read string function.
     bool rd_string(const char* str_input)
     {
@@ -2335,7 +2408,7 @@
   typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
                            && (std::is_integral   <IntegralType>::value == true)
                            && (std::is_unsigned   <IntegralType>::value == true)
-                           && std::numeric_limits<IntegralType>::digits <= (std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType>::limb_type>::type
+                           && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType>::limb_type>::type
   operator%(const uintwide_t<Digits2, LimbType>& u, const IntegralType& v)
   {
     uintwide_t<Digits2, LimbType> remainder;
@@ -3480,7 +3553,7 @@
     // This Miller-Rabin primality test is loosely based on
     // an adaptation of some code from Boost.Multiprecision.
     // The Boost.Multiprecision code can be found here:
-    // https://www.boost.org/doc/libs/1_68_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+    // https://www.boost.org/doc/libs/1_73_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
 
     // Note: Some comments in this subroutine use the Wolfram Language(TM).
 
@@ -3693,8 +3766,10 @@
   bool example006_gcd();
   bool example007_random_generator();
   bool example008_miller_rabin_prime();
-  bool example009_compare_mul_with_boost();
+  bool example008a_miller_rabin_prime();
+  bool example009_timed_mul();
   bool example010_uint48_t();
+  bool example011_uint24_t();
 
   } // namespace wide_integer
 
