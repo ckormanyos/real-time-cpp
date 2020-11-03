@@ -12,8 +12,6 @@
 #ifndef DECWIDE_T_DETAIL_KARATSUBA_2013_01_11_H_
   #define DECWIDE_T_DETAIL_KARATSUBA_2013_01_11_H_
 
-  #include <cstdint>
-
   namespace math { namespace wide_decimal { namespace detail { namespace karatsuba {
 
   } } } } // namespace math::wide_decimal::detail::karatsuba
