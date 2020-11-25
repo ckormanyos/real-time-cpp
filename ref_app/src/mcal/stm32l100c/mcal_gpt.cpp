@@ -27,9 +27,9 @@ namespace
   }
 }
 
-extern "C" void __sys_tick_handler() __attribute__((used, noinline));
+extern "C" void __sys_tick_handler(void) __attribute__((used, noinline));
 
-extern "C" void __sys_tick_handler()
+extern "C" void __sys_tick_handler(void)
 {
   // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/32].
 
