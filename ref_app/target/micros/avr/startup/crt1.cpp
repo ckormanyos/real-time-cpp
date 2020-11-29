@@ -46,6 +46,6 @@ void crt::init_ctors()
       mcal::memory::progmem::read<constructor_function_type::size_type>(rom_source - constructor_function_type::static_size);
 
     // Call the constructor function.
-    (reinterpret_cast<const constructor_function_type::pointer>(pf))();
+    (reinterpret_cast<constructor_function_type::pointer>(pf))();
   }
 }

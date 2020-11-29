@@ -29,7 +29,9 @@ void __vector_16() __attribute__((signal, used, externally_visible));
 void __vector_16()
 {
   // Increment the 32-bit system tick with 0x80, representing 128 microseconds.
-  system_tick += static_cast<std::uint8_t>(0x80U);
+  const mcal::gpt::value_type new_tick = system_tick + static_cast<std::uint8_t>(0x80U);
+
+  system_tick = new_tick;
 }
 
 void mcal::gpt::init(const config_type*)
