@@ -9,7 +9,10 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
+# See also: https://blog.zakkemble.net/avr-gcc-builds/
+
 GCC_VERSION   = 7.2.0
+#GCC_VERSION   = 10.1.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
@@ -18,9 +21,12 @@ TGT_SUFFIX    = elf
 TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
-                -mrelax
+                -mrelax                                        \
 
-TGT_CPPFLAGS  = -std=c++17
+#                -mdouble=64                                    \
+
+TGT_CPPFLAGS  = -std=c++11
+#TGT_CPPFLAGS  = -std=c++20
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
