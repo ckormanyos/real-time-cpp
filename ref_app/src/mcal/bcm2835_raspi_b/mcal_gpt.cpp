@@ -50,33 +50,19 @@ namespace
 
       // Since we have no information on the detailed ticking order
       // of clo and chi, we read the high counter and the low conter
-      // successively until a consistent 64-bit tick has been obtained.
+      // in the hopes that a consistent 64-bit tick has been obtained.
 
-      volatile std::uint32_t chi_1;
-      volatile std::uint32_t clo_1;
-      volatile std::uint32_t chi_2;
-      volatile std::uint32_t clo_2;
+      // Do the first read of the low counter and the high conter.
+      const std::uint32_t clo_1 = lo();
+      const std::uint32_t chi_1 = hi();
 
-      mcal::gpt::value_type consistent_microsecond_tick = mcal::gpt::value_type(0U);
+      // Do the second read of the high counter.
+      const std::uint32_t clo_2 = lo();
 
-      for(;;)
-      {
-        // Do the first read of the high counter and the low conter.
-        chi_1 = hi();
-        clo_1 = lo();
-
-        // Do the second read of the high counter and the low conter.
-        clo_2 = lo();
-        chi_2 = hi();
-
-        // Perform a consistency check.
-        if((chi_2 == chi_1) && (clo_2 >= clo_1))
-        {
-          consistent_microsecond_tick = util::make_long(clo_2, chi_2);
-
-          break;
-        }
-      }
+      // Perform a consistency check.
+      const mcal::gpt::value_type consistent_microsecond_tick =
+        ((clo_2 > clo_1) ? util::make_long(clo_1, chi_1)
+                         : util::make_long(clo_2, hi()));
 
       return consistent_microsecond_tick;
     }
