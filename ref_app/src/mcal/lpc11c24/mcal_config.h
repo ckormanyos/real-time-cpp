@@ -16,21 +16,21 @@
     namespace config
     {
       // PLL configuration.
-      constexpr std::uint32_t fclkin       = UINT32_C(12'000'000); // Crystal Oscillator
+      constexpr std::uint32_t fclkin       = UINT32_C(12000000); // Crystal Oscillator
       constexpr std::uint32_t syspll_m     = UINT32_C(4);
       constexpr std::uint32_t syspll_p     = UINT32_C(2);
       constexpr std::uint32_t fclkout      = fclkin * syspll_m;
       constexpr std::uint32_t fcco         = fclkout * 2 * syspll_p;
 
-      static_assert(fclkout <  100'000'000, "System PLL FCLKOUT cannot exceed 100MHz");
-      static_assert(   fcco >= 156'000'000, "System PLL FCCO < 156MHz");
-      static_assert(   fcco <= 320'000'000, "System PLL FCCO > 320MHz");
+      static_assert(fclkout <  UINT32_C(100000000), "System PLL FCLKOUT cannot exceed 100MHz");
+      static_assert(   fcco >= UINT32_C(156000000), "System PLL FCCO < 156MHz");
+      static_assert(   fcco <= UINT32_C(320000000), "System PLL FCCO > 320MHz");
 
       // System AHB clock divider.
       constexpr std::uint32_t sysahbclkdiv = UINT32_C(1);
 
       // System Tick configuration.
-      constexpr std::uint32_t systick_hz   = UINT32_C(10'000);
+      constexpr std::uint32_t systick_hz   = UINT32_C(10000);
       constexpr std::uint32_t systick_inc  = UINT32_C(100); // in microseconds
 
       // Watchdog Timer configuration.
