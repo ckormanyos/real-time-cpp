@@ -1,0 +1,32 @@
+
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Program code.
+NEW_BUFFER   Buf_402F0400_to_402F7FFF  FROM_FILE      inFile                    -useAreas={{0x402F0400, 0x7C00}}  -setByteOrder=BigEndian
+FILL_BUFFER  Buf_402F0400_to_402F7FFF  WITH_FILLER    { 0x00, 0xA0, 0xF0, 0xF7 }
+
+// Optionally zero-cleared DRAM area
+NEW_BUFFER   Buf_402F8000_to_402FBFFF  FROM_VALUES  {0x00} -useAreas={{0x402F8000, 0x4000}}
+
+// Include an 8-byte SD card boot header.
+// @ 0000 : Size of the (image + header) in bytes: 0x0000BC08
+// @ 0004 : Address where to store the raw image:  0x402F0400
+// Both values are in LSB format.
+NEW_BUFFER   Buf_0000_to_0003  FROM_VALUES    {0x08, 0xBC, 0x00, 0x00}
+NEW_BUFFER   Buf_0004_to_0007  FROM_VALUES    {0x00, 0x04, 0x2F, 0x40}
+
+// Create the output hex and binary files.
+// Include the SD card boot header in the binary file.
+WRITE_FILE   outFile  WITH_BUFFERS  {Buf_402F0400_to_402F7FFF,
+                                     Buf_402F8000_to_402FBFFF}  -setFormat=IntelHexExtended
+WRITE_FILE   binFile  WITH_BUFFERS  {Buf_402F0400_to_402F7FFF,
+                                     Buf_402F8000_to_402FBFFF}  -setFormat=RawBinary
+WRITE_FILE   mloFile  WITH_BUFFERS  {Buf_0000_to_0003,
+                                     Buf_0004_to_0007,
+                                     Buf_402F0400_to_402F7FFF,
+                                     Buf_402F8000_to_402FBFFF}  -setFormat=RawBinary

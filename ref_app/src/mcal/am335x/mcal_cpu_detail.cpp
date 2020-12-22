@@ -12,11 +12,6 @@
 #include <mcal_cpu_detail.h>
 #include <mcal_cpu_detail_secure.h>
 
-namespace int_vect
-{
-  std::uint32_t get_nmi_load_address();
-}
-
 void mcal::cpu::detail::init()
 {
   secure::initialize_vfp_unit          ();
@@ -29,13 +24,6 @@ void mcal::cpu::detail::init()
   secure::enable_mmu                   ();
   secure::enable_branch_prediction     ();
   secure::enable_caches                ();
-}
-
-void mcal::cpu::detail::load_nmi()
-{
-  const volatile std::uint32_t the_address = int_vect::get_nmi_load_address();
-
-  asm volatile("mcr p15, #0, %[value], c12, c0, #0" : : [value] "r" (the_address));
 }
 
 void mcal::cpu::detail::user_mode()

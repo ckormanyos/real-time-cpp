@@ -37,17 +37,6 @@ void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
 void __abort_handler      () { for(;;) { mcal::cpu::nop(); } }
 void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
 
-namespace int_vect
-{
-  std::uint32_t get_nmi_load_address();
-
-  std::uint32_t get_nmi_load_address()
-  {
-    // Get the address of the nmi interrupt table.
-    return reinterpret_cast<std::uint32_t>(&__isr_vector_nmi);
-  }
-}
-
 extern "C"
 const volatile std::array<function_type, number_of_interrupts_nmi> __isr_vector_nmi =
 {{
