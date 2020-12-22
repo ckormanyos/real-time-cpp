@@ -14,9 +14,8 @@
 
   //#define WIDE_DECIMAL_DISABLE_IOSTREAM
   //#define WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION
-  //#define WIDE_DECIMAL_DISABLE_CONVERSION_TO_BUILTINS
-  //#define WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
   //#define WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
+  //#define WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS
 
   #include <algorithm>
   #include <cmath>
@@ -30,9 +29,6 @@
   #include <sstream>
   #endif
   #include <memory>
-  #if !defined(WIDE_DECIMAL_DISABLE_CONVERSION_TO_BUILTINS)
-  #include <sstream>
-  #endif
   #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
   #include <string>
   #endif
@@ -69,36 +65,28 @@
     using base_class_type = util::dynamic_array<MyType, MyAlloc>;
 
   public:
-    constexpr fixed_dynamic_array()
-      : base_class_type(MySize) { }
+    fixed_dynamic_array(const typename base_class_type::size_type       s  = MySize,
+                        const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
+                        const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
+      : base_class_type(MySize, typename base_class_type::value_type(), a)
+    {
+      std::fill(base_class_type::begin(),
+                base_class_type::begin() + (std::min)(MySize, (std::uint_fast32_t) s),
+                v);
+    }
 
-    constexpr fixed_dynamic_array(const typename base_class_type::size_type my_size)
-      : base_class_type(my_size) { }
-
-    constexpr fixed_dynamic_array(const typename base_class_type::size_type   my_size,
-                                  const typename base_class_type::value_type& my_value)
-      : base_class_type(my_size, my_value) { }
-
-    constexpr fixed_dynamic_array(const typename base_class_type::size_type       my_size,
-                                  const typename base_class_type::value_type&     my_value,
-                                  const typename base_class_type::allocator_type& my_alloc)
-      : base_class_type(my_size, my_value, my_alloc) { }
-
-    fixed_dynamic_array(const fixed_dynamic_array& other_array)
+    constexpr fixed_dynamic_array(const fixed_dynamic_array& other_array)
       : base_class_type((const base_class_type&) other_array) { }
 
     fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
       : base_class_type(MySize)
     {
-      base_class_type::fill(typename base_class_type::value_type(0U));
-
       std::copy(lst.begin(),
-                lst.begin() + (std::min)((typename base_class_type::size_type) lst.size(),
-                                         (typename base_class_type::size_type) MySize),
+                lst.begin() + (std::min)((std::uint_fast32_t) lst.size(), MySize),
                 base_class_type::begin());
     }
 
-    fixed_dynamic_array(fixed_dynamic_array&& other_array)
+    constexpr fixed_dynamic_array(fixed_dynamic_array&& other_array)
       : base_class_type((base_class_type&&) other_array) { }
 
     fixed_dynamic_array& operator=(const fixed_dynamic_array& other_array)
@@ -117,7 +105,10 @@
 
     virtual ~fixed_dynamic_array() = default;
 
-    static constexpr typename base_class_type::size_type static_size() { return MySize; }
+    static constexpr typename base_class_type::size_type static_size()
+    {
+      return MySize;
+    }
   };
 
   typedef enum enum_os_float_field_type
@@ -131,61 +122,80 @@
   } // namespace math::wide_decimal::detail
 
   // Forward declarations of various decwide_t namespace functions.
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> zero  ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> one   ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> two   ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> half  ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> zero();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> one ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> two ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> half();
 
+  #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+  template<const std::int32_t MyDigits10,
+           typename LimbType = std::uint32_t,
+           typename AllocatorType = std::allocator<void>,
+           typename InternalFloatType = double>
+  const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
+  #else
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
            typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
+  #endif
 
+  #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+  template<const std::int32_t MyDigits10,
+           typename LimbType = std::uint32_t,
+           typename AllocatorType = std::allocator<void>,
+           typename InternalFloatType = double>
+  const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& ln_two();
+  #else
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
            typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ln_two();
+  #endif
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> unsigned_long_long_max();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signed_long_long_min  ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signed_long_long_max  ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> double_min            ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> double_max            ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> long_double_min       ();
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> long_double_max       ();
+  template<const std::int32_t MyDigits10,
+           typename LimbType = std::uint32_t,
+           typename AllocatorType = std::allocator<void>,
+           typename InternalFloatType = double>
+  decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> calc_pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
 
-  #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow2(const std::int64_t p);
-  #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
+  template<const std::int32_t MyDigits10,
+           typename LimbType = std::uint32_t,
+           typename AllocatorType = std::allocator<void>,
+           typename InternalFloatType = double>
+  decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> calc_ln_two();
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fabs (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> floor(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ceil (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t                                                      sgn  (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ldexp(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v, int e);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> frexp(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v, int* expon);
-  #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fmod (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v1, const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v2);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t                                                      ilogb(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> sqrt (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> cbrt (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rootn(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x, const std::int32_t p);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr unsigned_long_long_max();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr signed_long_long_min  ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr signed_long_long_max  ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr long_double_min       ();
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr long_double_max       ();
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isnan   (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isfinite(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isinf   (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fabs (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>  abs (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> floor(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ceil (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t                                                      sgn  (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ldexp(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v, int e);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> frexp(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v, int* expon);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fmod (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v1, decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v2);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t                                                      ilogb(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> sqrt (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> cbrt (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rootn(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x, std::int32_t p);
   template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rootn_inverse
-                                                                                                                                                                                        (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x, const std::int32_t p);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow  (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x, const std::int64_t n);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> log  (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isnan   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isfinite(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isinf   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isneg   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool ispos   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isint   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isone   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool iszero  (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x);
+                                                                                                                                                                                        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x, std::int32_t p);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> log  (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> exp  (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow  (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x, const std::int64_t n);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow  (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x,
+                                                                                                                                                                                         decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> a);
 
   #if !defined(WIDE_DECIMAL_DISABLE_IOSTREAM)
   template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::ostream& operator<<(std::ostream& os, const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& f);
@@ -354,7 +364,7 @@
   public:
     // Define the decwide_t digits characteristics.
 
-    static constexpr std::int32_t decwide_t_elems_for_fft     = 64;
+    static constexpr std::int32_t decwide_t_elems_for_fft     = 128;
 
     static constexpr std::int32_t decwide_t_digits10          = detail::decwide_t_helper<MyDigits10, LimbType>::digits10;
     static constexpr std::int32_t decwide_t_digits            = detail::decwide_t_helper<MyDigits10, LimbType>::digits;
@@ -404,7 +414,6 @@
     fpclass_type;
 
   private:
-    #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
     template<typename native_float_type>
     class native_float_parts final
     {
@@ -467,28 +476,53 @@
       unsigned long long my_mantissa_part;
       int                my_exponent_part;
     };
-    #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
+
+    #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+    // Static data initializer
+    struct initializer
+    {
+      initializer()
+      {
+        decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_pi    ();
+        decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_ln_two();
+      }
+
+      void do_nothing() { }
+    };
+
+    static initializer init;
+    #endif
 
   public:
     // Default constructor.
-    decwide_t() : my_data     (),
-                  my_exp      (static_cast<std::int64_t>(0)),
-                  my_neg      (false),
-                  my_fpclass  (decwide_t_finite),
-                  my_prec_elem(decwide_t_elem_number) { }
+    constexpr decwide_t() : my_data     (),
+                            my_exp      (static_cast<std::int64_t>(0)),
+                            my_neg      (false),
+                            my_fpclass  (decwide_t_finite),
+                            my_prec_elem(decwide_t_elem_number) { }
 
     // Constructors from built-in unsigned integral types.
     template<typename UnsignedIntegralType,
              typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
                                       && (std::is_unsigned<UnsignedIntegralType>::value == true)
                                       && (std::numeric_limits<UnsignedIntegralType>::digits <= std::numeric_limits<limb_type>::digits))>::type const* = nullptr>
-    decwide_t(const UnsignedIntegralType u) : my_data     (decwide_t_elem_number, 0U),
+    decwide_t(const UnsignedIntegralType u) : my_data     (),
                                               my_exp      (static_cast<std::int64_t>(0)),
                                               my_neg      (false),
                                               my_fpclass  (decwide_t_finite),
                                               my_prec_elem(decwide_t_elem_number)
     {
-      my_data[0U] = u;
+      if(u < decwide_t_elem_mask)
+      {
+        my_data[0U] = u;
+      }
+      else
+      {
+        my_data[0U] = u / decwide_t_elem_mask;
+        my_data[1U] = u % decwide_t_elem_mask;
+
+        my_exp = decwide_t_elem_digits10;
+      }
     }
 
     // Constructors from built-in unsigned integral types.
@@ -507,8 +541,8 @@
 
     // Constructors from built-in signed integral types.
     template<typename SignedIntegralType,
-              typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                       && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
+             typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
+                                      && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
     decwide_t(const SignedIntegralType n) : my_data     (),
                                             my_exp      (static_cast<std::int64_t>(0)),
                                             my_neg      (n < static_cast<signed long long>(0)),
@@ -522,7 +556,6 @@
       from_unsigned_long_long(u);
     }
 
-    #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
     // Constructors from built-in floating-point types.
     template<typename FloatingPointType,
               typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true>::type const* = nullptr>
@@ -534,7 +567,6 @@
     {
       from_long_double(static_cast<long double>(f));
     }
-    #endif //!(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
 
     #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
     // Constructors from character representations.
@@ -572,45 +604,45 @@
     #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
 
     // Copy constructor.
-    decwide_t(const decwide_t& other) : my_data     (other.my_data),
-                                        my_exp      (other.my_exp),
-                                        my_neg      (other.my_neg),
-                                        my_fpclass  (other.my_fpclass),
-                                        my_prec_elem(other.my_prec_elem) { }
+    constexpr decwide_t(const decwide_t& other) : my_data     (other.my_data),
+                                                  my_exp      (other.my_exp),
+                                                  my_neg      (other.my_neg),
+                                                  my_fpclass  (other.my_fpclass),
+                                                  my_prec_elem(other.my_prec_elem) { }
 
     // Move constructor.
-    decwide_t(decwide_t&& other) : my_data     ((array_type&&) other.my_data),
-                                   my_exp      (other.my_exp),
-                                   my_neg      (other.my_neg),
-                                   my_fpclass  (other.my_fpclass),
-                                   my_prec_elem(other.my_prec_elem) { }
+    constexpr decwide_t(decwide_t&& other) : my_data     ((array_type&&) other.my_data),
+                                             my_exp      (other.my_exp),
+                                             my_neg      (other.my_neg),
+                                             my_fpclass  (other.my_fpclass),
+                                             my_prec_elem(other.my_prec_elem) { }
 
     // Constructor from floating-point class.
-    explicit decwide_t(const fpclass_type fpc) : my_data     (),
-                                                 my_exp      (static_cast<std::int64_t>(0)),
-                                                 my_neg      (false),
-                                                 my_fpclass  (fpc),
-                                                 my_prec_elem(decwide_t_elem_number) { }
+    explicit constexpr decwide_t(const fpclass_type fpc) : my_data     (),
+                                                           my_exp      (static_cast<std::int64_t>(0)),
+                                                           my_neg      (false),
+                                                           my_fpclass  (fpc),
+                                                           my_prec_elem(decwide_t_elem_number) { }
 
     // Constructor from initializer list of limbs,
     // exponent value (normed to limb granularity) 
     // and optional sign flag.
-    decwide_t(std::initializer_list<limb_type> limb_values,
-            const std::int64_t e = 0,
-            const bool is_neg = false) : my_data     (limb_values),
-                                         my_exp      (e),
-                                         my_neg      (is_neg),
-                                         my_fpclass  (decwide_t_finite),
-                                         my_prec_elem(decwide_t_elem_number) { }
+    constexpr decwide_t(std::initializer_list<limb_type> limb_values,
+                        const std::int64_t e = 0,
+                        const bool is_neg = false) : my_data     (limb_values),
+                                                     my_exp      (e),
+                                                     my_neg      (is_neg),
+                                                     my_fpclass  (decwide_t_finite),
+                                                     my_prec_elem(decwide_t_elem_number) { }
 
   private:
     // Constructor from mantissa and exponent.
     decwide_t(const InternalFloatType mantissa,
-            const std::int64_t exponent) : my_data     (),
-                                           my_exp      (static_cast<std::int64_t>(0)),
-                                           my_neg      (false),
-                                           my_fpclass  (decwide_t_finite),
-                                           my_prec_elem(decwide_t_elem_number)
+              const std::int64_t exponent) : my_data     (),
+                                             my_exp      (static_cast<std::int64_t>(0)),
+                                             my_neg      (false),
+                                             my_fpclass  (decwide_t_finite),
+                                             my_prec_elem(decwide_t_elem_number)
     {
       // Create a decwide_t from mantissa and exponent.
 
@@ -698,188 +730,6 @@
           array_type&  representation()       { return my_data; }
     const array_type&  representation() const { return my_data; }
     const array_type& crepresentation() const { return my_data; }
-
-    // Arithmetic operators with signed long long.
-    decwide_t& add_signed_long_long(const signed long long n)
-    {
-      if(n < static_cast<signed long long>(0))
-      {
-        negate();
-        add_unsigned_long_long(static_cast<unsigned long long>(-n));
-        negate();
-      }
-      else
-      {
-        add_unsigned_long_long(static_cast<unsigned long long>(n));
-      }
-
-      return static_cast<decwide_t&>(*this);
-    }
-
-    decwide_t& sub_signed_long_long(const signed long long n)
-    {
-      return add_signed_long_long(static_cast<signed long long>(-n));
-    }
-
-    decwide_t& mul_signed_long_long(const signed long long n)
-    {
-      const bool b_neg = (n < static_cast<signed long long>(0));
-
-      mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
-
-      if(b_neg)
-      {
-        negate();
-      }
-
-      return static_cast<decwide_t&>(*this);
-    }
-
-    decwide_t& div_signed_long_long(const signed long long n)
-    {
-      const bool b_neg = (n < static_cast<signed long long>(0));
-
-      div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
-
-      if(b_neg)
-      {
-        negate();
-      }
-
-      return static_cast<decwide_t&>(*this);
-    }
-
-    int compare(const decwide_t& v) const
-    {
-      const std::int32_t this_compare_result = cmp(v);
-
-      return static_cast<int>(this_compare_result);
-    }
-
-    // Fast order-10 range check.
-    std::int64_t order() const { return get_order_fast(); }
-
-    friend inline decwide_t fabs(const decwide_t& x)
-    {
-      return (x.isneg() ? decwide_t(x).negate() : x);
-    }
-
-    std::int32_t cmp(const decwide_t& v) const
-    {
-      // Compare v with *this.
-      //         Return +1 for *this > v
-      //                 0 for *this = v
-      //                -1 for *this < v
-
-      // Handle all non-finite cases.
-      if((!isfinite()) || (!v.isfinite()))
-      {
-        // NaN can never equal NaN. Return an implementation-dependent
-        // signed result. Also note that comparison of NaN with NaN
-        // using operators greater-than or less-than is undefined.
-        if(isnan() || v.isnan())
-        {
-          return (isnan() ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
-        }
-
-        if(isinf() && v.isinf())
-        {
-          // Both *this and v are infinite. They are equal if they have the same sign.
-          // Otherwise, *this is less than v if and only if *this is negative.
-          return ((my_neg == v.my_neg)
-                   ? static_cast<std::int32_t>(0)
-                   : (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1)));
-        }
-
-        if(isinf())
-        {
-          // *this is infinite, but v is finite.
-          // So negative infinite *this is less than any finite v.
-          // Whereas positive infinite *this is greater than any finite v.
-          return (isneg() ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
-        }
-        else
-        {
-          // *this is finite, and v is infinite.
-          // So any finite *this is greater than negative infinite v.
-          // Whereas any finite *this is less than positive infinite v.
-          return (v.my_neg ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
-        }
-      }
-
-      // And now handle all *finite* cases.
-      if(iszero())
-      {
-        // The value of *this is zero and v is either zero or non-zero.
-        return (v.iszero() ? static_cast<std::int32_t>(0)
-                           : (v.my_neg ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1)));
-      }
-      else if(v.iszero())
-      {
-        // The value of v is zero and *this is non-zero.
-        return (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
-      }
-      else
-      {
-        // Both *this and v are non-zero.
-
-        if(my_neg != v.my_neg)
-        {
-          // The signs are different.
-          return (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
-        }
-        else if(my_exp != v.my_exp)
-        {
-          // The signs are the same and the exponents are different.
-          const std::int32_t val_cmp_exp = ((my_exp < v.my_exp) ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
-
-          return (my_neg ? val_cmp_exp : static_cast<std::int32_t>(-val_cmp_exp));
-        }
-        else
-        {
-          // The signs are the same and the exponents are the same.
-          // Compare the data.
-          const std::int32_t val_cmp_data = cmp_data(v.my_data);
-
-          return ((!my_neg) ? val_cmp_data : static_cast<std::int32_t>(-val_cmp_data));
-        }
-      }
-    }
-
-    // Specific special values.
-    static decwide_t my_value_inf() { return decwide_t(decwide_t_inf); }
-    static decwide_t my_value_nan() { return decwide_t(decwide_t_NaN); }
-    static decwide_t my_value_max() { return decwide_t( { limb_type(9U) }, decwide_t_max_exp10 ); }
-    static decwide_t my_value_min() { return decwide_t( { limb_type(1U) }, decwide_t_min_exp10 ); }
-    static decwide_t my_value_eps()
-    {
-      constexpr std::int32_t decwide_t_digits10_aligned =
-        -static_cast<std::int32_t>(((decwide_t_digits10 / decwide_t_elem_digits10) + ((decwide_t_digits10 % decwide_t_elem_digits10) != 0 ? 1 : 0)) * decwide_t_elem_digits10);
-
-      return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>
-      (
-        {
-          limb_type(detail::decwide_t_helper<MyDigits10, LimbType>::pow10_maker(static_cast<std::uint32_t>(static_cast<std::int32_t>(-decwide_t_digits10_aligned + 1) - decwide_t_digits10)))
-        },
-        static_cast<std::int64_t>(decwide_t_digits10_aligned)
-      );
-    }
-
-    void precision(const std::int32_t prec_digits)
-    {
-      if(prec_digits >= decwide_t_digits10)
-      {
-        my_prec_elem = decwide_t_elem_number;
-      }
-      else
-      {
-        const std::int32_t elems =
-          static_cast<std::int32_t>(    static_cast<std::int32_t>(prec_digits / decwide_t_elem_digits10)
-                                    +                          (((prec_digits % decwide_t_elem_digits10) != 0) ? 1 : 0));
-
-        my_prec_elem = (std::min)(decwide_t_elem_number, (std::max)(elems, static_cast<std::int32_t>(2)));
-      }
-    }
 
     // Binary arithmetic operators.
     decwide_t& operator+=(const decwide_t& v)
@@ -1323,6 +1173,193 @@
       return *this; 
     }
 
+    // Arithmetic operators with signed long long.
+    decwide_t& add_signed_long_long(const signed long long n)
+    {
+      if(n < static_cast<signed long long>(0))
+      {
+        negate();
+        add_unsigned_long_long(static_cast<unsigned long long>(-n));
+        negate();
+      }
+      else
+      {
+        add_unsigned_long_long(static_cast<unsigned long long>(n));
+      }
+
+      return static_cast<decwide_t&>(*this);
+    }
+
+    decwide_t& sub_signed_long_long(const signed long long n)
+    {
+      return add_signed_long_long(static_cast<signed long long>(-n));
+    }
+
+    decwide_t& mul_signed_long_long(const signed long long n)
+    {
+      const bool b_neg = (n < static_cast<signed long long>(0));
+
+      mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+
+      if(b_neg)
+      {
+        negate();
+      }
+
+      return static_cast<decwide_t&>(*this);
+    }
+
+    decwide_t& div_signed_long_long(const signed long long n)
+    {
+      const bool b_neg = (n < static_cast<signed long long>(0));
+
+      div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+
+      if(b_neg)
+      {
+        negate();
+      }
+
+      return static_cast<decwide_t&>(*this);
+    }
+
+    int compare(const decwide_t& v) const
+    {
+      const std::int32_t this_compare_result = cmp(v);
+
+      return static_cast<int>(this_compare_result);
+    }
+
+    std::int32_t cmp(const decwide_t& v) const
+    {
+      // Compare v with *this.
+      //         Return +1 for *this > v
+      //                 0 for *this = v
+      //                -1 for *this < v
+
+      // Handle all non-finite cases.
+      if((!isfinite()) || (!v.isfinite()))
+      {
+        // NaN can never equal NaN. Return an implementation-dependent
+        // signed result. Also note that comparison of NaN with NaN
+        // using operators greater-than or less-than is undefined.
+        if(isnan() || v.isnan())
+        {
+          return (isnan() ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
+        }
+
+        if(isinf() && v.isinf())
+        {
+          // Both *this and v are infinite. They are equal if they have the same sign.
+          // Otherwise, *this is less than v if and only if *this is negative.
+          return ((my_neg == v.my_neg)
+                   ? static_cast<std::int32_t>(0)
+                   : (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1)));
+        }
+
+        if(isinf())
+        {
+          // *this is infinite, but v is finite.
+          // So negative infinite *this is less than any finite v.
+          // Whereas positive infinite *this is greater than any finite v.
+          return (isneg() ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
+        }
+        else
+        {
+          // *this is finite, and v is infinite.
+          // So any finite *this is greater than negative infinite v.
+          // Whereas any finite *this is less than positive infinite v.
+          return (v.my_neg ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
+        }
+      }
+
+      // And now handle all *finite* cases.
+      if(iszero())
+      {
+        // The value of *this is zero and v is either zero or non-zero.
+        return (v.iszero() ? static_cast<std::int32_t>(0)
+                           : (v.my_neg ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1)));
+      }
+      else if(v.iszero())
+      {
+        // The value of v is zero and *this is non-zero.
+        return (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
+      }
+      else
+      {
+        // Both *this and v are non-zero.
+
+        if(my_neg != v.my_neg)
+        {
+          // The signs are different.
+          return (my_neg ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
+        }
+        else if(my_exp != v.my_exp)
+        {
+          // The signs are the same and the exponents are different.
+          const std::int32_t val_cmp_exp = ((my_exp < v.my_exp) ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
+
+          return (my_neg ? val_cmp_exp : static_cast<std::int32_t>(-val_cmp_exp));
+        }
+        else
+        {
+          // The signs are the same and the exponents are the same.
+          // Compare the data.
+          const std::int32_t val_cmp_data = cmp_data(v.my_data);
+
+          return ((!my_neg) ? val_cmp_data : static_cast<std::int32_t>(-val_cmp_data));
+        }
+      }
+    }
+
+    // Specific special values.
+    static constexpr decwide_t my_value_inf() { return decwide_t(decwide_t_inf); }
+    static constexpr decwide_t my_value_nan() { return decwide_t(decwide_t_NaN); }
+    static constexpr decwide_t my_value_max() { return decwide_t( { limb_type(9U) }, decwide_t_max_exp10 ); }
+    static constexpr decwide_t my_value_min() { return decwide_t( { limb_type(1U) }, decwide_t_min_exp10 ); }
+    static constexpr decwide_t my_value_eps()
+    {
+      return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>
+      (
+        {
+          (limb_type) detail::decwide_t_helper<MyDigits10, LimbType>::pow10_maker((std::uint32_t) ((std::int32_t) (INT32_C(1) + (std::int32_t) (((decwide_t_digits10 / decwide_t_elem_digits10) + ((decwide_t_digits10 % decwide_t_elem_digits10) != 0 ? 1 : 0)) * decwide_t_elem_digits10)) - decwide_t_digits10))
+        },
+        -(std::int64_t) (((decwide_t_digits10 / decwide_t_elem_digits10) + ((decwide_t_digits10 % decwide_t_elem_digits10) != 0 ? 1 : 0)) * decwide_t_elem_digits10)
+      );
+    }
+
+    #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+    static const decwide_t& my_value_pi()
+    {
+      init.do_nothing();
+      static const decwide_t val(calc_pi<MyDigits10, LimbType, AllocatorType, InternalFloatType>());
+      return val;
+    }
+
+    static const decwide_t& my_value_ln_two()
+    {
+      init.do_nothing();
+      static const decwide_t val(calc_ln_two<MyDigits10, LimbType, AllocatorType, InternalFloatType>());
+      return val;
+    }
+    #endif
+
+    void precision(const std::int32_t prec_digits)
+    {
+      if(prec_digits >= decwide_t_digits10)
+      {
+        my_prec_elem = decwide_t_elem_number;
+      }
+      else
+      {
+        const std::int32_t elems =
+          static_cast<std::int32_t>(    static_cast<std::int32_t>(prec_digits / decwide_t_elem_digits10)
+                                    +                          (((prec_digits % decwide_t_elem_digits10) != 0) ? 1 : 0));
+
+        my_prec_elem = (std::min)(decwide_t_elem_number, (std::max)(elems, static_cast<std::int32_t>(2)));
+      }
+    }
+
     void swap(decwide_t& other_decwide_t)
     {
       if(this != &other_decwide_t)
@@ -1388,12 +1425,14 @@
       // is used. During the iterative steps, the precision of the calculation is limited
       // to the minimum required in order to minimize the run-time.
 
-      for(std::int32_t digits = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1); digits < decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_digits10; digits *= static_cast<std::int32_t>(2))
+      for(std::int32_t digits  = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1);
+                       digits  < (std::int32_t) (original_prec_elem * decwide_t_elem_digits10);
+                       digits *= static_cast<std::int32_t>(2))
       {
         // Adjust precision of the terms.
         const std::int32_t new_prec_as_digits10 =
-                       static_cast<std::int32_t>(digits * 2)
-          + (std::max)(static_cast<std::int32_t>(decwide_t_elem_digits10 * 2), static_cast<std::int32_t>(16));
+            (std::int32_t) (digits * 2)
+          + (std::max)((std::int32_t) (decwide_t_elem_digits10  + 1), (std::int32_t) 9);
 
           precision(new_prec_as_digits10);
         x.precision(new_prec_as_digits10);
@@ -1464,12 +1503,14 @@
       // http://www.jjj.de/pibook/pibook.html
       // http://www.amazon.com/exec/obidos/tg/detail/-/3540665722/qid=1035535482/sr=8-7/ref=sr_8_7/104-3357872-6059916?v=glance&n=507846
 
-      for(std::int32_t digits = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1); digits < decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_digits10; digits *= static_cast<std::int32_t>(2))
+      for(std::int32_t digits  = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1);
+                       digits  < (std::int32_t) (original_prec_elem * decwide_t_elem_digits10);
+                       digits *= static_cast<std::int32_t>(2))
       {
         // Adjust precision of the terms.
         const std::int32_t new_prec_as_digits10 =
-                       static_cast<std::int32_t>(digits * 2)
-          + (std::max)(static_cast<std::int32_t>(decwide_t_elem_digits10 * 2), static_cast<std::int32_t>(16));
+            (std::int32_t) (digits * 2)
+          + (std::max)((std::int32_t) (decwide_t_elem_digits10  + 1), (std::int32_t) 9);
 
            precision(new_prec_as_digits10);
         vi.precision(new_prec_as_digits10);
@@ -1497,7 +1538,7 @@
       return *this;
     }
 
-    friend inline decwide_t rootn_inverse(const decwide_t& x, const std::int32_t p)
+    friend inline decwide_t rootn_inverse(decwide_t x, const std::int32_t p)
     {
       decwide_t result;
 
@@ -1540,6 +1581,8 @@
           dd /= 10.0;
         }
 
+        const std::int32_t original_prec_elem = x.my_prec_elem;
+
         using std::pow;
 
         // Estimate the one over the root using simple manipulations.
@@ -1548,24 +1591,28 @@
         // Set the result equal to the initial guess.
         result = decwide_t(one_over_rtn_d, static_cast<std::int64_t>(-ne / p));
 
-        for(std::int32_t digits = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1); digits < decwide_t::decwide_t_max_digits10; digits *= static_cast<std::int32_t>(2))
+        for(std::int32_t digits  = (std::int32_t) (std::numeric_limits<InternalFloatType>::digits10 - 1);
+                         digits  < (std::int32_t) (original_prec_elem * decwide_t_elem_digits10);
+                         digits *= static_cast<std::int32_t>(2))
         {
           // Adjust precision of the terms.
-          const std::int32_t new_prec = static_cast<std::int32_t>(digits * 2) + 10;
+          const std::int32_t new_prec_as_digits10 =
+              (std::int32_t) (digits * 2)
+            + (std::max)((std::int32_t) (decwide_t_elem_digits10  + 1), (std::int32_t) 9);
 
-          result.precision(new_prec);
+          result.precision(new_prec_as_digits10);
 
           // Perform the next iteration.
-          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> term =
-            (((-pow(result, p) * x) + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>()) / p) + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>();
+          decwide_t term =
+              (((-pow(result, p) * x) + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>()) / p)
+            + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>();
 
-          term.precision(new_prec);
+          term.precision(new_prec_as_digits10);
 
           result *= term;
-
         }
 
-        result.precision(std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::max_digits10);
+        result.my_prec_elem = original_prec_elem;
       }
 
       return result;
@@ -1752,95 +1799,53 @@
       return x;
     }
 
-    #if !defined(WIDE_DECIMAL_DISABLE_CONVERSION_TO_BUILTINS)
-    double extract_double() const
-    {
-      // Returns the double conversion of a decwide_t.
-
-      // Check for non-normal decwide_t.
-      if((!isfinite()))
-      {
-        if(isnan())
-        {
-          return std::numeric_limits<double>::quiet_NaN();
-        }
-        else
-        {
-          return ((!my_neg) ?  std::numeric_limits<double>::infinity()
-                            : -std::numeric_limits<double>::infinity());
-        }
-      }
-
-      const decwide_t xx(fabs(*this));
-
-      // Check for zero decwide_t.
-      if(iszero() || (xx < double_min<MyDigits10, LimbType, AllocatorType, InternalFloatType>()))
-      {
-        return 0.0;
-      }
-
-      // Check if decwide_t exceeds the maximum of double.
-      if(xx > double_max<MyDigits10, LimbType, AllocatorType, InternalFloatType>())
-      {
-        return ((!my_neg) ?  std::numeric_limits<double>::infinity()
-                          : -std::numeric_limits<double>::infinity());
-      }
-
-      std::stringstream ss;
-
-      ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10 + (2 + 1)))
-         << std::scientific
-         << *this;
-
-      double d;
-
-      ss >> d;
-
-      return d;
-    }
-
     long double extract_long_double() const
     {
       // Returns the long double conversion of a decwide_t.
 
+      long double ld;
+
       // Check for non-normal decwide_t.
-      if((!isfinite()))
+      if(isfinite() == false)
       {
-        if(isnan())
+        ld = (isnan() ? std::numeric_limits<long double>::quiet_NaN()
+                      : ((my_neg == false) ?  std::numeric_limits<long double>::infinity()
+                                           : -std::numeric_limits<long double>::infinity()));
+      }
+      else
+      {
+        const decwide_t xx(fabs(*this));
+
+        // Check for zero decwide_t.
+        if(iszero() || (xx < long_double_min<MyDigits10, LimbType, AllocatorType, InternalFloatType>()))
         {
-          return std::numeric_limits<long double>::quiet_NaN();
+          ld = 0.0L;
+        }
+        else
+        if(xx > long_double_max<MyDigits10, LimbType, AllocatorType, InternalFloatType>())
+        {
+          // Check if decwide_t exceeds the maximum of double.
+          ld = ((my_neg == false) ?  std::numeric_limits<long double>::infinity()
+                                  : -std::numeric_limits<long double>::infinity());
         }
         else
         {
-          return ((!my_neg) ?  std::numeric_limits<long double>::infinity()
-                            : -std::numeric_limits<long double>::infinity());
+          ld = (long double) my_data[0U];
+
+          long double scale = 1.0L;
+
+          for(typename array_type::size_type i  = (typename array_type::size_type) decwide_t_elem_digits10;
+                                             i  < (typename array_type::size_type) (std::numeric_limits<long double>::digits10 + 3);
+                                             i += (typename array_type::size_type) decwide_t_elem_digits10)
+          {
+            scale /= (long double) decwide_t_elem_mask;
+
+            ld += (long double) my_data[i / decwide_t_elem_digits10] * scale;
+          }
+
+          if(my_neg) { ld = -ld; }
         }
       }
-
-      const decwide_t xx(fabs(*this));
-
-      // Check for zero decwide_t.
-      if(iszero() || (xx < long_double_min<MyDigits10, LimbType, AllocatorType, InternalFloatType>()))
-      {
-        return 0.0L;
-      }
-
-      // Check if decwide_t exceeds the maximum of double.
-      if(xx > long_double_max<MyDigits10, LimbType, AllocatorType, InternalFloatType>())
-      {
-        return ((!my_neg) ?  std::numeric_limits<long double>::infinity()
-                          : -std::numeric_limits<long double>::infinity());
-      }
-
-      std::stringstream ss;
-
-      ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<long double>::digits10 + (2 + 1)))
-         << std::scientific
-         << *this;
-
-      long double ld;
-
-      ss >> ld;
 
       return ld;
     }
@@ -1931,42 +1936,19 @@
       return val;
     }
 
-    explicit operator long double() const
-    {
-      return extract_long_double();
-    }
-
-    explicit operator double() const
-    {
-      return extract_double();
-    }
-
-    explicit operator float() const
-    {
-      return (float) extract_double();
-    }
-
-    explicit operator signed long long() const
-    {
-      return extract_signed_long_long();
-    }
-
-    explicit operator unsigned long long() const
-    {
-      return extract_unsigned_long_long();
-    }
-
-    explicit operator signed int() const
-    {
-      return (int) extract_signed_long_long();
-    }
-
-    explicit operator unsigned int() const
-    {
-      return (unsigned int) extract_unsigned_long_long();
-    }
-
-    #endif // !WIDE_DECIMAL_DISABLE_CONVERSION_TO_BUILTINS
+    explicit operator long double       () const { return extract_long_double(); }
+    explicit operator double            () const { return (double) extract_long_double(); }
+    explicit operator float             () const { return (float) extract_long_double(); }
+    explicit operator signed char       () const { return (signed char) extract_signed_long_long(); }
+    explicit operator unsigned char     () const { return (unsigned char) extract_unsigned_long_long(); }
+    explicit operator signed short      () const { return (signed short) extract_signed_long_long(); }
+    explicit operator unsigned short    () const { return (unsigned short) extract_unsigned_long_long(); }
+    explicit operator signed int        () const { return (signed int) extract_signed_long_long(); }
+    explicit operator unsigned int      () const { return (unsigned int) extract_unsigned_long_long(); }
+    explicit operator signed long       () const { return (signed long) extract_signed_long_long(); }
+    explicit operator unsigned long     () const { return (unsigned long) extract_unsigned_long_long(); }
+    explicit operator signed long long  () const { return extract_signed_long_long(); }
+    explicit operator unsigned long long() const { return extract_unsigned_long_long(); }
 
   private:
     #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
@@ -2012,7 +1994,6 @@
       std::copy(temp, temp + (std::min)(i, static_cast<std::uint_fast32_t>(decwide_t_elem_number)), my_data.begin());
     }
 
-    #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
     void from_long_double(const long double l)
     {
       const bool b_neg = (l < static_cast<long double>(0.0L));
@@ -2048,12 +2029,11 @@
 
       if(p2 != 0)
       {
-        operator*=(pow2<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::int64_t>(p2)));
+        operator*=(ldexp(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), p2));
       }
 
       my_neg = b_neg;
     }
-    #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
 
     std::int32_t cmp_data(const array_type& vd) const
     {
@@ -2062,21 +2042,22 @@
       //                 0 for *this = v
       //                -1 for *this < v
 
-      const std::pair<typename array_type::const_iterator,
-                      typename array_type::const_iterator> mismatch_pair =
+      using const_iterator_type = typename array_type::const_iterator;
+
+      using mismatch_pair_type = std::pair<const_iterator_type, const_iterator_type>;
+
+      const mismatch_pair_type mismatch_pair =
         std::mismatch(my_data.cbegin(), my_data.cend(), vd.cbegin());
 
       const bool is_equal = (   (mismatch_pair.first  == my_data.cend())
                              && (mismatch_pair.second == vd.cend()));
 
-      if(is_equal)
-      {
-        return static_cast<std::int32_t>(0);
-      }
-      else
-      {
-        return ((*mismatch_pair.first > *mismatch_pair.second) ? static_cast<std::int32_t>(1) : static_cast<std::int32_t>(-1));
-      }
+      const std::int32_t n_return =
+        (is_equal ? static_cast<std::int32_t>(0)
+                  : ((*mismatch_pair.first > *mismatch_pair.second) ? static_cast<std::int32_t>(1)
+                                                                    : static_cast<std::int32_t>(-1)));
+
+      return n_return;
     }
 
     static limb_type add_loop_uv(limb_type* const u, const limb_type* const v, const std::int32_t p)
@@ -2317,8 +2298,8 @@
 
         // Shift the result of the multiplication one element to the right.
         std::copy_backward(my_data.cbegin(),
-                            my_data.cbegin() + static_cast<std::ptrdiff_t>(my_prec_elem - 1),
-                            my_data.begin()  + static_cast<std::ptrdiff_t>(my_prec_elem));
+                           my_data.cbegin() + static_cast<std::ptrdiff_t>(my_prec_elem - 1),
+                           my_data.begin()  + static_cast<std::ptrdiff_t>(my_prec_elem));
 
         my_data.front() = static_cast<limb_type>(carry);
       }
@@ -2370,33 +2351,6 @@
 
           my_data.back() = static_cast<limb_type>(0U);
         }
-      }
-    }
-
-    std::int64_t get_order_exact() const { return get_order_fast(); }
-
-    std::int64_t get_order_fast() const
-    {
-      if(isfinite() == false)
-      {
-        return static_cast<std::int64_t>(0);
-      }
-      else
-      {
-        std::int_fast16_t n10 = INT16_C(-1);
-
-        limb_type p10 = (limb_type) 1U;
-
-        const limb_type limit_aligned_with_10 = my_data[0U] + (limb_type) (10U - (my_data[0U] % 10U));
-
-        while(p10 < limit_aligned_with_10)
-        {
-          p10 *= 10U;
-
-          ++n10;
-        }
-
-        return static_cast<std::int64_t>(my_exp + n10);
       }
     }
 
@@ -2748,7 +2702,7 @@
       if(!isfinite()) { special_handle_string_not_finite(str, static_cast<const decwide_t&>(*this), my_showpos, my_uppercase); return; }
 
       // Get the base-10 exponent.
-      std::int64_t the_exp = get_order_exact();
+      std::int64_t the_exp = (std::int64_t) ilogb(*this);
 
       // Get the output stream's precision and limit it to max_digits10.
       // Erroneous zero or negative precision (theoretically impossible)
@@ -3120,11 +3074,74 @@
     }
     #endif // !WIDE_DECIMAL_DISABLE_IOSTREAM
 
-    friend decwide_t zero<>();
-    friend decwide_t one <>();
-    friend decwide_t half<>();
-    friend decwide_t two <>();
+    friend inline decwide_t fabs(decwide_t x)
+    {
+      return (x.isneg() ? decwide_t(x).negate() : x);
+    }
+
+    friend inline decwide_t abs(decwide_t x)
+    {
+      return fabs(x);
+    }
+
+    friend inline std::int32_t sgn(decwide_t x)
+    {
+      return (x.iszero() ? static_cast<std::int32_t>(0)
+                         : (x.isneg() ? static_cast<std::int32_t>(-1)
+                                      : static_cast<std::int32_t>(1)));
+    }
+
+    friend inline decwide_t floor(decwide_t x)
+    {
+      return (((x.isfinite() == false) || x.isint())
+               ?  x
+               : (x.isneg() ? (x - one<MyDigits10, LimbType, AllocatorType, InternalFloatType>()).extract_integer_part()
+                            :  x.extract_integer_part()));
+    }
+
+    friend inline decwide_t ceil(decwide_t x)
+    {
+      return (((x.isfinite() == false) || x.isint())
+               ?  x
+               : (x.isneg() ?  x.extract_integer_part()
+                            : (x + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>()).extract_integer_part()));
+    }
+
+    friend inline std::int32_t ilogb(decwide_t x)
+    {
+      std::int64_t e10;
+
+      if(x.isfinite() == false)
+      {
+        e10 = static_cast<std::int64_t>(0);
+      }
+      else
+      {
+        std::int_fast16_t n10 = INT16_C(-1);
+
+        limb_type p10 = (limb_type) 1U;
+
+        const limb_type limit_aligned_with_10 = x.my_data[0U] + (limb_type) (10U - (x.my_data[0U] % 10U));
+
+        while(p10 < limit_aligned_with_10)
+        {
+          p10 *= 10U;
+
+          ++n10;
+        }
+
+        e10 = static_cast<std::int64_t>(x.my_exp + n10);
+      }
+
+      return (std::max)(           (std::numeric_limits<std::int32_t>::min)(),
+                        (std::min)((std::numeric_limits<std::int32_t>::max)(), (std::int32_t) e10));
+    }
   };
+
+  #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::initializer decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::init;
+  #endif
 
   #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
   #else
@@ -3135,12 +3152,45 @@
   typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::array_type decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_n_data_for_add_sub;
   #endif
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> zero() { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>( { typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type(0U) } ); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> one () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>( { typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type(1U) } ); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> half() { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>( { typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_mask / 2) }, -decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_digits10 ); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> two () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>( { typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type(2U) } ); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> zero()
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t))
+    return floating_point_type( { typename floating_point_type::limb_type(0U) } );
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> one()
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
+
+    return floating_point_type( { typename floating_point_type::limb_type(1U) } );
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> two()
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
+
+    return floating_point_type( { typename floating_point_type::limb_type(2U) } );
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  constexpr decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> half()
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
+
+    return floating_point_type
+           (
+             {
+               typename floating_point_type::limb_type(floating_point_type::decwide_t_elem_mask / 2)
+             },
+             -floating_point_type::decwide_t_elem_digits10
+           );
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> calc_pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t))
   {
     // Description : Compute pi using the quadratically convergent Gauss AGM,
     //               in particular the Schoenhage variant.
@@ -3161,37 +3211,56 @@
       pfn_callback_to_report_digits10((std::uint32_t) 0U);
     }
 
-    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> val_pi;
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
 
-    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> a((typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type) 1U);
+    floating_point_type val_pi;
 
-    // Initialize bB to 0.5.
-    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> bB
+    floating_point_type a
     (
       {
-        (typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type) (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_mask / 2)
+        (typename floating_point_type::limb_type) 1U
       },
-      static_cast<std::int64_t>(-decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_digits10)
+      0
+    );
+
+    // Initialize bB to 0.5.
+    floating_point_type bB
+    (
+      {
+        (typename floating_point_type::limb_type) (floating_point_type::decwide_t_elem_mask / 2)
+      },
+      -floating_point_type::decwide_t_elem_digits10
     );
 
     // Initialize t to 0.375.
-    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> t
+    floating_point_type t
     (
       {
-        (typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::limb_type) ((((typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::double_limb_type) decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_mask) * 3) / 8)
+        (typename floating_point_type::limb_type) ((floating_point_type::decwide_t_elem_mask * 3LL) / 8L)
       },
-      static_cast<std::int64_t>(-decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_elem_digits10)
+      -floating_point_type::decwide_t_elem_digits10
     );
 
-    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> s(bB);
+    floating_point_type s(bB);
 
     // This loop is designed for a maximum of several million
     // decimal digits of pi. The index k should reach no higher
     // than about 25 or 30. After about 20 iterations, the precision
     // is about one million decimal digits.
 
+    const std::uint32_t digits10_iteration_goal =
+        (std::uint32_t) (std::numeric_limits<floating_point_type>::digits10 / 2)
+      + (std::max)((std::uint32_t) (floating_point_type::decwide_t_elem_digits10  + 1), (std::uint32_t) 9U);
+
+    using std::log;
+
+    const std::uint32_t digits10_scale =
+      (std::uint32_t) (0.5F + (1000.0F * log((float) std::numeric_limits<floating_point_type>::radix)) / log(10.0F));
+
     for(unsigned k = 0U; k < 48U; ++k)
     {
+      using std::sqrt;
+
       a      += sqrt(bB);
       a      /= 2U;
       val_pi  = a;
@@ -3200,25 +3269,24 @@
       bB     -= t;
       bB     *= 2U;
 
-      std::int32_t approximate_digits10_of_iteration;
+      floating_point_type iterate_term(bB);
 
+      iterate_term -= val_pi;
+      iterate_term *= (unsigned long long) (1ULL << (k + 1U));
+
+      s += iterate_term;
+
+      // Test the number of precise digits from this iteration.
+      // If it is there are enough precise digits, then the calculation
+      // is finished.
+      const std::int32_t ib = (std::max)(0, -ilogb(iterate_term));
+
+      const std::uint32_t digits10_of_iteration =
+        (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ib * digits10_scale) / 1000U);
+
+      if(pfn_callback_to_report_digits10 != nullptr)
       {
-        decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> iterate_term(bB);
-
-        iterate_term -= val_pi;
-        iterate_term *= (unsigned long long) (1ULL << (k + 1U));
-
-        s += iterate_term;
-
-        // Test the number of precise digits from this iteration.
-        // If it is there are enough precise digits, then the calculation
-        // is finished.
-        approximate_digits10_of_iteration = -ilogb(iterate_term);
-
-        if(pfn_callback_to_report_digits10 != nullptr)
-        {
-          pfn_callback_to_report_digits10((std::uint32_t) approximate_digits10_of_iteration);
-        }
+        pfn_callback_to_report_digits10(digits10_of_iteration);
       }
 
       // Estimate the approximate decimal digits of this iteration term.
@@ -3226,9 +3294,8 @@
       // with this iteration term, then the calculation is finished
       // because the change from the next iteration will be
       // insignificantly small.
-      const std::int32_t digits10_iteration_goal = static_cast<std::int32_t>((std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::digits10 / 2) + 16);
 
-      if(approximate_digits10_of_iteration > digits10_iteration_goal)
+      if(digits10_of_iteration > digits10_iteration_goal)
       {
         break;
       }
@@ -3243,13 +3310,13 @@
 
     if(pfn_callback_to_report_digits10 != nullptr)
     {
-      pfn_callback_to_report_digits10((std::uint32_t) std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::digits10);
+      pfn_callback_to_report_digits10((std::uint32_t) std::numeric_limits<floating_point_type>::digits10);
     }
 
     return val_pi;
   }
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ln_two()
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> calc_ln_two()
   {
     using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
 
@@ -3262,17 +3329,23 @@
 
     using std::log;
 
-    const float n_times_factor =
-      static_cast<float>(static_cast<float>(std::numeric_limits<floating_point_type>::digits10) * 1.67F);
+    const float n_times_factor = ((float) std::numeric_limits<floating_point_type>::digits10) * 1.67F;
 
     // Ensure that the resulting power is non-negative.
-    // Also enforce that m >= 8.
-    const std::int32_t m = (std::max)((std::int32_t) n_times_factor, (std::int32_t) 8);
+    // Also enforce that m >= 3.
+    const std::int32_t m = (std::max)((std::int32_t) n_times_factor, (std::int32_t) 3);
 
-    floating_point_type bk = 1 / pow(floating_point_type(2U), m - 2);
+    floating_point_type bk =
+      ldexp(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), (std::int32_t) (2 - m));
 
-    const std::int32_t digits10_iteration_goal =
-      static_cast<std::int32_t>((std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::digits10 / 2) + 16);
+    const std::uint32_t digits10_iteration_goal =
+        (std::uint32_t) (std::numeric_limits<floating_point_type>::digits10 / 2)
+      + (std::max)((std::uint32_t) (floating_point_type::decwide_t_elem_digits10 + 1), (std::uint32_t) 9U);
+
+    using std::log;
+
+    const std::uint32_t digits10_scale =
+      (std::uint32_t) (0.5F + (1000.0F * log((float) std::numeric_limits<floating_point_type>::radix)) / log(10.0F));
 
     for(std::int32_t k = static_cast<std::int32_t>(0); k < static_cast<std::int32_t>(64); ++k)
     {
@@ -3284,14 +3357,17 @@
       // half of the requested digits have been achieved,
       // then break after the upcoming iteration.
 
-      const std::int32_t approximate_digits10_of_iteration = -ilogb(ak - bk);
+      const std::int32_t ib = (std::max)(0, -ilogb(ak - bk));
+
+      const std::uint32_t digits10_of_iteration =
+        (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ib * digits10_scale) / 1000U);
 
       const floating_point_type ak_tmp(ak);
 
       ak += bk;
       ak /= 2;
 
-      if(approximate_digits10_of_iteration > digits10_iteration_goal)
+      if(digits10_of_iteration > digits10_iteration_goal)
       {
         break;
       }
@@ -3309,6 +3385,32 @@
 
     return result;
   }
+
+  #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t))
+  {
+    (void) pfn_callback_to_report_digits10;
+
+    return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_pi();
+  }
+  #else
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t))
+  {
+    return calc_pi<MyDigits10, LimbType, AllocatorType, InternalFloatType>(pfn_callback_to_report_digits10);
+  }
+  #endif
+
+  #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& ln_two()
+  {
+    return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_ln_two();
+  }
+  #else
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ln_two()
+  {
+    return calc_ln_two<MyDigits10, LimbType, AllocatorType, InternalFloatType>();
+  }
+  #endif
 
   // Global unary operators of decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> reference.
   template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> operator+(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& self) { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(self); }
@@ -3567,356 +3669,325 @@
     template <const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> class numeric_limits<math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>
     {
     public:
-      static const bool                    is_specialized    = true;
-      static const bool                    is_signed         = true;
-      static const bool                    is_integer        = false;
-      static const bool                    is_exact          = false;
-      static const bool                    is_bounded        = true;
-      static const bool                    is_modulo         = false;
-      static const bool                    is_iec559         = false;
-      static const std::int64_t            digits            = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_digits;       // Type differs from int.
-      static const std::int64_t            digits10          = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_digits10;     // Type differs from int.
-      static const std::int64_t            max_digits10      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_digits10; // Type differs from int.
-      static const std::int64_t            min_exponent      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_min_exp;      // Type differs from int.
-      static const std::int64_t            min_exponent10    = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_min_exp10;    // Type differs from int.
-      static const std::int64_t            max_exponent      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_exp;      // Type differs from int.
-      static const std::int64_t            max_exponent10    = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_exp10;    // Type differs from int.
-      static const int                     radix             = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_radix;
-      static const std::float_round_style  round_style       = std::round_to_nearest;
-      static const bool                    has_infinity      = true;
-      static const bool                    has_quiet_NaN     = true;
-      static const bool                    has_signaling_NaN = false;
-      static const std::float_denorm_style has_denorm        = std::denorm_absent;
-      static const bool                    has_denorm_loss   = false;
-      static const bool                    traps             = false;
-      static const bool                    tinyness_before   = false;
+      static constexpr bool                    is_specialized    = true;
+      static constexpr bool                    is_signed         = true;
+      static constexpr bool                    is_integer        = false;
+      static constexpr bool                    is_exact          = false;
+      static constexpr bool                    is_bounded        = true;
+      static constexpr bool                    is_modulo         = false;
+      static constexpr bool                    is_iec559         = false;
+      static constexpr std::int64_t            digits            = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_digits;       // Type differs from int.
+      static constexpr std::int64_t            digits10          = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_digits10;     // Type differs from int.
+      static constexpr std::int64_t            max_digits10      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_digits10; // Type differs from int.
+      static constexpr std::int64_t            min_exponent      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_min_exp;      // Type differs from int.
+      static constexpr std::int64_t            min_exponent10    = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_min_exp10;    // Type differs from int.
+      static constexpr std::int64_t            max_exponent      = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_exp;      // Type differs from int.
+      static constexpr std::int64_t            max_exponent10    = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_max_exp10;    // Type differs from int.
+      static constexpr int                     radix             = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::decwide_t_radix;
+      static constexpr std::float_round_style  round_style       = std::round_to_nearest;
+      static constexpr bool                    has_infinity      = true;
+      static constexpr bool                    has_quiet_NaN     = true;
+      static constexpr bool                    has_signaling_NaN = false;
+      static constexpr std::float_denorm_style has_denorm        = std::denorm_absent;
+      static constexpr bool                    has_denorm_loss   = false;
+      static constexpr bool                    traps             = false;
+      static constexpr bool                    tinyness_before   = false;
 
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> (min)        () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_min(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> (max)        () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_max(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> lowest       () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> epsilon      () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_eps(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> round_error  () { return math::wide_decimal::half<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> infinity     () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_inf(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> quiet_NaN    () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_nan(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signaling_NaN() { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
-      static math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> denorm_min   () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> (min)        () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_min(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> (max)        () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_max(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> lowest       () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> epsilon      () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_eps(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> round_error  () { return math::wide_decimal::half<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> infinity     () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_inf(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> quiet_NaN    () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>::my_value_nan(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signaling_NaN() { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> denorm_min   () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType>(); }
     };
   } // namespace std
 
   namespace math { namespace wide_decimal {
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> int32_min             () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<std::int32_t>::min)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> int32_max             () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<std::int32_t>::max)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> int64_min             () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<std::int64_t>::min)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> int64_max             () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<std::int64_t>::max)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> unsigned_long_long_max() { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<unsigned long long>::max)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signed_long_long_min  () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<signed long long>::min)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> signed_long_long_max  () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<signed long long>::max)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> double_min            () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<double>::min)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> double_max            () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<double>::max)()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> long_double_min       () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<long double>::min)());}
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> long_double_max       () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<long double>::max)());}
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr unsigned_long_long_max() { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<unsigned long long>::max)()); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr signed_long_long_min  () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<signed long long>::min)()); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr signed_long_long_max  () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<signed long long>::max)()); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr long_double_min       () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<long double>::min)());}
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> constexpr long_double_max       () { return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>((std::numeric_limits<long double>::max)());}
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isnan   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isnan(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isfinite(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isfinite(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isinf   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isinf(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isneg   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isneg(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool ispos   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return (!x.isneg()); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isint   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isint(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isone   (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.isone(); }
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool iszero  (const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x) { return x.iszero(); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isnan   (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x) { return x.isnan(); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isfinite(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x) { return x.isfinite(); }
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> bool isinf   (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x) { return x.isinf(); }
 
-  #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow2(const std::int64_t p)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType>
+  decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x,
+                                                                        decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> a)
   {
-    // Create a static const table of p^2 for -128 < p < +128.
-    // Note: The size of this table must be odd-numbered and
-    // symmetric about 0.
-    static const std::array<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>, 255U> p2_data =
-    {{
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.8774717541114375398436826861112283890933277838604376075437585313920862972736358642578125e-39"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.1754943508222875079687365372222456778186655567720875215087517062784172594547271728515625e-38"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.350988701644575015937473074444491355637331113544175043017503412556834518909454345703125e-38"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.70197740328915003187494614888898271127466222708835008603500682511366903781890869140625e-38"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.4039548065783000637498922977779654225493244541767001720700136502273380756378173828125e-38"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.8807909613156600127499784595555930845098648908353400344140027300454676151275634765625e-37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.761581922631320025499956919111186169019729781670680068828005460090935230255126953125e-37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.52316384526264005099991383822237233803945956334136013765601092018187046051025390625e-37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.50463276905252801019998276764447446760789191266827202753120218403637409210205078125e-36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.0092655381050560203999655352889489352157838253365440550624043680727481842041015625e-36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.018531076210112040799931070577897870431567650673088110124808736145496368408203125e-36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.203706215242022408159986214115579574086313530134617622024961747229099273681640625e-35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.40741243048404481631997242823115914817262706026923524404992349445819854736328125e-35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.8148248609680896326399448564623182963452541205384704880998469889163970947265625e-35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.629649721936179265279889712924636592690508241076940976199693977832794189453125e-35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.925929944387235853055977942584927318538101648215388195239938795566558837890625e-34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.85185988877447170611195588516985463707620329643077639047987759113311767578125e-34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.7037197775489434122239117703397092741524065928615527809597551822662353515625e-34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.5407439555097886824447823540679418548304813185723105561919510364532470703125e-33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.081487911019577364889564708135883709660962637144621112383902072906494140625e-33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.16297582203915472977912941627176741932192527428924222476780414581298828125e-33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.23259516440783094595582588325435348386438505485784844495356082916259765625e-32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.4651903288156618919116517665087069677287701097156968899071216583251953125e-32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.930380657631323783823303533017413935457540219431393779814243316650390625e-32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.86076131526264756764660706603482787091508043886278755962848663330078125e-32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.97215226305252951352932141320696557418301608777255751192569732666015625e-31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.9443045261050590270586428264139311483660321755451150238513946533203125e-31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.888609052210118054117285652827862296732064351090230047702789306640625e-31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.577721810442023610823457130565572459346412870218046009540557861328125e-30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.15544362088404722164691426113114491869282574043609201908111572265625e-30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.3108872417680944432938285222622898373856514808721840381622314453125e-30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.2621774483536188886587657044524579674771302961744368076324462890625e-29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.524354896707237777317531408904915934954260592348873615264892578125e-29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.04870979341447555463506281780983186990852118469774723052978515625e-29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.00974195868289511092701256356196637398170423693954944610595703125e-28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.0194839173657902218540251271239327479634084738790988922119140625e-28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.038967834731580443708050254247865495926816947758197784423828125e-28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.07793566946316088741610050849573099185363389551639556884765625e-28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.61558713389263217748322010169914619837072677910327911376953125e-27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.2311742677852643549664402033982923967414535582065582275390625e-27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.462348535570528709932880406796584793482907116413116455078125e-27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.292469707114105741986576081359316958696581423282623291015625e-26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.58493941422821148397315216271863391739316284656524658203125e-26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.1698788284564229679463043254372678347863256931304931640625e-26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.0339757656912845935892608650874535669572651386260986328125e-25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.067951531382569187178521730174907133914530277252197265625e-25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.13590306276513837435704346034981426782906055450439453125e-25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.2718061255302767487140869206996285356581211090087890625e-25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.6543612251060553497428173841399257071316242218017578125e-24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.308722450212110699485634768279851414263248443603515625e-24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.61744490042422139897126953655970282852649688720703125e-24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.32348898008484427979425390731194056570529937744140625e-23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.6469779601696885595885078146238811314105987548828125e-23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.293955920339377119177015629247762262821197509765625e-23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.058791184067875423835403125849552452564239501953125e-22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.11758236813575084767080625169910490512847900390625e-22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.2351647362715016953416125033982098102569580078125e-22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.470329472543003390683225006796419620513916015625e-22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.694065894508600678136645001359283924102783203125e-21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.38813178901720135627329000271856784820556640625e-21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.7762635780344027125465800054371356964111328125e-21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.3552527156068805425093160010874271392822265625e-20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.710505431213761085018632002174854278564453125e-20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.42101086242752217003726400434970855712890625e-20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.08420217248550443400745280086994171142578125e-19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.1684043449710088680149056017398834228515625e-19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.336808689942017736029811203479766845703125e-19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.67361737988403547205962240695953369140625e-19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.73472347597680709441192448139190673828125e-18"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.4694469519536141888238489627838134765625e-18"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.938893903907228377647697925567626953125e-18"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.387778780781445675529539585113525390625e-17"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.77555756156289135105907917022705078125e-17"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.5511151231257827021181583404541015625e-17"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.1102230246251565404236316680908203125e-16"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.220446049250313080847263336181640625e-16"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.44089209850062616169452667236328125e-16"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.8817841970012523233890533447265625e-16"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.7763568394002504646778106689453125e-15"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.552713678800500929355621337890625e-15"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.10542735760100185871124267578125e-15"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.42108547152020037174224853515625e-14"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.8421709430404007434844970703125e-14"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.684341886080801486968994140625e-14"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.136868377216160297393798828125e-13"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.27373675443232059478759765625e-13"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.5474735088646411895751953125e-13"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.094947017729282379150390625e-13"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.818989403545856475830078125e-12"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.63797880709171295166015625e-12"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.2759576141834259033203125e-12"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.4551915228366851806640625e-11"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.910383045673370361328125e-11"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.82076609134674072265625e-11"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.16415321826934814453125e-10"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.3283064365386962890625e-10"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.656612873077392578125e-10"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.31322574615478515625e-10"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.86264514923095703125e-9"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.7252902984619140625e-9"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.450580596923828125e-9"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.490116119384765625e-8"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.98023223876953125e-8"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.9604644775390625e-8"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.1920928955078125e-7"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.384185791015625e-7"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.76837158203125e-7"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.5367431640625e-7"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.9073486328125e-6"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.814697265625e-6"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.62939453125e-6"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0000152587890625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.000030517578125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.00006103515625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0001220703125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.000244140625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.00048828125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0009765625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.001953125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.00390625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0078125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.015625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.03125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0625"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.0125"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("0.5"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(1U),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(2U),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(4U),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(8U),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(16),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(32),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(64),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(128),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(256),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(512),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(1024),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(2048),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(4096),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(8192),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(16384),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(32768),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(65536),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(131072),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(262144),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(524288),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 20U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 21U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 22U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 23U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 24U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 25U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 26U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 27U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 28U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 29U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 30U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint32_t>(1UL << 31U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 32U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 33U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 34U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 35U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 36U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 37U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 38U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 39U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 40U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 41U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 42U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 43U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 44U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 45U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 46U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 47U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 48U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 49U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 50U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 51U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 52U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 53U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 54U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 55U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 56U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 57U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 58U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 59U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 60U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 61U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 62U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::uint64_t>(1ULL << 63U)),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.8446744073709551616e19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.6893488147419103232e19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.3786976294838206464e19"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.47573952589676412928e20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.95147905179352825856e20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.90295810358705651712e20"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.180591620717411303424e21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.361183241434822606848e21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.722366482869645213696e21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.444732965739290427392e21"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.8889465931478580854784e22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.7778931862957161709568e22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.5557863725914323419136e22"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.51115727451828646838272e23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.02231454903657293676544e23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.04462909807314587353088e23"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.208925819614629174706176e24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.417851639229258349412352e24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.835703278458516698824704e24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.671406556917033397649408e24"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.9342813113834066795298816e25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.8685626227668133590597632e25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.7371252455336267181195264e25"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.54742504910672534362390528e26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.09485009821345068724781056e26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.18970019642690137449562112e26"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.237940039285380274899124224e27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.475880078570760549798248448e27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.951760157141521099596496896e27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("9.903520314283042199192993792e27"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.9807040628566084398385987584e28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.9614081257132168796771975168e28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("7.9228162514264337593543950336e28"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.58456325028528675187087900672e29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.16912650057057350374175801344e29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.33825300114114700748351602688e29"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.267650600228229401496703205376e30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.535301200456458802993406410752e30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.070602400912917605986812821504e30"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.0141204801825835211973625643008e31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.0282409603651670423947251286016e31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.0564819207303340847894502572032e31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.1129638414606681695789005144064e31"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.62259276829213363391578010288128e32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.24518553658426726783156020576256e32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.49037107316853453566312041152512e32"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.298074214633706907132624082305024e33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.596148429267413814265248164610048e33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.192296858534827628530496329220096e33"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.0384593717069655257060992658440192e34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.0769187434139310514121985316880384e34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.1538374868278621028243970633760768e34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.3076749736557242056487941267521536e34"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.66153499473114484112975882535043072e35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("3.32306998946228968225951765070086144e35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("6.64613997892457936451903530140172288e35"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.329227995784915872903807060280344576e36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.658455991569831745807614120560689152e36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("5.316911983139663491615228241121378304e36"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.0633823966279326983230456482242756608e37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("2.1267647932558653966460912964485513216e37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("4.2535295865117307932921825928971026432e37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("8.5070591730234615865843651857942052864e37"),
-      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>("1.70141183460469231731687303715884105728e38")
-    }};
+    return exp(a * log(x));
+  }
 
-    if((p > static_cast<std::int64_t>(-128)) && (p < static_cast<std::int64_t>(+128)))
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ldexp(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v, int e)
+  {
+    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ldexp_result = v;
+
+    if(e == 0) { }
+    else if((e > 0) && (e < 64))
     {
-      return p2_data[static_cast<std::uint_fast32_t>(p + ((p2_data.size() - 1U) / 2U))];
+      ldexp_result *= (std::uint64_t) (1ULL << (unsigned) e);
     }
-    else if(p <= static_cast<std::int64_t>(-128))
+    else if((e > -64) && (e < 0))
     {
-      return pow2<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::int64_t>(-p)).calculate_inv();
+      ldexp_result /= (std::uint64_t) (1ULL << (unsigned) -e);
     }
     else
     {
-      return pow(two<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), p);
+      ldexp_result *= pow(two<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), e);
     }
-  }
-  #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> sqrt(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
+    return ldexp_result;
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> frexp(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v, int* expon)
   {
-    return decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>(x).calculate_sqrt();
+    double       d;
+    std::int64_t i;
+
+    v.extract_parts(d, i);
+
+    *expon = static_cast<int>(i);
+
+    return v * ldexp(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), (int) -i);
   }
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> cbrt(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fmod(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v1, decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> v2)
+  {
+    const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> n = ((v1 < 0) ? ceil(v1 / v2) : floor(v1 / v2));
+
+    return v1 - (n * v2);
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> sqrt(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x)
+  {
+    return x.calculate_sqrt();
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> cbrt(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x)
   {
     return rootn(x, static_cast<std::int32_t>(3));
   }
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& b, const std::int64_t p)
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rootn(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x, std::int32_t p)
+  {
+    decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rtn;
+
+    if(!isfinite(x))
+    {
+      rtn = std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::quiet_NaN();
+    }
+    else if(p < static_cast<std::int32_t>(0))
+    {
+      rtn = rootn(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>() / x, static_cast<std::int32_t>(-p));
+    }
+    else if((p == static_cast<std::int32_t>(0)) || ((x < 0) && (p != static_cast<std::int32_t>(3))))
+    {
+      rtn = std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::quiet_NaN();
+    }
+    else if(p == static_cast<std::int32_t>(1))
+    {
+      rtn = x;
+    }
+    else if(p == static_cast<std::int32_t>(2))
+    {
+      using std::sqrt;
+
+      rtn = sqrt(x);
+    }
+    else if(p == static_cast<std::int32_t>(3))
+    {
+      const bool b_neg = (x < 0);
+
+      using std::fabs;
+
+      rtn = 1 / rootn_inverse(fabs(x), 3);
+
+      if(b_neg) { rtn = -rtn; }
+    }
+    else
+    {
+      rtn = 1 / rootn_inverse(x, p);
+    }
+
+    return rtn;
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> log(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x)
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
+
+    // For values less than 1 invert the argument and
+    // remember (in this case) to negate the result below.
+    const bool b_negate = (x < 1);
+
+    const floating_point_type xx((b_negate == false) ? x : 1 / x);
+
+    // Use an AGM method to compute the logarithm of x.
+    // Set a0 = 1
+    // Set b0 = 4 / (x * 2^m)
+    //        = 1 / (x * 2^(m - 2))
+
+    floating_point_type ak(1U);
+
+    const float n_times_factor = ((float) std::numeric_limits<floating_point_type>::digits10) * 1.67F;
+
+    // Extract lg_xx = Log[mantissa * radix^ib]
+    //               = Log[mantissa] + ib * Log[radix]
+
+    InternalFloatType mantissa;
+    std::int64_t      ib;
+
+    xx.extract_parts(mantissa, ib);
+
+    using std::log;
+
+    const float lg_xx =   log((float) mantissa)
+                        + ((float) ib * log((float) std::numeric_limits<floating_point_type>::radix));
+
+    const float lg_xx_over_lg2 = lg_xx / log(2.0F);
+
+    // Ensure that the resulting power is non-negative.
+    // Also enforce that m >= 3.
+    const std::int32_t m = (std::max)((std::int32_t) (n_times_factor - lg_xx_over_lg2), (std::int32_t) 3);
+
+    floating_point_type bk =
+      ldexp(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>(), (std::int32_t) (2 - m)) / xx;
+
+    // TBD: Tolerance should have the log of the argument added to it (usually negligible).
+    const std::uint32_t digits10_iteration_goal =
+        (std::uint32_t) (std::numeric_limits<floating_point_type>::digits10 / 2)
+      + (std::max)((std::uint32_t) (floating_point_type::decwide_t_elem_digits10 + 1), (std::uint32_t) 9U);
+
+    using std::log;
+
+    const std::uint32_t digits10_scale =
+      (std::uint32_t) (0.5F + (1000.0F * log((float) std::numeric_limits<floating_point_type>::radix)) / log(10.0F));
+
+    for(std::int32_t k = static_cast<std::int32_t>(0); k < static_cast<std::int32_t>(64); ++k)
+    {
+      using std::ilogb;
+      using std::sqrt;
+
+      // Check for the number of significant digits to be
+      // at least half of the requested digits. If at least
+      // half of the requested digits have been achieved,
+      // then break after the upcoming iteration.
+
+      const std::int32_t ib = (std::max)(0, -ilogb(ak - bk));
+
+      const std::uint32_t digits10_of_iteration =
+        (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ib * digits10_scale) / 1000U);
+
+      const floating_point_type ak_tmp(ak);
+
+      ak += bk;
+      ak /= 2;
+
+      if(digits10_of_iteration > digits10_iteration_goal)
+      {
+        break;
+      }
+
+      bk *= ak_tmp;
+      bk  = sqrt(bk);
+    }
+
+    // We are now finished with the AGM iteration for log(x).
+    // Compute log(x) = {pi / [2 * AGM(1, 4 / 2^m)]} - (m * ln2)
+    // Note at this time that (ak = bk) = AGM(...)
+    // Retrieve the value of pi, divide by (2 * a) and subtract (m * ln2).
+
+    const floating_point_type result =
+             pi<MyDigits10, LimbType, AllocatorType, InternalFloatType>() / (ak * 2)
+      - (ln_two<MyDigits10, LimbType, AllocatorType, InternalFloatType>() * m);
+
+    return ((b_negate == true) ? -result : result);
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> exp(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> x)
+  {
+    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
+
+    floating_point_type exp_result;
+
+    using std::isfinite;
+
+    if(isfinite(x) == false)
+    {
+      exp_result = x;
+    }
+    else if(x == 0)
+    {
+      exp_result = floating_point_type(1U);
+    }
+    else
+    {
+      const bool b_neg = (x < 0);
+
+      const floating_point_type xx = ((b_neg == false) ? x : -x);
+
+      // The algorithm for exp has been taken from MPFUN.
+      // exp(t) = [ (1 + r + r^2/2! + r^3/3! + r^4/4! ...)^p2 ] * 2^n
+      // where p2 is a power of 2 such as 2048, r = t_prime / p2, and
+      // t_prime = t - n*ln2, with n chosen to minimize the absolute
+      // value of t_prime. In the resulting Taylor series, which is
+      // implemented as a hypergeometric function, |r| is bounded by
+      // ln2 / p2.
+
+      // Compute ln2 as a constant value.
+      const floating_point_type ln2 = ln_two<MyDigits10, LimbType, AllocatorType, InternalFloatType>();
+
+      const std::uint32_t nf = (std::uint32_t) (xx / ln2);
+
+      // Compute the exponential series of the scaled argument.
+      // The scaling is 2^11 = 2048.
+      const std::uint32_t p2 = (std::uint32_t) (1ULL << 11U);
+
+      // Compute the series representation of Hypergeometric0F0 taken from
+      // http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric0F0/06/01/
+      // There are no checks on input range or parameter boundaries.
+
+      const floating_point_type xh((xx - (nf * ln2)) / p2);
+
+      floating_point_type x_pow_n_div_n_fact(xh);
+
+      floating_point_type h0f0 = 1 + x_pow_n_div_n_fact;
+
+      const floating_point_type tol = std::numeric_limits<floating_point_type>::epsilon();
+
+      // Series expansion of hypergeometric_0f0(; ; x).
+      for(std::uint32_t n = 2U; n < UINT32_C(10000000); ++n)
+      {
+        x_pow_n_div_n_fact *= xh;
+        x_pow_n_div_n_fact /= n;
+
+        using std::fabs;
+
+        if((n > 4U) && (fabs(x_pow_n_div_n_fact) < tol))
+        {
+          break;
+        }
+
+        h0f0 += x_pow_n_div_n_fact;
+      }
+
+      using std::pow;
+
+      const floating_point_type exp_series = pow(h0f0, p2) * ldexp(floating_point_type(1U), nf);
+
+      exp_result = ((b_neg == false) ? exp_series : 1 / exp_series);
+    }
+
+    return exp_result;
+  }
+
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> pow(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> b, const std::int64_t p)
   {
     // Calculate (b ^ p).
 
@@ -3950,194 +4021,19 @@
     return result;
   }
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> log(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
-  {
-    using floating_point_type = decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>;
-
-    // For values less than 1 invert the argument and
-    // remember (in this case) to negate the result below.
-    const bool b_negate = (x < 1);
-
-    const floating_point_type xx = ((b_negate == false) ? x : 1 / x);
-
-    // Use an AGM method to compute the logarithm of x.
-    // Set a0 = 1
-    // Set b0 = 4 / (x * 2^m)
-    //        = 1 / (x * 2^(m - 2))
-
-    floating_point_type ak(1U);
-
-    using std::log;
-
-    const float n_times_factor =
-      static_cast<float>(static_cast<float>(std::numeric_limits<floating_point_type>::digits10) * 1.67F);
-
-    InternalFloatType dd;
-    std::int64_t      ne;
-
-    xx.extract_parts(dd, ne);
-
-    using std::log;
-
-    const float lgx = (float) (log((float) dd) + ((float) ne * log(10.0F)));
-
-    const float lgx_over_lg2   = lgx / log(2.0F);
-
-    // Ensure that the resulting power is non-negative.
-    // Also enforce that m >= 8.
-    const std::int32_t m = (std::max)((std::int32_t) (n_times_factor - lgx_over_lg2), (std::int32_t) 8);
-
-    floating_point_type bk = 1 / (xx * pow(floating_point_type(2U), m - 2));
-
-    // TBD: Tolerance should have the log of the argument added to it (usually negligible).
-    const std::int32_t digits10_iteration_goal =
-      static_cast<std::int32_t>((std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::digits10 / 2) + 16);
-
-    for(std::int32_t k = static_cast<std::int32_t>(0); k < static_cast<std::int32_t>(64); ++k)
-    {
-      using std::ilogb;
-      using std::sqrt;
-
-      // Check for the number of significant digits to be
-      // at least half of the requested digits. If at least
-      // half of the requested digits have been achieved,
-      // then break after the upcoming iteration.
-      const std::int32_t approximate_digits10_of_iteration = -ilogb(ak - bk);
-
-      const floating_point_type ak_tmp(ak);
-
-      ak += bk;
-      ak /= 2;
-
-      if(approximate_digits10_of_iteration > digits10_iteration_goal)
-      {
-        break;
-      }
-
-      bk *= ak_tmp;
-      bk  = sqrt(bk);
-    }
-
-    // We are now finished with the AGM iteration for log(x).
-    // Compute log(x) = {pi / [2 * AGM(1, 4 / 2^m)]} - (m * ln2)
-    // Note at this time that (ak = bk) = AGM(...)
-    // Retrieve the value of pi, divide by (2 * a) and subtract (m * ln2).
-
-    const floating_point_type result =
-             pi<MyDigits10, LimbType, AllocatorType, InternalFloatType>() / (ak * 2)
-      - (ln_two<MyDigits10, LimbType, AllocatorType, InternalFloatType>() * m);
-
-    return ((b_negate == true) ? -result : result);
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rootn(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x, const std::int32_t p)
-  {
-    if(!isfinite(x))
-    {
-      return std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::quiet_NaN();
-    }
-
-    if(p < static_cast<std::int32_t>(0))
-    {
-      return rootn(one<MyDigits10, LimbType, AllocatorType, InternalFloatType>() / x, static_cast<std::int32_t>(-p));
-    }
-
-    if((p == static_cast<std::int32_t>(0)) || isneg(x))
-    {
-      return std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>::quiet_NaN();
-    }
-    else if(p == static_cast<std::int32_t>(1))
-    {
-      return x;
-    }
-    else if(p == static_cast<std::int32_t>(2))
-    {
-      return sqrt(x);
-    }
-
-    const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> rtn = 1 / rootn_inverse(x, p);
-
-    return rtn;
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> floor(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
-  {
-    if(!isfinite(x) || isint(x)) { return x; }
-
-    return (isneg(x) ? integer_part(x - one<MyDigits10, LimbType, AllocatorType, InternalFloatType>())
-                     : integer_part(x));
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ceil(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
-  {
-    if(!isfinite(x) || isint(x)) { return x; }
-
-    return (isneg(x) ? integer_part(x)
-                     : integer_part(x + one<MyDigits10, LimbType, AllocatorType, InternalFloatType>()));
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t sgn(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
-  {
-    if(iszero(x))
-    {
-      return static_cast<std::int32_t>(0);
-    }
-    else
-    {
-      return (isneg(x) ? static_cast<std::int32_t>(-1) : static_cast<std::int32_t>(1));
-    }
-  }
-
-  #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT)
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> ldexp(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v, int e)
-  {
-    return v * pow2<MyDigits10, LimbType, AllocatorType, InternalFloatType>(e);
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> frexp(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v, int* expon)
-  {
-    double       d;
-    std::int64_t i;
-
-    v.extract_parts(d, i);
-
-    *expon = static_cast<int>(i);
-
-    return v * pow2<MyDigits10, LimbType, AllocatorType, InternalFloatType>(static_cast<std::int64_t>(-i));
-  }
-  #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_BUILTIN_FLOAT
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> std::int32_t ilogb(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& x)
-  {
-    std::int64_t e10 = x.order();
-
-    const std::int32_t e10_as_int32 =
-        (e10 > (std::numeric_limits<std::int32_t>::max)()) ? (std::numeric_limits<std::int32_t>::max)()
-      : (e10 < (std::numeric_limits<std::int32_t>::min)()) ? (std::numeric_limits<std::int32_t>::min)()
-      : static_cast<std::int32_t>(e10);
-
-    return e10_as_int32;
-  }
-
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> fmod(const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v1, const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>& v2)
-  {
-    const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType> n = (isneg(v1) ? ceil(v1 / v2) : floor(v1 / v2));
-
-    return v1 - (n * v2);
-  }
-
-  bool example001_roots_sqrt      ();
-  bool example001a_roots_seventh  ();
-  bool example002_pi              ();
-  bool example002a_pi_small_limb  ();
-  bool example002b_pi_100k        ();
-  bool example002c_pi_quintic     ();
-  bool example003_zeta            ();
-  bool example004_bessel_recur    ();
-  bool example005_polylog_series  ();
-  bool example006_logarithm       ();
-  bool example007_catalan_series  ();
-  bool example008_bernoulli_tgamma();
+  bool example001_roots_sqrt           ();
+  bool example001a_roots_seventh       ();
+  bool example002_pi                   ();
+  bool example002a_pi_small_limb       ();
+  bool example002b_pi_100k             ();
+  bool example002c_pi_quintic          ();
+  bool example003_zeta                 ();
+  bool example004_bessel_recur         ();
+  bool example005_polylog_series       ();
+  bool example006_logarithm            ();
+  bool example007_catalan_series       ();
+  bool example008_bernoulli_tgamma     ();
+  bool example009_boost_math_standalone();
 
   } } // namespace math::wide_decimal
 

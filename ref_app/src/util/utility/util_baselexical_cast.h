@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #ifndef UTIL_BASELEXICAL_CAST_2020_06_28_H_
   #define UTIL_BASELEXICAL_CAST_2020_06_28_H_
 
@@ -11,7 +18,7 @@
            typename OutputIterator,
            const std::uint_fast8_t BaseRepresentation = 10U,
            const bool UpperCase = true>
-  OutputIterator baselexical_cast(const UnsignedIntegerType& u, OutputIterator OutFirst) noexcept
+  OutputIterator baselexical_cast(const UnsignedIntegerType& u, OutputIterator OutFirst)
   {
     using unsigned_integer_type = UnsignedIntegerType;
     using output_value_type     = typename std::iterator_traits<OutputIterator>::value_type;
@@ -24,7 +31,7 @@
     {
       for(std::ptrdiff_t j = index; j >= 0; --j)
       {
-        OutFirst[j + 1] = OutFirst[j];
+        *(OutFirst + (j + 1)) = *(OutFirst + j);
       }
 
       ++index;
@@ -33,21 +40,21 @@
 
       x /= BaseRepresentation;
 
-      if(c <= output_value_type(9))
+      if(c <= (output_value_type) 9)
       {
-        c = c + output_value_type('0');
+        c = c + (output_value_type) '0';
       }
-      else if((c >= output_value_type(0xAU)) && (c <= output_value_type(0xFU)))
+      else if((c >= (output_value_type) 0xA) && (c <= (output_value_type) 0xF))
       {
-        c =   (UpperCase ? output_value_type('A') : output_value_type('a'))
-            + output_value_type(c - output_value_type(0xA));
+        c =   (UpperCase ? (output_value_type) 'A' : (output_value_type) 'a')
+            + (output_value_type) (c - (output_value_type) 0xA);
       }
 
       *OutFirst = c;
     }
     while(x != 0U);
 
-    return OutputIterator(OutFirst + index);
+    return (OutputIterator) (OutFirst + index);
   }
 
   } // namespace util
