@@ -32,7 +32,7 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CPPFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S -C $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
 	@-$(CC) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
@@ -51,7 +51,7 @@ $(PATH_OBJ)/%.o : %.c
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
 	@-$(CC) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
 
@@ -68,4 +68,4 @@ $(PATH_OBJ)/%.o : %.s
   # ...and create an assembly listing using objdump
 	@-$(CC) $(AFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst

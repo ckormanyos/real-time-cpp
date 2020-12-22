@@ -40,7 +40,7 @@ PATH_TGT_MAKE        = $(PATH_TGT)/make
 PATH_BIN             = bin
 PATH_TMP             = tmp
 PATH_OBJ             = $(PATH_TMP)/obj
-PATH_SRC             = $(PATH_TMP)/src
+PATH_LST             = $(PATH_TMP)/lst
 PATH_ERR             = $(PATH_TMP)/err
 
 
@@ -51,6 +51,7 @@ APP = $(PATH_BIN)/ref_app
 
 IMAGE_FILE = $(APP).bin
 
+RULE_SPECIAL_MAKE_IMAGE_FILE =
 
 # ------------------------------------------------------------------------------
 # include the target-specific make files
@@ -201,7 +202,7 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
+	@-$(MKDIR) -p $(PATH_LST)
 	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
@@ -215,10 +216,10 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
+	@-$(MKDIR) -p $(PATH_LST)
 	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
 	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_SRC)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_LST)   > NUL  2> NUL
 	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
@@ -254,7 +255,6 @@ $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
-	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 
 
 # ------------------------------------------------------------------------------
@@ -282,6 +282,11 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
 	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
+ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
+else
+	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)
@@ -290,7 +295,7 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 # If the files do not exist then the includes will be ignored.
 # ------------------------------------------------------------------------------
 ifneq ($(MAKECMDGOALS),rebuild)
--include $(subst .o,.d,$(FILES_O))       # for example tmp/obj/sys_start.d, tmp/obj/mcal_cpu.d, etc
+-include $(subst .o,.d,$(FILES_O))
 endif
 
 

@@ -28,7 +28,7 @@ PATH_TGT_MAKE  = $(PATH_TGT)/make
 PATH_BIN       = bin
 PATH_TMP       = tmp
 PATH_OBJ       = $(PATH_TMP)/obj
-PATH_SRC       = $(PATH_TMP)/src
+PATH_LST       = $(PATH_TMP)/lst
 PATH_ERR       = $(PATH_TMP)/err
 
 
@@ -186,7 +186,7 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
+	@-$(MKDIR) -p $(PATH_LST)
 	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
@@ -200,10 +200,10 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_BIN)
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
-	@-$(MKDIR) -p $(PATH_SRC)
+	@-$(MKDIR) -p $(PATH_LST)
 	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
 	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_SRC)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_LST)   > NUL  2> NUL
 	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
