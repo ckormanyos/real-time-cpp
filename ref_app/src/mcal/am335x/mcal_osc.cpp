@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2020.
+//  Copyright Christopher Kormanyos 2014 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -41,9 +41,9 @@ namespace
 
 void osc_detail::mpu_pll_init()
 {
-  // Set the MPU clock to 900MHz, an acceptable setting for the
-  // BeagleBone black edition. Note that the BeagleBone white
-  // edition is limite to frequencies less than 700MHz.
+  // Set the MPU clock.
+  // Use up to 900MHz for the BeagleBone black edition.
+  // The BeagleBone white edition is limited to 720MHz.
 
   // clkout = [m / (n + 1)] * clkinp * [1 / m2] = 900
   constexpr std::uint32_t mcu_mpu_pll_m  = UINT32_C(900);
