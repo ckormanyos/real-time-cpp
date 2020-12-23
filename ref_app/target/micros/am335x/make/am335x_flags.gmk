@@ -23,7 +23,8 @@ TGT_CFLAGS    = -O2                                                             
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
                 -mfpu=neon                                                        \
-                -ffast-math
+                -ffast-math                                                       \
+                -ftree-vectorize
 
 TGT_CPPFLAGS  = -std=c++11
 
