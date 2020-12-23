@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 9.3.1
+GCC_VERSION   = 10.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -17,15 +17,14 @@ TGT_SUFFIX    = elf
 
 TGT_CFLAGS    = -O2                                                               \
                 -finline-functions                                                \
-                -finline-limit=16                                                 \
-                -mcpu=cortex-a8                                                   \
+                -finline-limit=32                                                 \
+                -march=armv7-a                                                    \
                 -mtune=cortex-a8                                                  \
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
                 -mfpu=neon                                                        \
                 -ffast-math                                                       \
-                -mno-unaligned-access                                             \
-                -mno-long-calls
+                -ftree-vectorize
 
 TGT_CPPFLAGS  = -std=c++11
 

@@ -146,6 +146,7 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -Wfloat-equal                     \
               -Wdouble-promotion                \
               -gdwarf-2                         \
+              -ffreestanding                    \
               -fno-exceptions                   \
               -ffunction-sections               \
               -fdata-sections
