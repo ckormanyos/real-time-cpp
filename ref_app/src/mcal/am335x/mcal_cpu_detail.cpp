@@ -14,7 +14,6 @@
 
 void mcal::cpu::detail::init()
 {
-  secure::initialize_vfp_unit          ();
   secure::invalidate_caches            ();
   secure::clear_branch_prediction_array();
   secure::invalidate_tlb               ();

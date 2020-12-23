@@ -17,6 +17,8 @@
 
   void init();
 
+  void fpu();
+
   void post_init();
 
   inline void nop() { asm volatile("nop"); }

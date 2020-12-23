@@ -64,6 +64,9 @@ void __my_startup()
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
 
+  // Initialize the FPU.
+  mcal::cpu::fpu();
+
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
   crt::init_ram();
