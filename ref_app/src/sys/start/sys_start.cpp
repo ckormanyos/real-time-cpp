@@ -8,11 +8,15 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-extern "C" int main()
+[[noreturn]] int main(void);
+
+int main(void)
 {
   // Initialize the microcontroller abstraction layer.
   mcal::init();
 
   // Start the multitasking scheduler, and never return.
   os::start_os();
+
+  for(;;) { mcal::cpu::nop(); }
 }
