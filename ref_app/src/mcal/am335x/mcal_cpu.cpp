@@ -15,8 +15,6 @@
 
 void mcal::cpu::init()
 {
-  detail::init();
-
   // Disable OPP50 operation and enable OPP100 operation.
   // Use the ratio for 24MHz to 32KHz division.
   // See Chapter 9.3.8 in the am335x manual.
@@ -32,5 +30,7 @@ void mcal::cpu::init()
 
 void mcal::cpu::post_init()
 {
+  detail::init();
+
   detail::user_mode();
 }
