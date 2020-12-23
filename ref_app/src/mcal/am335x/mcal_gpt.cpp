@@ -136,12 +136,12 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Do the first read of the dmtimer7 counter and the system tick.
     const timer_register_type tim7_cnt_1   = timer7_reload_value + mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
-    while(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps, UINT32_C(3)>::bit_get()) { mcal::cpu::nop(); }
+    while(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps, UINT32_C(1)>::bit_get()) { mcal::cpu::nop(); }
     const mcal::gpt::value_type sys_tick_1 = system_tick;
 
     // Do the second read of the dmtimer7 counter.
     const timer_register_type tim7_cnt_2   = timer7_reload_value + mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::dmtimer7::tcrr>::reg_get();
-    while(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps, UINT32_C(3)>::bit_get()) { mcal::cpu::nop(); }
+    while(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::dmtimer7::twps, UINT32_C(1)>::bit_get()) { mcal::cpu::nop(); }
 
     // Perform the consistency check.
     const std::uint64_t consistent_tick =
