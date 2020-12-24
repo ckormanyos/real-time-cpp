@@ -25,7 +25,6 @@
           static void invalidate_tlb               ();
           static void setup_domain_access_control  ();
           static void fill_tlb_entries             ();
-          static void set_tlb_base_address         ();
           static void enable_mmu                   ();
           static void enable_branch_prediction     ();
           static void enable_caches                ();

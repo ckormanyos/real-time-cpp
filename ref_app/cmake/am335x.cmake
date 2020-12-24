@@ -36,17 +36,14 @@ set(TARGET_INCLUDES
 
 set(_TARGET_CFLAGS
     -finline-functions
-    -finline-limit=16
-    -ffast-math
+    -finline-limit=32
     -mcpu=cortex-a8
-    -march=armv7-a
     -mtune=cortex-a8
     -marm
     -mfloat-abi=hard
     -mfpu=neon
     -ffast-math
-    -mno-unaligned-access
-    -mno-long-calls
+    -ftree-vectorize
 )
 
 set(TARGET_AFLAGS "")
@@ -65,7 +62,6 @@ set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail_secure
-    ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_APP}/util/STL/impl/arm/arm_float_limits
     ${PATH_APP}/util/STL/impl/cmath_impl_gamma
     ${PATH_APP}/util/STL/impl/cmath_impl_hyperbolic

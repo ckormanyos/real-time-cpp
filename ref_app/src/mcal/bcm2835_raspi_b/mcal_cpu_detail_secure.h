@@ -16,7 +16,7 @@
 
   namespace mcal { namespace cpu { namespace detail {
 
-  inline void init();
+  void init();
 
   constexpr std::uint32_t tlb_base_address = UINT32_C(0x00004000);
 
@@ -84,10 +84,6 @@
       (void) set_mmu_section(mcal::reg::gpio_base, mcal::reg::gpio_base, UINT32_C(0x0000));
     }
 
-    static void set_tlb_base_address()
-    {
-    }
-
     static void enable_mmu()
     {
       mcal_cpu_detail_secure_start_mmu(tlb_base_address, std::uint32_t(0x00000001UL | 0x1000UL |0x0004UL));
@@ -134,15 +130,7 @@
       return set_is_ok;
     }
 
-    friend inline void mcal::cpu::detail::init()
-    {
-      initialize_vfp_unit();
-      clear_branch_prediction_array();
-      fill_tlb_entries();
-      enable_mmu();
-      enable_branch_prediction();
-      enable_caches();
-    }
+    friend void init();
   };
 
   } } } // namespace mcal::cpu::detail
