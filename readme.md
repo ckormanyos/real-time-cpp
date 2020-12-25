@@ -19,20 +19,20 @@ Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
-  * VC, MinGW, or other `*nix`-like generic host
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
+  * BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
+  * RaspberryPi(R) Zero with ARM(R) 1176-JZF-S
+  * Renesas(R) RL78/G13
+  * Renesas(R) RX600
   * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
   * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
-  * BeagleBone with Texas Instruments(R) AM3359 ARM(R) A8
-  * Renesas(R) RL78/G13
-  * Renesas(R) RX600
-  * Raspberry Pi with ARM(R) 11
+  * VC, MinGW, or other `*nix`-like generic host
 
 Cross Development in the Reference Application
 ----------------------------------------------
@@ -127,14 +127,14 @@ board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
 for the BeagleBone that runs independently from any kind of `*nix` distro on
 the board. Our program is designed to boot the BeagleBone from a raw binary file
-called "MLO" stored on a FAT32 SDHC microcard. The binary file includes a
+called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
 special boot header comprised of two 32-bit integers. The program is loaded
 from SD-card into RAM memory and subsequently executed. When switching on
 the BeagleBone black, the boot button (S2) must be pressed while powering
 up the board. The program toggles the first user LED (LED1 on port1.21).
 
-The ARM(R) 11 configuration (called "target bcm2835_raspi_b") runs on the
-RaspberryPi (PiZero) single core controller.
+The ARM(R) 1176-JZF-S configuration (called "target bcm2835_raspi_b") runs on the
+RaspberryPi(R) Zero (PiZero) single core controller.
 This project creates a bare-metal program for the PiZero.
 This program runs independently from any kind of `*nix` distro on the board.
 Our program is designed to boot the PiZero from a raw binary file.
