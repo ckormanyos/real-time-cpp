@@ -77,7 +77,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4351;4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -102,7 +102,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4351;4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -328,6 +328,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>

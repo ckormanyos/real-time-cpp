@@ -28,6 +28,16 @@ void mcal::cpu::init()
   mcal::osc::init (nullptr);
 }
 
+void mcal::cpu::fpu()
+{
+  asm volatile("mrc p15, #0, r1, c1, c0, #2");
+  asm volatile("orr r1, r1, #0x00F00000");
+  asm volatile("mcr p15, #0, r1, c1, c0, #2");
+  asm volatile("isb");
+  asm volatile("mov r1, #0x40000000");
+  asm volatile("vmsr fpexc, r1");
+}
+
 void mcal::cpu::post_init()
 {
   detail::init();

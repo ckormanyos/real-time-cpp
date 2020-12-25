@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 // Implement some efficient memory functions from the standard C library.
 // If this file is included in the project, the linker will take these

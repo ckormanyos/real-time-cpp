@@ -12,16 +12,6 @@
 #include <cstdint>
 #include <mcal_cpu_detail_secure.h>
 
-void mcal::cpu::detail::secure::initialize_vfp_unit()
-{
-  asm volatile("mrc p15, #0, r1, c1, c0, #2");
-  asm volatile("orr r1, r1, #0x00F00000");
-  asm volatile("mcr p15, #0, r1, c1, c0, #2");
-  asm volatile("isb");
-  asm volatile("mov r1, #0x40000000");
-  asm volatile("vmsr fpexc, r1");
-}
-
 void mcal::cpu::detail::secure::invalidate_caches()
 {
   // There are no contents here because the ARMv7 core
@@ -49,6 +39,11 @@ void mcal::cpu::detail::secure::setup_domain_access_control()
 
 void mcal::cpu::detail::secure::fill_tlb_entries()
 {
+  // Set TLB base address
+  const volatile std::uint32_t the_address = tlb_base_address;
+
+  asm volatile("mcr p15, #0, %[value], c2, c0, #0" : : [value] "r" (the_address));
+
   volatile std::uint32_t* pointer_to_tlb_base = reinterpret_cast<volatile std::uint32_t*>(tlb_base_address);
 
   // Initialize every memory block to be of type "strongly ordered memory",
@@ -79,15 +74,6 @@ void mcal::cpu::detail::secure::fill_tlb_entries()
 
   // Insert an instruction barrier.
   asm volatile("dsb");
-}
-
-void mcal::cpu::detail::secure::set_tlb_base_address()
-{
-  const volatile std::uint32_t the_address = tlb_base_address;
-
-  asm volatile("mcr p15, #0, %[value], c2, c0, #0" : : [value] "r" (the_address));
-
-  static_cast<void>(the_address);
 }
 
 void mcal::cpu::detail::secure::enable_mmu()

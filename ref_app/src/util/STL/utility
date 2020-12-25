@@ -18,10 +18,7 @@
   {
     // Forward declaration of std::identity, which is implemented in <functional>.
     template<typename T>
-    struct identity
-    {
-      using type = T;
-    };
+    struct identity;
 
     template<typename T>
     constexpr T&& forward(remove_reference_t<T>& arg) noexcept

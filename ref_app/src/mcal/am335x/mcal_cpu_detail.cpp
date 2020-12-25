@@ -14,13 +14,11 @@
 
 void mcal::cpu::detail::init()
 {
-  secure::initialize_vfp_unit          ();
   secure::invalidate_caches            ();
   secure::clear_branch_prediction_array();
   secure::invalidate_tlb               ();
   secure::setup_domain_access_control  ();
   secure::fill_tlb_entries             ();
-  secure::set_tlb_base_address         ();
   secure::enable_mmu                   ();
   secure::enable_branch_prediction     ();
   secure::enable_caches                ();
