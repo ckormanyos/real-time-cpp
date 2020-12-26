@@ -803,6 +803,142 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\base64.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\cbuf.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Esp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-adc.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-bt.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-cpu.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-dac.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-gpio.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-i2c.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-ledc.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-matrix.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-misc.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-psram.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-rmt.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-sigmadelta.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-spi.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-time.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-touch.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-uart.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\FunctionalInterrupt.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\HardwareSerial.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPv6Address.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\MD5Builder.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\stdlib_noniso.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Stream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\StreamString.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_pulse.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_shift.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WMath.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WString.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1774,6 +1910,286 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Arduino.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\base64.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\binary.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\cbuf.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Client.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Esp.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-adc.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-bt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-cpu.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-dac.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-gpio.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-i2c.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-ledc.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-log.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-matrix.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-psram.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-rmt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-sigmadelta.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-spi.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-touch.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-uart.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp8266-compat.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\FunctionalInterrupt.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\HardwareSerial.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPv6Address.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\MD5Builder.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\pgmspace.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Printable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Server.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\stdlib_noniso.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Stream.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\StreamString.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Udp.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WCharacter.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_private.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WString.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace\esp_app_trace.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace\esp_app_trace_util.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_update\esp_ota_ops.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_clock.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_common.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_flash_config.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_random.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_util.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_flash_encrypt.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_flash_partitions.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_image_format.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_secure_boot.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\bt.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_a2dp_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_avrc_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_blufi_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_defs.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_device.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_main.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gap_ble_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gap_bt_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gattc_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatts_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatt_common_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatt_defs.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_hf_client_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_hf_defs.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_spp_api.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\address.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\async.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\bits.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\block.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\address.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\async.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\bits.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\block.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap_io.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap_time.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\debug.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\encode.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\hashkey.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\libcoap.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\lwippools.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\mem.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\net.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\option.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\pdu.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\prng.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\resource.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\str.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\subscribe.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\uri.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\uthash.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\utlist.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_config.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_config_posix.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_io.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_time.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\debug.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\encode.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\hashkey.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\libcoap.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\lwippools.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\mem.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\net.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\option.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\pdu.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\prng.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\resource.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\str.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\subscribe.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\uri.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\uthash.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\utlist.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config\sdkconfig.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\argtable3\argtable3.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\esp_console.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\linenoise\linenoise.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\adc.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\adc2_wifi_internal.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\can.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\dac.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\gpio.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\i2c.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\i2s.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\ledc.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\mcpwm.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\pcnt.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\periph_ctrl.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rmt.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rtc_cntl.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rtc_io.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdio_slave.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_defs.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_host.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_types.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdspi_host.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sigmadelta.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_common.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_master.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_slave.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\timer.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\touch_pad.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\uart.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\uart_select.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse\esp_efuse.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse\esp_efuse_table.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_adc_cal\esp_adc_cal.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event\esp_event.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event\esp_event_base.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_ota\esp_https_ota.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_server\esp_https_server.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_client\esp_http_client.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server\esp_http_server.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server\http_server.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_ringbuf\freertos\ringbuf.h" />
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_websocket_client\esp_websocket_client.h" />
     <ClInclude Include="src\mcal\xtensa32\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

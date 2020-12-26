@@ -18,18 +18,157 @@ GCC_PREFIX    = xtensa-esp32-elf
 
 TGT_SUFFIX    = elf
 
+WARN_FLAGS   := -Wall                                                         \
+                -Wpointer-arith                                               \
+                -Wno-maybe-uninitialized                                      \
+                -Wno-unused-function                                          \
+                -Wno-unused-but-set-variable                                  \
+                -Wno-unused-variable                                          \
+                -Wno-deprecated-declarations                                  \
+                -Wno-unused-parameter                                         \
+                -Wno-unused-but-set-parameter                                 \
+                -Wno-missing-field-initializers                               \
+                -Wno-sign-compare
+
+#-w                                    
+#-Wpointer-arith                       
+#-Wno-error=maybe-uninitialized        
+#-Wno-error=unused-function            
+#-Wno-error=unused-but-set-variable    
+#-Wno-error=unused-variable            
+#-Wno-error=deprecated-declarations    
+#-Wno-unused-parameter                 
+#-Wno-unused-but-set-parameter         
+#-Wno-missing-field-initializers       
+#-Wno-sign-compare
+
+DEFINES_SDK   = -DESP_PLATFORM                                                \
+                -DMBEDTLS_CONFIG_FILE=$(DQUOTE)mbedtls/esp_config.h$(DQUOTE)  \
+                -DHAVE_CONFIG_H                                               \
+                -DGCC_NOT_5_2_0=1                                             \
+                -DWITH_POSIX                                                  \
+                -DF_CPU=240000000L                                            \
+                -DARDUINO=10813                                               \
+                -DARDUINO_ESP32_DEV                                           \
+                -DARDUINO_ARCH_ESP32                                          \
+                -DARDUINO_BOARD=$(DQUOTE)ESP32_DEV$(DQUOTE)                   \
+                -DARDUINO_VARIANT=$(DQUOTE)esp32$(DQUOTE)                     \
+                -DESP32                                                       \
+                -DCORE_DEBUG_LEVEL=0
+
+FLAGS_SDK     = -fstack-protector                               \
+                -fstrict-volatile-bitfields                     \
+                -mlongcalls                                     \
+                -nostdlib
+
 TGT_CFLAGS    = -Os                                                            \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
-                -ffast-math                                                    \
                 -mlongcalls                                                    \
-                -fstack-protector                                              \
-                -fstrict-volatile-bitfields
+                $(FLAGS_SDK)                                                   \
+                $(DEFINES_SDK)
 
 TGT_CPPFLAGS  = -std=c++11
 
+INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/config                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/app_trace               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/app_update              \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/asio                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/bootloader_support      \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/bt                      \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/coap                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/console                 \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/driver                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/efuse                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-tls                 \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_adc_cal             \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_event               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_http_client         \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_http_server         \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_https_ota           \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_https_server        \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_ringbuf             \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_websocket_client    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/espcoredump             \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/ethernet                \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/expat                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/fatfs                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/freemodbus              \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/freertos                \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/heap                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/idf_test                \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/jsmn                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/json                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/libsodium               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/log                     \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/lwip                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mbedtls                 \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mdns                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/micro-ecc               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mqtt                    \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/newlib                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/nghttp                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/nvs_flash               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/openssl                 \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/protobuf-c              \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/protocomm               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/pthread                 \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/sdmmc                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/smartconfig_ack         \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/soc                     \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/spi_flash               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/spiffs                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/tcp_transport           \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/tcpip_adapter           \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/ulp                     \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/unity                   \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/vfs                     \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wear_levelling          \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wifi_provisioning       \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wpa_supplicant          \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/xtensa-debug-module     \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-face                \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32-camera            \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-face                \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/fb_gfx                  \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32                               \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/variants/esp32
+
+
+#"C:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32/tools/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc"
+#-nostdlib
+#"-LC:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32/tools/sdk/lib"
+#"-LC:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32/tools/sdk/ld"
+#-T esp32_out.ld -T esp32.project.ld -T esp32.rom.ld -T esp32.peripherals.ld -T esp32.rom.libgcc.ld -T esp32.rom.spiram_incompatible_fns.ld
+#-u ld_include_panic_highint_hdl -u call_user_start_cpu0
+#-Wl,--gc-sections -Wl,-static -Wl,--undefined=uxTopUsedPriority
+#-u __cxa_guard_dummy
+#-u __cxx_fatal_exception
+#-Wl,--start-group
+#"C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943\\sketch\\Blink.ino.cpp.o"
+#"C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943\\core\\core.a"
+#-lgcc -lespcoredump -lesp_event -lheap -lpe -lmesh -lm -lesp_http_client
+#-lfb_gfx -lface_detection -lesp_adc_cal -ldetection_cat_face -lmbedtls
+#-lunity -lspiffs -lod -lapp_trace -llog -lesp_websocket_client
+#-lexpat -lwpa2 -lxtensa-debug-module -lnet80211 -lhal -lvfs -lwps
+#-lmqtt -lasio -lbt -lwpa_supplicant -lpp -lmdns -llwip -lnvs_flash
+#-lc -lbootloader_support -lnewlib -lsdmmc -lapp_update -lethernet
+#-lefuse -lprotobuf-c -ldetection -lfreemodbus -lcore -lface_recognition
+#-lfd -lcoap -ljsmn -lesp_https_ota -ltcp_transport -lbtdm_app
+#-lesp_ringbuf -ldriver -lwifi_provisioning -llibsodium -lopenssl
+#-lfatfs -lnghttp -lespnow -lprotocomm -lspi_flash -lc_nano -lulp
+#-lesp_http_server -lesp32-camera -lsmartconfig -lsmartconfig_ack
+#-lesp-tls -lcoexist -lmicro-ecc -lesp_https_server -lwpa -ltcpip_adapter
+#-lwear_levelling -lfreertos -lsoc -ljson -lesp32 -lpthread -lcxx -lfr
+#-ldl -lphy -limage_util -lrtc -lconsole
+#-lstdc++
+#-Wl,--end-group -Wl,-EL
+#-o "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943/Blink.ino.elf"
+
+
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
-                -I$(PATH_APP)/util/STL
+                $(INCLUDES_SDK)
 
 TGT_AFLAGS    =
 

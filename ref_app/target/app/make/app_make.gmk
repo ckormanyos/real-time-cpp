@@ -19,6 +19,12 @@
 
 
 # ------------------------------------------------------------------------------
+# punctuation
+# ------------------------------------------------------------------------------
+
+DQUOTE = \"
+
+# ------------------------------------------------------------------------------
 # compiler location, build from GCC version and GCC target
 # ------------------------------------------------------------------------------
 COMPILER_DIRECTORY = gcc-$(GCC_VERSION)-$(GCC_TARGET)
@@ -52,6 +58,8 @@ APP = $(PATH_BIN)/ref_app
 IMAGE_FILE = $(APP).bin
 
 RULE_SPECIAL_MAKE_IMAGE_FILE =
+
+WARN_FLAGS =
 
 # ------------------------------------------------------------------------------
 # include the target-specific make files
@@ -125,9 +133,8 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
-GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -g                                \
-              -Wall                             \
+ifeq ($(WARN_FLAGS),)
+WARN_FLAGS =  -Wall                             \
               -Wextra                           \
               -pedantic                         \
               -Wmain                            \
@@ -144,7 +151,12 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -Wmissing-include-dirs            \
               -Winit-self                       \
               -Wfloat-equal                     \
-              -Wdouble-promotion                \
+              -Wdouble-promotion
+endif
+
+GCCFLAGS    = $(TGT_CFLAGS)                     \
+              -g                                \
+              $(WARN_FLAGS)                     \
               -gdwarf-2                         \
               -ffreestanding                    \
               -fno-exceptions                   \
@@ -152,9 +164,10 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
-              -Wunsuffixed-float-constants      \
+              -Wno-unsuffixed-float-constants   \
+              -Wno-old-style-declaration        \
               -x c                              \
-              -std=c99
+              -std=gnu99
 
 CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
@@ -241,7 +254,7 @@ version:
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
-	@$(ECHO) $(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES)))
+	@$(ECHO) $(addsuffix ;,$(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES))))
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)

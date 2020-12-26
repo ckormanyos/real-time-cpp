@@ -173,6 +173,228 @@
     <Filter Include="src\math\wide_decimal">
       <UniqueIdentifier>{600114e0-a873-4e3b-8b5b-06844c801c31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware">
+      <UniqueIdentifier>{9a0d3544-14e6-43df-9d9f-7201775fa2c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif">
+      <UniqueIdentifier>{b1976cda-ffff-467b-b554-648147cb4fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32">
+      <UniqueIdentifier>{5d7db4fc-a711-481e-9486-92eb559cf024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools">
+      <UniqueIdentifier>{f8298baa-3d82-4b18-b75a-7b5e0584c113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk">
+      <UniqueIdentifier>{234e0646-1a1e-4bd0-a457-cc7982ba2f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include">
+      <UniqueIdentifier>{9796a0fe-b532-4dde-bea5-3448b1fe293f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config">
+      <UniqueIdentifier>{b58eae92-7bc9-465f-8db7-c989cfd62b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace">
+      <UniqueIdentifier>{a8e80fb9-e797-405f-85c4-b8c6cce83a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_update">
+      <UniqueIdentifier>{5d8f2f92-b202-486c-8ef5-3a2dbf9dac26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\asio">
+      <UniqueIdentifier>{2318c775-deb0-4302-aabe-b7b0283170da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\cores">
+      <UniqueIdentifier>{1a4e50eb-5373-4681-968d-11b444f30011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32">
+      <UniqueIdentifier>{4c75628e-1cbb-486c-8af4-6971ef343a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse">
+      <UniqueIdentifier>{34f8ded5-5aa9-4ec0-978a-076ace5d5d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support">
+      <UniqueIdentifier>{a01ee8a8-9e5f-4048-bf40-2a85aad920e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt">
+      <UniqueIdentifier>{5cb41d51-fd79-4eff-a7bb-eda6a8bcdc45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap">
+      <UniqueIdentifier>{78fa9823-683f-41fe-8b73-0388f448d3f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console">
+      <UniqueIdentifier>{1d72f8f1-fa61-4b71-b321-2e5589dae21e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver">
+      <UniqueIdentifier>{9175a182-c8c2-4bd7-9563-ca3424c7aad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_adc_cal">
+      <UniqueIdentifier>{bf656813-74c4-4888-b37d-80fc1d62d13e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event">
+      <UniqueIdentifier>{721af651-59a1-417e-ab13-a64abd74e98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_client">
+      <UniqueIdentifier>{c0d6e4b5-9077-4986-984d-afea458cb3d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server">
+      <UniqueIdentifier>{b0c33523-22d7-43d6-8f12-9b53651e2d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_ota">
+      <UniqueIdentifier>{b03f5a44-5414-4c0a-b6ee-a94a8931a3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_server">
+      <UniqueIdentifier>{6704b4b3-2783-4110-b262-558fa213b0be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_ringbuf">
+      <UniqueIdentifier>{b6f5c339-d0a4-4fd7-992e-741ffb3384af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_websocket_client">
+      <UniqueIdentifier>{4a6ddc58-a8f1-46fb-98ce-b1c73f1155e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp32">
+      <UniqueIdentifier>{f3b6ad5a-44d5-4a25-92d6-527bf6ccab8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp32-camery">
+      <UniqueIdentifier>{1237c961-2784-4603-9a83-92672a9a81ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\espcoredump">
+      <UniqueIdentifier>{66ed2563-9f2e-4239-aac4-d15b79701c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp-face">
+      <UniqueIdentifier>{bb8c02c0-e0d6-4363-bdef-a8bc7f7fee8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp-tls">
+      <UniqueIdentifier>{6d522efa-22af-4184-95fb-9a7d3f308cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\ethernet">
+      <UniqueIdentifier>{2a7373c3-3333-4d5f-9a0b-133a500a06f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\expat">
+      <UniqueIdentifier>{2f827d83-917e-4f7f-88f1-3e24bef68229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\fatfs">
+      <UniqueIdentifier>{91bdf5ee-f2c4-48cc-999a-7c809b8f64c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\fb_gfx">
+      <UniqueIdentifier>{2796a951-ce09-4c87-807c-b88c04c4e5d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\freemodbus">
+      <UniqueIdentifier>{eacb3de6-b1c1-4718-a23f-0620f94fd6a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\freertos">
+      <UniqueIdentifier>{cfd5b3f1-a151-438f-a73c-c2faeaf510af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\heap">
+      <UniqueIdentifier>{4811c3a7-27b6-4400-9208-db62bf9a92ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\idf_test">
+      <UniqueIdentifier>{8395e30b-2d64-4ea3-9c34-d6c3da5b79ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\jsmn">
+      <UniqueIdentifier>{05f23d90-cbf6-4521-87c4-095b6fe644ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\json">
+      <UniqueIdentifier>{354d4df6-893d-4094-a704-b2a67e142150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\libsodium">
+      <UniqueIdentifier>{2c99cfff-45af-4c11-92d2-f0657fa570db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\log">
+      <UniqueIdentifier>{a3cf437c-7ade-4f0a-85e8-b93b3b316e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\lwip">
+      <UniqueIdentifier>{11e6ed1e-aa1e-47ec-bcc1-9a7b18c75b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\mbedtls">
+      <UniqueIdentifier>{ef6a6a37-4a4b-42a4-b389-1fd3e28a4a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\mdns">
+      <UniqueIdentifier>{11605457-04c8-4014-8e08-500d08514fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\micro-ecc">
+      <UniqueIdentifier>{efa25119-1e15-41a4-874a-d6e6ffbfc594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\mqtt">
+      <UniqueIdentifier>{978316fb-7992-4099-87e4-4faf85af57ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\newlib">
+      <UniqueIdentifier>{9f226da6-5b57-4e0a-9069-b82df55f1b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\nghttp">
+      <UniqueIdentifier>{2ac10f0d-1c16-444a-875d-6d52b5a3afa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\nvs_flash">
+      <UniqueIdentifier>{2072ff1c-619e-4a49-8c7b-5e65101caae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\openssl">
+      <UniqueIdentifier>{e3562257-c7a9-4ec6-8cca-b83343b08a6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\protobuf-c">
+      <UniqueIdentifier>{259a11bd-de9d-4341-a9c4-8bdbef9d4bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\protocomm">
+      <UniqueIdentifier>{0137a994-91b8-4208-a91b-f78efdf37f21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\pthread">
+      <UniqueIdentifier>{8103c8d2-ccf8-4f6d-9b4a-510bc6f91884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\sdmmc">
+      <UniqueIdentifier>{3ea47ae8-d7bd-4d1b-97a8-14eb7601c4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\smartconfig_ack">
+      <UniqueIdentifier>{c8a7797b-e4a3-4d8b-808e-09ad1bf4113d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\soc">
+      <UniqueIdentifier>{74355df5-1a86-4b69-a6f9-1fd34a1b117b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\spi_flash">
+      <UniqueIdentifier>{34b11c97-6303-4324-ba6c-e2aedfd85729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\spiffs">
+      <UniqueIdentifier>{53cd299d-3b58-4d9b-8e07-aefc841dba1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\tcp_transport">
+      <UniqueIdentifier>{4e676abe-4acc-4b28-ad65-729e347017d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\xtensa-debug-module">
+      <UniqueIdentifier>{a46dd815-a2ab-46f5-a5fa-a91bb11b0ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\wpa_supplicant">
+      <UniqueIdentifier>{60159266-3c7d-4938-a0fe-8c3bdb706a9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\wifi_provisioning">
+      <UniqueIdentifier>{fd495413-69e8-4738-bb86-92564e4f4653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\wear_levelling">
+      <UniqueIdentifier>{78a7d652-7505-4e1b-932d-85b55aea8295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\vfs">
+      <UniqueIdentifier>{3ef78ff3-0204-447b-955c-b35625fbdf39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\unity">
+      <UniqueIdentifier>{1bcee068-a62f-4e09-966a-55aeaae47e18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\ulp">
+      <UniqueIdentifier>{13a475d4-76ab-4ab4-89dd-43863d258880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\tcpip_adapter">
+      <UniqueIdentifier>{1a65bf4e-dc88-4e92-a1e0-a2d8f3e7112c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap">
+      <UniqueIdentifier>{c0711c47-baf1-4647-a733-ae8aaf62778f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\argtable3">
+      <UniqueIdentifier>{c3d5a9a6-17fd-407a-87ad-f90f8e1a8b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\linenoise">
+      <UniqueIdentifier>{a856d4a8-5be2-46df-b362-e66a96d74e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver">
+      <UniqueIdentifier>{b38d22ab-cad8-4992-8002-3fbe035b88b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_ringbuf\freertos">
+      <UniqueIdentifier>{c91d81cb-752c-46c1-847a-d2f7711fb677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -756,6 +978,108 @@
     </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\base64.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\cbuf.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Esp.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-adc.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-bt.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-cpu.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-dac.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-gpio.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-i2c.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-ledc.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-matrix.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-misc.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-psram.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-rmt.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-sigmadelta.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-spi.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-time.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-touch.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-uart.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\FunctionalInterrupt.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\HardwareSerial.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPv6Address.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\main.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\MD5Builder.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\stdlib_noniso.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Stream.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\StreamString.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_pulse.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_shift.c">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WMath.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WString.cpp">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1772,6 +2096,486 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_baselexical_cast.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Arduino.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\base64.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\binary.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\cbuf.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Client.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Esp.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-adc.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-bt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-cpu.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-dac.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-gpio.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-i2c.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-ledc.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-log.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-matrix.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-psram.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-rmt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-sigmadelta.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-spi.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-touch.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-uart.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp8266-compat.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\FunctionalInterrupt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\HardwareSerial.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPv6Address.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\MD5Builder.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\pgmspace.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Printable.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Server.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\stdlib_noniso.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Stream.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\StreamString.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Udp.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WCharacter.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\wiring_private.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WString.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace\esp_app_trace.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace\esp_app_trace_util.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_trace</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_update\esp_ota_ops.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\app_update</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_flash_config.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_random.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_util.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_flash_encrypt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_flash_partitions.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_image_format.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\esp_secure_boot.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_clock.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support\bootloader_common.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bootloader_support</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gap_ble_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gap_bt_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatt_common_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatt_defs.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gattc_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_gatts_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_hf_client_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_hf_defs.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_spp_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\bt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_a2dp_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_avrc_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_blufi_api.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_defs.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_device.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt\esp_bt_main.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\bt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap_io.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\coap_time.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\debug.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\encode.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\hashkey.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\libcoap.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\lwippools.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\mem.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\net.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\option.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\pdu.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\prng.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\resource.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\str.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\subscribe.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\uri.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\uthash.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\utlist.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\address.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\async.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\bits.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap\block.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_config.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_config_posix.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_io.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap_time.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\debug.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\encode.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\hashkey.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\libcoap.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\lwippools.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\mem.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\net.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\option.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\pdu.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\prng.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\resource.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\str.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\subscribe.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\uri.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\uthash.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\utlist.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\address.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\async.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\bits.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\block.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap\coap.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\coap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config\sdkconfig.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\esp_console.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\linenoise\linenoise.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\linenoise</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\argtable3\argtable3.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\console\argtable3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\i2s.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\ledc.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\mcpwm.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\pcnt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\periph_ctrl.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rmt.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rtc_cntl.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\rtc_io.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdio_slave.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_defs.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_host.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdmmc_types.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sdspi_host.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\sigmadelta.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_common.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_master.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\spi_slave.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\timer.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\touch_pad.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\uart.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\uart_select.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\adc.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\adc2_wifi_internal.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\can.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\dac.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\gpio.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver\i2c.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse\esp_efuse_table.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse\esp_efuse.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\efuse</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_adc_cal\esp_adc_cal.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_adc_cal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event\esp_event_base.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event\esp_event.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_client\esp_http_client.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server\esp_http_server.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server\http_server.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_http_server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_ota\esp_https_ota.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_ota</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_server\esp_https_server.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_https_server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_ringbuf\freertos\ringbuf.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_ringbuf\freertos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_websocket_client\esp_websocket_client.h">
+      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\esp_websocket_client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
