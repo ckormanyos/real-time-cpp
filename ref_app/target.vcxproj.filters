@@ -330,6 +330,12 @@
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\start.elf">
       <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
     </None>
+    <None Include="target\micros\xtensa32\startup\partitions.bin">
+      <Filter>micros\xtensa32\startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\startup\partitions.csv">
+      <Filter>micros\xtensa32\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -454,18 +460,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f446\startup\int_vect.cpp">
       <Filter>micros\stm32f446\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\crt0.cpp">
-      <Filter>micros\xtensa32\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\crt0_init_ram.cpp">
-      <Filter>micros\xtensa32\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\crt1.cpp">
-      <Filter>micros\xtensa32\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\int_vect.cpp">
-      <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\lpc11c24\startup\crt0.cpp">
       <Filter>micros\lpc11c24\startup</Filter>

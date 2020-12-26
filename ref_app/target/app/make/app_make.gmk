@@ -57,7 +57,8 @@ APP = $(PATH_BIN)/ref_app
 
 IMAGE_FILE = $(APP).bin
 
-RULE_SPECIAL_MAKE_IMAGE_FILE =
+RULE_SPECIAL_MAKE_IMAGE_FILE  =
+RULE_SPECIAL_MAKE_FLASH_BATCH =
 
 WARN_FLAGS =
 
@@ -173,13 +174,6 @@ CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
-              -fstrict-enums                    \
-              -fno-use-cxa-atexit               \
-              -fno-use-cxa-get-exception-ptr    \
-              -fno-nonansi-builtins             \
-              -fno-threadsafe-statics           \
-              -fno-enforce-eh-specs             \
-              -ftemplate-depth=32               \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
@@ -189,9 +183,7 @@ AFLAGS      = $(GCCFLAGS)                       \
 
 LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
-              -x none                           \
-              -Wl,--gc-sections                 \
-              -Wl,-Map,$(APP).map
+              -x none
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -254,7 +246,7 @@ version:
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
-	@$(ECHO) $(addsuffix ;,$(subst /,\, $(subst -I,$$\(SolutionDir\), $(C_INCLUDES))))
+	@$(ECHO) $(addsuffix ;,$(subst -I,$$\(SolutionDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)
@@ -294,12 +286,15 @@ endif
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
-	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 else
 	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
+ifneq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
+	-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
 endif
 
 # ------------------------------------------------------------------------------

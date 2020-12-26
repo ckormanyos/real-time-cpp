@@ -49,10 +49,5 @@ FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/E
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
 
 
-FILES_TGT       = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                            \
-                  $(PATH_TGT)/startup/crt0                                                            \
-                  $(PATH_TGT)/startup/crt0_init_ram                                                   \
-                  $(PATH_TGT)/startup/crt1                                                            \
-                  $(PATH_TGT)/startup/int_vect                                                        \
-                  $(FILES_SDK_C)                                                                      \
+FILES_TGT       = $(FILES_SDK_C)                                                                      \
                   $(FILES_SDK_CPP)
