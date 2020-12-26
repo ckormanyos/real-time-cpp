@@ -615,6 +615,8 @@
     <None Include="target\micros\xtensa32\make\xtensa32.ld" />
     <None Include="target\micros\xtensa32\make\xtensa32_files.gmk" />
     <None Include="target\micros\xtensa32\make\xtensa32_flags.gmk" />
+    <None Include="target\micros\xtensa32\startup\bootloader_qio_80m.bin" />
+    <None Include="target\micros\xtensa32\startup\boot_app0.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.csv" />
   </ItemGroup>

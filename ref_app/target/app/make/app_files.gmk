@@ -9,4 +9,4 @@
 # List of the source files in the project
 # ------------------------------------------------------------------------------
 
-FILES_CPP  = $(PATH_APP)/app/led/ctags_target_for_gcc_minus_e
+FILES_CPP  = $(PATH_APP)/app/led/blink
