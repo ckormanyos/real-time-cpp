@@ -10,7 +10,7 @@
 
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_port_type = mcal::port::port_pin;
+  using led0_port_type = mcal::port::port_pin<2>;
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 

@@ -10,6 +10,10 @@
 
   #include <mcal_reg.h>
 
+  extern "C" void mcal_port_pin_mode(const unsigned pin_index, bool set_direction_to_output);
+  extern "C" void mcal_port_pin_set (const unsigned pin_index, bool set_value_to_high);
+  extern "C" bool mcal_port_pin_read(const unsigned pin_index);
+
   namespace mcal
   {
     namespace port
@@ -18,15 +22,16 @@
 
       void init(const config_type*);
 
+      template<const unsigned PinIndex>
       class port_pin
       {
       public:
-        static void set_direction_output() noexcept { }
-        static void set_direction_input () noexcept { }
-        static void set_pin_high        () noexcept { }
-        static void set_pin_low         () noexcept { }
-        static bool read_input_value    () noexcept { return false; }
-        static void toggle_pin          () noexcept { }
+        static void set_direction_output() noexcept { ::mcal_port_pin_mode(PinIndex, true); }
+        static void set_direction_input () noexcept { ::mcal_port_pin_mode(PinIndex, false); }
+        static void set_pin_high        () noexcept { ::mcal_port_pin_set (PinIndex, true); }
+        static void set_pin_low         () noexcept { ::mcal_port_pin_set (PinIndex, false);}
+        static bool read_input_value    () noexcept { return ::mcal_port_pin_read(PinIndex); }
+        static void toggle_pin          () noexcept { read_input_value() ? set_pin_low() : set_pin_high(); }
       };
     }
   }
