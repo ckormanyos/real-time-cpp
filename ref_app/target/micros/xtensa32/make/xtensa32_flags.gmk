@@ -42,7 +42,7 @@ DEFINES_SDK  := -DESP_PLATFORM                                                  
                 -DESP32                                                         \
                 -DCORE_DEBUG_LEVEL=0
 
-TGT_CFLAGS    = -Os                                                            \
+TGT_ALLFLAGS  = -Os                                                            \
                 -nostdlib                                                      \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
@@ -52,7 +52,13 @@ TGT_CFLAGS    = -Os                                                            \
                 $(FLAGS_SDK)                                                   \
                 $(DEFINES_SDK)
 
-TGT_CPPFLAGS  = -std=gnu++11
+TGT_CFLAGS    = -std=gnu99                                                     \
+                -Wno-unsuffixed-float-constants                                \
+                -Wno-old-style-declaration                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_CPPFLAGS  = -std=gnu++11                                                   \
+                $(TGT_ALLFLAGS)
 
 INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/config                  \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/app_trace               \

@@ -15,11 +15,16 @@ GCC_PREFIX    = rl78-elf
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -Os                                            \
+TGT_ALLFLAGS  = -Os                                            \
                 -fno-inline-functions                          \
                 -mmul=none
 
-TGT_CPPFLAGS  = -std=c++11
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
@@ -28,4 +33,6 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)

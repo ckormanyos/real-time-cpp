@@ -155,8 +155,7 @@ WARN_FLAGS =  -Wall                             \
               -Wdouble-promotion
 endif
 
-GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -g                                \
+GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
               -gdwarf-2                         \
               -ffreestanding                    \
@@ -165,15 +164,20 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
-              -Wno-unsuffixed-float-constants   \
-              -Wno-old-style-declaration        \
-              -x c                              \
-              -std=gnu99
+              $(TGT_CFLAGS)                     \
+              -x c
 
 CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
+              -fstrict-enums                    \
+              -fno-use-cxa-atexit               \
+              -fno-use-cxa-get-exception-ptr    \
+              -fno-nonansi-builtins             \
+              -fno-threadsafe-statics           \
+              -fno-enforce-eh-specs             \
+              -ftemplate-depth=32               \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
@@ -181,7 +185,7 @@ AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LDFLAGS     = $(GCCFLAGS)                       \
+LDFLAGS     = $(CPPFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none
 

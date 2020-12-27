@@ -1252,9 +1252,6 @@
     <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\WString.cpp">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\led\blink.cpp">
-      <Filter>src\app\led</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
