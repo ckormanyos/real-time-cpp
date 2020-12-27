@@ -79,69 +79,27 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
 
 TGT_AFLAGS    =
 
-SDK_LIBS      = -lespcoredump                   \
-                -lesp_event                     \
-                -lheap                          \
-                -lpe                            \
-                -lmesh                          \
-                -lesp_adc_cal                   \
-                -lmbedtls                       \
-                -lunity                         \
-                -lspiffs                        \
-                -lod                            \
-                -lapp_trace                     \
-                -llog                           \
-                -lexpat                         \
-                -lwpa2                          \
-                -lxtensa-debug-module           \
-                -lhal                           \
-                -lvfs                           \
-                -lwps                           \
-                -lmqtt                          \
-                -lbt                            \
-                -lpp                            \
-                -lmdns                          \
-                -llwip                          \
-                -lnvs_flash                     \
+SDK_LIBS      = -lapp_update                    \
                 -lbootloader_support            \
-                -lnewlib                        \
-                -lsdmmc                         \
-                -lapp_update                    \
-                -lethernet                      \
-                -lefuse                         \
-                -lprotobuf-c                    \
-                -ldetection                     \
-                -lfreemodbus                    \
-                -lcore                          \
-                -lface_recognition              \
-                -lfd                            \
-                -lcoap                          \
-                -ljsmn                          \
-                -lbtdm_app                      \
-                -lesp_ringbuf                   \
-                -ldriver                        \
-                -lwifi_provisioning             \
-                -lfatfs                         \
-                -lnghttp -lespnow               \
-                -lprotocomm                     \
-                -lspi_flash                     \
-                -lc_nano                        \
-                -lulp                           \
-                -lsmartconfig                   \
-                -lsmartconfig_ack               \
-                -lesp-tls                       \
                 -lcoexist                       \
-                -lmicro-ecc                     \
-                -lwear_levelling                \
-                -lfreertos                      \
-                -lsoc                           \
+                -lcore                          \
+                -ldriver                        \
+                -lefuse                         \
+                -lesp_ringbuf                   \
                 -lesp32                         \
+                -lexpat                         \
+                -lfreertos                      \
+                -lhal                           \
+                -lheap                          \
+                -llog                           \
+                -llwip                          \
+                -lnewlib                        \
+                -lnvs_flash                     \
                 -lpthread                       \
-                -lfr                            \
-                -ldl                            \
-                -lphy                           \
-                -lrtc                           \
-                -lconsole
+                -lsoc                           \
+                -lspi_flash                     \
+                -lvfs                           \
+                -lxtensa-debug-module
 
 TGT_LDFLAGS   = -nostdlib                                                               \
                 -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/lib        \
