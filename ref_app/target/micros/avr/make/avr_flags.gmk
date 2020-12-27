@@ -18,15 +18,19 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -Os                                            \
+TGT_ALLFLAGS  = -Os                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
                 -mrelax                                        \
 
 #                -mdouble=64                                    \
 
-TGT_CPPFLAGS  = -std=c++11
-#TGT_CPPFLAGS  = -std=c++20
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
@@ -35,5 +39,7 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)
 

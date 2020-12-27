@@ -21,15 +21,15 @@
 # ------------------------------------------------------------------------------
 # paths
 # ------------------------------------------------------------------------------
-PATH_APP       = src
-PATH_TGT       = target/micros/$(TGT)
-PATH_APP_MAKE  = target/app/make
-PATH_TGT_MAKE  = $(PATH_TGT)/make
-PATH_BIN       = bin
-PATH_TMP       = tmp
-PATH_OBJ       = $(PATH_TMP)/obj
-PATH_LST       = $(PATH_TMP)/lst
-PATH_ERR       = $(PATH_TMP)/err
+PATH_APP             = src
+PATH_TGT             = target/micros/$(TGT)
+PATH_APP_MAKE        = target/app/make
+PATH_TGT_MAKE        = $(PATH_TGT)/make
+PATH_BIN             = bin
+PATH_TMP             = tmp
+PATH_OBJ             = $(PATH_TMP)/obj
+PATH_LST             = $(PATH_TMP)/lst
+PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
@@ -39,7 +39,10 @@ APP = $(PATH_BIN)/ref_app
 
 IMAGE_FILE = $(APP).bin
 
-RULE_SPECIAL_MAKE_IMAGE_FILE =
+RULE_SPECIAL_MAKE_IMAGE_FILE  =
+RULE_SPECIAL_MAKE_FLASH_BATCH =
+
+WARN_FLAGS =
 
 # ------------------------------------------------------------------------------
 # include the target-specific make files
@@ -113,9 +116,8 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)                      \
              -I$(PATH_APP)/mcal/$(TGT)
 
-GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -g                                \
-              -Wall                             \
+ifeq ($(WARN_FLAGS),)
+WARN_FLAGS =  -Wall                             \
               -Wextra                           \
               -pedantic                         \
               -Wmain                            \
@@ -132,7 +134,11 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -Wmissing-include-dirs            \
               -Winit-self                       \
               -Wfloat-equal                     \
-              -Wdouble-promotion                \
+              -Wdouble-promotion
+endif
+
+GCCFLAGS    = -g                                \
+              $(WARN_FLAGS)                     \
               -gdwarf-2                         \
               -ffreestanding                    \
               -fno-exceptions                   \
@@ -140,9 +146,8 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
-              -Wunsuffixed-float-constants      \
-              -x c                              \
-              -std=c99
+              $(TGT_CFLAGS)                     \
+              -x c
 
 CPPFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
@@ -162,11 +167,9 @@ AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LDFLAGS     = $(GCCFLAGS)                       \
+LDFLAGS     = $(CPPFLAGS)                       \
               $(TGT_LDFLAGS)                    \
-              -x none                           \
-              -Wl,--gc-sections                 \
-              -Wl,-Map,$(APP).map
+              -x none
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -266,12 +269,15 @@ endif
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
-	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
-	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 else
 	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
+ifneq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
+	-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
 endif
 
 # ------------------------------------------------------------------------------

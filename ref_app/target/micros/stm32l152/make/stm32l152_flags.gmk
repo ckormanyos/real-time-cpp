@@ -15,7 +15,8 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -O2                                            \
+TGT_ALLFLAGS  = -O2                                            \
+                -Wunsuffixed-float-constants                   \
                 -finline-functions                             \
                 -finline-limit=32                              \
                 -mcpu=cortex-m3                                \
@@ -25,8 +26,12 @@ TGT_CFLAGS    = -O2                                            \
                 -mno-unaligned-access                          \
                 -mno-long-calls
 
+TGT_CFLAGS    = -std=c99                                       \
+                $(TGT_ALLFLAGS)
 
-TGT_CPPFLAGS  = -std=c++11
+
+TGT_CPPFLAGS  = -std=c++11                                     \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
@@ -35,4 +40,6 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)

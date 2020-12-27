@@ -15,7 +15,7 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -O3                                                               \
+TGT_ALLFLAGS  = -O3                                                               \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -mcpu=cortex-a8                                                   \
@@ -26,7 +26,12 @@ TGT_CFLAGS    = -O3                                                             
                 -ffast-math                                                       \
                 -ftree-vectorize
 
-TGT_CPPFLAGS  = -std=c++11
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
+                $(TGT_ALLFLAGS)
+
+TGT_CPPFLAGS  = -std=c++11                                                        \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
@@ -35,6 +40,8 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)
 
 HEX_MANIP = $(PATH_TOOLS)\generic\hex_tools\HexManip.exe

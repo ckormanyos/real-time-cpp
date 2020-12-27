@@ -17,7 +17,7 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin benchmark_port_type;
+      typedef mcal::port::port_pin<0U> benchmark_port_type;
     }
   }
 

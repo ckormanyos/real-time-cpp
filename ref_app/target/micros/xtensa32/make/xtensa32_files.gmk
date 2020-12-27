@@ -6,14 +6,15 @@
 #
 
 # ------------------------------------------------------------------------------
-# File list of the stm32f407 files in the project
+# File list of the xtensa32 esspressif ESP32 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
-             $(PATH_APP)/util/STL/impl/cmath_impl_gamma                \
-             $(PATH_APP)/util/STL/impl/cmath_impl_hyperbolic           \
-             $(PATH_TGT)/startup/crt0                                  \
-             $(PATH_TGT)/startup/crt0_init_ram                         \
-             $(PATH_TGT)/startup/crt1                                  \
-             $(PATH_TGT)/startup/int_vect                              \
-             $(PATH_APP)/util/STD_LIBC/memory
+FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-cpu          \
+                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-gpio         \
+                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc         \
+                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer
+
+FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
+
+FILES_TGT       = $(FILES_SDK_C)                                                                      \
+                  $(FILES_SDK_CPP)

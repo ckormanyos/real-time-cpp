@@ -15,19 +15,24 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -O2                                                           \
-                -finline-functions                                            \
-                -finline-limit=16                                             \
-                -mcpu=cortex-m4                                               \
-                -mtune=cortex-m4                                              \
-                -mthumb                                                       \
-                -mfloat-abi=hard                                              \
-                -mfpu=fpv4-sp-d16                                             \
-                -ffast-math                                                   \
-                -mno-unaligned-access                                         \
+TGT_ALLFLAGS  = -Os                                                            \
+                -finline-functions                                             \
+                -finline-limit=32                                              \
+                -mcpu=cortex-m4                                                \
+                -mtune=cortex-m4                                               \
+                -mthumb                                                        \
+                -mfloat-abi=hard                                               \
+                -mfpu=fpv4-sp-d16                                              \
+                -ffast-math                                                    \
+                -mno-unaligned-access                                          \
                 -mno-long-calls
 
-TGT_CPPFLAGS  = -std=c++11
+TGT_CFLAGS    = -std=c99                                                       \
+                -Wunsuffixed-float-constants                                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CPPFLAGS  = -std=c++11                                                     \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL
@@ -36,4 +41,6 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)
