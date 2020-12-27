@@ -61,67 +61,15 @@ TGT_CPPFLAGS  = -std=gnu++11                                                   \
                 $(TGT_ALLFLAGS)
 
 INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/config                  \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/app_trace               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/app_update              \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/asio                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/bootloader_support      \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/bt                      \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/coap                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/console                 \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/driver                  \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/efuse                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-tls                 \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_adc_cal             \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_event               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_http_client         \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_http_server         \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_https_ota           \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_https_server        \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_ringbuf             \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_websocket_client    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/espcoredump             \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/ethernet                \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/expat                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/fatfs                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/freemodbus              \
+                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32                   \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/freertos                \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/heap                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/idf_test                \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/jsmn                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/json                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/libsodium               \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/log                     \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/lwip                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mbedtls                 \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mdns                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/micro-ecc               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/mqtt                    \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/newlib                  \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/nghttp                  \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/nvs_flash               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/openssl                 \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/protobuf-c              \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/protocomm               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/pthread                 \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/sdmmc                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/smartconfig_ack         \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/soc                     \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/spi_flash               \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/spiffs                  \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/tcp_transport           \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/tcpip_adapter           \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/ulp                     \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/unity                   \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/vfs                     \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wear_levelling          \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wifi_provisioning       \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/wpa_supplicant          \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/xtensa-debug-module     \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-face                \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32-camera            \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp-face                \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/fb_gfx                  \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32                               \
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/variants/esp32
 
@@ -256,7 +204,8 @@ ESP32_ESP_TOOL_CMD_COPY =    copy /Y $(subst /,\,$(ESP32_GEN_PART))             
                           && copy /Y $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin)
 
 ESP32_ESP_TOOL_CMD_ECHO =    $(ECHO) gen_esp32part.exe -q partitions.csv $(notdir $(APP).partitions.bin)      > $(subst /,\,$(CURDIR)/bin/flash.bat)      \
-                          && $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS)                                     >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+                          && $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS)                                     >> $(subst /,\,$(CURDIR)/bin/flash.bat)      \
+                          && $(ECHO) pause                                                                   >> $(subst /,\,$(CURDIR)/bin/flash.bat)
 
 RULE_SPECIAL_MAKE_FLASH_BATCH =    $(ESP32_ESP_TOOL_CMD_COPY)             \
                                 && $(ESP32_ESP_TOOL_CMD_ECHO)

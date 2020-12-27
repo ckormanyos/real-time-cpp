@@ -14,12 +14,7 @@ FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/e
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc         \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer
 
-FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/Esp                    \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/IPv6Address            \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/IPAddress              \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/Print                  \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/cbuf                   \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
+FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
 
 FILES_TGT       = $(FILES_SDK_C)                                                                      \
                   $(FILES_SDK_CPP)
