@@ -82,7 +82,6 @@ TGT_AFLAGS    =
 SDK_LIBS      = -lapp_update                    \
                 -lbootloader_support            \
                 -lcoexist                       \
-                -lcore                          \
                 -ldriver                        \
                 -lefuse                         \
                 -lesp_ringbuf                   \
@@ -92,7 +91,6 @@ SDK_LIBS      = -lapp_update                    \
                 -lhal                           \
                 -lheap                          \
                 -llog                           \
-                -llwip                          \
                 -lnewlib                        \
                 -lnvs_flash                     \
                 -lpthread                       \
@@ -101,7 +99,8 @@ SDK_LIBS      = -lapp_update                    \
                 -lvfs                           \
                 -lxtensa-debug-module
 
-TGT_LDFLAGS   = -nostdlib                                                               \
+TGT_LDFLAGS   = -flto                                                                   \
+                -nostdlib                                                               \
                 -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/lib        \
                 -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/ld         \
                 -T esp32_out.ld                                                         \

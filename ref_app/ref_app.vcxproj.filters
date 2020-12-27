@@ -853,13 +853,7 @@
     <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.c">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.cpp">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\main.cpp">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.cpp">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1878,15 +1872,6 @@
     <ClInclude Include="src\util\utility\util_baselexical_cast.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Arduino.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\binary.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Client.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Esp.h">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClInclude>
@@ -1900,21 +1885,6 @@
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-timer.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp8266-compat.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\IPAddress.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Print.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Printable.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Server.h">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config\sdkconfig.h">
@@ -2641,9 +2611,6 @@
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\spi_flash</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-log.h">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\Stream.h">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClInclude>
   </ItemGroup>

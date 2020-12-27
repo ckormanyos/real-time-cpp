@@ -1,6 +1,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <Arduino.h>
+#include <esp32-hal.h>
 
 #ifndef CONFIG_ARDUINO_LOOP_STACK_SIZE
 #define CONFIG_ARDUINO_LOOP_STACK_SIZE 8192
@@ -12,8 +12,6 @@ extern "C" void main_loop(void*);
 
 extern "C" void app_main()
 {
-  initArduino();
-
   xTaskCreateUniversal(main_loop,
                        "main_loop",
                        CONFIG_ARDUINO_LOOP_STACK_SIZE,
