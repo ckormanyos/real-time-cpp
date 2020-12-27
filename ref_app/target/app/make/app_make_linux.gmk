@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2019.
+#  Copyright Christopher Kormanyos 2007 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -33,17 +33,21 @@ PATH_ERR       = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
-# include files
+# the application
+# ------------------------------------------------------------------------------
+APP = $(PATH_BIN)/ref_app
+
+IMAGE_FILE = $(APP).bin
+
+RULE_SPECIAL_MAKE_IMAGE_FILE =
+
+# ------------------------------------------------------------------------------
+# include the target-specific make files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
 include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
 include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 
-
-# ------------------------------------------------------------------------------
-# the application
-# ------------------------------------------------------------------------------
-APP = $(PATH_BIN)/ref_app
 
 # ------------------------------------------------------------------------------
 # object files
@@ -130,6 +134,7 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -Wfloat-equal                     \
               -Wdouble-promotion                \
               -gdwarf-2                         \
+              -ffreestanding                    \
               -fno-exceptions                   \
               -ffunction-sections               \
               -fdata-sections
@@ -263,6 +268,11 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) -O ihex $(APP).$(TGT_SUFFIX) $(APP).hex
 	@-$(OBJCOPY) -S -O binary $(APP).$(TGT_SUFFIX) $(APP).bin
+ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
+else
+	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
+endif
 
 # ------------------------------------------------------------------------------
 # Dependencyfile include (build)
@@ -271,7 +281,7 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 # If the files do not exist then the includes will be ignored.
 # ------------------------------------------------------------------------------
 ifneq ($(MAKECMDGOALS),rebuild)
--include $(subst .o,.d,$(FILES_O))       # for example tmp/obj/sys_start.d, tmp/obj/mcal_cpu.d, etc
+-include $(subst .o,.d,$(FILES_O))
 endif
 
 
