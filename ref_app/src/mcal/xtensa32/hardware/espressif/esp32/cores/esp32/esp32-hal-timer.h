@@ -25,7 +25,6 @@ extern "C" {
 #endif
 
 #include "esp32-hal.h"
-#include "freertos/FreeRTOS.h"
 
 struct hw_timer_s;
 typedef struct hw_timer_s hw_timer_t;

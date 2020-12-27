@@ -39,29 +39,15 @@ extern "C" {
 #define F_CPU (CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ * 1000000U)
 #endif
 
-//forward declaration from freertos/portmacro.h
-void vPortYield(void);
-void yield(void);
-#define optimistic_yield(u)
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 #define ESP_REG(addr) *((volatile uint32_t *)(addr))
 #define NOP() asm volatile ("nop")
 
 #include "esp32-hal-log.h"
-#include "esp32-hal-matrix.h"
-#include "esp32-hal-uart.h"
 #include "esp32-hal-gpio.h"
-#include "esp32-hal-touch.h"
-#include "esp32-hal-dac.h"
-#include "esp32-hal-adc.h"
-#include "esp32-hal-spi.h"
-#include "esp32-hal-i2c.h"
-#include "esp32-hal-ledc.h"
-#include "esp32-hal-rmt.h"
-#include "esp32-hal-sigmadelta.h"
 #include "esp32-hal-timer.h"
-#include "esp32-hal-bt.h"
-#include "esp32-hal-psram.h"
 #include "esp32-hal-cpu.h"
 
 #ifndef BOARD_HAS_PSRAM

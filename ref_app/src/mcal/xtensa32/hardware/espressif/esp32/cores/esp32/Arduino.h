@@ -36,7 +36,7 @@
 #include "esp8266-compat.h"
 #include "soc/gpio_reg.h"
 
-#include "stdlib_noniso.h"
+//#include "stdlib_noniso.h"
 #include "binary.h"
 
 #define PI 3.1415926535897932384626433832795
@@ -142,16 +142,11 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 #include <algorithm>
 #include <cmath>
 
-#include "WCharacter.h"
-#include "WString.h"
-#include "Stream.h"
 #include "Printable.h"
 #include "Print.h"
 #include "IPAddress.h"
 #include "Client.h"
 #include "Server.h"
-#include "Udp.h"
-#include "HardwareSerial.h"
 #include "Esp.h"
 
 using std::abs;

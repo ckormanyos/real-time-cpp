@@ -21,7 +21,6 @@
 #define IPv6Address_h
 
 #include <stdint.h>
-#include <WString.h>
 #include <Printable.h>
 
 // A class to make it easier to handle and pass around IP addresses
@@ -51,7 +50,6 @@ public:
     virtual ~IPv6Address() {}
 
     bool fromString(const char *address);
-    bool fromString(const String &address) { return fromString(address.c_str()); }
 
     operator const uint8_t*() const
     {
@@ -84,7 +82,6 @@ public:
     IPv6Address& operator=(const uint8_t *address);
 
     virtual size_t printTo(Print& p) const;
-    String toString() const;
 
     friend class UDP;
     friend class Client;

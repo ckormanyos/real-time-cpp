@@ -11,19 +11,13 @@
 
 FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-cpu          \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-gpio         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-ledc         \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-psram        \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer        \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/libb64/cdecode         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/libb64/cencode
+                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer
 
 FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/Esp                    \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/MD5Builder             \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/IPv6Address            \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/IPAddress              \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/Print                  \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/base64                 \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/cbuf                   \
                   $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
 
