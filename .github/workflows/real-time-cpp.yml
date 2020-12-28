@@ -11,6 +11,6 @@ jobs:
       - name: build-target-x86_64
         env:
           HELLO: Hi
-        run: echo $HELLO
         shell: bash
         working-directory: ../ref_app/
+        run: echo $HELLO
