@@ -11,4 +11,3 @@ jobs:
       - name: build-target-x86_64
         run: echo $PATH
         shell: bash
-        working-directory: ../ref_app/
