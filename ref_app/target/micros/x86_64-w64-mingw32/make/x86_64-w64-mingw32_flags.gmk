@@ -32,4 +32,4 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   =
+TGT_LDFLAGS   = -lpthread
