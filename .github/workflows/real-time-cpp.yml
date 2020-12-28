@@ -10,4 +10,6 @@ jobs:
         run: sudo apt install g++-10
       - name: build-target-x86_64
         working-directory: ../ref_app/
-        run: ./target/build/build.sh x86_64-w64-mingw32 rebuild
+        run: |
+             ls
+             pwd
