@@ -10,4 +10,4 @@ jobs:
         run: sudo apt install g++-10
       - name: build-target-x86_64
         working-directory: ../../ref_app/target
-        run: pwd
+        run: 'ls'
