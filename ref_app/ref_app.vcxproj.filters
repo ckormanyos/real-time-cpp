@@ -89,12 +89,6 @@
     <Filter Include="src\mcal\rl78">
       <UniqueIdentifier>{f8af3f0f-5c80-41e7-88de-7809108140bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL\impl\arm">
-      <UniqueIdentifier>{9720414a-cb9d-4d52-b113-55909704ad88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\STL\impl\rl78">
-      <UniqueIdentifier>{e5d40cb1-7138-45c2-a206-9124a2aa53ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\stm32f429">
       <UniqueIdentifier>{3d9c9058-7846-4b3f-b8aa-c64674ccacb1}</UniqueIdentifier>
     </Filter>
@@ -254,6 +248,9 @@
     <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\soc\soc">
       <UniqueIdentifier>{8511fbe1-1066-428a-8ea7-cb1af0086883}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\util\STL\impl\xtensa">
+      <UniqueIdentifier>{02b0983b-92d6-478f-aa6e-cd0c9b597f5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -352,9 +349,6 @@
     <ClCompile Include="src\mcal\stm32f407\mcal_wdg.cpp">
       <Filter>src\mcal\stm32f407</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
       <Filter>src\util\STL\impl</Filter>
     </ClCompile>
@@ -384,12 +378,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_wdg.cpp">
       <Filter>src\mcal\rl78</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL\impl\arm\arm_float_limits.cpp">
-      <Filter>src\util\STL\impl\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STL\impl\rl78\rl78_float_limits.cpp">
-      <Filter>src\util\STL\impl\rl78</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f429\mcal_cpu.cpp">
       <Filter>src\mcal\stm32f429</Filter>
@@ -2716,6 +2704,9 @@
     </None>
     <None Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.s">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </None>
+    <None Include="src\util\STL\impl\xtensa\cmath_for_xtensa.h">
+      <Filter>src\util\STL\impl\xtensa</Filter>
     </None>
   </ItemGroup>
 </Project>

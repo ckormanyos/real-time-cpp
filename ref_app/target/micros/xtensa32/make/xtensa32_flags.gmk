@@ -68,7 +68,8 @@ INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/inc
                 -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/variants/esp32
 
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                                                \
+                -I$(PATH_APP)/util/STL                                                               \
                 $(INCLUDES_SDK)
 
 TGT_AFLAGS    =
@@ -93,8 +94,8 @@ SDK_LIBS      = -lapp_update                    \
                 -lvfs                           \
                 -lxtensa-debug-module
 
-TGT_LDFLAGS   = -flto                                                                   \
-                -nostdlib                                                               \
+TGT_LDFLAGS   = -nostdlib                                                               \
+                -flto                                                                   \
                 -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/lib        \
                 -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/ld         \
                 -T esp32_out.ld                                                         \
@@ -113,7 +114,6 @@ TGT_LDFLAGS   = -flto                                                           
                 -Wl,--start-group                                                       \
                 $(SDK_LIBS)                                                             \
                 -lc                                                                     \
-                -lcxx                                                                   \
                 -lm                                                                     \
                 -lgcc                                                                   \
                 -lstdc++                                                                \

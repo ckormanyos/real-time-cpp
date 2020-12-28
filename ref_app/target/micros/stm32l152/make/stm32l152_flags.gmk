@@ -16,7 +16,6 @@ GCC_PREFIX    = arm-none-eabi
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                            \
-                -Wunsuffixed-float-constants                   \
                 -finline-functions                             \
                 -finline-limit=32                              \
                 -mcpu=cortex-m3                                \
@@ -27,8 +26,8 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mno-long-calls
 
 TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
-
 
 TGT_CPPFLAGS  = -std=c++11                                     \
                 $(TGT_ALLFLAGS)

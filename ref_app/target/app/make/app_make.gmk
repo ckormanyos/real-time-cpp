@@ -181,6 +181,7 @@ AFLAGS      = $(GCCFLAGS)                       \
 
 LDFLAGS     = $(CXXFLAGS)                       \
               $(TGT_LDFLAGS)                    \
+              -Wl,--undefined=main              \
               -x none
 
 # ------------------------------------------------------------------------------

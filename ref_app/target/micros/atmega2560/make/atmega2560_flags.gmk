@@ -15,25 +15,27 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                            \
-                -mmcu=atmega2560                               \
-                -fsigned-char                                  \
+TGT_ALLFLAGS  = -Os                                                               \
+                -flto                                                             \
+                -mmcu=atmega2560                                                  \
+                -fsigned-char                                                     \
                 -mrelax
 
-TGT_CFLAGS    = -std=c99                                       \
-                -Wunsuffixed-float-constants                   \
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
                 $(TGT_ALLFLAGS)
 
-TGT_CPPFLAGS  = -std=c++11                                     \
+TGT_CPPFLAGS  = -std=c++11                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                             \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
-                -nostartfiles                                  \
-                -Wl,--gc-sections                              \
-                -Wl,-Map,$(APP).map                            \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -flto                                                             \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
