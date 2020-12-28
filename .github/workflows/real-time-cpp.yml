@@ -9,6 +9,8 @@ jobs:
       - name: update-tools
         run: sudo apt install g++-10
       - name: build-target-x86_64
-        run: ls
+        env:
+          HELLO: Hi
+        run: echo $HELLO
         shell: bash
         working-directory: ../ref_app/
