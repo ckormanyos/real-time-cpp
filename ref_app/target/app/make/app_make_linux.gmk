@@ -172,7 +172,7 @@ LDFLAGS     = $(CXXFLAGS)                       \
               -x none
 
 ifeq ($(GCC_PREFIX),)
-LDFLAGS     = $(LDFLAGS)                        \
+LDFLAGS    := $(LDFLAGS)                        \
               -lposix
 endif
 
