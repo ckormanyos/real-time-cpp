@@ -1,4 +1,8 @@
 name: real-time-cpp
+defaults:
+  run:
+    shell: bash
+    working-directory: ../ref_app
 on: [push]
 jobs:
   target-x86_64:
