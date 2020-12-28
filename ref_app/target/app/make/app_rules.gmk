@@ -37,7 +37,7 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and create an assembly listing using objdump,
   # ...and generate a dependency file (using the -MM flag),
   # ...and be sure to include the path in the dependency file.
-	@-$(CC) $(CPPFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 

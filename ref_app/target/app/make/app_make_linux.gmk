@@ -149,7 +149,7 @@ CFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
               -x c
 
-CPPFLAGS    = $(GCCFLAGS)                       \
+CXXFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CPPFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
@@ -167,7 +167,7 @@ AFLAGS      = $(GCCFLAGS)                       \
               $(TGT_AFLAGS)                     \
               -x assembler
 
-LDFLAGS     = $(CPPFLAGS)                       \
+LDFLAGS     = $(CXXFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none
 

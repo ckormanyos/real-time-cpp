@@ -29,7 +29,12 @@
   #define EXIT_FAILURE -1
   #endif
 
-  void exit(int) __attribute__((noreturn));
+  extern "C"
+  {
+    void abort (void);
+    int  atexit(void(*)(void)) noexcept;
+    void exit  (int);
+  }
 
   namespace std
   {
@@ -37,7 +42,9 @@
     inline long       labs(long      a) { return ((a < 0) ? -a : a); }
     inline long long llabs(long long a) { return ((a < 0) ? -a : a); }
 
-    inline void exit(int exit_code) { ::exit(exit_code); }
+    using ::abort;
+    using ::atexit;
+    using ::exit;
 
     struct   div_t { int       quot; int       rem; };
     struct  ldiv_t { long      quot; long      rem; };
