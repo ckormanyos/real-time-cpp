@@ -26,8 +26,23 @@ jobs:
         with:
           commit-filter: '[skip ci];[ci skip];[CI SKIP];[SKIP CI];***CI SKIP***;***SKIP CI***'
       - name: update-tools
-        run: sudo apt install gcc-avr avr-libc
+        run: sudo apt install gcc-avr
       - name: build-target-avr
         run: ./target/build/build.sh avr rebuild
+        working-directory: ./ref_app/
+        shell: bash
+  target-stm32f446:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - uses: mstachniuk/ci-skip@v1
+        with:
+          commit-filter: '[skip ci];[ci skip];[CI SKIP];[SKIP CI];***CI SKIP***;***SKIP CI***'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-stm32f446
+        run: ./target/build/build.sh stm32f446 rebuild
         working-directory: ./ref_app/
         shell: bash
