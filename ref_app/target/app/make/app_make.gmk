@@ -162,7 +162,7 @@ CFLAGS      = $(GCCFLAGS)                       \
               -x c
 
 CXXFLAGS    = $(GCCFLAGS)                       \
-              $(TGT_CPPFLAGS)                   \
+              $(TGT_CXXFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
               -fstrict-enums                    \

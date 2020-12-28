@@ -65,7 +65,6 @@ endif()
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
     ${PATH_APP}/util/STD_LIBC/memory
-    ${PATH_APP}/util/STL/impl/arm/arm_float_limits
     ${PATH_APP}/util/STL/impl/cmath_impl_gamma
     ${PATH_APP}/util/STL/impl/cmath_impl_hyperbolic
     ${PATH_TGT}/startup/crt0

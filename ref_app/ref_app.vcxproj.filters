@@ -251,6 +251,9 @@
     <Filter Include="src\util\STL\impl\xtensa">
       <UniqueIdentifier>{02b0983b-92d6-478f-aa6e-cd0c9b597f5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cmake">
+      <UniqueIdentifier>{e81d15ff-933f-4412-adcb-d0828aec3a82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2708,5 +2711,54 @@
     <None Include="src\util\STL\impl\xtensa\cmath_for_xtensa.h">
       <Filter>src\util\STL\impl\xtensa</Filter>
     </None>
+    <None Include="cmake\atmega2560.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\avr.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\bcm2835_raspi_b.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\gcc-toolchain.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\host.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\lpc11c24.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\rl78.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\rx63n.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f100.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f407.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f429.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f446.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\stm32l152.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\xtensa32.cmake">
+      <Filter>cmake</Filter>
+    </None>
+    <None Include="cmake\am335x.cmake">
+      <Filter>cmake</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="build_commands.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>
