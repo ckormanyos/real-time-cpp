@@ -51,7 +51,7 @@ TGT_CFLAGS    = -std=gnu99                                                     \
                 -Wno-old-style-declaration                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CPPFLAGS  = -std=gnu++11                                                   \
+TGT_CXXFLAGS  = -std=gnu++11                                                   \
                 $(TGT_ALLFLAGS)
 
 INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/config           \

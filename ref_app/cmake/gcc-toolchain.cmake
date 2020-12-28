@@ -116,7 +116,7 @@ set(_CFLAGS ${GCCFLAGS}
     -std=c99
 )
 
-set(_CPPFLAGS ${GCCFLAGS}
+set(_CXXFLAGS ${GCCFLAGS}
     -x c++
     -fno-rtti
     -fstrict-enums
@@ -154,6 +154,6 @@ set(BIN_FILE ${CMAKE_BINARY_DIR}/${APP}.bin)
 
 # remove list item delimeter
 string(REPLACE ";" " " CFLAGS "${_CFLAGS}")
-string(REPLACE ";" " " CPPFLAGS "${_CPPFLAGS}")
+string(REPLACE ";" " " CXXFLAGS "${_CXXFLAGS}")
 string(REPLACE ";" " " AFLAGS "${_AFLAGS}")
 string(REPLACE ";" " " LDFLAGS "${_LDFLAGS}")

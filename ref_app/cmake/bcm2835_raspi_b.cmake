@@ -62,7 +62,6 @@ set(FILES_TARGET
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail_secure.s
     ${PATH_APP}/mcal/${TARGET}/mcal_reg.s
-    ${PATH_APP}/util/STL/impl/arm/arm_float_limits
     ${PATH_APP}/util/STL/impl/cmath_impl_gamma
     ${PATH_APP}/util/STL/impl/cmath_impl_hyperbolic
     ${PATH_TGT}/startup/crt0
