@@ -12,4 +12,5 @@ jobs:
         run: |
             echo $PATH
             ls
+            ./target/build/build.sh x86_64-w64-mingw32 rebuild
         shell: bash
