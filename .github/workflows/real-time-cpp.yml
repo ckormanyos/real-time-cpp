@@ -26,7 +26,7 @@ jobs:
         with:
           commit-filter: '[skip ci];[ci skip];[CI SKIP];[SKIP CI];***CI SKIP***;***SKIP CI***'
       - name: update-tools
-        run: sudo apt install gcc-avr
+        run: sudo apt install gcc-avr avr-libc
       - name: build-target-avr
         run: ./target/build/build.sh avr rebuild
         working-directory: ./ref_app/
