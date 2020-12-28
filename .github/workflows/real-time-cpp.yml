@@ -13,4 +13,5 @@ jobs:
             echo $PATH
             ls
             ./target/build/build.sh x86_64-w64-mingw32 rebuild
+        working-directory: ./ref_app/
         shell: bash
