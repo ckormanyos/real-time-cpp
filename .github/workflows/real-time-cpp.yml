@@ -9,5 +9,6 @@ jobs:
       - name: update-tools
         run: sudo apt install g++-10
       - name: build-target-x86_64
-        run: echo $PATH
+        run: ./target/build/build.sh x86_64-w64-mingw32 rebuild
+        working-directory: ./ref_app/
         shell: bash
