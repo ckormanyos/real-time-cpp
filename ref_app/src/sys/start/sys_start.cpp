@@ -8,10 +8,12 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-#if defined(__GNUC__) && defined(__XTENSA__)
-extern "C" [[noreturn]] void main_loop(void*);
-#else
-[[noreturn]] int main(void);
+#if defined(__GNUC__)
+  #if defined(__XTENSA__)
+  extern "C" void main_loop(void*);
+  #else
+  int main(void) __attribute__((used));
+  #endif
 #endif
 
 #if defined(__GNUC__) && defined(__XTENSA__)
