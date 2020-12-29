@@ -6,18 +6,20 @@
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
+mkdir -p bin
+
 rm -f ./bin/*.*
 
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_COMPLEX           -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_complex.cpp           -o ./bin/app_benchmark_complex.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC               -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp               -o ./bin/app_benchmark_crc.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FAST_MATH         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_fast_math.cpp         -o ./bin/app_benchmark_fast_math.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FILTER            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_filter.cpp            -o ./bin/app_benchmark_filter.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FIXED_POINT       -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_fixed_point.cpp       -o ./bin/app_benchmark_fixed_point.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_COMPLEX           -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_complex.cpp           -o ./bin/app_benchmark_complex.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC               -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp               -o ./bin/app_benchmark_crc.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FAST_MATH         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_fast_math.cpp         -o ./bin/app_benchmark_fast_math.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FILTER            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_filter.cpp            -o ./bin/app_benchmark_filter.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FIXED_POINT       -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_fixed_point.cpp       -o ./bin/app_benchmark_fixed_point.exe
 g++ -std=c++11 -Wall -Werror -O3 -march=native -I./src/util/STL_C++XX_stdfloat -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FLOAT             -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_float.cpp             -o ./bin/app_benchmark_float.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_HASH              -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_hash.cpp              -o ./bin/app_benchmark_hash.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_PI_SPIGOT         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_pi_spigot.cpp         -o ./bin/app_benchmark_pi_spigot.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE  -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_pi_spigot_single.cpp  -o ./bin/app_benchmark_pi_spigot_single.exe
-g++ -std=c++11 -Wall -Werror -O3 -march=native                                         -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_INTEGER      -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_wide_integer.cpp      -o ./bin/app_benchmark_wide_integer.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_HASH              -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_hash.cpp              -o ./bin/app_benchmark_hash.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_PI_SPIGOT         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_pi_spigot.cpp         -o ./bin/app_benchmark_pi_spigot.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE  -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_pi_spigot_single.cpp  -o ./bin/app_benchmark_pi_spigot_single.exe
+g++ -std=c++11 -Wall -Werror -O3 -march=native                                 -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_INTEGER      -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_wide_integer.cpp      -o ./bin/app_benchmark_wide_integer.exe
 
 ./bin/app_benchmark_complex.exe
 result_var_complex=$?
