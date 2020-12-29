@@ -40,3 +40,29 @@ jobs:
         run: ./target/build/build.sh stm32f446 rebuild
         working-directory: ./ref_app/
         shell: bash
+  target-am335x:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-am335x
+        run: ./target/build/build.sh am335x rebuild
+        working-directory: ./ref_app/
+        shell: bash
+  target-bcm2835_raspi_b:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-bcm2835_raspi_b
+        run: ./target/build/build.sh bcm2835_raspi_b rebuild
+        working-directory: ./ref_app/
+        shell: bash
