@@ -19,13 +19,12 @@ TGT_ALLFLAGS  = -O3                                                             
                 -flto                                                             \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
-                -mcpu=cortex-a8                                                   \
+                -march=armv7-a                                                    \
                 -mtune=cortex-a8                                                  \
                 -marm                                                             \
                 -mfloat-abi=hard                                                  \
                 -mfpu=neon                                                        \
-                -ffast-math                                                       \
-                -ftree-vectorize
+                -ffast-math
 
 TGT_CFLAGS    = -std=c99                                                          \
                 -Wunsuffixed-float-constants                                      \

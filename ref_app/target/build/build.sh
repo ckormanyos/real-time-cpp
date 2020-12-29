@@ -36,3 +36,5 @@ build_command="make -f $SCRIPT_DIR/../app/make/app_make_linux.gmk $2 TGT=$1"
 echo Executing Command: $build_command
 
 $build_command
+
+exit

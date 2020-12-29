@@ -37,8 +37,8 @@ namespace std
   }
 }
 
-void  operator delete(void*)               UTIL_NOEXCEPT;
-void  operator delete(void*, unsigned int) UTIL_NOEXCEPT;
+void  operator delete(void*)        UTIL_NOEXCEPT;
+void  operator delete(void*, void*) UTIL_NOEXCEPT;
 
 void* operator new(std::size_t size) UTIL_NOEXCEPT;
 
@@ -70,8 +70,8 @@ void* operator new(std::size_t size) UTIL_NOEXCEPT
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
 
-void operator delete(void*)               UTIL_NOEXCEPT { }
-void operator delete(void*, unsigned int) UTIL_NOEXCEPT { }
+void operator delete(void*)        UTIL_NOEXCEPT { }
+void operator delete(void*, void*) UTIL_NOEXCEPT { }
 
 extern "C"
 {
