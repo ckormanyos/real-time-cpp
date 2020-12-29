@@ -1,6 +1,5 @@
 *~
 .vscode/
-build/
 ref_app/.vs/
 ref_app/ref_app.vcxproj.user
 ref_app/target.vcxproj.user
