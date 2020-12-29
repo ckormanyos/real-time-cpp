@@ -63,4 +63,20 @@ bool app::benchmark::run_pi_spigot_single()
   return result_is_ok;
 }
 
+#if defined(APP_BENCHMARK_STANDALONE_MAIN)
+int main()
+{
+  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_pi_spigot_single.cpp -o ./ref_app/bin/app_benchmark_pi_spigot_single.exe
+
+  bool result_is_ok = true;
+
+  for(unsigned i = 0U; i < 8U; ++i)
+  {
+    result_is_ok &= app::benchmark::run_pi_spigot_single();
+  }
+
+  return result_is_ok ? 0 : -1;
+}
+#endif
+
 #endif // APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE

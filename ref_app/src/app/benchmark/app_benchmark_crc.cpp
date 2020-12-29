@@ -30,4 +30,21 @@ bool app::benchmark::run_crc()
   return result_is_ok;
 }
 
+#if defined(APP_BENCHMARK_STANDALONE_MAIN)
+int main()
+{
+  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_crc.cpp -o ./ref_app/bin/app_benchmark_crc.exe
+
+  bool result_is_ok = true;
+
+  for(unsigned i = 0U; i < 64U; ++i)
+  {
+    result_is_ok &= app::benchmark::run_crc();
+  }
+
+  return result_is_ok ? 0 : -1;
+}
+
+#endif
+
 #endif // APP_BENCHMARK_TYPE_CRC

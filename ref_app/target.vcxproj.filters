@@ -342,6 +342,9 @@
     <None Include="target\micros\xtensa32\startup\bootloader_qio_80m.bin">
       <Filter>micros\xtensa32\startup</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks.sh">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

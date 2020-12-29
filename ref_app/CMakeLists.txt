@@ -155,7 +155,7 @@ add_executable(ref_app
 )
 
 target_include_directories(ref_app PUBLIC
-    ${TARGET_INCLUDES} 
+    ${TARGET_INCLUDES}
     ${PATH_APP}
     ${PATH_APP}/mcal/${TARGET}
 )
