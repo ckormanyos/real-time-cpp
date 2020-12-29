@@ -13,7 +13,7 @@ jobs:
       - name: build-target-x86_64-w64-mingw32
         run: |
           ./target/build/build.sh x86_64-w64-mingw32 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.exe2
         working-directory: ./ref_app/
         shell: bash
   target-avr:
@@ -26,7 +26,9 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
       - name: build-target-avr
-        run: ./target/build/build.sh avr rebuild
+        run: |
+          ./target/build/build.sh avr rebuild
+          ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
   target-stm32f446:
@@ -39,7 +41,9 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: build-target-stm32f446
-        run: ./target/build/build.sh stm32f446 rebuild
+        run: |
+          ./target/build/build.sh stm32f446 rebuild
+          ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
   target-am335x:
@@ -52,7 +56,9 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: build-target-am335x
-        run: ./target/build/build.sh am335x rebuild
+        run: |
+          ./target/build/build.sh am335x rebuild
+          ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
   target-bcm2835_raspi_b:
@@ -65,6 +71,8 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: build-target-bcm2835_raspi_b
-        run: ./target/build/build.sh bcm2835_raspi_b rebuild
+        run: |
+          ./target/build/build.sh bcm2835_raspi_b rebuild
+          ls ./bin/ref_app.hex ./bin/kernel.img
         working-directory: ./ref_app/
         shell: bash
