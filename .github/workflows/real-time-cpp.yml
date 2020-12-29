@@ -48,7 +48,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
+        run: sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi
       - name: build-target-am335x
         run: ./target/build/build.sh am335x rebuild
         working-directory: ./ref_app/
@@ -61,7 +61,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
+        run: sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi
       - name: build-target-bcm2835_raspi_b
         run: ./target/build/build.sh bcm2835_raspi_b rebuild
         working-directory: ./ref_app/
