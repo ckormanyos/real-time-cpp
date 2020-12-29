@@ -61,21 +61,6 @@ jobs:
           ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
-  target-rx63n:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-rx-elf
-      - name: build-target-rx63n
-        run: |
-          ./target/build/build.sh rx63n rebuild
-          ls ./bin/ref_app.hex
-        working-directory: ./ref_app/
-        shell: bash
   target-stm32f100:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
