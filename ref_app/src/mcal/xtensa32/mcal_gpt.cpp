@@ -5,9 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <esp32-hal-timer.h>
-
 #include <mcal_gpt.h>
+
+extern "C"
+{
+  extern int64_t esp_timer_get_time(void);
+}
 
 void mcal::gpt::init(const config_type*)
 {

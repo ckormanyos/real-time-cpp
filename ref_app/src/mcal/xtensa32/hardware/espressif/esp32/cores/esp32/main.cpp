@@ -20,13 +20,3 @@ extern "C" void app_main()
                        &main_loop_task_handle,
                        CONFIG_ARDUINO_RUNNING_CORE);
 }
-
-extern "C"
-{
-  int atexit (void (*)(void)) noexcept;
-
-  int atexit (void (*)(void))
-  {
-    return 0;
-  }
-}

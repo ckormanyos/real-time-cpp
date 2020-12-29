@@ -9,10 +9,8 @@
 # File list of the xtensa32 esspressif ESP32 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-cpu          \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-gpio         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer
+FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/esp32-hal-gpio                                              \
+                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc
 
 FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
 

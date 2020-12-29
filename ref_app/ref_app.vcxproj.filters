@@ -251,6 +251,9 @@
     <Filter Include="src\util\STL\impl\xtensa">
       <UniqueIdentifier>{02b0983b-92d6-478f-aa6e-cd0c9b597f5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa32\soc">
+      <UniqueIdentifier>{734f412d-52b0-4aec-8bf0-f8a97565aac0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -843,6 +846,9 @@
     </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\main.cpp">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa32\esp32-hal-gpio.c">
+      <Filter>src\mcal\xtensa32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2600,6 +2606,12 @@
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-log.h">
       <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\soc\my_gpio_struct.h">
+      <Filter>src\mcal\xtensa32\soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\my_esp32-hal-gpio.h">
+      <Filter>src\mcal\xtensa32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
