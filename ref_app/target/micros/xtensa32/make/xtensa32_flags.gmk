@@ -54,23 +54,8 @@ TGT_CFLAGS    = -std=gnu99                                                     \
 TGT_CXXFLAGS  = -std=gnu++11                                                   \
                 $(TGT_ALLFLAGS)
 
-INCLUDES_SDK  = -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/config           \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/driver           \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp_event        \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/esp32            \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/freertos         \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/heap             \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/log              \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/nvs_flash        \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/soc              \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/include/spi_flash        \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32                        \
-                -I$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/variants/esp32
-
-
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                                                \
-                -I$(PATH_APP)/util/STL                                                               \
-                $(INCLUDES_SDK)
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
