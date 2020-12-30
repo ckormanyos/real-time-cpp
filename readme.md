@@ -22,6 +22,7 @@ The reference application supports the following targets:
   * ATMEL(R) AVR(R) Atmega328P
   * ATMEL(R) AVR(R) Atmega2560
   * BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
+  * Espressif (XTENSA) NodeMCU ESP32
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
   * RaspberryPi(R) Zero with ARM(R) 1176-JZF-S
   * Renesas(R) RL78/G13
@@ -98,6 +99,10 @@ be found in the target-directory and its subdirectories.
 
 The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
 The program toggles the yellow LED on portb.5.
+
+The Espressif (XTENSA) NodeMCU ESP32 implementation uses
+a subset of the Espressif SDK to run the reference application
+with a single OS task on 1 core.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
 called "target lpc1124" toggles the LED on port0.8. 
