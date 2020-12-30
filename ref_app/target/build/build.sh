@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2007 - 2015.
+#  Copyright Christopher Kormanyos 2007 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,15 +11,24 @@
 # Description of the build options used in the build command below.
 #
 # %1: target
-#       am335x           : BeagleBone with TI(R) AM3359, creates a bare-metal binary file "MLO"
-#       avr              : ATMEL(R) AVR(R) ATmega328P i.e., Arduino compatible
-#       bcm2835_raspi_b  : RaspberryPi Model B, creates a bare-metal binary file "kernel.img"
-#       pic32mx795fx     : PIC32(R) MIPS
-#       rl78             : Renesas(R) RL78
-#       rx63n            : Renesas(R) RX600
-#       stm32f100        : ST Microelectronics STM32F100 ARM(R) Cortex(TM)-M3, STM32VLDISCOVERY board
-#       stm32f407        : ST Microelectronics STM32F407 ARM(R) Cortex(TM)-M4, STM32F4DISCOVERY board
-#       stm32f429        : ST Microelectronics STM32F429 ARM(R) Cortex(TM)-M4, 32F429IDISCOVERY board
+#       avr                : ATMEL(R) AVR(R) Atmega328P
+#       atmega2560         : ATMEL(R) AVR(R) Atmega2560
+#       am335x             : BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
+#       xtensa32           : Espressif (XTENSA) NodeMCU ESP32
+#       lpc11c24           : NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
+#       bcm2835_raspi_b    : RaspberryPi(R) Zero with ARM(R) 1176-JZF-S
+#       rl78               : Renesas(R) RL78/G13
+#       rx63n              : Renesas(R) RX600
+#       stm32f100          : ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
+#       stm32f100          : ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
+#       stm32l100c         : ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
+#       stm32l152          : ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
+#       stm32f407          : ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
+#       stm32f429          : ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
+#       stm32f446          : ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
+#       host               : VC, MinGW, or other `*nix`-like generic host
+#       x86_64-w64-mingw32 : VC, MinGW, or other `*nix`-like generic host
+
 #
 # %2: buildtype
 #                        : None. Build the project. Compile and link outdated files only.
