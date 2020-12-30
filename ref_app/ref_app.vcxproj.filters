@@ -188,12 +188,6 @@
     <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\config">
       <UniqueIdentifier>{b58eae92-7bc9-465f-8db7-c989cfd62b72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\cores">
-      <UniqueIdentifier>{1a4e50eb-5373-4681-968d-11b444f30011}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32">
-      <UniqueIdentifier>{4c75628e-1cbb-486c-8af4-6971ef343a9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\xtensa32\hardware\espressif\esp32\tools\sdk\include\driver">
       <UniqueIdentifier>{9175a182-c8c2-4bd7-9563-ca3424c7aad8}</UniqueIdentifier>
     </Filter>
@@ -816,9 +810,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32\esp32-hal-misc.c">
-      <Filter>src\mcal\xtensa32\hardware\espressif\esp32\cores\esp32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\esp32-hal-gpio.c">
       <Filter>src\mcal\xtensa32</Filter>
