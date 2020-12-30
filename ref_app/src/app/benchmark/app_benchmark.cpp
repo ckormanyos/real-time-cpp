@@ -83,6 +83,10 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_hash();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL)
+
+  const bool result_is_ok = app::benchmark::run_wide_decimal();
+
   #endif
 
   // Set the benchmark port pin level to low.

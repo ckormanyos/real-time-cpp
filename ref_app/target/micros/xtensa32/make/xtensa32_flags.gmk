@@ -51,7 +51,7 @@ TGT_CFLAGS    = -std=gnu99                                                     \
                 -Wno-old-style-declaration                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=gnu++11                                                   \
+TGT_CXXFLAGS  = -std=c++11                                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
@@ -92,16 +92,17 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -u ld_include_panic_highint_hdl                                         \
                 -u call_user_start_cpu0                                                 \
                 -Wl,--gc-sections                                                       \
-                -Wl,-static                                                             \
                 -Wl,--undefined=uxTopUsedPriority                                       \
                 -u __cxa_guard_dummy                                                    \
                 -u __cxx_fatal_exception                                                \
                 -Wl,--start-group                                                       \
-                $(SDK_LIBS)                                                             \
+                -lg                                                                     \
                 -lc                                                                     \
                 -lm                                                                     \
                 -lgcc                                                                   \
                 -lstdc++                                                                \
+                -lcxx                                                                   \
+                $(SDK_LIBS)                                                             \
                 -Wl,--end-group                                                         \
                 -Wl,-EL
 

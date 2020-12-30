@@ -197,6 +197,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_hash.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />
     <ClCompile Include="src\mcal\am335x\mcal_cpu.cpp">
@@ -803,10 +804,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\esp32-hal-gpio.c">
+    <ClCompile Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.c" />
     <ClCompile Include="src\mcal\xtensa32\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1766,8 +1767,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.h" />
-    <ClInclude Include="src\mcal\xtensa32\from_sdk\soc\gpio_struct.h" />
+    <ClInclude Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa32\from_sdk\soc\gpio_struct.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1903,6 +1910,7 @@
     <ClInclude Include="src\util\utility\util_noexcept.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />
+    <ClInclude Include="src\util\utility\util_numeric_cast.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
     <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_swdm.h" />

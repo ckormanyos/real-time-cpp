@@ -10,7 +10,22 @@
 
   // Implement most of <cmath> for compilers that do not yet support it.
 
-  #if defined(__GNUC__) && defined(__XTENSA__)
+  extern "C"
+  {
+    bool isnanf   (float);
+    bool isnan    (double);
+    bool isnanl   (long double);
+
+    bool isfinitef(float);
+    bool isfinite (double);
+    bool isfinitel(long double);
+
+    int ilogbf(float);
+    int ilogb (double);
+    int ilogbl(long double);
+  }
+
+  #if defined(__GNUC__) && defined(__xXTENSA__)
 
   // Xtensa (ESP32) uses a version of its own <cmath>.
   #include <impl/xtensa/cmath_for_xtensa.h>
@@ -24,6 +39,7 @@
     namespace std
     {
       #if defined(__AVR__)
+        #define __BUILTIN_ISNANF __builtin_isnan
         #define __BUILTIN_FABSF  __builtin_fabs
         #define __BUILTIN_FMODF  __builtin_fmod
         #define __BUILTIN_MODFF  __builtin_modff
@@ -47,6 +63,7 @@
         #define __BUILTIN_COSHF  __builtin_cosh
         #define __BUILTIN_TANHF  __builtin_tanh
       #else
+        #define __BUILTIN_ISNANF __builtin_isnanf
         #define __BUILTIN_FABSF  __builtin_fabsf
         #define __BUILTIN_FMODF  __builtin_fmodf
         #define __BUILTIN_MODFF  __builtin_modff
@@ -71,6 +88,7 @@
         #define __BUILTIN_TANHF  __builtin_tanhf
       #endif // __AVR__ or not __AVR__ stuff
 
+      #define __BUILTIN_ISNAN  __builtin_isnan
       #define __BUILTIN_FABS   __builtin_fabs
       #define __BUILTIN_FMOD   __builtin_fmod
       #define __BUILTIN_MODF   __builtin_modf
@@ -94,6 +112,7 @@
       #define __BUILTIN_COSH   __builtin_cosh
       #define __BUILTIN_TANH   __builtin_tanh
 
+      #define __BUILTIN_ISNANL __builtin_isnanl
       #define __BUILTIN_FABSL  __builtin_fabsl
       #define __BUILTIN_FMODL  __builtin_fmodl
       #define __BUILTIN_MODFL  __builtin_modfl
@@ -116,6 +135,10 @@
       #define __BUILTIN_SINHL  __builtin_sinhl
       #define __BUILTIN_COSHL  __builtin_coshl
       #define __BUILTIN_TANHL  __builtin_tanhl
+
+      inline constexpr bool          isnan   (float x) { return __BUILTIN_ISNANF(x); }
+      inline           bool          isfinite(float x) { return ::isfinite(x); }
+      inline           int           ilogb   (float x) { return ::ilogb(x); }
 
       inline constexpr float         abs  (float       x)                 { return __BUILTIN_FABSF (x); }
       inline constexpr double        abs  (double      x)                 { return __BUILTIN_FABS  (x); }

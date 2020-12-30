@@ -751,11 +751,11 @@
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\esp32-hal-gpio.c">
-      <Filter>src\mcal\xtensa32</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.c">
       <Filter>src\mcal\xtensa32\from_sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp">
+      <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1778,6 +1778,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\xtensa32\from_sdk\soc\gpio_struct.h">
       <Filter>src\mcal\xtensa32\from_sdk\soc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_numeric_cast.h">
+      <Filter>src\util\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

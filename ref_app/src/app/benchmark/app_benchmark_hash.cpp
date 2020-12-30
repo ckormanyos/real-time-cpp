@@ -66,4 +66,4 @@ int main()
 }
 #endif
 
-#endif // APP_BENCHMARK_TYPE_CRC
+#endif // APP_BENCHMARK_TYPE_HASH

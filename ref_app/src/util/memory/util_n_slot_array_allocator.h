@@ -50,9 +50,9 @@
     using reference       = value_type&;
     using const_reference = const value_type&;
 
-    n_slot_array_allocator() noexcept = default;
+    n_slot_array_allocator() = default;
 
-    n_slot_array_allocator(const n_slot_array_allocator&) noexcept = default;
+    n_slot_array_allocator(const n_slot_array_allocator&) = default;
 
     template<typename U>
     struct rebind
@@ -60,9 +60,9 @@
       using other = n_slot_array_allocator<U, SlotWidth, SlotCount>;
     };
 
-    size_type max_size() const noexcept
+    size_type max_size() const
     {
-      return slot_array_memory.size();
+      return sizeof(slot_array_type) * slot_count;
     }
 
           pointer address(      reference x) const { return &x; }
@@ -81,6 +81,13 @@
 
           p = (pointer) slot_array_memory[i].data();
 
+          if(i > slot_max_index)
+          {
+            slot_max_index = i;
+
+            (void) slot_max_index;
+          }
+
           break;
         }
       }
@@ -88,11 +95,21 @@
       return p;
     }
 
-    void construct(pointer p, const value_type& x) noexcept { }
+    void construct(pointer p, const value_type& x)
+    {
+      // The memory in the n-slot allocator already exists
+      // in an uninitialized form. Construction can safely
+      // simply set the value in the uninitialized memory.
 
-    void destroy(pointer p) noexcept { }
+      *p = x;
+    }
 
-    void deallocate(pointer p_slot, size_type) noexcept
+    void destroy(pointer p)
+    {
+      (void) p;
+    }
+
+    void deallocate(pointer p_slot, size_type)
     {
       for(std::size_t i = 0U; i < slot_count; ++i)
       {
@@ -106,8 +123,9 @@
     }
 
   private:
-    static slot_array_type slot_array_memory[slot_count];
+    static slot_array_type                      slot_array_memory[slot_count];
     static std::array<std::uint8_t, slot_count> slot_flags;
+    static std::size_t                          slot_max_index;
   };
 
   template<typename T,
@@ -122,12 +140,17 @@
   std::array<std::uint8_t, n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_count>
   n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_flags;
 
+  template<typename T,
+           const std::uint_fast32_t SlotWidth,
+           const std::size_t SlotCount>
+  std::size_t n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_max_index;
+
   // Global comparison operators (required by the standard).
   template<typename T,
            const std::uint_fast32_t SlotWidth,
            const std::size_t SlotCount>
   bool operator==(const n_slot_array_allocator<T, SlotWidth, SlotCount>&,
-                  const n_slot_array_allocator<T, SlotWidth, SlotCount>&) noexcept
+                  const n_slot_array_allocator<T, SlotWidth, SlotCount>&)
   {
     return true;
   }
@@ -136,7 +159,7 @@
            const std::uint_fast32_t SlotWidth,
            const std::size_t SlotCount>
   bool operator!=(const n_slot_array_allocator<T, SlotWidth, SlotCount>&,
-                  const n_slot_array_allocator<T, SlotWidth, SlotCount>&) noexcept
+                  const n_slot_array_allocator<T, SlotWidth, SlotCount>&)
   {
     return false;
   }
