@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2018 - 2020.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,12 +9,5 @@
 # File list of the xtensa32 esspressif ESP32 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_SDK_C     = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-cpu          \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-gpio         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-misc         \
-                  $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/esp32-hal-timer
-
-FILES_SDK_CPP   = $(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/cores/esp32/main
-
-FILES_TGT       = $(FILES_SDK_C)                                                                      \
-                  $(FILES_SDK_CPP)
+FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/esp32-hal-gpio                                              \
+                  $(PATH_TGT)/startup/app_main
