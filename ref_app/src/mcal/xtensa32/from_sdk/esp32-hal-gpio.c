@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "my_esp32-hal-gpio.h"
-#include "soc/my_gpio_struct.h"
+#include <from_sdk/esp32-hal-gpio.h>
+#include <from_sdk/soc/gpio_struct.h>
 
-#define BIT(nr)                 (1UL << (nr))
-
-#define MY_ESP_REG(addr) *((volatile uint32_t *)(addr))
-#define MY_GPIO_PIN_COUNT                  40
-#define MY_RTC_IO_TOUCH_PAD1_FUN_SEL_V  0x3
-#define MY_DR_REG_RTCIO_BASE                       0x3ff48400
-#define MY_RTC_GPIO_ENABLE_W1TC_REG          (MY_DR_REG_RTCIO_BASE + 0x14)
-#define MY_RTC_GPIO_ENABLE_W1TC_S  14
-
-#define MY_DR_REG_IO_MUX_BASE                      0x3ff49000
-#define MY_GPIO_PIN0_PAD_DRIVER_S  2
+#define BIT(nr)                      (1UL << (nr))
+#define ESP_REG(addr)                *((volatile uint32_t *)(addr))
+#define GPIO_PIN_COUNT               40
+#define GPIO_PIN0_PAD_DRIVER_S       2
+#define DR_REG_RTCIO_BASE            0x3FF48400
+#define DR_REG_IO_MUX_BASE           0x3FF49000
+#define RTC_GPIO_ENABLE_W1TC_REG     (DR_REG_RTCIO_BASE + 0x14)
+#define RTC_GPIO_ENABLE_W1TC_S       14
+#define RTC_IO_TOUCH_PAD1_FUN_SEL_V  0x3
 
 
 /* The following are the bit fields for PERIPHS_IO_MUX_x_U registers */
@@ -101,11 +99,11 @@ typedef struct {
     int rtc_num;        /*!< RTC IO number, or -1 if not an RTC GPIO */
 } rtc_gpio_desc_t;
 
-extern const rtc_gpio_desc_t rtc_gpio_desc[MY_GPIO_PIN_COUNT];
+extern const rtc_gpio_desc_t rtc_gpio_desc[GPIO_PIN_COUNT];
 
 const int8_t esp32_adc2gpio[20] = {36, 37, 38, 39, 32, 33, 34, 35, -1, -1, 4, 0, 2, 15, 13, 12, 14, 27, 25, 26};
 
-const esp32_gpioMux_t esp32_gpioMux[MY_GPIO_PIN_COUNT] =
+const esp32_gpioMux_t esp32_gpioMux[GPIO_PIN_COUNT] =
 {
     {0x44, 11, 11, 1},
     {0x88, -1, -1, -1},
@@ -162,32 +160,32 @@ void pinMode(uint8_t pin, uint8_t mode)
             return;//not rtc pin
         }
         //lock rtc
-        uint32_t reg_val = MY_ESP_REG(rtc_reg);
+        uint32_t reg_val = ESP_REG(rtc_reg);
         if(reg_val & rtc_gpio_desc[pin].mux){
             return;//already in adc mode
         }
         reg_val &= ~(
-                (MY_RTC_IO_TOUCH_PAD1_FUN_SEL_V << rtc_gpio_desc[pin].func)
+                (RTC_IO_TOUCH_PAD1_FUN_SEL_V << rtc_gpio_desc[pin].func)
                 |rtc_gpio_desc[pin].ie
                 |rtc_gpio_desc[pin].pullup
                 |rtc_gpio_desc[pin].pulldown);
-        MY_ESP_REG(MY_RTC_GPIO_ENABLE_W1TC_REG) = (1 << (rtc_gpio_desc[pin].rtc_num + MY_RTC_GPIO_ENABLE_W1TC_S));
-        MY_ESP_REG(rtc_reg) = reg_val | rtc_gpio_desc[pin].mux;
+        ESP_REG(RTC_GPIO_ENABLE_W1TC_REG) = (1 << (rtc_gpio_desc[pin].rtc_num + RTC_GPIO_ENABLE_W1TC_S));
+        ESP_REG(rtc_reg) = reg_val | rtc_gpio_desc[pin].mux;
         //unlock rtc
-        MY_ESP_REG(MY_DR_REG_IO_MUX_BASE + esp32_gpioMux[pin].reg) = ((uint32_t)2 << MCU_SEL_S) | ((uint32_t)2 << FUN_DRV_S) | FUN_IE;
+        ESP_REG(DR_REG_IO_MUX_BASE + esp32_gpioMux[pin].reg) = ((uint32_t)2 << MCU_SEL_S) | ((uint32_t)2 << FUN_DRV_S) | FUN_IE;
         return;
     }
 
     //RTC pins PULL settings
     if(rtc_reg) {
         //lock rtc
-        MY_ESP_REG(rtc_reg) = MY_ESP_REG(rtc_reg) & ~(rtc_gpio_desc[pin].mux);
+        ESP_REG(rtc_reg) = ESP_REG(rtc_reg) & ~(rtc_gpio_desc[pin].mux);
         if(mode & PULLUP) {
-            MY_ESP_REG(rtc_reg) = (MY_ESP_REG(rtc_reg) | rtc_gpio_desc[pin].pullup) & ~(rtc_gpio_desc[pin].pulldown);
+            ESP_REG(rtc_reg) = (ESP_REG(rtc_reg) | rtc_gpio_desc[pin].pullup) & ~(rtc_gpio_desc[pin].pulldown);
         } else if(mode & PULLDOWN) {
-            MY_ESP_REG(rtc_reg) = (MY_ESP_REG(rtc_reg) | rtc_gpio_desc[pin].pulldown) & ~(rtc_gpio_desc[pin].pullup);
+            ESP_REG(rtc_reg) = (ESP_REG(rtc_reg) | rtc_gpio_desc[pin].pulldown) & ~(rtc_gpio_desc[pin].pullup);
         } else {
-            MY_ESP_REG(rtc_reg) = MY_ESP_REG(rtc_reg) & ~(rtc_gpio_desc[pin].pullup | rtc_gpio_desc[pin].pulldown);
+            ESP_REG(rtc_reg) = ESP_REG(rtc_reg) & ~(rtc_gpio_desc[pin].pullup | rtc_gpio_desc[pin].pulldown);
         }
         //unlock rtc
     }
@@ -229,10 +227,10 @@ void pinMode(uint8_t pin, uint8_t mode)
         pinFunction |= ((uint32_t)(mode >> 5) << MCU_SEL_S);
     }
 
-    MY_ESP_REG(MY_DR_REG_IO_MUX_BASE + esp32_gpioMux[pin].reg) = pinFunction;
+    ESP_REG(DR_REG_IO_MUX_BASE + esp32_gpioMux[pin].reg) = pinFunction;
 
     if(mode & OPEN_DRAIN) {
-        pinControl = (1 << MY_GPIO_PIN0_PAD_DRIVER_S);
+        pinControl = (1 << GPIO_PIN0_PAD_DRIVER_S);
     }
 
     GPIO.pin[pin].val = pinControl;

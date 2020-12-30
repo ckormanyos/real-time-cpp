@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <my_esp32-hal-gpio.h>
+#include <from_sdk/esp32-hal-gpio.h>
 
 #include <mcal_port.h>
 #include <mcal_reg.h>

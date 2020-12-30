@@ -81,8 +81,8 @@ SDK_LIBS      = -lapp_update                    \
 
 TGT_LDFLAGS   = -nostdlib                                                               \
                 -flto                                                                   \
-                -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/lib        \
-                -L$(PATH_APP)/mcal/$(TGT)/hardware/espressif/esp32/tools/sdk/ld         \
+                -L$(PATH_TGT_MAKE)/from_sdk/lib                                         \
+                -L$(PATH_TGT_MAKE)/from_sdk/ld                                          \
                 -T esp32_out.ld                                                         \
                 -T esp32.project.ld                                                     \
                 -T esp32.rom.ld                                                         \
@@ -104,7 +104,6 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -lstdc++                                                                \
                 -Wl,--end-group                                                         \
                 -Wl,-EL
-
 
 
 # copy "C:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32\\tools\\partitions\\default.csv" "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943\\partitions.csv"
@@ -140,15 +139,22 @@ ESP32_ESP_TOOL_FLAGS_PROG      = --chip esp32                         \
                                  $(notdir $(APP)).image.bin 0x8000    \
                                  $(notdir $(APP)).partitions.bin
 
+# TBD: ESP tool commands use WinDOS commands. Are there *nix equivalents?
+
 RULE_SPECIAL_MAKE_IMAGE_FILE   =    $(subst /,\,$(ESP32_ESP_TOOL)) $(ESP32_ESP_TOOL_FLAGS_IMAG)                                 \
                                  && $(subst /,\,$(ESP32_GEN_PART)) -q $(subst /,\,$(PATH_TGT)/startup/partitions.csv) $(APP).partitions.bin
 
-ESP32_ESP_TOOL_CMD_COPY        =    copy /Y $(subst /,\,$(ESP32_GEN_PART))                          $(subst /,\,$(CURDIR)/bin)  \
-                                 && copy /Y $(subst /,\,$(ESP32_ESP_TOOL))                          $(subst /,\,$(CURDIR)/bin)  \
-                                 && copy /Y $(subst /,\,$(PATH_TGT)/startup/boot_app0.bin)          $(subst /,\,$(CURDIR)/bin)  \
-                                 && copy /Y $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin)
+ESP32_ESP_TOOL_CMD_COPY_PART1  = $(CP) -f $(subst /,\,$(ESP32_GEN_PART))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART2  = $(CP) -f $(subst /,\,$(ESP32_ESP_TOOL))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART3  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/boot_app0.bin)          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART4  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin) > 2 > NUL
 
-ESP32_ESP_TOOL_CMD_ECHO        =    $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS_PROG)  > $(subst /,\,$(CURDIR)/bin/flash.bat)    \
-                                 && $(ECHO) pause                                    >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+ESP32_ESP_TOOL_CMD_COPY        = $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART1))  \
+                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART2))  \
+                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART3))  \
+                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART4))
 
-RULE_SPECIAL_MAKE_FLASH_BATCH = $(ESP32_ESP_TOOL_CMD_COPY) && $(ESP32_ESP_TOOL_CMD_ECHO)
+
+ESP32_ESP_TOOL_CMD_ECHO        = $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS_PROG) > $(subst /,\,$(CURDIR)/bin/flash.bat)
+
+RULE_SPECIAL_MAKE_FLASH_BATCH  = $(ESP32_ESP_TOOL_CMD_COPY) $(shell $(ESP32_ESP_TOOL_CMD_ECHO))

@@ -102,12 +102,12 @@ READELF   = $(GCC_PREFIX)-readelf
 SIZE      = $(GCC_PREFIX)-size
 endif
 
+CP        = cp
 ECHO      = echo
 MAKE      = make
 MKDIR     = mkdir
 RM        = rm
 SED       = sed
-
 
 # ------------------------------------------------------------------------------
 # Tool parameters

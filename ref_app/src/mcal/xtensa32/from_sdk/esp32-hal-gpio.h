@@ -26,8 +26,6 @@
 extern "C" {
 #endif
 
-//#include "esp32-hal.h"
-
 #define LOW               0x0
 #define HIGH              0x1
 
