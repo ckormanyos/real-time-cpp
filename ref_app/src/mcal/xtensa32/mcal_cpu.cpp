@@ -17,13 +17,3 @@ void mcal::cpu::init()
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }
-
-extern "C"
-{
-  int atexit (void (*)(void)) noexcept;
-
-  int atexit (void (*)(void))
-  {
-    return 0;
-  }
-}

@@ -10,4 +10,5 @@
 # ------------------------------------------------------------------------------
 
 FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/from_sdk/esp32-hal-gpio                                      \
-                  $(PATH_TGT)/startup/app_main
+                  $(PATH_TGT)/startup/app_main                                                         \
+                  $(PATH_TGT)/startup/xtensa_gcc_patch
