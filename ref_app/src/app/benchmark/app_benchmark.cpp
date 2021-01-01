@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -86,6 +86,10 @@ void app::benchmark::task_func()
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL)
 
   const bool result_is_ok = app::benchmark::run_wide_decimal();
+
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
+
+  const bool result_is_ok = app::benchmark::run_trapezoid_integral();
 
   #endif
 

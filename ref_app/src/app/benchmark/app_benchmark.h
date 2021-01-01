@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,18 +8,19 @@
 #ifndef APP_BENCHMARK_2018_10_02_H_
   #define APP_BENCHMARK_2018_10_02_H_
 
-  #define APP_BENCHMARK_TYPE_NONE                0
-  #define APP_BENCHMARK_TYPE_COMPLEX             1
-  #define APP_BENCHMARK_TYPE_CRC                 2
-  #define APP_BENCHMARK_TYPE_FAST_MATH           3
-  #define APP_BENCHMARK_TYPE_FILTER              4
-  #define APP_BENCHMARK_TYPE_FIXED_POINT         5
-  #define APP_BENCHMARK_TYPE_FLOAT               6
-  #define APP_BENCHMARK_TYPE_WIDE_INTEGER        7
-  #define APP_BENCHMARK_TYPE_PI_SPIGOT           8
-  #define APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE    9
-  #define APP_BENCHMARK_TYPE_HASH               10
-  #define APP_BENCHMARK_TYPE_WIDE_DECIMAL       11
+  #define APP_BENCHMARK_TYPE_NONE                  0
+  #define APP_BENCHMARK_TYPE_COMPLEX               1
+  #define APP_BENCHMARK_TYPE_CRC                   2
+  #define APP_BENCHMARK_TYPE_FAST_MATH             3
+  #define APP_BENCHMARK_TYPE_FILTER                4
+  #define APP_BENCHMARK_TYPE_FIXED_POINT           5
+  #define APP_BENCHMARK_TYPE_FLOAT                 6
+  #define APP_BENCHMARK_TYPE_WIDE_INTEGER          7
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT             8
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE      9
+  #define APP_BENCHMARK_TYPE_HASH                 10
+  #define APP_BENCHMARK_TYPE_WIDE_DECIMAL         11
+  #define APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL   12
 
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -33,6 +34,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_HASH
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_WIDE_DECIMAL
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL
 
   #if !defined(APP_BENCHMARK_TYPE)
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
@@ -63,6 +65,8 @@
   bool run_hash();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL)
   bool run_wide_decimal();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
+  bool run_trapezoid_integral();
   #endif
 
   } } // namespace app:::benchmark

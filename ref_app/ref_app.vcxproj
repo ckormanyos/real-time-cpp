@@ -197,6 +197,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_hash.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_trapezoid_integral.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />

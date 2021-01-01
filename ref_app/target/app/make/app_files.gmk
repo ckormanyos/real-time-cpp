@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Copyright Christopher Kormanyos 2007 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,6 +19,7 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
              $(PATH_APP)/app/benchmark/app_benchmark_hash                \
              $(PATH_APP)/app/benchmark/app_benchmark_pi_spigot           \
              $(PATH_APP)/app/benchmark/app_benchmark_pi_spigot_single    \
+             $(PATH_APP)/app/benchmark/app_benchmark_trapezoid_integral  \
              $(PATH_APP)/app/benchmark/app_benchmark_wide_decimal        \
              $(PATH_APP)/app/benchmark/app_benchmark_wide_integer        \
              $(PATH_APP)/app/led/app_led                                 \

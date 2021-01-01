@@ -9,6 +9,7 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
 
+#include <cstdfloat>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/constants/constants.h>
 #include <math/functions/math_functions_bessel.h>
