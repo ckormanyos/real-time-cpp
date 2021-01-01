@@ -10,6 +10,13 @@
 
   // Implement most of <cmath> for compilers that do not yet support it.
 
+  #if defined(__GNUC__) && defined(__XTENSA__)
+
+  // Xtensa (ESP32) uses a version of its own <cmath>.
+  #include <impl/xtensa/cmath_for_xtensa.h>
+
+  #else
+
   extern "C"
   {
     bool isnanf   (float);
@@ -24,13 +31,6 @@
     int ilogb (double);
     int ilogbl(long double);
   }
-
-  #if defined(__GNUC__) && defined(__xXTENSA__)
-
-  // Xtensa (ESP32) uses a version of its own <cmath>.
-  #include <impl/xtensa/cmath_for_xtensa.h>
-
-  #else
 
   #include <cstdfloat>
 

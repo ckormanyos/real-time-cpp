@@ -106,6 +106,36 @@ jobs:
           ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
+  target-stm32l100c:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-stm32l100c
+        run: |
+          ./target/build/build.sh stm32l100c rebuild
+          ls ./bin/ref_app.hex
+        working-directory: ./ref_app/
+        shell: bash
+  target-stm32l152:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-stm32l152
+        run: |
+          ./target/build/build.sh stm32l152 rebuild
+          ls ./bin/ref_app.hex
+        working-directory: ./ref_app/
+        shell: bash
   target-x86_64:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"

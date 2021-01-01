@@ -43,6 +43,7 @@
   namespace app { namespace benchmark {
 
   #if  (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
+  // none
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
   bool run_complex();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
