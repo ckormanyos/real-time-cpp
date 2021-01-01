@@ -18,6 +18,12 @@
 
   namespace std
   {
+    // Forward declaration.
+    template<typename input_iterator1,
+             typename input_iterator2>
+    void iter_swap(input_iterator1 left,
+                   input_iterator2 right);
+
     template<typename value_type>
     const value_type& (min)(const value_type& a,
                             const value_type& b)
@@ -332,22 +338,9 @@
     template<typename bidirectional_iterator>
     void reverse(bidirectional_iterator first, bidirectional_iterator last)
     {
-      if(first != last)
+      while((first != last) && (first != --last))
       {
-        --last;
-
-        while(first != last)
-        {
-          typedef typename std::iterator_traits<bidirectional_iterator>::value_type value_type;
-
-          const value_type tmp(*first);
-
-          *first  = *last;
-          *last   = tmp;
-
-          ++first;
-          --last;
-        }
+        std::iter_swap(first++, last);
       }
     }
 
