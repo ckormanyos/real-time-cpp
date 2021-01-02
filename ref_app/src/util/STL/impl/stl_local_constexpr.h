@@ -8,7 +8,7 @@
 #ifndef STL_LOCAL_CONSTEXPR_2014_12_04_H_
   #define STL_LOCAL_CONSTEXPR_2014_12_04_H_
 
-  #if defined(__GNUC__)
+  #if defined(__GNUC__) || defined(__IAR_SYSTEMS_ICC__)
     #define STL_LOCAL_CONSTEXPR constexpr
   #else
     #define STL_LOCAL_CONSTEXPR const

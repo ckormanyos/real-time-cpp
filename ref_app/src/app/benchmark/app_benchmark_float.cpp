@@ -9,7 +9,6 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
 
-#include <cstdfloat>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/constants/constants.h>
 #include <math/functions/math_functions_bessel.h>
@@ -18,7 +17,7 @@
 
 namespace
 {
-  constexpr std::float32_t app_benchmark_tolerance = FLOAT32_C(1.0E-5) * FLOAT32_C(20.0);
+  constexpr float app_benchmark_tolerance = 1.0E-5F * 20.0F;
 }
 
 bool app::benchmark::run_float()
@@ -34,10 +33,10 @@ bool app::benchmark::run_float()
     // N[BesselJ[11/9, EulerGamma], 40]
     // 0.1890533651853886085356717332711858771597
 
-    constexpr std::float32_t v = FLOAT32_C(11.0) / FLOAT32_C(9.0);
+    constexpr float v = 11.0F / 9.0F;
 
-    const std::float32_t app_benchmark_result_bessel =
-      math::functions::cyl_bessel_j(v, math::constants::euler<std::float32_t>());
+    const float app_benchmark_result_bessel =
+      math::functions::cyl_bessel_j(v, math::constants::euler<float>());
 
     app_benchmark_result_is_ok &= detail::is_close_fraction(FLOAT32_C(0.1890533652),
                                                             app_benchmark_result_bessel,
@@ -50,31 +49,31 @@ bool app::benchmark::run_float()
     // N[HypergeometricPFQ[3/{7, 8, 9, 10}, 7/{13, 14, 15, 16, 17}, Log[2]], 40]
     // 1.583596313998374915091256357139915173598
 
-    constexpr std::array<std::float32_t, 4U> ap =
+    constexpr std::array<float, 4U> ap =
     {{
-      FLOAT32_C(3.0) / FLOAT32_C( 7.0),
-      FLOAT32_C(3.0) / FLOAT32_C( 8.0),
-      FLOAT32_C(3.0) / FLOAT32_C( 9.0),
-      FLOAT32_C(3.0) / FLOAT32_C(10.0)
+      3.0F /  7.0F,
+      3.0F /  8.0F,
+      3.0F /  9.0F,
+      3.0F / 10.0F
     }};
 
-    constexpr std::array<std::float32_t, 5U> bq =
+    constexpr std::array<float, 5U> bq =
     {{
-      FLOAT32_C(7.0) / FLOAT32_C(13.0),
-      FLOAT32_C(7.0) / FLOAT32_C(14.0),
-      FLOAT32_C(7.0) / FLOAT32_C(15.0),
-      FLOAT32_C(7.0) / FLOAT32_C(16.0),
-      FLOAT32_C(7.0) / FLOAT32_C(17.0)
+      7.0F / 13.0F,
+      7.0F / 14.0F,
+      7.0F / 15.0F,
+      7.0F / 16.0F,
+      7.0F / 17.0F
     }};
 
-    const std::float32_t app_benchmark_result_hypergeometric =
+    const float app_benchmark_result_hypergeometric =
       math::functions::hypergeometric_pfq(ap.cbegin(),
                                           ap.cend(),
                                           bq.cbegin(),
                                           bq.cend(),
-                                          math::constants::ln_two<std::float32_t>());
+                                          math::constants::ln_two<float>());
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(FLOAT32_C(1.5835963140),
+    app_benchmark_result_is_ok &= detail::is_close_fraction(1.5835963140F,
                                                             app_benchmark_result_hypergeometric,
                                                             app_benchmark_tolerance);
   }
@@ -84,13 +83,13 @@ bool app::benchmark::run_float()
     // Here is a control value from Wolfram Alpha.
     // N[LegendreP[1/11, 14/19, 2/7], 40]
     // 0.2937838815278435137954432141091105343408
-    constexpr std::float32_t v = FLOAT32_C( 1.0) / FLOAT32_C(11.0);
-    constexpr std::float32_t u = FLOAT32_C(14.0) / FLOAT32_C(19.0);
-    constexpr std::float32_t x = FLOAT32_C( 2.0) / FLOAT32_C( 7.0);
+    constexpr float v =  1.0F / 11.0F;
+    constexpr float u = 14.0F / 19.0F;
+    constexpr float x =  2.0F /  7.0F;
 
-    const std::float32_t app_benchmark_result_legendre = math::functions::legendre_p(v, u, x);
+    const float app_benchmark_result_legendre = math::functions::legendre_p(v, u, x);
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(FLOAT32_C(0.2937838815),
+    app_benchmark_result_is_ok &= detail::is_close_fraction(0.2937838815F,
                                                             app_benchmark_result_legendre,
                                                             app_benchmark_tolerance);
   }

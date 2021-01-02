@@ -21,13 +21,13 @@
     struct identity;
 
     template<typename T>
-    constexpr T&& forward(remove_reference_t<T>& arg) noexcept
+    constexpr T&& forward(remove_reference_t<T>& arg) STL_LOCAL_NOEXCEPT
     {
       return static_cast<T&&>(arg);
     }
 
     template<typename T>
-    constexpr T&& forward(remove_reference_t<T>&& arg) noexcept
+    constexpr T&& forward(remove_reference_t<T>&& arg) STL_LOCAL_NOEXCEPT
     {
       return static_cast<T&&>(arg);
     }

@@ -15,7 +15,7 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O3                                                               \
+TGT_ALLFLAGS  = -Os                                                               \
                 -flto                                                             \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \

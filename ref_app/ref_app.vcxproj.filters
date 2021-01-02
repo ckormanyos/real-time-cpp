@@ -167,9 +167,6 @@
     <Filter Include="src\math\wide_decimal">
       <UniqueIdentifier>{600114e0-a873-4e3b-8b5b-06844c801c31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\STL\impl\xtensa">
-      <UniqueIdentifier>{02b0983b-92d6-478f-aa6e-cd0c9b597f5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\xtensa32\from_sdk">
       <UniqueIdentifier>{9e3b9eeb-09b2-45f0-b1c6-5aca06d31d33}</UniqueIdentifier>
     </Filter>
@@ -1888,9 +1885,6 @@
     </None>
     <None Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.s">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
-    </None>
-    <None Include="src\util\STL\impl\xtensa\cmath_for_xtensa.h">
-      <Filter>src\util\STL\impl\xtensa</Filter>
     </None>
   </ItemGroup>
 </Project>

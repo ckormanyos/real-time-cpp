@@ -60,20 +60,41 @@
       // The following values for float, double, and long double are provided
       // in a separate file that is dependent on the AVR architecture.
 
+      #if defined(__GNUC__)
       static constexpr float       my_value_that_needs_to_be_provided_flt_infinity()      { return __builtin_inff(); }
       static constexpr float       my_value_that_needs_to_be_provided_flt_quiet_NaN()     { return __builtin_nanf(""); }
       static constexpr float       my_value_that_needs_to_be_provided_flt_signaling_NaN() { return __builtin_nanf(""); }
-      static constexpr float       my_value_that_needs_to_be_provided_flt_denorm_min()    { return __FLT_DENORM_MIN__; }
+      #endif
+      #if defined(__IAR_SYSTEMS_ICC__)
+      static constexpr float       my_value_that_needs_to_be_provided_flt_infinity()      { return 0.Infinity; }
+      static constexpr float       my_value_that_needs_to_be_provided_flt_quiet_NaN()     { return 0.NaN; }
+      static constexpr float       my_value_that_needs_to_be_provided_flt_signaling_NaN() { return 0.NaN; }
+      #endif
+      static constexpr float       my_value_that_needs_to_be_provided_flt_denorm_min()    { return FLT_MIN; }
 
+      #if defined(__GNUC__)
       static constexpr double      my_value_that_needs_to_be_provided_dbl_infinity()      { return __builtin_inf(); }
       static constexpr double      my_value_that_needs_to_be_provided_dbl_quiet_NaN()     { return __builtin_nan(""); }
       static constexpr double      my_value_that_needs_to_be_provided_dbl_signaling_NaN() { return __builtin_nan(""); }
-      static constexpr double      my_value_that_needs_to_be_provided_dbl_denorm_min()    { return __DBL_DENORM_MIN__; }
+      #endif
+      #if defined(__IAR_SYSTEMS_ICC__)
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_infinity()      { return 0.Infinity; }
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_quiet_NaN()     { return 0.NaN; }
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_signaling_NaN() { return 0.NaN; }
+      #endif
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_denorm_min()    { return DBL_MIN; }
 
+      #if defined(__GNUC__)
       static constexpr long double my_value_that_needs_to_be_provided_ldbl_infinity()      { return __builtin_infl(); }
       static constexpr long double my_value_that_needs_to_be_provided_ldbl_quiet_NaN()     { return __builtin_nanl(""); }
       static constexpr long double my_value_that_needs_to_be_provided_ldbl_signaling_NaN() { return __builtin_nanl(""); }
-      static constexpr long double my_value_that_needs_to_be_provided_ldbl_denorm_min()    { return __LDBL_DENORM_MIN__; }
+      #endif
+      #if defined(__IAR_SYSTEMS_ICC__)
+      static constexpr long double my_value_that_needs_to_be_provided_ldbl_infinity()      { return 0.Infinity; }
+      static constexpr long double my_value_that_needs_to_be_provided_ldbl_quiet_NaN()     { return 0.NaN; }
+      static constexpr long double my_value_that_needs_to_be_provided_ldbl_signaling_NaN() { return 0.NaN; }
+      #endif
+      static constexpr long double my_value_that_needs_to_be_provided_ldbl_denorm_min()    { return LDBL_MIN; }
 
       template<typename T>
       friend class numeric_limits;

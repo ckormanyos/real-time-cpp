@@ -12,7 +12,7 @@
   #include <cstdint>
   #include <limits>
 
-  namespace std { namespace xcmath_impl {
+  namespace xcmath_impl {
 
   template<typename float_type>
   bool near_integer(const float_type& x, const std::uint_least8_t n)
@@ -29,20 +29,20 @@
   template<typename float_type>
   const float_type pi()
   {
-    return static_cast<float_type>(FLOATMAX_C(3.1415926535897932384626433832795028841972));
+    return static_cast<float_type>(3.1415926535897932384626433832795028841972L);
   }
 
   template<typename float_type>
   const float_type ln_two()
   {
-    return static_cast<float_type>(FLOATMAX_C(0.6931471805599453094172321214581765680755));
+    return static_cast<float_type>(0.6931471805599453094172321214581765680755L);
   }
 
     template<typename float_type>
     const float_type euler()
     {
-      return static_cast<float_type>(FLOATMAX_C(0.5772156649015328606065120900824024310422));
+      return static_cast<float_type>(0.5772156649015328606065120900824024310422L);
     }
-  } } // namespace std::xcmath_impl
+  } // namespace xcmath_impl
 
 #endif // XCMATH_IMPL_2014_01_11_H_

@@ -153,7 +153,6 @@ endif
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
               -gdwarf-2                         \
-              -ffreestanding                    \
               -fno-exceptions                   \
               -ffunction-sections               \
               -fdata-sections
@@ -166,9 +165,8 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CXXFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
-              -fstrict-enums                    \
               -fno-use-cxa-atexit               \
-              -fno-use-cxa-get-exception-ptr    \
+              -fno-exceptions                   \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
@@ -182,7 +180,6 @@ AFLAGS      = $(GCCFLAGS)                       \
 
 LDFLAGS     = $(CXXFLAGS)                       \
               $(TGT_LDFLAGS)                    \
-              -Wl,--undefined=main              \
               -x none
 
 # ------------------------------------------------------------------------------

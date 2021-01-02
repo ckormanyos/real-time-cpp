@@ -42,9 +42,11 @@
 
         result = (result / 2U) + (step * sum);
 
-        const real_value_type ratio = std::abs(tmp / result);
+        using std::fabs;
 
-        const real_value_type delta = std::abs(ratio - 1U);
+        const real_value_type ratio = fabs(tmp / result);
+
+        const real_value_type delta = fabs(ratio - 1U);
 
         if((k > UINT8_C(1)) && (delta < tol))
         {

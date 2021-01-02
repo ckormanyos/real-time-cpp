@@ -9,7 +9,6 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
 
-#include <cstdfloat>
 #include <cstdint>
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/calculus/integral.h>
@@ -17,7 +16,7 @@
 
 namespace
 {
-  constexpr std::float32_t app_benchmark_tolerance = FLOAT32_C(1.0E-5) * FLOAT32_C(20.0);
+  constexpr std::float32_t app_benchmark_tolerance = 1.0E-5F * 20.0F;
 
   template<typename float_type>
   float_type cyl_bessel_j(const std::uint_fast8_t n,
@@ -51,7 +50,7 @@ bool app::benchmark::run_trapezoid_integral()
   // N[BesselJ[2, 123/100], 50]
   const float j2 = cyl_bessel_j(UINT8_C(2), 1.23F);
 
-  const bool app_benchmark_result_is_ok = detail::is_close_fraction(FLOAT32_C(0.1663693837868140735126785243),
+  const bool app_benchmark_result_is_ok = detail::is_close_fraction(0.1663693837868140735126785243F,
                                                                     j2,
                                                                     app_benchmark_tolerance);
 

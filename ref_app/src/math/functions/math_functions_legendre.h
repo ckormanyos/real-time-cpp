@@ -10,7 +10,6 @@
   #define MATH_FUNCTIONS_LEGENDRE_2014_04_30_H_
 
   #include <cmath>
-  #include <cstdfloat>
 
   #include <math/functions/math_functions_hypergeometric.h>
 
