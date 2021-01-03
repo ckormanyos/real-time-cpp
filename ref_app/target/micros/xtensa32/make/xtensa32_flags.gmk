@@ -47,14 +47,15 @@ TGT_ALLFLAGS  = -Os                                                            \
                 $(DEFINES_SDK)
 
 TGT_CFLAGS    = -std=gnu99                                                     \
+                -nostdlib                                                      \
                 -Wno-unsuffixed-float-constants                                \
                 -Wno-old-style-declaration                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=gnu++11                                                   \
+TGT_CXXFLAGS  = -std=c++11                                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  =
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
@@ -79,7 +80,6 @@ SDK_LIBS      = -lapp_update                    \
                 -lxtensa-debug-module
 
 TGT_LDFLAGS   = -nostdlib                                                               \
-                -flto                                                                   \
                 -L$(PATH_TGT_MAKE)/from_sdk/lib                                         \
                 -L$(PATH_TGT_MAKE)/from_sdk/ld                                          \
                 -T esp32_out.ld                                                         \
@@ -97,6 +97,7 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -Wl,--start-group                                                       \
                 -lstdc++                                                                \
                 -lcxx                                                                   \
+                -lc                                                                     \
                 $(SDK_LIBS)                                                             \
                 -Wl,--end-group                                                         \
                 -Wl,-EL
