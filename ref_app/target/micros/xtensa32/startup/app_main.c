@@ -38,46 +38,20 @@ BaseType_t xTaskCreatePinnedToCore(TaskFunction_t pvTaskCode,
                                    TaskHandle_t * const pvCreatedTask,
                                    const BaseType_t xCoreID);
 
-static inline BaseType_t xTaskCreate(TaskFunction_t pvTaskCode,
-                                     const char * const pcName,
-                                     const uint32_t usStackDepth,
-                                     void * const pvParameters,
-                                     UBaseType_t uxPriority,
-                                     TaskHandle_t * const pvCreatedTask)
-{
-  return xTaskCreatePinnedToCore( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY );
-}
-
-BaseType_t xTaskCreateUniversal( TaskFunction_t pxTaskCode,
-                        const char * const pcName,
-                        const uint32_t usStackDepth,
-                        void * const pvParameters,
-                        UBaseType_t uxPriority,
-                        TaskHandle_t * const pxCreatedTask,
-                        const BaseType_t xCoreID )
-{
-  if(xCoreID >= 0 && xCoreID < 2)
-  {
-    return xTaskCreatePinnedToCore(pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask, xCoreID);
-  }
-  else
-  {
-    return xTaskCreate(pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask);
-  }
-}
-
 void app_main(void)
 {
-  const uint32_t config_arduino_loop_stack_size = UINT32_C(8192);
-  const BaseType_t    config_arduino_running_core    = 1U;
+  const uint32_t   config_arduino_loop_stack_size = UINT32_C(8192);
+  const BaseType_t config_arduino_running_core    = 1U;
 
   TaskHandle_t main_loop_task_handle;
 
-  xTaskCreateUniversal(main_loop,
-                       "main_loop",
-                       config_arduino_loop_stack_size,
-                       NULL,
-                       1,
-                       &main_loop_task_handle,
-                       config_arduino_running_core);
+  const BaseType_t handle = xTaskCreatePinnedToCore(main_loop,
+                                                    "main_loop",
+                                                    config_arduino_loop_stack_size,
+                                                    NULL,
+                                                    2,
+                                                    &main_loop_task_handle,
+                                                    config_arduino_running_core);
+
+  (void) handle;
 }

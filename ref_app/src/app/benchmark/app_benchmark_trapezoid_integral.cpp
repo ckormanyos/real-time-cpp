@@ -16,7 +16,7 @@
 
 namespace
 {
-  constexpr std::float32_t app_benchmark_tolerance = 1.0E-5F * 20.0F;
+  constexpr float app_benchmark_tolerance = 1.0E-5F * 20.0F;
 
   template<typename float_type>
   float_type cyl_bessel_j(const std::uint_fast8_t n,

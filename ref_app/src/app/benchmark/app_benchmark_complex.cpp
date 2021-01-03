@@ -16,7 +16,9 @@
 
 namespace
 {
-  using complex_type = extended_complex::complex<float>;
+  using local_floating_point_type = float;
+
+  using complex_type = extended_complex::complex<local_floating_point_type>;
 }
 
 extern complex_type x;
@@ -29,8 +31,8 @@ bool app::benchmark::run_complex()
   // 14.859343457123410999 + 5.259004469728472689 i
   y = sin(x);
 
-  const bool result_is_ok = (   detail::is_close_fraction(y.real(), 14.859343457123410999F)
-                             && detail::is_close_fraction(y.imag(),  5.259004469728472689F));
+  const bool result_is_ok = (   detail::is_close_fraction(y.real(), local_floating_point_type(14.859343457123410999L))
+                             && detail::is_close_fraction(y.imag(), local_floating_point_type( 5.259004469728472689L)));
 
   return result_is_ok;
 }
@@ -52,7 +54,7 @@ int main()
 
 #endif
 
-complex_type x(1.23F, 3.45F);
+complex_type x(local_floating_point_type(1.23L), local_floating_point_type(3.45L));
 complex_type y;
 
 #endif // APP_BENCHMARK_TYPE_COMPLEX

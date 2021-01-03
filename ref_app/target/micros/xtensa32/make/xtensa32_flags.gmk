@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 
 
-GCC_VERSION   = 8.2.0
+GCC_VERSION   = 8.4.0
 GCC_TARGET    = xtensa-esp32-elf
 GCC_PREFIX    = xtensa-esp32-elf
 
@@ -51,11 +51,10 @@ TGT_CFLAGS    = -std=gnu99                                                     \
                 -Wno-old-style-declaration                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                                     \
+TGT_CXXFLAGS  = -std=gnu++11                                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat                          \
-                -I$(PATH_APP)/util/STL
+TGT_INCLUDES  =
 
 TGT_AFLAGS    =
 
@@ -96,10 +95,6 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -u __cxa_guard_dummy                                                    \
                 -u __cxx_fatal_exception                                                \
                 -Wl,--start-group                                                       \
-                -lg                                                                     \
-                -lc                                                                     \
-                -lm                                                                     \
-                -lgcc                                                                   \
                 -lstdc++                                                                \
                 -lcxx                                                                   \
                 $(SDK_LIBS)                                                             \

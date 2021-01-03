@@ -154,6 +154,12 @@
     <Filter Include="micros\bcm2835_raspi_b\startup\SD_CARD\PiZero">
       <UniqueIdentifier>{a32f6b71-97b1-472a-8d7b-9e0ca74c54d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa32\make\from_sdk">
+      <UniqueIdentifier>{0780784d-8922-4ee4-9cba-c737e5c4b5d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa32\make\from_sdk\ld">
+      <UniqueIdentifier>{b64a703f-4f34-4ca9-96bd-ab8f1df822a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -282,9 +288,6 @@
     <None Include="target\micros\stm32f446\make\stm32f446_flags.gmk">
       <Filter>micros\stm32f446\make</Filter>
     </None>
-    <None Include="target\micros\xtensa32\make\xtensa32.ld">
-      <Filter>micros\xtensa32\make</Filter>
-    </None>
     <None Include="target\micros\xtensa32\make\xtensa32_files.gmk">
       <Filter>micros\xtensa32\make</Filter>
     </None>
@@ -344,6 +347,27 @@
     </None>
     <None Include="target\build\test_app_benchmarks.sh">
       <Filter>build</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.peripherals.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.project.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.libgcc.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.spiram_incompatible_fns.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32_out.ld">
+      <Filter>micros\xtensa32\make\from_sdk\ld</Filter>
+    </None>
+    <None Include="target\micros\xtensa32\make\xtensa32.ld">
+      <Filter>micros\xtensa32\make</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -495,9 +519,6 @@
       <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\xtensa32\startup\app_main.c">
-      <Filter>micros\xtensa32\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\gcc_clib_patch_xtensa.cpp">
       <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
   </ItemGroup>

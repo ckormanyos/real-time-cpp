@@ -613,6 +613,12 @@
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.peripherals.ld" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.project.ld" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.ld" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.libgcc.ld" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32.rom.spiram_incompatible_fns.ld" />
+    <None Include="target\micros\xtensa32\make\from_sdk\ld\esp32_out.ld" />
     <None Include="target\micros\xtensa32\make\xtensa32.ld" />
     <None Include="target\micros\xtensa32\make\xtensa32_files.gmk" />
     <None Include="target\micros\xtensa32\make\xtensa32_flags.gmk" />
@@ -672,7 +678,6 @@
     <ClCompile Include="target\micros\stm32l152\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32l152\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.c" />
-    <ClCompile Include="target\micros\xtensa32\startup\gcc_clib_patch_xtensa.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
