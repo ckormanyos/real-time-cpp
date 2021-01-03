@@ -38,7 +38,7 @@ bool app::benchmark::run_float()
     const float app_benchmark_result_bessel =
       math::functions::cyl_bessel_j(v, math::constants::euler<float>());
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(FLOAT32_C(0.1890533652),
+    app_benchmark_result_is_ok &= detail::is_close_fraction(0.1890533652F,
                                                             app_benchmark_result_bessel,
                                                             app_benchmark_tolerance);
   }
