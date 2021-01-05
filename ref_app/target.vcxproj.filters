@@ -518,7 +518,7 @@
     <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
       <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\app_main.c">
+    <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp">
       <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
   </ItemGroup>

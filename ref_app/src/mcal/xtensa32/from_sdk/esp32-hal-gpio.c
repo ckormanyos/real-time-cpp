@@ -1,3 +1,14 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020 - 2021.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+///////////////////////////////////////////////////////////////////////////////
+// Original copyright:
+//
+
 // Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +26,19 @@
 #include <from_sdk/esp32-hal-gpio.h>
 #include <from_sdk/soc/gpio_struct.h>
 
+typedef struct
+{
+    uint8_t reg;      /*!< GPIO register offset from DR_REG_IO_MUX_BASE */
+    int8_t rtc;       /*!< RTC GPIO number (-1 if not RTC GPIO pin) */
+    int8_t adc;       /*!< ADC Channel number (-1 if not ADC pin) */
+    int8_t touch;     /*!< Touch Channel number (-1 if not Touch pin) */
+}
+esp32_gpioMux_t;
+
+extern const esp32_gpioMux_t esp32_gpioMux[40];
+extern const int8_t          esp32_adc2gpio[20];
+
+#define digitalPinIsValid(pin)       ((pin) < 40 && esp32_gpioMux[(pin)].reg)
 #define BIT(nr)                      (1UL << (nr))
 #define ESP_REG(addr)                *((volatile uint32_t *)(addr))
 #define GPIO_PIN_COUNT               40

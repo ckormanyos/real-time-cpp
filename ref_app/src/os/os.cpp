@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <iterator>
+
 #include <mcal_irq.h>
 #include <os/os.h>
 #include <os/os_task_control_block.h>
@@ -28,7 +29,7 @@ namespace
 void os::start_os()
 {
   // Initialize each task once (and only once) before the task scheduling begins.
-  auto const it_init_func = std::for_each(os_task_list.cbegin(),
+  const auto it_init_func = std::for_each(os_task_list.cbegin(),
                                           os_task_list.cend(),
                                           [](const task_control_block& the_tcb)
                                           {
