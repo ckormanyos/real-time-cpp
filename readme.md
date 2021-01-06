@@ -33,38 +33,6 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
-## All Bare-Metal
-
-The projects are programmed _OS-less_ in bare-metal mode
-making use of self-written startup code.
-No external libraries other than native C++ and its own
-standard libraries are used.
-
-Consider, for instance, the BeagleBone Black Edition
-(known as target am335x below) --- one of several
-target systems supported in this repository.
-The projects on this board boot from the binary image file
-_MLO_ the SD card and subsequently perform their own
-static initialization and chip initialization
-of the ARM(R) 8 am335x processor.
-
-The [image](./bare_metal_bbb.jpg)
-shows the bare-metal BBB in action. The first
-user LED is toggled on port1.21 and the oscilloscope captures
-a real-time measurement with time signal on digital I/O
-port1.15 (header pin P8.15 on the BBB).
-
-
-## Cross Development in the Reference Application
-
-The reference application uses cross-development based on `*nix`-like make
-tools in combination with either Bash shell script, CMake or
-Microsoft(R) Visual Studio(R). Tool chains
-are not available in this repo (see below for further details).
-
-The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
-also has a project workspace for ATMEL(R) Atmel Studio(R) 7.
-
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
@@ -72,17 +40,17 @@ supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
 The reference application can be found in the directory ref_app and its
 subdirectories.
 
-To get started with the reference application on _*nix_
+To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
   - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
   - Identify the Bash shell script [build.sh](./ref_app/target/build/build.sh).
   - Select the desired configuration (such as _avr_)
   - Run GNU make with the command: `./target/build/build.sh avr rebuild`
   - This rebuilds the entire solution for target _avr_.
-  - If you are missing the AVR GNU tools and need to get them on _*nix_, run
+  - If you are missing the AVR GNU tools and need to get them on `*nix`, run
   `sudo apt install gcc-avr avr-libc`
   
-In summary on _*nix_ for _target avr_
+In summary on `*nix` for _target avr_
 
 ```C
 cd real-time-cpp
@@ -90,8 +58,7 @@ cd ref_app
 ./target/build/build.sh avr rebuild
 ```
 
-
-To get started with the reference application on _Win*_
+To get started with the reference application on `Win*`
   - Start Visual Studio(R) 2019 (or later)
   - Open the solution ref_app.sln.
   - Select the desired configuration.
@@ -112,7 +79,7 @@ details.
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the bin directory.
 
-There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
+There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7. It is called
 ref_app.atsln.
 
 ## To build master branch with CMake via Visual Studio host on Win10 x64
@@ -130,7 +97,7 @@ cmake --build . --config Debug --target ALL_BUILD
 ```
 
 OR...
-Following `*nix` pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
+Following `*nix` pattern to build with `x86_64-w64-mingw32` from MSYS or Cygwin
 should work too.
 
 ## Target Details
@@ -196,6 +163,37 @@ running the bare-metal reference application are included in this repo.
 For other compatible boards, feel free contact me with an issue requesting
 further details on your desired target system.
 
+## All Bare-Metal
+
+The projects are programmed _OS-less_ in bare-metal mode
+making use of self-written startup code.
+No external libraries other than native C++ and its own
+standard libraries are used.
+
+Consider, for instance, the BeagleBone Black Edition
+(known as target am335x below) --- one of several
+target systems supported in this repository.
+The projects on this board boot from the binary image file
+_MLO_ the SD card and subsequently perform their own
+static initialization and chip initialization
+of the ARM(R) 8 am335x processor.
+
+The [image](./bare_metal_bbb.jpg)
+shows the bare-metal BBB in action. The first
+user LED is toggled on port1.21 and the oscilloscope captures
+a real-time measurement with time signal on digital I/O
+port1.15 (header pin P8.15 on the BBB).
+
+## Cross Development in the Reference Application
+
+The reference application uses cross-development based on `*nix`-like make
+tools in combination with either Bash shell script, CMake or
+Microsoft(R) Visual Studio(R). Tool chains
+are not available in this repo (see below for further details).
+
+The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
+also has a project workspace for ATMEL(R) Atmel Studio(R) 7.
+
 ## Benchmarks
 
 [Benchmarks](./ref_app/src/app/benchmark)
@@ -208,14 +206,14 @@ GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
 A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 4.8 or higher (better yet, GCC 4.9 or higher) is required for building
+GCC 5.2 or higher (better yet, higher) is required for building
 the reference application.
 
 Some of the code snippets demonstrate language elements not only from C++11,
 but also from C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
 can, therefore, be beneficial for success with *all* of the code snippets.
 
-In the reference application, the makefiles are aware of a default location
+In the reference application on `*Win`, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me
 and it might not be where you want it to be. Therefore, when using the
 reference application or designing a custom build, the root directory of
