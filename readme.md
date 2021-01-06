@@ -6,7 +6,7 @@ Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 
-Details on the Reference Application
+#Details on the Reference Application
 ------------------------------------
 
 The reference application boots via a small startup code and subsequently
@@ -15,7 +15,7 @@ then passed to a simple multitasking scheduler that schedules the
 LED application, calls a cyclic a benchmark task, and services the watchdog.
 The LED application toggles a user-LED with a frequency of 1/2 Hz.
 
-Supported Targets in the Reference Application
+#Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
@@ -35,8 +35,7 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
-Cross Development in the Reference Application
-----------------------------------------------
+#Cross Development in the Reference Application
 
 The reference application uses cross-development based on `*nix`-like make
 tools in combination with Microsoft(R) Visual Studio(R). Tool chains
@@ -45,8 +44,7 @@ are not available in this repo (see below for further details).
 The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
 also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
 
-Getting Started with the Reference Application
-----------------------------------------------
+#Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi or BeagleBone. etc.
@@ -72,8 +70,7 @@ will be placed in the bin directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 6. It is called
 ref_app.atsln.
 
-To build master branch with CMake via Visual Studio host on Win10 x64
----------------------------------------------------------------------
+#To build master branch with CMake via Visual Studio host on Win10 x64
 
 Win+R, cmd, enter
 
@@ -91,8 +88,7 @@ OR...
 Following `*nix` pattern to build with x86_64-w64-mingw32 from MSYS or Cygwin
 should work too.
 
-Target Details
---------------
+#Target Details
 
 Target details including startup code and linker definition files can
 be found in the target-directory and its subdirectories.
@@ -155,8 +151,13 @@ running the bare-metal reference application are included in this repo.
 For other compatible boards, feel free contact me with an issue requesting
 further details on your desired target system.
 
-GNU GCC Compilers
------------------
+#Benchmarks
+
+[Benchmarks](./ref_app/src/app/benchmark)
+provide scalable, portable C++11 means for identifying
+the performance and the performance class of the microcontroller.
+
+#GNU GCC Compilers
 
 GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.

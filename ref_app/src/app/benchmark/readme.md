@@ -7,7 +7,7 @@
   - Each benchmark is implemented as a single callable function to be called from a scheduled task in the multitasking scheduler configuration.
   - Every benchmark file can also be compiled separately as a standalone C++11 project.
   - A benchmark digital I/O pin is toggled hi/lo at begin/end of the benchmark run providing for oscilloscope real-time measurement.
-  - The benchmarks provide scalability, portability means for identifying the performance class of the microcontroller.
+  - The benchmarks provide scalable, portable C++11 means for identifying the performance class of the microcontroller.
 
 # Benchmark details
 
@@ -39,5 +39,5 @@ shows the real-time measurement of this benchmark
 on the 8-bit MICROCHIP(R) AVR controller
 and the 32-bit ARM(R) 1176 controller
 of the BeagleBone. The calculation requires approximately
-470ms and 12ms respectively on these two microcontrollers
+470ms and 1.5ms respectively on these two microcontrollers
 having vastly different performance classes.
