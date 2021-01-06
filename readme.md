@@ -6,6 +6,11 @@ Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 
+This repository has three main parts.
+  - [Reference Application `ref_app`](./ref_app)
+  - [Examples](./examples) from the book
+  - [Code Snippets](./code_snippets) from the book
+
 ## Details on the Reference Application
 
 The reference application boots via a small startup code and subsequently
@@ -45,7 +50,7 @@ tools in combination with either Bash Shell and GNU make,
 Microsoft(R) Visual Studio(R) via _External Makefile_ or CMake.
 Tool chains are not available in this repo (see below for further details).
 
-### Build with Bash and GNU make
+### Build with Bash Shell Script and GNU make
 
 To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
@@ -65,7 +70,7 @@ cd ref_app
 ./target/build/build.sh avr rebuild
 ```
 
-### Build with VisualStudio(R) _External Makefile_
+### Build with VisualStudio(R) Project and CMD Batch
 
 To get started with the reference application on `Win*`
   - Start Visual Studio(R) 2019 (or later)
@@ -89,7 +94,7 @@ will be placed in the `bin` directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7. It is called
 ref_app.atsln.
 
-### Build with CMake
+### Build with Cross-Environment CMake
 
 CMake files have also been created for each supported target.
 TBD: Describe this more clearly and handle #76.

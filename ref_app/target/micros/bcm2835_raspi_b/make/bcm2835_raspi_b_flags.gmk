@@ -29,8 +29,7 @@ TGT_CFLAGS    = -std=c99                                       \
 TGT_CXXFLAGS  = -std=c++11                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
-                -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
