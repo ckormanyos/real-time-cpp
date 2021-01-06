@@ -33,23 +33,17 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
-## Cross Development in the Reference Application
-
-The reference application uses cross-development based on `*nix`-like make
-tools in combination with either Bash Shell and GNU make,
-Microsoft(R) Visual Studio(R) via _External Makefile_ or CMake.
-Tool chains are not available in this repo (see below for further details).
-
-The ATMEL(R) AVR(R) Atmega328P configuration (target _avr_)
-in the reference application also has a project workspace
-for MICROCHIP(R) ATMEL(R) Studio 7.
-
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
 The reference application can be found in the directory ref_app and its
 subdirectories.
+
+The reference application uses cross-development based on `*nix`-like make
+tools in combination with either Bash Shell and GNU make,
+Microsoft(R) Visual Studio(R) via _External Makefile_ or CMake.
+Tool chains are not available in this repo (see below for further details).
 
 ### Build with Bash and GNU make
 
@@ -85,19 +79,20 @@ workspace of type _external makefile_ in order
 to invoke GNUmake via batch file. The build process
 runs in combination with several makefiles.
 
-CMake files have also been created for each supported target.
-
 To build any target other than Debug or Release for Win32, a cross-compiler
 (GNU GCC cross compiler) is required. See the text below for additional
 details.
 
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
-will be placed in the bin directory.
+will be placed in the `bin` directory.
 
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7. It is called
 ref_app.atsln.
 
 ### Build with CMake
+
+CMake files have also been created for each supported target.
+TBD: Describe this more clearly and handle #76.
 
 Win+R, cmd, enter
 
