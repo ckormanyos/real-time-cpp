@@ -1921,6 +1921,7 @@
     <ClInclude Include="src\util\utility\util_utype_helper.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\..\..\real_time_cpp\real-time-cpp\ref_app\src\app\benchmark\readme.md" />
     <None Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail_secure.s">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
