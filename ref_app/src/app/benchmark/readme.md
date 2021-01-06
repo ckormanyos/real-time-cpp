@@ -1,6 +1,6 @@
 # Benchmarks and Performance Classes
 
-# Benchmarks
+## Benchmarks
 
   - The benchmarks provide code that exercises microcontroller performance.
   - Various efficiency aspects are emphasized such as integral and floating-point calculations, looping, branching, etc.
@@ -9,7 +9,7 @@
   - A benchmark digital I/O pin is toggled hi/lo at begin/end of the benchmark run providing for oscilloscope real-time measurement.
   - The benchmarks provide scalable, portable C++11 means for identifying the performance class of the microcontroller.
 
-# Benchmark details
+## Benchmark details
 
   - ![`APP_BENCHMARK_TYPE_NONE              `](./app_benchmark.cpp) is an empty benchmark with no functionality other than pin toggle.
   - ![`APP_BENCHMARK_TYPE_COMPLEX           `](./app_benchmark_complex.cpp) computes a floating-point complex-valued trigonometric sine function using the [`extended_complex::complex`](../../math/extended_complex/extended_complex.h) template class.
@@ -26,7 +26,7 @@
   - ![`APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL`](./app_benchmark_trapezoid_integral.cpp) computes the numerical floating-point result of a Bessel function using a recursive trapezoid integration routine.
   - ![`APP_BENCHMARK_TYPE_PI_AGM            `](./app_benchmark_pi_agm.cpp) computes 105 decimal digits of pi using a Gaus AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
 
-# Performance classes
+## Performance classes
 
 The benchmarks run on each supported target and reveal a wide range of
 microcontroller _performance classes_.
