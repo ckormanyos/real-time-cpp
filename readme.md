@@ -7,7 +7,6 @@ and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 
 ## Details on the Reference Application
-------------------------------------
 
 The reference application boots via a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
@@ -59,25 +58,42 @@ port1.15 (header pin P8.15 on the BBB).
 ## Cross Development in the Reference Application
 
 The reference application uses cross-development based on `*nix`-like make
-tools in combination with Microsoft(R) Visual Studio(R). Tool chains
+tools in combination with either Bash shell script, CMake or
+Microsoft(R) Visual Studio(R). Tool chains
 are not available in this repo (see below for further details).
 
 The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
-also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
+also has a project workspace for ATMEL(R) Atmel Studio(R) 7.
 
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
-supported boards, such as Arduino or RaspberryPi or BeagleBone. etc.
+supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
 The reference application can be found in the directory ref_app and its
 subdirectories.
 
-To get started with the reference application, start Visual Studio(R) 2017
-(or later) and open the solution ref_app.sln. Select the desired
-configuration. Then rebuild the entire solution. Note that the build in
+To get started with the reference application on _*nix_
+  - Open a terminal in the directory  [./ref_app](./ref_app).
+  - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
+  - Identify the Bash shell script [build.sh](./ref_app/target/build/build.sh).
+  - Select the desired configuration (such as _avr_)
+  - Run GNU make with the command:
+  ```./target/build/build.sh avr rebuild```.
+  - This rebuilds the entire solution for target avr.
+  - If you are missing the _avr_ GNU tools and need to get them on _*nix_, run
+  ```sudo apt install gcc-avr avr-libc```
+
+To get started with the reference application on _Win*_
+  - Start Visual Studio(R) 2019 (or later)
+  - Open the solution ref_app.sln.
+  - Select the desired configuration.
+  - Then rebuild the entire solution.
+
+Note that the build in
 Visual Studio(R) makes heavy use of cross development using a project
-workspace of type "external makefile" to invoke GNUmake (via batch file)
-in combination with several makefiles.
+workspace of type _external makefile_ in order
+to invoke GNUmake via batch file. The build process
+runs in combination with several makefiles.
 
 CMake files have also been created for each supported target.
 
