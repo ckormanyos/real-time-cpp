@@ -33,12 +33,25 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
+## Cross Development in the Reference Application
+
+The reference application uses cross-development based on `*nix`-like make
+tools in combination with either Bash Shell and GNU make,
+Microsoft(R) Visual Studio(R) via _External Makefile_ or CMake.
+Tool chains are not available in this repo (see below for further details).
+
+The ATMEL(R) AVR(R) Atmega328P configuration (target _avr_)
+in the reference application also has a project workspace
+for MICROCHIP(R) ATMEL(R) Studio 7.
+
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
 The reference application can be found in the directory ref_app and its
 subdirectories.
+
+### Build with Bash and GNU make
 
 To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
@@ -57,6 +70,8 @@ cd real-time-cpp
 cd ref_app
 ./target/build/build.sh avr rebuild
 ```
+
+### Build with VisualStudio(R) _External Makefile_
 
 To get started with the reference application on `Win*`
   - Start Visual Studio(R) 2019 (or later)
@@ -82,7 +97,7 @@ will be placed in the bin directory.
 There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7. It is called
 ref_app.atsln.
 
-## To build master branch with CMake via Visual Studio host on Win10 x64
+### Build with CMake
 
 Win+R, cmd, enter
 
@@ -183,16 +198,6 @@ shows the bare-metal BBB in action. The first
 user LED is toggled on port1.21 and the oscilloscope captures
 a real-time measurement with time signal on digital I/O
 port1.15 (header pin P8.15 on the BBB).
-
-## Cross Development in the Reference Application
-
-The reference application uses cross-development based on `*nix`-like make
-tools in combination with either Bash shell script, CMake or
-Microsoft(R) Visual Studio(R). Tool chains
-are not available in this repo (see below for further details).
-
-The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
-also has a project workspace for ATMEL(R) Atmel Studio(R) 7.
 
 ## Benchmarks
 
