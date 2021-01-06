@@ -6,7 +6,7 @@ Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 
-#Details on the Reference Application
+# Details on the Reference Application
 ------------------------------------
 
 The reference application boots via a small startup code and subsequently
@@ -15,7 +15,7 @@ then passed to a simple multitasking scheduler that schedules the
 LED application, calls a cyclic a benchmark task, and services the watchdog.
 The LED application toggles a user-LED with a frequency of 1/2 Hz.
 
-#Supported Targets in the Reference Application
+# Supported Targets in the Reference Application
 ----------------------------------------------
 
 The reference application supports the following targets:
@@ -35,7 +35,7 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
-#Cross Development in the Reference Application
+# Cross Development in the Reference Application
 
 The reference application uses cross-development based on `*nix`-like make
 tools in combination with Microsoft(R) Visual Studio(R). Tool chains
@@ -44,7 +44,7 @@ are not available in this repo (see below for further details).
 The ATMEL(R) AVR(R) Atmega328P configuration in the reference application
 also has a project workspace for ATMEL(R) Atmel Studio(R) 6.
 
-#Getting Started with the Reference Application
+# Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi or BeagleBone. etc.
@@ -151,13 +151,13 @@ running the bare-metal reference application are included in this repo.
 For other compatible boards, feel free contact me with an issue requesting
 further details on your desired target system.
 
-#Benchmarks
+# Benchmarks
 
 [Benchmarks](./ref_app/src/app/benchmark)
 provide scalable, portable C++11 means for identifying
 the performance and the performance class of the microcontroller.
 
-#GNU GCC Compilers
+# GNU GCC Compilers
 
 GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
