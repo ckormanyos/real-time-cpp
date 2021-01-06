@@ -31,7 +31,7 @@
         template<typename unsigned_tick_type>
         friend class util::timer;
 
-        static void trigger() { asm volatile("wdr"); }
+        static void trigger();
       };
     }
   }

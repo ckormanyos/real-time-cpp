@@ -49,7 +49,7 @@ extern "C"
 extern "C" void app_main(void)
 {
   // The subroutine app_main() is called from the Espressif SDK framework.
-  // From the perspective of this particular implementation, this is
+  // From the perspective of this particular implementation, this is the
   // starting point of the application.
 
   static TaskHandle_t main_loop_task_handle;

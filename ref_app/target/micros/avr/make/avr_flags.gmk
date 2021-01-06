@@ -21,6 +21,8 @@ TGT_SUFFIX    = elf
 TGT_ALLFLAGS  = -Os                                                               \
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
                 -fsigned-char
 
 #                -mdouble=64                                                       \

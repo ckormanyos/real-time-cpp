@@ -91,6 +91,10 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_trapezoid_integral();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM)
+
+  const bool result_is_ok = app::benchmark::run_pi_agm();
+
   #endif
 
   // Set the benchmark port pin level to low.

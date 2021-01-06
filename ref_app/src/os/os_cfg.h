@@ -65,22 +65,22 @@
 
   #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
 
-  #define OS_TASK_LIST                                                                           \
-  {                                                                                              \
-    {                                                                                            \
-      os::task_control_block(app::led::task_init,                                                \
-                             app::led::task_func,                                                \
-                             os::timer_type::microseconds(UINT32_C(  2000)),                     \
-                             os::timer_type::microseconds(UINT32_C(     0))),                    \
-      os::task_control_block(app::benchmark::task_init,                                          \
-                             app::benchmark::task_func,                                          \
-                             os::timer_type::microseconds(UINT32_C(100000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   379))),                    \
-      os::task_control_block(sys::mon::task_init,                                                \
-                             sys::mon::task_func,                                                \
-                             os::timer_type::microseconds(UINT32_C(  4000)),                     \
-                             os::timer_type::microseconds(UINT32_C(   541))),                    \
-    }                                                                                            \
+  #define OS_TASK_LIST                                                                            \
+  {                                                                                               \
+    {                                                                                             \
+      os::task_control_block(app::led::task_init,                                                 \
+                             app::led::task_func,                                                 \
+                             os::timer_type::microseconds(UINT32_C(  12000)),                     \
+                             os::timer_type::microseconds(UINT32_C(      0))),                    \
+      os::task_control_block(app::benchmark::task_init,                                           \
+                             app::benchmark::task_func,                                           \
+                             os::timer_type::microseconds(UINT32_C( 750000)),                     \
+                             os::timer_type::microseconds(UINT32_C(    379))),                    \
+      os::task_control_block(sys::mon::task_init,                                                 \
+                             sys::mon::task_func,                                                 \
+                             os::timer_type::microseconds(UINT32_C(  27000)),                     \
+                             os::timer_type::microseconds(UINT32_C(    541))),                    \
+    }                                                                                             \
   }
 
   static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
