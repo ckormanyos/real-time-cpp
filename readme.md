@@ -77,11 +77,19 @@ To get started with the reference application on _*nix_
   - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
   - Identify the Bash shell script [build.sh](./ref_app/target/build/build.sh).
   - Select the desired configuration (such as _avr_)
-  - Run GNU make with the command:
-  ```./target/build/build.sh avr rebuild```.
-  - This rebuilds the entire solution for target avr.
-  - If you are missing the _avr_ GNU tools and need to get them on _*nix_, run
-  ```sudo apt install gcc-avr avr-libc```
+  - Run GNU make with the command: `./target/build/build.sh avr rebuild`
+  - This rebuilds the entire solution for target _avr_.
+  - If you are missing the AVR GNU tools and need to get them on _*nix_, run
+  `sudo apt install gcc-avr avr-libc`
+  
+In summary on _*nix_ for _target avr_
+
+```C
+cd real-time-cpp
+cd ref_app
+./target/build/build.sh avr rebuild
+```
+
 
 To get started with the reference application on _Win*_
   - Start Visual Studio(R) 2019 (or later)
