@@ -16,7 +16,6 @@ LED application, calls a cyclic a benchmark task, and services the watchdog.
 The LED application toggles a user-LED with a frequency of 1/2 Hz.
 
 ## Supported Targets in the Reference Application
-----------------------------------------------
 
 The reference application supports the following targets:
   * ATMEL(R) AVR(R) Atmega328P
@@ -34,6 +33,28 @@ The reference application supports the following targets:
   * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
   * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
   * VC, MinGW, or other `*nix`-like generic host
+
+## All Bare-Metal
+
+The projects are programmed _OS-less_ in bare-metal mode
+making use of self-written startup code.
+No external libraries other than native C++ and its own
+standard libraries are used.
+
+Consider, for instance, the BeagleBone Black Edition
+(known as target am335x below) --- one of several
+target systems supported in this repository.
+The projects on this board boot from the binary image file
+_MLO_ the SD card and subsequently perform their own
+static initialization and chip initialization
+of the ARM(R) 8 am335x processor.
+
+The [image](./bare_metal_bbb.jpg)
+shows the bare-metal BBB in action. The first
+user LED is toggled on port1.21 and the oscilloscope captures
+a real-time measurement with time signal on digital I/O
+port1.15 (header pin P8.15 on the BBB).
+
 
 ## Cross Development in the Reference Application
 
