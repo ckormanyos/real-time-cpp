@@ -34,10 +34,11 @@ Consider, for instance, [`APP_BENCHMARK_TYPE_PI_AGM`](./app_benchmark_pi_agm.cpp
 which compute 105 decimal digits of the mathematical constant pi using
 a Gauss AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
 
-The [image](./app_benchmark_pi_agm.pdf)
+The [image](./images/app_benchmark_pi_agm.pdf)
 shows the real-time measurement of this benchmark
-on the 8-bit MICROCHIP(R) AVR controller
-and the 32-bit ARM(R) 1176 controller
-of the BeagleBone. The calculation requires approximately
+on the 8-bit MICROCHIP(R) AVR controller of the Arduino
+and the 32-bit ARM(R) 8 controller
+of the BeagleBone Black Edition, Rev. C.
+The calculation requires approximately
 470ms and 1.5ms respectively on these two microcontrollers
 having vastly different performance classes.

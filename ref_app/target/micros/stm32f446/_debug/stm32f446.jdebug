@@ -22,8 +22,8 @@ void OnProjectLoad (void) {
   //
   // Dialog-generated settings
   //
-  Project.AddPathSubstitute ("C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/ref_app/target/micros/stm32f446/_debug", "$(ProjectDir)");
-  Project.AddPathSubstitute ("c:/users/user/documents/ks/uc_software/boards/real-time-cpp/ref_app/target/micros/stm32f446/_debug", "$(ProjectDir)");
+  Project.AddPathSubstitute ("./", "$(ProjectDir)");
+  Project.AddPathSubstitute ("./", "$(ProjectDir)");
   Project.SetDevice ("STM32F446RC");
   Project.SetHostIF ("USB", "");
   Project.SetTargetIF ("SWD");
@@ -32,7 +32,7 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
-  File.Open ("C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/ref_app/bin/ref_app.elf");
+  File.Open ("$(ProjectDir)/../../../../bin/ref_app.elf");
 }
 
 /*********************************************************************

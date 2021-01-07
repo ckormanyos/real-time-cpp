@@ -604,6 +604,7 @@
     <None Include="target\micros\stm32f446\make\stm32f446.ld" />
     <None Include="target\micros\stm32f446\make\stm32f446_files.gmk" />
     <None Include="target\micros\stm32f446\make\stm32f446_flags.gmk" />
+    <None Include="target\micros\stm32f446\_debug\stm32f446.jdebug" />
     <None Include="target\micros\stm32l100c\make\stm32l100c.ld" />
     <None Include="target\micros\stm32l100c\make\stm32l100c_files.gmk" />
     <None Include="target\micros\stm32l100c\make\stm32l100c_flags.gmk" />

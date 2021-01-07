@@ -160,6 +160,9 @@
     <Filter Include="micros\xtensa32\make\from_sdk\ld">
       <UniqueIdentifier>{b64a703f-4f34-4ca9-96bd-ab8f1df822a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32f446\_debug">
+      <UniqueIdentifier>{525b4cb4-536c-456d-a67e-8d3646defe56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -368,6 +371,9 @@
     </None>
     <None Include="target\micros\xtensa32\make\xtensa32.ld">
       <Filter>micros\xtensa32\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f446\_debug\stm32f446.jdebug">
+      <Filter>micros\stm32f446\_debug</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

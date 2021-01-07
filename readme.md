@@ -42,7 +42,8 @@ The reference application supports the following targets:
 
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
-The reference application can be found in the directory ref_app and its
+The reference application can be found
+in the directory [./ref_app](./ref_app) and its
 subdirectories.
 
 The reference application uses cross-development based on `*nix`-like make
@@ -55,14 +56,14 @@ Tool chains are not available in this repo (see below for further details).
 To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
   - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
-  - Identify the Bash shell script [build.sh](./ref_app/target/build/build.sh).
+  - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
   - Select the desired configuration (such as _avr_)
   - Run GNU make with the command: `./target/build/build.sh avr rebuild`
   - This rebuilds the entire solution for target _avr_.
   - If you are missing the AVR GNU tools and need to get them on `*nix`, run
   `sudo apt install gcc-avr avr-libc`
-  
-In summary on `*nix` for _target avr_
+
+In summary on `*nix` for target _avr_
 
 ```C
 cd real-time-cpp
@@ -74,7 +75,7 @@ cd ref_app
 
 To get started with the reference application on `Win*`
   - Start Visual Studio(R) 2019 (or later)
-  - Open the solution ref_app.sln.
+  - Open the solution [./ref_app/ref_app.sln](./ref_app/ref_app.sln).
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
@@ -91,8 +92,8 @@ details.
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the `bin` directory.
 
-There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7. It is called
-ref_app.atsln.
+There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7.
+It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
 
 ### Build with Cross-Environment CMake
 
