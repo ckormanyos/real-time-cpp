@@ -23,6 +23,8 @@ TGT_ALLFLAGS  = -O2                                                            \
                 -mfloat-abi=hard                                               \
                 -mfpu=fpv4-sp-d16                                              \
                 -ffast-math                                                    \
+                -finline-functions                                             \
+                -finline-limit=32                                              \
                 -mno-unaligned-access                                          \
                 -mno-long-calls
 

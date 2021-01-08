@@ -7,7 +7,7 @@ and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
 
 This repository has three main parts.
-  - [Reference Application `ref_app`](./ref_app)
+  - Reference Application `ref_app` located in [./ref_app](./ref_app)
   - [Examples](./examples) from the book
   - [Code Snippets](./code_snippets) from the book
 
@@ -60,10 +60,9 @@ To get started with the reference application on `*nix`
   - Select the desired configuration (such as _avr_)
   - Run GNU make with the command: `./target/build/build.sh avr rebuild`
   - This rebuilds the entire solution for target _avr_.
-  - If you are missing the AVR GNU tools and need to get them on `*nix`, run
-  `sudo apt install gcc-avr avr-libc`
+  - If you're missing AVR GNU tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
 
-In summary on `*nix` for target _avr_
+In summary, on `*nix` for target _avr_
 
 ```C
 cd real-time-cpp
