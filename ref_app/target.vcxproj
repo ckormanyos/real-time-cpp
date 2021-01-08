@@ -289,7 +289,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
-    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat avr clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat atmega4809 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n clean_all</NMakeCleanCommandLine>
@@ -418,12 +418,12 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Target|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Target\Build\Build.bat avr</NMakeBuildCommandLine>
-    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat avr</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat atmega4809</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Target\Build\Build.bat avr rebuild</NMakeReBuildCommandLine>
-    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat avr rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat atmega4809 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n rebuild</NMakeReBuildCommandLine>

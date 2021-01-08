@@ -1,6 +1,6 @@
 
 /*
- Copyright Christopher Kormanyos 2007 - 2018.
+ Copyright Christopher Kormanyos 2021.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,24 +11,24 @@
 INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
-OUTPUT_ARCH(avrxmega:3)
+OUTPUT_ARCH(avr:103)
 
 /* The beginning and end of the program ROM area. */
 _rom_begin = 0x00000000;
-_rom_end   = 0x00007FFC;
+_rom_end   = 0x0000BFFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 0x200=(1/2)K */
-_stack_begin = 0x00800700;
-_stack_end   = 0x00800900;
+_stack_begin = 0x00805E00;
+_stack_end   = 0x00805FFE;
 
-/* The initial stack pointer (top of stack) is at the top of the 2K RAM */
-__initial_stack_pointer = 0x008008FE;
+/* The initial stack pointer (top of stack) is at the top of the 6K RAM */
+__initial_stack_pointer = 0x00805FFE;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 4
-  RAM(rw!x) : ORIGIN = 0x00800100, LENGTH = 0x00000700 - 0x00000100
+  ROM(rx)   : ORIGIN = 0, LENGTH = 48K - 4
+  RAM(rw!x) : ORIGIN = 0x00802800, LENGTH = 0x00001600
 }
 
 SECTIONS
@@ -76,7 +76,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  .= 0x00800100;
+  .= 0x00802800;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */

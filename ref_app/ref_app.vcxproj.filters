@@ -1851,9 +1851,6 @@
     <ClInclude Include="src\mcal\atmega4809\mcal_pwm_lcd.h">
       <Filter>src\mcal\atmega4809</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\atmega4809\mcal_pwm_timer1.h">
-      <Filter>src\mcal\atmega4809</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\atmega4809\mcal_reg.h">
       <Filter>src\mcal\atmega4809</Filter>
     </ClInclude>
