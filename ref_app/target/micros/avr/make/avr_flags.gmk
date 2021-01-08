@@ -11,7 +11,7 @@
 
 # See also: https://blog.zakkemble.net/avr-gcc-builds/
 
-GCC_VERSION   = 7.2.0
+GCC_VERSION   = 7.3.0
 #GCC_VERSION   = 10.1.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
