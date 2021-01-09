@@ -9,24 +9,17 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-# See also: https://blog.zakkemble.net/avr-gcc-builds/
-
 GCC_VERSION   = 7.3.0
-#GCC_VERSION   = 10.1.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
-
-#C:\Users\User\AppData\Local\Arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5
 
 TGT_ALLFLAGS  = -Os                                                               \
                 -mmcu=atmega4809                                                  \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -fsigned-char
-
-#                -mdouble=64                                                       \
 
 TGT_CFLAGS    = -std=c99                                                          \
                 $(TGT_ALLFLAGS)
@@ -38,9 +31,44 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
+LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/avrxmega3.ld
+
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
 
+# echo Forcing reset using 1200bps open/close on port COM8
+# c:\windows\system32\mode.com com8: baud=1200 dtr=on > NUL  1> NUL
+# c:\windows\system32\mode.com com8: dtr=off > NUL  1> NUL
+# C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\bin\avrdude.exe -CC:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\etc\avrdude.conf -v -patmega4809 -cjtag2updi -PCOM8 -b115200 -e -D -Uflash:w:C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\bin\ref_app.hex:i -Ufuse2:w:0x01:m -Ufuse5:w:0xC9:m -Ufuse8:w:0x00:m {upload.extra_files}
+
+AVR_AVRDUDE_TOOL               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/6.3.0-arduino17/bin/avrdude.exe
+AVR_AVRDUDE_CONF               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/6.3.0-arduino17/etc/avrdude.conf
+
+AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
+                                 -v                                  \
+                                 -patmega4809                        \
+                                 -cjtag2updi                         \
+                                 -PCOM8                              \
+                                 -b115200                            \
+                                 -e                                  \
+                                 -D                                  \
+                                 -Uflash:w:$(CURDIR)/$(APP).hex:i    \
+                                 -Ufuse2:w:0x01:m                    \
+                                 -Ufuse5:w:0xC9:m                    \
+                                 -Ufuse8:w:0x00:m                    \
+                                 {upload.extra_files}
+
+
+AVR_AVRDUDE_FLAG_ECHO_PART1    = $(ECHO) echo Forcing reset using 1200bps open/close on port COM8             > $(subst /,\,$(CURDIR)/bin/flash.bat)
+AVR_AVRDUDE_FLAG_ECHO_PART2    = $(ECHO) c:\windows\system32\mode.com com8: baud=1200 dtr=on > NUL 1> NUL    >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+AVR_AVRDUDE_FLAG_ECHO_PART3    = $(ECHO) c:\windows\system32\mode.com com8: dtr=off > NUL 1> NUL             >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+AVR_AVRDUDE_FLAG_ECHO_PART4    = $(ECHO) $(subst /,\,$(AVR_AVRDUDE_TOOL)) $(subst /,\,$(AVR_AVRDUDE_FLAGS))  >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+
+
+RULE_SPECIAL_MAKE_FLASH_BATCH :=    $(AVR_AVRDUDE_FLAG_ECHO_PART1) \
+                                 && $(AVR_AVRDUDE_FLAG_ECHO_PART2) \
+                                 && $(AVR_AVRDUDE_FLAG_ECHO_PART3) \
+                                 && $(AVR_AVRDUDE_FLAG_ECHO_PART4)

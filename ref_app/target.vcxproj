@@ -616,6 +616,8 @@
     <None Include="target\micros\atmega4809\make\atmega4809.ld" />
     <None Include="target\micros\atmega4809\make\atmega4809_files.gmk" />
     <None Include="target\micros\atmega4809\make\atmega4809_flags.gmk" />
+    <None Include="target\micros\atmega4809\make\avrxmega3.x" />
+    <None Include="target\micros\atmega4809\make\avrxmega3.ld" />
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b.ld" />
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_files.gmk" />
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_flags.gmk" />

@@ -33,6 +33,18 @@ PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
+# standard shell tools
+# ------------------------------------------------------------------------------
+
+CP        = cp
+ECHO      = echo
+MAKE      = make
+MKDIR     = mkdir
+RM        = rm
+SED       = sed
+
+
+# ------------------------------------------------------------------------------
 # the application
 # ------------------------------------------------------------------------------
 APP = $(PATH_BIN)/ref_app
@@ -101,13 +113,6 @@ OBJCOPY   = $(GCC_PREFIX)-objcopy
 READELF   = $(GCC_PREFIX)-readelf
 SIZE      = $(GCC_PREFIX)-size
 endif
-
-CP        = cp
-ECHO      = echo
-MAKE      = make
-MKDIR     = mkdir
-RM        = rm
-SED       = sed
 
 # ------------------------------------------------------------------------------
 # Tool parameters

@@ -19,11 +19,11 @@ _rom_end   = 0x0000BFFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 0x200=(1/2)K */
-_stack_begin = 0x00805E00;
-_stack_end   = 0x00805FFE;
+_stack_begin = 0x00803E00;
+_stack_end   = 0x00803FFE;
 
 /* The initial stack pointer (top of stack) is at the top of the 6K RAM */
-__initial_stack_pointer = 0x00805FFE;
+__initial_stack_pointer = 0x00803FFE;
 
 MEMORY
 {
