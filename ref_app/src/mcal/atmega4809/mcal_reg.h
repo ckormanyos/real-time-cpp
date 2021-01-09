@@ -56,6 +56,8 @@
       constexpr std::uint16_t  rtc_reserved_0x1F = 0x0140U + 0x1FU;
 
       // Watchdog registers
+      constexpr std::uint16_t  wdt_ctrla         = 0x0100U + 0x00U;
+      constexpr std::uint16_t  wdt_status        = 0x0100U + 0x01U;
 
       // Eeprom registers
     }

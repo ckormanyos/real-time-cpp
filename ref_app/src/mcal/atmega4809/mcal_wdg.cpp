@@ -10,8 +10,14 @@
 
 void mcal::wdg::init(const config_type*)
 {
+  // Set the watchdog timer to cycle watchdog with a period of about 2s.
+  mcal::reg::reg_access_static<std::uint16_t,
+                               std::uint8_t,
+                               mcal::reg::wdt_ctrla,
+                               UINT8_C(9)>::reg_set();
 }
 
 void mcal::wdg::secure::trigger()
 {
+  asm volatile("wdr");
 }
