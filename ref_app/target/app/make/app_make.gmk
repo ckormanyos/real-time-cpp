@@ -69,6 +69,12 @@ RULE_SPECIAL_MAKE_FLASH_BATCH =
 WARN_FLAGS =
 
 # ------------------------------------------------------------------------------
+# linker definition file
+# ------------------------------------------------------------------------------
+LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
+
+
+# ------------------------------------------------------------------------------
 # include the target-specific make files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
@@ -81,12 +87,6 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 # ------------------------------------------------------------------------------
 FILES_TMP   = $(FILES_CPP) $(FILES_TGT)
 FILES_O     = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_TMP))))
-
-
-# ------------------------------------------------------------------------------
-# linker definition file
-# ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------

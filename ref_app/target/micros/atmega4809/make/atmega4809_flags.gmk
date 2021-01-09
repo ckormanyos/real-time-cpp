@@ -31,7 +31,7 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/avrxmega3.ld
+#LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/avrxmega3.ld
 
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -nostartfiles                                                     \

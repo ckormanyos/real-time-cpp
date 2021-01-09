@@ -393,12 +393,6 @@
     <None Include="target\micros\atmega4809\make\atmega4809.ld">
       <Filter>micros\atmega4809\make</Filter>
     </None>
-    <None Include="target\micros\atmega4809\make\avrxmega3.x">
-      <Filter>micros\atmega4809\make</Filter>
-    </None>
-    <None Include="target\micros\atmega4809\make\avrxmega3.ld">
-      <Filter>micros\atmega4809\make</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

@@ -19,6 +19,12 @@
 
 
 # ------------------------------------------------------------------------------
+# punctuation
+# ------------------------------------------------------------------------------
+
+DQUOTE = \"
+
+# ------------------------------------------------------------------------------
 # paths
 # ------------------------------------------------------------------------------
 PATH_APP             = src
@@ -57,6 +63,12 @@ RULE_SPECIAL_MAKE_FLASH_BATCH =
 WARN_FLAGS =
 
 # ------------------------------------------------------------------------------
+# linker definition file
+# ------------------------------------------------------------------------------
+LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
+
+
+# ------------------------------------------------------------------------------
 # include the target-specific make files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
@@ -69,12 +81,6 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 # ------------------------------------------------------------------------------
 FILES_TMP   = $(FILES_CPP) $(FILES_TGT)
 FILES_O     = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_TMP))))
-
-
-# ------------------------------------------------------------------------------
-# linker definition file
-# ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -145,7 +151,6 @@ endif
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
               -gdwarf-2                         \
-              -ffreestanding                    \
               -fno-exceptions                   \
               -ffunction-sections               \
               -fdata-sections
@@ -158,9 +163,8 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               $(TGT_CXXFLAGS)                   \
               -x c++                            \
               -fno-rtti                         \
-              -fstrict-enums                    \
               -fno-use-cxa-atexit               \
-              -fno-use-cxa-get-exception-ptr    \
+              -fno-exceptions                   \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
@@ -277,12 +281,15 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(ECHO) +++ creating binary file
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 else
+	@-$(ECHO) +++ creating special image file
 	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
 endif
 ifneq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
-	-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
+	@-$(ECHO) +++ creating flash batch file
+	@-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
 endif
 
 # ------------------------------------------------------------------------------
