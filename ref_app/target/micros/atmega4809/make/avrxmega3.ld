@@ -13,6 +13,8 @@
 
 /* Linker script for MICROCHIP(R) AVR(R) ATmega4809. */
 
+/* TBD: Fuses: 00 00 01 FF 00 C9 00 00 00 */
+
 INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")

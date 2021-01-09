@@ -10,10 +10,10 @@
 
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_port_type = mcal::port::port_pin<std::uint8_t,
+  using led0_port_type = mcal::port::port_pin<std::uint16_t,
                                               std::uint8_t,
-                                              mcal::reg::portb,
-                                              UINT8_C(5)>;
+                                              mcal::reg::porte,
+                                              UINT8_C(2)>;
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 
