@@ -173,6 +173,9 @@
     <Filter Include="src\mcal\xtensa32\from_sdk\soc">
       <UniqueIdentifier>{734f412d-52b0-4aec-8bf0-f8a97565aac0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\atmega4809">
+      <UniqueIdentifier>{dbda4d0b-067f-4d70-82e7-06a6c5b83f6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -759,6 +762,39 @@
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_agm.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_osc.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_port.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_pwm.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_spi.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_wdg.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_cpu.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_eep.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_gpt.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_irq.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_led.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\atmega4809\mcal_memory_sram.cpp">
+      <Filter>src\mcal\atmega4809</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1784,6 +1820,69 @@
     </ClInclude>
     <ClInclude Include="src\util\utility\util_numeric_cast.h">
       <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_memory_sram.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_memory_sram_parallel_cypress_cy62158e.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_memory_sram_parallel_cypress_cy62167gn.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_osc.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_port.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_port_expander_microchip_mcp23s17.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_port_pin_dummy.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_port_word.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_pwm.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_pwm_lcd.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_reg.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_ser.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_spi.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_wdg.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_benchmark.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_cpu.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_eep.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_gpt.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_irq.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_led.h">
+      <Filter>src\mcal\atmega4809</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\atmega4809\mcal_memory_progmem.h">
+      <Filter>src\mcal\atmega4809</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,6 +25,7 @@ Global
 		Release|x64 = Release|x64
 		target am335x|x64 = target am335x|x64
 		target atmega2560|x64 = target atmega2560|x64
+		target atmega4809|x64 = target atmega4809|x64
 		target avr|x64 = target avr|x64
 		target bcm2835_raspi_b|x64 = target bcm2835_raspi_b|x64
 		target lpc11c24|x64 = target lpc11c24|x64
@@ -46,6 +47,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.Build.0 = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target am335x|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target atmega2560|x64.ActiveCfg = Release|x64
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target atmega4809|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target bcm2835_raspi_b|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target lpc11c24|x64.ActiveCfg = Release|x64
@@ -65,6 +67,8 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target am335x|x64.Build.0 = target am335x|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target atmega2560|x64.ActiveCfg = target atmega2560|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target atmega2560|x64.Build.0 = target atmega2560|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target atmega4809|x64.ActiveCfg = target atmega4809|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target atmega4809|x64.Build.0 = target atmega4809|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.ActiveCfg = target avr|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target avr|x64.Build.0 = target avr|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target bcm2835_raspi_b|x64.ActiveCfg = target bcm2835_raspi_b|x64

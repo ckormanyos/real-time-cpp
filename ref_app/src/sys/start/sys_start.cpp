@@ -25,6 +25,12 @@ int main(void)
   // Initialize the microcontroller abstraction layer.
   mcal::init();
 
-  // Start the multitasking scheduler, and never return.
+  // Start the multitasking scheduler. (This does not return.)
+  // Handle an unexpected return from main() in the startup code.
   os::start_os();
+
+  #if defined(__GNUC__) && defined(__XTENSA__)
+  #else
+  return 0;
+  #endif
 }

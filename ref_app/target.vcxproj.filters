@@ -163,6 +163,15 @@
     <Filter Include="micros\stm32f446\_debug">
       <UniqueIdentifier>{525b4cb4-536c-456d-a67e-8d3646defe56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\atmega4809">
+      <UniqueIdentifier>{ba6f4884-46c0-460d-b35f-1808a511a9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\atmega4809\make">
+      <UniqueIdentifier>{f8caecdf-f828-4818-a57a-c7d1e6ff4883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\atmega4809\startup">
+      <UniqueIdentifier>{0ad7a31a-3074-4b6b-95c1-6cf6e46e58c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -375,6 +384,15 @@
     <None Include="target\micros\stm32f446\_debug\stm32f446.jdebug">
       <Filter>micros\stm32f446\_debug</Filter>
     </None>
+    <None Include="target\micros\atmega4809\make\atmega4809_files.gmk">
+      <Filter>micros\atmega4809\make</Filter>
+    </None>
+    <None Include="target\micros\atmega4809\make\atmega4809_flags.gmk">
+      <Filter>micros\atmega4809\make</Filter>
+    </None>
+    <None Include="target\micros\atmega4809\make\atmega4809.ld">
+      <Filter>micros\atmega4809\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -526,6 +544,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp">
       <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega4809\startup\int_vect.cpp">
+      <Filter>micros\atmega4809\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega4809\startup\crt0.cpp">
+      <Filter>micros\atmega4809\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega4809\startup\crt0_init_ram.cpp">
+      <Filter>micros\atmega4809\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\atmega4809\startup\crt1.cpp">
+      <Filter>micros\atmega4809\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

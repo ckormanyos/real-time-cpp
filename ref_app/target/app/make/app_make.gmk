@@ -45,6 +45,18 @@ PATH_ERR             = $(PATH_TMP)/err
 
 
 # ------------------------------------------------------------------------------
+# standard shell tools
+# ------------------------------------------------------------------------------
+
+CP                   = $(PATH_TOOLS_MINGW_BIN)\cp.exe
+ECHO                 = $(PATH_TOOLS_MINGW_BIN)\echo.exe
+MAKE                 = $(PATH_TOOLS_MINGW_BIN)\make.exe
+MKDIR                = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
+RM                   = $(PATH_TOOLS_MINGW_BIN)\rm.exe
+SED                  = $(PATH_TOOLS_MINGW_BIN)\sed.exe
+
+
+# ------------------------------------------------------------------------------
 # the application
 # ------------------------------------------------------------------------------
 APP = $(PATH_BIN)/ref_app
@@ -55,6 +67,12 @@ RULE_SPECIAL_MAKE_IMAGE_FILE  =
 RULE_SPECIAL_MAKE_FLASH_BATCH =
 
 WARN_FLAGS =
+
+# ------------------------------------------------------------------------------
+# linker definition file
+# ------------------------------------------------------------------------------
+LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
+
 
 # ------------------------------------------------------------------------------
 # include the target-specific make files
@@ -69,12 +87,6 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 # ------------------------------------------------------------------------------
 FILES_TMP   = $(FILES_CPP) $(FILES_TGT)
 FILES_O     = $(addprefix $(PATH_OBJ)/, $(notdir $(addsuffix .o, $(FILES_TMP))))
-
-
-# ------------------------------------------------------------------------------
-# linker definition file
-# ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -113,14 +125,6 @@ OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
 READELF   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
 SIZE      = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
 endif
-
-CP        = $(PATH_TOOLS_MINGW_BIN)\cp.exe
-ECHO      = $(PATH_TOOLS_MINGW_BIN)\echo.exe
-MAKE      = $(PATH_TOOLS_MINGW_BIN)\make.exe
-MKDIR     = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
-RM        = $(PATH_TOOLS_MINGW_BIN)\rm.exe
-SED       = $(PATH_TOOLS_MINGW_BIN)\sed.exe
-
 
 # ------------------------------------------------------------------------------
 # Tool parameters
@@ -286,12 +290,15 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
+	@-$(ECHO) +++ creating binary file
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
 else
+	@-$(ECHO) +++ creating special image file
 	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
 endif
 ifneq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
-	-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
+	@-$(ECHO) +++ creating flash batch file
+	@-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
 endif
 
 # ------------------------------------------------------------------------------
