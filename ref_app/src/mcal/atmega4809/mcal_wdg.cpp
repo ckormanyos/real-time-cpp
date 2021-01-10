@@ -10,11 +10,13 @@
 
 void mcal::wdg::init(const config_type*)
 {
+  // Set main clock prescaler (uses protect protected I/O registers).
+  volatile std::uint8_t* p_wdt_ctrla = (volatile std::uint8_t*) mcal::reg::wdt_ctrla;
+  volatile std::uint8_t* p_ccp       = (volatile std::uint8_t*) mcal::reg::reg_ccp;
+
   // Set the watchdog timer to cycle watchdog with a period of about 2s.
-  mcal::reg::reg_access_static<std::uint16_t,
-                               std::uint8_t,
-                               mcal::reg::wdt_ctrla,
-                               UINT8_C(9)>::reg_set();
+  *p_ccp       = 0xD8U;
+  *p_wdt_ctrla = 9U;
 }
 
 void mcal::wdg::secure::trigger()
