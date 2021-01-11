@@ -56,14 +56,14 @@ Tool chains are not available in this repo (see below for further details).
 
 To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
-  - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
+  - The terminal should be located directly in [./ref_app](./ref_app) for the paths to work out (be found by the upcoming build).
   - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
   - Select the desired configuration (such as `avr`)
-  - Run GNU make with the command: `./target/build/build.sh avr rebuild`
-  - This rebuilds the entire solution for `avr`.
-  - If you're missing AVR GNU tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
+  - Execute `build.sh` with the command: `./target/build/build.sh avr rebuild`
+  - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
+  - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
 
-In summary, on `*nix` for target _avr_
+In summary, on `*nix` for `target avr`
 
 ```C
 cd real-time-cpp
@@ -185,29 +185,29 @@ config.txt, all described on internet. A complete set of
 running the bare-metal reference application are included in this repo.
 The program toggles the GPIO status LED  at GPIO index `0x47`.
 
-For other compatible boards, feel free contact me with an issue requesting
-further details on your desired target system.
+For other compatible boards, feel free contact me directly or submit
+an issue requesting support for your desired target system.
 
 ## All Bare-Metal
 
-The projects are programmed _OS-less_ in bare-metal mode
+Projects in this repo are programmed _OS-less_ in bare-metal mode
 making use of self-written startup code.
 No external libraries other than native C++ and its own
 standard libraries are used.
 
 Consider, for instance, the BeagleBone Black Edition
-(known as target am335x below) --- one of several
+(known as `target am335x` below) --- one of several
 target systems supported in this repository.
 The projects on this board boot from the binary image file
 _MLO_ the SD card and subsequently perform their own
 static initialization and chip initialization
-of the ARM(R) 8 am335x processor.
+of the ARM(R) 8 AM335x processor.
 
 The [image](./bare_metal_bbb.jpg)
 shows the bare-metal BBB in action. The first
-user LED is toggled on port1.21 and the oscilloscope captures
+user LED is toggled on `port1.21` and the oscilloscope captures
 a real-time measurement with time signal on digital I/O
-port1.15 (header pin P8.15 on the BBB).
+`port1.15` (header pin `P8.15` on the BBB).
 
 ## Benchmarks
 
