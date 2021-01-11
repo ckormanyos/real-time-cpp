@@ -15,7 +15,7 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                               \
+TGT_ALLFLAGS  = -O2                                                               \
                 -mmcu=atmega4809                                                  \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
@@ -56,8 +56,10 @@ AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
                                  -e                                  \
                                  -D                                  \
                                  -Uflash:w:$(CURDIR)/$(APP).hex:i    \
-                                 -Ufuse2:w:0x01:m                    \
-                                 -Ufuse5:w:0xC9:m                    \
+                                 -Ufuse0:w:0x09:m                    \
+                                 -Ufuse2:w:0x02:m                    \
+                                 -Ufuse5:w:0xC8:m                    \
+                                 -Ufuse6:w:0x04:m                    \
                                  -Ufuse8:w:0x00:m                    \
                                  {upload.extra_files}
 

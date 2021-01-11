@@ -11,8 +11,9 @@
 # Description of the build options used in the build command below.
 #
 # %1: target
-#       avr                : ATMEL(R) AVR(R) Atmega328P
-#       atmega2560         : ATMEL(R) AVR(R) Atmega2560
+#       avr                : MICROCHIP [former ATMEL(R)] AVR(R) ATmega328P
+#       atmega2560         : MICROCHIP [former ATMEL(R)] AVR(R) ATmega2560
+#       atmega4809         : MICROCHIP [former ATMEL(R)] ATmegax4809
 #       am335x             : BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
 #       xtensa32           : Espressif (XTENSA) NodeMCU ESP32
 #       lpc11c24           : NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
