@@ -22,8 +22,9 @@ The LED application toggles a user-LED with a frequency of 1/2 Hz.
 ## Supported Targets in the Reference Application
 
 The reference application supports the following targets:
-  * ATMEL(R) AVR(R) Atmega328P
-  * ATMEL(R) AVR(R) Atmega2560
+  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P
+  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560
+  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809
   * BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
   * Espressif (XTENSA) NodeMCU ESP32
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
@@ -41,7 +42,7 @@ The reference application supports the following targets:
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
-supported boards, such as Arduino or RaspberryPi Zero or BeagleBone, etc.
+supported boards, such as Arduino or RaspberryPi ZERO or BeagleBone, etc.
 The reference application can be found
 in the directory [./ref_app](./ref_app) and its
 subdirectories.
@@ -57,9 +58,9 @@ To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
   - Have the terminal located here in [./ref_app](./ref_app) for the paths to work out and be found by the build.
   - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
-  - Select the desired configuration (such as _avr_)
+  - Select the desired configuration (such as `avr`)
   - Run GNU make with the command: `./target/build/build.sh avr rebuild`
-  - This rebuilds the entire solution for target _avr_.
+  - This rebuilds the entire solution for `avr`.
   - If you're missing AVR GNU tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
 
 In summary, on `*nix` for target _avr_
@@ -120,37 +121,45 @@ should work too.
 Target details including startup code and linker definition files can
 be found in the target-directory and its subdirectories.
 
-The ATMEL(R) AVR(R) configuration runs on an Arduino(R) compatible board.
-The program toggles the yellow LED on portb.5.
+The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
+called `target avr` runs
+on a classic ARDUINO(R) compatible board.
+The program toggles the yellow LED on `portb.5`.
+
+The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
+called `target atmega4809` runs
+on an ARDUINO(R) _EVERY_ compatible board clocked
+with the internal resonator at 20MHz.
+The program toggles the yellow LED on `porte.2`.
 
 The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
 with a single OS task on 1 core.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
-called "target lpc1124" toggles the LED on port0.8. 
+called "target lpc1124" toggles the LED on `port0.8`.
 
-The ARM(R) Cortex(TM)-M3 configuration (called "target stm32f100") runs on
+The ARM(R) Cortex(TM)-M3 configuration (called `target stm32f100`) runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
-The program toggles the blue LED on portc.8.
+The program toggles the blue LED on `portc.8`.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called "target stm32l100c")
+The second ARM(R) Cortex(TM)-M3 configuration (called `target stm32l100c`)
 runs on the STM32L100 DISCOVERY board commercially available from
-ST Microelectronics(R). The program toggles the blue LED on portc.8.
+ST Microelectronics(R). The program toggles the blue LED on `portc.8`.
 
-The third ARM(R) Cortex(TM)-M3 configuration (called "target stm32l152")
+The third ARM(R) Cortex(TM)-M3 configuration (called `target stm32l152`)
 runs on the STM32L152C-DISCO board commercially available from
-ST Microelectronics(R). The program toggles the blue LED on portb.6.
+ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
 
-The first ARM(R) Cortex(TM)-M4 configuration (called "target stm32f407") runs on
+The first ARM(R) Cortex(TM)-M4 configuration (called `target stm32f407`) runs on
 the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
-The program toggles the blue LED on portd.15.
+The program toggles the blue LED on `portd.15`.
 
-Another ARM(R) Cortex(TM)-M4 configuration (called "target stm32f446") runs on
+Another ARM(R) Cortex(TM)-M4 configuration (called `target stm32f446`) runs on
 the STM32F446 Nucleo-64 board commercially available from ST Microelectronics(R).
-The program toggles the green LED on porta.5.
+The program toggles the green LED on `porta.5`.
 
-The ARM(R) A8 configuration (called "target am335x") runs on the BeagleBone
+The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
 from 900MHz to something like 600MHz. This project creates a bare-metal program
 for the BeagleBone that runs independently from any kind of `*nix` distro on
@@ -159,9 +168,9 @@ called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
 special boot header comprised of two 32-bit integers. The program is loaded
 from SD-card into RAM memory and subsequently executed. When switching on
 the BeagleBone black, the boot button (S2) must be pressed while powering
-up the board. The program toggles the first user LED (LED1 on port1.21).
+up the board. The program toggles the first user LED (LED1 on `port1.21`).
 
-The ARM(R) 1176-JZF-S configuration (called "target bcm2835_raspi_b") runs on the
+The ARM(R) 1176-JZF-S configuration (called `target bcm2835_raspi_b`) runs on the
 RaspberryPi(R) Zero (PiZero) single core controller.
 This project creates a bare-metal program for the PiZero.
 This program runs independently from any kind of `*nix` distro on the board.
@@ -174,6 +183,7 @@ three other files: bootcode.bin, start.elf and (an optional)
 config.txt, all described on internet. A complete set of
 [PiZero boot contents for an SD card](./ref_app/target/micros/bcm2835_raspi_b/startup/SD_CARD/PiZero)
 running the bare-metal reference application are included in this repo.
+The program toggles the GPIO status LED  at GPIO index `0x47`.
 
 For other compatible boards, feel free contact me with an issue requesting
 further details on your desired target system.

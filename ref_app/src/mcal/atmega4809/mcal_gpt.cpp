@@ -8,12 +8,10 @@
 #include <mcal_gpt.h>
 #include <mcal_reg.h>
 
-#include <util/utility/util_two_part_data_manipulation.h>
-
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
+  volatile std::uint64_t system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -30,16 +28,18 @@ void __vector_3() __attribute__((signal, used, externally_visible));
 
 void __vector_3()
 {
-  // Increment the 64-bit system tick with 15625 [us].
-  const mcal::gpt::value_type new_tick = system_tick + static_cast<std::uint32_t>(15625U);
-
-  system_tick = new_tick;
-
   // Clear the interrupt flag (on overflow).
   mcal::reg::reg_access_static<std::uint16_t,
                                std::uint8_t,
                                mcal::reg::rtc_intflags,
                                UINT8_C(0)>::bit_set();
+
+  // Increment the 64-bit system tick with 15625 [us].
+  // This number of microseconds represents the time
+  // span needed for 256 ticks at (1/2) 32.768 kHz.
+  const mcal::gpt::value_type new_tick = system_tick + static_cast<std::uint32_t>(15625U);
+
+  system_tick = new_tick;
 }
 
 void mcal::gpt::init(const config_type*)
@@ -58,7 +58,7 @@ void mcal::gpt::init(const config_type*)
                                  mcal::reg::rtc_clksel,
                                  UINT8_C(0x00)>::reg_set();
 
-    // Set the rtc period to 0xFF.
+    // Set the rtc period to 0x00FF.
     mcal::reg::reg_access_static<std::uint16_t,
                                  std::uint8_t,
                                  mcal::reg::rtc_per,
@@ -69,7 +69,7 @@ void mcal::gpt::init(const config_type*)
                                  mcal::reg::rtc_per + 1U,
                                  UINT8_C(0x00)>::reg_set();
 
-    // Set the rtc compare value to 0xFF (even though this is not used).
+    // Set the rtc compare value to 0x00FF (even though this is not used).
     mcal::reg::reg_access_static<std::uint16_t,
                                  std::uint8_t,
                                  mcal::reg::rtc_cmp,
@@ -80,7 +80,7 @@ void mcal::gpt::init(const config_type*)
                                  mcal::reg::rtc_cmp + 1U,
                                  UINT8_C(0x00)>::reg_set();
 
-    // Set the rtc ount value to 0.
+    // Set the rtc count value to 0x0000.
     mcal::reg::reg_access_static<std::uint16_t,
                                  std::uint8_t,
                                  mcal::reg::rtc_cnt,
@@ -109,31 +109,30 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
   {
     // Return the system tick using a multiple read to ensure data consistency.
 
-    // Do the first read of the rtc counter and the system tick.
-    const std::uint8_t          rtc_cnt_1  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick;
+    // Do the first read of the rtc's cnt register and the system tick.
+    const std::uint8_t  rtc_cnt_1  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
+    const std::uint64_t sys_tick_1 = system_tick;
 
-    // Do the second read of the rtc counter counter.
-    const std::uint8_t          rtc_cnt_2  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
+    // Do the second read of the rtc's cnt register.
+    const std::uint8_t  rtc_cnt_2  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
 
     // Perform the consistency check.
-    std::uint32_t         low_part;
-    mcal::gpt::value_type consistent_microsecond_tick;
+    std::uint64_t consistent_microsecond_tick;
 
     if(rtc_cnt_2 >= rtc_cnt_1)
     {
-      low_part = (std::uint32_t) ((std::uint32_t) (rtc_cnt_1 * (std::uint32_t) 15625U) + 128U) / 256U;
+      const std::uint32_t low_part = (std::uint32_t) ((std::uint32_t) (rtc_cnt_1 * (std::uint32_t) 15625U) + 128U) / 256U;
 
       consistent_microsecond_tick = sys_tick_1 | low_part;
     }
     else
     {
-      low_part = (std::uint32_t) ((std::uint32_t) (rtc_cnt_2 * (std::uint32_t) 15625U) + 128U) / 256U;
+      const std::uint32_t low_part = (std::uint32_t) ((std::uint32_t) (rtc_cnt_2 * (std::uint32_t) 15625U) + 128U) / 256U;
 
       consistent_microsecond_tick = system_tick | low_part;
     }
 
-    return consistent_microsecond_tick;
+    return (mcal::gpt::value_type) consistent_microsecond_tick;
   }
   else
   {

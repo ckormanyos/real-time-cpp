@@ -20,7 +20,7 @@
       typedef mcal::port::port_pin<std::uint16_t,
                                    std::uint8_t,
                                    mcal::reg::portd,
-                                   UINT8_C(0)> benchmark_port_type;
+                                   UINT8_C(3)> benchmark_port_type;
     }
   }
 
