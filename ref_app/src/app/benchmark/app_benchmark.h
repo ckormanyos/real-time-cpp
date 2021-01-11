@@ -46,6 +46,7 @@
 
   #if  (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
   // none
+  bool run_none();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
   bool run_complex();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)

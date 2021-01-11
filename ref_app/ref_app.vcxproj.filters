@@ -796,6 +796,9 @@
     <ClCompile Include="src\mcal\atmega4809\mcal_memory_sram.cpp">
       <Filter>src\mcal\atmega4809</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_none.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">

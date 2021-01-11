@@ -214,6 +214,8 @@ a real-time measurement with time signal on digital I/O
 [Benchmarks](./ref_app/src/app/benchmark)
 provide scalable, portable C++11 means for identifying
 the performance and the performance class of the microcontroller.
+For more information, see the detailed information
+on the [Benchmarks](./ref_app/src/app/benchmark) pages.
 
 ## GNU GCC Compilers
 

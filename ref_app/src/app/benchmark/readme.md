@@ -11,7 +11,7 @@
 
 ## Benchmark details
 
-  - ![`APP_BENCHMARK_TYPE_NONE              `](./app_benchmark.cpp) is an empty benchmark with no functionality other than pin toggle.
+  - ![`APP_BENCHMARK_TYPE_NONE              `](./app_benchmark_none.cpp) is an empty benchmark with merely a Boolean function call returning `true`.
   - ![`APP_BENCHMARK_TYPE_COMPLEX           `](./app_benchmark_complex.cpp) computes a floating-point complex-valued trigonometric sine function using the [`extended_complex::complex`](../../math/extended_complex/extended_complex.h) template class.
   - ![`APP_BENCHMARK_TYPE_CRC               `](./app_benchmark_crc.cpp) calculates a 32-bit byte-oriented CRC result described in Sect. 6.1 of the book.
   - ![`APP_BENCHMARK_TYPE_FAST_MATH         `](./app_benchmark_fast_math.cpp) calculates reduced, time-optimized floating-point elementary transcendental functions.

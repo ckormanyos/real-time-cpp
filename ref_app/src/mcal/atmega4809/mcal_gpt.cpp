@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+//  Copyright Christopher Kormanyos 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,6 +46,22 @@ void mcal::gpt::init(const config_type*)
 {
   if(gpt_is_initialized() == false)
   {
+    // The numerics of setting up this timer are outlined as follows.
+    // We take the real-time counter clocked at 32.768 kHz and
+    // use a prescalar of 2. The resulting frequency is (1/2) 32.768 kHz.
+    // We will use a period and compare value of 0x00FF below
+    // (with interrupt on compare).
+
+    // The resulting in a tick count is 256 (at) (1/2) 32.768 kHz.
+    // Under these conditions, 256 ticks requires:
+    // T = (2,000,000 [us] / 32,768) * 256 = 15,625 [us].
+    // So there will be an interrupt every 15,625 [us].
+
+    // Scaling from ticks to [us] requires multiplication
+    // by a factor of (15,625 / 256), which is done via
+    // rounded integer mathematics in the subroutine
+    // get_time_elapsed() below.
+
     // Enable interrupt on overflow.
     mcal::reg::reg_access_static<std::uint16_t,
                                  std::uint8_t,

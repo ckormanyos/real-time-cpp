@@ -41,7 +41,7 @@ void app::benchmark::task_func()
 
   #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
 
-  const bool result_is_ok = true;
+  const bool result_is_ok = app::benchmark::run_none();
 
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
 
