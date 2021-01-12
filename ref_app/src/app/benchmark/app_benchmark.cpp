@@ -25,11 +25,8 @@ namespace app
 
 void app::benchmark::task_init()
 {
-  #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
-  #else
   // Set the benchmark port pin direction to output.
   port_type::set_direction_output();
-  #endif
 }
 
 void app::benchmark::task_func()
