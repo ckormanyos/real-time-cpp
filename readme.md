@@ -99,7 +99,7 @@ It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
 
 ### Build with Cross-Environment CMake
 
-TBD: Describe this more clearly and handle [#76](./blob/issues/76).
+TBD: Describe this more clearly and handle [issue #76](https://github.com/ckormanyos/real-time-cpp/issues/79).
 CMake files have also been created for each supported target.
 
 Win+R, cmd, enter
