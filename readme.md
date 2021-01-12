@@ -1,7 +1,9 @@
 
 # Companion code for the book "Real-Time C++".
 
-See : C.M. Kormanyos, [Real-Time C++](http://www.springer.com/9783662567173):
+This is the companion code
+for the book C.M. Kormanyos,
+[Real-Time C++](http://www.springer.com/9783662567173):
 Efficient Object-Oriented
 and Template Microcontroller Programming, Third Edition
 (Springer, Heidelberg, 2018). ISBN 9783662567173
@@ -58,7 +60,7 @@ To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
   - The terminal should be located directly in [./ref_app](./ref_app) for the paths to work out (be found by the upcoming build).
   - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
-  - Select the desired configuration (such as `avr`)
+  - Consider which configuration (such as `target avr`) you'd like to build
   - Execute `build.sh` with the command: `./target/build/build.sh avr rebuild`
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
   - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
@@ -97,8 +99,8 @@ It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
 
 ### Build with Cross-Environment CMake
 
+TBD: Describe this more clearly and handle [#76](./issues/76).
 CMake files have also been created for each supported target.
-TBD: Describe this more clearly and handle #76.
 
 Win+R, cmd, enter
 
@@ -128,13 +130,13 @@ The program toggles the yellow LED on `portb.5`.
 
 The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
-on an ARDUINO(R) _EVERY_ compatible board clocked
+on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at 20MHz.
 The program toggles the yellow LED on `porte.2`.
 
 The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
-with a single OS task on 1 core.
+with a single OS task exclusively on 1 of its cores.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
 called "target lpc1124" toggles the LED on `port0.8`.
