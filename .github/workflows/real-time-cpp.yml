@@ -120,7 +120,7 @@ jobs:
         run: sudo apt install gcc-arm-none-eabi
       - name: build-target-stm32f429
         run: |
-            ./target/build/build.sh stm32f429 rebuild
+          ./target/build/build.sh stm32f429 rebuild
           ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
