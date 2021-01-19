@@ -119,9 +119,8 @@ set(_CFLAGS ${GCCFLAGS}
 set(_CXXFLAGS ${GCCFLAGS}
     -x c++
     -fno-rtti
-    -fstrict-enums
     -fno-use-cxa-atexit
-    -fno-use-cxa-get-exception-ptr
+    -fno-exceptions
     -fno-nonansi-builtins
     -fno-threadsafe-statics
     -fno-enforce-eh-specs
