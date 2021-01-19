@@ -30,7 +30,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
     ${PATH_APP}/util/STL
 )
 

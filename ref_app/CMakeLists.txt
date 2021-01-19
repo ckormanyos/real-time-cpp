@@ -127,6 +127,7 @@ set(app_src
     ${PATH_APP}/app/benchmark/app_benchmark_fixed_point
     ${PATH_APP}/app/benchmark/app_benchmark_float
     ${PATH_APP}/app/benchmark/app_benchmark_hash
+    ${PATH_APP}/app/benchmark/app_benchmark_none
     ${PATH_APP}/app/benchmark/app_benchmark_pi_spigot
     ${PATH_APP}/app/benchmark/app_benchmark_pi_spigot_single
     ${PATH_APP}/app/benchmark/app_benchmark_wide_integer
