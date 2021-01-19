@@ -27,23 +27,21 @@ set(APP MLO)
 set(CMAKE_EXECUTABLE_SUFFIX "")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
     ${PATH_APP}/util/STL
 )
 
 set(_TARGET_CFLAGS
     -finline-functions
     -finline-limit=32
-    -mcpu=cortex-a8
+    -march=armv7-a
     -mtune=cortex-a8
     -marm
     -mfloat-abi=hard
     -mfpu=neon
     -ffast-math
-    -ftree-vectorize
 )
 
 set(TARGET_AFLAGS "")
