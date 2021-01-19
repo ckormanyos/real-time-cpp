@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=amx335x -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=am335x -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
           ls ref_app.hex
         working-directory: ./
