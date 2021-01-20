@@ -76,6 +76,10 @@ void operator delete(void*, void*)       UTIL_NOEXCEPT { }
 void operator delete(void*, std::size_t) UTIL_NOEXCEPT { }
 #endif
 
+int _exit (int);
+
+int _exit(int)                               { return -1; }
+
 extern "C"
 {
   // Declarations of patched functions.
@@ -92,7 +96,6 @@ extern "C"
   void        _Exit               (int)        UTIL_NOEXCEPT __attribute__((noreturn));
   void        exit                (int)                      __attribute__((noreturn));
   void        quick_exit          (int)                      __attribute__((noreturn));
-  int         _exit               (int);
   int         _isatty             (int);
   int         _lseek              (int, int, int);
   int         _open               (const char*, int, int);
@@ -115,7 +118,6 @@ extern "C"
   void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
-  int         _exit               (int)                               { return -1; }
   int         _isatty             (int)                               { return  1; }
   int         _lseek              (int, int, int)                     { return  0; }
   int         _open               (const char*, int, int)             { return -1; }
