@@ -27,7 +27,7 @@ set(APP ref_app)
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
     ${PATH_APP}/util/STL
@@ -35,7 +35,7 @@ set(TARGET_INCLUDES
 
 set(_TARGET_CFLAGS
     -finline-functions
-    -finline-limit=16
+    -finline-limit=32
     -mcpu=cortex-m4
     -mtune=cortex-m4
     -mthumb
