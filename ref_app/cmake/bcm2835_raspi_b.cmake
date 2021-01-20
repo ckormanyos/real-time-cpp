@@ -1,3 +1,9 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2021.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 #
 # MIT License
 #
@@ -22,21 +28,20 @@
 # SOFTWARE.
 #
 
-set(APP kernel)
+set(APP ref_app)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
     ${PATH_APP}/util/STL
 )
 
 set(_TARGET_CFLAGS
     -finline-functions
-    -finline-limit=16
+    -finline-limit=32
     -march=armv6zk
     -mtune=arm1176jzf-s
     -marm
@@ -67,5 +72,5 @@ set(FILES_TARGET
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1
-    ${PATH_TGT}/startup/int_vect
+    ${PATH_TGT}/startup/int_vect.s
 )

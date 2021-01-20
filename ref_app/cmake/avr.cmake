@@ -1,3 +1,9 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2021.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
 #
 # MIT License
 #
@@ -27,10 +33,9 @@ set(APP ref_app)
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
     ${PATH_APP}/util/STL
 )
 
