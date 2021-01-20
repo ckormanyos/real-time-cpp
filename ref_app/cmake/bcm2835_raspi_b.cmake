@@ -28,21 +28,20 @@
 # SOFTWARE.
 #
 
-set(APP kernel)
+set(APP ref_app)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
     ${PATH_APP}/util/STL
 )
 
 set(_TARGET_CFLAGS
     -finline-functions
-    -finline-limit=16
+    -finline-limit=32
     -march=armv6zk
     -mtune=arm1176jzf-s
     -marm

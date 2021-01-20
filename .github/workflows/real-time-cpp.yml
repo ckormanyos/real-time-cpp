@@ -70,6 +70,24 @@ jobs:
           ls ./bin/ref_app.hex ./bin/kernel.img
         working-directory: ./ref_app/
         shell: bash
+  target-bcm2835_raspi_b-cmake:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: build-target-bcm2835_raspi_b
+        run: |
+          mkdir build
+          cd build
+          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=bcm2835_raspi_b -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          make -j ref_app
+          ls ref_app.hex
+        working-directory: ./
+        shell: bash
   target-lpc11c24:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
