@@ -15,8 +15,7 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                               \
-                -flto                                                             \
+TGT_ALLFLAGS  = -O2                                                               \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -march=armv7-a                                                    \
@@ -37,9 +36,7 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                         \
-                -nostartfiles                                                     \
-                -flto                                                             \
+TGT_LDFLAGS   = -nostartfiles                                                     \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

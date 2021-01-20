@@ -54,7 +54,6 @@ set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
     -nostdlib
-    -nostartfiles
     -T ${LINKER_DEFINITION_FILE}
 )
 
