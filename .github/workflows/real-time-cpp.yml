@@ -8,7 +8,7 @@ name: real-time-cpp
 on: [push,pull_request]
 jobs:
   target-am335x:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -22,26 +22,8 @@ jobs:
           ls ./bin/ref_app.hex
         working-directory: ./ref_app/
         shell: bash
-  target-am335x-cmake:
-    runs-on: ubuntu-18.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-am335x
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=am335x -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
   target-avr:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -56,7 +38,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-avr-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -74,7 +56,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-bcm2835_raspi_b:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -89,7 +71,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-bcm2835_raspi_b-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -107,7 +89,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-lpc11c24:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -122,7 +104,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-lpc11c24-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -140,7 +122,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32f100:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -155,7 +137,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32f100-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -173,7 +155,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32f407:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -188,7 +170,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32f407-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -206,7 +188,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32f429:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -221,7 +203,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32f429-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -239,7 +221,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32f446:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -254,7 +236,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32f446-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -272,7 +254,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32l100c:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -287,7 +269,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32l100c-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -305,7 +287,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-stm32l152:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -320,7 +302,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-stm32l152-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -338,7 +320,7 @@ jobs:
         working-directory: ./
         shell: bash
   target-x86_64:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -353,7 +335,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   benchmark_tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
