@@ -19,7 +19,7 @@ jobs:
       - name: build-target-am335x
         run: |
           ./target/build/build.sh am335x rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-avr:
@@ -34,7 +34,7 @@ jobs:
       - name: build-target-avr
         run: |
           ./target/build/build.sh avr rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-avr-cmake:
@@ -67,7 +67,7 @@ jobs:
       - name: build-target-bcm2835_raspi_b
         run: |
           ./target/build/build.sh bcm2835_raspi_b rebuild
-          ls ./bin/ref_app.hex ./bin/kernel.img
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-bcm2835_raspi_b-cmake:
@@ -100,7 +100,7 @@ jobs:
       - name: build-target-lpc11c24
         run: |
           ./target/build/build.sh lpc11c24 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-lpc11c24-cmake:
@@ -133,7 +133,7 @@ jobs:
       - name: build-target-stm32f100
         run: |
           ./target/build/build.sh stm32f100 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32f100-cmake:
@@ -166,7 +166,7 @@ jobs:
       - name: build-target-stm32f407
         run: |
           ./target/build/build.sh stm32f407 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32f407-cmake:
@@ -199,7 +199,7 @@ jobs:
       - name: build-target-stm32f429
         run: |
           ./target/build/build.sh stm32f429 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32f429-cmake:
@@ -232,7 +232,7 @@ jobs:
       - name: build-target-stm32f446
         run: |
           ./target/build/build.sh stm32f446 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32f446-cmake:
@@ -265,7 +265,7 @@ jobs:
       - name: build-target-stm32l100c
         run: |
           ./target/build/build.sh stm32l100c rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32l100c-cmake:
@@ -298,7 +298,7 @@ jobs:
       - name: build-target-stm32l152
         run: |
           ./target/build/build.sh stm32l152 rebuild
-          ls ./bin/ref_app.hex
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-stm32l152-cmake:
@@ -331,7 +331,7 @@ jobs:
       - name: build-target-x86_64-w64-mingw32
         run: |
           ./target/build/build.sh x86_64-w64-mingw32 rebuild
-          ls ./bin/ref_app.exe
+          ls ./bin/ref_app.exe ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
   target-host-cmake:
@@ -347,7 +347,7 @@ jobs:
           cd build
           cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
-          ls ref_app*
+          ls ref_app.exe ref_app.map
         working-directory: ./
         shell: bash
   msvc-release:
