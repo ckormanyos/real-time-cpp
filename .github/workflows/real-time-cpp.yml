@@ -358,5 +358,22 @@ jobs:
         shell: pwsh
         env:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
-        run: MSBuild -m ref_app.sln -p:Configuration=Release -p:Platform=x64
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration=Release -p:Platform=x64
+          dir ./tmp/Release/ref_app.exe
+        working-directory: ./ref_app/
+  msvc-debug:
+    runs-on: windows-latest
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: build-msvc-debug
+        shell: pwsh
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration=Debug -p:Platform=x64
+          dir ./tmp/Debug/ref_app.exe
         working-directory: ./ref_app/
