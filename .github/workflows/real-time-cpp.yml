@@ -331,7 +331,7 @@ jobs:
       - name: build-target-x86_64-w64-mingw32
         run: |
           ./target/build/build.sh x86_64-w64-mingw32 rebuild
-          ls ./bin/ref_app.exe ./bin/ref_app.map
+          ls ./bin/ref_app.exe
         working-directory: ./ref_app/
         shell: bash
   target-host-cmake:
