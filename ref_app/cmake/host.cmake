@@ -37,11 +37,9 @@ else()
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
-set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL_C++XX_stdfloat
-)
+set(TARGET_INCLUDES)
 
 if ((CMAKE_CXX_COMPILER_ID MATCHES "AppleClang") OR 
     (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
@@ -52,7 +50,9 @@ if ((CMAKE_CXX_COMPILER_ID MATCHES "AppleClang") OR
 
     set(TARGET_AFLAGS "")
 
-    set(_TARGET_LDFLAGS -pthread)
+    set(_TARGET_LDFLAGS -pthread
+                        -lpthread
+    )
 
 else()
 
@@ -67,7 +67,9 @@ else()
 
         set(TARGET_AFLAGS "")
 
-        set(_TARGET_LDFLAGS -pthread)
+        set(_TARGET_LDFLAGS -pthread
+                            -lpthread
+        )
 
     else()
 

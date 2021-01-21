@@ -334,18 +334,21 @@ jobs:
           ls ./bin/ref_app.exe
         working-directory: ./ref_app/
         shell: bash
-  benchmark_tests:
+  target-host-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install g++-10
-      - name: benchmark_tests
-        run: ./target/build/test_app_benchmarks.sh
-        working-directory: ./ref_app/
+      - name: build-target-host
+        run: |
+          mkdir build
+          cd build
+          cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          make -j ref_app
+          ls ref_app*
+        working-directory: ./
         shell: bash
   msvc-release:
     runs-on: windows-latest
@@ -377,3 +380,16 @@ jobs:
           MSBuild -m ref_app.sln -p:Configuration=Debug -p:Platform=x64
           dir ./tmp/Debug/ref_app.exe
         working-directory: ./ref_app/
+  benchmark_tests:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install g++-10
+      - name: benchmark_tests
+        run: ./target/build/test_app_benchmarks.sh
+        working-directory: ./ref_app/
+        shell: bash
