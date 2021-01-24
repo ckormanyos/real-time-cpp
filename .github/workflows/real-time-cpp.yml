@@ -68,13 +68,31 @@ jobs:
         run: |
           cd chapter02_03
           ./build.sh /usr/bin avr
-          ls ./bin/chapter02_03.hex ./bin/chapter02_03.map
+          ls ./bin/chapter02_03.elf ./bin/chapter02_03.map ./bin/chapter02_03.hex
           cd ../chapter02_03a
           ./build.sh /usr/bin avr
-          ls ./bin/chapter02_03a.hex ./bin/chapter02_03a.map
+          ls ./bin/chapter02_03a.elf ./bin/chapter02_03a.map ./bin/chapter02_03a.hex
           cd ../chapter03_02
           ./build.sh /usr/bin avr
-          ls ./bin/chapter03_02.hex ./bin/chapter03_02.map
+          ls ./bin/chapter03_02.elf ./bin/chapter03_02.map ./bin/chapter03_02.hex
+          cd ../chapter04_04
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter04_04.elf ./bin/chapter04_04.map ./bin/chapter04_04.hex
+          cd ../chapter04_04a
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter04_04a.elf ./bin/chapter04_04a.map ./bin/chapter04_04a.hex
+          cd ../chapter06_01
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter06_01.elf ./bin/chapter06_01.map ./bin/chapter06_01.hex
+          cd ../chapter06_14
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter06_14.elf ./bin/chapter06_14.map ./bin/chapter06_14.hex
+          cd ../chapter09_07
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter09_07.elf ./bin/chapter09_07.map ./bin/chapter09_07.hex
+          cd ../chapter09_08
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter09_08.elf ./bin/chapter09_08.map ./bin/chapter09_08.hex
         working-directory: ./examples/
         shell: bash
   target-bcm2835_raspi_b:
