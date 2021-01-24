@@ -74,9 +74,9 @@
       return write_clear_lines_is_ok;
     }
 
-    virtual bool write_n(const char* pstr,
-                         const std::uint_fast8_t length,
-                         const std::uint_fast8_t line_index)
+    virtual bool write(const char* pstr,
+                       const std::uint_fast8_t length,
+                       const std::uint_fast8_t line_index)
     {
       std::uint_fast8_t char_index = 0U;
 

@@ -67,7 +67,7 @@ jobs:
       - name: build-target-bcm2835_raspi_b
         run: |
           ./target/build/build.sh bcm2835_raspi_b rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
+          ls ./bin/ref_app.hex ./bin/ref_app.map ./bin/kernel.img
         working-directory: ./ref_app/
         shell: bash
   target-bcm2835_raspi_b-cmake:

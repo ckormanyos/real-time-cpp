@@ -227,6 +227,12 @@
     {
       return detail::addressof_impl<T>::f(detail::addr_impl_ref<T>(v), 0);
     }
+
+    template<typename AllocatorType>
+    struct allocator_traits
+    {
+      // TBD: Implement the essentials of allocator_traits.
+    };
   }
 
 #endif // MEMORY_2010_02_23_
