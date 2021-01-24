@@ -68,7 +68,7 @@ jobs:
         run: |
           cd chapter02_03
           ./build.sh /usr/bin avr
-          ls ./bin/chapter02_03.elf ./bin/chapter02_03.map ./bin/chapter02_03.hex
+          ls ./bin/chapter02_03.elf ./bin/chapter02_03.map ./bin/chapter02_03.rex
           cd ../chapter02_03a
           ./build.sh /usr/bin avr
           ls ./bin/chapter02_03a.elf ./bin/chapter02_03a.map ./bin/chapter02_03a.hex

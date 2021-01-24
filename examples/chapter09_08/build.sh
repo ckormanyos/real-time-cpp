@@ -91,9 +91,6 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/
 echo "Compile  : mcal_irq.cpp to bin/mcal_irq.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_irq.cpp -o bin/mcal_irq.o
 
-echo "Compile  : mcal_led.cpp to bin/mcal_led.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_led.cpp -o bin/mcal_led.o
-
 echo "Compile  : mcal_osc.cpp to bin/mcal_osc.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_osc.cpp -o bin/mcal_osc.o
 
