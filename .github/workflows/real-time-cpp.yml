@@ -66,7 +66,10 @@ jobs:
         run: sudo apt install gcc-avr avr-libc
       - name: build-avr-examples
         run: |
-          cd chapter02_03
+          cd chapter02_02
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter02_02.elf ./bin/chapter02_02.map ./bin/chapter02_02.hex
+          cd ../chapter02_03
           ./build.sh /usr/bin avr
           ls ./bin/chapter02_03.elf ./bin/chapter02_03.map ./bin/chapter02_03.hex
           cd ../chapter02_03a
@@ -93,6 +96,15 @@ jobs:
           cd ../chapter09_08
           ./build.sh /usr/bin avr
           ls ./bin/chapter09_08.elf ./bin/chapter09_08.map ./bin/chapter09_08.hex
+          cd ../chapter12_04
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter12_04.elf ./bin/chapter12_04.map ./bin/chapter12_04.hex
+          cd ../chapter17_03
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter17_03.elf ./bin/chapter17_03.map ./bin/chapter17_03.hex
+          cd ../chapter17_03a
+          ./build.sh /usr/bin avr
+          ls ./bin/chapter17_03a.elf ./bin/chapter17_03a.map ./bin/chapter17_03a.hex
         working-directory: ./examples/
         shell: bash
   target-bcm2835_raspi_b:
