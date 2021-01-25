@@ -122,6 +122,9 @@ jobs:
           cd chapter02_03
           MSBuild -m chapter02_03.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/chapter02_03.exe
+          cd ../chapter02_03a
+          MSBuild -m chapter02_03a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter02_03a.exe
         working-directory: ./examples/
   target-bcm2835_raspi_b:
     runs-on: ubuntu-20.04
