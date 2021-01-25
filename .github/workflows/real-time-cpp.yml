@@ -75,6 +75,9 @@ jobs:
           cd ../chapter02_03a
           ./build.sh /usr/bin avr
           ls ./bin/chapter02_03a.elf ./bin/chapter02_03a.map ./bin/chapter02_03a.hex
+          cd ../chapter02_06
+          ./build.sh /usr/bin avr
+          ls ./bin/led.elf ./bin/led.map ./bin/led.hex
           cd ../chapter03_02
           ./build.sh /usr/bin avr
           ls ./bin/chapter03_02.elf ./bin/chapter03_02.map ./bin/chapter03_02.hex
@@ -125,6 +128,33 @@ jobs:
           cd ../chapter02_03a
           MSBuild -m chapter02_03a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/chapter02_03a.exe
+          cd ../chapter04_04
+          MSBuild -m chapter04_04.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter04_04.exe
+          cd ../chapter03_02
+          MSBuild -m chapter03_02.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter03_02.exe
+          cd ../chapter04_04a
+          MSBuild -m chapter04_04a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter04_04a.exe
+          cd ../chapter06_01
+          MSBuild -m chapter06_01.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter06_01.exe
+          cd ../chapter06_14
+          MSBuild -m chapter06_14.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter06_14.exe
+          cd ../chapter09_08
+          MSBuild -m chapter09_08.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter09_08.exe
+          cd ../chapter12_04
+          MSBuild -m chapter12_04.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter12_04.exe
+          cd ../chapter17_03
+          MSBuild -m chapter17_03.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter17_03.exe
+          cd ../chapter17_03a
+          MSBuild -m chapter17_03a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter17_03a.exe
         working-directory: ./examples/
   target-bcm2835_raspi_b:
     runs-on: ubuntu-20.04
