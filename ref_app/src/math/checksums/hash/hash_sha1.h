@@ -107,7 +107,7 @@
 
       std::for_each(the_last_message_block.rbegin(),
                     the_last_message_block.rbegin() + 8U,
-                    [&carry, &local_message_length_total, this](std::uint8_t& the_byte)
+                    [&carry, &local_message_length_total](std::uint8_t& the_byte)
                     {
                       const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(local_message_length_total) << 3;
 
