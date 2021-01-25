@@ -22,6 +22,8 @@ mkdir -p bin
 
 rm -f ./bin/*.*
 
+echo run benchmarks with GCC=$GCC STD=$STD
+
 $GCC -std=$STD -Wall -Werror -O3 -march=native -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_COMPLEX             -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_complex.cpp              -o ./bin/app_benchmark_complex.exe
 $GCC -std=$STD -Wall -Werror -O3 -march=native -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC                 -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp                  -o ./bin/app_benchmark_crc.exe
 $GCC -std=$STD -Wall -Werror -O3 -march=native -I./src/mcal/host -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_FAST_MATH           -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_fast_math.cpp            -o ./bin/app_benchmark_fast_math.exe
