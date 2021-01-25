@@ -107,6 +107,22 @@ jobs:
           ls ./bin/chapter17_03a.elf ./bin/chapter17_03a.map ./bin/chapter17_03a.hex
         working-directory: ./examples/
         shell: bash
+  target-msvc-examples:
+    runs-on: windows-latest
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: target-msvc-examples
+        shell: pwsh
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        run: |
+          cd chapter02_03
+          MSBuild -m chapter02_03.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir ./Release/chapter02_03.exe
+        working-directory: ./examples/
   target-bcm2835_raspi_b:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
