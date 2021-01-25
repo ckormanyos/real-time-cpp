@@ -486,7 +486,18 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-8 gcc-9 gcc-10
       - name: benchmark_tests
-        run: ./target/build/test_app_benchmarks.sh
+        run: |
+            ./target/build/test_app_benchmarks.sh g++-8 c++11
+            ./target/build/test_app_benchmarks.sh g++-8 c++14
+            ./target/build/test_app_benchmarks.sh g++-8 c++17
+            ./target/build/test_app_benchmarks.sh g++-9 c++11
+            ./target/build/test_app_benchmarks.sh g++-9 c++14
+            ./target/build/test_app_benchmarks.sh g++-9 c++17
+            ./target/build/test_app_benchmarks.sh g++-10 c++11
+            ./target/build/test_app_benchmarks.sh g++-10 c++14
+            ./target/build/test_app_benchmarks.sh g++-10 c++17
         working-directory: ./ref_app/
         shell: bash
