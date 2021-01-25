@@ -103,18 +103,22 @@
       // with the lowest byte being stored at the highest position of the buffer
       std::uint8_t carry = static_cast<std::uint8_t>(0U);
 
+      std::uint64_t local_message_length_total = (std::uint64_t) base_class_type::message_length_total;
+
       std::for_each(the_last_message_block.rbegin(),
                     the_last_message_block.rbegin() + 8U,
-                    [&carry, this](std::uint8_t& the_byte)
+                    [&carry, &local_message_length_total, this](std::uint8_t& the_byte)
                     {
-                      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(base_class_type::message_length_total) << 3;
+                      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(local_message_length_total) << 3;
 
                       the_byte = static_cast<std::uint8_t>(the_word | carry);
 
-                      (base_class_type::message_length_total) >>= 8;
+                      local_message_length_total >>= 8U;
 
-                      carry = static_cast<std::uint8_t>(the_word >> 8) & static_cast<std::uint8_t>(0x07U);
+                      carry = static_cast<std::uint8_t>(the_word >> 8U) & static_cast<std::uint8_t>(0x07U);
                     });
+
+      base_class_type::message_length_total = (typename base_class_type::count_type) local_message_length_total;
 
       base_class_type::message_buffer = the_last_message_block;
 
