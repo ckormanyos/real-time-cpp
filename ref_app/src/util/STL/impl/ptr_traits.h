@@ -42,12 +42,6 @@
     template<typename...>
     using __void_t = void;
 
-    #if (__cplusplus >= 201703L)
-    // A metafunction that always yields void, used for detecting valid types.
-    template<typename...>
-    using void_t = void;
-    #endif
-
     // Implementation of the detection idiom (negative case).
     template<typename _Default, typename _AlwaysVoid,
     template<typename...> class _Op, typename... _Args>
@@ -149,7 +143,7 @@
       template<typename _Up>
       using rebind = _Up*;
 
-      static constexpr pointer pointer_to(__make_not_void<element_type>& __r) noexcept
+      static constexpr pointer pointer_to(__make_not_void<element_type>& __r)
       { return std::addressof(__r); }
     };
 
@@ -158,7 +152,7 @@
     using __ptr_rebind = typename pointer_traits<_Ptr>::template rebind<_Tp>;
 
     template<typename _Tp>
-    constexpr _Tp* __to_address(_Tp* __ptr) noexcept
+    constexpr _Tp* __to_address(_Tp* __ptr)
     {
       return __ptr;
     }
@@ -169,11 +163,11 @@
     { return std::__to_address(__ptr.operator->()); }
     #else
     template<typename _Ptr>
-    constexpr auto __to_address(const _Ptr& __ptr) noexcept -> decltype(std::pointer_traits<_Ptr>::to_address(__ptr))
+    constexpr auto __to_address(const _Ptr& __ptr) -> decltype(std::pointer_traits<_Ptr>::to_address(__ptr))
     { return std::pointer_traits<_Ptr>::to_address(__ptr); }
 
     template<typename _Ptr, typename... _None>
-    constexpr auto __to_address(const _Ptr& __ptr, _None...) noexcept
+    constexpr auto __to_address(const _Ptr& __ptr, _None...)
     {
       if constexpr (is_base_of_v<__gnu_debug::_Safe_iterator_base, _Ptr>)
       {
@@ -187,12 +181,12 @@
 
     template<typename _Tp>
     constexpr _Tp*
-    to_address(_Tp* __ptr) noexcept
+    to_address(_Tp* __ptr)
     { return std::__to_address(__ptr); }
 
     template<typename _Ptr>
     constexpr auto
-    to_address(const _Ptr& __ptr) noexcept
+    to_address(const _Ptr& __ptr)
     { return std::__to_address(__ptr); }
 
     #endif // C++2a

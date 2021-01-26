@@ -10,9 +10,6 @@
 
   #include <cstddef>
 
-  #include <impl/stl_local_constexpr.h>
-  #include <impl/stl_local_noexcept.h>
-
   // Implement some of <type_traits> for compilers that do not yet support it.
 
   namespace std
@@ -23,11 +20,11 @@
     {
       typedef the_value_type value_type;
 
-      static STL_LOCAL_CONSTEXPR value_type value = the_value;
+      static constexpr value_type value = the_value;
 
       typedef integral_constant type;
 
-      STL_LOCAL_CONSTEXPR operator value_type() const STL_LOCAL_NOEXCEPT
+      constexpr operator value_type() const
       {
         return value;
       }
@@ -155,7 +152,7 @@
     using remove_cvref_t = typename remove_cvref<T>::type;
 
     template<typename T>
-    constexpr remove_reference_t<T>&& move(T&& arg) STL_LOCAL_NOEXCEPT
+    constexpr remove_reference_t<T>&& move(T&& arg)
     {
       return static_cast<remove_reference_t<T>&&>(arg);
     }
