@@ -500,6 +500,7 @@ jobs:
             ./target/build/test_app_benchmarks.sh g++-10 c++11
             ./target/build/test_app_benchmarks.sh g++-10 c++14
             ./target/build/test_app_benchmarks.sh g++-10 c++17
+            ./target/build/test_app_benchmarks.sh g++-10 c++20
         working-directory: ./ref_app/
         shell: bash
   benchmark_tests-clang:
@@ -523,5 +524,6 @@ jobs:
             ./target/build/test_app_benchmarks.sh clang++-10 c++11
             ./target/build/test_app_benchmarks.sh clang++-10 c++14
             ./target/build/test_app_benchmarks.sh clang++-10 c++17
+            ./target/build/test_app_benchmarks.sh clang++-10 c++20
         working-directory: ./ref_app/
         shell: bash

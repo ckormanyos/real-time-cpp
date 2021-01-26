@@ -1887,6 +1887,12 @@
     <ClInclude Include="src\mcal_lcd\mcal_lcd_generic_st7066.h">
       <Filter>src\mcal_lcd</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\alloc_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\ptr_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

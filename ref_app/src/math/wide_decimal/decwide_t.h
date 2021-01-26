@@ -382,7 +382,7 @@
     static constexpr std::int64_t decwide_t_min_exp           = decwide_t_min_exp10;
 
     // Rebind the decwide_t allocator to the granularity of the LimbType.
-    using allocator_type = typename AllocatorType::template rebind<LimbType>::other;
+    using allocator_type = typename std::allocator_traits<AllocatorType>::template rebind_alloc<LimbType>;
 
     // Define the array type, which is the internal
     // representation of the data field of a decwide_t.

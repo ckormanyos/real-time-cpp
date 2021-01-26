@@ -49,7 +49,9 @@
 
         while(it != end())
         {
-          allocator_type(a).construct(it, v);
+          allocator_type my_a(a);
+
+          std::allocator_traits<AllocatorType>::construct(my_a, it, v);
 
           ++it;
         }
@@ -95,7 +97,9 @@
 
         while(p != elems + elem_count)
         {
-          allocator_type().destroy(p);
+          allocator_type a;
+
+          std::allocator_traits<allocator_type>::destroy(a, p);
 
           ++p;
         }
@@ -125,7 +129,9 @@
 
         while(p != elems + elem_count)
         {
-          allocator_type().destroy(p);
+          allocator_type a;
+
+          std::allocator_traits<allocator_type>::destroy(a, p);
 
           ++p;
         }
