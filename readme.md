@@ -213,14 +213,15 @@ _MLO_ the SD card and subsequently perform their own
 static initialization and chip initialization
 of the ARM(R) 8 AM335x processor.
 
-Th�s [image](./images/bare_metal_bbb.pdf)
-shows the bare-metal BeagleBobe Black Edition (BBB)
-in action. It is cyclically performing
+The following [pdf image](./images/bare_metal_bbb.pdf)
+depicts the bare-metal BeagleBobe Black Edition (BBB)
+in action. The microcontroller on the board is cyclically performing
 one of the [benchmarks](./ref_app/src/app/benchmark)
 mentioned above. The first
-user LED is toggled on `port1.21` and the oscilloscope captures
-a real-time measurement with time signal on digital I/O
-`port1.15`, header pin `P8.15` of the BBB.
+user LED is toggled on `port1.21` in multitasking operation
+and the oscilloscope captures
+a real-time measurement of the benchmark's time signal
+on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
 ## GNU GCC Compilers
 
