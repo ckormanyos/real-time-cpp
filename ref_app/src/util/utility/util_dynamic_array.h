@@ -43,14 +43,19 @@
                     const_reference v = value_type(),
                     const allocator_type& a = allocator_type())
         : elem_count(count),
-          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
+          elems     (nullptr)
       {
+        allocator_type my_a(a);
+
+        if(elem_count > 0U)
+        {
+          elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        }
+
         iterator it = begin();
 
         while(it != end())
         {
-          allocator_type my_a(a);
-
           std::allocator_traits<AllocatorType>::construct(my_a, it, v);
 
           ++it;
@@ -59,8 +64,15 @@
 
       dynamic_array(const dynamic_array& other)
         : elem_count(other.size()),
-          elems     (elem_count > 0U ? allocator_type().allocate(elem_count) : nullptr)
+          elems     (nullptr)
       {
+        allocator_type my_a;
+
+        if(elem_count > 0U)
+        {
+          elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        }
+
         std::copy(other.elems, other.elems + elem_count, elems);
       }
 
@@ -69,16 +81,30 @@
                     input_iterator last,
                     const allocator_type& a = allocator_type())
         : elem_count(static_cast<size_type>(std::distance(first, last))),
-          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
+          elems     (nullptr)
       {
+        allocator_type my_a(a);
+
+        if(elem_count > 0U)
+        {
+          elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        }
+
         std::copy(first, last, elems);
       }
 
       dynamic_array(std::initializer_list<value_type> lst,
                     const allocator_type& a = allocator_type())
         : elem_count(lst.size()),
-          elems     (elem_count > 0U ? allocator_type(a).allocate(elem_count) : nullptr)
+          elems     (nullptr)
       {
+        allocator_type my_a(a);
+
+        if(elem_count > 0U)
+        {
+          elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        }
+
         std::copy(lst.begin(), lst.end(), elems);
       }
 
@@ -95,17 +121,17 @@
       {
         pointer p = elems;
 
+        allocator_type my_a;
+
         while(p != elems + elem_count)
         {
-          allocator_type a;
-
-          std::allocator_traits<allocator_type>::destroy(a, p);
+          std::allocator_traits<allocator_type>::destroy(my_a, p);
 
           ++p;
         }
 
         // Destroy the elements and deallocate the range.
-        allocator_type().deallocate(elems, elem_count);
+        std::allocator_traits<allocator_type>::deallocate(my_a, elems, elem_count);
       }
 
       // Assignment operator.
@@ -127,16 +153,16 @@
         // Destroy the elements and deallocate the range.
         pointer p = elems;
 
+        allocator_type my_a;
+
         while(p != elems + elem_count)
         {
-          allocator_type a;
-
-          std::allocator_traits<allocator_type>::destroy(a, p);
+          std::allocator_traits<allocator_type>::destroy(my_a, p);
 
           ++p;
         }
 
-        allocator_type().deallocate(elems, elem_count);
+        std::allocator_traits<allocator_type>::deallocate(my_a, elems, elem_count);
 
         elem_count = other.elem_count;
         elems      = other.elems;
