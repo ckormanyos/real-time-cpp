@@ -393,6 +393,9 @@
     <None Include="target\micros\atmega4809\make\atmega4809.ld">
       <Filter>micros\atmega4809\make</Filter>
     </None>
+    <None Include="target\micros\stm32f446\_debug\Cortex-M4F.svd">
+      <Filter>micros\stm32f446\_debug</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

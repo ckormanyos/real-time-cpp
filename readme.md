@@ -190,6 +190,14 @@ The program toggles the GPIO status LED  at GPIO index `0x47`.
 For other compatible boards, feel free contact me directly or submit
 an issue requesting support for your desired target system.
 
+## Benchmarks
+
+[Benchmarks](./ref_app/src/app/benchmark)
+provide scalable, portable C++11 means for identifying
+the performance and the performance class of the microcontroller.
+For more information, see the detailed information
+on the [benchmarks](./ref_app/src/app/benchmark) pages.
+
 ## All Bare-Metal
 
 Projects in this repo are programmed _OS-less_ in bare-metal mode
@@ -205,19 +213,14 @@ _MLO_ the SD card and subsequently perform their own
 static initialization and chip initialization
 of the ARM(R) 8 AM335x processor.
 
-The [image](./bare_metal_bbb.jpg)
-shows the bare-metal BBB in action. The first
+Th�s [image](./images/bare_metal_bbb.pdf)
+shows the bare-metal BeagleBobe Black Edition (BBB)
+in action. It is cyclically performing
+one of the [benchmarks](./ref_app/src/app/benchmark)
+mentioned above. The first
 user LED is toggled on `port1.21` and the oscilloscope captures
 a real-time measurement with time signal on digital I/O
-`port1.15` (header pin `P8.15` on the BBB).
-
-## Benchmarks
-
-[Benchmarks](./ref_app/src/app/benchmark)
-provide scalable, portable C++11 means for identifying
-the performance and the performance class of the microcontroller.
-For more information, see the detailed information
-on the [Benchmarks](./ref_app/src/app/benchmark) pages.
+`port1.15`, header pin `P8.15` of the BBB.
 
 ## GNU GCC Compilers
 
