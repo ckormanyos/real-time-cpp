@@ -396,6 +396,9 @@
     <None Include="target\micros\stm32f446\_debug\Cortex-M4F.svd">
       <Filter>micros\stm32f446\_debug</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks_avr.sh">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

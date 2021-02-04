@@ -607,6 +607,7 @@
     <None Include="target\build\build.bat" />
     <None Include="target\build\build.sh" />
     <None Include="target\build\test_app_benchmarks.sh" />
+    <None Include="target\build\test_app_benchmarks_avr.sh" />
     <None Include="target\micros\am335x\make\am335x.ld" />
     <None Include="target\micros\am335x\make\am335x_files.gmk" />
     <None Include="target\micros\am335x\make\am335x_flags.gmk" />

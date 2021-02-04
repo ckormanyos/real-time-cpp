@@ -527,3 +527,16 @@ jobs:
             ./target/build/test_app_benchmarks.sh clang++-10 c++20
         working-directory: ./ref_app/
         shell: bash
+  benchmark_builds_avr:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-avr avr-libc
+      - name: benchmark_builds_avr
+        run: ./target/build/test_app_benchmarks_avr.sh
+        working-directory: ./ref_app/
+        shell: bash
