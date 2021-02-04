@@ -89,6 +89,6 @@ echo "result_ls_wide_integer      : "  "$result_ls_wide_integer"
 
 result_total=$((result_ls_complex+result_ls_crc+result_ls_fast_math+result_ls_filter+result_ls_fixed_point+result_ls_float+result_ls_hash+result_ls_none+result_ls_pi_agm+result_ls_pi_spigot+result_ls_pi_spigot_single+result_ls_trapezoid_integral+result_ls_wide_decimal+result_ls_wide_integer))
 
-echo "result_total                 : "  "$result_total"
+echo "result_total                : "  "$result_total"
 
 exit $result_total
