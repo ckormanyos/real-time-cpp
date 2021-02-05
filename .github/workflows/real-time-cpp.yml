@@ -222,21 +222,6 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-lpc11c24:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-lpc11c24
-        run: |
-          ./target/build/build.sh lpc11c24 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
   target-lpc11c24-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
@@ -263,7 +248,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ stm32f100, stm32f407, stm32f446 ]
+        suite: [ lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -272,7 +257,9 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: build-target-${{ matrix.suite }}
-        run: ./target/build/build.sh ${{ matrix.suite }} rebuild
+        run: |
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
   target-stm32f100-cmake:
     runs-on: ubuntu-20.04
@@ -292,21 +279,6 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-stm32f407:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f407
-        run: |
-          ./target/build/build.sh stm32f407 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
   target-stm32f407-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
@@ -324,21 +296,6 @@ jobs:
           make -j ref_app
           ls ref_app.hex
         working-directory: ./
-        shell: bash
-  target-stm32f429:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f429
-        run: |
-          ./target/build/build.sh stm32f429 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
         shell: bash
   target-stm32f429-cmake:
     runs-on: ubuntu-20.04
@@ -358,21 +315,6 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-stm32f446:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f446
-        run: |
-          ./target/build/build.sh stm32f446 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
   target-stm32f446-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
@@ -391,21 +333,6 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-stm32l100c:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32l100c
-        run: |
-          ./target/build/build.sh stm32l100c rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
   target-stm32l100c-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
@@ -423,21 +350,6 @@ jobs:
           make -j ref_app
           ls ref_app.hex
         working-directory: ./
-        shell: bash
-  target-stm32l152:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32l152
-        run: |
-          ./target/build/build.sh stm32l152 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
         shell: bash
   target-stm32l152-cmake:
     runs-on: ubuntu-20.04
