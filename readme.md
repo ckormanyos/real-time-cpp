@@ -223,6 +223,14 @@ and the oscilloscope captures
 a real-time measurement of the benchmark's time signal
 on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
+## Continuous Integration (CI)
+
+Continuous integration uses GitHub Actions programmed in YAML.
+The [CI script](.github/workflows/real-time-cpp.yml)
+exercises various target builds and benchmark builds/runs
+on Ubuntu or Windows-Latest using GNUmake, CMake or MSBuild
+depending on the particular build configuration.
+
 ## GNU GCC Compilers
 
 GNU GCC cross compilers for the microcontroller solutions are *not*
