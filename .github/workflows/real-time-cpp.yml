@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ avr, atmega2560 ]
+        suite: [ avr, atmega2560, atmega4809 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2

@@ -64,10 +64,10 @@ AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
                                  {upload.extra_files}
 
 
-AVR_AVRDUDE_FLAG_ECHO_PART1    = $(ECHO) echo Forcing reset using 1200bps open/close on port COM8             > $(subst /,\,$(CURDIR)/bin/flash.bat)
-AVR_AVRDUDE_FLAG_ECHO_PART2    = $(ECHO) c:\windows\system32\mode.com com8: baud=1200 dtr=on > NUL 1> NUL    >> $(subst /,\,$(CURDIR)/bin/flash.bat)
-AVR_AVRDUDE_FLAG_ECHO_PART3    = $(ECHO) c:\windows\system32\mode.com com8: dtr=off > NUL 1> NUL             >> $(subst /,\,$(CURDIR)/bin/flash.bat)
-AVR_AVRDUDE_FLAG_ECHO_PART4    = $(ECHO) $(subst /,\,$(AVR_AVRDUDE_TOOL)) $(subst /,\,$(AVR_AVRDUDE_FLAGS))  >> $(subst /,\,$(CURDIR)/bin/flash.bat)
+AVR_AVRDUDE_FLAG_ECHO_PART1    = $(ECHO) echo Forcing reset using 1200bps open/close on port COM8             > $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART2    = $(ECHO) c:\windows\system32\mode.com com8: baud=1200 dtr=on > NUL 1> NUL    >> $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART3    = $(ECHO) c:\windows\system32\mode.com com8: dtr=off > NUL 1> NUL             >> $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART4    = $(ECHO) $(subst /,\,$(AVR_AVRDUDE_TOOL)) $(subst /,\,$(AVR_AVRDUDE_FLAGS))  >> $(CURDIR)/bin/flash.bat
 
 
 RULE_SPECIAL_MAKE_FLASH_BATCH :=    $(AVR_AVRDUDE_FLAG_ECHO_PART1) \
