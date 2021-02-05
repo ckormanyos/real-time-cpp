@@ -7,21 +7,6 @@
 name: real-time-cpp
 on: [push,pull_request]
 jobs:
-  target-am335x:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-am335x
-        run: |
-          ./target/build/build.sh am335x rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
   targets-avr:
     runs-on: ubuntu-20.04
     defaults:
@@ -168,40 +153,7 @@ jobs:
           MSBuild -m chapter17_03a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/chapter17_03a.exe
         working-directory: ./examples/
-  target-bcm2835_raspi_b:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-bcm2835_raspi_b
-        run: |
-          ./target/build/build.sh bcm2835_raspi_b rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map ./bin/kernel.img
-        working-directory: ./ref_app/
-        shell: bash
-  target-bcm2835_raspi_b-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-bcm2835_raspi_b
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=bcm2835_raspi_b -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
-  targets-cortexm:
+  target-arm-none-eabi:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -209,7 +161,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -222,7 +174,7 @@ jobs:
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
-  targets-cortexm-cmake:
+  target-arm-none-eabi-cmake:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -230,7 +182,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
