@@ -255,8 +255,15 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-stm32f100:
+  targets-cortexm:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ stm32f100, stm32f407, stm32f446 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -264,12 +271,10 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f100
+      - name: build-target-${{suite}}
         run: |
-          ./target/build/build.sh stm32f100 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
+          ./target/build/build.sh ${{suite}} rebuild
         working-directory: ./ref_app/
-        shell: bash
   target-stm32f100-cmake:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
