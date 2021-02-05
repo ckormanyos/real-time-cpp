@@ -22,23 +22,15 @@ jobs:
           ls ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
         shell: bash
-  target-avr:
+  targets-avr:
     runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-avr avr-libc
-      - name: build-target-avr
-        run: |
-          ./target/build/build.sh avr rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
+    defaults:
+      run:
         shell: bash
-  target-avr-cmake:
-    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ avr, atmega2650 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -46,48 +38,35 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
-      - name: build-target-avr
+      - name: build-target-${{ matrix.suite }}
+        run: |
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+        working-directory: ./ref_app/
+  targets-avr-cmake:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ avr, atmega2650 ]
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-avr avr-libc
+      - name: build-target-${{ matrix.suite }}-cmake
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTRIPLE=avr -DTARGET=avr -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake ../ref_app -DTRIPLE=avr -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
-          ls ref_app.hex
+          ls -la ref_app.hex ref_app.map
         working-directory: ./
-        shell: bash
-  target-atmega2560:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-avr avr-libc
-      - name: build-target-avr
-        run: |
-          ./target/build/build.sh atmega2560 rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
-        working-directory: ./ref_app/
-        shell: bash
-  target-atmega2560-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-avr avr-libc
-      - name: build-target-avr
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=avr -DTARGET=atmega2560 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
   target-avr-examples:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
@@ -222,24 +201,6 @@ jobs:
           ls ref_app.hex
         working-directory: ./
         shell: bash
-  target-lpc11c24-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-lpc11c24
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=lpc11c24 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
   targets-cortexm:
     runs-on: ubuntu-20.04
     defaults:
@@ -259,10 +220,17 @@ jobs:
       - name: build-target-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
-          ls ./bin/ref_app.hex ./bin/ref_app.map
+          ls -la ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
-  target-stm32f100-cmake:
+  targets-cortexm-cmake:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -270,105 +238,14 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f100
+      - name: build-target-${{ matrix.suite }}-cmake
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f100 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
-          ls ref_app.hex
+          ls -la ref_app.hex ref_app.map
         working-directory: ./
-        shell: bash
-  target-stm32f407-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f407
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f407 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
-  target-stm32f429-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f429
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f429 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
-  target-stm32f446-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32f446
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
-  target-stm32l100c-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32l100c
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32l100c -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
-  target-stm32l152-cmake:
-    runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-stm32l152
-        run: |
-          mkdir build
-          cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32l152 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-          make -j ref_app
-          ls ref_app.hex
-        working-directory: ./
-        shell: bash
   target-x86_64:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
