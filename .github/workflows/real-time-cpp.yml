@@ -7,7 +7,7 @@
 name: real-time-cpp
 on: [push,pull_request]
 jobs:
-  targets-avr:
+  target-avr:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -23,12 +23,12 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
-      - name: build-target-${{ matrix.suite }}
+      - name: target-avr-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
-  targets-avr-cmake:
+  target-avr-cmake:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -44,7 +44,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
-      - name: build-target-${{ matrix.suite }}-cmake
+      - name: target-avr-cmake-${{ matrix.suite }}
         run: |
           mkdir build
           cd build
@@ -153,7 +153,7 @@ jobs:
           MSBuild -m chapter17_03a.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/chapter17_03a.exe
         working-directory: ./examples/
-  target-arm-none-eabi:
+  target-arm:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -169,12 +169,12 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-${{ matrix.suite }}
+      - name: target-arm-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
-  target-arm-none-eabi-cmake:
+  target-arm-cmake:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -190,7 +190,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
-      - name: build-target-${{ matrix.suite }}-cmake
+      - name: target-arm-cmake-${{ matrix.suite }}
         run: |
           mkdir build
           cd build
