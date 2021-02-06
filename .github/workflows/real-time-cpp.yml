@@ -68,7 +68,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
-      - name: build-avr-examples
+      - name: target-avr-example_led
         run: |
           cd ${{ matrix.example }}
           ./build.sh /usr/bin avr
@@ -91,7 +91,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
-      - name: build-avr-examples
+      - name: target-avr-examples
         run: |
           cd ${{ matrix.example }}
           ./build.sh /usr/bin avr
@@ -260,7 +260,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-10 clang-10
-      - name: benchmark_gcc-clang-8-9
+      - name: benchmark_gcc-clang-10
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-avr:
