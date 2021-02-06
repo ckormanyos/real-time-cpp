@@ -52,8 +52,31 @@ jobs:
           make -j ref_app
           ls -la ref_app.hex ref_app.map
         working-directory: ./
+  target-avr-example02_02:
+    runs-on: ubuntu-20.04
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-avr avr-libc
+      - name: build-avr-example02_02
+        run: |
+          cd chapter02_02
+          ./build.sh /usr/bin avr
+          ls ./bin/led.elf ./bin/led.map ./bin/led.hex
+        working-directory: ./examples/
+        shell: bash
   target-avr-examples:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [ chapter02_03, chapter02_03a, chapter02_06, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter12_04, chapter17_03, chapter17_03a ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -63,48 +86,9 @@ jobs:
         run: sudo apt install gcc-avr avr-libc
       - name: build-avr-examples
         run: |
-          cd chapter02_02
+          cd ${{ matrix.example }}
           ./build.sh /usr/bin avr
-          ls ./bin/led.elf ./bin/led.map ./bin/led.hex
-          cd ../chapter02_03
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter02_03.elf ./bin/chapter02_03.map ./bin/chapter02_03.hex
-          cd ../chapter02_03a
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter02_03a.elf ./bin/chapter02_03a.map ./bin/chapter02_03a.hex
-          cd ../chapter02_06
-          ./build.sh /usr/bin avr
-          ls ./bin/led.elf ./bin/led.map ./bin/led.hex
-          cd ../chapter03_02
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter03_02.elf ./bin/chapter03_02.map ./bin/chapter03_02.hex
-          cd ../chapter04_04
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter04_04.elf ./bin/chapter04_04.map ./bin/chapter04_04.hex
-          cd ../chapter04_04a
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter04_04a.elf ./bin/chapter04_04a.map ./bin/chapter04_04a.hex
-          cd ../chapter06_01
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter06_01.elf ./bin/chapter06_01.map ./bin/chapter06_01.hex
-          cd ../chapter06_14
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter06_14.elf ./bin/chapter06_14.map ./bin/chapter06_14.hex
-          cd ../chapter09_07
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter09_07.elf ./bin/chapter09_07.map ./bin/chapter09_07.hex
-          cd ../chapter09_08
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter09_08.elf ./bin/chapter09_08.map ./bin/chapter09_08.hex
-          cd ../chapter12_04
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter12_04.elf ./bin/chapter12_04.map ./bin/chapter12_04.hex
-          cd ../chapter17_03
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter17_03.elf ./bin/chapter17_03.map ./bin/chapter17_03.hex
-          cd ../chapter17_03a
-          ./build.sh /usr/bin avr
-          ls ./bin/chapter17_03a.elf ./bin/chapter17_03a.map ./bin/chapter17_03a.hex
+          ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
         shell: bash
   target-msvc-examples:
