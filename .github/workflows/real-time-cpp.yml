@@ -52,6 +52,26 @@ jobs:
           make -j ref_app
           ls -la ref_app.hex ref_app.map
         working-directory: ./
+  target-avr-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ avr, atmega2560 ]
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          brew tap osx-cross/avr
+          brew install avr-gcc
+      - name: target-avr-macos-${{ matrix.suite }}
+        run: |
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+        working-directory: ./ref_app/
   target-avr-example_led:
     runs-on: ubuntu-20.04
     defaults:
