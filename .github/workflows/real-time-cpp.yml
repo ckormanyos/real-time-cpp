@@ -232,7 +232,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [ g++, g++-8, g++-9, clang++, clang++-8, clang++-9 ]
-        standard: [ c++11, c++14, c++17 ]
+        standard: [ c++11, c++14, c++17, c++2a ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -265,6 +265,13 @@ jobs:
         working-directory: ./ref_app/
   benchmark_builds-avr:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++11, c++14 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
@@ -273,6 +280,24 @@ jobs:
       - name: update-tools
         run: sudo apt install gcc-avr avr-libc
       - name: benchmark_builds-avr
-        run: ./target/build/test_app_benchmarks_avr.sh
+        run: ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
+  benchmark_builds-stm32f446:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
         shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++11, c++14, c++17 ]
+    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: benchmark_builds-stm32f446
+        run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
+        working-directory: ./ref_app/
