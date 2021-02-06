@@ -257,54 +257,46 @@ jobs:
           MSBuild -m ref_app.sln -p:Configuration=Debug -p:Platform=x64 /t:Rebuild
           dir ./tmp/Debug/ref_app.exe
         working-directory: ./ref_app/
-  benchmark_tests-gcc:
+  benchmark_gcc-clang-8-9:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [ g++, g++-8, g++9, clang++, clang++-8, clang++-9 ]
+        standard: [ c++11, c++14, c++17 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-8 gcc-9 gcc-10
-      - name: benchmark_tests_gcc
-        run: |
-            ./target/build/test_app_benchmarks.sh g++ c++11
-            ./target/build/test_app_benchmarks.sh g++-8 c++11
-            ./target/build/test_app_benchmarks.sh g++-8 c++14
-            ./target/build/test_app_benchmarks.sh g++-8 c++17
-            ./target/build/test_app_benchmarks.sh g++-9 c++11
-            ./target/build/test_app_benchmarks.sh g++-9 c++14
-            ./target/build/test_app_benchmarks.sh g++-9 c++17
-            ./target/build/test_app_benchmarks.sh g++-10 c++11
-            ./target/build/test_app_benchmarks.sh g++-10 c++14
-            ./target/build/test_app_benchmarks.sh g++-10 c++17
-            ./target/build/test_app_benchmarks.sh g++-10 c++20
+        run: sudo apt install gcc-8 gcc-9 clang clang-8 clang-9
+      - name: benchmark_gcc-clang-8-9
+        run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
-        shell: bash
-  benchmark_tests-clang:
+  benchmark_gcc-clang-10:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [ g++10, clang++-10 ]
+        standard: [ c++11, c++14, c++17, c++20 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install clang clang-8 clang-9 clang-10
-      - name: benchmark_tests_clang
-        run: |
-            ./target/build/test_app_benchmarks.sh clang++ c++11
-            ./target/build/test_app_benchmarks.sh clang++-8 c++11
-            ./target/build/test_app_benchmarks.sh clang++-8 c++14
-            ./target/build/test_app_benchmarks.sh clang++-8 c++17
-            ./target/build/test_app_benchmarks.sh clang++-9 c++11
-            ./target/build/test_app_benchmarks.sh clang++-9 c++14
-            ./target/build/test_app_benchmarks.sh clang++-9 c++17
-            ./target/build/test_app_benchmarks.sh clang++-10 c++11
-            ./target/build/test_app_benchmarks.sh clang++-10 c++14
-            ./target/build/test_app_benchmarks.sh clang++-10 c++17
-            ./target/build/test_app_benchmarks.sh clang++-10 c++20
+        run: sudo apt install gcc-10 clang-10
+      - name: benchmark_gcc-clang-8-9
+        run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
-        shell: bash
   benchmark_builds-avr:
     runs-on: ubuntu-20.04
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"

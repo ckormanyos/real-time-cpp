@@ -227,9 +227,10 @@ on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
 Continuous integration uses GitHub Actions programmed in YAML.
 The [CI script](.github/workflows/real-time-cpp.yml)
-exercises various target builds and benchmark builds/runs
-on Ubuntu or Windows-Latest using GNUmake, CMake or MSBuild
-depending on the particular build configuration.
+exercises various target builds, example builds
+and benchmark builds/runs on Ubuntu or Windows-Latest
+using GNUmake, CMake or MSBuild
+depending on the particular OS/build/target configuration.
 
 ## GNU GCC Compilers
 
