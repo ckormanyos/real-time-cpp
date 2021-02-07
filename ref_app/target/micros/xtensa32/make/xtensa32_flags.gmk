@@ -146,12 +146,10 @@ ESP32_ESP_TOOL_CMD_COPY_PART2  = $(CP) -f $(subst /,\,$(ESP32_ESP_TOOL))        
 ESP32_ESP_TOOL_CMD_COPY_PART3  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/boot_app0.bin)          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
 ESP32_ESP_TOOL_CMD_COPY_PART4  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin) > 2 > NUL
 
-ESP32_ESP_TOOL_CMD_COPY        = $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART1))  \
-                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART2))  \
-                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART3))  \
-                                 $(shell $(ESP32_ESP_TOOL_CMD_COPY_PART4))
-
-
 ESP32_ESP_TOOL_CMD_ECHO        = $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS_PROG) > $(subst /,\,$(CURDIR)/bin/flash.bat)
 
-RULE_SPECIAL_MAKE_FLASH_BATCH := $(ESP32_ESP_TOOL_CMD_COPY) $(shell $(ESP32_ESP_TOOL_CMD_ECHO))
+RULE_SPECIAL_MAKE_FLASH_BATCH :=    $(ESP32_ESP_TOOL_CMD_COPY_PART1)   \
+                                 && $(ESP32_ESP_TOOL_CMD_COPY_PART2)   \
+                                 && $(ESP32_ESP_TOOL_CMD_COPY_PART3)   \
+                                 && $(ESP32_ESP_TOOL_CMD_COPY_PART4)   \
+                                 && $(ESP32_ESP_TOOL_CMD_ECHO)
