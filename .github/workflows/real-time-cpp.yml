@@ -141,14 +141,14 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.map
         working-directory: ./ref_app/
   target-arm-cmake:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     defaults:
       run:
         shell: bash
     strategy:
       fail-fast: false
       matrix:
-        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+        suite: [ bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
