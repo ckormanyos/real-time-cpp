@@ -115,6 +115,11 @@ set(CMAKE_ASM_FLAGS "${AFLAGS} ${TARGET_CFLAGS} ${TARGET_AFLAGS}" CACHE STRING "
 set(CMAKE_CXX_FLAGS "${CXXFLAGS} ${TARGET_CFLAGS} ${TARGET_CXXFLAGS}" CACHE STRING "" FORCE)
 set(CMAKE_EXE_LINKER_FLAGS "${LDFLAGS} ${TARGET_LDFLAGS}" CACHE STRING "" FORCE)
 
+message(STATUS "CMAKE_ASM_FLAGS       : " ${CMAKE_ASM_FLAGS})
+message(STATUS "CMAKE_CC_FLAGS        : " ${CMAKE_CC_FLAGS})
+message(STATUS "CMAKE_CXX_FLAGS       : " ${CMAKE_CXX_FLAGS})
+message(STATUS "CMAKE_EXE_LINKER_FLAGS: " ${CMAKE_EXE_LINKER_FLAGS})
+
 # ------------------------------------------------------------------------------
 # app files
 # ------------------------------------------------------------------------------
