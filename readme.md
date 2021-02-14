@@ -60,10 +60,10 @@ To get started with the reference application on `*nix`
   - Open a terminal in the directory  [./ref_app](./ref_app).
   - The terminal should be located directly in [./ref_app](./ref_app) for the paths to work out (be found by the upcoming build).
   - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
-  - Consider which configuration (such as `target avr`) you'd like to build
-  - Execute `build.sh` with the command: `./target/build/build.sh avr rebuild`
+  - Consider which configuration (such as `target avr`) you would like to build.
+  - Execute `build.sh` with the command: `./target/build/build.sh avr rebuild`.
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
-  - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`
+  - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`.
 
 In summary, on `*nix` for `target avr`
 
@@ -88,8 +88,7 @@ to invoke GNUmake via batch file. The build process
 runs in combination with several makefiles.
 
 To build any target other than Debug or Release for Win32, a cross-compiler
-(GNU GCC cross compiler) is required. See the text below for additional
-details.
+(GNU GCC cross compiler) is required. See the text below for additional details.
 
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the `bin` directory.
