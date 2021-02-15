@@ -435,7 +435,7 @@
         using std::frexp;
 
         // Get the fraction and base-2 exponent.
-        native_float_type man = frexp(f, &my_exponent_part);
+        native_float_type man = (native_float_type) frexp(f, &my_exponent_part);
 
         limb_type n2 = 0U;
 
@@ -3682,7 +3682,11 @@
   // Specialization of std::numeric_limits<decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>.
   namespace std
   {
-    template <const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType> class numeric_limits<math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>
+    template<const std::int32_t MyDigits10,
+             typename LimbType,
+             typename AllocatorType,
+             typename InternalFloatType>
+    class numeric_limits<math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType>>
     {
     public:
       static constexpr bool                    is_specialized    = true;
