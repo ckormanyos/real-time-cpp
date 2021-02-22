@@ -5,7 +5,7 @@
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 name: real-time-cpp
-on: [push,pull_request]
+on: [push]
 jobs:
   target-avr:
     runs-on: ubuntu-20.04
