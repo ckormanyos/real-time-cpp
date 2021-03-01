@@ -25,7 +25,7 @@
     static constexpr std::int32_t radix             = static_cast<std::int32_t>(10);
 
     // TBD: Can we obtain elem_digits10 from a meta-template?
-    static constexpr std::int32_t elem_digits10     = ((std::numeric_limits<LimbType>::digits == 32) ? static_cast<std::int32_t>(8) : static_cast<std::int32_t>(4));
+    static constexpr std::int32_t elem_digits10     = ((std::numeric_limits<LimbType>::digits == 32) ? static_cast<std::int32_t>(8) : ((std::numeric_limits<LimbType>::digits == 16) ? static_cast<std::int32_t>(4) : static_cast<std::int32_t>(2)));
     static constexpr std::int32_t elem_number       = static_cast<std::int32_t>(((digits10 / elem_digits10) + (((digits10 % elem_digits10) != 0) ? 1 : 0)) + (24 / elem_digits10));
     static constexpr std::int32_t elem_mask         = static_cast<std::int32_t>(pow10_maker((std::uint32_t)  elem_digits10));
     static constexpr std::int32_t elem_mask_half    = static_cast<std::int32_t>(pow10_maker((std::uint32_t) (elem_digits10 / 2)));
