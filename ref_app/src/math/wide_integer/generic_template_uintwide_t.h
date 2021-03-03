@@ -1481,6 +1481,66 @@
       return has_borrow_out;
     }
 
+    template<const std::uint_fast32_t RePhraseDigits2 = Digits2,
+             typename std::enable_if<(std::numeric_limits<limb_type>::digits * 4 == RePhraseDigits2)>::type const* = nullptr>
+    static void eval_multiply_n_by_n_to_lo_part(      limb_type*       r,
+                                                const limb_type*       a,
+                                                const limb_type*       b,
+                                                const std::uint_fast32_t)
+    {
+      // The algorithm has been derived from the polynomial multiplication
+      // given by: (D + Cx + Bx^2 + Ax^3) * (d + cx + bx^2 + ax^3).
+      // After the multiplication terms of equal order are grouped
+      // together and retained up to order(3). The carries from the
+      // multiplications are included when adding up the terms.
+      // The results of the intermediate multiplications are stored
+      // in local variables in memory.
+
+      double_limb_type r1;
+      double_limb_type r2;
+
+      const double_limb_type dD = a[0U] * double_limb_type(b[0U]);
+      const double_limb_type Cd = a[0U] * double_limb_type(b[1U]);
+      const double_limb_type cD = a[1U] * double_limb_type(b[0U]);
+      const double_limb_type cC = a[1U] * double_limb_type(b[1U]);
+
+      // One special case is considered, the case of multiplication
+      // of the form BITS/2 * BITS/2 = BITS. In this case, the algorithm
+      // can be significantly simplified by using only the 'lower-halves'
+      // of the data.
+      if(    (a[2U] == 0U)
+          && (b[2U] == 0U)
+          && (a[3U] == 0U)
+          && (b[3U] == 0U))
+      {
+        r1    = double_limb_type(detail::make_lo<limb_type>(Cd)) + detail::make_lo<limb_type>(cD) + detail::make_hi<limb_type>(dD);
+        r2    = double_limb_type(detail::make_lo<limb_type>(cC)) + detail::make_hi<limb_type>(Cd) + detail::make_hi<limb_type>(cD) + detail::make_hi<limb_type>(r1);
+        r[3U] = detail::make_hi<limb_type>(cC) + detail::make_hi<limb_type>(r2);
+      }
+      else
+      {
+        const double_limb_type Bd = a[0U] * double_limb_type(b[2U]); // 0 for BITS/2 * BITS/2 = BITS
+        const double_limb_type Ad = a[0U] * double_limb_type(b[3U]); // 0 for BITS/2 * BITS/2 = BITS
+
+        const double_limb_type Bc = a[1U] * double_limb_type(b[2U]); // 0 for BITS/2 * BITS/2 = BITS
+
+        const double_limb_type bD = a[2U] * double_limb_type(b[0U]); // 0 for BITS/2 * BITS/2 = BITS
+        const double_limb_type bC = a[2U] * double_limb_type(b[1U]); // 0 for T-bits * T-bits = double_limb_type-bits
+
+        const double_limb_type aD = a[3U] * double_limb_type(b[0U]); // 0 for BITS/2 * BITS/2 = BITS
+
+        r1    = double_limb_type(detail::make_lo<limb_type>(Cd)) + detail::make_lo<limb_type>(cD) + detail::make_hi<limb_type>(dD);
+        r2    = double_limb_type(detail::make_lo<limb_type>(cC)) + detail::make_lo<limb_type>(Bd) + detail::make_lo<limb_type>(bD) + detail::make_hi<limb_type>(Cd) + detail::make_hi<limb_type>(cD) + detail::make_hi<limb_type>(r1);
+        r[3U] = detail::make_lo<limb_type>(Bc) + detail::make_lo<limb_type>(bC) + detail::make_lo<limb_type>(aD) + detail::make_lo<limb_type>(Ad) + detail::make_hi<limb_type>(cC) + detail::make_hi<limb_type>(Bd) + detail::make_hi<limb_type>(bD) + detail::make_hi<limb_type>(r2);
+      }
+
+      r[0U] = detail::make_lo<limb_type>(dD);
+      r[1U] = limb_type(r1);
+      r[2U] = limb_type(r2);
+    }
+
+    template<const std::uint_fast32_t RePhraseDigits2 = Digits2,
+             typename std::enable_if<(std::numeric_limits<limb_type>::digits * 4 != RePhraseDigits2)>::type const* = nullptr>
     static void eval_multiply_n_by_n_to_lo_part(      limb_type*       r,
                                                 const limb_type*       a,
                                                 const limb_type*       b,
