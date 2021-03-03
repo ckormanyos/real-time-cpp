@@ -5,7 +5,10 @@
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 name: real-time-cpp
-on: [push]
+on:
+  push:
+  schedule:
+    - cron: '0 3 * * *' # run at 3 AM UTC
 jobs:
   target-avr:
     runs-on: ubuntu-20.04
@@ -16,7 +19,6 @@ jobs:
       fail-fast: false
       matrix:
         suite: [ avr, atmega2560 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -37,7 +39,6 @@ jobs:
       fail-fast: false
       matrix:
         suite: [ avr, atmega2560 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -61,7 +62,6 @@ jobs:
       fail-fast: false
       matrix:
         example: [ chapter02_02, chapter02_06 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -84,7 +84,6 @@ jobs:
       fail-fast: false
       matrix:
         example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter12_04, chapter17_03, chapter17_03a ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -106,7 +105,6 @@ jobs:
       fail-fast: false
       matrix:
         example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter12_04, chapter17_03, chapter17_03a ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -128,7 +126,6 @@ jobs:
       fail-fast: false
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -149,7 +146,6 @@ jobs:
       fail-fast: false
       matrix:
         suite: [ bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -166,7 +162,6 @@ jobs:
         working-directory: ./
   target-x86_64:
     runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -179,7 +174,6 @@ jobs:
         shell: bash
   target-host-cmake:
     runs-on: ubuntu-20.04
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -202,7 +196,6 @@ jobs:
       fail-fast: false
       matrix:
         suite: [ Debug, Release ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -224,7 +217,6 @@ jobs:
       matrix:
         compiler: [ g++, g++-8, g++-9, clang++, clang++-8, clang++-9 ]
         standard: [ c++11, c++14, c++17, c++2a ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -244,7 +236,6 @@ jobs:
       matrix:
         compiler: [ g++-10, clang++-10 ]
         standard: [ c++11, c++14, c++17, c++20 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -259,9 +250,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [ clang++ ]
+        compiler: [ g++, clang++ ]
         standard: [ c++11, c++14, c++17, c++2a ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -278,7 +268,6 @@ jobs:
       fail-fast: false
       matrix:
         standard: [ c++11, c++14 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -296,8 +285,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++11, c++14, c++17 ]
-    if: "!contains(github.event.commits[0].message, '[CI SKIP]')"
+        standard: [ c++11, c++14, c++17, c++2a ]
     steps:
       - uses: actions/checkout@v2
         with:

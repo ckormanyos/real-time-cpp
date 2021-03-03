@@ -432,11 +432,9 @@
     static constexpr std::int32_t decwide_t_elems_for_fft =
       ((std::is_same<limb_type, std::uint8_t>::value == true) ? 32 : 128);
 
-    typedef enum fpclass_type_enum
+    typedef enum fpclass_type
     {
-      decwide_t_finite,
-      decwide_t_inf,
-      decwide_t_NaN
+      decwide_t_finite
     }
     fpclass_type;
 
@@ -603,13 +601,9 @@
                                      my_fpclass  (decwide_t_finite),
                                      my_prec_elem(decwide_t_elem_number)
     {
-      if(!rd_string(s))
+      if(rd_string(s) == false)
       {
         std::fill(my_data.begin(), my_data.end(), static_cast<limb_type>(0U));
-
-        my_exp     = static_cast<exponent_type>(0);
-        my_neg     = false;
-        my_fpclass = decwide_t_NaN;
       }
     }
 
@@ -619,13 +613,9 @@
                                         my_fpclass  (decwide_t_finite),
                                         my_prec_elem(decwide_t_elem_number)
     {
-      if(!rd_string(str.c_str()))
+      if(rd_string(str.c_str()) == false)
       {
         std::fill(my_data.begin(), my_data.end(), static_cast<limb_type>(0U));
-
-        my_exp     = static_cast<exponent_type>(0);
-        my_neg     = false;
-        my_fpclass = decwide_t_NaN;
       }
     }
     #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
@@ -768,21 +758,6 @@
 
       // TBD: Limit the length of add/sub to only those ranges needed,
       // whereby propagate borrow/carry may be necessary as well.
-
-      if((isnan)())
-      {
-        return *this;
-      }
-
-      if((isinf)())
-      {
-        if((v.isinf)() && (isneg() != v.isneg()))
-        {
-          *this = my_value_nan();
-        }
-
-        return *this;
-      }
 
       if(iszero())
       {
@@ -1059,20 +1034,7 @@
       my_neg = false;
 
       // Handle special cases like zero, inf and NaN.
-      const bool b_u_is_inf  = (isinf)();
       const bool b_n_is_zero = (n == static_cast<std::int32_t>(0));
-
-      if((isnan)() || (b_u_is_inf && b_n_is_zero))
-      {
-        return (*this = my_value_nan());
-      }
-
-      if(b_u_is_inf)
-      {
-        *this = ((!b_neg) ?  my_value_inf() : -my_value_inf());
-
-        return *this;
-      }
 
       if(iszero() || b_n_is_zero)
       {
@@ -1127,32 +1089,11 @@
       // Artificially set the sign of the result to be positive.
       my_neg = false;
 
-      // Handle special cases like zero, inf and NaN.
-      if((isnan)())
-      {
-        return *this;
-      }
-
-      if((isinf)())
-      {
-        *this = ((!b_neg) ?  my_value_inf() : -my_value_inf());
-
-        return *this;
-      }
-
+      // Handle special cases of zero.
       if(n == static_cast<unsigned long long>(0U))
       {
         // Divide by 0.
-        if(iszero())
-        {
-          return (*this = my_value_nan());
-        }
-        else
-        {
-          *this = ((!isneg()) ?  my_value_inf() : -my_value_inf());
-
-          return *this;
-        }
+        return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>());
       }
 
       if(iszero())
@@ -1343,8 +1284,6 @@
     }
 
     // Specific special values.
-    static constexpr decwide_t my_value_inf() { return decwide_t(decwide_t_inf); }
-    static constexpr decwide_t my_value_nan() { return decwide_t(decwide_t_NaN); }
     static constexpr decwide_t my_value_max() { return decwide_t( { limb_type(9U) }, decwide_t_max_exp10 ); }
     static constexpr decwide_t my_value_min() { return decwide_t( { limb_type(1U) }, decwide_t_min_exp10 ); }
     static constexpr decwide_t my_value_eps()
@@ -1403,20 +1342,8 @@
 
       my_neg = false;
 
-      // Handle special cases like zero, inf and NaN.
+      // Handle special cases of zero.
       if(iszero())
-      {
-        *this = ((!b_neg) ? +my_value_inf() : -my_value_inf());
-
-        return *this;
-      }
-
-      if((isnan)())
-      {
-        return *this;
-      }
-
-      if((isinf)())
       {
         return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>());
       }
@@ -1475,9 +1402,9 @@
     {
       // Compute the square root of *this.
 
-      if(isneg() || ((isfinite)() == false))
+      if(isneg())
       {
-        return (*this = my_value_nan());
+        return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>());
       }
 
       if(iszero() || isone())
@@ -1642,9 +1569,9 @@
     }
 
     // Comparison functions.
-    bool (isnan)   () const { return (my_fpclass == decwide_t_NaN); }
-    bool (isinf)   () const { return (my_fpclass == decwide_t_inf); }
-    bool (isfinite)() const { return (my_fpclass == decwide_t_finite); }
+    bool (isnan)   () const { return false; }
+    bool (isinf)   () const { return false; }
+    bool (isfinite)() const { return true; }
 
     bool iszero() const
     {
@@ -2023,13 +1950,6 @@
 
       using std::isfinite;
       using std::isnan;
-
-      if((isfinite)(static_cast<double>(l)) == false)
-      {
-        operator=((isnan)(static_cast<double>(l)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
-
-        return;
-      }
 
       const long double my_ld = ((!b_neg) ? l : -l);
 
@@ -2628,35 +2548,6 @@
         my_data[i1] = Util::numeric_cast<limb_type>(str_i1);
       }
 
-      // Check for overflow...
-      if(my_exp > decwide_t_max_exp10)
-      {
-        const bool b_result_is_neg = my_neg;
-
-        *this = ((!b_result_is_neg) ?  my_value_inf() : -my_value_inf());
-      }
-
-      // ...and check for underflow.
-      if(my_exp <= decwide_t_min_exp10)
-      {
-        if(my_exp == decwide_t_min_exp10)
-        {
-          // Check for identity with the minimum value.
-          decwide_t test = *this;
-
-          test.my_exp = static_cast<exponent_type>(0);
-
-          if(test.isone())
-          {
-            *this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>();
-          }
-        }
-        else
-        {
-          *this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>();
-        }
-      }
-
       return true;
     }
     #endif //!(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
@@ -2665,8 +2556,9 @@
     void get_output_string(std::string& str, exponent_type& the_exp, const std::uint_fast32_t number_of_digits) const
     {
       // Determine the number of elements needed to provide the requested digits from decwide_t.
-      const std::uint_fast32_t number_of_elements = (std::min)(static_cast<std::uint_fast32_t>((number_of_digits / static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)) + 2U),
-                                                        static_cast<std::uint_fast32_t>(decwide_t_elem_number));
+      const std::uint_fast32_t number_of_elements =
+        (std::min)(static_cast<std::uint_fast32_t>((number_of_digits / static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)) + 2U),
+                   static_cast<std::uint_fast32_t>(decwide_t_elem_number));
 
       // Extract the remaining digits from decwide_t after the decimal point.
       char p_str[10U] = { 0 };
@@ -3724,8 +3616,8 @@
       static constexpr exponent_type           max_exponent10    = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>::decwide_t_max_exp10;    // Type differs from int.
       static constexpr int                     radix             = math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>::decwide_t_radix;
       static constexpr std::float_round_style  round_style       = std::round_to_nearest;
-      static constexpr bool                    has_infinity      = true;
-      static constexpr bool                    has_quiet_NaN     = true;
+      static constexpr bool                    has_infinity      = false;
+      static constexpr bool                    has_quiet_NaN     = false;
       static constexpr bool                    has_signaling_NaN = false;
       static constexpr std::float_denorm_style has_denorm        = std::denorm_absent;
       static constexpr bool                    has_denorm_loss   = false;
@@ -3737,8 +3629,8 @@
       static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> lowest       () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
       static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> epsilon      () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>::my_value_eps(); }
       static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> round_error  () { return math::wide_decimal::half<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
-      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> infinity     () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>::my_value_inf(); }
-      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> quiet_NaN    () { return math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>::my_value_nan(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> infinity     () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
+      static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> quiet_NaN    () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
       static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> signaling_NaN() { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
       static constexpr math::wide_decimal::decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> denorm_min   () { return math::wide_decimal::zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
     };

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2020.                 //
+//  Copyright Christopher Kormanyos 1999 - 2021.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -1208,25 +1208,15 @@
         }
         else
         {
-          const uintwide_t ten(std::uint8_t(10U));
-
           while(t.is_zero() == false)
           {
-            // TBD: Try to generally improve efficiency and reduce
-            // the number of temporaries and the count of operations
-            // on them in the conversion to decimal string.
+            const uintwide_t tmp(t);
 
-            const uintwide_t t_temp(t);
-
-            t /= ten;
-
-            char c = char((t_temp - (uintwide_t(t).mul_by_limb(10U))).values[0U]);
-
-            if(c <= char(9)) { c += char(0x30); }
+            t.eval_divide_by_single_limb(limb_type(10U), 0U, nullptr);
 
             --pos;
 
-            str_temp[pos] = c;
+            str_temp[pos] = (char) ((limb_type) (tmp - (uintwide_t(t).mul_by_limb(10U))) + 0x30U);
           }
         }
 
@@ -2598,7 +2588,7 @@
     else                                                 { base_rep = 10U; }
 
     const std::uint_fast32_t field_width = std::uint_fast32_t(out.width());
-    const char        fill_char   = out.fill();
+    const char               fill_char   = out.fill();
 
     using local_wide_integer_type = uintwide_t<Digits2, LimbType>;
 
@@ -3444,45 +3434,46 @@
     result_type a() const { return my_params.get_a(); }
     result_type b() const { return my_params.get_b(); }
 
-    template<typename GeneratorType>
+    template<typename GeneratorType,
+             const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
     result_type operator()(GeneratorType& generator)
     {
-      return generate(generator, my_params);
+      return generate<GeneratorType, GeneratorResultBits>(generator, my_params);
     }
 
-    template<typename GeneratorType>
+    template<typename GeneratorType,
+             const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
     result_type operator()(GeneratorType& input_generator,
                            const param_type& input_params)
     {
-      return generate(input_generator, input_params);
+      return generate<GeneratorType, GeneratorResultBits>(input_generator, input_params);
     }
 
   private:
     param_type my_params;
 
-    template<typename GeneratorType>
+    template<typename GeneratorType,
+             const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
     result_type generate(GeneratorType& input_generator,
                          const param_type& input_params)
     {
       // Generate random numbers r, where a <= r <= b.
 
-      result_type result(std::uint_fast8_t(0U));
+      result_type result(std::uint8_t(0U));
 
       using local_limb_type = typename result_type::limb_type;
 
       using generator_result_type = typename GeneratorType::result_type;
 
-      constexpr std::uint_fast8_t digits_generator_result_type =
-        std::uint_fast8_t(std::numeric_limits<generator_result_type>::digits);
+      constexpr std::uint32_t digits_generator_result_type = static_cast<std::uint32_t>(GeneratorResultBits);
 
       static_assert((digits_generator_result_type % 8U) == 0U,
                     "Error: Generator result type must have a multiple of 8 bits.");
 
-      constexpr std::uint_fast8_t digits_limb_ratio = 
-        std::uint_fast8_t(std::numeric_limits<local_limb_type>::digits / 8U);
+      constexpr std::uint32_t digits_limb_ratio = 
+        std::uint32_t(std::numeric_limits<local_limb_type>::digits / 8U);
 
-      constexpr std::uint_fast8_t digits_gtor_ratio = 
-        std::uint_fast8_t(digits_generator_result_type / 8U);
+      constexpr std::uint32_t digits_gtor_ratio = std::uint32_t(digits_generator_result_type / 8U);
 
       generator_result_type value = generator_result_type();
 
