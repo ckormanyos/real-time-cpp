@@ -169,14 +169,7 @@
     template<typename _Ptr, typename... _None>
     constexpr auto __to_address(const _Ptr& __ptr, _None...)
     {
-      if constexpr (is_base_of_v<__gnu_debug::_Safe_iterator_base, _Ptr>)
-      {
-        return std::__to_address(__ptr.base().operator->());
-      }
-      else
-      {
-        return std::__to_address(__ptr.operator->());
-      }
+      return std::__to_address(__ptr.operator->());
     }
 
     template<typename _Tp>

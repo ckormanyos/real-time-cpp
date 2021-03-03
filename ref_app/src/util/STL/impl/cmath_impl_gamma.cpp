@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <math.h>
+#include <cmath>
 #include <cstdint>
 #include "xcmath_impl.h"
 

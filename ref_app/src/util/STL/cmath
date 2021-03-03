@@ -476,6 +476,12 @@
     extern "C"
            double        lgamma  (double      x);
     inline long double   lgamma  (long double x)                 { return ::lgammal(x); }
+    #if __cplusplus > 201703L
+    inline float          lerp    (float a, float b, float t )   { return a + t * (b - a); }
+    inline double         lerp    (double a, double b, double t) { return a + t * (b - a); }
+    inline long double    lerp    (long double a, long double b, long double t)
+                                                                 { return a + t * (b - a); }
+    #endif
   #if defined(__cplusplus)
   }
   #endif

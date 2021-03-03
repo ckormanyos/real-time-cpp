@@ -8,8 +8,8 @@
 #ifndef FAST_MATH_2018_12_01_H_
   #define FAST_MATH_2018_12_01_H_
 
-  #include <math.h>
-  #include <stdint.h>
+  #include <cmath>
+  #include <cstdint>
 
   #if defined(__GNUC__)
   #pragma GCC diagnostic push
