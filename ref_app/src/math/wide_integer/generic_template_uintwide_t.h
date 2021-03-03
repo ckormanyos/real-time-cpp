@@ -489,8 +489,10 @@
   {
   public:
     // Class-local type definitions.
-    using limb_type        = LimbType;
-    using double_limb_type = typename detail::int_type_helper<std::uint_fast32_t(std::numeric_limits<limb_type>::digits * 2)>::exact_unsigned_type;
+    using limb_type = LimbType;
+
+    using double_limb_type =
+      typename detail::int_type_helper<std::uint_fast32_t(std::numeric_limits<limb_type>::digits * 2)>::exact_unsigned_type;
 
     // Legacy ularge and ushort types. These are no longer used
     // in the class, but provided for legacy compatibility.
@@ -785,10 +787,10 @@
       {
         // Unary addition function.
         const limb_type carry = eval_add_n(values.data(),
-                                             values.data(),
-                                             other.values.data(),
-                                             number_of_limbs,
-                                             limb_type(0U));
+                                           values.data(),
+                                           other.values.data(),
+                                           number_of_limbs,
+                                           limb_type(0U));
 
         static_cast<void>(carry);
 
@@ -1456,11 +1458,11 @@
       return carry_out;
     }
 
-    static bool eval_subtract_n(      limb_type* r,
-                                const limb_type* u,
-                                const limb_type* v,
-                                const std::uint_fast32_t  count,
-                                const bool         has_borrow_in = false)
+    static bool eval_subtract_n(      limb_type*         r,
+                                const limb_type*         u,
+                                const limb_type*         v,
+                                const std::uint_fast32_t count,
+                                const bool               has_borrow_in = false)
     {
       bool has_borrow_out = has_borrow_in;
 
@@ -1483,10 +1485,10 @@
 
     template<const std::uint_fast32_t RePhraseDigits2 = Digits2,
              typename std::enable_if<(std::numeric_limits<limb_type>::digits * 4 == RePhraseDigits2)>::type const* = nullptr>
-    static void eval_multiply_n_by_n_to_lo_part(      limb_type*       r,
-                                                const limb_type*       a,
-                                                const limb_type*       b,
-                                                const std::uint_fast32_t)
+    static void eval_multiply_n_by_n_to_lo_part(      limb_type*         r,
+                                                const limb_type*         a,
+                                                const limb_type*         b,
+                                                const std::uint_fast32_t count)
     {
       // The algorithm has been derived from the polynomial multiplication
       // given by: (D + Cx + Bx^2 + Ax^3) * (d + cx + bx^2 + ax^3).
@@ -1495,6 +1497,12 @@
       // multiplications are included when adding up the terms.
       // The results of the intermediate multiplications are stored
       // in local variables in memory.
+
+      // Performance improvement:
+      //   (old) kops_per_sec: 33173.50
+      //   (new) kops_per_sec: 86156.29
+
+      static_cast<void>(count);
 
       double_limb_type r1;
       double_limb_type r2;
@@ -3819,6 +3827,7 @@
   bool example008_miller_rabin_prime();
   bool example008a_miller_rabin_prime();
   bool example009_timed_mul();
+  bool example009a_timed_mul_4_by_4();
   bool example010_uint48_t();
   bool example011_uint24_t();
 
