@@ -8,10 +8,6 @@
 #ifndef GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
   #define GENERIC_TEMPLATE_UINTWIDE_T_2018_10_02_H_
 
-  #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
-  #define WIDE_INTEGER_DISABLE_IOSTREAM
-  #endif
-
   #include <algorithm>
   #include <array>
   #include <cstddef>
@@ -1500,7 +1496,7 @@
 
       // Performance improvement:
       //   (old) kops_per_sec: 33173.50
-      //   (new) kops_per_sec: 86156.29
+      //   (new) kops_per_sec: 95069.43
 
       static_cast<void>(count);
 
@@ -1527,31 +1523,32 @@
       }
       else
       {
-        const double_limb_type Bd = a[0U] * double_limb_type(b[2U]); // 0 for BITS/2 * BITS/2 = BITS
-        const double_limb_type Ad = a[0U] * double_limb_type(b[3U]); // 0 for BITS/2 * BITS/2 = BITS
-
-        const double_limb_type Bc = a[1U] * double_limb_type(b[2U]); // 0 for BITS/2 * BITS/2 = BITS
-
-        const double_limb_type bD = a[2U] * double_limb_type(b[0U]); // 0 for BITS/2 * BITS/2 = BITS
-        const double_limb_type bC = a[2U] * double_limb_type(b[1U]); // 0 for T-bits * T-bits = double_limb_type-bits
-
-        const double_limb_type aD = a[3U] * double_limb_type(b[0U]); // 0 for BITS/2 * BITS/2 = BITS
+        const double_limb_type Bd =           a[0U] * double_limb_type(b[2U]);
+        const        limb_type Ad = limb_type(a[0U] * b[3U]);
+        const        limb_type Bc = limb_type(a[1U] * b[2U]);
+        const double_limb_type bD =           a[2U] * double_limb_type(b[0U]);
+        const        limb_type bC = limb_type(a[2U] * b[1U]);
+        const        limb_type aD = limb_type(a[3U] * b[0U]);
 
         r1    = double_limb_type(detail::make_lo<limb_type>(Cd)) + detail::make_lo<limb_type>(cD) + detail::make_hi<limb_type>(dD);
         r2    = double_limb_type(detail::make_lo<limb_type>(cC)) + detail::make_lo<limb_type>(Bd) + detail::make_lo<limb_type>(bD) + detail::make_hi<limb_type>(Cd) + detail::make_hi<limb_type>(cD) + detail::make_hi<limb_type>(r1);
-        r[3U] = detail::make_lo<limb_type>(Bc) + detail::make_lo<limb_type>(bC) + detail::make_lo<limb_type>(aD) + detail::make_lo<limb_type>(Ad) + detail::make_hi<limb_type>(cC) + detail::make_hi<limb_type>(Bd) + detail::make_hi<limb_type>(bD) + detail::make_hi<limb_type>(r2);
+        r[3U] =   limb_type(limb_type(Bc + bC) + limb_type(aD + Ad))
+                + detail::make_hi<limb_type>(cC)
+                + detail::make_hi<limb_type>(Bd)
+                + detail::make_hi<limb_type>(bD)
+                + detail::make_hi<limb_type>(r2);
       }
 
-      r[0U] = detail::make_lo<limb_type>(dD);
+      r[0U] = limb_type(dD);
       r[1U] = limb_type(r1);
       r[2U] = limb_type(r2);
     }
 
     template<const std::uint_fast32_t RePhraseDigits2 = Digits2,
              typename std::enable_if<(std::numeric_limits<limb_type>::digits * 4 != RePhraseDigits2)>::type const* = nullptr>
-    static void eval_multiply_n_by_n_to_lo_part(      limb_type*       r,
-                                                const limb_type*       a,
-                                                const limb_type*       b,
+    static void eval_multiply_n_by_n_to_lo_part(      limb_type*         r,
+                                                const limb_type*         a,
+                                                const limb_type*         b,
                                                 const std::uint_fast32_t count)
     {
       std::memset(r, 0, count * sizeof(limb_type));
@@ -1853,9 +1850,6 @@
 
     void eval_divide_knuth(const uintwide_t& other, uintwide_t* remainder)
     {
-      // TBD: Consider cleaning up the unclear flow-control
-      // caused by numerous return statements in this subroutine.
-
       // Use Knuth's long division algorithm.
       // The loop-ordering of indexes in Knuth's original
       // algorithm has been reversed due to the data format
@@ -1885,11 +1879,8 @@
         {
           *remainder = uintwide_t(std::uint8_t(0U));
         }
-
-        return;
       }
-
-      if(u_offset == local_uint_index_type(number_of_limbs))
+      else if(u_offset == local_uint_index_type(number_of_limbs))
       {
         // The numerator is zero. Do nothing and return.
 
@@ -1897,10 +1888,8 @@
         {
           *remainder = uintwide_t(std::uint8_t(0U));
         }
-
-        return;
       }
-
+      else
       {
         const int result_of_compare_left_with_right = compare(other);
 
@@ -1917,11 +1906,8 @@
           }
 
           operator=(std::uint8_t(0U));
-
-          return;
         }
-
-        if(left_is_equal_to_right)
+        else if(left_is_equal_to_right)
         {
           // If the denominator is equal to the numerator,
           // then the result of the division is one.
@@ -1931,231 +1917,227 @@
           {
             *remainder = uintwide_t(std::uint8_t(0U));
           }
-
-          return;
         }
-      }
-
-      if(v_offset == local_uint_index_type(number_of_limbs - 1U))
-      {
-        // The denominator has one single limb.
-        // Use a one-dimensional division algorithm.
-        const limb_type short_denominator = other.values[0U];
-
-        eval_divide_by_single_limb(short_denominator, u_offset, remainder);
-
-        return;
-      }
-
-      // We will now use the Knuth long division algorithm.
-      {
-        // Compute the normalization factor d.
-        const double_limb_type d_large =
-          double_limb_type(  ((double_limb_type(std::uint8_t(1U))) << std::numeric_limits<limb_type>::digits)
-                      /   double_limb_type(double_limb_type(other.values[(number_of_limbs - 1U) - v_offset]) + limb_type(1U)));
-
-        const limb_type d = detail::make_lo<limb_type>(d_large);
-
-        // Step D1(b), normalize u -> u * d = uu.
-        // Note the added digit in uu and also that
-        // the data of uu have not been initialized yet.
-
-        std::array<limb_type, number_of_limbs + 1U> uu;
-
-        if(d == limb_type(1U))
+        else if(v_offset == local_uint_index_type(number_of_limbs - 1U))
         {
-          // The normalization is one.
-          std::copy(values.cbegin(), values.cend(), uu.begin());
+          // The denominator has one single limb.
+          // Use a one-dimensional division algorithm.
+          const limb_type short_denominator = other.values[0U];
 
-          uu.back() = limb_type(0U);
+          eval_divide_by_single_limb(short_denominator, u_offset, remainder);
         }
         else
         {
-          // Multiply u by d.
-          limb_type carry = 0U;
+          // We will now use the Knuth long division algorithm.
 
-          local_uint_index_type i;
+          // Compute the normalization factor d.
+          const double_limb_type d_large =
+            double_limb_type(  ((double_limb_type(std::uint8_t(1U))) << std::numeric_limits<limb_type>::digits)
+                             /   double_limb_type(double_limb_type(other.values[(number_of_limbs - 1U) - v_offset]) + limb_type(1U)));
 
-          for(i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - u_offset); ++i)
+          const limb_type d = detail::make_lo<limb_type>(d_large);
+
+          // Step D1(b), normalize u -> u * d = uu.
+          // Note the added digit in uu and also that
+          // the data of uu have not been initialized yet.
+
+          std::array<limb_type, number_of_limbs + 1U> uu;
+
+          if(d == limb_type(1U))
           {
-            const double_limb_type t = double_limb_type(double_limb_type(values[i]) * d) + carry;
+            // The normalization is one.
+            std::copy(values.cbegin(), values.cend(), uu.begin());
 
-            uu[i] = detail::make_lo<limb_type>(t);
-            carry = detail::make_hi<limb_type>(t);
+            uu.back() = limb_type(0U);
           }
-
-          uu[i] = carry;
-        }
-
-        std::array<limb_type, number_of_limbs> vv;
-
-        // Step D1(c): normalize v -> v * d = vv.
-        if(d == limb_type(1U))
-        {
-          // The normalization is one.
-          vv = other.values;
-        }
-        else
-        {
-          // Multiply v by d.
-          limb_type carry = 0U;
-
-          for(local_uint_index_type i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - v_offset); ++i)
+          else
           {
-            const double_limb_type t = double_limb_type(double_limb_type(other.values[i]) * d) + carry;
-
-            vv[i] = detail::make_lo<limb_type>(t);
-            carry = detail::make_hi<limb_type>(t);
-          }
-        }
-
-        // Step D2: Initialize j.
-        // Step D7: Loop on j from m to 0.
-
-        const local_uint_index_type n = local_uint_index_type(number_of_limbs - v_offset);
-        const local_uint_index_type m = local_uint_index_type(number_of_limbs - u_offset) - n;
-
-        for(local_uint_index_type j = local_uint_index_type(0U); j <= m; ++j)
-        {
-          // Step D3 [Calculate q_hat].
-          //   if u[j] == v[j0]
-          //     set q_hat = b - 1
-          //   else
-          //     set q_hat = (u[j] * b + u[j + 1]) / v[1]
-
-          const local_uint_index_type uj     = (((number_of_limbs + 1U) - 1U) - u_offset) - j;
-          const local_uint_index_type vj0    =   (number_of_limbs       - 1U) - v_offset;
-          const double_limb_type           u_j_j1 = (double_limb_type(uu[uj]) << std::numeric_limits<limb_type>::digits) + uu[uj - 1U];
-
-          double_limb_type q_hat = ((uu[uj] == vv[vj0])
-                                ? double_limb_type((std::numeric_limits<limb_type>::max)())
-                                : u_j_j1 / double_limb_type(vv[vj0]));
-
-          // Decrease q_hat if necessary.
-          // This means that q_hat must be decreased if the
-          // expression [(u[uj] * b + u[uj - 1] - q_hat * v[vj0 - 1]) * b]
-          // exceeds the range of uintwide_t.
-
-          double_limb_type t;
-
-          for(;;)
-          {
-            t = u_j_j1 - double_limb_type(q_hat * double_limb_type(vv[vj0]));
-
-            if(detail::make_hi<limb_type>(t) != limb_type(0U))
-            {
-              break;
-            }
-
-            if(   double_limb_type(double_limb_type(vv[vj0 - 1U]) * q_hat)
-               <= double_limb_type((t << std::numeric_limits<limb_type>::digits) + uu[uj - 2U]))
-            {
-              break;
-            }
-
-            --q_hat;
-          }
-
-          // Step D4: Multiply and subtract.
-          // Replace u[j, ... j + n] by u[j, ... j + n] - q_hat * v[1, ... n].
-
-          // Set nv = q_hat * (v[1, ... n]).
-          {
-            std::array<limb_type, number_of_limbs + 1U> nv;
-
+            // Multiply u by d.
             limb_type carry = 0U;
 
             local_uint_index_type i;
 
-            for(i = local_uint_index_type(0U); i < n; ++i)
+            for(i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - u_offset); ++i)
             {
-              t     = double_limb_type(double_limb_type(vv[i]) * q_hat) + carry;
-              nv[i] = detail::make_lo<limb_type>(t);
+              const double_limb_type t = double_limb_type(double_limb_type(values[i]) * d) + carry;
+
+              uu[i] = detail::make_lo<limb_type>(t);
               carry = detail::make_hi<limb_type>(t);
             }
 
-            nv[i] = carry;
-
-            {
-              // Subtract nv[0, ... n] from u[j, ... j + n].
-              std::uint_fast8_t     borrow = 0U;
-              local_uint_index_type ul     = uj - n;
-
-              for(i = local_uint_index_type(0U); i <= n; ++i, ++ul)
-              {
-                t      = double_limb_type(double_limb_type(uu[ul]) - nv[i]) - limb_type(borrow);
-                uu[ul] =   detail::make_lo<limb_type>(t);
-                borrow = ((detail::make_hi<limb_type>(t) != limb_type(0U)) ? 1U : 0U);
-              }
-
-              // Get the result data.
-              values[m - j] = detail::make_lo<limb_type>(q_hat);
-
-              // Step D5: Test the remainder.
-              // Set the result value: Set result.m_data[m - j] = q_hat.
-              // Use the condition (u[j] < 0), in other words if the borrow
-              // is non-zero, then step D6 needs to be carried out.
-
-              if(borrow != std::uint_fast8_t(0U))
-              {
-                // Step D6: Add back.
-                // Add v[1, ... n] back to u[j, ... j + n],
-                // and decrease the result by 1.
-
-                carry = 0U;
-                ul    = uj - n;
-
-                for(i = local_uint_index_type(0U); i < n; ++i, ++ul)
-                {
-                  t      = double_limb_type(double_limb_type(uu[ul]) + vv[i]) + carry;
-                  uu[ul] = detail::make_lo<limb_type>(t);
-                  carry  = detail::make_hi<limb_type>(t);
-                }
-
-                // A potential test case for uint512_t is:
-                //   QuotientRemainder
-                //     [698937339790347543053797400564366118744312537138445607919548628175822115805812983955794321304304417541511379093392776018867245622409026835324102460829431,
-                //      100041341335406267530943777943625254875702684549707174207105689918734693139781]
-                //
-                //     {6986485091668619828842978360442127600954041171641881730123945989288792389271,
-                //      100041341335406267530943777943625254875702684549707174207105689918734693139780}
-
-                --values[m - j];
-              }
-            }
+            uu[i] = carry;
           }
-        }
 
-        // Clear the data elements that have not
-        // been computed in the division algorithm.
-        std::fill(values.begin() + (m + 1U), values.end(), limb_type(0U));
+          std::array<limb_type, number_of_limbs> vv;
 
-        if(remainder != nullptr)
-        {
-          if(d == 1)
+          // Step D1(c): normalize v -> v * d = vv.
+          if(d == limb_type(1U))
           {
-            std::copy(uu.cbegin(),
-                      uu.cbegin() + (number_of_limbs - v_offset),
-                      remainder->values.begin());
+            // The normalization is one.
+            vv = other.values;
           }
           else
           {
-            limb_type previous_u = limb_type(0U);
+            // Multiply v by d.
+            limb_type carry = 0U;
 
-            for(std::int_fast32_t rl = std::int_fast32_t(n - 1U), ul = std::int_fast32_t(number_of_limbs - (v_offset + 1U)); rl >= 0; --rl, --ul)
+            for(local_uint_index_type i = local_uint_index_type(0U); i < local_uint_index_type(number_of_limbs - v_offset); ++i)
             {
-              const double_limb_type t =
-                double_limb_type(  uu[std::uint_fast32_t(ul)]
-                            + double_limb_type(double_limb_type(previous_u) << std::numeric_limits<limb_type>::digits));
+              const double_limb_type t = double_limb_type(double_limb_type(other.values[i]) * d) + carry;
 
-              remainder->values[std::uint_fast32_t(rl)] = detail::make_lo<limb_type>(double_limb_type(t / d));
-              previous_u                                = limb_type(t - double_limb_type(double_limb_type(d) * remainder->values[std::uint_fast32_t(rl)]));
+              vv[i] = detail::make_lo<limb_type>(t);
+              carry = detail::make_hi<limb_type>(t);
             }
           }
 
-          std::fill(remainder->values.begin() + n,
-                    remainder->values.end(),
-                    limb_type(0U));
+          // Step D2: Initialize j.
+          // Step D7: Loop on j from m to 0.
+
+          const local_uint_index_type n = local_uint_index_type(number_of_limbs - v_offset);
+          const local_uint_index_type m = local_uint_index_type(number_of_limbs - u_offset) - n;
+
+          for(local_uint_index_type j = local_uint_index_type(0U); j <= m; ++j)
+          {
+            // Step D3 [Calculate q_hat].
+            //   if u[j] == v[j0]
+            //     set q_hat = b - 1
+            //   else
+            //     set q_hat = (u[j] * b + u[j + 1]) / v[1]
+
+            const local_uint_index_type uj     = (((number_of_limbs + 1U) - 1U) - u_offset) - j;
+            const local_uint_index_type vj0    =   (number_of_limbs       - 1U) - v_offset;
+            const double_limb_type      u_j_j1 = (double_limb_type(uu[uj]) << std::numeric_limits<limb_type>::digits) + uu[uj - 1U];
+
+            double_limb_type q_hat = ((uu[uj] == vv[vj0])
+                                       ? double_limb_type((std::numeric_limits<limb_type>::max)())
+                                       : u_j_j1 / double_limb_type(vv[vj0]));
+
+            // Decrease q_hat if necessary.
+            // This means that q_hat must be decreased if the
+            // expression [(u[uj] * b + u[uj - 1] - q_hat * v[vj0 - 1]) * b]
+            // exceeds the range of uintwide_t.
+
+            double_limb_type t;
+
+            for(;;)
+            {
+              t = u_j_j1 - double_limb_type(q_hat * double_limb_type(vv[vj0]));
+
+              if(detail::make_hi<limb_type>(t) != limb_type(0U))
+              {
+                break;
+              }
+
+              if(   double_limb_type(double_limb_type(vv[vj0 - 1U]) * q_hat)
+                 <= double_limb_type((t << std::numeric_limits<limb_type>::digits) + uu[uj - 2U]))
+              {
+                break;
+              }
+
+              --q_hat;
+            }
+
+            // Step D4: Multiply and subtract.
+            // Replace u[j, ... j + n] by u[j, ... j + n] - q_hat * v[1, ... n].
+
+            // Set nv = q_hat * (v[1, ... n]).
+            {
+              std::array<limb_type, number_of_limbs + 1U> nv;
+
+              limb_type carry = 0U;
+
+              local_uint_index_type i;
+
+              for(i = local_uint_index_type(0U); i < n; ++i)
+              {
+                t     = double_limb_type(double_limb_type(vv[i]) * q_hat) + carry;
+                nv[i] = detail::make_lo<limb_type>(t);
+                carry = detail::make_hi<limb_type>(t);
+              }
+
+              nv[i] = carry;
+
+              {
+                // Subtract nv[0, ... n] from u[j, ... j + n].
+                std::uint_fast8_t     borrow = 0U;
+                local_uint_index_type ul     = uj - n;
+
+                for(i = local_uint_index_type(0U); i <= n; ++i, ++ul)
+                {
+                  t      = double_limb_type(double_limb_type(uu[ul]) - nv[i]) - limb_type(borrow);
+                  uu[ul] =   detail::make_lo<limb_type>(t);
+                  borrow = ((detail::make_hi<limb_type>(t) != limb_type(0U)) ? 1U : 0U);
+                }
+
+                // Get the result data.
+                values[m - j] = detail::make_lo<limb_type>(q_hat);
+
+                // Step D5: Test the remainder.
+                // Set the result value: Set result.m_data[m - j] = q_hat.
+                // Use the condition (u[j] < 0), in other words if the borrow
+                // is non-zero, then step D6 needs to be carried out.
+
+                if(borrow != std::uint_fast8_t(0U))
+                {
+                  // Step D6: Add back.
+                  // Add v[1, ... n] back to u[j, ... j + n],
+                  // and decrease the result by 1.
+
+                  carry = 0U;
+                  ul    = uj - n;
+
+                  for(i = local_uint_index_type(0U); i < n; ++i, ++ul)
+                  {
+                    t      = double_limb_type(double_limb_type(uu[ul]) + vv[i]) + carry;
+                    uu[ul] = detail::make_lo<limb_type>(t);
+                    carry  = detail::make_hi<limb_type>(t);
+                  }
+
+                  // A potential test case for uint512_t is:
+                  //   QuotientRemainder
+                  //     [698937339790347543053797400564366118744312537138445607919548628175822115805812983955794321304304417541511379093392776018867245622409026835324102460829431,
+                  //      100041341335406267530943777943625254875702684549707174207105689918734693139781]
+                  //
+                  //     {6986485091668619828842978360442127600954041171641881730123945989288792389271,
+                  //      100041341335406267530943777943625254875702684549707174207105689918734693139780}
+
+                  --values[m - j];
+                }
+              }
+            }
+          }
+
+          // Clear the data elements that have not
+          // been computed in the division algorithm.
+          std::fill(values.begin() + (m + 1U), values.end(), limb_type(0U));
+
+          if(remainder != nullptr)
+          {
+            if(d == 1U)
+            {
+              std::copy(uu.cbegin(),
+                        uu.cbegin() + (number_of_limbs - v_offset),
+                        remainder->values.begin());
+            }
+            else
+            {
+              limb_type previous_u = limb_type(0U);
+
+              for(std::int_fast32_t rl = std::int_fast32_t(n - 1U), ul = std::int_fast32_t(number_of_limbs - (v_offset + 1U)); rl >= 0; --rl, --ul)
+              {
+                const double_limb_type t =
+                  double_limb_type(  uu[std::uint_fast32_t(ul)]
+                                   + double_limb_type(double_limb_type(previous_u) << std::numeric_limits<limb_type>::digits));
+
+                remainder->values[std::uint_fast32_t(rl)] = detail::make_lo<limb_type>(double_limb_type(t / d));
+                previous_u                                = limb_type(t - double_limb_type(double_limb_type(d) * remainder->values[std::uint_fast32_t(rl)]));
+              }
+            }
+
+            std::fill(remainder->values.begin() + n,
+                      remainder->values.end(),
+                      limb_type(0U));
+          }
         }
       }
     }
@@ -3815,21 +3797,21 @@
 
   namespace wide_integer {
 
-  bool example001_mul_div();
-  bool example001a_div_mod();
-  bool example002_shl_shr();
-  bool example003_sqrt();
-  bool example003a_cbrt();
-  bool example004_rootk_pow();
-  bool example005_powm();
-  bool example006_gcd();
-  bool example007_random_generator();
-  bool example008_miller_rabin_prime();
+  bool example001_mul_div            ();
+  bool example001a_div_mod           ();
+  bool example002_shl_shr            ();
+  bool example003_sqrt               ();
+  bool example003a_cbrt              ();
+  bool example004_rootk_pow          ();
+  bool example005_powm               ();
+  bool example006_gcd                ();
+  bool example007_random_generator   ();
+  bool example008_miller_rabin_prime ();
   bool example008a_miller_rabin_prime();
-  bool example009_timed_mul();
-  bool example009a_timed_mul_4_by_4();
-  bool example010_uint48_t();
-  bool example011_uint24_t();
+  bool example009_timed_mul          ();
+  bool example009a_timed_mul_4_by_4  ();
+  bool example010_uint48_t           ();
+  bool example011_uint24_t           ();
 
   } // namespace wide_integer
 
