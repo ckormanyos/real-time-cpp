@@ -770,6 +770,7 @@
     const representation_type& crepresentation() const { return values; }
 
     // Unary operators: not, plus and minus.
+          uintwide_t& operator~()       { bitwise_not(); return *this; }
     const uintwide_t& operator+() const { return *this; }
           uintwide_t  operator-() const { uintwide_t tmp(*this); tmp.negate(); return tmp; }
 
@@ -901,14 +902,6 @@
     // Operators post-increment and post-decrement.
     uintwide_t operator++(int) { const uintwide_t w(*this); preincrement(); return w; }
     uintwide_t operator--(int) { const uintwide_t w(*this); predecrement(); return w; }
-
-    uintwide_t& operator~()
-    {
-      // Bitwise NOT.
-      bitwise_not();
-
-      return *this;
-    }
 
     uintwide_t& operator|=(const uintwide_t& other)
     {
@@ -1558,7 +1551,7 @@
             carry += double_limb_type(double_limb_type(a[i]) * b[j]);
             carry += r[i + j];
 
-            r[i + j] = detail::make_lo<limb_type>(carry);
+            r[i + j] = limb_type(carry);
             carry    = detail::make_hi<limb_type>(carry);
           }
         }
@@ -1585,7 +1578,7 @@
             carry += double_limb_type(double_limb_type(a[i]) * b[j]);
             carry += r[i + j];
 
-            r[i + j] = detail::make_lo<limb_type>(carry);
+            r[i + j] = limb_type(carry);
             carry    = detail::make_hi<limb_type>(carry);
           }
 
@@ -1611,7 +1604,7 @@
         {
           carry += double_limb_type(double_limb_type(a[i]) * b);
 
-          r[i]  = detail::make_lo<limb_type>(carry);
+          r[i]  = limb_type(carry);
           carry = detail::make_hi<limb_type>(carry);
         }
       }
@@ -1683,14 +1676,6 @@
 
         // Here we visualize u and v in two components 0,1 corresponding
         // to the high and low order parts, respectively.
-
-        // TBD: A subproblem: Deal with the subproblem getting negative,
-        // and consider the overhead for calculating the complements.
-        // Boost kara mul branch: z = (a1+a0)*(b1+b0) - a1*b1 - a0*b0
-        // This code:             z =  a1*b1 + a0*b0 - |a1-a0|*|b0-b1|
-        // This also may seem to be known as odd-even Karatsuba in
-        // R.P. Brent and P. Zimmermann, "Modern Computer Arithmetic",
-        // Cambridge University Press (2011).
 
         // Step 1
         // Calculate a1*b1 and store it in the upper part of r.
@@ -1799,11 +1784,11 @@
       }
     }
 
-    static void eval_multiply_toomcook3(      limb_type* r,
-                                        const limb_type* u,
-                                        const limb_type* v,
-                                        const std::uint_fast32_t  n,
-                                              limb_type* t)
+    static void eval_multiply_toomcook3(      limb_type*         r,
+                                        const limb_type*         u,
+                                        const limb_type*         v,
+                                        const std::uint_fast32_t n,
+                                              limb_type*         t)
     {
       if(n == 3072U)
       {
@@ -1928,8 +1913,8 @@
 
           // Compute the normalization factor d.
           const limb_type d =
-            limb_type(double_limb_type(  ((double_limb_type(std::uint8_t(1U))) << std::numeric_limits<limb_type>::digits)
-                                       /   double_limb_type(double_limb_type(other.values[(number_of_limbs - 1U) - v_offset]) + limb_type(1U))));
+            limb_type(double_limb_type(  double_limb_type(double_limb_type(1U) << std::numeric_limits<limb_type>::digits)
+                                       / double_limb_type(double_limb_type(other.values[(number_of_limbs - 1U) - v_offset]) + limb_type(1U))));
 
           // Step D1(b), normalize u -> u * d = uu.
           // Step D1(c): normalize v -> v * d = vv.
@@ -1956,8 +1941,9 @@
           // Step D2: Initialize j.
           // Step D7: Loop on j from m to 0.
 
-          const local_uint_index_type n = local_uint_index_type(number_of_limbs - v_offset);
-          const local_uint_index_type m = local_uint_index_type(number_of_limbs - u_offset) - n;
+          const local_uint_index_type n   = local_uint_index_type(number_of_limbs - v_offset);
+          const local_uint_index_type m   = local_uint_index_type(number_of_limbs - u_offset) - n;
+          const local_uint_index_type vj0 = (number_of_limbs - 1U) - v_offset;
 
           for(local_uint_index_type j = local_uint_index_type(0U); j <= m; ++j)
           {
@@ -1968,7 +1954,6 @@
             //     set q_hat = (u[j] * b + u[j + 1]) / v[1]
 
             const local_uint_index_type uj     = (((number_of_limbs + 1U) - 1U) - u_offset) - j;
-            const local_uint_index_type vj0    =   (number_of_limbs       - 1U) - v_offset;
             const double_limb_type      u_j_j1 = (double_limb_type(uu[uj]) << std::numeric_limits<limb_type>::digits) + uu[uj - 1U];
 
             limb_type q_hat = ((uu[uj] == vv[vj0]) ? (std::numeric_limits<limb_type>::max)()
@@ -1981,13 +1966,9 @@
 
             for(double_limb_type t = u_j_j1 - double_limb_type(q_hat * double_limb_type(vv[vj0])); ; --q_hat, t += vv[vj0])
             {
-              if(detail::make_hi<limb_type>(t) != limb_type(0U))
-              {
-                break;
-              }
-
-              if(   double_limb_type(double_limb_type(vv[vj0 - 1U]) * q_hat)
-                 <= double_limb_type(double_limb_type(t << std::numeric_limits<limb_type>::digits) + uu[uj - 2U]))
+              if(   (detail::make_hi<limb_type>(t) != limb_type(0U))
+                 || (   double_limb_type(double_limb_type(vv[vj0 - 1U]) * q_hat)
+                     <= double_limb_type(double_limb_type(t << std::numeric_limits<limb_type>::digits) + uu[uj - 2U])))
               {
                 break;
               }
