@@ -141,10 +141,10 @@ ESP32_ESP_TOOL_FLAGS_PROG      = --chip esp32                         \
 RULE_SPECIAL_MAKE_IMAGE_FILE   =    $(subst /,\,$(ESP32_ESP_TOOL)) $(ESP32_ESP_TOOL_FLAGS_IMAG)                                 \
                                  && $(subst /,\,$(ESP32_GEN_PART)) -q $(subst /,\,$(PATH_TGT)/startup/partitions.csv) $(APP).partitions.bin
 
-ESP32_ESP_TOOL_CMD_COPY_PART1  = $(CP) -f $(subst /,\,$(ESP32_GEN_PART))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
-ESP32_ESP_TOOL_CMD_COPY_PART2  = $(CP) -f $(subst /,\,$(ESP32_ESP_TOOL))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
-ESP32_ESP_TOOL_CMD_COPY_PART3  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/boot_app0.bin)          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
-ESP32_ESP_TOOL_CMD_COPY_PART4  = $(CP) -f $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART1  = copy /Y $(subst /,\,$(ESP32_GEN_PART))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART2  = copy /Y $(subst /,\,$(ESP32_ESP_TOOL))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART3  = copy /Y $(subst /,\,$(PATH_TGT)/startup/boot_app0.bin)          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32_ESP_TOOL_CMD_COPY_PART4  = copy /Y $(subst /,\,$(PATH_TGT)/startup/bootloader_qio_80m.bin) $(subst /,\,$(CURDIR)/bin) > 2 > NUL
 
 ESP32_ESP_TOOL_CMD_ECHO        = $(ECHO) esptool.exe $(ESP32_ESP_TOOL_FLAGS_PROG) > $(subst /,\,$(CURDIR)/bin/flash.bat)
 

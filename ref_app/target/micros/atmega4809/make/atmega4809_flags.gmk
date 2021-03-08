@@ -15,7 +15,7 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                               \
+TGT_ALLFLAGS  = -Os                                                               \
                 -mmcu=atmega4809                                                  \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
