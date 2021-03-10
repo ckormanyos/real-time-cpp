@@ -1,5 +1,4 @@
 Companion code for the book Real-Time C++
-[![Build Status](https://github.com/ckormanyos/real-time-cpp/workflows/CI/badge.svg?branch=develop)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
 
 This is the companion code
