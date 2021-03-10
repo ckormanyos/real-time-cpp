@@ -233,10 +233,7 @@ using GNUmake, CMake or MSBuild
 depending on the particular OS/build/target configuration.
 
 ### Build Status
-
-|                  |  Master  |
-|------------------|----------|
-| Github Actions   | [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions) |
+[![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 
 ## GNU GCC Compilers
 
