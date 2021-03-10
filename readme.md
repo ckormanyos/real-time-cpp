@@ -235,7 +235,7 @@ depending on the particular OS/build/target configuration.
 
 |                  |  Master  |
 |------------------|----------|
-| Github Actions | [![Build Status](https://github.com/ckormanyos/real-time-cpp/workflows/CI/badge.svg?branch=master)](https://github.com/ckormanyos/real-time-cpp/actions)
+| Github Actions | ![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)
 
 ## GNU GCC Compilers
 
