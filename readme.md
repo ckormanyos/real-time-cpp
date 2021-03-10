@@ -1,5 +1,5 @@
 Companion code for the book Real-Time C++
-![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)
+[![Build Status](https://github.com/ckormanyos/real-time-cpp/workflows/real-time-cpp/badge.svg?branch=develop)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
 
 This is the companion code
@@ -236,7 +236,7 @@ depending on the particular OS/build/target configuration.
 
 |                  |  Master  |
 |------------------|----------|
-| Github Actions | ![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)
+| Github Actions | [![Build Status](https://github.com/ckormanyos/real-time-cpp/workflows/real-time-cpp/badge.svg?branch=develop)](https://github.com/ckormanyos/real-time-cpp/actions)
 
 ## GNU GCC Compilers
 
