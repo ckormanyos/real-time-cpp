@@ -231,6 +231,12 @@ and benchmark builds/runs on Ubuntu or Windows-Latest
 using GNUmake, CMake or MSBuild
 depending on the particular OS/build/target configuration.
 
+### Build Status
+
+|                  |  Master  |
+|------------------|----------|
+| Github Actions | [![Build Status](https://github.com/ckormanyos/real-time-cpp/workflows/CI/badge.svg?branch=master)](https://github.com/boostorg/math/actions)
+
 ## GNU GCC Compilers
 
 GNU GCC cross compilers for the microcontroller solutions are *not*
