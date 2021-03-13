@@ -42,96 +42,49 @@ namespace
   // Modulus:
   //   a % b = 0x14998D5CA3DB6385F7DEDF4621DE48A9104AC13797C6567713D7ABC216D7AB4C
 
-  constexpr std::array<std::uint32_t, 8U> a_data_forward =
-  {{
-    UINT32_C(0xF4DF741D),
-    UINT32_C(0xE58BCB2F),
-    UINT32_C(0x37F18372),
-    UINT32_C(0x026EF9CB),
-    UINT32_C(0xCFC456CB),
-    UINT32_C(0x80AF54D5),
-    UINT32_C(0x3BDEED78),
-    UINT32_C(0x410065DE)
-  }};
+  const uint256_t a
+  (
+    {
+      UINT32_C(0x410065DE),
+      UINT32_C(0x3BDEED78),
+      UINT32_C(0x80AF54D5),
+      UINT32_C(0xCFC456CB),
+      UINT32_C(0x026EF9CB),
+      UINT32_C(0x37F18372),
+      UINT32_C(0xE58BCB2F),
+      UINT32_C(0xF4DF741D)
+    }
+  );
 
-  constexpr std::array<std::uint32_t, 8U> b_data_forward =
-  {{
-    UINT32_C(0x166D63E0),
-    UINT32_C(0x202B3D90),
-    UINT32_C(0xECCEAA04),
-    UINT32_C(0x6341AB50),
-    UINT32_C(0x4658F55B),
-    UINT32_C(0x974A7FD6),
-    UINT32_C(0x3733ECF8),
-    UINT32_C(0x9DD0DF75)
-  }};
-
-  constexpr std::array<std::uint32_t, 8U> c_data_forward =
-  {{
-    UINT32_C(0xE491A360),
-    UINT32_C(0xC57EB430),
-    UINT32_C(0x6C61F9A0),
-    UINT32_C(0x4F7F7D99),
-    UINT32_C(0xBE3676AA),
-    UINT32_C(0xD2D71C55),
-    UINT32_C(0x92D5AE70),
-    UINT32_C(0xF84AF076)
-  }};
-
-  constexpr std::array<std::uint32_t, 8U> m_data_forward =
-  {{
-    UINT32_C(0x14998D5C),
-    UINT32_C(0xA3DB6385),
-    UINT32_C(0xF7DEDF46),
-    UINT32_C(0x21DE48A9),
-    UINT32_C(0x104AC137),
-    UINT32_C(0x97C65677),
-    UINT32_C(0x13D7ABC2),
-    UINT32_C(0x16D7AB4C)
-  }};
-
-  const std::array<std::uint32_t, 8U> a_data =
-  {{
-    a_data_forward[7U],
-    a_data_forward[6U],
-    a_data_forward[5U],
-    a_data_forward[4U],
-    a_data_forward[3U],
-    a_data_forward[2U],
-    a_data_forward[1U],
-    a_data_forward[0U]
-  }};
-
-  const std::array<std::uint32_t, 8U> b_data =
-  {{
-    b_data_forward[7U],
-    b_data_forward[6U],
-    b_data_forward[5U],
-    b_data_forward[4U],
-    b_data_forward[3U],
-    b_data_forward[2U],
-    b_data_forward[1U],
-    b_data_forward[0U]
-  }};
-
-  const uint256_t a(a_data);
-  const uint256_t b(b_data);
+  const uint256_t b
+  (
+    {
+      UINT32_C(0x9DD0DF75),
+      UINT32_C(0x3733ECF8),
+      UINT32_C(0x974A7FD6),
+      UINT32_C(0x4658F55B),
+      UINT32_C(0x6341AB50),
+      UINT32_C(0xECCEAA04),
+      UINT32_C(0x202B3D90),
+      UINT32_C(0x166D63E0)
+    }
+  );
 
   bool run_wide_integer_mul()
   {
-    const std::array<std::uint32_t, 8U> c_data =
-    {{
-      c_data_forward[7U],
-      c_data_forward[6U],
-      c_data_forward[5U],
-      c_data_forward[4U],
-      c_data_forward[3U],
-      c_data_forward[2U],
-      c_data_forward[1U],
-      c_data_forward[0U]
-    }};
-
-    const uint256_t c(c_data);
+    const uint256_t c
+    (
+      {
+        UINT32_C(0xF84AF076),
+        UINT32_C(0x92D5AE70),
+        UINT32_C(0xD2D71C55),
+        UINT32_C(0xBE3676AA),
+        UINT32_C(0x4F7F7D99),
+        UINT32_C(0x6C61F9A0),
+        UINT32_C(0xC57EB430),
+        UINT32_C(0xE491A360)
+      }
+    );
 
     const bool result_of_mul_is_ok = ((a * b) == c);
 
@@ -149,19 +102,19 @@ namespace
 
   bool run_wide_integer_mod()
   {
-    const std::array<std::uint32_t, 8U> m_data =
-    {{
-      m_data_forward[7U],
-      m_data_forward[6U],
-      m_data_forward[5U],
-      m_data_forward[4U],
-      m_data_forward[3U],
-      m_data_forward[2U],
-      m_data_forward[1U],
-      m_data_forward[0U]
-    }};
-
-    const uint256_t m(m_data);
+    const uint256_t m
+    (
+      {
+        UINT32_C(0x16D7AB4C),
+        UINT32_C(0x13D7ABC2),
+        UINT32_C(0x97C65677),
+        UINT32_C(0x104AC137),
+        UINT32_C(0x21DE48A9),
+        UINT32_C(0xF7DEDF46),
+        UINT32_C(0xA3DB6385),
+        UINT32_C(0x14998D5C)
+      }
+    );
 
     const bool result_of_mod_is_ok = ((a % b) == m);
 
