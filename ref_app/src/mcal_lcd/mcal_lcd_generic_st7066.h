@@ -67,8 +67,8 @@
       command(UINT8_C(0x0C));                           // Display ON; Cursor ON
       command(UINT8_C(0x06));                           // Entry mode set
 
-      const bool write_clear_lines_is_ok = (   write_n(nullptr, 0U, 0U)
-                                            && write_n(nullptr, 0U, 1U));
+      const bool write_clear_lines_is_ok = (   write(nullptr, 0U, 0U)
+                                            && write(nullptr, 0U, 1U));
 
 
       return write_clear_lines_is_ok;

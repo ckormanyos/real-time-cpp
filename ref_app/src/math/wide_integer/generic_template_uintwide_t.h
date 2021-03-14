@@ -855,7 +855,7 @@
           {
             const local_unsigned_integral_type u =
               ((typename representation_type::size_type(i) < values.size())
-                ? local_unsigned_integral_type(values[i]) << (std::numeric_limits<limb_type>::digits * int(i))
+                ? local_unsigned_integral_type(local_unsigned_integral_type(values[i]) << (std::numeric_limits<limb_type>::digits * int(i)))
                 : 0U);
 
             cast_result |= u;
@@ -3164,8 +3164,8 @@
            typename LimbType,
            typename AllocatorType>
   uintwide_t<Digits2, LimbType, AllocatorType> powm(const uintwide_t<Digits2, LimbType, AllocatorType>& b,
-                                     const OtherUnsignedIntegralTypeP&    p,
-                                     const OtherUnsignedIntegralTypeM&    m)
+                                                    const OtherUnsignedIntegralTypeP&    p,
+                                                    const OtherUnsignedIntegralTypeM&    m)
   {
     // Calculate (b ^ p) % m.
 
