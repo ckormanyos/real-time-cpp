@@ -50,7 +50,7 @@
   // Forward declaration of the decwide_t template class.
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   class decwide_t;
@@ -107,7 +107,7 @@
       return *this;
     }
 
-    virtual ~fixed_dynamic_array() = default;
+    virtual ~fixed_dynamic_array() { }
 
     static constexpr typename base_class_type::size_type static_size()
     {
@@ -207,14 +207,14 @@
   #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>& pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
   #else
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
@@ -223,14 +223,14 @@
   #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>& ln_two();
   #else
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> ln_two();
@@ -238,14 +238,14 @@
 
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> calc_pi(void(*pfn_callback_to_report_digits10)(const std::uint32_t) = nullptr);
 
   template<const std::int32_t MyDigits10,
            typename LimbType = std::uint32_t,
-           typename AllocatorType = std::allocator<LimbType>,
+           typename AllocatorType = std::allocator<void>,
            typename InternalFloatType = double,
            typename ExponentType = std::int64_t>
   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType> calc_ln_two();
@@ -467,16 +467,19 @@
     static constexpr std::int32_t decwide_t_elem_mask      = detail::decwide_t_helper<MyDigits10, LimbType>::elem_mask;
     static constexpr std::int32_t decwide_t_elem_mask_half = detail::decwide_t_helper<MyDigits10, LimbType>::elem_mask_half;
 
-    static constexpr exponent_type decwide_t_max_exp10      =  static_cast<exponent_type>((std::numeric_limits<exponent_type>::max)() / decwide_t_elem_digits10) * decwide_t_elem_digits10;
-    static constexpr exponent_type decwide_t_min_exp10      = -static_cast<exponent_type>(decwide_t_max_exp10);
-    static constexpr exponent_type decwide_t_max_exp        = decwide_t_max_exp10;
-    static constexpr exponent_type decwide_t_min_exp        = decwide_t_min_exp10;
+    static constexpr exponent_type decwide_t_max_exp10     =  static_cast<exponent_type>((std::numeric_limits<exponent_type>::max)() / decwide_t_elem_digits10) * decwide_t_elem_digits10;
+    static constexpr exponent_type decwide_t_min_exp10     = -static_cast<exponent_type>(decwide_t_max_exp10);
+    static constexpr exponent_type decwide_t_max_exp       = decwide_t_max_exp10;
+    static constexpr exponent_type decwide_t_min_exp       = decwide_t_min_exp10;
 
     // Obtain the limb_type from template parameter.
     using limb_type = LimbType;
 
     // Rebind the decwide_t allocator to the granularity of the LimbType.
-    using allocator_type = AllocatorType;
+    using allocator_type =
+      typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
+                                                               std::allocator<void>,
+                                                               AllocatorType>::type>::template rebind_alloc<limb_type>;
 
     // Define the array type, which is the internal
     // representation of the data field of a decwide_t.
