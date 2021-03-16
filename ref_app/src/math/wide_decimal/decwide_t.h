@@ -845,9 +845,10 @@
       }
 
       // Get the offset for the add/sub operation.
-      static const exponent_type max_delta_exp = static_cast<exponent_type>((decwide_t_elem_number - 1) * decwide_t_elem_digits10);
+      constexpr std::int_fast64_t max_delta_exp =
+        static_cast<std::int_fast64_t>(std::int_fast64_t(decwide_t_elem_number - 1) * decwide_t_elem_digits10);
 
-      const exponent_type ofs_exp = static_cast<exponent_type>(my_exp - v.my_exp);
+      const std::int_fast64_t ofs_exp = static_cast<std::int_fast64_t>(my_exp - v.my_exp);
 
       // Check if the operation is out of range, requiring special handling.
       if(v.iszero() || (ofs_exp > max_delta_exp))
@@ -866,7 +867,7 @@
       typename array_type::pointer        p_u    =   my_data.data();
       typename array_type::const_pointer  p_v    = v.my_data.data();
       bool                                b_copy = false;
-      const std::int32_t                  ofs    = static_cast<std::int32_t>(static_cast<std::int32_t>(ofs_exp) / decwide_t_elem_digits10);
+      const std::int32_t                  ofs    = static_cast<std::int32_t>(ofs_exp / decwide_t_elem_digits10);
 
       #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
       array_type my_n_data_for_add_sub;
@@ -893,7 +894,7 @@
         else
         {
           std::copy(my_data.cbegin(),
-                    my_data.cend()     - static_cast<std::ptrdiff_t>(-ofs),
+                    my_data.cend() - static_cast<std::ptrdiff_t>(-ofs),
                     my_n_data_for_add_sub.begin() + static_cast<std::ptrdiff_t>(-ofs));
 
           std::fill(my_n_data_for_add_sub.begin(),
@@ -1022,7 +1023,10 @@
       }
 
       // Check for underflow.
-      if(iszero()) { return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>()); }
+      if(iszero())
+      {
+        return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>());
+      }
 
       return *this;
     }
@@ -1439,7 +1443,7 @@
       // Extract the mantissa and exponent for a "manual"
       // computation of the estimate.
       InternalFloatType dd;
-      exponent_type      ne;
+      exponent_type     ne;
 
       x.extract_parts(dd, ne);
 
@@ -1728,8 +1732,8 @@
       return (it_non_zero == my_data.cend());
     }
 
-    bool isneg   () const { return my_neg; }
-    bool ispos   () const { return (!isneg()); }
+    bool isneg() const { return my_neg; }
+    bool ispos() const { return (!isneg()); }
 
     // Operators pre-increment and pre-decrement.
     decwide_t& operator++() { return *this += one<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType>(); }
@@ -2095,7 +2099,7 @@
       for(std::int32_t j = static_cast<std::int32_t>(p - static_cast<std::int32_t>(1)); j >= static_cast<std::int32_t>(0); j--)
       {
         const limb_type t = static_cast<limb_type>(static_cast<limb_type>(u[j] + v[j]) + carry);
-        carry             = ((t > static_cast<limb_type>(decwide_t_elem_mask)) ? 1U : 0U);
+        carry             = ((t >= static_cast<limb_type>(decwide_t_elem_mask)) ? 1U : 0U);
         u[j]              = static_cast<limb_type>(t - ((carry != 0U) ? static_cast<limb_type>(decwide_t_elem_mask) : static_cast<limb_type>(0U)));
       }
 
@@ -2303,19 +2307,21 @@
       // Release the carries and re-combine the low and high parts.
       // This sets the integral data elements in the big number
       // to the result of multiplication.
-      double_limb_type carry = static_cast<double_limb_type>(0U);
+      using fft_carry_type = std::uint_fast64_t;
+
+      fft_carry_type carry = static_cast<fft_carry_type>(0U);
 
       for(std::uint32_t j = static_cast<std::uint32_t>((prec_elems_for_multiply * 2L) - 2L); static_cast<std::int32_t>(j) >= 0; j -= 2U)
       {
         fft_float_type         xaj = af[j] / (n_fft / 2U);
-        const double_limb_type xlo = static_cast<double_limb_type>(xaj + detail::fft::template_half<fft_float_type>()) + carry;
-        carry                      = static_cast<double_limb_type>(xlo / static_cast<limb_type>(decwide_t_elem_mask_half));
-        const limb_type        nlo = static_cast<limb_type>       (xlo - static_cast<double_limb_type>(carry * static_cast<limb_type>(decwide_t_elem_mask_half)));
+        const fft_carry_type xlo = static_cast<fft_carry_type>(xaj + detail::fft::template_half<fft_float_type>()) + carry;
+        carry                    = static_cast<fft_carry_type>(xlo / static_cast<limb_type>(decwide_t_elem_mask_half));
+        const limb_type      nlo = static_cast<limb_type>     (xlo - static_cast<fft_carry_type>(carry * static_cast<limb_type>(decwide_t_elem_mask_half)));
 
-                               xaj = ((j != 0) ? (af[j - 1U] / (n_fft / 2U)) : fft_float_type(0));
-        const double_limb_type xhi = static_cast<double_limb_type>(xaj + detail::fft::template_half<fft_float_type>()) + carry;
-        carry                      = static_cast<double_limb_type>(xhi / static_cast<limb_type>(decwide_t_elem_mask_half));
-        const limb_type        nhi = static_cast<limb_type>       (xhi - static_cast<double_limb_type>(carry * static_cast<limb_type>(decwide_t_elem_mask_half)));
+                             xaj = ((j != 0) ? (af[j - 1U] / (n_fft / 2U)) : fft_float_type(0));
+        const fft_carry_type xhi = static_cast<fft_carry_type>(xaj + detail::fft::template_half<fft_float_type>()) + carry;
+        carry                    = static_cast<fft_carry_type>(xhi / static_cast<limb_type>(decwide_t_elem_mask_half));
+        const limb_type      nhi = static_cast<limb_type>     (xhi - static_cast<fft_carry_type>(carry * static_cast<limb_type>(decwide_t_elem_mask_half)));
 
         u[(j / 2U)] = static_cast<limb_type>(static_cast<limb_type>(nhi * static_cast<limb_type>(decwide_t_elem_mask_half)) + nlo);
       }
@@ -3146,7 +3152,7 @@
       {
         limb_type xx = x.my_data[0U];
 
-        std::uint_fast16_t n10 = 0;
+        std::int_fast16_t n10 = 0;
 
         while(limb_type(xx + 5U) > 10U)
         {
@@ -4046,6 +4052,7 @@
   bool example002a_pi_small_limb         ();
   bool example002b_pi_100k               ();
   bool example002c_pi_quintic            ();
+  bool example002d_pi_limb08             ();
   bool example003_zeta                   ();
   bool example004_bessel_recur           ();
   bool example005_polylog_series         ();
