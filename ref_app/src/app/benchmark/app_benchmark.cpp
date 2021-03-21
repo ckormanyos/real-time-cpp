@@ -92,6 +92,10 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_pi_agm();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT)
+
+  const bool result_is_ok = app::benchmark::run_boost_math_cbrt();
+
   #endif
 
   // Set the benchmark port pin level to low.

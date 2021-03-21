@@ -35,7 +35,8 @@ TGT_CFLAGS    = -std=c99                                                       \
 TGT_CXXFLAGS  = -std=c++11                                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/math/include               \
+                -IC:/boost/boost_1_76_0
 
 TGT_AFLAGS    =
 
