@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#define BOOST_MATH_PROMOTE_FLOAT_POLICY false
 #include <boost/math/special_functions/cbrt.hpp>
 
 #include <app/benchmark/app_benchmark.h>
