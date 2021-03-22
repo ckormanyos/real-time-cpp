@@ -33,10 +33,12 @@ TGT_CFLAGS    = -std=c99                                                       \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++11                                                     \
+                -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/math/include               \
-                -IC:/boost/boost_1_76_0
+                -IC:/boost/boost_1_76_0                                        \
+                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 

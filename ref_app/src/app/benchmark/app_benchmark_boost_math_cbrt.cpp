@@ -9,6 +9,7 @@
 
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
 #include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/gamma.hpp>
 
 #include <app/benchmark/app_benchmark.h>
 
@@ -38,16 +39,16 @@ extern float x;
 
 bool app::benchmark::run_boost_math_cbrt()
 {
-  cb = boost::math::cbrt(x);
+  cb = boost::math::tgamma(boost::math::cbrt(x));
 
-  const bool result_is_ok = local::is_close_fraction(cb, 1.0714412696907731080F);
+  // N[Gamma[((123 Pi) / 100)^(1/3)], 21]
+  const bool result_is_ok = local::is_close_fraction(cb, 0.890420918714041301448F);
 
   return result_is_ok;
 }
 
 float cb;
-float x = 1.23F;
-
+float x = 1.23F * boost::math::constants::pi<float>();
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
 int main()

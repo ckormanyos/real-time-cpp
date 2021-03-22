@@ -15,28 +15,30 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O3                                            \
-                -marm                                          \
-                -march=armv6zk                                 \
-                -mtune=arm1176jzf-s                            \
-                -mfpu=vfpv2                                    \
+TGT_ALLFLAGS  = -O3                                                            \
+                -marm                                                          \
+                -march=armv6zk                                                 \
+                -mtune=arm1176jzf-s                                            \
+                -mfpu=vfpv2                                                    \
                 -mfloat-abi=hard
 
-TGT_CFLAGS    = -std=c99                                       \
-                -Wunsuffixed-float-constants                   \
+TGT_CFLAGS    = -std=c99                                                       \
+                -Wunsuffixed-float-constants                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                     \
+TGT_CXXFLAGS  = -std=c++11                                                     \
+                -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/math/include               \
+                -IC:/boost/boost_1_76_0
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
-                -nostartfiles                                  \
-                -Wl,--gc-sections                              \
-                -Wl,-Map,$(APP).map                            \
+TGT_LDFLAGS   = -nostdlib                                                      \
+                -nostartfiles                                                  \
+                -Wl,--gc-sections                                              \
+                -Wl,-Map,$(APP).map                                            \
                 -T $(LINKER_DEFINITION_FILE)
 
 IMAGE_FILE   := $(PATH_BIN)/kernel.img
