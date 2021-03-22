@@ -298,6 +298,8 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
+          git submodule update --init libs/array
+          git submodule update --init libs/assert
           git submodule update --init libs/concept_check
           git submodule update --init libs/config
           git submodule update --init libs/container
@@ -305,6 +307,7 @@ jobs:
           git submodule update --init libs/detail
           git submodule update --init libs/exception
           git submodule update --init libs/headers
+          git submodule update --init libs/integer
           git submodule update --init libs/iterator
           git submodule update --init libs/lexical_cast
           git submodule update --init libs/math
@@ -315,11 +318,13 @@ jobs:
           git submodule update --init libs/preprocessor
           git submodule update --init libs/range
           git submodule update --init libs/smart_ptr
+          git submodule update --init libs/static_assert
+          git submodule update --init libs/throw_exception
           git submodule update --init libs/type_traits
           git submodule update --init libs/utility
           ./bootstrap.sh
           ./b2 headers
-        working-directory: ./ref_app/
+        working-directory: ./
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: benchmark_builds-stm32f446
