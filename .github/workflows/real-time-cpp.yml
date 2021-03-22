@@ -305,6 +305,7 @@ jobs:
           git submodule update --init libs/core
           git submodule update --init libs/detail
           git submodule update --init libs/exception
+          git submodule update --init libs/headers
           git submodule update --init libs/iterator
           git submodule update --init libs/lexical_cast
           git submodule update --init libs/math
@@ -315,7 +316,6 @@ jobs:
           git submodule update --init libs/preprocessor
           git submodule update --init libs/range
           git submodule update --init libs/smart_ptr
-          git submodule update --init libs/static_assert
           git submodule update --init libs/type_traits
           git submodule update --init libs/utility
           ./bootstrap.sh
