@@ -319,6 +319,7 @@ jobs:
           git submodule update --init libs/utility
           ./bootstrap.sh
           ./b2 headers
+        working-directory: ./ref_app/
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
       - name: benchmark_builds-stm32f446
