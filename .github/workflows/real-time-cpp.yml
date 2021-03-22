@@ -298,7 +298,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/assert
           git submodule update --init libs/concept_check
           git submodule update --init libs/config
           git submodule update --init libs/container

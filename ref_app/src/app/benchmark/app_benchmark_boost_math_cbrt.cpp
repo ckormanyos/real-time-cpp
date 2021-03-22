@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
+#define BOOST_MATH_STANDALONE
 #include <boost/math/special_functions/cbrt.hpp>
 #include <boost/math/special_functions/gamma.hpp>
 
