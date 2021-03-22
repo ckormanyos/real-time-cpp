@@ -10,7 +10,6 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
-             $(PATH_APP)/app/benchmark/app_benchmark_boost_math_cbrt     \
              $(PATH_APP)/app/benchmark/app_benchmark_complex             \
              $(PATH_APP)/app/benchmark/app_benchmark_crc                 \
              $(PATH_APP)/app/benchmark/app_benchmark_fast_math           \
