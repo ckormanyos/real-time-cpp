@@ -315,6 +315,7 @@ jobs:
           git submodule update --init libs/preprocessor
           git submodule update --init libs/range
           git submodule update --init libs/smart_ptr
+          git submodule update --init libs/static_assert
           git submodule update --init libs/type_traits
           git submodule update --init libs/utility
           ./bootstrap.sh
