@@ -299,7 +299,7 @@ jobs:
           cd ../boost-root
           git submodule update --init tools
           git submodule update --init libs/assert
-          git submodule update --init libs/concept
+          git submodule update --init libs/concept_check
           git submodule update --init libs/config
           git submodule update --init libs/container
           git submodule update --init libs/core
