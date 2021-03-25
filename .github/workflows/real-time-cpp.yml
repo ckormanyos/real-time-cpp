@@ -290,9 +290,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
@@ -329,4 +326,20 @@ jobs:
         run: sudo apt install gcc-arm-none-eabi
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
+        working-directory: ./ref_app/
+  benchmark_single-stm32f446:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: benchmark_single-stm32f446
+        run: |
+          arm-none-eabi-g++ -std=c++11 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/single/gcc.ld -o ./bin/app_benchmark_crc.elf
+          ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
