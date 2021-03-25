@@ -9,12 +9,13 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <iterator>
 
 // STM32 EABI ARM(R) Cortex-M4(TM) startup code.
 // Expressed with C++ for STM32F446 by Chris.
 
-// C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin\arm-none-eabi-g++ -std=c++11 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
+// C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin\arm-none-eabi-g++ -std=c++11 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
 
 namespace crt
 {
@@ -48,8 +49,14 @@ void __my_startup(void)
   asm volatile("ldr r3, =main");
   asm volatile("blx r3");
 
+  exit(EXIT_SUCCESS);
+
   // TBD: Nothing on return from main.
 }
+
+extern "C" void _exit (int);
+
+extern "C" void _exit (int) { }
 
 extern "C"
 {
