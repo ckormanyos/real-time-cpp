@@ -45,16 +45,28 @@ namespace
   const uint256_t a
   (
     {
-      UINT32_C(0x410065DE), UINT32_C(0x3BDEED78), UINT32_C(0x80AF54D5), UINT32_C(0xCFC456CB),
-      UINT32_C(0x026EF9CB), UINT32_C(0x37F18372), UINT32_C(0xE58BCB2F), UINT32_C(0xF4DF741D)
+      UINT32_C(0x410065DE),
+      UINT32_C(0x3BDEED78),
+      UINT32_C(0x80AF54D5),
+      UINT32_C(0xCFC456CB),
+      UINT32_C(0x026EF9CB),
+      UINT32_C(0x37F18372),
+      UINT32_C(0xE58BCB2F),
+      UINT32_C(0xF4DF741D)
     }
   );
 
   const uint256_t b
   (
     {
-      UINT32_C(0x9DD0DF75), UINT32_C(0x3733ECF8), UINT32_C(0x974A7FD6), UINT32_C(0x4658F55B),
-      UINT32_C(0x6341AB50), UINT32_C(0xECCEAA04), UINT32_C(0x202B3D90), UINT32_C(0x166D63E0)
+      UINT32_C(0x9DD0DF75),
+      UINT32_C(0x3733ECF8),
+      UINT32_C(0x974A7FD6),
+      UINT32_C(0x4658F55B),
+      UINT32_C(0x6341AB50),
+      UINT32_C(0xECCEAA04),
+      UINT32_C(0x202B3D90),
+      UINT32_C(0x166D63E0)
     }
   );
 
@@ -63,8 +75,14 @@ namespace
     const uint256_t c
     (
       {
-        UINT32_C(0xF84AF076), UINT32_C(0x92D5AE70), UINT32_C(0xD2D71C55), UINT32_C(0xBE3676AA),
-        UINT32_C(0x4F7F7D99), UINT32_C(0x6C61F9A0), UINT32_C(0xC57EB430), UINT32_C(0xE491A360)
+        UINT32_C(0xF84AF076),
+        UINT32_C(0x92D5AE70),
+        UINT32_C(0xD2D71C55),
+        UINT32_C(0xBE3676AA),
+        UINT32_C(0x4F7F7D99),
+        UINT32_C(0x6C61F9A0),
+        UINT32_C(0xC57EB430),
+        UINT32_C(0xE491A360)
       }
     );
 
@@ -75,7 +93,9 @@ namespace
 
   bool run_wide_integer_div()
   {
-    const bool result_of_div_is_ok = ((a / b) == 10U);
+    const uint256_t q(10U);
+
+    const bool result_of_div_is_ok = ((a / b) == q);
 
     return result_of_div_is_ok;
   }
@@ -85,8 +105,14 @@ namespace
     const uint256_t m
     (
       {
-        UINT32_C(0x16D7AB4C), UINT32_C(0x13D7ABC2), UINT32_C(0x97C65677), UINT32_C(0x104AC137),
-        UINT32_C(0x21DE48A9), UINT32_C(0xF7DEDF46), UINT32_C(0xA3DB6385), UINT32_C(0x14998D5C)
+        UINT32_C(0x16D7AB4C),
+        UINT32_C(0x13D7ABC2),
+        UINT32_C(0x97C65677),
+        UINT32_C(0x104AC137),
+        UINT32_C(0x21DE48A9),
+        UINT32_C(0xF7DEDF46),
+        UINT32_C(0xA3DB6385),
+        UINT32_C(0x14998D5C)
       }
     );
 
