@@ -356,7 +356,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install gcc-arm-none-eabi libncurses5o libpython2.7
+          sudo apt install gcc-arm-none-eabi libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
           wget https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-7-linux-x64.tgz
           tar xvf xpack-qemu-arm-2.8.0-7-linux-x64.tgz 
