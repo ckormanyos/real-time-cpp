@@ -370,10 +370,10 @@ jobs:
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          ./2.8.0-7/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors 
-        working-directory: ./ref_app/emu_env
+          ./xPacks/qemu-arm/2.8.0-7/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors 
+        working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          arm-none-eabi-gdb-py bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
+          arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
         working-directory: ./ref_app/
 
