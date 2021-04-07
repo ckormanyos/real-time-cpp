@@ -353,14 +353,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [ g++-10, g++-11, clang++-10 ]
+        compiler: [ g++-10, clang++-10 ]
         standard: [ c++20 ]
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install g++-10 g++-11 clang-10
+        run: sudo apt install g++-10 clang-10
       - name: benchmark_single-cnl
         run: |
           git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root

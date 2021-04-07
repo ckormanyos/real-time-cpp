@@ -59,12 +59,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;C:\Users\User\Documents\Ks\PC_Software\NumericalPrograms\ExtendedNumberTypes\cnl-main\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;C:\Users\User\Documents\Ks\PC_Software\NumericalPrograms\ExtendedNumberTypes\cnl-main\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -193,7 +193,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp" />
