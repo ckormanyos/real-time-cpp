@@ -37,9 +37,12 @@ TGT_CXXFLAGS  = -std=c++11                                                     \
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
+#TGT_INCLUDES := -IC:/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/cnl-main/include        \
+#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
+
 #TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include               \
 #                -IC:/boost/boost_1_76_0                                        \
-#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/9.3.1/arm-none-eabi/thumb/v7e_m_fp/hard
+#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 

@@ -8,21 +8,23 @@
 #ifndef APP_BENCHMARK_DETAIL_2018_10_02_H_
   #define APP_BENCHMARK_DETAIL_2018_10_02_H_
 
-  #include <cmath>
+  #include <algorithm>
   #include <limits>
 
   namespace app { namespace benchmark { namespace detail {
 
-  template<typename float_type>
-  bool is_close_fraction(const float_type f,
-                         const float_type control,
-                         const float_type tol = std::numeric_limits<float_type>::epsilon() * float_type(100.0L))
+  template<typename NumericType>
+  bool is_close_fraction(const NumericType a,
+                         const NumericType b,
+                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * 100))
   {
-    using std::fabs;
+    using std::abs;
 
-    const float_type ratio = fabs(f / control);
+    const NumericType ratio     = abs(NumericType((NumericType(1) * a) / b));
 
-    return (fabs(float_type(1.0L) - ratio) < tol);
+    const NumericType closeness = abs(NumericType(1 - ratio));
+
+    return (closeness < tol);
   }
 
   } } } // namespace app::benchmark::detail

@@ -14,27 +14,10 @@
 #include <boost/math/special_functions/gamma.hpp>
 
 #include <app/benchmark/app_benchmark.h>
+#include <app/benchmark/app_benchmark_detail.h>
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT)
 
-namespace local
-{
-  template<typename FloatingPointType>
-  bool is_close_fraction(const FloatingPointType a,
-                         const FloatingPointType b,
-                         const FloatingPointType tol = std::numeric_limits<FloatingPointType>::epsilon() * 10.0F)
-  {
-    using std::fabs;
-
-    const FloatingPointType ratio = fabs(a / b);
-
-    const FloatingPointType delta = fabs(1 - ratio);
-
-    const bool result_is_ok = (delta < tol);
-
-    return result_is_ok;
-  }
-}
 
 extern float cb;
 extern float x;
@@ -64,7 +47,7 @@ bool app::benchmark::run_boost_math_cbrt()
 
   cb = boost::math::tgamma(boost::math::cbrt(x * float(app_benchmark_n_value)));
 
-  app_benchmark_result_is_ok &= local::is_close_fraction(cb, app_benchmark_control[app_benchmark_n_index]);
+  app_benchmark_result_is_ok &= detail::is_close_fraction(cb, app_benchmark_control[app_benchmark_n_index]);
 
   app_benchmark_n_value += 10U;
 
@@ -82,7 +65,7 @@ bool app::benchmark::run_boost_math_cbrt()
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
 int main()
 {
-  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_crc.cpp -o ./ref_app/bin/app_benchmark_crc.exe
+  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_MATH_CBRT -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_boost_math_cbrt.cpp -o ./ref_app/bin/app_benchmark_boost_math_cbrt.exe
 
   bool result_is_ok = true;
 
