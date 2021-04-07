@@ -333,11 +333,34 @@ jobs:
         run: |
           git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
           mkdir -p bin
-          ${{ matrix.compiler }} -std=${{ matrix.standard }} -Wall -Werror -O3 -march=native -fsanitize=address -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER  -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp -o ./bin/app_benchmark_cnl_scaled_integer.exe
+          ${{ matrix.compiler }} -std=${{ matrix.standard }} -Wall -Werror -O3 -march=native -fsanitize=address -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp -o ./bin/app_benchmark_cnl_scaled_integer.exe
           ls -la ./bin/app_benchmark_cnl_scaled_integer.exe
           ./bin/app_benchmark_cnl_scaled_integer.exe
         working-directory: ./ref_app/
-  benchmark_single-stm32f429:
+  benchmark_single-cnl-stm32f429:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: wget-gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux
+        run: |
+          mkdir -p emu_env && cd emu_env
+          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+        working-directory: ./ref_app/
+      - name: benchmark_single-cnl-stm32f429
+        run: |
+          git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
+          mkdir -p bin
+          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_cnl_scaled_integer.map -T ./target/micros/stm32f429/make/stm32f429.ld -o ./bin/app_benchmark_cnl_scaled_integer.elf
+          arm-none-eabi-objcopy ./bin/app_benchmark_cnl_scaled_integer.elf -O ihex ./bin/app_benchmark_cnl_scaled_integer.hex
+          ls -la ./bin/app_benchmark_cnl_scaled_integer.elf ./bin/app_benchmark_cnl_scaled_integer.hex ./bin/app_benchmark_cnl_scaled_integer.map
+        working-directory: ./ref_app/
+  benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -368,5 +391,5 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env//gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
+          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
         working-directory: ./ref_app/
