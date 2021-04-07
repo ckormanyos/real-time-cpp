@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <algorithm>
 #include <cnl/scaled_integer.h>
 
 #include <app/benchmark/app_benchmark.h>
@@ -21,6 +22,20 @@ namespace
                         const NumericType x)
   {
     return NumericType((NumericType(a * x) + b) * x) + c;
+  }
+
+  template<typename NumericType>
+  bool is_close_fraction(const NumericType a,
+                         const NumericType b,
+                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * 100))
+  {
+    using std::abs;
+
+    const NumericType ratio     = abs(NumericType((NumericType(1) * a) / b));
+
+    const NumericType closeness = abs(NumericType(1 - ratio));
+
+    return (closeness < tol);
   }
 
   using fixed_point_bin_type = cnl::scaled_integer<std::int32_t, cnl::power<-10>>;
@@ -49,15 +64,13 @@ bool app::benchmark::run_cnl_scaled_integer()
   {
     const fixed_point_bin_type f = quadratic(a_bin, b_bin, c_bin, x_bin);
 
-    result_is_ok =
-      app::benchmark::detail::is_close_fraction(f, r_bin, fixed_point_bin_type(fixed_point_bin_type(1) / 100));
+    result_is_ok = is_close_fraction(f, r_bin, fixed_point_bin_type(fixed_point_bin_type(1) / 100));
   }
   else
   {
     const fixed_point_dec_type f = quadratic(a_dec, b_dec, c_dec, x_dec);
 
-    result_is_ok =
-      app::benchmark::detail::is_close_fraction(f, r_dec, fixed_point_dec_type(fixed_point_dec_type(1) / 100));
+    result_is_ok = is_close_fraction(f, r_dec, fixed_point_dec_type(fixed_point_dec_type(1) / 100));
   }
 
   ++app_benchmark_cnl_scaled_integer_type_toggler;

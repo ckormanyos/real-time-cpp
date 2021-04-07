@@ -36,6 +36,7 @@ TGT_CXXFLAGS  = -std=c++11                                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+#TGT_INCLUDES  =
 
 #TGT_INCLUDES := -IC:/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/cnl-main/include        \
 #                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
