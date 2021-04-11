@@ -176,6 +176,9 @@
     <Filter Include="src\mcal\atmega4809">
       <UniqueIdentifier>{dbda4d0b-067f-4d70-82e7-06a6c5b83f6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\app\benchmark\_doc">
+      <UniqueIdentifier>{906a028e-7aa3-4935-8a72-2f735b223885}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1803,16 +1806,7 @@
     <ClInclude Include="src\util\memory\util_n_slot_array_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_helper.h">
-      <Filter>src\math\wide_decimal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_karatsuba.h">
-      <Filter>src\math\wide_decimal</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\wide_decimal\decwide_t.h">
-      <Filter>src\math\wide_decimal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h">
       <Filter>src\math\wide_decimal</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_baselexical_cast.h">
@@ -1898,6 +1892,12 @@
     </ClInclude>
     <ClInclude Include="src\util\STL\impl\ptr_traits.h">
       <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail.h">
+      <Filter>src\math\wide_decimal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h">
+      <Filter>src\math\wide_decimal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2004,7 +2004,7 @@
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </None>
     <None Include="src\app\benchmark\readme.md">
-      <Filter>src\app\benchmark</Filter>
+      <Filter>src\app\benchmark\_doc</Filter>
     </None>
   </ItemGroup>
 </Project>

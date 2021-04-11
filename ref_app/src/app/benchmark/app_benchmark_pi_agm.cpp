@@ -24,37 +24,37 @@
 bool app::benchmark::run_pi_agm()
 {
   // N[Pi, 106] and truncate the final digit.
-  using local_limb_type = std::uint32_t;
+  using local_limb_type = std::uint16_t;
 
-  constexpr std::uint32_t wide_decimal_digits10 = UINT32_C(105);
+  constexpr std::uint32_t wide_decimal_digits10 = UINT32_C(53);
 
   constexpr std::int32_t local_elem_number =
     math::wide_decimal::detail::decwide_t_helper<wide_decimal_digits10, local_limb_type>::elem_number;
 
   using local_allocator_type = util::n_slot_array_allocator<void, local_elem_number, 18U>;
 
-  using dec105_t = math::wide_decimal::decwide_t<wide_decimal_digits10, local_limb_type, local_allocator_type, float>;
+  using dec53_t = math::wide_decimal::decwide_t<wide_decimal_digits10, local_limb_type, local_allocator_type, float, std::int32_t, float>;
 
-  static const mcal::memory::progmem::array<typename dec105_t::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
+  static const mcal::memory::progmem::array<typename dec53_t::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
   {{
-    (typename dec105_t::limb_type) 3UL,
-    (typename dec105_t::limb_type) 14159265UL,
-    (typename dec105_t::limb_type) 35897932UL,
-    (typename dec105_t::limb_type) 38462643UL,
-    (typename dec105_t::limb_type) 38327950UL,
-    (typename dec105_t::limb_type) 28841971UL,
-    (typename dec105_t::limb_type) 69399375UL,
-    (typename dec105_t::limb_type) 10582097UL,
-    (typename dec105_t::limb_type) 49445923UL,
-    (typename dec105_t::limb_type)  7816406UL,
-    (typename dec105_t::limb_type) 28620899UL,
-    (typename dec105_t::limb_type) 86280348UL,
-    (typename dec105_t::limb_type) 25342117UL,
-    (typename dec105_t::limb_type)  6798214UL
+    (typename dec53_t::limb_type) UINT16_C(   3),
+    (typename dec53_t::limb_type) UINT16_C(1415),
+    (typename dec53_t::limb_type) UINT16_C(9265),
+    (typename dec53_t::limb_type) UINT16_C(3589),
+    (typename dec53_t::limb_type) UINT16_C(7932),
+    (typename dec53_t::limb_type) UINT16_C(3846),
+    (typename dec53_t::limb_type) UINT16_C(2643),
+    (typename dec53_t::limb_type) UINT16_C(3832),
+    (typename dec53_t::limb_type) UINT16_C(7950),
+    (typename dec53_t::limb_type) UINT16_C(2884),
+    (typename dec53_t::limb_type) UINT16_C(1971),
+    (typename dec53_t::limb_type) UINT16_C(6939),
+    (typename dec53_t::limb_type) UINT16_C(9375),
+    (typename dec53_t::limb_type) UINT16_C(1058)
   }};
 
-  const math::wide_decimal::decwide_t<wide_decimal_digits10, local_limb_type, local_allocator_type, float> my_pi =
-    math::wide_decimal::pi<wide_decimal_digits10, local_limb_type, local_allocator_type, float>();
+  const dec53_t my_pi =
+    math::wide_decimal::pi<wide_decimal_digits10, local_limb_type, local_allocator_type, float, std::int32_t, float>();
 
   const bool result_is_ok = std::equal(app_benchmark_pi_agm_control.cbegin(),
                                        app_benchmark_pi_agm_control.cend(),

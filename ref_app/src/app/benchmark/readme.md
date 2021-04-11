@@ -24,9 +24,9 @@
   - ![app_benchmark_hash.cpp](./app_benchmark_hash.cpp) via `#define APP_BENCHMARK_TYPE_HASH` computes a 160-bit hash checksum of a 3-character message.
   - ![app_benchmark_wide_decimal.cpp](./app_benchmark_wide_decimal.cpp) via `#define APP_BENCHMARK_TYPE_WIDE_DECIMAL` computes a 100 decimal digit square root using the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
   - ![app_benchmark_trapezoid_integral.cpp](./app_benchmark_trapezoid_integral.cpp) via `#define APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` computes the numerical floating-point result of a Bessel function using a recursive trapezoid integration routine.
-  - ![app_benchmark_pi_agm.cpp](./app_benchmark_pi_agm.cpp) via `#define APP_BENCHMARK_TYPE_PI_AGM` computes 105 decimal digits of pi using a Gaus AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
+  - ![app_benchmark_pi_agm.cpp](./app_benchmark_pi_agm.cpp) via `#define APP_BENCHMARK_TYPE_PI_AGM` computes 53 decimal digits of pi using a Gaus AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class having a so-called _limb type_ of `std::uint16_t`.
   - ![app_benchmark_boost_math_cbrt.cpp](./app_benchmark_pi_agm.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT` uses [Boost.Math](https://www.boost.org/doc/libs/1_75_0/libs/math/doc/html/index.html) to compute the cube root of various Gamma functions values (at the moment only available on PC or workstation hosts).
-  - ![app_benchmark_cnl_scaled_integer.cpp](./app_benchmark_cnl_scaled_integer.cpp) via `#define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER` brings a small subset of the [CNL Library](https://github.com/johnmcfarlane/cnl) _onto the metal_ by exercising an elementary quadratic calculations with the fixed-point representations of `cnl::scaled_integer`.
+  - ![app_benchmark_cnl_scaled_integer.cpp](./app_benchmark_cnl_scaled_integer.cpp) via `#define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER` brings a small subset of the [CNL Library](https://github.com/johnmcfarlane/cnl) _onto the metal_ by exercising an elementary quadratic calculations with the fixed-point representations of [`cnl::scaled_integer`](https://github.com/johnmcfarlane/cnl/tree/main/include/cnl/_impl/scaled_integer).
 
 ## Performance classes
 
