@@ -2006,5 +2006,8 @@
     <None Include="src\app\benchmark\readme.md">
       <Filter>src\app\benchmark\_doc</Filter>
     </None>
+    <None Include="src\util\STL\charconv">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
 </Project>
