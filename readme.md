@@ -1,4 +1,4 @@
-Companion code for the book Real-Time C++\\
+Companion code for the book Real-Time C++\
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
 
