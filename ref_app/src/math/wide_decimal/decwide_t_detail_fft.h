@@ -9,6 +9,9 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
+// This file implements a naive FFT used for large-digit
+// FFT multiplication in decwide_t.
+
 #ifndef DECWIDE_T_DETAIL_FFT_2013_01_08_H_
   #define DECWIDE_T_DETAIL_FFT_2013_01_08_H_
 

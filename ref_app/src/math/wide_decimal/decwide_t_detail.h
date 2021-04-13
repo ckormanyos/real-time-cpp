@@ -9,6 +9,8 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
+// This file implements various details for decwide_t.
+
 #ifndef DECWIDE_T_DETAIL_2020_10_26_H_
   #define DECWIDE_T_DETAIL_2020_10_26_H_
 
@@ -126,36 +128,46 @@
     return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10_maker(n - UINT32_C(1)) * UINT32_C(10));
   }
 
-  template<const std::int32_t MyDigits10,
-           typename LimbType>
-  struct decwide_t_helper
+  template<typename LimbType>
+  struct decwide_t_helper_base
   {
-    static constexpr std::int32_t digits10          = MyDigits10;
-    static constexpr std::int32_t digits            = digits10;
-    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 1);
-    static constexpr std::int32_t radix             = static_cast<std::int32_t>(10);
-
     static constexpr std::int32_t elem_digits10     =
       ((std::is_same<LimbType, std::uint32_t>::value == true)
         ? static_cast<std::int32_t>(8)
         : ((std::is_same<LimbType, std::uint16_t>::value == true) ? static_cast<std::int32_t>(4)
                                                                   : static_cast<std::int32_t>(2)));
 
+    static constexpr std::int32_t elem_mask      = static_cast<std::int32_t>(pow10_maker((std::uint32_t)  elem_digits10));
+    static constexpr std::int32_t elem_mask_half = static_cast<std::int32_t>(pow10_maker((std::uint32_t) (elem_digits10 / 2)));
+  };
+
+  template<typename LimbType> constexpr std::int32_t decwide_t_helper_base<LimbType>::elem_digits10;
+  template<typename LimbType> constexpr std::int32_t decwide_t_helper_base<LimbType>::elem_mask;
+  template<typename LimbType> constexpr std::int32_t decwide_t_helper_base<LimbType>::elem_mask_half;
+
+  template<const std::int32_t MyDigits10,
+           typename LimbType>
+  struct decwide_t_helper : decwide_t_helper_base<LimbType>
+  {
+  private:
+    using base_class_type = decwide_t_helper_base<LimbType>;
+
+  public:
+    static constexpr std::int32_t digits10          = MyDigits10;
+    static constexpr std::int32_t digits            = digits10;
+    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 1);
+    static constexpr std::int32_t radix             = static_cast<std::int32_t>(10);
+
     static constexpr std::int32_t elem_number_extra = 3;
-    static constexpr std::int32_t elem_number       = static_cast<std::int32_t>(((digits10 / elem_digits10) + (((digits10 % elem_digits10) != 0) ? 1 : 0)) + elem_number_extra);
-    static constexpr std::int32_t elem_mask         = static_cast<std::int32_t>(pow10_maker((std::uint32_t)  elem_digits10));
-    static constexpr std::int32_t elem_mask_half    = static_cast<std::int32_t>(pow10_maker((std::uint32_t) (elem_digits10 / 2)));
+    static constexpr std::int32_t elem_number       = static_cast<std::int32_t>(((digits10 / base_class_type::elem_digits10) + (((digits10 % base_class_type::elem_digits10) != 0) ? 1 : 0)) + elem_number_extra);
   };
 
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::digits10;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::digits;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::max_digits10;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::radix;
-  template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_digits10;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_number_extra;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_number;
-  template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_mask;
-  template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_mask_half;
 
   template <typename MyType,
             const std::uint_fast32_t MySize,
