@@ -10,8 +10,8 @@
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
 // This file implements the class decwide_t and most of its
-// basic functions including constructors, algebraic operations,
-// and more.
+// basic functions including constructors, binary arithmetic
+// operations, comparison operators and more.
 
 #ifndef DECWIDE_T_2004_06_01_H_
   #define DECWIDE_T_2004_06_01_H_
@@ -726,9 +726,11 @@
         return operator=(v);
       }
 
+      const std::int32_t prec_elems_for_add_sub = (std::min)(my_prec_elem, v.my_prec_elem);
+
       // Get the offset for the add/sub operation.
-      constexpr exponent_type max_delta_exp =
-        static_cast<exponent_type>(decwide_t_elem_number * decwide_t_elem_digits10);
+      const exponent_type max_delta_exp =
+        static_cast<exponent_type>(prec_elems_for_add_sub * decwide_t_elem_digits10);
 
       using local_unsigned_wrap_type = detail::unsigned_wrap<unsigned_exponent_type, exponent_type>;
 
@@ -799,11 +801,13 @@
           detail::eval_add_n(p_u,
                              typename std::add_const<limb_type*>::type(p_u),
                              typename std::add_const<limb_type*>::type(p_v),
-                             decwide_t_elem_number);
+                             prec_elems_for_add_sub);
 
         if(b_copy)
         {
-          std::copy(my_n_data_for_add_sub.cbegin(), my_n_data_for_add_sub.cend(), my_data.begin());
+          std::copy(my_n_data_for_add_sub.cbegin(),
+                    my_n_data_for_add_sub.cbegin() + prec_elems_for_add_sub,
+                    my_data.begin());
           my_exp  = v.my_exp;
         }
 
@@ -811,7 +815,7 @@
         if(carry != static_cast<limb_type>(0U))
         {
           std::copy_backward(my_data.cbegin(),
-                             my_data.cend() - static_cast<std::uint_fast32_t>(1U),
+                             my_data.cend() - static_cast<std::uint_fast32_t>((std::int32_t(my_data.size()) - prec_elems_for_add_sub) + 1),
                              my_data.end());
 
           my_data[0U] = carry;
@@ -825,7 +829,7 @@
         // might have to be treated with a positive, negative or zero offset.
         if(       (ofs >  static_cast<std::int32_t>(0))
            || (   (ofs == static_cast<std::int32_t>(0))
-               && (detail::compare_ranges(my_data.data(), v.my_data.data(), decwide_t_elem_number) > static_cast<std::int_fast8_t>(0))))
+               && (detail::compare_ranges(my_data.data(), v.my_data.data(), static_cast<std::uint_fast32_t>(prec_elems_for_add_sub)) > 0)))
         {
           // In this case, |u| > |v| and ofs is positive.
           // Copy the data of v, shifted down to a lower value
@@ -860,7 +864,9 @@
           // Set the u-pointer p_u to point to m_n and the
           // operand pointer p_v to point to the shifted
           // data m_data.
-          std::copy(v.my_data.cbegin(), v.my_data.cend(), my_n_data_for_add_sub.begin());
+          std::copy(v.my_data.cbegin(),
+                    v.my_data.cbegin() + prec_elems_for_add_sub,
+                    my_n_data_for_add_sub.begin());
           p_u    = my_n_data_for_add_sub.data();
           p_v    = my_data.data();
           b_copy = true;
@@ -871,13 +877,15 @@
           detail::eval_subtract_n(p_u,
                                   typename std::add_const<limb_type*>::type(p_u),
                                   typename std::add_const<limb_type*>::type(p_v),
-                                  decwide_t_elem_number);
+                                  prec_elems_for_add_sub);
 
         static_cast<void>(has_borrow);
 
         if(b_copy)
         {
-          std::copy(my_n_data_for_add_sub.cbegin(), my_n_data_for_add_sub.cend(), my_data.begin());
+          std::copy(my_n_data_for_add_sub.cbegin(),
+                    my_n_data_for_add_sub.cbegin() + prec_elems_for_add_sub,
+                    my_data.begin());
           my_exp  = v.my_exp;
           my_neg  = v.my_neg;
         }
@@ -885,7 +893,7 @@
         // Is it necessary to justify the data?
         const typename array_type::const_iterator first_nonzero_elem =
           std::find_if(my_data.cbegin(),
-                       my_data.cend(),
+                       my_data.cbegin() + prec_elems_for_add_sub,
                        [](const limb_type& d) -> bool
                        {
                          return (d != static_cast<limb_type>(0U));
@@ -893,9 +901,9 @@
 
         if(first_nonzero_elem != my_data.cbegin())
         {
-          if(first_nonzero_elem == my_data.cend())
+          if(first_nonzero_elem == my_data.cbegin() + prec_elems_for_add_sub)
           {
-            // This result of the subtraction is exactly zero.
+            // This result of the subtraction is exactly zero (within precision).
             // Reset the sign and the exponent.
             my_neg = false;
             my_exp = static_cast<exponent_type>(0);
@@ -987,7 +995,7 @@
       const bool u_and_v_are_identical =
         (   (my_fpclass == v.my_fpclass)
          && (my_exp     == v.my_exp)
-         && (detail::compare_ranges(my_data.data(), v.my_data.data(), decwide_t_elem_number) == static_cast<std::int_fast8_t>(0)));
+         && (detail::compare_ranges(my_data.data(), v.my_data.data(), static_cast<std::uint_fast32_t>(decwide_t_elem_number)) == 0));
 
       if(u_and_v_are_identical)
       {
@@ -1230,7 +1238,8 @@
         {
           // The signs are the same and the exponents are the same.
           // Compare the data.
-          const std::int_fast8_t val_cmp_data = detail::compare_ranges(my_data.data(), v.my_data.data(), decwide_t_elem_number);
+          const std::int_fast8_t val_cmp_data =
+            detail::compare_ranges(my_data.data(), v.my_data.data(), static_cast<std::uint_fast32_t>(decwide_t_elem_number));
 
           return ((!my_neg) ? val_cmp_data : static_cast<std::int_fast8_t>(-val_cmp_data));
         }

@@ -28,17 +28,21 @@
 
   template<typename InputIteratorLeftType,
            typename InputIteratorRightType>
-  std::int_fast8_t compare_ranges(InputIteratorLeftType a, InputIteratorRightType b, const std::uint_fast32_t count)
+  std::int_fast8_t compare_ranges(InputIteratorLeftType a,
+                                  InputIteratorRightType b,
+                                  const std::uint_fast32_t count)
   {
     std::int_fast8_t n_return = 0;
 
-    InputIteratorLeftType  it_a = a;
-    InputIteratorRightType it_b = b;
+    InputIteratorRightType it_b(b);
 
-    for( ; it_a != (a + count); ++it_a, ++it_b)
+    for(InputIteratorLeftType it_a(a); it_a != InputIteratorLeftType(a + count); ++it_a, ++it_b)
     {
-      if     (*it_a > typename std::iterator_traits<InputIteratorLeftType>::value_type(*it_b)) { n_return =  1; break; }
-      else if(*it_a < typename std::iterator_traits<InputIteratorLeftType>::value_type(*it_b)) { n_return = -1; break; }
+      using value_left_type =
+        typename std::iterator_traits<InputIteratorLeftType>::value_type;
+
+      if     (*it_a > value_left_type(*it_b)) { n_return =  1; break; }
+      else if(*it_a < value_left_type(*it_b)) { n_return = -1; break; }
     }
 
     return n_return;
@@ -192,7 +196,7 @@
       }
 
       carry = static_cast<local_double_limb_type>(sum / local_elem_mask);
-      *ir++ = static_cast<local_limb_type>       (sum - static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(carry) * local_elem_mask));
+      *ir++ = static_cast<local_limb_type>       (sum % local_elem_mask);
     }
 
     for(std::int32_t j = static_cast<std::int32_t>(count - 1); j >= static_cast<std::int32_t>(0); --j)
@@ -205,7 +209,7 @@
       }
 
       carry = static_cast<local_double_limb_type>(sum / local_elem_mask);
-      *ir++ = static_cast<local_limb_type>       (sum - static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(carry) * local_elem_mask));
+      *ir++ = static_cast<local_limb_type>       (sum % local_elem_mask);
     }
 
     *ir = static_cast<local_limb_type>(carry);
@@ -228,14 +232,18 @@
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
-    local_double_limb_type carry = 0U;
+    local_limb_type carry = 0U;
 
     // Multiplication loop.
     for(std::int32_t j = static_cast<std::int32_t>(p - 1); j >= static_cast<std::int32_t>(0); --j)
     {
-      const local_double_limb_type t = static_cast<local_double_limb_type>(carry + static_cast<local_double_limb_type>(u[j] * static_cast<local_double_limb_type>(n)));
-      carry                          = static_cast<local_double_limb_type>(t / local_elem_mask);
-      u[j]                           = static_cast<local_limb_type>(t - static_cast<local_double_limb_type>(local_elem_mask * carry));
+      const local_double_limb_type t =
+        static_cast<local_double_limb_type>(
+            carry
+          + static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(u[j]) * n));
+
+      carry = static_cast<local_limb_type>(t / local_elem_mask);
+      u[j]  = static_cast<local_limb_type>(t % local_elem_mask);
     }
 
     return static_cast<local_limb_type>(carry);
@@ -258,16 +266,20 @@
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
-    local_double_limb_type prev = 0U;
+    local_limb_type prev = 0U;
 
     for(std::int32_t j = static_cast<std::int32_t>(0); j < p; ++j)
     {
-      const local_double_limb_type t = static_cast<local_double_limb_type>(u[j] + static_cast<local_double_limb_type>(prev * local_elem_mask));
-      u[j]                           = static_cast<local_limb_type>(t / n);
-      prev                           = static_cast<local_double_limb_type>(t - static_cast<local_double_limb_type>(n * static_cast<local_double_limb_type>(u[j])));
+      const local_double_limb_type t =
+        static_cast<local_double_limb_type>(
+            u[j]
+          + static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(prev) * local_elem_mask));
+
+      u[j] = static_cast<local_limb_type>(t / n);
+      prev = static_cast<local_limb_type>(t % n);
     }
 
-    return static_cast<local_limb_type>(prev);
+    return prev;
   }
 
   template<typename LimbIteratorType>
@@ -525,18 +537,15 @@
     {
       local_fft_float_type  xaj = af[j] / (n_fft / 2U);
       const fft_carry_type  xlo = static_cast<fft_carry_type> (xaj + detail::fft::template_half<local_fft_float_type>()) + carry;
-      carry                     = static_cast<fft_carry_type> (xlo / static_cast<local_limb_type>(local_elem_mask_half));
-      const local_limb_type nlo = static_cast<local_limb_type>(xlo - static_cast<fft_carry_type>(carry * static_cast<local_limb_type>(local_elem_mask_half)));
+      carry                     = static_cast<fft_carry_type> (xlo / local_elem_mask_half);
+      const local_limb_type nlo = static_cast<local_limb_type>(xlo - static_cast<fft_carry_type>(carry * local_elem_mask_half));
 
-                             xaj = ((j != 0) ? (af[j - 1U] / (n_fft / 2U)) : local_fft_float_type(0));
-      const fft_carry_type   xhi = static_cast<fft_carry_type> (xaj + detail::fft::template_half<local_fft_float_type>()) + carry;
-      carry                      = static_cast<fft_carry_type> (xhi / static_cast<local_limb_type>(local_elem_mask_half));
-      const local_limb_type nhi  = static_cast<local_limb_type>(xhi - static_cast<fft_carry_type>(carry * static_cast<local_limb_type>(local_elem_mask_half)));
+                            xaj = ((j != 0) ? (af[j - 1U] / (n_fft / 2U)) : local_fft_float_type(0));
+      const fft_carry_type  xhi = static_cast<fft_carry_type> (xaj + detail::fft::template_half<local_fft_float_type>()) + carry;
+      carry                     = static_cast<fft_carry_type> (xhi / local_elem_mask_half);
+      const local_limb_type nhi = static_cast<local_limb_type>(xhi - static_cast<fft_carry_type>(carry * local_elem_mask_half));
 
-      r[(j / 2U)] =
-        static_cast<local_limb_type>(static_cast<local_limb_type>(
-                                         nhi
-                                       * static_cast<local_limb_type>(local_elem_mask_half)) + nlo);
+      r[(j / 2U)] = static_cast<local_limb_type>(static_cast<local_limb_type>(nhi * local_elem_mask_half) + nlo);
     }
   }
 
