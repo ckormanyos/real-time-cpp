@@ -18,7 +18,6 @@
 #include <numeric>
 
 #include <math/softfloat/soft_double.h>
-#include <math/softfloat/soft_double_examples.h>
 
 namespace local
 {
