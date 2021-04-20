@@ -26,7 +26,8 @@ TGT_ALLFLAGS  = -O2                                                            \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
                 -mno-unaligned-access                                          \
-                -mno-long-calls
+                -mno-long-calls                                                \
+                -Wno-psabi
 
 TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \

@@ -211,6 +211,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_trapezoid_integral.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_soft_double_h2f1.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />
     <ClCompile Include="src\mcal\am335x\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -947,6 +948,7 @@
     <ClInclude Include="src\math\functions\math_functions_bessel.h" />
     <ClInclude Include="src\math\functions\math_functions_hypergeometric.h" />
     <ClInclude Include="src\math\functions\math_functions_legendre.h" />
+    <ClInclude Include="src\math\softfloat\soft_double.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h" />

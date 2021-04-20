@@ -616,7 +616,7 @@
 
       using std::fabs;
 
-      constexpr InternalFloatType close_to_zero =
+      const InternalFloatType close_to_zero =
         (  (std::numeric_limits<InternalFloatType>::min)()
          * (InternalFloatType(1) + std::numeric_limits<InternalFloatType>::epsilon()));
 
@@ -638,7 +638,7 @@
         InternalFloatType d = ((!b_neg) ? mantissa : -mantissa);
         exponent_type     e = exponent;
 
-        constexpr InternalFloatType f10(10.0F);
+        constexpr InternalFloatType f10(10U);
 
         while(d > f10)                     { d /= f10; ++e; }
         while(d < InternalFloatType(1.0F)) { d *= f10; --e; }
