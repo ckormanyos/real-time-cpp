@@ -106,6 +106,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return a >> dist | ((a & (((uint64_t) 1 << dist) - 1)) != 0 ? 1U : 0U);
   }
 
+  template<typename UnsignedIntegralType>
+  inline constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
+                                           && (std::is_unsigned<UnsignedIntegralType>::value == true), UnsignedIntegralType>::type
+  negate(UnsignedIntegralType u)
+  {
+    return (UnsignedIntegralType) (((UnsignedIntegralType) ~u) + 1U);
+  }
+
+  template<typename SignedIntegralType>
+  inline constexpr typename std::enable_if<   (std::is_integral<SignedIntegralType>::value == true)
+                                           && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
+  negate(SignedIntegralType n)
+  {
+    return (SignedIntegralType) -n;
+  }
+
   /*----------------------------------------------------------------------------
   | Shifts 'a' right by the number of bits given in 'dist', which must not
   | be zero.  If any nonzero bits are shifted off, they are "jammed" into the
@@ -114,7 +130,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *----------------------------------------------------------------------------*/
   constexpr uint32_t softfloat_shiftRightJam32(uint32_t a, uint16_t dist)
   {
-    return (dist < 31) ? a >> dist | ((uint32_t)(a << (-dist & 31)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
+    return (dist < 31) ? a >> dist | ((uint32_t)(a << (negate(dist) & 31)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
   }
 
   /*----------------------------------------------------------------------------
@@ -123,7 +139,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *----------------------------------------------------------------------------*/
   constexpr uint64_t softfloat_shiftRightJam64(uint64_t a, uint32_t dist)
   {
-    return (dist < 63) ? a >> dist | ((uint64_t)(a << (-dist & 63)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
+    return (dist < 63) ? a >> dist | ((uint64_t)(a << (negate(dist) & 63)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
   }
 
   /*----------------------------------------------------------------------------
@@ -189,8 +205,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   {
     return
     {
-      (dist < 64) ? (a << (-dist & 63)) | (extra != 0U ? 1U : 0U) : ((dist == 64) ? a : (a != 0U ? 1U : 0U))  | (extra != 0U ? 1U : 0U),
-      (dist < 64) ?  a >> dist                                    : 0U
+      (dist < 64) ? (a << (negate(dist) & 63)) | (extra != 0U ? 1U : 0U) : ((dist == 64) ? a : (a != 0U ? 1U : 0U))  | (extra != 0U ? 1U : 0U),
+      (dist < 64) ?  a >> dist                                           : 0U
     };
   }
 
@@ -852,7 +868,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       return
         (!a) ? 0U
-             : detail::packToF64UI((a < 0), 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? -(uint32_t) a : (uint32_t) a)) + 21U)), (uint64_t) uint32_t((a < 0) ? -(uint32_t) a : (uint32_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? -(uint32_t) a : (uint32_t) a)) + 21U)));
+             : detail::packToF64UI((a < 0), 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a)) + 21U)), (uint64_t) uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a)) + 21U)));
     }
 
     static constexpr uint64_t my__i64_to_f64(const int64_t a)
@@ -860,7 +876,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       return
         (!((uint64_t) a & UINT64_C(0x7FFFFFFFFFFFFFFF)))
           ? ((a < 0) ? detail::packToF64UI(1, 0x43E, 0) : 0U)
-          : softfloat_normRoundPackToF64((a < 0), 0x43C, uint64_t((a < 0) ? -(uint64_t) a : (uint64_t) a));
+          : softfloat_normRoundPackToF64((a < 0), 0x43C, uint64_t((a < 0) ? detail::negate((uint64_t) a) : (uint64_t) a));
     }
 
     static constexpr uint64_t my_ui32_to_f64(const uint32_t a)
@@ -888,7 +904,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       sig32 = (uint32_t) (sig >> 12U);
 
-      const uint32_t ui = (uint32_t) (sign ? -sig32 : sig32);
+      const uint32_t ui = (uint32_t) (sign ? detail::negate(sig32) : sig32);
 
       return (int32_t) ui;
     }
@@ -900,7 +916,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         ++sig;
       }
 
-      const uint64_t ui = (uint64_t) (sign ? -sig : sig);
+      const uint64_t ui = (uint64_t) (sign ? detail::negate(sig) : sig);
 
       return (int64_t) ui;
     }
