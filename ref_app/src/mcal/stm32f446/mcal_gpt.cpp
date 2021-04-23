@@ -34,7 +34,7 @@ extern "C" void __sys_tick_handler(void)
 {
   // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/32].
 
-  system_tick += UINT32_C(0x01000000);
+  system_tick = system_tick + UINT32_C(0x01000000);
 }
 
 void mcal::gpt::init(const config_type*)

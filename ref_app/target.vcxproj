@@ -715,10 +715,12 @@
     <ClCompile Include="target\micros\stm32f407\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f407\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32f407\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\stm32f429\make\single\crt.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32f429\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\stm32f446\make\single\crt.cpp" />
     <ClCompile Include="target\micros\stm32f446\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32f446\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f446\startup\crt1.cpp" />

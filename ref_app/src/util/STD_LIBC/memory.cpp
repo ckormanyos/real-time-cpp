@@ -16,35 +16,41 @@
 // runtime in the executable.
 
 extern "C"
-void* memset(void* dst, int c, size_t n)
+void* memset(void* dest, int c, size_t count)
 {
-  // Convert the value c to unsigned char and copy it to the destination n times.
+  // Convert the value c to unsigned char and copy it into each
+  // of the first count characters of the object pointed to by dest.
+  // If the object is a potentially-overlapping subobject or is not
+  // TriviallyCopyable (e.g., scalar, C-compatible struct,
+  // or an array of trivially copyable type), the behavior is undefined.
+  // If count is greater than the size of the object pointed to by dest,
+  // the behavior is undefined.
 
-  std::uint8_t* the_dst = reinterpret_cast<std::uint8_t*>(dst);
+  unsigned char* puchar_dest = reinterpret_cast<unsigned char*>(dest);
+  const unsigned char uchar_c = static_cast<unsigned char>(c);
 
-  for( ; n > static_cast<size_t>(0U); --n)
+  size_t i = 0U;
+
+  for( ; i < count; ++i)
   {
-    *the_dst = static_cast<uint8_t>(c);
-    ++the_dst;
+    *(volatile unsigned char*) (puchar_dest + i) = uchar_c;
   }
 
-  return dst;
+  return reinterpret_cast<void*>(puchar_dest + i);
 }
 
 extern "C"
-void* memcpy(void* dst, const void* src, size_t n)
+void* memcpy(void* dest, const void* src, size_t count)
 {
-        std::uint8_t* the_dst = reinterpret_cast<      std::uint8_t*>(dst);
-  const std::uint8_t* the_src = reinterpret_cast<const std::uint8_t*>(src);
+        unsigned char* puchar_dest = reinterpret_cast<      std::uint8_t*>(dest);
+  const unsigned char* puchar_src  = reinterpret_cast<const std::uint8_t*>(src);
 
-  for( ; n > static_cast<std::size_t>(0U); --n)
+  for(size_t i = 0U; i < count; ++i)
   {
-    *the_dst = *the_src;
-    ++the_dst;
-    ++the_src;
+    puchar_dest[i] = puchar_src[i];
   }
 
-  return dst;
+  return reinterpret_cast<void*>(puchar_dest + count);
 }
 
 extern "C"

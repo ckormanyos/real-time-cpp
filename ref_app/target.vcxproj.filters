@@ -172,6 +172,12 @@
     <Filter Include="micros\atmega4809\startup">
       <UniqueIdentifier>{0ad7a31a-3074-4b6b-95c1-6cf6e46e58c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32f446\make\single">
+      <UniqueIdentifier>{06d85ca0-1ee7-4390-9b2c-d21d17cac378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32f429\make\single">
+      <UniqueIdentifier>{1ccfe424-3b8a-4499-be2b-cf8f9dc332cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -565,6 +571,12 @@
     </ClCompile>
     <ClCompile Include="target\micros\atmega4809\startup\crt1.cpp">
       <Filter>micros\atmega4809\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f446\make\single\crt.cpp">
+      <Filter>micros\stm32f446\make\single</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32f429\make\single\crt.cpp">
+      <Filter>micros\stm32f429\make\single</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

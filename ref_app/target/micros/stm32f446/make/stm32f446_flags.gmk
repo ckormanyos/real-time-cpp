@@ -9,13 +9,13 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 9.3.1
+GCC_VERSION   = 10.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                            \
+TGT_ALLFLAGS  = -Os                                                            \
                 -fno-inline-functions                                          \
                 -mcpu=cortex-m4                                                \
                 -mtune=cortex-m4                                               \
@@ -26,16 +26,26 @@ TGT_ALLFLAGS  = -O2                                                            \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
                 -mno-unaligned-access                                          \
-                -mno-long-calls
+                -mno-long-calls                                                \
+                -Wno-psabi
 
 TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                                     \
+TGT_CXXFLAGS  = -std=c++20                                                     \
+                -DBOOST_MATH_STANDALONE                                        \
+                -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+#TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  =
+
+#TGT_INCLUDES := -IC:/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/cnl-main/include        \
+#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
+
+TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include                                                       \
+                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 

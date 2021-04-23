@@ -13,6 +13,8 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
+ENTRY(__my_startup)
+
 /* The beginning and end of the program ROM area */
 /* Set up a ROM area with a size of 32K - 4 */
 _rom_begin = 0x08000000;

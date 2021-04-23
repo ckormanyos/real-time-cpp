@@ -96,6 +96,14 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_boost_math_cbrt();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
+
+  const bool result_is_ok = app::benchmark::run_cnl_scaled_integer();
+
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
+
+  const bool result_is_ok = app::benchmark::run_soft_double_h2f1();
+
   #endif
 
   // Set the benchmark port pin level to low.

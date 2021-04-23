@@ -24,6 +24,7 @@
     </SccProvider>
     <ProjectName>ref_app</ProjectName>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -78,7 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>
@@ -103,7 +104,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4646;4996</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>
@@ -192,6 +193,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp" />
@@ -206,6 +211,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_trapezoid_integral.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_integer.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_soft_double_h2f1.cpp" />
     <ClCompile Include="src\app\led\app_led.cpp" />
     <ClCompile Include="src\mcal\am335x\mcal_cpu.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -942,10 +948,11 @@
     <ClInclude Include="src\math\functions\math_functions_bessel.h" />
     <ClInclude Include="src\math\functions\math_functions_hypergeometric.h" />
     <ClInclude Include="src\math\functions\math_functions_legendre.h" />
+    <ClInclude Include="src\math\softfloat\soft_double.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h" />
-    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_helper.h" />
-    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_karatsuba.h" />
+    <ClInclude Include="src\math\wide_decimal\decwide_t_detail_ops.h" />
     <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h" />
     <ClInclude Include="src\mcal\am335x\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -2093,6 +2100,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="src\util\STL\cfloat">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\charconv">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
