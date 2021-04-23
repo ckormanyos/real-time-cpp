@@ -11,6 +11,8 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
 
+#define SOFT_DOUBLE_DISABLE_IOSTREAM
+
 #include <algorithm>
 #include <array>
 #include <cmath>
