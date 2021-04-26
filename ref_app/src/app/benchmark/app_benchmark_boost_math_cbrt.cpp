@@ -8,8 +8,12 @@
 #include <array>
 #include <cstdint>
 
+#if !defined(BOOST_MATH_STANDALONE)
 #define BOOST_MATH_STANDALONE
+#endif
+
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
+
 #include <boost/math/special_functions/cbrt.hpp>
 #include <boost/math/special_functions/gamma.hpp>
 
