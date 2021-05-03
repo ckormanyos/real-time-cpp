@@ -3865,15 +3865,15 @@
 
     template<typename GeneratorType,
              const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
-    constexpr result_type operator()(GeneratorType& generator)
+    WIDE_INTEGER_CONSTEXPR result_type operator()(GeneratorType& generator)
     {
       return generate<GeneratorType, GeneratorResultBits>(generator, my_params);
     }
 
     template<typename GeneratorType,
              const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
-    result_type operator()(GeneratorType& input_generator,
-                           const param_type& input_params)
+    WIDE_INTEGER_CONSTEXPR result_type operator()(GeneratorType& input_generator,
+                                                  const param_type& input_params)
     {
       return generate<GeneratorType, GeneratorResultBits>(input_generator, input_params);
     }
