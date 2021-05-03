@@ -16,7 +16,7 @@
 namespace
 {
   using uint256_t =
-    wide_integer::generic_template::uintwide_t<256U, std::uint32_t>;
+    math::wide_integer::uintwide_t<256U, std::uint32_t>;
 
   static_assert(std::numeric_limits<uint256_t>::digits == 256,
                 "Error: Incorrect digit count for this example");
