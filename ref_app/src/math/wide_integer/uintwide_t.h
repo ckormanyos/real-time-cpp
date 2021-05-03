@@ -57,70 +57,70 @@
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator+(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator+(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator-(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator-(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator*(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator*(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator/(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator/(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)
                            && (std::is_unsigned   <IntegralType>::value == false)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)
-                           && (std::is_unsigned   <IntegralType>::value == true)
-                           && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType, AllocatorType>::limb_type>::type
-  constexpr operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                                  && (std::is_integral   <IntegralType>::value == true)
+                                                  && (std::is_unsigned   <IntegralType>::value == true)
+                                                  && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType, AllocatorType>::limb_type>::type
+  operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)
-                           && (std::is_unsigned   <IntegralType>::value == true)
-                           && (std::numeric_limits<IntegralType>::digits > std::numeric_limits<LimbType>::digits)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)
+                                     && (std::is_unsigned   <IntegralType>::value == true)
+                                     && (std::numeric_limits<IntegralType>::digits > std::numeric_limits<LimbType>::digits)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v);
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (IntegralType op uintwide_t).
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator+(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator+(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator-(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator-(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator*(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator*(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator/(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator/(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                           && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
-  constexpr operator%(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
+  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                     && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Digits2, LimbType, AllocatorType>>::type
+  operator%(const IntegralType& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
 
   // Forward declarations of non-member binary logic operations of (uintwide_t op uintwide_t).
   template<const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType> constexpr uintwide_t<Digits2, LimbType, AllocatorType> operator|(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const uintwide_t<Digits2, LimbType, AllocatorType>& v);
@@ -1044,7 +1044,7 @@
     uintwide_t operator++(int) { const uintwide_t w(*this); preincrement(); return w; }
     uintwide_t operator--(int) { const uintwide_t w(*this); predecrement(); return w; }
 
-    uintwide_t& operator~()
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator~()
     {
       // Bitwise NOT.
       bitwise_not();
@@ -1052,7 +1052,7 @@
       return *this;
     }
 
-    uintwide_t& operator|=(const uintwide_t& other)
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator|=(const uintwide_t& other)
     {
       if(this != &other)
       {
@@ -1066,7 +1066,7 @@
       return *this;
     }
 
-    uintwide_t& operator^=(const uintwide_t& other)
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator^=(const uintwide_t& other)
     {
       if(this == &other)
       {
@@ -1084,7 +1084,7 @@
       return *this;
     }
 
-    uintwide_t& operator&=(const uintwide_t& other)
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator&=(const uintwide_t& other)
     {
       if(this != &other)
       {
@@ -1437,7 +1437,7 @@
       return cmp_result;
     }
 
-    void negate()
+    WIDE_INTEGER_CONSTEXPR void negate()
     {
       bitwise_not();
 
@@ -2021,12 +2021,12 @@
       }
     }
 
-    static void eval_multiply_n_by_n_to_2n(      limb_type*         r,
-                                           const limb_type*         a,
-                                           const limb_type*         b,
-                                           const std::uint_fast32_t count)
+    static WIDE_INTEGER_CONSTEXPR void eval_multiply_n_by_n_to_2n(      limb_type*         r,
+                                                                  const limb_type*         a,
+                                                                  const limb_type*         b,
+                                                                  const std::uint_fast32_t count)
     {
-      std::memset(r, 0, (count * 2U) * sizeof(limb_type));
+      std::fill_n(r, (count * 2U), limb_type(0U));
 
       for(std::uint_fast32_t i = 0U; i < count; ++i)
       {
@@ -2813,10 +2813,10 @@
   operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v) { return uintwide_t<Digits2, LimbType, AllocatorType>(u).operator%=(uintwide_t<Digits2, LimbType, AllocatorType>(v)); }
 
   template<typename IntegralType, const std::uint_fast32_t Digits2, typename LimbType, typename AllocatorType>
-  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                     && (std::is_integral   <IntegralType>::value == true)
-                                     && (std::is_unsigned   <IntegralType>::value == true)
-                                     && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType, AllocatorType>::limb_type>::type
+  WIDE_INTEGER_CONSTEXPR  typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
+                                                   && (std::is_integral   <IntegralType>::value == true)
+                                                   && (std::is_unsigned   <IntegralType>::value == true)
+                                                   && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Digits2, LimbType, AllocatorType>::limb_type>::type
   operator%(const uintwide_t<Digits2, LimbType, AllocatorType>& u, const IntegralType& v)
   {
     uintwide_t<Digits2, LimbType, AllocatorType> remainder;
