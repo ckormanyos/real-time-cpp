@@ -983,31 +983,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                        : softfloat_normRoundPackToF64(0, 0x43C, a);
     }
 
-    static int32_t softfloat_roundToI32(bool sign, uint64_t sig)
+    static constexpr int32_t softfloat_roundToI32(bool sign, uint64_t sig)
     {
-      uint32_t sig32;
-
-      uint16_t roundIncrement = (sign ? 0xFFFU : 0U);
-
-      sig += roundIncrement;
-
-      sig32 = (uint32_t) (sig >> 12U);
-
-      const uint32_t ui = (uint32_t) (sign ? detail::negate(sig32) : sig32);
-
-      return (int32_t) ui;
+      return (int32_t) ((uint32_t) (sign ? detail::negate((uint32_t) (sig >> 12U)) : (uint32_t) (sig >> 12U)));
     }
 
-    static int64_t softfloat_roundToI64(bool sign, uint64_t sig)
+    static constexpr int64_t softfloat_roundToI64(bool sign, uint64_t sig)
     {
-      if(sign)
-      {
-        ++sig;
-      }
-
-      const uint64_t ui = (uint64_t) (sign ? detail::negate(sig) : sig);
-
-      return (int64_t) ui;
+      return (int64_t) ((uint64_t) (sign ? detail::negate(sig) : sig));
     }
 
     static constexpr uint32_t softfloat_roundToUI32(bool sign, uint64_t sig)
@@ -1403,18 +1386,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         // Q04 = -0.4784212345106557147125E2;
         // Q05 = +0.1E1;
 
-        const math::softfloat::soft_double p00 = math::softfloat::soft_double(UINT64_C(0xC08EAA3CA575191A), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double p01 = math::softfloat::soft_double(UINT64_C(0x40A0655C8A1C19C3), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double p02 = math::softfloat::soft_double(UINT64_C(0xC0975FE114047504), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double p03 = math::softfloat::soft_double(UINT64_C(0x4078BFE6581C8213), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double p04 = math::softfloat::soft_double(UINT64_C(0xC03C92E6C89EC9E1), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q00 = math::softfloat::soft_double(UINT64_C(0xC07EAA3CA575191C), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q01 = math::softfloat::soft_double(UINT64_C(0x4092F38C42908712), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q02 = math::softfloat::soft_double(UINT64_C(0xC090789C42975D7D), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q03 = math::softfloat::soft_double(UINT64_C(0x40778E5238FAC622), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q04 = math::softfloat::soft_double(UINT64_C(0xC047EBCAB384C2B9), math::softfloat::detail::nothing());
-        const math::softfloat::soft_double q05 = math::softfloat::soft_double(UINT64_C(0x3FF0000000000000), math::softfloat::detail::nothing());
-
         // Scale the argument such that 1 <= a < 2.
         const int16_t n = detail::expF64UI(x.my_value) - INT16_C(0x3FF);
 
@@ -1423,20 +1394,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         const soft_double z  = (a - 1) / (a + 1);
         const soft_double z2 = z * z;
 
-        const soft_double pz2 = (((((     + p04)
-                                     * z2 + p03)
-                                     * z2 + p02)
-                                     * z2 + p01)
-                                     * z2 + p00);
+        const soft_double pz2 =  (((((     + soft_double(UINT64_C(0xC03C92E6C89EC9E1), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0x4078BFE6581C8213), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0xC0975FE114047504), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0x40A0655C8A1C19C3), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0xC08EAA3CA575191A), detail::nothing()));
 
-        const soft_double qz2 = ((((((     + q05)
-                                      * z2 + q04)
-                                      * z2 + q03)
-                                      * z2 + q02)
-                                      * z2 + q01)
-                                      * z2 + q00);
+        const soft_double qz2 = ((((((     + soft_double(UINT64_C(0x3FF0000000000000), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0xC047EBCAB384C2B9), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0x40778E5238FAC622), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0xC090789C42975D7D), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0x4092F38C42908712), detail::nothing()))
+                                      * z2 + soft_double(UINT64_C(0xC07EAA3CA575191C), detail::nothing()));
 
-        result = ((z * pz2) / qz2);
+        result  = ((z * pz2) / qz2);
 
         result += (n * soft_double::my_value_ln2());
       }

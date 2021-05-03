@@ -1266,7 +1266,7 @@
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h">
+    <ClInclude Include="src\math\wide_integer\uintwide_t.h">
       <Filter>src\math\wide_integer</Filter>
     </ClInclude>
     <ClInclude Include="src\app\benchmark\app_benchmark_detail.h">

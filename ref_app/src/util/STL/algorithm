@@ -550,7 +550,7 @@
     {
       while(first1 != last1 && *first1 == *first2)
       {
-          ++first1, ++first2;
+        ++first1, ++first2;
       }
 
       return std::make_pair(first1, first2);
