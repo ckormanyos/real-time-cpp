@@ -11,7 +11,7 @@
 
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 
-#include <math/wide_integer/generic_template_uintwide_t.h>
+#include <math/wide_integer/uintwide_t.h>
 
 namespace
 {

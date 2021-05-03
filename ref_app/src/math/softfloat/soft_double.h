@@ -5,42 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
 ///////////////////////////////////////////////////////////////////
 
-// This work uses (significantly) modified parts of the work mentioned below.
+// This work uses (significantly) modified parts of
+// SoftFloat IEEE Floating-Point Arithmetic Package,
+// Release 3e, by John R. Hauser.
 
-/*----------------------------------------------------------------------------
-
-This C header file is part of the SoftFloat IEEE Floating-Point Arithmetic
-Package, Release 3e, by John R. Hauser.
-
-Copyright 2011, 2012, 2013, 2014, 2015, 2016, 2017 The Regents of the
-University of California.  All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
- 1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions, and the following disclaimer.
-
- 2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions, and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
- 3. Neither the name of the University nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS", AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE
-DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
------------------------------------------------------------------------------*/
+// Full original copyright information is included
+// at the bottom of this header file.
 
 #ifndef SOFT_DOUBLE_2020_10_27_H_
   #define SOFT_DOUBLE_2020_10_27_H_
@@ -404,6 +374,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   inline soft_double exp     (const soft_double x);
   inline soft_double log     (const soft_double x);
   inline soft_double pow     (const soft_double x, const soft_double a);
+  inline soft_double sin     (const soft_double x);
+  inline soft_double cos     (const soft_double x);
+  inline soft_double tan     (const soft_double x);
+  inline soft_double sinh    (const soft_double x);
+  inline soft_double cosh    (const soft_double x);
+  inline soft_double tanh    (const soft_double x);
 
   template<typename UnsignedIntegralType,
            typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
@@ -547,11 +523,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     const soft_double& operator+() const { return *this; }
           soft_double  operator-() const { return soft_double(my_value ^ (uint64_t) (1ULL << 63U), detail::nothing()); }
 
-    static constexpr soft_double my_value_zero() { return soft_double(UINT64_C(0),                   detail::nothing()); }
-    static constexpr soft_double my_value_one () { return soft_double(UINT64_C(0x3FF0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_two () { return soft_double(UINT64_C(0x4000000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_half() { return soft_double(UINT64_C(0x3FE0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_pi  () { return soft_double(UINT64_C(4614256656552045848), detail::nothing()); }
+    static constexpr soft_double my_value_zero   () { return soft_double(UINT64_C(0),                   detail::nothing()); }
+    static constexpr soft_double my_value_one    () { return soft_double(UINT64_C(0x3FF0000000000000),  detail::nothing()); }
+    static constexpr soft_double my_value_two    () { return soft_double(UINT64_C(0x4000000000000000),  detail::nothing()); }
+    static constexpr soft_double my_value_half   () { return soft_double(UINT64_C(0x3FE0000000000000),  detail::nothing()); }
+    static constexpr soft_double my_value_pi     () { return soft_double(UINT64_C(4614256656552045848), detail::nothing()); }
+    static constexpr soft_double my_value_pi_half() { return soft_double(UINT64_C(0x3FF921FB54442D18),  detail::nothing()); }
+
     static constexpr soft_double my_value_ln2 () { return soft_double(UINT64_C(4604418534313441775), detail::nothing()); }
 
     static constexpr soft_double my_value_min()           { return soft_double(UINT64_C(4503599627370496),    detail::nothing()); }
@@ -995,8 +973,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     static constexpr uint32_t softfloat_roundToUI32(bool sign, uint64_t sig)
     {
-      return ((sign) && (sig == 0U)) ? 0U
-                                     : (uint32_t) (sig >> 12);
+      return ((sign) && (sig == 0U)) ? 0U : (uint32_t) (sig >> 12);
     }
 
     static constexpr uint64_t softfloat_roundToUI64(bool sign, uint64_t sig)
@@ -1311,14 +1288,46 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     friend inline soft_double floor(const soft_double x)
     {
-      return (x < 0) ? soft_double((int64_t) (x - soft_double::my_value_one()))
-                     : soft_double((int64_t)  x);
+      soft_double result;
+
+      if(x < 0)
+      {
+        const int64_t     xn = (int64_t) x;
+        const soft_double fn = soft_double(xn);
+
+        const bool is_pure_integer = (fn.my_value == x.my_value);
+
+        result =
+          (is_pure_integer ? fn : soft_double((int64_t) (x - soft_double::my_value_one())));
+      }
+      else
+      {
+        result = soft_double((int64_t)  x);
+      }
+
+      return result;
     }
 
     friend inline soft_double ceil(const soft_double x)
     {
-      return (x < 0) ? soft_double((int64_t)  x)
-                     : soft_double((int64_t) (x + soft_double::my_value_one()));
+      soft_double result;
+
+      if(x < 0)
+      {
+        result = soft_double((int64_t)  x);
+      }
+      else
+      {
+        const int64_t     xn = (int64_t) x;
+        const soft_double fn = soft_double(xn);
+
+        const bool is_pure_integer = (fn.my_value == x.my_value);
+
+        result =
+          (is_pure_integer ? fn : soft_double((int64_t) (x + soft_double::my_value_one())));
+      }
+
+      return result;
     }
 
     friend inline soft_double exp(const soft_double x)
@@ -1489,6 +1498,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       return result;
     }
 
+    friend inline soft_double sin(const soft_double x);
+    friend inline soft_double cos(const soft_double x);
+    friend inline soft_double tan(const soft_double x);
+
     friend inline soft_double operator+(const soft_double& a, const soft_double& b) { return soft_double(f64_add(a.my_value, b.my_value), detail::nothing()); }
     friend inline soft_double operator-(const soft_double& a, const soft_double& b) { return soft_double(f64_sub(a.my_value, b.my_value), detail::nothing()); }
     friend inline soft_double operator*(const soft_double& a, const soft_double& b) { return soft_double(f64_mul(a.my_value, b.my_value), detail::nothing()); }
@@ -1622,7 +1635,302 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     friend inline bool operator> (const long double f, const soft_double& a) { return ((soft_double((double) f) <= a) == false); }
   };
 
+  namespace detail {
+
+  inline soft_double sin_pade(soft_double x)
+  {
+    // PadeApproximant[Sin[x], {x, 0, {7,7}}]
+    // FullSimplify[%]
+
+    //    x (11511339840 - 1640635920 x^2 + 52785432 x^4 - 479249 x^6)
+    // / (7 ( 1644477120  +  39702960 x^2 +   453960 x^4 +   2623 x^6))
+
+    static const soft_double coef_sin_top_0(INT64_C(+11511339840));
+    static const soft_double coef_sin_top_1(INT32_C(-1640635920));
+    static const soft_double coef_sin_top_2(INT32_C(+52785432));
+    static const soft_double coef_sin_top_3(INT32_C(-479249));
+
+    static const soft_double coef_sin_bot_0(UINT32_C(+1644477120));
+    static const soft_double coef_sin_bot_1(UINT32_C(+39702960));
+    static const soft_double coef_sin_bot_2(UINT32_C(+453960));
+    static const soft_double coef_sin_bot_3(UINT32_C(+2623));
+
+
+    const soft_double x2(x * x);
+
+    const soft_double top = ((((     + coef_sin_top_3)
+                                * x2 + coef_sin_top_2)
+                                * x2 + coef_sin_top_1)
+                                * x2 + coef_sin_top_0);
+
+    const soft_double bot = ((((     + coef_sin_bot_3)
+                                * x2 + coef_sin_bot_2)
+                                * x2 + coef_sin_bot_1)
+                                * x2 + coef_sin_bot_0);
+
+    return (x * top) / (bot * 7);
+  }
+
+  inline soft_double cos_pade(soft_double x)
+  {
+    // PadeApproximant[Cos[x] - 1, {x, 0, {8,6}}]
+    // FullSimplify[%]
+
+    //   (x^2 (-5491886400 + 346666320 x^2 - 7038360 x^4 + 45469 x^6))
+    // / (24  (  457657200 +   9249240 x^2 +   86030 x^4 +   389 x^6))
+
+    static const soft_double coef_cos_top_0(INT64_C(-5491886400));
+    static const soft_double coef_cos_top_1(INT32_C(+346666320));
+    static const soft_double coef_cos_top_2(INT32_C(-7038360));
+    static const soft_double coef_cos_top_3(INT32_C(+45469));
+
+    static const soft_double coef_cos_bot_0(UINT32_C(457657200));
+    static const soft_double coef_cos_bot_1(UINT32_C(9249240));
+    static const soft_double coef_cos_bot_2(UINT32_C(86030));
+    static const soft_double coef_cos_bot_3(UINT32_C(389));
+
+    const soft_double x2(x * x);
+
+    const soft_double top = ((((     + coef_cos_top_3)
+                                * x2 + coef_cos_top_2)
+                                * x2 + coef_cos_top_1)
+                                * x2 + coef_cos_top_0);
+
+    const soft_double bot = ((((     + coef_cos_bot_3)
+                                * x2 + coef_cos_bot_2)
+                                * x2 + coef_cos_bot_1)
+                                * x2 + coef_cos_bot_0);
+
+    return 1U + ((x2 * top) / (bot * 24));
+  }
+
+  }
+
+  inline soft_double sin(soft_double x)
+  {
+    soft_double s;
+
+    if(x < 0)
+    {
+      s = -sin(-x);
+    }
+    else if(x > 0)
+    {
+      // Remove even multiples of pi.
+
+      bool b_negate_sin = false;
+
+      const std::uint32_t n_pi = (std::uint32_t) (x / soft_double::my_value_pi());
+
+      if(n_pi != 0U)
+      {
+        x -= (soft_double::my_value_pi() * n_pi);
+
+        if((n_pi % 2U) != 0)
+        {
+          b_negate_sin = (!b_negate_sin);
+        }
+      }
+
+      // Check if the reduced argument is very close to pi/2.
+      const soft_double delta_pi_half  = soft_double::my_value_pi_half() - x;
+      const bool        b_near_pi_half = (fabs(delta_pi_half) < soft_double(UINT64_C(0x3FE0C152382D7366), detail::nothing()));
+
+      if(b_near_pi_half)
+      {
+        // PadeApproximant[Hypergeometric0F1[1/2, -(dx^2)/4], {dx, 0, {6, 6}}]
+        // FullSimplify[%]
+        //   (39251520 - 18471600 dx^2 + 1075032 dx^4 - 14615 dx^6)
+        // / (39251520 +  1154160 dx^2 +   16632 dx^4 +   127 dx^6)
+
+        static const soft_double coef_top_0(INT32_C(+39251520));
+        static const soft_double coef_top_1(INT32_C(-18471600));
+        static const soft_double coef_top_2(INT32_C(+1075032));
+        static const soft_double coef_top_3(INT32_C(-14615));
+
+        static const soft_double coef_bot_0(UINT32_C(39251520));
+        static const soft_double coef_bot_1(UINT32_C(1154160));
+        static const soft_double coef_bot_2(UINT32_C(16632));
+        static const soft_double coef_bot_3(UINT32_C(127));
+
+        const soft_double x2(delta_pi_half * delta_pi_half);
+
+        const soft_double top = ((((     + coef_top_3)
+                                    * x2 + coef_top_2)
+                                    * x2 + coef_top_1)
+                                    * x2 + coef_top_0);
+
+        const soft_double bot = ((((     + coef_bot_3)
+                                    * x2 + coef_bot_2)
+                                    * x2 + coef_bot_1)
+                                    * x2 + coef_bot_0);
+
+        s = top / bot;
+      }
+      else
+      {
+        // Reduce the argument to 0 <= x <= pi/2.
+        if(x > soft_double::my_value_pi_half())
+        {
+          x = soft_double::my_value_pi() - x;
+        }
+
+        if(x > soft_double(UINT64_C(0x3FE0C152382D7366), detail::nothing()))
+        {
+          // x is larger than pi/6, scale by 9.
+          x /= 9U;
+
+          s = detail::sin_pade(x);
+
+          s = (s * 3U) - (((s * s) * s) * 4U);
+          s = (s * 3U) - (((s * s) * s) * 4U);
+        }
+        else if(x > soft_double(UINT64_C(0x3FC657184AE74487), detail::nothing()))
+        {
+          // x is larger than pi/18, scale by 3.
+          x /= 3U;
+
+          s = detail::sin_pade(x);
+
+          s = (s * 3U) - (((s * s) * s) * 4U);
+        }
+        else
+        {
+          s = detail::sin_pade(x);
+        }
+      }
+
+      if(b_negate_sin)
+      {
+        s = -s;
+      }
+    }
+    else
+    {
+      s = 0;
+    }
+
+    return s;
+  }
+
+  inline soft_double cos(soft_double x)
+  {
+    soft_double c;
+
+    if(x < 0)
+    {
+      c = cos(-x);
+    }
+    else if(x > 0)
+    {
+      // Remove even multiples of pi.
+
+      bool b_negate_cos = false;
+
+      const std::uint32_t n_pi = (std::uint32_t) (x / soft_double::my_value_pi());
+
+      if(n_pi != 0U)
+      {
+        x -= (soft_double::my_value_pi() * n_pi);
+
+        if((n_pi % 2U) != 0)
+        {
+          b_negate_cos = (!b_negate_cos);
+        }
+      }
+
+      // Check if the reduced argument is very close to pi/2.
+      const soft_double delta_pi_half  = soft_double::my_value_pi_half() - x;
+      const bool        b_near_pi_half = (fabs(delta_pi_half) < soft_double(UINT64_C(0x3FE0C152382D7366), detail::nothing()));
+
+      if(b_near_pi_half)
+      {
+        // PadeApproximant[Hypergeometric0F1[3/2, -(dx^2)/4], {dx, 0, {6, 6}}]
+        // FullSimplify[%]
+        //      (11511339840 - 1640635920 dx^2 + 52785432 dx^4 - 479249 dx^6)
+        // / (7 ( 1644477120 +   39702960 dx^2 +   453960 dx^4 +   2623 dx^6))
+
+        // This is the same approximation as the one found in detail::sin_pade().
+
+        c = detail::sin_pade(delta_pi_half);
+      }
+      else
+      {
+        // Reduce the argument to 0 <= x <= pi/2.
+        if(x > soft_double::my_value_pi_half())
+        {
+          x = soft_double::my_value_pi() - x;
+
+          b_negate_cos = (!b_negate_cos);
+        }
+
+        if(x > soft_double(UINT64_C(0x3FE0C152382D7366), detail::nothing()))
+        {
+          // x is larger than pi/6, scale by 9.
+          x /= 9U;
+
+          c = detail::cos_pade(x);
+
+          c = (((c * c) * c) * 4U) - (c * 3U);
+          c = (((c * c) * c) * 4U) - (c * 3U);
+        }
+        else if(x > soft_double(UINT64_C(0x3FC657184AE74487), detail::nothing()))
+        {
+          // x is larger than pi/18, scale by 3.
+          x /= 3U;
+
+          c = detail::cos_pade(x);
+
+          c = (((c * c) * c) * 4U) - (c * 3U);
+        }
+        else
+        {
+          c = detail::cos_pade(x);
+        }
+      }
+
+      if(b_negate_cos)
+      {
+        c = -c;
+      }
+    }
+    else
+    {
+      c = soft_double::my_value_one();
+    }
+
+    return c;
+  }
+
+  inline soft_double tan(const soft_double x)
+  {
+    return sin(x) / cos(x);
+  }
+
+  inline soft_double sinh(soft_double x)
+  {
+    const soft_double ep = exp(x);
+
+    return (ep - (1 / ep)) / 2;
+  }
+
+  inline soft_double cosh(soft_double x)
+  {
+    const soft_double ep = exp(x);
+
+    return (ep + (1 / ep)) / 2;
+  }
+
+  inline soft_double tanh(soft_double x)
+  {
+    const soft_double ep = exp(x);
+    const soft_double em = 1 / ep;
+
+    return (ep - em) / (ep + em);
+  }
+
   using float64_t = soft_double;
+
   } } // namespace math::softfloat
 
   namespace std {
@@ -1634,13 +1942,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   public:
     static constexpr bool               is_specialized    = true;
     static constexpr float_denorm_style has_denorm        = denorm_present;
+    static constexpr bool               has_denorm_loss   = false;
     static constexpr bool               has_infinity      = true;
     static constexpr bool               has_quiet_NaN     = true;
     static constexpr bool               has_signaling_NaN = false;
     static constexpr bool               is_bounded        = true;
     static constexpr bool               is_iec559         = false;
     static constexpr bool               is_integer        = false;
+    static constexpr bool               is_exact          = false;
     static constexpr bool               is_signed         = true;
+    static constexpr bool               is_modulo         = false;
+    static constexpr bool               traps             = false;
+    static constexpr bool               tinyness_before   = false;
     static constexpr float_round_style  round_style       = round_to_nearest;
     static constexpr int                radix             = 2;
 
@@ -1666,3 +1979,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   }
 
 #endif // SOFT_DOUBLE_2020_10_27_H_
+
+/*----------------------------------------------------------------------------
+
+This C header file is part of the SoftFloat IEEE Floating-Point Arithmetic
+Package, Release 3e, by John R. Hauser.
+
+Copyright 2011, 2012, 2013, 2014, 2015, 2016, 2017 The Regents of the
+University of California.  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions, and the following disclaimer.
+
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions, and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+ 3. Neither the name of the University nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS", AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE
+DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-----------------------------------------------------------------------------*/
