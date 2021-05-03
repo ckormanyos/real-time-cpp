@@ -549,8 +549,23 @@
   template<const std::uint_fast32_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= 65U) && (BitCount <= 128U)>::type> { using exact_unsigned_type = unsigned __int128; };
   #endif
 
+  template<typename UnsignedIntegralType>
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t lsb_helper(const UnsignedIntegralType& x);
+
+  template<typename UnsignedIntegralType>
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper(const UnsignedIntegralType& x);
+
+  template<>
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint32_t>(const std::uint32_t& x);
+
+  template<>
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint16_t>(const std::uint16_t& x);
+
+  template<>
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint8_t>(const std::uint8_t& x);
+
   // Use a local implementation of string copy.
-  inline char* strcpy_unsafe(char* dst, const char* src)
+  inline WIDE_INTEGER_CONSTEXPR char* strcpy_unsafe(char* dst, const char* src)
   {
     while((*dst++ = *src++) != char('\0')) { ; }
 
@@ -3109,7 +3124,7 @@
 
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    std::int_fast32_t i;
+    std::int_fast32_t i { };
 
     // TBD: This could potentially be improved with a binary
     // search for the highest bit position in the type.
@@ -3126,7 +3141,7 @@
   }
 
   template<>
-  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper(const std::uint32_t& u)
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint32_t>(const std::uint32_t& u)
   {
     std::uint_fast32_t r(0);
 
@@ -3143,7 +3158,7 @@
   }
 
   template<>
-  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper(const std::uint16_t& u)
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint16_t>(const std::uint16_t& u)
   {
     std::uint_fast32_t r(0);
 
@@ -3159,7 +3174,7 @@
   }
 
   template<>
-  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper(const std::uint8_t& u)
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t msb_helper<std::uint8_t>(const std::uint8_t& u)
   {
     std::uint_fast32_t r(0);
 
@@ -3195,7 +3210,7 @@
   template<const std::uint_fast32_t Digits2,
            typename LimbType,
            typename AllocatorType>
-  WIDE_INTEGER_CONSTEXPR std::uint_fast32_t lsb(const uintwide_t<Digits2, LimbType, AllocatorType>& x)
+  inline WIDE_INTEGER_CONSTEXPR std::uint_fast32_t lsb(const uintwide_t<Digits2, LimbType, AllocatorType>& x)
   {
     // Calculate the position of the least-significant bit.
     // Use a linear search starting from the least significant limbs.
@@ -3686,17 +3701,13 @@
       // Let shift := lg K, where K is the greatest
       // power of 2 dividing both u and v.
 
-      std::uint_fast32_t left_shift_amount;
+      const std::uint_fast32_t u_shift = lsb(u);
+      const std::uint_fast32_t v_shift = lsb(v);
 
-      {
-        const std::uint_fast32_t u_shift = lsb(u);
-        const std::uint_fast32_t v_shift = lsb(v);
+      const std::uint_fast32_t left_shift_amount = (std::min)(u_shift, v_shift);
 
-        left_shift_amount = (std::min)(u_shift, v_shift);
-
-        u >>= u_shift;
-        v >>= v_shift;
-      }
+      u >>= u_shift;
+      v >>= v_shift;
 
       for(;;)
       {
