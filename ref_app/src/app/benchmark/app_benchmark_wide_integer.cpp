@@ -72,7 +72,7 @@ namespace
 
   bool run_wide_integer_mul()
   {
-    const uint256_t c
+    WIDE_INTEGER_CONSTEXPR uint256_t c
     (
       {
         UINT32_C(0xF84AF076),

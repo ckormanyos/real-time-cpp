@@ -34,9 +34,14 @@
 
   #include <util/utility/util_dynamic_array.h>
 
-  #if (   (defined(__cpp_lib_constexpr_algorithms) && defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806)) \
-       || (defined(__GNUC__) && (__cplusplus >= 201402L)))
+  #if (defined(__cplusplus) && (__cplusplus >= 201402L))
+    #if defined(__AVR__)
     #define WIDE_INTEGER_CONSTEXPR constexpr
+    #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
+    #define WIDE_INTEGER_CONSTEXPR constexpr
+    #else
+    #define WIDE_INTEGER_CONSTEXPR
+    #endif
   #else
     #define WIDE_INTEGER_CONSTEXPR
   #endif
@@ -2709,14 +2714,16 @@
       }
     }
 
-    constexpr bool is_zero() const
+    WIDE_INTEGER_CONSTEXPR bool is_zero() const
     {
-      return std::all_of(values.cbegin(),
-                         values.cend(),
-                         [](const limb_type& u) -> bool
-                         {
-                           return (u == limb_type(0U));
-                         });
+      auto it = values.cbegin();
+
+      while(it != values.cend() && *it == limb_type(0U))
+      {
+        ++it;
+      }
+
+      return it == values.cend();
     }
   };
 

@@ -8,8 +8,14 @@
 #ifndef STL_LOCAL_CONSTEXPR_2014_12_04_H_
   #define STL_LOCAL_CONSTEXPR_2014_12_04_H_
 
-  #if (defined(__GNUC__) && (__cplusplus >= 201402L))
+  #if (defined(__cplusplus) && (__cplusplus >= 201402L))
+    #if defined(__AVR__)
     #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+    #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
+    #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+    #else
+    #define STL_LOCAL_CONSTEXPR_ALGORITHMS
+    #endif
   #else
     #define STL_LOCAL_CONSTEXPR_ALGORITHMS
   #endif
