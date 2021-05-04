@@ -34,24 +34,40 @@
 
   #include <util/utility/util_dynamic_array.h>
 
-  #if (defined(__cplusplus) && (__cplusplus >= 201402L))
-    #if defined(__AVR__) && (!defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ > 6)))
-    #define WIDE_INTEGER_CONSTEXPR constexpr
-    #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
-      #if defined(__clang__)
-        #if (__clang_major__ > 9)
-        #define WIDE_INTEGER_CONSTEXPR constexpr
-        #else
-        #define WIDE_INTEGER_CONSTEXPR
-        #endif
-      #else
+  #if defined(_MSC_VER)
+    #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
       #define WIDE_INTEGER_CONSTEXPR constexpr
-      #endif
+      #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
     #else
-    #define WIDE_INTEGER_CONSTEXPR
+      #define WIDE_INTEGER_CONSTEXPR
+      #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 0
     #endif
   #else
-    #define WIDE_INTEGER_CONSTEXPR
+    #if (defined(__cplusplus) && (__cplusplus >= 201402L))
+      #if defined(__AVR__) && (!defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ > 7)))
+      #define WIDE_INTEGER_CONSTEXPR constexpr
+      #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
+      #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
+        #if defined(__clang__)
+          #if (__clang_major__ > 9)
+          #define WIDE_INTEGER_CONSTEXPR constexpr
+          #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
+          #else
+          #define WIDE_INTEGER_CONSTEXPR
+          #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 0
+          #endif
+        #else
+        #define WIDE_INTEGER_CONSTEXPR constexpr
+        #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
+        #endif
+      #else
+      #define WIDE_INTEGER_CONSTEXPR
+      #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 0
+      #endif
+    #else
+      #define WIDE_INTEGER_CONSTEXPR
+      #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 0
+    #endif
   #endif
 
   namespace math { namespace wide_integer {
@@ -2726,12 +2742,12 @@
     {
       auto it = values.cbegin();
 
-      while(it != values.cend() && *it == limb_type(0U))
+      while((it != values.cend()) && (*it == limb_type(0U)))
       {
         ++it;
       }
 
-      return it == values.cend();
+      return (it == values.cend());
     }
   };
 
