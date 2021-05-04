@@ -9,10 +9,18 @@
   #define STL_LOCAL_CONSTEXPR_2014_12_04_H_
 
   #if (defined(__cplusplus) && (__cplusplus >= 201402L))
-    #if defined(__AVR__)
+    #if defined(__AVR__) && (!defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ > 6)))
     #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
     #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
-    #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+      #if defined(__clang__)
+        #if (__clang_major__ > 9)
+        #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+        #else
+        #define STL_LOCAL_CONSTEXPR_ALGORITHMS
+        #endif
+      #else
+      #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+      #endif
     #else
     #define STL_LOCAL_CONSTEXPR_ALGORITHMS
     #endif

@@ -35,10 +35,18 @@
   #include <util/utility/util_dynamic_array.h>
 
   #if (defined(__cplusplus) && (__cplusplus >= 201402L))
-    #if defined(__AVR__)
+    #if defined(__AVR__) && (!defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ > 6)))
     #define WIDE_INTEGER_CONSTEXPR constexpr
     #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
-    #define WIDE_INTEGER_CONSTEXPR constexpr
+      #if defined(__clang__)
+        #if (__clang_major__ > 9)
+        #define WIDE_INTEGER_CONSTEXPR constexpr
+        #else
+        #define WIDE_INTEGER_CONSTEXPR
+        #endif
+      #else
+      #define WIDE_INTEGER_CONSTEXPR constexpr
+      #endif
     #else
     #define WIDE_INTEGER_CONSTEXPR
     #endif
