@@ -34,7 +34,8 @@
 
   #include <util/utility/util_dynamic_array.h>
 
-  #if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806)
+  #if (   (defined(__cpp_lib_constexpr_algorithms) && defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806)) \
+       || (defined(__GNUC__) && (__cplusplus >= 201402L)))
     #define WIDE_INTEGER_CONSTEXPR constexpr
   #else
     #define WIDE_INTEGER_CONSTEXPR
@@ -1497,28 +1498,15 @@
                                                                   const limb_type*         b,
                                                                   const std::uint_fast32_t count)
     {
-      using local_const_reverse_iterator_type = std::reverse_iterator<const limb_type*>;
+      std::int_fast8_t n_return = 0;
 
-      local_const_reverse_iterator_type rcbegin_a(a + count);
-      local_const_reverse_iterator_type rcend_a  (a);
-      local_const_reverse_iterator_type rcbegin_b(b + count);
-      local_const_reverse_iterator_type rcend_b  (b);
+      std::reverse_iterator<const limb_type*> pa(a + count);
+      std::reverse_iterator<const limb_type*> pb(b + count);
 
-      const auto mismatch_pair = std::mismatch(rcbegin_a, rcend_a, rcbegin_b);
-
-      std::int_fast8_t n_return{};
-
-      if((mismatch_pair.first != rcend_a) || (mismatch_pair.second != rcend_b))
+      for( ; pa != std::reverse_iterator<const limb_type*>(a); ++pa, ++pb)
       {
-        const limb_type left  = *mismatch_pair.first;
-        const limb_type right = *mismatch_pair.second;
-
-        n_return = ((left > right) ? static_cast<std::int_fast8_t>( 1)
-                                   : static_cast<std::int_fast8_t>(-1));
-      }
-      else
-      {
-        n_return = static_cast<std::int_fast8_t>(0);
+        if     (*pa > *pb) { n_return =  1; break; }
+        else if(*pa < *pb) { n_return = -1; break; }
       }
 
       return n_return;

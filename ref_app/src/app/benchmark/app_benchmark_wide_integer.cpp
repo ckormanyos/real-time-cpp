@@ -42,7 +42,7 @@ namespace
   // Modulus:
   //   a % b = 0x14998D5CA3DB6385F7DEDF4621DE48A9104AC13797C6567713D7ABC216D7AB4C
 
-  const uint256_t a
+  WIDE_INTEGER_CONSTEXPR uint256_t a
   (
     {
       UINT32_C(0x410065DE),
@@ -56,7 +56,7 @@ namespace
     }
   );
 
-  const uint256_t b
+  WIDE_INTEGER_CONSTEXPR uint256_t b
   (
     {
       UINT32_C(0x9DD0DF75),
@@ -86,23 +86,23 @@ namespace
       }
     );
 
-    const bool result_of_mul_is_ok = ((a * b) == c);
+    WIDE_INTEGER_CONSTEXPR bool result_of_mul_is_ok = ((a * b) == c);
 
     return result_of_mul_is_ok;
   }
 
   bool run_wide_integer_div()
   {
-    const uint256_t q(10U);
+    WIDE_INTEGER_CONSTEXPR uint256_t q(10U);
 
-    const bool result_of_div_is_ok = ((a / b) == q);
+    WIDE_INTEGER_CONSTEXPR bool result_of_div_is_ok = ((a / b) == q);
 
     return result_of_div_is_ok;
   }
 
   bool run_wide_integer_mod()
   {
-    const uint256_t m
+    WIDE_INTEGER_CONSTEXPR uint256_t m
     (
       {
         UINT32_C(0x16D7AB4C),
@@ -116,7 +116,7 @@ namespace
       }
     );
 
-    const bool result_of_mod_is_ok = ((a % b) == m);
+    WIDE_INTEGER_CONSTEXPR bool result_of_mod_is_ok = ((a % b) == m);
 
     return result_of_mod_is_ok;
   }

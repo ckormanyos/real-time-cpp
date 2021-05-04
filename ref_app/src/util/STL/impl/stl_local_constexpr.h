@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014.
+//  Copyright Christopher Kormanyos 2014 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,6 +7,12 @@
 
 #ifndef STL_LOCAL_CONSTEXPR_2014_12_04_H_
   #define STL_LOCAL_CONSTEXPR_2014_12_04_H_
+
+  #if (defined(__GNUC__) && (__cplusplus >= 201402L))
+    #define STL_LOCAL_CONSTEXPR_ALGORITHMS constexpr
+  #else
+    #define STL_LOCAL_CONSTEXPR_ALGORITHMS
+  #endif
 
   #if defined(__GNUC__) || defined(__IAR_SYSTEMS_ICC__)
     #define STL_LOCAL_CONSTEXPR constexpr
