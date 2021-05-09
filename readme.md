@@ -68,7 +68,7 @@ To get started with the reference application on `*nix`
 
 In summary, on `*nix` for `target avr`
 
-```C
+```sh
 cd real-time-cpp
 cd ref_app
 ./target/build/build.sh avr rebuild
@@ -105,7 +105,7 @@ For this purpose, CMake files have also been created for each supported target.
 Consider, for instance, building the reference application for the
 `avr`target with CMake. The pattern is shown below.
 
-```C
+```sh
 cd real-time-cpp
 mkdir build
 cd build
