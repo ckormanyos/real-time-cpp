@@ -17,7 +17,9 @@
   namespace util
   {
     template<typename ValueType,
-             typename AllocatorType = std::allocator<ValueType>>
+             typename AllocatorType = std::allocator<ValueType>,
+             typename SizeType = std::size_t,
+             typename DiffType = std::ptrdiff_t>
     class dynamic_array
     {
     public:
@@ -30,32 +32,35 @@
       using const_iterator         = const value_type*;
       using pointer                =       value_type*;
       using const_pointer          = const value_type*;
-      using size_type              =       std::uint_fast32_t;
-      using difference_type        =       std::ptrdiff_t;
+      using size_type              =       SizeType;
+      using difference_type        =       DiffType;
       using reverse_iterator       =       std::reverse_iterator<iterator>;
       using const_reverse_iterator =       std::reverse_iterator<const_iterator>;
 
       // Constructors.
-      dynamic_array(size_type             count = size_type(0U),
-                    const_reference       v     = value_type(),
-                    const allocator_type& a     = allocator_type())
+      constexpr dynamic_array() : elem_count(0U),
+                                  elems     (nullptr) { }
+
+      dynamic_array(size_type count,
+                    const_reference v = value_type(),
+                    const allocator_type& a = allocator_type())
         : elem_count(count),
           elems     (nullptr)
       {
+        allocator_type my_a(a);
+
         if(elem_count > 0U)
         {
-          allocator_type my_a(a);
-
           elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        }
 
-          iterator it = begin();
+        iterator it = begin();
 
-          while(it != end())
-          {
-            std::allocator_traits<allocator_type>::construct(my_a, it, v);
+        while(it != end())
+        {
+          std::allocator_traits<AllocatorType>::construct(my_a, it, v);
 
-            ++it;
-          }
+          ++it;
         }
       }
 
@@ -63,14 +68,14 @@
         : elem_count(other.size()),
           elems     (nullptr)
       {
+        allocator_type my_a;
+
         if(elem_count > 0U)
         {
-          allocator_type my_a;
-
           elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-
-          std::copy(other.elems, other.elems + elem_count, elems);
         }
+
+        std::copy(other.elems, other.elems + elem_count, elems);
       }
 
       template<typename input_iterator>
@@ -80,14 +85,14 @@
         : elem_count(static_cast<size_type>(std::distance(first, last))),
           elems     (nullptr)
       {
+        allocator_type my_a(a);
+
         if(elem_count > 0U)
         {
-          allocator_type my_a(a);
-
           elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-
-          std::copy(first, last, elems);
         }
+
+        std::copy(first, last, elems);
       }
 
       dynamic_array(std::initializer_list<value_type> lst,
@@ -95,14 +100,14 @@
         : elem_count(lst.size()),
           elems     (nullptr)
       {
+        allocator_type my_a(a);
+
         if(elem_count > 0U)
         {
-          allocator_type my_a(a);
-
           elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-
-          std::copy(lst.begin(), lst.end(), elems);
         }
+
+        std::copy(lst.begin(), lst.end(), elems);
       }
 
       // Move constructor.
