@@ -207,6 +207,36 @@ jobs:
           MSBuild -m ref_app.sln -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
           dir ./tmp/${{ matrix.suite }}/ref_app.exe
         working-directory: ./ref_app/
+  benchmark_gcc-clang:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [ g++, clang++ ]
+        standard: [ c++11, c++14, c++17, c++2a ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install clang
+      - name: clone-submods-bootstrap-headers-boost-develop
+        run: |
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
+          cd ../boost-root
+          git submodule update --init tools
+          git submodule update --init libs/config
+          git submodule update --init libs/headers
+          git submodule update --init libs/math
+          ./bootstrap.sh
+          ./b2 headers
+        working-directory: ./
+      - name: benchmark_gcc-clang
+        run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
+        working-directory: ./ref_app/
   benchmark_gcc-clang-8-9:
     runs-on: ubuntu-20.04
     defaults:
@@ -215,14 +245,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [ g++, g++-8, g++-9, clang++, clang++-8, clang++-9 ]
-        standard: [ c++11, c++14, c++17, c++2a ]
+        compiler: [ g++-8, g++-9, clang++-8, clang++-9 ]
+        standard: [ c++11, c++14, c++17 ]
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install g++-8 g++-9 clang clang-8 clang-9
+        run: sudo apt install g++-8 g++-9 clang-8 clang-9
       - name: clone-submods-bootstrap-headers-boost-develop
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
