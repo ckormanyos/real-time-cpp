@@ -11,6 +11,7 @@
   #include <impl/stl_local_constexpr.h>
 
   #include <algorithm>
+  #include <cstddef>
   #include <iterator>
   #include <type_traits>
   #include <tuple>
@@ -20,7 +21,7 @@
 
   namespace std
   {
-    template<typename T, size_t N>
+    template<typename T, std::size_t N>
     class array
     {
     public:

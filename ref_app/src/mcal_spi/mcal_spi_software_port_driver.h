@@ -62,7 +62,7 @@
     {
       base_class_type::recv_buffer = 0U;
 
-      for(std::uint_fast8_t bit_mask = UINT8_C(0x80); bit_mask != UINT8_C(0); bit_mask >>= 1U)
+      for(std::uint_fast8_t bit_mask = UINT8_C(0x80); bit_mask != UINT8_C(0); bit_mask = std::uint_fast8_t(bit_mask >> 1U))
       {
         ((std::uint_fast8_t(byte_to_send & bit_mask) != UINT8_C(0)) ? port_pin_mosi_type::set_pin_high()
                                                                     : port_pin_mosi_type::set_pin_low());
