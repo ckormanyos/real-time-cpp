@@ -7,6 +7,9 @@
 name: real-time-cpp
 on:
   push:
+    branches:
+      - '**'
+  pull_request:
   schedule:
     - cron: '45 23 * * *' # run at 11:45 PM UTC
 jobs:
