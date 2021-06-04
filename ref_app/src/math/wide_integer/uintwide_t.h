@@ -134,7 +134,7 @@
   }
   #endif
 
-  }
+  } // namespace math::wide_integer::detail
 
   using detail::size_t;
   using detail::ptrdiff_t;
@@ -156,46 +156,44 @@
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr uintwide_t<Width2, LimbType, AllocatorType, IsSigned> operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                                  && (std::is_integral   <IntegralType>::value == true)
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
                                                   && (std::is_unsigned   <IntegralType>::value == true)
                                                   && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::limb_type>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                     && (std::is_integral   <IntegralType>::value == true)
+  constexpr typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
                                      && (std::is_unsigned   <IntegralType>::value == true)
                                      && (std::numeric_limits<IntegralType>::digits > std::numeric_limits<LimbType>::digits)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (IntegralType op uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   // Forward declarations of non-member binary add, sub, mul, div, mod of (uintwide_t op FloatingPointType).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
 
   // Forward declarations of non-member binary add, sub, mul, div, mod of (FloatingPointType op uintwide_t).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
   #endif
 
   // Forward declarations of non-member binary logic operations of (uintwide_t op uintwide_t).
@@ -204,18 +202,18 @@
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr uintwide_t<Width2, LimbType, AllocatorType, IsSigned> operator&(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   // Forward declarations of non-member binary logic operations of (uintwide_t op IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
 
   // Forward declarations of non-member binary binary logic operations of (IntegralType op uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   // Forward declarations of non-member shift functions of (uintwide_t shift IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n);
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp uintwide_t).
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr bool operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
@@ -226,37 +224,37 @@
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr bool operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v);
 
   // Forward declarations of non-member comparison functions of (IntegralType cmp uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator==(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator!=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator> (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator< (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator>=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral   <IntegralType>::value == true)), bool>::type operator<=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator==(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator!=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator> (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator< (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator>=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator<=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
 
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   // Non-member comparison functions of (uintwide_t cmp FloatingPointType).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f);
 
   // Non-member comparison functions of (FloatingPointType cmp uintwide_t).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator==(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator!=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator> (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator< (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator>=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator<=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator==(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator!=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator> (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator< (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator>=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator<=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v);
   #endif
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
@@ -349,8 +347,7 @@
                                                                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b);
 
   template<typename UnsignedShortType>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<UnsignedShortType>::value == true)
-                                                  && (std::is_integral   <UnsignedShortType>::value == true)
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <UnsignedShortType>::value == true)
                                                   && (std::is_unsigned   <UnsignedShortType>::value == true)), UnsignedShortType>::type
   gcd(const UnsignedShortType& u, const UnsignedShortType& v);
 
@@ -387,7 +384,7 @@
            typename AllocatorType,
            const bool IsSigned>
   bool miller_rabin(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& n,
-                    const std::uint_fast32_t                                     number_of_trials,
+                    const unsinged_fast_type                                     number_of_trials,
                     DistributionType&                                            distribution,
                     GeneratorType&                                               generator);
 
@@ -664,8 +661,6 @@
     return local_ularge_type(local_ularge_type(static_cast<local_ularge_type>(hi) << std::numeric_limits<UnsignedShortType>::digits) | lo);
   }
 
-  struct uint64_extra { uint64_t extra, v; };
-
   template<typename UnsignedIntegralType>
   constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
                                     && (std::is_unsigned<UnsignedIntegralType>::value == true), UnsignedIntegralType>::type
@@ -679,7 +674,10 @@
                                     && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
   negate(SignedIntegralType n)
   {
-    return (SignedIntegralType) -n;
+    using local_unsigned_type =
+      typename detail::uint_type_helper<size_t(std::numeric_limits<SignedIntegralType>::digits + 1)>::exact_unsigned_type;
+
+    return (SignedIntegralType) negate((local_unsigned_type) n);
   }
 
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
@@ -840,8 +838,7 @@
     // are less wide than limb_type or exactly as wide as limb_type.
     template<typename UnsignedIntegralType>
     constexpr uintwide_t(const UnsignedIntegralType v,
-                         typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                                                  && (std::is_integral   <UnsignedIntegralType>::value == true)
+                         typename std::enable_if<(   (std::is_integral   <UnsignedIntegralType>::value == true)
                                                   && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                                   && (std::numeric_limits<UnsignedIntegralType>::digits <= std::numeric_limits<limb_type>::digits))>::type* = nullptr)
       : values(1U, v) { }
@@ -851,8 +848,7 @@
     // same width as limb_type.
     template<typename UnsignedIntegralType>
     WIDE_INTEGER_CONSTEXPR uintwide_t(const UnsignedIntegralType v,
-                                      typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                                                               && (std::is_integral   <UnsignedIntegralType>::value == true)
+                                      typename std::enable_if<(   (std::is_integral   <UnsignedIntegralType>::value == true)
                                                                && (std::is_unsigned   <UnsignedIntegralType>::value == true)
                                                                && (std::numeric_limits<UnsignedIntegralType>::digits > std::numeric_limits<limb_type>::digits))>::type* = nullptr)
     {
@@ -874,8 +870,7 @@
     // Constructors from built-in signed integral types.
     template<typename SignedIntegralType>
     WIDE_INTEGER_CONSTEXPR uintwide_t(const SignedIntegralType v,
-                                      typename std::enable_if<(   (std::is_fundamental<SignedIntegralType>::value == true)
-                                                               && (std::is_integral   <SignedIntegralType>::value == true)
+                                      typename std::enable_if<(   (std::is_integral   <SignedIntegralType>::value == true)
                                                                && (std::is_signed     <SignedIntegralType>::value == true))>::type* = nullptr)
     {
       using local_signed_integral_type   = SignedIntegralType;
@@ -885,7 +880,7 @@
       const bool v_is_neg = (v < local_signed_integral_type(0));
 
       const local_unsigned_integral_type u =
-        ((v_is_neg == false) ? local_unsigned_integral_type(v) : local_unsigned_integral_type(-v));
+        ((v_is_neg == false) ? local_unsigned_integral_type(v) : local_unsigned_integral_type(detail::negate(v)));
 
       operator=(uintwide_t(u));
 
@@ -1257,8 +1252,7 @@
     }
 
     template<typename SignedIntegralType>
-    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<SignedIntegralType>::value == true)
-                                                    && (std::is_integral   <SignedIntegralType>::value == true)
+    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <SignedIntegralType>::value == true)
                                                     && (std::is_signed     <SignedIntegralType>::value == true)), uintwide_t>::type&
     operator<<=(const SignedIntegralType n)
     {
@@ -1287,8 +1281,7 @@
     }
 
     template<typename UnsignedIntegralType>
-    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                                                    && (std::is_integral   <UnsignedIntegralType>::value == true)
+    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <UnsignedIntegralType>::value == true)
                                                     && (std::is_signed     <UnsignedIntegralType>::value == false)), uintwide_t>::type&
     operator<<=(const UnsignedIntegralType n)
     {
@@ -1313,8 +1306,7 @@
     }
 
     template<typename SignedIntegralType>
-    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<SignedIntegralType>::value == true)
-                                                    && (std::is_integral   <SignedIntegralType>::value == true)
+    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <SignedIntegralType>::value == true)
                                                     && (std::is_signed     <SignedIntegralType>::value == true)), uintwide_t>::type&
     operator>>=(const SignedIntegralType n)
     {
@@ -1352,8 +1344,7 @@
     }
 
     template<typename UnsignedIntegralType>
-    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                                                    && (std::is_integral   <UnsignedIntegralType>::value == true)
+    WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <UnsignedIntegralType>::value == true)
                                                     && (std::is_signed     <UnsignedIntegralType>::value == false)), uintwide_t>::type&
     operator>>=(const UnsignedIntegralType n)
     {
@@ -1431,6 +1422,27 @@
     static constexpr uintwide_t limits_helper_min()
     {
       return uintwide_t(representation_type(number_of_limbs, limb_type(0U)));
+    }
+
+    static WIDE_INTEGER_CONSTEXPR uintwide_t limits_helper_lowest(bool is_signed)
+    {
+      return
+      (is_signed == false)
+        ? from_rep
+          (
+            representation_type
+            (
+              number_of_limbs, limb_type(0U)
+            )
+          )
+        : from_rep
+          (
+            representation_type
+            (
+              number_of_limbs, limb_type(0U)
+            )
+          ) | (uintwide_t(1U) << (my_width2 - 1))
+        ;
     }
 
     // Define the maximum buffer sizes for extracting
@@ -1822,8 +1834,7 @@
 
     // Implement a function that extracts any built-in signed or unsigned integral type.
     template<typename UnknownBuiltInIntegralType,
-             typename = typename std::enable_if<(   (std::is_fundamental<UnknownBuiltInIntegralType>::value == true)
-                                                 && (std::is_integral   <UnknownBuiltInIntegralType>::value == true))>::type>
+             typename = typename std::enable_if<std::is_integral<UnknownBuiltInIntegralType>::value == true>::type>
     WIDE_INTEGER_CONSTEXPR UnknownBuiltInIntegralType extract_builtin_integral_type() const
     {
       using local_unknown_integral_type  = UnknownBuiltInIntegralType;
@@ -1871,8 +1882,7 @@
     #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
     // Implement a function that extracts any built-in floating-point type.
     template<typename FloatingPointType,
-             typename = typename std::enable_if<(   (std::is_fundamental   <FloatingPointType>::value == true)
-                                                 && (std::is_floating_point<FloatingPointType>::value == true))>::type>
+             typename = typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true>::type>
     WIDE_INTEGER_CONSTEXPR FloatingPointType extract_builtin_floating_point_type() const
     {
       using local_unsigned_wide_integer_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
@@ -3239,8 +3249,9 @@
     static constexpr int max_exponent    = digits;
     static constexpr int max_exponent10  = static_cast<int>((std::uintmax_t(max_exponent) * UINTMAX_C(75257499)) / UINTMAX_C(250000000));
 
-    static constexpr local_wide_integer_type (max)() { return local_wide_integer_type::limits_helper_max(IsSigned); }
-    static constexpr local_wide_integer_type (min)() { return local_wide_integer_type::limits_helper_min(IsSigned); }
+    static constexpr local_wide_integer_type (max) () { return local_wide_integer_type::limits_helper_max   (IsSigned); }
+    static constexpr local_wide_integer_type (min) () { return local_wide_integer_type::limits_helper_min   (IsSigned); }
+    static constexpr local_wide_integer_type lowest() { return local_wide_integer_type::limits_helper_lowest(IsSigned); }
   };
 
   template<class T>
@@ -3281,20 +3292,18 @@
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr uintwide_t<Width2, LimbType, AllocatorType, IsSigned> operator& (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& left, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& right) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(left).operator&=(right); }
 
   // Non-member binary add, sub, mul, div, mod of (uintwide_t op IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                     && (std::is_integral   <IntegralType>::value == true)
+  constexpr typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
                                      && (std::is_unsigned   <IntegralType>::value == false)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                                  && (std::is_integral   <IntegralType>::value == true)
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
                                                   && (std::is_unsigned   <IntegralType>::value == true)
                                                   && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::limb_type>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v)
@@ -3316,48 +3325,47 @@
   }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  constexpr typename std::enable_if<(   (std::is_fundamental<IntegralType>::value == true)
-                                     && (std::is_integral   <IntegralType>::value == true)
+  constexpr typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
                                      && (std::is_unsigned   <IntegralType>::value == true)
                                      && (std::numeric_limits<IntegralType>::digits > std::numeric_limits<LimbType>::digits)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   // Non-member binary add, sub, mul, div, mod of (IntegralType op uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(v); }
 
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   // Non-member binary add, sub, mul, div, mod of (uintwide_t op FloatingPointType).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator+=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator-=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator*=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
 
   // Non-member binary add, sub, mul, div, mod of (FloatingPointType op uintwide_t).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator+=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator-=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator*=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator/=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator%=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator+(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator+=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator-(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator-=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator*(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator*=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator/=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator%(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator%=(v); }
   #endif
 
   // Non-member binary logic operations of (uintwide_t op IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator|=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator^=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator&=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator|=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator^=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator&=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   // Non-member binary binary logic operations of (IntegralType op uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator|=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator^=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator&=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator|(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator|=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator^(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator^=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator&(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator&=(v); }
 
   // Non-member shift functions of (uintwide_t shift IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator<<=(n); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator>>=(n); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator<<=(n); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator>>=(n); }
 
   // Non-member comparison functions of (uintwide_t cmp uintwide_t).
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr bool operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return u.operator==(v); }
@@ -3368,37 +3376,37 @@
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr bool operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return u.operator<=(v); }
 
   // Non-member comparison functions of (uintwide_t cmp IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator==(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator!=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator> (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator< (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator>=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator<=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator==(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator!=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator> (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator< (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator>=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return u.operator<=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   // Non-member comparison functions of (IntegralType cmp uintwide_t).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator==(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator==(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator!=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator!=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator> (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator> (v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator< (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator< (v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator>=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator>=(v); }
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<IntegralType>::value == true) && (std::is_integral<IntegralType>::value == true)), bool>::type operator<=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator<=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator==(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator==(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator!=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator!=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator> (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator> (v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator< (const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator< (v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator>=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator>=(v); }
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, bool>::type operator<=(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator<=(v); }
 
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   // Non-member comparison functions of (uintwide_t cmp FloatingPointType).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator==(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator!=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator> (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator< (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator>=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator<=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator==(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator!=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator!=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator> (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator> (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator< (const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator< (uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator>=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator>=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator<=(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const FloatingPointType& f) { return u.operator<=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f)); }
 
   // Non-member comparison functions of (FloatingPointType cmp uintwide_t).
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator==(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator==(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator!=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator!=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator> (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator> (v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator< (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator< (v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator>=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator>=(v); }
-  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<((std::is_fundamental<FloatingPointType>::value == true) && (std::is_floating_point<FloatingPointType>::value == true)), bool>::type operator<=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator<=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator==(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator==(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator!=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator!=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator> (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator> (v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator< (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator< (v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator>=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator>=(v); }
+  template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true, bool>::type operator<=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator<=(v); }
   #endif
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
@@ -3495,9 +3503,6 @@
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   namespace my_own {
 
-  template<typename FloatingPointType>
-  constexpr FloatingPointType pow2(int n) { return n == 0 ? FloatingPointType(1.0L) : pow2<FloatingPointType>(n - 1) * FloatingPointType(2.0L); }
-
   template<typename FloatingPointType> WIDE_INTEGER_CONSTEXPR typename std::enable_if<((std::is_floating_point<FloatingPointType>::value == true) && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type frexp(FloatingPointType x, int* expptr)
   {
     using local_floating_point_type = FloatingPointType;
@@ -3508,7 +3513,8 @@
 
     int e2 = 0;
 
-    constexpr long double two_pow32 = pow2<long double>(32);
+    constexpr long double two_pow32 =
+      static_cast<long double>(0x10000) * static_cast<long double>(0x10000);
 
     while(f >= local_floating_point_type(two_pow32))
     {
@@ -3581,8 +3587,7 @@
   inline WIDE_INTEGER_CONSTEXPR unsinged_fast_type lsb_helper(const UnsignedIntegralType& x)
   {
     // Compile-time checks.
-    static_assert((   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                   && (std::is_integral<UnsignedIntegralType>::value    == true)
+    static_assert((   (std::is_integral<UnsignedIntegralType>::value    == true)
                    && (std::is_unsigned<UnsignedIntegralType>::value    == true)),
                    "Error: Please check the characteristics of UnsignedIntegralType");
 
@@ -3610,8 +3615,7 @@
   inline WIDE_INTEGER_CONSTEXPR unsinged_fast_type msb_helper(const UnsignedIntegralType& u)
   {
     // Compile-time checks.
-    static_assert((   (std::is_fundamental<UnsignedIntegralType>::value == true)
-                   && (std::is_integral<UnsignedIntegralType>::value    == true)
+    static_assert((   (std::is_integral<UnsignedIntegralType>::value    == true)
                    && (std::is_unsigned<UnsignedIntegralType>::value    == true)),
                    "Error: Please check the characteristics of UnsignedIntegralType");
 
@@ -4247,8 +4251,7 @@
   }
 
   template<typename UnsignedShortType>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_fundamental<UnsignedShortType>::value == true)
-                                                  && (std::is_integral   <UnsignedShortType>::value == true)
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <UnsignedShortType>::value == true)
                                                   && (std::is_unsigned   <UnsignedShortType>::value == true)), UnsignedShortType>::type
   gcd(const UnsignedShortType& u, const UnsignedShortType& v)
   {
@@ -4486,9 +4489,10 @@
     // This Miller-Rabin primality test is loosely based on
     // an adaptation of some code from Boost.Multiprecision.
     // The Boost.Multiprecision code can be found here:
-    // https://www.boost.org/doc/libs/1_73_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+    // https://www.boost.org/doc/libs/1_76_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
 
     // Note: Some comments in this subroutine use the Wolfram Language(TM).
+    // These can be exercised at the web links to WolframAlpha(R) provided
 
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
     using local_limb_type         = typename local_wide_integer_type::limb_type;
@@ -4512,6 +4516,7 @@
           return true;
         }
 
+        // Exclude pure small primes from 3...227.
         // Table[Prime[i], {i, 2, 49}] =
         // {
         //     3,   5,   7,  11,  13,  17,  19,  23,
@@ -4521,8 +4526,9 @@
         //   139, 149, 151, 157, 163, 167, 173, 179,
         //   181, 191, 193, 197, 199, 211, 223, 227
         // }
+        // See also:
+        // https://www.wolframalpha.com/input/?i=Table%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+49%7D%5D
 
-        // Exclude pure small primes from 3...227.
         constexpr std::array<local_limb_type, 48U> small_primes = 
         {{
           UINT8_C(  3), UINT8_C(  5), UINT8_C(  7), UINT8_C( 11), UINT8_C( 13), UINT8_C( 17), UINT8_C( 19), UINT8_C( 23),
@@ -4540,9 +4546,11 @@
     }
 
     // Check small factors.
+
+    // Exclude small prime factors from { 3 ...  53 }.
+    // Product[Prime[i], {i, 2, 16}] = 16294579238595022365
+    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+16%7D%5D
     {
-      // Product[Prime[i], {i, 2, 16}] = 16294579238595022365
-      // Exclude small prime factors from { 3 ...  53 }.
       constexpr std::uint64_t pp0 = UINT64_C(16294579238595022365);
 
       const std::uint64_t m0(np % pp0);
@@ -4553,9 +4561,10 @@
       }
     }
 
+    // Exclude small prime factors from { 59 ... 101 }.
+    // Product[Prime[i], {i, 17, 26}] = 7145393598349078859
+    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+17%2C+26%7D%5D
     {
-      // Product[Prime[i], {i, 17, 26}] = 7145393598349078859
-      // Exclude small prime factors from { 59 ... 101 }.
       constexpr std::uint64_t pp1 = UINT64_C(7145393598349078859);
 
       const std::uint64_t m1(np % pp1);
@@ -4566,9 +4575,10 @@
       }
     }
 
+    // Exclude small prime factors from { 103 ... 149 }.
+    // Product[Prime[i], {i, 27, 35}] = 6408001374760705163
+    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+27%2C+35%7D%5D
     {
-      // Product[Prime[i], {i, 27, 35}] = 6408001374760705163
-      // Exclude small prime factors from { 103 ... 149 }.
       constexpr std::uint64_t pp2 = UINT64_C(6408001374760705163);
 
       const std::uint64_t m2(np % pp2);
@@ -4579,9 +4589,10 @@
       }
     }
 
+    // Exclude small prime factors from { 151 ... 191 }.
+    // Product[Prime[i], {i, 36, 43}] = 690862709424854779
+    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+36%2C+43%7D%5D
     {
-      // Product[Prime[i], {i, 36, 43}] = 690862709424854779
-      // Exclude small prime factors from { 151 ... 191 }.
       constexpr std::uint64_t pp3 = UINT64_C(690862709424854779);
 
       const std::uint64_t m3(np % pp3);
@@ -4592,9 +4603,10 @@
       }
     }
 
+    // Exclude small prime factors from { 193 ... 227 }.
+    // Product[Prime[i], {i, 44, 49}] = 80814592450549
+    // See also: https://www.wolframalpha.com/input/?i=Product%5BPrime%5Bi%5D%2C+%7Bi%2C+44%2C+49%7D%5D
     {
-      // Product[Prime[i], {i, 44, 49}] = 80814592450549
-      // Exclude small prime factors from { 193 ... 227 }.
       constexpr std::uint64_t pp4 = UINT64_C(80814592450549);
 
       const std::uint64_t m4(np % pp4);
@@ -4614,9 +4626,7 @@
       // Perform a single Fermat test which will
       // exclude many non-prime candidates.
 
-      static const local_wide_integer_type n228(local_limb_type(228U));
-
-      const local_wide_integer_type fn = powm(n228, nm1, np);
+      const local_wide_integer_type fn = powm(local_wide_integer_type(local_limb_type(228U)), nm1, np);
 
       const local_limb_type fn0 = static_cast<local_limb_type>(fn);
 
@@ -4683,7 +4693,7 @@
     }
     while((i < number_of_trials) && is_probably_prime);
 
-    // Probably prime.
+    // The prime candidate is probably prime.
     return is_probably_prime;
   }
 
