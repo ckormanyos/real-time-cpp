@@ -249,8 +249,12 @@
                 typename base_class_type::value_type());
     }
 
-    constexpr fixed_static_array(const fixed_static_array& other_array)
-      : base_class_type(static_cast<const base_class_type&>(other_array)) { }
+    fixed_static_array(const fixed_static_array& other_array)
+    {
+      std::copy(other_array.cbegin(),
+                other_array.cbegin() + MySize,
+                base_class_type::begin());
+    }
 
     template<const std::uint_fast32_t OtherSize>
     fixed_static_array(const fixed_static_array<std::uint_fast32_t, OtherSize>& other_array)
