@@ -1,0 +1,172 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef RANDOM_2018_06_10_
+  #define RANDOM_2018_06_10_
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
+  #include <initializer_list>
+  #include <vector>
+
+  /*
+  Portions of <random>. The following portions will be included:
+
+    linear_congruential_engine
+    mersenne_twister_engine
+    subtract_with_carry_engine
+    discard_block_engine
+    independent_bits_engine
+    shuffle_order_engine
+    [rand.predef]
+    uniform_int_distribution
+  */
+
+  namespace std
+  {
+    class seed_seq
+    {
+    public:
+      using result_type = uint_least32_t;
+
+      seed_seq() : internal_sequence() { }
+
+      template<typename T>
+      seed_seq(const std::initializer_list<T>& init_list)
+        : internal_sequence(init_list.begin(), init_list.end()) { }
+
+      template<typename input_iterator_type>
+      seed_seq(input_iterator_type first, input_iterator_type last)
+        : internal_sequence(first, last) { }
+
+      template<typename random_iterator_type>
+      void generate(random_iterator_type first, random_iterator_type last) const
+      {
+        typedef typename std::iterator_traits<random_iterator_type>::value_type value_type;
+
+        std::fill(first, last, static_cast<value_type>(0x8B8B8B8BU));
+
+        std::size_t s = internal_sequence.size();
+
+        std::size_t n = last - first;
+
+        std::size_t t = (n >= 623) ? 11 :
+                        (n >=  68) ?  7 :
+                        (n >=  39) ?  5 :
+                        (n >=   7) ?  3 :
+                        (n - 1)/2;
+
+        std::size_t p = (n - t) / 2;
+        std::size_t q = p + t;
+        std::size_t m = (std::max)(s + 1, n);
+
+        value_type mask = 0xFFFFFFFFU;
+        for(std::size_t k = 0; k < m; ++k)
+        {
+          value_type r1(*(first + (k % n)) ^ *(first + ((k + p) % n)) ^ *(first + (((k + n) - 1) % n)));
+
+          r1 = r1 ^ (r1 >> 27);
+          r1 = (r1 * 1664525U) & mask;
+
+          value_type r2(r1 + ((k == 0) ? s :
+                              (k <= s) ? k % n + internal_sequence[k - 1] :
+                              (k % n)));
+
+          *(first + ((k + p) % n)) = (*(first + ((k + p) % n)) + r1) & mask;
+          *(first + ((k + q) % n)) = (*(first + ((k + q) % n)) + r2) & mask;
+          *(first + (k % n)) = r2;
+        }
+
+        for(std::size_t k = m; k < m + n; ++k)
+        {
+          value_type r3((*(first + (k % n)) + *(first + ((k + p) % n)) + *(first + (k+n-1)%n)) & mask);
+
+          r3 = r3 ^ (r3 >> 27);
+          r3 = (r3 * 1566083941U) & mask;
+
+          value_type r4 = static_cast<value_type>(r3 - (k % n));
+
+          *(first + ((k + p) % n)) ^= r3;
+          *(first + ((k + q) % n)) ^= r4;
+          *(first +  (k % n)) = r4;
+        }
+      }
+
+      template<typename output_iterator_type>
+      void param(output_iterator_type destination) const
+      {
+        static_cast<void>(destination);
+      }
+
+      size_t size() const { return internal_sequence.size(); }
+
+      seed_seq(const seed_seq&) = delete;
+      void operator=(const seed_seq&) = delete;
+
+    private:
+      std::vector<result_type> internal_sequence;
+    };
+
+    template<typename UIntType,
+             size_t w,
+             size_t n,
+             size_t m,
+             size_t r,
+             UIntType a,
+             size_t u,
+             UIntType d,
+             size_t s,
+             UIntType b,
+             size_t t,
+             UIntType c,
+             size_t l,
+             UIntType f>
+    class mersenne_twister_engine
+    {
+    public:
+      using result_type = unsigned_integral_type;
+
+      static const result_type default_seed = 0U;
+
+      explicit mersenne_twister_engine(result_type val = default_seed)
+      {
+      }
+
+      template<typename seed_sequence_type>
+      explicit mersenne_twister_engine(seed_sequence_type& q)
+      {
+      }
+
+      void seed(result_type val = default_seed)
+      {
+      }
+
+      template<typename seed_sequence_type>
+      void seed(seed_sequence_type& q)
+      {
+      }
+    };
+
+    typedef mersenne_twister_engine<uint_fast32_t,
+                                              32U,
+                                             624U,
+                                             397U,
+                                              31U,
+                                      0x9908B0DFU,
+                                              11U,
+                                      0xFFFFFFFFU,
+                                               7U,
+                                      0x9D2C5680U,
+                                              15U,
+                                      0xEFC60000U,
+                                              18U,
+                                      1812433253U>
+    mt19937;
+  }
+
+#endif // RANDOM_2018_06_10_

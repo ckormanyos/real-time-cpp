@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{05026f2b-390f-424a-b24a-73033960ef24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\make">
+      <UniqueIdentifier>{3e4d62e1-393a-4652-861b-115c75eed949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{16b42c54-b896-4cb6-b8a5-0436327def0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros">
+      <UniqueIdentifier>{0a8b6cbb-02d4-4780-a2a9-c5a1b34deb53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b">
+      <UniqueIdentifier>{de66c8a6-669d-452d-a873-565241e395de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\make">
+      <UniqueIdentifier>{314e7494-f11e-45e1-bb0a-80529ba9a61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\startup">
+      <UniqueIdentifier>{3500d006-2e46-4281-adcb-a55d324a5d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\startup\SD_CARD">
+      <UniqueIdentifier>{6dbc2a31-5543-47f2-aa55-dd9397a4d7e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\bcm2835_raspi_b\startup\SD_CARD\PiZero">
+      <UniqueIdentifier>{9e42eedf-2266-4e14-b9c1-af204b31d8e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\x86_64-w64-mingw32">
+      <UniqueIdentifier>{435c3cf9-e58a-4c28-bf3d-22dae7662c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\x86_64-w64-mingw32\make">
+      <UniqueIdentifier>{c46cc273-2fa7-468e-9315-1c823451c468}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="target\app\make\app_files.gmk">
+      <Filter>app\make</Filter>
+    </None>
+    <None Include="target\app\make\app_make.gmk">
+      <Filter>app\make</Filter>
+    </None>
+    <None Include="target\app\make\app_rules.gmk">
+      <Filter>app\make</Filter>
+    </None>
+    <None Include="target\build\build.bat">
+      <Filter>build</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b.ld">
+      <Filter>micros\bcm2835_raspi_b\make</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_files.gmk">
+      <Filter>micros\bcm2835_raspi_b\make</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_flags.gmk">
+      <Filter>micros\bcm2835_raspi_b\make</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\bootcode.bin">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\kernel.img">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\start.elf">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
+    </None>
+    <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk">
+      <Filter>micros\x86_64-w64-mingw32\make</Filter>
+    </None>
+    <None Include="target\micros\bcm2835_raspi_b\startup\int_vect.s">
+      <Filter>micros\bcm2835_raspi_b\startup</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0.cpp">
+      <Filter>micros\bcm2835_raspi_b\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt0_init_ram.cpp">
+      <Filter>micros\bcm2835_raspi_b\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\bcm2835_raspi_b\startup\crt1.cpp">
+      <Filter>micros\bcm2835_raspi_b\startup</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
+      <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

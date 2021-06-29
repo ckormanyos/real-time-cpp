@@ -1,0 +1,29 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CSTRING_2018_10_04_
+  #define CSTRING_2018_10_04_
+
+  #include <stddef.h>
+
+  extern "C" void*  memcpy (void*, const void*, size_t);
+  extern "C" void*  memmove(void*, const void*, size_t);
+  extern "C" void*  memset (void*, int, size_t);
+
+  extern "C" char*  strcpy (char*, const char*);
+  extern "C" size_t strlen (const char*);
+
+  namespace std
+  {
+    using ::memcpy;
+    using ::memmove;
+    using ::memset;
+    using ::strlen;
+    using ::strcpy;
+  }
+
+#endif // CSTRING_2018_10_04_

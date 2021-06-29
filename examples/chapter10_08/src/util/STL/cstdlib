@@ -1,0 +1,51 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2017.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CSTDLIB_2017_11_07_
+  #define CSTDLIB_2017_11_07_
+
+  #if !defined(__GNUC__)
+  #define __attribute__(a)
+  #endif
+
+  #include <cstddef>
+
+  #if defined(NULL)
+  #undef NULL
+  #define NULL ((void*) 0)
+  #endif
+
+  #if defined(EXIT_SUCCESS)
+  #undef EXIT_SUCCESS
+  #define EXIT_SUCCESS 0
+  #endif
+
+  #if defined(EXIT_FAILURE)
+  #undef EXIT_FAILURE
+  #define EXIT_FAILURE -1
+  #endif
+
+  void exit(int) __attribute__((noreturn));
+
+  namespace std
+  {
+    inline int         abs(int       a) { return ((a < 0) ? -a : a); }
+    inline long       labs(long      a) { return ((a < 0) ? -a : a); }
+    inline long long llabs(long long a) { return ((a < 0) ? -a : a); }
+
+    inline void exit(int exit_code) { ::exit(exit_code); }
+
+    struct   div_t { int       quot; int       rem; };
+    struct  ldiv_t { long      quot; long      rem; };
+    struct lldiv_t { long long quot; long long rem; };
+
+    inline   div_t   div(int       x, int       y) { const   div_t result = { x / y, x % y }; return result; }
+    inline  ldiv_t  ldiv(long      x, long      y) { const  ldiv_t result = { x / y, x % y }; return result; }
+    inline lldiv_t lldiv(long long x, long long y) { const lldiv_t result = { x / y, x % y }; return result; }
+  }
+
+#endif // CSTDLIB_2017_11_07_

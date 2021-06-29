@@ -1,0 +1,30 @@
+#
+#  Copyright Christopher Kormanyos 2019 - 2020.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 8.2.0
+GCC_TARGET    = x86_64-w64-mingw32
+GCC_PREFIX    =
+
+TGT_SUFFIX    = exe
+
+TGT_CFLAGS    = -O3                                            \
+                -finline-functions                             \
+                -finline-limit=32                              \
+                -march=native                                  \
+                -mtune=native
+
+TGT_CPPFLAGS  = -std=c++17
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   =

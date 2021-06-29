@@ -1,0 +1,49 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CHARCONV_2021_04_12_
+  #define CHARCONV_2021_04_12_
+
+  // Implement std::time_t of <charconv> for compilers that do not yet support it.
+
+  #include <errno.h>
+
+  namespace std
+  {
+    enum errc
+    {
+      my_unknown_errc = 0,
+      value_too_large = 1,
+    };
+  }
+
+  namespace std
+  {
+    struct to_chars_result
+    {
+      to_chars_result() : ptr(nullptr),
+                          ec (my_unknown_errc) { }
+      char* ptr;
+      errc ec;
+      friend bool operator==(const to_chars_result&, const to_chars_result&) = default;
+    };
+
+    //to_chars_result to_chars(char* first, char* last,
+    //                         /* see description */ value, int base = 10);
+
+    to_chars_result to_chars(char* first, char* last, bool value, int base = 10) = delete;
+
+    inline to_chars_result to_chars(char* first, char* last, float value)       { return to_chars_result{ }; }
+    inline to_chars_result to_chars(char* first, char* last, double value)      { return to_chars_result{ }; }
+    inline to_chars_result to_chars(char* first, char* last, long double value) { return to_chars_result{ }; }
+
+    //to_chars_result to_chars(char* first, char* last, float value, chars_format fmt);
+    //to_chars_result to_chars(char* first, char* last, double value, chars_format fmt);
+    //to_chars_result to_chars(char* first, char* last, long double value, chars_format fmt);
+  }
+
+#endif // CHARCONV_2021_04_12_

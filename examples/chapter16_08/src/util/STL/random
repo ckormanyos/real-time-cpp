@@ -1,0 +1,1717 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018 - 2020.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef RANDOM_2018_06_10_
+  #define RANDOM_2018_06_10_
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
+  #include <limits>
+  #include <numeric>
+  #include <type_traits>
+
+  // Implement some of <random> for compilers that do not yet support it.
+
+  extern "C" unsigned int  my_hardware_random_device_generator(void);
+  extern "C" unsigned char my_hardware_random_device_entropy  (void);
+
+  namespace std {
+
+  namespace rnd__detail {
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           bool = rnd__word_size < static_cast<size_t>(std::numeric_limits<UnsignedIntegralType>::digits)>
+  struct rnd__shift
+  {
+    static const UnsignedIntegralType rnd__value = 0U;
+  };
+
+  template<typename UnsignedIntegralType,
+            size_t rnd__word_size>
+  struct rnd__shift<UnsignedIntegralType, rnd__word_size, true>
+  {
+    static const UnsignedIntegralType rnd__value = UnsignedIntegralType(1ULL << rnd__word_size);
+  };
+
+  template<int rnd__seed,
+           int rnd__which =   ((rnd__seed <= CHAR_BIT * sizeof (int))
+                            +  (rnd__seed <= CHAR_BIT * sizeof (long))
+                            +  (rnd__seed <= CHAR_BIT * sizeof (long long))
+                            /* assume long long no bigger than __int128 */
+                            +  (rnd__seed <= 128))>
+  struct rnd__select_uint_least_t
+  {
+    static_assert(rnd__which < 0, "Error: would be too much trouble for a slow result");
+  };
+
+  template<int rnd__seed>
+  struct rnd__select_uint_least_t<rnd__seed, 4>
+  {
+    typedef unsigned int type;
+  };
+
+  template<int rnd__seed>
+  struct rnd__select_uint_least_t<rnd__seed, 3>
+  {
+    typedef unsigned long type;
+  };
+
+  template<int rnd__seed>
+  struct rnd__select_uint_least_t<rnd__seed, 2>
+  {
+    typedef unsigned long long type;
+  };
+
+  // Assume a != 0, a < m, c < m, x < m.
+  template<typename T,
+            T ParamM,
+            T ParamA,
+            T ParamC,
+            bool rnd__big_enough = (!(ParamM & (ParamM - 1)) || (T(-1) - ParamC) / ParamA >= ParamM - 1),
+            bool rnd__schrage_ok = ParamM % ParamA < ParamM / ParamA>
+  struct rnd__inner_mod
+  {
+    typedef T _Tp2;
+    static T
+
+    rnd__calc(T rnd__x)
+    {
+      return static_cast<T>((_Tp2(ParamA) * rnd__x + ParamC) % ParamM);
+    }
+  };
+
+  // Schrage.
+  template<typename T,
+           T ParamM,
+           T ParamA,
+           T ParamC>
+  struct rnd__inner_mod<T,
+                        ParamM,
+                        ParamA,
+                        ParamC,
+                        false,
+                        true>
+  {
+    // General case for x = (ax + c) mod m -- use Schrage's algorithm
+    // to avoid integer overflow.
+    //
+    // Preconditions:  a > 0, m > 0.
+    //
+    // Note: only works correctly for ParamM % ParamA < ParamM / ParamA.
+    static T rnd__calc(T rnd__x)
+    {
+      if (ParamA == 1)
+      {
+        rnd__x %= ParamM;
+      }
+      else
+      {
+        constexpr T rnd__seed_sequence = ParamM / ParamA;
+        constexpr T rnd__long_lag_r    = ParamM % ParamA;
+
+        T rnd__t1 = ParamA * (rnd__x % rnd__seed_sequence);
+        T rnd__t2 = rnd__long_lag_r * (rnd__x / rnd__seed_sequence);
+
+        if (rnd__t1 >= rnd__t2)
+        {
+          rnd__x = rnd__t1 - rnd__t2;
+        }
+        else
+        {
+          rnd__x = ParamM - rnd__t2 + rnd__t1;
+        }
+      }
+
+      if(ParamC != 0)
+      {
+        const T rnd__value_d = ParamM - rnd__x;
+
+        if (rnd__value_d > ParamC)
+        {
+          rnd__x += ParamC;
+        }
+        else
+        {
+          rnd__x = ParamC - rnd__value_d;
+        }
+      }
+
+      return rnd__x;
+    }
+  };
+
+  // Special cases:
+  // - for m == 2^n or m == 0, unsigned integer overflow is safe.
+  // - a * (m - 1) + c fits in T, there is no overflow.
+  template<typename T,
+           T ParamM,
+           T ParamA,
+           T ParamC,
+           bool rnd__seed>
+  struct rnd__inner_mod<T,
+              ParamM,
+              ParamA,
+              ParamC,
+              true,
+              rnd__seed>
+  {
+    static T rnd__calc(T rnd__x)
+    {
+      T rnd__res = ParamA * rnd__x + ParamC;
+
+      if (ParamM)
+      {
+        rnd__res %= ParamM;
+      }
+
+      return rnd__res;
+    }
+  };
+
+  template<typename T,
+           T ParamM,
+           T ParamA = 1,
+           T ParamC = 0>
+  inline T rnd__mod(T rnd__x)
+  {
+    return rnd__inner_mod<T,
+                          ParamM,
+                          ParamA,
+                          ParamC>::rnd__calc(rnd__x);
+  }
+
+  template<typename InputIterator,
+           typename OutputIterator,
+           typename T>
+  OutputIterator rnd__normalize(InputIterator  rnd__first,
+                                InputIterator  rnd__last,
+                                OutputIterator rnd__result,
+                                const T& rnd__factor)
+  {
+    for( ; rnd__first != rnd__last; ++rnd__first, ++rnd__result)
+    {
+      *rnd__result = *rnd__first / rnd__factor;
+    }
+
+    return rnd__result;
+  }
+
+  } // namespace rnd__detail
+
+  // These classes define objects which provide random
+  // or pseudorandom numbers, either from a discrete or
+  // a continuous interval.
+
+  // Generate pseudorandom numbers via linear function
+  //   x_{i+1} -> (ax_{i} + c) % m
+  //
+  // The template parameter UnsignedIntegralType must be an unsigned
+  // integral type large enough to store values up to (ParamM-1).
+  // If the template parameter ParamM is 0, the modulus ParamM used is
+  // std::numeric_limits<UnsignedIntegralType>::max() + 1. Otherwise,
+  // the template parameters ParamA and ParamC must be less than ParamM.
+
+  template<typename UnsignedIntegralType,
+           UnsignedIntegralType ParamA,
+           UnsignedIntegralType ParamC,
+           UnsignedIntegralType ParamM>
+  class linear_congruential_engine
+  {
+  private:
+    static_assert(std::is_unsigned<UnsignedIntegralType>::value,
+                  "Error: result_type must be an unsigned integral type");
+
+    static_assert(ParamM == 0u || (ParamA < ParamM && ParamC < ParamM),
+                  "Error: template argument substituting ParamM out of bounds");
+
+  public:
+    typedef UnsignedIntegralType result_type;
+
+    static const result_type multiplier   = ParamA;
+    static const result_type increment    = ParamC;
+    static const result_type modulus      = ParamM;
+    static const result_type default_seed = 1U;
+
+    explicit linear_congruential_engine(result_type rnd__seed = default_seed)
+    {
+      seed(rnd__seed);
+    }
+
+    template<typename _Sseq,
+             typename = typename std::enable_if<!std::is_same<_Sseq, linear_congruential_engine>::value>::type>
+    explicit linear_congruential_engine(_Sseq& rnd__seed_sequence)
+    {
+      seed(rnd__seed_sequence);
+    }
+
+    void seed(result_type rnd__seed = default_seed);
+
+    static constexpr result_type min()
+    {
+      return ParamC == 0u ? 1u : 0u;
+    }
+
+    static constexpr result_type max()
+    {
+      return ParamM - 1u;
+    }
+
+    void discard(unsigned long long rnd__z)
+    {
+      for( ; rnd__z != 0ULL; --rnd__z)
+      {
+        (*this)();
+      }
+    }
+
+    result_type operator()()
+    {
+      my_elems = rnd__detail::rnd__mod<UnsignedIntegralType, ParamM, ParamA, ParamC>(my_elems);
+
+      return my_elems;
+    }
+
+    friend bool operator==(const linear_congruential_engine& left,
+                           const linear_congruential_engine& right)
+    {
+      return (left.my_elems == right.my_elems);
+    }
+
+  private:
+    UnsignedIntegralType my_elems;
+  };
+
+  template<typename UnsignedIntegralType, UnsignedIntegralType ParamA, UnsignedIntegralType ParamC, UnsignedIntegralType ParamM>
+  inline bool operator!=(const std::linear_congruential_engine<UnsignedIntegralType,
+                                                               ParamA,
+                                                               ParamC,
+                                                               ParamM>& left,
+                         const std::linear_congruential_engine<UnsignedIntegralType,
+                                                               ParamA,
+                                                               ParamC,
+                                                               ParamM>& right)
+  {
+    return !(left == right);
+  }
+
+  // A generalized feedback shift register discrete random number generator.
+  //
+  // This algorithm avoids multiplication and division and is designed to be
+  // friendly to a pipelined architecture.  If the parameters are chosen
+  // correctly, this generator will produce numbers with a very long period and
+  // fairly good apparent entropy, although still not cryptographically strong.
+  //
+  // The best way to use this generator is with the predefined mt19937 class.
+  //
+  // This algorithm was originally invented by Makoto Matsumoto and
+  // Takuji Nishimura.
+  //
+  // rnd__word_size  Word size, the number of bits in each element of 
+  //      the state vector.
+  // ParamN  The degree of recursion.
+  // ParamM  The period parameter.
+  // rnd__long_lag_r  The separation point bit index.
+  // ParamA  The last row of the twist matrix.
+  // ParamU  The first right-shift tempering matrix parameter.
+  // rnd__value_d  The first right-shift tempering matrix mask.
+  // rnd__seed  The first left-shift tempering matrix parameter.
+  // rnd__value_b  The first left-shift tempering matrix mask.
+  // ParamT  The second left-shift tempering matrix parameter.
+  // ParamC  The second left-shift tempering matrix mask.
+  // ParamL  The second right-shift tempering matrix parameter.
+  // rnd__value_f  Initialization multiplier.
+
+  template<typename  UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  class mersenne_twister_engine
+  {
+  private:
+    static_assert(std::is_unsigned<UnsignedIntegralType>::value,
+                  "result_type must be an unsigned integral type");
+
+    static_assert(1u <= ParamM && ParamM <= ParamN,
+                  "template argument substituting ParamM out of bounds");
+
+    static_assert(rnd__long_lag_r <= rnd__word_size, "template argument substituting rnd__long_lag_r out of bound");
+    static_assert(ParamU <= rnd__word_size, "template argument substituting ParamU out of bound");
+    static_assert(rnd__seed <= rnd__word_size, "template argument substituting rnd__seed out of bound");
+    static_assert(ParamT <= rnd__word_size, "template argument substituting ParamT out of bound");
+    static_assert(ParamL <= rnd__word_size, "template argument substituting ParamL out of bound");
+    static_assert(rnd__word_size <= std::numeric_limits<UnsignedIntegralType>::digits,
+                  "template argument substituting rnd__word_size out of bound");
+    static_assert(ParamA <= (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1),
+                  "template argument substituting ParamA out of bound");
+    static_assert(rnd__value_b <= (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1),
+                  "template argument substituting rnd__value_b out of bound");
+    static_assert(ParamC <= (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1),
+                  "template argument substituting ParamC out of bound");
+    static_assert(rnd__value_d <= (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1),
+                  "template argument substituting rnd__value_d out of bound");
+    static_assert(rnd__value_f <= (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1),
+                  "template argument substituting rnd__value_f out of bound");
+
+  public:
+    typedef UnsignedIntegralType result_type;
+
+    static const size_t      word_size                 = rnd__word_size;
+    static const size_t      state_size                = ParamN;
+    static const size_t      shift_size                = ParamM;
+    static const size_t      mask_bits                 = rnd__long_lag_r;
+    static const result_type xor_mask                  = ParamA;
+    static const size_t      tempering_u               = ParamU;
+    static const result_type tempering_d               = rnd__value_d;
+    static const size_t      tempering_s               = rnd__seed;
+    static const result_type tempering_b               = rnd__value_b;
+    static const size_t      tempering_t               = ParamT;
+    static const result_type tempering_c               = ParamC;
+    static const size_t      tempering_l               = ParamL;
+    static const result_type initialization_multiplier = rnd__value_f;
+    static const result_type default_seed = 5489u;
+
+    // constructors and member function
+    explicit mersenne_twister_engine(result_type rnd__s = default_seed)
+    {
+      seed(rnd__s);
+    }
+
+    template<typename _Sseq,
+              typename = typename std::enable_if<!std::is_same<_Sseq, mersenne_twister_engine>::value>::type>
+    explicit mersenne_twister_engine(_Sseq& rnd__seed_sequence)
+    {
+      seed(rnd__seed_sequence);
+    }
+
+    void seed(result_type __sd = default_seed);
+
+    static constexpr result_type min()
+    {
+      return 0;
+    }
+
+    static constexpr result_type max()
+    {
+      return rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1;
+    }
+
+    void discard(unsigned long long rnd__z);
+
+    result_type operator()();
+
+    friend bool operator==(const mersenne_twister_engine& left,
+                           const mersenne_twister_engine& right)
+    {
+      return (   std::equal(left.my_elems, left.my_elems + state_size, right.my_elems)
+              && left.my_p == right.my_p);
+    }
+
+  private:
+    UnsignedIntegralType my_elems[state_size];
+    size_t               my_p;
+
+    void rnd__m_gen_rand();
+  };
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  inline bool operator!=(const std::mersenne_twister_engine<UnsignedIntegralType,
+                                                            rnd__word_size,
+                                                            ParamN,
+                                                            ParamM,
+                                                            rnd__long_lag_r,
+                                                            ParamA,
+                                                            ParamU,
+                                                            rnd__value_d,
+                                                            rnd__seed,
+                                                            rnd__value_b,
+                                                            ParamT,
+                                                            ParamC,
+                                                            ParamL,
+                                                            rnd__value_f>& left,
+                         const std::mersenne_twister_engine<UnsignedIntegralType,
+                                                            rnd__word_size,
+                                                            ParamN,
+                                                            ParamM,
+                                                            rnd__long_lag_r,
+                                                            ParamA,
+                                                            ParamU,
+                                                            rnd__value_d,
+                                                            rnd__seed,
+                                                            rnd__value_b,
+                                                            ParamT,
+                                                            ParamC,
+                                                            ParamL,
+                                                            rnd__value_f>& right)
+  {
+    return !(left == right);
+  }
+
+  // Marsaglia-Zaman generator.
+  //
+  // This is a model of a Generalized Fibonacci discrete random number
+  // generator, sometimes referred to as the SWC generator.
+  //
+  // A discrete random number generator that produces pseudorandom
+  // numbers using:
+  //   x_{i} -> (x_{i - s} - x_{i - r} - carry_{i-1}) % m
+  //
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  class subtract_with_carry_engine
+  {
+  private:
+    static_assert(std::is_unsigned<UnsignedIntegralType>::value,
+                  "result_type must be an unsigned integral type");
+
+    static_assert(0u < rnd__seed && rnd__seed < rnd__long_lag_r, "0 < s < r");
+
+    static_assert(0u < rnd__word_size && rnd__word_size <= std::numeric_limits<UnsignedIntegralType>::digits,
+                  "template argument substituting rnd__word_size out of bounds");
+
+  public:
+    typedef UnsignedIntegralType result_type;
+
+    // parameter values
+    static const size_t      word_size    = rnd__word_size;
+    static const size_t      short_lag    = rnd__seed;
+    static const size_t      long_lag     = rnd__long_lag_r;
+    static const result_type default_seed = (result_type) 19780503ULL;
+
+    explicit subtract_with_carry_engine(result_type __sd = default_seed)
+    {
+      seed(__sd);
+    }
+
+    template<typename _Sseq, typename = typename
+             std::enable_if<!std::is_same<_Sseq, subtract_with_carry_engine>::value>::type>
+    explicit subtract_with_carry_engine(_Sseq& rnd__seed_sequence)
+    {
+      seed(rnd__seed_sequence);
+    }
+
+    void seed(result_type rnd__s = default_seed);
+
+    static constexpr result_type min() { return 0; }
+
+    static constexpr result_type max()
+    {
+      return rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - 1;
+    }
+
+    result_type operator()()
+    {
+      // Derive short lag index from current index.
+      std::int32_t rnd__ps = (std::int32_t) my_p - (std::int32_t) short_lag;
+
+      if(rnd__ps < 0)
+      {
+        rnd__ps += (std::int32_t) long_lag;
+      }
+
+      // Calculate new x(i) without overflow or division.
+      // NB: Thanks to the requirements for UnsignedIntegralType, rnd__elems[rnd__m_p] + rnd__m_carry
+      // cannot overflow.
+      UnsignedIntegralType rnd__xi;
+
+      if(my_elems[rnd__ps] >= my_elems[my_p] + my_carry)
+      {
+        rnd__xi = my_elems[rnd__ps] - my_elems[my_p] - my_carry;
+
+        my_carry = 0;
+      }
+      else
+      {
+        rnd__xi = (rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value - my_elems[my_p] - my_carry + my_elems[rnd__ps]);
+
+        my_carry = 1;
+      }
+
+      my_elems[my_p] = rnd__xi;
+
+      // Adjust current index to loop around in ring buffer.
+      if (++my_p >= long_lag)
+      {
+        my_p = 0;
+      }
+
+      return rnd__xi;
+    }
+
+    void discard(unsigned long long rnd__z)
+    {
+      for (; rnd__z != 0ULL; --rnd__z)
+      {
+        (*this)();
+      }
+    }
+
+    friend inline bool operator==(const subtract_with_carry_engine& left,
+                                  const subtract_with_carry_engine& right)
+    {
+      return (   std::equal(left.my_elems, left.my_elems + long_lag, right.my_elems)
+              && left.my_carry == right.my_carry
+              && left.my_p == right.my_p);
+    }
+
+  private:
+    UnsignedIntegralType  my_elems[long_lag];
+    UnsignedIntegralType  my_carry;
+    size_t                my_p;
+  };
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  inline bool operator!=(const std::subtract_with_carry_engine<UnsignedIntegralType,
+                                                               rnd__word_size,
+                                                               rnd__seed,
+                                                               rnd__long_lag_r>& left,
+                         const std::subtract_with_carry_engine<UnsignedIntegralType,
+                                                               rnd__word_size,
+                                                               rnd__seed,
+                                                               rnd__long_lag_r>& right)
+  {
+    return !(left == right);
+  }
+
+
+  // Produces random numbers from some base engine
+  // by discarding blocks of data.
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__p,
+           size_t rnd__long_lag_r>
+  class discard_block_engine
+  {
+  private:
+    static_assert(1 <= rnd__long_lag_r && rnd__long_lag_r <= rnd__p,
+                  "template argument substituting rnd__long_lag_r out of bounds");
+
+  public:
+    typedef typename _RandomNumberEngine::result_type result_type;
+
+    static const size_t block_size = rnd__p;
+    static const size_t used_block = rnd__long_lag_r;
+
+    discard_block_engine() : my_b(), my_n(0) { }
+
+    explicit discard_block_engine(const _RandomNumberEngine& rnd__eng)
+      : my_b(rnd__eng),
+        my_n(0) { }
+
+    explicit discard_block_engine(_RandomNumberEngine&& rnd__eng)
+      : my_b(std::move(rnd__eng)),
+             my_n(0) { }
+
+    explicit discard_block_engine(result_type rnd__seed)
+      : my_b(rnd__seed),
+        my_n(0) { }
+
+    template<typename _Sseq,
+             typename = typename std::enable_if<(   !std::is_same<_Sseq, discard_block_engine>::value
+                                                 && !std::is_same<_Sseq, _RandomNumberEngine >::value)>::type>
+    explicit discard_block_engine(_Sseq& rnd__seed_sequence)
+      : my_b(rnd__seed_sequence),
+        my_n(0) { }
+
+    void seed()
+    {
+      my_b.seed();
+      my_n = 0;
+    }
+
+    void seed(result_type rnd__seed)
+    {
+      my_b.seed(rnd__seed);
+      my_n = 0;
+    }
+
+    template<typename _Sseq>
+    void seed(_Sseq& rnd__seed_sequence)
+    {
+      my_b.seed(rnd__seed_sequence);
+      my_n = 0;
+    }
+
+    const _RandomNumberEngine& base() const noexcept
+    {
+      return my_b;
+    }
+
+    static constexpr result_type min()
+    {
+      return _RandomNumberEngine::min();
+    }
+
+    static constexpr result_type max()
+    {
+      return _RandomNumberEngine::max();
+    }
+
+    void discard(unsigned long long rnd__z)
+    {
+      for( ; rnd__z != 0ULL; --rnd__z)
+      {
+        (*this)();
+      }
+    }
+
+    result_type operator()();
+
+    friend bool operator==(const discard_block_engine& left,
+                           const discard_block_engine& right)
+    {
+      return    left.my_b == right.my_b
+             && left.my_n == right.my_n;
+    }
+
+  private:
+    _RandomNumberEngine my_b;
+    size_t my_n;
+  };
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__p,
+           size_t rnd__long_lag_r>
+  inline bool operator!=(const std::discard_block_engine<_RandomNumberEngine,
+                                                         rnd__p,
+                                                         rnd__long_lag_r>& left,
+                         const std::discard_block_engine<_RandomNumberEngine,
+                                                         rnd__p,
+                                                         rnd__long_lag_r>& right)
+  {
+    return !(left == right);
+  }
+
+
+  // Produces random numbers by combining random numbers
+  // from some base engine to produce random numbers
+  // with a specifies number of bits rnd__k.
+
+  template<typename _RandomNumberEngine, size_t rnd__k>
+  class shuffle_order_engine
+  {
+  private:
+    static_assert(1u <= rnd__k, "template argument substituting "
+                  "rnd__k out of bound");
+
+  public:
+    typedef typename _RandomNumberEngine::result_type result_type;
+
+    static const size_t table_size = rnd__k;
+
+    shuffle_order_engine() : rnd__m_b()
+    {
+      rnd__m_initialize();
+    }
+
+    explicit shuffle_order_engine(const _RandomNumberEngine& rnd__eng)
+      : rnd__m_b(rnd__eng)
+    {
+      rnd__m_initialize();
+    }
+
+    explicit shuffle_order_engine(_RandomNumberEngine&& rnd__eng)
+      : rnd__m_b(std::move(rnd__eng))
+    {
+      rnd__m_initialize();
+    }
+
+    explicit shuffle_order_engine(result_type rnd__seed)
+      : rnd__m_b(rnd__seed)
+    {
+      rnd__m_initialize();
+    }
+
+    template<typename _Sseq, typename = typename
+    std::enable_if<(   !std::is_same<_Sseq, shuffle_order_engine>::value
+                    && !std::is_same<_Sseq, _RandomNumberEngine >::value)>::type>
+    explicit shuffle_order_engine(_Sseq& rnd__seed_sequence)
+      : rnd__m_b(rnd__seed_sequence)
+    {
+      rnd__m_initialize();
+    }
+
+    void seed()
+    {
+      rnd__m_b.seed();
+
+      rnd__m_initialize();
+    }
+
+    void seed(result_type rnd__seed)
+    {
+      rnd__m_b.seed(rnd__seed);
+
+      rnd__m_initialize();
+    }
+
+    template<typename _Sseq>
+    void seed(_Sseq& rnd__seed_sequence)
+    {
+      rnd__m_b.seed(rnd__seed_sequence);
+
+      rnd__m_initialize();
+    }
+
+    const _RandomNumberEngine& base() const noexcept
+    {
+      return rnd__m_b;
+    }
+
+    static constexpr result_type min()
+    {
+      return _RandomNumberEngine::min();
+    }
+
+    static constexpr result_type max()
+    {
+      return _RandomNumberEngine::max();
+    }
+
+    void discard(unsigned long long rnd__z)
+    {
+      for(; rnd__z != 0ULL; --rnd__z)
+      {
+        (*this)();
+      }
+    }
+
+    result_type operator()();
+
+    friend bool operator==(const shuffle_order_engine& left,
+                           const shuffle_order_engine& right)
+    {
+       return (   left.rnd__m_b == right.rnd__m_b
+               && std::equal(left.rnd__m_v, left.rnd__m_v + rnd__k, right.rnd__m_v)
+               && left.rnd__m_y == right.rnd__m_y);
+    }
+
+  private:
+    void rnd__m_initialize()
+    {
+      for(size_t rnd__i = 0; rnd__i < rnd__k; ++rnd__i)
+      {
+        rnd__m_v[rnd__i] = rnd__m_b();
+      }
+
+      rnd__m_y = rnd__m_b();
+    }
+
+    _RandomNumberEngine rnd__m_b;
+    result_type rnd__m_v[rnd__k];
+    result_type rnd__m_y;
+  };
+
+  template<typename _RandomNumberEngine, size_t rnd__k>
+  inline bool operator!=(const std::shuffle_order_engine<_RandomNumberEngine, rnd__k>& left,
+                         const std::shuffle_order_engine<_RandomNumberEngine, rnd__k>& right)
+  {
+    return !(left == right);
+  }
+
+  template<typename UnsignedIntegralType,
+           UnsignedIntegralType ParamA,
+           UnsignedIntegralType ParamC,
+           UnsignedIntegralType ParamM>
+  const UnsignedIntegralType linear_congruential_engine<UnsignedIntegralType,
+                                                        ParamA,
+                                                        ParamC,
+                                                        ParamM>::multiplier;
+
+  template<typename UnsignedIntegralType,
+           UnsignedIntegralType ParamA,
+           UnsignedIntegralType ParamC,
+           UnsignedIntegralType ParamM>
+  const UnsignedIntegralType linear_congruential_engine<UnsignedIntegralType,
+                                                        ParamA,
+                                                        ParamC,
+                                                        ParamM>::increment;
+
+  template<typename UnsignedIntegralType,
+           UnsignedIntegralType ParamA,
+           UnsignedIntegralType ParamC,
+           UnsignedIntegralType ParamM>
+  const UnsignedIntegralType linear_congruential_engine<UnsignedIntegralType,
+                                                        ParamA,
+                                                        ParamC,
+                                                        ParamM>::modulus;
+
+  template<typename UnsignedIntegralType,
+           UnsignedIntegralType ParamA,
+           UnsignedIntegralType ParamC,
+           UnsignedIntegralType ParamM>
+  const UnsignedIntegralType linear_congruential_engine<UnsignedIntegralType,
+                                                        ParamA,
+                                                        ParamC,
+                                                        ParamM>::default_seed;
+
+  template<typename UnsignedIntegralType,
+                    UnsignedIntegralType ParamA,
+                    UnsignedIntegralType ParamC,
+                    UnsignedIntegralType ParamM>
+  void linear_congruential_engine<UnsignedIntegralType, ParamA, ParamC, ParamM>::seed(result_type rnd__seed)
+  {
+    if((   (rnd__detail::rnd__mod<UnsignedIntegralType, ParamM>(ParamC)    == 0)
+        && (rnd__detail::rnd__mod<UnsignedIntegralType, ParamM>(rnd__seed) == 0)))
+    {
+      my_elems = 1;
+    }
+    else
+    {
+      my_elems = rnd__detail::rnd__mod<UnsignedIntegralType, ParamM>(rnd__seed);
+    }
+  }
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::word_size;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::state_size;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::shift_size;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::mask_bits;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::xor_mask;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::tempering_u;
+
+template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::tempering_d;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::tempering_s;
+
+template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::tempering_b;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::tempering_t;
+
+template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::tempering_c;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const size_t mersenne_twister_engine<UnsignedIntegralType,
+                                       rnd__word_size,
+                                       ParamN,
+                                       ParamM,
+                                       rnd__long_lag_r,
+                                       ParamA,
+                                       ParamU,
+                                       rnd__value_d,
+                                       rnd__seed,
+                                       rnd__value_b,
+                                       ParamT,
+                                       ParamC,
+                                       ParamL,
+                                       rnd__value_f>::tempering_l;
+
+template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::initialization_multiplier;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  const UnsignedIntegralType mersenne_twister_engine<UnsignedIntegralType,
+                                                     rnd__word_size,
+                                                     ParamN,
+                                                     ParamM,
+                                                     rnd__long_lag_r,
+                                                     ParamA,
+                                                     ParamU,
+                                                     rnd__value_d,
+                                                     rnd__seed,
+                                                     rnd__value_b,
+                                                     ParamT,
+                                                     ParamC,
+                                                     ParamL,
+                                                     rnd__value_f>::default_seed;
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  void mersenne_twister_engine<UnsignedIntegralType,
+                               rnd__word_size,
+                               ParamN,
+                               ParamM,
+                               rnd__long_lag_r,
+                               ParamA,
+                               ParamU,
+                               rnd__value_d,
+                               rnd__seed,
+                               rnd__value_b,
+                               ParamT,
+                               ParamC,
+                               ParamL,
+                               rnd__value_f>::seed(result_type __sd)
+  {
+    my_elems[0] = rnd__detail::rnd__mod<UnsignedIntegralType,
+    rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value>(__sd);
+
+    for (size_t rnd__i = 1; rnd__i < state_size; ++rnd__i)
+    {
+      UnsignedIntegralType rnd__x = my_elems[rnd__i - 1];
+
+      rnd__x ^= rnd__x >> (rnd__word_size - 2);
+      rnd__x *= rnd__value_f;
+      rnd__x += rnd__detail::rnd__mod<UnsignedIntegralType, ParamN>(rnd__i);
+
+      my_elems[rnd__i] = rnd__detail::rnd__mod<UnsignedIntegralType,
+
+      rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value>(rnd__x);
+    }
+
+    my_p = state_size;
+  }
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  void mersenne_twister_engine<UnsignedIntegralType,
+                               rnd__word_size,
+                               ParamN,
+                               ParamM,
+                               rnd__long_lag_r,
+                               ParamA,
+                               ParamU,
+                               rnd__value_d,
+                               rnd__seed,
+                               rnd__value_b,
+                               ParamT,
+                               ParamC,
+                               ParamL,
+                               rnd__value_f>::rnd__m_gen_rand(void)
+  {
+    const UnsignedIntegralType __upper_mask = (~UnsignedIntegralType()) << rnd__long_lag_r;
+    const UnsignedIntegralType __lower_mask = ~__upper_mask;
+
+    for(size_t rnd__k = 0; rnd__k < (ParamN - ParamM); ++rnd__k)
+    {
+      UnsignedIntegralType rnd__y = ((my_elems[rnd__k] & __upper_mask) | (my_elems[rnd__k + 1] & __lower_mask));
+
+      my_elems[rnd__k] = (my_elems[rnd__k + ParamM] ^ (rnd__y >> 1) ^ ((rnd__y & 0x01) ? ParamA : 0));
+    }
+
+    for (size_t rnd__k = (ParamN - ParamM); rnd__k < (ParamN - 1); ++rnd__k)
+    {
+      UnsignedIntegralType rnd__y = ((my_elems[rnd__k] & __upper_mask) | (my_elems[rnd__k + 1] & __lower_mask));
+
+      my_elems[rnd__k] = (my_elems[rnd__k + (ParamM - ParamN)] ^ (rnd__y >> 1) ^ ((rnd__y & 0x01) ? ParamA : 0));
+    }
+
+    UnsignedIntegralType rnd__y = ((my_elems[ParamN - 1] & __upper_mask) | (my_elems[0] & __lower_mask));
+
+    my_elems[ParamN - 1] = (my_elems[ParamM - 1] ^ (rnd__y >> 1) ^ ((rnd__y & 0x01) ? ParamA : 0));
+
+    my_p = 0;
+  }
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  void mersenne_twister_engine<UnsignedIntegralType,
+                               rnd__word_size,
+                               ParamN,
+                               ParamM,
+                               rnd__long_lag_r,
+                               ParamA,
+                               ParamU,
+                               rnd__value_d,
+                               rnd__seed,
+                               rnd__value_b,
+                               ParamT,
+                               ParamC,
+                               ParamL,
+                               rnd__value_f>::discard(unsigned long long rnd__z)
+  {
+    while(rnd__z > state_size - my_p)
+    {
+      rnd__z -= state_size - my_p;
+      rnd__m_gen_rand();
+    }
+
+    my_p += rnd__z;
+  }
+
+  template<typename UnsignedIntegralType,
+           size_t               rnd__word_size,
+           size_t               ParamN,
+           size_t               ParamM,
+           size_t               rnd__long_lag_r,
+           UnsignedIntegralType ParamA,
+           size_t               ParamU,
+           UnsignedIntegralType rnd__value_d,
+           size_t               rnd__seed,
+           UnsignedIntegralType rnd__value_b,
+           size_t               ParamT,
+           UnsignedIntegralType ParamC,
+           size_t               ParamL,
+           UnsignedIntegralType rnd__value_f>
+  typename mersenne_twister_engine<UnsignedIntegralType,
+                                   rnd__word_size,
+                                   ParamN,
+                                   ParamM,
+                                   rnd__long_lag_r,
+                                   ParamA,
+                                   ParamU,
+                                   rnd__value_d,
+                                   rnd__seed,
+                                   rnd__value_b,
+                                   ParamT,
+                                   ParamC,
+                                   ParamL,
+                                   rnd__value_f>::result_type
+  mersenne_twister_engine<UnsignedIntegralType,
+                          rnd__word_size,
+                          ParamN,
+                          ParamM,
+                          rnd__long_lag_r,
+                          ParamA,
+                          ParamU,
+                          rnd__value_d,
+                          rnd__seed,
+                          rnd__value_b,
+                          ParamT,
+                          ParamC,
+                          ParamL,
+                          rnd__value_f>::operator()()
+  {
+    if (my_p >= state_size)
+    {
+      rnd__m_gen_rand();
+    }
+
+    result_type rnd__z = my_elems[my_p++];
+
+    rnd__z ^= (rnd__z >> ParamU) & rnd__value_d;
+    rnd__z ^= (rnd__z << rnd__seed) & rnd__value_b;
+    rnd__z ^= (rnd__z << ParamT) & ParamC;
+    rnd__z ^= (rnd__z >> ParamL);
+
+    return rnd__z;
+  }
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  const size_t subtract_with_carry_engine<UnsignedIntegralType,
+                                          rnd__word_size,
+                                          rnd__seed,
+                                          rnd__long_lag_r>::word_size;
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  const size_t subtract_with_carry_engine<UnsignedIntegralType,
+                                          rnd__word_size,
+                                          rnd__seed,
+                                          rnd__long_lag_r>::short_lag;
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  const size_t subtract_with_carry_engine<UnsignedIntegralType,
+                                          rnd__word_size,
+                                          rnd__seed,
+                                          rnd__long_lag_r>::long_lag;
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  const UnsignedIntegralType subtract_with_carry_engine<UnsignedIntegralType,
+                                                        rnd__word_size,
+                                                        rnd__seed,
+                                                        rnd__long_lag_r>::default_seed;
+
+  template<typename UnsignedIntegralType,
+           size_t rnd__word_size,
+           size_t rnd__seed,
+           size_t rnd__long_lag_r>
+  void subtract_with_carry_engine<UnsignedIntegralType,
+                                  rnd__word_size,
+                                  rnd__seed,
+                                  rnd__long_lag_r>::seed(result_type rnd__value)
+  {
+    std::linear_congruential_engine<result_type, 40014u, 0u, 2147483563u>
+
+    __lcg(rnd__value == 0u ? default_seed : rnd__value);
+
+    const size_t ParamN = (rnd__word_size + 31) / 32;
+
+    for (size_t rnd__i = 0; rnd__i < long_lag; ++rnd__i)
+    {
+      UnsignedIntegralType rnd__sum = 0u;
+      UnsignedIntegralType rnd__factor = 1u;
+
+      for(size_t rnd__j = 0; rnd__j < ParamN; ++rnd__j)
+      {
+         rnd__sum += rnd__detail::rnd__mod<uint_least32_t,
+                                  rnd__detail::rnd__shift<uint_least32_t, 32>::rnd__value>(__lcg()) * rnd__factor;
+
+         rnd__factor *= rnd__detail::rnd__shift<UnsignedIntegralType, 32>::rnd__value;
+      }
+
+      my_elems[rnd__i] =
+        rnd__detail::rnd__mod<UnsignedIntegralType,
+                           rnd__detail::rnd__shift<UnsignedIntegralType, rnd__word_size>::rnd__value>(rnd__sum);
+    }
+
+    my_carry = (my_elems[long_lag - 1] == 0) ? 1 : 0;
+    my_p = 0;
+  }
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__p,
+           size_t rnd__long_lag_r>
+  const size_t discard_block_engine<_RandomNumberEngine,
+                                    rnd__p,
+                                    rnd__long_lag_r>::block_size;
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__p,
+           size_t rnd__long_lag_r>
+  const size_t discard_block_engine<_RandomNumberEngine,
+                                    rnd__p,
+                                    rnd__long_lag_r>::used_block;
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__p,
+           size_t rnd__long_lag_r>
+  typename discard_block_engine<_RandomNumberEngine,
+                                rnd__p,
+                                rnd__long_lag_r>::result_type
+  discard_block_engine<_RandomNumberEngine, rnd__p, rnd__long_lag_r>::operator()()
+  {
+    if (my_n >= used_block)
+    {
+      my_b.discard(block_size - my_n);
+      my_n = 0;
+    }
+
+    ++my_n;
+
+    return my_b();
+  }
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__k>
+  const size_t shuffle_order_engine<_RandomNumberEngine, rnd__k>::table_size;
+
+  template<typename _RandomNumberEngine,
+           size_t rnd__k>
+  typename shuffle_order_engine<_RandomNumberEngine, rnd__k>::result_type
+  shuffle_order_engine<_RandomNumberEngine, rnd__k>::operator()()
+  {
+    size_t rnd__j = rnd__k * ((rnd__m_y - rnd__m_b.min()) / (rnd__m_b.max() - rnd__m_b.min() + 1.0L));
+
+    rnd__m_y = rnd__m_v[rnd__j];
+    rnd__m_v[rnd__j] = rnd__m_b();
+
+    return rnd__m_y;
+  }
+
+  // The classic Minimum Standard rand0 of Lewis, Goodman, and Miller.
+  typedef linear_congruential_engine<uint_fast32_t, 16807UL, 0UL, 2147483647UL> minstd_rand0;
+
+  // An alternative LCR (Lehmer Generator function).
+  typedef linear_congruential_engine<uint_fast32_t, 48271UL, 0UL, 2147483647UL> minstd_rand;
+
+  // The classic Mersenne Twister.
+  // M. Matsumoto and T. Nishimura, Mersenne Twister: A 623-Dimensionally
+  // Equidistributed Uniform Pseudo-Random Number Generator, ACM Transactions
+  // on Modeling and Computer Simulation, Vol. 8, No. 1, January 1998, pp 3-30.
+
+  typedef mersenne_twister_engine<uint_fast32_t,
+                                  32U,
+                                  624U,
+                                  397U,
+                                  31U,
+                                  0x9908B0DFUL,
+                                  11U,
+                                  0xFFFFFFFFUL,
+                                  7U,
+                                  0x9D2C5680UL,
+                                  15U,
+                                  0xEFC60000UL,
+                                  18U,
+                                  1812433253UL>
+  mt19937;
+
+  // An alternative Mersenne Twister (64-bit).
+  typedef mersenne_twister_engine<uint_fast64_t,
+                                  64,
+                                  312,
+                                  156,
+                                  31,
+                                  0xB5026F5AA96619E9ULL,
+                                  29U,
+                                  0x5555555555555555ULL,
+                                  17U,
+                                  0x71D67FFFEDA60000ULL,
+                                  37U,
+                                  0xFFF7EEE000000000ULL,
+                                  43U,
+                                  6364136223846793005ULL>
+  mt19937_64;
+
+  typedef subtract_with_carry_engine<uint_fast32_t, 24, 10, 24> ranlux24_base;
+  typedef subtract_with_carry_engine<uint_fast64_t, 48,  5, 12> ranlux48_base;
+
+  typedef discard_block_engine<ranlux24_base, 223, 23> ranlux24;
+  typedef discard_block_engine<ranlux48_base, 389, 11> ranlux48;
+
+  typedef shuffle_order_engine<minstd_rand0, 256> knuth_b;
+
+  typedef minstd_rand0 default_random_engine;
+
+  class random_device
+  {
+  public:
+    using result_type = unsigned int;
+
+    random_device() { }
+
+    explicit random_device(const char*) { }
+
+    static constexpr result_type(min)() noexcept
+    {
+      return result_type(0U);
+    }
+
+    static constexpr result_type(max)() noexcept
+    {
+      return (result_type) std::uintmax_t(INTMAX_C(-1));
+    }
+
+    // Not conformant with the standard return type of double.
+    float entropy() const noexcept
+    {
+      const unsigned char e = my_hardware_random_device_entropy();
+
+      return ((e > 32U) ? 32.0F : float(e));
+    }
+
+    result_type operator()()
+    {
+      return my_hardware_random_device_generator();
+    }
+
+    random_device(const random_device&) = delete;
+    random_device& operator=(const random_device&) = delete;
+  };
+
+  }
+
+#endif // RANDOM_2018_06_10_

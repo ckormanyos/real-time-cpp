@@ -1814,19 +1814,24 @@
       return a;
     }
 
-    static WIDE_INTEGER_CONSTEXPR std::int_fast8_t compare_ranges(const limb_type*         a,
-                                                                  const limb_type*         b,
+    template<typename InputIteratorLeftType,
+             typename InputIteratorRightType>
+    static WIDE_INTEGER_CONSTEXPR std::int_fast8_t compare_ranges(InputIteratorLeftType    a,
+                                                                  InputIteratorRightType   b,
                                                                   const unsinged_fast_type count)
     {
       std::int_fast8_t n_return = 0;
 
-      std::reverse_iterator<const limb_type*> pa(a + count);
-      std::reverse_iterator<const limb_type*> pb(b + count);
+      std::reverse_iterator<InputIteratorLeftType>  pa(a + count);
+      std::reverse_iterator<InputIteratorRightType> pb(b + count);
 
-      for( ; pa != std::reverse_iterator<const limb_type*>(a); ++pa, ++pb)
+      for( ; pa != std::reverse_iterator<InputIteratorLeftType>(a); ++pa, ++pb)
       {
-        if     (*pa > *pb) { n_return =  1; break; }
-        else if(*pa < *pb) { n_return = -1; break; }
+        using value_left_type =
+          typename std::iterator_traits<InputIteratorLeftType>::value_type;
+
+        if     (*pa > value_left_type(*pb)) { n_return =  1; break; }
+        else if(*pa < value_left_type(*pb)) { n_return = -1; break; }
       }
 
       return n_return;
