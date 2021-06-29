@@ -1,3 +1,15 @@
+---
+
+## Announcement July 2021
+
+The companion code for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956) is planned for August 2021.
+The companion code of the fourth edition keeps up with the evolution of C++20 and adds several examples
+ranging from straightforward to advanced levels and also extends the range of one example to a 32-bit single-board computer.
+  - Add examples steadily over the next few weeks and document them.
+  - Complete backward compatibility will be retained.
+
+---
+
 Companion code for the book Real-Time C++\
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
