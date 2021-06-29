@@ -1,0 +1,359 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013 - 2021.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef TYPE_TRAITS_2013_09_01_
+  #define TYPE_TRAITS_2013_09_01_
+
+  #include <cstddef>
+
+  // Implement some of <type_traits> for compilers that do not yet support it.
+
+  namespace std
+  {
+    template<typename the_value_type,
+             the_value_type the_value>
+    struct integral_constant
+    {
+      typedef the_value_type value_type;
+
+      static constexpr value_type value = the_value;
+
+      typedef integral_constant type;
+
+      constexpr operator value_type() const
+      {
+        return value;
+      }
+    };
+
+    typedef integral_constant<bool, true>  true_type;
+    typedef integral_constant<bool, false> false_type;
+  }
+
+  namespace traits_helper
+  {
+    template<typename T> struct is_integral                     : std::false_type { };
+    template<>           struct is_integral<bool>               : std::true_type  { };
+    template<>           struct is_integral<char>               : std::true_type  { };
+    template<>           struct is_integral<signed char>        : std::true_type  { };
+    template<>           struct is_integral<unsigned char>      : std::true_type  { };
+    template<>           struct is_integral<char16_t>           : std::true_type  { };
+    template<>           struct is_integral<char32_t>           : std::true_type  { };
+    template<>           struct is_integral<wchar_t>            : std::true_type  { };
+    template<>           struct is_integral<short>              : std::true_type  { };
+    template<>           struct is_integral<int>                : std::true_type  { };
+    template<>           struct is_integral<long>               : std::true_type  { };
+    template<>           struct is_integral<long long>          : std::true_type  { };
+    template<>           struct is_integral<unsigned short>     : std::true_type  { };
+    template<>           struct is_integral<unsigned int>       : std::true_type  { };
+    template<>           struct is_integral<unsigned long>      : std::true_type  { };
+    template<>           struct is_integral<unsigned long long> : std::true_type  { };
+
+    template<typename T> struct is_floating_point               : std::false_type { };
+    template<>           struct is_floating_point<float>        : std::true_type  { };
+    template<>           struct is_floating_point<double>       : std::true_type  { };
+    template<>           struct is_floating_point<long double>  : std::true_type  { };
+  }
+
+  namespace std
+  {
+    template<bool,
+             typename value_type = void>
+    struct enable_if { };
+
+    template<typename value_type>
+    struct enable_if<true, value_type>
+    {
+      typedef value_type type;
+    };
+
+    template<bool test_value,
+             typename enable_type = void>
+    using enable_if_t = typename enable_if<test_value, enable_type>::type;
+
+    template<const bool boolean_value,
+             typename true_type,
+             typename false_type>
+    struct conditional
+    {
+      typedef true_type type;
+    };
+
+    template<class true_type,
+             class false_type>
+    struct conditional<false, true_type, false_type>
+    {
+      typedef false_type type;
+    };
+
+    template<typename the_value_type1,
+             typename the_value_type2>
+    struct is_same : false_type { };
+
+    template<typename the_value_type1>
+    struct is_same<the_value_type1,
+                   the_value_type1> : true_type { };
+
+    template<typename T> struct remove_const                      { typedef T type; };
+    template<typename T> struct remove_const<const T>             { typedef T type; };
+    template<typename T> struct remove_volatile                   { typedef T type; };
+    template<typename T> struct remove_volatile<volatile T>       { typedef T type; }; 
+    template<typename T> struct remove_cv                         { typedef typename std::remove_volatile<typename std::remove_const<T>::type>::type type; };
+    template<typename T> struct remove_reference                  { typedef T type; };
+    template<typename T> struct remove_reference<T&>              { typedef T type; };
+    template<typename T> struct remove_reference<T&&>             { typedef T type; };
+    template<typename T> struct remove_pointer                    { typedef T type; };
+    template<typename T> struct remove_pointer<T*>                { typedef T type; };
+    template<typename T> struct remove_pointer<T* const>          { typedef T type; };
+    template<typename T> struct remove_pointer<T* volatile>       { typedef T type; };
+    template<typename T> struct remove_pointer<T* const volatile> { typedef T type; };
+    template<typename T> struct add_const                         { typedef const T type; };
+    template<typename T> struct add_volatile                      { typedef volatile T type; };
+    template<typename T> struct add_cv                            { typedef typename std::add_volatile<typename std::add_const<T>::type>::type type; };
+    template<typename T> struct add_pointer                       { typedef typename std::remove_reference<T>::type* type; };
+
+    template<typename T> struct is_const                : std::false_type { };
+    template<typename T> struct is_const<const T>       : std::true_type  { };
+    template<typename T> struct is_volatile             : std::false_type { };
+    template<typename T> struct is_volatile<volatile T> : std::true_type  { };
+
+    template<typename T> struct is_void           : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<T>::type>::value> { };
+    template<typename T> struct is_null_pointer   : std::integral_constant          <bool, std::is_same<void, typename std::remove_cv<std::nullptr_t>::type>::value> { };
+    template<typename T> struct is_integral       : traits_helper::is_integral      <typename remove_cv<T>::type> { };
+    template<typename T> struct is_floating_point : traits_helper::is_floating_point<typename remove_cv<T>::type> { };
+    template<typename T> struct is_arithmetic     : std::integral_constant          <bool,    std::is_integral      <T>::value
+                                                                                           || std::is_floating_point<T>::value> { };
+    template<typename T> struct is_fundamental    : std::integral_constant          <bool,    std::is_arithmetic    <T>::value
+                                                                                           || std::is_void          <T>::value
+                                                                                           || std::is_null_pointer  <T>::value> { };
+    template<typename T> struct is_array          : std::false_type {};
+    template<typename T> struct is_array<T[]>     : std::true_type  {};
+    template<typename T, std::size_t N>
+                         struct is_array<T[N]>    : std::true_type  {};
+
+    template<typename T> struct is_reference      : std::false_type { };
+    template<typename T> struct is_reference<T&>  : std::true_type  { };
+    template<typename T> struct is_reference<T&&> : std::true_type  { };
+
+    template<typename T> struct is_function       : std::integral_constant<bool, !std::is_const<const T>::value && !std::is_reference<T>::value> { };
+
+    template<typename T> using remove_cv_t       = typename remove_cv<T>::type;
+    template<typename T> using remove_const_t    = typename remove_const<T>::type;
+    template<typename T> using remove_volatile_t = typename remove_volatile<T>::type;
+
+    template<typename T >
+    using remove_reference_t = typename remove_reference<T>::type;
+
+    template<typename T>
+    struct remove_cvref
+    {
+      typedef std::remove_cv_t<std::remove_reference_t<T>> type;
+    };
+
+    template<typename T>
+    using remove_cvref_t = typename remove_cvref<T>::type;
+
+    template<typename T>
+    constexpr remove_reference_t<T>&& move(T&& arg)
+    {
+      return static_cast<remove_reference_t<T>&&>(arg);
+    }
+  }
+
+  namespace std
+  {
+    template<typename T>
+    struct make_unsigned { };
+
+    template<> struct make_unsigned<signed char>      { using type = unsigned char; };
+    template<> struct make_unsigned<signed short>     { using type = unsigned short; };
+    template<> struct make_unsigned<signed int>       { using type = unsigned int; };
+    template<> struct make_unsigned<signed long>      { using type = unsigned long; };
+    template<> struct make_unsigned<signed long long> { using type = unsigned long long; };
+
+    template<typename T>
+    struct make_signed { };
+
+    template<> struct make_signed<unsigned char>      { using type = signed char; };
+    template<> struct make_signed<unsigned short>     { using type = signed short; };
+    template<> struct make_signed<unsigned int>       { using type = signed int; };
+    template<> struct make_signed<unsigned long>      { using type = signed long; };
+    template<> struct make_signed<unsigned long long> { using type = signed long long; };
+  }
+
+  namespace traits_helper
+  {
+    template<typename T, bool = std::is_arithmetic<T>::value>
+    struct is_unsigned : std::integral_constant<bool, (T(0) < T(-1))> { };
+
+    template<typename T>
+    struct is_unsigned<T, false> : std::false_type { };
+
+    template<typename T,bool = std::is_arithmetic<T>::value>
+    struct is_signed : std::integral_constant<bool, (T(-1) < T(0))> { };
+
+    template<typename T>
+    struct is_signed<T,false> : std::false_type { };
+  }
+
+  namespace std
+  {
+    template<typename T> struct is_unsigned  : traits_helper::is_unsigned<T>::type { };
+    template<typename T> struct is_signed    : traits_helper::is_signed  <T>::type { };
+  }
+
+  namespace traits_helper
+  {
+    template <typename T>
+    struct type_identity { using type = T; };
+
+    template <typename T>
+    auto try_add_lvalue_reference(int) -> type_identity<T&>;
+
+    template <typename T>
+    auto try_add_lvalue_reference(...) -> type_identity<T>;
+
+    template <typename T>
+    auto try_add_rvalue_reference(int) -> type_identity<T&&>;
+
+    template <typename T>
+    auto try_add_rvalue_reference(...) -> type_identity<T>;
+
+    template <typename T>
+    std::integral_constant<bool, !__is_union(T)> test(int T::*);
+
+    template <typename>
+    std::false_type test(...);
+
+    template <typename B>
+    std::true_type  test_pre_ptr_convertible(const volatile B*);
+    template <typename>
+    std::false_type test_pre_ptr_convertible(const volatile void*);
+
+    template <typename, typename>
+    auto test_pre_is_base_of(...) -> std::true_type;
+    template <typename B, typename D>
+    auto test_pre_is_base_of(int) ->
+        decltype(test_pre_ptr_convertible<B>(static_cast<D*>(nullptr)));
+  }
+
+  namespace std
+  {
+    template <class T>
+    struct add_lvalue_reference : decltype(traits_helper::try_add_lvalue_reference<T>(0)) { };
+
+    template <class T>
+    struct add_rvalue_reference : decltype(traits_helper::try_add_rvalue_reference<T>(0)) { };
+
+    template<typename T>
+    typename std::add_rvalue_reference<T>::type declval();
+
+    template <typename T>
+    struct is_class : decltype(traits_helper::test<T>(nullptr)) { };
+
+    template <typename Base, typename Derived>
+    struct is_base_of : std::integral_constant<bool,
+                                               std::is_class<Base>::value && std::is_class<Derived>::value &&
+                                               decltype(traits_helper::test_pre_is_base_of<Base, Derived>(0))::value> { };
+
+    template<typename T>
+    struct remove_extent { typedef T type; };
+
+    template<typename T>
+    struct remove_extent<T[]> { typedef T type; };
+
+    template<typename T, std::size_t N>
+    struct remove_extent<T[N]> { typedef T type; };
+
+    template< class T >
+    struct decay
+    {
+    private:
+      typedef typename std::remove_reference<T>::type U;
+
+    public:
+      typedef typename std::conditional<std::is_array<U>::value,
+                                        typename std::remove_extent<U>::type*,
+                                        typename std::conditional<std::is_function<U>::value,
+                                                                  typename std::add_pointer<U>::type,
+                                                                  typename std::remove_cv<U>::type>::type>::type type;
+    };
+
+    template <typename...>
+    using void_t = void; 
+
+    // primary template (used for zero types)
+    template <typename...>
+    struct common_type { };
+
+    // 1 type
+    template <typename T>
+    struct common_type<T> : common_type<T, T> {};
+
+    // 2 types
+    template <typename T1, typename T2>
+    using cond_t = decltype(false ? std::declval<T1>() : std::declval<T2>());
+
+    template <typename T1, typename T2, typename=void>
+    struct common_type_2_impl {};
+
+    template <typename T1, typename T2>
+    struct common_type_2_impl<T1, T2, void_t<cond_t<T1, T2>>>
+    {
+      using type = typename std::decay<cond_t<T1, T2>>::type;
+    };
+
+    template <typename T1, typename T2>
+    struct common_type<T1, T2> : common_type_2_impl<typename std::decay<T1>::type,
+                                                    typename std::decay<T2>::type> { };
+
+    // 3 or more types
+    template <class AlwaysVoid, class T1, class T2, class...R>
+    struct common_type_multi_impl { };
+
+    template <class T1, class T2, class...R>
+    struct common_type_multi_impl<void_t<typename common_type<T1, T2>::type>, T1, T2, R...>
+      : common_type<typename common_type<T1, T2>::type, R...> { };
+
+    template <class T1, class T2, class... R>
+    struct common_type<T1, T2, R...> : common_type_multi_impl<void, T1, T2, R...> {};
+  }
+
+  #if(__cplusplus >= 201703L)
+  // C++17 and later
+  namespace std
+  {
+    template<typename T, typename U>
+    inline constexpr bool is_same_v = is_same<T, U>::value;
+
+    template<typename T>
+    inline constexpr bool is_integral_v = is_integral<T>::value;
+
+    template<typename T>
+    inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
+
+    template< class Base, class Derived >
+    inline constexpr bool is_base_of_v = is_base_of<Base, Derived>::value;
+  }
+  #endif
+
+  #if(__cplusplus > 202002L)
+  // C++20 and later
+  namespace std
+  {
+    template<typename T>
+    struct type_identity
+    {
+      using type = T;
+    };
+
+    template<typename T>
+    using type_identity_t = typename type_identity<T>::type;
+  }
+  #endif
+
+#endif // TYPE_TRAITS_2013_09_01_

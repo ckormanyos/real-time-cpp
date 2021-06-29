@@ -50,9 +50,23 @@ This example makes use of object oriented programming methods to control a seven
 Example ![chapter09_08](./chapter09_08) Controlling an RGB LED.\
 This example utilizes object oriented programming techniques to control an RGB LED.
 
+Example ![chapter10_08](./chapter10_08) External SPI RAM and computing 10,001 digits of Pi.\
+This example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits of the mathematical constant Pi, showing fascinating memory management iterators, containers and algorithms along the way.
+
+Example ![chapter10_08a](./chapter10_08a) External parallel SRAM and computing 100,001 digits of Pi.\
+This example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant Pi.
+
+Example ![chapter10_09](./chapter10_09) Adapt the 100,001 digits Pi calculation to the powerful Arm(R)-based Raspberry Pi(R).\
+This example ports the Pi Spigot 100,001 digits pi calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
+
+Example ![chapter11_07](./chapter11_07) Make straightforward use of preemptive multitasking scheduling.\
+This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.
+
 Example ![chapter12_04](./chapter12_04) Floating-Point Calculations.\
-This example performs a variety of floating-point calculations
-of selected special functions of pure and applied mathematics.
+This example performs a variety of floating-point calculations of selected special functions of pure and applied mathematics.
+
+Example ![chapter16_08](./chapter16_08) 128-bit random prime number generation.\
+This example uses an extended integer class to create 128-bit unsigned prime integers with primality testing performed by Miller-Rabin.
 
 Example ![chapter17_03](./chapter17_03) Traditional C Language Code in a Modern C++ Project.\
 This example depicts some methods that potentially allow the successful use

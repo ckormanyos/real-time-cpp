@@ -1,0 +1,35 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+# See also: https://blog.zakkemble.net/avr-gcc-builds/
+
+GCC_VERSION   = 9.2.0
+GCC_TARGET    = avr
+GCC_PREFIX    = avr
+
+TGT_SUFFIX    = elf
+
+TGT_CFLAGS    = -O3                                            \
+                -mmcu=atmega328p                               \
+                -fsigned-char                                  \
+                -mrelax
+
+TGT_CPPFLAGS  = -std=c++11
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+                -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -T $(LINKER_DEFINITION_FILE)
+
