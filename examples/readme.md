@@ -61,6 +61,7 @@ This example utilizes object oriented programming techniques to control an RGB L
 
 Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
 This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits of the mathematical constant Pi, showing fascinating memory management iterators, containers and algorithms along the way.
+This example depicts algorithmic complexity running in a real-world system and includes a detailed description of algorithmic complexity in the corresponding book section.
 
 Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
 This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant Pi.
@@ -76,6 +77,7 @@ This example performs a variety of floating-point calculations of selected speci
 
 Example ![chapter16_08](./chapter16_08) Generating and displaying 128-bit Random Prime Numbers.\
 This advanced example uses an extended integer class to create 128-bit unsigned prime integers with primality testing performed via Miller-Rabin.
+This example also provides fascinating, intuitive, visual insight into the prime number theory of pure mathematics.
 
 Example ![chapter17_03](./chapter17_03) Traditional C Language Code in a Modern C++ Project.\
 This example depicts some methods that potentially allow the successful use

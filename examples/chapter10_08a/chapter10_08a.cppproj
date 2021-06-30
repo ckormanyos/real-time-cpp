@@ -188,9 +188,6 @@
     <Compile Include="src\math\constants\pi_spigot_state.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_benchmark.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_cpu.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -215,6 +212,15 @@
     <Compile Include="src\mcal\avr\mcal_irq.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_lcd.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_lcd_st7066u_newhaven_0216k1z.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_led.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -230,7 +236,10 @@
     <Compile Include="src\mcal\avr\mcal_memory_sram.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_memory_sram_microchip_23lc1024.h">
+    <Compile Include="src\mcal\avr\mcal_memory_sram_parallel_cypress_cy62158e.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_memory_sram_parallel_cypress_cy62167gn.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
@@ -245,13 +254,25 @@
     <Compile Include="src\mcal\avr\mcal_port.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_pin_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_word.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_pwm_timer1.h">
+    <Compile Include="src\mcal\avr\mcal_pwm_lcd.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -466,6 +487,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\mcal\avr\memboard.docx">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\mcal\avr\memboard.pdf">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\mcal\avr\memboard2.docx">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\mcal\avr\memboard2.pdf">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\algorithm">
       <SubType>compile</SubType>
     </None>

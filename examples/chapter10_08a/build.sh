@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014.
+# Copyright Christopher Kormanyos 2014 - 2021.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -153,7 +153,7 @@ echo "Extract  : executable hex file : from bin/chapter10_08a.elf"
 $TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter10_08a.elf bin/chapter10_08a.hex
 
 echo "Extract  : assembly list file  : from bin/chapter10_08a.elf"
-$TOOL_PATH/$TOOL_PREFIX-objdump -h -S bin/chapter10_08a.elf > bin/chapter10_08a.lss
+$TOOL_PATH/$TOOL_PREFIX-objdump --disassemble bin/chapter10_08a.elf > bin/chapter10_08a.lss
 
 echo "Extract  : size information    : from bin/chapter10_08a.elf"
 $TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter10_08a.elf > bin/chapter10_08a_size.txt

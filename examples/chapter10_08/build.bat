@@ -118,7 +118,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter10_08.elf bin/chapter10_08.hex
 
 @echo.Extract  : assembly list file  : from bin/chapter10_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/chapter10_08.elf > bin/chapter10_08.lss
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter10_08.elf > bin/chapter10_08.lss
 
 @echo.Extract  : size information    : from bin/chapter10_08.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter10_08.elf > bin\chapter10_08_size.txt
