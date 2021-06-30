@@ -99,6 +99,27 @@ jobs:
           ./build.sh /usr/bin avr
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
+  target-bcm2835_raspi_b-example10_09:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [ chapter10_09 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install gcc-arm-none-eabi
+      - name: target--bcm2835_raspi_b-example10_09
+        run: |
+          cd ${{ matrix.example }}
+          ./build.sh /usr/bin arm-none-eabi
+          ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex ./bin/kernel.img
+        working-directory: ./examples/
   target-msvc-examples:
     runs-on: windows-latest
     defaults:
