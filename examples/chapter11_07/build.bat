@@ -25,7 +25,7 @@
 
 @set CFLAGS=-C -Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
 @set CPPFLAGS=-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-@set CINCLUDES=-Isrc/os/FreeRTOS/Source/include/cfg/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/portable/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/include -Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
+@set CINCLUDES=-Isrc/os/FreeRTOS/Source/include/cfg/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/portable/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/include -Isrc/util/STL -Isrc/mcal/avr -Isrc
 
 @echo.
 @echo.Building with        : build.bat
@@ -112,7 +112,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter11_07.elf bin/chapter11_07.hex
 
 @echo.Extract  : assembly list file  : from bin/chapter11_07.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/chapter11_07.elf > bin/chapter11_07.lss
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter11_07.elf > bin/chapter11_07.lss
 
 @echo.Extract  : size information    : from bin/chapter11_07.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter11_07.elf > bin\chapter11_07_size.txt

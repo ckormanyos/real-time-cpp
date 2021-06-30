@@ -135,7 +135,7 @@ echo "Extract  : executable hex file : from bin/chapter12_04.elf"
 $TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter12_04.elf bin/chapter12_04.hex
 
 echo "Extract  : assembly list file  : from bin/chapter12_04.elf"
-$TOOL_PATH/$TOOL_PREFIX-objdump -h -S bin/chapter12_04.elf > bin/chapter12_04.lss
+$TOOL_PATH/$TOOL_PREFIX-objdump --disassemble bin/chapter12_04.elf > bin/chapter12_04.lss
 
 echo "Extract  : size information    : from bin/chapter12_04.elf"
 $TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter12_04.elf > bin/chapter12_04_size.txt

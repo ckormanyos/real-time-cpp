@@ -201,9 +201,6 @@
     <ClCompile Include="src\mcal\win32\mcal_math_independent_test_system.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">

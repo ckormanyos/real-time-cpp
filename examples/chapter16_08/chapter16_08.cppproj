@@ -12,7 +12,7 @@
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
     <AssemblyName>chapter10_09</AssemblyName>
-    <Name>chapter10_08a</Name>
+    <Name>chapter16_08</Name>
     <RootNamespace>chapter10_09</RootNamespace>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
@@ -82,7 +82,7 @@
             <Value>../src/util/STL_C++XX_stdfloat</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
@@ -155,7 +155,6 @@
     <Folder Include="src\sys\idle" />
     <Folder Include="src\util\memory" />
     <Folder Include="src\util\STD_LIBC\" />
-    <Folder Include="src\util\STL_C++XX_stdfloat\" />
     <Folder Include="target" />
     <Folder Include="src" />
     <Folder Include="src\mcal" />
@@ -215,22 +214,28 @@
     <Compile Include="src\mcal\avr\mcal_irq.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_lcd.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_led.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_math_independent_test_system.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_math_independent_test_system.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_memory_sram.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_memory_sram.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_memory_sram_microchip_23lc1024.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_osc.cpp">
@@ -245,6 +250,12 @@
     <Compile Include="src\mcal\avr\mcal_port.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_expander_microchip_mcp23s17.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port_pin_dummy.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -252,6 +263,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_pwm_timer1.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_random.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
@@ -350,10 +364,10 @@
     <Compile Include="src\sys\idle\sys_idle.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\sys\idle\sys_idle_pi_spigot.cpp">
+    <Compile Include="src\sys\idle\sys_idle_miller_rabin.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\sys\idle\sys_idle_pi_spigot.h">
+    <Compile Include="src\sys\idle\sys_idle_miller_rabin.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\sys\start\sys_start.cpp">
@@ -380,9 +394,6 @@
     <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
       <SubType>compile</SubType>
     </Compile>
@@ -390,9 +401,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\time.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\utility\util_alignas.h">
@@ -545,9 +553,6 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\vector">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
       <SubType>compile</SubType>
     </None>
     <None Include="target\micros\avr\make\avr.ld">
