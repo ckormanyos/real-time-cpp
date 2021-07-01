@@ -3872,14 +3872,20 @@
 
       floating_point_type y(b);
 
-      for(std::uint64_t p_local = (std::uint64_t) p; p_local != 0U; p_local >>= 1U)
+      std::uint64_t p_local = static_cast<std::uint64_t>(p);
+
+      // Use the so-called ladder method for the power calculation.
+      for(;;)
       {
-        if((p_local & 1U) != 0U)
+        if(std::uint_fast8_t(p_local & 1U) != 0U)
         {
           result *= y;
         }
 
-        y *= y;
+        p_local >>= 1U;
+
+        if  (p_local == 0U) { break; }
+        else                { y *= y; }
       }
     }
 

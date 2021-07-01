@@ -114,7 +114,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
-      - name: target--bcm2835_raspi_b-example10_09
+      - name: target-bcm2835_raspi_b-example10_09
         run: |
           cd ${{ matrix.example }}
           ./build.sh /usr/bin arm-none-eabi

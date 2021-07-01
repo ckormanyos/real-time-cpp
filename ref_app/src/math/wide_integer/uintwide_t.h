@@ -481,8 +481,7 @@
                 value_type());
     }
 
-    constexpr fixed_static_array(const fixed_static_array& other_array)
-      : base_class_type(static_cast<const base_class_type&>(other_array)) { }
+    constexpr fixed_static_array(const fixed_static_array& other_array) = default;
 
     template<const size_type OtherSize>
     WIDE_INTEGER_CONSTEXPR fixed_static_array(const fixed_static_array<size_type, OtherSize>& other_array)
@@ -507,22 +506,10 @@
                 value_type());
     }
 
-    constexpr fixed_static_array(fixed_static_array&& other_array)
-      : base_class_type(static_cast<base_class_type&&>(other_array)) { }
+    constexpr fixed_static_array(fixed_static_array&& other_array) = default;
 
-    WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(const fixed_static_array& other_array)
-    {
-      base_class_type::operator=((const base_class_type&) other_array);
-
-      return *this;
-    }
-
-    WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(fixed_static_array&& other_array)
-    {
-      base_class_type::operator=((base_class_type&&) other_array);
-
-      return *this;
-    }
+    WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(const fixed_static_array& other_array) = default;
+    WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(fixed_static_array&& other_array) = default;
   };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth
@@ -820,7 +807,7 @@
                                      typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
                                                                                               std::allocator<void>,
                                                                                               AllocatorType>::type>::template rebind_alloc<limb_type>>
-      >::type;
+        >::type;
 
     // The iterator types of the internal data representation.
     using iterator               = typename representation_type::iterator;
@@ -938,7 +925,7 @@
     #endif
 
     // Copy constructor.
-    constexpr uintwide_t(const uintwide_t& other) : values(other.values) { }
+    constexpr uintwide_t(const uintwide_t& other) = default;
 
     // Copy-like constructor from the other signed-ness type.
     template<const bool OtherIsSigned,
@@ -972,7 +959,7 @@
     }
 
     // Move constructor.
-    constexpr uintwide_t(uintwide_t&& other) : values(static_cast<representation_type&&>(other.values)) { }
+    constexpr uintwide_t(uintwide_t&& other) = default;
 
     // Move-like constructor from the other signed-ness type.
     template<const bool OtherIsSigned,
@@ -981,15 +968,7 @@
       : values(static_cast<representation_type&&>(other.values)) { }
 
     // Assignment operator.
-    WIDE_INTEGER_CONSTEXPR uintwide_t& operator=(const uintwide_t& other)
-    {
-      if(this != &other)
-      {
-        values = other.values;
-      }
-
-      return *this;
-    }
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator=(const uintwide_t& other) = default;
 
     // Assignment operator from the other signed-ness type.
     template<const bool OtherIsSigned,
@@ -1002,12 +981,7 @@
     }
 
     // Trivial move assignment operator.
-    WIDE_INTEGER_CONSTEXPR uintwide_t& operator=(uintwide_t&& other)
-    {
-      values = static_cast<representation_type&&>(other.values);
-
-      return *this;
-    }
+    WIDE_INTEGER_CONSTEXPR uintwide_t& operator=(uintwide_t&& other) = default;
 
     // Trivial move assignment operator from the other signed-ness type.
     template<const bool OtherIsSigned,
@@ -3219,6 +3193,20 @@
   using uint16384_t = uintwide_t<16384U, std::uint32_t>;
   using uint32768_t = uintwide_t<32768U, std::uint32_t>;
 
+  #if defined(__GNUC__) && defined(__AVR__)
+  #else
+  static_assert(std::is_trivially_copyable<uint64_t   >::value && std::is_standard_layout<uint64_t   >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint128_t  >::value && std::is_standard_layout<uint128_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint256_t  >::value && std::is_standard_layout<uint256_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint512_t  >::value && std::is_standard_layout<uint512_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint1024_t >::value && std::is_standard_layout<uint1024_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint2048_t >::value && std::is_standard_layout<uint2048_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint4096_t >::value && std::is_standard_layout<uint4096_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint8192_t >::value && std::is_standard_layout<uint8192_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint16384_t>::value && std::is_standard_layout<uint16384_t>::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<uint32768_t>::value && std::is_standard_layout<uint32768_t>::value, "uintwide_t must be trivially copyable with standard layout.");
+  #endif
+
   using  int64_t    = uintwide_t<   64U, std::uint16_t, void, true>;
   using  int128_t   = uintwide_t<  128U, std::uint32_t, void, true>;
   using  int256_t   = uintwide_t<  256U, std::uint32_t, void, true>;
@@ -3229,6 +3217,20 @@
   using  int8192_t  = uintwide_t< 8192U, std::uint32_t, void, true>;
   using  int16384_t = uintwide_t<16384U, std::uint32_t, void, true>;
   using  int32768_t = uintwide_t<32768U, std::uint32_t, void, true>;
+
+  #if defined(__GNUC__) && defined(__AVR__)
+  #else
+  static_assert(std::is_trivially_copyable<int64_t   >::value && std::is_standard_layout<int64_t   >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int128_t  >::value && std::is_standard_layout<int128_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int256_t  >::value && std::is_standard_layout<int256_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int512_t  >::value && std::is_standard_layout<int512_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int1024_t >::value && std::is_standard_layout<int1024_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int2048_t >::value && std::is_standard_layout<int2048_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int4096_t >::value && std::is_standard_layout<int4096_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int8192_t >::value && std::is_standard_layout<int8192_t >::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int16384_t>::value && std::is_standard_layout<int16384_t>::value, "uintwide_t must be trivially copyable with standard layout.");
+  static_assert(std::is_trivially_copyable<int32768_t>::value && std::is_standard_layout<int32768_t>::value, "uintwide_t must be trivially copyable with standard layout.");
+  #endif
 
   // Insert a base class for numeric_limits<> support.
   // This class inherits from std::numeric_limits<unsigned int>
