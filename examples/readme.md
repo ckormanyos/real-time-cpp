@@ -3,7 +3,8 @@
 
 ## Announcement July 2021
 
-Now adding/proofing examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956) planned to be finished by August 2021.
+Now adding/proofing examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
+planned to be finished by July/August 2021.
 
 ---
 
@@ -61,7 +62,9 @@ This example utilizes object oriented programming techniques to control an RGB L
 
 Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
 This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits of the mathematical constant Pi, showing fascinating memory management iterators, containers and algorithms along the way.
-This example depicts algorithmic complexity running in a real-world system and includes a detailed description of algorithmic complexity in the corresponding book section.
+This example depicts algorithmic complexity running in a real-world system
+and highlights the real-time numeric expression of the detailed description
+of algorithmic complexity in the corresponding book section.
 
 Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
 This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant Pi.
