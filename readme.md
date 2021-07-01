@@ -2,10 +2,12 @@
 
 ## Announcement July 2021
 
-The companion code for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956) is planned for August 2021.
+The companion code for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
+is planned to be finished by July/August 2021.
 The companion code of the fourth edition keeps up with the evolution of C++20 and adds several examples
 ranging from straightforward to advanced levels and also extends the range of one example to a 32-bit single-board computer.
-  - Add examples steadily over the next few weeks and document them.
+  - Add new examples from the fourth edition over the next few weeks.
+  - Document the newly added examples.
   - Complete backward compatibility will be retained.
 
 ---
@@ -256,12 +258,13 @@ GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
 A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 5.2 or higher (better yet, higher) is required for building
+GCC 5 (or, better yet, higher) is required for building
 the reference application.
 
 Some of the code snippets demonstrate language elements not only from C++11,
-but also from C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
-can, therefore, be beneficial for success with *all* of the code snippets.
+but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 7)
+or even C++20 support (such as GCC 11) can, therefore,
+be beneficial for success with *all* of the code snippets.
 
 In the reference application on `*Win`, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me

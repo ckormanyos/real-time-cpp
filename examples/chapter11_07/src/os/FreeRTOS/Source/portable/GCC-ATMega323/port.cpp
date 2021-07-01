@@ -51,14 +51,14 @@ Changes from Christopher Kormanyos 2020-10-07
 
 #include <mcal_reg.h>
 
-/*-----------------------------------------------------------
+/*--------------------------------------------------------------------
  * Implementation of functions defined in portable.h for the AVR port.
- *----------------------------------------------------------*/
+ *------------------------------------------------------------------*/
 
-namespace
+namespace portable_local
 {
   // Start tasks with interrupts enables.
-  constexpr StackType_t portFLAGS_INT_ENABLED = (( StackType_t) 0x80U);
+  constexpr StackType_t portFLAGS_INT_ENABLED = (StackType_t) 0x80U;
 
   void prvSetupTimerInterrupt(void);
 
@@ -236,12 +236,15 @@ StackType_t* pxPortInitialiseStack(StackType_t* pxTopOfStack,
   *pxTopOfStack = (StackType_t) (usAddress & (uint16_t) 0x00FFU);
   --pxTopOfStack;
 
-  // Next simulate the stack as if after a call to portSAVE_CONTEXT().  
+  // Next simulate the stack as if after a call to portSAVE_CONTEXT().
   // portSAVE_CONTEXT places the flags on the stack immediately after r0
   // to ensure the interrupts get disabled as soon as possible, and so ensuring
   // the stack use is minimal should a context switch interrupt occur.
-  *pxTopOfStack = (StackType_t) 0x00U;  /* R0  */ --pxTopOfStack;
-  *pxTopOfStack = portFLAGS_INT_ENABLED;          --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x00U;  /* R0  */
+  --pxTopOfStack;
+
+  *pxTopOfStack = portable_local::portFLAGS_INT_ENABLED;
+  --pxTopOfStack;
 
   // Now the remaining registers.   The compiler expects R1 to be 0.
   *pxTopOfStack = (StackType_t) 0x00U;  /* R1  */ --pxTopOfStack;
@@ -275,12 +278,12 @@ StackType_t* pxPortInitialiseStack(StackType_t* pxTopOfStack,
   usAddress >>= 8;
   *pxTopOfStack = (StackType_t) (usAddress & (uint16_t) 0x00FFU); --pxTopOfStack;
 
-  *pxTopOfStack = ( StackType_t ) 0x26;  /* R26 X */ --pxTopOfStack;
-  *pxTopOfStack = ( StackType_t ) 0x27;  /* R27   */ --pxTopOfStack;
-  *pxTopOfStack = ( StackType_t ) 0x28;  /* R28 Y */ --pxTopOfStack;
-  *pxTopOfStack = ( StackType_t ) 0x29;  /* R29   */ --pxTopOfStack;
-  *pxTopOfStack = ( StackType_t ) 0x30;  /* R30 Z */ --pxTopOfStack;
-  *pxTopOfStack = ( StackType_t ) 0x31;  /* R31   */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x26;  /* R26 X */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x27;  /* R27   */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x28;  /* R28 Y */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x29;  /* R29   */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x30;  /* R30 Z */ --pxTopOfStack;
+  *pxTopOfStack = (StackType_t) 0x31;  /* R31   */ --pxTopOfStack;
 
   // lint +e950 +e611 +e923
 
@@ -291,7 +294,7 @@ extern "C"
 BaseType_t xPortStartScheduler(void)
 {
   // Setup the hardware to generate the tick.
-  prvSetupTimerInterrupt();
+  portable_local::prvSetupTimerInterrupt();
 
   // Restore the context of the first task that is going to run.
   portRESTORE_CONTEXT();
@@ -327,14 +330,14 @@ void vPortYield(void)
 
   portRESTORE_CONTEXT();
 
-  asm volatile ( "ret" );
+  asm volatile ("ret");
 }
 
 extern "C"
-void vPortYieldFromTick( void ) __attribute__((naked));
+void vPortYieldFromTick(void) __attribute__((naked));
 
 extern "C"
-void vPortYieldFromTick( void )
+void vPortYieldFromTick(void)
 {
   // Context switch function used by the tick.  This must be identical to 
   // vPortYield() from the call to vTaskSwitchContext() onwards.  The only
@@ -343,7 +346,7 @@ void vPortYieldFromTick( void )
 
   portSAVE_CONTEXT();
 
-  if( xTaskIncrementTick() != pdFALSE )
+  if(xTaskIncrementTick() != pdFALSE)
   {
     vTaskSwitchContext();
   }
@@ -353,7 +356,7 @@ void vPortYieldFromTick( void )
   asm volatile ( "ret" );
 }
 
-#if configUSE_PREEMPTION == 1
+#if defined(configUSE_PREEMPTION) && (configUSE_PREEMPTION == 1)
 
 extern "C"
 void __vector_11(void) __attribute__((signal, used, externally_visible, naked));
@@ -367,7 +370,7 @@ void __vector_11(void)
 
   vPortYieldFromTick();
 
-  asm volatile ( "reti" );
+  asm volatile ("reti");
 }
 
 #else
