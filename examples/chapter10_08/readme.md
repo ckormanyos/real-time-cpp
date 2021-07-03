@@ -111,17 +111,16 @@ via standard protocol described in the SRAM chip manual.
 
 Pinning in this example is shown in the table below.
 
-|     Pin on     |  SRAM Chip's  | Electrical | Microcontroller    |
-|  SRAM Chip 0,1 |    Function   | Connection |      Pin           |
-| -------------- | ------------- | ---------- |                    |
-| 1 (SRAM_0)     |    CS_0       | `portc.4`  |       27           |
-| 6 (SRAM 0)     |    SCK_0      | `portc.3`  |       26           |
-| 2 (SRAM 0)     |    SO_0       | `portc.2`  |       25           |
-| 5 (SRAM 0)     |    SI_0       | `portc.1`  |       24           |
-| 1 (SRAM 1)     |    CS_1       | `portc.5`  |       28           |
-| 6 (SRAM 1)     |    SCK_1      | `portc.3`  |  shared with SCK_0 |
-| 2 (SRAM 1)     |    SO_1       | `portc.2`  |  shared with SO_0  |
-| 5 (SRAM 1)     |    SI_1       | `portc.1`  |  shared with SI_0  |
+| Pin SRAM_0,1   |  SRAM Function | MCU Function | MCU Pin            |
+| -------------- | -------------- | ------------ | ------------------ |
+| 1 (SRAM_0)     |    CS_0        | `portc.4`    |       27           |
+| 6 (SRAM 0)     |    SCK_0       | `portc.3`    |       26           |
+| 2 (SRAM 0)     |    SO_0        | `portc.2`    |       25           |
+| 5 (SRAM 0)     |    SI_0        | `portc.1`    |       24           |
+| 1 (SRAM 1)     |    CS_1        | `portc.5`    |       28           |
+| 6 (SRAM 1)     |    SCK_1       | `portc.3`    |  shared with SCK_0 |
+| 2 (SRAM 1)     |    SO_1        | `portc.2`    |  shared with SO_0  |
+| 5 (SRAM 1)     |    SI_1        | `portc.1`    |  shared with SI_0  |
 
 The hardware setup is pictured in the image below.
 
