@@ -24,7 +24,7 @@ modestly small decimal digits of the mathematical constant
 A simple expression for a pi spigot algorithm for
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 is provided in Eq. 6.1, Sect. 6.1,
-page 78 of Arndt and Haehnel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
+page 78 of Arndt and Haenel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
 
 <img src="https://render.githubusercontent.com/render/math?math=\pi\,=\,2\,+\,\dfrac{1}{3}\Biggl(2\,+\,\dfrac{2}{5}\Biggl(2\,+\,\dfrac{3}{7}\Biggl(2\,+\,\ldots\Biggr)\Biggr)\Biggr)">
 
@@ -101,4 +101,28 @@ The calculation requires approximately 100s in this configuration.
 
 # Hardware Setup
 
-TBD
+Memory extension uses two serial SPI SRAM chips of type Microchip(R) 23LC1024.
+Each chip has 1 Mbit (128 kByte) of asynchronous SRAM, capable of being addressed
+with read/write in either single byte sequences or small page bursts.
+
+The [all-software SPI driver](./src/macl_spi/mcal_spi_software_port_driver.h)
+communicates directly with the off-chip SRAM devices
+via standard protocol described in the SRAM chip manual.
+
+Pinning in this example is shown in the table below.
+
+|     Pin on     |  SRAM Chip's  | Electrical | Microcontroller    |
+|  SRAM Chip 0,1 |    Function   | Connection |      Pin           |
+| -------------- | ------------- | ---------- |                    |
+| 1 (SRAM_0)     |    CS_0       | `portc.4`  |       27           |
+| 6 (SRAM 0)     |    SCK_0      | `portc.3`  |       26           |
+| 2 (SRAM 0)     |    SO_0       | `portc.2`  |       25           |
+| 5 (SRAM 0)     |    SI_0       | `portc.1`  |       24           |
+| 1 (SRAM 1)     |    CS_1       | `portc.5`  |       28           |
+| 6 (SRAM 1)     |    SCK_1      | `portc.3`  |  shared with SCK_0 |
+| 2 (SRAM 1)     |    SO_1       | `portc.2`  |  shared with SO_0  |
+| 5 (SRAM 1)     |    SI_1       | `portc.1`  |  shared with SI_0  |
+
+The hardware setup is pictured in the image below.
+
+![](./images/board10_08.jpg)
