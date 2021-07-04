@@ -9,10 +9,12 @@ constant <img src="https://render.githubusercontent.com/render/math?math=\pi">,
 showing fascinating memory management iterators,
 containers and algorithms along the way.
 
-This example depicts algorithmic complexity running in a real-world system.
-It simultaneously highlights the real-time numeric expression
-of the very detailed description of algorithmic complexity
-in the corresponding book section.
+This example embodies a stunning depiction
+of computational complexity running in a real-world, real-time system.
+In addition to maintaining real-time multitasking operation,
+it simultaneously highlights the quite detailed description
+of the Pi Spigot algorithm's complexity that can
+be found in the corresponding book section.
 
 # Application Description
 
@@ -20,7 +22,7 @@ The famous Pi Spigot algorithm is often used to compute
 modestly small numbers of decimal digits of the mathematical constant
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
-A simple expression for a Spigot algorithm for
+A simple expression of Spigot algorithm for
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 is provided in Eq. 6.1, Sect. 6.1,
 page 78 of Arndt and Haenel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
@@ -43,12 +45,14 @@ input memory consumption: 137788
 result_is_ok: true
 ```
 
-In the default release of this program, the Pi Spigot algorithm
-is setup to compute
+In the default release of this program
+from the code snippets area running on a PC,
+the Pi Spigot algorithm is set up to compute
 <img src="https://render.githubusercontent.com/render/math?math=10,001">
 digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
-Play around with this program. Switch from the default setting of
+Play around with the output digit count in the program.
+Switch from the default setting of
 <img src="https://render.githubusercontent.com/render/math?math=10,001">
 digits down to
 <img src="https://render.githubusercontent.com/render/math?math=1,001">
@@ -68,10 +72,13 @@ have been used.
 Memory allocation schemes and external SRAM iterators/containers
 are described fully in the book. These have been used to
 abstract memory access to the off-chip SRAMs
-and allow the Pi Spigot program to run essentially out of the box.
+and allow the Pi Spigot program to run essentially
+out of the box in about the same form as found
+in the code snippets area.
 
-For this particular example, a state-machine variation
-of the single-state program is being used. The state-machine
+For this particular example adapted to the 8-bit MCU,
+a state-machine variation
+of the single-state program is used. The state-machine
 variation divides the computation time of the individual
 Pi Spigot operations among the time slices of the idle
 task of the multitasking scheduler. The internal state
@@ -81,7 +88,8 @@ consequently, iteratively and deliberately works its way
 through the Pi Spigot calculation.
 
 The program runs continuously, performing successive back-to-back
-calculations, the subsequent one beginning when the previous one finishes.
+calculations. The subsequent Pi Spigot calculation begins
+when the previous one finishes.
 Simultaneously, the well-known _blinky_ application with
 1s blinking on/off is handled in the LED task.
 
@@ -89,21 +97,27 @@ A tabulated, known control value containing
 <img src="https://render.githubusercontent.com/render/math?math=\gtrsim\,10,011">
 decimal digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
-is stored in the constant-valued, ROM-stored array variable
-`local::control::sys_idle_pi_spigot_cntrl`. This control value
+is stored in the constant-valued, ROM-based `array` variable
+called `local::control::sys_idle_pi_spigot_cntrl`. This control value
 is used to check the calculated digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
-in this example.
+on the fly as they are retrieved from each successive iteration
+of the calculation.
 
 Progress of the Pi Spigot calculation is reported in the
-form of the duty cycle of a PWM signal, requiring an oscilloscope
-to actually verify the calculation progress. A possible program extension
-could mount an additional resistor/LED series combination
-in order to view the calculation progress as LED brighness.
+duty cycle of a PWM signal on `timer_a` visible on `portb.1`, microcontroller pin 15.
+An oscilloscope is required in order to verify the calculation
+progress via PWM duty cycle measurement.
+A possible program extension
+could mount and subsequently implement control for
+an additional resistor/LED series combination
+or an LCD, as seen in
+[example Chapter10_08a](../chapter10_08a),
+in order to display the calculation progress more obviously.
 
 This example has been adapted to run on the AVR(R) MCU
 on our target with the 8-bit microcontroller.
-The default release is set up for
+The default release on the 8-bit MCU is set up for
 <img src="https://render.githubusercontent.com/render/math?math=1,001">
 decimal digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
@@ -112,6 +126,9 @@ The
 decimal digit
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 calculation requires approximately 100s on this particular setup.
+The astute observer notes that
+the duty cycle representing number of digits computed
+accelerates toward the end of each calculation.
 
 # Hardware Setup
 
@@ -132,22 +149,29 @@ for the full
 digit range intended for this example.
 
 The [all-software SPI driver](./src/mcal_spi/mcal_spi_software_port_driver.h)
-communicates directly with the off-chip SRAM devices
-via standard protocol described in the SRAM chip's manual(s).
+communicates directly with the off-chip SRAM devices.
+The standard protocol described in the SRAM chip's manual(s) is used.
 
 Pinning in this example is summarized in the table below.
 
-| Pin SRAM_0,1   |  SRAM Function | MCU Function | MCU Pin            |
-| -------------- | -------------- | ------------ | ------------------ |
-| 1 (SRAM_0)     |    CS_0        | `portc.4`    |       27           |
-| 6 (SRAM_0)     |    SCK_0       | `portc.3`    |       26           |
-| 2 (SRAM_0)     |    SO_0        | `portc.2`    |       25           |
-| 5 (SRAM_0)     |    SI_0        | `portc.1`    |       24           |
-| 1 (SRAM_1)     |    CS_1        | `portc.5`    |       28           |
-| 6 (SRAM_1)     |    SCK_1       | `portc.3`    |  shared with SCK_0 |
-| 2 (SRAM_1)     |    SO_1        | `portc.2`    |  shared with SO_0  |
-| 5 (SRAM_1)     |    SI_1        | `portc.1`    |  shared with SI_0  |
+| Pin SRAM_0,1   |  SRAM Function | MCU Function            | MCU Pin            |
+| -------------- | -------------- | ----------------------- | ------------------ |
+| 1 (SRAM_0)     |    CS_0        | `portc.4`               |       27           |
+| 6 (SRAM_0)     |    SCK_0       | `portc.3`               |       26           |
+| 2 (SRAM_0)     |    SO_0        | `portc.2`               |       25           |
+| 5 (SRAM_0)     |    SI_0        | `portc.1`               |       24           |
+| 1 (SRAM_1)     |    CS_1        | `portc.5`               |       28           |
+| 6 (SRAM_1)     |    SCK_1       | `portc.3`               |  shared with SCK_0 |
+| 2 (SRAM_1)     |    SO_1        | `portc.2`               |  shared with SO_0  |
+| 5 (SRAM_1)     |    SI_1        | `portc.1`               |  shared with SI_0  |
+| NA             |                | `portb.1`/`timer_a` PWM |       15           |
 
-The hardware setup is pictured in the image below.
+The hardware setup is pictured in the image below with an oscilloscope measurement
+in action.
 
 ![](./images/board10_08.jpg)
+
+The PWM signal representing calculation progress is shown below.
+The PWM signal has a frequency of approximately two kilohertz.
+
+![](./images/scope10_08.jpg)
