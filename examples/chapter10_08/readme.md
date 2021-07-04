@@ -2,25 +2,25 @@
 # External SPI RAM and Computing 10,001 Digits of Pi
 
 This advanced example extends available RAM via SPI SRAM chips
-and uses a Pi Spigot algorithm to compute
+and uses a Pi Spigot algorithm to compute up to approximately
 <img src="https://render.githubusercontent.com/render/math?math=10,001">
-decimal digits
-of the mathematical
+decimal digits of the mathematical
 constant <img src="https://render.githubusercontent.com/render/math?math=\pi">,
 showing fascinating memory management iterators,
 containers and algorithms along the way.
 
-This example depicts algorithmic complexity running in a real-world system
-and highlights the real-time numeric expression of the detailed description
-of algorithmic complexity in the corresponding book section.
+This example depicts algorithmic complexity running in a real-world system.
+It simultaneously highlights the real-time numeric expression
+of the very detailed description of algorithmic complexity
+in the corresponding book section.
 
 # Application Description
 
 The famous Pi Spigot algorithm is often used to compute
-modestly small decimal digits of the mathematical constant
+modestly small numbers of decimal digits of the mathematical constant
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
-A simple expression for a Pi Spigot algorithm for
+A simple expression for a Spigot algorithm for
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 is provided in Eq. 6.1, Sect. 6.1,
 page 78 of Arndt and Haenel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
@@ -101,10 +101,30 @@ The calculation requires approximately 100s in this configuration.
 # Hardware Setup
 
 Memory extension uses two serial SPI SRAM chips of type Microchip(R) 23LC1024.
-Each chip has 1 Mbit (128 kByte) of asynchronous SRAM. These little
-8-pin SRAM chips are capable of being addressed with commands
+Each chip has 1 Mbit (128 kByte) of asynchronous SRAM.
+These 8-pin SRAM chips are straightforward to use.
+They are controlled with easy-to-understand commands
 that execute read/write operations in either single byte sequences
 or small page bursts.
+
+The <img src="https://render.githubusercontent.com/render/math?math=10,001">
+decimal digit
+The <img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation requires approximately 140 kByte RAM.
+Thus two 128 kByte chips are required
+for the full
+<img src="https://render.githubusercontent.com/render/math?math=10,001">
+digit range intended for this example.
+
+A tabulated, known control value containing
+<img src="https://render.githubusercontent.com/render/math?math=\gtrsim\,10,011">
+decimal digits of
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+is stored in the constant-valued, ROM-stored array variable
+`local::control::sys_idle_pi_spigot_cntrl`. This control value
+is used to check the calculated digits of
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+in this example.
 
 The [all-software SPI driver](./src/mcal_spi/mcal_spi_software_port_driver.h)
 communicates directly with the off-chip SRAM devices
@@ -115,13 +135,13 @@ Pinning in this example is summarized in the table below.
 | Pin SRAM_0,1   |  SRAM Function | MCU Function | MCU Pin            |
 | -------------- | -------------- | ------------ | ------------------ |
 | 1 (SRAM_0)     |    CS_0        | `portc.4`    |       27           |
-| 6 (SRAM 0)     |    SCK_0       | `portc.3`    |       26           |
-| 2 (SRAM 0)     |    SO_0        | `portc.2`    |       25           |
-| 5 (SRAM 0)     |    SI_0        | `portc.1`    |       24           |
-| 1 (SRAM 1)     |    CS_1        | `portc.5`    |       28           |
-| 6 (SRAM 1)     |    SCK_1       | `portc.3`    |  shared with SCK_0 |
-| 2 (SRAM 1)     |    SO_1        | `portc.2`    |  shared with SO_0  |
-| 5 (SRAM 1)     |    SI_1        | `portc.1`    |  shared with SI_0  |
+| 6 (SRAM_0)     |    SCK_0       | `portc.3`    |       26           |
+| 2 (SRAM_0)     |    SO_0        | `portc.2`    |       25           |
+| 5 (SRAM_0)     |    SI_0        | `portc.1`    |       24           |
+| 1 (SRAM_1)     |    CS_1        | `portc.5`    |       28           |
+| 6 (SRAM_1)     |    SCK_1       | `portc.3`    |  shared with SCK_0 |
+| 2 (SRAM_1)     |    SO_1        | `portc.2`    |  shared with SO_0  |
+| 5 (SRAM_1)     |    SI_1        | `portc.1`    |  shared with SI_0  |
 
 The hardware setup is pictured in the image below.
 
