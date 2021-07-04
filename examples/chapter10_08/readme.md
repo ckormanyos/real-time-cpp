@@ -85,18 +85,33 @@ calculations, the subsequent one beginning when the previous one finishes.
 Simultaneously, the well-known _blinky_ application with
 1s blinking on/off is handled in the LED task.
 
+A tabulated, known control value containing
+<img src="https://render.githubusercontent.com/render/math?math=\gtrsim\,10,011">
+decimal digits of
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+is stored in the constant-valued, ROM-stored array variable
+`local::control::sys_idle_pi_spigot_cntrl`. This control value
+is used to check the calculated digits of
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+in this example.
+
 Progress of the Pi Spigot calculation is reported in the
 form of the duty cycle of a PWM signal, requiring an oscilloscope
 to actually verify the calculation progress. A possible program extension
 could mount an additional resistor/LED series combination
 in order to view the calculation progress as LED brighness.
 
-The default release of this example adapted to the 8-bit MCU
-is set up for
+This example has been adapted to run on the AVR(R) MCU
+on our target with the 8-bit microcontroller.
+The default release is set up for
 <img src="https://render.githubusercontent.com/render/math?math=1,001">
 decimal digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
-The calculation requires approximately 100s in this configuration.
+The
+<img src="https://render.githubusercontent.com/render/math?math=1,001">
+decimal digit
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation requires approximately 100s on this particular setup.
 
 # Hardware Setup
 
@@ -115,16 +130,6 @@ Thus two 128 kByte chips are required
 for the full
 <img src="https://render.githubusercontent.com/render/math?math=10,001">
 digit range intended for this example.
-
-A tabulated, known control value containing
-<img src="https://render.githubusercontent.com/render/math?math=\gtrsim\,10,011">
-decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-is stored in the constant-valued, ROM-stored array variable
-`local::control::sys_idle_pi_spigot_cntrl`. This control value
-is used to check the calculated digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-in this example.
 
 The [all-software SPI driver](./src/mcal_spi/mcal_spi_software_port_driver.h)
 communicates directly with the off-chip SRAM devices
