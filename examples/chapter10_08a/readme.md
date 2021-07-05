@@ -1,34 +1,39 @@
-# Example Chapter10_08a
+# Example Chapter10_08a (advanced level):
 # Parallel SRAM and Computing 100,001 Digits of Pi
 
 This advanced example picks up on the idea of the previous Example Chapter10_08
 and extends RAM even further with an external
 2MByte asynchronous parallel SRAM brick.
-This memory extension expands the range of the Pi Spigot to calculate up to
+This memory extension significantly expands the range of the Pi Spigot calculation
+with the 8-bit MCU, allowing the computation and verification of up to and beyond
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
 decimal digits of the mathematical
 constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
 This example requires utmost attention to detail and advanced
-laboratory and programming skills to make programmatic access
-to an external 2MByte parallel SRAM brick as, let's say,
+laboratory and programming skills. With, however, a bit of concentrated
+effort (especially to make programmatic access
+to then external parallel SRAM bricks), Example Chapter10_08a
+makes this mammoth calculation let's say as
 _easy_ _as_ _pie_.
 
 # Application Description
 
-The Pi Spigot program from Example Chapter10_08 is used
-in this example in essentially the exact form. The algorithms
-and their implementations remain the same.
+The Pi Spigot program is used in this example in essentially
+the exact form a it was used in the previous Example Chapter10_08.
+The algorithms and their implementations remain identically
+the same.
 
-The difference in this example is the extension to 2MByte
+The difference in this example is the extension to up to 2MByte
 SRAM allowing for the calculation of even more digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
 Care needs to be taken to wire the parallel SRAM brick properly
 (as shown below). When the hardware setup is correct,
-it is relatively straightforward (although definitely
-requiring of careful attention to detail) to write a prallel
-SRAM driver for the 8-bit MCU. The results of these activities
+however, it is actually relatively straightforward
+(although definitely requiring of careful attention to detail)
+to write a prallel SRAM driver for the 8-bit MCU.
+The results of these activities
 are expressed in the template classes
 `mcal::memroy::sram::memory_sram_parallel_cypress_cy62158e`
 and
@@ -99,7 +104,7 @@ It is hoped that this example will challenge the microcontroller
 laboratory enthusiast and provide for a positive technical experience.
 In fact, the wiring of this example is rich in detail and requires attentive
 fitting of each wire properly to its dedicated pin(s) on the MCU
-or relevant device.
+or relevant device(s).
 
 Two port expanders of type
 Microchip(R) MCP23S17 are needed to provide enough
