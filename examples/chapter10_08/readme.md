@@ -68,6 +68,15 @@ In this example, the Pi Spigot program has been adapted
 to run on our target system with the 8-bit microcontroller.
 In order to do so, two external serial SPI SRAM chips
 have been used.
+The default release on the 8-bit MCU is set up for
+<img src="https://render.githubusercontent.com/render/math?math=1,001">
+decimal digits of
+<img src="https://render.githubusercontent.com/render/math?math=\pi">.
+The
+<img src="https://render.githubusercontent.com/render/math?math=1,001">
+decimal digit
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation requires approximately 90s on this particular setup.
 
 Memory allocation schemes and external SRAM iterators/containers
 are described fully in the book. These have been used to
@@ -104,8 +113,8 @@ is used to check the calculated digits of
 on the fly as they are retrieved from each successive iteration
 of the calculation.
 
-Progress of the Pi Spigot calculation is reported in the
-duty cycle of a PWM signal on `timer_a` visible on `portb.1`, microcontroller pin 15.
+Progress of the Pi Spigot calculation is expressed as the
+duty cycle of a PWM signal on `timer_a` output on `portb.1`, microcontroller pin 15.
 An oscilloscope is required in order to verify the calculation
 progress via PWM duty cycle measurement.
 A possible program extension
@@ -114,21 +123,9 @@ an additional resistor/LED series combination
 or an LCD, as seen in
 [example Chapter10_08a](../chapter10_08a),
 in order to display the calculation progress more obviously.
-
-This example has been adapted to run on the AVR(R) MCU
-on our target with the 8-bit microcontroller.
-The default release on the 8-bit MCU is set up for
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
-The
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation requires approximately 100s on this particular setup.
-The astute observer notes that
-the duty cycle representing number of digits computed
-accelerates toward the end of each calculation.
+The duty cycle representing number of digits computed
+accelerates toward the end of each calculation,
+which mimics the nature of the calculation itself.
 
 # Hardware Setup
 
@@ -137,7 +134,11 @@ Each chip has 1 Mbit (128 kByte) of asynchronous SRAM.
 These 8-pin SRAM chips are straightforward to use.
 They are controlled with easy-to-understand commands
 that execute read/write operations in either single byte sequences
-or small page bursts.
+or small page bursts. A lightweight communication class
+called `mcal::memroy::sram::memory_sram_microchip_23lc1024`
+that is used to control the SRAM chips can be found
+in the file
+[mcal_memory_sram_microchip_23lc1024.h](./src/mcal/avr/mcal_memory_sram_microchip_23lc1024.h)
 
 The <img src="https://render.githubusercontent.com/render/math?math=10,001">
 decimal digit

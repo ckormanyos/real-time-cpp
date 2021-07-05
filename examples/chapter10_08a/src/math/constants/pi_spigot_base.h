@@ -128,7 +128,7 @@
       return result_digit;
     }
 
-    static constexpr std::uint32_t get_input__static_size() noexcept
+    static constexpr std::uint32_t get_input_static_size() noexcept
     {
       return input_scale(get_output_static_size());
     }
