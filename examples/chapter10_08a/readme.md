@@ -12,18 +12,17 @@ constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
 This example requires utmost attention to detail and advanced
 laboratory and programming skills. With, however, a bit of concentrated
-effort (especially to make programmatic access
-to then external parallel SRAM bricks), Example Chapter10_08a
-makes this mammoth calculation let's say as
+effort (especially to make the hardware and provide for clean,
+iterator-based programmatic access to the external parallel SRAM bricks),
+Example Chapter10_08a makes this mammoth calculation let's say as
 _easy_ _as_ _pie_.
 
 # Application Description
 
-The Pi Spigot program is used in this example in essentially
-the exact form a it was used in the previous Example Chapter10_08.
-The algorithms and their implementations remain identically
-the same.
-
+The Pi Spigot program used in this example has essentially
+the exact form that has been used in the previous Example Chapter10_08.
+The algorithms and their implementations remain,
+in fact, identically the same.
 The difference in this example is the extension to up to 2MByte
 SRAM allowing for the calculation of even more digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
@@ -31,7 +30,7 @@ SRAM allowing for the calculation of even more digits of
 Care needs to be taken to wire the parallel SRAM brick properly
 (as shown below). When the hardware setup is correct,
 however, it is actually relatively straightforward
-(although definitely requiring of careful attention to detail)
+(although definitely requires of careful attention to detail)
 to write a prallel SRAM driver for the 8-bit MCU.
 The results of these activities
 are expressed in the template classes
@@ -47,6 +46,9 @@ brick of type CY62158E
 and the latter controls a 2 MByte parallel SRAM
 brick of type
 CY62167GN, both from Cypress(R), an Infineon Company.
+The class for the larger brick is cleverly devised
+to use a superset of the chip addresses and is, as such,
+capable of also driving the chip having half the memory.
 
 SRAM memory abstractions of specialized iterators and containers,
 as shown both in great detail in the book as well as in the previous example,
@@ -65,32 +67,40 @@ decimal digits, whereas the full 2 MByte brick is required for the
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
 digit calculation.
 
-Calculation progress with resolution of
-<img src="https://render.githubusercontent.com/render/math?math=1/10\,\%">
-is expressed in directly in alpha-numeric form on an LCD
-module of having two-by-sixteen lines.
+Calculation progress having resolution of
+<img src="https://render.githubusercontent.com/render/math?math=[1/10]">
+percent
+is expressed in alpha-numeric form on an LCD
+module of having two-by-sixteen characters.
 Armed with all these program elements, the Pi Spigot algorithms
-are straightforward and identical with those in the previous example.
+are straightforward to use and remain
+identical with those in the previous example.
 
 The standard _blinky_ LED task is also exercised. In this example,
 two LEDs engage in blinking. One is on the usual microcontroller pin
 `portb.5`, whereas the second is on one of the port expander pins.
-The second LED serves primarily as a simple diagnostic of the
+The second LED serves primarily as a simple diagnostic
+_heartbeat_ verifying the integrity of the
 communication between the port expander and the MCU.
 
 As mentioned in the book and in the previous example,
-however, the length of the calculation is based on its operation count.
-This varies significantly and quadratically with output size.
-Although we're not intending to break any records in super-computing
-performace with the 8-bit MCU hooked up to external parallel SRAM,
-the advantage of parallel port access can be noticed.
+however, the time of the calculation
+(which is essentially solely determined by the operation count)
+is strongly dependent on the output length.
+This varies quadratically with the number of decimal digits
+targeted in a given calculation.
 
+Although we're not intending to break any super-computing
+performace or speed records with the 8-bit MCU hooked up
+to external parallel SRAM, the advantage of parallel port access
+can be noticed.
 Indeed, in this setup, the
 <img src="https://render.githubusercontent.com/render/math?math=1,001">
 decimal digit
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 calculation takes approximately 60s compared with approximately 90s
 in the previous example using serial SRAM chips.
+
 Do, however, be prepared for a bit of a wait as the digit count
 in a given Pi Spigot calculation climbs.
 The full
@@ -101,7 +111,8 @@ asynchronous parallel SRAM memory.
 # Hardware Setup
 
 It is hoped that this example will challenge the microcontroller
-laboratory enthusiast and provide for a positive technical experience.
+laboratory enthusiast and provide for a positive technical experience
+for those intrepid makers who wrangle with it and take it on.
 In fact, the wiring of this example is rich in detail and requires attentive
 fitting of each wire properly to its dedicated pin(s) on the MCU
 or relevant device(s).
