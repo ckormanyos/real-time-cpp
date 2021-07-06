@@ -1,11 +1,16 @@
 @;///////////////////////////////////////////////////////////////////////////////
-@;//  Copyright Christopher Kormanyos 2013 - 2020.
+@;//  Copyright Christopher Kormanyos 2013 - 2021.
 @;//  Distributed under the Boost Software License,
 @;//  Version 1.0. (See accompanying file LICENSE_1_0.txt
 @;//  or copy at http://www.boost.org/LICENSE_1_0.txt)
 @;//
 
 .section .startup, "ax"
+
+@
+@extern "C"
+@void mcal_cpu_detail_secure_start_mmu(const uint32_t tlb_base, const uint32_t mmu_flags);
+@
 
 .globl mcal_cpu_detail_secure_start_mmu
 mcal_cpu_detail_secure_start_mmu:

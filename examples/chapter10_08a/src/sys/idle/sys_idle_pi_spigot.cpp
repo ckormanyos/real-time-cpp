@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <cstdint>
 
-#include <math/constants/pi_digits_hash_sha1_control.h>
 #include <math/constants/pi_digits_100th_pi_digits.h>
+#include <math/constants/pi_digits_hash_sha1_control.h>
 #include <math/constants/pi_spigot_state.h>
 #include <mcal_lcd.h>
 #include <mcal_memory/mcal_memory_sram_array.h>

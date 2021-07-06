@@ -12,7 +12,10 @@
 
   #include <mcal_reg.h>
 
-  extern "C" void mcal_cpu_detail_secure_start_mmu(uint32_t tlb_base, uint32_t mmu_flags);
+  // The function mcal_cpu_detail_secure_start_mmu() can be
+  // found in the assembly file mcal_cpu_detail_secure.s.
+  extern "C"
+  void mcal_cpu_detail_secure_start_mmu(const uint32_t tlb_base, const uint32_t mmu_flags);
 
   namespace mcal { namespace cpu { namespace detail {
 

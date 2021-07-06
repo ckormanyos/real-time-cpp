@@ -1,4 +1,4 @@
-# Example Chapter10_08 (advanced level):
+# Example Chapter10_08 (advanced level)
 # External SPI RAM and Computing 10,001 Digits of Pi
 
 This advanced example extends available RAM via SPI SRAM chips
