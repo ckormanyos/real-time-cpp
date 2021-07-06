@@ -173,22 +173,22 @@
       }
 
       // Set the microcontroller port direction (i.e., of port_address_read_write_data)
-      // to output (to write out the data).
+      // to output (to write out the data). This initiates the write of
+      // the first byte.
       sram_parallel_port_data08_type::set_direction_output();
 
       for(std::size_t i = 0U; i < count; ++i)
       {
+        // Write subsequent bytes via address transition.
+
         if(input_word08_addr_00_to_03 == UINT8_C(0x10))
         {
-          // Important:
-          // By design, the body of this if-clause will *not*
-          // be executed on the zero'th trip through the enclosing
-          // for-loop.
+          // The lower address nibble has wrapped around to zero.
+          // Increment the high 16 (word) bits of the address.
           input_word08_addr_00_to_03 = 0U;
 
           ++my_word16_addr_04_to_19;
 
-          // Set the high 16 (word) bits of the address.
           sram_parallel_port_addr04_to_19_type::set_port(my_word16_addr_04_to_19);
         }
 
@@ -310,7 +310,8 @@
       mcal::helper::disable_all_interrupts<has_disable_enable_interrupts>();
 
       // Assert OE_NOT to low in order to begin strobing
-      // in the byte stream.
+      // in the byte stream. This initiates the read of
+      // the first byte.
       sram_parallel_port_pin_oe_not_type::set_pin_low();
       sram_parallel_port_pin_we_not_type::set_pin_high();
 
@@ -320,15 +321,17 @@
 
       for(std::size_t i = 1U; i < count; ++i)
       {
+        // Read subsequent bytes via address transition.
         ++input_word08_addr_00_to_03;
 
         if(input_word08_addr_00_to_03 == UINT8_C(0x10))
         {
+          // The lower address nibble has wrapped around to zero.
+          // Increment the high 16 (word) bits of the address.
           input_word08_addr_00_to_03 = 0U;
 
           ++my_word16_addr_04_to_19;
 
-          // Set the high 16 (word) bits of the address.
           sram_parallel_port_addr04_to_19_type::set_port(my_word16_addr_04_to_19);
         }
 

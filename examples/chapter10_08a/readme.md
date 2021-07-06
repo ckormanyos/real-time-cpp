@@ -1,4 +1,4 @@
-# Example Chapter10_08a (advanced level):
+# Example Chapter10_08a (advanced level)
 # Parallel SRAM and Computing 100,001 Digits of Pi
 
 This advanced example picks up on the idea of the previous Example Chapter10_08
@@ -30,7 +30,7 @@ SRAM allowing for the calculation of even more digits of
 Care needs to be taken to wire the parallel SRAM brick properly
 (as shown below). When the hardware setup is correct,
 however, it is actually relatively straightforward
-(although definitely requires of careful attention to detail)
+(although definitely requires careful attention to detail)
 to write a prallel SRAM driver for the 8-bit MCU.
 The results of these activities
 are expressed in the template classes
@@ -70,25 +70,28 @@ digit calculation.
 Calculation progress having resolution of
 <img src="https://render.githubusercontent.com/render/math?math=[1/10]">
 percent
-is expressed in alpha-numeric form on an LCD
-module of having two-by-sixteen characters.
-Armed with all these program elements, the Pi Spigot algorithms
-are straightforward to use and remain
-identical with those in the previous example.
+is expressed in alpha-numeric form on an LCD module.
+The LCD is of type NHD-0216K1Z-FSW-FBW-L-42862
+from Newhaven Display international and features
+two-by-sixteen characters. It uses standard
+industry 8-bit parallel control in this example.
 
-The standard _blinky_ LED task is also exercised. In this example,
-two LEDs engage in blinking. One is on the usual microcontroller pin
-`portb.5`, whereas the second is on one of the port expander pins.
-The second LED serves primarily as a simple diagnostic
-_heartbeat_ verifying the integrity of the
-communication between the port expander and the MCU.
+The familiar _blinky_ LED task is also exercised. In this
+particular example, though, there are two distinct LEDs that
+partake in synchronized blinking.
+The first blinking LED is attached the usual microcontroller pin `portb.5`.
+The second blinking LED is on one of the port expander pins.
+The second LED confirms the smooth running of the
+Pi Spigot application. The second blinking LED also
+provides a simple diagnostic _heartbeat_ verifying
+the integrity of the communication between
+the port expander and the MCU.
 
 As mentioned in the book and in the previous example,
-however, the time of the calculation
-(which is essentially solely determined by the operation count)
-is strongly dependent on the output length.
-This varies quadratically with the number of decimal digits
-targeted in a given calculation.
+the Pi Spigot calculation time
+is essentially solely determined by the operation count.
+This increases quadratically with increasing number
+of decimal digits targeted in a given calculation.
 
 Although we're not intending to break any super-computing
 performace or speed records with the 8-bit MCU hooked up
@@ -98,14 +101,19 @@ Indeed, in this setup, the
 <img src="https://render.githubusercontent.com/render/math?math=1,001">
 decimal digit
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation takes approximately 60s compared with approximately 90s
+calculation takes approximately 50s compared with approximately 90s
 in the previous example using serial SRAM chips.
 
-Do, however, be prepared for a bit of a wait as the digit count
-in a given Pi Spigot calculation climbs.
+Do, however, be prepared for a bit of a wait as
+the digit count in the Pi Spigot calculation
+(having quadratically increasing computational complexity)
+climbs higher and higher.
 The full
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
-requires about 6 days (almost a week) to run on the 8-bit MCU with external
+decimal digit
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation
+requires about 6 days to run on the 8-bit MCU with external
 asynchronous parallel SRAM memory.
 
 # Hardware Setup
