@@ -2,23 +2,20 @@
 # 100,001 Digits of Pi on Raspberry Pi(R)
 
 This advanced example ports the Pi Spigot
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
+calculation to a powerful 32-bit single-board computer.
 The Raspberry Pi(R) Zero WH with Arm1176JZF-S(TM) single core
-controller is used. This system has ample 512 MByte bus-addressable SRAM.
+controller is used.
 
 Using the single-board computer system with its more powerful controller
-and ample 512 MByte SRAM further simplifies and speeds up the
+and ample 512 MByte SRAM simplifies and speeds up the
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
 decimal digit
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 calculation using the Pi Spigot program.
 In particular, tedious wiring and software development efforts required
 for our target with the 8-bit microcontroller in previous
-Examples Chapter10_08 and 10_08a are drastically reduced and simplified
-in this example.
+Examples Chapter10_08 and 10_08a are drastically reduced
+or even entirely eliminated in this example.
 
 # Application Description
 
@@ -26,9 +23,9 @@ The same Pi Spigot algorithm is used as has been used in
 Examples Chapter10_08 and 10_08a. The single-board computer is operated
 OS-less in _bare-metal_ mode with no input or output device and self-written
 startup and chip initialization code. Real-time afficicionados
-will relish the stark and bare use of the on-board Arm(R) controller
-with its corresponding manually-written startup, initialization
-and memory-access optimization code.
+will relish the stark, bare, clean use of the on-board Arm(R) controller
+with eloquent amd efficient, manually-written startup sequence,
+hardware initialization software and memory-access optimization code.
 
 The application computes successively
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
@@ -36,7 +33,7 @@ decimal digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 Calculation progress is displayed on
 an LCD module of type NHD-0216K1Z-FSW-FBW-L-42862
-from Newhaven Display international having
+from Newhaven Display International having
 two-by-sixteen characters. It uses standard
 industry 8-bit parallel control in this example.
 
@@ -44,7 +41,7 @@ A port expander chip of type
 Microchip(R) MCP23S17 provides additional
 digital input/output pins for the necessary
 connections to the display and a second blinking LED.
-A software SPI driver is sued as the main communication
+A software SPI driver is used to communicate
 with the port expander.
 
 A skinny MCAL layer provides the needed peripheral abstractions
@@ -58,7 +55,8 @@ TBD
 # Hardware Setup
 
 The Raspberry Pi(R) Zero WH is used out-of-the-box
-without modification. Wire-wrapping techniques with skinny AWG-30 wires
+without modification.
+Old-school wire-wrapping techniques with skinny AWG-30 wires
 are used to connect the single-board computer to power, ground
 and the necessary logic peripherals. Power and ground lines have
 double/quadruple strands to reduce parasitic dissipation
