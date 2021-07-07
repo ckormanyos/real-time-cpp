@@ -24,7 +24,7 @@ in this example. It can be found in identically the same form
 as that which has been used in Examples Chapter10_08 and 10_08a.
 The single-board computer is operated
 OS-less in _bare-metal_ mode with no input or output device.
-Real-time afficicionados will relish the eloquent, efficient
+Real-time afficicionados will relish the eloquent, efficient, terse,
 manually-written startup sequence and memory-access optimization code.
 A skinny MCAL layer provides the needed peripheral abstractions
 for timer, port I/O driver, etc.
@@ -60,11 +60,11 @@ attached over a resistor to one of the port pins on the port expander.
 The Raspberry Pi(R) bootloader is used to boot from the
 contents of the micro SD card in the on-board tray upon power-up.
 Formatting the SD card is a topic of great interest.
-A partition tool or a running *nix itself seem to be the
+A partition tool or a running `*nix` itself seem to be the
 best ways known (reported to work) to format the SD card
 in the necessary way. The format characteristics that worked
 for this example are FAT32, active primary partition,
-non-Win* tool used to format.
+non-`Win*` tool used to format.
 
 The bootloader performs its own
 pre-programmed initializations. It then loads the contents of
