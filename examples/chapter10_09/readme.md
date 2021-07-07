@@ -51,7 +51,7 @@ In addition to carrying out the Pi Spigot calculation and displaying
 calculation progress, the _blinky_ application is executed
 in the LED task. Two LEDs engage in blinking.
 The first LED is the on-board
-GPIO-status-LED fitted on the Raspberry PI(R) Zero board.
+GPIO-status-LED fitted on the Raspberry Pi(R) Zero board.
 The second LED is manually fitted on the breadboard,
 attached over a resistor to one of the port pins on the port expander.
 
@@ -59,6 +59,13 @@ attached over a resistor to one of the port pins on the port expander.
 
 The Raspberry Pi(R) bootloader is used to boot from the
 contents of the micro SD card in the on-board tray upon power-up.
+Formatting the SD card is a topic of great interest.
+A partition tool or a running *nix itself seem to be the
+best ways known (reported to work) to format the SD card
+in the necessary way. The format characteristics that worked
+for this example are FAT32, active primary partition,
+non-Win* tool used to format.
+
 The bootloader performs its own
 pre-programmed initializations. It then loads the contents of
 the file `kernel.img` to RAM address `0x00008000`
