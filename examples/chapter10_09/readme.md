@@ -20,20 +20,14 @@ or even entirely eliminated in this example.
 # Application Description
 
 The same Pi Spigot algorithm is used yet again
-in the same form as has been used in
-Examples Chapter10_08 and 10_08a. The single-board computer is operated
+in this example. It can be found in identically the same form
+as that which has been used in Examples Chapter10_08 and 10_08a.
+The single-board computer is operated
 OS-less in _bare-metal_ mode with no input or output device.
 Real-time afficicionados will relish the eloquent, efficient
 manually-written startup sequence and memory-access optimization code.
 A skinny MCAL layer provides the needed peripheral abstractions
 for timer, port I/O driver, etc.
-
-A port expander chip of type
-Microchip(R) MCP23S17 provides additional
-digital input/output pins for the necessary
-connections to the display and a second blinking LED.
-A software SPI driver is used to communicate
-with the port expander.
 
 The application exercises consecutive, back-to-back
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
@@ -45,6 +39,21 @@ an LCD module of type NHD-0216K1Z-FSW-FBW-L-42862
 from Newhaven Display International.
 It has two-by-sixteen characters and uses standard
 industry 8-bit parallel control.
+
+A port expander chip of type
+Microchip(R) MCP23S17 provides additional
+digital input/output pins for the necessary
+connections to the display and a second blinking LED.
+A software SPI driver is used to communicate
+with the port expander.
+
+In addition to carrying out the Pi Spigot calculation and displaying
+calculation progress, the _blinky_ application is executed
+in the LED task. Two LEDs engage in blinking.
+The first LED is the on-board
+GPIO-status-LED fitted on the Raspberry PI(R) Zero board.
+The second LED is manually fitted on the breadboard,
+attached over a resistor to one of the port pins on the port expander.
 
 # Booting from SD Card
 
@@ -77,7 +86,7 @@ b __int_vect_fiq_handler
 ```
 
 The first entry contains a branch instruction to the
-startup routine `__my_startup`, which is shown en its entirety
+startup routine `__my_startup`, which is shown in its entirety
 for reference in the following code sequence.
 
 ```C
@@ -146,15 +155,17 @@ extern "C" void __my_startup(void)
 
 The startup code begins by performing some standard initializations
 of stacks, RAM, static constructors, etc.
-The program subsequently jumps to `main()`,
-initializes the MCAL, starts the multitasking scheduler in the usual way,
+The program subsequently jumps to `main()`.
+The `main()` is not explicitly shown above,
+but once the program arrives there, it initializes the MCAL,
+starts the multitasking scheduler in the usual way,
 and never returns.
 
 This bare-metal RpiZero startup philosophy will also work
 for other kinds of programs. There are, however quite a few details
 regarding cache initialization and activating other chip features.
 These are partially described in the book's Sect. 10.9 and the references therein.
-The bare-metal programming itself (in a combination of C++ and assembly)
+The bare-metal programming itself (written in a combination of C++ and assembly)
 can be seen in its definitive form
 in the source code of the low-level initialization files
 in the [chip startup](./target/micros/bcm2835_raspi_b/startup)
@@ -182,7 +193,8 @@ without modification.
 Old-school wire-wrapping techniques with skinny AWG-30 wires
 are used to connect the single-board computer to power, ground
 and the necessary logic peripherals. Power and ground lines have
-double/quadruple strands to reduce parasitic dissipation
+double and quadruple strands of skinny wire
+in order to reduce parasitic dissipation
 in the currrent-carrying lines.
 
 The logic gate sharpens port output signal edges
