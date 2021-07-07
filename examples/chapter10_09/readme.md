@@ -156,13 +156,17 @@ extern "C" void __my_startup(void)
 The startup code begins by performing some standard initializations
 of stacks, RAM, static constructors, etc.
 The program subsequently jumps to `main()`.
-The `main()` is not explicitly shown above,
-but once the program arrives there, it initializes the MCAL,
+The `main()` subroutine is not explicitly shown above.
+Once the program arrives in `main()`, it initializes the MCAL,
 starts the multitasking scheduler in the usual way,
-and never returns.
+and never returns. As in the previous Examples
+Chapter10_08 and Chapter10_08a,
+the Pi Spigot algorithm runs in the idle task
+of the multitasking scheduler.
 
-This bare-metal RpiZero startup philosophy will also work
-for other kinds of programs. There are, however quite a few details
+The bare-metal RpiZero startup philosophy employed in this example
+will also work for other kinds of programs.
+There are, however quite a few details
 regarding cache initialization and activating other chip features.
 These are partially described in the book's Sect. 10.9 and the references therein.
 The bare-metal programming itself (written in a combination of C++ and assembly)
