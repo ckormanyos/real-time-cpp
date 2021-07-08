@@ -49,7 +49,7 @@ fi
 
 CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections"
 CPPFLAGS="-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs"
-CINCLUDES="-Isrc/os/FreeRTOS/Source/include/cfg/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/portable/GCC-ATMega323 -Isrc/os/FreeRTOS/Source/include -Isrc/util/STL -Isrc/mcal/avr -Isrc "
+CINCLUDES="-Isrc/os/FreeRTOS/Source/include/cfg/GCC-ATMega328 -Isrc/os/FreeRTOS/Source/portable/GCC-ATMega328 -Isrc/os/FreeRTOS/Source/include -Isrc/util/STL -Isrc/mcal/avr -Isrc "
 
 echo
 echo "Building with        : build.sh"
@@ -110,7 +110,7 @@ echo "Compile  : application.c to bin/application.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/application/application.c -o bin/application.o
 
 echo "Compile  : port.cpp to bin/port.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/os/FreeRTOS/Source/portable/GCC-ATMega323/port.cpp -o bin/port.o
+$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/os/FreeRTOS/Source/portable/GCC-ATMega328/port.cpp -o bin/port.o
 
 echo "Compile  : sys_start.cpp to bin/sys_start.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/sys/start/sys_start.cpp -o bin/sys_start.o
