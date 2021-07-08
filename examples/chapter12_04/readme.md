@@ -1,5 +1,5 @@
 # Example Chapter12_04
-# Floating-Point Calculations
+# Benchmarking Floating-Point Calculations
 
 Example chapter12_04 performs a variety of floating-point
 calculations of selected special functions of pure and applied

@@ -24,7 +24,7 @@ in this example. It can be found in identically the same form
 as that which has been used in Examples Chapter10_08 and 10_08a.
 The single-board computer is operated
 OS-less in _bare-metal_ mode with no input or output device.
-Real-time afficicionados will relish the eloquent, efficient, terse,
+Real-time afficionados will relish the eloquent, efficient, terse,
 manually-written startup sequence and memory-access optimization code.
 A skinny MCAL layer provides the needed peripheral abstractions
 for timer, port I/O driver, etc.

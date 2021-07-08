@@ -212,7 +212,7 @@
     <ClCompile Include="src\os\FreeRTOS\Source\application\application.c" />
     <ClCompile Include="src\os\FreeRTOS\Source\event_groups.c" />
     <ClCompile Include="src\os\FreeRTOS\Source\list.c" />
-    <ClCompile Include="src\os\FreeRTOS\Source\portable\GCC-ATMega323\port.cpp">
+    <ClCompile Include="src\os\FreeRTOS\Source\portable\GCC-ATMega328\port.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -297,7 +297,7 @@
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\atomic.h" />
-    <ClInclude Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega323\FreeRTOSConfig.h" />
+    <ClInclude Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega328\FreeRTOSConfig.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\cfg\WIN32-MSVC-Static-Allocation-Only\FreeRTOSConfig.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\event_groups.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\FreeRTOS.h" />
@@ -309,7 +309,7 @@
     <ClInclude Include="src\os\FreeRTOS\Source\include\stack_macros.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\task.h" />
     <ClInclude Include="src\os\FreeRTOS\Source\include\timers.h" />
-    <ClInclude Include="src\os\FreeRTOS\Source\portable\GCC-ATMega323\portmacro.h">
+    <ClInclude Include="src\os\FreeRTOS\Source\portable\GCC-ATMega328\portmacro.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
