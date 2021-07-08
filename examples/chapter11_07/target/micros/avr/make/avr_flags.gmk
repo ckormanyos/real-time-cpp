@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Copyright Christopher Kormanyos 2007 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,8 +24,8 @@ TGT_CFLAGS    = -O3                                            \
 
 TGT_CPPFLAGS  = -std=c++11
 
-TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega323         \
-                -I$(PATH_APP)/os/FreeRTOS/Source/portable/GCC-ATmega323            \
+TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega328         \
+                -I$(PATH_APP)/os/FreeRTOS/Source/portable/GCC-ATmega328            \
                 -I$(PATH_APP)/util/STL_C++XX_stdfloat                              \
                 -I$(PATH_APP)/util/STL
 

@@ -79,9 +79,6 @@
     <Filter Include="src\os\FreeRTOS\Source\portable\MSVC-MingW">
       <UniqueIdentifier>{125b0c90-6975-476b-a1ac-88b04a1c9651}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega323">
-      <UniqueIdentifier>{63a11b61-9e28-4ba2-bc96-b75109f5c0d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\os\FreeRTOS\Source\application">
       <UniqueIdentifier>{570d6491-87e8-4455-b6f7-9dd4137d660f}</UniqueIdentifier>
     </Filter>
@@ -94,8 +91,11 @@
     <Filter Include="src\mcal_led">
       <UniqueIdentifier>{607aa9a4-f82b-4e25-b1d1-108c83256711}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\os\FreeRTOS\Source\portable\GCC-ATMega323">
+    <Filter Include="src\os\FreeRTOS\Source\portable\GCC-ATMega328">
       <UniqueIdentifier>{0c74a14d-9bb9-4a68-98fe-29165fddb630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega328">
+      <UniqueIdentifier>{63a11b61-9e28-4ba2-bc96-b75109f5c0d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -174,8 +174,8 @@
     <ClCompile Include="src\sys\start\sys_start.cpp">
       <Filter>src\sys\start</Filter>
     </ClCompile>
-    <ClCompile Include="src\os\FreeRTOS\Source\portable\GCC-ATMega323\port.cpp">
-      <Filter>src\os\FreeRTOS\Source\portable\GCC-ATMega323</Filter>
+    <ClCompile Include="src\os\FreeRTOS\Source\portable\GCC-ATMega328\port.cpp">
+      <Filter>src\os\FreeRTOS\Source\portable\GCC-ATMega328</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -389,9 +389,6 @@
     <ClInclude Include="src\os\FreeRTOS\Source\portable\MSVC-MingW\portmacro.h">
       <Filter>src\os\FreeRTOS\Source\portable\MSVC-MingW</Filter>
     </ClInclude>
-    <ClInclude Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega323\FreeRTOSConfig.h">
-      <Filter>src\os\FreeRTOS\Source\include\cfg\GCC-ATMega323</Filter>
-    </ClInclude>
     <ClInclude Include="src\app\led\app_led.h">
       <Filter>src\app\led</Filter>
     </ClInclude>
@@ -419,8 +416,11 @@
     <ClInclude Include="src\os\FreeRTOS\Source\include\portable.h">
       <Filter>src\os\FreeRTOS\Source\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\os\FreeRTOS\Source\portable\GCC-ATMega323\portmacro.h">
-      <Filter>src\os\FreeRTOS\Source\portable\GCC-ATMega323</Filter>
+    <ClInclude Include="src\os\FreeRTOS\Source\portable\GCC-ATMega328\portmacro.h">
+      <Filter>src\os\FreeRTOS\Source\portable\GCC-ATMega328</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os\FreeRTOS\Source\include\cfg\GCC-ATMega328\FreeRTOSConfig.h">
+      <Filter>src\os\FreeRTOS\Source\include\cfg\GCC-ATMega328</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
