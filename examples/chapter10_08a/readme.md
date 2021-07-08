@@ -143,9 +143,10 @@ The pin connections for the 48-pin TSOP 2 MByte memory brick
 of type Cypress(R) MoBL(R) CY62167GN
 are shown in the table below. The pinnning has
 been selected with certain considerations in mind that
-make the software driver for the memory brick simpler to write.
+make the software driver for the memory brick
+more straightforward and less complicated to write.
 Where possible, for instance, entire 8-bit ports or groups
-of port pins have been matched on SRAM/MCU to simplify
+of port pins have been matched on SRAM/MCU/Port-Expander to simplify
 read/write operations on the driver level.
 
 | SRAM TSOP-48   | Function   | Device Connection       |
