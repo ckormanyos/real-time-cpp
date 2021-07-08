@@ -11,21 +11,17 @@ of pure mathematics.
 
 # Application Description
 
-TBD
+TBD Describe the application
 
 The circuit used for creating the random digitized noise is
-sketched below.
-
-![](./images/circuit16_08.pdf)
-
-The oscilloscope image below shows a small snapshot
-of the random digitized noise from this circuit.
-
-![](./images/signal16_08.pdf)
+sketched [here](./images/circuit16_08.pdf).
+The oscilloscope image [here](./images/signal16_08.pdf)
+shows a small snapshot of the random digitized noise
+from this circuit.
 
 # Hardware Setup
 
-TBD
+TBD Describe the hardware setup
 
 The target hardware featuring the is shown in the following image.
 
