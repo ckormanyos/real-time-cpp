@@ -16,12 +16,12 @@ TBD
 The circuit used for creating the random digitized noise is
 sketched below.
 
-![](./images/circuit16_08.svg)
+![](./images/circuit16_08.pdf)
 
 The oscilloscope image below shows a small snapshot
 of the random digitized noise from this circuit.
 
-![](./images/signal16_08.jpg)
+![](./images/signal16_08.pdf)
 
 # Hardware Setup
 
