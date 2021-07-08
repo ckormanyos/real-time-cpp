@@ -13,6 +13,21 @@ of pure mathematics.
 
 TBD
 
+The circuit used for creating the random digitized noise is
+sketched below.
+
+![](./images/circuit16_08.jpg)
+
+The oscilloscope image below shows a small snapshot
+of the random digitized noise from this circuit.
+
+![](./images/signal16_08.jpg)
+
 # Hardware Setup
 
 TBD
+
+The target hardware featuring the is shown in the following image.
+
+![](./images/board16_08.jpg)
+

@@ -92,15 +92,18 @@ for the OS tick.
 The blinky LED 1s on/off can be found on `portb.5`.
 The background 10Hz toggle pin can be found on `portd.3`.
 
-An example of a target hardware is shown in the following image.
+An example of a target hardware featuring the
+2 MByte SRAM brick is shown in the following image.
 
 ![](./images/board11_07.jpg)
 
 The oscilloscope image below captures the toggle cycle
 of the LED in the background task.
 The background task, although programmed to toggle its
-pin every 10 ms does have slight, occasional variations
-in its call cycle due to task jitter and being interrupted
-by the application task having higher priority.
+pin every 50ms does have slight, occasional variations
+in its toggle cycle. These are due to task jitter
+and the fact that the background task is interrupted
+by the call cycle and subsequent execution of the
+application task (which has higher priority).
 
 ![](./images/scope11_07.jpg)

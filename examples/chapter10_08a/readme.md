@@ -139,8 +139,8 @@ Pinning differs slightly depending on whether
 we are intending to use either the 1 MByte brick
 or the 2 MByte brick.
 
-The pin connections for the 48-pin TSOP 2 MByte memory brick
-of type Cypress(R) MoBL(R) CY62167GN
+The pin connections for the 2 MByte memory brick
+of type Cypress(R) MoBL(R) CY62167GN in 48-pin TSOP
 are shown in the table below. The pinnning has
 been selected with certain considerations in mind that
 make the software driver for the memory brick
@@ -160,10 +160,10 @@ read/write operations on the driver level.
 | 7              | A9         | Port Expander GPA_5     |
 | 8              | A8         | Port Expander GPA_4     |
 | 9              | A19        | Port Expander GPB_7     |
-| 10             | NC         | X (open)                |
+| 10             | NC         | open/no connection      |
 | 11             | WE_NOT     | MCU PB4/pin18           |
 | 12             | CE2        | +5V over 2 kOhm         |
-| 13             | NC         | X (open)                |
+| 13             | NC         | open/no connection      |
 | 14             | BHE_NOT    | +5V over 2 kOhm         |
 | 15             | BLE_NOT    | GND                     |
 | 16             | A18        | Port Expander GPB_6     |
@@ -180,20 +180,20 @@ read/write operations on the driver level.
 | 27             | VSS        | GND                     |
 | 28             | OE_NOT     | MCU PC5/pin28           |
 | 29             | I/O_0      | MCU PD0/pin2            |
-| 30             | I/O_8      | X (open)                |
+| 30             | I/O_8      | open/no connection      |
 | 31             | I/O_1      | MCU PD1/pin3            |
-| 32             | I/O_9      | X (open)                |
+| 32             | I/O_9      | open/no connection      |
 | 33             | I/O_2      | MCU PD2/pin4            |
-| 34             | I/O_10     | X (open)                |
+| 34             | I/O_10     | open/no connection      |
 | 35             | I/O_3      | MCU PD3/pin5            |
-| 36             | I/O_11     | X (open)                |
+| 36             | I/O_11     | open/no connection      |
 | 37             | VCC        | +5V                     |
 | 38             | I/O_4      | MCU PD4/pin6            |
-| 39             | I/O_12     | X (open)                |
+| 39             | I/O_12     | open/no connection      |
 | 40             | I/O_5      | MCU PD5/pin11           |
-| 41             | I/O_13     | X (open)                |
+| 41             | I/O_13     | open/no connection      |
 | 42             | I/O_6      | MCU PD6/pin12           |
-| 43             | I/O_14     | X (open)                |
+| 43             | I/O_14     | open/no connection      |
 | 44             | I/O_7      | MCU PD7/pin13           |
 | 45             | I/O_15/A20 | MCU PC2/pin25           |
 | 46             | GND        | GND                     |
