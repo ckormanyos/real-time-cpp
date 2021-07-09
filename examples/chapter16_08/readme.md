@@ -41,19 +41,44 @@ of the random digitized noise from this circuit.
 
 # Deep Connection to the Prime Number Theorem
 
-The prime number theorem postulates that the asymptotic density
-of prime numbers for large <img src="https://render.githubusercontent.com/render/math?math=x">,
-<img src="https://render.githubusercontent.com/render/math?math=\pi(x)">,
-approaches
+The prime number theorem postulates that the prime counting function
+<img src="https://render.githubusercontent.com/render/math?math=\pi(x)">
+for large <img src="https://render.githubusercontent.com/render/math?math=x">,
+asymptotically approaches
 
 <img src="https://render.githubusercontent.com/render/math?math=\pi(x)\,\sim\,\frac{\log(x)}{x}">.
 
-The detailed description in the book verifies in an intuitive
-and tacit way the prime number theorem running via
-this example's software running on an 8-bit micrcocontroller.
-This is a really cool combination of electronics, real-time C++
-template programming, and the inate elegance and beauty
-of pure and applied mathematics.
+This assertion basically means that
+for large <img src="https://render.githubusercontent.com/render/math?math=n">
+the density of prime numbers is approximately
+<img src="https://render.githubusercontent.com/render/math?math=1/\,\log(n)">.
+For 128-bit unsigned integers around
+<img src="https://render.githubusercontent.com/render/math?math=2^{128}\,\approx\,3.4\,\times\,10^{38}">,
+the probability that a randomly chosen integer is prime is about
+<img src="https://render.githubusercontent.com/render/math?math=1/\,\log(2^{128})\,\approx\,1/\,89">,
+or a bit in excess of one percent.
+
+By filtering out even numbers, using simple _wheel_ factors, etc.,
+the odds that a randomly chosen 128-bit integer is prime can be increased.
+With simple preselection in the software of Example Chapter16_08,
+these odds are increased to slightly higher than
+<img src="https://render.githubusercontent.com/render/math?math=\sim\,1/\,25">,
+or around four percent.
+The non-trivial mathematical description in the book runs through
+the entire mathematical analysis in great detail.
+
+Running Example Chapter16_08 accumulates over time many prime numbers
+selected randomly from prime candidates originating from the random bits
+collected from the generator circuit shown above.
+A running average of approximately how many candidates have been tested
+per prime number found verifies the prime number theorem
+in a very intuitive and _real-time_ way.
+
+This advanced example's software running on an 8-bit micrcocontroller
+exhibits a fascinating combination of elementary electronics,
+real-time C++ object-oriented and template programming,
+and the inate elegance and beauty of pure mathematics.
+It is simply cool!
 
 # Hardware Setup
 
@@ -65,7 +90,7 @@ random bits are collected to be collated into 128-bit prime candidates.
 The random noise subcircuit can be observed in the central right portion
 of the breadboard. The 12V supply stems from a classic LM7812
 voltage regulator, from which TTL +5V is also derived for
-theMCU and logic power rail.
+the MCU and logic power rail.
 
 The target hardware is shown in the image below. In this image,
 the system has accumulated a few hundred pseudo-random prime
