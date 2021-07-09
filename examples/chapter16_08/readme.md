@@ -11,9 +11,12 @@ of pure mathematics.
 
 # Application Description
 
-This project uses a hardware electronic subcircuit to generate random noise.
-Bits are collected from the digitized random noise and used
-to create random 128-bit pseudo-prime numbers.
+This project uses an elementary electronic subcircuit
+to generate a semi-random electrical noise signal.
+Bits are collected from the digitized random noise
+using a hardware/software random engine.
+These bits are concatenated and subsequently used
+to create 128-bit pseudo-prime numbers.
 Primality testing uses the Miller-Rabin algorithm.
 The [wide-integer](https://github.com/ckormanyos/wide-integer)
 project is used to implement 128-bit unsigned integers.
@@ -22,7 +25,7 @@ In this example, Miller-Rabin testing has been implemented as a state machine.
 The individual states of the prime testing machine are serviced within the
 time slices of the multitasking scheduler.
 Representation of the 128-bit integers is in hexadecimal format
-on an LCD module havint width of 40 characters.
+on an LCD module having width of 40 characters.
 
 The electronic subcircuit used for creating the random digitized noise
 is sketched below.
