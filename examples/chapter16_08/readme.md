@@ -53,12 +53,21 @@ The probability that a randomly chosen 128-bit unsigned integer is prime is abou
 <img src="https://render.githubusercontent.com/render/math?math=1/\,\log(2^{128})\,\approx\,1/\,89">,
 or a bit in excess of one percent.
 
-By filtering out even numbers, simple _wheel_ factors, etc.,
-the odds that a randomly chosen 128-bit integer is prime can be increased.
-With straightforward preselection implemented within
+Numbers having trailing base-10 digit equal to one of 0, 2, 4, 5, 6 or 8
+are obviously non-prime. These have been rejected via software
+from the random device in example chapter16_08.
+Furthermore, prime candidates having base-10 digital root
+equal to 3, 6 or 9 have also been eliminated from prime consideration.
+This selective filtering increases the odds that a randomly chosen
+128-bit integer is prime by the two factors
+<img src="https://render.githubusercontent.com/render/math?math=\left(1/\,\frac{4}{10}\right)\,\times\,\left(1/\,\frac{2}{3}\right)">.
+
+With corresponding preselection implemented within
 the bit-collection software of Example Chapter16_08,
 the primality odds are increased to slightly higher than
-<img src="https://render.githubusercontent.com/render/math?math=\sim\,1/\,25">,
+
+<img src="https://render.githubusercontent.com/render/math?math=\left(\frac{1}{89}\right)\,\times\,\left(1/\,\frac{4}{10}\right)\,\times\,\left(1/\,\frac{2}{3}\right)\,\approx\,\frac{1}{24}">,
+
 or around four percent. Sect. 16.8 in the book runs through
 the realted, intriguing mathematics in great detail.
 
@@ -70,14 +79,16 @@ that have been tested per prime number found is stored
 and displayed in realtime. The value of this running average
 verifies the prime number theorem in a very intuitive way.
 
-In the realease version of this software running on our target
-with the 8-bit microcontroller, it takes approximately 15s on average
-to find each one new pseudo-random 128-bit prime, or about
-<img src="https://render.githubusercontent.com/render/math?math=\lesssim\,250">,
+The realease version of this software is intended to run on our target
+with the 8-bit microcontroller, as shown below.
+On this system, it takes approximately 15s on average
+to find each single new pseudo-random 128-bit prime.
+This results in finding about
+<img src="https://render.githubusercontent.com/render/math?math=\lesssim\,240">,
 primes per hour.
 
-Testing exercises for this project on the 8-bit target have collected
-hundreds of thousands of primes. In addition, PC-based testing
+Testing experiences for this project on the 8-bit target have collected
+hundreds of thousands of primes. In addition, in-depth PC-based testing
 has confirmed the integrity of the numerical methods
 with many, many millions of primes found and independently verified
 with separate computer and software algebra system(s).
