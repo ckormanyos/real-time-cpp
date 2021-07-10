@@ -66,7 +66,7 @@ the bit-collection software, in fact,
 the odds that a randomly chosen selectively filtered
 128-bit integer is prime increase to slightly higher than
 
-<img src="https://render.githubusercontent.com/render/math?math=\left(\dfrac{1}{89}\right)\,\times\,\left(1/\,\dfrac{4}{10}\right)\,\times\,\left(1/\,\frac{2}{3}\right)\,\approx\,\dfrac{1}{24}">,
+<img src="https://render.githubusercontent.com/render/math?math=\left(\dfrac{1}{89}\right)\,\times\,\left(1/\,\dfrac{4}{10}\right)\,\times\,\left(1/\,\dfrac{2}{3}\right)\,\approx\,\dfrac{1}{24}">,
 
 or around four percent. Sect. 16.8 in the book runs through
 the realted, intriguing mathematics in great detail.
