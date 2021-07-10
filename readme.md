@@ -2,17 +2,16 @@
 
 ## Announcement July 2021
 
-Now adding/proofing examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
+Now refining examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
 planned to be finished by July/August 2021.
-
-New examples include:
-  - [chapter03_02](./examples/chapter03_02)
-  - [chapter04_04](./examples/chapter04_04) and [chapter04_04a](./examples/chapter04_04a)
-  - [chapter06_14](./examples/chapter06_14)
-  - [chapter10_08](./examples/chapter10_08) and [chapter10_08a](./examples/chapter10_08a), both advanced level
-  - [chapter10_09](./examples/chapter10_09), advanced level
-  - [chapter11_07](./examples/chapter11_07)
-  - [chapter16_08](./examples/chapter16_08), advanced level
+New examples include [chapter03_02](./examples/chapter03_02),
+[chapter04_04](./examples/chapter04_04) and [chapter04_04a](./examples/chapter04_04a),
+[chapter06_14](./examples/chapter06_14),
+[chapter10_08](./examples/chapter10_08) and [chapter10_08a](./examples/chapter10_08a) both having advanced level,
+[chapter10_09](./examples/chapter10_09) having advanced level,
+[chapter11_07](./examples/chapter11_07),
+and
+[chapter16_08](./examples/chapter16_08) having advanced level.
 
 ---
 

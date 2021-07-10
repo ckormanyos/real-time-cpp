@@ -3,7 +3,7 @@
 
 ## Announcement July 2021
 
-Now adding/proofing examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
+Now refining examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
 planned to be finished by July/August 2021.
 
 ---
