@@ -41,7 +41,7 @@ The prime number theorem postulates that the prime counting function
 for large <img src="https://render.githubusercontent.com/render/math?math=x">
 asymptotically and approximately approaches
 
-<img src="https://render.githubusercontent.com/render/math?math=\pi(x)\,\sim\,\frac{\log(x)}{x}">.
+<img src="https://render.githubusercontent.com/render/math?math=\pi(x)\,\sim\,\dfrac{\log(x)}{x}">.
 
 This assertion basically means that
 for large <img src="https://render.githubusercontent.com/render/math?math=n">
@@ -59,10 +59,11 @@ from the random device in example chapter16_08.
 Furthermore, prime candidates having base-10 digital root
 equal to 3, 6 or 9 have also been eliminated from prime consideration.
 
-This selective filtering increases the odds that a randomly chosen
-128-bit integer is prime. With selective filtering implemented within
-the bit-collection software of Example Chapter16_08,
-The odds that a randomly chosen selectively filtered
+This selective digital filtering in the software of Example Chapter16_08
+increases the odds that a randomly chosen
+128-bit integer is prime. With selective digital filtering implemented within
+the bit-collection software, in fact,
+the odds that a randomly chosen selectively filtered
 128-bit integer is prime increase to slightly higher than
 
 <img src="https://render.githubusercontent.com/render/math?math=\left(\dfrac{1}{89}\right)\,\times\,\left(1/\,\dfrac{4}{10}\right)\,\times\,\left(1/\,\frac{2}{3}\right)\,\approx\,\dfrac{1}{24}">,
