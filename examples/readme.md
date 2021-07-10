@@ -3,7 +3,7 @@
 
 ## Announcement July 2021
 
-Now adding/proofing examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
+Now refining examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
 planned to be finished by July/August 2021.
 
 ---
@@ -72,10 +72,10 @@ This advanced example extends RAM even further with a 2MByte parallel SRAM brick
 Example ![chapter10_09](./chapter10_09) 100,001 Digits of Pi on Raspberry Pi(R).\
 This advanced example ports the Pi Spigot 100,001 digits Pi calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
 
-Example ![chapter11_07](./chapter11_07) Straightforward Preemptive Multitasking.\
+Example ![chapter11_07](./chapter11_07) Preemptive Multitasking.\
 This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.
 
-Example ![chapter12_04](./chapter12_04) Benchmarking floating-point calculations.\
+Example ![chapter12_04](./chapter12_04) Benchmarking Floating-Point Calculations.\
 This example performs a variety of floating-point calculations of selected special functions of pure and applied mathematics.
 
 Example ![chapter16_08](./chapter16_08) Generating and displaying 128-bit Random Prime Numbers.\
