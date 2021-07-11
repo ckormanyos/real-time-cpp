@@ -3,8 +3,8 @@
 
 ## Announcement July 2021
 
-Now refining examples for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956)
-planned to be finished by July/August 2021.
+We are now refining the [examples](./examples) for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956).
+This activity is planned to be finished by July/August 2021.
 
 ---
 

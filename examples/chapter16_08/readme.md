@@ -34,6 +34,25 @@ from Newhaven Display International. The display
 is 40 characters in width by 4 lines and is, in fact,
 controlled as two individual displays packed together.
 
+The realease version of this software is intended to run on our target
+with the 8-bit microcontroller, as shown below.
+On this system, it takes approximately 15s on average
+to find each single new pseudo-random 128-bit prime.
+This results in finding about
+<img src="https://render.githubusercontent.com/render/math?math=\lesssim\,240">,
+primes per hour.
+
+Testing experiences for this project on the 8-bit target have collected
+hundreds of thousands of primes. In addition, in-depth PC-based testing
+has confirmed the integrity of the numerical methods
+with many, many millions of primes found and independently verified
+with separate computer and software algebra system(s).
+
+This advanced example's software running on an 8-bit micrcocontroller
+exhibits a fascinating combination of elementary electronics,
+real-time C++ object-oriented and template programming,
+and the inate elegance and beauty of pure mathematics.
+
 # Deep Connection to the Prime Number Theorem
 
 The prime number theorem postulates that the prime counting function
@@ -66,7 +85,7 @@ the bit-collection software, in fact,
 the odds that a randomly chosen selectively filtered
 128-bit integer is prime increase to slightly higher than
 
-<img src="https://render.githubusercontent.com/render/math?math=\left(\dfrac{1}{89}\right)\,\times\,\left(1/\,\dfrac{4}{10}\right)\,\times\,\left(1/\,\dfrac{2}{3}\right)\,\approx\,\dfrac{1}{24}">,
+<img src="https://render.githubusercontent.com/render/math?math=\left(\dfrac{1}{89}\right)\,\div\,\left(\dfrac{4}{10}\right)\,\div\,\left(\dfrac{2}{3}\right)\,\approx\,\dfrac{1}{24}">,
 
 or around four percent. Sect. 16.8 in the book runs through
 the realted, intriguing mathematics in great detail.
@@ -78,25 +97,6 @@ A running average representing the number of prime candidates
 that have been tested per prime number found is stored
 and displayed in realtime. The value of this running average
 verifies the prime number theorem in a very intuitive way.
-
-The realease version of this software is intended to run on our target
-with the 8-bit microcontroller, as shown below.
-On this system, it takes approximately 15s on average
-to find each single new pseudo-random 128-bit prime.
-This results in finding about
-<img src="https://render.githubusercontent.com/render/math?math=\lesssim\,240">,
-primes per hour.
-
-Testing experiences for this project on the 8-bit target have collected
-hundreds of thousands of primes. In addition, in-depth PC-based testing
-has confirmed the integrity of the numerical methods
-with many, many millions of primes found and independently verified
-with separate computer and software algebra system(s).
-
-This advanced example's software running on an 8-bit micrcocontroller
-exhibits a fascinating combination of elementary electronics,
-real-time C++ object-oriented and template programming,
-and the inate elegance and beauty of pure mathematics.
 
 # Hardware Setup
 
