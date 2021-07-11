@@ -89,11 +89,10 @@ for the OS tick.
 
 # Hardware Setup
 
+An example of a simple, self-made target hardware running
+Example Chapter11_07 is shown in the image below.
 The blinky LED 1s on/off can be found on `portb.5`.
 The background 10Hz toggle pin can be found on `portd.3`.
-
-An example of a target hardware featuring the
-2 MByte SRAM brick is shown in the following image.
 
 ![](./images/board11_07.jpg)
 
