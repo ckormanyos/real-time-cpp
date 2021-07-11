@@ -23,7 +23,7 @@ The Pi Spigot program used in this example has essentially
 the exact form that has been used in the previous Example Chapter10_08.
 The algorithms and their implementations remain,
 in fact, identically the same.
-The difference in this example is the extension to up to 2MByte
+The difference in this example is the extension to up to 2 MByte
 SRAM allowing for the calculation of even more digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
@@ -149,56 +149,56 @@ Where possible, for instance, entire 8-bit ports or groups
 of port pins have been matched on SRAM/MCU/Port-Expander to simplify
 read/write operations on the driver level.
 
-| SRAM TSOP-48   | Function   | Device Connection       |
-| -------------- | ---------- | ----------------------- |
-| 1              | A15        | Port Expander GPB_3     |
-| 2              | A14        | Port Expander GPB_2     |
-| 3              | A13        | Port Expander GPB_1     |
-| 4              | A12        | Port Expander GPB_0     |
-| 5              | A11        | Port Expander GPA_7     |
-| 6              | A10        | Port Expander GPA_6     |
-| 7              | A9         | Port Expander GPA_5     |
-| 8              | A8         | Port Expander GPA_4     |
-| 9              | A19        | Port Expander GPB_7     |
-| 10             | NC         | open/no connection      |
-| 11             | WE_NOT     | MCU PB4/pin18           |
-| 12             | CE2        | +5V over 2 kOhm         |
-| 13             | NC         | open/no connection      |
-| 14             | BHE_NOT    | +5V over 2 kOhm         |
-| 15             | BLE_NOT    | GND                     |
-| 16             | A18        | Port Expander GPB_6     |
-| 17             | A17        | Port Expander GPB_5     |
-| 18             | A7         | Port Expander GPA_3     |
-| 19             | A6         | Port Expander GPA_2     |
-| 20             | A5         | Port Expander GPA_1     |
-| 21             | A4         | Port Expander GPA_0     |
-| 22             | A3         | MCU PB3/pin17           |
-| 23             | A2         | MCU PB2/pin16           |
-| 24             | A1         | MCU PB1/pin15           |
-| 25             | A0         | MCU PB0/pin14           |
-| 26             | CE1_NOT    | MCU PC4/pin27           |
-| 27             | VSS        | GND                     |
-| 28             | OE_NOT     | MCU PC5/pin28           |
-| 29             | I/O_0      | MCU PD0/pin2            |
-| 30             | I/O_8      | open/no connection      |
-| 31             | I/O_1      | MCU PD1/pin3            |
-| 32             | I/O_9      | open/no connection      |
-| 33             | I/O_2      | MCU PD2/pin4            |
-| 34             | I/O_10     | open/no connection      |
-| 35             | I/O_3      | MCU PD3/pin5            |
-| 36             | I/O_11     | open/no connection      |
-| 37             | VCC        | +5V                     |
-| 38             | I/O_4      | MCU PD4/pin6            |
-| 39             | I/O_12     | open/no connection      |
-| 40             | I/O_5      | MCU PD5/pin11           |
-| 41             | I/O_13     | open/no connection      |
-| 42             | I/O_6      | MCU PD6/pin12           |
-| 43             | I/O_14     | open/no connection      |
-| 44             | I/O_7      | MCU PD7/pin13           |
-| 45             | I/O_15/A20 | MCU PC2/pin25           |
-| 46             | GND        | GND                     |
-| 47             | BYTE_NOT   | GND                     |
-| 48             | A16        | Port Expander GPB_4     |
+| SRAM CY62167GN TSOP-48   | Function   | Device Connection       |
+| ------------------------ | ---------- | ----------------------- |
+| 1                        | A15        | Port Expander GPB_3     |
+| 2                        | A14        | Port Expander GPB_2     |
+| 3                        | A13        | Port Expander GPB_1     |
+| 4                        | A12        | Port Expander GPB_0     |
+| 5                        | A11        | Port Expander GPA_7     |
+| 6                        | A10        | Port Expander GPA_6     |
+| 7                        | A9         | Port Expander GPA_5     |
+| 8                        | A8         | Port Expander GPA_4     |
+| 9                        | A19        | Port Expander GPB_7     |
+| 10                       | NC         | open/no connection      |
+| 11                       | WE_NOT     | MCU PB4/pin18           |
+| 12                       | CE2        | +5V over 2 kOhm         |
+| 13                       | NC         | open/no connection      |
+| 14                       | BHE_NOT    | +5V over 2 kOhm         |
+| 15                       | BLE_NOT    | GND                     |
+| 16                       | A18        | Port Expander GPB_6     |
+| 17                       | A17        | Port Expander GPB_5     |
+| 18                       | A7         | Port Expander GPA_3     |
+| 19                       | A6         | Port Expander GPA_2     |
+| 20                       | A5         | Port Expander GPA_1     |
+| 21                       | A4         | Port Expander GPA_0     |
+| 22                       | A3         | MCU PB3/pin17           |
+| 23                       | A2         | MCU PB2/pin16           |
+| 24                       | A1         | MCU PB1/pin15           |
+| 25                       | A0         | MCU PB0/pin14           |
+| 26                       | CE1_NOT    | MCU PC4/pin27           |
+| 27                       | VSS        | GND                     |
+| 28                       | OE_NOT     | MCU PC5/pin28           |
+| 29                       | I/O_0      | MCU PD0/pin2            |
+| 30                       | I/O_8      | open/no connection      |
+| 31                       | I/O_1      | MCU PD1/pin3            |
+| 32                       | I/O_9      | open/no connection      |
+| 33                       | I/O_2      | MCU PD2/pin4            |
+| 34                       | I/O_10     | open/no connection      |
+| 35                       | I/O_3      | MCU PD3/pin5            |
+| 36                       | I/O_11     | open/no connection      |
+| 37                       | VCC        | +5V                     |
+| 38                       | I/O_4      | MCU PD4/pin6            |
+| 39                       | I/O_12     | open/no connection      |
+| 40                       | I/O_5      | MCU PD5/pin11           |
+| 41                       | I/O_13     | open/no connection      |
+| 42                       | I/O_6      | MCU PD6/pin12           |
+| 43                       | I/O_14     | open/no connection      |
+| 44                       | I/O_7      | MCU PD7/pin13           |
+| 45                       | I/O_15/A20 | MCU PC2/pin25           |
+| 46                       | GND        | GND                     |
+| 47                       | BYTE_NOT   | GND                     |
+| 48                       | A16        | Port Expander GPB_4     |
 
 The hardware setup with the 2 MByte SRAM brick
 is pictured in the image below.
