@@ -182,6 +182,26 @@ in the source code of the low-level initialization files
 in the [chip startup](./target/micros/bcm2835_raspi_b/startup)
 and [MCAL](./src/mcal/bcm2835_raspi_b).
 
+For a deep dive into the low-level chip init, for instance,
+consider the header file
+[mcal_cpu_detail_secure.h](./src/mcal/bcm2835_raspi_b/mcal_cpu_detail_secure.h).
+This file is written in hybrid C++/assembly and contains
+quite a few of the particular chip-specific initialization features.
+These are collected in the inline subroutine
+`mcal::cpu::detail::init()` which is also sketched below.
+
+```C
+friend inline void mcal::cpu::detail::init()
+{
+  initialize_vfp_unit();
+  clear_branch_prediction_array();
+  fill_tlb_entries();
+  enable_mmu();
+  enable_branch_prediction();
+  enable_caches();
+}
+```
+
 # SD Card Contents
 
 For exemplary purposes, the entire contents of an RpiZero
