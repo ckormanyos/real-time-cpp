@@ -23,7 +23,8 @@ The famous Pi Spigot algorithm is often used to compute
 modestly small numbers of decimal digits of the mathematical constant
 <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
-A simple expression of Spigot algorithm for
+A simple expression of a Spigot algorithm
+for the base-10 representation of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 is provided in Eq. 6.1, Sect. 6.1,
 page 78 of Arndt and Haenel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
