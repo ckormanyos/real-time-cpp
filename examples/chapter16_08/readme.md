@@ -1,10 +1,10 @@
-# Example Chapter16_08
+# Example Chapter16_08 (advanced level)
 # Generate and Display 128-bit Random Prime Numbers
 
-This advanced example uses an extended integer class
-to create 128-bit random unsigned prime integers with
-primality testing performed via Miller-Rabin.
-
+This advanced example uses a self-made pseudo-random electronic
+signal generator combined with an extended integer class
+to create 128-bit random unsigned prime integers.
+Primality testing is performed via Miller-Rabin.
 This example also provides fascinating, intuitive,
 visual insight into the prime number theorem
 of pure mathematics.
