@@ -1,13 +1,14 @@
 # Example Chapter10_08 (advanced level)
 # External SPI RAM and Computing 10,001 Digits of Pi
 
-This advanced example extends available RAM via SPI SRAM chips
-and uses a Pi Spigot algorithm to compute up to approximately
+This advanced example extends available RAM via SPI SRAM chips.
+It uses a Pi Spigot algorithm to compute up to approximately
 <img src="https://render.githubusercontent.com/render/math?math=10,001">
 decimal digits of the mathematical
-constant <img src="https://render.githubusercontent.com/render/math?math=\pi">,
-showing fascinating memory management iterators,
-containers and algorithms along the way.
+constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
+Along the way, this example implements fascinating memory management mechanisms
+including external-RAM-based iterators, containers and algorithms
+in modern C++ style.
 
 This example embodies a stunning depiction
 of computational complexity running in a real-world, real-time system.
