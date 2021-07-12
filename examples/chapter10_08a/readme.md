@@ -40,10 +40,10 @@ and
 found in the files
 [mcal_memory_sram_parallel_cypress_cy62158e.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62158e.h)
 and
-[mcal_memory_sram_parallel_cypress_cy62158e.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62167gn.h),
+[mcal_memory_sram_parallel_cypress_cy62167gn.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62167gn.h),
 respectively. The former controls a 1 MByte parallel SRAM
 brick of type CY62158E
-and the latter controls a 2 MByte parallel SRAM
+while the latter controls a 2 MByte parallel SRAM
 brick of type
 CY62167GN, both from Cypress(R), an Infineon Company.
 The class for the larger brick is cleverly devised
