@@ -189,16 +189,17 @@ jobs:
           ./bootstrap.bat
           ./b2 headers
         working-directory: ./examples/
+      - uses: actions/checkout@v1
+      - uses: ilammy/msvc-dev-cmd@v1
       - name: target-msvc-example16_08
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        shell: cmd
+        working-directory: ./examples/
         run: |
           cd ${{ matrix.example }}
           dir
           set INCLUDE='%cd%\src\mcal\win32\;%cd%\src\;%cd%\..\..\boost-root\;%INCLUDE%'
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/${{ matrix.example }}.exe
-        working-directory: ./examples/
   target-arm:
     runs-on: ubuntu-20.04
     defaults:
