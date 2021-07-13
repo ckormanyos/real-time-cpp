@@ -49,7 +49,7 @@ with many, many millions of primes found and independently verified
 with separate computer and software algebra system(s).
 The default PC configuration built with the VisualStudio(R)
 project uses
-[Boost.Multiprecision]()
+[Boost.Multiprecision](https://www.boost.org/doc/libs/1_76_0/libs/multiprecision/doc/html/index.html)
 for its 128-bit integer representation and independent primality testing.
 
 This advanced example's software running on an 8-bit micrcocontroller
