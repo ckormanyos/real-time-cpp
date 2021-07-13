@@ -3,9 +3,10 @@
 
 This advanced example picks up on the idea of the previous Example Chapter10_08
 and extends RAM even further with an external
-2MByte asynchronous parallel SRAM brick.
+2 MByte asynchronous parallel SRAM brick.
 This memory extension significantly expands the range of the Pi Spigot calculation
-with the 8-bit MCU, allowing the computation and verification of up to and beyond
+with the 8-bit MCU. This 2 MByte RAM extension enables, in fact,
+the computation and verification of up to and beyond
 <img src="https://render.githubusercontent.com/render/math?math=100,001">
 decimal digits of the mathematical
 constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
@@ -119,7 +120,7 @@ asynchronous parallel SRAM memory.
 # Hardware Setup
 
 It is hoped that this example will challenge the microcontroller
-laboratory enthusiast and provide for a positive technical experience
+laboratory enthusiast and provide for a fulfilling technical experience
 for those intrepid makers who wrangle with it and take it on.
 In fact, the wiring of this example is rich in detail and requires attentive
 fitting of each wire properly to its dedicated pin(s) on the MCU
