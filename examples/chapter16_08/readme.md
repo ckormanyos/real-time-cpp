@@ -47,6 +47,10 @@ hundreds of thousands of primes. In addition, in-depth PC-based testing
 has confirmed the integrity of the numerical methods
 with many, many millions of primes found and independently verified
 with separate computer and software algebra system(s).
+The default PC configuration built with the VisualStudio(R)
+project uses
+[Boost.Multiprecision]()
+for its 128-bit integer representation and independent primality testing.
 
 This advanced example's software running on an 8-bit micrcocontroller
 exhibits a fascinating combination of elementary electronics,

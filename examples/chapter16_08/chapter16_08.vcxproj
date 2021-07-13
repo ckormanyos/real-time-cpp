@@ -568,9 +568,6 @@
     </None>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat" />
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="src\math\test\lib\wstp64i4m.lib" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
