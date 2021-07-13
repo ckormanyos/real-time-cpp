@@ -143,9 +143,6 @@ jobs:
         working-directory: ./examples/
   target-msvc-example16_08:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -188,8 +185,6 @@ jobs:
           git submodule update --init libs/utility
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v1
-      - uses: ilammy/msvc-dev-cmd@v1
       - name: target-msvc-example16_08
         shell: cmd
         working-directory: ./
