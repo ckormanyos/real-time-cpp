@@ -191,11 +191,10 @@ jobs:
         shell: cmd
         working-directory: ./
         run: |
-          cd examples
-          cd ${{ matrix.example }}
+          cd examples/${{ matrix.example }}
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
-          dir Release\chapter16_08.exe
+          dir Release/${{ matrix.example }}.exe
   target-arm:
     runs-on: ubuntu-20.04
     defaults:
