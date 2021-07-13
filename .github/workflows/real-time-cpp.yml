@@ -143,6 +143,9 @@ jobs:
         working-directory: ./examples/
   target-msvc-example16_08:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -185,19 +188,16 @@ jobs:
           git submodule update --init libs/utility
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v1
-      - uses: ilammy/msvc-dev-cmd@v1
       - name: target-msvc-example16_08
-        shell: cmd
-        working-directory: ./
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
-          cd examples
           cd ${{ matrix.example }}
-          dir %cd%\..\..\..
-          dir %cd%\..\..\..\boost-root
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
+          dir
           dir ./Release/${{ matrix.example }}.exe
+        working-directory: ./examples/
   target-arm:
     runs-on: ubuntu-20.04
     defaults:
