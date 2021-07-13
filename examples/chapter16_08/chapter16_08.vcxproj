@@ -19,7 +19,6 @@
     <SccLocalPath>Rational ClearCase</SccLocalPath>
     <SccProvider>Rational ClearCase</SccProvider>
     <ProjectName>chapter16_08</ProjectName>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -55,12 +54,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\src;$(SolutionDir)\src\mcal\win32;C:\boost\boost_1_76_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\src;$(SolutionDir)\src\mcal\win32;C:\boost\boost_1_76_0;$(SolutionDir)..\..\..\boost-root;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\src;$(SolutionDir)\src\mcal\win32;C:\boost\boost_1_76_0;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\src;$(SolutionDir)\src\mcal\win32;C:\boost\boost_1_76_0;$(SolutionDir)..\..\..\boost-root;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
