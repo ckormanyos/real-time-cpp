@@ -194,7 +194,8 @@ jobs:
       - name: target-msvc-example16_08
         shell: cmd
         run: |
-          set INCLUDE=%cd%\src\mcal\win32\;%cd%\src\;%cd%\..\..\boost-root\;%INCLUDE%
+          dir %cd%\..
+          set INCLUDE=%cd%\src\mcal\win32\;%cd%\src\;%cd%\..\boost-root\;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/${{ matrix.example }}.exe
         working-directory: ./examples/${{ matrix.example }}
