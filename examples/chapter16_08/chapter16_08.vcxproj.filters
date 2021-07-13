@@ -85,9 +85,6 @@
     <Filter Include="src\math\test">
       <UniqueIdentifier>{ebd42680-2209-43cc-bf91-3f24676e9390}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\math\test\lib">
-      <UniqueIdentifier>{59228e07-81c6-4c27-a16d-16126ce8381e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sys\start\sys_start.cpp">
@@ -631,10 +628,5 @@
     <None Include="src\util\STL\span">
       <Filter>src\util\STL</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="src\math\test\lib\wstp64i4m.lib">
-      <Filter>src\math\test\lib</Filter>
-    </Library>
   </ItemGroup>
 </Project>
