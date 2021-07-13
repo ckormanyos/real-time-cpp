@@ -143,9 +143,6 @@ jobs:
         working-directory: ./examples/
   target-msvc-example16_08:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -190,7 +187,7 @@ jobs:
           ./b2 headers
       - uses: actions/checkout@v1
       - uses: ilammy/msvc-dev-cmd@v1
-      - name: msvc-release-x64
+      - name: target-msvc-example16_08
         shell: cmd
         working-directory: ./
         run: |
@@ -199,6 +196,7 @@ jobs:
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir
+          dir Release
   target-arm:
     runs-on: ubuntu-20.04
     defaults:
