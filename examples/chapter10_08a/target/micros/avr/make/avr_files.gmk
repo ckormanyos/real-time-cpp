@@ -1,0 +1,17 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# File list of the avr files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_APP)/mcal/avr/mcal_memory_sram                     \
+             $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_TGT)/startup/crt0                                  \
+             $(PATH_TGT)/startup/crt0_init_ram                         \
+             $(PATH_TGT)/startup/crt1                                  \
+             $(PATH_TGT)/startup/int_vect

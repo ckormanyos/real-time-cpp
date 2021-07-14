@@ -11,8 +11,8 @@
 
 # See also: https://blog.zakkemble.net/avr-gcc-builds/
 
-#GCC_VERSION   = 7.3.0
-GCC_VERSION   = 10.1.0
+GCC_VERSION   = 7.3.0
+#GCC_VERSION   = 11.1.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
@@ -30,7 +30,7 @@ TGT_ALLFLAGS  = -Os                                                             
 TGT_CFLAGS    = -std=c99                                                          \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++20                                                        \
+TGT_CXXFLAGS  = -std=c++11                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL

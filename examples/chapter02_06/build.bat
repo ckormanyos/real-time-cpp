@@ -45,7 +45,7 @@ del /Q bin\led*.*
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/led.elf bin/led.hex
 
 @echo.Extract  : assembly list file  : from bin/led.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/led.elf > bin/led.lss
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/led.elf > bin/led.lss
 
 @echo.Extract  : size information    : from bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/led.elf > bin\led_size.txt

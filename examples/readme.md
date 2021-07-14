@@ -1,4 +1,14 @@
 
+---
+
+## Announcement July 2021
+
+We are now refining the [examples](./examples) for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956).
+This activity is planned to be finished by July/August 2021.
+
+---
+
+
 ## These examples are motivated by the book "Real-Time C++".
 
 See : C.M. Kormanyos, [Real-Time C++](http://www.springer.com/9783662567173):
@@ -40,7 +50,7 @@ Example ![chapter06_01](./chapter06_01) A CRC Benchmark.\
 This example illustrates certain optimization techniques through the calculation
 of a standard CRC32 checksum (cycle redundancy check).
 
-Example ![chapter06_14](./chapter06_14) A CRC Benchmark with ROM-based Table and Data.\
+Example ![chapter06_14](./chapter06_14) A CRC Benchmark with ROM-Based Table and Data.\
 This example features essentially the same functionality as example chapter06_01.
 The checksum table and benchmark data, however, are ROM-able.
 
@@ -50,9 +60,27 @@ This example makes use of object oriented programming methods to control a seven
 Example ![chapter09_08](./chapter09_08) Controlling an RGB LED.\
 This example utilizes object oriented programming techniques to control an RGB LED.
 
-Example ![chapter12_04](./chapter12_04) Floating-Point Calculations.\
-This example performs a variety of floating-point calculations
-of selected special functions of pure and applied mathematics.
+Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
+This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits of the mathematical constant Pi, showing fascinating memory management iterators, containers and algorithms along the way.
+This example depicts algorithmic complexity running in a real-world system
+and highlights the real-time numeric expression of the detailed description
+of algorithmic complexity in the corresponding book section.
+
+Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
+This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant Pi.
+
+Example ![chapter10_09](./chapter10_09) 100,001 Digits of Pi on Raspberry Pi(R).\
+This advanced example ports the Pi Spigot 100,001 digits Pi calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
+
+Example ![chapter11_07](./chapter11_07) Preemptive Multitasking.\
+This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.
+
+Example ![chapter12_04](./chapter12_04) Benchmarking Floating-Point Calculations.\
+This example performs a variety of floating-point calculations of selected special functions of pure and applied mathematics.
+
+Example ![chapter16_08](./chapter16_08) Generating and displaying 128-bit Random Prime Numbers.\
+This advanced example uses an extended integer class to create 128-bit unsigned prime integers with primality testing performed via Miller-Rabin.
+This example also provides fascinating, intuitive, visual insight into the prime number theory of pure mathematics.
 
 Example ![chapter17_03](./chapter17_03) Traditional C Language Code in a Modern C++ Project.\
 This example depicts some methods that potentially allow the successful use

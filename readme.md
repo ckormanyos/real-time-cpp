@@ -1,3 +1,21 @@
+---
+
+## Announcement July 2021
+
+We are now refining the [examples](./examples) for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956).
+This activity is planned to be finished by July/August 2021.
+
+New [examples](./examples) include [chapter03_02](./examples/chapter03_02),
+[chapter04_04](./examples/chapter04_04) and [chapter04_04a](./examples/chapter04_04a),
+[chapter06_14](./examples/chapter06_14),
+[chapter10_08](./examples/chapter10_08) and [chapter10_08a](./examples/chapter10_08a) both having advanced level,
+[chapter10_09](./examples/chapter10_09) having advanced level,
+[chapter11_07](./examples/chapter11_07),
+and
+[chapter16_08](./examples/chapter16_08) having advanced level.
+
+---
+
 Companion code for the book Real-Time C++\
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
@@ -68,7 +86,7 @@ To get started with the reference application on `*nix`
 
 In summary, on `*nix` for `target avr`
 
-```C
+```sh
 cd real-time-cpp
 cd ref_app
 ./target/build/build.sh avr rebuild
@@ -105,7 +123,7 @@ For this purpose, CMake files have also been created for each supported target.
 Consider, for instance, building the reference application for the
 `avr`target with CMake. The pattern is shown below.
 
-```C
+```sh
 cd real-time-cpp
 mkdir build
 cd build
@@ -244,12 +262,13 @@ GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
 A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 5.2 or higher (better yet, higher) is required for building
+GCC 5 (or, better yet, higher) is required for building
 the reference application.
 
 Some of the code snippets demonstrate language elements not only from C++11,
-but also from C++14 and C++17. A compiler with C++17 support (such as GCC 7.2.0)
-can, therefore, be beneficial for success with *all* of the code snippets.
+but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 7)
+or even C++20 support (such as GCC 11) can, therefore,
+be beneficial for success with *all* of the code snippets.
 
 In the reference application on `*Win`, the makefiles are aware of a default location
 for the respective GCC tool chains. This location has been defined by me

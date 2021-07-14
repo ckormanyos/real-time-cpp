@@ -249,8 +249,12 @@
                 typename base_class_type::value_type());
     }
 
-    constexpr fixed_static_array(const fixed_static_array& other_array)
-      : base_class_type(static_cast<const base_class_type&>(other_array)) { }
+    fixed_static_array(const fixed_static_array& other_array)
+    {
+      std::copy(other_array.cbegin(),
+                other_array.cbegin() + MySize,
+                base_class_type::begin());
+    }
 
     template<const std::uint_fast32_t OtherSize>
     fixed_static_array(const fixed_static_array<std::uint_fast32_t, OtherSize>& other_array)
@@ -317,8 +321,8 @@
 
     constexpr unsigned_wrap(signed_type n)
       : my_neg  (n < static_cast<signed_type>(0)),
-        my_value((my_neg == false) ? static_cast<unsigned_type>(n)
-                                   : static_cast<unsigned_type>(1U) + static_cast<unsigned_type>(-(n + 1))) { }
+        my_value(static_cast<unsigned_type>((my_neg == false) ? static_cast<unsigned_type>(n)
+                                                              : static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(n)) + 1U))) { }
 
     unsigned_type get_value_unsigned() const { return my_value; }
       signed_type get_value_signed  () const { return (my_neg == false) ? (signed_type) my_value : -(signed_type) my_value; }
@@ -334,7 +338,7 @@
       {
         // +3 + (+2)
         // -3 + (-2)
-        my_value += other.my_value;
+        my_value = static_cast<unsigned_type>(my_value + other.my_value);
       }
       else
       {
@@ -343,12 +347,12 @@
           if(my_value > other.my_value)
           {
             // +3 + (-2)
-            my_value -= other.my_value;
+            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + 1U));
           }
           else
           {
             // +2 + (-3)
-            my_value = other.my_value - my_value;
+            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + 1U));
 
             my_neg = (my_value != 0U) ? true : false;
           }
@@ -358,12 +362,12 @@
           if(my_value > other.my_value)
           {
             // -3 + (+2)
-            my_value -= other.my_value;
+            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + 1U));
           }
           else
           {
             // -2 + (+3)
-            my_value = other.my_value - my_value;
+            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + 1U));
 
             my_neg = false;
           }

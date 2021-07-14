@@ -1,0 +1,363 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef BASIC_STRING_2010_02_23_
+  #define BASIC_STRING_2010_02_23_
+
+  #if defined(__GNUC__)
+  #pragma GCC system_header
+  #endif
+
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <initializer_list>
+  #include <iterator>
+  #include <memory>
+
+  #include <string.h>
+
+  #include "impl/allocator_impl.h"
+
+  // Implement some of std::char_traits for compilers that do not yet support it.
+
+  namespace std
+  {
+    template<typename char_type>
+    class char_traits
+    {
+    public:
+      static std::size_t length(const char_type* first)
+      {
+        const char_type* p = first;
+
+        while(*p != char_type('\0'))
+        {
+          ++p;
+        }
+
+        return (std::size_t) (p - first);
+      }
+
+      static int compare(const char_type* first1, const char_type* first2, size_t count)
+      {
+        for( ; 0 < count; --count, ++first1, ++first2)
+        {
+          if(*first1 != *first2)
+          {
+            return ((*first1 < *first2) ? -1 : +1);
+          }
+        }
+
+        return 0;
+      }
+    };
+
+    template<>
+    class char_traits<char>
+    {
+    public:
+      static std::size_t length(const char* first)
+      {
+        return ::strlen(first);
+      }
+
+      static int compare(const char* first1, const char* first2, size_t count)
+      {
+        for( ; 0 < count; --count, ++first1, ++first2)
+        {
+          if(*first1 != *first2)
+          {
+            return ((*first1 < *first2) ? -1 : +1);
+          }
+        }
+
+        return 0;
+      }
+    };
+  }
+
+  // Implement some of std::basic_string for compilers that do not yet support it.
+
+  namespace std
+  {
+    template<typename T,
+             typename traits_type = std::char_traits<T>,
+             typename alloc = std::allocator<T> >
+    class basic_string
+    {
+    public:
+      typedef alloc                                    allocator_type;
+      typedef std::size_t                              size_type;
+      typedef std::ptrdiff_t                           difference_type;
+      typedef T                                        value_type;
+      typedef typename allocator_type::pointer         pointer;
+      typedef typename allocator_type::const_pointer   const_pointer;
+      typedef typename allocator_type::reference       reference;
+      typedef typename allocator_type::const_reference const_reference;
+      typedef pointer                                  iterator;
+      typedef const_pointer                            const_iterator;
+      typedef std::reverse_iterator<iterator>          reverse_iterator;
+      typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
+
+      static STL_LOCAL_CONSTEXPR size_type npos = static_cast<size_type>(-1);
+
+      basic_string() : my_first(allocator_type().allocate(1U)),
+                       my_last (my_first)
+      {
+        *my_last = static_cast<value_type>(0);
+      }
+
+      explicit basic_string(size_type count) : my_first(allocator_type().allocate(count + 1U)),
+                                               my_last (my_first + count)
+      {
+        std::fill(my_first, my_last, value_type());
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(size_type count, const T& value) : my_first(allocator_type().allocate(count + 1U)),
+                                                      my_last (my_first + count)
+      {
+        std::fill(my_first, my_last, value);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(const_pointer p)
+      {
+        const size_type count = traits_type::length(p);
+        my_first = allocator_type().allocate(count + 1U);
+        my_last = my_first + count;
+        std::copy(p, p + count, my_first);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(const basic_string& str)
+      {
+        const size_type count = str.length();
+        my_first = allocator_type().allocate(count + 1U);
+        my_last = my_first + count;
+        std::copy(str.begin(), str.end(), my_first);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(std::initializer_list<T> lst)
+      {
+        const size_type count = lst.size();
+        my_first = allocator_type().allocate(count + 1U);
+        my_last = my_first + count;
+        std::copy(lst.begin(), lst.end(), my_first);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(size_type count,
+                   const T& value,
+                   const allocator_type& a) : my_first(allocator_type(a).allocate(count + 1U)),
+                                              my_last (my_first + count)
+      {
+        std::fill(my_first, my_last, value);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      template<typename input_iterator>
+      basic_string(input_iterator first,
+                   input_iterator last,
+                   const allocator_type& a = allocator_type())
+      {
+        const size_type sz = static_cast<size_type>(std::distance(first, last));
+        my_first = allocator_type(a).allocate(sz + 1U);
+        my_last  = my_first + sz;
+        std::copy(first, last, my_first);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      basic_string(std::initializer_list<T> lst,
+                   const allocator_type& a = allocator_type())
+      {
+        const size_type sz = (size_type) (lst.size());
+        my_first = allocator_type(a).allocate(sz + 1U);
+        my_last  = my_first + sz;
+        std::copy(lst.begin(), lst.end(), my_first);
+        *my_last = static_cast<value_type>(0);
+      }
+
+      ~basic_string()
+      {
+        std::destroy_range   (my_first, my_last + 1U, allocator_type());
+        std::deallocate_range(my_first, my_last + 1U, allocator_type());
+      }
+
+      basic_string& operator=(const basic_string& str)
+      {
+        if(this == &str)
+        {
+        }
+        else
+        {
+          const size_type sz = str.length();
+
+          if(length() != sz)
+          {
+            std::destroy_range   (my_first, my_last + 1U, allocator_type());
+            std::deallocate_range(my_first, my_last + 1U, allocator_type());
+
+            my_first = allocator_type().allocate(sz + 1U);
+            my_last  = my_first + sz;
+          }
+
+          std::copy(str.begin(), str.end(), my_first);
+          *my_last = static_cast<value_type>(0);
+        }
+
+        return *this;
+      }
+
+      basic_string& operator=(const_pointer p)
+      {
+        const size_type sz = traits_type::length(p);
+
+        if(length() != sz)
+        {
+          std::destroy_range   (my_first, my_last + 1U, allocator_type());
+          std::deallocate_range(my_first, my_last + 1U, allocator_type());
+
+          my_first = allocator_type().allocate(sz + 1U);
+          my_last  = my_first + sz;
+        }
+
+        std::copy(p, p + sz, my_first);
+        *my_last = static_cast<value_type>(0);
+
+        return *this;
+      }
+
+      basic_string& operator=(std::initializer_list<T> lst)
+      {
+        const size_type sz = lst.size();
+
+        if(length() != sz)
+        {
+          std::destroy_range   (my_first, my_last + 1U, allocator_type());
+          std::deallocate_range(my_first, my_last + 1U, allocator_type());
+
+          my_first = allocator_type().allocate(sz + 1U);
+          my_last  = my_first + sz;
+        }
+
+        std::copy(lst.begin(), lst.end(), my_first);
+        *my_last = static_cast<value_type>(0);
+
+        return *this;
+      }
+
+      iterator begin() { return my_first; }
+      iterator end  () { return my_last; }
+
+      const_iterator begin() const { return my_first; }
+      const_iterator end  () const { return my_last; }
+
+      const_iterator cbegin() const { return my_first; }
+      const_iterator cend  () const { return my_last; }
+
+      reverse_iterator rbegin() { return reverse_iterator(my_last); }
+      reverse_iterator rend  () { return reverse_iterator(my_first); }
+
+      const_reverse_iterator rbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator rend  () const { return const_reverse_iterator(my_first); }
+
+      const_reverse_iterator crbegin() const { return const_reverse_iterator(my_last); }
+      const_reverse_iterator crend  () const { return const_reverse_iterator(my_first); }
+
+      reference operator[](const size_type i)             { return my_first[i]; }
+      const_reference operator[](const size_type i) const { return my_first[i]; }
+
+      reference at(const size_type i)             { return my_first[i]; }
+      const_reference at(const size_type i) const { return my_first[i]; }
+
+      bool      empty () const STL_LOCAL_NOEXCEPT { return (my_first == my_last); }
+      size_type length() const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
+      size_type size  () const STL_LOCAL_NOEXCEPT { return static_cast<size_type>(my_last - my_first); }
+
+      const_pointer c_str() const { return my_first; }
+
+      allocator_type get_allocator() const { return allocator_type(); }
+
+      bool operator==(const basic_string& other) const
+      {
+        const bool the_lengths_are_equal = (length() == other.length());
+
+        return (the_lengths_are_equal && std::equal(my_first, my_last, other.my_first));
+      }
+
+      int compare(const basic_string& other_string) const
+      {
+        const size_type my_size    = size();
+        const size_type other_size = other_string.size();
+
+        const bool      my_size_is_less = (my_size < other_size);
+        const size_type compare_size    = (my_size_is_less ? my_size : other_size);
+
+        int compare_result = traits_type::compare(my_first, other_string.my_first, compare_size);
+
+        if((compare_result == 0) && (my_size != other_size))
+        {
+          compare_result = (my_size_is_less ? -1 : +1);
+        }
+
+        return compare_result;
+      }
+
+    private:
+      iterator my_first;
+      iterator my_last;
+    };
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator==(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (left.compare(right) == 0);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator!=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(left == right));
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator<(const basic_string<T, char_traits, allocator_type>& left,
+                   const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (left.compare(right) < 0);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator>(const basic_string<T, char_traits, allocator_type>& left,
+                   const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (right < left);
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator<=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(right < left));
+    }
+
+    template<typename T, typename char_traits, typename allocator_type>
+    bool operator>=(const basic_string<T, char_traits, allocator_type>& left,
+                    const basic_string<T, char_traits, allocator_type>& right)
+    {
+      return (!(left < right));
+    }
+  }
+
+#endif // BASIC_STRING_2010_02_23_

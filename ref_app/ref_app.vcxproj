@@ -953,7 +953,7 @@
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail_fft.h" />
     <ClInclude Include="src\math\wide_decimal\decwide_t_detail_ops.h" />
-    <ClInclude Include="src\math\wide_integer\generic_template_uintwide_t.h" />
+    <ClInclude Include="src\math\wide_integer\uintwide_t.h" />
     <ClInclude Include="src\mcal\am335x\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -2018,12 +2018,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\util\STL\impl\alloc_traits.h" />
+    <ClInclude Include="src\util\STL\impl\alloc_traits.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\util\STL\impl\ptr_traits.h" />
+    <ClInclude Include="src\util\STL\impl\ptr_traits.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\util\STL\impl\stl_local_constexpr.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

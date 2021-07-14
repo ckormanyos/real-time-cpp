@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2020.
+@rem Copyright Christopher Kormanyos 2014 - 2021.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -112,7 +112,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter12_04.elf bin/chapter12_04.hex
 
 @echo.Extract  : assembly list file  : from bin/chapter12_04.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/chapter12_04.elf > bin/chapter12_04.lss
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter12_04.elf > bin/chapter12_04.lss
 
 @echo.Extract  : size information    : from bin/chapter12_04.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter12_04.elf > bin\chapter12_04_size.txt

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2020.
+//  Copyright Christopher Kormanyos 2018 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,12 +11,12 @@
 
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 
-#include <math/wide_integer/generic_template_uintwide_t.h>
+#include <math/wide_integer/uintwide_t.h>
 
 namespace
 {
   using uint256_t =
-    wide_integer::generic_template::uintwide_t<256U, std::uint32_t>;
+    math::wide_integer::uintwide_t<256U, std::uint32_t>;
 
   static_assert(std::numeric_limits<uint256_t>::digits == 256,
                 "Error: Incorrect digit count for this example");
@@ -42,81 +42,42 @@ namespace
   // Modulus:
   //   a % b = 0x14998D5CA3DB6385F7DEDF4621DE48A9104AC13797C6567713D7ABC216D7AB4C
 
-  const uint256_t a
-  (
-    {
-      UINT32_C(0x410065DE),
-      UINT32_C(0x3BDEED78),
-      UINT32_C(0x80AF54D5),
-      UINT32_C(0xCFC456CB),
-      UINT32_C(0x026EF9CB),
-      UINT32_C(0x37F18372),
-      UINT32_C(0xE58BCB2F),
-      UINT32_C(0xF4DF741D)
-    }
-  );
-
-  const uint256_t b
-  (
-    {
-      UINT32_C(0x9DD0DF75),
-      UINT32_C(0x3733ECF8),
-      UINT32_C(0x974A7FD6),
-      UINT32_C(0x4658F55B),
-      UINT32_C(0x6341AB50),
-      UINT32_C(0xECCEAA04),
-      UINT32_C(0x202B3D90),
-      UINT32_C(0x166D63E0)
-    }
-  );
+  WIDE_INTEGER_CONSTEXPR uint256_t a("0xF4DF741DE58BCB2F37F18372026EF9CBCFC456CB80AF54D53BDEED78410065DE");
+  WIDE_INTEGER_CONSTEXPR uint256_t b("0x166D63E0202B3D90ECCEAA046341AB504658F55B974A7FD63733ECF89DD0DF75");
+  WIDE_INTEGER_CONSTEXPR uint256_t c("0xE491A360C57EB4306C61F9A04F7F7D99BE3676AAD2D71C5592D5AE70F84AF076");
+  WIDE_INTEGER_CONSTEXPR uint256_t m("0x14998D5CA3DB6385F7DEDF4621DE48A9104AC13797C6567713D7ABC216D7AB4C");
 
   bool run_wide_integer_mul()
   {
-    const uint256_t c
-    (
-      {
-        UINT32_C(0xF84AF076),
-        UINT32_C(0x92D5AE70),
-        UINT32_C(0xD2D71C55),
-        UINT32_C(0xBE3676AA),
-        UINT32_C(0x4F7F7D99),
-        UINT32_C(0x6C61F9A0),
-        UINT32_C(0xC57EB430),
-        UINT32_C(0xE491A360)
-      }
-    );
+    WIDE_INTEGER_CONSTEXPR bool result_of_mul_is_ok = ((a * b) == c);
 
-    const bool result_of_mul_is_ok = ((a * b) == c);
+    #if defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0)
+    static_assert(result_of_mul_is_ok == true, "Error: result_of_mul_is_ok not OK!");
+    #endif
 
     return result_of_mul_is_ok;
   }
 
   bool run_wide_integer_div()
   {
-    const uint256_t q(10U);
+    WIDE_INTEGER_CONSTEXPR uint256_t q(10U);
 
-    const bool result_of_div_is_ok = ((a / b) == q);
+    WIDE_INTEGER_CONSTEXPR bool result_of_div_is_ok = ((a / b) == q);
+
+    #if defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0)
+    static_assert(result_of_div_is_ok == true, "Error: result_of_div_is_ok not OK!");
+    #endif
 
     return result_of_div_is_ok;
   }
 
   bool run_wide_integer_mod()
   {
-    const uint256_t m
-    (
-      {
-        UINT32_C(0x16D7AB4C),
-        UINT32_C(0x13D7ABC2),
-        UINT32_C(0x97C65677),
-        UINT32_C(0x104AC137),
-        UINT32_C(0x21DE48A9),
-        UINT32_C(0xF7DEDF46),
-        UINT32_C(0xA3DB6385),
-        UINT32_C(0x14998D5C)
-      }
-    );
+    WIDE_INTEGER_CONSTEXPR bool result_of_mod_is_ok = ((a % b) == m);
 
-    const bool result_of_mod_is_ok = ((a % b) == m);
+    #if defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0)
+    static_assert(result_of_mod_is_ok == true, "Error: result_of_div_is_ok not OK!");
+    #endif
 
     return result_of_mod_is_ok;
   }

@@ -1,0 +1,90 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2012 - 2019.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef INITIALIZER_LIST_2012_02_14_H_
+  #define INITIALIZER_LIST_2012_02_14_H_
+
+  #include <impl/stl_local_constexpr.h>
+  #include <impl/stl_local_noexcept.h>
+
+  #include <cstddef>
+  #include <iterator>
+
+  // Implement std::initializer_list for compilers that do not yet support it.
+  // See ISO/IEC 14882:2011 Chapter 18.9.
+
+  namespace std
+  {
+    template<typename T>
+    class initializer_list
+    {
+    public:
+      typedef T           value_type;
+      typedef const T&    reference;
+      typedef const T&    const_reference;
+      typedef std::size_t size_type;
+      typedef const T*    iterator;
+      typedef const T*    const_iterator;
+
+      STL_LOCAL_CONSTEXPR initializer_list() STL_LOCAL_NOEXCEPT
+        : my_elems (nullptr),
+          my_length(0U) { }
+
+      STL_LOCAL_CONSTEXPR initializer_list(iterator it_first,
+                                           iterator it_last) STL_LOCAL_NOEXCEPT
+        : my_elems  (it_first),
+          my_length (size_type(it_last - it_first)) { }
+
+      STL_LOCAL_CONSTEXPR size_type size() const STL_LOCAL_NOEXCEPT { return my_length; }
+
+      STL_LOCAL_CONSTEXPR iterator begin() const STL_LOCAL_NOEXCEPT { return my_elems; }
+      STL_LOCAL_CONSTEXPR iterator end  () const STL_LOCAL_NOEXCEPT { return my_elems + my_length; }
+
+    private:
+      iterator  my_elems;
+      size_type my_length;
+    };
+
+    // Non-member versions of begin and end of initializer_list<T>.
+    template<typename T>
+    STL_LOCAL_CONSTEXPR
+    typename initializer_list<T>::iterator begin(initializer_list<T> lst) STL_LOCAL_NOEXCEPT
+    {
+      return lst.begin();
+    }
+
+    template<typename T>
+    STL_LOCAL_CONSTEXPR
+    typename initializer_list<T>::iterator end(initializer_list<T> lst) STL_LOCAL_NOEXCEPT
+    {
+      return lst.end();
+    }
+
+    // Namespace std inline versions of rbegin and rend of initializer_list<T>.
+    // These are specified in C++14.
+    template<typename T>
+    STL_LOCAL_CONSTEXPR
+    typename initializer_list<T>::iterator rbegin(initializer_list<T> lst) STL_LOCAL_NOEXCEPT
+    {
+      using local_reverse_iterator_type =
+        std::reverse_iterator<typename initializer_list<T>::iterator>;
+
+      return local_reverse_iterator_type(lst.end());
+    }
+
+    template<typename T>
+    STL_LOCAL_CONSTEXPR
+    typename initializer_list<T>::iterator rend(initializer_list<T> lst) STL_LOCAL_NOEXCEPT
+    {
+      using local_reverse_iterator_type =
+        std::reverse_iterator<typename initializer_list<T>::iterator>;
+
+      return local_reverse_iterator_type(lst.begin());
+    }
+  }
+
+#endif // INITIALIZER_LIST_2012_02_14_H_

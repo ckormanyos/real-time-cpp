@@ -1,0 +1,18 @@
+#
+#  Copyright Christopher Kormanyos 2013 - 2020.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# File list of the RaspberryPi(R) ARM(R) A11 files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu_detail_secure            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_reg                          \
+             $(PATH_TGT)/startup/crt0                                  \
+             $(PATH_TGT)/startup/crt0_init_ram                         \
+             $(PATH_TGT)/startup/crt1                                  \
+             $(PATH_TGT)/startup/int_vect

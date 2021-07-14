@@ -8,6 +8,7 @@
 #ifndef ALGORITHM_2010_02_23_
   #define ALGORITHM_2010_02_23_
 
+  #include <impl/stl_local_constexpr.h>
   #include <cstddef>
   #include <initializer_list>
   #include <iterator>
@@ -21,28 +22,28 @@
     // Forward declaration.
     template<typename input_iterator1,
              typename input_iterator2>
-    void iter_swap(input_iterator1 left,
-                   input_iterator2 right);
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void iter_swap(input_iterator1 left,
+                                                  input_iterator2 right);
 
     template<typename value_type>
-    const value_type& (min)(const value_type& a,
-                            const value_type& b)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(value_type a,
+                                                    value_type b)
     {
       return ((a < b) ? a : b);
     }
 
     template<typename value_type,
              typename binary_function_type>
-    const value_type& (min)(const value_type&    a,
-                            const value_type&    b,
-                            binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(value_type a,
+                                                    value_type b,
+                                                    binary_function_type binary_function)
     {
       return (binary_function(b, a) ? b : a);
     }
 
     template<typename forward_iterator>
-    forward_iterator min_element(forward_iterator first,
-                                 forward_iterator last)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS forward_iterator min_element(forward_iterator first,
+                                                                forward_iterator last)
     {
       forward_iterator minimum_value = first;
 
@@ -64,9 +65,9 @@
 
     template<typename forward_iterator,
              typename binary_function_type>
-    forward_iterator min_element(forward_iterator     first,
-                                 forward_iterator     last,
-                                 binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS forward_iterator min_element(forward_iterator     first,
+                                                                forward_iterator     last,
+                                                                binary_function_type binary_function)
     {
       forward_iterator minimum_value = first;
 
@@ -87,15 +88,15 @@
     }
 
     template<typename value_type>
-    value_type (min)(std::initializer_list<value_type> my_initializer_list)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(std::initializer_list<value_type> my_initializer_list)
     {
       return *std::min_element(my_initializer_list.begin(), my_initializer_list.end());
     }
 
     template<typename value_type,
              typename binary_function_type>
-    value_type (min)(std::initializer_list<value_type> my_initializer_list,
-                     binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (min)(std::initializer_list<value_type> my_initializer_list,
+                                                    binary_function_type binary_function)
     {
       return *std::min_element(my_initializer_list.begin(),
                                my_initializer_list.end(),
@@ -103,23 +104,23 @@
     }
 
     template<typename value_type>
-    const value_type& (max)(const value_type& a,
-                            const value_type& b)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(value_type a,
+                                                    value_type b)
     {
       return ((a > b) ? a : b);
     }
 
     template<typename value_type,
              typename binary_function_type>
-    const value_type& (max)(const value_type&    a,
-                            const value_type&    b,
-                            binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(value_type           a,
+                                                    value_type           b,
+                                                    binary_function_type binary_function)
     {
       return (binary_function(a, b) ? a : b);
     }
 
     template<typename forward_iterator>
-    forward_iterator max_element(forward_iterator first, forward_iterator last)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS forward_iterator max_element(forward_iterator first, forward_iterator last)
     {
       forward_iterator maximum_value = first;
 
@@ -141,9 +142,9 @@
 
     template<typename forward_iterator,
              typename binary_function_type>
-    forward_iterator max_element(forward_iterator     first,
-                                 forward_iterator     last,
-                                 binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS forward_iterator max_element(forward_iterator     first,
+                                                                forward_iterator     last,
+                                                                binary_function_type binary_function)
     {
       forward_iterator maximum_value = first;
 
@@ -164,15 +165,15 @@
     }
 
     template<typename value_type>
-    value_type (max)(std::initializer_list<value_type> my_initializer_list)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(std::initializer_list<value_type> my_initializer_list)
     {
       return *std::max_element(my_initializer_list.begin(), my_initializer_list.end());
     }
 
     template<typename value_type,
              typename binary_function_type>
-    value_type (max)(std::initializer_list<value_type> my_initializer_list,
-                     binary_function_type binary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS value_type (max)(std::initializer_list<value_type> my_initializer_list,
+                                                    binary_function_type binary_function)
     {
       return *std::max_element(my_initializer_list.begin(),
                                my_initializer_list.end(),
@@ -226,9 +227,9 @@
 
     template<typename input_iterator,
              typename output_iterator>
-    output_iterator copy(input_iterator  first,
-                         input_iterator  last,
-                         output_iterator result)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS output_iterator copy(input_iterator  first,
+                                                        input_iterator  last,
+                                                        output_iterator result)
     {
       for( ; first != last; ++result, ++first)
       {
@@ -240,9 +241,9 @@
 
     template<typename bidirectional_input__iterator1,
              typename bidirectional_output_iterator2>
-    bidirectional_output_iterator2 copy_backward(bidirectional_input__iterator1 first1,
-                                                 bidirectional_input__iterator1 last1,
-                                                 bidirectional_output_iterator2 last2)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS bidirectional_output_iterator2 copy_backward(bidirectional_input__iterator1 first1,
+                                                                                bidirectional_input__iterator1 last1,
+                                                                                bidirectional_output_iterator2 last2)
     {
       while (first1 != last1)
       {
@@ -280,9 +281,9 @@
 
     template<typename forward_iterator,
              typename value_type>
-    void fill(forward_iterator  first,
-              forward_iterator  last,
-              const value_type& value)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void fill(forward_iterator  first,
+                                             forward_iterator  last,
+                                             const value_type& value)
     {
       for( ; first != last; ++first)
       {
@@ -293,9 +294,9 @@
     template<typename output_iterator,
              typename size_type,
              typename value_type>
-    output_iterator fill_n(output_iterator   first,
-                           size_type         count,
-                           const value_type& value)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS output_iterator fill_n(output_iterator   first,
+                                                          size_type         count,
+                                                          const value_type& value)
     {
       const output_iterator last(first + count);
 
@@ -336,7 +337,7 @@
     }
 
     template<typename bidirectional_iterator>
-    void reverse(bidirectional_iterator first, bidirectional_iterator last)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void reverse(bidirectional_iterator first, bidirectional_iterator last)
     {
       while((first != last) && (first != --last))
       {
@@ -422,9 +423,9 @@
 
     template<typename iterator_type,
              typename unary_function_type>
-    bool all_of(iterator_type       first,
-                iterator_type       last,
-                unary_function_type unary_function)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS bool all_of(iterator_type       first,
+                                               iterator_type       last,
+                                               unary_function_type unary_function)
     {
       while((first != last) && unary_function(*first))
       {
@@ -546,11 +547,13 @@
     }
 
     template<class InputIt1, class InputIt2>
-    std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1, InputIt1 last1, InputIt2 first2)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS std::pair<InputIt1, InputIt2> mismatch(InputIt1 first1,
+                                                                          InputIt1 last1,
+                                                                          InputIt2 first2)
     {
       while(first1 != last1 && *first1 == *first2)
       {
-          ++first1, ++first2;
+        ++first1, ++first2;
       }
 
       return std::make_pair(first1, first2);
@@ -764,8 +767,8 @@
 
     template<typename input_iterator1,
              typename input_iterator2>
-    void iter_swap(input_iterator1 left,
-                   input_iterator2 right)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void iter_swap(input_iterator1 left,
+                                                  input_iterator2 right)
     {
       typedef typename std::iterator_traits<input_iterator1>::value_type value_left_type;
       typedef typename std::iterator_traits<input_iterator2>::value_type value_right_type;

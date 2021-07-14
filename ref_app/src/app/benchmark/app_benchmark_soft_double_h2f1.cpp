@@ -11,15 +11,22 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
 
+//#define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE
+
+#if !defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
 #define SOFT_DOUBLE_DISABLE_IOSTREAM
+#endif
 
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <numeric>
 
+#if !defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
 #include <math/softfloat/soft_double.h>
+#endif
 
 namespace local
 {
@@ -165,7 +172,13 @@ namespace local
 
 bool app::benchmark::run_soft_double_h2f1()
 {
+  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+  using float64_t = double;
+  #else
   using float64_t = math::softfloat::float64_t;
+  #endif
+
+  static_assert(std::numeric_limits<float64_t>::digits >= 53, "Error: incorrect float64_t type definition");
 
   const float64_t a( float64_t(2U) / 3U);
   const float64_t b( float64_t(4U) / 3U);
@@ -175,8 +188,11 @@ bool app::benchmark::run_soft_double_h2f1()
   const float64_t h2f1 = local::hypergeometric_2f1(a, b, c, z);
 
   // N[Hypergeometric2F1[2/3, 4/3, 5/7, -3/4], 41]
-  const float64_t control(UINT64_C(0x3FE0083B15946592),
-                          math::softfloat::detail::nothing());
+  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+  const float64_t control = 0.50100473608761064038202987077811306637010;
+  #else
+  const float64_t control(UINT64_C(0x3FE0083B15946592), math::softfloat::detail::nothing());
+  #endif
 
   using std::fabs;
 

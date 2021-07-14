@@ -1,0 +1,13 @@
+#
+#  Copyright Christopher Kormanyos 2019 - 2020.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# File list of the x86_64-w64-mingw32 files in the project
+# ------------------------------------------------------------------------------
+
+FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_pwm_software                      \
+             $(PATH_APP)/mcal/$(TGT)/mcal_wdg_watchdog

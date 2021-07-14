@@ -99,14 +99,14 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
 @echo.Link     : objects to bin/chapter03_02.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter02_03.map bin/app_led.o bin/app_prime.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter03_02.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter03_02.map bin/app_led.o bin/app_prime.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter03_02.elf
 
 @echo.
 @echo.Extract  : executable hex file : from bin/chapter03_02.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter03_02.elf bin/chapter03_02.hex
 
 @echo.Extract  : assembly list file  : from bin/chapter03_02.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump -h -S bin/chapter03_02.elf > bin/chapter03_02.lss
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter03_02.elf > bin/chapter03_02.lss
 
 @echo.Extract  : size information    : from bin/chapter03_02.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter03_02.elf > bin\chapter03_02_size.txt

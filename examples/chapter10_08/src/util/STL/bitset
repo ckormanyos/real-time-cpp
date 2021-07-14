@@ -1,0 +1,117 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef BITSET_2018_06_10_
+  #define BITSET_2018_06_10_
+
+  #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
+  #include <limits>
+  #include <string>
+
+  #include <impl/stl_local_constexpr.h>
+
+  namespace std
+  {
+    template<const std::size_t my_bit_count>
+    class bitset
+    {
+    public:
+      using element_type = bool;
+
+      STL_LOCAL_CONSTEXPR bitset() : my_memory()
+      {
+        std::fill(my_memory, my_memory + my_elem_count, 0U);
+      }
+
+      STL_LOCAL_CONSTEXPR bitset(unsigned long long val) : my_memory()
+      {
+        std::fill(my_memory, my_memory + my_elem_count, 0U);
+
+        for(std::uint_fast8_t i = 0U; i < (std::min)(my_bit_count, std::size_t(std::numeric_limits<unsigned long long>::digits)); ++i)
+        {
+          if((val & 1U) != 0U)
+          {
+            set(i);
+          }
+
+          val >>= 1;
+        }
+      }
+
+      template<typename T,
+               typename traits_type,
+               typename alloc>
+      explicit bitset(const std::basic_string<T, traits_type, alloc>& str,
+                      typename std::basic_string<T, traits_type, alloc>::size_type pos = 0U,
+                      typename std::basic_string<T, traits_type, alloc>::size_type n =
+                        std::basic_string<T, traits_type, alloc>::npos,
+                        T zero = T('0'),
+                        T one  = T('1'))
+      {
+      }
+
+      template<typename T>
+      explicit bitset(const T* str,
+                      typename std::basic_string<T>::size_type n = std::basic_string<T>::npos,
+                      T zero = T('0'),
+                      T one  = T('1'))
+      {
+      }
+
+      ~bitset() = default;
+
+      void set()
+      {
+        if(my_elem_count > 0U)
+        {
+          std::size_t i;
+
+          for(i = 0U; i < my_elem_count - 1U; ++i)
+          {
+            my_memory[i] = UINT8_C(0xFF);
+          }
+
+          std::uint_fast8_t mask = 1U;
+
+          for(std::uint_fast8_t j = 0U; j < (my_elem_count % 8U); ++j)
+          {
+            my_memory[i] |= std::uint8_t(mask);
+
+            mask <<= 1;
+          }
+        }
+      }
+
+      bitset& set(size_t pos, bool value = true)
+      {
+        if(value)
+        {
+          my_memory[i / 8U] |= (UINT8_C(1) << (i % 8U));
+        }
+        else
+        {
+          my_memory[i / 8U] &= std::uint8_t(~(UINT8_C(1) << (i % 8U)));
+        }
+
+        return *this;
+      }
+
+      void flip(const std::size_t i)
+      {
+        my_memory[i / 8U] ^= (UINT8_C(1) << (i % 8U));
+      }
+
+    private:
+      static const std::size_t my_elem_count = (my_bit_count / 8U) + (((my_bit_count % 8U) != 0U) ? 1U : 0U);
+
+      std::uint8_t my_memory[my_elem_count];
+    };
+  }
+
+#endif // BITSET_2018_06_10_
