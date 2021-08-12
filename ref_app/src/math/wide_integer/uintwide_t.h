@@ -37,6 +37,12 @@
 
   #include <util/utility/util_dynamic_array.h>
 
+  #if (defined(__clang__) && (__clang_major__ <= 9))
+  #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE struct
+  #else
+  #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE class
+  #endif
+
   #if defined(_MSC_VER)
     #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
       #define WIDE_INTEGER_CONSTEXPR constexpr
@@ -397,7 +403,7 @@
              typename LimbType,
              typename AllocatorType,
              const bool IsSigned>
-    class numeric_limits<math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>;
+    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>;
   }
 
   namespace math { namespace wide_integer { namespace detail {
@@ -816,7 +822,7 @@
     using const_reverse_iterator = typename representation_type::const_reverse_iterator;
 
     // Define a class-local type that has double the width of *this.
-    using double_width_type = uintwide_t<size_t(Width2 * 2U), LimbType, AllocatorType, IsSigned>;
+    using double_width_type = uintwide_t<size_t(Width2 * 2U), limb_type, AllocatorType, IsSigned>;
 
     // Default constructor.
     constexpr uintwide_t() { }
@@ -938,15 +944,34 @@
     template<const size_t OtherWidth2>
     WIDE_INTEGER_CONSTEXPR uintwide_t(const uintwide_t<OtherWidth2, LimbType, AllocatorType, IsSigned>& v)
     {
+      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, IsSigned>;
+
+      const bool v_is_neg = (other_wide_integer_type::is_neg(v));
+
       const size_t sz =
         (std::min)(size_t(v.crepresentation().size()),
                    size_t(number_of_limbs));
 
-      std::copy(v.crepresentation().cbegin(),
-                v.crepresentation().cbegin() + sz,
-                values.begin());
+      if(v_is_neg == false)
+      {
+        std::copy(v.crepresentation().cbegin(),
+                  v.crepresentation().cbegin() + sz,
+                  values.begin());
 
-      std::fill(values.begin() + sz, values.end(), limb_type(0U));
+        std::fill(values.begin() + sz, values.end(), limb_type(0U));
+      }
+      else
+      {
+        const other_wide_integer_type uv(-v);
+
+        std::copy(uv.crepresentation().cbegin(),
+                  uv.crepresentation().cbegin() + sz,
+                  values.begin());
+
+        std::fill(values.begin() + sz, values.end(), limb_type(0U));
+
+        negate();
+      }
     }
 
     // Constructor from a constant character string.
@@ -994,21 +1019,21 @@
     }
 
     #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
-    explicit WIDE_INTEGER_CONSTEXPR operator long double       () const { return extract_builtin_floating_point_type<long double>(); }
-    explicit WIDE_INTEGER_CONSTEXPR operator double            () const { return extract_builtin_floating_point_type<double>     (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator float             () const { return extract_builtin_floating_point_type<float>      (); }
+    explicit constexpr operator long double       () const { return extract_builtin_floating_point_type<long double>(); }
+    explicit constexpr operator double            () const { return extract_builtin_floating_point_type<double>     (); }
+    explicit constexpr operator float             () const { return extract_builtin_floating_point_type<float>      (); }
     #endif
 
-    explicit WIDE_INTEGER_CONSTEXPR operator signed char       () const { return extract_builtin_integral_type<signed char>       (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator unsigned char     () const { return extract_builtin_integral_type<unsigned char>     (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator signed short      () const { return extract_builtin_integral_type<signed short>      (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator unsigned short    () const { return extract_builtin_integral_type<unsigned short>    (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator signed int        () const { return extract_builtin_integral_type<signed int>        (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator unsigned int      () const { return extract_builtin_integral_type<unsigned int>      (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator signed long       () const { return extract_builtin_integral_type<signed long >      (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator unsigned long     () const { return extract_builtin_integral_type<unsigned long>     (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator signed long long  () const { return extract_builtin_integral_type<signed long long>  (); }
-    explicit WIDE_INTEGER_CONSTEXPR operator unsigned long long() const { return extract_builtin_integral_type<unsigned long long>(); }
+    explicit constexpr operator signed char       () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed char>       () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed char>       ())); }
+    explicit constexpr operator unsigned char     () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned char>     () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned char>     ())); }
+    explicit constexpr operator signed short      () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed short>      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed short>      ())); }
+    explicit constexpr operator unsigned short    () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned short>    () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned short>    ())); }
+    explicit constexpr operator signed int        () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed int>        () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed int>        ())); }
+    explicit constexpr operator unsigned int      () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned int>      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned int>      ())); }
+    explicit constexpr operator signed long       () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed long >      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed long >      ())); }
+    explicit constexpr operator unsigned long     () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned long>     () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned long>     ())); }
+    explicit constexpr operator signed long long  () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed long long>  () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed long long>  ())); }
+    explicit constexpr operator unsigned long long() const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned long long>() : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned long long>())); }
 
 
     // Implement the cast operator that casts to the double-width type.
@@ -1129,14 +1154,35 @@
       }
       else if(other.is_zero())
       {
-        values.fill((std::numeric_limits<limb_type>::max)());
+        *this = limits_helper_max(IsSigned);
       }
       else
       {
         // Unary division function.
-        const bool denom_was_neg = is_neg(other);
 
-        eval_divide_knuth((denom_was_neg == false) ? other : -other, nullptr, denom_was_neg);
+        const bool numererator_was_neg = is_neg(*this);
+        const bool denominator_was_neg = is_neg(other);
+
+        if(numererator_was_neg || denominator_was_neg)
+        {
+          using local_unsigned_wide_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
+
+          local_unsigned_wide_type a(*this);
+          local_unsigned_wide_type b(other);
+
+          if(numererator_was_neg) { a.negate(); }
+          if(denominator_was_neg) { b.negate(); }
+
+          a.eval_divide_knuth(b, nullptr);
+
+          if(numererator_was_neg != denominator_was_neg) { a.negate(); }
+
+          values = a.values;
+        }
+        else
+        {
+          eval_divide_knuth(other, nullptr);
+        }
       }
 
       return *this;
@@ -1151,13 +1197,37 @@
       else
       {
         // Unary modulus function.
-        uintwide_t remainder;
+        const bool numererator_was_neg = is_neg(*this);
+        const bool denominator_was_neg = is_neg(other);
 
-        const bool denom_was_neg = is_neg(other);
+        if(numererator_was_neg || denominator_was_neg)
+        {
+          using local_unsigned_wide_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
 
-        eval_divide_knuth((denom_was_neg == false) ? other : -other, &remainder, denom_was_neg);
+          local_unsigned_wide_type a(*this);
+          local_unsigned_wide_type b(other);
 
-        values = remainder.values;
+          if(numererator_was_neg) { a.negate(); }
+          if(denominator_was_neg) { b.negate(); }
+
+          local_unsigned_wide_type remainder;
+
+          a.eval_divide_knuth(b, &remainder);
+
+          // The sign of the remainder follows the sign of the denominator.
+          // TBD: Verify if this is always the correct sign of the remainder.
+          if(numererator_was_neg) { remainder.negate(); }
+
+          values = remainder.values;
+        }
+        else
+        {
+          uintwide_t remainder;
+
+          eval_divide_knuth(other, &remainder);
+
+          values = remainder.values;
+        }
       }
 
       return *this;
@@ -1351,7 +1421,7 @@
     constexpr bool operator>=(const uintwide_t& other) const { return (compare(other) >= std::int_fast8_t( 0)); }
 
     // Helper functions for supporting std::numeric_limits<>.
-    static WIDE_INTEGER_CONSTEXPR uintwide_t limits_helper_max(bool is_signed)
+    static constexpr uintwide_t limits_helper_max(bool is_signed)
     {
       return
       (is_signed == false)
@@ -1372,7 +1442,7 @@
         ;
     }
 
-    static WIDE_INTEGER_CONSTEXPR uintwide_t limits_helper_min(bool is_signed)
+    static constexpr uintwide_t limits_helper_min(bool is_signed)
     {
       return
       (is_signed == false)
@@ -1398,7 +1468,7 @@
       return uintwide_t(representation_type(number_of_limbs, limb_type(0U)));
     }
 
-    static WIDE_INTEGER_CONSTEXPR uintwide_t limits_helper_lowest(bool is_signed)
+    static constexpr uintwide_t limits_helper_lowest(bool is_signed)
     {
       return
       (is_signed == false)
@@ -1426,13 +1496,13 @@
     static constexpr size_t wr_string_max_buffer_size_dec = (20U + size_t((std::uintmax_t(my_width2) * UINTMAX_C(301)) / UINTMAX_C(1000))) + 1U;
 
     // Write string function.
-    bool wr_string(      char*              str_result,
-                   const std::uint_fast8_t  base_rep     = 0x10U,
-                   const bool               show_base    = true,
-                   const bool               show_pos     = false,
-                   const bool               is_uppercase = true,
-                         unsinged_fast_type field_width  = 0U,
-                   const char               fill_char    = char('0')) const
+    WIDE_INTEGER_CONSTEXPR bool wr_string(      char*              str_result,
+                                          const std::uint_fast8_t  base_rep     = 0x10U,
+                                          const bool               show_base    = true,
+                                          const bool               show_pos     = false,
+                                          const bool               is_uppercase = true,
+                                                unsinged_fast_type field_width  = 0U,
+                                          const char               fill_char    = char('0')) const
     {
       bool wr_string_is_ok = true;
 
@@ -1777,15 +1847,18 @@
   private:
     representation_type values { };
 
-    static WIDE_INTEGER_CONSTEXPR uintwide_t from_rep(const representation_type& other_rep)
+    static constexpr uintwide_t from_rep(const representation_type& other_rep)
     {
       // Factory-like creator from the internal data representation.
 
-      uintwide_t a;
+      return [&other_rep]() -> uintwide_t
+      {
+        uintwide_t a;
 
-      a.values = other_rep;
+        a.values = other_rep;
 
-      return a;
+        return a;
+      }();
     }
 
     template<typename InputIteratorLeftType,
@@ -1811,52 +1884,51 @@
       return n_return;
     }
 
-    // Implement a function that extracts any built-in signed or unsigned integral type.
-    template<typename UnknownBuiltInIntegralType,
-             typename = typename std::enable_if<std::is_integral<UnknownBuiltInIntegralType>::value == true>::type>
-    WIDE_INTEGER_CONSTEXPR UnknownBuiltInIntegralType extract_builtin_integral_type() const
+    template<typename UnknownBuiltInIntegralType>
+    struct digits_ratio
     {
       using local_unknown_integral_type  = UnknownBuiltInIntegralType;
 
-      using local_unsigned_integral_type =
+      using local_unsigned_conversion_type =
         typename detail::uint_type_helper<
           std::numeric_limits<local_unknown_integral_type>::is_signed
             ? size_t(std::numeric_limits<local_unknown_integral_type>::digits + 1)
             : size_t(std::numeric_limits<local_unknown_integral_type>::digits + 0)>::exact_unsigned_type;
 
-      local_unsigned_integral_type cast_result;
+      static constexpr std::uint_fast32_t value = 
+        std::uint_fast32_t(  std::numeric_limits<local_unsigned_conversion_type>::digits
+                           / std::numeric_limits<limb_type>::digits);
 
-      const std::uint_fast8_t digits_ratio = 
-        std::uint_fast8_t(  std::numeric_limits<local_unsigned_integral_type>::digits
-                          / std::numeric_limits<limb_type>::digits);
-
-      switch(digits_ratio)
+      static WIDE_INTEGER_CONSTEXPR local_unknown_integral_type extract(const limb_type* p_limb, std::uint_fast32_t limb_count)
       {
-        case 0:
-        case 1:
-          // The input parameter is less wide or equally as wide as the limb width.
-          cast_result = static_cast<local_unsigned_integral_type>(values[0U]);
-          break;
+        local_unsigned_conversion_type u = 0U;
 
-        default:
-          // The input parameter is wider than the limb width.
-          cast_result = 0U;
+        for(std::uint_fast32_t i = 0U; i < limb_count; ++i)
+        {
+          u = local_unsigned_conversion_type(u | local_unsigned_conversion_type(local_unsigned_conversion_type(p_limb[i]) << unsigned(std::numeric_limits<limb_type>::digits * int(i))));
+        }
 
-          for(std::uint_fast8_t i = 0U; i < digits_ratio; ++i)
-          {
-            const local_unsigned_integral_type u =
-              ((typename representation_type::size_type(i) < values.size())
-                ? local_unsigned_integral_type(local_unsigned_integral_type(values[i]) << unsigned(std::numeric_limits<limb_type>::digits * int(i)))
-                : local_unsigned_integral_type(0U));
-
-            cast_result |= u;
-          }
-          break;
+        return local_unknown_integral_type(u);
       }
+    };
 
-      return local_unknown_integral_type(cast_result);
+    // Implement a function that extracts any built-in signed or unsigned integral type.
+    template<typename UnknownBuiltInIntegralType,
+             typename = typename std::enable_if<std::is_integral<UnknownBuiltInIntegralType>::value == true>::type>
+    WIDE_INTEGER_CONSTEXPR UnknownBuiltInIntegralType extract_builtin_integral_type() const
+    {
+      using local_unknown_integral_type = UnknownBuiltInIntegralType;
+      using digits_ratio_type           = digits_ratio<local_unknown_integral_type>;
+
+      const std::uint_fast32_t ilim = (std::min)(std::uint_fast32_t(digits_ratio_type::value),
+                                                 std::uint_fast32_t(values.size()));
+
+      // Handle cases for which the input parameter is less wide
+      // or equally as wide as the limb width or wider than the limb width.
+      return ((digits_ratio_type::value < 2U)
+               ? static_cast<local_unknown_integral_type>(values[0U])
+               : digits_ratio_type::extract(values.data(), ilim));
     }
-
 
     #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
     // Implement a function that extracts any built-in floating-point type.
@@ -2706,39 +2778,13 @@
     #endif
 
     WIDE_INTEGER_CONSTEXPR void eval_divide_knuth(const uintwide_t& other,
-                                                        uintwide_t* remainder,
-                                                  const bool        denom_was_neg = false)
+                                                        uintwide_t* remainder)
     {
       // Use Knuth's long division algorithm.
       // The loop-ordering of indexes in Knuth's original
       // algorithm has been reversed due to the data format
       // used here. Several optimizations and combinations
       // of logic have been carried out in the source code.
-
-      bool bNegQuot = false;
-      bool bNegRem  = false;
-
-      // Make *this (the numerator) positive. The sign of the
-      // remainder will match the sign of the denominator.
-      if(is_neg(*this))
-      {
-        bNegRem = true;
-
-        negate();
-      }
-
-      // The denominator has (already) been made positive and its sign has
-      // been provided in the denom_was_neg flag. The sign of the quotient
-      // will be negative if the sign of the divisor and dividend do not match,
-      // else positive.
-      if(denom_was_neg)
-      {
-        bNegQuot = !bNegRem;
-      }
-      else
-      {
-        bNegQuot = bNegRem;
-      }
 
       // See also:
       // D.E. Knuth, "The Art of Computer Programming, Volume 2:
@@ -2788,8 +2834,6 @@
           if(remainder != nullptr)
           {
             *remainder = *this;
-
-            if(bNegRem) { remainder->negate(); }
           }
 
           operator=(std::uint8_t(0U));
@@ -2812,9 +2856,6 @@
           const limb_type short_denominator = other.values[0U];
 
           eval_divide_by_single_limb(short_denominator, u_offset, remainder);
-
-          if(bNegQuot) { negate(); }
-          if(bNegRem && remainder != nullptr)  { remainder->negate(); }
         }
         else
         {
@@ -2953,9 +2994,6 @@
                       remainder->values.end(),
                       limb_type(0U));
           }
-
-          if(bNegQuot) { negate(); }
-          if(bNegRem && remainder != nullptr)  { remainder->negate(); }
         }
       }
     }
@@ -3016,7 +3054,7 @@
         {
           const limb_type t = values[size_t(i)];
 
-          values[size_t(i)] = (t >> local_integral_type(right_shift_amount)) | part_from_previous_value;
+          values[size_t(i)] = limb_type(limb_type(t >> local_integral_type(right_shift_amount)) | part_from_previous_value);
 
           part_from_previous_value = limb_type(t << local_integral_type(unsinged_fast_type(std::numeric_limits<limb_type>::digits - right_shift_amount)));
         }
@@ -3240,7 +3278,7 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  class numeric_limits_uintwide_t_base
+  WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits_uintwide_t_base
     : public std::numeric_limits<typename std::conditional<IsSigned == false, unsigned int, signed int>::type>
   {
   private:
@@ -3280,7 +3318,7 @@
              typename LimbType,
              typename AllocatorType,
              const bool IsSigned>
-    class numeric_limits<math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>
+    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>
       : public math::wide_integer::numeric_limits_uintwide_t_base<Width2, LimbType, AllocatorType, IsSigned> { };
   }
 
@@ -4700,7 +4738,8 @@
     }
     while((i < number_of_trials) && is_probably_prime);
 
-    // The prime candidate is probably prime.
+    // The prime candidate is probably prime in the sense
+    // of the very high probability resulting from Miller-Rabin.
     return is_probably_prime;
   }
 
