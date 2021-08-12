@@ -258,9 +258,11 @@ This [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
 has been defined by myself at the beginning of the project
 Toolchains intended to be located there are used for cross MSVC/GCC builds.
 
-An open issues such as [this](https://github.com/ckormanyos/real-time-cpp/issues/103)
-and/or [this](https://github.com/ckormanyos/real-time-cpp/issues/108)
-track the ongoing effort to make cross-compilers available.
+Open issues such as [this issue](https://github.com/ckormanyos/real-time-cpp/issues/103)
+and/or [this issue](https://github.com/ckormanyos/real-time-cpp/issues/108)
+track the ongoing effort to make cross-compilers available
+in efficient forms in this repository.
 At the moment, however, when using the reference application
-or designing a custom build, the root directory of
-the tool chain must be properly supplied to the makefiles.
+or designing a custom build for msvc or similar,
+the root directory of the tool chain must be properly
+supplied to the makefiles.
