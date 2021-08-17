@@ -11,11 +11,12 @@ the computation and verification of up to and beyond
 decimal digits of the mathematical
 constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
-This example requires utmost attention to detail and advanced
+This example is challenging and requires utmost attention to detail
+combined with advanced
 laboratory and programming skills. With, however, a bit of concentrated
 effort (especially to make the hardware and provide for clean,
 iterator-based programmatic access to the external parallel SRAM bricks),
-Example Chapter10_08a makes this mammoth calculation let's say as
+Example Chapter10_08a makes this mammoth numerical calculation let's say as
 _easy_ _as_ _pie_.
 
 # Application Description
@@ -122,7 +123,7 @@ asynchronous parallel SRAM memory.
 It is hoped that this example will challenge the microcontroller
 laboratory enthusiast and provide for a fulfilling technical experience
 for those intrepid makers who wrangle with it and take it on.
-In fact, the wiring of this example is rich in detail and requires attentive
+In fact, the wiring of this example requires attentive
 fitting of each wire properly to its dedicated pin(s) on the MCU
 or relevant device(s).
 
@@ -135,12 +136,12 @@ Fitting the parallel SRAM brick on a breadboard requires the use
 of a secondary SMD-to-DIP adapter to which the SMD device
 itself actually needs to be meticulously soldered.
 
-Pinning in this example is rich in detail.
-Pinning differs slightly depending on whether
-we are intending to use either the 1 MByte brick
+Pinning in this example is, indeed, rich in detail.
+Pinning variants differ slightly depending on whether
+we intend to use either the 1 MByte brick
 or the 2 MByte brick.
 
-The pin connections for the 2 MByte memory brick
+The pin connections of the 2 MByte memory brick
 of type Cypress(R) MoBL(R) CY62167GN in 48-pin TSOP
 are shown in the table below. The pinnning has
 been selected with certain considerations in mind that

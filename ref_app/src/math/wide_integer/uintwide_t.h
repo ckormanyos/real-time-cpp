@@ -1895,15 +1895,15 @@
             ? size_t(std::numeric_limits<local_unknown_integral_type>::digits + 1)
             : size_t(std::numeric_limits<local_unknown_integral_type>::digits + 0)>::exact_unsigned_type;
 
-      static constexpr std::uint_fast32_t value = 
-        std::uint_fast32_t(  std::numeric_limits<local_unsigned_conversion_type>::digits
+      static constexpr unsinged_fast_type value = 
+        unsinged_fast_type(  std::numeric_limits<local_unsigned_conversion_type>::digits
                            / std::numeric_limits<limb_type>::digits);
 
-      static WIDE_INTEGER_CONSTEXPR local_unknown_integral_type extract(const limb_type* p_limb, std::uint_fast32_t limb_count)
+      static WIDE_INTEGER_CONSTEXPR local_unknown_integral_type extract(const limb_type* p_limb, unsinged_fast_type limb_count)
       {
         local_unsigned_conversion_type u = 0U;
 
-        for(std::uint_fast32_t i = 0U; i < limb_count; ++i)
+        for(unsinged_fast_type i = 0U; i < limb_count; ++i)
         {
           u = local_unsigned_conversion_type(u | local_unsigned_conversion_type(local_unsigned_conversion_type(p_limb[i]) << unsigned(std::numeric_limits<limb_type>::digits * int(i))));
         }
@@ -1920,8 +1920,8 @@
       using local_unknown_integral_type = UnknownBuiltInIntegralType;
       using digits_ratio_type           = digits_ratio<local_unknown_integral_type>;
 
-      const std::uint_fast32_t ilim = (std::min)(std::uint_fast32_t(digits_ratio_type::value),
-                                                 std::uint_fast32_t(values.size()));
+      const unsinged_fast_type ilim = (std::min)(unsinged_fast_type(digits_ratio_type::value),
+                                                 unsinged_fast_type(values.size()));
 
       // Handle cases for which the input parameter is less wide
       // or equally as wide as the limb width or wider than the limb width.

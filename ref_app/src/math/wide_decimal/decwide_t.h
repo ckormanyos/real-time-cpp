@@ -3825,7 +3825,7 @@
       const floating_point_type tol = std::numeric_limits<floating_point_type>::epsilon();
 
       // Series expansion of hypergeometric_0f0(; ; x).
-      for(std::uint32_t n = 2U; n < UINT32_C(10000000); ++n)
+      for(std::uint32_t n = 2U; n < UINT32_C(100000); ++n)
       {
         x_pow_n_div_n_fact *= xh;
         x_pow_n_div_n_fact /= n;
@@ -3843,9 +3843,12 @@
       using std::ldexp;
       using std::pow;
 
-      const floating_point_type exp_series = pow(h0f0, p2) * ldexp(floating_point_type(1U), (int) nf);
+      exp_result = ((nf == 0U) ? pow(h0f0, p2) : ldexp(pow(h0f0, p2), (int) nf));
 
-      exp_result = ((b_neg == false) ? exp_series : 1 / exp_series);
+      if(b_neg)
+      {
+        (void) exp_result.calculate_inv();
+      }
     }
 
     return exp_result;
