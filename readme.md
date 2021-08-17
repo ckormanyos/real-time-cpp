@@ -135,7 +135,7 @@ The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
 on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at 20MHz.
-The program toggles the yellow LED on `porte.2`.
+The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
 The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
@@ -252,11 +252,12 @@ but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 6, 7, or
 or even C++20 support (such as GCC 11) can, therefore,
 be beneficial for success with *all* of the code snippets.
 
-In the reference application on `*Win`, the makefiles are aware of a default location
+In the reference application on `Win*`, the makefiles are aware of a default location
 for the respective GCC toolchains.
 This [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
-has been defined by myself at the beginning of the project
-Toolchains intended to be located there are used for cross MSVC/GCC builds.
+has been defined by myself at the beginning of the project.
+Toolchains intended for the cross MSVC/GCC builds should be located there
+(although these are not _yet_ part of this repository).
 
 Open issues such as [this issue](https://github.com/ckormanyos/real-time-cpp/issues/103)
 and/or [this issue](https://github.com/ckormanyos/real-time-cpp/issues/108)
