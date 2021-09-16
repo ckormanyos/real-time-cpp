@@ -490,7 +490,7 @@ jobs:
       - name: wget-gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux
         run: |
           mkdir -p emu_env && cd emu_env
-          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
           tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
         working-directory: ./ref_app/
       - name: benchmark_single-stm32f429-qemu-cnl
@@ -514,9 +514,9 @@ jobs:
         run: |
           sudo apt install gcc-arm-none-eabi libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
-          wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
           tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-          wget https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-7-linux-x64.tgz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-7-linux-x64.tgz
           tar xvf xpack-qemu-arm-2.8.0-7-linux-x64.tgz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
