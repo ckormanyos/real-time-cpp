@@ -536,8 +536,8 @@
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(const fixed_static_array& other_array) = default;
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(fixed_static_array&& other_array) = default;
 
-    WIDE_INTEGER_CONSTEXPR base_class_type::reference       operator[](const size_type i)       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
-    WIDE_INTEGER_CONSTEXPR base_class_type::const_reference operator[](const size_type i) const { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    WIDE_INTEGER_CONSTEXPR typename base_class_type::reference       operator[](const size_type i)       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    WIDE_INTEGER_CONSTEXPR typename base_class_type::const_reference operator[](const size_type i) const { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth
