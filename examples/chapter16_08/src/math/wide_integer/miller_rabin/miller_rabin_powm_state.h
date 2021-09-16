@@ -8,6 +8,9 @@
 #ifndef MILLER_RABIN_POWM_STATE_2020_06_05_H_
   #define MILLER_RABIN_POWM_STATE_2020_06_05_H_
 
+  #define WIDE_INTEGER_DISABLE_IOSTREAM
+  #define WIDE_INTEGER_DISABLE_FLOAT_INTEROP
+
   #include <math/wide_integer/uintwide_t.h>
 
   namespace math { namespace wide_integer {

@@ -18,6 +18,7 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
+  #include <cstdlib>
   #include <cstring>
   #include <initializer_list>
   #include <iterator>
@@ -312,6 +313,12 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
+  constexpr uintwide_t<Width2, LimbType, AllocatorType, IsSigned> abs(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x);
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
   WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> sqrt(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& m);
 
   template<const size_t Width2,
@@ -353,9 +360,21 @@
                                                                                    const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b);
 
   template<typename UnsignedShortType>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <UnsignedShortType>::value == true)
-                                                  && (std::is_unsigned   <UnsignedShortType>::value == true)), UnsignedShortType>::type
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral<UnsignedShortType>::value == true)
+                                                  && (std::is_unsigned<UnsignedShortType>::value == true)), UnsignedShortType>::type
   gcd(const UnsignedShortType& u, const UnsignedShortType& v);
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> lcm(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& a,
+                                                                                   const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b);
+
+  template<typename UnsignedShortType>
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral<UnsignedShortType>::value == true)
+                                                  && (std::is_unsigned<UnsignedShortType>::value == true)), UnsignedShortType>::type
+  lcm(const UnsignedShortType& a, const UnsignedShortType& b);
 
   template<const size_t Width2,
            typename LimbType = std::uint32_t,
@@ -516,6 +535,9 @@
 
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(const fixed_static_array& other_array) = default;
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(fixed_static_array&& other_array) = default;
+
+    WIDE_INTEGER_CONSTEXPR typename base_class_type::reference       operator[](const size_type i)       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    WIDE_INTEGER_CONSTEXPR typename base_class_type::const_reference operator[](const size_type i) const { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth
@@ -1512,7 +1534,7 @@
 
         const limb_type mask(std::uint8_t(0x7U));
 
-        char str_temp[wr_string_max_buffer_size_oct];
+        char str_temp[std::size_t(wr_string_max_buffer_size_oct)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
@@ -1599,7 +1621,7 @@
           t.negate();
         }
 
-        char str_temp[wr_string_max_buffer_size_dec];
+        char str_temp[std::size_t(wr_string_max_buffer_size_dec)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
@@ -1658,7 +1680,7 @@
 
         const limb_type mask(std::uint8_t(0xFU));
 
-        char str_temp[wr_string_max_buffer_size_hex];
+        char str_temp[std::size_t(wr_string_max_buffer_size_hex)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
@@ -2750,7 +2772,7 @@
         // R.P. Brent and P. Zimmermann, "Modern Computer Arithmetic",
         // Cambridge University Press (2011).
 
-        // TBD: Toom-Cook3
+        // TBD: Toom-Cook3 is not yet implemented. Use Karatsuba at the moment.
         eval_multiply_kara_n_by_n_to_2n(r, u, v, n, t);
       }
     }
@@ -2771,7 +2793,7 @@
       }
       else
       {
-        // TBD: Toom-Cook4
+        // TBD: Toom-Cook4 is not yet implemented. Use Karatsuba at the moment.
         eval_multiply_kara_n_by_n_to_2n(r, u, v, n, t);
       }
     }
@@ -3343,26 +3365,25 @@
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr typename std::enable_if<std::is_integral<IntegralType>::value == true, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type operator/(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator/=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  constexpr typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
-                                     && (std::is_unsigned   <IntegralType>::value == false)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
+  constexpr typename std::enable_if<(   (std::is_integral<IntegralType>::value == true)
+                                     && (std::is_unsigned<IntegralType>::value == false)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
-                                                  && (std::is_unsigned   <IntegralType>::value == true)
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral<IntegralType>::value == true)
+                                                  && (std::is_unsigned<IntegralType>::value == true)
                                                   && (std::numeric_limits<IntegralType>::digits <= std::numeric_limits<LimbType>::digits)), typename uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::limb_type>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v)
   {
-    const bool u_is_neg = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::is_neg(u);
+    using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
-    uintwide_t<Width2, LimbType, AllocatorType, IsSigned> remainder;
+    const bool u_is_neg = local_wide_integer_type::is_neg(u);
 
-    uintwide_t<Width2, LimbType, AllocatorType, IsSigned>
-    (
-      (u_is_neg == false) ? u : -u
-    ).eval_divide_by_single_limb(v, 0U, &remainder);
+    local_wide_integer_type remainder;
 
-    using local_limb_type = typename uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::limb_type;
+    local_wide_integer_type((u_is_neg == false) ? u : -u).eval_divide_by_single_limb(v, 0U, &remainder);
+
+    using local_limb_type = typename local_wide_integer_type::limb_type;
 
     local_limb_type u_rem = (local_limb_type) remainder;
 
@@ -3370,8 +3391,8 @@
   }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
-  constexpr typename std::enable_if<(   (std::is_integral   <IntegralType>::value == true)
-                                     && (std::is_unsigned   <IntegralType>::value == true)
+  constexpr typename std::enable_if<(   (std::is_integral<IntegralType>::value == true)
+                                     && (std::is_unsigned<IntegralType>::value == true)
                                      && (std::numeric_limits<IntegralType>::digits > std::numeric_limits<LimbType>::digits)), uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type
   operator%(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType& v) { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(u).operator%=(uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(v)); }
 
@@ -3816,6 +3837,17 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
+  constexpr uintwide_t<Width2, LimbType, AllocatorType, IsSigned> abs(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x)
+  {
+    using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+
+    return ((local_wide_integer_type::is_neg(x) == false) ? x : -x);
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
   WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> sqrt(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& m)
   {
     // Calculate the square root.
@@ -4013,31 +4045,30 @@
     return s;
   }
 
-  template<typename OtherUnsignedIntegralTypeP,
+  template<typename OtherIntegralTypeP,
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
   WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> pow(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b,
-                                                                                   const OtherUnsignedIntegralTypeP&    p)
+                                                                                   const OtherIntegralTypeP&    p)
   {
     // Calculate (b ^ p).
-
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
     using local_limb_type         = typename local_wide_integer_type::limb_type;
 
     local_wide_integer_type result;
-    local_limb_type         p0(p);
+    local_limb_type         p0(static_cast<local_limb_type>(p));
 
-    if((p0 == 0U) && (p == 0U))
+    if((p0 == 0U) && (p == OtherIntegralTypeP(0)))
     {
       result = local_wide_integer_type(std::uint8_t(1U));
     }
-    else if((p0 == 1U) && (p == 1U))
+    else if((p0 == 1U) && (p == OtherIntegralTypeP(1)))
     {
       result = b;
     }
-    else if((p0 == 2U) && (p == 2U))
+    else if((p0 == 2U) && (p == OtherIntegralTypeP(2)))
     {
       result  = b;
       result *= b;
@@ -4065,15 +4096,15 @@
     return result;
   }
 
-  template<typename OtherUnsignedIntegralTypeP,
-           typename OtherUnsignedIntegralTypeM,
+  template<typename OtherIntegralTypeP,
+           typename OtherIntegralTypeM,
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
   WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> powm(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b,
-                                                                                     const OtherUnsignedIntegralTypeP& p,
-                                                                                     const OtherUnsignedIntegralTypeM& m)
+                                                                                    const OtherIntegralTypeP& p,
+                                                                                    const OtherIntegralTypeM& m)
   {
     // Calculate (b ^ p) % m.
 
@@ -4084,17 +4115,17 @@
           local_normal_width_type result;
           local_double_width_type y      (b);
     const local_double_width_type m_local(m);
-          local_limb_type         p0     (p);
+          local_limb_type         p0     (static_cast<local_limb_type>(p));
 
-    if((p0 == 0U) && (p == 0U))
+    if((p0 == 0U) && (p == OtherIntegralTypeP(0)))
     {
       result = local_normal_width_type((m != 1U) ? std::uint8_t(1U) : std::uint8_t(0U));
     }
-    else if((p0 == 1U) && (p == 1U))
+    else if((p0 == 1U) && (p == OtherIntegralTypeP(1)))
     {
       result = b % m;
     }
-    else if((p0 == 2U) && (p == 2U))
+    else if((p0 == 2U) && (p == OtherIntegralTypeP(2)))
     {
       y *= y;
       y %= m_local;
@@ -4103,8 +4134,8 @@
     }
     else
     {
-      local_double_width_type    x      (std::uint8_t(1U));
-      OtherUnsignedIntegralTypeP p_local(p);
+      local_double_width_type x      (std::uint8_t(1U));
+      OtherIntegralTypeP      p_local(p);
 
       while(((p0 = local_limb_type(p_local)) != 0U) || (p_local != 0U))
       {
@@ -4327,6 +4358,46 @@
     }
 
     return result;
+  }
+
+  namespace detail {
+
+  template<typename IntegerType>
+  WIDE_INTEGER_CONSTEXPR IntegerType lcm_impl(const IntegerType& a, const IntegerType& b)
+  {
+    using local_integer_type = IntegerType;
+
+    using std::abs;
+
+    const local_integer_type ap = abs(a);
+    const local_integer_type bp = abs(b);
+
+    const bool a_is_greater_than_b = (ap > bp);
+
+    const local_integer_type gcd_of_ab = gcd(a, b);
+
+    return (a_is_greater_than_b ? ap * (bp / gcd_of_ab)
+                                : bp * (ap / gcd_of_ab));
+  }
+
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  WIDE_INTEGER_CONSTEXPR uintwide_t<Width2, LimbType, AllocatorType, IsSigned> lcm(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& a,
+                                                                                   const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b)
+  {
+    return detail::lcm_impl(a, b);
+  }
+
+  template<typename UnsignedShortType>
+  WIDE_INTEGER_CONSTEXPR typename std::enable_if<(   (std::is_integral<UnsignedShortType>::value == true)
+                                                  && (std::is_unsigned<UnsignedShortType>::value == true)), UnsignedShortType>::type
+  lcm(const UnsignedShortType& a, const UnsignedShortType& b)
+  {
+    return detail::lcm_impl(a, b);
   }
 
   template<const size_t Width2,

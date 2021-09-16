@@ -39,6 +39,8 @@
   namespace std
   {
     inline int         abs(int       a) { return ((a < 0) ? -a : a); }
+    inline long        abs(long      a) { return ((a < 0) ? -a : a); }
+    inline long long   abs(long long a) { return ((a < 0) ? -a : a); }
     inline long       labs(long      a) { return ((a < 0) ? -a : a); }
     inline long long llabs(long long a) { return ((a < 0) ? -a : a); }
 
