@@ -18,6 +18,7 @@
   #include <array>
   #include <cstddef>
   #include <cstdint>
+  #include <cstdlib>
   #include <cstring>
   #include <initializer_list>
   #include <iterator>
@@ -534,6 +535,9 @@
 
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(const fixed_static_array& other_array) = default;
     WIDE_INTEGER_CONSTEXPR fixed_static_array& operator=(fixed_static_array&& other_array) = default;
+
+    WIDE_INTEGER_CONSTEXPR base_class_type::reference       operator[](const size_type i)       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    WIDE_INTEGER_CONSTEXPR base_class_type::const_reference operator[](const size_type i) const { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth
@@ -1530,7 +1534,7 @@
 
         const limb_type mask(std::uint8_t(0x7U));
 
-        char str_temp[wr_string_max_buffer_size_oct];
+        char str_temp[std::size_t(wr_string_max_buffer_size_oct)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
@@ -1617,7 +1621,7 @@
           t.negate();
         }
 
-        char str_temp[wr_string_max_buffer_size_dec];
+        char str_temp[std::size_t(wr_string_max_buffer_size_dec)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
@@ -1676,7 +1680,7 @@
 
         const limb_type mask(std::uint8_t(0xFU));
 
-        char str_temp[wr_string_max_buffer_size_hex];
+        char str_temp[std::size_t(wr_string_max_buffer_size_hex)];
 
         unsinged_fast_type pos = (sizeof(str_temp) - 1U);
 
