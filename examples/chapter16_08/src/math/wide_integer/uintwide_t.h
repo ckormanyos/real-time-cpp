@@ -84,8 +84,8 @@
 
   namespace detail {
 
-  using size_t    = std::uint32_t;
-  using ptrdiff_t = std::int32_t;
+  using size_t    = std::uint16_t;
+  using ptrdiff_t = std::int16_t;
 
   template<const size_t Width2> struct verify_power_of_two
   {

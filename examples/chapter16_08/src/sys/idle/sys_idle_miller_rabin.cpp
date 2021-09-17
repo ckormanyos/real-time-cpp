@@ -142,17 +142,23 @@ void sys::idle::miller_rabin_run()
 
       // Re-seed one of each of the generators after each new prime.
       {
-        using local_gen1_seed_type =
-          typename sys_idle_miller_rabin_miller_rabin_type::generator1_type::result_type;
-
-        using local_gen2_seed_type =
-          typename sys_idle_miller_rabin_miller_rabin_type::generator2_type::result_type;
-
-        const bool need_to_reseed_1_or_2 =
+        const bool reseed_is_even =
           (util::narrow_cast<std::uint_fast8_t>(sys_idle_miller_rabin_number_of_primes & 1U) != 0U);
 
-        (need_to_reseed_1_or_2 ? sys_idle_miller_rabin_object.reseed1(util::timer<local_gen1_seed_type>::get_mark())
-                               : sys_idle_miller_rabin_object.reseed2(util::timer<local_gen2_seed_type>::get_mark()));
+        if(reseed_is_even)
+        {
+          using local_gen1_seed_type =
+            typename sys_idle_miller_rabin_miller_rabin_type::generator1_type::result_type;
+
+          sys_idle_miller_rabin_object.reseed1(util::timer<local_gen1_seed_type>::get_mark());
+        }
+        else
+        {
+          using local_gen2_seed_type =
+            typename sys_idle_miller_rabin_miller_rabin_type::generator2_type::result_type;
+
+          sys_idle_miller_rabin_object.reseed2(util::timer<local_gen2_seed_type>::get_mark());
+        }
       }
     }
   }

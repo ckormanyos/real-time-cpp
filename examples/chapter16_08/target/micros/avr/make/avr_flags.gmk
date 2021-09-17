@@ -22,7 +22,7 @@ TGT_CFLAGS    = -Os                                            \
                 -fsigned-char                                  \
                 -mrelax                                        \
                 -finline-functions                             \
-                -finline-limit=32
+                -finline-limit=64
 
 TGT_CPPFLAGS  = -std=c++2a
 
