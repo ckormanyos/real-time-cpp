@@ -23,7 +23,7 @@ _stack_begin = 0x00800700;
 _stack_end   = 0x00800900;
 
 /* The initial stack pointer (top of stack) is at the top of the 2K RAM */
-__initial_stack_pointer = 0x008008FE;
+__initial_stack_pointer = 0x00800900 - 2;
 
 MEMORY
 {
