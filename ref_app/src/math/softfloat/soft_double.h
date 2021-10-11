@@ -46,8 +46,8 @@
 
   namespace detail {
 
-  struct uint128_as_struct  { uint64_t v0, v64; };
-  struct uint64_extra       { uint64_t extra, v; };
+  struct uint128_as_struct  { std::uint64_t v0, v64; };
+  struct uint64_extra       { std::uint64_t extra, v; };
 
   template<typename UnsignedIntegralType>
   constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
@@ -62,12 +62,12 @@
                                     && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
   negate(SignedIntegralType n)
   {
-    return (SignedIntegralType) -n;
+    return (SignedIntegralType) detail::negate((unsigned long long) n);
   }
 
-  inline constexpr bool          signF32UI(uint32_t a) { return ((bool) ((uint32_t) (a)>>31)); }
-  inline constexpr std::int16_t  expF32UI (uint32_t a) { return ((int16_t) ((a)>>23) & 0xFF); }
-  inline constexpr std::uint32_t fracF32UI(uint32_t a) { return ((a) & UINT32_C(0x007FFFFF)); }
+  inline constexpr bool          signF32UI(std::uint32_t a) { return ((bool) ((std::uint32_t) (a)>>31)); }
+  inline constexpr std::int16_t  expF32UI (std::uint32_t a) { return ((std::int16_t) ((a)>>23) & 0xFF); }
+  inline constexpr std::uint32_t fracF32UI(std::uint32_t a) { return ((a) & UINT32_C(0x007FFFFF)); }
 
   inline constexpr bool          signF64UI(std::uint64_t a) { return ((unsigned) ((std::uint64_t) a >> 63U) != 0U); }
   inline constexpr std::int16_t  expF64UI (std::uint64_t a) { return (std::int16_t) (a >> 52U) & INT16_C(0x7FF); }
@@ -75,16 +75,16 @@
 
   template<typename IntegralTypeExp,
            typename IntegralTypeSig>
-  constexpr uint64_t packToF64UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
+  constexpr std::uint64_t packToF64UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
   {
-    return ((uint64_t) ((uint64_t) (((uint64_t) (sign ? 1U : 0U))<<63) + (uint64_t) (((uint64_t) expA)<<52) + (uint64_t) sig));
+    return ((std::uint64_t) ((std::uint64_t) (((std::uint64_t) (sign ? 1U : 0U))<<63) + (std::uint64_t) (((std::uint64_t) expA)<<52) + (std::uint64_t) sig));
   }
 
   template<typename IntegralTypeExp,
            typename IntegralTypeSig>
-  constexpr uint32_t packToF32UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
+  constexpr std::uint32_t packToF32UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
   {
-    return ((uint32_t) ((uint32_t) (((uint32_t) (sign ? 1U : 0U))<<31) + (uint32_t) (((uint32_t) expA)<<23) + (uint32_t) sig));
+    return ((std::uint32_t) ((std::uint32_t) (((std::uint32_t) (sign ? 1U : 0U))<<31) + (std::uint32_t) (((std::uint32_t) expA)<<23) + (std::uint32_t) sig));
   }
 
   /*----------------------------------------------------------------------------
@@ -93,7 +93,7 @@
   | into the least-significant bit of the shifted value by setting the least-
   | significant bit to 1.  This shifted-and-jammed value is returned.
   *----------------------------------------------------------------------------*/
-  constexpr uint64_t softfloat_shortShiftRightJam64(uint64_t a, uint_fast8_t dist)
+  constexpr std::uint64_t softfloat_shortShiftRightJam64(std::uint64_t a, uint_fast8_t dist)
   {
     return a >> dist | ((a & ((UINT64_C(1) << dist) - 1)) != 0 ? 1U : 0U);
   }
@@ -104,18 +104,18 @@
   | least-significant bit of the shifted value by setting the least-significant
   | bit to 1.  This shifted-and-jammed value is returned.
   *----------------------------------------------------------------------------*/
-  constexpr uint32_t softfloat_shiftRightJam32(uint32_t a, uint16_t dist)
+  constexpr std::uint32_t softfloat_shiftRightJam32(std::uint32_t a, std::uint16_t dist)
   {
-    return (dist < 31) ? a >> dist | ((uint32_t)(a << (negate(dist) & 31)) != 0U ? 1U : 0U) : (a != 0U ? 1U : 0U);
+    return (dist < 31) ? a >> dist | ((std::uint32_t)(a << (negate(dist) & 31)) != 0U ? 1U : 0U) : (a != 0U ? 1U : 0U);
   }
 
   /*----------------------------------------------------------------------------
   | Shifts 'a' right by the number of bits given in 'dist', which must not
   | be zero.
   *----------------------------------------------------------------------------*/
-  constexpr uint64_t softfloat_shiftRightJam64(uint64_t a, uint32_t dist)
+  constexpr std::uint64_t softfloat_shiftRightJam64(std::uint64_t a, std::uint32_t dist)
   {
-    return (dist < 63) ? a >> dist | ((uint64_t)(a << (negate(dist) & 63)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
+    return (dist < 63) ? a >> dist | ((std::uint64_t)(a << (negate(dist) & 63)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
   }
 
   /*----------------------------------------------------------------------------
@@ -137,28 +137,28 @@
                            :      softfloat_countLeadingZeros8_z_table(index >>   4U);
   }
 
-  constexpr uint_fast8_t softfloat_countLeadingZeros16(uint16_t a)
+  constexpr uint_fast8_t softfloat_countLeadingZeros16(std::uint16_t a)
   {
     return (a < UINT16_C(0x100)) ? 8U + softfloat_countLeadingZeros8((uint_fast8_t) a)
                                  :      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
   }
 
-  constexpr uint_fast8_t softfloat_countLeadingZeros32(uint32_t a)
+  constexpr uint_fast8_t softfloat_countLeadingZeros32(std::uint32_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT32_C(0x10000)) ? 16U + softfloat_countLeadingZeros16((uint16_t) a)
-                                   :       softfloat_countLeadingZeros16((uint16_t) (a >> 16U));
+    return (a < UINT32_C(0x10000)) ? 16U + softfloat_countLeadingZeros16((std::uint16_t) a)
+                                   :       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
   }
 
   /*----------------------------------------------------------------------------
   | Returns the number of leading 0 bits before the most-significant 1 bit of
   | 'a'.  If 'a' is zero, 64 is returned.
   *----------------------------------------------------------------------------*/
-  constexpr uint_fast8_t softfloat_countLeadingZeros64(uint64_t a)
+  constexpr uint_fast8_t softfloat_countLeadingZeros64(std::uint64_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT64_C(0x100000000)) ? 32U + softfloat_countLeadingZeros32((uint32_t) a)
-                                       :       softfloat_countLeadingZeros32((uint32_t) (a >> 32U));
+    return (a < UINT64_C(0x100000000)) ? 32U + softfloat_countLeadingZeros32((std::uint32_t) a)
+                                       :       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
   }
 
   /*----------------------------------------------------------------------------
@@ -166,9 +166,9 @@
   | where 'a' is interpreted as an unsigned fixed-point number with one integer
   | bit and 31 fraction bits.
   *----------------------------------------------------------------------------*/
-  constexpr uint32_t softfloat_approxRecip32_1(uint32_t a)
+  constexpr std::uint32_t softfloat_approxRecip32_1(std::uint32_t a)
   {
-    return (uint32_t) (UINT64_C(0x7FFFFFFFFFFFFFFF) / a);
+    return (std::uint32_t) (UINT64_C(0x7FFFFFFFFFFFFFFF) / a);
   }
 
   /*----------------------------------------------------------------------------
@@ -177,7 +177,7 @@
   | shifted value is at most 64 nonzero bits and is returned in the 'v' field
   | of the 'struct uint64_extra' result.
   *----------------------------------------------------------------------------*/
-  constexpr struct uint64_extra softfloat_shiftRightJam64Extra(uint64_t a, uint64_t extra, uint32_t dist)
+  constexpr struct uint64_extra softfloat_shiftRightJam64Extra(std::uint64_t a, std::uint64_t extra, std::uint32_t dist)
   {
     return
     {
@@ -396,20 +396,20 @@
     static_assert(sizeof(float) == 4U,
                   "Error: This template is designed for 4 byte built-in float");
   public:
-    using representation_type = uint64_t;
+    using representation_type = std::uint64_t;
 
     soft_double() { }
 
     template<typename UnsignedIntegralType,
              typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
                                       && (std::is_unsigned<UnsignedIntegralType>::value == true)
-                                      && (sizeof(UnsignedIntegralType) <= sizeof(uint32_t)))>::type const* = nullptr>
+                                      && (sizeof(UnsignedIntegralType) <= sizeof(std::uint32_t)))>::type const* = nullptr>
     constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui32_to_f64((std::uint32_t) u)) { }
 
     template<typename UnsignedIntegralType,
              typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
                                       && (std::is_unsigned<UnsignedIntegralType>::value == true)
-                                      && !(sizeof(UnsignedIntegralType) <= sizeof(uint32_t)))>::type const* = nullptr>
+                                      && !(sizeof(UnsignedIntegralType) <= sizeof(std::uint32_t)))>::type const* = nullptr>
     constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui64_to_f64((std::uint64_t) u)) { }
 
     template<typename SignedIntegralType,
@@ -429,7 +429,7 @@
         (
           ((detail::expF32UI (detail::uz_type<float>(f).my_u) == 0) && (detail::fracF32UI(detail::uz_type<float>(f).my_u) == 0U))
             ? detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), 0, 0)
-            : detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), detail::expF32UI(detail::uz_type<float>(f).my_u) + 0x380, (uint64_t) detail::fracF32UI(detail::uz_type<float>(f).my_u) << 29)
+            : detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), detail::expF32UI(detail::uz_type<float>(f).my_u) + 0x380, (std::uint64_t) detail::fracF32UI(detail::uz_type<float>(f).my_u) << 29)
         ) { }
 
     constexpr soft_double(double d)
@@ -521,7 +521,7 @@
     soft_double operator--(int) { const soft_double w(*this); static_cast<void>(--(*this)); return w; }
 
     const soft_double& operator+() const { return *this; }
-          soft_double  operator-() const { return soft_double(my_value ^ (uint64_t) (1ULL << 63U), detail::nothing()); }
+          soft_double  operator-() const { return soft_double(my_value ^ (std::uint64_t) (1ULL << 63U), detail::nothing()); }
 
     static constexpr soft_double my_value_zero   () { return soft_double(UINT64_C(0),                   detail::nothing()); }
     static constexpr soft_double my_value_one    () { return soft_double(UINT64_C(0x3FF0000000000000),  detail::nothing()); }
@@ -559,7 +559,7 @@
                : (a.my_value != b.my_value) && (detail::signF64UI(a.my_value) ^ (a.my_value < b.my_value));
     }
 
-    static uint64_t f64_add(const uint64_t a, const uint64_t b)
+    static std::uint64_t f64_add(const std::uint64_t a, const std::uint64_t b)
     {
       const bool signA = detail::signF64UI(a);
       const bool signB = detail::signF64UI(b);
@@ -574,7 +574,7 @@
       }
     }
 
-    static uint64_t f64_sub(const uint64_t a, const uint64_t b)
+    static std::uint64_t f64_sub(const std::uint64_t a, const std::uint64_t b)
     {
       const bool signA = detail::signF64UI(a);
       const bool signB = detail::signF64UI(b);
@@ -589,15 +589,15 @@
       }
     }
 
-    static uint64_t f64_mul(const uint64_t a, const uint64_t b)
+    static std::uint64_t f64_mul(const std::uint64_t a, const std::uint64_t b)
     {
-      const bool     signA = detail::signF64UI(a);
-      const int16_t  expA  = detail::expF64UI (a);
-            uint64_t sigA  = detail::fracF64UI(a);
+      const bool          signA = detail::signF64UI(a);
+      const std::int16_t  expA  = detail::expF64UI (a);
+            std::uint64_t sigA  = detail::fracF64UI(a);
 
-      const bool     signB = detail::signF64UI(b);
-      const int16_t  expB  = detail::expF64UI (b);
-            uint64_t sigB  = detail::fracF64UI(b);
+      const bool          signB = detail::signF64UI(b);
+      const std::int16_t  expB  = detail::expF64UI (b);
+            std::uint64_t sigB  = detail::fracF64UI(b);
 
       const bool signZ = signA ^ signB;
 
@@ -607,7 +607,7 @@
       }
       else
       {
-        int16_t expZ = (int16_t) (expA + expB) - 0x3FF;
+        std::int16_t expZ = (std::int16_t) (expA + expB) - 0x3FF;
 
         sigA = (sigA | UINT64_C(0x0010000000000000)) << 10U;
         sigB = (sigB | UINT64_C(0x0010000000000000)) << 11U;
@@ -615,20 +615,20 @@
 
         // Compute the 128-bit product of sigA and sigB.
 
-        const uint32_t a32 = (uint32_t) (sigA >> 32U);
-        const uint32_t a0  = (uint32_t)  sigA;
-        const uint32_t b32 = (uint32_t) (sigB >> 32U);
-        const uint32_t b0  = (uint32_t)  sigB;
+        const std::uint32_t a32 = (std::uint32_t) (sigA >> 32U);
+        const std::uint32_t a0  = (std::uint32_t)  sigA;
+        const std::uint32_t b32 = (std::uint32_t) (sigB >> 32U);
+        const std::uint32_t b0  = (std::uint32_t)  sigB;
 
         struct detail::uint128_as_struct sig128Z;
 
-        sig128Z.v0 = ((uint64_t) a0) * b0;
+        sig128Z.v0 = ((std::uint64_t) a0) * b0;
 
-        uint64_t mid1 =                    ((uint64_t) a32) * b0;
-        uint64_t mid  = mid1 + (uint64_t) (((uint64_t) b32) * a0);
+        std::uint64_t mid1 =                    ((std::uint64_t) a32) * b0;
+        std::uint64_t mid  = mid1 + (std::uint64_t) (((std::uint64_t) b32) * a0);
 
-        sig128Z.v64  = ((uint64_t) a32) * b32;
-        sig128Z.v64 += ((uint64_t) (mid < mid1) << 32U) | (uint32_t) (mid >> 32U);
+        sig128Z.v64  = ((std::uint64_t) a32) * b32;
+        sig128Z.v64 += ((std::uint64_t) (mid < mid1) << 32U) | (std::uint32_t) (mid >> 32U);
 
         mid <<= 32U;
 
@@ -651,15 +651,15 @@
       }
     }
 
-    static uint64_t f64_div(const uint64_t a, const uint64_t b)
+    static std::uint64_t f64_div(const std::uint64_t a, const std::uint64_t b)
     {
-      const bool     signA = detail::signF64UI(a);
-            int16_t  expA  = detail::expF64UI (a);
-            uint64_t sigA  = detail::fracF64UI(a);
+      const bool          signA = detail::signF64UI(a);
+            std::int16_t  expA  = detail::expF64UI (a);
+            std::uint64_t sigA  = detail::fracF64UI(a);
 
-      const bool     signB = detail::signF64UI(b);
-            int16_t  expB  = detail::expF64UI (b);
-            uint64_t sigB  = detail::fracF64UI(b);
+      const bool          signB = detail::signF64UI(b);
+            std::int16_t  expB  = detail::expF64UI (b);
+            std::uint64_t sigB  = detail::fracF64UI(b);
 
       const bool signZ = signA ^ signB;
 
@@ -669,7 +669,7 @@
       }
       else
       {
-        int16_t expZ = (expA - expB) + 0x3FE;
+        std::int16_t expZ = (expA - expB) + 0x3FE;
 
         sigA |= UINT64_C(0x0010000000000000);
         sigB |= UINT64_C(0x0010000000000000);
@@ -687,27 +687,27 @@
 
         sigB <<= 11U;
 
-        const uint32_t recip32 = detail::softfloat_approxRecip32_1(sigB >> 32U) - 2U;
-        const uint32_t sig32Z  = ((uint32_t) (sigA >> 32U) * (uint64_t) recip32) >> 32U;
+        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1(sigB >> 32U) - 2U;
+        const std::uint32_t sig32Z  = ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U;
 
-        uint32_t doubleTerm = sig32Z << 1U;
+        std::uint32_t doubleTerm = sig32Z << 1U;
 
-        uint64_t rem =   ((sigA - (uint64_t) doubleTerm *  (uint32_t) (sigB >> 32U)) << 28U)
-                                - (uint64_t) doubleTerm * ((uint32_t)  sigB >> 4U);
+        std::uint64_t rem =   ((sigA - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
+                                - (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
 
-        uint32_t q = (((uint32_t) (rem >> 32U) * (uint64_t) recip32) >> 32U) + 4U;
+        std::uint32_t q = (((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U;
 
-        uint64_t sigZ = ((uint64_t) sig32Z << 32U) + ((uint64_t) q << 4U);
+        std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U) + ((std::uint64_t) q << 4U);
 
         if((sigZ & 0x1FF) < (4UL << 4U))
         {
-          q    &=  (uint32_t) ~7U;
-          sigZ &= ~(uint64_t) 0x7F;
+          q    &=  (std::uint32_t) ~7U;
+          sigZ &= ~(std::uint64_t) 0x7F;
 
           doubleTerm = q << 1U;
 
-          rem =   ((rem - (uint64_t) doubleTerm *  (uint32_t) (sigB >> 32U)) << 28U)
-                -         (uint64_t) doubleTerm * ((uint32_t)  sigB >> 4U);
+          rem =   ((rem - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
+                -         (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
 
           if(rem & UINT64_C(0x8000000000000000))
           {
@@ -726,11 +726,11 @@
       }
     }
 
-    static uint64_t f64_sqrt(const uint64_t a)
+    static std::uint64_t f64_sqrt(const std::uint64_t a)
     {
-      bool     signA = detail::signF64UI(a);
-      int16_t  expA  = detail::expF64UI (a);
-      uint64_t sigA  = detail::fracF64UI(a);
+      bool          signA = detail::signF64UI(a);
+      std::int16_t  expA  = detail::expF64UI (a);
+      std::uint64_t sigA  = detail::fracF64UI(a);
 
       if(((!expA) && (!sigA)) || signA)
       {
@@ -743,14 +743,14 @@
         | `sig32A', which makes `sig32Z' also a lower bound on the square root of
         | `sigA'.)
         *------------------------------------------------------------------------*/
-        int16_t expZ = ((expA - 0x3FF) >> 1) + 0x3FE;
+        std::int16_t expZ = ((expA - 0x3FF) >> 1) + 0x3FE;
 
         expA &= 1;
         sigA |= UINT64_C(0x0010000000000000);
 
-        uint32_t sig32A      = (uint32_t) (sigA >> 21U);
-        uint32_t recipSqrt32 = softfloat_approxRecipSqrt32_1((uint32_t) expA, sig32A);
-        uint32_t sig32Z      = ((uint64_t) sig32A * recipSqrt32) >> 32U;
+        std::uint32_t sig32A      = (std::uint32_t) (sigA >> 21U);
+        std::uint32_t recipSqrt32 = softfloat_approxRecipSqrt32_1((std::uint32_t) expA, sig32A);
+        std::uint32_t sig32Z      = ((std::uint64_t) sig32A * recipSqrt32) >> 32U;
 
         if(expA)
         {
@@ -762,16 +762,16 @@
           sigA <<= 9U;
         }
 
-              uint64_t rem = sigA - (uint64_t) sig32Z * sig32Z;
-        const uint32_t q   = ((uint32_t) (rem >> 2U) * (uint64_t) recipSqrt32) >> 32U;
+              std::uint64_t rem = sigA - (std::uint64_t) sig32Z * sig32Z;
+        const std::uint32_t q   = ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U;
 
-        uint64_t sigZ = ((uint64_t) sig32Z << 32U | (1UL << 5U)) + ((uint64_t) q << 3U);
+        std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U);
 
         if((sigZ & 0x1FFU) < 0x22U)
         {
-          sigZ &= ~(uint64_t) 0x3FU;
+          sigZ &= ~(std::uint64_t) 0x3FU;
 
-          const uint64_t shiftedSigZ = sigZ >> 6U;
+          const std::uint64_t shiftedSigZ = sigZ >> 6U;
 
           rem = (sigA << 52U) - shiftedSigZ * shiftedSigZ;
 
@@ -792,60 +792,60 @@
       }
     }
 
-    static uint32_t f64_to_ui32(const uint64_t a)
+    static std::uint32_t f64_to_ui32(const std::uint64_t a)
     {
-      const bool     sign = detail::signF64UI(a);
-      const int16_t  expA = detail::expF64UI (a);
-            uint64_t sig  = detail::fracF64UI(a);
+      const bool          sign = detail::signF64UI(a);
+      const std::int16_t  expA = detail::expF64UI (a);
+            std::uint64_t sig  = detail::fracF64UI(a);
 
       if(expA)
       {
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      const int16_t shiftDist = 0x427 - expA;
+      const std::int16_t shiftDist = 0x427 - expA;
 
       if(0 < shiftDist)
       {
-        sig = detail::softfloat_shiftRightJam64(sig, (uint32_t) shiftDist);
+        sig = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) shiftDist);
       }
 
       return softfloat_roundToUI32(sign, sig);
     }
 
-    static int32_t f64_to__i32(const uint64_t a)
+    static int32_t f64_to__i32(const std::uint64_t a)
     {
       const bool     sign = detail::signF64UI(a);
-      const int16_t  expA = detail::expF64UI (a);
-            uint64_t sig  = detail::fracF64UI(a);
+      const std::int16_t  expA = detail::expF64UI (a);
+            std::uint64_t sig  = detail::fracF64UI(a);
 
       if(expA)
       {
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      int16_t shiftDist = 0x427 - expA;
+      std::int16_t shiftDist = 0x427 - expA;
 
       if(0 < shiftDist)
       {
-        sig = detail::softfloat_shiftRightJam64(sig, (uint32_t) shiftDist);
+        sig = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) shiftDist);
       }
 
       return softfloat_roundToI32(sign, sig);
     }
 
-    static uint64_t f64_to_ui64(const uint64_t a)
+    static std::uint64_t f64_to_ui64(const std::uint64_t a)
     {
-      const bool     sign = detail::signF64UI(a);
-      const int16_t  expA = detail::expF64UI (a);
-            uint64_t sig  = detail::fracF64UI(a);
+      const bool          sign = detail::signF64UI(a);
+      const std::int16_t  expA = detail::expF64UI (a);
+            std::uint64_t sig  = detail::fracF64UI(a);
 
       if(expA)
       {
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      int16_t shiftDist = 0x433 - expA;
+      std::int16_t shiftDist = 0x433 - expA;
 
       struct detail::uint64_extra sigExtra;
 
@@ -861,24 +861,24 @@
       }
       else
       {
-        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (uint32_t) shiftDist);
+        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (std::uint32_t) shiftDist);
       }
 
       return softfloat_roundToUI64(sign, sigExtra.v);
     }
 
-    static int64_t f64_to__i64(const uint64_t a)
+    static int64_t f64_to__i64(const std::uint64_t a)
     {
-      const bool     sign = detail::signF64UI(a);
-      const int16_t  expA = detail::expF64UI (a);
-            uint64_t sig  = detail::fracF64UI(a);
+      const bool          sign = detail::signF64UI(a);
+      const std::int16_t  expA = detail::expF64UI (a);
+            std::uint64_t sig  = detail::fracF64UI(a);
 
       if(expA)
       {
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      int16_t shiftDist = (int16_t) (INT16_C(0x433) - expA);
+      std::int16_t shiftDist = (std::int16_t) (INT16_C(0x433) - expA);
 
       struct detail::uint64_extra sigExtra;
 
@@ -894,26 +894,26 @@
       }
       else
       {
-        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (uint32_t) shiftDist);
+        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (std::uint32_t) shiftDist);
       }
 
       return softfloat_roundToI64(sign, sigExtra.v);
     }
 
-    static float f64_to_f32(const uint64_t a)
+    static float f64_to_f32(const std::uint64_t a)
     {
       const bool     sign = detail::signF64UI(a);
-      const int16_t  expA = detail::expF64UI (a);
-      const uint64_t frac = detail::fracF64UI(a);
+      const std::int16_t  expA = detail::expF64UI (a);
+      const std::uint64_t frac = detail::fracF64UI(a);
 
-      const uint32_t frac32 = (uint32_t) detail::softfloat_shortShiftRightJam64(frac, 22);
+      const std::uint32_t frac32 = (std::uint32_t) detail::softfloat_shortShiftRightJam64(frac, 22);
 
-      const float f = softfloat_roundPackToF32(sign, (int16_t) (expA - INT16_C(0x381)), frac32 | UINT32_C(0x40000000));
+      const float f = softfloat_roundPackToF32(sign, (std::int16_t) (expA - INT16_C(0x381)), frac32 | UINT32_C(0x40000000));
 
       return f;
     }
 
-    static float softfloat_roundPackToF32(bool sign, int16_t expA, uint32_t sig)
+    static float softfloat_roundPackToF32(bool sign, std::int16_t expA, std::uint32_t sig)
     {
       constexpr uint_fast8_t roundIncrement = UINT8_C(0x40);
 
@@ -931,72 +931,72 @@
       return detail::uz_type<float>(detail::packToF32UI(sign, expA, sig)).my_f;
     }
 
-    static constexpr uint64_t my__i32_to_f64(const int32_t a)
+    static constexpr std::uint64_t my__i32_to_f64(const int32_t a)
     {
       return
         (!a) ? 0U
-             : detail::packToF64UI((a < 0), 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a)) + 21U)), (uint64_t) uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(uint32_t((a < 0) ? detail::negate((uint32_t) a) : (uint32_t) a)) + 21U)));
+             : detail::packToF64UI((a < 0), 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a)) + 21U)), (std::uint64_t) std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a)) + 21U)));
     }
 
-    static constexpr uint64_t my__i64_to_f64(const int64_t a)
+    static constexpr std::uint64_t my__i64_to_f64(const int64_t a)
     {
       return
-        (!((uint64_t) a & UINT64_C(0x7FFFFFFFFFFFFFFF)))
+        (!((std::uint64_t) a & UINT64_C(0x7FFFFFFFFFFFFFFF)))
           ? ((a < 0) ? detail::packToF64UI(1, 0x43E, 0) : 0U)
-          : softfloat_normRoundPackToF64((a < 0), 0x43C, uint64_t((a < 0) ? detail::negate((uint64_t) a) : (uint64_t) a));
+          : softfloat_normRoundPackToF64((a < 0), 0x43C, std::uint64_t((a < 0) ? detail::negate((std::uint64_t) a) : (std::uint64_t) a));
     }
 
-    static constexpr uint64_t my_ui32_to_f64(const uint32_t a)
+    static constexpr std::uint64_t my_ui32_to_f64(const std::uint32_t a)
     {
       return
         ((a == 0U)
           ? 0U
-          : detail::packToF64UI(0, 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U)), ((uint64_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U))));
+          : detail::packToF64UI(0, 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U)), ((std::uint64_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U))));
     }
 
-    static constexpr uint64_t my_ui64_to_f64(const uint64_t a)
+    static constexpr std::uint64_t my_ui64_to_f64(const std::uint64_t a)
     {
-      return (!a) ? (uint64_t) 0U
+      return (!a) ? (std::uint64_t) 0U
                   : (a & UINT64_C(0x8000000000000000)) ? softfloat_roundPackToF64(0, 0x43D, detail::softfloat_shortShiftRightJam64(a, 1))
                                                        : softfloat_normRoundPackToF64(0, 0x43C, a);
     }
 
-    static constexpr int32_t softfloat_roundToI32(bool sign, uint64_t sig)
+    static constexpr int32_t softfloat_roundToI32(bool sign, std::uint64_t sig)
     {
-      return (int32_t) ((uint32_t) (sign ? detail::negate((uint32_t) (sig >> 12U)) : (uint32_t) (sig >> 12U)));
+      return (int32_t) ((std::uint32_t) (sign ? detail::negate((std::uint32_t) (sig >> 12U)) : (std::uint32_t) (sig >> 12U)));
     }
 
-    static constexpr int64_t softfloat_roundToI64(bool sign, uint64_t sig)
+    static constexpr int64_t softfloat_roundToI64(bool sign, std::uint64_t sig)
     {
-      return (int64_t) ((uint64_t) (sign ? detail::negate(sig) : sig));
+      return (int64_t) ((std::uint64_t) (sign ? detail::negate(sig) : sig));
     }
 
-    static constexpr uint32_t softfloat_roundToUI32(bool sign, uint64_t sig)
+    static constexpr std::uint32_t softfloat_roundToUI32(bool sign, std::uint64_t sig)
     {
-      return ((sign) && (sig == 0U)) ? 0U : (uint32_t) (sig >> 12);
+      return ((sign) && (sig == 0U)) ? 0U : (std::uint32_t) (sig >> 12);
     }
 
-    static constexpr uint64_t softfloat_roundToUI64(bool sign, uint64_t sig)
+    static constexpr std::uint64_t softfloat_roundToUI64(bool sign, std::uint64_t sig)
     {
       return ((sign) && (sig == 0U)) ? 0U : sig;
     }
 
-    static uint64_t softfloat_addMagsF64(uint64_t uiA, uint64_t uiB, bool signZ)
+    static std::uint64_t softfloat_addMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ)
     {
-      const int16_t  expA = detail::expF64UI (uiA);
-            uint64_t sigA = detail::fracF64UI(uiA);
-      const int16_t  expB = detail::expF64UI (uiB);
-            uint64_t sigB = detail::fracF64UI(uiB);
+      const std::int16_t  expA = detail::expF64UI (uiA);
+            std::uint64_t sigA = detail::fracF64UI(uiA);
+      const std::int16_t  expB = detail::expF64UI (uiB);
+            std::uint64_t sigB = detail::fracF64UI(uiB);
 
-      const int16_t expDiff = expA - expB;
+      const std::int16_t expDiff = expA - expB;
 
-      int16_t  expZ;
-      uint64_t sigZ;
+      std::int16_t  expZ;
+      std::uint64_t sigZ;
 
       if(expDiff == 0)
       {
         expZ = expA;
-        sigZ = (uint64_t) (UINT64_C(0x0020000000000000) + sigA) + sigB;
+        sigZ = (std::uint64_t) (UINT64_C(0x0020000000000000) + sigA) + sigB;
         sigZ <<= 9U;
       }
       else
@@ -1017,7 +1017,7 @@
             sigA <<= 1;
           }
 
-          sigA = detail::softfloat_shiftRightJam64(sigA, (uint32_t) (-expDiff));
+          sigA = detail::softfloat_shiftRightJam64(sigA, (std::uint32_t) (-expDiff));
         }
         else
         {
@@ -1032,10 +1032,10 @@
             sigB <<= 1U;
           }
 
-          sigB = detail::softfloat_shiftRightJam64(sigB, (uint32_t) expDiff);
+          sigB = detail::softfloat_shiftRightJam64(sigB, (std::uint32_t) expDiff);
         }
 
-        sigZ = (uint64_t) (UINT64_C(0x2000000000000000) + sigA) + sigB;
+        sigZ = (std::uint64_t) (UINT64_C(0x2000000000000000) + sigA) + sigB;
 
         if(sigZ < UINT64_C(0x4000000000000000))
         {
@@ -1054,9 +1054,9 @@
     | number either with one integer bit and 31 fraction bits or with two integer
     | bits and 30 fraction bits.
     *----------------------------------------------------------------------------*/
-    static uint32_t softfloat_approxRecipSqrt32_1(uint32_t oddExpA, uint32_t a)
+    static std::uint32_t softfloat_approxRecipSqrt32_1(std::uint32_t oddExpA, std::uint32_t a)
     {
-      constexpr std::array<uint16_t, 16U> softfloat_approxRecipSqrt_1k0s =
+      constexpr std::array<std::uint16_t, 16U> softfloat_approxRecipSqrt_1k0s =
       {{
         UINT16_C(0xB4C9), UINT16_C(0xFFAB), UINT16_C(0xAA7D), UINT16_C(0xF11C),
         UINT16_C(0xA1C5), UINT16_C(0xE4C7), UINT16_C(0x9A43), UINT16_C(0xDA29),
@@ -1064,7 +1064,7 @@
         UINT16_C(0x88C6), UINT16_C(0xC16D), UINT16_C(0x8424), UINT16_C(0xBAE1)
       }};
 
-      constexpr std::array<uint16_t, 16U> softfloat_approxRecipSqrt_1k1s =
+      constexpr std::array<std::uint16_t, 16U> softfloat_approxRecipSqrt_1k1s =
       {{
         UINT16_C(0xA5A5), UINT16_C(0xEA42), UINT16_C(0x8C21), UINT16_C(0xC62D),
         UINT16_C(0x788F), UINT16_C(0xAA7F), UINT16_C(0x6928), UINT16_C(0x94B6),
@@ -1072,24 +1072,24 @@
         UINT16_C(0x4A3E), UINT16_C(0x68FE), UINT16_C(0x432B), UINT16_C(0x5EFD)
       }};
 
-      int16_t index       = (int16_t) (((uint32_t) (a >> 27U) & 0xEU) + oddExpA);
-      uint16_t     eps    = (uint16_t) (a >> 12);
-      uint16_t     r0     =                           softfloat_approxRecipSqrt_1k0s[(unsigned) index]
-                            - (uint16_t) ((uint32_t) (softfloat_approxRecipSqrt_1k1s[(unsigned) index] * (uint32_t) eps) >> 20U);
-      uint32_t     ESqrR0 = (uint32_t) r0 * r0;
+      std::int16_t index       = (std::int16_t) (((std::uint32_t) (a >> 27U) & 0xEU) + oddExpA);
+      std::uint16_t     eps    = (std::uint16_t) (a >> 12);
+      std::uint16_t     r0     =                           softfloat_approxRecipSqrt_1k0s[(unsigned) index]
+                            - (std::uint16_t) ((std::uint32_t) (softfloat_approxRecipSqrt_1k1s[(unsigned) index] * (std::uint32_t) eps) >> 20U);
+      std::uint32_t     ESqrR0 = (std::uint32_t) r0 * r0;
 
       if(!oddExpA)
       {
         ESqrR0 <<= 1U;
       }
 
-      const uint32_t sigma0 = ~(uint32_t) (((uint32_t) ESqrR0 * (uint64_t) a) >> 23U);
+      const std::uint32_t sigma0 = ~(std::uint32_t) (((std::uint32_t) ESqrR0 * (std::uint64_t) a) >> 23U);
 
-      uint32_t r = (((uint32_t) r0) << 16U) + (uint32_t) ((r0 * (uint64_t) sigma0) >> 25U);
+      std::uint32_t r = (((std::uint32_t) r0) << 16U) + (std::uint32_t) ((r0 * (std::uint64_t) sigma0) >> 25U);
 
-      const uint32_t sqrSigma0 = (uint32_t) ((uint64_t) ((uint64_t) sigma0 * sigma0) >> 32U);
+      const std::uint32_t sqrSigma0 = (std::uint32_t) ((std::uint64_t) ((std::uint64_t) sigma0 * sigma0) >> 32U);
 
-      r += (uint32_t) ((uint64_t) ((uint32_t) ((uint32_t) ((r >> 1U) + (r >> 3U)) - ((uint32_t) r0 << 14U)) * (uint64_t) sqrSigma0) >> 48U);
+      r += (std::uint32_t) ((std::uint64_t) ((std::uint32_t) ((std::uint32_t) ((r >> 1U) + (r >> 3U)) - ((std::uint32_t) r0 << 14U)) * (std::uint64_t) sqrSigma0) >> 48U);
 
       if(!(r & UINT32_C(0x80000000)))
       {
@@ -1099,15 +1099,15 @@
       return r;
     }
 
-    static uint64_t softfloat_normRoundPackToF64(bool sign, int16_t expA, uint64_t sig)
+    static std::uint64_t softfloat_normRoundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig)
     {
       const int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64(sig) - 1U);
 
       expA -= shiftDist;
 
-      if((10 <= shiftDist) && ((uint32_t) expA < 0x7FDU))
+      if((10 <= shiftDist) && ((std::uint32_t) expA < 0x7FDU))
       {
-        const uint64_t uZ = detail::packToF64UI(sign, sig ? expA : 0, sig << (shiftDist - 10));
+        const std::uint64_t uZ = detail::packToF64UI(sign, sig ? expA : 0, sig << (shiftDist - 10));
 
         return uZ;
       }
@@ -1117,44 +1117,44 @@
       }
     }
 
-    static uint64_t softfloat_roundPackToF64(bool sign, int16_t expA, uint64_t sig)
+    static std::uint64_t softfloat_roundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig)
     {
-      if(0x7FDU <= (uint16_t) expA)
+      if(0x7FDU <= (std::uint16_t) expA)
       {
         if(expA < 0)
         {
-          sig  = detail::softfloat_shiftRightJam64(sig, (uint32_t) -expA);
+          sig  = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) -expA);
           expA = 0;
         }
       }
 
-      const uint16_t roundBits = sig & 0x3FFU;
+      const std::uint16_t roundBits = sig & 0x3FFU;
 
       sig = (sig + 0x200U) >> 10U;
 
-      sig &= (uint64_t) (~(uint64_t) (((roundBits ^ 0x200U) == 0U ? 1U : 0U) & 1U));
+      sig &= (std::uint64_t) (~(std::uint64_t) (((roundBits ^ 0x200U) == 0U ? 1U : 0U) & 1U));
 
       if(!sig)
       {
         expA = 0;
       }
 
-      const uint64_t uiZ = detail::packToF64UI(sign, expA, sig);
+      const std::uint64_t uiZ = detail::packToF64UI(sign, expA, sig);
 
       return uiZ;
     }
 
-    static uint64_t softfloat_subMagsF64(uint64_t uiA, uint64_t uiB, bool signZ)
+    static std::uint64_t softfloat_subMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ)
     {
-      uint64_t uiZ;
-      int16_t  expZ;
+      std::uint64_t uiZ;
+      std::int16_t  expZ;
 
-      int16_t  expA = detail::expF64UI(uiA);
-      uint64_t sigA = detail::fracF64UI(uiA);
-      int16_t  expB = detail::expF64UI(uiB);
-      uint64_t sigB = detail::fracF64UI(uiB);
+      std::int16_t  expA = detail::expF64UI(uiA);
+      std::uint64_t sigA = detail::fracF64UI(uiA);
+      std::int16_t  expB = detail::expF64UI(uiB);
+      std::uint64_t sigB = detail::fracF64UI(uiB);
 
-      const int16_t expDiff = expA - expB;
+      const std::int16_t expDiff = expA - expB;
 
       if(!expDiff)
       {
@@ -1177,7 +1177,7 @@
             sigDiff = -sigDiff;
           }
 
-          int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64((uint64_t) sigDiff) - 11U);
+          int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64((std::uint64_t) sigDiff) - 11U);
 
           expZ = expA - shiftDist;
 
@@ -1196,14 +1196,14 @@
         sigA <<= 10U;
         sigB <<= 10U;
 
-        uint64_t sigZ;
+        std::uint64_t sigZ;
 
         if(expDiff < 0)
         {
           signZ = (!signZ);
 
           sigA += ((expA != 0) ? UINT64_C(0x4000000000000000) : sigA);
-          sigA  = detail::softfloat_shiftRightJam64(sigA, (uint32_t) -expDiff);
+          sigA  = detail::softfloat_shiftRightJam64(sigA, (std::uint32_t) -expDiff);
 
           sigB |= UINT64_C(0x4000000000000000);
 
@@ -1213,7 +1213,7 @@
         else
         {
           sigB += ((expB != 0) ? UINT64_C(0x4000000000000000) : sigB);
-          sigB  = detail::softfloat_shiftRightJam64(sigB, (uint32_t) expDiff);
+          sigB  = detail::softfloat_shiftRightJam64(sigB, (std::uint32_t) expDiff);
 
           sigA |= UINT64_C(0x4000000000000000);
 
@@ -1221,7 +1221,7 @@
           sigZ = sigA - sigB;
         }
 
-        return softfloat_normRoundPackToF64(signZ, (int16_t) (expZ - 1), sigZ);
+        return softfloat_normRoundPackToF64(signZ, (std::int16_t) (expZ - 1), sigZ);
       }
 
       return uiZ;
@@ -1262,14 +1262,14 @@
     friend bool isnan   (const soft_double x) { return  (x.my_value == my_value_quiet_NaN().my_value); }
     friend bool isinf   (const soft_double x) { return ((x.my_value & my_value_infinity().my_value) == my_value_infinity().my_value); }
 
-    friend inline soft_double fabs (const soft_double x) { return soft_double((uint64_t) (x.my_value & UINT64_C(0x7FFFFFFFFFFFFFFF)), detail::nothing()); }
+    friend inline soft_double fabs (const soft_double x) { return soft_double((std::uint64_t) (x.my_value & UINT64_C(0x7FFFFFFFFFFFFFFF)), detail::nothing()); }
     friend inline soft_double sqrt (const soft_double x) { return soft_double(f64_sqrt(x.my_value), detail::nothing()); }
 
     friend inline soft_double frexp(const soft_double x, int* expptr)
     {
       const bool     sign = detail::signF64UI(x.my_value);
-      const int16_t  expA = detail::expF64UI (x.my_value) - INT16_C(0x3FE);
-      const uint64_t frac = detail::fracF64UI(x.my_value);
+      const std::int16_t  expA = detail::expF64UI (x.my_value) - INT16_C(0x3FE);
+      const std::uint64_t frac = detail::fracF64UI(x.my_value);
 
       if(expptr != nullptr)
       {
@@ -1283,7 +1283,7 @@
     {
       const int expA = (int) (detail::expF64UI(x.my_value) + expval);
 
-      return soft_double((uint64_t) ((uint64_t) (x.my_value & (uint64_t) ~(UINT64_C(0x7FF) << 52U)) | (uint64_t) expA << 52U), detail::nothing());
+      return soft_double((std::uint64_t) ((std::uint64_t) (x.my_value & (std::uint64_t) ~(UINT64_C(0x7FF) << 52U)) | (std::uint64_t) expA << 52U), detail::nothing());
     }
 
     friend inline soft_double floor(const soft_double x)
@@ -1345,8 +1345,8 @@
       // Scale the argument yet again with division by 4.
       const int expA = (int) (detail::expF64UI(a.my_value) - 2);
 
-      a.my_value &= (uint64_t) ~(UINT64_C(0x7FF) << 52U);
-      a.my_value |= (uint64_t) expA << 52U;
+      a.my_value &= (std::uint64_t) ~(UINT64_C(0x7FF) << 52U);
+      a.my_value |= (std::uint64_t) expA << 52U;
 
       const soft_double a2 = a * a;
 
@@ -1359,14 +1359,7 @@
       result *= result;
       result *= result;
 
-      if(n != 0)
-      {
-        const soft_double p2 = ldexp(soft_double::my_value_one(), n);
-
-        result *= p2;
-      }
-
-      return result;
+      return ((n != 0) ? ldexp(result, n) : result);
     }
 
     friend inline soft_double log(const soft_double x)
@@ -1396,9 +1389,9 @@
         // Q05 = +0.1E1;
 
         // Scale the argument such that 1 <= a < 2.
-        const int16_t n = detail::expF64UI(x.my_value) - INT16_C(0x3FF);
+        const std::int16_t n = detail::expF64UI(x.my_value) - INT16_C(0x3FF);
 
-        const soft_double a((uint64_t) ((uint64_t) (x.my_value & (uint64_t) ~(UINT64_C(0x7FF) << 52U)) | UINT64_C(0x3FF) << 52U), detail::nothing());
+        const soft_double a((std::uint64_t) ((std::uint64_t) (x.my_value & (std::uint64_t) ~(UINT64_C(0x7FF) << 52U)) | UINT64_C(0x3FF) << 52U), detail::nothing());
 
         const soft_double z  = (a - 1) / (a + 1);
         const soft_double z2 = z * z;
