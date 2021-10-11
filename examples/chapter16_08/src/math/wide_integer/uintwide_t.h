@@ -87,6 +87,10 @@
   using size_t    = std::uint16_t;
   using ptrdiff_t = std::int16_t;
 
+  static_assert((  (std::numeric_limits<size_t>::digits        >= 16)
+                && (std::numeric_limits<ptrdiff_t>::digits + 1 >= 16)),
+                "Error: size type and pointer difference type must be at least 16 bits in width (or wider)");
+
   template<const size_t Width2> struct verify_power_of_two
   {
     // TBD: Which powers should be checked if size_t is not 32 bits?
@@ -3251,7 +3255,6 @@
   using uint4096_t  = uintwide_t< 4096U, std::uint32_t>;
   using uint8192_t  = uintwide_t< 8192U, std::uint32_t>;
   using uint16384_t = uintwide_t<16384U, std::uint32_t>;
-  using uint32768_t = uintwide_t<32768U, std::uint32_t>;
 
   #if defined(__GNUC__) && defined(__AVR__)
   #else
@@ -3264,7 +3267,6 @@
   static_assert(std::is_trivially_copyable<uint4096_t >::value && std::is_standard_layout<uint4096_t >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<uint8192_t >::value && std::is_standard_layout<uint8192_t >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<uint16384_t>::value && std::is_standard_layout<uint16384_t>::value, "uintwide_t must be trivially copyable with standard layout.");
-  static_assert(std::is_trivially_copyable<uint32768_t>::value && std::is_standard_layout<uint32768_t>::value, "uintwide_t must be trivially copyable with standard layout.");
   #endif
 
   using  int64_t    = uintwide_t<   64U, std::uint16_t, void, true>;
@@ -3276,7 +3278,6 @@
   using  int4096_t  = uintwide_t< 4096U, std::uint32_t, void, true>;
   using  int8192_t  = uintwide_t< 8192U, std::uint32_t, void, true>;
   using  int16384_t = uintwide_t<16384U, std::uint32_t, void, true>;
-  using  int32768_t = uintwide_t<32768U, std::uint32_t, void, true>;
 
   #if defined(__GNUC__) && defined(__AVR__)
   #else
@@ -3289,7 +3290,6 @@
   static_assert(std::is_trivially_copyable<int4096_t >::value && std::is_standard_layout<int4096_t >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<int8192_t >::value && std::is_standard_layout<int8192_t >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<int16384_t>::value && std::is_standard_layout<int16384_t>::value, "uintwide_t must be trivially copyable with standard layout.");
-  static_assert(std::is_trivially_copyable<int32768_t>::value && std::is_standard_layout<int32768_t>::value, "uintwide_t must be trivially copyable with standard layout.");
   #endif
 
   // Insert a base class for numeric_limits<> support.

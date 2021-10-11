@@ -8,6 +8,7 @@
 #ifndef MCAL_MEMORY_PROGMEM_2019_08_17_H_
   #define MCAL_MEMORY_PROGMEM_2019_08_17_H_
 
+  #include <stddef.h>
   #include <stdint.h>
 
   #define MY_PROGMEM

@@ -41,7 +41,6 @@ namespace
   std::uint64_t                                     sys_idle_miller_rabin_number_of_primes;
 
   sys_idle_miller_rabin_str_result_type             sys_idle_miller_rabin_str_result;
-
 }
 
 bool sys::idle::miller_rabin_result_is_ok = true;

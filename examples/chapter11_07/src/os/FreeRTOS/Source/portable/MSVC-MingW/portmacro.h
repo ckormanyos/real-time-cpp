@@ -42,12 +42,11 @@
 #define portSHORT             short
 #define portSTACK_TYPE        size_t
 #define portBASE_TYPE         long
-#define portPOINTER_SIZE_TYPE size_t
+#define portPOINTER_SIZE_TYPE uintptr_t
 
 typedef portSTACK_TYPE        StackType_t;
 typedef long                  BaseType_t;
 typedef unsigned long         UBaseType_t;
-
 
 #if( configUSE_16_BIT_TICKS == 1 )
     typedef uint16_t TickType_t;
@@ -63,10 +62,10 @@ typedef unsigned long         UBaseType_t;
 
 /* Hardware specifics. */
 #define portSTACK_GROWTH      ( -1 )
-#define portTICK_PERIOD_MS      ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#define portTICK_PERIOD_MS    ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portINLINE __inline
 
-#if defined( __x86_64__) || defined( _M_X64 )
+#if defined(__x86_64__) || defined(_M_X64)
   #define portBYTE_ALIGNMENT    8
 #else
   #define portBYTE_ALIGNMENT    4
@@ -116,7 +115,7 @@ void vPortExitCritical( void );
 
   /*-----------------------------------------------------------*/
 
-  #ifdef __GNUC__
+  #if defined(__GNUC__)
     #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities )  \
       __asm volatile(  "bsr %1, %0\n\t"                   \
               :"=r"(uxTopPriority) : "rm"(uxReadyPriorities) : "cc" )
@@ -128,10 +127,9 @@ void vPortExitCritical( void );
 
 #endif /* taskRECORD_READY_PRIORITY */
 
-#ifndef __GNUC__
+#if !defined(__GNUC__)
   __pragma( warning( disable:4211 ) ) /* Nonstandard extension used, as extern is only nonstandard to MSVC. */
 #endif
-
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
 #define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void * pvParameters )

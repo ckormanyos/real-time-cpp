@@ -17,7 +17,11 @@ namespace
   OS_TASK_STATIC_RESOURCES(app_led_task_toggle_led0, 128U);
 }
 
-extern "C" int main()
+#if defined(__AVR__)
+extern "C" int main(void) __attribute__((used, noinline));
+#endif
+
+extern "C" int main(void)
 {
   // Initialize the microcontroller abstraction layer.
   mcal::init();
