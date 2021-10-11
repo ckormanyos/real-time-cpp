@@ -17,16 +17,17 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -O3                                            \
+TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
-                -mrelax
+                -mrelax                                        \
+                -finline-functions                             \
+                -finline-limit=64
 
 TGT_CPPFLAGS  = -std=c++11
 
 TGT_INCLUDES  = -I$(PATH_APP)/os/FreeRTOS/Source/include/cfg/GCC-ATMega328         \
                 -I$(PATH_APP)/os/FreeRTOS/Source/portable/GCC-ATmega328            \
-                -I$(PATH_APP)/util/STL_C++XX_stdfloat                              \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =

@@ -43,13 +43,14 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR        char
-#define portFLOAT       float
-#define portDOUBLE      double
-#define portLONG        long
-#define portSHORT       int
-#define portSTACK_TYPE  uint8_t
-#define portBASE_TYPE   char
+#define portCHAR              char
+#define portFLOAT             float
+#define portDOUBLE            double
+#define portLONG              long
+#define portSHORT             int
+#define portSTACK_TYPE        uint8_t
+#define portBASE_TYPE         char
+#define portPOINTER_SIZE_TYPE uintptr_t
 
 typedef portSTACK_TYPE StackType_t;
 typedef signed char    BaseType_t;

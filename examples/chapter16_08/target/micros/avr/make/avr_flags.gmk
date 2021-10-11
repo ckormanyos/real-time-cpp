@@ -24,7 +24,7 @@ TGT_CFLAGS    = -Os                                            \
                 -finline-functions                             \
                 -finline-limit=64
 
-TGT_CPPFLAGS  = -std=c++2a
+TGT_CPPFLAGS  = -std=c++11
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
