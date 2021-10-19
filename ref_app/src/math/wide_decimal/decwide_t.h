@@ -130,24 +130,24 @@
   template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> bool (isinf)   (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
   template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> int   sign     (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
 
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> fabs         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>  abs         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> floor        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> ceil         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> std::int32_t                                                                    sgn          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> ldexp        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v, int e);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> frexp        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v, int* expon);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> fmod         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v1, decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v2);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> std::int32_t                                                                    ilogb        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> sqrt         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> cbrt         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> rootn        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, std::int32_t p);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> rootn_inverse(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, std::int32_t p);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> log          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> exp          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> pow          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, const std::int64_t n);
-  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> pow          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x,
-                                                                                                                                                                                                                                      decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> a);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                fabs         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                 abs         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                floor        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                ceil         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          std::int32_t                                                                                                 sgn          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                ldexp        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v, int e);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                frexp        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v, int* expon);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                fmod         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v1, decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> v2);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> typename decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::exponent_type ilogb        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                sqrt         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                cbrt         (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                rootn        (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, std::int32_t p);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                rootn_inverse(decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, std::int32_t p);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                log          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                exp          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                pow          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x, const std::int64_t n);
+  template<const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>          decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>                pow          (decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> x,
+                                                                                                                                                                                                                                                                                                   decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType> a);
 
   #if !defined(WIDE_DECIMAL_DISABLE_IOSTREAM)
   template<typename char_type, typename traits_type, const std::int32_t MyDigits10, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& os, const decwide_t<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>& f);
@@ -325,7 +325,8 @@
                    || (std::is_same<std::int16_t, exponent_type>::value == true)
                    || (std::is_same<std::int32_t, exponent_type>::value == true)
                    || (std::is_same<std::int64_t, exponent_type>::value == true)),
-                   "Error: exponent_type (determined via the template parameter ExponentType) must be one of int8_t, int16_t, int32_t or int64_t.");
+                   "Error: exponent_type (template parameter ExponentType) "
+                   "must be one of int8_t, int16_t, int32_t or int64_t.");
 
     static constexpr std::int32_t  decwide_t_digits10       = detail::decwide_t_helper<MyDigits10, LimbType>::digits10;
     static constexpr std::int32_t  decwide_t_digits         = detail::decwide_t_helper<MyDigits10, LimbType>::digits;
@@ -350,14 +351,14 @@
 
     // Rebind the decwide_t allocator to the granularity of the LimbType.
     using allocator_type =
-      typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                               std::allocator<void>,
-                                                               AllocatorType>::type>::template rebind_alloc<limb_type>;
+      typename std::allocator_traits<typename std::conditional<(std::is_same<AllocatorType, void>::value == true),
+                                                                std::allocator<void>,
+                                                                AllocatorType>::type>::template rebind_alloc<limb_type>;
 
     // Define the array type, which is the internal
     // representation of the data field of a decwide_t.
     using representation_type =
-      typename std::conditional<std::is_same<AllocatorType, void>::value,
+      typename std::conditional<(std::is_same<AllocatorType, void>::value == true),
                                 detail::fixed_static_array <limb_type, static_cast<std::uint_fast32_t>(decwide_t_elem_number)>,
                                 detail::fixed_dynamic_array<limb_type, static_cast<std::uint_fast32_t>(decwide_t_elem_number), allocator_type>>::type;
 
@@ -365,7 +366,8 @@
     static_assert((   (std::is_same<std::uint8_t,  limb_type>::value == true)
                    || (std::is_same<std::uint16_t, limb_type>::value == true)
                    || (std::is_same<std::uint32_t, limb_type>::value == true)),
-                   "Error: limb_type (determined via the template parameter LimbType) must be one of uint8_t, uint16_t or uint32_t.");
+                   "Error: limb_type (template parameter LimbType) "
+                   "must be one of uint8_t, uint16_t or uint32_t.");
 
     using double_limb_type =
       typename std::conditional<(std::is_same<limb_type, std::uint32_t>::value == true),
@@ -527,8 +529,8 @@
                                             my_prec_elem(decwide_t_elem_number)
     {
       const unsigned long long u =
-        ((!my_neg) ? static_cast<unsigned long long>(n)
-                   : static_cast<unsigned long long>(1U) + static_cast<unsigned long long>(-(n + 1)));
+        ((my_neg == false) ?                static_cast<unsigned long long>(n)
+                           : detail::negate(static_cast<unsigned long long>(n)));
 
       from_unsigned_long_long(u);
     }
@@ -716,12 +718,12 @@
       const exponent_type max_delta_exp =
         static_cast<exponent_type>(prec_elems_for_add_sub * decwide_t_elem_digits10);
 
-      using local_unsigned_wrap_type = detail::unsigned_wrap<unsigned_exponent_type, exponent_type>;
+      using local_unsigned_exponent_wrap_type = detail::unsigned_wrap<unsigned_exponent_type, exponent_type>;
 
-      local_unsigned_wrap_type u_exp(  my_exp);
-      local_unsigned_wrap_type v_exp(v.my_exp);
+      local_unsigned_exponent_wrap_type u_exp(  my_exp);
+      local_unsigned_exponent_wrap_type v_exp(v.my_exp);
 
-      const local_unsigned_wrap_type ofs_exp = (u_exp - v_exp);
+      const local_unsigned_exponent_wrap_type ofs_exp = (u_exp - v_exp);
 
       // Check if the operation is out of range, requiring special handling.
       if(   v.iszero()
@@ -742,7 +744,7 @@
       typename representation_type::const_pointer p_v    = v.my_data.data();
       bool                                        b_copy = false;
       const std::int32_t                          ofs    = ((ofs_exp.get_is_neg() == false) ? +static_cast<std::int32_t>(ofs_exp.get_value_unsigned() / (unsigned_exponent_type) decwide_t_elem_digits10)
-                                                                                   : -static_cast<std::int32_t>(ofs_exp.get_value_unsigned() / (unsigned_exponent_type) decwide_t_elem_digits10));
+                                                                                            : -static_cast<std::int32_t>(ofs_exp.get_value_unsigned() / (unsigned_exponent_type) decwide_t_elem_digits10));
 
       #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
       representation_type my_n_data_for_add_sub;
@@ -909,12 +911,12 @@
             my_exp = static_cast<exponent_type>(my_exp - static_cast<exponent_type>(sj * static_cast<std::ptrdiff_t>(decwide_t_elem_digits10)));
           }
         }
-      }
 
-      // Check for underflow.
-      if(iszero())
-      {
-        return (*this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>());
+        // Check for underflow.
+        if(iszero())
+        {
+          *this = zero<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>();
+        }
       }
 
       return *this;
@@ -959,8 +961,10 @@
         }
         else
         {
-          my_exp = static_cast<exponent_type>((result_exp.get_is_neg() == false) ? static_cast<exponent_type>(result_exp.get_value_unsigned())
-                                                                                 : static_cast<exponent_type>(unsigned_exponent_type(unsigned_exponent_type(~result_exp.get_value_unsigned()) + 1U)));
+          my_exp =
+            static_cast<exponent_type>((result_exp.get_is_neg() == false)
+              ?                static_cast<exponent_type>(result_exp.get_value_unsigned())
+              : detail::negate(static_cast<exponent_type>(result_exp.get_value_unsigned())));
 
           const std::int32_t prec_elems_for_multiply = (std::min)(my_prec_elem, v.my_prec_elem);
 
@@ -1002,13 +1006,17 @@
     decwide_t& add_unsigned_long_long(const unsigned long long n)
     {
       // Non-optimized addition of unsigned long long.
-      return operator+=(decwide_t(n));
+      static_cast<void>(operator+=(decwide_t(n)));
+
+      return *this;
     }
 
     decwide_t& sub_unsigned_long_long(const unsigned long long n)
     {
       // Non-optimized subtraction of unsigned long long.
-      return operator-=(decwide_t(n));
+      static_cast<void>(operator-=(decwide_t(n)));
+
+      return *this;
     }
 
     decwide_t& mul_unsigned_long_long(const unsigned long long n)
@@ -1138,7 +1146,7 @@
       if(n < static_cast<signed long long>(0))
       {
         negate();
-        add_unsigned_long_long(static_cast<unsigned long long>(-n));
+        add_unsigned_long_long(detail::negate(static_cast<unsigned long long>(n)));
         negate();
       }
       else
@@ -1146,7 +1154,7 @@
         add_unsigned_long_long(static_cast<unsigned long long>(n));
       }
 
-      return static_cast<decwide_t&>(*this);
+      return *this;
     }
 
     decwide_t& sub_signed_long_long(const signed long long n)
@@ -1158,21 +1166,21 @@
     {
       const bool b_neg = (n < static_cast<signed long long>(0));
 
-      mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+      mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : detail::negate(static_cast<unsigned long long>(n)));
 
       if(b_neg)
       {
         negate();
       }
 
-      return static_cast<decwide_t&>(*this);
+      return *this;
     }
 
     decwide_t& div_signed_long_long(const signed long long n)
     {
       const bool b_neg = (n < static_cast<signed long long>(0));
 
-      div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+      div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : detail::negate(static_cast<unsigned long long>(n)));
 
       if(b_neg)
       {
@@ -1222,6 +1230,10 @@
         {
           // The signs are the same and the exponents are the same.
           // Compare the data.
+
+          // TBD: Compare the limbs and on the final limb (if reached)
+          // assess the result of comparison on the relevant digit-level.
+          // This might be needed within the compare_ranges subroutine.
           const std::int_fast8_t val_cmp_data =
             detail::compare_ranges(my_data.data(), v.my_data.data(), static_cast<std::uint_fast32_t>(decwide_t_elem_number));
 
@@ -1761,7 +1773,11 @@
       else
       {
         // Extract the data into an unsigned long long value.
-        const decwide_t xn(fabs(extract_integer_part()));
+        decwide_t xn(*this);
+
+        xn.eval_round_self();
+
+        xn = fabs(xn.extract_integer_part());
 
         val = static_cast<unsigned long long>(xn.my_data[0]);
 
@@ -1792,40 +1808,45 @@
       {
         return static_cast<unsigned long long>(extract_signed_long_long());
       }
-
-      if(my_exp < static_cast<exponent_type>(0))
+      else if(my_exp < static_cast<exponent_type>(0))
       {
         return static_cast<unsigned long long>(0U);
       }
-
-      const decwide_t xn(extract_integer_part());
-
-      unsigned long long val;
-
-      if(xn > unsigned_long_long_max<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
-      {
-        return (std::numeric_limits<unsigned long long>::max)();
-      }
       else
       {
-        // Extract the data into an unsigned long long value.
-        val = static_cast<unsigned long long>(xn.my_data[0]);
+        decwide_t xn(*this);
 
-        const std::int32_t imax =
-          (std::min)(static_cast<std::int32_t>(static_cast<std::int32_t>(xn.my_exp) / decwide_t_elem_digits10),
-                     static_cast<std::int32_t>(decwide_t_elem_number - static_cast<std::int32_t>(1)));
+        xn.eval_round_self();
 
-        for(typename representation_type::size_type
-              limb_index  = static_cast<typename representation_type::size_type>(1);
-              limb_index <= static_cast<typename representation_type::size_type>(imax);
-            ++limb_index)
+        xn = xn.extract_integer_part();
+
+        unsigned long long val;
+
+        if(xn > unsigned_long_long_max<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
         {
-          val *= static_cast<unsigned long long>(decwide_t_elem_mask);
-          val += static_cast<unsigned long long>(xn.my_data[limb_index]);
+          return (std::numeric_limits<unsigned long long>::max)();
         }
-      }
+        else
+        {
+          // Extract the data into an unsigned long long value.
+          val = static_cast<unsigned long long>(xn.my_data[0]);
 
-      return val;
+          const std::int32_t imax =
+            (std::min)(static_cast<std::int32_t>(static_cast<std::int32_t>(xn.my_exp) / decwide_t_elem_digits10),
+                       static_cast<std::int32_t>(decwide_t_elem_number - static_cast<std::int32_t>(1)));
+
+          for(typename representation_type::size_type
+                limb_index  = static_cast<typename representation_type::size_type>(1);
+                limb_index <= static_cast<typename representation_type::size_type>(imax);
+              ++limb_index)
+          {
+            val *= static_cast<unsigned long long>(decwide_t_elem_mask);
+            val += static_cast<unsigned long long>(xn.my_data[limb_index]);
+          }
+        }
+
+        return val;
+      }
     }
 
     explicit operator long double       () const { return extract_long_double(); }
@@ -1885,9 +1906,11 @@
       unsigned long long uu = u;
 
       using local_tmp_array_type =
-        std::array<limb_type, std::size_t(std::numeric_limits<unsigned long long>::digits10 / static_cast<int>(decwide_t_elem_digits10)) + 3U>;
+        std::array<limb_type,
+                   std::size_t(std::numeric_limits<unsigned long long>::digits10 / static_cast<int>(decwide_t_elem_digits10)) + 3U>;
 
       local_tmp_array_type tmp;
+
       tmp.fill(static_cast<limb_type>(0U));
 
       while
@@ -2256,6 +2279,124 @@
       }
     }
 
+    void eval_round_self()
+    {
+      const bool needs_rounding = (((isfinite)() == true) && (iszero() == false));
+
+      if(needs_rounding)
+      {
+        using local_size_type = typename representation_type::size_type;
+        using local_limb_type = typename representation_type::value_type;
+
+        std::int32_t digits_limb_0 = 0;
+
+        local_limb_type tmp_limb_0 = my_data[0U];
+
+        // Manually count the number of base-10 digits on the zero'th limb.
+        while(tmp_limb_0 > 0U)
+        {
+          tmp_limb_0 /= 10U;
+
+          ++digits_limb_0;
+        }
+
+        constexpr std::int32_t local_max_digits10 = decwide_t_max_digits10;
+
+        const std::int32_t digits_limb_1_to_n = local_max_digits10 - digits_limb_0;
+
+        // Find the index of the element that contains the least-significant base-10 digit.
+        std::int32_t least_digit_idx = std::int32_t(   (digits_limb_1_to_n / decwide_t_elem_digits10)
+                                                    + ((digits_limb_1_to_n % decwide_t_elem_digits10) != 0));
+
+        // Set the index of the element that contains the rounding base-10 digit.
+        const std::int32_t round_digit_idx =
+          std::int32_t(((digits_limb_1_to_n % decwide_t_elem_digits10) != 0)
+                          ? least_digit_idx
+                          : least_digit_idx + 1);
+
+        // Find the base-10 order (position) of the least-significant base-10 digit.
+        const std::int32_t least_digit_pos =
+          (std::int32_t(digits_limb_1_to_n % decwide_t_elem_digits10) != 0)
+            ? std::int32_t
+              (
+                  decwide_t_elem_digits10
+                - std::int32_t(digits_limb_1_to_n % decwide_t_elem_digits10)
+              )
+            : 0;
+
+        // Find the base-10 order (position) of the rounding base-10 digit.
+        const std::int32_t round_digit_pos =
+          std::int32_t((least_digit_pos != 0) ? least_digit_pos - 1 : decwide_t_elem_digits10 - 1);
+
+        using digit_helper_struct_type = detail::decwide_t_helper<decwide_t_elem_digits10, limb_type>;
+
+        // Get the value of the rounding base-10 digit.
+        const std::uint8_t round_digit_value =
+          digit_helper_struct_type::digit_at_pos_in_limb
+          (
+             my_data[local_size_type(round_digit_idx)],
+             unsigned(round_digit_pos)
+          );
+
+        const local_limb_type least_digit_p10 = detail::pow10_maker_as_runtime_value(std::uint32_t(least_digit_pos));
+
+        // Clear the lower base-10 digits of the rounded element.
+        my_data[local_size_type(least_digit_idx)] -= local_limb_type(my_data[local_size_type(least_digit_idx)] % least_digit_p10);
+
+        // Clear the lower base-10 limbs.
+        if(local_size_type(least_digit_idx + 1) < my_data.size() - 1U)
+        {
+          std::fill(my_data.begin() + local_size_type(least_digit_idx + 1), my_data.end(), local_limb_type(0U));
+        }
+
+        // Perform round-to-nearest with no tie-breaking whatsoever.
+        if(round_digit_value >= 5U)
+        {
+          my_data[local_size_type(least_digit_idx)] += least_digit_p10;
+
+          // There is a carry from rounding up.
+          std::uint_fast8_t carry_out =
+            ((my_data[local_size_type(least_digit_idx)] >= decwide_t_elem_mask)
+              ? static_cast<std::uint_fast8_t>(1U)
+              : static_cast<std::uint_fast8_t>(0U));
+
+          // Propogate the carry into the limbs of higher significance as needed.
+          if(carry_out != 0U)
+          {
+            my_data[local_size_type(least_digit_idx)] -= decwide_t_elem_mask;
+
+            --least_digit_idx;
+
+            for( ; least_digit_idx >= 0 && (carry_out != 0U); --least_digit_idx)
+            {
+              const local_limb_type tt = local_limb_type(my_data[local_size_type(least_digit_idx)] + local_limb_type(carry_out));
+
+              carry_out = ((tt >= decwide_t_elem_mask) ? static_cast<std::uint_fast8_t>(1U)
+                                                       : static_cast<std::uint_fast8_t>(0U));
+
+              my_data[local_size_type(least_digit_idx)] =
+                static_cast<local_limb_type>(tt - ((carry_out != 0U) ? decwide_t_elem_mask
+                                                                     : static_cast<local_limb_type>(0U)));
+            }
+
+            if((least_digit_idx < 0) && (carry_out != 0U))
+            {
+              // In rare cases, propagation of the carry reaches the zero'th limb
+              // of highest significance, and we must shift the data, create a new limb
+              // with the carry value of 1 and adjust the exponent accordingly.
+              std::copy_backward(my_data.cbegin(),
+                                 my_data.cend() - 1,
+                                 my_data.end());
+
+              my_data[0U] = carry_out;
+
+              my_exp = static_cast<exponent_type>(my_exp + static_cast<exponent_type>(decwide_t_elem_digits10));
+            }
+          }
+        }
+      }
+    }
+
     #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
     bool rd_string(const char* s)
     {
@@ -2577,7 +2718,7 @@
       const bool my_uppercase = ((my_flags & std::ios::uppercase) != static_cast<std::ios::fmtflags>(0U));
 
       // Get the base-10 exponent.
-      exponent_type the_exp = (exponent_type) ilogb(*this);
+      exponent_type the_exp = ilogb(*this);
 
       // Get the output stream's precision and limit it to max_digits10.
       // Erroneous zero or negative precision (theoretically impossible)
@@ -2722,12 +2863,13 @@
       // Trim the trailing zeros, where the trim-characteristics depend on the showpoint flag.
       if(trim_trailing_zeros)
       {
-        const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.crbegin(),
-                                                                              str.crend(),
-                                                                              [](const char& c) -> bool
-                                                                              {
-                                                                                return (c != static_cast<char>('0'));
-                                                                              });
+        const std::string::const_reverse_iterator rit_non_zero =
+          std::find_if(str.crbegin(),
+                       str.crend(),
+                       [](const char& c) -> bool
+                       {
+                         return (c != static_cast<char>('0'));
+                       });
 
         if(rit_non_zero != str.rbegin())
         {
@@ -2947,24 +3089,74 @@
 
     friend inline decwide_t floor(decwide_t x)
     {
-      return ((((x.isfinite)() == false) || x.isint())
-               ?  x
-               : (x.isneg() ? (x - one<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>()).extract_integer_part()
-                            :  x.extract_integer_part()));
+      decwide_t result = x;
+
+      if((x.isfinite)() == false)
+      {
+        ;
+      }
+      else
+      {
+        result.eval_round_self();
+
+        if(result.isint())
+        {
+          ;
+        }
+        else
+        {
+          if(result.isneg())
+          {
+            result -= one<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>();
+          }
+          else
+          {
+            ;
+          }
+
+          result = result.extract_integer_part();
+        }
+      }
+
+      return result;
     }
 
     friend inline decwide_t ceil(decwide_t x)
     {
-      return ((((x.isfinite)() == false) || x.isint())
-               ?  x
-               : (x.isneg() ?  x.extract_integer_part()
-                            : (x + one<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>()).extract_integer_part()));
+      decwide_t result = x;
+
+      if((x.isfinite)() == false)
+      {
+        ;
+      }
+      else
+      {
+        result.eval_round_self();
+
+        if(result.isint())
+        {
+          ;
+        }
+        else
+        {
+          if(result.isneg())
+          {
+            ;
+          }
+          else
+          {
+            result += one<MyDigits10, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>();
+          }
+
+          result = result.extract_integer_part();
+        }
+      }
+
+      return result;
     }
 
-    friend inline std::int32_t ilogb(decwide_t x)
+    friend inline exponent_type ilogb(decwide_t x)
     {
-      exponent_type e10;
-
       limb_type xx = x.my_data[0U];
 
       std::int_fast16_t n10 = 0;
@@ -2976,10 +3168,9 @@
         ++n10;
       }
 
-      e10 = static_cast<exponent_type>(x.my_exp + n10);
+      const exponent_type e10 = static_cast<exponent_type>(x.my_exp + n10);
 
-      return (std::max)(           (std::numeric_limits<std::int32_t>::min)(),
-                        (std::min)((std::numeric_limits<std::int32_t>::max)(), (std::int32_t) e10));
+      return e10;
     }
 
     template<const std::int32_t OtherMyDigits10, typename OtherLimbType, typename OtherAllocatorType, typename OtherInternalFloatType, typename OtherExponentType, typename OtherFftFloatType>
@@ -3132,7 +3323,12 @@
       // Test the number of precise digits from this iteration.
       // If it is there are enough precise digits, then the calculation
       // is finished.
-      const std::int32_t ib = (std::max)(std::int32_t(0), -ilogb(iterate_term));
+      const std::int32_t ib =
+        (std::max)
+        (
+          std::int32_t(0),
+          std::int32_t(-ilogb(iterate_term))
+        );
 
       const std::uint32_t digits10_of_iteration =
         (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ib * digits10_scale) / 1000U);
@@ -3207,7 +3403,12 @@
       // half of the requested digits have been achieved,
       // then break after the upcoming iteration.
 
-      const std::int32_t ib = (std::max)(std::int32_t(0), -ilogb(ak - bk));
+      const std::int32_t ib =
+        (std::max)
+        (
+          std::int32_t(0),
+          std::int32_t(-ilogb(ak - bk))
+        );
 
       const std::uint32_t digits10_of_iteration =
         (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ib * digits10_scale) / 1000U);
@@ -3742,7 +3943,12 @@
       // half of the requested digits have been achieved,
       // then break after the upcoming iteration.
 
-      const std::int32_t ilogb_of_ak_minus_bk = (std::max)(std::int32_t(0), -ilogb(ak - bk));
+      const std::int32_t ilogb_of_ak_minus_bk =
+        (std::max)
+        (
+          std::int32_t(0),
+          std::int32_t(-ilogb(ak - bk))
+        );
 
       const std::uint32_t digits10_of_iteration =
         (std::uint32_t) ((std::uint64_t) ((std::uint64_t) ilogb_of_ak_minus_bk * digits10_scale) / 1000U);
@@ -3825,7 +4031,7 @@
       const floating_point_type tol = std::numeric_limits<floating_point_type>::epsilon();
 
       // Series expansion of hypergeometric_0f0(; ; x).
-      for(std::uint32_t n = 2U; n < UINT32_C(10000000); ++n)
+      for(std::uint32_t n = 2U; n < UINT32_C(100000); ++n)
       {
         x_pow_n_div_n_fact *= xh;
         x_pow_n_div_n_fact /= n;
@@ -3843,9 +4049,12 @@
       using std::ldexp;
       using std::pow;
 
-      const floating_point_type exp_series = pow(h0f0, p2) * ldexp(floating_point_type(1U), (int) nf);
+      exp_result = ((nf == 0U) ? pow(h0f0, p2) : ldexp(pow(h0f0, p2), (int) nf));
 
-      exp_result = ((b_neg == false) ? exp_series : 1 / exp_series);
+      if(b_neg)
+      {
+        (void) exp_result.calculate_inv();
+      }
     }
 
     return exp_result;

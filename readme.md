@@ -1,31 +1,13 @@
----
-
-## Announcement July 2021
-
-We are now refining the [examples](./examples) for [Real-Time C++ 4th Edition](http://www.springer.com/book/9783662629956).
-This activity is planned to be finished by July/August 2021.
-
-New [examples](./examples) include [chapter03_02](./examples/chapter03_02),
-[chapter04_04](./examples/chapter04_04) and [chapter04_04a](./examples/chapter04_04a),
-[chapter06_14](./examples/chapter06_14),
-[chapter10_08](./examples/chapter10_08) and [chapter10_08a](./examples/chapter10_08a) both having advanced level,
-[chapter10_09](./examples/chapter10_09) having advanced level,
-[chapter11_07](./examples/chapter11_07),
-and
-[chapter16_08](./examples/chapter16_08) having advanced level.
-
----
-
 Companion code for the book Real-Time C++\
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
 
 This is the companion code
 for the book C.M. Kormanyos,
-[Real-Time C++](http://www.springer.com/9783662567173):
+[Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
-and Template Microcontroller Programming, Third Edition
-(Springer, Heidelberg, 2018). ISBN 9783662567173
+and Template Microcontroller Programming, Fourth Edition
+(Springer, Heidelberg, 2021). ISBN 9783662629956
 
 This repository has three main parts.
   - Reference Application `ref_app` located in [./ref_app](./ref_app)
@@ -49,15 +31,15 @@ The reference application supports the following targets:
   * BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
   * Espressif (XTENSA) NodeMCU ESP32
   * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
-  * RaspberryPi(R) Zero with ARM(R) 1176-JZF-S
+  * RaspberryPi(R) Zero with ARM1176-JZFS(TM)
   * Renesas(R) RL78/G13
   * Renesas(R) RX600
-  * ST Microelectronics(R) STM32F100 ARM(R) Cortex(TM)-M3
-  * ST Microelectronics(R) STM32L100 ARM(R) Cortex(TM)-M3
-  * ST Microelectronics(R) STM32L152 ARM(R) Cortex(TM)-M3
-  * ST Microelectronics(R) STM32F407 ARM(R) Cortex(TM)-M4
-  * ST Microelectronics(R) STM32F429 ARM(R) Cortex(TM)-M4
-  * ST Microelectronics(R) STM32F446 ARM(R) Cortex(TM)-M4
+  * ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3
+  * ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3
+  * ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3
+  * ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4
+  * ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4
+  * ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4
   * VC, MinGW, or other `*nix`-like generic host
 
 ## Getting Started with the Reference Application
@@ -153,7 +135,7 @@ The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
 on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at 20MHz.
-The program toggles the yellow LED on `porte.2`.
+The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
 The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
@@ -262,16 +244,26 @@ GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
 A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 5 (or, better yet, higher) is required for building
-the reference application.
+GCC 5 through 11 (higher generally being more advantageous)
+is required for building the reference application.
 
 Some of the code snippets demonstrate language elements not only from C++11,
-but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 7)
+but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 6, 7, or 8)
 or even C++20 support (such as GCC 11) can, therefore,
 be beneficial for success with *all* of the code snippets.
 
-In the reference application on `*Win`, the makefiles are aware of a default location
-for the respective GCC tool chains. This location has been defined by me
-and it might not be where you want it to be. Therefore, when using the
-reference application or designing a custom build, the root directory of
-the tool chain must be properly supplied to the makefiles.
+In the reference application on `Win*`, the makefiles are aware of a default location
+for the respective GCC toolchains.
+This [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
+has been defined by myself at the beginning of the project.
+Toolchains intended for the cross MSVC/GCC builds should be located there
+(although these are not _yet_ part of this repository).
+
+Open issues such as [this issue](https://github.com/ckormanyos/real-time-cpp/issues/103)
+and/or [this issue](https://github.com/ckormanyos/real-time-cpp/issues/108)
+track the ongoing effort to make cross-compilers available
+in efficient forms in this repository.
+At the moment, however, when using the reference application
+or designing a custom build for msvc or similar,
+the root directory of the tool chain must be properly
+supplied to the makefiles.

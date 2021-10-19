@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Copyright Christopher Kormanyos 2007 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -123,13 +123,13 @@ C_INCLUDES = $(TGT_INCLUDES)                                    \
              -I$(PATH_APP)/os/FreeRTOS/Source/include
 
 GCCFLAGS    = $(TGT_CFLAGS)                     \
-              -g                                \
               -Wall                             \
               -Wextra                           \
               -pedantic                         \
               -Wmain                            \
               -Wundef                           \
               -Wsign-conversion                 \
+              -Wconversion                      \
               -Wunused-parameter                \
               -Wuninitialized                   \
               -Wmissing-declarations            \
@@ -145,7 +145,8 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -ffunction-sections               \
-              -fdata-sections
+              -fdata-sections                   \
+              -flto
 
 CFLAGS      = $(GCCFLAGS)                       \
               -Wno-int-to-pointer-cast          \
@@ -175,6 +176,7 @@ AFLAGS      = $(GCCFLAGS)                       \
 LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
+              -flto                             \
               -Wl,--gc-sections                 \
               -Wl,-Map,$(APP).map
 
@@ -253,7 +255,7 @@ $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
+	@-$(OBJDUMP) --disassemble $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------

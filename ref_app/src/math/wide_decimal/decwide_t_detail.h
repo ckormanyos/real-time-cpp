@@ -24,6 +24,22 @@
 
   namespace math { namespace wide_decimal { namespace detail {
 
+  template<typename UnsignedIntegralType>
+  constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
+                                    && (std::is_unsigned<UnsignedIntegralType>::value == true), UnsignedIntegralType>::type
+  negate(UnsignedIntegralType u)
+  {
+    return (UnsignedIntegralType) (((UnsignedIntegralType) ~u) + 1U);
+  }
+
+  template<typename SignedIntegralType>
+  constexpr typename std::enable_if<   (std::is_integral<SignedIntegralType>::value == true)
+                                    && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
+  negate(SignedIntegralType n)
+  {
+    return (SignedIntegralType) detail::negate((unsigned long long) n);
+  }
+
   struct a029750
   {
     static constexpr std::uint32_t a029750_as_constexpr(const std::uint32_t value)
@@ -128,6 +144,29 @@
     return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10_maker(n - UINT32_C(1)) * UINT32_C(10));
   }
 
+  inline std::uint32_t pow10_maker_as_runtime_value(const std::uint32_t n)
+  {
+    using local_p10_table_type = std::array<std::uint32_t, 10U>;
+
+    constexpr local_p10_table_type local_p10_table =
+    {{
+      UINT32_C(1),
+      UINT32_C(10),
+      UINT32_C(100),
+      UINT32_C(1000),
+      UINT32_C(10000),
+      UINT32_C(100000),
+      UINT32_C(1000000),
+      UINT32_C(10000000),
+      UINT32_C(100000000),
+      UINT32_C(1000000000)
+    }};
+
+    return ((n < std::uint32_t(std::tuple_size<local_p10_table_type>::value))
+             ? local_p10_table[typename local_p10_table_type::size_type(n)]
+             : local_p10_table.back());
+  }
+
   template<typename LimbType>
   struct decwide_t_helper_base
   {
@@ -139,6 +178,11 @@
 
     static constexpr std::int32_t elem_mask      = static_cast<std::int32_t>(pow10_maker((std::uint32_t)  elem_digits10));
     static constexpr std::int32_t elem_mask_half = static_cast<std::int32_t>(pow10_maker((std::uint32_t) (elem_digits10 / 2)));
+
+    static std::uint8_t digit_at_pos_in_limb(const LimbType u, const unsigned pos)
+    {
+      return std::uint8_t(LimbType(u / pow10_maker_as_runtime_value(std::uint32_t(pos))) % LimbType(10U));
+    }
   };
 
   template<typename LimbType> constexpr std::int32_t decwide_t_helper_base<LimbType>::elem_digits10;
@@ -155,7 +199,7 @@
   public:
     static constexpr std::int32_t digits10          = MyDigits10;
     static constexpr std::int32_t digits            = digits10;
-    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 1);
+    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 4);
     static constexpr std::int32_t radix             = static_cast<std::int32_t>(10);
 
     static constexpr std::int32_t elem_number_extra = 3;

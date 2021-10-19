@@ -8,6 +8,10 @@
 #ifndef MILLER_RABIN_BASE_2020_05_30_H_
   #define MILLER_RABIN_BASE_2020_05_30_H_
 
+  #define WIDE_INTEGER_DISABLE_IOSTREAM
+  #define WIDE_INTEGER_DISABLE_FLOAT_INTEROP
+  #define WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY
+
   #include <math/wide_integer/uintwide_t.h>
 
   namespace math { namespace wide_integer {

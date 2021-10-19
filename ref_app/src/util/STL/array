@@ -11,7 +11,6 @@
   #include <impl/stl_local_constexpr.h>
 
   #include <algorithm>
-  #include <cstddef>
   #include <iterator>
   #include <type_traits>
   #include <tuple>
