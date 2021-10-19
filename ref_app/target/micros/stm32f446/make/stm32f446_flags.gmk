@@ -16,7 +16,7 @@ GCC_PREFIX    = arm-none-eabi
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                                            \
-                -fno-inline-functions                                          \
+                -flto                                                          \
                 -mcpu=cortex-m4                                                \
                 -mtune=cortex-m4                                               \
                 -mthumb                                                        \
@@ -33,7 +33,7 @@ TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++20                                                     \
+TGT_CXXFLAGS  = -std=c++11                                                     \
                 -DBOOST_MATH_STANDALONE                                        \
                 -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
@@ -49,8 +49,7 @@ TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include                
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                      \
-                -nostartfiles                                                  \
+TGT_LDFLAGS   = -nostartfiles                                                  \
                 -Wl,--gc-sections                                              \
                 -Wl,-Map,$(APP).map                                            \
                 -T $(LINKER_DEFINITION_FILE)

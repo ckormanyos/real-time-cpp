@@ -84,6 +84,8 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
+  unsigned char __dso_handle;
+
   typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
 
   void        abort               ()           UTIL_NOEXCEPT __attribute__((noreturn));
@@ -105,7 +107,6 @@ extern "C"
   int         _kill               (int, int);
   void        __cxa_pure_virtual  ();
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
-  void        __cxa_call_terminate(_Unwind_Exception*);
 
   // Implementations of patched functions.
 
@@ -128,7 +129,6 @@ extern "C"
   int         _kill               (int, int)                          { return -1; }
   void        __cxa_pure_virtual  ()                                  { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
-  void        __cxa_call_terminate(_Unwind_Exception*)                { }
 
   // Provide some patched data values.
   const char*  const __env[1U]       = { nullptr };
@@ -137,13 +137,3 @@ extern "C"
   int          __errno         = 0;
   std::uint8_t __fdlib_version = UINT8_C(0);
 }
-
-// Provide some stubs for specific GCC error handling mechanisms.
-namespace std
-{
-  void __throw_length_error(char const*);
-  void __throw_logic_error (char const*);
-}
-
-void std::__throw_length_error(char const*) { }
-void std::__throw_logic_error (char const*) { }

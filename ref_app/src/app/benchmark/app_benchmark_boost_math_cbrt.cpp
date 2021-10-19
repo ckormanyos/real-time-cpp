@@ -15,7 +15,7 @@
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
 
 #include <boost/math/special_functions/cbrt.hpp>
-#include <boost/math/special_functions/gamma.hpp>
+#include <boost/math/constants/constants.hpp>
 
 #include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
@@ -32,24 +32,24 @@ bool app::benchmark::run_boost_math_cbrt()
 
   constexpr std::array<float, 11U> app_benchmark_control =
   {{
-     0.939131814550229181011F,
-     1.34645417009670049451F,
-     2.24865197861464813285F,
-     3.54010862139328036869F,
-     5.32678290474027222700F,
-     7.74480814145513084405F,
-    10.9608033153333194319F,
-    15.1764307769968425577F,
-    20.6341757772658373763F,
-    27.6240717359003789929F,
-    36.4914014381246411895F
+    1.13223955591538834215F,
+    2.51807823011086695042F,
+    3.12376308426998860514F,
+    3.55679543482482372870F,
+    3.90420795695072854283F,
+    4.19883087509735642352F,
+    4.45705782245778172910F,
+    4.68839764973308916541F,
+    4.89891603901205916941F,
+    5.09274722453205566419F,
+    5.27285037700955609422F
   }};
 
   static unsigned app_benchmark_n_index      = 0U;
   static unsigned app_benchmark_n_value      = 1U;
   static bool     app_benchmark_result_is_ok = true;
 
-  cb = boost::math::tgamma(boost::math::cbrt(x * float(app_benchmark_n_value)));
+  cb = boost::math::cbrt(x * float(app_benchmark_n_value));
 
   app_benchmark_result_is_ok &= detail::is_close_fraction(cb, app_benchmark_control[app_benchmark_n_index]);
 

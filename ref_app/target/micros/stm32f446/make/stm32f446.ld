@@ -16,22 +16,22 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
-/* Set up a ROM area with a size of 32K - 4 */
+/* Set up a ROM area with a size of 512K - 4 */
 _rom_begin = 0x08000000;
-_rom_end   = 0x08007FFC;
+_rom_end   = 0x0807FFFC;
 
 /* The beginning and end (i.e., the top) of the stack */
-/* Set up a stack with a size of 4K */
-_stack_begin = 0x20007000;
-_stack_end   = 0x20008000;
+/* Set up a stack with a size of 32K */
+_stack_begin = 0x20008000;
+_stack_end   = 0x20010000;
 
-__initial_stack_pointer = 0x20008000;
+__initial_stack_pointer = 0x20010000;
 
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 32K - 4
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
+  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 512K - 4
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000
 }
 
 SECTIONS
@@ -56,6 +56,10 @@ SECTIONS
     KEEP (*(SORT(.init_array)))
     _ctors_end = .;
     *(.progmem*)
+    . = ALIGN(4);
+    *(.ARM.extab)
+    . = ALIGN(4);
+    *(.ARM.extab.text.*)
     . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
@@ -99,6 +103,13 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.bss*))
     _bss_end = .;
+  } > RAM
+
+  .ARM.exidx :
+  {
+  __exidx_start = .;
+    *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+  __exidx_end = .;
   } > RAM
 
   _rom_data_begin = LOADADDR(.data);
