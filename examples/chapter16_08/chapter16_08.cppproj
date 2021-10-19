@@ -147,7 +147,9 @@
     <Folder Include="src\app\led" />
     <Folder Include="src\app\benchmark" />
     <Folder Include="src\math\" />
-    <Folder Include="src\math\constants" />
+    <Folder Include="src\math\test" />
+    <Folder Include="src\math\wide_integer\" />
+    <Folder Include="src\math\wide_integer\miller_rabin" />
     <Folder Include="src\mcal_pwm" />
     <Folder Include="src\mcal_spi" />
     <Folder Include="src\mcal_memory" />
@@ -178,13 +180,28 @@
     <Compile Include="src\app\led\app_led.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\math\constants\pi_spigot_base.h">
+    <Compile Include="src\math\test\math_test_independent_test_system_base.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\math\constants\pi_spigot_single.h">
+    <Compile Include="src\math\test\math_test_independent_test_system_boost.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\math\constants\pi_spigot_state.h">
+    <Compile Include="src\math\test\math_test_independent_test_system_mathlink.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\test\math_test_independent_test_system_none.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\wide_integer\miller_rabin\miller_rabin_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\wide_integer\miller_rabin\miller_rabin_single.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\wide_integer\miller_rabin\miller_rabin_state.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\math\wide_integer\uintwide_t.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_benchmark.h">
