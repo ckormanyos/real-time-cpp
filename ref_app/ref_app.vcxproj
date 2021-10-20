@@ -59,12 +59,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;C:\boost\modular_boost\boost\libs\math\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(SolutionDir)/src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;C:\boost\modular_boost\boost\libs\math\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -189,10 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp" />
-    <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

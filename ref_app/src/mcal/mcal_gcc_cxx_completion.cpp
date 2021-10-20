@@ -84,16 +84,12 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
-  unsigned char __dso_handle;
-
-  typedef struct struct_unwind_exception_type { unsigned dummy; } _Unwind_Exception;
-
-  void        abort               ()           UTIL_NOEXCEPT __attribute__((noreturn));
-  int         atexit              (void (*)()) UTIL_NOEXCEPT;
-  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT;
-  void        _Exit               (int)        UTIL_NOEXCEPT __attribute__((noreturn));
-  void        exit                (int)                      __attribute__((noreturn));
-  void        quick_exit          (int)                      __attribute__((noreturn));
+  void        abort               (void)           UTIL_NOEXCEPT __attribute__((noreturn));
+  int         atexit              (void (*)(void)) UTIL_NOEXCEPT;
+  int         at_quick_exit       (void (*)(void)) UTIL_NOEXCEPT;
+  void        _Exit               (int)            UTIL_NOEXCEPT __attribute__((noreturn));
+  void        exit                (int)                          __attribute__((noreturn));
+  void        quick_exit          (int)                          __attribute__((noreturn));
   int         _exit               (int);
   int         _isatty             (int);
   int         _lseek              (int, int, int);
@@ -103,14 +99,14 @@ extern "C"
   int         _write              (int, char*, int);
   int         _fstat              (int, void*);
   const void* _sbrk               (int);
-  int         _getpid             ();
+  int         _getpid             (void);
   int         _kill               (int, int);
-  void        __cxa_pure_virtual  ();
+  void        __cxa_pure_virtual  (void);
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
 
   // Implementations of patched functions.
 
-  void        abort               ()           UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
+  void        abort               (void)       UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
   int         atexit              (void (*)()) UTIL_NOEXCEPT          { return 0; }
   int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT          { return 0; }
   void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
@@ -125,15 +121,20 @@ extern "C"
   int         _write              (int, char*, int)                   { return  0; }
   int         _fstat              (int, void*)                        { return  0; }
   const void* _sbrk               (int)                               { return  nullptr; }
-  int         _getpid             ()                                  { return  1; }
+  int         _getpid             (void)                              { return  1; }
   int         _kill               (int, int)                          { return -1; }
-  void        __cxa_pure_virtual  ()                                  { }
+  void        __cxa_pure_virtual  (void)                              { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
+
+  #if defined(environ)
+  #undef environ
+  #endif
 
   // Provide some patched data values.
   const char*  const __env[1U]       = { nullptr };
   const char** const environ         = { nullptr };
 
-  int          __errno         = 0;
-  std::uint8_t __fdlib_version = UINT8_C(0);
+  int          __errno;
+  std::uint8_t __fdlib_version;
+  std::uint8_t __dso_handle;
 }

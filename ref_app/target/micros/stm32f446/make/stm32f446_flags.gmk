@@ -15,8 +15,7 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                            \
-                -flto                                                          \
+TGT_ALLFLAGS  = -O2                                                            \
                 -mcpu=cortex-m4                                                \
                 -mtune=cortex-m4                                               \
                 -mthumb                                                        \
@@ -26,8 +25,7 @@ TGT_ALLFLAGS  = -Os                                                            \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
                 -mno-unaligned-access                                          \
-                -mno-long-calls                                                \
-                -Wno-psabi
+                -mno-long-calls
 
 TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \
@@ -38,14 +36,11 @@ TGT_CXXFLAGS  = -std=c++11                                                     \
                 -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
-#TGT_INCLUDES  = -I$(PATH_APP)/util/STL
-TGT_INCLUDES  =
+TGT_INCLUDES  = -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
 
-#TGT_INCLUDES := -IC:/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/cnl-main/include        \
-#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
 
-TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include                                                       \
-                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
+TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include               \
+                $(TGT_INCLUDES)
 
 TGT_AFLAGS    =
 

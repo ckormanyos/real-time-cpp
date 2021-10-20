@@ -107,9 +107,12 @@ SECTIONS
 
   .ARM.exidx :
   {
-  __exidx_start = .;
-    *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-  __exidx_end = .;
+    __exidx_start = .;
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    *(.gnu.linkonce.armexidx.*)
+    . = ALIGN(4);
+    __exidx_end = .;
   } > RAM
 
   _rom_data_begin = LOADADDR(.data);

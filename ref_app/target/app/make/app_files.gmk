@@ -10,6 +10,7 @@
 # ------------------------------------------------------------------------------
 
 FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
+             $(PATH_APP)/app/benchmark/app_benchmark_boost_math_cbrt     \
              $(PATH_APP)/app/benchmark/app_benchmark_complex             \
              $(PATH_APP)/app/benchmark/app_benchmark_crc                 \
              $(PATH_APP)/app/benchmark/app_benchmark_fast_math           \
@@ -42,5 +43,3 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                     \
              $(PATH_APP)/sys/idle/sys_idle                               \
              $(PATH_APP)/sys/mon/sys_mon                                 \
              $(PATH_APP)/sys/start/sys_start
-
-#             $(PATH_APP)/app/benchmark/app_benchmark_boost_math_cbrt     \
