@@ -36,15 +36,16 @@ TGT_CXXFLAGS  = -std=c++11                                                     \
                 -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
-
-TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include               \
-                $(TGT_INCLUDES)
+#TGT_INCLUDES  = -I$(PATH_APP)/util/STL                                         \
+#                -I$(PATH_APP)/util/boost_metal_bindings                        \
+#                -IC:/boost/modular_boost/boost/libs/math/include
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostartfiles                                                  \
+TGT_LDFLAGS   = -nostdlib                                                      \
+                -nostartfiles                                                  \
                 -Wl,--gc-sections                                              \
                 -Wl,-Map,$(APP).map                                            \
                 -T $(LINKER_DEFINITION_FILE)

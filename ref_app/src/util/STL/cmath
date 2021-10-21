@@ -8,6 +8,8 @@
 #ifndef CMATH_2010_02_23_
   #define CMATH_2010_02_23_
 
+  #include <cstdlib>
+
   // Implement most of <cmath> for compilers that do not yet support it.
   #if defined(__GNUC__) && defined(__AVR__)
   #include <math.h>
@@ -39,6 +41,9 @@
   #define __BUILTIN_SQRTF  __builtin_sqrt
   #define __BUILTIN_SQRT   __builtin_sqrt
   #define __BUILTIN_SQRTL  __builtin_sqrtl
+  #define __BUILTIN_CBRTF  __builtin_cbrt
+  #define __BUILTIN_CBRT   __builtin_cbrt
+  #define __BUILTIN_CBRTL  __builtin_cbrtl
   #define __BUILTIN_SINF   __builtin_sin
   #define __BUILTIN_SIN    __builtin_sin
   #define __BUILTIN_SINL   __builtin_sinl
@@ -146,6 +151,9 @@
     inline float       sqrt    (float x)                            { return __BUILTIN_SQRTF (x); }
     inline double      sqrt    (double x)                           { return __BUILTIN_SQRT  (x); }
     inline long double sqrt    (long double x)                      { return __BUILTIN_SQRTL (x); }
+    inline float       cbrt    (float x)                            { return __BUILTIN_CBRTF (x); }
+    inline double      cbrt    (double x)                           { return __BUILTIN_CBRT  (x); }
+    inline long double cbrt    (long double x)                      { return __BUILTIN_CBRTL (x); }
     inline float       sin     (float x)                            { return __BUILTIN_SINF  (x); }
     inline double      sin     (double x)                           { return __BUILTIN_SIN   (x); }
     inline long double sin     (long double x)                      { return __BUILTIN_SINL  (x); }
@@ -234,6 +242,8 @@
     long double ldexpl   (long double x, int p);
     float       sqrtf    (float x);
     long double sqrtl    (long double x);
+    float       cbrtf    (float x);
+    long double cbrtl    (long double x);
     float       sinf     (float x);
     long double sinl     (long double x);
     float       cosf     (float x);
@@ -317,6 +327,9 @@
     inline float         sqrt    (float       x)                 { return __builtin_sqrtf (x); }
     inline double        sqrt    (double      x)                 { return __builtin_sqrt  (x); }
     inline long double   sqrt    (long double x)                 { return __builtin_sqrtl (x); }
+    inline float         cbrt    (float       x)                 { return __builtin_cbrtf (x); }
+    inline double        cbrt    (double      x)                 { return __builtin_cbrt  (x); }
+    inline long double   cbrt    (long double x)                 { return __builtin_cbrtl (x); }
     inline float         sin     (float       x)                 { return __builtin_sinf  (x); }
     inline double        sin     (double      x)                 { return __builtin_sin   (x); }
     inline long double   sin     (long double x)                 { return __builtin_sinl  (x); }
@@ -399,6 +412,10 @@
     extern "C"
            double        sqrt    (double      x);
     inline long double   sqrt    (long double x)                 { return ::sqrtl (x); }
+    inline float         cbrt    (float       x)                 { return ::cbrtf (x); }
+    extern "C"
+           double        cbrt    (double      x);
+    inline long double   cbrt    (long double x)                 { return ::cbrtl (x); }
     inline float         sin     (float       x)                 { return ::sinf  (x); }
     extern "C"
            double        sin     (double      x);
@@ -500,6 +517,7 @@
     using ::frexp;
     using ::ldexp;
     using ::sqrt;
+    using ::cbrt;
     using ::sin;
     using ::cos;
     using ::tan;

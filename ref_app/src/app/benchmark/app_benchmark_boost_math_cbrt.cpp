@@ -12,6 +12,10 @@
 #define BOOST_MATH_STANDALONE
 #endif
 
+#if !defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+#define BOOST_MATH_DISABLE_ERROR_HANDLING
+#endif
+
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
 
 #include <boost/math/special_functions/cbrt.hpp>

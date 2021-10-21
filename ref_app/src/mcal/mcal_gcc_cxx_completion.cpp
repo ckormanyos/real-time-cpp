@@ -136,5 +136,4 @@ extern "C"
 
   int          __errno;
   std::uint8_t __fdlib_version;
-  std::uint8_t __dso_handle;
 }
