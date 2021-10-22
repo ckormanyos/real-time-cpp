@@ -6,12 +6,13 @@
 //
 
 #include <algorithm>
-#include <cnl/scaled_integer.h>
 
 #include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
+
+#include <cnl/scaled_integer.h>
 
 namespace
 {
@@ -114,4 +115,4 @@ int main()
 
 #endif
 
-#endif // APP_BENCHMARK_TYPE_BOOST_MATH_CBRT
+#endif // APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER

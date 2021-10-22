@@ -19,6 +19,12 @@
   {
     using string = basic_string<char, char_traits<char>, allocator<char>>;
 
+    // TBD: Implement various forms of to_string (especially for built-in integral types).
+    inline string to_string(int n) { return std::string(); }
+
+    // TBD: Implement std::string addition.
+    inline string operator+(const string& a, const string& b) { return std::string(); }
+
     namespace literals
     {
       namespace string_literals

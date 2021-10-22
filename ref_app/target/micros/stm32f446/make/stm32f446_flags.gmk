@@ -9,47 +9,39 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 9.3.1
+GCC_VERSION   = 10.2.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                            \
-                -fno-inline-functions                                          \
-                -mcpu=cortex-m4                                                \
-                -mtune=cortex-m4                                               \
-                -mthumb                                                        \
-                -mfloat-abi=hard                                               \
-                -mfpu=fpv4-sp-d16                                              \
-                -ffast-math                                                    \
-                -finline-functions                                             \
-                -finline-limit=32                                              \
-                -mno-unaligned-access                                          \
-                -mno-long-calls                                                \
-                -Wno-psabi
+TGT_ALLFLAGS  = -O2                                                               \
+                -mcpu=cortex-m4                                                   \
+                -mtune=cortex-m4                                                  \
+                -mthumb                                                           \
+                -mfloat-abi=hard                                                  \
+                -mfpu=fpv4-sp-d16                                                 \
+                -ffast-math                                                       \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -mno-unaligned-access                                             \
+                -mno-long-calls
 
-TGT_CFLAGS    = -std=c99                                                       \
-                -Wunsuffixed-float-constants                                   \
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                                     \
+TGT_CXXFLAGS  = -std=c++11                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
-#TGT_INCLUDES  =
 
-#TGT_INCLUDES := -IC:/Users/User/Documents/Ks/PC_Software/NumericalPrograms/ExtendedNumberTypes/cnl-main/include        \
-#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
-
-#TGT_INCLUDES := -IC:/boost/modular_boost/boost/libs/math/include               \
-#                -IC:/boost/boost_1_76_0                                        \
-#                -I$(PATH_TOOLS_CC)/../arm-none-eabi/include/c++/$(GCC_VERSION)/arm-none-eabi/thumb/v7e_m_fp/hard
+#               -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                      \
-                -nostartfiles                                                  \
-                -Wl,--gc-sections                                              \
-                -Wl,-Map,$(APP).map                                            \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

@@ -92,9 +92,9 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_pi_agm();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
 
-  const bool result_is_ok = app::benchmark::run_boost_math_cbrt();
+  const bool result_is_ok = app::benchmark::run_boost_math_cbrt_tgamma();
 
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
 

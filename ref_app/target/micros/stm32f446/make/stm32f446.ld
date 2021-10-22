@@ -57,6 +57,10 @@ SECTIONS
     _ctors_end = .;
     *(.progmem*)
     . = ALIGN(4);
+    *(.ARM.extab)
+    . = ALIGN(4);
+    *(.ARM.extab.text.*)
+    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -99,6 +103,16 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.bss*))
     _bss_end = .;
+  } > RAM
+
+  .ARM.exidx :
+  {
+    __exidx_start = .;
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    *(.gnu.linkonce.armexidx.*)
+    . = ALIGN(4);
+    __exidx_end = .;
   } > RAM
 
   _rom_data_begin = LOADADDR(.data);
