@@ -36,11 +36,9 @@ TGT_CXXFLAGS  = -std=c++11                                                     \
                 -DBOOST_NO_RTTI                                                \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
-
-#TGT_INCLUDES  = -I$(PATH_APP)/util/STL                                         \
-#                -I$(PATH_APP)/util/boost_metal_bindings                        \
-#                -IC:/boost/modular_boost/boost/libs/math/include
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL                                         \
+                -I$(PATH_APP)/util/boost_metal_bindings                        \
+                -IC:/boost/modular_boost/boost/libs/math/include
 
 TGT_AFLAGS    =
 
