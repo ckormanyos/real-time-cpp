@@ -139,7 +139,6 @@ WARN_FLAGS =  -Wall                             \
               -pedantic                         \
               -Wmain                            \
               -Wundef                           \
-              -Wconversion                      \
               -Wsign-conversion                 \
               -Wunused-parameter                \
               -Wuninitialized                   \
