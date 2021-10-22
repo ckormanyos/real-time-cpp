@@ -426,13 +426,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++11, c++14, c++17, c++2a ]
+        standard: [ c++11, c++14, c++17, c++20 ]
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
       - name: update-tools
         run: sudo apt install gcc-arm-none-eabi
+      - name: clone-submods-bootstrap-headers-boost-develop
+        run: |
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
+          cd ../boost-root
+          git submodule update --init tools
+          git submodule update --init libs/config
+          git submodule update --init libs/headers
+          git submodule update --init libs/math
+          ./bootstrap.sh
+          ./b2 headers
+        working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
         working-directory: ./ref_app/

@@ -80,7 +80,7 @@
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM)
   bool run_pi_agm();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
-  bool run_boost_math_cbrt();
+  bool run_boost_math_cbrt_tgamma();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
   bool run_cnl_scaled_integer();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)

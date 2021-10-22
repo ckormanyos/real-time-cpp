@@ -56,7 +56,7 @@
 extern float cb;
 extern float x;
 
-bool app::benchmark::run_boost_math_cbrt()
+bool app::benchmark::run_boost_math_cbrt_tgamma()
 {
   #if defined(APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA)
   // Table[N[((456 n)/(100 Pi))^(1/3), 21], {n, 1, 101, 10}]
@@ -128,7 +128,7 @@ int main()
 
   for(unsigned i = 0U; i < 64U; ++i)
   {
-    result_is_ok &= app::benchmark::run_boost_math_cbrt();
+    result_is_ok &= app::benchmark::run_boost_math_cbrt_tgamma();
   }
 
   return result_is_ok ? 0 : -1;
