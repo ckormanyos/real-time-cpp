@@ -15,37 +15,31 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                            \
-                -mcpu=cortex-m4                                                \
-                -mtune=cortex-m4                                               \
-                -mthumb                                                        \
-                -mfloat-abi=hard                                               \
-                -mfpu=fpv4-sp-d16                                              \
-                -ffast-math                                                    \
-                -finline-functions                                             \
-                -finline-limit=32                                              \
-                -mno-unaligned-access                                          \
+TGT_ALLFLAGS  = -O2                                                               \
+                -mcpu=cortex-m4                                                   \
+                -mtune=cortex-m4                                                  \
+                -mthumb                                                           \
+                -mfloat-abi=hard                                                  \
+                -mfpu=fpv4-sp-d16                                                 \
+                -ffast-math                                                       \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -mno-unaligned-access                                             \
                 -mno-long-calls
 
-TGT_CFLAGS    = -std=c99                                                       \
-                -Wunsuffixed-float-constants                                   \
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                                     \
-                -DBOOST_MATH_STANDALONE                                        \
-                -DBOOST_NO_RTTI                                                \
+TGT_CXXFLAGS  = -std=c++11                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
-#TGT_INCLUDES  = -I$(PATH_APP)/util/STL                                         \
-#                -I$(PATH_APP)/util/boost_metal_bindings                        \
-#                -IC:/boost/modular_boost/boost/libs/math/include
-
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                      \
-                -nostartfiles                                                  \
-                -Wl,--gc-sections                                              \
-                -Wl,-Map,$(APP).map                                            \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

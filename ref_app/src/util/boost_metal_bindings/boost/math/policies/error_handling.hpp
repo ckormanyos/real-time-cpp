@@ -12,7 +12,6 @@
 #else
 #include <iomanip>
 #include <sstream>
-#include <stdexcept>
 #include <typeinfo>
 #endif
 
@@ -21,6 +20,7 @@
 #include <complex>
 #include <cstdint>
 #include <cstring>
+#include <stdexcept>
 #include <string>
 
 #include <boost/math/tools/config.hpp>
@@ -755,31 +755,39 @@ inline constexpr T raise_domain_error(const char* function, const char* message,
 }
 #endif
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class Policy>
+inline constexpr T raise_pole_error(const char*, const char*, const T&, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return T();
+}
+#else
 template <class T, class Policy>
 inline constexpr T raise_pole_error(const char* function, const char* message, const T& val, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return T();
-#else
    typedef typename Policy::pole_error_type policy_type;
    return detail::raise_pole_error(
       function, message ? message : "Evaluation of function at pole %1%",
       val, policy_type());
-#endif
 }
+#endif
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class Policy>
+inline constexpr T raise_overflow_error(const char*, const char*, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return T();
+}
+#else
 template <class T, class Policy>
 inline constexpr T raise_overflow_error(const char* function, const char* message, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return T();
-#else
    typedef typename Policy::overflow_error_type policy_type;
    return detail::raise_overflow_error<T>(
       function, message ? message : "Overflow Error",
       policy_type());
-#endif
 }
+#endif
 
 template <class T, class Policy>
 inline constexpr T raise_overflow_error(const char* function, const char* message, const T& val, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
@@ -794,58 +802,74 @@ inline constexpr T raise_overflow_error(const char* function, const char* messag
 #endif
 }
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class Policy>
+inline constexpr T raise_underflow_error(const char*, const char*, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return T();
+}
+#else
 template <class T, class Policy>
 inline constexpr T raise_underflow_error(const char* function, const char* message, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return T();
-#else
    typedef typename Policy::underflow_error_type policy_type;
    return detail::raise_underflow_error<T>(
       function, message ? message : "Underflow Error",
       policy_type());
-#endif
 }
+#endif
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class Policy>
+inline constexpr T raise_denorm_error(const char*, const char*, const T&, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return T();
+}
+#else
 template <class T, class Policy>
 inline constexpr T raise_denorm_error(const char* function, const char* message, const T& val, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return T();
-#else
    typedef typename Policy::denorm_error_type policy_type;
    return detail::raise_denorm_error<T>(
       function, message ? message : "Denorm Error",
       val,
       policy_type());
-#endif
 }
+#endif
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class Policy>
+inline constexpr T raise_evaluation_error(const char*, const char*, const T&, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return T();
+}
+#else
 template <class T, class Policy>
 inline constexpr T raise_evaluation_error(const char* function, const char* message, const T& val, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return T();
-#else
    typedef typename Policy::evaluation_error_type policy_type;
    return detail::raise_evaluation_error(
       function, message ? message : "Internal Evaluation Error, best value so far was %1%",
       val, policy_type());
-#endif
 }
+#endif
 
+#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+template <class T, class TargetType, class Policy>
+inline constexpr TargetType raise_rounding_error(const char*, const char*, const T&, const TargetType&, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
+{
+   return TargetType();
+}
+#else
 template <class T, class TargetType, class Policy>
 inline constexpr TargetType raise_rounding_error(const char* function, const char* message, const T& val, const TargetType& t, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
 {
-#if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-   return TargetType();
-#else
    typedef typename Policy::rounding_error_type policy_type;
    return detail::raise_rounding_error(
       function, message ? message : "Value %1% can not be represented in the target integer type.",
       val, t, policy_type());
-#endif
 }
+#endif
 
 template <class T, class R, class Policy>
 inline constexpr T raise_indeterminate_result_error(const char* function, const char* message, const T& val, const R& result, const Policy&) noexcept(is_noexcept_error_policy<Policy>::value && BOOST_MATH_IS_FLOAT(T))
@@ -873,6 +897,8 @@ inline bool check_overflow(T val, R* result, const char* function, const Policy&
    if(fabs(val) > tools::max_value<R>())
    {
 #if defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
+      static_cast<void>(function);
+      static_cast<void>(pol);
 #else
       boost::math::policies::detail::raise_overflow_error<R>(function, 0, pol);
 #endif
