@@ -29,7 +29,8 @@
   #include <stdint.h>
 
   #ifdef __cplusplus
-  extern "C" {
+  extern "C"
+  {
   #endif
 
   #define LOW               0x0
@@ -62,9 +63,9 @@
   //#define ONLOW_WE  0x0C
   //#define ONHIGH_WE 0x0D
 
-  void pinMode     (uint8_t pin, uint8_t mode);
-  void digitalWrite(uint8_t pin, uint8_t val);
-  int  digitalRead (uint8_t pin);
+  void pinMode     (const uint8_t pin, const uint8_t mode);
+  void digitalWrite(const uint8_t pin, const uint8_t val);
+  int  digitalRead (const uint8_t pin);
 
   #ifdef __cplusplus
   }

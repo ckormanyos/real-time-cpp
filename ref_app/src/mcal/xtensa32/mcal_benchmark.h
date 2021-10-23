@@ -17,7 +17,8 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<0U> benchmark_port_type;
+      // Index 4 corresponds to port D4 on the PCB markings.
+      typedef mcal::port::port_pin<4U> benchmark_port_type;
     }
   }
 

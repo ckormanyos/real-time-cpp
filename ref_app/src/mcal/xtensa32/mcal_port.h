@@ -8,9 +8,9 @@
 #ifndef MCAL_PORT_2014_01_10_H_
   #define MCAL_PORT_2014_01_10_H_
 
-  extern "C" void mcal_port_pin_mode_out(const unsigned pin_index, bool set_direction_to_output);
-  extern "C" void mcal_port_pin_set     (const unsigned pin_index, bool set_value_to_high);
-  extern "C" bool mcal_port_pin_read    (const unsigned pin_index);
+  extern void mcal_port_pin_mode_out(const unsigned pin_index, const bool set_direction_to_output);
+  extern void mcal_port_pin_set     (const unsigned pin_index, const bool set_value_to_high);
+  extern bool mcal_port_pin_read    (const unsigned pin_index);
 
   namespace mcal
   {
@@ -18,7 +18,7 @@
     {
       typedef void config_type;
 
-      void init(const config_type*);
+      inline void init(const config_type*) { }
 
       template<const unsigned PinIndex>
       class port_pin
