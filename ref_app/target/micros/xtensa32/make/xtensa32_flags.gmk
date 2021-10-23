@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2018 - 2020.
+#  Copyright Christopher Kormanyos 2018 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,50 +9,49 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-
 GCC_VERSION   = 8.4.0
 GCC_TARGET    = xtensa-esp32-elf
 GCC_PREFIX    = xtensa-esp32-elf
 
 TGT_SUFFIX    = elf
 
-WARN_FLAGS   := -Wall                                                         \
-                -Wpointer-arith                                               \
-                -Wno-maybe-uninitialized                                      \
-                -Wno-unused-function                                          \
-                -Wno-unused-but-set-variable                                  \
-                -Wno-unused-variable                                          \
-                -Wno-deprecated-declarations                                  \
-                -Wno-unused-parameter                                         \
-                -Wno-unused-but-set-parameter                                 \
-                -Wno-missing-field-initializers                               \
+WARN_FLAGS   := -Wall                                                             \
+                -Wpointer-arith                                                   \
+                -Wno-maybe-uninitialized                                          \
+                -Wno-unused-function                                              \
+                -Wno-unused-but-set-variable                                      \
+                -Wno-unused-variable                                              \
+                -Wno-deprecated-declarations                                      \
+                -Wno-unused-parameter                                             \
+                -Wno-unused-but-set-parameter                                     \
+                -Wno-missing-field-initializers                                   \
                 -Wno-sign-compare
 
-DEFINES_SDK  := -DESP_PLATFORM                                                  \
-                "-DMBEDTLS_CONFIG_FILE=$(DQUOTE)mbedtls/esp_config.h$(DQUOTE)"  \
-                -DHAVE_CONFIG_H                                                 \
-                -DGCC_NOT_5_2_0=1                                               \
-                -DF_CPU=240000000L                                              \
-                -DESP32                                                         \
+DEFINES_SDK  := -DESP_PLATFORM                                                    \
+                "-DMBEDTLS_CONFIG_FILE=$(DQUOTE)mbedtls/esp_config.h$(DQUOTE)"    \
+                -DHAVE_CONFIG_H                                                   \
+                -DGCC_NOT_5_2_0=1                                                 \
+                -DF_CPU=240000000L                                                \
+                -DESP32                                                           \
                 -DCORE_DEBUG_LEVEL=0
 
-TGT_ALLFLAGS  = -Os                                                            \
-                -nostdlib                                                      \
-                -finline-functions                                             \
-                -finline-limit=32                                              \
-                -fstack-protector                                              \
-                -fstrict-volatile-bitfields                                    \
-                -mlongcalls                                                    \
-                $(FLAGS_SDK)                                                   \
+TGT_ALLFLAGS  = -Os                                                               \
+                -nostdlib                                                         \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -fstack-protector                                                 \
+                -fstrict-volatile-bitfields                                       \
+                -mlongcalls                                                       \
+                $(FLAGS_SDK)                                                      \
                 $(DEFINES_SDK)
 
-TGT_CFLAGS    = -std=gnu99                                                     \
-                -nostdlib                                                      \
-                -Wno-unsuffixed-float-constants                                \
-                -Wno-old-style-declaration                                     \
+TGT_CFLAGS    = -std=gnu99                                                        \
+                -nostdlib                                                         \
+                -Wno-unsuffixed-float-constants                                   \
+                -Wno-old-style-declaration                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                                     \
+TGT_CXXFLAGS  = -std=c++11                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
@@ -79,27 +78,27 @@ SDK_LIBS      = -lapp_update                    \
                 -lvfs                           \
                 -lxtensa-debug-module
 
-TGT_LDFLAGS   = -nostdlib                                                               \
-                -L$(PATH_TGT_MAKE)/from_sdk/lib                                         \
-                -L$(PATH_TGT_MAKE)/from_sdk/ld                                          \
-                -T esp32_out.ld                                                         \
-                -T esp32.project.ld                                                     \
-                -T esp32.rom.ld                                                         \
-                -T esp32.peripherals.ld                                                 \
-                -T esp32.rom.libgcc.ld                                                  \
-                -T esp32.rom.spiram_incompatible_fns.ld                                 \
-                -u ld_include_panic_highint_hdl                                         \
-                -u call_user_start_cpu0                                                 \
-                -Wl,--gc-sections                                                       \
-                -Wl,--undefined=uxTopUsedPriority                                       \
-                -u __cxa_guard_dummy                                                    \
-                -u __cxx_fatal_exception                                                \
-                -Wl,--start-group                                                       \
-                -lstdc++                                                                \
-                -lcxx                                                                   \
-                -lc                                                                     \
-                $(SDK_LIBS)                                                             \
-                -Wl,--end-group                                                         \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -L$(PATH_TGT_MAKE)/from_sdk/lib                                   \
+                -L$(PATH_TGT_MAKE)/from_sdk/ld                                    \
+                -T esp32_out.ld                                                   \
+                -T esp32.project.ld                                               \
+                -T esp32.rom.ld                                                   \
+                -T esp32.peripherals.ld                                           \
+                -T esp32.rom.libgcc.ld                                            \
+                -T esp32.rom.spiram_incompatible_fns.ld                           \
+                -u ld_include_panic_highint_hdl                                   \
+                -u call_user_start_cpu0                                           \
+                -Wl,--gc-sections                                                 \
+                -Wl,--undefined=uxTopUsedPriority                                 \
+                -u __cxa_guard_dummy                                              \
+                -u __cxx_fatal_exception                                          \
+                -Wl,--start-group                                                 \
+                -lstdc++                                                          \
+                -lcxx                                                             \
+                -lc                                                               \
+                $(SDK_LIBS)                                                       \
+                -Wl,--end-group                                                   \
                 -Wl,-EL
 
 

@@ -8,28 +8,28 @@
 #include <from_sdk/esp32-hal-gpio.h>
 
 #include <mcal_port.h>
-#include <mcal_reg.h>
 
-void mcal::port::init(const config_type*)
+void mcal_port_pin_mode_out(const unsigned pin_index, const bool set_direction_to_output)
 {
+  const uint8_t idx = (uint8_t) pin_index;
+  const uint8_t dir = (uint8_t) set_direction_to_output ? OUTPUT : INPUT;
+
+  ::pinMode(idx, dir);
 }
 
-extern "C"
-void mcal_port_pin_mode_out(const unsigned pin_index, bool set_direction_to_output)
+void mcal_port_pin_set(const unsigned pin_index, const bool set_value_to_high)
 {
-  ::pinMode(pin_index, set_direction_to_output ? OUTPUT : INPUT);
+  const uint8_t idx = (uint8_t) pin_index;
+  const uint8_t val = (uint8_t) set_value_to_high ? HIGH : LOW;
+
+  ::digitalWrite(idx, val);
 }
 
-extern "C"
-void mcal_port_pin_set(const unsigned pin_index, bool set_value_to_high)
-{
-  ::digitalWrite(pin_index, set_value_to_high ? HIGH : LOW);
-}
-
-extern "C"
 bool mcal_port_pin_read(const unsigned pin_index)
 {
-  const int n_port_value = ::digitalRead(pin_index);
+  const uint8_t idx = (uint8_t) pin_index;
 
-  return (n_port_value != 0);
+  const int val = ::digitalRead((uint8_t) idx);
+
+  return (val != 0);
 }
