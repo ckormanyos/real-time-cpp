@@ -194,6 +194,9 @@
     <Filter Include="src\util\boost_metal_bindings\boost\math\policies">
       <UniqueIdentifier>{72c5030d-41c0-4152-9a9c-0cf5f18cd189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\cmake">
+      <UniqueIdentifier>{f93f7228-dccf-4716-a98e-7f05d4c20a8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2045,5 +2048,56 @@
     <None Include="src\util\STL\stdexcept">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="cmake\stm32f407.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f429.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f446.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32l100c.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32l152.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\xtensa32.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\am335x.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\atmega2560.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\avr.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\bcm2835_raspi_b.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\gcc-toolchain.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\host.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\lpc11c24.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\rl78.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\rx63n.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32f100.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

@@ -155,6 +155,7 @@ endif
 
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
+              -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -ffunction-sections               \

@@ -130,6 +130,9 @@ set(app_src
     ${PATH_APP}/app/benchmark/app_benchmark_none
     ${PATH_APP}/app/benchmark/app_benchmark_pi_spigot
     ${PATH_APP}/app/benchmark/app_benchmark_pi_spigot_single
+    ${PATH_APP}/app/benchmark/app_benchmark_soft_double_h2f1
+    ${PATH_APP}/app/benchmark/app_benchmark_trapezoid_integral
+    ${PATH_APP}/app/benchmark/app_benchmark_wide_decimal
     ${PATH_APP}/app/benchmark/app_benchmark_wide_integer
     ${PATH_APP}/app/led/app_led
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu

@@ -35,6 +35,7 @@ extern "C"
   using UBaseType_t    = unsigned int;
 
   extern void main_loop(void*);
+
   void app_main(void);
 
   extern BaseType_t xTaskCreatePinnedToCore(      TaskFunction_t       pvTaskCode,
@@ -59,11 +60,13 @@ extern "C" void app_main(void)
   constexpr BaseType_t  main_loop_running_core = 1;
 
   // Create the main loop task.
-  (void) xTaskCreatePinnedToCore( main_loop,
-                                 "main_loop",
-                                  main_loop_stack_size,
-                                  nullptr,
-                                  main_loop_prio,
-                                 &main_loop_task_handle,
-                                  main_loop_running_core);
+  const BaseType_t create_result = ::xTaskCreatePinnedToCore( main_loop,
+                                                             "main_loop",
+                                                              main_loop_stack_size,
+                                                              nullptr,
+                                                              main_loop_prio,
+                                                             &main_loop_task_handle,
+                                                              main_loop_running_core);
+
+  static_cast<void>(create_result);
 }
