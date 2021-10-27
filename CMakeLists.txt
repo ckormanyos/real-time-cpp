@@ -35,7 +35,7 @@ include (ExternalProject)
 
 set(TARGET_CFG_LIST
     # NAME | TARGET | TRIPLE
-    sitara|am335x|arm-none-eabi
+    am335x|am335x|arm-none-eabi
     stm32f100|stm32f100|arm-none-eabi
     stm32f407|stm32f407|arm-none-eabi
     stm32f429|stm32f429|arm-none-eabi

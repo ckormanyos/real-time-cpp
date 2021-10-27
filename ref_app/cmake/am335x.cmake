@@ -53,8 +53,6 @@ set(_TARGET_CFLAGS
 set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
-    -nostdlib
-    -nostartfiles
     -T ${LINKER_DEFINITION_FILE}
 )
 
@@ -66,6 +64,7 @@ set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail
     ${PATH_APP}/mcal/${TARGET}/mcal_cpu_detail_secure
+    ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_APP}/util/STL/impl/cmath_impl_gamma
     ${PATH_APP}/util/STL/impl/cmath_impl_hyperbolic
     ${PATH_TGT}/startup/crt0

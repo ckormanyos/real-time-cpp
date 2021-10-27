@@ -155,10 +155,19 @@ endif
 
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
+              -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
+              -fno-builtin                      \
               -ffunction-sections               \
               -fdata-sections
+
+ifeq ($(TGT_SUFFIX),elf)
+GCCFLAGS   := $(GCCFLAGS)                       \
+              -nostdlib                         \
+              -nostartfiles
+endif
+
 
 CFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \

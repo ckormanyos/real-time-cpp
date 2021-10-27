@@ -114,6 +114,9 @@ set(GCCFLAGS
     -fno-exceptions
     -ffunction-sections
     -fdata-sections
+    -nostdlib
+    -nostartfiles
+    -fno-builtin
 )
 
 set(_CFLAGS ${GCCFLAGS}

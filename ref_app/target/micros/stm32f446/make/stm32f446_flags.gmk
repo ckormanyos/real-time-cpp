@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 10.2.1
+GCC_VERSION   = 9.3.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -36,12 +36,10 @@ TGT_CXXFLAGS  = -std=c++11                                                      
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
-#               -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
+#TGT_INCLUDES  = -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e-m-fp/hard
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                         \
-                -nostartfiles                                                     \
-                -Wl,--gc-sections                                                 \
+TGT_LDFLAGS   = -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
