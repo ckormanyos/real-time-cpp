@@ -114,16 +114,24 @@ set(GCCFLAGS
     -fno-exceptions
     -ffunction-sections
     -fdata-sections
-    -nostdlib
-    -nostartfiles
-    -fno-builtin
 )
 
-set(_CFLAGS ${GCCFLAGS}
-    -Wunsuffixed-float-constants
-    -x c
-    -std=c99
-)
+if("${TARGET}" STREQUAL "host")
+    set(_CFLAGS ${GCCFLAGS}
+        -Wunsuffixed-float-constants
+        -x c
+        -std=c99
+    )
+else()
+    set(_CFLAGS ${GCCFLAGS}
+        -Wunsuffixed-float-constants
+        -x c
+        -std=c99
+        -nostdlib
+        -nostartfiles
+        -fno-builtin
+    )
+endif()
 
 set(_CXXFLAGS ${GCCFLAGS}
     -x c++
