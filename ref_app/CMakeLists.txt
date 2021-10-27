@@ -30,7 +30,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-project(ref_app VERSION "${REALTIME_CPP_VERSION}" LANGUAGES C CXX ASM)
+project(ref_app VERSION "${REALTIME_CPP_VERSION}" LANGUAGES CXX ASM)
 
 message(STATUS "Generator .............. ${CMAKE_GENERATOR}")
 message(STATUS "Build Type ............. ${CMAKE_BUILD_TYPE}")

@@ -116,22 +116,11 @@ set(GCCFLAGS
     -fdata-sections
 )
 
-if("${TARGET}" STREQUAL "host")
-    set(_CFLAGS ${GCCFLAGS}
-        -Wunsuffixed-float-constants
-        -x c
-        -std=c99
-    )
-else()
-    set(_CFLAGS ${GCCFLAGS}
-        -Wunsuffixed-float-constants
-        -x c
-        -std=c99
-        -nostdlib
-        -nostartfiles
-        -fno-builtin
-    )
-endif()
+set(_CFLAGS ${GCCFLAGS}
+    -Wunsuffixed-float-constants
+    -x c
+    -std=c99
+)
 
 set(_CXXFLAGS ${GCCFLAGS}
     -x c++

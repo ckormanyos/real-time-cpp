@@ -36,8 +36,7 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                         \
-                -nostartfiles                                                     \
+TGT_LDFLAGS   = -nostartfiles                                                     \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

@@ -36,10 +36,12 @@ TGT_CXXFLAGS  = -std=c++11                                                      
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
-#TGT_INCLUDES  = -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e-m-fp/hard
+#               -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -Wl,--gc-sections                                                 \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
