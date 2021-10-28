@@ -60,9 +60,15 @@ void mcal::gpt::init(const config_type*)
 
     constexpr std::uint32_t timer4_irq_n = UINT32_C(30);
 
-    const std::uint8_t timer4_interrupt_priority = std::uint8_t(  std::uint32_t(timer4_nvic_irq_preemption_prio << tmp_pre)
-                                                                | std::uint32_t(timer4_nvic_irq_sub_prio & tmp_sub)
-                                                               ) << 0x04;
+    const std::uint8_t timer4_interrupt_priority =
+      std::uint8_t
+      (
+        std::uint32_t
+        (
+            std::uint32_t(timer4_nvic_irq_preemption_prio << tmp_pre)
+          | std::uint32_t(timer4_nvic_irq_sub_prio & tmp_sub)
+        ) << 0x04U
+      );
 
     // Set the timer4 interrupt priority.
     mcal::reg::reg_access_dynamic<std::uint32_t,

@@ -36,7 +36,7 @@ extern "C" void __vector_timer4(void)
   mcal::reg::reg_access_static<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, UINT16_C(0x0000)>::reg_set();
 
   // Increment the 64-bit system tick with 0x10000, representing (2^16) microseconds.
-  system_tick += UINT32_C(0x10000);
+  system_tick = std::uint64_t(system_tick + UINT32_C(0x10000));
 }
 
 void mcal::gpt::init(const config_type*)
@@ -65,9 +65,15 @@ void mcal::gpt::init(const config_type*)
 
     constexpr std::uint32_t timer4_irq_n = UINT32_C(30);
 
-    const std::uint8_t timer4_interrupt_priority = std::uint8_t(  std::uint32_t(timer4_nvic_irq_preemption_prio << tmp_pre)
-                                                                | std::uint32_t(timer4_nvic_irq_sub_prio & tmp_sub)
-                                                               ) << 0x04;
+    const std::uint8_t timer4_interrupt_priority =
+      std::uint8_t
+      (
+        std::uint32_t
+        (
+            std::uint32_t(timer4_nvic_irq_preemption_prio << tmp_pre)
+          | std::uint32_t(timer4_nvic_irq_sub_prio & tmp_sub)
+        ) << 0x04U
+      );
 
     // Set the timer4 interrupt priority.
     mcal::reg::reg_access_dynamic<std::uint32_t,

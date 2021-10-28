@@ -127,12 +127,12 @@ void os::clear_event(const event_type& event_to_clear)
 
   if(it_running_task != os_task_list.end())
   {
-    const volatile event_type event_clear_mask(~event_to_clear);
+    const volatile event_type event_clear_mask = event_type(~event_to_clear);
 
     // Clear the event of the running task.
     mcal::irq::disable_all();
 
-    it_running_task->my_event &= event_clear_mask;
+    it_running_task->my_event = event_type(it_running_task->my_event & event_clear_mask);
 
     mcal::irq::enable_all();
   }
