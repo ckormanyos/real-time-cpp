@@ -84,6 +84,8 @@
   bool run_cnl_scaled_integer();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
   bool run_soft_double_h2f1();
+  #else
+  #error APP_BENCHMARK_TYPE is undefined.
   #endif
 
   } } // namespace app:::benchmark
