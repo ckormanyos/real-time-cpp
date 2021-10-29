@@ -1,1 +1,0 @@
-This is the root folder intended for the toolchain gcc-10.1.0-avr
