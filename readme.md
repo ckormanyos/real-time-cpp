@@ -209,21 +209,29 @@ No external libraries other than native C++ and its own
 standard libraries are used.
 
 Consider, for instance, the BeagleBone Black Edition
-(known as `target am335x` below) --- one of several
+(BBB, also known as `target am335x`) --- one
+of several popular
 target systems supported in this repository.
 The projects on this board boot from the binary image file
-_MLO_ on the SD card and perform their own
-static initialization and chip initialization
-of the ARM(R) 8 AM335x processor. Like all other projects
-in this repository, these projects, following initialization.
-subsequently jump to the `main()` subroutine which
-initializes the MCAL and starts
-our self-written [multitasking scheduler](./ref_app/src/os).
+_MLO_ on the SD card. Like all other projects in this repository,
+the BBB projects perform their own
+[static initialization](./ref_app/target/micros/am335x/startup)
+and
+[chip initialization](./ref_app/src/mcal/am335x/mcal_cpu_detail_secure.cpp)
+(i.e., in this particular case chip initialization
+of the ARM(R) 8 AM335x processor).
+The BBB projects, following initialization,
+subsequently jump to `main()` which
+initializes the
+[`am335x` MCAL](./ref_app/src/mcal/am335x)
+and starts our self-written
+[multitasking scheduler](./ref_app/src/os).
 
 The following [pdf image](./images/bare_metal_bbb.pdf)
-depicts the bare-metal BeagleBone Black Edition (BBB)
-in action. In this example, there is no keyboard,
-no monitor and no running `*nix` OS on the BBB.
+depicts the bare-metal BeagleBone Black Edition
+in action. In this bare-metal operation mode, there is
+no running `*nix` OS on the BBB, no keyboard,
+no mouse, no monitor, no debug interface and no emulator.
 
 The microcontroller on the board is cyclically performing
 one of the [benchmarks](./ref_app/src/app/benchmark)
