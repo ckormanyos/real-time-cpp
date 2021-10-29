@@ -60,7 +60,7 @@ of algorithmic complexity in the corresponding book section.
 
 Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
 This advanced example extends RAM even further with a 2 MByte parallel SRAM brick. This extended memory
-is used for storage in Pi Spigot calculats of the mathematical constant
+is used for storage in Pi Spigot calculations of the mathematical constant
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
 up to 100,001 decimal digits.
 
