@@ -103,7 +103,7 @@ Cross-Environment CMake can build the reference application.
 For this purpose, CMake files have also been created for each supported target.
 
 Consider, for instance, building the reference application for the
-`avr`target with CMake. The pattern is shown below.
+`avr` target with CMake. The pattern is shown below.
 
 ```sh
 cd real-time-cpp
@@ -203,8 +203,8 @@ on the [benchmarks](./ref_app/src/app/benchmark) pages.
 
 ## All Bare-Metal
 
-Projects in this repo are programmed _OS-less_ in bare-metal mode
-making use of self-written startup code.
+Projects in this repo are programmed _OS-less_ in naked,
+bare-metal mode making use of self-written startup code.
 No external libraries other than native C++ and its own
 standard libraries are used.
 
@@ -212,13 +212,20 @@ Consider, for instance, the BeagleBone Black Edition
 (known as `target am335x` below) --- one of several
 target systems supported in this repository.
 The projects on this board boot from the binary image file
-_MLO_ the SD card and subsequently perform their own
+_MLO_ on the SD card and perform their own
 static initialization and chip initialization
-of the ARM(R) 8 AM335x processor.
+of the ARM(R) 8 AM335x processor. Like all other projects
+in this repository, these projects, following initialization.
+subsequently jump to the `main()` subroutine which
+initializes the MCAL and starts
+our self-written [multitasking scheduler](./ref_app/src/os).
 
 The following [pdf image](./images/bare_metal_bbb.pdf)
-depicts the bare-metal BeagleBobe Black Edition (BBB)
-in action. The microcontroller on the board is cyclically performing
+depicts the bare-metal BeagleBone Black Edition (BBB)
+in action. In this example, there is no keyboard,
+no monitor and no running `*nix` OS on the BBB.
+
+The microcontroller on the board is cyclically performing
 one of the [benchmarks](./ref_app/src/app/benchmark)
 mentioned above. The first
 user LED is toggled on `port1.21` in multitasking operation
@@ -231,9 +238,10 @@ on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 Continuous integration uses GitHub Actions programmed in YAML.
 The [CI script](.github/workflows/real-time-cpp.yml)
 exercises various target builds, example builds
-and benchmark builds/runs on Ubuntu or Windows-Latest
+and benchmark builds/runs on GitHub Actions' instances
+of `ubuntu-latest`, `windows-latest` and `macos-latest`
 using GNUmake, CMake or MSBuild
-depending on the particular OS/build/target configuration.
+depending on the particular OS/build/target-configuration.
 
 ### Build Status
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)

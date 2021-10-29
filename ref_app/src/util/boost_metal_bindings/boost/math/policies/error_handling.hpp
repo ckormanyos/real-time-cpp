@@ -1,9 +1,14 @@
 //  Copyright John Maddock 2007.
 //  Copyright Paul A. Bristow 2007.
+//  Copyright Christopher Kormanyos 2021.
 
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+// This is a patched version of "error_handling.hpp" that
+// removes heavy-weight I/O streaming and certain exception
+// artifacts for bare-metal Boost.Math special functions.
 
 #ifndef BOOST_MATH_POLICY_ERROR_HANDLING_HPP
 #define BOOST_MATH_POLICY_ERROR_HANDLING_HPP
