@@ -56,10 +56,13 @@ and highlights the real-time numeric expression of the detailed description
 of algorithmic complexity in the corresponding book section.
 
 Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
-This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant Pi.
+This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant
+<img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
 Example ![chapter10_09](./chapter10_09) 100,001 Digits of Pi on Raspberry Pi(R).\
-This advanced example ports the Pi Spigot 100,001 digits Pi calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
+This advanced example ports the Pi Spigot 100,001 digits
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
 
 Example ![chapter11_07](./chapter11_07) Preemptive Multitasking.\
 This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.

@@ -2096,6 +2096,9 @@
     <None Include="cmake\stm32f100.cmake">
       <Filter>src\cmake</Filter>
     </None>
+    <None Include="src\util\STL\cinttypes">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

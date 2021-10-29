@@ -1,0 +1,23 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef CINTTYPES_2021_10_19_
+  #define CINTTYPES_2021_10_19_
+
+  #include <inttypes.h>
+  #include <cstdint>
+
+  namespace std
+  {
+    struct imaxdiv_t { std::intmax_t quot; std::intmax_t rem; };
+
+    inline std::intmax_t imaxabs(std::intmax_t n) { return ((n < 0) ? -n : n); }
+
+    inline std::imaxdiv_t imaxdiv(std::intmax_t x, std::intmax_t y) { const std::imaxdiv_t result = { x / y, x % y }; return result; }
+  }
+
+#endif // CINTTYPES_2021_10_19_

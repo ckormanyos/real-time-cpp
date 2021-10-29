@@ -25,23 +25,29 @@
   - ![app_benchmark_wide_decimal.cpp](./app_benchmark_wide_decimal.cpp) via `#define APP_BENCHMARK_TYPE_WIDE_DECIMAL` computes a 100 decimal digit square root using the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
   - ![app_benchmark_trapezoid_integral.cpp](./app_benchmark_trapezoid_integral.cpp) via `#define APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` computes the numerical floating-point result of a Bessel function using a recursive trapezoid integration routine.
   - ![app_benchmark_pi_agm.cpp](./app_benchmark_pi_agm.cpp) via `#define APP_BENCHMARK_TYPE_PI_AGM` computes 53 decimal digits of pi using a Gaus AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class having a so-called _limb type_ of `std::uint16_t`.
+  - ![app_benchmark_boost_math_cbrt_tgamma.cpp](./app_benchmark_boost_math_cbrt_tgamma.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA` uses [Boost.Math](https://www.boost.org/doc/libs/1_77_0/libs/math/doc/html/index.html) to compute the cube root of various Gamma functions values, where we note that heavy-weight error-handling has been patched for bare metal builds with the file [error_handling.hpp](../util/boost_metal_bindings/boost/math/policies/error_handling.hpp).
+  - ![app_benchmark_cnl_scaled_integer.cpp](./app_benchmark_cnl_scaled_integer.cpp) via `#define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER` brings a small subset of the [CNL Library](https://github.com/johnmcfarlane/cnl) _onto the metal_ by exercising various elementary quadratic calculations with the fixed-point representations of [`cnl::scaled_integer`](https://github.com/johnmcfarlane/cnl/tree/main/include/cnl/_impl/scaled_integer).
   - ![app_benchmark_soft_double_h2f1.cpp](./app_benchmark_soft_double_h2f1.cpp) via `#define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1` calculates an <img src="https://render.githubusercontent.com/render/math?math=\approx\,15"> decimal digit hypergeometric function value using a classic iterative rational approximation scheme. This calculation is also included as an example in the [soft_double](https://github.com/ckormanyos/soft_double) project.
-  - ![app_benchmark_boost_math_cbrt_tgamma.cpp](./app_benchmark_boost_math_cbrt_tgamma.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA` uses [Boost.Math](https://www.boost.org/doc/libs/1_76_0/libs/math/doc/html/index.html) to compute the cube root of various Gamma functions values (at the moment only available on PC or workstation hosts).
-  - ![app_benchmark_cnl_scaled_integer.cpp](./app_benchmark_cnl_scaled_integer.cpp) via `#define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER` brings a small subset of the [CNL Library](https://github.com/johnmcfarlane/cnl) _onto the metal_ by exercising an elementary quadratic calculations with the fixed-point representations of [`cnl::scaled_integer`](https://github.com/johnmcfarlane/cnl/tree/main/include/cnl/_impl/scaled_integer).
 
 ## Performance classes
 
-The benchmarks run on each supported target and reveal a wide range of
-microcontroller _performance classes_.
-Consider, for instance, [`APP_BENCHMARK_TYPE_PI_AGM`](./app_benchmark_pi_agm.cpp)
-which compute 105 decimal digits of the mathematical constant pi using
-a Gauss AGM method with the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
+Most of the benchmarks run on each supported target system.
+Experience with runs on the individual target systems reveal
+a wide range of microcontroller _performance classes_.
 
-The [image](./images/app_benchmark_pi_agm.pdf)
+Consider, for instance, the [`APP_BENCHMARK_TYPE_PI_AGM`](./app_benchmark_pi_agm.cpp)
+benchmark. This program compute 53 decimal digits of the mathematical constant
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+using a Gauss AGM method with help
+from the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
+
+The [PDF image](./images/app_benchmark_pi_agm.pdf)
 shows the real-time measurement of this benchmark
-on the 8-bit MICROCHIP(R) AVR controller of the Arduino
+on two of our target systems having vastly different
+performance classes:
+the 8-bit MICROCHIP(R) AVR controller of the Arduino
 and the 32-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
-The calculation requires approximately
-470ms and 1.5ms respectively on these two microcontrollers
-having vastly different performance classes.
+The <img src="https://render.githubusercontent.com/render/math?math=\pi">
+calculation requires approximately 470ms and 1.5ms,
+respectively, on these two microcontroller systems.
