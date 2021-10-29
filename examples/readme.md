@@ -50,19 +50,25 @@ Example ![chapter09_08](./chapter09_08) Controlling an RGB LED.\
 This example utilizes object oriented programming techniques to control an RGB LED.
 
 Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
-This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits of the mathematical constant Pi, showing fascinating memory management iterators, containers and algorithms along the way.
+This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits
+of the mathematical constant
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+showing fascinating memory management iterators, containers and algorithms along the way.
 This example depicts algorithmic complexity running in a real-world system
 and highlights the real-time numeric expression of the detailed description
 of algorithmic complexity in the corresponding book section.
 
 Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
-This advanced example extends RAM even further with a 2MByte parallel SRAM brick to calculate 100,001 digits of the mathematical constant
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
+This advanced example extends RAM even further with a 2 MByte parallel SRAM brick. This extended memory
+is used for storage in Pi Spigot calculats of the mathematical constant
+<img src="https://render.githubusercontent.com/render/math?math=\pi">
+up to 100,001 decimal digits.
 
 Example ![chapter10_09](./chapter10_09) 100,001 Digits of Pi on Raspberry Pi(R).\
-This advanced example ports the Pi Spigot 100,001 digits
+This advanced example ports the Pi Spigot calculation
+of 100,001 decimal digits of
 <img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
+to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
 
 Example ![chapter11_07](./chapter11_07) Preemptive Multitasking.\
 This example makes straightforward use of preemptive multitasking scheduling with a blinky-style application that features a main task and a low-priority background task.

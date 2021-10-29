@@ -243,13 +243,14 @@ depending on the particular OS/build/target configuration.
 GNU GCC cross compilers for the microcontroller solutions are *not*
 available here.
 
-A GNU GCC port with a relatively high level of C++11 awareness such as
-GCC 5 through 11 (higher generally being more advantageous)
-is required for building the reference application.
+A GNU GCC port (or other compiler)
+with a high level of C++11 awareness and adherence
+such as GCC 5 through 11 (higher generally being more advantageous)
+or MSVC 14.2 or higher is required for building the reference application.
 
 Some of the code snippets demonstrate language elements not only from C++11,
 but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 6, 7, or 8)
-or even C++20 support (such as GCC 11) can, therefore,
+or even C++20 support (such as GCC 10 or 11, clang 12 or MSVC 14.2) can, therefore,
 be beneficial for success with *all* of the code snippets.
 
 In the reference application on `Win*`, the makefiles are aware of a default location
