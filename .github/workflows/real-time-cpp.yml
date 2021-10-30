@@ -280,8 +280,8 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../
-          dir
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          move ../toolchains/ref_app/tools ./ref_app/tools
           cd ref_app
           dir
         working-directory: ./
