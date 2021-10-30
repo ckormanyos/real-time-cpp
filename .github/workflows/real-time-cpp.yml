@@ -32,7 +32,7 @@ jobs:
           move ../toolchains/ref_app/tools ./ref_app/tools
           cd ./ref_app/tools/Util/MinGW/msys/1.0/local
           dir
-          gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
+          ./gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
