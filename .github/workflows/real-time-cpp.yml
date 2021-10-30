@@ -281,6 +281,14 @@ jobs:
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+      - name: clone-submods-bootstrap-headers-boost-develop
+        run: |
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../
+          dir
+          cd ref_app
+          dir
+        working-directory: ./
+      - name: msbuild-ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
           dir ./tmp/${{ matrix.suite }}/ref_app.exe
