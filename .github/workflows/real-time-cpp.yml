@@ -313,6 +313,62 @@ jobs:
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir ./bin/ref_app.elf
         working-directory: ./ref_app/
+  msvc-msbuild-arm:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: clone-real-time-cpp-toolchains-master
+        run: |
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          move ../toolchains/ref_app/tools ./ref_app/tools
+          cd ./ref_app/tools/Util/MinGW/msys/1.0/local
+          dir
+          ./gcc-9.3.1-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-9.3.1-arm-none-eabi-avr"
+        working-directory: ./
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir ./bin/ref_app.elf
+        working-directory: ./ref_app/
+  msvc-msbuild-xtensa:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ xtensa32 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: clone-real-time-cpp-toolchains-master
+        run: |
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          move ../toolchains/ref_app/tools ./ref_app/tools
+          cd ./ref_app/tools/Util/MinGW/msys/1.0/local
+          dir
+          ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
+        working-directory: ./
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir ./bin/ref_app.elf
+        working-directory: ./ref_app/
   benchmark_gcc-clang:
     runs-on: ubuntu-20.04
     defaults:
