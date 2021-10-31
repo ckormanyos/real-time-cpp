@@ -374,7 +374,8 @@ jobs:
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf
-        working-directory: ./ref_app/  benchmark_gcc-clang:
+        working-directory: ./ref_app/
+  benchmark_gcc-clang:
     runs-on: ubuntu-20.04
     defaults:
       run:
