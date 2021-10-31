@@ -31,7 +31,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
-          dir ./tmp/${{ matrix.suite }}/ref_app.exe
+          dir .\tmp\${{ matrix.suite }}\ref_app.exe
         working-directory: ./ref_app/
   msvc-msbuild-avr:
     runs-on: windows-latest
@@ -50,8 +50,8 @@ jobs:
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
-          move ../toolchains/ref_app/tools ./ref_app/tools
-          cd ./ref_app/tools/Util/MinGW/msys/1.0/local
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
@@ -61,7 +61,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir ./bin/ref_app.elf
+          dir .\bin\ref_app.elf
         working-directory: ./ref_app/
   msvc-msbuild-arm:
     runs-on: windows-latest
@@ -80,8 +80,8 @@ jobs:
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
-          move ../toolchains/ref_app/tools ./ref_app/tools
-          cd ./ref_app/tools/Util/MinGW/msys/1.0/local
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-9.3.1-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-9.3.1-arm-none-eabi-avr"
@@ -91,7 +91,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir ./bin/ref_app.elf
+          dir .\bin\ref_app.elf
         working-directory: ./ref_app/
   msvc-msbuild-xtensa:
     runs-on: windows-latest
@@ -110,8 +110,8 @@ jobs:
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
-          move ../toolchains/ref_app/tools ./ref_app/tools
-          cd ./ref_app/tools/Util/MinGW/msys/1.0/local
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
@@ -121,5 +121,5 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir ./bin/ref_app.elf
+          dir .\bin\ref_app.elf
         working-directory: ./ref_app/
