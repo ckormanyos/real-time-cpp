@@ -252,35 +252,50 @@ using GNUmake, CMake or MSBuild
 depending on the particular OS/build/target-configuration.
 
 ### Build Status
+
+The build status badge shows the state of the nightly CI builds and tests.
+
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 
 ## GNU GCC Compilers
 
-GNU GCC cross compilers for the microcontroller solutions are *not*
-available here.
+The reference application and the examples (also the code snippets)
+can be built with GNU GCC compilers and GNUmake on `*nix`.
+GNU GCC cross compilers and GNUmake on `*nix` are assumed to
+be available in the standard executable path,
+such as after standard get-install practices.
+
+Some ported GNU/GCC cross compilers for `Win*` are available in the
+[real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
+These can be used with the microcontroller solution configurations
+in the reference application when developing/building
+within Microsoft(R) VisualStudio(R). certain other GNU
+tools such as GNUmake, SED, etc. have been ported
+and can be found there. These are used in the Makefiles
+When building cross embedded projects such as `ref_app`
+on `Win*`.
+
+In the reference application on `Win*`, the makefiles use a
+self-defined, default location for the respective tools
+and GNU GCC toolchains.
+The [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
+has been defined by myself at the beginning of the project.
+Toolchains intended for the cross MSVC/GCC builds should be located there.
+Although these are not _yet_ part of this repository,
+instructions in the
+[real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains)
+are provided [here](https://github.com/ckormanyos/real-time-cpp-toolchains#using-gnugcc-toolchains-with-the-ref_app-vs-solution).
+These provide guidance on using these toolchains if the
+Microsoft(R) VisualStudio(R) project is selected
+to build the reference application.
 
 A GNU GCC port (or other compiler)
 with a high level of C++11 awareness and adherence
 such as GCC 5 through 11 (higher generally being more advantageous)
-or MSVC 14.2 or higher is required for building the reference application.
+or MSVC 14.2 or higher is required for building the reference application
+(and the examples and code snippets).
 
 Some of the code snippets demonstrate language elements not only from C++11,
 but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 6, 7, or 8)
 or even C++20 support (such as GCC 10 or 11, clang 12 or MSVC 14.2) can, therefore,
 be beneficial for success with *all* of the code snippets.
-
-In the reference application on `Win*`, the makefiles are aware of a default location
-for the respective GCC toolchains.
-This [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
-has been defined by myself at the beginning of the project.
-Toolchains intended for the cross MSVC/GCC builds should be located there
-(although these are not _yet_ part of this repository).
-
-Open issues such as [this issue](https://github.com/ckormanyos/real-time-cpp/issues/103)
-and/or [this issue](https://github.com/ckormanyos/real-time-cpp/issues/108)
-track the ongoing effort to make cross-compilers available
-in efficient forms in this repository.
-At the moment, however, when using the reference application
-or designing a custom build for msvc or similar,
-the root directory of the tool chain must be properly
-supplied to the makefiles.
