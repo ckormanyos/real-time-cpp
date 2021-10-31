@@ -301,10 +301,12 @@ jobs:
       - name: clone-real-time-cpp-toolchains-master
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          echo Moving GNU/GCC toolchain
           move ../toolchains/ref_app/tools ./ref_app/tools
           cd ./ref_app/tools/Util/MinGW/msys/1.0/local
           dir
-          ./gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -329,10 +331,12 @@ jobs:
       - name: clone-real-time-cpp-toolchains-master
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          echo Moving GNU/GCC toolchain
           move ../toolchains/ref_app/tools ./ref_app/tools
           cd ./ref_app/tools/Util/MinGW/msys/1.0/local
           dir
-          ./gcc-9.3.1-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-9.3.1-arm-none-eabi-avr"
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-9.3.1-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-9.3.1-arm-none-eabi-avr"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -357,10 +361,12 @@ jobs:
       - name: clone-real-time-cpp-toolchains-master
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          echo Moving GNU/GCC toolchain
           move ../toolchains/ref_app/tools ./ref_app/tools
           cd ./ref_app/tools/Util/MinGW/msys/1.0/local
           dir
-          ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
