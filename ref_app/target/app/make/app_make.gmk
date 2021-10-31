@@ -48,7 +48,6 @@ PATH_ERR             = $(PATH_TMP)/err
 # standard shell tools
 # ------------------------------------------------------------------------------
 
-CP                   = $(PATH_TOOLS_MINGW_BIN)\cp.exe
 ECHO                 = $(PATH_TOOLS_MINGW_BIN)\echo.exe
 MAKE                 = $(PATH_TOOLS_MINGW_BIN)\make.exe
 MKDIR                = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe

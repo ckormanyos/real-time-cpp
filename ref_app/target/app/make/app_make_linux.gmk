@@ -42,7 +42,6 @@ PATH_ERR             = $(PATH_TMP)/err
 # standard shell tools
 # ------------------------------------------------------------------------------
 
-CP        = cp
 ECHO      = echo
 MAKE      = make
 MKDIR     = mkdir
