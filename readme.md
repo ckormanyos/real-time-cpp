@@ -75,10 +75,11 @@ To get started with the reference application on `*nix`
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
   - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`.
 
-### Example build via Bash on `*nix` for `target avr`
+### Example build on `*nix` for `target avr`
 
-If you would like to build the reference application on `*nix`
-for `target avr`, which is essentially any ARDUINO(R)-compatible board.
+We will now exenplify how to build the reference application on a command shell
+in `*nix` for `target avr`, which is essentially any ARDUINO(R)-compatible board.
+This is the board compatibility actually used in the book.
 
 Install `gcc-avr` if needed.
 
@@ -94,10 +95,12 @@ cd ref_app
 ./target/build/build.sh avr rebuild
 ```
 
-### Example build via Bash on `*nix` for `target stm32f446`
+### Example build on `*nix` for `target stm32f446`
 
-If you would like to build the reference application on `*nix`
-for an ARM(R) target, let's say for example, for `target stm32f446`
+We will now exenplify how to build the reference application on a command shell
+in `*nix` for an ARM(R) target, let's say for example, for `target stm32f446`.
+The NUCLEO-F446RE board from STMicroelectronics(R) can conveniently
+be used for this.
 
 Install `gcc-arm-none-eabi` if needed.
 
@@ -116,31 +119,32 @@ cd ref_app
 ### Build with VisualStudio(R) Project and CMD Batch
 
 To get started with the reference application on `Win*`
-  - Start Visual Studio(R) 2019 (or later)
+  - Start Visual Studio(R) 2019 (or later, Community Edition is OK)
   - Open the solution [./ref_app/ref_app.sln](./ref_app/ref_app.sln).
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
-Note that the build in Microsoft(R) VisualStudio(R)
+Note that the `ref_app` build in Microsoft(R) VisualStudio(R)
 makes heavy use of cross development using a project
-workspace of type _external makefile_ in order
-to invoke GNUmake via batch file. The build process
-runs in combination with several makefiles.
+workspace of type _External_ _Makefile_.
+The build process invokes GNUmake via batch file
+which subsequently runs in combination with several makefiles.
 
 To build any target other than Debug or Release for Win32, a cross-compiler
 (GNU/GCC cross compiler) is required. See the text below for additional details.
 
 GNU/GCC cross compilers running on `Win*` intended
-for the reference application when on VisualStudio(R)
-can also be found in the
+for the reference application on VisualStudio(R)
+can be found in the
 [ckormanyos/real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
 This repository also contains detailed instructions on
 installing, moving and using these ported GNU/GCC compilers.
 
-Upon successful build, the build results, such as the HEX-files, map files, etc.,
-will be placed in the `bin` directory.
+Upon successful completion of the build, the build results,
+such as the HEX-files, map files, etc., are placed in the
+`bin` directory.
 
-There is also a workspace solution for ATMEL(R) Atmel Studio(R) 7.
+There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
 It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
 
 ### Build with Cross-Environment CMake
