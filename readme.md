@@ -20,27 +20,36 @@ The reference application boots via a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler that schedules the
 LED application, calls a cyclic a benchmark task, and services the watchdog.
-The LED application toggles a user-LED with a frequency of 1/2 Hz.
+
+The LED application toggles a user-LED with a frequency of 1/2 Hz
+The result is LED on for one second, LED off for one second --- cyclically and perpetually
+without break or pause.
 
 ## Supported Targets in the Reference Application
 
 The reference application supports the following targets:
-  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P
-  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560
-  * MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809
-  * BeagleBone with Texas Instruments(R) AM335x ARM(R) A8
-  * Espressif (XTENSA) NodeMCU ESP32
-  * NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0
-  * RaspberryPi(R) Zero with ARM1176-JZFS(TM)
-  * Renesas(R) RL78/G13
-  * Renesas(R) RX600
-  * ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3
-  * ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3
-  * ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3
-  * ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4
-  * ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4
-  * ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4
-  * VC, MinGW, or other `*nix`-like generic host
+
+| Target name (as used in build command) | Target Description |
+| -------------------------------------- | ------------------ |
+| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P          |
+| `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560          |
+| `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809         |
+| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8     |
+| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                          |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0        |
+| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                 |
+| `rl78`                                 | Renesas(R) RL78/G13                                       |
+| `rx63n`                                | Renesas(R) RX600                                          |
+| `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3      |
+| `stm32l100c`                           | ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3      |
+| `stm32l152`                            | ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3      |
+| `stm32f407`                            | ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4      |
+| `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4      |
+| `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4      |
+| `x86_64-w64-mingw32`                   | PC on `Win*`/`MinGW` via GNU/GCC x86_x64 compiler         |
+| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler Debug/Release          |
+| `host`                                 | PC/Workstation on `Win*`/`MinGW`/`*nix` via host compiler |
+
 
 ## Getting Started with the Reference Application
 
@@ -66,12 +75,42 @@ To get started with the reference application on `*nix`
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
   - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`.
 
-In summary, on `*nix` for `target avr`
+### Example build via Bash on `*nix` for `target avr`
+
+If you would like to build the reference application on `*nix`
+for `target avr`, which is essentially any ARDUINO(R)-compatible board.
+
+Install `gcc-avr` if needed.
+
+```sh
+sudo apt install gcc-avr avr-libc
+```
+
+then build with:
 
 ```sh
 cd real-time-cpp
 cd ref_app
 ./target/build/build.sh avr rebuild
+```
+
+### Example build via Bash on `*nix` for `target stm32f446`
+
+If you would like to build the reference application on `*nix`
+for an ARM(R) target, let's say for example, for `target stm32f446`
+
+Install `gcc-arm-none-eabi` if needed.
+
+```sh
+sudo apt install gcc-arm-none-eabi
+```
+
+then build with:
+
+```sh
+cd real-time-cpp
+cd ref_app
+./target/build/build.sh stm32f446 rebuild
 ```
 
 ### Build with VisualStudio(R) Project and CMD Batch
@@ -82,14 +121,20 @@ To get started with the reference application on `Win*`
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
-Note that the build in
-Visual Studio(R) makes heavy use of cross development using a project
+Note that the build in Microsoft(R) VisualStudio(R)
+makes heavy use of cross development using a project
 workspace of type _external makefile_ in order
 to invoke GNUmake via batch file. The build process
 runs in combination with several makefiles.
 
 To build any target other than Debug or Release for Win32, a cross-compiler
-(GNU GCC cross compiler) is required. See the text below for additional details.
+(GNU/GCC cross compiler) is required. See the text below for additional details.
+GNU/GCC cross compilers running on `Win*` intended to
+for the reference application when on VisualStudio(R)
+can also be found in the
+[ckormanyos/real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
+This repository also contains detailed instructions on
+their installing, moving and using these GNU/GCC comp�ilers.
 
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the `bin` directory.
@@ -257,11 +302,11 @@ The build status badge shows the state of the nightly CI builds and tests.
 
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 
-## GNU GCC Compilers
+## GNU/GCC Compilers
 
 The reference application and the examples (also the code snippets)
-can be built with GNU GCC compilers and GNUmake on `*nix`.
-GNU GCC cross compilers and GNUmake on `*nix` are assumed to
+can be built with GNU/GCC compilers and GNUmake on `*nix`.
+GNU/GCC cross compilers and GNUmake on `*nix` are assumed to
 be available in the standard executable path,
 such as after standard get-install practices.
 
@@ -277,7 +322,7 @@ on `Win*`.
 
 In the reference application on `Win*`, the makefiles use a
 self-defined, default location for the respective tools
-and GNU GCC toolchains.
+and GNU/GCC toolchains.
 The [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
 has been defined by myself at the beginning of the project.
 Toolchains intended for the cross MSVC/GCC builds should be located there.
@@ -289,7 +334,7 @@ These provide guidance on using these toolchains if the
 Microsoft(R) VisualStudio(R) project is selected
 to build the reference application.
 
-A GNU GCC port (or other compiler)
+A GNU/GCC port (or other compiler)
 with a high level of C++11 awareness and adherence
 such as GCC 5 through 11 (higher generally being more advantageous)
 or MSVC 14.2 or higher is required for building the reference application
