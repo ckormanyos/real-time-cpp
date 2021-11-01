@@ -129,12 +129,13 @@ runs in combination with several makefiles.
 
 To build any target other than Debug or Release for Win32, a cross-compiler
 (GNU/GCC cross compiler) is required. See the text below for additional details.
-GNU/GCC cross compilers running on `Win*` intended to
+
+GNU/GCC cross compilers running on `Win*` intended
 for the reference application when on VisualStudio(R)
 can also be found in the
 [ckormanyos/real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
 This repository also contains detailed instructions on
-their installing, moving and using these GNU/GCC comp�ilers.
+installing, moving and using these ported GNU/GCC compilers.
 
 Upon successful build, the build results, such as the HEX-files, map files, etc.,
 will be placed in the `bin` directory.
