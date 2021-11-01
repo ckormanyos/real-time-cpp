@@ -31,6 +31,17 @@ The LED application toggles a user-LED with a frequency of 1/2 Hz
 The result is LED on for one second, LED off for one second --- cyclically and perpetually
 without break or pause.
 
+## Portability
+
+The application software is implemented once and used uniformly
+on each supported target in the reference application.
+Differences among the individual targets arise only
+in the lower software layers pertaining
+to chip-specific and board-specific startup/MCAL details.
+
+In this way the application software exhibits a high level
+of portability.
+
 ## Supported Targets in the Reference Application
 
 The reference application supports the following targets:
