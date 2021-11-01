@@ -77,9 +77,10 @@ To get started with the reference application on `*nix`
 
 ### Example build on `*nix` for `target avr`
 
-We will now exenplify how to build the reference application on a command shell
-in `*nix` for `target avr`, which is essentially any ARDUINO(R)-compatible board.
-This is the board compatibility actually used in the book.
+We will now exemplify how to build the reference application on a command shell
+in `*nix` for `target avr`. This target system includes essentially
+_any_ ARDUINO(R)-compatible board. This is also the board compatibility
+actually used with the homemade boards in the book.
 
 Install `gcc-avr` if needed.
 
@@ -97,10 +98,10 @@ cd ref_app
 
 ### Example build on `*nix` for `target stm32f446`
 
-We will now exenplify how to build the reference application on a command shell
-in `*nix` for an ARM(R) target, let's say for example, for `target stm32f446`.
-The NUCLEO-F446RE board from STMicroelectronics(R) can conveniently
-be used for this.
+We will now exemplify how to build the reference application on a command shell
+in `*nix` for an ARM(R) target. Consider, for example, the build variant
+`target stm32f446`. The NUCLEO-F446RE board from STMicroelectronics(R)
+can conveniently be used for this.
 
 Install `gcc-arm-none-eabi` if needed.
 
@@ -192,7 +193,7 @@ a subset of the Espressif SDK to run the reference application
 with a single OS task exclusively on 1 of its cores.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
-called "target lpc1124" toggles the LED on `port0.8`.
+called "target lpc11c24" toggles the LED on `port0.8`.
 
 The ARM(R) Cortex(TM)-M3 configuration (called `target stm32f100`) runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
@@ -303,9 +304,11 @@ depending on the particular OS/build/target-configuration.
 
 ### Build Status
 
-The build status badge shows the state of the nightly CI builds and tests.
+Here is the build status badge.
 
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
+
+The build status badge represents the state of the nightly CI builds and tests.
 
 ## GNU/GCC Compilers
 
