@@ -14,6 +14,12 @@ This repository has three main parts.
   - [Examples](./examples) from the book
   - [Code Snippets](./code_snippets) from the book
 
+GNU/GCC cross compilers and various additional tools
+running on `Win*`, optionally needed for certain builds
+as described below, can be found in the related
+[ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
+repository.
+
 ## Details on the Reference Application
 
 The reference application boots via a small startup code and subsequently
@@ -59,10 +65,10 @@ The reference application can be found
 in the directory [./ref_app](./ref_app) and its
 subdirectories.
 
-The reference application uses cross-development based on `*nix`-like make
-tools in combination with either Bash Shell and GNU make,
-Microsoft(R) Visual Studio(R) via _External Makefile_ or CMake.
-Tool chains are not available in this repo (see below for further details).
+The reference application uses cross-development based on
+`*nix`-like make tools in combination with either
+Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_
+or platform-independent CMake.
 
 ### Build with Bash Shell Script and GNU make
 
@@ -137,7 +143,8 @@ To build any target other than Debug or Release for Win32, a cross-compiler
 GNU/GCC cross compilers running on `Win*` intended
 for the reference application on VisualStudio(R)
 can be found in the
-[ckormanyos/real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
+[ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
+repository.
 This repository also contains detailed instructions on
 installing, moving and using these ported GNU/GCC compilers.
 
@@ -319,7 +326,8 @@ be available in the standard executable path,
 such as after standard get-install practices.
 
 Some ported GNU/GCC cross compilers for `Win*` are available in the
-[real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains).
+[real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
+repository.
 These can be used with the microcontroller solution configurations
 in the reference application when developing/building
 within Microsoft(R) VisualStudio(R). certain other GNU
@@ -336,8 +344,9 @@ has been defined by myself at the beginning of the project.
 Toolchains intended for the cross MSVC/GCC builds should be located there.
 Although these are not _yet_ part of this repository,
 instructions in the
-[real-time-cpp-toolchains repository](https://github.com/ckormanyos/real-time-cpp-toolchains)
-are provided [here](https://github.com/ckormanyos/real-time-cpp-toolchains#using-gnugcc-toolchains-with-the-ref_app-vs-solution).
+[real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
+repository are provided
+[here](https://github.com/ckormanyos/real-time-cpp-toolchains#using-gnugcc-toolchains-with-the-ref_app-vs-solution).
 These provide guidance on using these toolchains if the
 Microsoft(R) VisualStudio(R) project is selected
 to build the reference application.
