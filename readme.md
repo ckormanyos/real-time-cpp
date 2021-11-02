@@ -81,12 +81,6 @@ The reference application uses cross-development based on
 Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_
 or platform-independent CMake.
 
-Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*` can be found
-in the [make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build).
-If desired, clone or get the code of this repo. Build `make-4.2.1`
-in its `x64` `Release` configuration with MSVC
-(i.e., VC 14.2 or later, Community Edition is OK).
-
 ### Build with Bash Shell Script and GNU make
 
 To get started with the reference application on `*nix`
@@ -169,8 +163,13 @@ Upon successful completion of the build, the build results,
 such as the HEX-files, map files, etc., are placed in the
 `bin` directory.
 
-There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
-It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
+Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*`
+can be found in the
+[make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build)
+repository.
+If desired, clone or get the code of this repository.
+Build `make-4.2.1` in its `x64` `Release` configuration
+with MSVC (i.e., VC 14.2 or later, Community Edition is OK).
 
 ### Build with Cross-Environment CMake
 
@@ -195,6 +194,11 @@ ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(TM)-M4.
 
 Following the standard `*nix` pattern to build with `x86_64-w64-mingw32`
 or `host` from the MSYS or Cygwin console should work too.
+
+### Build with ATMEL(R) AtmelStudio(R)
+
+There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
+It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
 
 ## Target Details
 
