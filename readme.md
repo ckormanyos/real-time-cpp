@@ -142,11 +142,11 @@ To get started with the reference application on `Win*`
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
-Note that the `ref_app` build in Microsoft(R) VisualStudio(R)
+The `ref_app` build in Microsoft(R) VisualStudio(R)
 makes heavy use of cross development using a project
 workspace of type _External_ _Makefile_.
-The build process invokes GNUmake via batch file
-which subsequently runs in combination with several makefiles.
+GNUmake is invoked via batch file in the build process.
+It subsequently runs in combination with several Makefiles.
 
 To build any `ref_app` target other than `Debug` or `Release` for Win32, a cross-compiler
 (GNU/GCC cross compiler) is required. See the text below for additional details.
