@@ -64,7 +64,7 @@ The reference application supports the following targets:
 | `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4      |
 | `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4      |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`MinGW` via GNU/GCC x86_x64 compiler         |
-| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler Debug/Release          |
+| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`      |
 | `host`                                 | PC/Workstation on `Win*`/`MinGW`/`*nix` via host compiler |
 
 
@@ -80,6 +80,12 @@ The reference application uses cross-development based on
 `*nix`-like make tools in combination with either
 Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_
 or platform-independent CMake.
+
+Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*` can be found
+in the [make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build).
+If desired, clone or get the code of this repo. Build `make-4.2.1`
+in its `x64` `Release` configuration with MSVC
+(i.e., VC 14.2 or later, Community Edition is OK).
 
 ### Build with Bash Shell Script and GNU make
 
@@ -148,7 +154,7 @@ workspace of type _External_ _Makefile_.
 The build process invokes GNUmake via batch file
 which subsequently runs in combination with several makefiles.
 
-To build any target other than Debug or Release for Win32, a cross-compiler
+To build any `ref_app` target other than `Debug` or `Release` for Win32, a cross-compiler
 (GNU/GCC cross compiler) is required. See the text below for additional details.
 
 GNU/GCC cross compilers running on `Win*` intended
