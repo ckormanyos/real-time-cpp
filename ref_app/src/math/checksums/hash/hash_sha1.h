@@ -109,7 +109,8 @@
                     the_last_message_block.rbegin() + 8U,
                     [&carry, &local_message_length_total](std::uint8_t& the_byte)
                     {
-                      const std::uint_least16_t the_word = static_cast<std::uint_least16_t>(local_message_length_total) << 3;
+                      const std::uint_least16_t the_word =
+                        static_cast<std::uint_least16_t>(local_message_length_total << 3U);
 
                       the_byte = static_cast<std::uint8_t>(the_word | carry);
 

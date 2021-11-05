@@ -3592,8 +3592,8 @@
   using uint8192_t  = uintwide_t< 8192U, std::uint32_t>;
   using uint16384_t = uintwide_t<16384U, std::uint32_t>;
 
-  #if defined(__GNUC__) && (defined(__AVR__) || defined(__XTENSA__))
-  #else
+
+  #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<uint64_t   >::value && std::is_standard_layout<uint64_t   >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<uint128_t  >::value && std::is_standard_layout<uint128_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<uint256_t  >::value && std::is_standard_layout<uint256_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
@@ -3615,8 +3615,7 @@
   using  int8192_t  = uintwide_t< 8192U, std::uint32_t, void, true>;
   using  int16384_t = uintwide_t<16384U, std::uint32_t, void, true>;
 
-  #if defined(__GNUC__) && (defined(__AVR__) || defined(__XTENSA__))
-  #else
+  #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
   static_assert(std::is_trivially_copyable<int64_t   >::value && std::is_standard_layout<int64_t   >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<int128_t  >::value && std::is_standard_layout<int128_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
   static_assert(std::is_trivially_copyable<int256_t  >::value && std::is_standard_layout<int256_t  >::value, "uintwide_t must be trivially copyable with standard layout.");
@@ -4748,10 +4747,10 @@
     struct param_type
     {
     public:
-      param_type(const result_type& a = (std::numeric_limits<result_type>::min)(),
-                 const result_type& b = (std::numeric_limits<result_type>::max)())
-        : param_a(a),
-          param_b(b) { }
+      param_type(const result_type& p_a = (std::numeric_limits<result_type>::min)(),
+                 const result_type& p_b = (std::numeric_limits<result_type>::max)())
+        : param_a(p_a),
+          param_b(p_b) { }
 
       ~param_type() = default;
 
@@ -4772,8 +4771,8 @@
       constexpr result_type get_a() const { return param_a; }
       constexpr result_type get_b() const { return param_b; }
 
-      void set_a(const result_type& a) { param_a = a; }
-      void set_b(const result_type& b) { param_b = b; }
+      void set_a(const result_type& p_a) { param_a = p_a; }
+      void set_b(const result_type& p_b) { param_b = p_b; }
 
     private:
       result_type param_a;
@@ -4796,9 +4795,9 @@
 
     uniform_int_distribution() : my_params() { }
 
-    explicit uniform_int_distribution(const result_type& a,
-                                      const result_type& b = (std::numeric_limits<result_type>::max)())
-        : my_params(param_type(a, b)) { }
+    explicit uniform_int_distribution(const result_type& p_a,
+                                      const result_type& p_b = (std::numeric_limits<result_type>::max)())
+        : my_params(param_type(p_a, p_b)) { }
 
     explicit uniform_int_distribution(const param_type& other_params)
       : my_params(other_params) { }
