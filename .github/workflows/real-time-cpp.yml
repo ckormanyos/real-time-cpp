@@ -405,6 +405,36 @@ jobs:
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf
         working-directory: ./ref_app/
+  msvc-msbuild-rx63n:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ rx63n ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: clone-real-time-cpp-toolchains-master
+        run: |
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-8.5.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-8.5.0-rx-elf"
+        working-directory: ./
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf
+        working-directory: ./ref_app/
   benchmark_gcc-clang:
     runs-on: ubuntu-20.04
     defaults:
