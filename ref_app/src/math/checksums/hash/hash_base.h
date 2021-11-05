@@ -45,9 +45,9 @@
 
       while(process_index < count)
       {
-        message_index        += std::uint_least16_t(process_chunk_size);
-        message_length_total += process_chunk_size;
-        process_index        += process_chunk_size;
+        message_index        = std::uint_least16_t(message_index        + process_chunk_size);
+        message_length_total = count_type         (message_length_total + process_chunk_size);
+        process_index        = count_type         (process_index        + process_chunk_size);
 
         if(message_index == message_buffer_static_size)
         {
