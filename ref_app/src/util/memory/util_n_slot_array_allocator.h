@@ -40,7 +40,7 @@
     static constexpr std::uint_fast32_t slot_width = SlotWidth;
     static constexpr std::size_t        slot_count = SlotCount;
 
-    using slot_array_type = std::array<T, slot_width>;
+    using slot_array_type = std::array<T, std::size_t(slot_width)>;
 
   public:
     using size_type       = std::size_t;

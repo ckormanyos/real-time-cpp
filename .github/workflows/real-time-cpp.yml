@@ -396,7 +396,7 @@ jobs:
           cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-4.9.4-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-4.9.4-rl78-unknown-elf"
+          start /b /wait ./gcc-8.5.0-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-8.5.0-rl78-unknown-elf"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
