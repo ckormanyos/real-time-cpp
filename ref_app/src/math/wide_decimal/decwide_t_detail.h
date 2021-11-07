@@ -273,10 +273,10 @@
 
   template<typename MyType,
            const std::uint_fast32_t MySize>
-  class fixed_static_array final : public std::array<MyType, MySize>
+  class fixed_static_array final : public std::array<MyType, std::size_t(MySize)>
   {
   private:
-    using base_class_type = std::array<MyType, MySize>;
+    using base_class_type = std::array<MyType, std::size_t(MySize)>;
 
   public:
     fixed_static_array() { }
