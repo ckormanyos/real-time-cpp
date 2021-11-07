@@ -56,7 +56,7 @@ The reference application supports the following targets:
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0        |
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                 |
 | `rl78`                                 | Renesas(R) RL78/G13                                       |
-| `rx63n`                                | Renesas(R) RX600                                          |
+| `rx63n`                                | Renesas(R) RX630/RX631                                    |
 | `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3      |
 | `stm32l100c`                           | ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3      |
 | `stm32l152`                            | ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3      |
@@ -360,22 +360,27 @@ on `Win*`.
 In the reference application on `Win*`, the makefiles use a
 self-defined, default location for the respective tools
 and GNU/GCC toolchains.
-The [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local)
-has been defined by myself at the beginning of the project.
-Toolchains intended for the cross MSVC/GCC builds should be located there.
-Although these are not _yet_ part of this repository,
+The [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local) on `Win*`
+has been defined by myself at the time epoch near the beginning of the project.
+This location is inspired by the `MinGW` system.
+
+Toolchains intended for the cross MSVC/GCC builds on `Win*`
+should be located there.
+These toolchains are not _yet_ part of this repository,
 instructions in the
 [real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
-repository are provided
+repository are available
 [here](https://github.com/ckormanyos/real-time-cpp-toolchains#using-gnugcc-toolchains-with-the-ref_app-vs-solution).
-These provide guidance on using these toolchains if the
+These instructions provide guidance on using these toolchains if the
 Microsoft(R) VisualStudio(R) project is selected
 to build the reference application.
+
+## C++ Language Adherence
 
 A GNU/GCC port (or other compiler)
 with a high level of C++11 awareness and adherence
 such as GCC 5 through 11 (higher generally being more advantageous)
-or MSVC 14.2 or higher is required for building the reference application
+or MSVC 14 or higher is required for building the reference application
 (and the examples and code snippets).
 
 Some of the code snippets demonstrate language elements not only from C++11,
