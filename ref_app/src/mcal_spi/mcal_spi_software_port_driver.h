@@ -77,7 +77,8 @@
 
         if(port_pin_miso_type::read_input_value())
         {
-          base_class_type::recv_buffer |= bit_mask;
+          base_class_type::recv_buffer =
+            base_class_type::buffer_type(base_class_type::recv_buffer | bit_mask);
         }
 
         mcal::helper::enable_all_interrupts<has_disable_enable_interrupts>();
