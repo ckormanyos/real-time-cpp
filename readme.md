@@ -78,8 +78,13 @@ subdirectories.
 
 The reference application uses cross-development based on
 `*nix`-like make tools in combination with either
-Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_
+Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_,
 or platform-independent CMake.
+
+Upon successful completion of the build,
+the resulting build artifacts, including HEX-files
+(such as `ref_app.hex`), map files, size reports, etc.,
+are available in the `bin` directory.
 
 ### Build with Bash Shell Script and GNU make
 
@@ -105,7 +110,8 @@ Install `gcc-avr` if needed.
 sudo apt install gcc-avr avr-libc
 ```
 
-then build with:
+Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
+repository. Then build with:
 
 ```sh
 cd real-time-cpp
@@ -126,7 +132,8 @@ Install `gcc-arm-none-eabi` if needed.
 sudo apt install gcc-arm-none-eabi
 ```
 
-then build with:
+Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
+repository. Then build with:
 
 ```sh
 cd real-time-cpp
@@ -137,8 +144,10 @@ cd ref_app
 ### Build with VisualStudio(R) Project and CMD Batch
 
 To get started with the reference application on `Win*`
+  - Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp) repository.
+  - Get and setup (from the [ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains) repository) any needed GNU/GCC cross compilers running on `Win*`, as described in detail a few paragraphs below.
   - Start Visual Studio(R) 2019 (or later, Community Edition is OK)
-  - Open the solution [./ref_app/ref_app.sln](./ref_app/ref_app.sln).
+  - Open the solution `ref_app.sln` in the [./ref_app](./ref_app) directory.
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
@@ -158,10 +167,6 @@ can be found in the
 repository.
 This repository also contains detailed instructions on
 installing, moving and using these ported GNU/GCC compilers.
-
-Upon successful completion of the build, the build results,
-such as the HEX-files, map files, etc., are placed in the
-`bin` directory.
 
 Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*`
 can be found in the
@@ -198,12 +203,15 @@ or `host` from the MSYS or Cygwin console should work too.
 ### Build with ATMEL(R) AtmelStudio(R)
 
 There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
-It is called [./ref_app/ref_app.atsln](./ref_app/ref_app.atsln).
+It is called `ref_app.atsln` and is also located
+in the [./ref_app](./ref_app) directory.
 
 ## Target Details
 
 Target details including startup code and linker definition files can
-be found in the target-directory and its subdirectories.
+be found in the [./ref_app/target](./ref_app/target) directory
+and its subdirectories. There are individual subdirectories for
+each supported target microcontroller system.
 
 The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target avr` runs
@@ -366,14 +374,12 @@ This location is inspired by the `MinGW` system.
 
 Toolchains intended for the cross MSVC/GCC builds on `Win*`
 should be located there.
-These toolchains are not _yet_ part of this repository,
-instructions in the
+These toolchains are not part of this repository.
+Detailed instructions are available in the
 [real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
-repository are available
-[here](https://github.com/ckormanyos/real-time-cpp-toolchains#using-gnugcc-toolchains-with-the-ref_app-vs-solution).
-These instructions provide guidance on using these toolchains if the
-Microsoft(R) VisualStudio(R) project is selected
-to build the reference application.
+repository. These instructions provide guidance on using these toolchains
+when selecting the Microsoft(R) VisualStudio(R) project
+(via the usual, above-described MSVC/`Win*`-way) to build the reference application.
 
 ## C++ Language Adherence
 
