@@ -68,7 +68,7 @@
         #define WIDE_INTEGER_CONSTEXPR constexpr
         #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
         #endif
-      #elif (defined(__clang__) && (__clang_major__ > 10)) && (defined(__cplusplus) && (__cplusplus > 201703L))
+      #elif (defined(__clang__) && (__clang_major__ >= 10)) && (defined(__cplusplus) && (__cplusplus > 201703L))
         #if defined(__x86_64__)
         #define WIDE_INTEGER_CONSTEXPR constexpr
         #define WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST 1
@@ -1398,16 +1398,10 @@
     explicit constexpr operator float             () const { return extract_builtin_floating_point_type<float>      (); }
     #endif
 
-    explicit constexpr operator signed char       () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed char>       () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed char>       ())); }
-    explicit constexpr operator unsigned char     () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned char>     () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned char>     ())); }
-    explicit constexpr operator signed short      () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed short>      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed short>      ())); }
-    explicit constexpr operator unsigned short    () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned short>    () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned short>    ())); }
-    explicit constexpr operator signed int        () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed int>        () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed int>        ())); }
-    explicit constexpr operator unsigned int      () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned int>      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned int>      ())); }
-    explicit constexpr operator signed long       () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed long >      () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed long >      ())); }
-    explicit constexpr operator unsigned long     () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned long>     () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned long>     ())); }
-    explicit constexpr operator signed long long  () const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<signed long long>  () : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<signed long long>  ())); }
-    explicit constexpr operator unsigned long long() const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<unsigned long long>() : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<unsigned long long>())); }
+    template<typename Integer, typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    explicit constexpr operator Integer() const { return ((is_neg(*this) == false) ? extract_builtin_integral_type<Integer>() : detail::negate(uintwide_t(-*this).extract_builtin_integral_type<Integer>())); }
+
+    explicit constexpr operator bool() const { return !is_zero(); }
 
     // Implement the cast operator that casts to the double-width type.
     template<typename UnknownUnsignedWideIntegralType,
