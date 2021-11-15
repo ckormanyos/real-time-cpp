@@ -31,7 +31,7 @@ jobs:
       - name: target-avr-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
-          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-cmake:
     runs-on: ubuntu-20.04
@@ -54,7 +54,7 @@ jobs:
           cd build
           cmake ../ref_app -DTRIPLE=avr -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
-          ls -la ref_app.hex ref_app.map
+          ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
   target-avr-example_led:
     runs-on: ubuntu-20.04
@@ -213,7 +213,7 @@ jobs:
       - name: target-arm-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
-          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-arm-cmake:
     runs-on: ubuntu-20.04
@@ -236,7 +236,7 @@ jobs:
           cd build
           cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
-          ls -la ref_app.hex ref_app.map
+          ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
   target-x86_64:
     runs-on: ubuntu-20.04
@@ -313,7 +313,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-arm:
     runs-on: windows-latest
@@ -343,7 +343,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-xtensa:
     runs-on: windows-latest
@@ -373,7 +373,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rl78:
     runs-on: windows-latest
@@ -403,7 +403,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rx63n:
     runs-on: windows-latest
@@ -433,7 +433,7 @@ jobs:
           PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   benchmark_gcc-clang:
     runs-on: ubuntu-20.04
