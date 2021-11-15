@@ -211,6 +211,9 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
         # creating hex module: ${APP}.hex
         COMMAND ${POSTBUILD_GEN_HEX}
 
+        # creating srec module: ${APP}.s19
+        COMMAND ${POSTBUILD_GEN_S19}
+
         # creating hex module: ${APP}.bin
         COMMAND ${POSTBUILD_GEN_BIN}
     )
