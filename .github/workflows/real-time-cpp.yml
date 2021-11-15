@@ -31,7 +31,7 @@ jobs:
       - name: target-avr-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
-          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-cmake:
     runs-on: ubuntu-20.04
@@ -213,7 +213,7 @@ jobs:
       - name: target-arm-${{ matrix.suite }}
         run: |
           ./target/build/build.sh ${{ matrix.suite }} rebuild
-          ls -la ./bin/ref_app.hex ./bin/ref_app.map
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-arm-cmake:
     runs-on: ubuntu-20.04
