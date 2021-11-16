@@ -494,6 +494,9 @@
 
     operator double() const noexcept
     {
+      static_assert(sizeof(double) == 8U,
+                    "Error: This cast requires 8 byte built-in double");
+
       return (double) (*(volatile double*) (this));
     }
 
