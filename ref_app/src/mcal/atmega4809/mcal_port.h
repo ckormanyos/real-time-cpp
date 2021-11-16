@@ -69,13 +69,15 @@
         static void set_pin_high() noexcept
         {
           // Set the port output value to high.
-          *(std::uint8_t*) pout_set__address |= (std::uint8_t) (1U << bpos_value);
+          *(volatile std::uint8_t*) pout_set__address =
+            (std::uint8_t) ((std::uint8_t) (*(volatile std::uint8_t*) pout_set__address) | (std::uint8_t) (1U << bpos_value));
         }
 
         static void set_pin_low() noexcept
         {
           // Set the port output value to low.
-          *(std::uint8_t*) pout_clr__address |= (std::uint8_t) (1U << bpos_value);
+          *(volatile std::uint8_t*) pout_clr__address =
+            (std::uint8_t) ((std::uint8_t) (*(volatile std::uint8_t*) pout_clr__address) | (std::uint8_t) (1U << bpos_value));
         }
 
         static bool read_input_value() noexcept
@@ -90,7 +92,8 @@
         static void toggle_pin() noexcept
         {
           // Toggle the port output value.
-          *(std::uint8_t*) pout_tgl__address |= (std::uint8_t) (1U << bpos_value);
+          *(volatile std::uint8_t*) pout_tgl__address =
+            (std::uint8_t) ((std::uint8_t) (*(volatile std::uint8_t*) pout_tgl__address) | (std::uint8_t) (1U << bpos_value));
         }
       };
 

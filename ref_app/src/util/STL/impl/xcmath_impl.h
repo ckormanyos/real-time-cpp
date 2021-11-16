@@ -27,22 +27,23 @@
   }
 
   template<typename float_type>
-  const float_type pi()
+  constexpr float_type pi()
   {
     return static_cast<float_type>(3.1415926535897932384626433832795028841972L);
   }
 
   template<typename float_type>
-  const float_type ln_two()
+  constexpr float_type ln_two()
   {
     return static_cast<float_type>(0.6931471805599453094172321214581765680755L);
   }
 
-    template<typename float_type>
-    const float_type euler()
-    {
-      return static_cast<float_type>(0.5772156649015328606065120900824024310422L);
-    }
+  template<typename float_type>
+  constexpr float_type euler()
+  {
+    return static_cast<float_type>(0.5772156649015328606065120900824024310422L);
+  }
+
   } // namespace xcmath_impl
 
 #endif // XCMATH_IMPL_2014_01_11_H_
