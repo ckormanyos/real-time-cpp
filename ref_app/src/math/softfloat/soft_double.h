@@ -486,18 +486,12 @@
 
     operator float() const noexcept
     {
-      static_assert(sizeof(float) == 4U,
-                    "Error: This cast requires 4 byte built-in float");
-
-      return f64_to_f32(my_value);
+      return to_float<float>();
     }
 
     operator double() const noexcept
     {
-      static_assert(sizeof(double) == 8U,
-                    "Error: This cast requires 8 byte built-in double");
-
-      return (double) (*(volatile double*) (this));
+      return to_float<double>();
     }
 
     operator long double() const noexcept
@@ -542,6 +536,20 @@
 
   private:
     representation_type my_value;
+
+    template<typename FloatingPointType>
+    typename std::enable_if<(   (sizeof(FloatingPointType) == 4)
+                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    {
+      return f64_to_f32(my_value);
+    }
+
+    template<typename FloatingPointType>
+    typename std::enable_if<(   (sizeof(FloatingPointType) == 8)
+                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    {
+      return (FloatingPointType) (*(volatile FloatingPointType*) (this));
+    }
 
     static constexpr bool my_le(const soft_double& a, const soft_double& b)
     {
