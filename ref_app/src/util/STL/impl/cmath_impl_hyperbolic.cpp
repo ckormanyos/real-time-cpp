@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <math.h>
+#include <cmath>
 #include <cstdint>
 #include "xcmath_impl.h"
 
@@ -28,7 +28,7 @@ extern "C"
 float asinhf(float x)
 {
   // Implement a naive hyperbolic arc-sine function.
-  return ::logf(x + ::sqrtf((x * x) + 1.0F));
+  return std::log(x + ::sqrtf((x * x) + 1.0F));
 }
 
 extern "C"
@@ -50,7 +50,7 @@ float acoshf(float x)
     const float xp = (x + 1.0F);
     const float xm = (x - 1.0F);
 
-    return ::logf(x + ::sqrtf(xm * xp));
+    return std::log(x + ::sqrtf(xm * xp));
   }
 }
 

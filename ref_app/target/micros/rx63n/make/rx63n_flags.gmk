@@ -21,6 +21,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mcpu=RX610                                    \
                 -mlittle-endian-data                           \
                 -fpu                                           \
+                -m64bit-doubles                                \
                 -mno-pid                                       \
                 -msave-acc-in-interrupts                       \
                 -funsafe-math-optimizations

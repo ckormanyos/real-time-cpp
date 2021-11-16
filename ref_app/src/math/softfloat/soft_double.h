@@ -133,21 +133,21 @@
 
   constexpr uint_fast8_t softfloat_countLeadingZeros8(const uint_fast8_t index)
   {
-    return (index < 0x10U) ? 4U + softfloat_countLeadingZeros8_z_table(index &  0xFU)
-                           :      softfloat_countLeadingZeros8_z_table(index >>   4U);
+    return (index < 0x10U) ? (uint_fast8_t) (4U + softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index &  0xFU)))
+                           :                      softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index >>   4U));
   }
 
   constexpr uint_fast8_t softfloat_countLeadingZeros16(std::uint16_t a)
   {
-    return (a < UINT16_C(0x100)) ? 8U + softfloat_countLeadingZeros8((uint_fast8_t) a)
-                                 :      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
+    return (a < UINT16_C(0x100)) ? (uint_fast8_t) (8U + softfloat_countLeadingZeros8((uint_fast8_t) a))
+                                 :                      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
   }
 
   constexpr uint_fast8_t softfloat_countLeadingZeros32(std::uint32_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT32_C(0x10000)) ? 16U + softfloat_countLeadingZeros16((std::uint16_t) a)
-                                   :       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
+    return (a < UINT32_C(0x10000)) ? (uint_fast8_t) (16U + softfloat_countLeadingZeros16((std::uint16_t) a))
+                                   :                       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
   }
 
   /*----------------------------------------------------------------------------
@@ -157,8 +157,8 @@
   constexpr uint_fast8_t softfloat_countLeadingZeros64(std::uint64_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT64_C(0x100000000)) ? 32U + softfloat_countLeadingZeros32((std::uint32_t) a)
-                                       :       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
+    return (a < UINT64_C(0x100000000)) ? (uint_fast8_t) (32U + softfloat_countLeadingZeros32((std::uint32_t) a))
+                                       :                       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
   }
 
   /*----------------------------------------------------------------------------
@@ -484,25 +484,17 @@
     operator unsigned long     () const { return (unsigned long)      f64_to_ui64(my_value); }
     operator unsigned long long() const { return (unsigned long long) f64_to_ui64(my_value); }
 
-    operator float() const
+    operator float() const noexcept
     {
-      static_assert(sizeof(float) == 4U,
-                    "Error: This cast requires 4 byte built-in float");
-
-      return f64_to_f32(my_value);
+      return to_float<float>();
     }
 
-    operator double() const
+    operator double() const noexcept
     {
-      #if defined(__AVR__)
-      // TBD: Is this the best way to deal with double/float ambiguity for GCC-ARV?
-      return (double) ((float) *this);
-      #else
-      return detail::uz_type<double>(my_value).my_f;
-      #endif
+      return to_float<double>();
     }
 
-    operator long double() const
+    operator long double() const noexcept
     {
       return (long double) ((double) *this);
     }
@@ -544,6 +536,20 @@
 
   private:
     representation_type my_value;
+
+    template<typename FloatingPointType>
+    typename std::enable_if<(   (sizeof(FloatingPointType) == 4)
+                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    {
+      return f64_to_f32(my_value);
+    }
+
+    template<typename FloatingPointType>
+    typename std::enable_if<(   (sizeof(FloatingPointType) == 8)
+                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    {
+      return (FloatingPointType) (*(volatile FloatingPointType*) (this));
+    }
 
     static constexpr bool my_le(const soft_double& a, const soft_double& b)
     {
@@ -607,7 +613,7 @@
       }
       else
       {
-        std::int16_t expZ = (std::int16_t) (expA + expB) - 0x3FF;
+        std::int16_t expZ =  (std::int16_t) ((std::int16_t) (expA + expB) -  (std::int16_t) 0x3FF);
 
         sigA = (sigA | UINT64_C(0x0010000000000000)) << 10U;
         sigB = (sigB | UINT64_C(0x0010000000000000)) << 11U;
@@ -669,7 +675,7 @@
       }
       else
       {
-        std::int16_t expZ = (expA - expB) + 0x3FE;
+        std::int16_t expZ =   (std::int16_t) ((std::int16_t) (expA - expB) +  (std::int16_t) 0x3FE);
 
         sigA |= UINT64_C(0x0010000000000000);
         sigB |= UINT64_C(0x0010000000000000);
@@ -687,15 +693,15 @@
 
         sigB <<= 11U;
 
-        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1(sigB >> 32U) - 2U;
-        const std::uint32_t sig32Z  = ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U;
+        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1((uint32_t) (sigB >> 32U)) - 2U;
+        const std::uint32_t sig32Z  = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U);
 
         std::uint32_t doubleTerm = sig32Z << 1U;
 
         std::uint64_t rem =   ((sigA - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
                                 - (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
 
-        std::uint32_t q = (((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U;
+        std::uint32_t q = (std::uint32_t) ((std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U);
 
         std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U) + ((std::uint64_t) q << 4U);
 
@@ -743,16 +749,16 @@
         | `sig32A', which makes `sig32Z' also a lower bound on the square root of
         | `sigA'.)
         *------------------------------------------------------------------------*/
-        std::int16_t expZ = ((expA - 0x3FF) >> 1) + 0x3FE;
+        const std::int16_t expZ = (std::int16_t) ((std::int16_t) ((std::int16_t) (expA - 0x3FF) >> 1) + (std::int16_t) 0x3FE);
 
         expA &= 1;
         sigA |= UINT64_C(0x0010000000000000);
 
         std::uint32_t sig32A      = (std::uint32_t) (sigA >> 21U);
         std::uint32_t recipSqrt32 = softfloat_approxRecipSqrt32_1((std::uint32_t) expA, sig32A);
-        std::uint32_t sig32Z      = ((std::uint64_t) sig32A * recipSqrt32) >> 32U;
+        std::uint32_t sig32Z      = (std::uint32_t) ((std::uint64_t) ((std::uint64_t) sig32A * recipSqrt32) >> 32U);
 
-        if(expA)
+        if(expA != 0)
         {
           sigA   <<= 8U;
           sig32Z >>= 1U;
@@ -763,9 +769,9 @@
         }
 
               std::uint64_t rem = sigA - (std::uint64_t) sig32Z * sig32Z;
-        const std::uint32_t q   = ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U;
+        const std::uint32_t q   = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U);
 
-        std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U);
+        std::uint64_t sigZ = (std::uint64_t) (((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U));
 
         if((sigZ & 0x1FFU) < 0x22U)
         {
@@ -775,13 +781,13 @@
 
           rem = (sigA << 52U) - shiftedSigZ * shiftedSigZ;
 
-          if(rem & UINT64_C(0x8000000000000000))
+          if((std::uint64_t) (rem & UINT64_C(0x8000000000000000)) != 0U)
           {
             --sigZ;
           }
           else
           {
-            if(rem)
+            if(rem != 0U)
             {
               sigZ |= 1U;
             }
@@ -803,7 +809,7 @@
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      const std::int16_t shiftDist = 0x427 - expA;
+      const std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x427 - expA);
 
       if(0 < shiftDist)
       {
@@ -824,7 +830,7 @@
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      std::int16_t shiftDist = 0x427 - expA;
+      std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x427 - expA);
 
       if(0 < shiftDist)
       {
@@ -845,7 +851,7 @@
         sig |= UINT64_C(0x0010000000000000);
       }
 
-      std::int16_t shiftDist = 0x433 - expA;
+      std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x433 - expA);
 
       struct detail::uint64_extra sigExtra;
 
@@ -988,7 +994,7 @@
       const std::int16_t  expB = detail::expF64UI (uiB);
             std::uint64_t sigB = detail::fracF64UI(uiB);
 
-      const std::int16_t expDiff = expA - expB;
+      const std::int16_t expDiff = (std::int16_t) (expA - expB);
 
       std::int16_t  expZ;
       std::uint64_t sigZ;
@@ -1074,8 +1080,11 @@
 
       std::int16_t index       = (std::int16_t) (((std::uint32_t) (a >> 27U) & 0xEU) + oddExpA);
       std::uint16_t     eps    = (std::uint16_t) (a >> 12);
-      std::uint16_t     r0     =                           softfloat_approxRecipSqrt_1k0s[(unsigned) index]
-                            - (std::uint16_t) ((std::uint32_t) (softfloat_approxRecipSqrt_1k1s[(unsigned) index] * (std::uint32_t) eps) >> 20U);
+      std::uint16_t     r0     = (std::uint16_t)
+                                 (
+                                                                       softfloat_approxRecipSqrt_1k0s[(std::size_t) index]
+                                   - (std::uint16_t) ((std::uint32_t) (softfloat_approxRecipSqrt_1k1s[(std::size_t) index] * (std::uint32_t) eps) >> 20U)
+                                 );
       std::uint32_t     ESqrR0 = (std::uint32_t) r0 * r0;
 
       if(!oddExpA)
@@ -1103,7 +1112,7 @@
     {
       const int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64(sig) - 1U);
 
-      expA -= shiftDist;
+      expA = (std::int16_t) (expA - (std::int16_t) shiftDist);
 
       if((10 <= shiftDist) && ((std::uint32_t) expA < 0x7FDU))
       {
@@ -1154,7 +1163,7 @@
       std::int16_t  expB = detail::expF64UI(uiB);
       std::uint64_t sigB = detail::fracF64UI(uiB);
 
-      const std::int16_t expDiff = expA - expB;
+      const std::int16_t expDiff = (std::int16_t) (expA - expB);
 
       if(!expDiff)
       {
@@ -1179,7 +1188,7 @@
 
           int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64((std::uint64_t) sigDiff) - 11U);
 
-          expZ = expA - shiftDist;
+          expZ = (std::int16_t) (expA - shiftDist);
 
           if(expZ < 0)
           {
@@ -1267,9 +1276,9 @@
 
     friend inline soft_double frexp(const soft_double x, int* expptr)
     {
-      const bool     sign = detail::signF64UI(x.my_value);
-      const std::int16_t  expA = detail::expF64UI (x.my_value) - INT16_C(0x3FE);
-      const std::uint64_t frac = detail::fracF64UI(x.my_value);
+      const bool          sign =                 detail::signF64UI(x.my_value);
+      const std::int16_t  expA = (std::int16_t) (detail::expF64UI (x.my_value) - INT16_C(0x3FE));
+      const std::uint64_t frac =                 detail::fracF64UI(x.my_value);
 
       if(expptr != nullptr)
       {
@@ -1389,7 +1398,7 @@
         // Q05 = +0.1E1;
 
         // Scale the argument such that 1 <= a < 2.
-        const std::int16_t n = detail::expF64UI(x.my_value) - INT16_C(0x3FF);
+        const std::int16_t n = (std::int16_t) (detail::expF64UI(x.my_value) - INT16_C(0x3FF));
 
         const soft_double a((std::uint64_t) ((std::uint64_t) (x.my_value & (std::uint64_t) ~(UINT64_C(0x7FF) << 52U)) | UINT64_C(0x3FF) << 52U), detail::nothing());
 
