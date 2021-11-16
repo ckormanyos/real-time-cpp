@@ -30,6 +30,14 @@
 
 namespace local
 {
+  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+  using float64_t = double;
+  #else
+  using float64_t = math::softfloat::float64_t;
+  #endif
+
+  const float64_t tolerance = std::numeric_limits<float64_t>::epsilon() * 10;
+
   template<typename T>
   T hypergeometric_2f1(const T& AP, const T& BP, const T& CP, const T& ZM)
   {
@@ -172,11 +180,7 @@ namespace local
 
 bool app::benchmark::run_soft_double_h2f1()
 {
-  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
-  using float64_t = double;
-  #else
-  using float64_t = math::softfloat::float64_t;
-  #endif
+  using local::float64_t;
 
   static_assert(std::numeric_limits<float64_t>::digits >= 53, "Error: incorrect float64_t type definition");
 
@@ -198,7 +202,7 @@ bool app::benchmark::run_soft_double_h2f1()
 
   const float64_t closeness = fabs(1 - fabs(h2f1 / control));
 
-  const bool result_is_ok = closeness < (std::numeric_limits<float64_t>::epsilon() * 10);
+  const bool result_is_ok = (closeness < local::tolerance);
 
   return result_is_ok;
 }
