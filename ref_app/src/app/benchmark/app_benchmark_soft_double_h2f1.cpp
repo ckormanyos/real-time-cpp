@@ -13,10 +13,6 @@
 
 //#define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE
 
-#if !defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
-#define SOFT_DOUBLE_DISABLE_IOSTREAM
-#endif
-
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -25,19 +21,13 @@
 #include <numeric>
 
 #if !defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+#define SOFT_DOUBLE_DISABLE_IOSTREAM
+
 #include <math/softfloat/soft_double.h>
 #endif
 
 namespace local
 {
-  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
-  using float64_t = double;
-  #else
-  using float64_t = math::softfloat::float64_t;
-  #endif
-
-  const float64_t tolerance = std::numeric_limits<float64_t>::epsilon() * 10;
-
   template<typename T>
   T hypergeometric_2f1(const T& AP, const T& BP, const T& CP, const T& ZM)
   {
@@ -180,9 +170,17 @@ namespace local
 
 bool app::benchmark::run_soft_double_h2f1()
 {
-  using local::float64_t;
+  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+  using float64_t = std::conditional<std::numeric_limits<double>::digits < 53, long double, double>::type;
 
-  static_assert(std::numeric_limits<float64_t>::digits >= 53, "Error: incorrect float64_t type definition");
+  static_assert((   (std::numeric_limits<     double>::digits == 53)
+                 || (std::numeric_limits<long double>::digits == 53)),
+                 "Error: Either double or long double must be equivalent to float64_t for this benchmark configuration.");
+  #else
+  using float64_t = math::softfloat::float64_t;
+  #endif
+
+  static_assert(std::numeric_limits<float64_t>::digits == 53, "Error: incorrect float64_t type definition");
 
   const float64_t a( float64_t(2U) / 3U);
   const float64_t b( float64_t(4U) / 3U);
@@ -201,8 +199,9 @@ bool app::benchmark::run_soft_double_h2f1()
   using std::fabs;
 
   const float64_t closeness = fabs(1 - fabs(h2f1 / control));
+  const float64_t tolerance = std::numeric_limits<float64_t>::epsilon() * 10;
 
-  const bool result_is_ok = (closeness < local::tolerance);
+  const bool result_is_ok = (closeness < tolerance);
 
   return result_is_ok;
 }
