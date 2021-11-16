@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <cstdint>
+
 #include "xcmath_impl.h"
 
 #if defined(__GNUC__) && defined(__AVR__)
@@ -132,7 +133,7 @@ float tgammaf(float x)
   {
     using xcmath_impl::pi;
 
-    const float sin_pi_x = ::sinf(pi<float>() * x);
+    const float sin_pi_x = std::sin(pi<float>() * x);
 
     return -pi<float>() / ((x * gamma_value) * sin_pi_x);
   }

@@ -133,21 +133,21 @@
 
   constexpr uint_fast8_t softfloat_countLeadingZeros8(const uint_fast8_t index)
   {
-    return (index < 0x10U) ? 4U + softfloat_countLeadingZeros8_z_table(index &  0xFU)
-                           :      softfloat_countLeadingZeros8_z_table(index >>   4U);
+    return (index < 0x10U) ? (uint_fast8_t) (4U + softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index &  0xFU)))
+                           :                      softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index >>   4U));
   }
 
   constexpr uint_fast8_t softfloat_countLeadingZeros16(std::uint16_t a)
   {
-    return (a < UINT16_C(0x100)) ? 8U + softfloat_countLeadingZeros8((uint_fast8_t) a)
-                                 :      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
+    return (a < UINT16_C(0x100)) ? (uint_fast8_t) (8U + softfloat_countLeadingZeros8((uint_fast8_t) a))
+                                 :                      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
   }
 
   constexpr uint_fast8_t softfloat_countLeadingZeros32(std::uint32_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT32_C(0x10000)) ? 16U + softfloat_countLeadingZeros16((std::uint16_t) a)
-                                   :       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
+    return (a < UINT32_C(0x10000)) ? (uint_fast8_t) (16U + softfloat_countLeadingZeros16((std::uint16_t) a))
+                                   :                       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
   }
 
   /*----------------------------------------------------------------------------
@@ -157,8 +157,8 @@
   constexpr uint_fast8_t softfloat_countLeadingZeros64(std::uint64_t a)
   {
     // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT64_C(0x100000000)) ? 32U + softfloat_countLeadingZeros32((std::uint32_t) a)
-                                       :       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
+    return (a < UINT64_C(0x100000000)) ? (uint_fast8_t) (32U + softfloat_countLeadingZeros32((std::uint32_t) a))
+                                       :                       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
   }
 
   /*----------------------------------------------------------------------------
@@ -687,15 +687,15 @@
 
         sigB <<= 11U;
 
-        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1(sigB >> 32U) - 2U;
-        const std::uint32_t sig32Z  = ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U;
+        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1((uint32_t) (sigB >> 32U)) - 2U;
+        const std::uint32_t sig32Z  = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U);
 
         std::uint32_t doubleTerm = sig32Z << 1U;
 
         std::uint64_t rem =   ((sigA - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
                                 - (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
 
-        std::uint32_t q = (((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U;
+        std::uint32_t q = (std::uint32_t) ((std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U);
 
         std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U) + ((std::uint64_t) q << 4U);
 
@@ -750,7 +750,7 @@
 
         std::uint32_t sig32A      = (std::uint32_t) (sigA >> 21U);
         std::uint32_t recipSqrt32 = softfloat_approxRecipSqrt32_1((std::uint32_t) expA, sig32A);
-        std::uint32_t sig32Z      = ((std::uint64_t) sig32A * recipSqrt32) >> 32U;
+        std::uint32_t sig32Z      = (std::uint32_t) ((std::uint64_t) ((std::uint64_t) sig32A * recipSqrt32) >> 32U);
 
         if(expA)
         {
@@ -763,9 +763,9 @@
         }
 
               std::uint64_t rem = sigA - (std::uint64_t) sig32Z * sig32Z;
-        const std::uint32_t q   = ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U;
+        const std::uint32_t q   = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U);
 
-        std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U);
+        std::uint64_t sigZ = (std::uint64_t) (((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U));
 
         if((sigZ & 0x1FFU) < 0x22U)
         {
