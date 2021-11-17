@@ -26,6 +26,7 @@ TGT_ALLFLAGS  = -Os                                                             
                 -fsigned-char
 
 #                -mdouble=64                                                       \
+#                -mlong-double=64                                                  \
 
 TGT_CFLAGS    = -std=c99                                                          \
                 $(TGT_ALLFLAGS)
