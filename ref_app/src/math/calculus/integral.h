@@ -35,7 +35,7 @@
         {
           const std::uint_fast32_t two_j_plus_one = (j * UINT32_C(2)) + UINT32_C(1);
 
-          sum += real_function(a + (step * two_j_plus_one));
+          sum += real_function(a + real_value_type(step * real_value_type(two_j_plus_one)));
         }
 
         const real_value_type tmp = result;
