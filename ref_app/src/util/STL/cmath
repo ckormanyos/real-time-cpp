@@ -14,78 +14,158 @@
   #if defined(__GNUC__) && defined(__AVR__)
   #include <math.h>
 
-  #define __BUILTIN_ISNANF __builtin_isnanf
+  static_assert(__SIZEOF_LONG_DOUBLE__ >= __SIZEOF_DOUBLE__,
+                "Error: Configuration error regarding 64-bit double/long-double for AVR");
+
+  #if(__SIZEOF_DOUBLE__ == 4)
+  #define __BUILTIN_ISNANF __builtin_isnan
   #define __BUILTIN_ISNAN  __builtin_isnan
   #define __BUILTIN_ISNANL __builtin_isnanl
-  #define __BUILTIN_FABSF  __builtin_fabsf
+  #define __BUILTIN_FABSF  __builtin_fabs
   #define __BUILTIN_FABS   __builtin_fabs
   #define __BUILTIN_FABSL  __builtin_fabsl
-  #define __BUILTIN_FMODF  __builtin_fmodf
+  #define __BUILTIN_FMODF  __builtin_fmod
   #define __BUILTIN_FMOD   __builtin_fmod
   #define __BUILTIN_FMODL  __builtin_fmodl
   #define __BUILTIN_MODFF  __builtin_modff
   #define __BUILTIN_MODF   __builtin_modf
   #define __BUILTIN_MODFL  __builtin_modfl
-  #define __BUILTIN_FLOORF __builtin_floorf
+  #define __BUILTIN_FLOORF __builtin_floor
   #define __BUILTIN_FLOOR  __builtin_floor
   #define __BUILTIN_FLOORL __builtin_floorl
-  #define __BUILTIN_CEILF  __builtin_ceilf
+  #define __BUILTIN_CEILF  __builtin_ceil
   #define __BUILTIN_CEIL   __builtin_ceil
   #define __BUILTIN_CEILL  __builtin_ceill
-  #define __BUILTIN_FREXPF __builtin_frexpf
+  #define __BUILTIN_FREXPF __builtin_frexp
   #define __BUILTIN_FREXP  __builtin_frexp
   #define __BUILTIN_FREXPL __builtin_frexpl
-  #define __BUILTIN_LDEXPF __builtin_ldexpf
+  #define __BUILTIN_LDEXPF __builtin_ldexp
   #define __BUILTIN_LDEXP  __builtin_ldexp
   #define __BUILTIN_LDEXPL __builtin_ldexpl
-  #define __BUILTIN_SQRTF  __builtin_sqrtf
+  #define __BUILTIN_SQRTF  __builtin_sqrt
   #define __BUILTIN_SQRT   __builtin_sqrt
   #define __BUILTIN_SQRTL  __builtin_sqrtl
-  #define __BUILTIN_CBRTF  __builtin_cbrtf
+  #define __BUILTIN_CBRTF  __builtin_cbrt
   #define __BUILTIN_CBRT   __builtin_cbrt
   #define __BUILTIN_CBRTL  __builtin_cbrtl
-  #define __BUILTIN_SINF   __builtin_sinf
+  #define __BUILTIN_SINF   __builtin_sin
   #define __BUILTIN_SIN    __builtin_sin
   #define __BUILTIN_SINL   __builtin_sinl
-  #define __BUILTIN_COSF   __builtin_cosf
+  #define __BUILTIN_COSF   __builtin_cos
   #define __BUILTIN_COS    __builtin_cos
   #define __BUILTIN_COSL   __builtin_cosl
-  #define __BUILTIN_TANF   __builtin_tanf
+  #define __BUILTIN_TANF   __builtin_tan
   #define __BUILTIN_TAN    __builtin_tan
   #define __BUILTIN_TANL   __builtin_tanl
-  #define __BUILTIN_ASINF  __builtin_asinf
+  #define __BUILTIN_ASINF  __builtin_asin
   #define __BUILTIN_ASIN   __builtin_asin
   #define __BUILTIN_ASINL  __builtin_asinl
-  #define __BUILTIN_ACOS   __builtin_acosf
   #define __BUILTIN_ACOSF  __builtin_acos
+  #define __BUILTIN_ACOS   __builtin_acos
   #define __BUILTIN_ACOSL  __builtin_acosl
-  #define __BUILTIN_ATANF  __builtin_atanf
+  #define __BUILTIN_ATANF  __builtin_atan
   #define __BUILTIN_ATAN   __builtin_atan
   #define __BUILTIN_ATANL  __builtin_atanl
-  #define __BUILTIN_ATAN2F __builtin_atan2f
+  #define __BUILTIN_ATAN2F __builtin_atan2
   #define __BUILTIN_ATAN2  __builtin_atan2
   #define __BUILTIN_ATAN2L __builtin_atan2l
-  #define __BUILTIN_EXPF   __builtin_expf
+  #define __BUILTIN_EXPF   __builtin_exp
   #define __BUILTIN_EXP    __builtin_exp
   #define __BUILTIN_EXPL   __builtin_expl
-  #define __BUILTIN_POWF   __builtin_powf
+  #define __BUILTIN_POWF   __builtin_pow
   #define __BUILTIN_POW    __builtin_pow
   #define __BUILTIN_POWL   __builtin_powl
-  #define __BUILTIN_LOGF   __builtin_logf
+  #define __BUILTIN_LOGF   __builtin_log
   #define __BUILTIN_LOG    __builtin_log
   #define __BUILTIN_LOGL   __builtin_logl
-  #define __BUILTIN_LOG10F __builtin_log10f
+  #define __BUILTIN_LOG10F __builtin_log10
   #define __BUILTIN_LOG10  __builtin_log10
   #define __BUILTIN_LOG10L __builtin_log10l
-  #define __BUILTIN_SINHF  __builtin_sinhf
+  #define __BUILTIN_SINHF  __builtin_sinh
   #define __BUILTIN_SINH   __builtin_sinh
   #define __BUILTIN_SINHL  __builtin_sinhl
-  #define __BUILTIN_COSHF  __builtin_coshf
+  #define __BUILTIN_COSHF  __builtin_cosh
   #define __BUILTIN_COSH   __builtin_cosh
   #define __BUILTIN_COSHL  __builtin_coshl
-  #define __BUILTIN_TANHF  __builtin_tanhf
+  #define __BUILTIN_TANHF  __builtin_tanh
   #define __BUILTIN_TANH   __builtin_tanh
   #define __BUILTIN_TANHL  __builtin_tanhl
+  #elif(__SIZEOF_DOUBLE__ == 8)
+  #define __BUILTIN_ISNANF __builtin_isnanf
+  #define __BUILTIN_ISNAN  __builtin_isnanl
+  #define __BUILTIN_ISNANL __builtin_isnanl
+  #define __BUILTIN_FABSF  __builtin_fabsf
+  #define __BUILTIN_FABS   __builtin_fabsl
+  #define __BUILTIN_FABSL  __builtin_fabsl
+  #define __BUILTIN_FMODF  __builtin_fmodf
+  #define __BUILTIN_FMOD   __builtin_fmodl
+  #define __BUILTIN_FMODL  __builtin_fmodl
+  #define __BUILTIN_MODFF  __builtin_modff
+  #define __BUILTIN_MODF   __builtin_modf
+  #define __BUILTIN_MODFL  __builtin_modfl
+  #define __BUILTIN_FLOORF __builtin_floorf
+  #define __BUILTIN_FLOOR  __builtin_floorl
+  #define __BUILTIN_FLOORL __builtin_floorl
+  #define __BUILTIN_CEILF  __builtin_ceilf
+  #define __BUILTIN_CEIL   __builtin_ceill
+  #define __BUILTIN_CEILL  __builtin_ceill
+  #define __BUILTIN_FREXPF __builtin_frexpf
+  #define __BUILTIN_FREXP  __builtin_frexpl
+  #define __BUILTIN_FREXPL __builtin_frexpl
+  #define __BUILTIN_LDEXPF __builtin_ldexpf
+  #define __BUILTIN_LDEXP  __builtin_ldexpl
+  #define __BUILTIN_LDEXPL __builtin_ldexpl
+  #define __BUILTIN_SQRTF  __builtin_sqrtf
+  #define __BUILTIN_SQRT   __builtin_sqrtl
+  #define __BUILTIN_SQRTL  __builtin_sqrtl
+  #define __BUILTIN_CBRTF  __builtin_cbrtf
+  #define __BUILTIN_CBRT   __builtin_cbrtl
+  #define __BUILTIN_CBRTL  __builtin_cbrtl
+  #define __BUILTIN_SINF   __builtin_sinf
+  #define __BUILTIN_SIN    __builtin_sinl
+  #define __BUILTIN_SINL   __builtin_sinl
+  #define __BUILTIN_COSF   __builtin_cosf
+  #define __BUILTIN_COS    __builtin_cosl
+  #define __BUILTIN_COSL   __builtin_cosl
+  #define __BUILTIN_TANF   __builtin_tanf
+  #define __BUILTIN_TAN    __builtin_tanl
+  #define __BUILTIN_TANL   __builtin_tanl
+  #define __BUILTIN_ASINF  __builtin_asinf
+  #define __BUILTIN_ASIN   __builtin_asinl
+  #define __BUILTIN_ASINL  __builtin_asinl
+  #define __BUILTIN_ACOSF  __builtin_acosf
+  #define __BUILTIN_ACOS   __builtin_acosl
+  #define __BUILTIN_ACOSL  __builtin_acosl
+  #define __BUILTIN_ATANF  __builtin_atanf
+  #define __BUILTIN_ATAN   __builtin_atanl
+  #define __BUILTIN_ATANL  __builtin_atanl
+  #define __BUILTIN_ATAN2F __builtin_atan2f
+  #define __BUILTIN_ATAN2  __builtin_atan2l
+  #define __BUILTIN_ATAN2L __builtin_atan2l
+  #define __BUILTIN_EXPF   __builtin_expf
+  #define __BUILTIN_EXP    __builtin_expl
+  #define __BUILTIN_EXPL   __builtin_expl
+  #define __BUILTIN_POWF   __builtin_powf
+  #define __BUILTIN_POW    __builtin_powl
+  #define __BUILTIN_POWL   __builtin_powl
+  #define __BUILTIN_LOGF   __builtin_logf
+  #define __BUILTIN_LOG    __builtin_logl
+  #define __BUILTIN_LOGL   __builtin_logl
+  #define __BUILTIN_LOG10F __builtin_log10f
+  #define __BUILTIN_LOG10  __builtin_log10l
+  #define __BUILTIN_LOG10L __builtin_log10l
+  #define __BUILTIN_SINHF  __builtin_sinhf
+  #define __BUILTIN_SINH   __builtin_sinhl
+  #define __BUILTIN_SINHL  __builtin_sinhl
+  #define __BUILTIN_COSHF  __builtin_coshf
+  #define __BUILTIN_COSH   __builtin_coshl
+  #define __BUILTIN_COSHL  __builtin_coshl
+  #define __BUILTIN_TANHF  __builtin_tanhf
+  #define __BUILTIN_TANH   __builtin_tanhl
+  #define __BUILTIN_TANHL  __builtin_tanhl
+  #else
+  #error Error: sizeof(double) is unknown or not standard for AVR.
+  #endif
 
   extern "C"
   {
@@ -166,8 +246,8 @@
     inline float       asin    (float x)                            { return __BUILTIN_ASINF (x); }
     inline double      asin    (double x)                           { return __BUILTIN_ASIN  (x); }
     inline long double asin    (long double x)                      { return __BUILTIN_ASINL (x); }
-    inline float       acos    (float x)                            { return __BUILTIN_ACOS  (x); }
-    inline double      acos    (double x)                           { return __BUILTIN_ACOSF (x); }
+    inline float       acos    (float x)                            { return __BUILTIN_ACOSF (x); }
+    inline double      acos    (double x)                           { return __BUILTIN_ACOS (x); }
     inline long double acos    (long double x)                      { return __BUILTIN_ACOSL (x); }
     inline float       atan    (float x)                            { return __BUILTIN_ATANF (x); }
     inline double      atan    (double x)                           { return __BUILTIN_ATAN  (x); }
