@@ -10,7 +10,7 @@
 
 #include <mcal/mcal.h>
 
-asm volatile(".extern __initial_stack_pointer");
+asm(".extern __initial_stack_pointer");
 
 namespace crt
 {

@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 8.5.0
+GCC_VERSION   = 11.2.0
 GCC_TARGET    = rl78-unknown-elf
 GCC_PREFIX    = rl78-unknown-elf
 
