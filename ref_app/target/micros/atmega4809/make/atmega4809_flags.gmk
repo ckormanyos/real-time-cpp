@@ -9,7 +9,9 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
+ifneq ($(MAKE),make)
 GCC_VERSION   = 11.2.0
+endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
@@ -19,13 +21,13 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mmcu=atmega4809                                                  \
                 -mrelax                                                           \
                 -mdouble=32                                                       \
-                -mlong-double=64                                                  \
-                -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -fsigned-char                                                     \
 
 ifeq ($(GCC_VERSION),11.2.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mlong-double=64                                                  \
+                -finline-functions                                                \
                 -DAVR_LIBC_LEGACY_IO=0                                            \
                 -D__AVR_DEV_LIB_NAME__=atmega4809
 endif

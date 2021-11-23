@@ -11,7 +11,9 @@
 
 # See also: https://blog.zakkemble.net/avr-gcc-builds/
 
+ifneq ($(MAKE),make)
 GCC_VERSION   = 11.2.0
+endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
@@ -20,11 +22,15 @@ TGT_SUFFIX    = elf
 TGT_ALLFLAGS  = -Os                                                               \
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
-                -mdouble=32                                                       \
-                -mlong-double=64                                                  \
                 -finline-functions                                                \
                 -finline-limit=32                                                 \
                 -fsigned-char
+
+ifeq ($(GCC_VERSION),11.2.0)
+TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mdouble=32                                                       \
+                -mlong-double=64
+endif
 
 TGT_CFLAGS    = -std=c99                                                          \
                 $(TGT_ALLFLAGS)
