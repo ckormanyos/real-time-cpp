@@ -8,7 +8,7 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega32P. */
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libgcc.a libc.a libm.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:103)
@@ -76,7 +76,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  .= 0x00802800;
+  . = 0x00802800;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */

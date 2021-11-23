@@ -84,7 +84,7 @@ SECTIONS
     . = ALIGN(0x10);
   } > ROM = 0xAAAA
 
-  .= 0x800100;
+  . = 0x800100;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */
