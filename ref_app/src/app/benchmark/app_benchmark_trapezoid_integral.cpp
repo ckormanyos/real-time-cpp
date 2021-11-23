@@ -49,10 +49,10 @@ namespace
 
 bool app::benchmark::run_trapezoid_integral()
 {
-  using my_float_type = std::floatmax_t;
+  using my_float_type = std::float32_t;
 
   constexpr my_float_type app_benchmark_tolerance =
-    my_float_type(std::numeric_limits<std::floatmax_t>::epsilon() * FLOATMAX_C(100.0));
+    my_float_type(std::numeric_limits<my_float_type>::epsilon() * FLOATMAX_C(100.0));
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
   // N[BesselJ[2, 123/100], 50]

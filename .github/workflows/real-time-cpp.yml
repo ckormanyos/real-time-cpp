@@ -306,7 +306,7 @@ jobs:
           cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-7.3.0-avr.exe -y -gm2 -InstallPath=".\\gcc-7.3.0-avr"
+          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
