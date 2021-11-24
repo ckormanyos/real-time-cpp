@@ -264,7 +264,7 @@ $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S -b rl78-unknown-elf $(APP).$(TGT_SUFFIX) > $(APP).lss
+	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 
 
 # ------------------------------------------------------------------------------
@@ -289,10 +289,13 @@ endif
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ creating hex module: $(APP).hex.
+	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
 ifeq ($(TGT_SUFFIX),elf)
+	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
+	@-$(ECHO) +++ creating srec module: $(APP).s19
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
+	@-$(ECHO) +++ creating binary module: $(APP).bin
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
