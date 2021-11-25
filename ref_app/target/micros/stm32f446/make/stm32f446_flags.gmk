@@ -9,7 +9,7 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 9.3.1
+GCC_VERSION   = 11.2.0
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
@@ -36,8 +36,6 @@ TGT_CXXFLAGS  = -std=c++11                                                      
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
-
-#               -I$(PATH_TOOLS_CC)/../$(GCC_TARGET)/include/c++/$(GCC_VERSION)/$(GCC_TARGET)/thumb/v7e_m_fp/hard
 
 TGT_AFLAGS    =
 

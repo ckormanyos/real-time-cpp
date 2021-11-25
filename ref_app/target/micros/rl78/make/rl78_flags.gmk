@@ -9,15 +9,15 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 8.5.0
+GCC_VERSION   = 11.2.0
 GCC_TARGET    = rl78-unknown-elf
 GCC_PREFIX    = rl78-unknown-elf
 
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                            \
-                -mcpu=g10                                      \
-                -mmul=g10                                      \
+                -mcpu=g13                                      \
+                -mmul=g13                                      \
                 -fno-inline-functions
 
 TGT_CFLAGS    = -std=c99                                       \

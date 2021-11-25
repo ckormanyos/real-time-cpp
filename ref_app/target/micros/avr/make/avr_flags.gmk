@@ -11,8 +11,9 @@
 
 # See also: https://blog.zakkemble.net/avr-gcc-builds/
 
-GCC_VERSION   = 7.3.0
-#GCC_VERSION   = 11.1.0
+ifneq ($(MAKE),make)
+GCC_VERSION   = 11.2.0
+endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
@@ -25,8 +26,11 @@ TGT_ALLFLAGS  = -Os                                                             
                 -finline-limit=32                                                 \
                 -fsigned-char
 
-#                -mdouble=64                                                       \
-#                -mlong-double=64                                                  \
+ifeq ($(GCC_VERSION),11.2.0)
+TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mdouble=32                                                       \
+                -mlong-double=64
+endif
 
 TGT_CFLAGS    = -std=c99                                                          \
                 $(TGT_ALLFLAGS)
@@ -43,4 +47,3 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
-

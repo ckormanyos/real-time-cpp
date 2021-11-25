@@ -1,19 +1,23 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Copyright Christopher Kormanyos 2007 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
 # ------------------------------------------------------------------------------
-# 
+#
 # Makefile
 #
 # Build file for the reference application using the GNU tools
 #
-# Based on GNU Make 3.81
+# Based on GNU Make 4.2.1
 #
 # 07-April-2010
+#
+# See also a definitive list of GCC command line options
+# (for numerous target systems) here:
+#   https://man7.org/linux/man-pages/man1/gcc.1.html
 #
 # ------------------------------------------------------------------------------
 
@@ -285,10 +289,13 @@ endif
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ creating hex module: $(APP).hex.
+	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
 ifeq ($(TGT_SUFFIX),elf)
+	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
+	@-$(ECHO) +++ creating srec module: $(APP).s19
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
+	@-$(ECHO) +++ creating binary module: $(APP).bin
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.

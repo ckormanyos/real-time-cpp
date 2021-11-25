@@ -38,7 +38,7 @@ namespace
                                                          tol,
                                                          [&x, &n](const local_float_type& t) -> local_float_type
                                                          {
-                                                           return cos(x * sin(t) - (t * n));
+                                                           return cos(x * sin(t) - (t * local_float_type(n)));
                                                          });
 
     const local_float_type jn = integration_result / math::constants::pi<local_float_type>();
@@ -49,16 +49,19 @@ namespace
 
 bool app::benchmark::run_trapezoid_integral()
 {
-  using my_float_type = std::floatmax_t;
+  using std::float32_t;
 
-  constexpr my_float_type app_benchmark_tolerance =
-    my_float_type(std::numeric_limits<std::floatmax_t>::epsilon() * FLOATMAX_C(100.0));
+  static_assert(std::numeric_limits<float32_t>::digits >= 24,
+                "Error: Incorrect float32_t type definition");
+
+  constexpr float32_t app_benchmark_tolerance =
+    float32_t(std::numeric_limits<float32_t>::epsilon() * float32_t(FLOATMAX_C(100.0)));
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
   // N[BesselJ[2, 123/100], 50]
-  const my_float_type j2 = cyl_bessel_j(UINT8_C(2), my_float_type(FLOATMAX_C(1.23)));
+  const float32_t j2 = cyl_bessel_j(UINT8_C(2), float32_t(FLOATMAX_C(1.23)));
 
-  const bool app_benchmark_result_is_ok = detail::is_close_fraction(my_float_type(FLOATMAX_C(0.1663693837868140735126785243)),
+  const bool app_benchmark_result_is_ok = detail::is_close_fraction(float32_t(FLOATMAX_C(0.1663693837868140735126785243)),
                                                                     j2,
                                                                     app_benchmark_tolerance);
 

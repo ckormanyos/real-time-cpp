@@ -168,36 +168,41 @@ namespace local
     // by the ratio of the final recursions of A and B.
     return A.back() / B.back();
   }
+
+  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
+  using std::float64_t;
+  #else
+  using math::softfloat::float64_t;
+  #endif
 }
 
 bool app::benchmark::run_soft_double_h2f1()
 {
-  #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
-  using my_float_type = std::floatmax_t;
-  #else
-  using my_float_type = math::softfloat::float64_t;
-  #endif
+  using local::float64_t;
 
-  static_assert(std::numeric_limits<my_float_type>::digits >= 53, "Error: incorrect float64_t type definition");
+  static_assert(std::numeric_limits<float64_t>::digits >= 53,
+                "Error: Incorrect float64_t type definition");
 
-  const my_float_type a( my_float_type(2U) / 3U);
-  const my_float_type b( my_float_type(4U) / 3U);
-  const my_float_type c( my_float_type(5U) / 7U);
-  const my_float_type z(-my_float_type(3U) / 4U);
+  const float64_t a( float64_t(2U) / 3U);
+  const float64_t b( float64_t(4U) / 3U);
+  const float64_t c( float64_t(5U) / 7U);
+  const float64_t z(-float64_t(3U) / 4U);
 
-  const my_float_type h2f1 = local::hypergeometric_2f1(a, b, c, z);
+  using local::hypergeometric_2f1;
+
+  const float64_t h2f1 = hypergeometric_2f1(a, b, c, z);
 
   // N[Hypergeometric2F1[2/3, 4/3, 5/7, -3/4], 41]
   #if defined (APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1_USES_BUILTIN_DOUBLE)
-  const my_float_type control = my_float_type(FLOATMAX_C(0.50100473608761064038202987077811306637010));
+  const float64_t control = float64_t(FLOATMAX_C(0.50100473608761064038202987077811306637010));
   #else
-  const my_float_type control(UINT64_C(0x3FE0083B15946592), math::softfloat::detail::nothing());
+  const float64_t control(UINT64_C(0x3FE0083B15946592), math::softfloat::detail::nothing());
   #endif
 
   using std::fabs;
 
-  const my_float_type closeness = fabs(1 - fabs(h2f1 / control));
-  const my_float_type tolerance = std::numeric_limits<my_float_type>::epsilon() * 10;
+  const float64_t closeness = fabs(1 - fabs(h2f1 / control));
+  const float64_t tolerance = std::numeric_limits<float64_t>::epsilon() * 10;
 
   const bool result_is_ok = (closeness < tolerance);
 
