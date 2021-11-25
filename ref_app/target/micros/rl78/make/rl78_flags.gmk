@@ -16,8 +16,8 @@ GCC_PREFIX    = rl78-unknown-elf
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                            \
-                -mcpu=g10                                      \
-                -mmul=g10                                      \
+                -mcpu=g13                                      \
+                -mmul=g13                                      \
                 -fno-inline-functions
 
 TGT_CFLAGS    = -std=c99                                       \

@@ -9,7 +9,7 @@
 # File list of the xtensa32 esspressif ESP32 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/from_sdk/esp32-hal-gpio                                      \
-                  $(PATH_APP)/util/STL/impl/cmath_impl_gamma                                           \
-                  $(PATH_APP)/util/STL/impl/cmath_impl_hyperbolic                                      \
+FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/from_sdk/esp32-hal-gpio            \
+                  $(PATH_APP)/util/STL/impl/cmath_impl_gamma                 \
+                  $(PATH_APP)/util/STL/impl/cmath_impl_hyperbolic            \
                   $(PATH_TGT)/startup/app_main
