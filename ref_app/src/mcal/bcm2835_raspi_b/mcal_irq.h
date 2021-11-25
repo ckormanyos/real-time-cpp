@@ -8,6 +8,10 @@
 #ifndef MCAL_IRQ_2014_09_20_H_
   #define MCAL_IRQ_2014_09_20_H_
 
+  #if defined(__GNUC__)
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wattributes"
+  #endif
   extern "C" void __my_startup                     () __attribute__((used, noinline));                                             // Position 00 : This is implemented in crt0.cpp.
   extern "C" void __int_vect_undef_instr_handler   () __attribute__((section(".text.isr1"),  interrupt("UNDEF"), used, noinline)); // Position 01
   extern "C" void __int_vect_sw_interrupt_handler  () __attribute__((section(".text.isr2"),  interrupt("SWI"),   used, noinline)); // Position 02
@@ -16,6 +20,9 @@
   extern "C" void __int_vect_unused_05_handler     () __attribute__((section(".text.isr5"),  interrupt("IRQ"),   used, noinline)); // Position 05
   extern "C" void __int_vect_irq_handler           () __attribute__((section(".text.isr6"),  interrupt("IRQ"),   used, noinline)); // Position 06
   extern "C" void __int_vect_fiq_handler           () __attribute__((section(".text.isr7"),  interrupt("FIQ"),   used, noinline)); // Position 07
+  #if defined(__GNUC__)
+  #pragma GCC diagnostic pop
+  #endif
 
   namespace mcal
   {

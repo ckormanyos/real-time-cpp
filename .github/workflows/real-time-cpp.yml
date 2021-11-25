@@ -336,7 +336,7 @@ jobs:
           cd .\ref_app\tools\Util\MinGW\msys\1.0\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-9.3.1-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-9.3.1-arm-none-eabi-avr"
+          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
