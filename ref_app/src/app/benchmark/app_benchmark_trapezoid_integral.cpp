@@ -38,7 +38,7 @@ namespace
                                                          tol,
                                                          [&x, &n](const local_float_type& t) -> local_float_type
                                                          {
-                                                           return cos(x * sin(t) - (t * n));
+                                                           return cos(x * sin(t) - (t * local_float_type(n)));
                                                          });
 
     const local_float_type jn = integration_result / math::constants::pi<local_float_type>();
@@ -55,7 +55,7 @@ bool app::benchmark::run_trapezoid_integral()
                 "Error: Incorrect float32_t type definition");
 
   constexpr float32_t app_benchmark_tolerance =
-    float32_t(std::numeric_limits<float32_t>::epsilon() * FLOATMAX_C(100.0));
+    float32_t(std::numeric_limits<float32_t>::epsilon() * float32_t(FLOATMAX_C(100.0)));
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
   // N[BesselJ[2, 123/100], 50]

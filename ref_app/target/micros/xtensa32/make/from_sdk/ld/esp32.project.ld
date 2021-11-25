@@ -2,7 +2,7 @@
 /* Espressif IoT Development Framework Linker Script */
 /* Generated from: /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp32/ld/esp32.project.ld.in */
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libc.a libm.a libgcc.a libstdc++.a)
 
 /*  Default entry point:  */
 ENTRY(call_start_cpu0);
