@@ -1,0 +1,84 @@
+
+bin/led.elf:     file format elf32-avr
+
+
+Disassembly of section .isr_vectors:
+
+00000000 <isr_vectors>:
+   0:	0e 94 02 00 	call	0x4	; 0x4 <__my_startup>
+
+Disassembly of section .startup:
+
+00000004 <__my_startup>:
+   4:	11 24       	eor	r1, r1
+   6:	1f be       	out	0x3f, r1	; 63
+   8:	c0 e0       	ldi	r28, 0x00	; 0
+   a:	d8 e0       	ldi	r29, 0x08	; 8
+   c:	de bf       	out	0x3e, r29	; 62
+   e:	cd bf       	out	0x3d, r28	; 61
+  10:	0e 94 11 00 	call	0x22	; 0x22 <__do_copy_data>
+  14:	0e 94 1d 00 	call	0x3a	; 0x3a <__do_clear_bss>
+  18:	0e 94 26 00 	call	0x4c	; 0x4c <__do_global_ctors>
+  1c:	0e 94 37 00 	call	0x6e	; 0x6e <main>
+  20:	ff cf       	rjmp	.-2      	; 0x20 <__my_startup+0x1c>
+
+00000022 <__do_copy_data>:
+  22:	11 e0       	ldi	r17, 0x01	; 1
+  24:	a0 e0       	ldi	r26, 0x00	; 0
+  26:	b1 e0       	ldi	r27, 0x01	; 1
+  28:	ee e7       	ldi	r30, 0x7E	; 126
+  2a:	f0 e0       	ldi	r31, 0x00	; 0
+  2c:	02 c0       	rjmp	.+4      	; 0x32 <__do_copy_data+0x10>
+  2e:	05 90       	lpm	r0, Z+
+  30:	0d 92       	st	X+, r0
+  32:	a0 30       	cpi	r26, 0x00	; 0
+  34:	b1 07       	cpc	r27, r17
+  36:	d9 f7       	brne	.-10     	; 0x2e <__do_copy_data+0xc>
+  38:	08 95       	ret
+
+0000003a <__do_clear_bss>:
+  3a:	11 e0       	ldi	r17, 0x01	; 1
+  3c:	a0 e0       	ldi	r26, 0x00	; 0
+  3e:	b1 e0       	ldi	r27, 0x01	; 1
+  40:	01 c0       	rjmp	.+2      	; 0x44 <__SREG__+0x5>
+  42:	1d 92       	st	X+, r1
+  44:	a0 30       	cpi	r26, 0x00	; 0
+  46:	b1 07       	cpc	r27, r17
+  48:	e1 f7       	brne	.-8      	; 0x42 <__SREG__+0x3>
+  4a:	08 95       	ret
+
+0000004c <__do_global_ctors>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	c6 e6       	ldi	r28, 0x66	; 102
+  50:	d0 e0       	ldi	r29, 0x00	; 0
+  52:	04 c0       	rjmp	.+8      	; 0x5c <__do_global_ctors+0x10>
+  54:	22 97       	sbiw	r28, 0x02	; 2
+  56:	fe 01       	movw	r30, r28
+  58:	0e 94 33 00 	call	0x66	; 0x66 <__ctors_end>
+  5c:	c4 36       	cpi	r28, 0x64	; 100
+  5e:	d1 07       	cpc	r29, r17
+  60:	c9 f7       	brne	.-14     	; 0x54 <__do_global_ctors+0x8>
+  62:	08 95       	ret
+
+Disassembly of section .text:
+
+00000064 <__ctors_start>:
+  64:	3c 00       	.word	0x003c	; ????
+
+00000066 <__ctors_end>:
+  66:	05 90       	lpm	r0, Z+
+  68:	f4 91       	lpm	r31, Z
+  6a:	e0 2d       	mov	r30, r0
+  6c:	09 94       	ijmp
+
+0000006e <main>:
+  6e:	90 e2       	ldi	r25, 0x20	; 32
+  70:	85 b1       	in	r24, 0x05	; 5
+  72:	89 27       	eor	r24, r25
+  74:	85 b9       	out	0x05, r24	; 5
+  76:	fc cf       	rjmp	.-8      	; 0x70 <main+0x2>
+
+00000078 <_GLOBAL__sub_I_main>:
+  78:	2d 98       	cbi	0x05, 5	; 5
+  7a:	25 9a       	sbi	0x04, 5	; 4
+  7c:	08 95       	ret
