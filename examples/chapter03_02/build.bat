@@ -120,3 +120,8 @@
 
 @echo.Extract  : demangled names     : from bin/chapter03_02.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter03_02.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter03_02_cppfilt.txt
+
+if not exist ./bin/chapter03_02.elf exit 1
+if not exist ./bin/chapter03_02.hex exit 1
+
+exit 0

@@ -32,7 +32,7 @@
 @echo.Using tool path     : %TOOL_PATH%
 @echo.Using tool prefix   : %TOOL_PREFIX%
 @echo.Clean bin directory : bin\led*.*
-del /Q bin\led*.*
+if exist bin\led*.* del /Q bin\led*.*
 
 @echo.
 @echo.Assemble : crt0.s  to bin/crt0.o
@@ -59,3 +59,10 @@ del /Q bin\led*.*
 
 @echo.Extract  : demangled names     : from bin/led.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/led.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\led_cppfilt.txt
+
+dir ./bin/led.elf ./bin/led.hex
+
+if not exist ./bin/led.elf exit 1
+if not exist ./bin/led.hex exit 1
+
+exit 0

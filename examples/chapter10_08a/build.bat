@@ -135,3 +135,10 @@
 
 @echo.Extract  : demangled names     : from bin/chapter10_08a.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter10_08a.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter10_08a_cppfilt.txt
+
+dir ./bin/chapter10_08a.elf ./bin/chapter10_08a.hex
+
+if not exist ./bin/chapter10_08a.elf exit 1
+if not exist ./bin/chapter10_08a.hex exit 1
+
+exit 0

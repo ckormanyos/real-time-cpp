@@ -222,7 +222,6 @@ jobs:
         run: |
           cd ${{ matrix.example }}
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
-          dir ./bin/led.elf ./bin/led.hex
         working-directory: ./examples/
   target-avr-win-batch-examples:
     runs-on: windows-latest
@@ -251,7 +250,6 @@ jobs:
         run: |
           cd ${{ matrix.example }}
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
-          dir ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
   target-arm-win-batch-examples:
     runs-on: windows-latest
@@ -280,7 +278,6 @@ jobs:
         run: |
           cd ${{ matrix.example }}
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-arm-none-eabi\bin" arm-none-eabi
-          dir ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
   target-arm:
     runs-on: ubuntu-20.04
