@@ -199,7 +199,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: pwsh
+        shell: cmd
     strategy:
       fail-fast: false
       matrix:
