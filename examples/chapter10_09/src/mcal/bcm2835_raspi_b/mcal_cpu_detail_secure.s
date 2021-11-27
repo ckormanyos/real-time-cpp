@@ -7,11 +7,6 @@
 
 .section .startup, "ax"
 
-@
-@extern "C"
-@void mcal_cpu_detail_secure_start_mmu(const uint32_t tlb_base, const uint32_t mmu_flags);
-@
-
 .globl mcal_cpu_detail_secure_start_mmu
 mcal_cpu_detail_secure_start_mmu:
   mov r2, #0
