@@ -212,11 +212,12 @@ jobs:
         run: |
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
-          move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\msys64\usr\local
+          move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
+          cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
+        working-directory: ./
       - name: target-avr-win-batch-examples
         run: |
           cd ${{ matrix.example }}

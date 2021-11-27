@@ -48,24 +48,24 @@ The reference application supports the following targets:
 
 | Target name (as used in build command) | Target Description |
 | -------------------------------------- | ------------------ |
-| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P          |
-| `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560          |
-| `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809         |
-| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8     |
-| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                          |
-| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0        |
-| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                 |
-| `rl78`                                 | Renesas(R) RL78/G13                                       |
-| `rx63n`                                | Renesas(R) RX630/RX631                                    |
-| `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3      |
-| `stm32l100c`                           | ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3      |
-| `stm32l152`                            | ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3      |
-| `stm32f407`                            | ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4      |
-| `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4      |
-| `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4      |
-| `x86_64-w64-mingw32`                   | PC on `Win*`/`MinGW` via GNU/GCC x86_x64 compiler         |
-| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`      |
-| `host`                                 | PC/Workstation on `Win*`/`MinGW`/`*nix` via host compiler |
+| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            |
+| `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |
+| `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           |
+| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |
+| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
+| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |
+| `rl78`                                 | Renesas(R) RL78/G13                                         |
+| `rx63n`                                | Renesas(R) RX630/RX631                                      |
+| `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3        |
+| `stm32l100c`                           | ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3        |
+| `stm32l152`                            | ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3        |
+| `stm32f407`                            | ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4        |
+| `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4        |
+| `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4        |
+| `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
+| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
+| `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
 
 
 ## Getting Started with the Reference Application
@@ -365,12 +365,14 @@ and can be found there. These are used in the Makefiles
 When building cross embedded projects such as `ref_app`
 on `Win*`.
 
-In the reference application on `Win*`, the makefiles use a
-self-defined, default location for the respective tools
-and GNU/GCC toolchains.
-The [toolchain location](ref_app/tools/Util/MinGW/msys/1.0/local) on `Win*`
-has been defined by myself at the time epoch near the beginning of the project.
-This location is inspired by the `MinGW` system.
+In the reference application on `Win*`,
+the Makefiles use a self-defined, default location
+for the respective tools and GNU/GCC toolchains.
+The [toolchain location](ref_app/tools/Util/msys64/usr/local) on `Win*`
+has been defined by myself for this project.
+This particular toolchain location is inspired by the
+[`msys2`/`mingw64`](https://www.msys2.org)
+system.
 
 Toolchains intended for the cross MSVC/GCC builds on `Win*`
 should be located there.
