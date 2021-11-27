@@ -1,5 +1,5 @@
 /*
-  Copyright Christopher Kormanyos 2007 - 2014.
+  Copyright Christopher Kormanyos 2007 - 2021.
   Distributed under the Boost Software License,
   Version 1.0. (See accompanying file LICENSE_1_0.txt
   or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -59,7 +59,7 @@ SECTIONS
     . = ALIGN(2);
   } > ROM
 
-  .= 0x800100;
+  . = 0x800100;
   . = ALIGN(2);
 
   /* The ROM-to-RAM initialized data section */

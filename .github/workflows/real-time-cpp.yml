@@ -303,7 +303,7 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
@@ -333,7 +333,7 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
@@ -363,7 +363,7 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
@@ -393,7 +393,7 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rl78-unknown-elf"
@@ -423,7 +423,7 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
-          cd .\ref_app\tools\Util\MinGW\msys\1.0\local
+          cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rx-elf"

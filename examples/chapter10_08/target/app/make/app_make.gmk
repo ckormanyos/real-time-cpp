@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2020.
+#  Copyright Christopher Kormanyos 2007 - 2021.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +11,7 @@
 #
 # Build file for the reference application using the GNU tools
 #
-# Based on GNU Make 3.81
+# Based on GNU Make 4.2.1
 #
 # 07-April-2010
 #
@@ -29,9 +29,9 @@ COMPILER_DIRECTORY = gcc-$(GCC_VERSION)-$(GCC_TARGET)
 # ------------------------------------------------------------------------------
 PATH_TOOLS           = tools
 PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
-PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\MinGW\msys\1.0
+PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
 PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\$(COMPILER_DIRECTORY)\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
 
 PATH_APP             = src
 PATH_TGT             = target/micros/$(TGT)

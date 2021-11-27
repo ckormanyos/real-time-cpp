@@ -359,7 +359,7 @@ Some ported GNU/GCC cross compilers for `Win*` are available in the
 repository.
 These can be used with the microcontroller solution configurations
 in the reference application when developing/building
-within Microsoft(R) VisualStudio(R). certain other GNU
+within Microsoft(R) VisualStudio(R). Various other GNU
 tools such as GNUmake, SED, etc. have been ported
 and can be found there. These are used in the Makefiles
 When building cross embedded projects such as `ref_app`

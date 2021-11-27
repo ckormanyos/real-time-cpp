@@ -13,7 +13,11 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin" arm-none-eabi
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09\tools\Util\msys64\usr\local\gcc-11.2.0-arm-none-eabi\bin" arm-none-eabi
+
+@rem Usage example A1 (use a relative tool path),
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" arm-none-eabi
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
