@@ -11,23 +11,25 @@
 
 # See also: https://blog.zakkemble.net/avr-gcc-builds/
 
-GCC_VERSION   = 9.2.0
+GCC_VERSION   = 11.2.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -O3                                            \
+TGT_CFLAGS    = -Os                                            \
                 -mmcu=atmega328p                               \
                 -fsigned-char                                  \
                 -mrelax
 
 TGT_CPPFLAGS  = -std=c++11
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -T $(LINKER_DEFINITION_FILE)
+

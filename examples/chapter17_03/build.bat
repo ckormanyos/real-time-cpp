@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2020.
+@rem Copyright Christopher Kormanyos 2014 - 2021.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,11 +13,15 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter17_03"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter17_03\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter17_03\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+
+@rem Usage example A1 (use a relative tool path),
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter17_03"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter17_03"
-@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
+@rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1
@@ -131,3 +135,10 @@
 
 @echo.Extract  : demangled names     : from bin/chapter17_03.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter17_03.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter17_03_cppfilt.txt
+
+dir .\bin\chapter17_03.elf .\bin\chapter17_03.hex
+
+if not exist .\bin\chapter17_03.elf exit 1
+if not exist .\bin\chapter17_03.hex exit 1
+
+exit 0

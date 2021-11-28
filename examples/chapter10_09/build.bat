@@ -13,7 +13,11 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin" arm-none-eabi
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09\tools\Util\msys64\usr\local\gcc-11.2.0-arm-none-eabi\bin" arm-none-eabi
+
+@rem Usage example A1 (use a relative tool path),
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-arm-none-eabi\bin" arm-none-eabi
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter10_09"
@@ -53,6 +57,9 @@
 
 @echo.Compile  : mcal_cpu.cpp to bin/mcal_cpu.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/bcm2835_raspi_b/mcal_cpu.cpp -o bin/mcal_cpu.o
+
+@echo.Compile  : mcal_cpu.cpp to bin/mcal_cpu_detail.o
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/bcm2835_raspi_b/mcal_cpu_detail.cpp -o bin/mcal_cpu_detail.o
 
 @echo.Assemble : mcal_cpu_detail_secure.s to bin/mcal_cpu_detail_secure.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x assembler %CFLAGS% %CINCLUDES% -c src/mcal/bcm2835_raspi_b/mcal_cpu_detail_secure.s -o bin/mcal_cpu_detail_secure.o
@@ -118,7 +125,7 @@
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x assembler %CFLAGS% %CINCLUDES% -c target/micros/bcm2835_raspi_b/startup/int_vect.s -o bin/int_vect.o
 
 @echo.Link     : objects to bin/chapter10_09.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/bcm2835_raspi_b/make/bcm2835_raspi_b.ld,-Map,bin/chapter10_09.map bin/app_benchmark.o bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_cpu_detail_secure.o bin/mcal_eep.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_lcd.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_reg.o bin/mcal_spi.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_idle_pi_spigot.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter10_09.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/bcm2835_raspi_b/make/bcm2835_raspi_b.ld,-Map,bin/chapter10_09.map bin/app_benchmark.o bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_cpu_detail.o bin/mcal_cpu_detail_secure.o bin/mcal_eep.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_lcd.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_reg.o bin/mcal_spi.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_idle_pi_spigot.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter10_09.elf
 
 @echo.
 @echo.Extract  : executable hex file : from bin/chapter10_09.elf
@@ -138,3 +145,10 @@
 
 @echo.Extract  : demangled names     : from bin/chapter10_09.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter10_09.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter10_09_cppfilt.txt
+
+dir .\bin\chapter10_09.elf .\bin\chapter10_09.hex
+
+if not exist .\bin\chapter10_09.elf exit 1
+if not exist .\bin\chapter10_09.hex exit 1
+
+exit 0

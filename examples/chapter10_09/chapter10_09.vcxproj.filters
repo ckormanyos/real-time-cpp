@@ -237,6 +237,9 @@
     <ClCompile Include="src\mcal\x86_64-w64-mingw32\mcal_eep.cpp">
       <Filter>src\mcal\x86_64-w64-mingw32</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
+      <Filter>src\mcal\bcm2835_raspi_b</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">

@@ -5,7 +5,7 @@ section        size      addr
 .startup         96         4
 .text            46       100
 .bss              2   8388864
-.comment         17         0
-Total           165
+.comment         18         0
+Total           166
 
 
