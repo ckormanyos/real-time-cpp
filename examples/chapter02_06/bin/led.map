@@ -1,0 +1,91 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x0000000000000000 0x0000000000008000 xr
+RAM              0x0000000000800100 0x000000000000079c rw !x
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+                0x0000000000800800                __initial_stack_pointer = 0x800800
+                0x0000000000000000                . = 0x0
+                0x0000000000000000                . = ALIGN (0x2)
+
+.isr_vectors    0x0000000000000000        0x4
+ *(.isr_vectors)
+ .isr_vectors   0x0000000000000000        0x4 bin/crt0.o
+                0x0000000000000000                isr_vectors
+                0x0000000000000004                . = ALIGN (0x2)
+ *(.isr_vectors)
+
+.startup        0x0000000000000004       0x60
+ *(.startup)
+ .startup       0x0000000000000004       0x60 bin/crt0.o
+                0x0000000000000022                __do_copy_data
+                0x000000000000003a                __do_clear_bss
+                0x0000000000000064                . = ALIGN (0x2)
+ *(.startup)
+
+.text           0x0000000000000064       0x1a
+                0x0000000000000064                __ctors_start = .
+ *(.ctors)
+ .ctors         0x0000000000000064        0x2 bin/led.o
+                0x0000000000000066                . = ALIGN (0x2)
+ *(SORT_BY_NAME(.ctors))
+                0x0000000000000066                __ctors_end = .
+ *(.progmem*)
+                0x0000000000000066                . = ALIGN (0x2)
+ *(.trampolines*)
+ .trampolines   0x0000000000000066        0x0 linker stubs
+                0x0000000000000066                . = ALIGN (0x2)
+ *(.text)
+ .text          0x0000000000000066        0x0 bin/led.o
+ .text          0x0000000000000066        0x8 bin/crt0.o
+                0x000000000000006e                . = ALIGN (0x2)
+ *(.text*)
+ .text.startup  0x000000000000006e       0x10 bin/led.o
+                0x000000000000006e                main
+                0x000000000000007e                . = ALIGN (0x2)
+                0x0000000000800100                . = 0x800100
+                0x0000000000800100                . = ALIGN (0x2)
+
+.data           0x0000000000800100        0x0 load address 0x000000000000007e
+                0x0000000000800100                __data_start = .
+ *(.data)
+ .data          0x0000000000800100        0x0 bin/led.o
+ .data          0x0000000000800100        0x0 bin/crt0.o
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.data)
+ *(.data*)
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.data*)
+ *(.rodata)
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.rodata)
+ *(.rodata*)
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.rodata*)
+                0x0000000000800100                __data_end = .
+
+.bss            0x0000000000800100        0x0 load address 0x000000000000007e
+                0x0000000000800100                __bss_start = .
+ *(.bss)
+ .bss           0x0000000000800100        0x0 bin/led.o
+ .bss           0x0000000000800100        0x0 bin/crt0.o
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.bss)
+ *(.bss*)
+                0x0000000000800100                . = ALIGN (0x2)
+ *(.bss*)
+                0x0000000000800100                __bss_end = .
+                0x000000000000007e                __data_load_start = LOADADDR (.data)
+LOAD bin/led.o
+LOAD bin/crt0.o
+OUTPUT(bin/led.elf elf32-avr)
+LOAD linker stubs
+
+.comment        0x0000000000000000       0x12
+ .comment       0x0000000000000000       0x12 bin/led.o
+                                         0x13 (size before relaxing)

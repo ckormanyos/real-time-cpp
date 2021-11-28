@@ -13,11 +13,15 @@
 
 @rem Usage example A,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter12_04"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter12_04\tools\Util\MinGW\msys\1.0\local\gcc-9.2.0-avr\bin" avr
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter12_04\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+
+@rem Usage example A1 (use a relative tool path),
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter12_04"
+@rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
 
 @rem Usage example B,
 @rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter12_04"
-@rem build.bat "C:\Program Files (x86)\gcc-9.2.0-avr\bin" avr
+@rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
 
 
 @set TOOL_PATH=%1
@@ -25,7 +29,7 @@
 
 @set CFLAGS=-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
 @set CPPFLAGS=-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
-@set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc -Isrc/mcal/avr
+@set CINCLUDES=-Isrc/util/STL_C++XX_stdfloat -Isrc/util/STL -Isrc/mcal/avr -Isrc
 
 @echo.
 @echo.Building with        : build.bat
@@ -122,3 +126,11 @@
 
 @echo.Extract  : demangled names     : from bin/chapter12_04.elf
 @%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter12_04.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter12_04_cppfilt.txt
+
+dir .\bin\chapter12_04.elf
+dir .\bin\chapter12_04.hex
+
+if not exist .\bin\chapter12_04.elf exit 1
+if not exist .\bin\chapter12_04.hex exit 1
+
+exit 0

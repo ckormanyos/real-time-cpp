@@ -1,0 +1,21 @@
+00000000 a __tmp_reg__
+00000000 T isr_vectors
+00000001 a __zero_reg__
+00000004 t __my_startup
+00000022 T __do_copy_data
+0000003a T __do_clear_bss
+0000003d a __SP_L__
+0000003e a __SP_H__
+0000003f a __SREG__
+0000004c t __do_global_ctors
+00000064 T __ctors_start
+00000066 T __ctors_end
+00000066 t __tablejump__
+0000006e 0000000a T main
+00000078 00000006 t _GLOBAL__sub_I_main
+0000007e A __data_load_start
+00800100 B __bss_end
+00800100 B __bss_start
+00800100 D __data_end
+00800100 D __data_start
+00800800 A __initial_stack_pointer

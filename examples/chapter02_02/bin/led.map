@@ -86,6 +86,6 @@ LOAD bin/crt0.o
 OUTPUT(bin/led.elf elf32-avr)
 LOAD linker stubs
 
-.comment        0x0000000000000000       0x11
- .comment       0x0000000000000000       0x11 bin/led.o
-                                         0x12 (size before relaxing)
+.comment        0x0000000000000000       0x12
+ .comment       0x0000000000000000       0x12 bin/led.o
+                                         0x13 (size before relaxing)
