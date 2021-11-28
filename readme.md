@@ -368,16 +368,22 @@ on `Win*`.
 In the reference application on `Win*`,
 the Makefiles use a self-defined, default location
 for the respective tools and GNU/GCC toolchains.
-The [toolchain location](ref_app/tools/Util/msys64/usr/local) on `Win*`
-has been defined by myself for this project.
+The toolchain default location on `Win*` is
+`./ref_app/tools/Util/msys64/usr/local`.
 This particular toolchain location is inspired by the
 [`msys2`/`mingw64`](https://www.msys2.org)
 system.
 
-Toolchains intended for the cross MSVC/GCC builds on `Win*`
+Toolchains intended for cross MSVC/GCC builds on `Win*`
 should be located there.
-These toolchains are not part of this repository.
-Detailed instructions are available in the
+These toolchains are not part of this repository
+and it is necessary to get these toolchains separately
+when using the supported `Win*` builds when optionally using
+VisualStudio(R) Projects with CMD Batch.
+
+Detailed instructions on getting and using the
+toolchains for cross MSVC/GCC builds on `Win*`
+are available in the
 [real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
 repository. These instructions provide guidance on using these toolchains
 when selecting the Microsoft(R) VisualStudio(R) project
