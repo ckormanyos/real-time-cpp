@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <cstdint>
+
 #include "xcmath_impl.h"
 
 #if defined(__GNUC__) && defined(__AVR__)
@@ -37,7 +38,7 @@ namespace xcmath_impl
                 * x + 1.0F)
                 * x;
 
-      return 1.0F / inverse_series_value;
+      return float(1.0F / inverse_series_value);
   }
 
   float tgamma_polynomial_approximation(float x)
@@ -57,7 +58,7 @@ namespace xcmath_impl
 
     // Return the polynomial fit for gamma(x).
     // One downward recursion is used here.
-    return (polynomial_approximation_value / x);
+    return float(polynomial_approximation_value / x);
   }
 }
 
@@ -132,7 +133,9 @@ float tgammaf(float x)
   {
     using xcmath_impl::pi;
 
-    const float sin_pi_x = ::sinf(pi<float>() * x);
+    using std::sin;
+
+    const float sin_pi_x = sin(pi<float>() * x);
 
     return -pi<float>() / ((x * gamma_value) * sin_pi_x);
   }
