@@ -318,6 +318,8 @@ depicts the bare-metal BeagleBone Black Edition
 in action. In this bare-metal operation mode, there is
 no running `*nix` OS on the BBB, no keyboard,
 no mouse, no monitor, no debug interface and no emulator.
+See also the corresponding [pdf image](./images/bare_metal_bbb.pdf).
+
 
 The microcontroller on the board is cyclically performing
 one of the [benchmarks](./ref_app/src/app/benchmark)
@@ -327,7 +329,7 @@ and the oscilloscope captures
 a real-time measurement of the benchmark's time signal
 on digital I/O `port1.15`, header pin `P8.15` of the BBB.
 
-![](./images/bare_metal_bbb.pdf)
+![](./images/bare_metal_bbb.jpg)
 
 ## Continuous Integration (CI)
 
