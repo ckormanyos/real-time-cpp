@@ -162,10 +162,9 @@ To build any `ref_app` target other than `Debug` or `Release` for Win32, a cross
 
 GNU/GCC cross compilers running on `Win*` intended
 for the reference application on VisualStudio(R)
-can be found in the
-[ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
-repository.
-This repository also contains detailed instructions on
+can be found in the _toolchains_ repository,
+[ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains).
+The _toolchains_ repository contains detailed instructions on
 installing, moving and using these ported GNU/GCC compilers.
 
 Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*`
@@ -314,7 +313,7 @@ initializes the
 and starts our self-written
 [multitasking scheduler](./ref_app/src/os).
 
-The following [pdf image](./images/bare_metal_bbb.pdf)
+The image below
 depicts the bare-metal BeagleBone Black Edition
 in action. In this bare-metal operation mode, there is
 no running `*nix` OS on the BBB, no keyboard,
@@ -327,6 +326,8 @@ user LED is toggled on `port1.21` in multitasking operation
 and the oscilloscope captures
 a real-time measurement of the benchmark's time signal
 on digital I/O `port1.15`, header pin `P8.15` of the BBB.
+
+![](./images/bare_metal_bbb.pdf)
 
 ## Continuous Integration (CI)
 
@@ -355,8 +356,8 @@ be available in the standard executable path,
 such as after standard get-install practices.
 
 Some ported GNU/GCC cross compilers for `Win*` are available in the
-[real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains)
-repository.
+_toolchains_ repository,
+[real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains).
 These can be used with the microcontroller solution configurations
 in the reference application when developing/building
 within Microsoft(R) VisualStudio(R). Various other GNU
