@@ -210,7 +210,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
@@ -238,7 +242,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
@@ -266,7 +274,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
@@ -384,7 +396,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
@@ -414,7 +430,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
@@ -444,7 +464,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
@@ -474,7 +498,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
@@ -504,7 +532,11 @@ jobs:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
         run: |
+          echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
