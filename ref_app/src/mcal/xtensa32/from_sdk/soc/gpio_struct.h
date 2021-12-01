@@ -31,7 +31,8 @@
 extern "C" {
 #endif
 
-typedef volatile struct {
+typedef volatile struct gpio_dev_t
+{
     uint32_t bt_select;                             /*NA*/
     uint32_t out;                                   /*GPIO0~31 output value*/
     uint32_t out_w1ts;                              /*GPIO0~31 output value write 1 to set*/
@@ -218,6 +219,7 @@ typedef volatile struct {
         uint32_t val;
     } func_out_sel_cfg[40];
 } gpio_dev_t;
+
 extern gpio_dev_t GPIO;
 
 #ifdef __cplusplus

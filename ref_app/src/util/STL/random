@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2020.
+//  Copyright Christopher Kormanyos 2018 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -202,7 +202,9 @@
     return rnd__result;
   }
 
-  } // namespace rnd__detail
+  } } // namespace std::rnd__detail
+
+  namespace std {
 
   // These classes define objects which provide random
   // or pseudorandom numbers, either from a discrete or
@@ -1712,6 +1714,6 @@ template<typename UnsignedIntegralType,
     random_device& operator=(const random_device&) = delete;
   };
 
-  }
+  } // namespace std
 
 #endif // RANDOM_2018_06_10_

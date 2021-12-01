@@ -10,14 +10,14 @@
 
 #if defined(__GNUC__)
 #if defined(__XTENSA__)
-extern "C" void main_loop(void*);
+extern "C" int app_main_loop(void) __attribute__((used));
 #else
 int main(void) __attribute__((used));
 #endif
 #endif
 
 #if defined(__GNUC__) && defined(__XTENSA__)
-void main_loop(void*)
+int app_main_loop(void)
 #else
 int main(void)
 #endif
@@ -29,8 +29,5 @@ int main(void)
   // Handle an unexpected return from main() in the startup code.
   os::start_os();
 
-  #if defined(__GNUC__) && defined(__XTENSA__)
-  #else
   return 0;
-  #endif
 }

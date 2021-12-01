@@ -12,6 +12,10 @@
   #include <array>
   #include <algorithm>
 
+  // TBD: Handle conversion warnings with search and replace or new code generation.
+
+  namespace math { namespace filters {
+
   template<const std::size_t order,
            const std::size_t resol = 4U,
            typename sample_t = std::int16_t,
@@ -2620,5 +2624,7 @@
     result_type result;
     std::array<value_type, 49U> data;
   };
+
+  } } // namespace math::filters
 
 #endif // FIR_ORDER_N_UNSIGNED_2012_03_27_H_

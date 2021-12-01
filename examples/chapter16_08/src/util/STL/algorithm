@@ -264,11 +264,13 @@
                             output_iterator     result,
                             unary_function_type unary_function)
     {
+      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
       while(first != last)
       {
         if(unary_function(*first))
         {
-          *result = *first;
+          *result = output_value_type(*first);
 
           ++result;
         }
@@ -285,9 +287,11 @@
                                              forward_iterator  last,
                                              const value_type& value)
     {
+      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+
       for( ; first != last; ++first)
       {
-        *first = value;
+        *first = forward_value_type(value);
       }
     }
 
@@ -311,9 +315,11 @@
                   forward_iterator last,
                   generator_type   generator)
     {
+      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+
       while(first != last)
       {
-        *first = generator();
+        *first = forward_value_type(generator());
 
         ++first;
       }
@@ -326,9 +332,11 @@
                                size_type       count,
                                generator_type  generator)
     {
+      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
       for(size_type i = size_type(0); i < count; ++i)
       {
-        *first = generator();
+        *first = output_value_type(generator());
 
         ++first;
       }
@@ -353,9 +361,11 @@
                               output_iterator     result,
                               unary_function_type unary_function)
     {
+      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
       for( ; first != last; ++first, ++result)
       {
-        *result = unary_function(*first);
+        *result = output_value_type(unary_function(*first));
       }
 
       return result;
@@ -371,9 +381,11 @@
                               output_iterator      result,
                               binary_function_type binary_function)
     {
+      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
-        *result = binary_function(*first1, *first2);
+        *result = output_value_type(binary_function(*first1, *first2));
       }
 
       return result;
