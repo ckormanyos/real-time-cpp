@@ -8,23 +8,24 @@
 #ifndef APP_BENCHMARK_2018_10_02_H_
   #define APP_BENCHMARK_2018_10_02_H_
 
-  #define APP_BENCHMARK_TYPE_NONE                        0
-  #define APP_BENCHMARK_TYPE_COMPLEX                     1
-  #define APP_BENCHMARK_TYPE_CRC                         2
-  #define APP_BENCHMARK_TYPE_FAST_MATH                   3
-  #define APP_BENCHMARK_TYPE_FILTER                      4
-  #define APP_BENCHMARK_TYPE_FIXED_POINT                 5
-  #define APP_BENCHMARK_TYPE_FLOAT                       6
-  #define APP_BENCHMARK_TYPE_WIDE_INTEGER                7
-  #define APP_BENCHMARK_TYPE_PI_SPIGOT                   8
-  #define APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE            9
-  #define APP_BENCHMARK_TYPE_HASH                       10
-  #define APP_BENCHMARK_TYPE_WIDE_DECIMAL               11
-  #define APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL         12
-  #define APP_BENCHMARK_TYPE_PI_AGM                     13
-  #define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA     14
-  #define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER         15
-  #define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1           16
+  #define APP_BENCHMARK_TYPE_NONE                                0
+  #define APP_BENCHMARK_TYPE_COMPLEX                             1
+  #define APP_BENCHMARK_TYPE_CRC                                 2
+  #define APP_BENCHMARK_TYPE_FAST_MATH                           3
+  #define APP_BENCHMARK_TYPE_FILTER                              4
+  #define APP_BENCHMARK_TYPE_FIXED_POINT                         5
+  #define APP_BENCHMARK_TYPE_FLOAT                               6
+  #define APP_BENCHMARK_TYPE_WIDE_INTEGER                        7
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT                           8
+  #define APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE                    9
+  #define APP_BENCHMARK_TYPE_HASH                               10
+  #define APP_BENCHMARK_TYPE_WIDE_DECIMAL                       11
+  #define APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL                 12
+  #define APP_BENCHMARK_TYPE_PI_AGM                             13
+  #define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA             14
+  #define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER                 15
+  #define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1                   16
+  #define APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT          17
 
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -43,6 +44,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT
 
   #if !defined(APP_BENCHMARK_TYPE)
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
@@ -84,6 +86,8 @@
   bool run_cnl_scaled_integer();
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
   bool run_soft_double_h2f1();
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT)
+  bool run_boost_multiprecision_sqrt();
   #else
   #error APP_BENCHMARK_TYPE is undefined.
   #endif

@@ -15,7 +15,7 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                                               \
+TGT_ALLFLAGS  = -Os                                                               \
                 -mcpu=cortex-m4                                                   \
                 -mtune=cortex-m4                                                  \
                 -mthumb                                                           \
