@@ -268,7 +268,7 @@
     <ClCompile Include="src\os\os_task_control_block.cpp">
       <Filter>src\os</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32f407\mcal_cpu.cpp">
@@ -829,8 +829,11 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_soft_double_h2f1.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\benchmark\app_benchmark_boost_multiprecision_sqrt.cpp">
+    <ClCompile Include="src\app\benchmark\app_benchmark_boost_multiprecision_cbrt.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\mcal_gcc_cxx_completion_with_stdlib.cpp">
+      <Filter>src\mcal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

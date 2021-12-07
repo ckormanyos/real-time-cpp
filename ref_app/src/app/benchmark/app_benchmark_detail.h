@@ -16,7 +16,7 @@
   template<typename NumericType>
   bool is_close_fraction(const NumericType a,
                          const NumericType b,
-                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * 100))
+                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * NumericType(100)))
   {
     using std::fabs;
 

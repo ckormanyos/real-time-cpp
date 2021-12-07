@@ -52,9 +52,10 @@ The reference application supports the following targets:
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           |
 | `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |
-| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
-| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |
+| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
+| `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
 | `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3        |
@@ -64,8 +65,7 @@ The reference application supports the following targets:
 | `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4        |
 | `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4        |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
-| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
-| `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
+| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
 
 
 ## Getting Started with the Reference Application

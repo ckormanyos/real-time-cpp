@@ -104,9 +104,9 @@ void app::benchmark::task_func()
 
   const bool result_is_ok = app::benchmark::run_soft_double_h2f1();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT)
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT)
 
-  const bool result_is_ok = app::benchmark::run_boost_multiprecision_sqrt();
+  const bool result_is_ok = app::benchmark::run_boost_multiprecision_cbrt();
 
   #endif
 
