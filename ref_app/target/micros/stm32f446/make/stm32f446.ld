@@ -130,6 +130,7 @@ SECTIONS
   } > RAM
 
   PROVIDE(end = .);
+  PROVIDE(_fini = .);
 
   _rom_data_begin = LOADADDR(.data);
 }
