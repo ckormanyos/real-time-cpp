@@ -7,13 +7,18 @@
 
 #include <cstddef>
 
-// Patched functions.
+extern "C"
+{
+  // Patched functions.
+  void        __cxa_pure_virtual  (void);
+  char*       __cxa_demangle      (const char*, char*, size_t*, int*);
+
+  void        __cxa_pure_virtual  (void)                              { }
+  char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
+}
 
 extern "C"
 {
-  void  __cxa_pure_virtual  (void);
-  char* __cxa_demangle      (const char*, char*, size_t*, int*);
-
-  void  __cxa_pure_virtual  (void)                              { }
-  char* __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
+  // Patched labels.
+  void* __dso_handle;
 }

@@ -21,8 +21,8 @@ _rom_begin = 0x08000000;
 _rom_end   = 0x08080000;
 
 /* The beginning and end (i.e., the top) of the stack */
-/* Set up a stack with a size of 32K */
-_stack_begin = 0x20018000;
+/* Set up a stack with a size of 64K */
+_stack_begin = 0x20010000;
 _stack_end   = 0x20020000;
 
 __initial_stack_pointer = 0x20020000 - 4;
@@ -31,7 +31,7 @@ __initial_stack_pointer = 0x20020000 - 4;
 MEMORY
 {
   ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 512K
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x18000
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x10000
 }
 
 SECTIONS
@@ -47,12 +47,13 @@ SECTIONS
     KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
+  /* startup */
   .startup :
   {
     *(.startup)
-    . = ALIGN(4);
+    . = ALIGN(0x10);
     KEEP(*(.startup))
-  } > ROM = 0xAAAA
+  } > ROM = 0x5555
 
   /* Program code (text), read-only data and static ctors */
   .text :
@@ -62,12 +63,6 @@ SECTIONS
     KEEP(*(.init_array*))
     _ctors_end = .;
     *(.progmem*)
-    . = ALIGN(4);
-    *(.ARM.extab)
-    . = ALIGN(4);
-    *(.ARM.extab.text.*)
-    . = ALIGN(4);
-    *(.gnu.linkonce.armextab.*)
     . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
@@ -81,16 +76,29 @@ SECTIONS
     . = ALIGN(4);
     *(.glue_7t)
     . = ALIGN(4);
+  } > ROM
+
+  .ARM.extab :
+  {
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
     PROVIDE(__exidx_start = .);
     *(.ARM.exidx*)
     . = ALIGN(4);
-    *(.gnu.linkonce.armexidx.*)
-    . = ALIGN(4);
     PROVIDE(__exidx_end = .);
-    . = ALIGN(4);
+  } > ROM
+
+  .ARM.attributes :
+  {
     *(.ARM.attributes)
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
+  } > ROM
 
   . = 0x20000000;
   . = ALIGN(4);
