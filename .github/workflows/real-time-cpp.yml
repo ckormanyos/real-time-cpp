@@ -319,7 +319,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+        suite: [ bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
     steps:
       - uses: actions/checkout@v2
         with:
