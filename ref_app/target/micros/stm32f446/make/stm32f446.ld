@@ -64,12 +64,6 @@ SECTIONS
     _ctors_end = .;
     *(.progmem*)
     . = ALIGN(4);
-    *(.ARM.extab)
-    . = ALIGN(4);
-    *(.ARM.extab.text.*)
-    . = ALIGN(4);
-    *(.gnu.linkonce.armextab.*)
-    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -82,16 +76,29 @@ SECTIONS
     . = ALIGN(4);
     *(.glue_7t)
     . = ALIGN(4);
+  } > ROM
+
+  .ARM.extab :
+  {
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
     PROVIDE(__exidx_start = .);
     *(.ARM.exidx*)
     . = ALIGN(4);
-    *(.gnu.linkonce.armexidx.*)
-    . = ALIGN(4);
     PROVIDE(__exidx_end = .);
-    . = ALIGN(4);
+  } > ROM
+
+  .ARM.attributes :
+  {
     *(.ARM.attributes)
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
+  } > ROM
 
   . = 0x20000000;
   . = ALIGN(4);
