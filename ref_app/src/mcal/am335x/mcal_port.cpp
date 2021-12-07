@@ -15,11 +15,11 @@ namespace
 {
   struct osc_detail
   {
-    static constexpr std::uint32_t modulemode_enable = mcal_osc_shared::modulemode_enable;
-    static constexpr std::uint32_t modulemode_mask   = mcal_osc_shared::modulemode_mask;
+    static constexpr std::uint32_t modulemode_enable = mcal::osc::mcal_osc_shared::modulemode_enable;
+    static constexpr std::uint32_t modulemode_mask   = mcal::osc::mcal_osc_shared::modulemode_mask;
 
-    static constexpr std::uint32_t idlest_func       = mcal_osc_shared::idlest_func;
-    static constexpr std::uint32_t idlest_mask       = mcal_osc_shared::idlest_mask;
+    static constexpr std::uint32_t idlest_func       = mcal::osc::mcal_osc_shared::idlest_func;
+    static constexpr std::uint32_t idlest_mask       = mcal::osc::mcal_osc_shared::idlest_mask;
   };
 
   struct port_detail

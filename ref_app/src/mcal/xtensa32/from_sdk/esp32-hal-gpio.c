@@ -94,7 +94,7 @@
 #define MCU_SEL_V 0x7
 #define MCU_SEL_S 12
 
-typedef struct
+typedef struct esp32_gpioMux_t
 {
   uint8_t reg;      /*!< GPIO register offset from DR_REG_IO_MUX_BASE */
    int8_t rtc;      /*!< RTC GPIO number (-1 if not RTC GPIO pin) */
@@ -103,7 +103,7 @@ typedef struct
 }
 esp32_gpioMux_t;
 
-typedef struct
+typedef struct rtc_gpio_desc_t
 {
   uint32_t reg;       /*!< Register of RTC pad, or 0 if not an RTC GPIO */
   uint32_t mux;       /*!< Bit mask for selecting digital pad or RTC pad */

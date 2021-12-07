@@ -34,7 +34,8 @@ extern "C"
   using BaseType_t     = int;
   using UBaseType_t    = unsigned int;
 
-  extern void main_loop(void*);
+  extern int app_main_loop(void) __attribute__((used));
+  void app_main_loop_wrapper(void*);
 
   void app_main(void);
 
@@ -47,26 +48,33 @@ extern "C"
                                             const BaseType_t           xCoreID);
 }
 
+extern "C" void app_main_loop_wrapper(void*)
+{
+  const int nm = app_main_loop();
+
+  static_cast<void>(nm);
+}
+
 extern "C" void app_main(void)
 {
   // The subroutine app_main() is called from the Espressif SDK framework.
   // From the perspective of this particular implementation, this is the
   // starting point of the application.
 
-  static TaskHandle_t main_loop_task_handle;
+  static TaskHandle_t app_main_loop_task_handle;
 
-  constexpr uint32_t    main_loop_stack_size   = UINT32_C(8192);
-  constexpr UBaseType_t main_loop_prio         = 2U;
-  constexpr BaseType_t  main_loop_running_core = 1;
+  constexpr uint32_t    app_main_loop_stack_size   = UINT32_C(8192);
+  constexpr UBaseType_t app_main_loop_prio         = 2U;
+  constexpr BaseType_t  app_main_loop_running_core = 1;
 
   // Create the main loop task.
-  const BaseType_t create_result = ::xTaskCreatePinnedToCore( main_loop,
-                                                             "main_loop",
-                                                              main_loop_stack_size,
+  const BaseType_t create_result = ::xTaskCreatePinnedToCore( app_main_loop_wrapper,
+                                                             "app_main_loop_wrapper",
+                                                              app_main_loop_stack_size,
                                                               nullptr,
-                                                              main_loop_prio,
-                                                             &main_loop_task_handle,
-                                                              main_loop_running_core);
+                                                              app_main_loop_prio,
+                                                             &app_main_loop_task_handle,
+                                                              app_main_loop_running_core);
 
   static_cast<void>(create_result);
 }

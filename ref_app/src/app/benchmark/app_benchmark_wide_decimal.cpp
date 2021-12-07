@@ -35,7 +35,9 @@ bool app::benchmark::run_wide_decimal()
 
   const dec101_t s = sqrt(dec101_t(123456U) / 100);
 
-  // N[Sqrt[123456/100], 101]
+  // N[Sqrt[123456/100], 111]
+  // 35.1363060095963986639333846404180557597515182871693145281659761647177108954528909286350312191322209780537650946
+
   dec101_t control;
 
   typename dec101_t::representation_type rep
@@ -44,6 +46,8 @@ bool app::benchmark::run_wide_decimal()
   );
 
   std::copy(rep.cbegin(), rep.cend(), control.representation().begin());
+
+  using std::fabs;
 
   const dec101_t closeness = fabs(1 - (s / control));
 

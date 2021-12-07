@@ -73,9 +73,15 @@
       static constexpr float       my_value_that_needs_to_be_provided_flt_denorm_min()    { return FLT_MIN; }
 
       #if defined(__GNUC__)
+      #if defined(__AVR__) && (__SIZEOF_DOUBLE__ == 8)
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_infinity()      { return __builtin_infl(); }
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_quiet_NaN()     { return __builtin_nanl(""); }
+      static constexpr double      my_value_that_needs_to_be_provided_dbl_signaling_NaN() { return __builtin_nanl(""); }
+      #else
       static constexpr double      my_value_that_needs_to_be_provided_dbl_infinity()      { return __builtin_inf(); }
       static constexpr double      my_value_that_needs_to_be_provided_dbl_quiet_NaN()     { return __builtin_nan(""); }
       static constexpr double      my_value_that_needs_to_be_provided_dbl_signaling_NaN() { return __builtin_nan(""); }
+      #endif
       #endif
       #if defined(__IAR_SYSTEMS_ICC__)
       static constexpr double      my_value_that_needs_to_be_provided_dbl_infinity()      { return 0.Infinity; }

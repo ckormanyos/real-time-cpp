@@ -190,6 +190,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt_tgamma.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_boost_multiprecision_cbrt.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp" />
@@ -475,6 +476,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\mcal\mcal.cpp" />
+    <ClCompile Include="src\mcal\mcal_gcc_cxx_completion_with_stdlib.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\mcal\rl78\mcal_eep.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -904,7 +909,7 @@
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>

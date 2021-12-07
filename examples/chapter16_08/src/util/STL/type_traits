@@ -356,4 +356,137 @@
   }
   #endif
 
+  namespace traits_helper
+  {
+    template<class T>
+    auto test_returnable(int) ->
+      decltype
+      (
+        void(static_cast<T(*)()>(nullptr)), std::true_type { }
+      );
+
+    template<class>
+    auto test_returnable(...) -> std::false_type;
+
+    template<class From, class To>
+    auto test_implicitly_convertible(int) ->
+      decltype
+      (
+        void(std::declval<void(&)(To)>()(std::declval<From>())), std::true_type { }
+      );
+
+    template<class, class>
+    auto test_implicitly_convertible(...) -> std::false_type;
+
+    typedef char yes_type;
+
+    struct no_type
+    {
+      char padding[8];
+    };
+
+    struct is_constructible_imp
+    {
+      template<typename T, typename ...TheArgs, typename = decltype(T(std::declval<TheArgs>()...))>
+      static traits_helper::yes_type test(int);
+      template<typename, typename...>
+      static traits_helper::no_type test(...);
+
+      template<typename T, typename Arg, typename = decltype(::new T(std::declval<Arg>()))>
+      static traits_helper::yes_type test1(int);
+      template<typename, typename>
+      static traits_helper::no_type test1(...);
+
+      template <typename T>
+      static traits_helper::yes_type ref_test(T);
+      template <typename T>
+      static traits_helper::no_type ref_test(...);
+    };
+
+    template <unsigned N>
+    struct ok_tag { double d; char c[N]; };
+
+    template <class T>
+    ok_tag<sizeof(T)> check_is_complete(int);
+
+    template <class T>
+    char check_is_complete(...);
+
+    struct is_default_constructible_imp
+    {
+      template<typename _Tp, typename = decltype(_Tp())>
+      static traits_helper::yes_type test(int);
+
+      template<typename>
+      static traits_helper::no_type test(...);
+    };
+
+    struct is_destructible_imp
+    {
+      template<typename T, typename = decltype(std::declval<T&>().~T())>
+      static traits_helper::yes_type test(int);
+      template<typename>
+      static traits_helper::no_type test(...);
+    };
+  }
+
+  namespace std
+  {
+   template <class T> struct is_complete
+      : public std::integral_constant<bool,
+                                      std::is_function<    typename std::remove_reference<T>::type>::value
+                                                       || (sizeof(traits_helper::check_is_complete<T>(0)) != sizeof(char))> { };
+
+    template <class T> struct is_destructible
+      : public std::integral_constant<bool, sizeof(traits_helper::is_destructible_imp::test<T>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "Arguments to is_destructible must be complete types");
+    };
+
+    template <class T> struct is_default_constructible
+      : public integral_constant<bool, sizeof(traits_helper::is_default_constructible_imp::test<T>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "Arguments to is_default_constructible must be complete types");
+    };
+
+    template <class T, std::size_t N> struct is_default_constructible<T[N]> : public is_default_constructible<T>{};
+    template <class T> struct is_default_constructible<T[]> : public is_default_constructible<T>{};
+    template <class T> struct is_default_constructible<T&> : public integral_constant<bool, false>{};
+
+    template <class T> struct is_default_constructible<T&&> : public integral_constant<bool, false>{};
+
+    template <> struct is_default_constructible<void> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void const> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void volatile> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void const volatile> : public integral_constant<bool, false>{};
+
+    template<class From, class To>
+    struct is_convertible
+      : std::integral_constant<bool,
+                                   (   decltype(traits_helper::test_returnable<To>(0))::value
+                                    && decltype(traits_helper::test_implicitly_convertible<From, To>(0))::value)
+                                || (std::is_void<From>::value && std::is_void<To>::value)> { };
+
+    template <class T, class ...Args> struct is_constructible
+      : public std::integral_constant<bool, sizeof(traits_helper::is_constructible_imp::test<T, Args...>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "The target type must be complete in order to test for constructibility");
+    };
+
+    template <class T, class Arg> struct is_constructible<T, Arg> : public integral_constant<bool, std::is_destructible<T>::value && sizeof(traits_helper::is_constructible_imp::test1<T, Arg>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "The target type must be complete in order to test for constructibility");
+    };
+
+    template <class Ref, class Arg> struct is_constructible<Ref&,  Arg> : public integral_constant<bool, sizeof(traits_helper::is_constructible_imp::ref_test<Ref&> (std::declval<Arg>())) == sizeof(traits_helper::yes_type)> { };
+    template <class Ref, class Arg> struct is_constructible<Ref&&, Arg> : public integral_constant<bool, sizeof(traits_helper::is_constructible_imp::ref_test<Ref&&>(std::declval<Arg>())) == sizeof(traits_helper::yes_type)> { };
+
+    template <> struct is_constructible<void>                : public false_type { };
+    template <> struct is_constructible<void const>          : public false_type { };
+    template <> struct is_constructible<void const volatile> : public false_type { };
+    template <> struct is_constructible<void volatile>       : public false_type { };
+
+    template <class T> struct is_constructible<T> : public is_default_constructible<T> { };
+  }
+
 #endif // TYPE_TRAITS_2013_09_01_

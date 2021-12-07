@@ -23,11 +23,11 @@ namespace
     static void emif_init                   ();
     static void dm_timer7_clock_init        ();
 
-    static constexpr std::uint32_t modulemode_enable = mcal_osc_shared::modulemode_enable;
-    static constexpr std::uint32_t modulemode_mask   = mcal_osc_shared::modulemode_mask;
+    static constexpr std::uint32_t modulemode_enable = mcal::osc::mcal_osc_shared::modulemode_enable;
+    static constexpr std::uint32_t modulemode_mask   = mcal::osc::mcal_osc_shared::modulemode_mask;
 
-    static constexpr std::uint32_t idlest_func       = mcal_osc_shared::idlest_func;
-    static constexpr std::uint32_t idlest_mask       = mcal_osc_shared::idlest_mask;
+    static constexpr std::uint32_t idlest_func       = mcal::osc::mcal_osc_shared::idlest_func;
+    static constexpr std::uint32_t idlest_mask       = mcal::osc::mcal_osc_shared::idlest_mask;
 
     static constexpr std::uint32_t mcu_clkinp        = UINT32_C(24); // Clock input 24MHz.
 
