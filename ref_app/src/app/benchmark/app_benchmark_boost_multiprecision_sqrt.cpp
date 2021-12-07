@@ -10,9 +10,13 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT)
 
+//#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_SQRT_USE_BIN_FLOAT
+
 //TGT_INCLUDES  = -IC:/boost/boost_multiprecision_standalone/include                \
 //                -IC:/boost/modular_boost/boost/libs/math/include                  \
 //                -IC:/boost/modular_boost/boost/libs/config/include
+
+//C:/boost/boost_multiprecision_standalone/include;C:/boost/modular_boost/boost/libs/math/include;C:/boost/modular_boost/boost/libs/config/include;
 
 #if !defined(BOOST_MP_STANDALONE)
 #define BOOST_MP_STANDALONE
@@ -38,28 +42,49 @@
 #define BOOST_MATH_DISABLE_ERROR_HANDLING
 #endif
 
-#define BOOST_MATH_PROMOTE_FLOAT_POLICY false
+#if !defined(BOOST_NO_CXX11_THREAD_LOCAL)
+#define BOOST_NO_CXX11_THREAD_LOCAL
+#endif
 
+#include <boost/config.hpp>
+#if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_SQRT_USE_BIN_FLOAT)
+#include <boost/multiprecision/cpp_bin_float.hpp>
+#else
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#endif
 
 namespace local
 {
   using big_float_type =
-    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<51, std::int32_t, void>,
+  #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_SQRT_USE_BIN_FLOAT)
+    boost::multiprecision::number<boost::multiprecision::cpp_bin_float<101>,
                                   boost::multiprecision::et_off>;
+  #else
+    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<101, std::int32_t, void>,
+                                  boost::multiprecision::et_off>;
+  #endif
 }
 
 bool app::benchmark::run_boost_multiprecision_sqrt()
 {
   using local::big_float_type;
 
-  // N[Sqrt[3001/3], 51]
-  // 31.6280466253186956650730523324944190761410921737177
+  // N[Sqrt[3001/3], 111]
+  // 31.6280466253186956650730523324944190761410921737176918710172729131615977753452108050362516806270353838640956123
+  static const big_float_type
+    control
+    (
+      "31.6280466253186956650730523324944190761410921737176918710172729131615977753452108050362516806270353838640956123"
+    );
 
+  using std::sqrt;
+
+  // Compute a square root.
   const big_float_type big_float_arg    = big_float_type(3001) / 3;
   const big_float_type big_float_result = sqrt(big_float_arg);
 
-  const bool app_benchmark_result_is_ok = (static_cast<int>(big_float_result) == 31);
+  // Compare the calculated result with the known control value.
+  const bool app_benchmark_result_is_ok = detail::is_close_fraction(big_float_result, control);
 
   return app_benchmark_result_is_ok;
 }
@@ -76,9 +101,9 @@ int main()
     result_is_ok &= app::benchmark::run_boost_multiprecision_sqrt();
   }
 
-  return result_is_ok ? 0 : -1;
+  return (result_is_ok ? 0 : -1);
 }
 
 #endif
 
-#endif // APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA
+#endif // APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_SQRT
