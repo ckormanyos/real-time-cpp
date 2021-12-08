@@ -54,29 +54,17 @@
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #endif
 
-namespace local
-{
-  using big_float_type =
-  #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)
-    boost::multiprecision::number<boost::multiprecision::cpp_bin_float<101>,
-                                  boost::multiprecision::et_off>;
-  #else
-    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<101, std::int32_t, void>,
-                                  boost::multiprecision::et_off>;
-  #endif
-
-  // N[(3001/3)^(1/3), 111]
-  // 10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127
-  const big_float_type
-    control
-    (
-      "10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127"
-    );
-}
-
 bool app::benchmark::run_boost_multiprecision_cbrt()
 {
-  using local::big_float_type;
+  using big_float_backend_type =
+  #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)
+    boost::multiprecision::cpp_bin_float<101, boost::multiprecision::backends::digit_base_10, void, std::int32_t>;
+  #else
+    boost::multiprecision::cpp_dec_float<101, std::int32_t, void>;
+  #endif
+
+  using big_float_type =
+    boost::multiprecision::number<big_float_backend_type, boost::multiprecision::et_off>;
 
   using std::cbrt;
   using boost::math::cbrt;
@@ -85,7 +73,13 @@ bool app::benchmark::run_boost_multiprecision_cbrt()
   const big_float_type big_float_arg    = big_float_type(3001) / 3;
   const big_float_type big_float_result = cbrt(big_float_arg);
 
-  using local::control;
+  // N[(3001/3)^(1/3), 111]
+  // 10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127
+  const big_float_type
+    control
+    (
+      "10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127"
+    );
 
   // Compare the calculated result with the known control value.
   const bool app_benchmark_result_is_ok = detail::is_close_fraction(big_float_result, control);
