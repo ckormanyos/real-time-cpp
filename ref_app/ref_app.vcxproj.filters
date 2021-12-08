@@ -1845,9 +1845,6 @@
     <ClInclude Include="src\mcal\xtensa32\from_sdk\soc\gpio_struct.h">
       <Filter>src\mcal\xtensa32\from_sdk\soc</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_numeric_cast.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\atmega4809\mcal_memory_sram.h">
       <Filter>src\mcal\atmega4809</Filter>
     </ClInclude>

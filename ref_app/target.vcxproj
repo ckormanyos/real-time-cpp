@@ -305,22 +305,22 @@
 </NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b clean_all</NMakeCleanCommandLine>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">$(OutDir)ref_app.exe</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(OutDir)ref_app.hex</NMakeOutput>
-    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(OutDir)ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f407|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target x86_64-w64-mingw32|x64'">$(SolutionDir)bin\ref_app.exe</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f446|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
