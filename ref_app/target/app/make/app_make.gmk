@@ -124,7 +124,9 @@ CC        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
 CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
 NM        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
 OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
+ifeq ($(OBJCOPY),)
 OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+endif
 READELF   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
 SIZE      = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
 endif
