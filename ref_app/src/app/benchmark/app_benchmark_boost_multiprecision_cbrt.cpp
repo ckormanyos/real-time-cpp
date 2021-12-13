@@ -12,11 +12,13 @@
 
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
 
-//TGT_INCLUDES  = -IC:/boost/boost_multiprecision_standalone/include                \
+//TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/multiprecision/include        \
 //                -IC:/boost/modular_boost/boost/libs/math/include                  \
 //                -IC:/boost/modular_boost/boost/libs/config/include
 
-//C:/boost/boost_multiprecision_standalone/include;C:/boost/modular_boost/boost/libs/math/include;C:/boost/modular_boost/boost/libs/config/include;
+//LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/stm32f446_with_stdlib.ld
+
+//C:/boost/modular_boost/boost/libs/multiprecision/include;C:/boost/modular_boost/boost/libs/math/include;C:/boost/modular_boost/boost/libs/config/include;
 
 #if !defined(BOOST_MP_STANDALONE)
 #define BOOST_MP_STANDALONE
@@ -66,20 +68,25 @@ bool app::benchmark::run_boost_multiprecision_cbrt()
   using big_float_type =
     boost::multiprecision::number<big_float_backend_type, boost::multiprecision::et_off>;
 
+  // Compute a square root.
+  static const big_float_type
+    big_float_arg
+    {
+      big_float_type(UINT32_C(123456)) / 100U
+    };
+
   using std::cbrt;
   using boost::math::cbrt;
 
-  // Compute a square root.
-  const big_float_type big_float_arg    = big_float_type(3001) / 3;
   const big_float_type big_float_result = cbrt(big_float_arg);
 
-  // N[(3001/3)^(1/3), 111]
-  // 10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127
-  const big_float_type
+  // N[(123456/100)^(1/3), 111]
+  // 10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465
+  static const big_float_type
     control
-    (
-      "10.0011109876771782769109438960277928258242274909220595675238056009519465183945889896557377478820599978423940127"
-    );
+    {
+      "10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465"
+    };
 
   // Compare the calculated result with the known control value.
   const bool app_benchmark_result_is_ok = detail::is_close_fraction(big_float_result, control);

@@ -43,7 +43,7 @@ void* memcpy(void* dest, const void* src, size_t count)
   return (void*) (puchar_dest + count);
 }
 
-void *memmove(void *dest, const void *src, size_t n)
+void* memmove(void *dest, const void *src, size_t n)
 {
   uint8_t* from = (uint8_t*) src;
   uint8_t* to   = (uint8_t*) dest;

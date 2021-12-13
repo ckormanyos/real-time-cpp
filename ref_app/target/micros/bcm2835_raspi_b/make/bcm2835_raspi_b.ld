@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2013 - 2020.
+ Copyright Christopher Kormanyos 2013 - 2021.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,6 +13,7 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The beginning and end of the program ROM area */
+/* Set up a ROM area with a size of 32K */
 _rom_begin = 0x00008000;
 _rom_end   = 0x00010000;
 
@@ -54,7 +55,7 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0x5555
+  } > ROM = 0xAAAA
 
   /* Startup: This is where the program starts. */
   .startup :
@@ -62,18 +63,17 @@ SECTIONS
     *(.startup)
     . = ALIGN(0x10);
     KEEP(*(.startup))
-  } > ROM = 0xAAAA
+  } > ROM = 0x5555
 
   /* Program code (text), read-only data and static ctors */
   .text :
   {
     _ctors_begin = .;
-    *(.init_array)
-    . = ALIGN(4);
-    KEEP (*(SORT(.init_array)))
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array*))
     _ctors_end = .;
     *(.progmem*)
-    . = ALIGN(2);
+    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -82,12 +82,33 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
+    *(.glue_7)
+    . = ALIGN(4);
+    *(.glue_7t)
+    . = ALIGN(4);
   } > ROM
 
-  .text :
+  .ARM.extab :
   {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > ROM
+
+  .ARM.attributes :
+  {
+    *(.ARM.attributes)
+  } > ROM
 
   . = 0x00010000;
   . = ALIGN(4);
@@ -162,6 +183,8 @@ SECTIONS
     . = ALIGN(MAX(__FIQ_STACK_SIZE , .), 8);
     PROVIDE(__FIQ_STACK_TOP = .) ;
   } > STACKS
+
+  PROVIDE(end = .);
 
   _rom_data_begin = LOADADDR(.data);
 }
