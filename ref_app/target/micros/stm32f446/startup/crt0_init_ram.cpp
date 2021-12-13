@@ -25,7 +25,7 @@ namespace crt
 
 void crt::init_ram()
 {
-  typedef std::uint32_t memory_aligned_type;
+  using memory_aligned_type = std::uint32_t;
 
   // Copy the data segment initializers from ROM to RAM.
   // Note that all data segments are aligned by 4.

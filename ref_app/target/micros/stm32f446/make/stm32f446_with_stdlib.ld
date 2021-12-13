@@ -47,7 +47,7 @@ SECTIONS
     KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
-  /* startup */
+  /* Startup: This is where the program starts. */
   .startup :
   {
     *(.startup)

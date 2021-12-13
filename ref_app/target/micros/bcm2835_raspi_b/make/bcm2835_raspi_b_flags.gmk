@@ -41,3 +41,9 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -T $(LINKER_DEFINITION_FILE)
 
 IMAGE_FILE   := $(PATH_BIN)/kernel.img
+
+ifeq ($(OBJCOPY),)
+OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+endif
+
+RULE_SPECIAL_MAKE_IMAGE_FILE := $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)

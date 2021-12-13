@@ -1486,7 +1486,7 @@
         while(ne % static_cast<exponent_type>(p))
         {
           ++ne;
-          dd /= 10.0;
+          dd /= InternalFloatType(10.0F);
         }
 
         const std::int32_t original_prec_elem = x.my_prec_elem;

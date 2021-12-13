@@ -120,6 +120,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${LDFLAGS} ${TARGET_LDFLAGS}" CACHE STRING "" FORCE)
 # ------------------------------------------------------------------------------
 set(app_src
     ${PATH_APP}/app/benchmark/app_benchmark
+    ${PATH_APP}/app/benchmark/app_benchmark_boost_math_cbrt_tgamma
+    ${PATH_APP}/app/benchmark/app_benchmark_boost_multiprecision_cbrt
     ${PATH_APP}/app/benchmark/app_benchmark_complex
     ${PATH_APP}/app/benchmark/app_benchmark_crc
     ${PATH_APP}/app/benchmark/app_benchmark_fast_math
