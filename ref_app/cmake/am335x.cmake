@@ -53,8 +53,9 @@ set(_TARGET_CFLAGS
 set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
-    -nostdlib
     -nostartfiles
+    -specs=nano.specs
+    -specs=nosys.specs
     -T ${LINKER_DEFINITION_FILE}
 )
 

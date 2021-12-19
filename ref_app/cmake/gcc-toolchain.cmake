@@ -126,7 +126,6 @@ set(_CXXFLAGS ${GCCFLAGS}
     -x c++
     -fno-rtti
     -fno-use-cxa-atexit
-    -fno-exceptions
     -fno-nonansi-builtins
     -fno-threadsafe-statics
     -fno-enforce-eh-specs
