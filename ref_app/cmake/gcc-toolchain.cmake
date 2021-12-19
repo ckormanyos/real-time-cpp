@@ -110,6 +110,7 @@ set(GCCFLAGS
     -Winit-self
     -Wfloat-equal
     -Wdouble-promotion
+    -Wno-comment
     -gdwarf-2
     -fno-exceptions
     -ffunction-sections

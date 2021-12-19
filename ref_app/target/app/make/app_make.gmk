@@ -180,7 +180,7 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32               \
+              -ftemplate-depth=128              \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
