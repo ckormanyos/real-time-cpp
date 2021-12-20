@@ -136,6 +136,7 @@ WARN_FLAGS =  -Wall                             \
               -pedantic                         \
               -Wmain                            \
               -Wundef                           \
+              -Wconversion                      \
               -Wsign-conversion                 \
               -Wunused-parameter                \
               -Wuninitialized                   \
@@ -153,6 +154,7 @@ endif
 
 GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
+              -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -ffunction-sections               \
@@ -167,11 +169,10 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               -x c++                            \
               -fno-rtti                         \
               -fno-use-cxa-atexit               \
-              -fno-exceptions                   \
               -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
               -fno-enforce-eh-specs             \
-              -ftemplate-depth=32               \
+              -ftemplate-depth=128              \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
@@ -280,23 +281,27 @@ endif
 # create hex mask
 # ------------------------------------------------------------------------------
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
-	@-$(ECHO) +++ creating hex module: $(APP).hex.
+	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
 ifeq ($(TGT_SUFFIX),elf)
+	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
-	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
+	@-$(ECHO) +++ creating srec module: $(APP).s19
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
 endif
 ifeq ($(RULE_SPECIAL_MAKE_IMAGE_FILE),)
-	@-$(ECHO) +++ creating binary file
-	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)
+	@-$(ECHO) +++ creating special image file
+	@-$(ECHO) +++ disabled because there is no special image file
 else
 	@-$(ECHO) +++ creating special image file
 	@-$(RULE_SPECIAL_MAKE_IMAGE_FILE)
 endif
-ifneq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
-	@-$(ECHO) +++ creating flash batch file
+ifeq ($(RULE_SPECIAL_MAKE_FLASH_BATCH),)
+	@-$(ECHO) +++ creating special flash batch file
+	@-$(ECHO) +++ disabled because there is no special flash batch file
+else
+	@-$(ECHO) +++ creating special flash batch file
 	@-$(RULE_SPECIAL_MAKE_FLASH_BATCH)
 endif
 
