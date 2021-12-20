@@ -50,7 +50,7 @@ namespace
 
       // Since we have no information on the detailed ticking order
       // of clo and chi, we read the high counter and the low conter
-      // in the hopes that a consistent 64-bit tick has been obtained.
+      // successively until a consistent 64-bit tick has been obtained.
 
       // Do the first read of the low counter and the high conter.
       const std::uint32_t clo_1 = lo();

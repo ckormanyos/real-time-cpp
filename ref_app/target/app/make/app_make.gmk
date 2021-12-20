@@ -156,6 +156,7 @@ WARN_FLAGS =  -Wall                             \
               -Wcast-align                      \
               -Wmissing-include-dirs            \
               -Winit-self                       \
+              -Wfloat-equal                     \
               -Wdouble-promotion
 endif
 
