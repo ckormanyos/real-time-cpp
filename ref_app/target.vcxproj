@@ -627,6 +627,7 @@
     <None Include="Target\Micros\AVR\Startup\crt0.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt0_init_ram.cpp" />
     <None Include="Target\Micros\AVR\Startup\crt1.cpp" />
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_with_stdlib.ld" />
     <None Include="target\micros\bcm2835_raspi_b\startup\int_vect.s" />
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\bootcode.bin" />
     <None Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\kernel.img" />
