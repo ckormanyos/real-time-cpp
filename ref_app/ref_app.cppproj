@@ -72,6 +72,7 @@
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.warnings.ExtraWarnings>True</avrgcc.compiler.warnings.ExtraWarnings>
   <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
   <avrgcc.compiler.miscellaneous.OtherFlags>-std=c99 -flto</avrgcc.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.compiler.directories.IncludePaths>
@@ -85,7 +86,7 @@
   <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++11 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -flto</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++11 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -flto -Wno-comment</avrgcccpp.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
   <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
   <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
@@ -161,7 +162,10 @@
     <Folder Include="src\math\fixed_point\" />
     <Folder Include="src\math\functions" />
     <Folder Include="src\math\wide_integer" />
+    <Folder Include="src\mcal_lcd\" />
+    <Folder Include="src\mcal_led\" />
     <Folder Include="src\mcal_memory" />
+    <Folder Include="src\mcal_pwm\" />
     <Folder Include="src\mcal_spi" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
@@ -189,6 +193,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_boost_math_cbrt_tgamma.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_boost_multiprecision_cbrt.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_complex.cpp">
@@ -225,6 +238,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_pi_spigot_single.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\app\benchmark\app_benchmark_soft_double_h2f1.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\app\benchmark\app_benchmark_trapezoid_integral.cpp">
@@ -401,6 +417,33 @@
     <Compile Include="src\mcal\mcal_reg_access_static.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_lcd\mcal_lcd_generic_st7066.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port_inverted.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
@@ -435,6 +478,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memroy_sram_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_pwm\mcal_pwm_dummy.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_spi\mcal_spi_software_dummy.h">
@@ -479,7 +531,7 @@
     <Compile Include="src\util\memory\util_static_allocator.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\util\STD_LIBC\memory.cpp">
+    <Compile Include="src\util\STD_LIBC\memory.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL\impl\allocator_impl.h">
@@ -589,10 +641,25 @@
     <None Include="src\util\STL\basic_string">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\bitset">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\cfloat">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\charconv">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cinttypes">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\climits">
@@ -637,7 +704,16 @@
     <None Include="src\util\STL\numeric">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\util\STL\random">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\util\STL\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\span">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\stdexcept">
       <SubType>compile</SubType>
     </None>
     <None Include="src\util\STL\string">

@@ -10,6 +10,11 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT)
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
 
 //TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/multiprecision/include        \
@@ -109,6 +114,10 @@ int main()
   return (result_is_ok ? 0 : -1);
 }
 
+#endif
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT

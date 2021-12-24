@@ -411,6 +411,9 @@
     <None Include="target\micros\stm32f446\make\stm32f446_with_stdlib.ld">
       <Filter>micros\stm32f446\make</Filter>
     </None>
+    <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_with_stdlib.ld">
+      <Filter>micros\bcm2835_raspi_b\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
