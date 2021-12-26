@@ -16,8 +16,12 @@ GCC_PREFIX    = v850-unknown-elf
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                            \
-                -mv850e1                                       \
+                -mv850es                                       \
                 -mgcc-abi                                      \
+                -mtda=0x0                                      \
+                -mzda=0x0                                      \
+                -msda=0x0                                      \
+                -mdisable-callt                                \
                 -finline-functions                             \
                 -finline-limit=32
 

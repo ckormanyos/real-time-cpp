@@ -12,7 +12,7 @@ _stack_end   = 0x03FFF000;
 
 __initial_stack_pointer = 0x03FFF000 - 4;
 
-EXTERN(__ctbp __ep __gp);
+EXTERN(__tp __ep __gp);
 
 MEMORY
 {
@@ -96,18 +96,8 @@ SECTIONS
      It contains a small lookup table at the start followed by the
      code pointed to by entries in the lookup table.  */
 
-  .call_table_data ALIGN (4) :
-  {
-    PROVIDE(__ctbp = .);
-    *(.call_table_data)
-  } >ROM = 0xff   /* Fill gaps with 0xff.  */
+    PROVIDE(__tp = .);
 
-  .call_table_text :
-  {
-    *(.call_table_text)
-  } > ROM
-  
-  .fini    : { KEEP (*(.fini)) } > ROM = 0
   .rodata  : { *(.rodata) *(.rodata.*) *(.gnu.linkonce.r*) } > ROM
   .rodata1 : { *(.rodata1) } > ROM
 

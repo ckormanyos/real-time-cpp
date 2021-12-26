@@ -21,15 +21,17 @@ extern "C" void __my_startup() __attribute__((used, noinline));
 void __my_startup()
 {
   // Load the stack pointer.
-  asm volatile("movea 255, r0, r20");
-  asm volatile("mov   65535, r21");
-  asm volatile("mov   hilo(__initial_stack_pointer), sp");
+  //asm volatile("movea 255, r0, r20");
+  asm volatile("movhi hi(__initial_stack_pointer), zero, sp");
+  asm volatile("movea lo(__initial_stack_pointer), sp, sp");
 
-  // Initialize other chip registers and pointers.
-  asm volatile("mov   hilo(__ep), ep");
-  asm volatile("mov   hilo(__gp), gp");
-  asm volatile("mov   hilo(__ctbp), r6");
-  asm volatile("ldsr  r6, ctbp");
+  // Initialize the global pointer.
+  asm volatile("movhi hi(__gp), zero, gp");
+  asm volatile("movea lo(__gp), gp, gp");
+
+  // Initialize the text pointer.
+  asm volatile("movhi hi(__tp), zero, tp");
+  asm volatile("movea lo(__tp), tp, tp");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
