@@ -178,6 +178,15 @@
     <Filter Include="micros\stm32f429\make\single">
       <UniqueIdentifier>{1ccfe424-3b8a-4499-be2b-cf8f9dc332cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\v850es_fx2">
+      <UniqueIdentifier>{95548fcd-4508-40bb-849e-c14ad226a802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\v850es_fx2\make">
+      <UniqueIdentifier>{6815bbfa-b7a8-482a-a91d-872b191ceaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\v850es_fx2\startup">
+      <UniqueIdentifier>{9e52b1bf-fd57-474f-91d6-677c425f54e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -414,6 +423,15 @@
     <None Include="target\micros\bcm2835_raspi_b\make\bcm2835_raspi_b_with_stdlib.ld">
       <Filter>micros\bcm2835_raspi_b\make</Filter>
     </None>
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2_files.gmk">
+      <Filter>micros\v850es_fx2\make</Filter>
+    </None>
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2_flags.gmk">
+      <Filter>micros\v850es_fx2\make</Filter>
+    </None>
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2.ld">
+      <Filter>micros\v850es_fx2\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -583,6 +601,21 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32f429\make\single\crt.cpp">
       <Filter>micros\stm32f429\make\single</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt0.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt1.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\unhandled_exception.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

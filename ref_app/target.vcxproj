@@ -57,6 +57,10 @@
       <Configuration>target stm32l152</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target v850es_fx2|x64">
+      <Configuration>target v850es_fx2</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="target x86_64-w64-mingw32|x64">
       <Configuration>target x86_64-w64-mingw32</Configuration>
       <Platform>x64</Platform>
@@ -95,6 +99,11 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -193,6 +202,10 @@
     <ConfigurationType>Makefile</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">
     <ConfigurationType>Makefile</ConfigurationType>
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
@@ -217,6 +230,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" Label="PropertySheets">
@@ -260,6 +276,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24</NMakeBuildCommandLine>
@@ -276,6 +293,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 rebuild</NMakeReBuildCommandLine>
@@ -293,6 +311,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">Target\Build\Build.bat v850es_fx2 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 clean_all</NMakeCleanCommandLine>
@@ -310,6 +329,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -326,6 +346,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -342,6 +363,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(ProjectDir)/Cpp; $(ProjectDir)/Cpp/Hal/AVR;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\lpc11c24</NMakeIncludeSearchPath>
@@ -358,6 +380,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -374,6 +397,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -390,6 +414,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
@@ -422,36 +447,43 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">Target\Build\Build.bat v850es_fx2</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">Target\Build\Build.bat avr rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">Target\Build\Build.bat atmega4809 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">Target\Build\Build.bat atmega2560 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">Target\Build\Build.bat rl78 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">Target\Build\Build.bat rx63n rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">Target\Build\Build.bat v850es_fx2 rebuild</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\avr;</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\avr;</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(SolutionDir)src\util\STL $(SolutionDir)src\util\STL_C++XX_stdfloat $(SolutionDir)src $(SolutionDir)src\mcal\avr</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/rl78</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/rx63n</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/rx63n</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|x64'">Build\Build.bat AVR</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Target AVR32|Win32'">Build\Build.bat AVR rebuild</NMakeReBuildCommandLine>
@@ -473,31 +505,37 @@
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target avr|x64'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target rl78|x64'" />
     <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'" />
+    <ExcludePath Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Target|Win32'">
     <BuildLog>
@@ -530,6 +568,11 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target rx63n|x64'">
+    <BuildLog>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target v850es_fx2|x64'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
@@ -662,6 +705,9 @@
     <None Include="target\micros\stm32l152\make\stm32l152.ld" />
     <None Include="target\micros\stm32l152\make\stm32l152_files.gmk" />
     <None Include="target\micros\stm32l152\make\stm32l152_flags.gmk" />
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2.ld" />
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2_files.gmk" />
+    <None Include="target\micros\v850es_fx2\make\v850es_fx2_flags.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk" />
@@ -735,6 +781,11 @@
     <ClCompile Include="target\micros\stm32l152\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32l152\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32l152\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s" />
+    <ClCompile Include="target\micros\v850es_fx2\startup\unhandled_exception.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
   </ItemGroup>
   <ItemGroup>
