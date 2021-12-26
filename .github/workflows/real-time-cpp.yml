@@ -501,7 +501,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ x850es_fx2 ]
+        suite: [ v850es_fx2 ]
     steps:
       - uses: actions/checkout@v2
         with:
