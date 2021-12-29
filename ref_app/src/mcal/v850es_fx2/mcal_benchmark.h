@@ -9,12 +9,16 @@
   #define MCAL_BENCHMARK_2021_12_25_H_
 
   #include <mcal_port.h>
+  #include <mcal_reg.h>
 
   namespace mcal
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin benchmark_port_type;
+      using benchmark_port_type = mcal::port::port_pin<std::uint32_t,
+                                                       std::uint8_t,
+                                                       mcal::reg::pdll,
+                                                       1U>;
     }
   }
 

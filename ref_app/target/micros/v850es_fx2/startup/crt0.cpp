@@ -8,7 +8,8 @@
 // Renesas v850es/fx2 startup code.
 // Expressed with C++ for upd703231 by Chris.
 
-#include <mcal/mcal.h>
+#include <mcal_cpu.h>
+#include <mcal_wdg.h>
 
 namespace crt
 {
@@ -16,42 +17,44 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup() __attribute__((used, noinline));
+extern "C" void __my_startup(void) __attribute__((used, noinline));
+extern "C" void mcal_cpu_init(void);
+extern "C" void crt_init_ctors(void);
 
 void __my_startup()
 {
-  // Load the stack pointer.
-  //asm volatile("movea 255, r0, r20");
-  asm volatile("movhi hi(__initial_stack_pointer), zero, sp");
-  asm volatile("movea lo(__initial_stack_pointer), sp, sp");
+  asm volatile("movea 255, r0, r20");
+  asm volatile("mov   65535, r21");
+  asm volatile("mov   hilo(_stack), sp");
+  asm volatile("mov   hilo(__ep), ep");
+  asm volatile("mov   hilo(__gp), gp");
 
-  // Initialize the global pointer.
-  asm volatile("movhi hi(__gp), zero, gp");
-  asm volatile("movea lo(__gp), gp, gp");
-
-  // Initialize the text pointer.
-  asm volatile("movhi hi(__tp), zero, tp");
-  asm volatile("movea lo(__tp), tp, tp");
+  //asm volatile("movhi hi(__tp), zero, tp");
+  //asm volatile("movea lo(__tp), tp, tp");
 
   // Chip init: Watchdog, port, and oscillator.
-  mcal::cpu::init();
+  mcal_cpu_init();
+  mcal::wdg::secure::trigger();
 
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
   crt::init_ram();
-  asm volatile("nop");
+  mcal::wdg::secure::trigger();
 
   // Call all ctor initializations.
-  crt::init_ctors();
-  asm volatile("nop");
+  crt_init_ctors();
+  mcal::wdg::secure::trigger();
 
   // Jump to main (and never return).
-  asm volatile("jarl _main, lp");
+  asm volatile("jr _main");
 
   // Catch an unexpected return from main.
   for(;;)
   {
     // Replace with a loud error if desired.
-    asm volatile("nop");
+    mcal::wdg::secure::trigger();
   }
 }
+
+asm(".section .stack");
+asm("_stack: .long 1");

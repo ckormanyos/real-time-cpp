@@ -20,7 +20,7 @@
 
       void init(const config_type*);
 
-      class secure final
+      struct secure final
       {
         static void trigger();
 

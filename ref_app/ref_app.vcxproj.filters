@@ -2007,6 +2007,12 @@
     <ClInclude Include="src\mcal\v850es_fx2\mcal_wdg.h">
       <Filter>src\mcal\v850es_fx2</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\DF3375.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\io_macros.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

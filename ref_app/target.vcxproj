@@ -708,6 +708,7 @@
     <None Include="target\micros\v850es_fx2\make\v850es_fx2.ld" />
     <None Include="target\micros\v850es_fx2\make\v850es_fx2_files.gmk" />
     <None Include="target\micros\v850es_fx2\make\v850es_fx2_flags.gmk" />
+    <None Include="target\micros\v850es_fx2\startup\crt0.cpp" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk" />
@@ -781,7 +782,6 @@
     <ClCompile Include="target\micros\stm32l152\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32l152\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32l152\startup\int_vect.cpp" />
-    <ClCompile Include="target\micros\v850es_fx2\startup\crt0.cpp" />
     <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\v850es_fx2\startup\crt1.cpp" />
     <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s" />

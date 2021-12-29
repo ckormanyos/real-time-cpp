@@ -432,6 +432,9 @@
     <None Include="target\micros\v850es_fx2\make\v850es_fx2.ld">
       <Filter>micros\v850es_fx2\make</Filter>
     </None>
+    <None Include="target\micros\v850es_fx2\startup\crt0.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -605,16 +608,13 @@
     <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s">
       <Filter>micros\v850es_fx2\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\crt0.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp">
-      <Filter>micros\v850es_fx2\startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\v850es_fx2\startup\crt1.cpp">
       <Filter>micros\v850es_fx2\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\v850es_fx2\startup\unhandled_exception.cpp">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp">
       <Filter>micros\v850es_fx2\startup</Filter>
     </ClCompile>
   </ItemGroup>

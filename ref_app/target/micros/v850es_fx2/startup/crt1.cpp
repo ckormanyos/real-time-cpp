@@ -25,6 +25,14 @@ namespace crt
   void init_ctors();
 }
 
+extern "C" void crt_init_ctors(void);
+
+extern "C"
+void crt_init_ctors(void)
+{
+  crt::init_ctors();
+}
+
 void crt::init_ctors()
 {
   std::for_each(ctor_type::const_reverse_iterator(ctors_end),
