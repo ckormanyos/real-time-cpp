@@ -107,7 +107,7 @@ SECTIONS
   __gp = . ;
 
   /* The ROM-to-RAM initialized data section */
-  .data :
+  .data ALIGN (4) :
   {
     _data_begin = .;
     *(.data)

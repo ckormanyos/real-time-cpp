@@ -17,7 +17,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  mcal::gpt::value_type system_tick;
+  volatile mcal::gpt::value_type system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -39,7 +39,7 @@ UINT64 GetTick64_at_xxMHz(void);
 
 } } // namespace mcal::gpt
 
-extern "C" void IntQ0OV() __attribute__((interrupt));
+extern "C" void IntQ0OV() __attribute__((interrupt_handler));
 
 extern "C" void IntQ0OV(void)
 {

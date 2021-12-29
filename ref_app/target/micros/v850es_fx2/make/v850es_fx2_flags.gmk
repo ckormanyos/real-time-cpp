@@ -17,8 +17,7 @@ TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                            \
                 -mv850e1                                       \
-                -mno-long-calls                                \
-                -mno-ep                                        \
+                -mlong-calls                                   \
                 -mgcc-abi                                      \
                 -mtda=0                                        \
                 -mzda=0                                        \

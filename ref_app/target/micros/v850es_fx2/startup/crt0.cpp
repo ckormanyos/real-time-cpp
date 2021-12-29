@@ -56,6 +56,3 @@ void __my_startup()
     mcal::wdg::secure::trigger();
   }
 }
-
-asm(".section .stack");
-asm("_stack: .long 1");
