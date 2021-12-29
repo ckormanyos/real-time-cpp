@@ -8,20 +8,14 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-extern "C" void HalWdtService(void);
-
-extern "C" void HalWdtService(void) { mcal::wdg::secure::trigger(); }
-
 void mcal::wdg::init(const config_type*)
 {
-  // The watchdog invokes a system reset (0x60 = bit pattern 11 00000).
-  // The watchdog is middle-fast (i.e., having a watchdog period
-  // of approximately 0.27 sec at 32MHz).
-
+  // The watchdog is middle-fast.
+  // TBD: Verify what setting this is.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint8_t,
                                mcal::reg::wdtm2,
-                               UINT8_C(0x64)>::reg_set();
+                               UINT8_C(0x6F)>::reg_set();
 }
 
 void mcal::wdg::secure::trigger()

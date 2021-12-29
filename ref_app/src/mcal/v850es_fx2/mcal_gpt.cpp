@@ -17,7 +17,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  std::uint64_t system_tick;
+  mcal::gpt::value_type system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -35,7 +35,7 @@ using UINT8  = std::uint8_t;
 using UINT32 = std::uint32_t;
 using UINT64 = std::uint64_t;
 
-UINT64 GetTick64_at_xxMHz();
+UINT64 GetTick64_at_xxMHz(void);
 
 } } // namespace mcal::gpt
 
@@ -84,5 +84,21 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
 mcal::gpt::UINT64 mcal::gpt::GetTick64_at_xxMHz(void)
 {
-  return static_cast<UINT64>(0U);
+  // Return the system tick using a multiple read to ensure data consistency.
+
+  typedef std::uint16_t timer_register_type;
+
+  // Do the first read of the timer4 counter and the system tick.
+  const timer_register_type   tq0_cnt_1  = static_cast<timer_register_type>(TQ0CNT);
+  const mcal::gpt::value_type sys_tick_1 = system_tick;
+
+  // Do the second read of the timer4 counter.
+  const timer_register_type   tq0_cnt_2  = static_cast<timer_register_type>(TQ0CNT);
+
+  // Perform the consistency check.
+  const mcal::gpt::value_type consistent_microsecond_tick
+    = ((tq0_cnt_2 >= tq0_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | tq0_cnt_1)
+                                : mcal::gpt::value_type(system_tick | tq0_cnt_2));
+
+  return mcal::gpt::value_type(mcal::gpt::value_type(consistent_microsecond_tick + 10U) / 20U);
 }

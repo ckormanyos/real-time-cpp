@@ -20,7 +20,9 @@ TGT_ALLFLAGS  = -Os                                            \
                 -mno-long-calls                                \
                 -mno-ep                                        \
                 -mgcc-abi                                      \
-                -mdisable-callt                                \
+                -mtda=0                                        \
+                -mzda=0                                        \
+                -msda=0                                        \
                 -finline-functions                             \
                 -finline-limit=32
 
@@ -35,7 +37,8 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostartfiles                                  \
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
                 -Wl,--gc-sections                              \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)

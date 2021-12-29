@@ -5,13 +5,13 @@ INPUT(libc.a libg.a libgcc.a)
 OUTPUT_FORMAT("elf32-v850", "elf32-v850","elf32-v850")
 OUTPUT_ARCH(v850)
 
-EXTERN(__tp __ep __gp);
+EXTERN(__tp __ctbp __ep __gp);
 
 MEMORY
 {
   ROM  (rx)   : org = 0x00000000, len = 128K
-  RAM  (rw!x) : org = 0x03FFD900, len = 0x1000 - 0x100
-  stack(rw!x) : org = 0x03FFE800, len = 0x0800 - 0x100
+  RAM  (rw!x) : org = 0x03FFD800, len = 0x1000
+  stack(rw!x) : org = 0x03FFE800, len = 0x0800
 }
 
 SECTIONS
@@ -26,14 +26,7 @@ SECTIONS
     KEEP(*(.isr_vector))
   } > ROM = 0xAAAA
 
-  /* Read-only sections, merged into text segment. */
-
-  .rozdata ALIGN (4) :
-  {
-    *(.rozdata)
-    *(romzdata)
-    *(romzbss)
-  } > ROM
+  PROVIDE(__tp = .);
 
   /* Read-only sections, merged into text segment. */
 
@@ -66,63 +59,71 @@ SECTIONS
   .init                  : { KEEP (*(.init)) } =0
   .plt                   : { *(.plt) }
 
+  /* Program code (text), read-only data and static ctors */
   .text :
   {
-    . = ALIGN(4);
-    *(.text)
-    . = ALIGN(4);
-    *(.text*)
-    . = ALIGN(4);
-    *(.rodata)
-    . = ALIGN(4);
-    *(.rodata*)
     . = ALIGN(4);
     _ctors_begin = .;
     KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
     KEEP (*(SORT(.ctors.*)))
     KEEP (*crtend(.ctors))
     _ctors_end = .;
+    . = ALIGN(4);
+    *(.text)
+    . = ALIGN(4);
+    *(.text*)
+    . = ALIGN(4);
   } > ROM = 0
+
+  .call_table_data ALIGN (4) :
+  {
+    PROVIDE(__ctbp = .);
+    *(.call_table_data)
+  } > ROM = 0xFF
+
+  .call_table_text :
+  {
+    *(.call_table_text)
+  } > ROM
+
+  PROVIDE(__tp = .);
+
+  .rodata  : { *(.rodata) *(.rodata.*) *(.gnu.linkonce.r*) } > ROM
+  .rodata1 : { *(.rodata1) } > ROM
 
   .jcr :
   {
     KEEP (*(.jcr))
   } > ROM
-  
+
   .gcc_except_table : { *(.gcc_except_table) } > ROM
   .got              : { *(.got.plt) *(.got) } > ROM
   .dynamic          : { *(.dynamic) } > ROM
 
-  PROVIDE(__tp = .);
-
-  . = 0x03FFD900;
+  . = 0x03FFD800;
   . = ALIGN(4);
 
+  __ep = . ;
+  __gp = . ;
+
+  /* The ROM-to-RAM initialized data section */
   .data :
   {
-    PROVIDE(__data_ram_start = .);
+    _data_begin = .;
     *(.data)
-    *(.data.*)
-    *(.gnu.linkonce.d*)
-    CONSTRUCTORS
+    . = ALIGN(4);
+    KEEP (*(.data))
+    *(.data*)
+    . = ALIGN(4);
+    KEEP (*(.data*))
+    *(.sdata*)
+    . = ALIGN(4);
+    KEEP (*(.sdata*))
+    *(.rosdata*)
+    . = ALIGN(4);
+    KEEP (*(.rosdata*))
+    _data_end = .;
   } > RAM AT > ROM
-
-  PROVIDE (__ep = .);
-
-  PROVIDE (__gp = . + 0x00008000);
-
-  .sdata ALIGN (4) :
-  {
-    *(.sdata)
-  } > RAM AT > ROM
-
-  .rosdata :
-  {
-    *(.rosdata)
-  } > RAM AT > ROM
- 
-  _data_begin = LOADADDR(.data);
-  _data_end   = LOADADDR(.rosdata) + SIZEOF(.rosdata);
 
   .bss ALIGN (4) :
   {
@@ -134,12 +135,15 @@ SECTIONS
     *(.bss)
     *(.bss*)
     *(COMMON)
+    _bss_end = . ;
   } > RAM
 
-  _bss_end = . ;
   _end = . ;
 
   PROVIDE (end = .);
+
+  . = 0x03FFE800;
+  . = ALIGN(4);
 
   .stack :
   {

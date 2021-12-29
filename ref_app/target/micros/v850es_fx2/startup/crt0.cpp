@@ -28,9 +28,10 @@ void __my_startup()
   asm volatile("mov   hilo(_stack), sp");
   asm volatile("mov   hilo(__ep), ep");
   asm volatile("mov   hilo(__gp), gp");
-
-  //asm volatile("movhi hi(__tp), zero, tp");
-  //asm volatile("movea lo(__tp), tp, tp");
+  asm volatile("movhi hi(__tp), zero, tp");
+  asm volatile("movea lo(__tp), tp, tp");
+  asm volatile("mov   hilo(__ctbp), r6");
+  asm volatile("ldsr  r6, ctbp");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal_cpu_init();
