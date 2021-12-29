@@ -197,6 +197,9 @@
     <Filter Include="src\cmake">
       <UniqueIdentifier>{f93f7228-dccf-4716-a98e-7f05d4c20a8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\v850es_fx2">
+      <UniqueIdentifier>{8e53b3f3-75d7-4f06-923e-237c9c103735}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -834,6 +837,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\mcal_gcc_cxx_completion_with_stdlib.cpp">
       <Filter>src\mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_cpu.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_eep.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_gpt.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_irq.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_led.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_osc.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_port.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_pwm.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_spi.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_wdg.cpp">
+      <Filter>src\mcal\v850es_fx2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1931,6 +1964,54 @@
     </ClInclude>
     <ClInclude Include="src\util\boost_metal_bindings\boost\math\policies\error_handling.hpp">
       <Filter>src\util\boost_metal_bindings\boost\math\policies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_benchmark.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_cpu.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_eep.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_gpt.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_irq.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_led.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_memory_progmem.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_osc.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_port.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_pwm.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_reg.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_ser.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_spi.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\mcal_wdg.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\DF3375.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\v850es_fx2\io_macros.h">
+      <Filter>src\mcal\v850es_fx2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

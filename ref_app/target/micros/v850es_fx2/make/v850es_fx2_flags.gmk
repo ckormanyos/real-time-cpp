@@ -1,0 +1,43 @@
+#
+#  Copyright Christopher Kormanyos 2014 - 2021.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 11.2.0
+GCC_TARGET    = v850-unknown-elf
+GCC_PREFIX    = v850-unknown-elf
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -Os                                            \
+                -mv850e1                                       \
+                -mlong-calls                                   \
+                -mgcc-abi                                      \
+                -mtda=0                                        \
+                -mzda=0                                        \
+                -msda=0                                        \
+                -finline-functions                             \
+                -finline-limit=32
+
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++11                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)
