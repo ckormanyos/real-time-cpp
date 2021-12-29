@@ -43,8 +43,7 @@ extern "C" void IntQ0OV() __attribute__((interrupt));
 
 extern "C" void IntQ0OV(void)
 {
-  //mcal::led::led0().toggle();
-  ++system_tick;
+  system_tick = static_cast<mcal::gpt::value_type>(system_tick + UINT32_C(0x10000));
 }
 
 void mcal::gpt::init(const config_type*)
@@ -53,20 +52,18 @@ void mcal::gpt::init(const config_type*)
   {
     gpt_is_initialized() = true;
 
-    #if 1
     // Select free-running mode for TAB1.
     TQ0CTL1 = static_cast<UINT8>(0x05u);
 
     // Select a prescaler of 1 (bit pattern 0) for TAB1.
     TQ0CTL0 = static_cast<UINT8>(0x00u);
-  
+
     // Set the TAB1 overflow interrupt priority.
     // Enable the TAB1 overflow interrupt.
     TQ0OVIC = static_cast<UINT8>(0x06u);
 
     // Start TAB1.
     TQ0CTL0 |= static_cast<UINT8>(0x80u);
-    #endif
   }
 }
 

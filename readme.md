@@ -64,6 +64,7 @@ The reference application supports the following targets:
 | `stm32f407`                            | ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4        |
 | `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4        |
 | `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4        |
+| `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
 
@@ -275,6 +276,10 @@ config.txt, all described on internet. A complete set of
 [PiZero boot contents for an SD card](./ref_app/target/micros/bcm2835_raspi_b/startup/SD_CARD/PiZero)
 running the bare-metal reference application are included in this repo.
 The program toggles the GPIO status LED  at GPIO index `0x47`.
+
+Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
+The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
+starter kit is used.
 
 For other compatible boards, feel free contact me directly or submit
 an issue requesting support for your desired target system.
