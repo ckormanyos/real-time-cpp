@@ -868,6 +868,9 @@
     <ClCompile Include="src\mcal\v850es_fx2\mcal_wdg.cpp">
       <Filter>src\mcal\v850es_fx2</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\v850es_fx2\mcal_gpt_tick.c">
+      <Filter>src\mcal\v850es_fx2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2005,12 +2008,6 @@
       <Filter>src\mcal\v850es_fx2</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\v850es_fx2\mcal_wdg.h">
-      <Filter>src\mcal\v850es_fx2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\v850es_fx2\DF3375.h">
-      <Filter>src\mcal\v850es_fx2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\v850es_fx2\io_macros.h">
       <Filter>src\mcal\v850es_fx2</Filter>
     </ClInclude>
   </ItemGroup>
