@@ -9,32 +9,27 @@
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-#include <io_macros.h>
-#include <DF3375.h>
-
 void mcal::osc::init(const config_type*)
 {
-  using UINT8 = std::uint8_t;
-
   // Set the minimum number of wait states for flash.
-  VSWC = static_cast<UINT8>(0x01u);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::vswc, UINT8_C(0x01)>::reg_set();
 
   // Start the MainOSC
   do
   {
     // PCC is write protected, use special access sequence.
-    SYS   = static_cast<UINT8>(0u);
+    mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::sys, UINT8_C(0)>::reg_set();
 
     // Access sequence: write PRCMD as prerequisite for PCC
-    PRCMD = static_cast<UINT8>(0u);
+    mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::prcmd, UINT8_C(0)>::reg_set();
 
     // Wait five clock cycles.
     mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop();
 
-    // start operation of main clock, _MCK=0, fcpu=fXX
-    _MCK  = 0U;
+    // Start operation of main clock, _MCK=0, fcpu=fXX.
+    mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::pcc, UINT8_C(6)>::bit_set();
   }
-  while(static_cast<UINT8>(SYS & static_cast<UINT8>(1u)) != static_cast<UINT8>(0u));
+  while(mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::sys, UINT8_C(0)>::bit_get() != false);
 
   // Wait eight clock cycles.
   mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop();
@@ -45,17 +40,17 @@ void mcal::osc::init(const config_type*)
   // the LOCKR.LOCK bit = 0.
 
   // Setup the PLL lockup time 2^13 / fx.
-  PLLS = static_cast<UINT8>(3u);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::plls, UINT8_C(3)>::reg_set();
 
-  // Enable the PLL, CPU still on main
-  PLLCTL = static_cast<UINT8>(1u);
+  // Enable the PLL, while CPU is still on main osc.
+  mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::pllctl, UINT8_C(1)>::reg_set();
 
   // Wait for a stable PLL.
-  while(static_cast<UINT8>(LOCKR & static_cast<UINT8>(1u)) != static_cast<UINT8>(0u))
+  while(mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::lockr, UINT8_C(0)>::bit_get() != false)
   {
     mcal::cpu::nop();
   }
 
   // Switch to PLL.
-  PLLCTL = static_cast<UINT8>(3u);
+  mcal::reg::reg_access_static<std::uint32_t, std::uint8_t, mcal::reg::pllctl, UINT8_C(3)>::reg_set();
 }
