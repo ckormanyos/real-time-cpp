@@ -5,8 +5,7 @@
 # //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 # //
 
-.section .stack
+.section .rodata
+.global ___errno
 
-.global _stack
-
-_stack: .long 1
+___errno: .int 0

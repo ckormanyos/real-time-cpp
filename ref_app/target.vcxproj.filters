@@ -438,6 +438,9 @@
     <None Include="target\micros\v850es_fx2\startup\stack.s">
       <Filter>micros\v850es_fx2\startup</Filter>
     </None>
+    <None Include="target\micros\v850es_fx2\startup\errno.s">
+      <Filter>micros\v850es_fx2\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

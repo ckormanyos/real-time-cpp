@@ -90,7 +90,7 @@ extern "C"
   void        _Exit               (int)            UTIL_NOEXCEPT __attribute__((noreturn));
   void        exit                (int)                          __attribute__((noreturn));
   void        quick_exit          (int)                          __attribute__((noreturn));
-  int         _exit               (int);
+  void        _exit               (int)                          __attribute__((noreturn));
   int         _isatty             (int);
   int         _lseek              (int, int, int);
   int         _open               (const char*, int, int);
@@ -112,7 +112,7 @@ extern "C"
   void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
-  int         _exit               (int)                               { return -1; }
+  void        _exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   int         _isatty             (int)                               { return  1; }
   int         _lseek              (int, int, int)                     { return  0; }
   int         _open               (const char*, int, int)             { return -1; }
@@ -131,9 +131,13 @@ extern "C"
   #endif
 
   // Provide some patched data values.
-  const char*  const __env[1U]       = { nullptr };
-  const char** const environ         = { nullptr };
+  const char*  const __env[1U] = { nullptr };
+  const char** const environ   = { nullptr };
 
-  int          __errno;
+  #if (defined(__GNUC__) && defined(__v850__))
+  #else
+  int __errno;
+  #endif
+
   std::uint8_t __fdlib_version;
 }
