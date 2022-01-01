@@ -1,6 +1,6 @@
 /* Linker script for NEC V850 FX2 upD70F3231 */
 
-INPUT(libc.a libg.a libgcc.a)
+INPUT(libc.a libg.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-v850", "elf32-v850","elf32-v850")
 OUTPUT_ARCH(v850)

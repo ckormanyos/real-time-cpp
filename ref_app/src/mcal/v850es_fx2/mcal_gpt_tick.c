@@ -7,7 +7,7 @@
 
 extern void mcal_gpt_increment_tick(void);
 
-void IntQ0OV(void) __attribute__((interrupt_handler));
+void IntQ0OV(void) __attribute__((interrupt_handler, used, noinline));
 
 void IntQ0OV(void)
 {
