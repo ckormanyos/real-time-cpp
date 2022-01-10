@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2021.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,15 +19,15 @@
 
 namespace
 {
-  using sys_idle_miller_rabin_uint_type           = math::wide_integer::uintwide_t<math::wide_integer::size_t(128U), std::uint16_t>;
+  using sys_idle_miller_rabin_uint_type           = WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<WIDE_INTEGER_NAMESPACE::math::wide_integer::size_t(128U), std::uint16_t>;
 
   using sys_idle_miller_rabin_random_engine1_type = mcal::random::default_random_engine;
   using sys_idle_miller_rabin_random_engine2_type = std::minstd_rand;
 
-  using sys_idle_miller_rabin_miller_rabin_type   = math::wide_integer::miller_rabin_state<sys_idle_miller_rabin_random_engine1_type,
-                                                                                           sys_idle_miller_rabin_random_engine2_type,
-                                                                                           sys_idle_miller_rabin_uint_type::my_width2,
-                                                                                           typename sys_idle_miller_rabin_uint_type::limb_type>;
+  using sys_idle_miller_rabin_miller_rabin_type   = WIDE_INTEGER_NAMESPACE::math::wide_integer::miller_rabin_state<sys_idle_miller_rabin_random_engine1_type,
+                                                                                                                   sys_idle_miller_rabin_random_engine2_type,
+                                                                                                                   sys_idle_miller_rabin_uint_type::my_width2,
+                                                                                                                   typename sys_idle_miller_rabin_uint_type::limb_type>;
 
   constexpr std::uint_fast8_t sys_idle_miller_rabin_prime_width_base16
                                                   = util::narrow_cast<std::uint_fast8_t>(std::numeric_limits<sys_idle_miller_rabin_uint_type>::digits / 4);

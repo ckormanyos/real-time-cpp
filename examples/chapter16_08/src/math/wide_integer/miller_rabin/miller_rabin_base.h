@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2021.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,12 @@
   #define WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY
   #define WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS
 
+  // Note that -DWIDE_INTEGER_NAMESPACE=ckormanyos is defined
+  // on the compiler command line.
+
   #include <math/wide_integer/uintwide_t.h>
+
+  WIDE_INTEGER_NAMESPACE_BEGIN
 
   namespace math { namespace wide_integer {
 
@@ -226,6 +231,9 @@
            typename LimbType>
   std::uint64_t miller_rabin_base<Generator1Type, Generator2Type, Digits2, LimbType>::my_n_total_mul_10;
 
-  } } // namespace math::wide_integer
+  } // namespace wide_integer
+  } // namespace math
+
+  WIDE_INTEGER_NAMESPACE_END
 
 #endif // MILLER_RABIN_BASE_2020_05_30_H_

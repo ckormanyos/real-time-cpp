@@ -9,8 +9,6 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-# See also: https://blog.zakkemble.net/avr-gcc-builds/
-
 GCC_VERSION   = 11.2.0
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
@@ -22,7 +20,8 @@ TGT_CFLAGS    = -Os                                            \
                 -fsigned-char                                  \
                 -mrelax                                        \
                 -finline-functions                             \
-                -finline-limit=64
+                -finline-limit=64                              \
+                -DWIDE_INTEGER_NAMESPACE=ckormanyos
 
 TGT_CPPFLAGS  = -std=c++11
 
