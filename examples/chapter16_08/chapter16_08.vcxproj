@@ -65,7 +65,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIDE_INTEGER_NAMESPACE=ckormanyos;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -82,7 +82,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_SECURE_SCL=0;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIDE_INTEGER_NAMESPACE=ckormanyos;WIN32;NDEBUG;_CONSOLE;_SECURE_SCL=0;%(PreprocessorDefinitions);FIXED_POINT_USE_64BIT</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>

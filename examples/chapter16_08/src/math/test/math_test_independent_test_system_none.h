@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2020.
+//  Copyright Christopher Kormanyos 2019 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
   #include <math/test/math_test_independent_test_system_base.h>
 
-  namespace math { namespace test {
+  namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
   class independent_test_system_none : public independent_test_system_base
   {
@@ -27,6 +27,8 @@
     }
   };
 
-  } } // namespace math::test
+  } // namespace test
+  } // namespace math
+  } // namespace WIDE_INTEGER_NAMESPACE
 
 #endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_NONE_2020_07_15_H_

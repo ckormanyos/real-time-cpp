@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2021.
+//  Copyright Christopher Kormanyos 2019 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,7 +36,7 @@
     extern int           WSGetString     (WSLINK, const char**);
   }
 
-  namespace math { namespace test {
+  namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
   namespace detail {
 
@@ -284,6 +284,8 @@
   template<const char* PtrStrLocationMathLinkKernel> WSENV  math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::env_ptr  = nullptr;
   template<const char* PtrStrLocationMathLinkKernel> WSLINK math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::lnk_ptr  = nullptr;
 
-  } } // namespace math::test
+  } // namespace test
+  } // namespace math
+  } // namespace WIDE_INTEGER_NAMESPACE
 
 #endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H_

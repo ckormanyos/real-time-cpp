@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2020.
+//  Copyright Christopher Kormanyos 2019 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
   #include <util/utility/util_noncopyable.h>
 
-  namespace math { namespace test {
+  namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
   class independent_test_system_base : private util::noncopyable
   {
@@ -23,6 +23,8 @@
     independent_test_system_base() noexcept { }
   };
 
-  } } // namespace math::test
+  } // namespace test
+  } // namespace math
+  } // namespace WIDE_INTEGER_NAMESPACE
 
 #endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H_

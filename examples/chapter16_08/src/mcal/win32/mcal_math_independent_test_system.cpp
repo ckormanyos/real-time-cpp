@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2021.
+//  Copyright Christopher Kormanyos 2019 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,12 +23,12 @@ namespace
 }
 #endif
 
-::math::test::independent_test_system_base& mcal::math::independent_test_system0() noexcept
+WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_base& mcal::math::independent_test_system0() noexcept
 {
   #if defined(MCAL_MATH_USE_INDEPENDENT_TEST_SYSTEM_MATHLINK)
-  using test_system_type = ::math::test::independent_test_system_mathlink<independent_test_system_mathlink_location>;
+  using test_system_type = WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_mathlink<independent_test_system_mathlink_location>;
   #else
-  using test_system_type = ::math::test::independent_test_system_boost;
+  using test_system_type = WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_boost;
   #endif
 
   static test_system_type ts0;
