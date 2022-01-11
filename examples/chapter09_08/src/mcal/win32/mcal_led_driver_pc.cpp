@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2017 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,13 +15,13 @@
 
 namespace
 {
-  const UINT WM_MESSAGE_FROM_LED_MONOCHROME = (WM_USER + 1);
-  const UINT WM_MESSAGE_FROM_LED_RGB        = (WM_USER + 2);
+  constexpr UINT WM_MESSAGE_FROM_LED_MONOCHROME = (WM_USER + 1);
+  constexpr UINT WM_MESSAGE_FROM_LED_RGB        = (WM_USER + 2);
 
-  const COLORREF color_red   = RGB(255U,   0U,   0U);
-  const COLORREF color_green = RGB(  0U, 255U,   0U);
-  const COLORREF color_blue  = RGB(  0U,   0U, 255U);
-  const COLORREF color_gray  = RGB(200U, 200U, 200U);
+  constexpr COLORREF color_red   = RGB(255U,   0U,   0U);
+  constexpr COLORREF color_green = RGB(  0U, 255U,   0U);
+  constexpr COLORREF color_blue  = RGB(  0U,   0U, 255U);
+  constexpr COLORREF color_gray  = RGB(200U, 200U, 200U);
 }
 
 void post_message_led_rgb(const std::uint32_t color)
@@ -39,10 +39,10 @@ void post_message_led_monochrome(const bool is_on)
 {
   if(mcal::led::sys_start_interface::my_exit_pc_api_flag() == false)
   {
-    PostMessage(mcal::led::driver_pc::instance().get_handle_to_window(),
-                WM_MESSAGE_FROM_LED_MONOCHROME,
-                0U,
-                static_cast<LPARAM>(is_on ? 1U : 0U));
+    ::PostMessage(mcal::led::driver_pc::instance().get_handle_to_window(),
+                  WM_MESSAGE_FROM_LED_MONOCHROME,
+                  0U,
+                  static_cast<LPARAM>(is_on ? 1U : 0U));
   }
 }
 
@@ -81,7 +81,7 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
     window_class.hInstance     =  my_handle_to_instance;
     window_class.hIcon         =  LoadIcon(my_handle_to_instance, MAKEINTRESOURCE(initial_icon_id));
     window_class.hCursor       =  LoadCursor(nullptr, IDC_ARROW);
-    window_class.hbrBackground =  reinterpret_cast<HBRUSH>(COLOR_GRAYTEXT);
+    window_class.hbrBackground =  (HBRUSH) COLOR_GRAYTEXT;
     window_class.lpszMenuName  =  nullptr;
     window_class.lpszClassName =  my_str_class_name.c_str();
 
@@ -90,19 +90,18 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
     static_cast<void>(register_class_result);
   }
 
-  my_handle_to_window =
-    CreateWindowEx(extended_style,
-                   my_str_class_name.c_str(),
-                   my_str_class_name.c_str(),
-                   basic_style,
-                   screen_coordinate_x  * scale_x(),
-                   screen_coordinate_y  * scale_y(),
-                   ( 4 + window_width)  * scale_x(),
-                   (12 + window_height) * scale_y(),
-                   nullptr,
-                   static_cast<HMENU>(nullptr),
-                   my_handle_to_instance,
-                   nullptr);
+  my_handle_to_window = CreateWindowEx(extended_style,
+                                       my_str_class_name.c_str(),
+                                       my_str_class_name.c_str(),
+                                       basic_style,
+                                       screen_coordinate_x  * scale_x(),
+                                       screen_coordinate_y  * scale_y(),
+                                       ( 4 + window_width)  * scale_x(),
+                                       (12 + window_height) * scale_y(),
+                                       nullptr,
+                                       nullptr,
+                                       my_handle_to_instance,
+                                       nullptr);
 
   bool create_window_is_ok = (my_handle_to_window != nullptr);
 
@@ -160,8 +159,8 @@ bool mcal::led::driver_pc::draw_circle(const int      center_x,
   {
     // Create the pen and (if necessary) the brush for drawing the circle.
 
-    const HPEN handle_to_new_pen = static_cast<HPEN>(CreatePen(PS_SOLID, pen_width, pen_color));
-    const HPEN handle_to_old_pen = static_cast<HPEN>(SelectObject(handle_to_dc, handle_to_new_pen));
+    const HPEN handle_to_new_pen = CreatePen(PS_SOLID, pen_width, pen_color);
+    const HPEN handle_to_old_pen = (HPEN) SelectObject(handle_to_dc, handle_to_new_pen);
 
     const HBRUSH handle_to_new_brush =
       (use_fill ? static_cast<HBRUSH>(CreateSolidBrush(pen_color))
@@ -178,7 +177,7 @@ bool mcal::led::driver_pc::draw_circle(const int      center_x,
                                  center_y - radius) == TRUE);
 
     {
-      const BOOL delete_old_pen___is_ok = DeleteObject(SelectObject(handle_to_dc, handle_to_old_pen  ));
+      const BOOL delete_old_pen___is_ok = DeleteObject(SelectObject(handle_to_dc, handle_to_old_pen));
       const BOOL delete_old_brush_is_ok = DeleteObject(SelectObject(handle_to_dc, handle_to_old_brush));
 
       static_cast<void>(delete_old_pen___is_ok);
@@ -201,13 +200,18 @@ bool mcal::led::driver_pc::set_icon(const int icon_id)
   const ULONG_PTR previous_set_icon_result =
     GetClassLongPtr(my_handle_to_window, GCLP_HICON);
 
-  const HICON load_icon_result = LoadIcon(my_handle_to_instance,
-                                          MAKEINTRESOURCE(icon_id));
+  const HICON load_icon_result =
+    LoadIcon
+    (
+      my_handle_to_instance,
+      MAKEINTRESOURCE(icon_id)
+    );
+
   // Set the new icon.
   const ULONG_PTR set_icon_result =
     SetClassLongPtr(my_handle_to_window,
                     GCLP_HICON,
-                    reinterpret_cast<LONG_PTR>(load_icon_result));
+                    (LONG_PTR) load_icon_result);
 
   // Verify the result of setting the icon.
   return (set_icon_result == previous_set_icon_result);
