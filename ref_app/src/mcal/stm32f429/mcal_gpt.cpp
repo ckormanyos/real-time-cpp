@@ -15,7 +15,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
+  volatile mcal::gpt::value_type mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -36,7 +36,7 @@ extern "C" void __vector_timer4(void)
   mcal::reg::reg_access_static<std::uint32_t, std::uint16_t, mcal::reg::tim4_sr, UINT16_C(0x0000)>::reg_set();
 
   // Increment the 64-bit system tick with 0x10000, representing (2^16) microseconds.
-  system_tick += UINT32_C(0x10000);
+  mcal_gpt_system_tick += UINT32_C(0x10000);
 }
 
 void mcal::gpt::init(const config_type*)
@@ -116,15 +116,15 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Do the first read of the timer4 counter and the system tick.
     const timer_register_type   tim4_cnt_1 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = system_tick;
+    const mcal::gpt::value_type sys_tick_1 = mcal_gpt_system_tick;
 
     // Do the second read of the timer4 counter.
     const timer_register_type   tim4_cnt_2 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tim4_cnt>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick
-      = ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | tim4_cnt_1)
-                                    : mcal::gpt::value_type(system_tick | tim4_cnt_2));
+      = ((tim4_cnt_2 >= tim4_cnt_1) ? mcal::gpt::value_type(sys_tick_1           | tim4_cnt_1)
+                                    : mcal::gpt::value_type(mcal_gpt_system_tick | tim4_cnt_2));
 
     return consistent_microsecond_tick;
   }

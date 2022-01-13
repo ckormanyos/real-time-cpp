@@ -15,7 +15,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile std::uint64_t system_tick;
+  volatile std::uint64_t mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -33,7 +33,7 @@ extern "C" void __sys_tick_handler(void)
 {
   // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/32].
 
-  system_tick += UINT32_C(0x01000000);
+  mcal_gpt_system_tick += UINT32_C(0x01000000);
 }
 
 void mcal::gpt::init(const config_type*)
@@ -80,7 +80,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
                                                          timer_register_type,
                                                          mcal::reg::sys_tick_val>::reg_get());
 
-    const std::uint64_t system_tick_gpt = system_tick;
+    const std::uint64_t system_tick_gpt = mcal_gpt_system_tick;
 
     // Do the second read of the sys tick counter.
     // Handle reverse counting for sys tick counting down.
@@ -92,8 +92,8 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Perform the consistency check.
     const std::uint64_t consistent_tick =
-      ((sys_tick_val_2 >= sys_tick_val_1) ? std::uint64_t(system_tick_gpt | sys_tick_val_1)
-                                          : std::uint64_t(system_tick     | sys_tick_val_2));
+      ((sys_tick_val_2 >= sys_tick_val_1) ? std::uint64_t(system_tick_gpt          | sys_tick_val_1)
+                                          : std::uint64_t(mcal_gpt_system_tick     | sys_tick_val_2));
 
     // Perform scaling and include a rounding correction.
     const mcal::gpt::value_type consistent_microsecond_tick =

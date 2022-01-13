@@ -11,7 +11,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
+  volatile mcal::gpt::value_type mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -28,7 +28,7 @@ extern "C" void __inttm02_vect() __attribute__((interrupt, used, externally_visi
 void __inttm02_vect()
 {
   // Increment the software system tick.
-  system_tick += UINT32_C(0x10000);
+  mcal_gpt_system_tick += UINT32_C(0x10000);
 }
 
 void mcal::gpt::init(const config_type*)
@@ -102,15 +102,15 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     // Do the first read of the timer channel 2 counter and the system tick.
     const timer_register_type timer_cnt_1 = UINT16_C(0xFFFF) - mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcr02>::reg_get();
 
-    const mcal::gpt::value_type sys_tick_1 = system_tick;
+    const mcal::gpt::value_type sys_tick_1 = mcal_gpt_system_tick;
 
     // Do the second read of the timer channel 2 counter.
     const timer_register_type timer_cnt_2 = UINT16_C(0xFFFF) - mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcr02>::reg_get();
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick
-      = ((timer_cnt_2 >= timer_cnt_1) ? static_cast<mcal::gpt::value_type>(sys_tick_1  | timer_cnt_1)
-                                      : static_cast<mcal::gpt::value_type>(system_tick | timer_cnt_2));
+      = ((timer_cnt_2 >= timer_cnt_1) ? static_cast<mcal::gpt::value_type>(sys_tick_1           | timer_cnt_1)
+                                      : static_cast<mcal::gpt::value_type>(mcal_gpt_system_tick | timer_cnt_2));
 
     return consistent_microsecond_tick;
   }
