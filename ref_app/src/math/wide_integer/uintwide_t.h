@@ -98,6 +98,12 @@
     #define WIDE_INTEGER_NAMESPACE_END
   #endif
 
+  #if defined(__GNUC__) && (__GNUC__ < 6)
+  #define WIDE_INTEGER_NODISCARD               // NOLINT(cppcoreguidelines-macro-usage)
+  #else
+  #define WIDE_INTEGER_NODISCARD [[nodiscard]] // NOLINT(cppcoreguidelines-macro-usage)
+  #endif
+
   #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
 
   WIDE_INTEGER_NAMESPACE_BEGIN
@@ -1187,8 +1193,8 @@
       return *this;
     }
 
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto get_mantissa() const -> unsigned long long { return my_mantissa_part; } // NOLINT(google-runtime-int)
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto get_exponent() const -> int                { return my_exponent_part; }
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto get_mantissa() const -> unsigned long long { return my_mantissa_part; } // NOLINT(google-runtime-int)
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto get_exponent() const -> int                { return my_exponent_part; }
 
     WIDE_INTEGER_CONSTEXPR native_float_parts() = delete;
 
@@ -1208,7 +1214,7 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  class uintwide_t // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
+  class uintwide_t
   {
   public:
     template<const size_t OtherWidth2,
@@ -1393,7 +1399,11 @@
     #endif
 
     // Copy constructor.
+    #if !defined(WIDE_INTEGER_DISABLE_TRIVIAL_COPY_AND_STD_LAYOUT_CHECKS)
     constexpr uintwide_t(const uintwide_t& other) = default;
+    #else
+    constexpr uintwide_t(const uintwide_t& other) : values(other.values) { }
+    #endif
 
     // Copy-like constructor from the other signed-ness type.
     template<const bool OtherIsSigned,
@@ -1457,6 +1467,9 @@
              typename std::enable_if<(OtherIsSigned != IsSigned)>::type const* = nullptr>
     constexpr uintwide_t(uintwide_t<Width2, LimbType, AllocatorType, OtherIsSigned>&& other) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
       : values(static_cast<representation_type&&>(other.values)) { }
+
+    // Default destructor.
+    WIDE_INTEGER_CONSTEXPR ~uintwide_t() = default;
 
     // Assignment operator.
     WIDE_INTEGER_CONSTEXPR auto operator=(const uintwide_t& other) -> uintwide_t& = default;
@@ -1523,8 +1536,8 @@
 
     // Provide a user interface to the internal data representation.
                   WIDE_INTEGER_CONSTEXPR auto  representation()       ->       representation_type& { return values; }
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto  representation() const -> const representation_type& { return values; }
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto crepresentation() const -> const representation_type& { return values; }
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto  representation() const -> const representation_type& { return values; }
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto crepresentation() const -> const representation_type& { return values; }
 
     // Unary operators: not, plus and minus.
     WIDE_INTEGER_CONSTEXPR auto operator+() const -> const uintwide_t& { return *this; }
@@ -2222,7 +2235,7 @@
 
     template<const bool RePhraseIsSigned = IsSigned,
              typename std::enable_if<(!RePhraseIsSigned)>::type const* = nullptr>
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto compare(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) const -> std::int_fast8_t
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto compare(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) const -> std::int_fast8_t
     {
       return compare_ranges(values.data(),
                             other.values.data(),
@@ -2231,7 +2244,7 @@
 
     template<const bool RePhraseIsSigned = IsSigned,
              typename std::enable_if<(RePhraseIsSigned)>::type const* = nullptr>
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto compare(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) const -> std::int_fast8_t
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto compare(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) const -> std::int_fast8_t
     {
       const bool other_is_neg = is_neg(other);
 
@@ -2290,7 +2303,7 @@
       }
     }
 
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto is_zero() const -> bool
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto is_zero() const -> bool
     {
       auto it = values.cbegin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
@@ -2396,7 +2409,7 @@
     // Implement a function that extracts any built-in signed or unsigned integral type.
     template<typename UnknownBuiltInIntegralType,
              typename = typename std::enable_if<std::is_integral<UnknownBuiltInIntegralType>::value>::type>
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto extract_builtin_integral_type() const -> UnknownBuiltInIntegralType
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto extract_builtin_integral_type() const -> UnknownBuiltInIntegralType
     {
       using local_unknown_integral_type = UnknownBuiltInIntegralType;
       using digits_ratio_type           = digits_ratio<local_unknown_integral_type>;
@@ -2415,7 +2428,7 @@
     // Implement a function that extracts any built-in floating-point type.
     template<typename FloatingPointType,
              typename = typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type>
-    [[nodiscard]] WIDE_INTEGER_CONSTEXPR auto extract_builtin_floating_point_type() const -> FloatingPointType
+    WIDE_INTEGER_NODISCARD WIDE_INTEGER_CONSTEXPR auto extract_builtin_floating_point_type() const -> FloatingPointType
     {
       using local_unsigned_wide_integer_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
       using local_builtin_float_type         = FloatingPointType;
@@ -4377,16 +4390,15 @@
   template<>
   inline WIDE_INTEGER_CONSTEXPR auto msb_helper<std::uint32_t>(const std::uint32_t& u) -> unsinged_fast_type
   {
-    auto r = static_cast<unsinged_fast_type>(0);
-
-    std::uint32_t x = u;
+    auto r = static_cast<unsinged_fast_type>(0U);
+    auto x = static_cast<std::uint_fast32_t>(u);
 
     // Use O(log2[N]) binary-halving in an unrolled loop to find the msb.
-    if((x & UINT32_C(0xFFFF0000)) != UINT32_C(0)) { x = static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT32_C(16))); r = static_cast<unsinged_fast_type>(r | UINT32_C(16)); }
-    if((x & UINT32_C(0x0000FF00)) != UINT32_C(0)) { x = static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT32_C( 8))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 8)); }
-    if((x & UINT32_C(0x000000F0)) != UINT32_C(0)) { x = static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT32_C( 4))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 4)); }
-    if((x & UINT32_C(0x0000000C)) != UINT32_C(0)) { x = static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT32_C( 2))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 2)); }
-    if((x & UINT32_C(0x00000002)) != UINT32_C(0)) {                                                                           r = static_cast<unsinged_fast_type>(r | UINT32_C( 1)); }
+    if((x & UINT32_C(0xFFFF0000)) != UINT32_C(0)) { x = static_cast<std::uint_fast32_t>(x >> static_cast<unsigned>(UINT8_C(16))); r = static_cast<unsinged_fast_type>(r | UINT32_C(16)); }
+    if((x & UINT32_C(0x0000FF00)) != UINT32_C(0)) { x = static_cast<std::uint_fast32_t>(x >> static_cast<unsigned>(UINT8_C( 8))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 8)); }
+    if((x & UINT32_C(0x000000F0)) != UINT32_C(0)) { x = static_cast<std::uint_fast32_t>(x >> static_cast<unsigned>(UINT8_C( 4))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 4)); }
+    if((x & UINT32_C(0x0000000C)) != UINT32_C(0)) { x = static_cast<std::uint_fast32_t>(x >> static_cast<unsigned>(UINT8_C( 2))); r = static_cast<unsinged_fast_type>(r | UINT32_C( 2)); }
+    if((x & UINT32_C(0x00000002)) != UINT32_C(0)) {                                                                               r = static_cast<unsinged_fast_type>(r | UINT32_C( 1)); }
 
     return r;
   }
@@ -4394,15 +4406,14 @@
   template<>
   inline WIDE_INTEGER_CONSTEXPR auto msb_helper<std::uint16_t>(const std::uint16_t& u) -> unsinged_fast_type
   {
-    auto r = static_cast<unsinged_fast_type>(0);
-
-    std::uint16_t x = u;
+    auto r = static_cast<unsinged_fast_type>(0U);
+    auto x = static_cast<std::uint_fast16_t>(u);
 
     // Use O(log2[N]) binary-halving in an unrolled loop to find the msb.
-    if((x & UINT16_C(0xFF00)) != UINT16_C(0)) { x = std::uint16_t(x >> static_cast<unsigned>(UINT16_C(8))); r = static_cast<unsinged_fast_type>(r | UINT16_C(8)); } // NOLINT(hicpp-signed-bitwise)
-    if((x & UINT16_C(0x00F0)) != UINT16_C(0)) { x = std::uint16_t(x >> static_cast<unsigned>(UINT16_C(4))); r = static_cast<unsinged_fast_type>(r | UINT16_C(4)); } // NOLINT(hicpp-signed-bitwise)
-    if((x & UINT16_C(0x000C)) != UINT16_C(0)) { x = std::uint16_t(x >> static_cast<unsigned>(UINT16_C(2))); r = static_cast<unsinged_fast_type>(r | UINT16_C(2)); } // NOLINT(hicpp-signed-bitwise)
-    if((x & UINT16_C(0x0002)) != UINT16_C(0)) {                                                             r = static_cast<unsinged_fast_type>(r | UINT16_C(1)); } // NOLINT(hicpp-signed-bitwise)
+    if(static_cast<std::uint_fast16_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0xFF00)) != UINT16_C(0)) { x = static_cast<std::uint_fast16_t>(x >> static_cast<unsigned>(UINT8_C(8))); r = static_cast<unsinged_fast_type>(r | UINT32_C(8)); }
+    if(static_cast<std::uint_fast16_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0x00F0)) != UINT16_C(0)) { x = static_cast<std::uint_fast16_t>(x >> static_cast<unsigned>(UINT8_C(4))); r = static_cast<unsinged_fast_type>(r | UINT32_C(4)); }
+    if(static_cast<std::uint_fast16_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0x000C)) != UINT16_C(0)) { x = static_cast<std::uint_fast16_t>(x >> static_cast<unsigned>(UINT8_C(2))); r = static_cast<unsinged_fast_type>(r | UINT32_C(2)); }
+    if(static_cast<std::uint_fast16_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0x0002)) != UINT16_C(0)) {                                                                              r = static_cast<unsinged_fast_type>(r | UINT32_C(1)); }
 
     return r;
   }
@@ -4410,14 +4421,13 @@
   template<>
   inline WIDE_INTEGER_CONSTEXPR auto msb_helper<std::uint8_t>(const std::uint8_t& u) -> unsinged_fast_type
   {
-    auto r = static_cast<unsinged_fast_type>(0);
-
-    std::uint8_t x = u;
+    auto r = static_cast<unsinged_fast_type>(0U);
+    auto x = static_cast<std::uint_fast8_t>(u);
 
     // Use O(log2[N]) binary-halving in an unrolled loop to find the msb.
-    if((x & UINT8_C(0xF0)) != UINT8_C(0)) { x = static_cast<std::uint8_t>(x >> 4U); r = static_cast<unsinged_fast_type>(r | UINT8_C(4)); } // NOLINT(hicpp-signed-bitwise)
-    if((x & UINT8_C(0x0C)) != UINT8_C(0)) { x = static_cast<std::uint8_t>(x >> 2U); r = static_cast<unsinged_fast_type>(r | UINT8_C(2)); } // NOLINT(hicpp-signed-bitwise)
-    if((x & UINT8_C(0x02)) != UINT8_C(0)) {                                         r = static_cast<unsinged_fast_type>(r | UINT8_C(1)); } // NOLINT(hicpp-signed-bitwise)
+    if(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0xF0)) != UINT8_C(0)) { x = static_cast<std::uint_fast8_t>(x >> static_cast<unsigned>(UINT8_C(4))); r = static_cast<unsinged_fast_type>(r | UINT32_C(4)); }
+    if(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0x0C)) != UINT8_C(0)) { x = static_cast<std::uint_fast8_t>(x >> static_cast<unsigned>(UINT8_C(2))); r = static_cast<unsinged_fast_type>(r | UINT32_C(2)); }
+    if(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast32_t>(x) & UINT32_C(0x02)) != UINT8_C(0)) {                                                                             r = static_cast<unsinged_fast_type>(r | UINT32_C(1)); }
 
     return r;
   }
@@ -4452,14 +4462,16 @@
     // Use a linear search starting from the least significant limbs.
 
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
-    using local_value_type        = typename local_wide_integer_type::limb_type;
+    using local_value_type        = typename local_wide_integer_type::representation_type::value_type;
 
     auto bpos   = static_cast<unsinged_fast_type>(0U);
     auto offset = static_cast<unsinged_fast_type>(0U);
 
     for(auto it = x.crepresentation().cbegin(); it != x.crepresentation().cend(); ++it, ++offset) // NOLINT(llvm-qualified-auto,readability-qualified-auto)
     {
-      if(static_cast<local_value_type>(*it & (std::numeric_limits<local_value_type>::max)()) != static_cast<local_value_type>(0U))
+      const auto vi = static_cast<local_value_type>(*it & (std::numeric_limits<local_value_type>::max)());
+
+      if(vi != static_cast<local_value_type>(0U))
       {
         bpos = static_cast<unsinged_fast_type>
                (
@@ -4484,14 +4496,16 @@
     // Use a linear search starting from the most significant limbs.
 
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
-    using local_value_type        = typename local_wide_integer_type::limb_type;
+    using local_value_type        = typename local_wide_integer_type::representation_type::value_type;
 
     auto bpos   = static_cast<unsinged_fast_type>(0U);
     auto offset = static_cast<unsinged_fast_type>(x.crepresentation().size() - 1U);
 
     for(auto ri = x.crepresentation().crbegin(); ri != x.crepresentation().crend(); ++ri, --offset)
     {
-      if((*ri & (std::numeric_limits<local_value_type>::max)()) != 0U)
+      const auto vr = static_cast<local_value_type>(*ri & (std::numeric_limits<local_value_type>::max)());
+
+      if(vr != static_cast<local_value_type>(0U))
       {
         bpos = static_cast<unsinged_fast_type>
                (
@@ -5122,8 +5136,8 @@
         return *this;
       }
 
-      [[nodiscard]] constexpr auto get_a() const -> result_type { return param_a; }
-      [[nodiscard]] constexpr auto get_b() const -> result_type { return param_b; }
+      WIDE_INTEGER_NODISCARD constexpr auto get_a() const -> result_type { return param_a; }
+      WIDE_INTEGER_NODISCARD constexpr auto get_b() const -> result_type { return param_b; }
 
       void set_a(const result_type& p_a) { param_a = p_a; }
       void set_b(const result_type& p_b) { param_b = p_b; }
@@ -5184,10 +5198,10 @@
       my_params = new_params;
     }
 
-    [[nodiscard]] auto param() const -> const param_type& { return my_params; }
+    WIDE_INTEGER_NODISCARD auto param() const -> const param_type& { return my_params; }
 
-    [[nodiscard]] auto a() const -> result_type { return my_params.get_a(); }
-    [[nodiscard]] auto b() const -> result_type { return my_params.get_b(); }
+    WIDE_INTEGER_NODISCARD auto a() const -> result_type { return my_params.get_a(); }
+    WIDE_INTEGER_NODISCARD auto b() const -> result_type { return my_params.get_b(); }
 
     template<typename GeneratorType,
              const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
