@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,7 +25,7 @@ namespace
   {
     using local_float_type = FloatingPointType;
 
-    const local_float_type epsilon = std::numeric_limits<local_float_type>::epsilon();
+    constexpr local_float_type epsilon = std::numeric_limits<local_float_type>::epsilon();
 
     using std::cos;
     using std::sin;
@@ -33,12 +33,12 @@ namespace
 
     const local_float_type tol = sqrt(epsilon);
 
-    const local_float_type integration_result = math::integral(local_float_type(0),
+    const local_float_type integration_result = math::integral(static_cast<local_float_type>(0),
                                                          math::constants::pi<local_float_type>(),
                                                          tol,
-                                                         [&x, &n](const local_float_type& t) -> local_float_type
+                                                         [&x, &n](const local_float_type& t) noexcept -> local_float_type
                                                          {
-                                                           return cos(x * sin(t) - (t * local_float_type(n)));
+                                                           return cos(x * sin(t) - (t * static_cast<local_float_type>(n)));
                                                          });
 
     const local_float_type jn = integration_result / math::constants::pi<local_float_type>();
@@ -49,21 +49,34 @@ namespace
 
 bool app::benchmark::run_trapezoid_integral()
 {
-  using my_float_type = std::float32_t;
+  using my_float_type = std::float64_t;
 
-  static_assert(std::numeric_limits<my_float_type>::digits >= 24,
+  static_assert((std::numeric_limits<my_float_type>::digits >= 53),
                 "Error: Incorrect my_float_type type definition");
 
   constexpr my_float_type app_benchmark_tolerance =
-    my_float_type(std::numeric_limits<my_float_type>::epsilon() * my_float_type(FLOATMAX_C(100.0)));
+    static_cast<my_float_type>
+    (
+        std::numeric_limits<my_float_type>::epsilon()
+      * static_cast<my_float_type>(FLOATMAX_C(100.0))
+    );
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
   // N[BesselJ[2, 123/100], 50]
-  const my_float_type j2 = cyl_bessel_j(UINT8_C(2), my_float_type(FLOATMAX_C(1.23)));
+  const my_float_type j2 =
+    cyl_bessel_j
+    (
+      UINT8_C(2),
+      static_cast<my_float_type>(FLOATMAX_C(1.23))
+    );
 
-  const bool app_benchmark_result_is_ok = detail::is_close_fraction(my_float_type(FLOATMAX_C(0.1663693837868140735126785243)),
-                                                                    j2,
-                                                                    app_benchmark_tolerance);
+  const bool app_benchmark_result_is_ok =
+    detail::is_close_fraction
+    (
+      static_cast<my_float_type>(FLOATMAX_C(0.1663693837868140735126785243)),
+      j2,
+      app_benchmark_tolerance
+    );
 
   return app_benchmark_result_is_ok;
 }
