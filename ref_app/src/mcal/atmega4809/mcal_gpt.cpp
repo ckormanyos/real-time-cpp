@@ -11,7 +11,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile std::uint64_t system_tick;
+  volatile std::uint64_t mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -40,9 +40,9 @@ void __vector_3()
   // Increment the 64-bit system tick with 15625 [us].
   // This number of microseconds represents the time
   // span needed for 512 ticks at 32.768 kHz.
-  const mcal::gpt::value_type new_tick = system_tick + static_cast<std::uint32_t>(15625U);
+  const mcal::gpt::value_type new_tick = mcal_gpt_system_tick + static_cast<std::uint32_t>(15625U);
 
-  system_tick = new_tick;
+  mcal_gpt_system_tick = new_tick;
 }
 
 void mcal::gpt::init(const config_type*)
@@ -136,7 +136,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Do the first read of the real-time counter's cnt register and the system tick.
     const std::uint8_t  rtc_cnt_1  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
-    const std::uint64_t sys_tick_1 = system_tick;
+    const std::uint64_t sys_tick_1 = mcal_gpt_system_tick;
 
     // Do the second read of the real-time counter's cnt register.
     const std::uint8_t  rtc_cnt_2  = mcal::reg::reg_access_static<std::uint16_t, std::uint8_t, mcal::reg::rtc_cnt + 0U>::reg_get();
@@ -154,7 +154,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     {
       const std::uint32_t low_part = (std::uint32_t) ((std::uint32_t) (rtc_cnt_2 * (std::uint32_t) 15625U) + 256U) / 512U;
 
-      consistent_microsecond_tick = system_tick | low_part;
+      consistent_microsecond_tick = mcal_gpt_system_tick | low_part;
     }
 
     return (mcal::gpt::value_type) consistent_microsecond_tick;

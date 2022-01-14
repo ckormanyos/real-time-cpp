@@ -18,7 +18,7 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type system_tick;
+  volatile mcal::gpt::value_type mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -35,7 +35,7 @@ extern "C" void __sys_tick_handler() __attribute__((interrupt));
 extern "C" void __sys_tick_handler()
 {
   // Update 64-bit counter with microsecond count.
-  system_tick += mcal::config::systick_inc;
+  mcal_gpt_system_tick += mcal::config::systick_inc;
 }
 
 void mcal::gpt::init(const config_type*)
@@ -84,7 +84,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     const timer_register_type   sys_tick_cnt_1 = mcal::reg::reg_access_static<timer_address_type,
                                                                               timer_register_type,
                                                                               mcal::reg::systick_val>::reg_get();
-    const mcal::gpt::value_type sys_tick_1     = system_tick;
+    const mcal::gpt::value_type sys_tick_1     = mcal_gpt_system_tick;
 
     // Do the second read of the systick counter.
     const timer_register_type   sys_tick_cnt_2 = mcal::reg::reg_access_static<timer_address_type,
@@ -93,8 +93,8 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Perform the consistency check.
     const mcal::gpt::value_type consistent_microsecond_tick
-      = ((sys_tick_cnt_2 >= sys_tick_cnt_1) ? mcal::gpt::value_type(sys_tick_1  | sys_tick_cnt_1)
-                                            : mcal::gpt::value_type(system_tick | sys_tick_cnt_2));
+      = ((sys_tick_cnt_2 >= sys_tick_cnt_1) ? mcal::gpt::value_type(sys_tick_1           | sys_tick_cnt_1)
+                                            : mcal::gpt::value_type(mcal_gpt_system_tick | sys_tick_cnt_2));
 
     return consistent_microsecond_tick;
   }
