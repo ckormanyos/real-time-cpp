@@ -49,9 +49,9 @@ namespace
 
 bool app::benchmark::run_trapezoid_integral()
 {
-  using my_float_type = std::float64_t;
+  using my_float_type = std::floatmax_t;
 
-  static_assert((std::numeric_limits<my_float_type>::digits >= 53),
+  static_assert((std::numeric_limits<my_float_type>::digits >= 24),
                 "Error: Incorrect my_float_type type definition");
 
   constexpr my_float_type app_benchmark_tolerance =
