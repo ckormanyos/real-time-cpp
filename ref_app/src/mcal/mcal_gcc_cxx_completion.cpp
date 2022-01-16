@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,7 +16,7 @@ namespace std
 {
   namespace chrono
   {
-    high_resolution_clock::time_point high_resolution_clock::now() UTIL_NOEXCEPT
+    high_resolution_clock::time_point high_resolution_clock::now() noexcept
     {
        // The source of the high-resolution clock is microseconds.
        using microsecond_time_point_type =
@@ -37,12 +37,12 @@ namespace std
   }
 }
 
-void  operator delete(void*)        UTIL_NOEXCEPT;
-void  operator delete(void*, void*) UTIL_NOEXCEPT;
+void  operator delete(void*)        noexcept;
+void  operator delete(void*, void*) noexcept;
 
-void* operator new(std::size_t size) UTIL_NOEXCEPT;
+void* operator new(std::size_t size) noexcept;
 
-void* operator new(std::size_t size) UTIL_NOEXCEPT
+void* operator new(std::size_t size) noexcept
 {
   // This is a naive and not completely functional
   // implementation of operator new(). In particular, there is
@@ -70,10 +70,10 @@ void* operator new(std::size_t size) UTIL_NOEXCEPT
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
 
-void operator delete(void*)              UTIL_NOEXCEPT { }
-void operator delete(void*, void*)       UTIL_NOEXCEPT { }
+void operator delete(void*)              noexcept { }
+void operator delete(void*, void*)       noexcept { }
 #if(__cplusplus >= 201400L)
-void operator delete(void*, std::size_t) UTIL_NOEXCEPT { }
+void operator delete(void*, std::size_t) noexcept { }
 #endif
 
 extern "C"
@@ -84,13 +84,13 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
-  void        abort               (void)           UTIL_NOEXCEPT __attribute__((noreturn));
-  int         atexit              (void (*)(void)) UTIL_NOEXCEPT;
-  int         at_quick_exit       (void (*)(void)) UTIL_NOEXCEPT;
-  void        _Exit               (int)            UTIL_NOEXCEPT __attribute__((noreturn));
-  void        exit                (int)                          __attribute__((noreturn));
-  void        quick_exit          (int)                          __attribute__((noreturn));
-  void        _exit               (int)                          __attribute__((noreturn));
+  void        abort               (void)                    __attribute__((noreturn));
+  int         atexit              (void (*)(void));
+  int         at_quick_exit       (void (*)(void)) noexcept;
+  void        _Exit               (int)            noexcept __attribute__((noreturn));
+  void        exit                (int)                     __attribute__((noreturn));
+  void        quick_exit          (int)                     __attribute__((noreturn));
+  void        _exit               (int)                     __attribute__((noreturn));
   int         _isatty             (int);
   int         _lseek              (int, int, int);
   int         _open               (const char*, int, int);
@@ -106,10 +106,10 @@ extern "C"
 
   // Implementations of patched functions.
 
-  void        abort               (void)       UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)()) UTIL_NOEXCEPT          { return 0; }
-  int         at_quick_exit       (void (*)()) UTIL_NOEXCEPT          { return 0; }
-  void        _Exit               (int)        UTIL_NOEXCEPT          { for(;;) { mcal::cpu::nop(); } }
+  void        abort               (void)                              { for(;;) { mcal::cpu::nop(); } }
+  int         atexit              (void (*)())                        { return 0; }
+  int         at_quick_exit       (void (*)()) noexcept               { return 0; }
+  void        _Exit               (int)        noexcept               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
   void        _exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
