@@ -16,14 +16,10 @@
 
 #include <math/wide_integer/uintwide_t.h>
 
-#if defined(WIDE_INTEGER_NAMESPACE)
-using namespace WIDE_INTEGER_NAMESPACE;
-#endif
-
 namespace
 {
   using uint256_t =
-    math::wide_integer::uintwide_t<256U, std::uint32_t>;
+    WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<256U, std::uint32_t>;
 
   static_assert(std::numeric_limits<uint256_t>::digits == 256,
                 "Error: Incorrect digit count for this example");
