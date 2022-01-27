@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2012 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -24,8 +24,8 @@
     {
     public:
       // Type definitions.
-      using allocator_type         =       AllocatorType;
-      using value_type             =       ValueType;
+      using allocator_type         = typename std::allocator_traits<AllocatorType>::template rebind_alloc<ValueType>;
+      using value_type             = typename allocator_type::value_type;
       using reference              =       value_type&;
       using const_reference        = const value_type&;
       using iterator               =       value_type*;
@@ -58,7 +58,7 @@
 
         while(it != end())
         {
-          std::allocator_traits<AllocatorType>::construct(my_a, it, v);
+          std::allocator_traits<allocator_type>::construct(my_a, it, v);
 
           ++it;
         }
