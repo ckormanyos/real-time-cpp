@@ -147,9 +147,9 @@
     constexpr dynamic_array() : elem_count(0U),
                                 elems     (nullptr) { }
 
-    explicit dynamic_array(      size_type count,
-                                 const_reference v = value_type(),
-                           const allocator_type& a = allocator_type())
+    explicit WIDE_INTEGER_CONSTEXPR dynamic_array(      size_type count,
+                                                        const_reference v = value_type(),
+                                                  const allocator_type& a = allocator_type())
       : elem_count(count),
         elems     (nullptr)
     {
@@ -170,7 +170,7 @@
       }
     }
 
-    dynamic_array(const dynamic_array& other)
+    WIDE_INTEGER_CONSTEXPR dynamic_array(const dynamic_array& other)
       : elem_count(other.size()),
         elems     (nullptr)
     {
@@ -185,9 +185,9 @@
     }
 
     template<typename input_iterator>
-    dynamic_array(input_iterator first,
-                  input_iterator last,
-                  const allocator_type& a = allocator_type())
+    WIDE_INTEGER_CONSTEXPR dynamic_array(input_iterator first,
+                                         input_iterator last,
+                                         const allocator_type& a = allocator_type())
       : elem_count(static_cast<size_type>(std::distance(first, last))),
         elems     (nullptr)
     {
@@ -201,8 +201,8 @@
       std::copy(first, last, elems);
     }
 
-    dynamic_array(std::initializer_list<value_type> lst,
-                  const allocator_type& a = allocator_type())
+    WIDE_INTEGER_CONSTEXPR dynamic_array(std::initializer_list<value_type> lst,
+                                         const allocator_type& a = allocator_type())
       : elem_count(lst.size()),
         elems     (nullptr)
     {
@@ -217,8 +217,8 @@
     }
 
     // Move constructor.
-    dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
-                                                    elems     (other.elems)
+    WIDE_INTEGER_CONSTEXPR dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
+                                                                           elems     (other.elems)
     {
       other.elem_count = 0U;
       other.elems      = nullptr;
@@ -227,23 +227,25 @@
     // Destructor.
     WIDE_INTEGER_CONSTEXPR virtual ~dynamic_array()
     {
-      pointer p = elems;
+      pointer p = elems; // NOLINT(altera-id-dependent-backward-branch)
+
+      using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
       allocator_type my_a;
 
-      while(p != elems + elem_count)
+      while(p != elems + elem_count) // NOLINT(altera-id-dependent-backward-branch)
       {
-        std::allocator_traits<allocator_type>::destroy(my_a, p);
+        local_allocator_traits_type::destroy(my_a, p);
 
         ++p;
       }
 
       // Destroy the elements and deallocate the range.
-      std::allocator_traits<allocator_type>::deallocate(my_a, elems, elem_count);
+      local_allocator_traits_type::deallocate(my_a, elems, elem_count);
     }
 
     // Assignment operator.
-    auto operator=(const dynamic_array& other) -> dynamic_array&
+    WIDE_INTEGER_CONSTEXPR auto operator=(const dynamic_array& other) -> dynamic_array&
     {
       if(this != &other)
       {
@@ -256,21 +258,23 @@
     }
 
     // Move assignment operator.
-    auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
+    WIDE_INTEGER_CONSTEXPR auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
       // Destroy the elements and deallocate the range.
-      pointer p = elems;
+      pointer p = elems; // NOLINT(altera-id-dependent-backward-branch)
+
+      using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
       allocator_type my_a;
 
-      while(p != elems + elem_count)
+      while(p != elems + elem_count) // NOLINT(altera-id-dependent-backward-branch)
       {
-        std::allocator_traits<allocator_type>::destroy(my_a, p);
+        local_allocator_traits_type::destroy(my_a, p);
 
         ++p;
       }
 
-      std::allocator_traits<allocator_type>::deallocate(my_a, elems, elem_count);
+      local_allocator_traits_type::deallocate(my_a, elems, elem_count);
 
       elem_count = other.elem_count;
       elems      = other.elems;
@@ -282,79 +286,78 @@
     }
 
     // Iterator members:
-    auto begin  ()       -> iterator               { return elems; }
-    auto end    ()       -> iterator               { return elems + elem_count; }
-    auto begin  () const -> const_iterator         { return elems; }
-    auto end    () const -> const_iterator         { return elems + elem_count; }
-    auto cbegin () const -> const_iterator         { return elems; }
-    auto cend   () const -> const_iterator         { return elems + elem_count; }
-    auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
-    auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_CONSTEXPR auto begin  ()       -> iterator               { return elems; }
+    WIDE_INTEGER_CONSTEXPR auto end    ()       -> iterator               { return elems + elem_count; }
+    WIDE_INTEGER_CONSTEXPR auto begin  () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_CONSTEXPR auto end    () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_CONSTEXPR auto cbegin () const -> const_iterator         { return elems; }
+    WIDE_INTEGER_CONSTEXPR auto cend   () const -> const_iterator         { return elems + elem_count; }
+    WIDE_INTEGER_CONSTEXPR auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_CONSTEXPR auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
+    WIDE_INTEGER_CONSTEXPR auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_CONSTEXPR auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    WIDE_INTEGER_CONSTEXPR auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    WIDE_INTEGER_CONSTEXPR auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    auto data()       -> pointer       { return elems; }
-    auto data() const -> const_pointer { return elems; }
+    WIDE_INTEGER_CONSTEXPR auto data()       -> pointer       { return elems; }
+    WIDE_INTEGER_CONSTEXPR auto data() const -> const_pointer { return elems; }
 
     // Size and capacity.
-    auto size    () const -> size_type { return  elem_count; }
-    auto max_size() const -> size_type { return  elem_count; }
-    auto empty   () const -> bool      { return (elem_count == 0U); }
+    constexpr auto size    () const -> size_type { return  elem_count; }
+    constexpr auto max_size() const -> size_type { return  elem_count; }
+    constexpr auto empty   () const -> bool      { return (elem_count == 0U); }
 
     // Element access members.
-    auto operator[](const size_type i)       -> reference       { return elems[i]; }
-    auto operator[](const size_type i) const -> const_reference { return elems[i]; }
+    WIDE_INTEGER_CONSTEXPR auto operator[](const size_type i)       -> reference       { return elems[i]; }
+    WIDE_INTEGER_CONSTEXPR auto operator[](const size_type i) const -> const_reference { return elems[i]; }
 
-    auto front()       -> reference       { return elems[0U]; }
-    auto front() const -> const_reference { return elems[0U]; }
+    WIDE_INTEGER_CONSTEXPR auto front()       -> reference       { return elems[0U]; }
+    WIDE_INTEGER_CONSTEXPR auto front() const -> const_reference { return elems[0U]; }
 
-    auto back()       -> reference       { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
-    auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
+    WIDE_INTEGER_CONSTEXPR auto back()       -> reference       { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
+    WIDE_INTEGER_CONSTEXPR auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
 
-    auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[0U]); }
-    auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[0U]); }
+    WIDE_INTEGER_CONSTEXPR auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[0U]); }
+    WIDE_INTEGER_CONSTEXPR auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[0U]); }
 
     // Element manipulation members.
-    void fill(const value_type& v)
+    WIDE_INTEGER_CONSTEXPR void fill(const value_type& v)
     {
       std::fill_n(begin(), elem_count, v);
     }
 
-    void swap(dynamic_array& other)
+    WIDE_INTEGER_CONSTEXPR void swap(dynamic_array& other)
     {
-      const size_type     tmp_elem_count = elem_count;
-            const_pointer tmp_elems      = elems;
+      if(this != &other)
+      {
+        pointer tmp_elems = elems;
 
-      elem_count = other.elem_count;
-      elems      = other.elems;
+        elems = other.elems;
+        other.elems = tmp_elems;
 
-      other.elem_count = tmp_elem_count;
-      other.elems      = tmp_elems;
+        std::swap(elem_count, other.elem_count);
+      }
     }
 
-    void swap(dynamic_array&& other)
+    WIDE_INTEGER_CONSTEXPR void swap(dynamic_array&& other)
     {
-      const size_type     tmp_elem_count = elem_count;
-            const_pointer tmp_elems      = elems;
+      pointer tmp_elems = elems;
 
-      elem_count = other.elem_count;
-      elems      = other.elems;
+      elems = other.elems;
+      other.elems = tmp_elems;
 
-      other.elem_count = tmp_elem_count;
-      other.elems      = tmp_elems;
+      std::swap(elem_count, other.elem_count);
     }
 
   private:
     mutable size_type elem_count; // NOLINT(readability-identifier-naming)
-    pointer           elems;      // NOLINT(readability-identifier-naming)
+    pointer           elems;      // NOLINT(readability-identifier-naming,altera-id-dependent-backward-branch)
   };
 
   template<typename ValueType, typename AllocatorType>
-  auto operator==(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator==(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                         const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     bool left_and_right_are_equal = false;
 
@@ -378,8 +381,8 @@
   }
 
   template<typename ValueType, typename AllocatorType>
-  auto operator<(const dynamic_array<ValueType, AllocatorType>& lhs,
-                 const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator<(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                        const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
@@ -416,36 +419,36 @@
   }
 
   template<typename ValueType, typename AllocatorType>
-  auto operator!=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator!=(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                         const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     return (!(lhs == rhs));
   }
 
   template<typename ValueType, typename AllocatorType>
-  auto operator>(const dynamic_array<ValueType, AllocatorType>& lhs,
-                 const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator>(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                        const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     return (rhs < lhs);
   }
 
   template<typename ValueType, typename AllocatorType>
-  auto operator>=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator>=(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                         const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     return (!(lhs < rhs));
   }
 
   template<typename ValueType, typename AllocatorType>
-  auto operator<=(const dynamic_array<ValueType, AllocatorType>& lhs,
-                  const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+  WIDE_INTEGER_CONSTEXPR auto operator<=(const dynamic_array<ValueType, AllocatorType>& lhs,
+                                         const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     return (!(rhs < lhs));
   }
 
   template<typename ValueType, typename AllocatorType>
-  void swap(dynamic_array<ValueType, AllocatorType>& x,
-            dynamic_array<ValueType, AllocatorType>& y)
+  WIDE_INTEGER_CONSTEXPR void swap(dynamic_array<ValueType, AllocatorType>& x,
+                                   dynamic_array<ValueType, AllocatorType>& y)
   {
     x.swap(y);
   }
@@ -654,8 +657,8 @@
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator&(const IntegralType& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) -> typename std::enable_if<std::is_integral<IntegralType>::value, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type;
 
   // Forward declarations of non-member shift functions of (uintwide_t shift IntegralType).
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) -> typename std::enable_if<std::is_integral<IntegralType>::value, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type;
-  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) -> typename std::enable_if<std::is_integral<IntegralType>::value, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type;
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator<<(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) -> typename std::enable_if<std::is_integral<IntegralType>::value, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type; // NOLINT(readability-avoid-const-params-in-decls)
+  template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator>>(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const IntegralType n) -> typename std::enable_if<std::is_integral<IntegralType>::value, uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>::type; // NOLINT(readability-avoid-const-params-in-decls)
 
   // Forward declarations of non-member comparison functions of (uintwide_t cmp uintwide_t).
   template<const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator==(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& u, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) -> bool;
@@ -764,7 +767,7 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  WIDE_INTEGER_CONSTEXPR auto rootk(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& m, const std::uint_fast8_t k) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+  WIDE_INTEGER_CONSTEXPR auto rootk(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& m, const std::uint_fast8_t k) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>; // NOLINT(readability-avoid-const-params-in-decls)
 
   template<typename OtherUnsignedIntegralTypeP,
            const size_t Width2,
@@ -838,9 +841,9 @@
            typename AllocatorType,
            const bool IsSigned>
   auto miller_rabin(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& n,
-                    const unsigned_fast_type                                     number_of_trials,
-                    DistributionType&                                            distribution,
-                    GeneratorType&                                               generator) -> bool;
+                    const unsigned_fast_type                                     number_of_trials, // NOLINT(readability-avoid-const-params-in-decls)
+                          DistributionType&                                      distribution,
+                          GeneratorType&                                         generator) -> bool;
 
   #if(__cplusplus >= 201703L)
   } // namespace math::wide_integer
@@ -947,43 +950,19 @@
     explicit WIDE_INTEGER_CONSTEXPR fixed_static_array(const size_type   s,
                                                        const value_type& v = value_type())
     {
-      std::fill(base_class_type::begin(),
-                base_class_type::begin() + (std::min)(MySize, static_cast<size_type>(s)),
-                v);
-
-      std::fill(base_class_type::begin() + (std::min)(MySize, static_cast<size_type>(s)),
-                base_class_type::end(),
-                value_type());
+      if(s < static_size())
+      {
+        std::fill(base_class_type::begin(),     base_class_type::begin() + s, v);
+        std::fill(base_class_type::begin() + s, base_class_type::end(),       value_type());
+      }
+      else
+      {
+        base_class_type::fill(v);
+      }
     }
 
-    template<const size_type OtherSize>
-    WIDE_INTEGER_CONSTEXPR fixed_static_array(const fixed_static_array<size_type, OtherSize>& other_array,   // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
-                                              typename std::enable_if<OtherSize != MySize>::type* p_nullparam = nullptr)
-    {
-      static_cast<void>(p_nullparam == nullptr);
-
-      std::copy(other_array.cbegin(),
-                other_array.cbegin() + (std::min)(OtherSize, MySize),
-                base_class_type::begin());
-
-      std::fill(base_class_type::begin() + (std::min)(OtherSize, MySize),
-                base_class_type::end(),
-                value_type());
-    }
-
-    WIDE_INTEGER_CONSTEXPR fixed_static_array(std::initializer_list<value_type> lst)
-    {
-      std::copy(lst.begin(),
-                lst.begin() + (std::min)(static_cast<size_type>(lst.size()), MySize),
-                base_class_type::begin());
-
-      std::fill(base_class_type::begin() + (std::min)(static_cast<size_type>(lst.size()), MySize),
-                base_class_type::end(),
-                value_type());
-    }
-
-    constexpr fixed_static_array(const fixed_static_array&) = default;
-    constexpr fixed_static_array(fixed_static_array&&) noexcept = default;
+    WIDE_INTEGER_CONSTEXPR fixed_static_array(const fixed_static_array&) = default;
+    WIDE_INTEGER_CONSTEXPR fixed_static_array(fixed_static_array&&) noexcept = default;
 
     WIDE_INTEGER_CONSTEXPR ~fixed_static_array() = default;
 
@@ -1044,7 +1023,7 @@
   {
     const char* p_str_copy{};
 
-    for(p_str_copy = p_str; (*p_str_copy != static_cast<char>('\0')); ++p_str_copy) { ; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    for(p_str_copy = p_str; (*p_str_copy != static_cast<char>('\0')); ++p_str_copy) { ; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,altera-id-dependent-backward-branch)
 
     return static_cast<unsigned_fast_type>(p_str_copy - p_str);
   }
@@ -1358,7 +1337,7 @@
       auto right_shift_amount_v = static_cast<unsigned_fast_type>(0U);
       auto index_u              = static_cast<std::uint_fast8_t> (0U);
 
-      for( ; (   (index_u < values.size())
+      for( ; (   (index_u < values.size()) // NOLINT(altera-id-dependent-backward-branch)
               && (right_shift_amount_v < static_cast<unsigned_fast_type>(std::numeric_limits<UnsignedIntegralType>::digits)));
              ++index_u)
       {
@@ -2189,7 +2168,7 @@
           {
             uintwide_t<my_width2, limb_type, AllocatorType, false> tu(t);
 
-            while(!tu.is_zero())
+            while(!tu.is_zero()) // NOLINT(altera-id-dependent-backward-branch)
             {
               auto c = static_cast<char>(*tu.values.cbegin() & mask);
 
@@ -2222,7 +2201,7 @@
         {
           field_width = (std::min)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - 1U));
 
-          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width))
+          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
             --pos;
 
@@ -2306,7 +2285,7 @@
         {
           field_width = (std::min)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - 1U));
 
-          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width))
+          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
             --pos;
 
@@ -2368,7 +2347,7 @@
           {
             uintwide_t<my_width2, limb_type, AllocatorType, false> tu(t);
 
-            while(!tu.is_zero())
+            while(!tu.is_zero()) // NOLINT(altera-id-dependent-backward-branch)
             {
               char c(*tu.values.cbegin() & mask);
 
@@ -2406,7 +2385,7 @@
         {
           field_width = (std::min)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - 1U));
 
-          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width))
+          while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - 1U) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
             --pos;
 
@@ -2468,7 +2447,7 @@
 
       auto hi_part = static_cast<limb_type>(0U);
 
-      for(auto i = static_cast<signed_fast_type>(static_cast<unsigned_fast_type>(number_of_limbs - 1U) - u_offset); static_cast<signed_fast_type>(i) >= 0; --i)
+      for(auto i = static_cast<signed_fast_type>(static_cast<unsigned_fast_type>(number_of_limbs - 1U) - u_offset); static_cast<signed_fast_type>(i) >= 0; --i) // NOLINT(altera-id-dependent-backward-branch)
       {
         long_numerator =
           static_cast<double_limb_type>
@@ -2500,7 +2479,7 @@
     {
       auto it = values.cbegin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
-      while((it != values.cend()) && (*it == static_cast<limb_type>(0U)))
+      while((it != values.cend()) && (*it == static_cast<limb_type>(0U))) // NOLINT(altera-id-dependent-backward-branch)
       {
         ++it;
       }
@@ -2550,7 +2529,7 @@
       std::reverse_iterator<InputIteratorLeftType>  pa(a + count);
       std::reverse_iterator<InputIteratorRightType> pb(b + count);
 
-      for( ; pa != std::reverse_iterator<InputIteratorLeftType>(a); ++pa, ++pb)
+      for( ; pa != std::reverse_iterator<InputIteratorLeftType>(a); ++pa, ++pb) // NOLINT(altera-id-dependent-backward-branch)
       {
         using value_left_type =
           typename std::iterator_traits<InputIteratorLeftType>::value_type;
@@ -2643,7 +2622,7 @@
 
       long double ldexp_runner(one_ldbl);
 
-      for(auto i = static_cast<size_t>(0U); i < ilim; ++i)
+      for(auto i = static_cast<size_t>(0U); i < ilim; ++i) // NOLINT(altera-id-dependent-backward-branch)
       {
         auto ld      = static_cast<long double>(0.0L);
         auto lm_mask = static_cast<limb_type>(1ULL);
@@ -3416,7 +3395,7 @@
 
       local_limb_type carry_out = carry;
 
-      while((i < n) && (carry_out != static_cast<local_limb_type>(0U)))
+      while((i < n) && (carry_out != static_cast<local_limb_type>(0U))) // NOLINT(altera-id-dependent-backward-branch)
       {
         const local_double_limb_type uv_as_ularge = static_cast<local_double_limb_type>(*(t + static_cast<left_difference_type>(i))) + carry_out;
 
@@ -3445,7 +3424,7 @@
 
       bool has_borrow_out = has_borrow;
 
-      while((i < n) && (has_borrow_out))
+      while((i < n) && (has_borrow_out)) // NOLINT(altera-id-dependent-backward-branch)
       {
         auto uv_as_ularge = static_cast<local_double_limb_type>(*(t + static_cast<left_difference_type>(i)));
 
@@ -3633,8 +3612,8 @@
       auto v_offset = static_cast<local_uint_index_type>(0U);
 
       // Compute the offsets for u and v.
-      for(auto i = static_cast<local_uint_index_type>(0U); (i < number_of_limbs) && (*(      values.cbegin() + static_cast<size_t>(static_cast<local_uint_index_type>(number_of_limbs - 1U) - i)) == static_cast<limb_type>(0U)); ++i) { ++u_offset; }
-      for(auto i = static_cast<local_uint_index_type>(0U); (i < number_of_limbs) && (*(other.values.cbegin() + static_cast<size_t>(static_cast<local_uint_index_type>(number_of_limbs - 1U) - i)) == static_cast<limb_type>(0U)); ++i) { ++v_offset; }
+      for(auto i = static_cast<local_uint_index_type>(0U); (i < number_of_limbs) && (*(      values.cbegin() + static_cast<size_t>(static_cast<local_uint_index_type>(number_of_limbs - 1U) - i)) == static_cast<limb_type>(0U)); ++i) { ++u_offset; } // NOLINT(altera-id-dependent-backward-branch)
+      for(auto i = static_cast<local_uint_index_type>(0U); (i < number_of_limbs) && (*(other.values.cbegin() + static_cast<size_t>(static_cast<local_uint_index_type>(number_of_limbs - 1U) - i)) == static_cast<limb_type>(0U)); ++i) { ++v_offset; } // NOLINT(altera-id-dependent-backward-branch)
 
       if(v_offset == static_cast<local_uint_index_type>(number_of_limbs))
       {
@@ -3740,7 +3719,7 @@
           const auto m   = static_cast<local_uint_index_type> (number_of_limbs - u_offset) - n;
           const auto vj0 = static_cast<local_uint_index_type>((number_of_limbs - 1U) - v_offset);
 
-          for(auto j = static_cast<local_uint_index_type>(0U); j <= m; ++j)
+          for(auto j = static_cast<local_uint_index_type>(0U); j <= m; ++j) // NOLINT(altera-id-dependent-backward-branch)
           {
             // Step D3 [Calculate q_hat].
             //   if u[j] == v[j0]
@@ -3822,7 +3801,7 @@
             {
               auto previous_u = static_cast<limb_type>(0U);
 
-              for(auto rl = static_cast<signed_fast_type>(n - 1U), ul = static_cast<signed_fast_type>(number_of_limbs - (v_offset + 1U)); rl >= 0; --rl, --ul)
+              for(auto rl = static_cast<signed_fast_type>(n - 1U), ul = static_cast<signed_fast_type>(number_of_limbs - (v_offset + 1U)); rl >= 0; --rl, --ul) // NOLINT(altera-id-dependent-backward-branch)
               {
                 const auto t =
                   static_cast<double_limb_type>(  *(uu.cbegin() + static_cast<size_t>(ul))
@@ -3859,7 +3838,7 @@
       {
         auto part_from_previous_value = static_cast<limb_type>(0U);
 
-        for(unsigned_fast_type i = offset; i < static_cast<unsigned_fast_type>(number_of_limbs); ++i)
+        for(unsigned_fast_type i = offset; i < static_cast<unsigned_fast_type>(number_of_limbs); ++i) // NOLINT(altera-id-dependent-backward-branch)
         {
           const limb_type t = *(values.cbegin() + static_cast<size_t>(i));
 
@@ -3895,7 +3874,7 @@
             ? static_cast<limb_type>(0U)
             : static_cast<limb_type>((std::numeric_limits<limb_type>::max)() << static_cast<std::uint_fast16_t>(static_cast<std::uint_fast16_t>(std::numeric_limits<limb_type>::digits) - right_shift_amount));
 
-        for(auto i = static_cast<signed_fast_type>((number_of_limbs - 1U) - offset); i >= static_cast<signed_fast_type>(0); --i)
+        for(auto i = static_cast<signed_fast_type>((number_of_limbs - 1U) - offset); i >= static_cast<signed_fast_type>(0); --i) // NOLINT(altera-id-dependent-backward-branch)
         {
           const limb_type t = *(values.cbegin() + static_cast<size_t>(i));
 
@@ -3966,7 +3945,7 @@
 
       bool char_is_valid = true;
 
-      for( ; ((pos < str_length) && char_is_valid); ++pos)
+      for( ; ((pos < str_length) && char_is_valid); ++pos) // NOLINT(altera-id-dependent-backward-branch)
       {
         const auto c = static_cast<std::uint8_t>(str_input[pos]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
@@ -4043,7 +4022,7 @@
       // Implement pre-increment.
       unsigned_fast_type i = 0U;
 
-      for( ; (i < static_cast<unsigned_fast_type>(values.size() - 1U)) && (++(*(values.begin() + static_cast<size_t>(i))) == static_cast<limb_type>(0U)); ++i)
+      for( ; (i < static_cast<unsigned_fast_type>(values.size() - 1U)) && (++(*(values.begin() + static_cast<size_t>(i))) == static_cast<limb_type>(0U)); ++i) // NOLINT(altera-id-dependent-backward-branch)
       {
         ;
       }
@@ -4059,7 +4038,7 @@
       // Implement pre-decrement.
       unsigned_fast_type i = 0U;
 
-      for( ; (i < static_cast<unsigned_fast_type>(values.size() - 1U)) && ((*(values.begin() + static_cast<size_t>(i)))-- == static_cast<limb_type>(0U)); ++i)
+      for( ; (i < static_cast<unsigned_fast_type>(values.size() - 1U)) && ((*(values.begin() + static_cast<size_t>(i)))-- == static_cast<limb_type>(0U)); ++i) // NOLINT(altera-id-dependent-backward-branch)
       {
         ;
       }
@@ -4353,7 +4332,7 @@
   template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator< (const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) -> typename std::enable_if<std::is_floating_point<FloatingPointType>::value, bool>::type { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator< (v); }
   template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator>=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) -> typename std::enable_if<std::is_floating_point<FloatingPointType>::value, bool>::type { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator>=(v); }
   template<typename FloatingPointType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned> constexpr auto operator<=(const FloatingPointType& f, const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& v) -> typename std::enable_if<std::is_floating_point<FloatingPointType>::value, bool>::type { return uintwide_t<Width2, LimbType, AllocatorType, IsSigned>(f).operator<=(v); }
-  #endif
+  #endif // !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
 
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
 
@@ -4482,7 +4461,7 @@
     return in;
   }
 
-  #endif
+  #endif // !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
 
   #if(__cplusplus >= 201703L)
   } // namespace math::wide_integer
@@ -4517,7 +4496,7 @@
     constexpr long double two_pow32 =
       static_cast<long double>(0x10000) * static_cast<long double>(0x10000);
 
-    while(f >= static_cast<local_floating_point_type>(two_pow32))
+    while(f >= static_cast<local_floating_point_type>(two_pow32)) // NOLINT(altera-id-dependent-backward-branch)
     {
       // TBD: Maybe optimize this exponent reduction
       // with a more clever kind of binary searching.
@@ -4528,7 +4507,7 @@
 
     constexpr long double one_ldbl(1.0L);
 
-    while(f >= static_cast<local_floating_point_type>(one_ldbl))
+    while(f >= static_cast<local_floating_point_type>(one_ldbl)) // NOLINT(altera-id-dependent-backward-branch)
     {
       constexpr long double two_ldbl(2.0L);
 
@@ -4584,9 +4563,8 @@
 
     return isfinite(x);
   }
-
   } // namespace my_own
-  #endif
+  #endif // !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
 
   template<typename UnsignedIntegralType>
   inline WIDE_INTEGER_CONSTEXPR auto lsb_helper(const UnsignedIntegralType& u) -> unsigned_fast_type
@@ -4606,7 +4584,7 @@
     // Naive and basic LSB search.
     // TBD: This could be improved with a binary search
     // on the lowest bit position of the fundamental type.
-    while((static_cast<unsigned_fast_type>(mask) & 1U) == 0U)
+    while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(mask) & UINT8_C(1)) == UINT8_C(0)) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
     {
       mask >>= 1U;
 
@@ -4722,7 +4700,7 @@
     auto bpos   = static_cast<unsigned_fast_type>(0U);
     auto offset = static_cast<unsigned_fast_type>(0U);
 
-    for(auto it = x.crepresentation().cbegin(); it != x.crepresentation().cend(); ++it, ++offset) // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+    for(auto it = x.crepresentation().cbegin(); it != x.crepresentation().cend(); ++it, ++offset) // NOLINT(llvm-qualified-auto,readability-qualified-auto,altera-id-dependent-backward-branch)
     {
       const auto vi = static_cast<local_value_type>(*it & (std::numeric_limits<local_value_type>::max)());
 
@@ -4756,7 +4734,7 @@
     auto bpos   = static_cast<unsigned_fast_type>(0U);
     auto offset = static_cast<unsigned_fast_type>(x.crepresentation().size() - 1U);
 
-    for(auto ri = x.crepresentation().crbegin(); ri != x.crepresentation().crend(); ++ri, --offset)
+    for(auto ri = x.crepresentation().crbegin(); ri != x.crepresentation().crend(); ++ri, --offset) // NOLINT(altera-id-dependent-backward-branch)
     {
       const auto vr = static_cast<local_value_type>(*ri & (std::numeric_limits<local_value_type>::max)());
 
@@ -5024,7 +5002,7 @@
       local_wide_integer_type y      (b);
       local_wide_integer_type p_local(p);
 
-      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != 0U))
+      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != 0U)) // NOLINT(altera-id-dependent-backward-branch)
       {
         if((p0 & 1U) != 0U)
         {
@@ -5081,7 +5059,7 @@
       local_double_width_type x      (static_cast<std::uint8_t>(1U));
       OtherIntegralTypeP      p_local(p);
 
-      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != 0U))
+      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != 0U)) // NOLINT(altera-id-dependent-backward-branch)
       {
         if((p0 & 1U) != 0U)
         {
@@ -5159,7 +5137,7 @@
 
       v -= u;
 
-      while((static_cast<local_ushort_type>(v) & 1U) == 0U)
+      while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(v) & UINT8_C(1)) == UINT8_C(0)) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
       {
         v >>= 1U;
       }
@@ -5524,7 +5502,7 @@
 
       unsigned_fast_type j = 0U;
 
-      while(it != result.representation().end())
+      while(it != result.representation().end()) // NOLINT(altera-id-dependent-backward-branch)
       {
         if((j % digits_gtor_ratio) == 0U)
         {
@@ -5594,8 +5572,8 @@
            const bool IsSigned>
   auto miller_rabin(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& n, // NOLINT(readability-function-cognitive-complexity)
                     const unsigned_fast_type                                     number_of_trials,
-                    DistributionType&                                            distribution,
-                    GeneratorType&                                               generator) -> bool
+                          DistributionType&                                      distribution,
+                          GeneratorType&                                         generator) -> bool
   {
     // This Miller-Rabin primality test is loosely based on
     // an adaptation of some code from Boost.Multiprecision.
@@ -5770,7 +5748,7 @@
 
       auto j = static_cast<unsigned_fast_type>(0U);
 
-      while(y != nm1)
+      while(y != nm1) // NOLINT(altera-id-dependent-backward-branch)
       {
         const local_limb_type y0(y);
 
