@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_DYNAMIC_ARRAY_2012_05_16_H_
-  #define UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+#ifndef UTIL_DYNAMIC_ARRAY_2012_05_16_H
+  #define UTIL_DYNAMIC_ARRAY_2012_05_16_H
 
   #include <algorithm>
   #include <initializer_list>
@@ -352,4 +352,4 @@
 
   } // namespace util
 
-#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H
