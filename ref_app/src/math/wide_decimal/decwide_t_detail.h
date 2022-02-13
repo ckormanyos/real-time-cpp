@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2021.                 //
+//  Copyright Christopher Kormanyos 1999 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -11,8 +11,8 @@
 
 // This file implements various details for decwide_t.
 
-#ifndef DECWIDE_T_DETAIL_2020_10_26_H_
-  #define DECWIDE_T_DETAIL_2020_10_26_H_
+#ifndef DECWIDE_T_DETAIL_2020_10_26_H
+  #define DECWIDE_T_DETAIL_2020_10_26_H
 
   #include <algorithm>
   #include <array>
@@ -25,24 +25,30 @@
   namespace math { namespace wide_decimal { namespace detail {
 
   template<typename UnsignedIntegralType>
-  constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
-                                    && (std::is_unsigned<UnsignedIntegralType>::value == true), UnsignedIntegralType>::type
-  negate(UnsignedIntegralType u)
+  constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value)
+                                                                            && (std::is_unsigned<UnsignedIntegralType>::value)), UnsignedIntegralType>::type
   {
-    return (UnsignedIntegralType) (((UnsignedIntegralType) ~u) + 1U);
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    return static_cast<local_unsigned_integral_type>((static_cast<local_unsigned_integral_type>(~u)) + 1U);
   }
 
   template<typename SignedIntegralType>
-  constexpr typename std::enable_if<   (std::is_integral<SignedIntegralType>::value == true)
-                                    && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
-  negate(SignedIntegralType n)
+  constexpr auto negate(SignedIntegralType n) -> typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value)
+                                                                          && (std::is_signed  <SignedIntegralType>::value)), SignedIntegralType>::type
   {
-    return (SignedIntegralType) detail::negate((unsigned long long) n);
+    using local_signed_integral_type = SignedIntegralType;
+
+    return
+      static_cast<local_signed_integral_type>
+      (
+        detail::negate(static_cast<unsigned long long>(n)) // NOLINT(google-runtime-int)
+      );
   }
 
   struct a029750
   {
-    static constexpr std::uint32_t a029750_as_constexpr(const std::uint32_t value)
+    static constexpr auto a029750_as_constexpr(std::uint32_t value) noexcept -> std::uint32_t // NOLINT(readability-function-cognitive-complexity)
     {
       // Sloane's A029750 List of numbers of the form 2^k times 1, 3, 5 or 7.
       // CoefficientList[Series[-(x + 1)^2 (x^2 + 1)^2/(2 x^4 - 1), {x, 0, 91}], x]
@@ -64,7 +70,7 @@
              ((value <= UINT32_C(1048576)) ? UINT32_C(1048576) : ((value <=  UINT32_C( 1310720)) ?  UINT32_C( 1310720) : ((value <= UINT32_C( 1572864)) ? UINT32_C( 1572864) : ((value <= UINT32_C( 1835008)) ? UINT32_C( 1835008) : UINT32_C(2097152)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
     }
 
-    static std::uint32_t a029750_as_runtime_value(const std::uint32_t value)
+    static auto a029750_as_runtime_value(std::uint32_t value) noexcept -> std::uint32_t
     {
       using array_type = std::array<std::uint32_t, 65U>;
 
@@ -91,8 +97,7 @@
         UINT32_C( 2097152)
       }};
 
-      const typename array_type::const_iterator it =
-        std::lower_bound(a029750_data.cbegin(), a029750_data.cend(), value);
+      const auto it = std::lower_bound(a029750_data.cbegin(), a029750_data.cend(), value); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
       return ((it != a029750_data.cend()) ? *it : a029750_data.back());
     }
@@ -100,7 +105,7 @@
 
   struct a000079
   {
-    static constexpr std::uint32_t a000079_as_constexpr(const std::uint32_t value)
+    static constexpr auto a000079_as_constexpr(const std::uint32_t value) noexcept -> std::uint32_t // NOLINT(readability-function-cognitive-complexity)
     {
       // Sloane's A000079 List of numbers of powers of 2.
       // Table[2^n, {n, 0, 31, 1}]
@@ -113,7 +118,7 @@
              ((value <= UINT32_C(134217728)) ? UINT32_C(134217728) : ((value <=  UINT32_C(268435456)) ?  UINT32_C(268435456) : ((value <= UINT32_C(536870912)) ? UINT32_C(536870912) : ((value <= UINT32_C(1073741824)) ? UINT32_C(1073741824) : UINT32_C(2147483648)))))))))))))))))))))))))))));
     }
 
-    static std::uint32_t a000079_as_runtime_value(const std::uint32_t value)
+    static auto a000079_as_runtime_value(const std::uint32_t value) noexcept -> std::uint32_t
     {
       using array_type = std::array<std::uint32_t, 29U>;
 
@@ -131,20 +136,19 @@
         UINT32_C(2147483648)
       }};
 
-      const typename array_type::const_iterator it =
-        std::lower_bound(a000079_data.cbegin(), a000079_data.cend(), value);
+      const auto it = std::lower_bound(a000079_data.cbegin(), a000079_data.cend(), value); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
       return ((it != a000079_data.cend()) ? *it : a000079_data.back());
     }
   };
 
-  constexpr std::uint32_t pow10_maker(std::uint32_t n)
+  constexpr inline auto pow10_maker(std::uint32_t n) noexcept -> std::uint32_t // NOLINT(misc-no-recursion)
   {
     // Make the constant power of 10^n.
     return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10_maker(n - UINT32_C(1)) * UINT32_C(10));
   }
 
-  inline std::uint32_t pow10_maker_as_runtime_value(const std::uint32_t n)
+  inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
   {
     using local_p10_table_type = std::array<std::uint32_t, 10U>;
 
@@ -162,7 +166,7 @@
       UINT32_C(1000000000)
     }};
 
-    return ((n < std::uint32_t(std::tuple_size<local_p10_table_type>::value))
+    return ((n < static_cast<std::uint32_t>(std::tuple_size<local_p10_table_type>::value))
              ? local_p10_table[typename local_p10_table_type::size_type(n)]
              : local_p10_table.back());
   }
@@ -171,17 +175,17 @@
   struct decwide_t_helper_base
   {
     static constexpr std::int32_t elem_digits10     =
-      ((std::is_same<LimbType, std::uint32_t>::value == true)
+      ((std::is_same<LimbType, std::uint32_t>::value )
         ? static_cast<std::int32_t>(8)
-        : ((std::is_same<LimbType, std::uint16_t>::value == true) ? static_cast<std::int32_t>(4)
-                                                                  : static_cast<std::int32_t>(2)));
+        : ((std::is_same<LimbType, std::uint16_t>::value ) ? static_cast<std::int32_t>(4)
+                                                           : static_cast<std::int32_t>(2)));
 
-    static constexpr std::int32_t elem_mask      = static_cast<std::int32_t>(pow10_maker((std::uint32_t)  elem_digits10));
-    static constexpr std::int32_t elem_mask_half = static_cast<std::int32_t>(pow10_maker((std::uint32_t) (elem_digits10 / 2)));
+    static constexpr auto elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
+    static constexpr auto elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));
 
-    static std::uint8_t digit_at_pos_in_limb(const LimbType u, const unsigned pos)
+    static constexpr auto digit_at_pos_in_limb(LimbType u, unsigned pos) noexcept -> std::uint8_t
     {
-      return std::uint8_t(LimbType(u / pow10_maker_as_runtime_value(std::uint32_t(pos))) % LimbType(10U));
+      return static_cast<std::uint8_t>(static_cast<LimbType>(u / pow10_maker_as_runtime_value(static_cast<std::uint32_t>(pos))) % static_cast<LimbType>(10U));
     }
   };
 
@@ -213,148 +217,105 @@
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_number_extra;
   template<const std::int32_t MyDigits10, typename LimbType> constexpr std::int32_t decwide_t_helper<MyDigits10, LimbType>::elem_number;
 
-  template <typename MyType,
-            const std::uint_fast32_t MySize,
-            typename MyAlloc>
-  class fixed_dynamic_array final : public util::dynamic_array<MyType, MyAlloc>
+  template<typename MyType,
+           const size_t MySize,
+           typename MyAlloc>
+  class fixed_dynamic_array final : public util::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>
   {
   private:
-    using base_class_type = util::dynamic_array<MyType, MyAlloc>;
+    using base_class_type = util::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>;
 
   public:
-    constexpr fixed_dynamic_array()
-      : base_class_type(MySize) { }
+    static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
 
-    fixed_dynamic_array(const typename base_class_type::size_type       s,
-                        const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
-                        const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
+    explicit fixed_dynamic_array(const typename base_class_type::size_type       s = MySize,
+                                 const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
+                                 const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
       : base_class_type(MySize, typename base_class_type::value_type(), a)
     {
       std::fill(base_class_type::begin(),
-                base_class_type::begin() + (std::min)(MySize, (std::uint_fast32_t) s),
+                base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(s)),
                 v);
     }
 
     constexpr fixed_dynamic_array(const fixed_dynamic_array& other_array)
-      : base_class_type((const base_class_type&) other_array) { }
+      : base_class_type(static_cast<const base_class_type&>(other_array)) { }
 
-    explicit fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
+    fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
       : base_class_type(MySize)
     {
       std::copy(lst.begin(),
-                lst.begin() + (std::min)((std::uint_fast32_t) lst.size(), MySize),
+                lst.begin() + (std::min)(static_cast<typename base_class_type::size_type>(lst.size()), MySize),
                 base_class_type::begin());
     }
 
-    constexpr fixed_dynamic_array(fixed_dynamic_array&& other_array)
-      : base_class_type((base_class_type&&) other_array) { }
+    constexpr fixed_dynamic_array(fixed_dynamic_array&& other_array) noexcept
+      : base_class_type(static_cast<base_class_type&&>(other_array)) { }
 
-    fixed_dynamic_array& operator=(const fixed_dynamic_array& other_array)
+    auto operator=(const fixed_dynamic_array& other_array) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
     {
-      base_class_type::operator=((const base_class_type&) other_array);
+      base_class_type::operator=(static_cast<const base_class_type&>(other_array));
 
       return *this;
     }
 
-    fixed_dynamic_array& operator=(fixed_dynamic_array&& other_array)
+    auto operator=(fixed_dynamic_array&& other_array) noexcept -> fixed_dynamic_array&
     {
-      base_class_type::operator=((base_class_type&&) other_array);
+      base_class_type::operator=(static_cast<base_class_type&&>(other_array));
 
       return *this;
     }
 
-    virtual ~fixed_dynamic_array() { }
-
-    static constexpr typename base_class_type::size_type static_size()
-    {
-      return MySize;
-    }
+    ~fixed_dynamic_array() override = default;
   };
 
   template<typename MyType,
-           const std::uint_fast32_t MySize>
-  class fixed_static_array final : public std::array<MyType, std::size_t(MySize)>
+           const size_t MySize>
+  class fixed_static_array final : public std::array<MyType, static_cast<std::size_t>(MySize)>
   {
   private:
-    using base_class_type = std::array<MyType, std::size_t(MySize)>;
+    using base_class_type = std::array<MyType, static_cast<std::size_t>(MySize)>;
 
   public:
-    fixed_static_array() { }
+    using size_type  = size_t;
+    using value_type = typename base_class_type::value_type;
 
-    fixed_static_array(const typename base_class_type::size_type   s,
-                       const typename base_class_type::value_type& v = typename base_class_type::value_type())
+    static constexpr auto static_size() -> size_type { return MySize; }
+
+    constexpr fixed_static_array() = default;
+
+    explicit fixed_static_array(const size_type   s,
+                                                       const value_type& v = value_type())
     {
-      std::fill(base_class_type::begin(),
-                base_class_type::begin() + (std::min)(MySize, (std::uint_fast32_t) s),
-                v);
-
-      std::fill(base_class_type::begin() + (std::min)(MySize, (std::uint_fast32_t) s),
-                base_class_type::end(),
-                typename base_class_type::value_type());
+      if(s < static_size())
+      {
+        std::fill(base_class_type::begin(),     base_class_type::begin() + s, v);
+        std::fill(base_class_type::begin() + s, base_class_type::end(),       value_type());
+      }
+      else
+      {
+        base_class_type::fill(v);
+      }
     }
 
-    fixed_static_array(const fixed_static_array& other_array)
-    {
-      std::copy(other_array.cbegin(),
-                other_array.cbegin() + MySize,
-                base_class_type::begin());
-    }
+    fixed_static_array(const fixed_static_array&) = default;
+    fixed_static_array(fixed_static_array&&) noexcept = default;
 
-    template<const std::uint_fast32_t OtherSize>
-    fixed_static_array(const fixed_static_array<std::uint_fast32_t, OtherSize>& other_array)
-    {
-      std::copy(other_array.cbegin(),
-                other_array.cbegin() + (std::min)(OtherSize, MySize),
-                base_class_type::begin());
+    ~fixed_static_array() = default;
 
-      std::fill(base_class_type::begin() + (std::min)(OtherSize, MySize),
-                base_class_type::end(),
-                typename base_class_type::value_type());
-    }
+    auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
+    auto operator=(fixed_static_array&& other_array) noexcept -> fixed_static_array& = default;
 
-    explicit fixed_static_array(std::initializer_list<typename base_class_type::value_type> lst)
-    {
-      std::copy(lst.begin(),
-                lst.begin() + (std::min)((std::uint_fast32_t) lst.size(), MySize),
-                base_class_type::begin());
-
-      std::fill(base_class_type::begin() + (std::min)((std::uint_fast32_t) lst.size(), MySize),
-                base_class_type::end(),
-                typename base_class_type::value_type());
-    }
-
-    constexpr fixed_static_array(fixed_static_array&& other_array)
-      : base_class_type(static_cast<base_class_type&&>(other_array)) { }
-
-    fixed_static_array& operator=(const fixed_static_array& other_array)
-    {
-      base_class_type::operator=((const base_class_type&) other_array);
-
-      return *this;
-    }
-
-    fixed_static_array& operator=(fixed_static_array&& other_array)
-    {
-      base_class_type::operator=((base_class_type&&) other_array);
-
-      return *this;
-    }
-
-    ~fixed_static_array() { }
-
-    static constexpr typename base_class_type::size_type static_size()
-    {
-      return MySize;
-    }
+    auto operator[](const size_type i)       -> typename base_class_type::reference       { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
+    auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
-  typedef enum enum_os_float_field_type
+  using os_float_field_type = enum os_float_field_type
   {
     os_float_field_scientific,
     os_float_field_fixed,
     os_float_field_none
-  }
-  os_float_field_type;
+  };
 
   template<typename UnsignedIntegerType,
            typename SignedIntegerType>
@@ -363,20 +324,49 @@
     using unsigned_type = UnsignedIntegerType;
     using   signed_type =   SignedIntegerType;
 
-    constexpr unsigned_wrap(signed_type n)
+    constexpr explicit unsigned_wrap(signed_type n)
       : my_neg  (n < static_cast<signed_type>(0)),
-        my_value(static_cast<unsigned_type>((my_neg == false) ? static_cast<unsigned_type>(n)
-                                                              : static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(n)) + 1U))) { }
+        my_value(static_cast<unsigned_type>((!my_neg ) ? static_cast<unsigned_type>(n)
+                                                       : static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(n)) + 1U))) { }
 
-    unsigned_type get_value_unsigned() const { return my_value; }
-      signed_type get_value_signed  () const { return (my_neg == false) ? (signed_type) my_value : -(signed_type) my_value; }
+    constexpr unsigned_wrap(const unsigned_wrap& other)
+      : my_neg  (other.my_neg),
+        my_value(other.my_value) { }
 
-    bool          get_is_neg        () const { return my_neg; }
+    constexpr unsigned_wrap(unsigned_wrap&& other) noexcept
+      : my_neg  (other.my_neg),
+        my_value(other.my_value) { }
 
-    bool          my_neg;
-    unsigned_type my_value;
+    ~unsigned_wrap() = default;
 
-    unsigned_wrap& operator+=(const unsigned_wrap& other)
+    auto operator=(const unsigned_wrap& other) -> unsigned_wrap&
+    {
+      if(this != &other)
+      {
+        my_neg   = other.my_neg;
+        my_value = other.my_value;
+      }
+
+      return *this;
+    }
+
+    auto operator=(unsigned_wrap&& other) noexcept -> unsigned_wrap&
+    {
+      my_neg   = other.my_neg;
+      my_value = other.my_value;
+
+      return *this;
+    }
+
+    auto constexpr get_value_unsigned() const -> unsigned_type { return my_value; }
+    auto constexpr get_value_signed  () const ->   signed_type { return ((!my_neg) ? static_cast<signed_type>(my_value) : -static_cast<signed_type>(my_value)); }
+
+    auto constexpr get_is_neg        () const -> bool { return my_neg; }
+
+    bool          my_neg;   // NOLINT(misc-non-private-member-variables-in-classes)
+    unsigned_type my_value; // NOLINT(misc-non-private-member-variables-in-classes)
+
+    auto operator+=(const unsigned_wrap& other) -> unsigned_wrap&
     {
       if(my_neg == other.my_neg)
       {
@@ -386,7 +376,7 @@
       }
       else
       {
-        if(my_neg == false)
+        if(!my_neg)
         {
           if(my_value > other.my_value)
           {
@@ -398,7 +388,7 @@
             // +2 + (-3)
             my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + 1U));
 
-            my_neg = (my_value != 0U) ? true : false;
+            my_neg = (my_value != 0U);
           }
         }
         else
@@ -421,7 +411,7 @@
       return *this;
     }
 
-    unsigned_wrap& operator-=(const unsigned_wrap& other)
+    auto operator-=(const unsigned_wrap& other) -> unsigned_wrap&
     {
       if(my_value == 0U)
       {
@@ -443,9 +433,11 @@
     }
   };
 
-  template<typename UnsignedIntegerType, typename SignedIntegerType> inline unsigned_wrap<UnsignedIntegerType, SignedIntegerType> operator+(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) += b; }
-  template<typename UnsignedIntegerType, typename SignedIntegerType> inline unsigned_wrap<UnsignedIntegerType, SignedIntegerType> operator-(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) -= b; }
+  template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator+(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) += b; }
+  template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator-(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) -= b; }
 
-  } } } // namespace math::wide_decimal::detail
+  } // namespace detail
+  } // namespace wide_decimal
+  } // namespace math
 
-#endif // DECWIDE_T_DETAIL_2020_10_26_H_
+#endif // DECWIDE_T_DETAIL_2020_10_26_H

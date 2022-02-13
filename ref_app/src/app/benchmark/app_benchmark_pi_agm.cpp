@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -33,28 +33,38 @@ bool app::benchmark::run_pi_agm()
 
   using local_allocator_type = util::n_slot_array_allocator<void, local_elem_number, 18U>;
 
-  using dec53_t = math::wide_decimal::decwide_t<wide_decimal_digits10, local_limb_type, local_allocator_type, float, std::int32_t, float>;
+  using dec53_t = math::wide_decimal::decwide_t<wide_decimal_digits10,
+                                                local_limb_type,
+                                                local_allocator_type,
+                                                float,
+                                                std::int16_t,
+                                                float>;
 
   static const mcal::memory::progmem::array<typename dec53_t::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
   {{
-    (typename dec53_t::limb_type) UINT16_C(   3),
-    (typename dec53_t::limb_type) UINT16_C(1415),
-    (typename dec53_t::limb_type) UINT16_C(9265),
-    (typename dec53_t::limb_type) UINT16_C(3589),
-    (typename dec53_t::limb_type) UINT16_C(7932),
-    (typename dec53_t::limb_type) UINT16_C(3846),
-    (typename dec53_t::limb_type) UINT16_C(2643),
-    (typename dec53_t::limb_type) UINT16_C(3832),
-    (typename dec53_t::limb_type) UINT16_C(7950),
-    (typename dec53_t::limb_type) UINT16_C(2884),
-    (typename dec53_t::limb_type) UINT16_C(1971),
-    (typename dec53_t::limb_type) UINT16_C(6939),
-    (typename dec53_t::limb_type) UINT16_C(9375),
-    (typename dec53_t::limb_type) UINT16_C(1058)
+    static_cast<typename dec53_t::limb_type>(UINT16_C(   3)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(1415)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(9265)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(3589)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(7932)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(3846)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(2643)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(3832)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(7950)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(2884)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(1971)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(6939)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(9375)),
+    static_cast<typename dec53_t::limb_type>(UINT16_C(1058))
   }};
 
   const dec53_t my_pi =
-    math::wide_decimal::pi<wide_decimal_digits10, local_limb_type, local_allocator_type, float, std::int32_t, float>();
+    math::wide_decimal::pi<wide_decimal_digits10,
+                           local_limb_type,
+                           local_allocator_type,
+                           float,
+                           std::int16_t,
+                           float>();
 
   const bool result_is_ok = std::equal(app_benchmark_pi_agm_control.cbegin(),
                                        app_benchmark_pi_agm_control.cend(),
