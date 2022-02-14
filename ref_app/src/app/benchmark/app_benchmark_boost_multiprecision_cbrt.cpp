@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,14 +16,6 @@
 #endif
 
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
-
-//TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/multiprecision/include        \
-//                -IC:/boost/modular_boost/boost/libs/math/include                  \
-//                -IC:/boost/modular_boost/boost/libs/config/include
-
-//LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/stm32f446_with_stdlib.ld
-
-//C:/boost/modular_boost/boost/libs/multiprecision/include;C:/boost/modular_boost/boost/libs/math/include;C:/boost/modular_boost/boost/libs/config/include;
 
 #if !defined(BOOST_MP_STANDALONE)
 #define BOOST_MP_STANDALONE
@@ -117,6 +109,7 @@ int main()
 #endif
 
 #if defined(__GNUC__)
+// -Wfloat-equal
 #pragma GCC diagnostic pop
 #endif
 

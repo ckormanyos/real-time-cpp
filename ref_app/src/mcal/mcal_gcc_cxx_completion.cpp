@@ -37,9 +37,6 @@ namespace std
   }
 }
 
-void  operator delete(void*)        noexcept;
-void  operator delete(void*, void*) noexcept;
-
 void* operator new(std::size_t size) noexcept;
 
 void* operator new(std::size_t size) noexcept
@@ -69,6 +66,12 @@ void* operator new(std::size_t size) noexcept
 
   return static_cast<void*>(const_cast<std::uint8_t*>(p));
 }
+
+void operator delete(void*)        noexcept;
+void operator delete(void*, void*) noexcept;
+#if(__cplusplus >= 201400L)
+void operator delete(void*, std::size_t) noexcept;
+#endif
 
 void operator delete(void*)              noexcept { }
 void operator delete(void*, void*)       noexcept { }
