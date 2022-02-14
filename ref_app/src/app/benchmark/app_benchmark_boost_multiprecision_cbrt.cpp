@@ -17,9 +17,19 @@
 
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomment"
+#endif
+
 //TGT_INCLUDES  = -IC:/boost/modular_boost/boost/libs/multiprecision/include        \
 //                -IC:/boost/modular_boost/boost/libs/math/include                  \
 //                -IC:/boost/modular_boost/boost/libs/config/include
+
+#if defined(__GNUC__)
+// -Wcomment
+#pragma GCC diagnostic pop
+#endif
 
 //LINKER_DEFINITION_FILE := $(PATH_TGT_MAKE)/stm32f446_with_stdlib.ld
 
@@ -117,6 +127,7 @@ int main()
 #endif
 
 #if defined(__GNUC__)
+// -Wfloat-equal
 #pragma GCC diagnostic pop
 #endif
 
