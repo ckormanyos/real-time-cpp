@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,20 +14,6 @@
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
 
 //#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcomment"
-#endif
-
-//TGT_INCLUDES  = -I$(PATH_APP)/util/STL                                            \
-//                -I$(PATH_APP)/util/boost_metal_bindings                           \
-//                -IC:/boost/boost_1_77_0
-
-#if defined(__GNUC__)
-// -Wcomment
-#pragma GCC diagnostic pop
-#endif
 
 #if !defined(BOOST_MATH_STANDALONE)
 #define BOOST_MATH_STANDALONE
