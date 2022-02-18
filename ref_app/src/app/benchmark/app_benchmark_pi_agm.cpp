@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -16,6 +16,7 @@
 #define WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION
 #define WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
 #define WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS
+#define WIDE_DECIMAL_NAMESPACE ckormanyos
 
 #include <math/wide_decimal/decwide_t.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
@@ -26,19 +27,33 @@ bool app::benchmark::run_pi_agm()
   // N[Pi, 106] and truncate the final digit.
   using local_limb_type = std::uint16_t;
 
-  constexpr std::uint32_t wide_decimal_digits10 = UINT32_C(53);
+  constexpr std::int32_t wide_decimal_digits10 = INT32_C(53);
 
+  #if defined(WIDE_DECIMAL_NAMESPACE)
+  constexpr std::int32_t local_elem_number =
+    WIDE_DECIMAL_NAMESPACE::math::wide_decimal::detail::decwide_t_helper<wide_decimal_digits10, local_limb_type>::elem_number;
+  #else
   constexpr std::int32_t local_elem_number =
     math::wide_decimal::detail::decwide_t_helper<wide_decimal_digits10, local_limb_type>::elem_number;
+  #endif
 
   using local_allocator_type = util::n_slot_array_allocator<void, local_elem_number, 18U>;
 
+  #if defined(WIDE_DECIMAL_NAMESPACE)
+  using dec53_t = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<wide_decimal_digits10,
+                                                                        local_limb_type,
+                                                                        local_allocator_type,
+                                                                        float,
+                                                                        std::int16_t,
+                                                                        float>;
+  #else
   using dec53_t = math::wide_decimal::decwide_t<wide_decimal_digits10,
                                                 local_limb_type,
                                                 local_allocator_type,
                                                 float,
                                                 std::int16_t,
                                                 float>;
+  #endif
 
   static const mcal::memory::progmem::array<typename dec53_t::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
   {{
@@ -58,6 +73,15 @@ bool app::benchmark::run_pi_agm()
     static_cast<typename dec53_t::limb_type>(UINT16_C(1058))
   }};
 
+  #if defined(WIDE_DECIMAL_NAMESPACE)
+  const dec53_t my_pi =
+    WIDE_DECIMAL_NAMESPACE::math::wide_decimal::pi<wide_decimal_digits10,
+                                                   local_limb_type,
+                                                   local_allocator_type,
+                                                   float,
+                                                   std::int16_t,
+                                                   float>();
+  #else
   const dec53_t my_pi =
     math::wide_decimal::pi<wide_decimal_digits10,
                            local_limb_type,
@@ -65,6 +89,7 @@ bool app::benchmark::run_pi_agm()
                            float,
                            std::int16_t,
                            float>();
+  #endif
 
   const bool result_is_ok = std::equal(app_benchmark_pi_agm_control.cbegin(),
                                        app_benchmark_pi_agm_control.cend(),

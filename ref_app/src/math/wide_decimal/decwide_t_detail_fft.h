@@ -18,7 +18,13 @@
   #include <array>
   #include <cstdint>
 
-  namespace math { namespace wide_decimal { namespace detail { namespace fft {
+  WIDE_DECIMAL_NAMESPACE_BEGIN
+
+  #if(__cplusplus >= 201703L)
+  namespace math::wide_decimal::detail::fft {
+  #else
+  namespace math { namespace wide_decimal { namespace detail { namespace fft { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   template<typename float_type>
   inline constexpr auto template_one() -> float_type { return static_cast<float_type>(1); }
@@ -368,9 +374,15 @@
     fft_lanczos_fft<float_type, false>(N / 2U, data);
   }
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::wide_decimal::detail::fft
+  #else
   } // namespace fft
   } // namespace detail
   } // namespace wide_decimal
   } // namespace math
+  #endif
+
+  WIDE_DECIMAL_NAMESPACE_END
 
 #endif // DECWIDE_T_DETAIL_FFT_2013_01_08_H

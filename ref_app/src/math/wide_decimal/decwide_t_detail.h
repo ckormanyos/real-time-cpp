@@ -22,7 +22,15 @@
 
   #include <util/utility/util_dynamic_array.h>
 
-  namespace math { namespace wide_decimal { namespace detail {
+  #include <math/wide_decimal/decwide_t_detail_namespace.h>
+
+  WIDE_DECIMAL_NAMESPACE_BEGIN
+
+  #if(__cplusplus >= 201703L)
+  namespace math::wide_decimal::detail {
+  #else
+  namespace math { namespace wide_decimal { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   template<typename UnsignedIntegralType>
   constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value)
@@ -175,9 +183,9 @@
   struct decwide_t_helper_base
   {
     static constexpr std::int32_t elem_digits10     =
-      ((std::is_same<LimbType, std::uint32_t>::value )
+      ((std::is_same<LimbType, std::uint32_t>::value)
         ? static_cast<std::int32_t>(8)
-        : ((std::is_same<LimbType, std::uint16_t>::value ) ? static_cast<std::int32_t>(4)
+        : ((std::is_same<LimbType, std::uint16_t>::value) ? static_cast<std::int32_t>(4)
                                                            : static_cast<std::int32_t>(2)));
 
     static constexpr auto elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
@@ -436,8 +444,14 @@
   template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator+(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) += b; }
   template<typename UnsignedIntegerType, typename SignedIntegerType> inline auto operator-(const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& a, const unsigned_wrap<UnsignedIntegerType, SignedIntegerType>& b) -> unsigned_wrap<UnsignedIntegerType, SignedIntegerType> { return unsigned_wrap<UnsignedIntegerType, SignedIntegerType>(a) -= b; }
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::wide_decimal::detail
+  #else
   } // namespace detail
   } // namespace wide_decimal
   } // namespace math
+  #endif
+
+  WIDE_DECIMAL_NAMESPACE_END
 
 #endif // DECWIDE_T_DETAIL_2020_10_26_H

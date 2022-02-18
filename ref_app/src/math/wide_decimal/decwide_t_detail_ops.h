@@ -24,7 +24,13 @@
   #include <math/wide_decimal/decwide_t_detail.h>
   #include <math/wide_decimal/decwide_t_detail_fft.h>
 
-  namespace math { namespace wide_decimal { namespace detail {
+  WIDE_DECIMAL_NAMESPACE_BEGIN
+
+  #if(__cplusplus >= 201703L)
+  namespace math::wide_decimal::detail {
+  #else
+  namespace math { namespace wide_decimal { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   template<typename InputIteratorLeftType,
            typename InputIteratorRightType>
@@ -34,15 +40,20 @@
   {
     std::int_fast8_t n_return = 0;
 
-    InputIteratorRightType it_b(b);
+    InputIteratorRightType it_b    (b);
+    InputIteratorLeftType  it_a    (a);
+    InputIteratorRightType it_a_end(a + count);
 
-    for(InputIteratorLeftType it_a(a); it_a != InputIteratorLeftType(a + count); ++it_a, ++it_b)
+    while(it_a != it_a_end)
     {
       using value_left_type =
         typename std::iterator_traits<InputIteratorLeftType>::value_type;
 
       if(*it_a > static_cast<value_left_type>(*it_b)) { n_return =  1; break; }
       if(*it_a < static_cast<value_left_type>(*it_b)) { n_return = -1; break; }
+
+      ++it_a;
+      ++it_b;
     }
 
     return n_return;
@@ -64,7 +75,11 @@
 
     for(auto j = static_cast<std::int32_t>(count - static_cast<std::int32_t>(1)); j >= static_cast<std::int32_t>(0); --j)
     {
-      const auto t = static_cast<local_limb_type>(static_cast<local_limb_type>(u[j] + v[j]) + carry);
+      const auto t =
+        static_cast<local_limb_type>
+        (
+          static_cast<local_limb_type>(u[j] + v[j]) + carry
+        );
 
       carry = ((t >= static_cast<local_limb_type>(local_elem_mask)) ? static_cast<std::uint_fast8_t>(1U)
                                                                     : static_cast<std::uint_fast8_t>(0U));
@@ -93,10 +108,23 @@
 
     for(auto j = static_cast<std::uint32_t>(count - static_cast<std::int32_t>(1)); static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(0); --j)
     {
+      const auto vjb =
+        static_cast<local_limb_type>
+        (
+          v[j] + static_cast<local_limb_type>(borrow)
+        );
+
       auto t =
         static_cast<local_signed_limb_type>
         (
-          static_cast<local_limb_type>(u[j] + static_cast<local_limb_type>(static_cast<local_limb_type>(~static_cast<local_limb_type>(static_cast<local_limb_type>(v[j] + static_cast<local_limb_type>(borrow)))) + 1U))
+          static_cast<local_limb_type>
+          (
+              u[j]
+            + static_cast<local_limb_type>
+              (
+                static_cast<local_limb_type>(~vjb) + 1U
+              )
+          )
         );
 
       // Underflow? Borrow?
@@ -114,7 +142,7 @@
       r[j] = static_cast<local_limb_type>(t);
     }
 
-    return (borrow != 0U);
+    return (borrow != static_cast<std::uint_fast8_t>(0U));
   }
 
   template<typename InputLimbIteratorType,
@@ -125,7 +153,7 @@
     InputLimbIteratorType a,
     InputLimbIteratorType b,
     const std::int_fast32_t count,
-    const typename std::enable_if<(std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint8_t>::value )>::type* p_nullparam = nullptr
+    const typename std::enable_if<(std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint8_t>::value)>::type* p_nullparam = nullptr
   )
   {
     static_cast<void>(p_nullparam);
@@ -135,9 +163,9 @@
     constexpr local_limb_type local_elem_mask = decwide_t_helper_base<local_limb_type>::elem_mask;
 
     using local_double_limb_type =
-      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value ),
+      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value),
                                   std::uint64_t,
-                                  typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value ),
+                                  typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value),
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
@@ -170,8 +198,8 @@
     InputLimbIteratorType a,
     InputLimbIteratorType b,
     const std::int_fast32_t count,
-    const typename std::enable_if<(   (std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint16_t>::value )
-                                   || (std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint32_t>::value ))>::type* p_nullparam = nullptr)
+    const typename std::enable_if<(   (std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint16_t>::value)
+                                   || (std::is_same<typename std::iterator_traits<OutputLimbIteratorType>::value_type, std::uint32_t>::value))>::type* p_nullparam = nullptr)
   {
     static_cast<void>(p_nullparam);
 
@@ -180,9 +208,9 @@
     constexpr local_limb_type local_elem_mask = decwide_t_helper_base<local_limb_type>::elem_mask;
 
     using local_double_limb_type =
-      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value ),
+      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value),
                                  std::uint64_t,
-                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value ),
+                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value),
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
@@ -235,9 +263,9 @@
     constexpr local_limb_type local_elem_mask = decwide_t_helper_base<local_limb_type>::elem_mask;
 
     using local_double_limb_type =
-      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value ),
+      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value),
                                  std::uint64_t,
-                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value ),
+                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value),
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
@@ -270,9 +298,9 @@
     constexpr local_limb_type local_elem_mask = decwide_t_helper_base<local_limb_type>::elem_mask;
 
     using local_double_limb_type =
-      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value ),
+      typename std::conditional<(std::is_same<local_limb_type, std::uint32_t>::value),
                                  std::uint64_t,
-                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value ),
+                                 typename std::conditional<(std::is_same<local_limb_type, std::uint16_t>::value),
                                                             std::uint32_t,
                                                             std::uint16_t>::type>::type;
 
@@ -560,8 +588,14 @@
     }
   }
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::wide_decimal::detail
+  #else
   } // namespace detail
   } // namespace wide_decimal
   } // namespace math
+  #endif
+
+  WIDE_DECIMAL_NAMESPACE_END
 
 #endif // DECWIDE_T_DETAIL_OPS_2021_04_12_H
