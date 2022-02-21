@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_DYNAMIC_ARRAY_2012_05_16_H
+#ifndef UTIL_DYNAMIC_ARRAY_2012_05_16_H // NOLINT(llvm-header-guard)
   #define UTIL_DYNAMIC_ARRAY_2012_05_16_H
 
   #include <algorithm>
@@ -352,4 +352,4 @@
 
   } // namespace util
 
-#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H
+#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H_
