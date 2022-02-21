@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
 ///////////////////////////////////////////////////////////////////
 
-#ifndef DECWIDE_T_DETAIL_NAMESPACE_2022_02_15_H
+#ifndef DECWIDE_T_DETAIL_NAMESPACE_2022_02_15_H // NOLINT(llvm-header-guard)
   #define DECWIDE_T_DETAIL_NAMESPACE_2022_02_15_H
 
   #if defined(WIDE_DECIMAL_NAMESPACE_BEGIN) || defined(WIDE_DECIMAL_NAMESPACE_END)

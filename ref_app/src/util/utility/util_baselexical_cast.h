@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2021.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_BASELEXICAL_CAST_2020_06_28_H_
-  #define UTIL_BASELEXICAL_CAST_2020_06_28_H_
+#ifndef UTIL_BASELEXICAL_CAST_2020_06_28_H // NOLINT(llvm-header-guard)
+  #define UTIL_BASELEXICAL_CAST_2020_06_28_H
 
   #include <cstddef>
   #include <cstdint>
@@ -16,47 +16,51 @@
 
   template<typename UnsignedIntegerType,
            typename OutputIterator,
-           const std::uint_fast8_t BaseRepresentation = 10U,
+           const std::uint_fast8_t BaseRepresentation = 10U, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
            const bool UpperCase = true>
-  OutputIterator baselexical_cast(const UnsignedIntegerType& u, OutputIterator OutFirst)
+  auto baselexical_cast(const UnsignedIntegerType& u, OutputIterator out_first) -> OutputIterator
   {
     using unsigned_integer_type = UnsignedIntegerType;
     using output_value_type     = typename std::iterator_traits<OutputIterator>::value_type;
 
     unsigned_integer_type x(u);
 
-    std::ptrdiff_t index = 0;
+    auto index = static_cast<std::ptrdiff_t>(0);
 
     do
     {
-      for(std::ptrdiff_t j = index; j >= 0; --j)
+      for(auto j = index; j >= static_cast<std::ptrdiff_t>(0); --j)
       {
-        *(OutFirst + (j + 1)) = *(OutFirst + j);
+        *(out_first + static_cast<std::ptrdiff_t>(j + 1)) = *(out_first + j);
       }
 
       ++index;
 
-      output_value_type c = (output_value_type) (x % (unsigned_integer_type) BaseRepresentation);
+      auto c = static_cast<output_value_type>(x % static_cast<unsigned_integer_type>(BaseRepresentation));
 
-      x = unsigned_integer_type(x / (unsigned_integer_type) BaseRepresentation);
+      x = static_cast<unsigned_integer_type>(x / static_cast<unsigned_integer_type>(BaseRepresentation));
 
-      if(c <= (output_value_type) 9)
+      if(c <= static_cast<output_value_type>(9)) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       {
-        c = (output_value_type) (c + (output_value_type) '0');
+        c = static_cast<output_value_type>(c + static_cast<output_value_type>('0'));
       }
-      else if((c >= (output_value_type) 0xA) && (c <= (output_value_type) 0xF))
+      else if((c >= static_cast<output_value_type>(0xA)) && (c <= static_cast<output_value_type>(0xF))) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       {
-        c = (output_value_type) (  (output_value_type) (UpperCase ? (output_value_type) 'A' : (output_value_type) 'a')
-                                 + (output_value_type) (c - (output_value_type) 0xA));
+        c =
+        static_cast<output_value_type>
+        (
+            static_cast<output_value_type>(UpperCase ? static_cast<output_value_type>('A') : static_cast<output_value_type>('a'))
+          + static_cast<output_value_type>(c - static_cast<output_value_type>(0xA)) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+        );
       }
 
-      *OutFirst = c;
+      *out_first = c;
     }
-    while(x != 0U);
+    while(x != static_cast<unsigned_integer_type>(0U));
 
-    return (OutputIterator) (OutFirst + index);
+    return static_cast<OutputIterator>(out_first + index);
   }
 
   } // namespace util
 
-#endif // UTIL_BASELEXICAL_CAST_2020_06_28_H_
+#endif // UTIL_BASELEXICAL_CAST_2020_06_28_H
