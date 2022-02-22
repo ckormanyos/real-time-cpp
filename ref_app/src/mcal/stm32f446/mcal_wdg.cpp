@@ -1,17 +1,19 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+ï»¿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal_wdg.h>
+#include <cstdint>
+
 #include <mcal_reg.h>
+#include <mcal_wdg.h>
 
 void mcal::wdg::init(const config_type*)
 {
   // Write access to the IWDG_PR and IWDG_RLR registers is protected
-  // Register access  unlock protection
+  // Register access unlock protection
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::iwdg_kr,
@@ -25,7 +27,7 @@ void mcal::wdg::init(const config_type*)
 
   // Register reload set to 1000 for a watchdog period of approximately 100ms.
   // Note that this time is not exact. See Chapter 18.3.3, in the
-  // caption of Table 84: "[...] microcontroller’s internal RC frequency
+  // caption of Table 84: "[...] microcontrollerï¿½s internal RC frequency
   // can vary from 30 to 60 kHz". Take 40 kHz and the prescaler of 4,
   // resulting in approximately 10 kHz for the watchdog clock.
   // Divide this by 1000, which gives a period of approximately

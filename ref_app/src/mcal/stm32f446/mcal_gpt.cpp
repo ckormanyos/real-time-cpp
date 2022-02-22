@@ -1,22 +1,20 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <array>
 #include <cstddef>
 #include <cstdint>
 
-#include <mcal_cpu.h>
 #include <mcal_gpt.h>
 #include <mcal_reg.h>
 
 namespace
 {
   // The one (and only one) system tick.
-  volatile std::uint64_t mcal_gpt_system_tick;
+  volatile mcal::gpt::value_type mcal_gpt_system_tick;
 
   bool& gpt_is_initialized() __attribute__((used, noinline));
 
@@ -32,9 +30,13 @@ extern "C" void __sys_tick_handler(void) __attribute__((used, noinline));
 
 extern "C" void __sys_tick_handler(void)
 {
-  // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/32].
+  // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/168].
 
-  mcal_gpt_system_tick = mcal_gpt_system_tick + UINT32_C(0x01000000);
+  mcal_gpt_system_tick =
+    static_cast<mcal::gpt::value_type>
+    (
+      mcal_gpt_system_tick + UINT32_C(0x01000000)
+    );
 }
 
 void mcal::gpt::init(const config_type*)
@@ -70,8 +72,8 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
   {
     // Return the system tick using a multiple read to ensure data consistency.
 
-    typedef std::uint32_t timer_address_type;
-    typedef std::uint32_t timer_register_type;
+    using timer_address_type  = std::uint32_t;
+    using timer_register_type = std::uint32_t;
 
     // Do the first read of the sys tick counter and the system tick.
     // Handle reverse counting for sys tick counting down.
@@ -93,17 +95,20 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
     // Perform the consistency check.
     const std::uint64_t consistent_tick =
-      ((sys_tick_val_2 >= sys_tick_val_1) ? std::uint64_t(system_tick_gpt          | sys_tick_val_1)
-                                          : std::uint64_t(mcal_gpt_system_tick     | sys_tick_val_2));
+      ((sys_tick_val_2 >= sys_tick_val_1) ? static_cast<std::uint64_t>(system_tick_gpt      | sys_tick_val_1)
+                                          : static_cast<std::uint64_t>(mcal_gpt_system_tick | sys_tick_val_2));
 
     // Perform scaling and include a rounding correction.
     const mcal::gpt::value_type consistent_microsecond_tick =
-      mcal::gpt::value_type(std::uint64_t(consistent_tick + 84U) / 168U);
+      static_cast<mcal::gpt::value_type>
+      (
+        static_cast<std::uint64_t>(consistent_tick + UINT32_C(84)) / UINT32_C(168)
+      );
 
     return consistent_microsecond_tick;
   }
   else
   {
-    return mcal::gpt::value_type(0U);
+    return static_cast<mcal::gpt::value_type>(0U);
   }
 }
