@@ -121,7 +121,7 @@ jobs:
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex ./bin/kernel.img
         working-directory: ./examples/
   target-msvc-examples:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: pwsh
@@ -142,7 +142,7 @@ jobs:
           dir ./Release/${{ matrix.example }}.exe
         working-directory: ./examples/
   target-msvc-example16_08:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       fail-fast: false
       matrix:
@@ -172,7 +172,7 @@ jobs:
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
   target-avr-win-batch-example_led:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -204,7 +204,7 @@ jobs:
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
         working-directory: ./examples/
   target-avr-win-batch-examples:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -236,7 +236,7 @@ jobs:
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
         working-directory: ./examples/
   target-arm-win-batch-examples:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -338,7 +338,7 @@ jobs:
         working-directory: ./
         shell: bash
   msvc-msbuild:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -358,7 +358,7 @@ jobs:
           dir .\tmp\${{ matrix.suite }}\ref_app.exe
         working-directory: ./ref_app/
   msvc-msbuild-avr:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -392,7 +392,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-arm:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -426,7 +426,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rl78:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -460,7 +460,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rx63n:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -494,7 +494,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-v850:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -528,7 +528,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-x86_64-w64-mingw32:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -562,7 +562,7 @@ jobs:
           dir .\bin\ref_app.exe
         working-directory: ./ref_app/
   msvc-msbuild-xtensa:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
