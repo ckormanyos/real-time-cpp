@@ -1,4 +1,4 @@
-Companion code for the book [Real-Time C++](https://www.springer.com/de/book/9783662629956)\
+﻿Companion code for the book [Real-Time C++](https://www.springer.com/de/book/9783662629956)\
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 ==================
 
@@ -192,13 +192,36 @@ cmake ../ref_app -DTRIPLE=avr -DTARGET=avr -DCMAKE_TOOLCHAIN_FILE=../ref_app/cma
 make -j ref_app
 ```
 
-Switch from `avr` to, for instance, `bcm2835_raspi_b` or `stm32f446`
-to build for one of the supported ARM(R) targets such as
-RaspberryPi(R) Zero with ARM(R) 1176-JZF-S or
-ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(TM)-M4.
+We will now consider, for instance, building the reference application for
+one of the supported ARM(R) targets with CMake. The pattern is shown below.
+In this case, we need to identify the following make options:
 
-Following the standard `*nix` pattern to build with `x86_64-w64-mingw32`
-or `host` from the MSYS or Cygwin console should work too.
+```
+-DTRIPLE=avr -DTARGET=avr
+```
+
+Switch these options to the ones intended for the `stm32f446` ARM(R)-based target being built.
+
+```
+-DTRIPLE=arm-none-eabi -DTARGET=stm32f446
+```
+
+Let's clarify the commands in their entirety in order to run a CMake build for `stm32f446`
+(i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(TM)-M4).
+
+```sh
+cd real-time-cpp
+mkdir build
+cd build
+cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+make -j ref_app
+```
+
+When building with CMake for other targets,
+follow the standard `*nix` pattern to build.
+Also building with CMake for `x86_64-w64-mingw32`
+or `host` from MSYS, Cygwin or any similar `*nix`-like
+shell or console should work too.
 
 ### Build with ATMEL(R) AtmelStudio(R)
 
