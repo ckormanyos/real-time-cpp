@@ -194,21 +194,19 @@ make -j ref_app
 
 We will now consider, for instance, building the reference application for
 one of the supported ARM(R) targets with CMake. The pattern is shown below.
-
-
-In this case, we need to identify the line:
+In this case, we need to identify the following make options:
 
 ```
 -DTRIPLE=avr -DTARGET=avr
 ```
 
-and switch these options to the right ones for the ARM(R) target being built
+Switch these options to the ones intended for the `stm32f446` ARM(R)-based target being built.
 
 ```
 -DTRIPLE=arm-none-eabi -DTARGET=stm32f446
 ```
 
-Let's clarify this in order to run a CMake build for `stm32f446`
+Let's clarify the commands in their entirety in order to run a CMake build for `stm32f446`
 (i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(TM)-M4).
 
 ```sh
@@ -219,8 +217,11 @@ cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FIL
 make -j ref_app
 ```
 
-Following the standard `*nix` pattern to build with `x86_64-w64-mingw32`
-or `host` from the MSYS or Cygwin console should work too.
+When building with CMake for other targets,
+follow the standard `*nix` pattern to build.
+Also building with CMake for `x86_64-w64-mingw32`
+or `host` from MSYS, Cygwin or any similar `*nix`-like
+shell or console should work too.
 
 ### Build with ATMEL(R) AtmelStudio(R)
 
