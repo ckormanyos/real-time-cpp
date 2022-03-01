@@ -16,7 +16,7 @@ This is because C++ can not store references in STL containers such as
 The container of wrapped LED base class references looks
 like this:
 
-```
+```cpp
 #include <functional>
 
 // ...
@@ -37,7 +37,7 @@ The elements in the array of LED base class references
 are toggled in the application task each second in the following
 fashion.
 
-```
+```cpp
 void app::led::task_func()
 {
   if(app_led_timer.timeout())

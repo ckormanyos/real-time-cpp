@@ -14,7 +14,7 @@ method based on 4-bit nibbles. The table having
 16 individual 32 bit unsigned integer entries is clearly visible
 in the code.
 
-```
+```cpp
 template<typename input_iterator>
 std::uint32_t crc32_mpeg2(input_iterator first,
                           input_iterator last)
@@ -73,7 +73,7 @@ Please note here that the digits are not decimal values.
 They are the ASCII representations instead. In other words,
 the standard CRC test computes the checksum of a byte array such as
 
-```
+```cpp
 static const std::array<std::uint8_t, 9U> app_benchmark_crc_data =
 {{
   0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
@@ -97,7 +97,7 @@ a CRC runtime of approximately 300 microseconds.
 The benchmark port definition can be located in the file
 `mcal/avr/mcal_benchmark.h`, and is similar to the code snippet below.
 
-```
+```cpp
 namespace mcal
 {
   namespace benchmark

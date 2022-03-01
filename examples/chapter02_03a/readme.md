@@ -29,7 +29,7 @@ In the LED program with timing, the blinking is controlled
 in the application task `app::led::task_func`
 in the file `app_led.cpp`.
 
-```
+```cpp
 void app::led::task_func()
 {
   if(app_led_timer.timeout())

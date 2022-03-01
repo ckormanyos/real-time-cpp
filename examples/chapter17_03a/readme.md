@@ -19,7 +19,7 @@ schedule having widths of 8, 16, 32 and 64 bits.
 The code of `app::crc::task_func()` from example17_03a
 is shown below.
 
-```
+```cpp
 void app::crc::task_func()
 {
   // Calculate and verify the 8-bit, 16-bit,

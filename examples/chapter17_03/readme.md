@@ -21,7 +21,7 @@ CRC variants with results having widths of 8, 16, 32 and 64 bits.
 
 A C-language interface to an 8-bit CRC is shown below.
 
-```
+```cpp
 // The interface to Crc08 can be used in both C as well as C++.
 
 /* Name            : CRC-8/AUTOSAR */
@@ -71,7 +71,7 @@ bytes of the ACII digits
 
 The application task `app::crc::task_func()` is shown below.
 
-```
+```cpp
 void app::crc::task_func()
 {
   // Create an array of 4 crc_base class pointers.

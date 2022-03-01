@@ -79,7 +79,7 @@ can be found.
 The start of the application is an interrupt vector table,
 as shown below.
 
-```C
+```cpp
 .section .isr_vector, "ax"
 
 b __my_startup
@@ -96,7 +96,7 @@ The first entry contains a branch instruction to the
 startup routine `__my_startup`, which is shown in its entirety
 for reference in the following code sequence.
 
-```C
+```cpp
 extern "C" void __my_startup(void)
 {
   // The ARM1176JZF-S is started in supervisor mode
@@ -190,7 +190,7 @@ quite a few of the particular chip-specific initialization features.
 These are collected in the inline subroutine
 `mcal::cpu::detail::init()` which is also sketched below.
 
-```C
+```cpp
 friend inline void mcal::cpu::detail::init()
 {
   initialize_vfp_unit();
