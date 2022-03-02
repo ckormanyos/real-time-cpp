@@ -32,7 +32,7 @@ The application places five LED base class pointers in an
 
 The LED base class pointers, for instance, are shown below.
 
-```
+```cpp
 std::array<mcal::led::led_base*, 5U> app_led_base_class_pointers =
 {{
   mcal::led::led0(),
@@ -47,7 +47,7 @@ The application task performs the toggle functionality
 at a frequency of approximately 1/2Hz using
 dynamic polymorphism on the base class pointer list.
 
-```
+```cpp
 void app::led::task_func()
 {
   if(app_led_timer.timeout())

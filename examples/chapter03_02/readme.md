@@ -15,7 +15,7 @@ This integer is stored in a fixed width
 unsigned integer variable having 32 bits. The storage
 is of type `constexpr`, which is compile-time constant.
 
-```
+```cpp
 #include <cstdint>
 
 // Initialize the 664,999th prime number.

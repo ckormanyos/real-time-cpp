@@ -27,7 +27,7 @@ responsible for writing the character digit and decimal
 point on the seven segment display. The user LED is simultaneously
 toggled at its frequency of 1/2Hz.
 
-```
+```cpp
 void app::display::task_func()
 {
   if(app_display_timer.timeout())

@@ -34,7 +34,7 @@ values in small argument range. These include a cylindrical Bessel function,
 a generalized hypergeometric geometric function and a generalized
 Legendre function.
 
-```
+```cpp
 void app::benchmark::task_func()
 {
   static std::uint_fast8_t app_benchmark_index;
@@ -145,7 +145,7 @@ the expected answer with the control value compared with one.
 A simple template function called `is_close_fraction()`
 is used to test floating-point closeness as a ratio.
 
-```
+```cpp
 template<typename float_type>
 bool is_close_fraction(const float_type& left,
                        const float_type& right,

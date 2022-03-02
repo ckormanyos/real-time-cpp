@@ -37,7 +37,7 @@ of our book. Consider, in particular, the code snippet
 Compiling and running this program as it stands produces the following output
 (which may vary regarding timing of your system):
 
-```
+```sh
 result_digit: 10001
 result_test_pi_spigot_single_is_ok: true
 elapsed time: 0.265s

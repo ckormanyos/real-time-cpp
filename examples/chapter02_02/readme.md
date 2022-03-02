@@ -43,7 +43,7 @@ the blinking for easier observation. The commented out
 loop is reproduced below within its contect in `main`.
 It is the line starting with `for(volatile std::uint8_t delay`...).
 
-```
+```cpp
 int main()
 {
   // Toggle led_b5 in a loop forever.
@@ -68,7 +68,7 @@ accomplished in a cmd window. Use a command command such as
 shown below, where the full path of the pre-installed 
 gcc-avr is listed in its entirety.
 
-```
+```sh
 build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
 ```
 
@@ -77,14 +77,14 @@ build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
 On `*nix`-like systems, gcc-avr can be installed from a package manager.
 A common example is shown below.
 
-```
+```sh
 apt-get install gcc-avr avr-libc
 ```
 
 Building the Example chapter02_02 project can be done with a bash shell
 such as:
 
-```
+```sh
 ## bash will typically use dirname, so this might be equivalent to: ./build.sh /usr/bin avr
 ./build.sh "$(dirname $(which avr-g++))" avr
 ```

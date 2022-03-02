@@ -24,7 +24,7 @@ In `Win*`, the `GNUmake` command is executed from
 `Build.bat`. The exact `Win*` command including command line
 parameters is shown below.
 
-```
+```sh
 Target\Build\Build.bat avr rebuild
 ```
 
@@ -46,7 +46,7 @@ for initializing clocks and interrupts. It is this layer
 that needs to be modified when porting to other microcontroller
 systems.
 
-```
+```cpp
 int main()
 {
   // Initialize the mcal.

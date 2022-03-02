@@ -30,7 +30,7 @@ mechanisms and methods.
 
 The tasks are summarized in the code snippet below.
 
-```C
+```cpp
 extern "C"
 void app_led_task_background(void*)
 {
