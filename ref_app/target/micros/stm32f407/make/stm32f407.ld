@@ -1,4 +1,4 @@
-﻿
+
 /*
  Copyright Christopher Kormanyos 2007 - 2022.
  Distributed under the Boost Software License,
@@ -7,6 +7,8 @@
 */
 
 /* Linker script for STM32F4xx ARM(R) Cortex(TM)-M4 MCU */
+
+ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
 
@@ -24,7 +26,6 @@ _stack_begin = 0x20007000;
 _stack_end   = 0x20008000;
 
 __initial_stack_pointer = 0x20008000 - 4;
-
 
 MEMORY
 {
