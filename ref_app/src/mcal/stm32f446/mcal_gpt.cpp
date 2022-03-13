@@ -20,7 +20,7 @@ namespace
 
   bool& gpt_is_initialized()
   {
-    static bool is_init = false;
+    static bool is_init { };
 
     return is_init;
   }

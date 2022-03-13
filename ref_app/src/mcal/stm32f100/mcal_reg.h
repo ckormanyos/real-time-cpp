@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -14,6 +14,12 @@
   {
     namespace reg
     {
+      // Global base addresses.
+      constexpr std::uint32_t scs_base        = UINT32_C(0xE000E000);
+
+      // Individual unit base addresses.
+      constexpr std::uint32_t sys_tick_base   = scs_base + UINT32_C(0x00000010);
+
       // System registers.
       constexpr std::uint32_t scb_vtor  = static_cast<std::uint32_t>(0xE000ED08UL);   // 32-bit register.
       constexpr std::uint32_t aircr     = static_cast<std::uint32_t>(0xE000ED0CUL);   // 32-bit register. SCB application interrupt / reset control.
@@ -23,6 +29,12 @@
       constexpr std::uint32_t rcc_cfgr  = static_cast<std::uint32_t>(0x40021004UL);   // 32-bit register.
       constexpr std::uint32_t rcc_cir   = static_cast<std::uint32_t>(0x40021008UL);   // 32-bit register.
       constexpr std::uint32_t rcc_cfgr2 = static_cast<std::uint32_t>(0x4002102CUL);   // 32-bit register.
+
+      // System tick addresses.
+      constexpr std::uint32_t sys_tick_ctrl   = sys_tick_base + UINT32_C(0x00000000);
+      constexpr std::uint32_t sys_tick_load   = sys_tick_base + UINT32_C(0x00000004);
+      constexpr std::uint32_t sys_tick_val    = sys_tick_base + UINT32_C(0x00000008);
+      constexpr std::uint32_t sys_tick_cal    = sys_tick_base + UINT32_C(0x0000000C);
 
       // Port registers.
       constexpr std::uint32_t gpioa_crl = static_cast<std::uint32_t>(0x40010800UL);   // 32-bit register.
