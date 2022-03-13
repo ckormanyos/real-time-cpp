@@ -18,9 +18,6 @@
       constexpr std::uint32_t periph_base     = UINT32_C(0x40000000);
       constexpr std::uint32_t scs_base        = UINT32_C(0xE000E000);
 
-      // System tick base address.
-      constexpr std::uint32_t stk_base        = UINT32_C(0xE000E010);
-
       // Individual unit base addresses.
       constexpr std::uint32_t scb_base        = scs_base        + UINT32_C(0x00000D00);
       constexpr std::uint32_t nvic_base       = scs_base        + UINT32_C(0x00000100);
