@@ -1,6 +1,9 @@
-﻿Companion code for the book [Real-Time C++](https://www.springer.com/de/book/9783662629956)\
-[![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
+﻿Real-Time-C++
 ==================
+
+[![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
+[![Boost Software License 1.0](https://img.shields.io/badge/license-BSL%201.0-blue.svg)](https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ckormanyos/real-time-cpp)](https://github.com/ckormanyos/real-time-cpp)
 
 This is the companion code
 for the book C.M. Kormanyos,

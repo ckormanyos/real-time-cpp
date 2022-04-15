@@ -50,20 +50,20 @@
       : elem_count(count),
         elems     (nullptr)
     {
-      allocator_type my_a(a);
-
       if(elem_count > 0U)
       {
+        allocator_type my_a(a);
+
         elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
-      }
 
-      iterator it = begin();
+        iterator it = begin();
 
-      while(it != end())
-      {
-        std::allocator_traits<allocator_type>::construct(my_a, it, v);
+        while(it != end())
+        {
+          std::allocator_traits<allocator_type>::construct(my_a, it, v);
 
-        ++it;
+          ++it;
+        }
       }
     }
 
@@ -157,27 +157,8 @@
     // Move assignment operator.
     auto operator=(dynamic_array&& other) noexcept -> dynamic_array&
     {
-      // Destroy the elements and deallocate the range.
-      pointer p = elems; // NOLINT(altera-id-dependent-backward-branch)
-
-      using local_allocator_traits_type = std::allocator_traits<allocator_type>;
-
-      allocator_type my_a;
-
-      while(p != elems + elem_count) // NOLINT(altera-id-dependent-backward-branch)
-      {
-        local_allocator_traits_type::destroy(my_a, p);
-
-        ++p;
-      }
-
-      local_allocator_traits_type::deallocate(my_a, elems, elem_count);
-
-      elem_count = other.elem_count;
-      elems      = other.elems;
-
-      other.elem_count = 0U;
-      other.elems      = nullptr;
+      std::swap(elem_count, other.elem_count);
+      std::swap(elems,      other.elems);
 
       return *this;
     }
@@ -219,32 +200,26 @@
     auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[0U]); }
 
     // Element manipulation members.
-    void fill(const value_type& v)
+    auto fill(const value_type& v) -> void
     {
       std::fill_n(begin(), elem_count, v);
     }
 
-    void swap(dynamic_array& other)
+    auto swap(dynamic_array& other) noexcept -> void
     {
       if(this != &other)
       {
-        pointer tmp_elems = elems;
-
-        elems = other.elems;
-        other.elems = tmp_elems;
-
+        std::swap(elems,      other.elems);
         std::swap(elem_count, other.elem_count);
       }
     }
 
-    void swap(dynamic_array&& other)
+    auto swap(dynamic_array&& other) noexcept -> void
     {
-      pointer tmp_elems = elems;
+      auto tmp = std::move(*this);
 
-      elems = other.elems;
-      other.elems = tmp_elems;
-
-      std::swap(elem_count, other.elem_count);
+      *this = std::move(other);
+      other = std::move(tmp);
     }
 
   private:
@@ -268,10 +243,6 @@
 
       left_and_right_are_equal =
         (size_of_left_is_zero || std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin()));
-    }
-    else
-    {
-      ;
     }
 
     return left_and_right_are_equal;
@@ -344,8 +315,8 @@
   }
 
   template<typename ValueType, typename AllocatorType>
-  void swap(dynamic_array<ValueType, AllocatorType>& x,
-            dynamic_array<ValueType, AllocatorType>& y)
+  auto swap(dynamic_array<ValueType, AllocatorType>& x,
+            dynamic_array<ValueType, AllocatorType>& y) noexcept -> void
   {
     x.swap(y);
   }

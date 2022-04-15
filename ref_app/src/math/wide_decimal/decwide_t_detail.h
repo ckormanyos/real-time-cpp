@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 1999 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
@@ -67,17 +67,21 @@
   #endif
 
   template<typename UnsignedIntegralType>
-  constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value)
-                                                                            && (std::is_unsigned<UnsignedIntegralType>::value)), UnsignedIntegralType>::type
+  constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                                                            && std::is_unsigned<UnsignedIntegralType>::value), UnsignedIntegralType>::type
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    return static_cast<local_unsigned_integral_type>((static_cast<local_unsigned_integral_type>(~u)) + 1U);
+    return
+      static_cast<local_unsigned_integral_type>
+      (
+        (static_cast<local_unsigned_integral_type>(~u)) + static_cast<local_unsigned_integral_type>(1U)
+      );
   }
 
   template<typename SignedIntegralType>
-  constexpr auto negate(SignedIntegralType n) -> typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value)
-                                                                          && (std::is_signed  <SignedIntegralType>::value)), SignedIntegralType>::type
+  constexpr auto negate(SignedIntegralType n) -> typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                                                          && std::is_signed  <SignedIntegralType>::value), SignedIntegralType>::type
   {
     using local_signed_integral_type = SignedIntegralType;
 
@@ -114,11 +118,11 @@
 
     static auto a029750_as_runtime_value(std::uint32_t value) noexcept -> std::uint32_t
     {
-      using array_type = std::array<std::uint32_t, 65U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      using local_array_type = std::array<std::uint32_t, 65U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
       // Sloane's A029750 List of numbers of the form 2^k times 1, 3, 5 or 7.
       // CoefficientList[Series[-(x + 1)^2 (x^2 + 1)^2/(2 x^4 - 1), {x, 0, 91}], x]
-      constexpr array_type a029750_data =
+      constexpr local_array_type a029750_data =
       {{
         UINT32_C(      32), UINT32_C(      40), UINT32_C(      48), UINT32_C(      56),
         UINT32_C(      64), UINT32_C(      80), UINT32_C(      96), UINT32_C(     112),
@@ -162,11 +166,11 @@
 
     static auto a000079_as_runtime_value(const std::uint32_t value) noexcept -> std::uint32_t
     {
-      using array_type = std::array<std::uint32_t, 29U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      using local_array_type = std::array<std::uint32_t, 29U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
       // Sloane's A000079 List of numbers of powers of 2.
       // Table[2^n, {n, 0, 31, 1}]
-      constexpr array_type a000079_data =
+      constexpr local_array_type a000079_data =
       {{
         UINT32_C(         8), UINT32_C(       16), UINT32_C(       32), UINT32_C(        64),
         UINT32_C(       128), UINT32_C(      256), UINT32_C(      512), UINT32_C(      1024),
@@ -192,9 +196,9 @@
 
   inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
   {
-    using local_p10_table_type = std::array<std::uint32_t, 10U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    using local_array_type = std::array<std::uint32_t, 10U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-    constexpr local_p10_table_type local_p10_table =
+    constexpr local_array_type local_p10_table =
     {{
       UINT32_C(1),
       UINT32_C(10),
@@ -208,8 +212,8 @@
       UINT32_C(1000000000)
     }};
 
-    return ((n < static_cast<std::uint32_t>(std::tuple_size<local_p10_table_type>::value))
-             ? local_p10_table[typename local_p10_table_type::size_type(n)]
+    return ((n < static_cast<std::uint32_t>(std::tuple_size<local_array_type>::value))
+             ? local_p10_table[typename local_array_type::size_type(n)]
              : local_p10_table.back());
   }
 
@@ -217,10 +221,10 @@
   struct decwide_t_helper_base
   {
     static constexpr std::int32_t elem_digits10     =
-      ((std::is_same<LimbType, std::uint32_t>::value)
+      (std::is_same<LimbType, std::uint32_t>::value
         ? static_cast<std::int32_t>(8)
-        : ((std::is_same<LimbType, std::uint16_t>::value) ? static_cast<std::int32_t>(4)
-                                                           : static_cast<std::int32_t>(2)));
+        : (std::is_same<LimbType, std::uint16_t>::value ? static_cast<std::int32_t>(4)
+                                                        : static_cast<std::int32_t>(2)));
 
     static constexpr auto elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
     static constexpr auto elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));
@@ -254,9 +258,9 @@
     static constexpr std::int32_t digits10          = ParamDigitsBaseTen;
     static constexpr std::int32_t digits            = digits10;
     static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 4);
-    static constexpr std::int32_t radix             = static_cast<std::int32_t>(10);
+    static constexpr std::int32_t radix             = static_cast<std::int32_t>(INT32_C(10));
 
-    static constexpr std::int32_t elem_number_extra = 3;
+    static constexpr std::int32_t elem_number_extra = static_cast<std::int32_t>(INT32_C(3));
     static constexpr std::int32_t elem_number       = static_cast<std::int32_t>(((digits10 / base_class_type::elem_digits10) + (((digits10 % base_class_type::elem_digits10) != 0) ? 1 : 0)) + elem_number_extra);
   };
 
@@ -288,8 +292,8 @@
                 v);
     }
 
-    constexpr fixed_dynamic_array(const fixed_dynamic_array& other_array)
-      : base_class_type(static_cast<const base_class_type&>(other_array)) { }
+    constexpr fixed_dynamic_array(const fixed_dynamic_array& other)
+      : base_class_type(static_cast<const base_class_type&>(other)) { }
 
     fixed_dynamic_array(std::initializer_list<typename base_class_type::value_type> lst)
       : base_class_type(MySize)
@@ -299,19 +303,22 @@
                 base_class_type::begin());
     }
 
-    constexpr fixed_dynamic_array(fixed_dynamic_array&& other_array) noexcept
-      : base_class_type(static_cast<base_class_type&&>(other_array)) { }
+    constexpr fixed_dynamic_array(fixed_dynamic_array&& other) noexcept
+      : base_class_type(static_cast<base_class_type&&>(other)) { }
 
-    auto operator=(const fixed_dynamic_array& other_array) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
+    auto operator=(const fixed_dynamic_array& other) -> fixed_dynamic_array& // NOLINT(cert-oop54-cpp)
     {
-      base_class_type::operator=(static_cast<const base_class_type&>(other_array));
+      if(this != &other)
+      {
+        base_class_type::operator=(static_cast<const base_class_type&>(other));
+      }
 
       return *this;
     }
 
-    auto operator=(fixed_dynamic_array&& other_array) noexcept -> fixed_dynamic_array&
+    auto operator=(fixed_dynamic_array&& other) noexcept -> fixed_dynamic_array&
     {
-      base_class_type::operator=(static_cast<base_class_type&&>(other_array));
+      base_class_type::operator=(static_cast<base_class_type&&>(other));
 
       return *this;
     }
@@ -351,6 +358,30 @@
     fixed_static_array(const fixed_static_array&) = default;
     fixed_static_array(fixed_static_array&&) noexcept = default;
 
+    fixed_static_array(std::initializer_list<typename base_class_type::value_type> lst)
+    {
+      const auto size_to_copy =
+        (std::min)(static_cast<size_type>(lst.size()),
+                   static_cast<size_type>(MySize));
+
+      if(size_to_copy < static_cast<size_type>(base_class_type::size()))
+      {
+        std::copy(lst.begin(),
+                  lst.begin() + size_to_copy,
+                  base_class_type::begin());
+
+        std::fill(base_class_type::begin() + size_to_copy,
+                  base_class_type::end(),
+                  static_cast<typename base_class_type::value_type>(0U));
+      }
+      else
+      {
+        std::copy(lst.begin(),
+                  lst.begin() + size_to_copy,
+                  base_class_type::begin());
+      }
+    }
+
     ~fixed_static_array() = default;
 
     auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
@@ -360,11 +391,11 @@
     auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
-  using os_float_field_type = enum os_float_field_type
+  enum class os_float_field_type
   {
-    os_float_field_scientific,
-    os_float_field_fixed,
-    os_float_field_none
+    scientific,
+    fixed,
+    none
   };
 
   template<typename UnsignedIntegerType,
