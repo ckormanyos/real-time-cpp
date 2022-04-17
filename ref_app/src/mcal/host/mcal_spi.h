@@ -12,11 +12,11 @@
 
   namespace mcal { namespace spi {
 
-  typedef void config_type;
+  using config_type = void;
 
-  void init(const config_type*);
+  auto init(const config_type*) -> void;
 
-  util::communication_base& spi0();
+  auto spi0() -> util::communication_base&;
 
   } }
 

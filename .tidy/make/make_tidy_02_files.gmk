@@ -1,0 +1,42 @@
+﻿# ------------------------------------------------------------------------------
+#  Copyright Christopher Kormanyos 2022.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+# ------------------------------------------------------------------------------
+
+FILES_PRJ  = $(PATH_SRC)/app/benchmark/app_benchmark                                 \
+             $(PATH_SRC)/app/benchmark/app_benchmark_boost_math_cbrt_tgamma          \
+             $(PATH_SRC)/app/benchmark/app_benchmark_boost_multiprecision_cbrt       \
+             $(PATH_SRC)/app/benchmark/app_benchmark_complex                         \
+             $(PATH_SRC)/app/benchmark/app_benchmark_crc                             \
+             $(PATH_SRC)/app/benchmark/app_benchmark_fast_math                       \
+             $(PATH_SRC)/app/benchmark/app_benchmark_filter                          \
+             $(PATH_SRC)/app/benchmark/app_benchmark_fixed_point                     \
+             $(PATH_SRC)/app/benchmark/app_benchmark_float                           \
+             $(PATH_SRC)/app/benchmark/app_benchmark_hash                            \
+             $(PATH_SRC)/app/benchmark/app_benchmark_none                            \
+             $(PATH_SRC)/app/benchmark/app_benchmark_pi_agm                          \
+             $(PATH_SRC)/app/benchmark/app_benchmark_pi_spigot                       \
+             $(PATH_SRC)/app/benchmark/app_benchmark_pi_spigot_single                \
+             $(PATH_SRC)/app/benchmark/app_benchmark_soft_double_h2f1                \
+             $(PATH_SRC)/app/benchmark/app_benchmark_trapezoid_integral              \
+             $(PATH_SRC)/app/benchmark/app_benchmark_wide_decimal                    \
+             $(PATH_SRC)/app/benchmark/app_benchmark_wide_integer                    \
+             $(PATH_SRC)/app/led/app_led                                             \
+             $(PATH_SRC)/mcal/host/mcal_cpu                                          \
+             $(PATH_SRC)/mcal/host/mcal_eep                                          \
+             $(PATH_SRC)/mcal/host/mcal_gpt                                          \
+             $(PATH_SRC)/mcal/host/mcal_irq                                          \
+             $(PATH_SRC)/mcal/host/mcal_led                                          \
+             $(PATH_SRC)/mcal/host/mcal_osc                                          \
+             $(PATH_SRC)/mcal/host/mcal_pwm                                          \
+             $(PATH_SRC)/mcal/host/mcal_port                                         \
+             $(PATH_SRC)/mcal/host/mcal_spi                                          \
+             $(PATH_SRC)/mcal/host/mcal_wdg                                          \
+             $(PATH_SRC)/mcal/mcal                                                   \
+             $(PATH_SRC)/os/os                                                       \
+             $(PATH_SRC)/os/os_task_control_block                                    \
+             $(PATH_SRC)/sys/idle/sys_idle                                           \
+             $(PATH_SRC)/sys/mon/sys_mon                                             \
+             $(PATH_SRC)/sys/start/sys_start

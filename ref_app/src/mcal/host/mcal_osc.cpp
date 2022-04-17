@@ -7,6 +7,6 @@
 
 #include <mcal_osc.h>
 
-void mcal::osc::init(const config_type*)
+auto mcal::osc::init(const config_type*) -> void // NOLINT(readability-named-parameter)
 {
 }

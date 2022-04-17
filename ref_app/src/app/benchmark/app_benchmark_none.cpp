@@ -9,9 +9,9 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
 
-bool app::benchmark::run_none()
+auto app::benchmark::run_none() -> bool
 {
-  const bool result_is_ok = true;
+  constexpr auto result_is_ok = true;
 
   return result_is_ok;
 }

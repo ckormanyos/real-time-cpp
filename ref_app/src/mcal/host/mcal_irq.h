@@ -14,10 +14,10 @@
     {
       typedef void config_type;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
-      inline void enable_all () { }
-      inline void disable_all() { }
+      inline auto enable_all () -> void { }
+      inline auto disable_all() -> void { }
     }
   }
 

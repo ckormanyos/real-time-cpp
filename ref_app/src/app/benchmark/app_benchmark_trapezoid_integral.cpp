@@ -47,7 +47,7 @@ namespace
   }
 }
 
-bool app::benchmark::run_trapezoid_integral()
+auto app::benchmark::run_trapezoid_integral() -> bool
 {
   using my_float_type = std::floatmax_t;
 

@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,32 +8,31 @@
 #include <mcal/mcal.h>
 #include <util/utility/util_time.h>
 
-namespace app
+namespace app { namespace led {
+
+void task_init();
+void task_func();
+
+} // namespace led
+} // namespace app
+
+namespace local
 {
-  namespace led
-  {
-    void task_init();
-    void task_func();
-  }
-}
+  typedef util::timer<std::uint32_t> app_led_timer_type;
 
-namespace
-{
-  typedef util::timer<std::uint32_t> timer_type;
+  app_led_timer_type app_led_timer(app_led_timer_type::seconds(1U));
+} // namespace local
 
-  timer_type app_led_timer(timer_type::seconds(1U));
-}
-
-void app::led::task_init()
+auto app::led::task_init() -> void
 {
   mcal::led::led0().toggle();
 }
 
-void app::led::task_func()
+auto app::led::task_func() -> void
 {
-  if(app_led_timer.timeout())
+  if(local::app_led_timer.timeout())
   {
-    app_led_timer.start_interval(timer_type::seconds(1U));
+    local::app_led_timer.start_interval(local::app_led_timer_type::seconds(1U));
 
     mcal::led::led0().toggle();
   }

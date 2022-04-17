@@ -35,7 +35,7 @@
 
 //#define APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS
 
-bool app::benchmark::run_pi_agm()
+auto app::benchmark::run_pi_agm() -> bool
 {
   // N[Pi, 106] and truncate the final digit.
   using local_limb_type = std::uint16_t;

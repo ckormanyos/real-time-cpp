@@ -10,10 +10,10 @@
       using config_type  = void;
       using address_type = std::uint64_t;
 
-      inline void init(const config_type*) { }
+      inline auto init(const config_type*) -> void { }
 
-      void         write(const address_type addr, const std::uint8_t data);
-      std::uint8_t read (const address_type addr);
+      auto write(const address_type addr, const std::uint8_t data) -> void;
+      auto read (const address_type addr) -> std::uint8_t;
     }
   }
 

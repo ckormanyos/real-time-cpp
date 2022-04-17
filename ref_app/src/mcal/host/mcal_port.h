@@ -14,17 +14,17 @@
     {
       typedef void config_type;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       class port_pin
       {
       public:
-        static void set_direction_output() noexcept { }
-        static void set_direction_input () noexcept { }
-        static void set_pin_high        () noexcept { }
-        static void set_pin_low         () noexcept { }
-        static bool read_input_value    () noexcept { return false; }
-        static void toggle_pin          () noexcept { }
+        static auto set_direction_output()noexcept -> void { }
+        static auto set_direction_input ()noexcept -> void { }
+        static auto set_pin_high        ()noexcept -> void { }
+        static auto set_pin_low         ()noexcept -> void { }
+        static auto read_input_value    ()noexcept -> bool { return false; }
+        static auto toggle_pin          ()noexcept -> void { }
       };
     }
   }

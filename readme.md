@@ -3,7 +3,6 @@
 
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
 [![Boost Software License 1.0](https://img.shields.io/badge/license-BSL%201.0-blue.svg)](https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ckormanyos/real-time-cpp)](https://github.com/ckormanyos/real-time-cpp)
 
 This is the companion code
 for the book C.M. Kormanyos,
@@ -225,6 +224,17 @@ follow the standard `*nix` pattern to build.
 Also building with CMake for `x86_64-w64-mingw32`
 or `host` from MSYS, Cygwin or any similar `*nix`-like
 shell or console should work too.
+
+The following command sequence will build for the
+native `host` on a `*nix`-like shell or console.
+
+```sh
+cd real-time-cpp
+mkdir build
+cd build
+cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+make -j ref_app
+```
 
 ### Build with ATMEL(R) AtmelStudio(R)
 

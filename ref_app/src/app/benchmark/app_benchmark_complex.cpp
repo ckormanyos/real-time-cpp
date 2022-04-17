@@ -24,7 +24,7 @@ namespace
 extern complex_type x;
 extern complex_type y;
 
-bool app::benchmark::run_complex()
+auto app::benchmark::run_complex() -> bool
 {
   using std::sin;
 

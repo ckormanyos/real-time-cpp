@@ -8,7 +8,7 @@
 #include <mcal_pwm.h>
 #include <mcal_pwm/mcal_pwm_console.h>
 
-mcal::pwm::pwm_base& mcal::pwm::pwm0() noexcept
+auto mcal::pwm::pwm0() noexcept -> mcal::pwm::pwm_base&
 {
   static mcal::pwm::pwm_console pwm;
 

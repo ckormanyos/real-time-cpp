@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -53,7 +53,7 @@
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #endif
 
-bool app::benchmark::run_boost_multiprecision_cbrt()
+auto app::benchmark::run_boost_multiprecision_cbrt() -> bool
 {
   using big_float_backend_type =
   #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)

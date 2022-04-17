@@ -26,7 +26,7 @@ extern fixed_point_type global_b;
 extern fixed_point_type global_c;
 extern fixed_point_type global_d;
 
-bool app::benchmark::run_fixed_point()
+auto app::benchmark::run_fixed_point() -> bool
 {
   const fixed_point_type a = global_a;
   const fixed_point_type b = global_b;

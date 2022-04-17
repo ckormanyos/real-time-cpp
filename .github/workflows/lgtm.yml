@@ -1,0 +1,42 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2022.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+extraction:
+  # Define settings for C/C++ analysis
+  #####################################
+  cpp:
+    # The `prepare` step exists for customization on LGTM.com only.
+    # prepare:
+    #   # The `packages` section is valid for LGTM.com only. It names Ubuntu packages to
+    #   # be installed.
+    #   packages:
+    #     - libxml2-dev
+    #     - libxslt1-dev
+    # Add an `after-prepare` step if you need to run commands after the prepare step.
+    # Each command should be listed on a separate line.
+    # This step is useful for C/C++ analysis where you want to prepare the environment
+    # for the `configure` step without changing the default behavior for that step. 
+    after_prepare:
+      - echo after_prepare
+    # The `configure` step generates build configuration files which the `index` step
+    # then uses to build the codebase.
+    configure:
+      command:
+      - echo configure_commands
+    # Optional step. You should add a `before_index` step if you need to run commands
+    # before the `index` step.
+    before_index:
+      - echo before_index
+    # The `index` step builds the code and extracts information during the build
+    # process.
+    index:
+      # Override the autobuild process by specifying a list of custom build commands
+      # to use instead. 
+      build_command:
+        - mkdir -p build
+        - cd build
+        - cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+        - make -j ref_app

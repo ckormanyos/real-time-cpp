@@ -7,6 +7,6 @@
 
 #include <mcal_port.h>
 
-void mcal::port::init(const config_type*)
+auto mcal::port::init(const config_type*) -> void // NOLINT(readability-named-parameter)
 {
 }

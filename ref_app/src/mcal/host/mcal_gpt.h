@@ -27,11 +27,11 @@
       typedef void          config_type;
       typedef std::uint64_t value_type;
 
-      inline void init(const config_type*) { }
+      inline auto init(const config_type*) -> void { }
 
       class secure final
       {
-        static value_type get_time_elapsed();
+        static auto get_time_elapsed() -> value_type;
 
         friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT;
 

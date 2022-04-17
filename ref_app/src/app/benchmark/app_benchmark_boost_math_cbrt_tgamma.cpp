@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -54,7 +54,7 @@ using my_float_type = boost::float64_t;
 extern my_float_type cb;
 extern my_float_type x;
 
-bool app::benchmark::run_boost_math_cbrt_tgamma()
+auto app::benchmark::run_boost_math_cbrt_tgamma() -> bool
 {
   static_assert(std::numeric_limits<my_float_type>::digits >= 53,
                 "Error: Incorrect float64_t type definition");
