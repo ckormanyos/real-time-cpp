@@ -31,6 +31,7 @@ jobs:
         run: sudo apt install clang clang-tidy
       - name: gnumake-clang-tidy-native
         run: |
+          cd .tidy/make
           echo "running clang-tidy"
           echo "make prepare -f make_tidy_01_generic.gmk MY_CC=${{ matrix.compiler }} MY_STD=${{ matrix.standard }}"
           echo
