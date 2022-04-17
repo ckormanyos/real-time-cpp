@@ -53,7 +53,7 @@ namespace
   WIDE_INTEGER_CONSTEXPR local_uint256_t c("0xE491A360C57EB4306C61F9A04F7F7D99BE3676AAD2D71C5592D5AE70F84AF076");
   WIDE_INTEGER_CONSTEXPR local_uint256_t m("0x14998D5CA3DB6385F7DEDF4621DE48A9104AC13797C6567713D7ABC216D7AB4C");
 
-  bool run_wide_integer_mul()
+  auto run_wide_integer_mul() -> bool
   {
     WIDE_INTEGER_CONSTEXPR bool result_of_mul_is_ok = ((a * b) == c);
 
@@ -64,7 +64,7 @@ namespace
     return result_of_mul_is_ok;
   }
 
-  bool run_wide_integer_div()
+  auto run_wide_integer_div() -> bool
   {
     WIDE_INTEGER_CONSTEXPR local_uint256_t q(static_cast<std::uint8_t>(UINT8_C(10)));
 
@@ -77,7 +77,7 @@ namespace
     return result_of_div_is_ok;
   }
 
-  bool run_wide_integer_mod()
+  auto run_wide_integer_mod() -> bool
   {
     WIDE_INTEGER_CONSTEXPR bool result_of_mod_is_ok = ((a % b) == m);
 
@@ -89,7 +89,7 @@ namespace
   }
 }
 
-bool app::benchmark::run_wide_integer()
+auto app::benchmark::run_wide_integer() -> bool
 {
   static std::uint_fast8_t select_test_case;
 
@@ -127,7 +127,7 @@ int main()
 {
   // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_wide_integer.cpp -o ./ref_app/bin/app_benchmark_wide_integer.exe
 
-  bool result_is_ok = true;
+  auto result_is_ok = true;
 
   for(unsigned i = 0U; i < 64U; ++i)
   {

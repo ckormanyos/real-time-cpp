@@ -1,0 +1,47 @@
+﻿# ------------------------------------------------------------------------------
+#  Copyright Christopher Kormanyos 2022.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+# ------------------------------------------------------------------------------
+
+CC                  = clang++
+STD                 = c++11
+
+ifneq ($(MY_CC),)
+CC                  := $(MY_CC)
+endif
+
+ifneq ($(MY_STD),)
+STD                 := $(MY_STD)
+endif
+
+CXX_FLAGS    = $(CC)                                                           \
+               -march=native                                                   \
+               -mtune=native                                                   \
+               -O3                                                             \
+               -Wall                                                           \
+               -Wextra                                                         \
+               -Wconversion                                                    \
+               -Wsign-conversion                                               \
+               -std=$(STD)
+
+C_DEFINES    =
+
+C_INCLUDES   = $(PATH_SRC)                                                     \
+               $(PATH_SRC)/mcal/host
+
+C_DEFINES   :=$(addprefix -D,$(C_DEFINES))
+C_INCLUDES  :=$(addprefix -I,$(C_INCLUDES))
+
+
+TIDY_CHECKS  = "*,                                                             \
+               -altera-struct-pack-align,                                      \
+               -altera-unroll-loops,                                           \
+               -fuchsia-*,                                                     \
+               -llvmlibc-*"
+
+TIDY_FLAGS   = --extra-arg-before=--driver-mode=g++                            \
+               --header-filter=decwide_t                                       \
+               -warnings-as-errors=*                                           \
+               -checks=$(TIDY_CHECKS)

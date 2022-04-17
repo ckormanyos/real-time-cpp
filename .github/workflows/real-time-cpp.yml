@@ -13,6 +13,33 @@ on:
   schedule:
     - cron: '45 23 * * *' # run at 11:45 PM UTC
 jobs:
+  gnumake-clang-tidy-native:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [ c++11 ]
+        compiler: [ g++, clang++ ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: sudo apt install clang clang-tidy
+      - name: gnumake-clang-tidy-native
+        run: |
+          echo "running clang-tidy"
+          echo "make prepare -f make_tidy_01_generic.gmk MY_CC=${{ matrix.compiler }} MY_STD=${{ matrix.standard }}"
+          echo
+          make prepare -f make_tidy_01_generic.gmk MY_CC=${{ matrix.compiler }} MY_STD=${{ matrix.standard }}
+          echo "make tidy -f make_tidy_01_generic.gmk --jobs=8 MY_CC=${{ matrix.compiler }} MY_STD=${{ matrix.standard }}"
+          make tidy -f make_tidy_01_generic.gmk --jobs=8 MY_CC=${{ matrix.compiler }} MY_STD=${{ matrix.standard }}
+          echo
+          echo "verify empty word count of ./tmp/all.tidy_txt"
+          wc ./tmp/all.tidy_txt | grep '0 0 0'
   target-avr:
     runs-on: ubuntu-20.04
     defaults:

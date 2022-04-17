@@ -8,7 +8,7 @@
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_console.h>
 
-mcal::led::led_base& mcal::led::led0()
+auto mcal::led::led0() -> mcal::led::led_base&
 {
   static mcal::led::led_console l0(0U);
 

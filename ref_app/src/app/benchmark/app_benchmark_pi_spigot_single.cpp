@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cstdint>
 
 #include <app/benchmark/app_benchmark.h>
@@ -44,7 +44,7 @@ namespace
   std::uint32_t app_benchmark_pi_spigot_digits10;
 }
 
-bool app::benchmark::run_pi_spigot_single()
+auto app::benchmark::run_pi_spigot_single() -> bool
 {
   app_benchmark_pi_spigot_object.calculate(app_benchmark_pi_spigot_in__.data(),
                                            app_benchmark_pi_spigot_out_.data());

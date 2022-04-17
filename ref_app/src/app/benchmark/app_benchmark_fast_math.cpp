@@ -20,7 +20,7 @@ using float_type = fast_math::float32_t;
 extern float_type xx;
 extern float_type yy;
 
-bool app::benchmark::run_fast_math()
+auto app::benchmark::run_fast_math() -> bool
 {
   static bool toggle_test_case;
 

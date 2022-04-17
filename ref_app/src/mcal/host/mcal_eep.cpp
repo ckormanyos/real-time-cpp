@@ -1,12 +1,12 @@
 #include <mcal_eep.h>
 
-void mcal::eep::write(const address_type addr, const std::uint8_t data)
+auto mcal::eep::write(const address_type addr, const std::uint8_t data) -> void
 {
   static_cast<void>(addr);
   static_cast<void>(data);
 }
 
-std::uint8_t mcal::eep::read(const address_type addr)
+auto mcal::eep::read(const address_type addr) -> std::uint8_t
 {
   static_cast<void>(addr);
 

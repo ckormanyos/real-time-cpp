@@ -14,9 +14,9 @@
   namespace app { namespace benchmark { namespace detail {
 
   template<typename NumericType>
-  bool is_close_fraction(const NumericType a,
+  auto is_close_fraction(const NumericType a,
                          const NumericType b,
-                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * NumericType(100)))
+                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * NumericType(100))) -> bool
   {
     using std::fabs;
 

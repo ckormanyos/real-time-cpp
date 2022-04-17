@@ -22,7 +22,7 @@ namespace
 extern       filter_type f;
 extern const sample_type sample;
 
-bool app::benchmark::run_filter()
+auto app::benchmark::run_filter() -> bool
 {
   static std::uint_fast8_t sample_counter;
 

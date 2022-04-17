@@ -22,7 +22,7 @@
 #include <math/wide_decimal/decwide_t.h>
 #include <util/memory/util_n_slot_array_allocator.h>
 
-bool app::benchmark::run_wide_decimal()
+auto app::benchmark::run_wide_decimal() -> bool
 {
   using local_limb_type = std::uint16_t;
 

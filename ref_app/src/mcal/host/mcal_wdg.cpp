@@ -7,11 +7,11 @@
 
 #include <mcal_wdg_watchdog.h>
 
-void mcal::wdg::init(const config_type*)
+auto mcal::wdg::init(const config_type*) -> void // NOLINT(readability-named-parameter)
 {
 }
 
-void mcal::wdg::secure::trigger()
+auto mcal::wdg::secure::trigger() -> void
 {
   mcal::wdg::watchdog::the_watchdog.reset_watchdog_timer();
 }

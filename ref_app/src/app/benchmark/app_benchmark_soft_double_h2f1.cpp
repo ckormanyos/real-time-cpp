@@ -174,9 +174,9 @@ namespace local
   #else
   using math::softfloat::float64_t;
   #endif
-}
+} // namespace local
 
-bool app::benchmark::run_soft_double_h2f1()
+auto app::benchmark::run_soft_double_h2f1() -> bool
 {
   using local::float64_t;
 

@@ -53,41 +53,41 @@
   namespace app { namespace benchmark {
 
   #if  (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
-  bool run_none();
+  auto run_none() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
-  bool run_complex();
+  auto run_complex() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
-  bool run_crc();
+  auto run_crc() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
-  bool run_fast_math();
+  auto run_fast_math() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
-  bool run_filter();
+  auto run_filter() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
-  bool run_fixed_point();
+  auto run_fixed_point() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
-  bool run_float();
+  auto run_float() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
-  bool run_wide_integer();
+  auto run_wide_integer() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT)
-  bool run_pi_spigot();
+  auto run_pi_spigot() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE)
-  bool run_pi_spigot_single();
+  auto run_pi_spigot_single() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH)
-  bool run_hash();
+  auto run_hash() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL)
-  bool run_wide_decimal();
+  auto run_wide_decimal() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
-  bool run_trapezoid_integral();
+  auto run_trapezoid_integral() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM)
-  bool run_pi_agm();
+  auto run_pi_agm() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
-  bool run_boost_math_cbrt_tgamma();
+  auto run_boost_math_cbrt_tgamma() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
-  bool run_cnl_scaled_integer();
+  auto run_cnl_scaled_integer() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
-  bool run_soft_double_h2f1();
+  auto run_soft_double_h2f1() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT)
-  bool run_boost_multiprecision_cbrt();
+  auto run_boost_multiprecision_cbrt() -> bool;
   #else
   #error APP_BENCHMARK_TYPE is undefined.
   #endif

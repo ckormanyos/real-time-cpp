@@ -14,7 +14,7 @@
 #include <math/checksums/hash/hash_sha1.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
 
-bool app::benchmark::run_hash()
+auto app::benchmark::run_hash() -> bool
 {
   using hash_type = math::checksums::hash::hash_sha1<std::uint8_t>;
 

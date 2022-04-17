@@ -14,7 +14,7 @@
 #include <math/checksums/crc/crc32.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
 
-bool app::benchmark::run_crc()
+auto app::benchmark::run_crc() -> bool
 {
   static const mcal::memory::progmem::array<std::uint8_t, 9U> app_benchmark_crc_data MY_PROGMEM =
   {{
