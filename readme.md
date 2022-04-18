@@ -2,6 +2,8 @@
 ==================
 
 [![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ckormanyos/real-time-cpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ckormanyos/real-time-cpp/alerts/)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/ckormanyos/real-time-cpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ckormanyos/real-time-cpp/context:cpp)
 [![Boost Software License 1.0](https://img.shields.io/badge/license-BSL%201.0-blue.svg)](https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt)
 
 This is the companion code
