@@ -25,7 +25,7 @@ void mcal::wdg::init(const config_type*)
 
   // Register reload set to 1000 for a watchdog period of approximately 100ms.
   // Note that this time is not exact. See Chapter 18.3.3, in the
-  // caption of Table 84: "[...] microcontroller’s internal RC frequency
+  // caption of Table 84: "[...] microcontroller's internal RC frequency
   // can vary from 30 to 60 kHz". Take 40 kHz and the prescaler of 4,
   // resulting in approximately 10 kHz for the watchdog clock.
   // Divide this by 1000, which gives a period of approximately
