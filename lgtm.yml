@@ -12,10 +12,22 @@ extraction:
   cpp:
     configure:
       command:
-      - echo configure_command
+        - echo configure_command
+        - git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
+        - cd ../boost-root
+        - git submodule update --init tools
+        - git submodule update --init libs/config
+        - git submodule update --init libs/math
+        - git submodule update --init libs/multiprecision
+        - ./bootstrap.sh
+        - ./b2 headers
     index:
       build_command:
+        - echo 'Build with CMake for target host'
         - mkdir -p build_host
         - cd build_host
         - cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
         - make -j ref_app
+        - echo 'Build benchmarks on GCC'
+        - cd ../ref_app
+        - ./target/build/test_app_benchmarks.sh g++ c++11
