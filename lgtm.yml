@@ -1,4 +1,4 @@
-##############################################################################
+﻿##############################################################################
 #  Copyright Christopher Kormanyos 2022.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -8,8 +8,7 @@ extraction:
   cpp:
     configure:
       command:
-      - sudo apt install gcc-arm-none-eabi
-      - sudo apt install gcc-avr avr-libc
+      - echo configure_command
     index:
       build_command:
         - mkdir -p build_host
@@ -20,9 +19,4 @@ extraction:
         - mkdir -p build_stm32f446
         - cd build_stm32f446
         - cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=stm32f446 -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
-        - make -j ref_app
-        - cd ..
-        - mkdir -p build_avr
-        - cd build_avr
-        - cmake ../ref_app -DTRIPLE=avr -DTARGET=avr -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
         - make -j ref_app
