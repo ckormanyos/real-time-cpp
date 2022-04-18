@@ -27,7 +27,8 @@
 
 #if defined(__GNUC__)
 #if defined(__XTENSA__)
-__attribute__((used)) extern "C" app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
+extern "C"
+__attribute__((used)) auto app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #else
 __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #endif
