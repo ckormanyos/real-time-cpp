@@ -1,0 +1,19 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2022.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+extraction:
+  # Define settings for C/C++ analysis
+  #####################################
+  cpp:
+    configure:
+      command:
+      - echo configure_commands
+    index:
+      build_command:
+        - mkdir -p build
+        - cd build
+        - cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+        - make -j ref_app

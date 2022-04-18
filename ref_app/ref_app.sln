@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{FF08
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{05C8F17D-422D-4E38-BC39-07809736C953}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\lgtm.yml = ..\.github\workflows\lgtm.yml
 		..\.github\workflows\real-time-cpp.yml = ..\.github\workflows\real-time-cpp.yml
 	EndProjectSection
 EndProject
@@ -22,7 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_doc", "_doc", "{AF95AFE8-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{114FF69D-9BD4-4C58-B23A-636DFA3B62EA}"
 	ProjectSection(SolutionItems) = preProject
+		..\.clang-tidy = ..\.clang-tidy
 		..\CMakeLists.txt = ..\CMakeLists.txt
+		..\lgtm.yml = ..\lgtm.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tidy", ".tidy", "{7B349636-E848-4CDE-9C88-2F993F4DAC51}"
