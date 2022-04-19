@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2014 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -1322,7 +1322,7 @@
   } // namespace extended_complex
 
   /*
-  8-bit microcontroller @ 16MHz
+  8-bit microcontroller at 16MHz
 
   std::complex<float> x(1.23F, 3.45F);
   std::complex<float> y(0.77F, 0.22F);
