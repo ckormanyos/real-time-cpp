@@ -25,7 +25,7 @@ auto mcal::wdg::watchdog::get_watchdog_timeout() -> bool
 auto mcal::wdg::watchdog::reset_watchdog_timer() -> void
 {
   my_mutex.lock();
-  my_timer.start_relative(the_watchdog.my_period);
+  my_timer.start_relative(mcal::wdg::watchdog::my_period);
   my_mutex.unlock();
 }
 
