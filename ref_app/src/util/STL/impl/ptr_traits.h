@@ -29,13 +29,8 @@
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
 
-/** @file bits/ptr_traits.h
- *  This is an internal header file, included by other library headers.
- *  Do not attempt to use it directly. @headername{memory}
- */
-
-#ifndef PTR_TRAITS_2021_01_26_H_
-  #define PTR_TRAITS_2021_01_26_H_
+#ifndef PTR_TRAITS_2021_01_26_H
+  #define PTR_TRAITS_2021_01_26_H
 
   namespace std
   {
@@ -185,4 +180,4 @@
     #endif // C++2a
   }
 
-#endif // PTR_TRAITS_2021_01_26_H_
+#endif // PTR_TRAITS_2021_01_26_H

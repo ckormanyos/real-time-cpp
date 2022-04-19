@@ -26,14 +26,14 @@ void mcal::osc::init(const config_type*)
                                mcal::reg::sosccr,
                                UINT8_C(0x01)>::reg_set();
 
-  // Set main oscillator settling time to 10ms (131072 cycles @ 12MHz)
+  // Set main oscillator settling time to 10ms (131072 cycles at 12MHz)
   // SYSTEM.MOSCWTCR.BYTE = 0x0Du;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint8_t,
                                mcal::reg::moscwtcr,
                                UINT8_C(0x0D)>::reg_set();
 
-  // Set the PLL circuit settling time to 10ms (2097152 cycles @ 192MHz)
+  // Set the PLL circuit settling time to 10ms (2097152 cycles at 192MHz)
   // SYSTEM.PLLWTCR.BYTE = 0x0Eu;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint8_t,
@@ -61,7 +61,7 @@ void mcal::osc::init(const config_type*)
                                mcal::reg::pllcr2,
                                UINT8_C(0x00)>::reg_set();
 
-  // Wait for at least 12ms (~2075op/s @ 125KHz).
+  // Wait for at least 12ms (~2075op/s at 125KHz).
   // Execute a delay loop 210 times. The delay loop has 10 operations:
   // one subtraction, one branching-comparison, and eight no-operations.
   for(std::uint_fast16_t i = UINT16_C(0); i < UINT16_C(210); ++i)
