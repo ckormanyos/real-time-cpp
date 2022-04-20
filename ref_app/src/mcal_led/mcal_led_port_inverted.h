@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_PORT_INVERTED_2020_08_02_H_
-  #define MCAL_LED_PORT_INVERTED_2020_08_02_H_
+#ifndef MCAL_LED_PORT_INVERTED_2020_08_02_H
+  #define MCAL_LED_PORT_INVERTED_2020_08_02_H
 
   #include <mcal_led/mcal_led_boolean_state_base.h>
   #include <mcal_port.h>
@@ -23,10 +23,10 @@
       port_type::set_direction_output();
     }
 
-    virtual ~led_port_inverted() = default;
+    ~led_port_inverted() override = default;
 
   private:
-    virtual void toggle()
+    auto toggle() -> void override
     {
       led_boolean_state_base::toggle();
 
@@ -34,6 +34,7 @@
     }
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
-#endif // MCAL_LED_PORT_INVERTED_2020_08_02_H_
+#endif // MCAL_LED_PORT_INVERTED_2020_08_02_H
