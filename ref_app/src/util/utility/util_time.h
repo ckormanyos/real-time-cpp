@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -29,27 +29,21 @@
     public:
       using tick_type = unsigned_tick_type;
 
-      static_assert(std::numeric_limits<tick_type>::is_signed == false,
-                    "the timer tick_type must be unsigned");
-
-      static_assert(std::numeric_limits<tick_type>::digits <= std::numeric_limits<mcal::gpt::value_type>::digits,
-                    "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
-
       template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return value_microseconds; }
       template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
-      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds     ) noexcept -> tick_type { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
-      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes     ) noexcept -> tick_type { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
-      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours       ) noexcept -> tick_type { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
-      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days        ) noexcept -> tick_type { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
-      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks       ) noexcept -> tick_type { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
+      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
+      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      noexcept -> tick_type { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
+      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours)        noexcept -> tick_type { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
+      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days)         noexcept -> tick_type { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
+      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks)        noexcept -> tick_type { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
 
-      timer() noexcept = default;
+      constexpr timer() noexcept = default;
 
-      timer(const tick_type& tick_value) noexcept : my_tick(my_now() + tick_value) { }
+      constexpr timer(tick_type tick_value) noexcept : my_tick(my_now() + tick_value) { }
 
-      timer(const timer& other) noexcept : my_tick(other.my_tick) { }
+      constexpr timer(const timer& other) noexcept : my_tick(other.my_tick) { }
 
-      timer(timer&& other) noexcept : my_tick(other.my_tick) { }
+      constexpr timer(timer&& other) noexcept : my_tick(other.my_tick) { }
 
       ~timer() noexcept = default;
 
@@ -80,33 +74,27 @@
         my_tick = my_now() + tick_value;
       }
 
-      auto timeout() const noexcept -> bool
+      constexpr auto timeout() const noexcept -> bool
       {
-        const auto delta = static_cast<tick_type>(my_now() - my_tick);
-
-        return (delta <= timer_mask);
+        return (static_cast<tick_type>(my_now() - my_tick) <= timer_mask);
       }
 
-      auto timeout_of_specific_timepoint(const tick_type timepoint) const noexcept -> bool
+      constexpr auto timeout_of_specific_timepoint(const tick_type timepoint) const noexcept -> bool
       {
-        const auto delta = static_cast<tick_type>(timepoint - my_tick);
-
-        return (delta <= timer_mask);
+        return (static_cast<tick_type>(timepoint - my_tick) <= timer_mask);
       }
 
       auto set_mark() noexcept -> void
       {
-        my_tick = my_now();
-
-        return my_tick;
+        return (my_tick = my_now());
       }
 
-      static auto get_mark() noexcept -> tick_type
+      static constexpr auto get_mark() noexcept -> tick_type
       {
         return my_now();
       }
 
-      auto get_ticks_since_mark() const noexcept -> tick_type
+      constexpr auto get_ticks_since_mark() const noexcept -> tick_type
       {
         return my_now() - my_tick;
       }
@@ -124,10 +112,16 @@
     private:
       tick_type my_tick { };
 
-      static auto my_now() noexcept -> tick_type
+      constexpr static auto my_now() noexcept -> tick_type
       {
         return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
       }
+
+      static_assert(std::numeric_limits<tick_type>::is_signed == false,
+                    "the timer tick_type must be unsigned");
+
+      static_assert(std::numeric_limits<tick_type>::digits <= std::numeric_limits<mcal::gpt::value_type>::digits,
+                    "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
     };
   }
 

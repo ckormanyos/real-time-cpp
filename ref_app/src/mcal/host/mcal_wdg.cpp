@@ -9,6 +9,7 @@
 
 auto mcal::wdg::init(const config_type*) -> void // NOLINT(readability-named-parameter)
 {
+  // Subroutine is empty on purpose.
 }
 
 auto mcal::wdg::secure::trigger() -> void

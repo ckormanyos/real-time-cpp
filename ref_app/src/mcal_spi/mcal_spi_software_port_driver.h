@@ -1,12 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H_
-  #define MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H_
+#ifndef MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
+  #define MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H
 
   #include <mcal_port.h>
   #include <mcal_port_pin_dummy.h>
@@ -56,9 +56,9 @@
       port_pin_miso_type::set_direction_input();
     }
 
-    virtual ~spi_software_port_driver() = default;
+    ~spi_software_port_driver() override = default;
 
-    virtual bool send(const std::uint8_t byte_to_send)
+    auto send(const std::uint8_t byte_to_send) -> bool override
     {
       base_class_type::recv_buffer = 0U;
 
@@ -87,8 +87,8 @@
       return true;
     }
 
-    virtual void   select() { port_pin_csn__type::set_pin_low(); }
-    virtual void deselect() { port_pin_csn__type::set_pin_high(); }
+    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
+    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
   };
 
   template<typename port_pin_sck__type,
@@ -113,9 +113,9 @@
       port_pin_mosi_type::set_direction_output();
     }
 
-    virtual ~spi_software_port_driver() = default;
+    ~spi_software_port_driver() override = default;
 
-    virtual bool send(const std::uint8_t byte_to_send)
+    auto send(const std::uint8_t byte_to_send) -> bool override
     {
       for(std::uint_fast8_t bit_mask  = UINT8_C(0x80);
                             bit_mask != UINT8_C(0);
@@ -135,10 +135,11 @@
       return true;
     }
 
-    virtual void   select() { port_pin_csn__type::set_pin_low(); }
-    virtual void deselect() { port_pin_csn__type::set_pin_high(); }
+    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
+    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
   };
 
-  } } // namespace mcal::spi
+  } // namespace spi
+  } // namespace mcal
 
-#endif // MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H_
+#endif // MCAL_SPI_SOFTWARE_PORT_DRIVER_2020_04_09_H

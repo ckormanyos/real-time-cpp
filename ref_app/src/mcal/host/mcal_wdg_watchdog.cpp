@@ -15,6 +15,8 @@ mcal::wdg::watchdog mcal::wdg::watchdog::the_watchdog(watchdog::the_watchdog_thr
 
 auto mcal::wdg::watchdog::get_watchdog_timeout() -> bool
 {
+  // TBD: Consider using C++11/C++20 atomics for this code area.
+  // See Synopsis Coverity: https://scan9.scan.coverity.com/reports.htm#v48132/p14235/fileInstanceId=95338277&defectInstanceId=8753985&mergedDefectId=254442
   my_mutex.lock();
   const auto timeout_result = my_timer.timeout();
   my_mutex.unlock();
@@ -24,6 +26,8 @@ auto mcal::wdg::watchdog::get_watchdog_timeout() -> bool
 
 auto mcal::wdg::watchdog::reset_watchdog_timer() -> void
 {
+  // TBD: Consider using C++11/C++20 atomics for this code area.
+  // See Synopsis Coverity: https://scan9.scan.coverity.com/reports.htm#v48132/p14235/fileInstanceId=95338277&defectInstanceId=8753986&mergedDefectId=254441
   my_mutex.lock();
   my_timer.start_relative(mcal::wdg::watchdog::my_period);
   my_mutex.unlock();
