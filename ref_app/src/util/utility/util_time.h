@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -39,7 +39,7 @@
 
       constexpr timer() noexcept = default;
 
-      explicit constexpr timer(const tick_type& tick_value) noexcept : my_tick(my_now() + tick_value) { }
+      constexpr timer(tick_type tick_value) noexcept : my_tick(my_now() + tick_value) { }
 
       constexpr timer(const timer& other) noexcept : my_tick(other.my_tick) { }
 
@@ -84,12 +84,12 @@
         return (static_cast<tick_type>(timepoint - my_tick) <= timer_mask);
       }
 
-      constexpr auto set_mark() noexcept -> void
+      auto set_mark() noexcept -> void
       {
         return (my_tick = my_now());
       }
 
-      constexpr static auto get_mark() noexcept -> tick_type
+      static constexpr auto get_mark() noexcept -> tick_type
       {
         return my_now();
       }
