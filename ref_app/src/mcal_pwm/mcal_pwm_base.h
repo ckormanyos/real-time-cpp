@@ -26,9 +26,10 @@
     auto get_duty() const noexcept -> std::uint16_t { return my_duty_cycle; }
 
   protected:
-    std::uint16_t my_duty_cycle { };
-
     pwm_base() = default;
+
+  private:
+    std::uint16_t my_duty_cycle { };
   };
 
   } // namespace pwm

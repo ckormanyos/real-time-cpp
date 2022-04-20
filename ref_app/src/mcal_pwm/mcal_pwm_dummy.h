@@ -24,7 +24,7 @@
 
     auto set_duty(const std::uint16_t duty_cycle) noexcept -> void override
     {
-      base_class_type::my_duty_cycle = duty_cycle;
+      base_class_type::set_duty(duty_cycle);
     }
 
     ~pwm_dummy() override = default;

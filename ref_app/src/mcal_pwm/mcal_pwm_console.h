@@ -28,9 +28,13 @@
 
     auto set_duty(const std::uint16_t duty_cycle) noexcept -> void override
     {
-      base_class_type::my_duty_cycle = duty_cycle;
+      base_class_type::set_duty(duty_cycle);
 
-      const float duty_cycle_as_percent = float(duty_cycle) / 10.0F;
+      const auto duty_cycle_as_percent = 
+        static_cast<float>
+        (
+          static_cast<float>(base_class_type::get_duty()) / 10.0F
+        );
 
       std::stringstream strm;
 

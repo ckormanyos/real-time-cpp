@@ -60,10 +60,10 @@
 
       auto execute(const tick_type& timepoint_of_ckeck_ready) -> bool;
 
-      friend auto start_os   () -> void;
-      friend auto set_event  (const task_id_type, const event_type&) -> bool;
-      friend auto get_event  (event_type&) -> void;
-      friend auto clear_event(const event_type&) -> void;
+      friend OS_NORETURN auto start_os   () -> void;
+      friend             auto set_event  (const task_id_type, const event_type&) -> bool;
+      friend             auto get_event  (event_type&) -> void;
+      friend             auto clear_event(const event_type&) -> void;
     };
   }
 

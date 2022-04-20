@@ -26,7 +26,7 @@ namespace local
   task_index_type os_task_index;
 } // namespace local
 
-void os::start_os()
+OS_NORETURN auto os::start_os() -> void
 {
   // Initialize each task once (and only once) before the task scheduling begins.
   const auto it_init_func = std::for_each(local::os_task_list.cbegin(),
