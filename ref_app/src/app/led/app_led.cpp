@@ -18,10 +18,17 @@ void task_func();
 
 namespace local
 {
-  typedef util::timer<std::uint32_t> app_led_timer_type;
+  using app_led_timer_type = util::timer<std::uint32_t>;
 
-  app_led_timer_type app_led_timer(app_led_timer_type::seconds(1U));
+  auto app_led_timer() -> app_led_timer_type&;
 } // namespace local
+
+auto local::app_led_timer() -> app_led_timer_type&
+{
+  static app_led_timer_type t(app_led_timer_type::seconds(1U));
+
+  return t;
+}
 
 auto app::led::task_init() -> void
 {
@@ -30,9 +37,9 @@ auto app::led::task_init() -> void
 
 auto app::led::task_func() -> void
 {
-  if(local::app_led_timer.timeout())
+  if(local::app_led_timer().timeout())
   {
-    local::app_led_timer.start_interval(local::app_led_timer_type::seconds(1U));
+    local::app_led_timer().start_interval(local::app_led_timer_type::seconds(1U));
 
     mcal::led::led0().toggle();
   }

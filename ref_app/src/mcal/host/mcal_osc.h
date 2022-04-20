@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_OSC_2011_10_20_H_
-  #define MCAL_OSC_2011_10_20_H_
+#ifndef MCAL_OSC_2011_10_20_H
+  #define MCAL_OSC_2011_10_20_H
 
   namespace mcal
   {
@@ -18,4 +18,4 @@
     }
   }
 
-#endif // MCAL_OSC_2011_10_20_H_
+#endif // MCAL_OSC_2011_10_20_H

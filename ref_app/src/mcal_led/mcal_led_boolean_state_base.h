@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H_
-  #define MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H_
+#ifndef MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H
+  #define MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H
 
   #include <mcal_led/mcal_led_base.h>
 
@@ -15,23 +15,23 @@
   class led_boolean_state_base : public mcal::led::led_base
   {
   public:
-    virtual ~led_boolean_state_base() = default;
+    ~led_boolean_state_base() override = default;
 
   protected:
-    led_boolean_state_base() : is_on(false) { }
+    led_boolean_state_base() = default;
 
-    virtual void toggle()
+    auto toggle() -> void override
     {
       // Toggle the LED state.
       is_on = (!is_on);
     }
 
-    virtual bool state_is_on() const { return is_on; }
+    auto state_is_on() const -> bool override { return is_on; }
 
   private:
-    bool is_on;
+    bool is_on { };
   };
 
   } } // namespace mcal::led
 
-#endif // MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H_
+#endif // MCAL_LED_BOOLEAN_STATE_BASE_2020_08_07_H

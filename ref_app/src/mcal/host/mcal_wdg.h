@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_WDG_2010_04_10_H_
-  #define MCAL_WDG_2010_04_10_H_
+#ifndef MCAL_WDG_2010_04_10_H
+  #define MCAL_WDG_2010_04_10_H
 
   // Forward declaration of the util::timer template class.
   namespace util
@@ -21,7 +21,7 @@
   {
     namespace wdg
     {
-      typedef void config_type;
+      using config_type = void;
 
       auto init(const config_type*) -> void;
 
@@ -37,4 +37,4 @@
     }
   }
 
-#endif // MCAL_WDG_2010_04_10_H_
+#endif // MCAL_WDG_2010_04_10_H

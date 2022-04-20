@@ -9,4 +9,5 @@
 
 auto mcal::port::init(const config_type*) -> void // NOLINT(readability-named-parameter)
 {
+  // Subroutine is empty on purpose.
 }

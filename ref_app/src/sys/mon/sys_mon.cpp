@@ -16,8 +16,10 @@ void task_func();
 
 auto sys::mon::task_init() -> void
 {
+  // Subroutine is empty on purpose.
 }
 
 auto sys::mon::task_func() -> void
 {
+  // Subroutine is empty on purpose.
 }

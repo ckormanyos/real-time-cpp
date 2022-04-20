@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2021.
+//  Copyright Christopher Kormanyos 2013 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_CONSOLE_2020_04_23_H_
-  #define MCAL_LED_CONSOLE_2020_04_23_H_
+#ifndef MCAL_LED_CONSOLE_2020_04_23_H
+  #define MCAL_LED_CONSOLE_2020_04_23_H
 
   #include <cstdint>
   #include <iostream>
@@ -21,12 +21,12 @@
     explicit led_console(const std::uint_fast8_t i)
       : my_index(i) { }
 
-    virtual ~led_console() = default;
+    ~led_console() override = default;
 
   private:
     const std::uint_fast8_t my_index;
 
-    virtual void toggle()
+    auto toggle() -> void override
     {
       led_boolean_state_base::toggle();
 
@@ -41,4 +41,4 @@
 
   } } // namespace mcal::led
 
-#endif // MCAL_LED_CONSOLE_2020_04_23_H_
+#endif // MCAL_LED_CONSOLE_2020_04_23_H

@@ -29,6 +29,7 @@ auto mcal::wdg::watchdog::reset_watchdog_timer() -> void
   my_mutex.unlock();
 }
 
+MCAL_WDG_NORETURN
 auto mcal::wdg::watchdog::the_watchdog_thread_function() -> void
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(10U));
