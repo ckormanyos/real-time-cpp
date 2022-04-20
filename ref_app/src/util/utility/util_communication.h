@@ -38,12 +38,7 @@
         {
           using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
-          send_result =
-            static_cast<send_value_type>
-            (
-                send_result
-              & this->send(static_cast<std::uint8_t>(send_value_type(*first++)))
-            );
+          send_result = (this->send(static_cast<std::uint8_t>(send_value_type(*first++))) && send_result);
         }
 
         return send_result;
@@ -62,9 +57,9 @@
     class communication_buffer_depth_one_byte : public communication_base
     {
     public:
-      typedef std::uint8_t buffer_type;
+      using buffer_type = std::uint8_t;
 
-      virtual ~communication_buffer_depth_one_byte() = default;
+      ~communication_buffer_depth_one_byte() override = default;
 
     protected:
       buffer_type recv_buffer { };
@@ -72,7 +67,7 @@
       communication_buffer_depth_one_byte() = default;
 
     private:
-      virtual auto recv(std::uint8_t& byte_to_recv) -> bool
+      auto recv(std::uint8_t& byte_to_recv) -> bool override
       {
         byte_to_recv = recv_buffer;
 
@@ -83,9 +78,6 @@
     template<const std::size_t channel_count>
     class communication_multi_channel : public communication_base
     {
-    private:
-      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
-
     public:
       explicit communication_multi_channel(communication_base** p_com_channels)
       {
@@ -124,6 +116,8 @@
       std::size_t         my_index { };
 
       communication_multi_channel() = delete;
+
+      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
     };
   }
 
