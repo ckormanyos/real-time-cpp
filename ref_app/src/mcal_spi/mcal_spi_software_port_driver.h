@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -87,8 +87,8 @@
       return true;
     }
 
-    virtual auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
-    virtual auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
+    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
+    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
   };
 
   template<typename port_pin_sck__type,

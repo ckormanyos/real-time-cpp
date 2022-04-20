@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -33,8 +33,8 @@
       return true;
     }
 
-    virtual auto   select() -> void override { }
-    virtual auto deselect() -> void override { }
+    auto   select() -> void override { }
+    auto deselect() -> void override { }
   };
 
   } // namespace spi
