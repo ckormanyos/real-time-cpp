@@ -9,4 +9,5 @@
 
 void mcal::cpu::init()
 {
+  // Subroutine is empty on purpose.
 }

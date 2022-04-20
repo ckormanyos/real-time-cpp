@@ -11,6 +11,7 @@
 
 auto mcal::spi::init(const mcal::spi::config_type*) -> void // NOLINT(readability-named-parameter)
 {
+  // Subroutine is empty on purpose.
 }
 
 auto mcal::spi::spi0() -> util::communication_base&

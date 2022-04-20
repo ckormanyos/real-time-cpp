@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_SPI_2012_05_24_H_
-  #define MCAL_SPI_2012_05_24_H_
+#ifndef MCAL_SPI_2012_05_24_H
+  #define MCAL_SPI_2012_05_24_H
 
   #include <util/utility/util_communication.h>
 
@@ -20,4 +20,4 @@
 
   } }
 
-#endif // MCAL_SPI_2012_05_24_H_
+#endif // MCAL_SPI_2012_05_24_H
