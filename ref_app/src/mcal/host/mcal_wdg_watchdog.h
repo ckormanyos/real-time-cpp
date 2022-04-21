@@ -10,7 +10,6 @@
 
   #include <cstdint>
   #include <functional>
-  #include <mutex>
   #include <thread>
 
   #include <mcal_wdg.h>
@@ -48,19 +47,17 @@
 
         explicit watchdog(const function_type& pf) : my_thread(pf) { }
 
-        static const timer_type::tick_type my_period;
+        static constexpr timer_type::tick_type my_period = timer_type::seconds(2U);
 
-        timer_type  my_timer  { my_period} ;
-        std::mutex  my_mutex  { };
+        timer_type  my_timer { my_period };
         std::thread my_thread;
 
-        static watchdog the_watchdog;
+        static watchdog& the_watchdog();
 
-        bool get_watchdog_timeout();
-        void reset_watchdog_timer();
+        auto get_watchdog_timeout() -> bool;
+        auto reset_watchdog_timer() -> void;
 
-        MCAL_WDG_NORETURN
-        static void the_watchdog_thread_function();
+        MCAL_WDG_NORETURN static auto the_watchdog_thread_function() -> void;
 
         friend class ::mcal::wdg::secure;
       };
