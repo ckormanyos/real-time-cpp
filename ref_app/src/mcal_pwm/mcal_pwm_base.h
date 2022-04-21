@@ -17,18 +17,19 @@
   class pwm_base : private util::noncopyable
   {
   public:
-    virtual ~pwm_base() = default;
+    virtual ~pwm_base() noexcept = default;
 
     virtual auto init() noexcept -> bool = 0;
 
-    virtual auto set_duty(const std::uint16_t duty_cycle) -> void = 0;
+    virtual auto set_duty(const std::uint16_t duty_cycle) noexcept -> void { my_duty_cycle = duty_cycle; }
 
     auto get_duty() const noexcept -> std::uint16_t { return my_duty_cycle; }
 
   protected:
-    std::uint16_t my_duty_cycle { };
+    pwm_base() noexcept = default;
 
-    pwm_base() = default;
+  private:
+    std::uint16_t my_duty_cycle { };
   };
 
   } // namespace pwm

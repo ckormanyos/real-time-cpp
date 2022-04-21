@@ -1,12 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_TIMER1_2020_04_12_H_
-  #define MCAL_PWM_TIMER1_2020_04_12_H_
+#ifndef MCAL_PWM_TIMER1_2020_04_12_H
+  #define MCAL_PWM_TIMER1_2020_04_12_H
 
   #include <algorithm>
   #include <cstdint>
@@ -16,17 +16,17 @@
 
   namespace mcal { namespace pwm {
 
-  class pwm_timer1 : public mcal::pwm::pwm_base
+  class pwm_timer1 : public pwm_base
   {
   private:
-    using base_class_type = mcal::pwm::pwm_base;
+    using base_class_type = pwm_base;
 
   public:
     pwm_timer1() = default;
 
-    virtual ~pwm_timer1() = default;
+    ~pwm_timer1() override = default;
 
-    virtual bool init() noexcept
+    auto init() noexcept -> bool override
     {
       // Set portb.1 to output.
       mcal::reg::reg_access_static<std::uint8_t,
@@ -93,18 +93,19 @@
       return true;
     }
 
-    virtual void set_duty(const std::uint16_t duty_cycle) noexcept
+    auto set_duty(const std::uint16_t duty_cycle) noexcept -> void override
     {
       // Set the duty cycle 0...1000.
 
-      base_class_type::my_duty_cycle = (std::min)(duty_cycle, std::uint16_t(UINT16_C(1000)));
+      base_class_type::set_duty((std::min)(duty_cycle, static_cast<std::uint16_t>(UINT16_C(1000))));
 
       mcal::reg::reg_access_dynamic<std::uint8_t,
                                     std::uint16_t>::reg_set(mcal::reg::ocr1a,
-                                                            base_class_type::my_duty_cycle);
+                                                            base_class_type::get_duty());
     }
   };
 
-  } }
+  } // namespace pwm
+  } // namespace mcal
 
-#endif // MCAL_PWM_TIMER1_2020_04_12_H_
+#endif // MCAL_PWM_TIMER1_2020_04_12_H

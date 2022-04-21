@@ -23,7 +23,7 @@
   public:
     pwm_lcd()
     {
-      base_class_type::my_duty_cycle = UINT16_C(1000);
+      base_class_type::set_duty(static_cast<std::uint16_t>(UINT16_C(1000));
     }
 
     virtual ~pwm_lcd() = default;
