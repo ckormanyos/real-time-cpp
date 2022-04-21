@@ -30,15 +30,13 @@
   {
     // Enumerate the task IDs. Note that the order in this list must
     // be identical with the order of the tasks in the task list below.
-    typedef enum enum_task_id
+    enum class task_id_type
     {
-      // TBD: Use a scoped enum class.
       task_id_app_led,
       task_id_app_benchmark,
       task_id_sys_mon,
       task_id_end
-    }
-    task_id_type;
+    };
 
     // Configure the operating system types.
     using function_type = void(*)();
@@ -64,7 +62,7 @@
   //  4201, 4409, 4637, 4831, 5039, 5279, 5483, 5693, 5881, 6133, 6337,
   //  6571, 6793, 6997, 7237, 7499, 7687, 7919
 
-  #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
+  #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_type::task_id_end)
 
   #define OS_TASK_LIST                                                                            \
   {                                                                                               \

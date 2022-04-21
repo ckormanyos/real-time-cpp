@@ -78,7 +78,7 @@ auto os::set_event(const task_id_type task_id, const event_type& event_to_set) -
 {
   bool result_set_is_ok { };
 
-  if(task_id < task_id_end)
+  if(task_id < task_id_type::task_id_end)
   {
     // Get the iterator of the control block corresponding to
     // the task id that has been supplied to this subroutine.
