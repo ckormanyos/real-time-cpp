@@ -14,5 +14,5 @@ auto mcal::wdg::init(const config_type*) -> void // NOLINT(readability-named-par
 
 auto mcal::wdg::secure::trigger() -> void
 {
-  mcal::wdg::watchdog::the_watchdog.reset_watchdog_timer();
+  mcal::wdg::watchdog::the_watchdog().reset_watchdog_timer();
 }

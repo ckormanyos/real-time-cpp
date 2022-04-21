@@ -5,36 +5,46 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <atomic>
 #include <chrono>
 #include <iostream>
+
 #include <mcal_wdg_watchdog.h>
 
-const mcal::wdg::watchdog::timer_type::tick_type mcal::wdg::watchdog::my_period(timer_type::seconds(2U));
+namespace local
+{
+  auto timer_lock() noexcept -> std::atomic_flag&
+  {
+    static std::atomic_flag  my_lock = ATOMIC_FLAG_INIT;
 
-mcal::wdg::watchdog mcal::wdg::watchdog::the_watchdog(watchdog::the_watchdog_thread_function);
+    return my_lock;
+  }
+}
+
+mcal::wdg::watchdog& mcal::wdg::watchdog::the_watchdog()
+{
+  static mcal::wdg::watchdog wd(the_watchdog_thread_function);
+
+  return wd;
+}
 
 auto mcal::wdg::watchdog::get_watchdog_timeout() -> bool
 {
-  // TBD: Consider using C++11/C++20 atomics for this code area.
-  // See Synopsis Coverity: https://scan9.scan.coverity.com/reports.htm#v48132/p14235/fileInstanceId=95338277&defectInstanceId=8753985&mergedDefectId=254442
-  my_mutex.lock();
+  while(local::timer_lock().test_and_set()) { ; }
   const auto timeout_result = my_timer.timeout();
-  my_mutex.unlock();
+  local::timer_lock().clear();
 
   return timeout_result;
 }
 
 auto mcal::wdg::watchdog::reset_watchdog_timer() -> void
 {
-  // TBD: Consider using C++11/C++20 atomics for this code area.
-  // See Synopsis Coverity: https://scan9.scan.coverity.com/reports.htm#v48132/p14235/fileInstanceId=95338277&defectInstanceId=8753986&mergedDefectId=254441
-  my_mutex.lock();
+  while(local::timer_lock().test_and_set()) { ; }
   my_timer.start_relative(mcal::wdg::watchdog::my_period);
-  my_mutex.unlock();
+  local::timer_lock().clear();
 }
 
-MCAL_WDG_NORETURN
-auto mcal::wdg::watchdog::the_watchdog_thread_function() -> void
+MCAL_WDG_NORETURN auto mcal::wdg::watchdog::the_watchdog_thread_function() -> void
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(10U));
 
@@ -50,7 +60,7 @@ auto mcal::wdg::watchdog::the_watchdog_thread_function() -> void
     }
     else
     {
-      if(watchdog::the_watchdog.get_watchdog_timeout())
+      if(watchdog::the_watchdog().get_watchdog_timeout())
       {
         timeout_has_occurred = true;
       }
