@@ -233,13 +233,11 @@
   {
     bool left_and_right_are_equal = false;
 
-    const bool sizes_are_equal = (lhs.size() == rhs.size());
-
-    if(sizes_are_equal)
+    if(lhs.size() == rhs.size())
     {
       using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
-      const bool size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
+      const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
 
       left_and_right_are_equal =
         (size_of_left_is_zero || std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin()));
@@ -254,13 +252,13 @@
   {
     using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
-    const bool size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
+    const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
 
     bool b_result { };
 
     if(size_of_left_is_zero)
     {
-      const bool size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
+      const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
 
       b_result = (!size_of_right_is_zero);
     }
@@ -268,7 +266,7 @@
     {
       if(size_of_left_is_zero)
       {
-        const bool size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
+        const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
 
         b_result = (!size_of_right_is_zero);
       }
@@ -323,4 +321,4 @@
 
   } // namespace util
 
-#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H_
+#endif // UTIL_DYNAMIC_ARRAY_2012_05_16_H

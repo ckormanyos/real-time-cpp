@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -314,8 +314,8 @@
     int         isfinitel(long double);
     int         ilogbf   (float);
     int         ilogbl   (long double);
-    bool        isnanf   (float);
-    bool        isnanl   (long double);
+    int         isnanf   (float);
+    int         isnanl   (long double);
     float       fabsf    (float x);
     long double fabsl    (long double x);
     float       fmodf    (float x, float y);
@@ -382,9 +382,9 @@
   extern "C++"
   {
   #endif
-    inline bool          isfinite(float x)                       { return ::isfinitef(x) == 1; }
-    inline bool          isfinite(double x)                      { return ::isfinite (x) == 1; }
-    inline bool          isfinite(long double x)                 { return ::isfinitel(x) == 1; }
+    inline bool          isfinite(float x)                       { return (::isfinitef(x) == 1); }
+    inline bool          isfinite(double x)                      { return (::isfinite (x) == 1); }
+    inline bool          isfinite(long double x)                 { return (::isfinitel(x) == 1); }
     inline int           ilogb   (float x)                       { return ::ilogbf(x); }
     inline int           ilogb   (double x)                      { return ::ilogb (x); }
     inline int           ilogb   (long double x)                 { return ::ilogbl(x); }
