@@ -43,6 +43,23 @@ $(PATH_OBJ)/%.o : %.cpp
 
 
 # ------------------------------------------------------------------------------
+# Rule to compile C++ source file (*.cc) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+$(PATH_OBJ)/%.o : %.cc
+	@$(ECHO) +++ compile: $< to $@
+  # Compile the source file,
+  # ...and reformat (using sed) any possible error/warning messages
+  #    for the VisualStudio(R) output window,
+  # ...and create an assembly listing using objdump,
+  # ...and generate a dependency file (using the -MM flag),
+  # ...and be sure to include the path in the dependency file.
+	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
+
+
+# ------------------------------------------------------------------------------
 # Rule to compile C source file (*.c) to object file (*.o).
 # ------------------------------------------------------------------------------
 

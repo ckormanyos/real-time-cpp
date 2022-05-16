@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 1999 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
@@ -533,12 +533,76 @@
       }
       else if(static_cast<std::int_fast8_t>(cmp_result_a1a0 * cmp_result_b0b1) == static_cast<std::int_fast8_t>(-1))
       {
-        const bool has_borrow = detail::eval_subtract_n(r1, r1, t2, static_cast<std::int32_t>(n));
+        const auto has_borrow = detail::eval_subtract_n(r1, r1, t2, static_cast<std::int32_t>(n));
 
         eval_multiply_kara_propagate_borrow(r0, nh, has_borrow);
       }
     }
   }
+
+  #if 0
+  template<typename InputLimbIteratorType,
+           typename OutputLimbIteratorType,
+           typename TempLimbIteratorType>
+  auto eval_multiply_toom3_n_by_n_to_2n(      OutputLimbIteratorType r, // NOLINT(misc-no-recursion)
+                                              InputLimbIteratorType  a,
+                                              InputLimbIteratorType  b,
+                                        const std::uint_fast32_t     n,
+                                              TempLimbIteratorType   t) -> void
+  {
+    // TBD: Implement Toom-Cook 3-way multiplication.
+    // See: https://github.com/ckormanyos/wide-decimal/issues/24
+
+    // See also: http://www.bodrato.it/toom-cook/
+
+    // (C) 2007-2011 Marco Bodrato <http://marco.bodrato.it/>
+    // This code is released under GNU-GPL 3.0+ licence.
+
+    // U = U2*x^2 + U1*x*y + U0*y^2
+    // V = V2*x^2 + V1*x*y + V0*y^2
+
+    // P(x,y)[3]: P0=(0,1); P1=(-2,1); P2=(1,1); P3=(-1,1); P4=(1,0)
+    // Evaluation[1]: 5*2 add/sub, 2 shift; 5mul (n)
+    // W3 = U0 + U2         ; W2 = V0 + V2
+    // W0 = W3 - U1         ; W4 = W2 - V1
+    // W3 = W3 + U1         ; W2 = W2 + V1
+
+    // W1 = W3 * W2         ; W2 = W0 * W4
+
+    // W0 =(W0 + U2)<<1 - U0; W4 =(W4 + V2)<<1 - V0
+
+    // W3 = W0 * W4
+    // W0 = U0 * V0         ; W4 = U2 * V2
+    // Interpolation[2]: 8 add/sub, 3 shift, 1 Sdiv (2n)
+    // W3 =(W3 - W1)/3
+    // W1 =(W1 - W2)>>1
+    // W2 = W2 - W0
+    // W3 =(W2 - W3)>>1 + W4<<1
+    // W2 = W2 + W1
+    // Early recomposition[3]:
+    // W3 = W4*x + W3*y
+    // W1 = W2*x + W1*y
+    // W1 = W1 - W3
+    // Final recomposition:
+    // W  = W3*x^3+ W1*x*y^2 + W0*y^4
+    // W == U*V
+
+    // References: http://bodrato.it/papers/#Toom-Cook
+    // [1] Marco BODRATO, "Towards Optimal Toom-Cook Multiplication
+    // for Univariate and Multivariate Polynomials in Characteristic
+    // 2 and 0"; "WAIFI'07 proceedings" (C.Carlet and B.Sunar, eds.)
+    // LNCS#4547, Springer, Madrid, Spain, June 2007, pp. 116-133.
+
+    // [2] M. BODRATO, A. ZANONI, "Integer and Polynomial
+    // Multiplication: Towards Optimal Toom-Cook Matrices";
+    // "Proceedings of the ISSAC 2007 conference", pp. 17-24
+    // ACM press, Waterloo, Ontario, Canada, July 29-August 1, 2007
+
+    // [3] Marco BODRATO, "High degree Toom'n'half for balanced and
+    // unbalanced multiplication"; "Proceedings of the 20th IEEE symposium
+    // on Computer Arithmetic", pp 15-22, Tuebingen, Germany, 2011
+  }
+  #endif
 
   template<typename InputLimbIteratorType,
            typename OutputLimbIteratorType,
