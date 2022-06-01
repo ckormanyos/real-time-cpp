@@ -1,4 +1,4 @@
-﻿@rem
+@rem
 @rem  Copyright Christopher Kormanyos 2007 - 2022.
 @rem  Distributed under the Boost Software License,
 @rem  Version 1.0. (See accompanying file LICENSE_1_0.txt

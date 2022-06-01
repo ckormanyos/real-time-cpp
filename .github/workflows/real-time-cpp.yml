@@ -632,7 +632,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [ g++, clang++ ]
-        standard: [ c++11, c++14, c++17, c++2a ]
+        standard: [ c++14, c++17, c++2a ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -662,7 +662,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [ g++-8, g++-9, clang++-8, clang++-9 ]
-        standard: [ c++11, c++14, c++17 ]
+        standard: [ c++14, c++17 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -692,7 +692,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [ g++-10, clang++-10 ]
-        standard: [ c++11, c++14, c++17, c++20 ]
+        standard: [ c++14, c++17, c++20 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -719,7 +719,7 @@ jobs:
       fail-fast: false
       matrix:
         compiler: [ g++, clang++ ]
-        standard: [ c++11, c++14, c++17, c++2a ]
+        standard: [ c++14, c++17, c++2a ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -746,7 +746,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++11, c++14 ]
+        standard: [ c++14 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -764,7 +764,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++11, c++14, c++17, c++2a ]
+        standard: [ c++14, c++17, c++2a ]
     steps:
       - uses: actions/checkout@v2
         with:
