@@ -1,4 +1,4 @@
-
+﻿
 /*
  Copyright Michael Schnerr 2011 - 2014.
  Copyright Christopher Kormanyos 2007 - 2022.
@@ -8,8 +8,6 @@
 */
 
 /* Linker script for Bare-Metal BeagleBone(R) AM335x ARM(R) A8 MCU */
-
-ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
 

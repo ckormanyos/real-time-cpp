@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -57,9 +57,9 @@ OS_NORETURN auto os::start_os() -> void
     const auto it_ready_task = // NOLINT(llvm-qualified-auto,readability-qualified-auto)
       std::find_if(local::os_task_list.begin(),
                    local::os_task_list.end(),
-                   [&timepoint_of_ckeck_ready](task_control_block& tcb) -> bool
+                   [&timepoint_of_ckeck_ready](task_control_block& tcb) // NOLINT(modernize-use-trailing-return-type)
                    {
-                     const bool task_is_ready = tcb.execute(timepoint_of_ckeck_ready);
+                     const auto task_is_ready = tcb.execute(timepoint_of_ckeck_ready);
 
                      ++local::os_task_index;
 
@@ -98,7 +98,7 @@ auto os::set_event(const task_id_type task_id, const event_type& event_to_set) -
   return result_set_is_ok;
 }
 
-void os::get_event(event_type& event_to_get)
+auto os::get_event(event_type& event_to_get) -> void
 {
   // Get the iterator of the control block of the running task.
   const auto it_running_task = (local::os_task_list.cbegin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
@@ -120,7 +120,7 @@ void os::get_event(event_type& event_to_get)
   }
 }
 
-void os::clear_event(const event_type& event_to_clear)
+auto os::clear_event(const event_type& event_to_clear) -> void
 {
   // Get the iterator of the control block of the running task.
   const auto it_running_task = (local::os_task_list.begin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)

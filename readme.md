@@ -443,11 +443,11 @@ when selecting the Microsoft(R) VisualStudio(R) project
 
 A GNU/GCC port (or other compiler)
 with a high level of C++11 awareness and adherence
-such as GCC 5 through 11 (higher generally being more advantageous)
-or MSVC 14 or higher is required for building the reference application
+such as GCC 5 through 12 (higher generally being more advantageous)
+or MSVC 14.2 or higher is required for building the reference application
 (and the examples and code snippets).
 
 Some of the code snippets demonstrate language elements not only from C++11,
-but also from C++14, 17, 20. A compiler with C++17 support (such as GCC 6, 7, or 8)
-or even C++20 support (such as GCC 10 or 11, clang 12 or MSVC 14.2) can, therefore,
+but also from C++14, 17, 20, 23. A compiler with C++17 support (such as GCC 6, 7, or 8)
+or even C++20, 23 support (such as GCC 10, 11, 12, or clang 12, 14 or MSVC 14.2, 14.3) can, therefore,
 be beneficial for success with *all* of the code snippets.

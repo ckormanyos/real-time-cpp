@@ -28,7 +28,7 @@ TGT_CFLAGS    = -std=c99                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++11                                     \
+TGT_CXXFLAGS  = -std=c++14                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL

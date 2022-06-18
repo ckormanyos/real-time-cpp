@@ -5,9 +5,9 @@
   - The benchmarks provide code that exercises microcontroller performance.
   - Various efficiency aspects are emphasized such as integral and floating-point calculations, looping, branching, etc.
   - Each benchmark is implemented as a single callable function to be called from a scheduled task in the multitasking scheduler configuration.
-  - Every benchmark file can also be compiled separately as a standalone C++11 project.
+  - Every benchmark file can also be compiled separately as a standalone C++14 project.
   - A benchmark digital I/O pin is toggled hi/lo at begin/end of the benchmark run providing for oscilloscope real-time measurement.
-  - The benchmarks provide scalable, portable C++11 means for identifying the performance class of the microcontroller.
+  - The benchmarks provide scalable, portable C++14 means for identifying the performance class of the microcontroller.
 
 ## Benchmark details
 
