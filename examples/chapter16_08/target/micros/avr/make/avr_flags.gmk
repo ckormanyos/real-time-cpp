@@ -1,4 +1,4 @@
-#
+﻿#
 #  Copyright Christopher Kormanyos 2007 - 2022.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -23,7 +23,7 @@ TGT_CFLAGS    = -Os                                            \
                 -finline-limit=64                              \
                 -DWIDE_INTEGER_NAMESPACE=ckormanyos
 
-TGT_CPPFLAGS  = -std=c++11
+TGT_CPPFLAGS  = -std=c++14
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
                 -I$(PATH_APP)/util/STL

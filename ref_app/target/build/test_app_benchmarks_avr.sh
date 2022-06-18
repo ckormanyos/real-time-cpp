@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 #
 #  Copyright Christopher Kormanyos 2021.
 #  Distributed under the Boost Software License,
@@ -12,7 +12,7 @@
 if [[ "$1" != "" ]]; then
     STD="$1"
 else
-    STD=c++11
+    STD=c++14
 fi
 
 wflags="-Wextra -pedantic -Wmain -Wundef -Wsign-conversion -Wunused-parameter -Wuninitialized -Wmissing-declarations -Wshadow -Wunreachable-code -Wswitch-default -Wswitch-enum -Wcast-align -Wmissing-include-dirs -Winit-self -Wfloat-equal -Wdouble-promotion"

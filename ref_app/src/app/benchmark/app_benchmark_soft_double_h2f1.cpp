@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -226,4 +226,4 @@ int main()
 
 #endif
 
-#endif // APP_BENCHMARK_TYPE_CRC
+#endif // APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1

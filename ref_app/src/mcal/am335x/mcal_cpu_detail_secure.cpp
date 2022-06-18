@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2020.
+//  Copyright Christopher Kormanyos 2014 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -56,7 +56,14 @@ void mcal::cpu::detail::secure::fill_tlb_entries()
                   pointer_to_tlb_base + static_cast<std::size_t>(4096U),
                   [&tlb_index](volatile std::uint32_t& tlb_entry)
                   {
-                    tlb_entry = static_cast<std::uint32_t>(UINT32_C(0x00000C02) | static_cast<std::uint32_t>(tlb_index << 20));
+                    const auto tlb_mem_value =
+                      static_cast<std::uint32_t>
+                      (
+                          static_cast<std::uint32_t>(UINT32_C(0x00000C02))
+                        | static_cast<std::uint32_t>(static_cast<std::uint32_t>(tlb_index) << 20U)
+                      );
+
+                    tlb_entry = tlb_mem_value;
 
                     ++tlb_index;
                   });
@@ -70,7 +77,18 @@ void mcal::cpu::detail::secure::fill_tlb_entries()
   // and the stack in the bare-metal BeagleBone application.
   // This is the 1MB memory block that resides at 0x40200000.
 
-  *(pointer_to_tlb_base + static_cast<std::size_t>(0x402U)) = static_cast<std::uint32_t>(UINT32_C(0x00004C06) | static_cast<std::uint32_t>(UINT32_C(0x402) << 20));
+  auto p_mem =
+    static_cast<volatile std::uint32_t*>
+    (
+      pointer_to_tlb_base + static_cast<std::size_t>(0x402U)
+    );
+
+  *p_mem =
+    static_cast<std::uint32_t>
+    (
+        static_cast<std::uint32_t>(UINT32_C(0x00004C06))
+      | static_cast<std::uint32_t>(UINT32_C(0x402) << 20)
+    );
 
   // Insert an instruction barrier.
   asm volatile("dsb");
