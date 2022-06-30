@@ -8,6 +8,7 @@
 #ifndef UTIL_BASELEXICAL_CAST_2020_06_28_H // NOLINT(llvm-header-guard)
   #define UTIL_BASELEXICAL_CAST_2020_06_28_H
 
+  #include <algorithm>
   #include <cstddef>
   #include <cstdint>
   #include <iterator>
@@ -85,33 +86,53 @@
            typename OutputIterator,
            const std::uint_fast8_t BaseRepresentation = 10U, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
            const bool UpperCase = true>
-  auto baselexical_cast(const UnsignedIntegerType& u, OutputIterator out_first) -> OutputIterator
+  auto baselexical_cast(const UnsignedIntegerType& u, OutputIterator out) -> OutputIterator
   {
     using unsigned_integer_type = UnsignedIntegerType;
     using output_value_type     = typename std::iterator_traits<OutputIterator>::value_type;
 
-    unsigned_integer_type x(u);
-
-    auto index = static_cast<std::ptrdiff_t>(0);
-
-    do
+    if(u == static_cast<unsigned_integer_type>(UINT8_C(0)))
     {
-      for(auto j = index; j >= static_cast<std::ptrdiff_t>(0); --j)
+      *out++ =
+        static_cast<output_value_type>
+        (
+          baselexical_cast_helper<OutputIterator, UpperCase, BaseRepresentation>::extract(static_cast<output_value_type>(UINT8_C(0)))
+        );
+    }
+    else
+    {
+      unsigned_integer_type x(u);
+
+      auto out_first = out;
+      auto index     = static_cast<std::ptrdiff_t>(0);
+
+      while(x != static_cast<unsigned_integer_type>(0U))
       {
-        *(out_first + static_cast<std::ptrdiff_t>(j + 1)) = *(out_first + j);
+        ++index;
+
+        const auto c =
+          static_cast<output_value_type>
+          (
+            x % static_cast<unsigned_integer_type>(BaseRepresentation)
+          );
+
+        *out++ =
+          static_cast<output_value_type>
+          (
+            baselexical_cast_helper<OutputIterator, UpperCase, BaseRepresentation>::extract(c)
+          );
+
+        x =
+          static_cast<unsigned_integer_type>
+          (
+            x / static_cast<unsigned_integer_type>(BaseRepresentation)
+          );
       }
 
-      ++index;
-
-      auto c = static_cast<output_value_type>(x % static_cast<unsigned_integer_type>(BaseRepresentation));
-
-      x = static_cast<unsigned_integer_type>(x / static_cast<unsigned_integer_type>(BaseRepresentation));
-
-      *out_first = baselexical_cast_helper<OutputIterator, UpperCase, BaseRepresentation>::extract(c);
+      std::reverse(out_first, out);
     }
-    while(x != static_cast<unsigned_integer_type>(0U));
 
-    return static_cast<OutputIterator>(out_first + index);
+    return out;
   }
 
   } // namespace util

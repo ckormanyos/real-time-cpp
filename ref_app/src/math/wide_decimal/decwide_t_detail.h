@@ -94,6 +94,9 @@
 
   struct a029750
   {
+    #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
+    #else
+    // LCOV_EXCL_START
     static constexpr auto a029750_as_constexpr(std::uint32_t value) noexcept -> std::uint32_t // NOLINT(readability-function-cognitive-complexity)
     {
       // Sloane's A029750 List of numbers of the form 2^k times 1, 3, 5 or 7.
@@ -115,6 +118,8 @@
              ((value <= UINT32_C( 524288)) ? UINT32_C( 524288) : ((value <=  UINT32_C(  655360)) ?  UINT32_C(  655360) : ((value <= UINT32_C(  786432)) ? UINT32_C(  786432) : ((value <= UINT32_C(  917504)) ? UINT32_C(  917504) :
              ((value <= UINT32_C(1048576)) ? UINT32_C(1048576) : ((value <=  UINT32_C( 1310720)) ?  UINT32_C( 1310720) : ((value <= UINT32_C( 1572864)) ? UINT32_C( 1572864) : ((value <= UINT32_C( 1835008)) ? UINT32_C( 1835008) : UINT32_C(2097152)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
     }
+    // LCOV_EXCL_STOP
+    #endif
 
     static auto a029750_as_runtime_value(std::uint32_t value) noexcept -> std::uint32_t
     {
@@ -158,43 +163,24 @@
       return ((value <= UINT32_C(        8)) ? UINT32_C(        8) : ((value <=  UINT32_C(       16)) ?  UINT32_C(       16) : ((value <= UINT32_C(       32)) ? UINT32_C(       32) : ((value <= UINT32_C(        64)) ? UINT32_C(        64) :
              ((value <= UINT32_C(      128)) ? UINT32_C(      128) : ((value <=  UINT32_C(      256)) ?  UINT32_C(      256) : ((value <= UINT32_C(      512)) ? UINT32_C(      512) : ((value <= UINT32_C(      1024)) ? UINT32_C(      1024) :
              ((value <= UINT32_C(     2048)) ? UINT32_C(     2048) : ((value <=  UINT32_C(     4096)) ?  UINT32_C(     4096) : ((value <= UINT32_C(     8192)) ? UINT32_C(     8192) : ((value <= UINT32_C(     16384)) ? UINT32_C(     16384) :
+             // LCOV_EXCL_START
              ((value <= UINT32_C(    32768)) ? UINT32_C(    32768) : ((value <=  UINT32_C(    65536)) ?  UINT32_C(    65536) : ((value <= UINT32_C(   131072)) ? UINT32_C(   131072) : ((value <= UINT32_C(    262144)) ? UINT32_C(    262144) :
              ((value <= UINT32_C(   524288)) ? UINT32_C(   524288) : ((value <=  UINT32_C(  1048576)) ?  UINT32_C(  1048576) : ((value <= UINT32_C(  2097152)) ? UINT32_C(  2097152) : ((value <= UINT32_C(   4194304)) ? UINT32_C(   4194304) :
              ((value <= UINT32_C(  8388608)) ? UINT32_C(  8388608) : ((value <=  UINT32_C( 16777216)) ?  UINT32_C( 16777216) : ((value <= UINT32_C( 33554432)) ? UINT32_C( 33554432) : ((value <= UINT32_C(  67108864)) ? UINT32_C(  67108864) :
              ((value <= UINT32_C(134217728)) ? UINT32_C(134217728) : ((value <=  UINT32_C(268435456)) ?  UINT32_C(268435456) : ((value <= UINT32_C(536870912)) ? UINT32_C(536870912) : ((value <= UINT32_C(1073741824)) ? UINT32_C(1073741824) : UINT32_C(2147483648)))))))))))))))))))))))))))));
-    }
-
-    static auto a000079_as_runtime_value(const std::uint32_t value) noexcept -> std::uint32_t
-    {
-      using local_array_type = std::array<std::uint32_t, 29U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-
-      // Sloane's A000079 List of numbers of powers of 2.
-      // Table[2^n, {n, 0, 31, 1}]
-      constexpr local_array_type a000079_data =
-      {{
-        UINT32_C(         8), UINT32_C(       16), UINT32_C(       32), UINT32_C(        64),
-        UINT32_C(       128), UINT32_C(      256), UINT32_C(      512), UINT32_C(      1024),
-        UINT32_C(      2048), UINT32_C(     4096), UINT32_C(     8192), UINT32_C(     16384),
-        UINT32_C(     32768), UINT32_C(    65536), UINT32_C(   131072), UINT32_C(    262144),
-        UINT32_C(    524288), UINT32_C(  1048576), UINT32_C(  2097152), UINT32_C(   4194304),
-        UINT32_C(   8388608), UINT32_C( 16777216), UINT32_C( 33554432), UINT32_C(  67108864),
-        UINT32_C( 134217728), UINT32_C(268435456), UINT32_C(536870912), UINT32_C(1073741824),
-        UINT32_C(2147483648)
-      }};
-
-      const auto it = std::lower_bound(a000079_data.cbegin(), a000079_data.cend(), value); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
-
-      return ((it != a000079_data.cend()) ? *it : a000079_data.back());
+             // LCOV_EXCL_STOP
     }
   };
 
-  constexpr inline auto pow10_maker(std::uint32_t n) noexcept -> std::uint32_t // NOLINT(misc-no-recursion)
+  // LCOV_EXCL_START
+  constexpr auto pow10_maker(std::uint32_t n) noexcept -> std::uint32_t // NOLINT(misc-no-recursion)
   {
     // Make the constant power of 10^n.
     return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10_maker(n - UINT32_C(1)) * UINT32_C(10));
   }
+  // LCOV_EXCL_STOP
 
-  inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
+  static inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
   {
     using local_array_type = std::array<std::uint32_t, 10U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
@@ -214,7 +200,7 @@
 
     return ((n < static_cast<std::uint32_t>(std::tuple_size<local_array_type>::value))
              ? local_p10_table[typename local_array_type::size_type(n)]
-             : local_p10_table.back());
+             : local_p10_table.back()); // LCOV_EXCL_LINE
   }
 
   template<typename LimbType>
@@ -339,7 +325,7 @@
 
     static constexpr auto static_size() -> size_type { return MySize; }
 
-    constexpr fixed_static_array() = default;
+    constexpr fixed_static_array() = default; // LCOV_EXCL_LINE
 
     explicit fixed_static_array(const size_type   s,
                                                        const value_type& v = value_type())
@@ -382,7 +368,7 @@
       }
     }
 
-    ~fixed_static_array() = default;
+    ~fixed_static_array() = default; // LCOV_EXCL_LINE
 
     auto operator=(const fixed_static_array& other_array) -> fixed_static_array& = default;
     auto operator=(fixed_static_array&& other_array) noexcept -> fixed_static_array& = default;
@@ -418,7 +404,7 @@
       : my_neg  (other.my_neg),
         my_value(other.my_value) { }
 
-    ~unsigned_wrap() = default;
+    ~unsigned_wrap() = default; // LCOV_EXCL_LINE
 
     auto operator=(const unsigned_wrap& other) -> unsigned_wrap&
     {
