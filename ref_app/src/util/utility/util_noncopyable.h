@@ -16,8 +16,8 @@
   class noncopyable
   {
   protected:
-    noncopyable() = default;
-    ~noncopyable() = default;
+    noncopyable() = default;  // LCOV_EXCL_LINE
+    ~noncopyable() = default; // LCOV_EXCL_LINE
 
   private:
     // Emphasize: The following members are private.

@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2013 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
@@ -26,6 +26,7 @@
   namespace math { namespace wide_decimal { namespace detail { namespace fft { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
+  // LCOV_EXCL_START
   template<typename float_type>
   constexpr auto template_one() -> float_type { return static_cast<float_type>(1); }
 
@@ -61,6 +62,7 @@
 
   template<>
   constexpr auto template_fast_div_by_two<long double>(long double a) -> long double { return static_cast<long double>(a / 2); }
+  // LCOV_EXCL_STOP
 
   template<typename float_type>
   constexpr auto template_sin_order_1(std::uint32_t num_points) -> float_type // NOLINT(readability-function-cognitive-complexity)
@@ -86,6 +88,7 @@
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 17U)) ? static_cast<float_type>(2.3968449808418218729186577165021820094761E-05L) : // Pi / 2^17 : as uint64_t --> UINT64_C(0x3EF921FB5439D73A) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 18U)) ? static_cast<float_type>(1.1984224905069706421521561596988984804732E-05L) : // Pi / 2^18 : as uint64_t --> UINT64_C(0x3EE921FB544197A1) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 19U)) ? static_cast<float_type>(5.9921124526424278428797118088908617299872E-06L) : // Pi / 2^19 : as uint64_t --> UINT64_C(0x3ED921FB544387BA) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      // LCOV_EXCL_START
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 20U)) ? static_cast<float_type>(2.9960562263346607504548128083570598118252E-06L) : // Pi / 2^20 : as uint64_t --> UINT64_C(0x3EC921FB544403C1) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 21U)) ? static_cast<float_type>(1.4980281131690112288542788461553611206918E-06L) : // Pi / 2^21 : as uint64_t --> UINT64_C(0x3EB921FB544422C2) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 22U)) ? static_cast<float_type>(7.4901405658471572113049856673065563715596E-07L) : // Pi / 2^22 : as uint64_t --> UINT64_C(0x3EA921FB54442A83) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -98,6 +101,7 @@
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 29U)) ? static_cast<float_type>(5.8516723170686386908097901008341396943900E-09L) : // Pi / 2^29 : as uint64_t --> UINT64_C(0x3E3921FB54442D18) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 30U)) ? static_cast<float_type>(2.9258361585343193579282304690689559020176E-09L) : // Pi / 2^30 : as uint64_t --> UINT64_C(0x3E2921FB54442D18) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 31U)) ? static_cast<float_type>(1.4629180792671596805295321618659637103743E-09L) : // Pi / 2^31 : as uint64_t --> UINT64_C(0x3E1921FB54442D18) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      // LCOV_EXCL_STOP
                                                                        static_cast<float_type>(0.0L)                                              // Pi        : as uint64_t --> UINT64_C(0x0000000000000000) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       ;
   }

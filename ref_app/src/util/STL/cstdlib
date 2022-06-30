@@ -31,9 +31,12 @@
 
   extern "C"
   {
-    void abort (void);
-    int  atexit(void(*)(void)) noexcept;
-    void exit  (int);
+    void        abort (void);
+    int         atexit(void(*)(void)) noexcept;
+    void        exit  (int);
+    float       strtof(const char* str, char** str_end);
+    double      strtod(const char* str, char** str_end);
+    long double strtold(const char* str, char** str_end);
   }
 
   namespace std
@@ -47,6 +50,10 @@
     using ::abort;
     using ::atexit;
     using ::exit;
+
+    using ::strtof;
+    using ::strtod;
+    using ::strtold;
 
     struct   div_t { int       quot; int       rem; };
     struct  ldiv_t { long      quot; long      rem; };
