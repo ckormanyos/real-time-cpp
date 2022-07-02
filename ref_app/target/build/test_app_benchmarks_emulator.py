@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+﻿#!/usr/bin/env python2
 import gdb
 import time
 import logging
@@ -42,8 +42,10 @@ logging.info('------- Running GDB Test -----')
 load_elf()
 
 #Dummy sequence
-bp1 = gdb.Breakpoint('main')
+bp1 = gdb.Breakpoint('app_benchmark_crc_get_standalone_result')
 run()
+app_benchmark_crc_standalone_value = gdb.parse_and_eval("app_benchmark_crc_standalone_value")
 time.sleep(0.5)
 bp1.delete()
+print(app_benchmark_crc_standalone_value.format_string('x'))
 terminate()
