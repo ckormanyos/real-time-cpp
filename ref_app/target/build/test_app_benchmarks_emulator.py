@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+﻿#!/usr/bin/env python2
 import gdb
 import time
 import logging
@@ -20,7 +20,7 @@ def run():
 def next():
     execute('next')
 
-def terminate():
+def gdbquit():
     execute('quit')
 
 
@@ -41,9 +41,13 @@ logging.info('------- Running GDB Test -----')
 #Load object data base
 load_elf()
 
-#Dummy sequence
-bp1 = gdb.Breakpoint('main')
+#See also https://embeddedartistry.com/blog/2020/11/09/metal-gdb-controlling-gdb-through-python-scripts-with-the-gdb-python-api/
+
+#Run the benchmark and assess the result
+bp1 = gdb.Breakpoint('app_benchmark_crc_get_standalone_result')
 run()
+my_value = gdb.parse_and_eval("app_benchmark_crc_standalone_value")
+print(str(my_value))
 time.sleep(0.5)
 bp1.delete()
-terminate()
+gdbquit()

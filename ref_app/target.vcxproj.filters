@@ -441,6 +441,9 @@
     <None Include="target\micros\v850es_fx2\startup\errno.s">
       <Filter>micros\v850es_fx2\startup</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks_emulator.py">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
