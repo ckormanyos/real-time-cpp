@@ -44,5 +44,7 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
+          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py > arm-none-eabi-gdb-py.txt
+          cat arm-none-eabi-gdb-py.txt
+          sed -n l arm-none-eabi-gdb-py.txt | grep 4027435774
         working-directory: ./ref_app/
