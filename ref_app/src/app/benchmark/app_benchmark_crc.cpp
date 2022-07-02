@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -63,7 +63,7 @@ extern "C"
   auto app_benchmark_crc_get_standalone_result(void) -> bool
   {
     volatile auto result_is_ok =
-      (app_benchmark_crc_standalone_value = UINT32_C(0xF00DCAFE));
+      (app_benchmark_crc_standalone_value == UINT32_C(0xF00DCAFE));
 
     return result_is_ok;
   }
