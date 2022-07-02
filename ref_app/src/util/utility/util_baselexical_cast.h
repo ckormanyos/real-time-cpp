@@ -93,7 +93,7 @@
 
     if(u == static_cast<unsigned_integer_type>(UINT8_C(0)))
     {
-      *out++ =
+      *out =
         static_cast<output_value_type>
         (
           baselexical_cast_helper<OutputIterator, UpperCase, BaseRepresentation>::extract(static_cast<output_value_type>(UINT8_C(0)))
@@ -104,19 +104,16 @@
       unsigned_integer_type x(u);
 
       auto out_first = out;
-      auto index     = static_cast<std::ptrdiff_t>(0);
 
       while(x != static_cast<unsigned_integer_type>(0U))
       {
-        ++index;
-
         const auto c =
           static_cast<output_value_type>
           (
             x % static_cast<unsigned_integer_type>(BaseRepresentation)
           );
 
-        *out++ =
+        *out =
           static_cast<output_value_type>
           (
             baselexical_cast_helper<OutputIterator, UpperCase, BaseRepresentation>::extract(c)
@@ -127,12 +124,17 @@
           (
             x / static_cast<unsigned_integer_type>(BaseRepresentation)
           );
+
+        if(x != static_cast<unsigned_integer_type>(0U))
+        {
+          ++out;
+        }
       }
 
-      std::reverse(out_first, out);
+      std::reverse(out_first, out + static_cast<std::size_t>(UINT8_C(1)));
     }
 
-    return out;
+    return out + static_cast<std::size_t>(UINT8_C(1));
   }
 
   } // namespace util

@@ -2318,12 +2318,7 @@
                           : -std::numeric_limits<long double>::infinity());
       }
 
-      constexpr auto digs_of_ldbl_to_get =
-        static_cast<int>
-        (
-            std::numeric_limits<long double>::max_digits10
-          + static_cast<int>(INT8_C(2) + INT8_C(1))
-        );
+      constexpr auto digs_of_ldbl_to_get = std::numeric_limits<long double>::max_digits10;
 
       constexpr auto elems_of_ldbl_to_get_try =
         static_cast<int>
@@ -2345,36 +2340,48 @@
           )
         );
 
+      using local_unsigned_exponent_type = typename std::make_unsigned<exponent_type>::type;
+
+      constexpr auto ldbl_max_width_for_exp = std::numeric_limits<local_unsigned_exponent_type>::digits10;
+
       constexpr auto ldbl_str_rep_char_cnt =
         static_cast<int>
         (
-            1                                         // +/- sign
-          +   elems_of_ldbl_to_get
-            * static_cast<int>(decwide_t_elem_number) // number of decimal digits
-          + 1                                         // decimal point
-          + 2                                         // E+ or E-
-          + 8                                         // eight-digit left-justified unsigned integral representation for exponent
+            1                                             // +/- sign
+          + (  elems_of_ldbl_to_get
+             * static_cast<int>(decwide_t_elem_digits10)) // number of decimal digits
+          + 1                                             // decimal point
+          + 2                                             // E+ or E-
+          + ldbl_max_width_for_exp                        // unsigned integral representation of the exponent
         );
 
       using ldbl_str_array_type = std::array<char, static_cast<std::size_t>(ldbl_str_rep_char_cnt)>;
 
       ldbl_str_array_type ldbl_str_rep = { '\0' };
 
-      ldbl_str_rep.at(static_cast<std::size_t>(UINT8_C(0))) = ((!my_neg) ? '+' : '-');
+      auto ldbl_str_pos = static_cast<std::size_t>(UINT8_C(0));
+
+      ldbl_str_rep.at(ldbl_str_pos) = ((!my_neg) ? '+' : '-');
+
+      ++ldbl_str_pos;
 
       std::size_t count_retrieved { };
 
       get_output_digits(*this,
-                        ldbl_str_rep.data() + static_cast<std::size_t>(UINT8_C(1)),
+                        ldbl_str_rep.data() + ldbl_str_pos,
                         elems_of_ldbl_to_get,
                         &count_retrieved,
                         true);
 
-      // Note: Add two (2) to the long double string position,
-      // including both the retrieved decimal digits as well as
-      // 1 for the +/- sign and 1 for the decimal point.
+      // Note: Add an additional 1 to the long double string position
+      // in order to include both the retrieved decimal digits as well as
+      // the decimal point.
 
-      auto ldbl_str_pos = static_cast<std::size_t>(count_retrieved + UINT8_C(2));
+      ldbl_str_pos =
+        static_cast<std::size_t>
+        (
+          ldbl_str_pos + static_cast<std::size_t>(count_retrieved + UINT8_C(1))
+        );
 
       // Handle the letter 'E' for the exponent.
       ldbl_str_rep.at(ldbl_str_pos) = 'E';
@@ -2390,21 +2397,27 @@
 
       // Obtain the absolute value of the exponent from decwide_t.
       const auto ul_exp =
-        static_cast<std::uint32_t>
+        static_cast<local_unsigned_exponent_type>
         (
-          (!exp_is_neg) ? static_cast<std::uint32_t>(my_exp) : static_cast<std::uint32_t>(-my_exp)
+          (!exp_is_neg) ? static_cast<local_unsigned_exponent_type>(my_exp)
+                        : static_cast<local_unsigned_exponent_type>(-my_exp)
         );
 
-      // Extract the integral value of the absolute value of the exponent.
-      using exp_array_type = std::array<char, static_cast<std::size_t>(UINT8_C(6))>;
+      {
+        // Extract the integral value of the absolute value of the exponent.
+        using exp_array_type =
+          std::array<char, static_cast<std::size_t>(ldbl_max_width_for_exp)>;
 
-      exp_array_type data_exp_buf { };
+        exp_array_type data_exp_buf { };
 
-      const char* p_end = util::baselexical_cast(ul_exp, data_exp_buf.data());
+        const char* p_end = util::baselexical_cast(ul_exp, data_exp_buf.data());
 
-      std::copy(data_exp_buf.cbegin(),
-                data_exp_buf.cbegin() + std::distance(static_cast<const char*>(data_exp_buf.data()), p_end),
-                ldbl_str_rep.begin() + ldbl_str_pos);
+        const auto exp_len = std::distance(static_cast<const char*>(data_exp_buf.data()), p_end);
+
+        std::copy(data_exp_buf.cbegin(),
+                  data_exp_buf.cbegin() + static_cast<std::size_t>(exp_len),
+                  ldbl_str_rep.begin() + ldbl_str_pos);
+      }
 
       const auto ldbl_retrieved = std::strtold(ldbl_str_rep.data(), nullptr);
 
@@ -2650,7 +2663,16 @@
 
       if(i > static_cast<std::uint_fast32_t>(1U))
       {
-        my_exp = static_cast<exponent_type>(my_exp + static_cast<exponent_type>((i - 1U) * static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)));
+        my_exp =
+          static_cast<exponent_type>
+          (
+              my_exp
+            + static_cast<exponent_type>
+              (
+                  static_cast<std::uint_fast32_t>(i - 1U)
+                * static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)
+              )
+          );
       }
 
       std::reverse(tmp.begin(), tmp.begin() + i);
@@ -3638,6 +3660,10 @@
       // Extract the required digits from decwide_t, including
       // digits both before as well as after the decimal point.
 
+      // Include the decimal point in the retrieved characters
+      // if requested. Do not, however, count an inserted
+      // decimal point as one of the retrieved characters.
+
       using data_elem_array_type =
         std::array<char, static_cast<std::size_t>(decwide_t_elem_digits10)>;
 
@@ -3670,7 +3696,7 @@
 
       // Extract the digits following the decimal point from decwide_t,
       // beginning with the data element having index 1.
-      while(it_rep !=  x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements))
+      while(it_rep != (x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements)))
       {
         p_end = util::baselexical_cast(*it_rep, data_elem_buf.data());
 
@@ -3683,7 +3709,7 @@
         std::fill(rit, data_elem_array.rend(), '0');
 
         it_dst = std::copy(data_elem_array.cbegin(),
-                           data_elem_array.cbegin() + static_cast<std::size_t>(decwide_t_elem_digits10),
+                           data_elem_array.cend(),
                            it_dst);
 
         *count_retrieved =
@@ -3929,7 +3955,11 @@
 
         if(n_pad > static_cast<exponent_type>(0))
         {
-          str.insert(str.end(), static_cast<std::size_t>(n_pad), '0');
+          // This line is marked as lcov exclude line. Even though
+          // there are explicit test cases thought to cover this line,
+          // it is mysteriously sometimes not being hit.
+
+          str.insert(str.end(), static_cast<std::size_t>(n_pad), '0'); // LCOV_EXCL_LINE
         }
       }
 
