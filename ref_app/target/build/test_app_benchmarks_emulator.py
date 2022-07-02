@@ -41,11 +41,13 @@ logging.info('------- Running GDB Test -----')
 #Load object data base
 load_elf()
 
+#See also https://embeddedartistry.com/blog/2020/11/09/metal-gdb-controlling-gdb-through-python-scripts-with-the-gdb-python-api/
+
 #Dummy sequence
 bp1 = gdb.Breakpoint('app_benchmark_crc_get_standalone_result')
 run()
-app_benchmark_crc_standalone_value = gdb.parse_and_eval("app_benchmark_crc_standalone_value")
+print(gdb.parse_and_eval(app_benchmark_crc_standalone_value.what))
 time.sleep(0.5)
+print(gdb.parse_and_eval(app_benchmark_crc_standalone_value.what))
 bp1.delete()
-print(app_benchmark_crc_standalone_value.format_string('x'))
 terminate()
