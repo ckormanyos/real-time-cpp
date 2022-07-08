@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -31,19 +31,17 @@ auto app::benchmark::run_crc() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-constexpr auto app_benchmark_crc_standalone_foodcafe = static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE));
+constexpr auto app_benchmark_standalone_foodcafe = static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE));
 
 extern "C"
 {
-  extern volatile std::uint32_t app_benchmark_crc_standalone_value;
+  extern volatile std::uint32_t app_benchmark_standalone_result;
 
-  auto app_benchmark_crc_run_standalone       (void) -> bool;
-  auto app_benchmark_crc_get_standalone_result(void) -> bool;
+  auto app_benchmark_run_standalone       (void) -> bool;
+  auto app_benchmark_get_standalone_result(void) -> bool;
 
-  auto app_benchmark_crc_run_standalone(void) -> bool
+  auto app_benchmark_run_standalone(void) -> bool
   {
-    // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_crc.cpp -o ./ref_app/bin/app_benchmark_crc.exe
-
     bool result_is_ok = true;
 
     for(unsigned i = 0U; i < 64U; ++i)
@@ -51,19 +49,19 @@ extern "C"
       result_is_ok &= app::benchmark::run_crc();
     }
 
-    app_benchmark_crc_standalone_value =
+    app_benchmark_standalone_result =
       static_cast<std::uint32_t>
       (
-        result_is_ok ? app_benchmark_crc_standalone_foodcafe : UINT32_C(0xFFFFFFFF)
+        result_is_ok ? app_benchmark_standalone_foodcafe : UINT32_C(0xFFFFFFFF)
       );
 
     return result_is_ok;
   }
 
-  auto app_benchmark_crc_get_standalone_result(void) -> bool
+  auto app_benchmark_get_standalone_result(void) -> bool
   {
     volatile auto result_is_ok =
-      (app_benchmark_crc_standalone_value == UINT32_C(0xF00DCAFE));
+      (app_benchmark_standalone_result == UINT32_C(0xF00DCAFE));
 
     return result_is_ok;
   }
@@ -71,21 +69,18 @@ extern "C"
 
 int main()
 {
-  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_crc.cpp -o ./ref_app/bin/app_benchmark_crc.exe
-
   auto result_is_ok = true;
 
-  result_is_ok = (::app_benchmark_crc_run_standalone       () && result_is_ok);
-  result_is_ok = (::app_benchmark_crc_get_standalone_result() && result_is_ok);
+  result_is_ok = (::app_benchmark_run_standalone       () && result_is_ok);
+  result_is_ok = (::app_benchmark_get_standalone_result() && result_is_ok);
 
   return (result_is_ok ? 0 : -1);
 }
 
 extern "C"
 {
-  volatile std::uint32_t app_benchmark_crc_standalone_value;
+  volatile std::uint32_t app_benchmark_standalone_result;
 }
-
-#endif
+#endif // APP_BENCHMARK_STANDALONE_MAIN
 
 #endif // APP_BENCHMARK_TYPE_CRC

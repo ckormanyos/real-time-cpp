@@ -231,7 +231,7 @@
     const auto r_range =
       static_cast<std::size_t>
       (
-        count * static_cast<std::int_fast32_t>(INT8_C(2))
+        static_cast<std::size_t>(count) * static_cast<std::size_t>(UINT8_C(2))
       );
 
     local_reverse_iterator_type ir(r + r_range);
@@ -483,12 +483,12 @@
       TempLimbIteratorType t0 = t + 0U;
       TempLimbIteratorType t1 = t + nh;
       TempLimbIteratorType t2 = t + n;
-      TempLimbIteratorType t4 = t + (n + n);
+      TempLimbIteratorType t4 = t + static_cast<std::size_t>(static_cast<std::size_t>(n) + static_cast<std::size_t>(n));
 
       // Step 1
       eval_multiply_kara_n_by_n_to_2n(r0, a1, b1, nh, t);
       eval_multiply_kara_n_by_n_to_2n(r2, a0, b0, nh, t);
-      std::copy(r0, r0 + (2U * n), t0);
+      std::copy(r0, r0 + static_cast<std::size_t>(static_cast<std::size_t>(n) * static_cast<std::size_t>(UINT8_C(2))), t0);
 
       // Step 2
       local_limb_type carry;
@@ -608,12 +608,12 @@
            typename OutputLimbIteratorType,
            typename FftFloatIteratorType>
   auto mul_loop_fft(      OutputLimbIteratorType r,
-                          InputLimbIteratorType  u, // NOLINT(bugprone-easily-swappable-parameters)
+                          InputLimbIteratorType  u,                       // NOLINT(bugprone-easily-swappable-parameters)
                           InputLimbIteratorType  v,
                           FftFloatIteratorType   af,
                           FftFloatIteratorType   bf,
-                    const std::int32_t           prec_elems_for_multiply,
-                    const std::uint32_t          n_fft) -> void
+                    const std::int32_t           prec_elems_for_multiply, // NOLINT(bugprone-easily-swappable-parameters)
+                    const std::uint32_t          n_fft) -> void           // NOLINT(bugprone-easily-swappable-parameters)
   {
     using local_limb_type = typename std::iterator_traits<OutputLimbIteratorType>::value_type;
 
@@ -633,8 +633,14 @@
       bf[(i * 2U) + 1U] = static_cast<local_fft_float_type>(v[i] % local_elem_mask_half);
     }
 
-    std::fill(af + (2 * prec_elems_for_multiply), af + n_fft, static_cast<local_fft_float_type>(0));
-    std::fill(bf + (2 * prec_elems_for_multiply), bf + n_fft, static_cast<local_fft_float_type>(0));
+    const auto fill_distance =
+      static_cast<std::size_t>
+      (
+        static_cast<std::size_t>(prec_elems_for_multiply) * static_cast<std::size_t>(UINT8_C(2))
+      );
+
+    std::fill(af + fill_distance, af + n_fft, static_cast<local_fft_float_type>(0));
+    std::fill(bf + fill_distance, bf + n_fft, static_cast<local_fft_float_type>(0));
 
     // Perform forward FFTs on the data arrays a and b.
     detail::fft::rfft_lanczos_rfft<local_fft_float_type, true>(n_fft, af);

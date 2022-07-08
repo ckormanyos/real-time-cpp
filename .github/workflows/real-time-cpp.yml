@@ -836,19 +836,32 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-      - name: wget-gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux
+      - name: update-tools
         run: |
+          sudo apt install libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-          tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: benchmark_single-stm32f429-qemu-cnl
         run: |
           git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
           mkdir -p bin
-          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_cnl_scaled_integer.map -T ./target/micros/stm32f429/make/stm32f429.ld -o ./bin/app_benchmark_cnl_scaled_integer.elf
-          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-objcopy ./bin/app_benchmark_cnl_scaled_integer.elf -O ihex ./bin/app_benchmark_cnl_scaled_integer.hex
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_cnl_scaled_integer.map -T ./target/micros/stm32f429/make/stm32f429.ld -o ./bin/app_benchmark_cnl_scaled_integer.elf
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-objcopy ./bin/app_benchmark_cnl_scaled_integer.elf -O ihex ./bin/app_benchmark_cnl_scaled_integer.hex
           ls -la ./bin/app_benchmark_cnl_scaled_integer.elf ./bin/app_benchmark_cnl_scaled_integer.hex ./bin/app_benchmark_cnl_scaled_integer.map
+        working-directory: ./ref_app/
+      - name: emulate-target stm32f429
+        run: |
+          ./emu_env/xpack-qemu-arm-2.8.0-13/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+        working-directory: ./ref_app/
+      - name: run-test-on-target
+        run: |
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py > arm-none-eabi-gdb-py.txt
+          cat arm-none-eabi-gdb-py.txt
+          sed -n l arm-none-eabi-gdb-py.txt | grep 4027435774
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-20.04
@@ -863,25 +876,25 @@ jobs:
         run: |
           sudo apt install libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-          tar -xf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-7-linux-x64.tgz
-          tar xvf xpack-qemu-arm-2.8.0-7-linux-x64.tgz
+          wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
           mkdir -p bin
-          emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-g++ -std=c++14 -Wall -Wextra -pedantic -O0 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld -o ./bin/app_benchmark_crc.elf
-          emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
+          emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O0 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_crc.elf
+          emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          ./emu_env/xPacks/qemu-arm/2.8.0-7/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          ./emu_env/xpack-qemu-arm-2.8.0-13/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py > arm-none-eabi-gdb-py.txt
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py > arm-none-eabi-gdb-py.txt
           cat arm-none-eabi-gdb-py.txt
           sed -n l arm-none-eabi-gdb-py.txt | grep 4027435774
         working-directory: ./ref_app/
