@@ -842,7 +842,7 @@ jobs:
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi.tar.xz
           tar -xf gcc-arm-11.2-2022.02-x86_64-arm-none-eabi.tar.xz
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-13-linux-x64.tgz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tgz
           tar xvf xpack-qemu-arm-2.8.0-13-linux-x64.tgz
         working-directory: ./ref_app/
       - name: benchmark_single-stm32f429-qemu-cnl
@@ -878,7 +878,7 @@ jobs:
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi.tar.xz
           tar -xf gcc-arm-11.2-2022.02-x86_64-arm-none-eabi.tar.xz
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-7/xpack-qemu-arm-2.8.0-13-linux-x64.tgz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tgz
           tar xvf xpack-qemu-arm-2.8.0-13-linux-x64.tgz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
