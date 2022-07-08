@@ -29,7 +29,7 @@ jobs:
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
-          tar –xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: benchmark_single-stm32f429-qemu-cnl
         run: |
@@ -65,7 +65,7 @@ jobs:
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
-          tar –xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
