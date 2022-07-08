@@ -43,10 +43,10 @@ load_elf()
 
 #See also https://embeddedartistry.com/blog/2020/11/09/metal-gdb-controlling-gdb-through-python-scripts-with-the-gdb-python-api/
 
-#Run the benchmark and assess the result
-bp1 = gdb.Breakpoint('app_benchmark_crc_get_standalone_result')
+#Run the benchmark and verify the result
+bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
-my_value = gdb.parse_and_eval("app_benchmark_crc_standalone_value")
+my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 print(str(my_value))
 time.sleep(0.5)
 bp1.delete()
