@@ -57,9 +57,9 @@
     using reference       = value_type&;
     using const_reference = const value_type&;
 
-    n_slot_array_allocator() = default; // LCOV_EXCL_LINE
+    constexpr n_slot_array_allocator() = default; // LCOV_EXCL_LINE
 
-    n_slot_array_allocator(const n_slot_array_allocator&) = default; // LCOV_EXCL_LINE
+    constexpr n_slot_array_allocator(const n_slot_array_allocator&) = default; // LCOV_EXCL_LINE
 
     template<typename U>
     struct rebind
@@ -67,13 +67,10 @@
       using other = n_slot_array_allocator<U, SlotWidth, SlotCount>;
     };
 
-    auto max_size() const -> size_type
-    {
-      return sizeof(slot_array_type) * slot_count;
-    }
+    constexpr auto max_size() const noexcept -> size_type { return slot_count; }
 
-    auto address(      reference x) const ->       pointer { return &x; }
-    auto address(const_reference x) const -> const_pointer { return &x; }
+    constexpr auto address(      reference x) const ->       pointer { return &x; }
+    constexpr auto address(const_reference x) const -> const_pointer { return &x; }
 
     auto allocate
     (
@@ -85,6 +82,10 @@
       static_cast<void>(p_hint);
 
       pointer p = nullptr;
+
+      // TBD: There is most likely significant optimization potential
+      // capable of being unlocked if a storage/lookup mechanism can be
+      // devised that uses a binary search when finding the next free slot.
 
       for(std::size_t i = 0U; i < slot_count; ++i)
       {
