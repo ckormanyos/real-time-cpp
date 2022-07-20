@@ -258,12 +258,12 @@
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType> constexpr std::int32_t decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_number;       // NOLINT(readability-redundant-declaration,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
 
   template<typename MyType,
-           const size_t MySize,
+           const std::size_t MySize,
            typename MyAlloc>
-  class fixed_dynamic_array final : public util::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>
+  class fixed_dynamic_array final : public util::dynamic_array<MyType, MyAlloc, std::size_t, ptrdiff_t>
   {
   private:
-    using base_class_type = util::dynamic_array<MyType, MyAlloc, size_t, ptrdiff_t>;
+    using base_class_type = util::dynamic_array<MyType, MyAlloc, std::size_t, ptrdiff_t>;
 
   public:
     static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
@@ -313,14 +313,14 @@
   };
 
   template<typename MyType,
-           const size_t MySize>
+           const std::size_t MySize>
   class fixed_static_array final : public std::array<MyType, static_cast<std::size_t>(MySize)>
   {
   private:
     using base_class_type = std::array<MyType, static_cast<std::size_t>(MySize)>;
 
   public:
-    using size_type  = size_t;
+    using size_type  = std::size_t;
     using value_type = typename base_class_type::value_type;
 
     static constexpr auto static_size() -> size_type { return MySize; }

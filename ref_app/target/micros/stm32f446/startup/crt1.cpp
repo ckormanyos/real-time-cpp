@@ -12,12 +12,11 @@ extern "C"
 {
   struct ctor_type
   {
-    typedef void(*function_type)();
-    typedef std::reverse_iterator<const function_type*> const_reverse_iterator;
+    using function_type = void(*)(void);
   };
 
-  extern ctor_type::function_type _ctors_end[];
-  extern ctor_type::function_type _ctors_begin[];
+  extern ctor_type::function_type _ctors_end;
+  extern ctor_type::function_type _ctors_begin;
 }
 
 namespace crt
@@ -27,8 +26,10 @@ namespace crt
 
 void crt::init_ctors()
 {
-  std::for_each(ctor_type::const_reverse_iterator(_ctors_end),
-                ctor_type::const_reverse_iterator(_ctors_begin),
+  using local_const_reverse_iterator = std::reverse_iterator<const ctor_type::function_type*>;
+
+  std::for_each(local_const_reverse_iterator(&_ctors_end),
+                local_const_reverse_iterator(&_ctors_begin),
                 [](const ctor_type::function_type pf)
                 {
                   pf();
