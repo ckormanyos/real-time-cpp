@@ -150,6 +150,51 @@ cd ref_app
 ./target/build/build.sh stm32f446 rebuild
 ```
 
+### Example build on MacOS for `target stm32f446`
+
+We will now exemplify how to build the reference application on a command shell
+in MacOS for an ARM(R) target. Consider, for example, the build variant
+`target stm32f446`. The NUCLEO-F446RE board from STMicroelectronics(R)
+can conveniently be used for this.
+
+Install `gcc-arm-none-eabi` if needed. In this case,
+I have found it convenient to use
+[ArmMbed/homebrew-formulae](https://github.com/ARMmbed/homebrew-formulae).
+Follow the instructions there. Alternatively,
+a modern `gcc-arm-none-eabi` for MacOS can be found at the
+[Arm GNU Toolchain Downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads).
+
+Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
+repository.
+
+The default version 3.81 of GNUmake on MacOS, has been found
+to be slightly incompatible with the make files used in this
+repository. This was identified and corrected in
+[issue 273](https://github.com/ckormanyos/real-time-cpp/issues/273).
+
+In order to work around this, we need to install (via _brew_)
+a newer version of GNUmake.
+This installs a version of GNUmake called `gmake` in the path
+and we will be using this `gmake` instead of the usual `make`.
+
+```
+brew install make
+```
+
+Query the `gmake` version with
+
+```
+gmake --version
+```
+
+Now build the target with a direct call to `gamke`.
+
+```sh
+cd real-time-cpp
+cd ref_app
+gmake -f target/app/make/app_make_linux.gmk rebuild TGT=stm32f446 MY_GMAKE=gmake
+```
+
 ### Build with VisualStudio(R) Project and CMD Batch
 
 To get started with the reference application on `Win*`

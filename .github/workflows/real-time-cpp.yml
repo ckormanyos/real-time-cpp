@@ -338,6 +338,34 @@ jobs:
           make -j ref_app
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
+  target-arm-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32l100c, stm32l152 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: clone-armmbed-homebrew-formulae-and-install
+        run: |
+          echo Install gcc-arm-none-eabi on MacOS via ArmMbed/homebrew-formulae
+          git clone -b master --depth 1 https://github.com/ARMmbed/homebrew-formulae.git ../ARMmbed-root
+          cd ../ARMmbed-root
+          brew tap ArmMbed/homebrew-formulae
+          brew install arm-none-eabi-gcc
+        working-directory: ./
+      - name: target-arm-macos-${{ matrix.suite }}
+        run: |
+          echo Install make via brew
+          brew install make
+          echo query the GNUmake version
+          gmake --version
+          echo Manually call GNUmake to build the target
+          gmake -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }} MY_GMAKE=gmake
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
+        working-directory: ./ref_app/
   target-x86_64:
     runs-on: ubuntu-20.04
     steps:

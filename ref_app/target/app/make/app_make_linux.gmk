@@ -52,6 +52,9 @@ MKDIR     = mkdir
 RM        = rm
 SED       = sed
 
+ifneq ($(MY_GMAKE),)
+MAKE     := $(MY_GMAKE)
+endif
 
 # ------------------------------------------------------------------------------
 # the application
