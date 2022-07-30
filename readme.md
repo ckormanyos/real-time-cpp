@@ -167,10 +167,13 @@ a modern `gcc-arm-none-eabi` for MacOS can be found at the
 Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
 repository.
 
-The default 3.81 version of GNUmake on MacOS, has been found
+The default version 3.81 of GNUmake on MacOS, has been found
 to be slightly incompatible with the make files used in this
-repository. So in this case, we need to install (via _brew_)
-a newer versoin of GNUmake.
+repository. This was identified and corrected in
+[issue 273](https://github.com/ckormanyos/real-time-cpp/issues/273).
+
+In order to work around this, we need to install (via _brew_)
+a newer version of GNUmake.
 This installs a version of GNUmake called `gmake` in the path
 and we will be using this `gmake` instead of the usual `make`.
 
