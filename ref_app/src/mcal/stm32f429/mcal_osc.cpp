@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2011 - 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -61,19 +61,22 @@ namespace
 
       // Configure the main pll.
       mcal::reg::reg_access_dynamic<std::uint32_t,
-                                std::uint32_t>::reg_set(mcal::reg::rcc_pllcfgr,
-                                                        rcc_pllcfgr_value);
+                                    std::uint32_t>::reg_set(mcal::reg::rcc_pllcfgr,
+                                                            rcc_pllcfgr_value);
 
       // Set hclk  = sysclk / 1.
       // Set pclk2 =   hclk / 2.
       // Set pclk1 =   hclk / 4.
       mcal::reg::reg_access_static<std::uint32_t,
-                        std::uint32_t,
-                        mcal::reg::rcc_cfgr,
-                        UINT32_C(0x00009400)>::reg_or();
+                                   std::uint32_t,
+                                   mcal::reg::rcc_cfgr,
+                                   UINT32_C(0x00009400)>::reg_or();
 
       // Enable the pll via setting the pllon bit of the rcc_cr register.
-      mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(0x01000000)>::reg_or();
+      mcal::reg::reg_access_static<std::uint32_t,
+                                   std::uint32_t,
+                                   mcal::reg::rcc_cr,
+                                   UINT32_C(0x01000000)>::reg_or();
 
       // Wait until the pll is locked.
       while(mcal::reg::reg_access_static<std::uint32_t,
