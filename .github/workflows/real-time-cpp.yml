@@ -84,6 +84,47 @@ jobs:
           make -j ref_app
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
+  target-avr-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ avr, atmega2560 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: clone-osx-cross-homebrew-avr-and-install
+        run: |
+          echo Install avr-gcc on MacOS via osx-cross/homebrew-avr
+          echo ""
+          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr.git ../homebrew-avr-root
+          cd ../homebrew-avr-root
+          brew tap osx-cross/avr
+          brew install avr-gcc@11
+        working-directory: ./
+      - name: target-avr-macos-${{ matrix.suite }}
+        run: |
+          echo Install make via brew
+          brew install make
+          echo ""
+          echo Add the brew-installed-make path
+          PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+          echo ""
+          echo query the GNUmake version
+          make --version
+          echo Add the brew-installed-avr-gcc@11 path
+          PATH="/usr/local/opt/avr-gcc@11/bin:$PATH"
+          echo ""
+          echo Query the avr-gcc version
+          avr-g++ -v
+          echo ""
+          echo Manually call GNUmake to build the target
+          echo ""
+          make -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }}
+          echo ""
+          ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
+        working-directory: ./ref_app/
   target-avr-example_led:
     runs-on: ubuntu-20.04
     defaults:
