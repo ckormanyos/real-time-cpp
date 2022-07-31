@@ -23,10 +23,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-      - name: clone-armmbed-homebrew-formulae-and-install
+      - name: clone-osx-cross-homebrew-avr-and-install
         run: |
           echo Install avr-gcc on MacOS via osx-cross/homebrew-avr
-          git clone -b master --depth 1 https://github.com/osx-cross/homebrew-avr.git ../homebrew-avr-root
+          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr.git ../homebrew-avr-root
           cd ../homebrew-avr-root
           brew tap osx-cross/avr
           brew install avr-gcc@11
