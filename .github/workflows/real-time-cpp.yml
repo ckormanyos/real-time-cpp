@@ -24,7 +24,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncurses5 libpython2.7
+          sudo apt install libncurses5 libpython3.7
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
@@ -59,7 +59,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncurses5 libpython2.7
+          sudo apt install libncurses5 libpython3.7
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
