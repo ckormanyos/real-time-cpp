@@ -56,6 +56,6 @@ my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 time.sleep(0.5)
 bp1.delete()
 gdbquit()
-
+print("Dummy")
 # check the return value
 check_ret_value(hex(my_value))
