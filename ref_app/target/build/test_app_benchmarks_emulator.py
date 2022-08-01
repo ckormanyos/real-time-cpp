@@ -60,7 +60,6 @@ my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 # check the return value
 print("before")
 print(my_value)
-print(hex(my_value))
 check_ret_value(my_value)
 time.sleep(5)
 bp1.delete()
