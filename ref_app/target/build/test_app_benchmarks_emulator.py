@@ -23,6 +23,12 @@ def next():
 def gdbquit():
     execute('quit')
 
+def check_ret_value(ret_val)
+    if ret_val == '0xF00DCAFE':
+        sys.exit(0)
+    else:
+        sys.exit(-1)
+
 
 ########################################################################################
 #Config
@@ -47,7 +53,9 @@ load_elf()
 bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
-print(str(my_value))
 time.sleep(0.5)
 bp1.delete()
 gdbquit()
+
+# check the return value
+check_ret_value(hex(my_value))
