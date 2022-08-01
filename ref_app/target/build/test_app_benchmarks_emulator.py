@@ -25,13 +25,9 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == ret_val:
-        print("TRUE")
-        print(ret_val)
+    if ret_val == 4027435774:
         sys.exit(0)
     else:
-        print("FALSE")
-        print(ret_val)
         sys.exit(-1)
 
 
