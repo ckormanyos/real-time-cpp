@@ -2,6 +2,7 @@
 import gdb
 import time
 import logging
+import sys
 
 def execute(command, from_tty = False, to_string = False):
     gdb.execute('{}'.format(command), from_tty, to_string)
