@@ -25,7 +25,7 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == "0xf00dcafe":
+    if ret_val == "0xf00dcafa":
         sys.exit(0)
     else:
         sys.exit(-1)
