@@ -24,7 +24,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncurses5 libpython3.7
+          sudo apt install libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
@@ -45,8 +45,7 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py > test.txt
-          cat test.txt
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-18.04
@@ -59,7 +58,7 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncurses5 libpython3.7
+          sudo apt install libncurses5 libpython2.7
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
@@ -79,6 +78,5 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py > test.txt
-          cat test.txt
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
         working-directory: ./ref_app/

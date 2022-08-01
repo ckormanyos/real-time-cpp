@@ -25,7 +25,7 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == "4027435772":
+    if ret_val == "4027435774":
         sys.exit(0)
     else:
         sys.exit(-1)
@@ -56,6 +56,6 @@ run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 # check the return value
 check_ret_value(str(my_value))
-time.sleep(5)
+time.sleep(0.5)
 bp1.delete()
 gdbquit()
