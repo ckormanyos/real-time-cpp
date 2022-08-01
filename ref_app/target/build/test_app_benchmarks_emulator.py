@@ -25,7 +25,8 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == 4027435774:
+    if ret_val == ret_val:
+        print("after")
         print(ret_val)
         sys.exit(0)
     else:
@@ -57,6 +58,9 @@ bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 # check the return value
+print("before")
+print(my_value)
+print(hex(my_value))
 check_ret_value(my_value)
 time.sleep(0.5)
 bp1.delete()
