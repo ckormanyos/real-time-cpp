@@ -25,7 +25,7 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == '4027435774':
+    if ret_val == str(4027435774):
         print("after")
         print(ret_val)
         sys.exit(0)
