@@ -24,7 +24,7 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == '0xF00DCAFA':
+    if ret_val == '0xf00dcafa':
         sys.exit(0)
     else:
         sys.exit(-1)
@@ -55,6 +55,6 @@ run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 # check the return value
 check_ret_value(hex(my_value))
-time.sleep(0.5)
-bp1.delete()
-gdbquit()
+#time.sleep(0.5)
+#bp1.delete()
+#gdbquit()
