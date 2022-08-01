@@ -27,8 +27,8 @@ def gdbquit():
 def check_ret_value(ret_val):
     if ret_val != 4027435774:
         print("after")
-        type(ret_val)
         print(ret_val)
+        print("The variable, name is of type:", type(ret_val))
         sys.exit(0)
     else:
         print("FALSE")
@@ -61,7 +61,7 @@ my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 # check the return value
 print("before")
 print(my_value)
-type(my_value)
+print("The variable, name is of type:", type(my_value))
 check_ret_value(my_value)
 time.sleep(5)
 bp1.delete()
