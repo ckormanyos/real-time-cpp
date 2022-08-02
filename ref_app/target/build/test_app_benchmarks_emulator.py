@@ -23,7 +23,7 @@ def next():
 
 def check_ret_val_and_quit_gdb(ret_val):
     print(ret_val)
-    if ret_val == "4027435774":
+    if ret_val == "0xf00dcafe":
         print("sys_exit_success")
         sys.exit(0)
     else:
@@ -62,4 +62,4 @@ val_as_int = int(val_as_str)
 print(val_as_int)
 val_as_hex = hex(val_as_int)
 print(val_as_hex)
-check_ret_val_and_quit_gdb(val_as_str)
+check_ret_val_and_quit_gdb(val_as_hex)
