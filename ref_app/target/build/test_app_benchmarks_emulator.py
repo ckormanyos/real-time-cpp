@@ -22,6 +22,7 @@ def next():
     execute('next')
 
 def gdbquit():
+    print("Here I quit")
     execute('quit')
 
 def check_ret_value(ret_val):
