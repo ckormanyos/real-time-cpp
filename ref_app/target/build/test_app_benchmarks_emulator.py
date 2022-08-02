@@ -25,10 +25,12 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == "0xfoodcafa":
-        return 0
+    if ret_val == "4027435774":
+        print(ret_val)
+        print("TRUE")
+        sys.exit(0)
     else:
-        return -1
+        sys.exit(-1)
 
 
 ########################################################################################
@@ -54,22 +56,8 @@ load_elf()
 bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
+# check the return value
+check_ret_value(str(my_value))
 time.sleep(0.5)
 bp1.delete()
 gdbquit()
-
-print("convert and check")
-
-# check the return gdb value
-val_as_str = str(my_value)
-print(val_as_str)
-val_as_int = int(val_as_str)
-print(val_as_int)
-val_as_hex = hex(val_as_int)
-print(val_as_hex)
-check_is_ok = check_ret_value(val_as_hex)
-
-if check_is_ok == 0:
-    sys.exit(0)
-else:
-    sys.exit(-1)
