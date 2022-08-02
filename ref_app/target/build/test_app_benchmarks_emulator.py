@@ -56,8 +56,8 @@ load_elf()
 bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
-# check the return value
-check_ret_value(str(my_value))
 time.sleep(0.5)
 bp1.delete()
 gdbquit()
+# check the return value
+check_ret_value(str(my_value))
