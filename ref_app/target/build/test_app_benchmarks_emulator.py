@@ -23,7 +23,7 @@ def next():
 
 def check_ret_val_and_quit_gdb(ret_val):
     print(ret_val)
-    if ret_val == "0xf00dcafe":
+    if ret_val == "0xf00dcafq":
         print("sys_exit_success")
         sys.exit(0)
     else:
@@ -56,6 +56,7 @@ run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 time.sleep(0.5)
 bp1.delete()
+
 # check the return value and quit gdb
 val_as_str = str(my_value)
 val_as_hex = hex(int(val_as_str))
