@@ -21,17 +21,15 @@ def run():
 def next():
     execute('next')
 
-def gdbquit():
-    print("Here I quit")
-    execute('quit')
-
-def check_ret_value(ret_val):
+def check_ret_val_and_quit_gdb(ret_val):
     if ret_val == "4027435774":
-        print(ret_val)
-        print("TRUE")
+        print("sys_exit_success")
         sys.exit(0)
     else:
+        print("sys_exit_error")
         sys.exit(-1)
+    print("quite")
+    execute('quit')
 
 
 ########################################################################################
@@ -59,6 +57,5 @@ run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 time.sleep(0.5)
 bp1.delete()
-gdbquit()
-# check the return value
-check_ret_value(str(my_value))
+# check the return value and quit
+check_ret_val_and_quit_gdb(str(my_value))
