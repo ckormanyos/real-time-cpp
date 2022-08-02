@@ -58,6 +58,8 @@ time.sleep(0.5)
 bp1.delete()
 gdbquit()
 
+print("convert and check")
+
 # check the return gdb value
 val_as_str = str(my_value)
 print(val_as_str)
