@@ -60,7 +60,8 @@ gdbquit()
 
 # check the return gdb value
 val_as_str = str(my_value)
-val_as_hex = str(val_as_str)
+val_as_int = int(val_as_str)
+val_as_hex = hex(val_as_int)
 check_is_ok = check_ret_value(val_as_hex)
 
 if check_is_ok == 0:
