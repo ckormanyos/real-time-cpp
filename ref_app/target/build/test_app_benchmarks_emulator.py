@@ -56,10 +56,8 @@ run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 time.sleep(0.5)
 bp1.delete()
-# check the return value and quit
+# check the return value and quit gdb
 val_as_str = str(my_value)
-val_as_int = int(val_as_str)
-print(val_as_int)
-val_as_hex = hex(val_as_int)
-print(val_as_hex)
+val_as_hex = hex(int(val_as_str))
+#val_as_hex = hex(val_as_int)
 check_ret_val_and_quit_gdb(val_as_hex)
