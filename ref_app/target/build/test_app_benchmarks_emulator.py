@@ -25,7 +25,7 @@ def gdbquit():
     execute('quit')
 
 def check_ret_value(ret_val):
-    if ret_val == "0xfoodcafe":
+    if ret_val == "0xfoodcafa":
         return 0
     else:
         return -1
