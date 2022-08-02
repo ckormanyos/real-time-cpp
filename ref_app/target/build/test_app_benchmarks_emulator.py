@@ -22,7 +22,7 @@ def next():
     execute('next')
 
 def check_ret_val_and_quit_gdb(ret_val):
-    if ret_val == "0xf00dcafi":
+    if ret_val == "0xf00dcafe":
         sys.exit(0)
     else:
         sys.exit(-1)
