@@ -39,7 +39,7 @@ class benchmarks_emulator:
         gdb.execute('{}'.format(command), from_tty, to_string)
 
     # Connect to server
-    def connect_to_server(tcp_port):
+    def connect_to_server(self, tcp_port):
         execute('target remote localhost:{}'.format(tcp_port))
         execute('monitor reset')
         execute('set confirm off')
