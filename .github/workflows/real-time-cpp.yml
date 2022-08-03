@@ -45,7 +45,8 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py > test.txt
+          cat test.txt
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-18.04
@@ -78,5 +79,6 @@ jobs:
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
+          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py > test.txt
+          cat test.txt
         working-directory: ./ref_app/
