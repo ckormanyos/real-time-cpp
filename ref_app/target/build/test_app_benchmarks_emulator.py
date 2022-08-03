@@ -87,7 +87,7 @@ iterations = 64
 
 print("Initialize")
 # Initialize
-benchmark = benchmarks_emulator(tcp_port)
+benchmarks_emulator(tcp_port, iterations)
 
 print("break point")
 # Set break point and run the benchmark
