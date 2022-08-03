@@ -49,13 +49,14 @@ class benchmarks_emulator:
         self.execute('load')
 
     # Run the benchmark
-    def run():
+    def run(self):
         self.execute('continue')
 
     def next(self):
         self.execute('next')
 
-    def set_gdb_break_point():
+    def set_gdb_break_point(self):
+        print("break point func")
         return gdb.Breakpoint('app_benchmark_get_standalone_result')
 
     def get_gdb_result(self):
@@ -86,19 +87,20 @@ iterations = 64
 
 print("Initialize")
 # Initialize
-benchmarks_emulator(tcp_port)
+obj = benchmarks_emulator(tcp_port)
 
 print("break point")
 # Set break point and run the benchmark
-bp1 = benchmarks_emulator.set_gdb_break_point()
-benchmarks_emulator.run()
+bp1 = obj.set_gdb_break_point()
+print("run")
+obj.run()
 
 print("get value")
 # Get gdb result
-my_value = benchmarks_emulator.get_gdb_result()
+my_value = obj.get_gdb_result()
 time.sleep(0.5)
 bp1.delete()
 
 print("last check")
 # Check the return value and quit gdb
-benchmarks_emulator.check_ret_val_and_quit_gdb(my_value)
+obj.check_ret_val_and_quit_gdb(my_value)
