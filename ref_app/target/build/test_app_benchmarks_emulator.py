@@ -85,13 +85,16 @@ class benchmarks_emulator:
 tcp_port   = 9999
 iterations = 64
 
+print("Initialize")
 # Initialize
 benchmarks_emulator(tcp_port, iterations)
 
+print("break point")
 # Set break point and run the benchmark
 bp1 = benchmarks_emulator.set_gdb_break_point()
 benchmarks_emulator.run()
 
+print("get value")
 # Get gdb result
 my_value = benchmarks_emulator.get_gdb_result()
 time.sleep(0.5)
