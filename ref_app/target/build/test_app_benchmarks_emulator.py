@@ -40,20 +40,20 @@ class benchmarks_emulator:
 
     # Connect to server
     def connect_to_server(self, tcp_port):
-        execute('target remote localhost:{}'.format(tcp_port))
-        execute('monitor reset')
-        execute('set confirm off')
+        self.execute('target remote localhost:{}'.format(tcp_port))
+        self.execute('monitor reset')
+        self.execute('set confirm off')
 
     # Load object data base
     def load_elf():
-        execute('load')
+        self.execute('load')
 
     # Run the benchmark
     def run():
-        execute('continue')
+        self.execute('continue')
 
     def next():
-        execute('next')
+        self.execute('next')
 
     def set_gdb_break_point():
         return gdb.Breakpoint('app_benchmark_get_standalone_result')
