@@ -30,7 +30,6 @@ class benchmarks_emulator:
         self.create_log_file()
         self.load_elf()
 
-
     def execute(self, command, from_tty = False, to_string = False):
         gdb.execute('{}'.format(command), from_tty, to_string)
 
@@ -56,7 +55,7 @@ class benchmarks_emulator:
     def next(self):
         self.execute('next')
 
-    def set_gdb_break_point(self):
+    def set_gdb_break_point():
         return gdb.Breakpoint('app_benchmark_get_standalone_result')
 
     def get_gdb_result(self):
