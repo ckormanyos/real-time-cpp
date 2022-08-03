@@ -35,7 +35,7 @@ class benchmarks_emulator:
         self.load_elf()
 
     # Create log file
-    def create_log_file():
+    def create_log_file(self):
         logging.basicConfig(filename='emu-target.log',level=logging.DEBUG, filemode='w')
         logging.info('------- Running GDB Test -----')
 
@@ -46,7 +46,7 @@ class benchmarks_emulator:
         execute('set confirm off')
 
     # Load object data base
-    def load_elf():
+    def load_elf(self):
         execute('load')
 
     # Run the benchmark
