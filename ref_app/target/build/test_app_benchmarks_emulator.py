@@ -49,7 +49,7 @@ class benchmarks_emulator:
         self.execute('load')
 
     # Run the benchmark
-    def run(self):
+    def run():
         self.execute('continue')
 
     def next(self):
