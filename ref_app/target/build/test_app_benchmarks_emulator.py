@@ -2,6 +2,7 @@
 import gdb
 import time
 import logging
+import sys
 
 def execute(command, from_tty = False, to_string = False):
     gdb.execute('{}'.format(command), from_tty, to_string)
@@ -20,8 +21,11 @@ def run():
 def next():
     execute('next')
 
-def gdbquit():
-    execute('quit')
+def check_ret_val_and_quit_gdb(ret_val):
+    if ret_val == "0xf00dcafe":
+        sys.exit(0)
+    else:
+        sys.exit(-1)
 
 
 ########################################################################################
@@ -47,7 +51,14 @@ load_elf()
 bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 run()
 my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
-print(str(my_value))
 time.sleep(0.5)
 bp1.delete()
-gdbquit()
+
+# check the return value and quit gdb
+val_as_str = str(my_value)
+val_as_hex = hex(int(val_as_str))
+
+print ("Value as hex:")
+print (val_as_hex)
+
+check_ret_val_and_quit_gdb(val_as_hex)
