@@ -87,19 +87,19 @@ iterations = 64
 
 print("Initialize")
 # Initialize
-benchmarks_emulator(tcp_port)
+benchmark_object = benchmarks_emulator(tcp_port)
 
 print("break point")
 # Set break point and run the benchmark
-bp1 = benchmarks_emulator.set_gdb_break_point()
-benchmarks_emulator.run()
+bp1 = benchmark_object.set_gdb_break_point()
+benchmark_object.run()
 
 print("get value")
 # Get gdb result
-my_value = benchmarks_emulator.get_gdb_result()
+my_value = benchmark_object.get_gdb_result()
 time.sleep(0.5)
 bp1.delete()
 
 print("last check")
 # Check the return value and quit gdb
-benchmarks_emulator.check_ret_val_and_quit_gdb(my_value)
+benchmark_object.check_ret_val_and_quit_gdb(my_value)
