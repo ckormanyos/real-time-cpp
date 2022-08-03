@@ -25,8 +25,12 @@ import sys
 # --- class: benchmarks_emulator
 #-------------------------------------------------------------------------------
 class benchmarks_emulator:
-    def __init__(self, tcp_port):
-        self.connect_to_server(tcp_port)
+    def __init__(self, tcp_port, iterations):
+        self.tcp_port   = tcp_port
+        self.iterations = iterations
+
+    def initialize(self):
+        self.connect_to_server(self.tcp_port)
         self.create_log_file()
         self.load_elf()
 
@@ -86,8 +90,11 @@ tcp_port   = 9999
 iterations = 64
 
 print("Initialize")
+#create an object
+obj = benchmarks_emulator(tcp_port, iterations)
+
 # Initialize
-obj = benchmarks_emulator(tcp_port)
+obj.initialize()
 
 print("break point")
 # Set break point and run the benchmark
