@@ -21,10 +21,6 @@ import time
 import logging
 import sys
 
-def execute(command, from_tty = False, to_string = False):
-    gdb.execute('{}'.format(command), from_tty, to_string)
-
-
 #-------------------------------------------------------------------------------
 # --- class: benchmarks_emulator
 #-------------------------------------------------------------------------------
@@ -34,6 +30,10 @@ class benchmarks_emulator:
         self.create_log_file()
         self.load_elf()
 
+
+    def execute(self, command, from_tty = False, to_string = False):
+        gdb.execute('{}'.format(command), from_tty, to_string)
+
     # Create log file
     def create_log_file(self):
         logging.basicConfig(filename='emu-target.log',level=logging.DEBUG, filemode='w')
@@ -41,29 +41,29 @@ class benchmarks_emulator:
 
     # Connect to server
     def connect_to_server(self, tcp_port):
-        execute('target remote localhost:{}'.format(tcp_port))
-        execute('monitor reset')
-        execute('set confirm off')
+        self.execute('target remote localhost:{}'.format(tcp_port))
+        self.execute('monitor reset')
+        self.execute('set confirm off')
 
     # Load object data base
     def load_elf(self):
-        execute('load')
+        self.execute('load')
 
     # Run the benchmark
-    def run():
-        execute('continue')
+    def run(self):
+        self.execute('continue')
 
-    def next():
-        execute('next')
+    def next(self):
+        self.execute('next')
 
-    def set_gdb_break_point():
+    def set_gdb_break_point(self):
         return gdb.Breakpoint('app_benchmark_get_standalone_result')
 
-    def get_gdb_result():
+    def get_gdb_result(self):
         return gdb.parse_and_eval("app_benchmark_standalone_result")
 
     # Check the gdb return value
-    def check_ret_val_and_quit_gdb(ret_val):
+    def check_ret_val_and_quit_gdb(self, ret_val):
         val_as_str = str(ret_val)
         val_as_hex = hex(int(val_as_str))
 
