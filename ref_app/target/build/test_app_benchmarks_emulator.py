@@ -66,7 +66,10 @@ class benchmarks_emulator:
         val_as_str = str(ret_val)
         val_as_hex = hex(int(val_as_str))
 
-        if val_as_hex == "0xf00dcafe":
+        # print the return value
+        print ("Value as hex: " + str(val_as_hex))
+
+        if val_as_hex == "0xf00dcafa":
             sys.exit(0)
         else:
             sys.exit(-1)
