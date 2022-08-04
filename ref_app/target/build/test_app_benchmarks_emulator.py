@@ -123,4 +123,4 @@ obj.delete_gdb_break_point(bp1)
 print("last check")
 # Check the gdb result and quit
 print(my_value)
-obj.check_ret_val_and_quit_gdb(my_value)
+#obj.check_ret_val_and_quit_gdb(my_value)
