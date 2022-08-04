@@ -21,8 +21,6 @@ import time
 import logging
 import sys
 
-def execute(command, from_tty = False, to_string = False):
-    gdb.execute('{}'.format(command), from_tty, to_string)
 
 #-------------------------------------------------------------------------------
 # --- class: qemu_emulator
@@ -37,6 +35,9 @@ class qemu_emulator:
         self.create_log_file()
         self.load_elf()
 
+    def execute(self, command, from_tty = False, to_string = False):
+        gdb.execute('{}'.format(command), from_tty, to_string)
+
     # Create log file
     def create_log_file(self):
         logging.basicConfig(filename='emu-target.log',level=logging.DEBUG, filemode='w')
@@ -44,20 +45,20 @@ class qemu_emulator:
 
     # Connect to server
     def connect_to_server(self, tcp_port):
-        execute('target remote localhost:{}'.format(tcp_port))
-        execute('monitor reset')
-        execute('set confirm off')
+        self.execute('target remote localhost:{}'.format(tcp_port))
+        self.execute('monitor reset')
+        self.execute('set confirm off')
 
     # Load object data base
     def load_elf(self):
-        execute('load')
+        self.execute('load')
 
     # Run the benchmark
     def run(self):
-        execute('continue')
+        self.execute('continue')
 
     def next(self):
-        execute('next')
+        self.execute('next')
 
     def set_gdb_break_point(self):
         my_bp = gdb.Breakpoint('app_benchmark_get_standalone_result')
