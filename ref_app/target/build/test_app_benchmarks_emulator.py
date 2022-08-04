@@ -21,7 +21,6 @@ import time
 import logging
 import sys
 
-
 #-------------------------------------------------------------------------------
 # --- class: qemu_emulator
 #-------------------------------------------------------------------------------
@@ -30,11 +29,13 @@ class qemu_emulator:
         self.tcp_port   = tcp_port
         self.iterations = iterations
 
+    # qemu initialization
     def initialize(self):
         self.connect_to_server(self.tcp_port)
         self.create_log_file()
         self.load_elf()
 
+    # Excute gdb commands
     def execute(self, command, from_tty = False, to_string = False):
         gdb.execute('{}'.format(command), from_tty, to_string)
 
@@ -77,7 +78,7 @@ class qemu_emulator:
         val_as_hex = hex(int(val_as_str))
 
         # print the return value
-        print("Result value as hex: " + val_as_str)
+        #print("Result value as hex: " + val_as_str)
 
         if val_as_hex == "0xf00dcafa":
             sys.exit(0)
