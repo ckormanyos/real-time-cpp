@@ -95,20 +95,20 @@ print("Initialize")
 obj = qemu_emulator(tcp_port, iterations)
 
 # Initialize
-obj.initialize()
+#obj.initialize()
 
 print("break point")
 # Set break point and run the benchmark
-bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
+#bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 print("run")
-obj.run()
+#obj.run()
 
 print("get value")
 # Get gdb result
-my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
-time.sleep(0.5)
-bp1.delete()
+#my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
+#time.sleep(0.5)
+#bp1.delete()
 
 print("last check")
 # Check the return value and quit gdb
-obj.check_ret_val_and_quit_gdb(my_value)
+#obj.check_ret_val_and_quit_gdb(my_value)
