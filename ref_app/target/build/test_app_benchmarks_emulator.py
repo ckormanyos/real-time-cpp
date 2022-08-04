@@ -72,13 +72,12 @@ class qemu_emulator:
        return my_result
 
     # Check the gdb return value
-    def check_ret_val_and_quit_gdb(self, ret_val):
-        print ("before")
-        val_as_str = str(ret_val)
+    def check_ret_val_and_quit_gdb(self, gdb_val):
+        val_as_str = str(gdb_val)
         val_as_hex = hex(int(val_as_str))
 
         # print the return value
-        print ("Value as hex: " + str(val_as_hex))
+        print("Result value as hex: " + val_as_str)
 
         if val_as_hex == "0xf00dcafa":
             sys.exit(0)
@@ -95,32 +94,24 @@ class qemu_emulator:
 tcp_port   = 9999
 iterations = 64
 
-print("Initialize")
 #create an object
 obj = qemu_emulator(tcp_port, iterations)
 
 # Initialize
 obj.initialize()
 
-print("break point")
-
 # Set break point
 bp1 = obj.set_gdb_break_point()
-print("run")
+
 # Run the benchmark
 obj.run()
-
-print("get value")
 
 # Get gdb result
 my_value = obj.get_gdb_result()
 time.sleep(0.5)
 
-print("delete bp1")
 # Delete break point
 obj.delete_gdb_break_point(bp1)
 
-print("last check")
 # Check the gdb result and quit
-print(my_value)
-#obj.check_ret_val_and_quit_gdb(my_value)
+obj.check_ret_val_and_quit_gdb(my_value)
