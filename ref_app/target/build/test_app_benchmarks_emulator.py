@@ -107,7 +107,8 @@ obj.run()
 print("get value")
 # Get gdb result
 #my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
-#time.sleep(0.5)
+my_value = obj.set_gdb_break_point()
+time.sleep(0.5)
 #bp1.delete()
 
 print("last check")
