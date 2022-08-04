@@ -103,20 +103,22 @@ obj.initialize()
 
 print("break point")
 
-# Set break point and run the benchmark
+# Set break point
 bp1 = obj.set_gdb_break_point()
 print("run")
+# Run the benchmark
 obj.run()
 
 print("get value")
+
 # Get gdb result
-#my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 my_value = obj.set_gdb_break_point()
 time.sleep(0.5)
 
 print("delete bp1")
+# Delete break point
 obj.delete_gdb_break_point(bp1)
 
 print("last check")
-# Check the return value and quit gdb
-#obj.check_ret_val_and_quit_gdb(my_value)
+# Check the gdb result and quit
+obj.check_ret_val_and_quit_gdb(my_value)
