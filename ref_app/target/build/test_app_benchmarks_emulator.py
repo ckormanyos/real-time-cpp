@@ -21,7 +21,7 @@ import time
 import logging
 import sys
 
-def execute(self, command, from_tty = False, to_string = False):
+def execute(command, from_tty = False, to_string = False):
     gdb.execute('{}'.format(command), from_tty, to_string)
 
 #-------------------------------------------------------------------------------
