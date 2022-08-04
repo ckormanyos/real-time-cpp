@@ -72,19 +72,16 @@ class qemu_emulator:
        my_result = gdb.parse_and_eval("app_benchmark_standalone_result")
        return my_result
 
-    # Check the gdb return value
-    def check_ret_val_and_quit_gdb(self, gdb_val):
-        val_as_str = str(gdb_val)
+    def convert_to_hex(self, gdb_value):
+        val_as_str = str(gdb_value)
         val_as_hex = hex(int(val_as_str))
+        return val_as_hex
 
-        # print the return value
-        #print("Result value as hex: " + val_as_str)
-
-        if val_as_hex == "0xf00dcafa":
-            sys.exit(0)
-        else:
-            sys.exit(-1)
-
+    def check_gdb_result(self, result_as_hex):
+       if result_as_hex == "0xf00dcafa":
+          return True
+       else:
+          return False
 
 #-------------------------------------------------------------------------------
 # --- GDB Script starts here
@@ -114,5 +111,16 @@ time.sleep(0.5)
 # Delete break point
 obj.delete_gdb_break_point(bp1)
 
+# Convert gdb result to hex
+result_as_hex = obj.convert_to_hex(my_value)
+
+# print the return value
+print("Result value as hex: " + result_as_hex)
+
 # Check the gdb result and quit
-obj.check_ret_val_and_quit_gdb(my_value)
+result_is_ok = obj.check_ret_val_and_quit_gdb(result_as_hex)
+
+if result_is_ok == True:
+    sys.exit(0)
+else:
+    sys.exit(-1)
