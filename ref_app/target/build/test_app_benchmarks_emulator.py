@@ -99,7 +99,8 @@ obj.initialize()
 
 print("break point")
 # Set break point and run the benchmark
-bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
+#bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
+bp1 = obj.set_gdb_break_point()
 print("run")
 #obj.run()
 
