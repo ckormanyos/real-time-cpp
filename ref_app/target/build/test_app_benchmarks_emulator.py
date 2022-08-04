@@ -22,9 +22,9 @@ import logging
 import sys
 
 #-------------------------------------------------------------------------------
-# --- class: benchmarks_emulator
+# --- class: qemu_emulator
 #-------------------------------------------------------------------------------
-class benchmarks_emulator:
+class qemu_emulator:
     def __init__(self, tcp_port, iterations):
         self.tcp_port   = tcp_port
         self.iterations = iterations
@@ -60,11 +60,12 @@ class benchmarks_emulator:
         self.execute('next')
 
     def set_gdb_break_point(self):
-        print("break point func")
-        return gdb.Breakpoint('app_benchmark_get_standalone_result')
+        my_bp = gdb.Breakpoint('app_benchmark_get_standalone_result')
+        return my_bp
 
     def get_gdb_result(self):
-        return gdb.parse_and_eval("app_benchmark_standalone_result")
+       my_result = gdb.parse_and_eval("app_benchmark_standalone_result")
+       return my_result
 
     # Check the gdb return value
     def check_ret_val_and_quit_gdb(self, ret_val):
@@ -91,20 +92,20 @@ iterations = 64
 
 print("Initialize")
 #create an object
-obj = benchmarks_emulator(tcp_port, iterations)
+obj = qemu_emulator(tcp_port, iterations)
 
 # Initialize
 obj.initialize()
 
 print("break point")
 # Set break point and run the benchmark
-bp1 = obj.set_gdb_break_point()
+bp1 = gdb.Breakpoint('app_benchmark_get_standalone_result')
 print("run")
 obj.run()
 
 print("get value")
 # Get gdb result
-my_value = obj.get_gdb_result()
+my_value = gdb.parse_and_eval("app_benchmark_standalone_result")
 time.sleep(0.5)
 bp1.delete()
 
