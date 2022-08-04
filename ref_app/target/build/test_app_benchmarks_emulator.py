@@ -113,7 +113,7 @@ obj.run()
 print("get value")
 
 # Get gdb result
-my_value = obj.set_gdb_break_point()
+my_value = obj.get_gdb_result()
 time.sleep(0.5)
 
 print("delete bp1")
