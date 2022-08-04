@@ -124,7 +124,7 @@ result_as_hex = obj.convert_to_hex(my_value)
 print("Result value as hex: " + result_as_hex)
 
 # Check the gdb result and quit
-result_is_ok = obj.check_ret_val_and_quit_gdb(result_as_hex)
+result_is_ok = obj.check_gdb_result(result_as_hex)
 
 if result_is_ok == True:
     sys.exit(0)
