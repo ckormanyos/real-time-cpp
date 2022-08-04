@@ -61,24 +61,30 @@ class qemu_emulator:
     def next(self):
         self.execute('next')
 
+    # Set gdb Bp
     def set_gdb_break_point(self):
         my_bp = gdb.Breakpoint('app_benchmark_get_standalone_result')
         return my_bp
 
+    # Delete gdb Bp
     def delete_gdb_break_point(self, bp):
         bp.delete()
 
+    # Get gdb result
     def get_gdb_result(self):
        my_result = gdb.parse_and_eval("app_benchmark_standalone_result")
        return my_result
 
+    # Convert from gdb type to hex
     def convert_to_hex(self, gdb_value):
         val_as_str = str(gdb_value)
         val_as_hex = hex(int(val_as_str))
         return val_as_hex
 
+    # Check the gdb return value
     def check_gdb_result(self, result_as_hex):
-       if result_as_hex == "0xf00dcafa":
+       print(result_as_hex)
+       if result_as_hex == "0xf00dcafe":
           return True
        else:
           return False
