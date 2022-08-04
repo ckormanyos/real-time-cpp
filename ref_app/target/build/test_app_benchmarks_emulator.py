@@ -92,10 +92,10 @@ iterations = 64
 
 print("Initialize")
 #create an object
-qemu_emulator(tcp_port, iterations)
+obj = qemu_emulator(tcp_port, iterations)
 
 # Initialize
-qemu_emulator.initialize()
+obj.initialize()
 
 print("break point")
 # Set break point and run the benchmark
