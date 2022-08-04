@@ -83,7 +83,7 @@ class qemu_emulator:
 
     # Check the gdb return value
     def check_gdb_result(self, result_as_hex):
-       if result_as_hex == "0xf00dcafa":
+       if result_as_hex == "0xf00dcafe":
           return True
        else:
           return False
@@ -117,13 +117,13 @@ time.sleep(0.5)
 obj.delete_gdb_break_point(bp1)
 
 # Convert gdb result to hex
-result_as_hex = obj.convert_to_hex(my_value)
+value_as_hex = obj.convert_to_hex(my_value)
 
-# print the return value
-print("Result value as hex: " + result_as_hex)
+# Print the return value
+print("Result value as hex: " + value_as_hex)
 
 # Check the gdb result and quit
-result_is_ok = obj.check_gdb_result(result_as_hex)
+result_is_ok = obj.check_gdb_result(value_as_hex)
 
 if result_is_ok == True:
     sys.exit(0)
