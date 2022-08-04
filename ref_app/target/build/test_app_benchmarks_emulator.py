@@ -73,6 +73,7 @@ class qemu_emulator:
 
     # Check the gdb return value
     def check_ret_val_and_quit_gdb(self, ret_val):
+        print ("before")
         val_as_str = str(ret_val)
         val_as_hex = hex(int(val_as_str))
 
@@ -121,4 +122,5 @@ obj.delete_gdb_break_point(bp1)
 
 print("last check")
 # Check the gdb result and quit
+print(my_value)
 obj.check_ret_val_and_quit_gdb(my_value)
