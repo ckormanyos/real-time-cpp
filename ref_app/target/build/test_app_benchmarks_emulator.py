@@ -83,7 +83,7 @@ class qemu_emulator:
 
     # Check the gdb return value
     def check_gdb_result(self, result_as_hex):
-       if result_as_hex == "0xf00dcafe":
+       if result_as_hex == "0xf00dcafi":
           return True
        else:
           return False
