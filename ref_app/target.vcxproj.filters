@@ -187,6 +187,15 @@
     <Filter Include="micros\v850es_fx2\startup">
       <UniqueIdentifier>{9e52b1bf-fd57-474f-91d6-677c425f54e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32h7a3">
+      <UniqueIdentifier>{d8403855-6ae4-419d-a00f-c5a20006bb76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32h7a3\make">
+      <UniqueIdentifier>{6bd3de44-163e-4637-b64c-d1b6b9474464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32h7a3\startup">
+      <UniqueIdentifier>{6c38201f-e52f-4dcd-8802-12544cc6c099}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -444,6 +453,15 @@
     <None Include="target\build\test_app_benchmarks_emulator.py">
       <Filter>build</Filter>
     </None>
+    <None Include="target\micros\stm32h7a3\make\stm32h7a3_files.gmk">
+      <Filter>micros\stm32h7a3\make</Filter>
+    </None>
+    <None Include="target\micros\stm32h7a3\make\stm32h7a3_flags.gmk">
+      <Filter>micros\stm32h7a3\make</Filter>
+    </None>
+    <None Include="target\micros\stm32h7a3\make\stm32h7a3.ld">
+      <Filter>micros\stm32h7a3\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -625,6 +643,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\v850es_fx2\startup\crt0_init_ram.cpp">
       <Filter>micros\v850es_fx2\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32h7a3\startup\crt1.cpp">
+      <Filter>micros\stm32h7a3\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32h7a3\startup\int_vect.cpp">
+      <Filter>micros\stm32h7a3\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32h7a3\startup\crt0.cpp">
+      <Filter>micros\stm32h7a3\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32h7a3\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32h7a3\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
