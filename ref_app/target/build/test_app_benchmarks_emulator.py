@@ -83,7 +83,7 @@ class qemu_emulator:
 
     # Check the gdb return value
     def check_gdb_result(self, result_as_hex):
-       if result_as_hex == "0xf00dcafi":
+       if result_as_hex == "0xf00dcafe":
           return True
        else:
           return False
@@ -97,7 +97,7 @@ class qemu_emulator:
 tcp_port   = 9999
 iterations = 64
 
-#create an object
+# Create a qemu object
 obj = qemu_emulator(tcp_port, iterations)
 
 # Initialize
