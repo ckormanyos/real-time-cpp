@@ -931,7 +931,7 @@ jobs:
           ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py
           qemu_result=$?
           echo "qemu_result" "$qemu_result"
-          echo "qemu_result" "$qemu_result" | grep 'result 0'
+          echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
     runs-on: ubuntu-18.04
@@ -967,5 +967,5 @@ jobs:
           ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
           qemu_result=$?
           echo "qemu_result" "$qemu_result"
-          echo "qemu_result" "$qemu_result" | grep 'result 0'
+          echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
         working-directory: ./ref_app/
