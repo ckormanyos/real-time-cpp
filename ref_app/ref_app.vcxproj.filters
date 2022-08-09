@@ -943,7 +943,7 @@
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_rcc.c">
+    <ClCompile Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_rcc.cpp">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\Downloads\test_stm32h7a3_nucleo\Src\mcal_wdg.cpp">
@@ -2392,6 +2392,9 @@
     </None>
     <None Include="src\util\STL\cinttypes">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="cmake\stm32h7a3.cmake">
+      <Filter>src\cmake</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

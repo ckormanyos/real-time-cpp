@@ -1,4 +1,4 @@
-#
+﻿#
 # MIT License
 #
 # Copyright (c) 2019 Joel Winarske
@@ -40,6 +40,7 @@ set(TARGET_CFG_LIST
     stm32f407|stm32f407|arm-none-eabi
     stm32f429|stm32f429|arm-none-eabi
     stm32f446|stm32f446|arm-none-eabi
+    stm32h7a3|stm32h7a3|arm-none-eabi
     stm32l152|stm32l152|arm-none-eabi
     rpi3|bcm2835_raspi_b|arm-none-eabi
     nxp|lpc11c24|arm-none-eabi
