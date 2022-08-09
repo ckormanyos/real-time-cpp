@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,16 +10,13 @@
 
 mcal::led::led_base& mcal::led::led0()
 {
-  // The LED's on the stm32f4discovery board are as follows:
-  // - portd.12: green
-  // - portd.13: organge
-  // - portd.14: red
-  // - portd.15: blue
+  // The 1st user-LED on the STM32H7A3xxQ board is:
+  // - portb.0: green
 
   using led0_port_type = mcal::port::port_pin<std::uint32_t,
                                               std::uint32_t,
-                                              mcal::reg::gpiog_base,
-                                              UINT32_C(13)>;
+                                              mcal::reg::gpiob_base,
+                                              UINT32_C(0)>;
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 

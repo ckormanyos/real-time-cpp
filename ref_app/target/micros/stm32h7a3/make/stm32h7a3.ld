@@ -1,4 +1,4 @@
-
+﻿
 /*
  Copyright Christopher Kormanyos 2022.
  Distributed under the Boost Software License,
@@ -27,7 +27,8 @@ __initial_stack_pointer = 0x20008000 - 4;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 64K
+  VEC(rx)  : ORIGIN = 0x08000000, LENGTH = 0x300
+  ROM(rx)  : ORIGIN = 0x08000300, LENGTH = 64K - 0x300
   RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
 }
 
@@ -40,9 +41,9 @@ SECTIONS
   .isr_vector :
   {
     *(.isr_vector)
-    . = ALIGN(0x10);
+    . = ALIGN(0x100);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > VEC = 0xAAAA
 
   /* startup */
   .startup :

@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,8 +10,6 @@
 
   #include <chrono>
   #include <cstdint>
-
-  #include <util/utility/util_noexcept.h>
 
   // Forward declaration of the util::timer template class.
   namespace util
@@ -33,7 +31,7 @@
       {
         static value_type get_time_elapsed();
 
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT;
+        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
 
         template<typename unsigned_tick_type>
         friend class util::timer;
