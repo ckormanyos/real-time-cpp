@@ -23,37 +23,37 @@
                const reg_type bpos>
       class port_pin
       {
-        static constexpr auto GPIO_MODE_Pos            = static_cast<std::uint32_t>(0ULL);
-        static constexpr auto GPIO_MODE                = static_cast<std::uint32_t>(0x3ULL << GPIO_MODE_Pos);
-        static constexpr auto MODE_INPUT               = static_cast<std::uint32_t>(0x0ULL << GPIO_MODE_Pos);
-        static constexpr auto MODE_OUTPUT              = static_cast<std::uint32_t>(0x1ULL << GPIO_MODE_Pos);
-        static constexpr auto MODE_AF                  = static_cast<std::uint32_t>(0x2ULL << GPIO_MODE_Pos);
-        static constexpr auto MODE_ANALOG              = static_cast<std::uint32_t>(0x3ULL << GPIO_MODE_Pos);
-        static constexpr auto OUTPUT_TYPE_Pos          = static_cast<std::uint32_t>(4ULL);
-        static constexpr auto OUTPUT_TYPE              = static_cast<std::uint32_t>(0x1ULL << OUTPUT_TYPE_Pos);
-        static constexpr auto OUTPUT_PP                = static_cast<std::uint32_t>(0x0ULL << OUTPUT_TYPE_Pos);
-        static constexpr auto OUTPUT_OD                = static_cast<std::uint32_t>(0x1ULL << OUTPUT_TYPE_Pos);
+        static constexpr auto gpio_mode_pos            = static_cast<std::uint32_t>(0ULL);
+        static constexpr auto gpio_mode                = static_cast<std::uint32_t>(0x3ULL << gpio_mode_pos);
+        static constexpr auto mode_input               = static_cast<std::uint32_t>(0x0ULL << gpio_mode_pos);
+        static constexpr auto mode_output              = static_cast<std::uint32_t>(0x1ULL << gpio_mode_pos);
+        static constexpr auto mode_af                  = static_cast<std::uint32_t>(0x2ULL << gpio_mode_pos);
+        static constexpr auto mode_analog              = static_cast<std::uint32_t>(0x3ULL << gpio_mode_pos);
+        static constexpr auto output_type_pos          = static_cast<std::uint32_t>(4ULL);
+        static constexpr auto output_type              = static_cast<std::uint32_t>(0x1ULL << output_type_pos);
+        static constexpr auto output_pp                = static_cast<std::uint32_t>(0x0ULL << output_type_pos);
+        static constexpr auto output_od                = static_cast<std::uint32_t>(0x1ULL << output_type_pos);
 
-        static constexpr auto GPIO_SPEED_FREQ_LOW      = static_cast<std::uint32_t>(0x00000000U);             // Low speed
-        static constexpr auto GPIO_MODE_INPUT          = static_cast<std::uint32_t>(MODE_INPUT);              // Input Floating Mode
-        static constexpr auto GPIO_MODE_OUTPUT_PP      = static_cast<std::uint32_t>(MODE_OUTPUT | OUTPUT_PP); // Output Push Pull Mode
-        static constexpr auto GPIO_NOPULL              = static_cast<std::uint32_t>(0x00000000U);             // No Pull-up or Pull-down activation
+        static constexpr auto gpio_speed_freq_low      = static_cast<std::uint32_t>(0x00000000U);             // Low speed
+        static constexpr auto gpio_mode_input          = static_cast<std::uint32_t>(mode_input);              // Input Floating Mode
+        static constexpr auto gpio_mode_output_pp      = static_cast<std::uint32_t>(mode_output | output_pp); // Output Push Pull Mode
+        static constexpr auto gpio_nopull              = static_cast<std::uint32_t>(0x00000000U);             // No Pull-up or Pull-down activation
 
-        static constexpr auto GPIO_OSPEEDR_OSPEED0_Pos = static_cast<std::uint32_t>(0ULL);
-        static constexpr auto GPIO_OSPEEDR_OSPEED0_Msk = static_cast<std::uint32_t>(0x3UL << GPIO_OSPEEDR_OSPEED0_Pos);     // 0x00000003
-        static constexpr auto GPIO_OSPEEDR_OSPEED0     = static_cast<std::uint32_t>(GPIO_OSPEEDR_OSPEED0_Msk);
+        static constexpr auto gpio_ospeedr_ospeed0_pos = static_cast<std::uint32_t>(0ull);
+        static constexpr auto gpio_ospeedr_ospeed0_msk = static_cast<std::uint32_t>(0x3ul << gpio_ospeedr_ospeed0_pos);     // 0x00000003
+        static constexpr auto gpio_ospeedr_ospeed0     = static_cast<std::uint32_t>(gpio_ospeedr_ospeed0_msk);
 
-        static constexpr auto GPIO_OTYPER_OT0_Pos      = static_cast<std::uint32_t>(0ULL);
-        static constexpr auto GPIO_OTYPER_OT0_Msk      = static_cast<std::uint32_t>(0x1UL << GPIO_OTYPER_OT0_Pos);          // 0x00000001
-        static constexpr auto GPIO_OTYPER_OT0          = static_cast<std::uint32_t>(GPIO_OTYPER_OT0_Msk);
+        static constexpr auto gpio_otyper_ot0_pos      = static_cast<std::uint32_t>(0ull);
+        static constexpr auto gpio_otyper_ot0_msk      = static_cast<std::uint32_t>(0x1ul << gpio_otyper_ot0_pos);          // 0x00000001
+        static constexpr auto gpio_otyper_ot0          = static_cast<std::uint32_t>(gpio_otyper_ot0_msk);
 
-        static constexpr auto GPIO_PUPDR_PUPD0_Pos     = static_cast<std::uint32_t>(0ULL);
-        static constexpr auto GPIO_PUPDR_PUPD0_Msk     = static_cast<std::uint32_t>(0x3ULL << GPIO_PUPDR_PUPD0_Pos);        // 0x00000003
-        static constexpr auto GPIO_PUPDR_PUPD0         = static_cast<std::uint32_t>(GPIO_PUPDR_PUPD0_Msk);
+        static constexpr auto gpio_pupdr_pupd0_pos     = static_cast<std::uint32_t>(0ull);
+        static constexpr auto gpio_pupdr_pupd0_msk     = static_cast<std::uint32_t>(0x3ull << gpio_pupdr_pupd0_pos);        // 0x00000003
+        static constexpr auto gpio_pupdr_pupd0         = static_cast<std::uint32_t>(gpio_pupdr_pupd0_msk);
 
-        static constexpr auto GPIO_MODER_MODE0_Pos     = static_cast<std::uint32_t>(0ULL);
-        static constexpr auto GPIO_MODER_MODE0_Msk     = static_cast<std::uint32_t>(0x3ULL << GPIO_MODER_MODE0_Pos);        // 0x00000003
-        static constexpr auto GPIO_MODER_MODE0         = static_cast<std::uint32_t>(GPIO_MODER_MODE0_Msk);
+        static constexpr auto gpio_moder_mode0_pos     = static_cast<std::uint32_t>(0ull);
+        static constexpr auto gpio_moder_mode0_msk     = static_cast<std::uint32_t>(0x3ull << gpio_moder_mode0_pos);        // 0x00000003
+        static constexpr auto gpio_moder_mode0         = static_cast<std::uint32_t>(gpio_moder_mode0_msk);
 
       public:
         static void set_direction_output()
@@ -65,8 +65,8 @@
           temp = mcal::reg::reg_access_static<addr_type,
                                               reg_type,
                                               output_speed_register>::reg_get();
-          temp &= ~(GPIO_OSPEEDR_OSPEED0 << (bpos * 2U));
-          temp |= (GPIO_SPEED_FREQ_LOW << (bpos * 2U));
+          temp &= ~(gpio_ospeedr_ospeed0 << (bpos * 2U));
+          temp |= (gpio_speed_freq_low << (bpos * 2U));
           mcal::reg::reg_access_dynamic<addr_type,
                                         reg_type>::reg_set(output_speed_register, temp);
 
@@ -74,8 +74,8 @@
           temp =  mcal::reg::reg_access_static<addr_type,
                                        reg_type,
                                        output_type_register>::reg_get();
-          temp &= ~(GPIO_OTYPER_OT0 << bpos) ;
-          temp |= (((GPIO_MODE_OUTPUT_PP & OUTPUT_TYPE) >> OUTPUT_TYPE_Pos) << bpos);
+          temp &= ~(gpio_otyper_ot0 << bpos) ;
+          temp |= (((gpio_mode_output_pp & output_type) >> output_type_pos) << bpos);
           mcal::reg::reg_access_dynamic<addr_type,
                                         reg_type>::reg_set(output_type_register, temp);
 
@@ -83,8 +83,8 @@
           temp =  mcal::reg::reg_access_static<addr_type,
                                        reg_type,
                                        pull_up_pull_down_register>::reg_get();
-          temp &= ~(GPIO_PUPDR_PUPD0 << (bpos * 2U));
-          temp |= (GPIO_NOPULL << (bpos * 2U));
+          temp &= ~(gpio_pupdr_pupd0 << (bpos * 2u));
+          temp |= (gpio_nopull << (bpos * 2u));
           mcal::reg::reg_access_dynamic<addr_type,
                                         reg_type>::reg_set(pull_up_pull_down_register, temp);
 
@@ -93,8 +93,8 @@
           temp =  mcal::reg::reg_access_static<addr_type,
                                        reg_type,
                                        port_mode_register>::reg_get();
-          temp &= ~(GPIO_MODER_MODE0 << (bpos * 2U));
-          temp |= ((GPIO_MODE_OUTPUT_PP & GPIO_MODE) << (bpos * 2U));
+          temp &= ~(gpio_moder_mode0 << (bpos * 2u));
+          temp |= ((gpio_mode_output_pp & gpio_mode) << (bpos * 2U));
           mcal::reg::reg_access_dynamic<addr_type,
                                         reg_type>::reg_set(port_mode_register, temp);
         }
