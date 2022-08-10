@@ -1,0 +1,54 @@
+#
+#  Copyright Christopher Kormanyos 2007 - 2021.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 11.2.0
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -Os                                                            \
+                -finline-functions                                             \
+                -finline-limit=32                                              \
+                -mcpu=cortex-m7                                                \
+                -mtune=cortex-m7                                               \
+                -mthumb                                                        \
+                -mfloat-abi=hard                                               \
+                -mfpu=fpv5-d16                                                 \
+                -ffast-math                                                    \
+                -mno-unaligned-access                                          \
+                -mno-long-calls
+
+TGT_CFLAGS    = -std=c99                                                       \
+                -Wunsuffixed-float-constants                                   \
+                -Wno-sign-conversion                                           \
+                $(TGT_ALLFLAGS)                                                \
+                -DSTM32H7A3xxQ
+
+TGT_CXXFLAGS  = -std=c++14                                                     \
+                -Wno-psabi                                                     \
+                $(TGT_ALLFLAGS)                                                \
+                -Wno-sign-conversion                                           \
+                -DSTM32H7A3xxQ
+
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Drivers/STM32H7xx_HAL_Driver/Inc                  \
+                -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Device/ST/STM32H7xx/Include         \
+                -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Core/Include                        \
+                -I$(PATH_APP)/mcal/$(TGT)/Inc                                               \
+                -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)

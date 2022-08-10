@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -36,7 +36,12 @@
         {
           volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address);
 
-          *pa = register_value_type(register_value_type(reg_get() & register_value_type(~mask_value)) | register_value_type(value & mask_value));
+          *pa =
+            register_value_type
+            (
+                register_value_type(reg_get() & register_value_type(~mask_value))
+              | register_value_type(value & mask_value)
+            );
         }
 
         static void bit_set() { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | static_cast<register_value_type>(1ULL << value); }
