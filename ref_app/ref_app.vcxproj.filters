@@ -2130,22 +2130,13 @@
     <ClInclude Include="src\mcal\stm32h7a3\mcal_irq.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\from_periph_driver.h">
-      <Filter>src\mcal\stm32h7a3</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Inc\stm32h7xx_hal_conf.h">
       <Filter>src\mcal\stm32h7a3\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_armclang_ltm.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_compiler.h">
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_gcc.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_iccarm.h">
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_version.h">
@@ -2155,15 +2146,6 @@
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\mpu_armv7.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\tz_context.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_armcc.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_armclang.h">
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7a3xxq.h">
@@ -2185,9 +2167,6 @@
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_cortex.h">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_def.h">

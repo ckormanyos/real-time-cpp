@@ -5,7 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <from_periph_driver.h>
+#include "stm32h7xx_hal.h"
+
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
@@ -169,5 +170,7 @@ void mcal::osc::init(const config_type*)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
   RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
 
-  static_cast<void>(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2));
+  constexpr auto flash_latency_2 = static_cast<std::uint32_t>(UINT8_C(2));
+
+  static_cast<void>(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, flash_latency_2));
 }
