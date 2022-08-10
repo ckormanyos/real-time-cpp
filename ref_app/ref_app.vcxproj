@@ -188,7 +188,6 @@
     </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\test_stm32h7a3_nucleo\Src\mcal_wdg.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt_tgamma.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_multiprecision_cbrt.cpp" />
@@ -1016,7 +1015,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\test_stm32h7a3_nucleo\Src\mcal_wdg.h" />
     <ClInclude Include="src\app\benchmark\app_benchmark.h" />
     <ClInclude Include="src\app\benchmark\app_benchmark_detail.h" />
     <ClInclude Include="src\math\calculus\derivative.h" />

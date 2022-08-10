@@ -10,8 +10,10 @@
 
 void mcal::wdg::init(const config_type*)
 {
+  // TBD: Initialize the watchdog.
 }
 
 void mcal::wdg::secure::trigger()
 {
+  // TBD: Implement watchdog trigger.
 }

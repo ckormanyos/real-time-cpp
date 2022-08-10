@@ -946,9 +946,6 @@
     <ClCompile Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_rcc.cpp">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\test_stm32h7a3_nucleo\Src\mcal_wdg.cpp">
-      <Filter>src\math</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2138,9 +2135,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Inc\stm32h7xx_hal_conf.h">
       <Filter>src\mcal\stm32h7a3\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\test_stm32h7a3_nucleo\Src\mcal_wdg.h">
-      <Filter>src\math</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_armclang_ltm.h">
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
