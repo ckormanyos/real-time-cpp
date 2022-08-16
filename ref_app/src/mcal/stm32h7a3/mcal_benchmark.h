@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2014.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -18,8 +18,8 @@
     {
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   mcal::reg::gpiof_base,
-                                   UINT32_C(9)> benchmark_port_type;
+                                   mcal::reg::gpiod_base,
+                                   UINT32_C(3)> benchmark_port_type;
     }
   }
 

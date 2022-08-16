@@ -364,81 +364,81 @@ typedef enum
   * @brief Enable the AVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_ENABLE_IT() SET_BIT(EXTI->IMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_ENABLE_IT() set_bit(EXTI->IMR1, PWR_EXTI_LINE_AVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Enable the AVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTID2_ENABLE_IT() SET_BIT(EXTI_D2->IMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTID2_ENABLE_IT() set_bit(EXTI_D2->IMR1, PWR_EXTI_LINE_AVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Disable the AVD EXTI Line 16
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_DISABLE_IT() CLEAR_BIT(EXTI->IMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_DISABLE_IT() clear_bit(EXTI->IMR1, PWR_EXTI_LINE_AVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Disable the AVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTID2_DISABLE_IT() CLEAR_BIT(EXTI_D2->IMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTID2_DISABLE_IT() clear_bit(EXTI_D2->IMR1, PWR_EXTI_LINE_AVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Enable event on AVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_ENABLE_EVENT() SET_BIT(EXTI->EMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_ENABLE_EVENT() set_bit(EXTI->EMR1, PWR_EXTI_LINE_AVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Enable event on AVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTID2_ENABLE_EVENT() SET_BIT(EXTI_D2->EMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTID2_ENABLE_EVENT() set_bit(EXTI_D2->EMR1, PWR_EXTI_LINE_AVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Disable event on AVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_DISABLE_EVENT() CLEAR_BIT(EXTI->EMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_DISABLE_EVENT() clear_bit(EXTI->EMR1, PWR_EXTI_LINE_AVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Disable event on AVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTID2_DISABLE_EVENT() CLEAR_BIT(EXTI_D2->EMR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTID2_DISABLE_EVENT() clear_bit(EXTI_D2->EMR1, PWR_EXTI_LINE_AVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Enable the AVD Extended Interrupt Rising Trigger.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_ENABLE_RISING_EDGE() SET_BIT(EXTI->RTSR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_ENABLE_RISING_EDGE() set_bit(EXTI->RTSR1, PWR_EXTI_LINE_AVD)
 
 /**
   * @brief Disable the AVD Extended Interrupt Rising Trigger.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_DISABLE_RISING_EDGE() CLEAR_BIT(EXTI->RTSR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_DISABLE_RISING_EDGE() clear_bit(EXTI->RTSR1, PWR_EXTI_LINE_AVD)
 
 /**
   * @brief Enable the AVD Extended Interrupt Falling Trigger.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_ENABLE_FALLING_EDGE() SET_BIT(EXTI->FTSR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_ENABLE_FALLING_EDGE() set_bit(EXTI->FTSR1, PWR_EXTI_LINE_AVD)
 
 /**
   * @brief Disable the AVD Extended Interrupt Falling Trigger.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_DISABLE_FALLING_EDGE() CLEAR_BIT(EXTI->FTSR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_DISABLE_FALLING_EDGE() clear_bit(EXTI->FTSR1, PWR_EXTI_LINE_AVD)
 
 /**
   * @brief Enable the AVD Extended Interrupt Rising and Falling Trigger.
@@ -464,35 +464,35 @@ do {                                                     \
   * @brief Check whether the specified AVD EXTI interrupt flag is set or not.
   * @retval EXTI AVD Line Status.
   */
-#define __HAL_PWR_AVD_EXTI_GET_FLAG() ((READ_BIT(EXTI->PR1, PWR_EXTI_LINE_AVD) == PWR_EXTI_LINE_AVD) ? 1UL : 0UL)
+#define __HAL_PWR_AVD_EXTI_GET_FLAG() ((read_bit(EXTI->PR1, PWR_EXTI_LINE_AVD) == PWR_EXTI_LINE_AVD) ? 1UL : 0UL)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Check whether the specified AVD EXTI D2 interrupt flag is set or not.
   * @retval EXTI D2 AVD Line Status.
   */
-#define __HAL_PWR_AVD_EXTID2_GET_FLAG() ((READ_BIT(EXTI_D2->PR1, PWR_EXTI_LINE_AVD) == PWR_EXTI_LINE_AVD) ? 1UL : 0UL)
+#define __HAL_PWR_AVD_EXTID2_GET_FLAG() ((read_bit(EXTI_D2->PR1, PWR_EXTI_LINE_AVD) == PWR_EXTI_LINE_AVD) ? 1UL : 0UL)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief  Clear the AVD EXTI flag.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_CLEAR_FLAG() SET_BIT(EXTI->PR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_CLEAR_FLAG() set_bit(EXTI->PR1, PWR_EXTI_LINE_AVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief  Clear the AVD EXTI D2 flag.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTID2_CLEAR_FLAG() SET_BIT(EXTI_D2->PR1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTID2_CLEAR_FLAG() set_bit(EXTI_D2->PR1, PWR_EXTI_LINE_AVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief  Generates a Software interrupt on AVD EXTI line.
   * @retval None.
   */
-#define __HAL_PWR_AVD_EXTI_GENERATE_SWIT() SET_BIT(EXTI->SWIER1, PWR_EXTI_LINE_AVD)
+#define __HAL_PWR_AVD_EXTI_GENERATE_SWIT() set_bit(EXTI->SWIER1, PWR_EXTI_LINE_AVD)
 /**
   * @}
   */

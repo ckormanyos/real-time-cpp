@@ -21,12 +21,11 @@ void mcal::port::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_ahb4enr,
-                               static_cast<std::uint32_t>(UINT8_C(2))>::reg_or();
+                               static_cast<std::uint32_t>(UINT8_C(0x0A))>::reg_or();
 
   const volatile auto ahb4enr_portb_is_on = mcal::reg::reg_access_static<std::uint32_t,
                                                                          std::uint32_t,
                                                                          mcal::reg::rcc_ahb4enr>::reg_get();
-  static_cast<void>(ahb4enr_portb_is_on);
 
-  local::led_port_type::set_direction_output();
+  static_cast<void>(ahb4enr_portb_is_on);
 }

@@ -21,10 +21,6 @@
 #ifndef STM32H7xx_HAL_DEF
 #define STM32H7xx_HAL_DEF
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx.h"
 #include "Legacy/stm32_hal_legacy.h"
@@ -208,11 +204,6 @@ typedef enum
 */
 #define __NOINLINE _Pragma("optimize = no_inline")
 
-#endif
-
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif /* STM32H7xx_HAL_DEF */

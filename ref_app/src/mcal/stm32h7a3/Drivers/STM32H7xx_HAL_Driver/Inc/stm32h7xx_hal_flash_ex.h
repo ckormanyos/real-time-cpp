@@ -770,10 +770,10 @@ typedef struct
   */
 #if defined (DUAL_BANK)
 #define __HAL_FLASH_SET_PSIZE(__PSIZE__, __BANK__) (((__BANK__) == FLASH_BANK_1)  ? \
-                              MODIFY_REG(FLASH->CR1, FLASH_CR_PSIZE, (__PSIZE__)) : \
-                              MODIFY_REG(FLASH->CR2, FLASH_CR_PSIZE, (__PSIZE__)))
+                              modify_reg(FLASH->CR1, FLASH_CR_PSIZE, (__PSIZE__)) : \
+                              modify_reg(FLASH->CR2, FLASH_CR_PSIZE, (__PSIZE__)))
 #else
-#define __HAL_FLASH_SET_PSIZE(__PSIZE__, __BANK__)  MODIFY_REG(FLASH->CR1, FLASH_CR_PSIZE, (__PSIZE__))
+#define __HAL_FLASH_SET_PSIZE(__PSIZE__, __BANK__)  modify_reg(FLASH->CR1, FLASH_CR_PSIZE, (__PSIZE__))
 #endif /* DUAL_BANK */
 
 /**
@@ -784,10 +784,10 @@ typedef struct
   */
 #if defined (DUAL_BANK)
 #define __HAL_FLASH_GET_PSIZE(__BANK__) (((__BANK__) == FLASH_BANK_1) ? \
-                              READ_BIT((FLASH->CR1), FLASH_CR_PSIZE)  : \
-                              READ_BIT((FLASH->CR2), FLASH_CR_PSIZE))
+                              read_bit((FLASH->CR1), FLASH_CR_PSIZE)  : \
+                              read_bit((FLASH->CR2), FLASH_CR_PSIZE))
 #else
-#define __HAL_FLASH_GET_PSIZE(__BANK__)  READ_BIT((FLASH->CR1), FLASH_CR_PSIZE)
+#define __HAL_FLASH_GET_PSIZE(__BANK__)  read_bit((FLASH->CR1), FLASH_CR_PSIZE)
 #endif /* DUAL_BANK */
 
 #endif /* FLASH_CR_PSIZE */
@@ -798,14 +798,14 @@ typedef struct
   *         This parameter can be a value of @ref FLASHEx_Programming_Delay
   * @retval none
   */
-#define __HAL_FLASH_SET_PROGRAM_DELAY(__DELAY__)  MODIFY_REG(FLASH->ACR, FLASH_ACR_WRHIGHFREQ, (__DELAY__))
+#define __HAL_FLASH_SET_PROGRAM_DELAY(__DELAY__)  modify_reg(FLASH->ACR, FLASH_ACR_WRHIGHFREQ, (__DELAY__))
 
 /**
   * @brief  Get the FLASH Programming Delay.
   * @retval FLASH Programming Delay
   *         This return value can be a value of @ref FLASHEx_Programming_Delay
   */
-#define __HAL_FLASH_GET_PROGRAM_DELAY()     READ_BIT(FLASH->ACR, FLASH_ACR_WRHIGHFREQ)
+#define __HAL_FLASH_GET_PROGRAM_DELAY()     read_bit(FLASH->ACR, FLASH_ACR_WRHIGHFREQ)
 
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup FLASHEx_Exported_Functions

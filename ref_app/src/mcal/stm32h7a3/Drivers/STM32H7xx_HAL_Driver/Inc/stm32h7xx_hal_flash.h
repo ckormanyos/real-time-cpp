@@ -494,14 +494,14 @@ typedef struct
   * @retval none
   */
 #define __HAL_FLASH_SET_LATENCY(__LATENCY__) \
-                  MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, (uint32_t)(__LATENCY__))
+                  modify_reg(FLASH->ACR, FLASH_ACR_LATENCY, (uint32_t)(__LATENCY__))
 
 /**
   * @brief  Get the FLASH Latency.
   * @retval FLASH Latency
   *          The value of this parameter depend on device used within the same series
   */
-#define __HAL_FLASH_GET_LATENCY()     (READ_BIT((FLASH->ACR), FLASH_ACR_LATENCY))
+#define __HAL_FLASH_GET_LATENCY()     (read_bit((FLASH->ACR), FLASH_ACR_LATENCY))
 
 /**
   * @brief  Enable the specified FLASH interrupt.
@@ -639,9 +639,9 @@ typedef struct
   *     @arg FLASH_FLAG_CRCRDERR_BANK2 : CRC Read error on Bank 2 flag
   * @retval The new state of FLASH_FLAG (SET or RESET).
   */
-#define __HAL_FLASH_GET_FLAG_BANK1(__FLAG__)     (READ_BIT(FLASH->SR1, (__FLAG__)) == (__FLAG__))
+#define __HAL_FLASH_GET_FLAG_BANK1(__FLAG__)     (read_bit(FLASH->SR1, (__FLAG__)) == (__FLAG__))
 
-#define __HAL_FLASH_GET_FLAG_BANK2(__FLAG__)     (READ_BIT(FLASH->SR2, ((__FLAG__) & 0x7FFFFFFFU)) == (((__FLAG__) & 0x7FFFFFFFU)))
+#define __HAL_FLASH_GET_FLAG_BANK2(__FLAG__)     (read_bit(FLASH->SR2, ((__FLAG__) & 0x7FFFFFFFU)) == (((__FLAG__) & 0x7FFFFFFFU)))
 
 #if defined (DUAL_BANK)
 #define __HAL_FLASH_GET_FLAG(__FLAG__)           (IS_FLASH_FLAG_BANK1(__FLAG__) ?  __HAL_FLASH_GET_FLAG_BANK1(__FLAG__) : \
