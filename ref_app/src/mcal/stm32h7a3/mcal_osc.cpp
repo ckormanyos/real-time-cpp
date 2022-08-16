@@ -43,9 +43,7 @@ namespace local
     }
 
     // Set the power supply configuration.
-    // MODIFY_REG (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
-    mcal::reg::reg_access_dynamic<std::uint32_t,
-                                  std::uint32_t>::reg_msk(mcal::reg::pwr_cr3, SupplySource, PWR_SUPPLY_CONFIG_MASK);
+    modify_reg (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
 
     /* Wait till voltage level flag is set */
     volatile std::uint32_t delay { };

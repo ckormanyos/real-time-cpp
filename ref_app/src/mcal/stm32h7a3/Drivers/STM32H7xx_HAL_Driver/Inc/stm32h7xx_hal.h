@@ -21,10 +21,6 @@
 #ifndef STM32H7xx_HAL_H
 #define STM32H7xx_HAL_H
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal_conf.h"
 
@@ -707,17 +703,17 @@ typedef enum
 /** @brief  ART Enable Macro.
   *         Enable the Cortex-M4 ART cache.
   */
-#define __HAL_ART_ENABLE()   SET_BIT(ART->CTR, ART_CTR_EN)
+#define __HAL_ART_ENABLE()   set_bit(ART->CTR, ART_CTR_EN)
 
 /** @brief  ART Disable Macro.
   *         Disable the Cortex-M4 ART cache.
   */
-#define __HAL_ART_DISABLE()   CLEAR_BIT(ART->CTR, ART_CTR_EN)
+#define __HAL_ART_DISABLE()   clear_bit(ART->CTR, ART_CTR_EN)
 
 /** @brief  ART Cache BaseAddress Config.
   *         Configure the Cortex-M4 ART cache Base Address.
   */
-#define __HAL_ART_CONFIG_BASE_ADDRESS(__BASE_ADDRESS__)   MODIFY_REG(ART->CTR, ART_CTR_PCACHEADDR, (((__BASE_ADDRESS__) >> 12U) & 0x000FFF00UL))
+#define __HAL_ART_CONFIG_BASE_ADDRESS(__BASE_ADDRESS__)   modify_reg(ART->CTR, ART_CTR_PCACHEADDR, (((__BASE_ADDRESS__) >> 12U) & 0x000FFF00UL))
 
 /**
   * @}
@@ -733,77 +729,77 @@ typedef enum
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_AXISRAM_DBL_ECC_LOCK()     SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_AXISRAML)
+#define __HAL_SYSCFG_BREAK_AXISRAM_DBL_ECC_LOCK()     set_bit(SYSCFG->CFGR, SYSCFG_CFGR_AXISRAML)
 
 /** @brief  SYSCFG Break ITCM double ECC lock.
   *         Enable and lock the connection of ITCM double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_ITCM_DBL_ECC_LOCK()        SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_ITCML)
+#define __HAL_SYSCFG_BREAK_ITCM_DBL_ECC_LOCK()        set_bit(SYSCFG->CFGR, SYSCFG_CFGR_ITCML)
 
 /** @brief  SYSCFG Break DTCM double ECC lock.
   *         Enable and lock the connection of DTCM double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_DTCM_DBL_ECC_LOCK()        SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_DTCML)
+#define __HAL_SYSCFG_BREAK_DTCM_DBL_ECC_LOCK()        set_bit(SYSCFG->CFGR, SYSCFG_CFGR_DTCML)
 
 /** @brief  SYSCFG Break SRAM1 double ECC lock.
   *         Enable and lock the connection of SRAM1 double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_SRAM1_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_SRAM1L)
+#define __HAL_SYSCFG_BREAK_SRAM1_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_SRAM1L)
 
 /** @brief  SYSCFG Break SRAM2 double ECC lock.
   *         Enable and lock the connection of SRAM2 double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_SRAM2_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_SRAM2L)
+#define __HAL_SYSCFG_BREAK_SRAM2_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_SRAM2L)
 
 /** @brief  SYSCFG Break SRAM3 double ECC lock.
   *         Enable and lock the connection of SRAM3 double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_SRAM3_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_SRAM3L)
+#define __HAL_SYSCFG_BREAK_SRAM3_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_SRAM3L)
 
 /** @brief  SYSCFG Break SRAM4 double ECC lock.
   *         Enable and lock the connection of SRAM4 double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_SRAM4_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_SRAM4L)
+#define __HAL_SYSCFG_BREAK_SRAM4_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_SRAM4L)
 
 /** @brief  SYSCFG Break Backup SRAM double ECC lock.
   *         Enable and lock the connection of Backup SRAM double ECC error to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_BKRAM_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_BKRAML)
+#define __HAL_SYSCFG_BREAK_BKRAM_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_BKRAML)
 
 /** @brief  SYSCFG Break Cortex-M7 Lockup lock.
   *         Enable and lock the connection of Cortex-M7 LOCKUP output to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_CM7_LOCKUP_LOCK()          SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_CM7L)
+#define __HAL_SYSCFG_BREAK_CM7_LOCKUP_LOCK()          set_bit(SYSCFG->CFGR, SYSCFG_CFGR_CM7L)
 
 /** @brief  SYSCFG Break FLASH double ECC lock.
   *         Enable and lock the connection of Flash double ECC error connection to TIM1/8/15/16/17 and HRTIMER Break input.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_FLASH_DBL_ECC_LOCK()       SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_FLASHL)
+#define __HAL_SYSCFG_BREAK_FLASH_DBL_ECC_LOCK()       set_bit(SYSCFG->CFGR, SYSCFG_CFGR_FLASHL)
 
 /** @brief  SYSCFG Break PVD lock.
   *         Enable and lock the PVD connection to Timer1/8/15/16/17 and HRTIMER Break input, as well as the PVDE and PLS[2:0] in the PWR_CR1 register.
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_PVD_LOCK()                 SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_PVDL)
+#define __HAL_SYSCFG_BREAK_PVD_LOCK()                 set_bit(SYSCFG->CFGR, SYSCFG_CFGR_PVDL)
 
 #if defined(DUAL_CORE)
 /** @brief  SYSCFG Break Cortex-M4 Lockup lock.
@@ -811,7 +807,7 @@ typedef enum
   * @note   The selected configuration is locked and can be unlocked only by system reset.
             This feature is available on STM32H7 rev.B and above.
   */
-#define __HAL_SYSCFG_BREAK_CM4_LOCKUP_LOCK()          SET_BIT(SYSCFG->CFGR, SYSCFG_CFGR_CM4L)
+#define __HAL_SYSCFG_BREAK_CM4_LOCKUP_LOCK()          set_bit(SYSCFG->CFGR, SYSCFG_CFGR_CM4L)
 #endif /* DUAL_CORE */
 
 #if !defined(SYSCFG_PMCR_BOOSTEN)
@@ -823,11 +819,11 @@ typedef enum
   *     @arg @ref SYSCFG_FASTMODEPLUS_PB9 Fast-mode Plus driving capability activation on PB9
   */
 #define __HAL_SYSCFG_FASTMODEPLUS_ENABLE(__FASTMODEPLUS__)  do {assert_param(IS_SYSCFG_FASTMODEPLUS((__FASTMODEPLUS__)));\
-                                                                SET_BIT(SYSCFG->PMCR, (__FASTMODEPLUS__));\
+                                                                set_bit(SYSCFG->PMCR, (__FASTMODEPLUS__));\
                                                                }while(0)
 
 #define __HAL_SYSCFG_FASTMODEPLUS_DISABLE(__FASTMODEPLUS__) do {assert_param(IS_SYSCFG_FASTMODEPLUS((__FASTMODEPLUS__)));\
-                                                                CLEAR_BIT(SYSCFG->PMCR, (__FASTMODEPLUS__));\
+                                                                clear_bit(SYSCFG->PMCR, (__FASTMODEPLUS__));\
                                                                }while(0)
 
 #endif /* !SYSCFG_PMCR_BOOSTEN */
@@ -1125,18 +1121,4 @@ void HAL_SYSCFG_ADC2ALT_Rout0Config(uint32_t Adc2AltRout0);
 void HAL_SYSCFG_ADC2ALT_Rout1Config(uint32_t Adc2AltRout1);
 #endif /*SYSCFG_ADC2ALT_ADC2_ROUT1*/
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif /* STM32H7xx_HAL_H */
-
-

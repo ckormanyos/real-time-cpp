@@ -249,9 +249,9 @@ typedef struct
 do {                                                                           \
       __IO uint32_t tmpreg = 0x00;                                             \
       /* Configure the Voltage Scaling */                                      \
-      MODIFY_REG(PWR->SRDCR, PWR_SRDCR_VOS, (__REGULATOR__));                  \
+      modify_reg(PWR->SRDCR, PWR_SRDCR_VOS, (__REGULATOR__));                  \
       /* Delay after setting the voltage scaling */                            \
-      tmpreg = READ_BIT(PWR->SRDCR, PWR_SRDCR_VOS);                            \
+      tmpreg = read_bit(PWR->SRDCR, PWR_SRDCR_VOS);                            \
       UNUSED(tmpreg);                                                          \
 } while(0)
 #else /* 3 power domains devices */
@@ -263,24 +263,24 @@ do {                                                                           \
       if((__REGULATOR__) == PWR_REGULATOR_VOLTAGE_SCALE0)                      \
       {                                                                        \
         /* Configure the Voltage Scaling 1 */                                  \
-        MODIFY_REG(PWR->D3CR, PWR_D3CR_VOS, PWR_REGULATOR_VOLTAGE_SCALE1);     \
+        modify_reg(PWR->D3CR, PWR_D3CR_VOS, PWR_REGULATOR_VOLTAGE_SCALE1);     \
         /* Delay after setting the voltage scaling */                          \
-        tmpreg = READ_BIT(PWR->D3CR, PWR_D3CR_VOS);                            \
+        tmpreg = read_bit(PWR->D3CR, PWR_D3CR_VOS);                            \
         /* Enable the PWR overdrive */                                         \
-        SET_BIT(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                             \
+        set_bit(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                             \
         /* Delay after setting the syscfg boost setting */                     \
-        tmpreg = READ_BIT(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                   \
+        tmpreg = read_bit(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                   \
       }                                                                        \
       else                                                                     \
       {                                                                        \
         /* Disable the PWR overdrive */                                        \
-        CLEAR_BIT(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                           \
+        clear_bit(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                           \
         /* Delay after setting the syscfg boost setting */                     \
-        tmpreg = READ_BIT(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                   \
+        tmpreg = read_bit(SYSCFG->PWRCR, SYSCFG_PWRCR_ODEN);                   \
         /* Configure the Voltage Scaling x */                                  \
-        MODIFY_REG(PWR->D3CR, PWR_D3CR_VOS, (__REGULATOR__));                  \
+        modify_reg(PWR->D3CR, PWR_D3CR_VOS, (__REGULATOR__));                  \
         /* Delay after setting the voltage scaling */                          \
-        tmpreg = READ_BIT(PWR->D3CR, PWR_D3CR_VOS);                            \
+        tmpreg = read_bit(PWR->D3CR, PWR_D3CR_VOS);                            \
       }                                                                        \
       UNUSED(tmpreg);                                                          \
 } while(0)
@@ -289,9 +289,9 @@ do {                                                                           \
 do {                                                                           \
       __IO uint32_t tmpreg = 0x00;                                             \
       /* Configure the Voltage Scaling */                                      \
-      MODIFY_REG (PWR->D3CR, PWR_D3CR_VOS, (__REGULATOR__));                   \
+      modify_reg (PWR->D3CR, PWR_D3CR_VOS, (__REGULATOR__));                   \
       /* Delay after setting the voltage scaling */                            \
-      tmpreg = READ_BIT(PWR->D3CR, PWR_D3CR_VOS);                              \
+      tmpreg = read_bit(PWR->D3CR, PWR_D3CR_VOS);                              \
       UNUSED(tmpreg);                                                          \
 } while(0)
 #endif /* defined(SYSCFG_PWRCR_ODEN) */
@@ -499,8 +499,8 @@ do {                                                                           \
   */
 #define __HAL_PWR_CLEAR_FLAG(__FLAG__)      \
 do {                                        \
-     SET_BIT(PWR->CPUCR, PWR_CPUCR_CSSF);   \
-     SET_BIT(PWR->CPU2CR, PWR_CPU2CR_CSSF); \
+     set_bit(PWR->CPUCR, PWR_CPUCR_CSSF);   \
+     set_bit(PWR->CPU2CR, PWR_CPU2CR_CSSF); \
 } while(0)
 #else
 /** @brief  Clear CPU PWR flags.
@@ -513,7 +513,7 @@ do {                                        \
   *         For STM32H7Axxx and STM32H7Bxxx lines, CPU flags are STOPF and SBF.
   * @retval None.
   */
-#define __HAL_PWR_CLEAR_FLAG(__FLAG__) SET_BIT(PWR->CPUCR, PWR_CPUCR_CSSF)
+#define __HAL_PWR_CLEAR_FLAG(__FLAG__) set_bit(PWR->CPUCR, PWR_CPUCR_CSSF)
 #endif /* defined (DUAL_CORE) */
 
 /** @brief  Clear PWR wake up flags.
@@ -529,87 +529,87 @@ do {                                        \
   *         that support GPIOI port.
   * @retval None.
   */
-#define __HAL_PWR_CLEAR_WAKEUPFLAG(__FLAG__) SET_BIT(PWR->WKUPCR, (__FLAG__))
+#define __HAL_PWR_CLEAR_WAKEUPFLAG(__FLAG__) set_bit(PWR->WKUPCR, (__FLAG__))
 
 /**
   * @brief Enable the PVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_ENABLE_IT() SET_BIT(EXTI->IMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_ENABLE_IT() set_bit(EXTI->IMR1, PWR_EXTI_LINE_PVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Enable the PVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTID2_ENABLE_IT() SET_BIT(EXTI_D2->IMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTID2_ENABLE_IT() set_bit(EXTI_D2->IMR1, PWR_EXTI_LINE_PVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Disable the PVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_DISABLE_IT() CLEAR_BIT(EXTI->IMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_DISABLE_IT() clear_bit(EXTI->IMR1, PWR_EXTI_LINE_PVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Disable the PVD EXTI D2 Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTID2_DISABLE_IT() CLEAR_BIT(EXTI_D2->IMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTID2_DISABLE_IT() clear_bit(EXTI_D2->IMR1, PWR_EXTI_LINE_PVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief   Enable event on PVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_ENABLE_EVENT() SET_BIT(EXTI->EMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_ENABLE_EVENT() set_bit(EXTI->EMR1, PWR_EXTI_LINE_PVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Enable event on PVD EXTI D2 Line.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTID2_ENABLE_EVENT() SET_BIT(EXTI_D2->EMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTID2_ENABLE_EVENT() set_bit(EXTI_D2->EMR1, PWR_EXTI_LINE_PVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief   Disable event on PVD EXTI Line 16.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_DISABLE_EVENT() CLEAR_BIT(EXTI->EMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_DISABLE_EVENT() clear_bit(EXTI->EMR1, PWR_EXTI_LINE_PVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Disable event on PVD EXTI D2 Line.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTID2_DISABLE_EVENT() CLEAR_BIT(EXTI_D2->EMR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTID2_DISABLE_EVENT() clear_bit(EXTI_D2->EMR1, PWR_EXTI_LINE_PVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Enable the PVD Rising Interrupt Trigger.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_ENABLE_RISING_EDGE() SET_BIT(EXTI->RTSR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_ENABLE_RISING_EDGE() set_bit(EXTI->RTSR1, PWR_EXTI_LINE_PVD)
 
 /**
   * @brief Disable the PVD Rising Interrupt Trigger.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_DISABLE_RISING_EDGE() CLEAR_BIT(EXTI->RTSR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_DISABLE_RISING_EDGE() clear_bit(EXTI->RTSR1, PWR_EXTI_LINE_PVD)
 
 /**
   * @brief Enable the PVD Falling Interrupt Trigger.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_ENABLE_FALLING_EDGE() SET_BIT(EXTI->FTSR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_ENABLE_FALLING_EDGE() set_bit(EXTI->FTSR1, PWR_EXTI_LINE_PVD)
 
 /**
   * @brief Disable the PVD Falling Interrupt Trigger.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_DISABLE_FALLING_EDGE() CLEAR_BIT(EXTI->FTSR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_DISABLE_FALLING_EDGE() clear_bit(EXTI->FTSR1, PWR_EXTI_LINE_PVD)
 
 /**
   * @brief Enable the PVD Rising & Falling Interrupt Trigger.
@@ -635,35 +635,35 @@ do {                                                     \
   * @brief Check whether the specified PVD EXTI interrupt flag is set or not.
   * @retval EXTI PVD Line Status.
   */
-#define __HAL_PWR_PVD_EXTI_GET_FLAG() ((READ_BIT(EXTI->PR1, PWR_EXTI_LINE_PVD) == PWR_EXTI_LINE_PVD) ? 1UL : 0UL)
+#define __HAL_PWR_PVD_EXTI_GET_FLAG() ((read_bit(EXTI->PR1, PWR_EXTI_LINE_PVD) == PWR_EXTI_LINE_PVD) ? 1UL : 0UL)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Checks whether the specified PVD EXTI interrupt flag is set or not.
   * @retval EXTI D2 PVD Line Status.
   */
-#define __HAL_PWR_PVD_EXTID2_GET_FLAG() ((READ_BIT(EXTI_D2->PR1, PWR_EXTI_LINE_PVD) == PWR_EXTI_LINE_PVD) ? 1UL : 0UL)
+#define __HAL_PWR_PVD_EXTID2_GET_FLAG() ((read_bit(EXTI_D2->PR1, PWR_EXTI_LINE_PVD) == PWR_EXTI_LINE_PVD) ? 1UL : 0UL)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief Clear the PVD EXTI flag.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_CLEAR_FLAG() SET_BIT(EXTI->PR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_CLEAR_FLAG() set_bit(EXTI->PR1, PWR_EXTI_LINE_PVD)
 
 #if defined (DUAL_CORE)
 /**
   * @brief Clear the PVD EXTI D2 flag.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTID2_CLEAR_FLAG() SET_BIT(EXTI_D2->PR1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTID2_CLEAR_FLAG() set_bit(EXTI_D2->PR1, PWR_EXTI_LINE_PVD)
 #endif /* defined (DUAL_CORE) */
 
 /**
   * @brief  Generates a Software interrupt on PVD EXTI line.
   * @retval None.
   */
-#define __HAL_PWR_PVD_EXTI_GENERATE_SWIT() SET_BIT(EXTI->SWIER1, PWR_EXTI_LINE_PVD)
+#define __HAL_PWR_PVD_EXTI_GENERATE_SWIT() set_bit(EXTI->SWIER1, PWR_EXTI_LINE_PVD)
 /**
   * @}
   */

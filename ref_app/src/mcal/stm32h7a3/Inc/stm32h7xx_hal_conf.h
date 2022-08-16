@@ -21,10 +21,6 @@
 #ifndef STM32H7xx_HAL_CONF_H
 #define STM32H7xx_HAL_CONF_H
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
@@ -441,9 +437,5 @@
 #else
   #define assert_param(expr) ((void)0U)
 #endif /* USE_FULL_ASSERT */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* STM32H7xx_HAL_CONF_H */
