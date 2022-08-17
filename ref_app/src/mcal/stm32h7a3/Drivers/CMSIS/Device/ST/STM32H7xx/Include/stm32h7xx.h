@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Modified by Christopher Kormanyos 2022.
+//  Distributed under (see below).
+//
+
 /*
   ******************************************************************************
   * @file    stm32h7xx.h
@@ -26,137 +31,121 @@
   ******************************************************************************
 */
 
-#ifndef STM32H7xx_H
-#define STM32H7xx_H
+#ifndef STM32H7XX_2022_08_05_H_
+  #define STM32H7XX_2022_08_05_H_
 
-#include <cstdint>
+  #if defined(_MSC_VER)
+  #if !defined(__IO)
+  #define __IO
+  #endif
+  #endif
 
-#include <mcal_reg.h>
+  #include <cstdint>
 
-#if !defined  (STM32H7)
-#define STM32H7
-#endif
+  #include "stm32h7a3xxq.h"
 
-constexpr unsigned int __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN = (0x01);
-constexpr unsigned int __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 = (0x0A);
-constexpr unsigned int __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 = (0x02);
-constexpr unsigned int __STM32H7xx_CMSIS_DEVICE_VERSION_RC   = (0x00);
-constexpr unsigned int __STM32H7xx_CMSIS_DEVICE_VERSION      = ((   __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN << 24)
-                                                                 | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 << 16)
-                                                                 | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 <<  8)
-                                                                 | (__STM32H7xx_CMSIS_DEVICE_VERSION_RC));
+  #include <mcal_reg.h>
 
-#include "stm32h7a3xxq.h"
+  #if !defined  (STM32H7)
+  #define STM32H7
+  #endif
 
-typedef enum
-{
-  RESET = 0,
-  SET = !RESET
-}
-FlagStatus, ITStatus;
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN = static_cast<unsigned int>(0x01);
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 = static_cast<unsigned int>(0x0A);
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 = static_cast<unsigned int>(0x02);
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_RC   = static_cast<unsigned int>(0x00);
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION      = static_cast<unsigned int>
+                                                         (
+                                                             (__STM32H7xx_CMSIS_DEVICE_VERSION_MAIN << 24U)
+                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 << 16U)
+                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 <<  8U)
+                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_RC   <<  0U)
+                                                         );
 
-typedef enum
-{
-  DISABLE = 0,
-  ENABLE = !DISABLE
-}
-FunctionalState;
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
+  {
+    using local_value_type = UnknownValueType;
 
-typedef enum
-{
-  SUCCESS = 0,
-  ERROR = !SUCCESS
-}
-ErrorStatus;
+    auto addr = (volatile local_value_type*) &reg;
 
-template<typename UnknownAddressType,
-         typename UnknownValueType>
-static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit_val) -> UnknownValueType
-{
-  using local_value_type = UnknownValueType;
+    const local_value_type result = *addr;
 
-  auto addr = (volatile local_value_type*) &reg;
+    return static_cast<local_value_type>(result & bit);
+  }
 
-  const local_value_type result = *addr;
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
+  {
+    using local_value_type = UnknownValueType;
 
-  return static_cast<local_value_type>(result & bit_val);
-}
+    auto addr = (volatile local_value_type*) &reg;
 
-template<typename UnknownAddressType,
-         typename UnknownValueType>
-static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
-{
-  using local_value_type = UnknownValueType;
+    *addr = val;
+  }
 
-  auto addr = (volatile local_value_type*) &reg;
+  template<typename UnknownAddressType>
+  static inline auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
+  {
+    using local_value_type = std::uint32_t;
 
-  *addr = val;
-}
+    const auto addr = (const volatile local_value_type*) &reg;
 
-template<typename UnknownAddressType>
-static inline auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
-{
-  using local_value_type = std::uint32_t;
+    return *addr;
+  }
 
-  const auto addr = (const volatile local_value_type*) &reg;
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto set_bit(      UnknownAddressType& reg,
+                             const UnknownValueType    bit) -> void
+  {
+    using local_value_type = UnknownValueType;
 
-  return *addr;
-}
+    const auto val =
+      static_cast<local_value_type>
+      (
+          static_cast<local_value_type>(read_reg(reg))
+        | static_cast<local_value_type>(bit)
+      );
 
-template<typename UnknownAddressType,
-         typename UnknownValueType>
-static inline auto set_bit(      UnknownAddressType& reg,
-                           const UnknownValueType    bit_val) -> void
-{
-  using local_value_type = UnknownValueType;
+    write_reg(reg, val);
+  }
 
-  const auto reg_val = read_reg(reg);
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto clear_bit(      UnknownAddressType& reg,
+                               const UnknownValueType    bit) -> void
+  {
+    using local_value_type = UnknownValueType;
 
-  const auto val =
-    static_cast<local_value_type>
-    (
-        static_cast<local_value_type>(reg_val)
-      | static_cast<local_value_type>(bit_val)
-    );
+    const auto val =
+      static_cast<local_value_type>
+      (
+          static_cast<local_value_type>(read_reg(reg))
+        & static_cast<local_value_type>(~bit)
+      );
 
-  write_reg(reg, val);
-}
+    write_reg(reg, val);
+  }
 
-template<typename UnknownAddressType,
-         typename UnknownValueType>
-static inline auto clear_bit(      UnknownAddressType& reg,
-                             const UnknownValueType    bit_val) -> void
-{
-  using local_value_type = UnknownValueType;
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto modify_reg(      UnknownAddressType& reg,
+                                const UnknownValueType    clearmask,
+                                const UnknownValueType    setmask) -> void
+  {
+    using local_value_type = std::uint32_t;
 
-  const auto reg_val = read_reg(reg);
+    const auto reg_val =
+      static_cast<local_value_type>
+      (
+          (read_reg(reg) & static_cast<local_value_type>(~clearmask))
+        | static_cast<local_value_type>(setmask)
+      );
 
-  const auto val =
-    static_cast<local_value_type>
-    (
-        static_cast<local_value_type>(reg_val)
-      & static_cast<local_value_type>(~bit_val)
-    );
+    write_reg(reg, reg_val);
+  }
 
-  write_reg(reg, val);
-}
-
-template<typename UnknownAddressType,
-         typename UnknownValueType>
-static inline auto modify_reg(      UnknownAddressType& reg,
-                              const UnknownValueType    clearmask,
-                              const UnknownValueType    setmask) -> void
-{
-  using local_value_type = std::uint32_t;
-
-  const auto reg_val =
-    static_cast<local_value_type>
-    (
-        (read_reg(reg) & static_cast<local_value_type>(~clearmask))
-      | static_cast<local_value_type>(setmask)
-    );
-
-  write_reg(reg, reg_val);
-}
-
-#endif // STM32H7xx_H
+#endif // STM32H7XX_2022_08_05_H_
