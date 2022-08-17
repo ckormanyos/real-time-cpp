@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2020.
+//  Modified by Christopher Kormanyos 2022.
 //  Distributed under (see below).
 //
 
@@ -31,11 +31,13 @@
   ******************************************************************************
 */
 
-#ifndef STM32H7xx_H
-  #define STM32H7xx_H
+#ifndef STM32H7XX_2022_08_05_H_
+  #define STM32H7XX_2022_08_05_H_
 
   #if defined(_MSC_VER)
+  #if !defined(__IO)
   #define __IO
+  #endif
   #endif
 
   #include <cstdint>
@@ -146,4 +148,4 @@
     write_reg(reg, reg_val);
   }
 
-#endif // STM32H7xx_H
+#endif // STM32H7XX_2022_08_05_H_

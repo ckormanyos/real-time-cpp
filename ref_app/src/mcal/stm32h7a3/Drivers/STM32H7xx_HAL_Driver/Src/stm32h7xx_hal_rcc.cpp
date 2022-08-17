@@ -157,10 +157,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
   /*----------------------------- CSI Configuration --------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_CSI) == RCC_OSCILLATORTYPE_CSI)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_CSI(RCC_OscInitStruct->CSIState));
-    assert_param(IS_RCC_CSICALIBRATION_VALUE(RCC_OscInitStruct->CSICalibrationValue));
-
     /* When the CSI is used as system clock it will not disabled */
     const uint32_t temp_sysclksrc = hal_rcc_get_sysclk_source();
     const uint32_t temp_pllckselr = RCC->PLLCKSELR;
@@ -223,9 +219,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
   /*------------------------------ LSI Configuration -------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_LSI(RCC_OscInitStruct->LSIState));
-
     /* Check the LSI State */
     if((RCC_OscInitStruct->LSIState)!= RCC_LSI_OFF)
     {
@@ -266,9 +259,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
   /*------------------------------ HSI48 Configuration -------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSI48) == RCC_OSCILLATORTYPE_HSI48)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_HSI48(RCC_OscInitStruct->HSI48State));
-
     /* Check the HSI48 State */
     if((RCC_OscInitStruct->HSI48State)!= RCC_HSI48_OFF)
     {
@@ -308,9 +298,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
   /*------------------------------ LSE Configuration -------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_LSE(RCC_OscInitStruct->LSEState));
-
     /* Enable write access to Backup domain */
     PWR->CR1 |= PWR_CR1_DBP;
 
@@ -357,9 +344,8 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
       }
     }
   }
-  /*-------------------------------- PLL Configuration -----------------------*/
-  /* Check the parameters */
-  assert_param(IS_RCC_PLL(RCC_OscInitStruct->PLL.PLLState));
+
+  // PLL Configuration
   if ((RCC_OscInitStruct->PLL.PLLState) != RCC_PLL_NONE)
   {
     /* Check if the PLL is used as system clock or not */
@@ -480,18 +466,12 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
 HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, uint32_t FLatency)
 {
   HAL_StatusTypeDef halstatus;
-  //uint32_t tickstart;
-  //uint32_t common_system_clock;
 
    /* Check Null pointer */
   if(RCC_ClkInitStruct == NULL)
   {
     return HAL_ERROR;
   }
-
-  /* Check the parameters */
-  assert_param(IS_RCC_CLOCKTYPE(RCC_ClkInitStruct->ClockType));
-  assert_param(IS_FLASH_LATENCY(FLatency));
 
   /* To correctly read data from FLASH memory, the number of wait states (LATENCY)
     must be correctly programmed according to the frequency of the CPU clock
@@ -509,106 +489,58 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     {
       return HAL_ERROR;
     }
-
   }
 
-  /* Increasing the BUS frequency divider */
-  /*-------------------------- D1PCLK1/CDPCLK1 Configuration ---------------------------*/
+  // Increase the BUS frequency divider.
+  // D1PCLK1/CDPCLK1 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D1PCLK1) == RCC_CLOCKTYPE_D1PCLK1)
   {
-#if defined (RCC_D1CFGR_D1PPRE)
-    if((RCC_ClkInitStruct->APB3CLKDivider) > (RCC->D1CFGR & RCC_D1CFGR_D1PPRE))
-    {
-      assert_param(IS_RCC_D1PCLK1(RCC_ClkInitStruct->APB3CLKDivider));
-      modify_reg(RCC->D1CFGR, RCC_D1CFGR_D1PPRE, RCC_ClkInitStruct->APB3CLKDivider);
-    }
-#else
     if((RCC_ClkInitStruct->APB3CLKDivider) > (RCC->CDCFGR1 & RCC_CDCFGR1_CDPPRE))
     {
-      assert_param(IS_RCC_CDPCLK1(RCC_ClkInitStruct->APB3CLKDivider));
       modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_CDPPRE, RCC_ClkInitStruct->APB3CLKDivider);
     }
-#endif
   }
 
   /*-------------------------- PCLK1 Configuration ---------------------------*/
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
   {
-#if defined (RCC_D2CFGR_D2PPRE1)
-    if((RCC_ClkInitStruct->APB1CLKDivider) > (RCC->D2CFGR & RCC_D2CFGR_D2PPRE1))
-    {
-      assert_param(IS_RCC_PCLK1(RCC_ClkInitStruct->APB1CLKDivider));
-      modify_reg(RCC->D2CFGR, RCC_D2CFGR_D2PPRE1, (RCC_ClkInitStruct->APB1CLKDivider));
-    }
-#else
     if((RCC_ClkInitStruct->APB1CLKDivider) > (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE1))
     {
-      assert_param(IS_RCC_PCLK1(RCC_ClkInitStruct->APB1CLKDivider));
       modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE1, (RCC_ClkInitStruct->APB1CLKDivider));
-  }
-#endif
     }
+  }
+
   /*-------------------------- PCLK2 Configuration ---------------------------*/
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2)
   {
-#if defined(RCC_D2CFGR_D2PPRE2)
-    if((RCC_ClkInitStruct->APB2CLKDivider) > (RCC->D2CFGR & RCC_D2CFGR_D2PPRE2))
-    {
-      assert_param(IS_RCC_PCLK2(RCC_ClkInitStruct->APB2CLKDivider));
-      modify_reg(RCC->D2CFGR, RCC_D2CFGR_D2PPRE2, (RCC_ClkInitStruct->APB2CLKDivider));
-    }
-#else
      if((RCC_ClkInitStruct->APB2CLKDivider) > (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE2))
     {
-      assert_param(IS_RCC_PCLK2(RCC_ClkInitStruct->APB2CLKDivider));
       modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE2, (RCC_ClkInitStruct->APB2CLKDivider));
     }
-#endif
   }
 
   /*-------------------------- D3PCLK1 Configuration ---------------------------*/
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D3PCLK1) == RCC_CLOCKTYPE_D3PCLK1)
   {
-#if defined(RCC_D3CFGR_D3PPRE)
-    if((RCC_ClkInitStruct->APB4CLKDivider) > (RCC->D3CFGR & RCC_D3CFGR_D3PPRE))
-    {
-      assert_param(IS_RCC_D3PCLK1(RCC_ClkInitStruct->APB4CLKDivider));
-      modify_reg(RCC->D3CFGR, RCC_D3CFGR_D3PPRE, (RCC_ClkInitStruct->APB4CLKDivider) );
-    }
-#else
     if((RCC_ClkInitStruct->APB4CLKDivider) > (RCC->SRDCFGR & RCC_SRDCFGR_SRDPPRE))
     {
-      assert_param(IS_RCC_D3PCLK1(RCC_ClkInitStruct->APB4CLKDivider));
       modify_reg(RCC->SRDCFGR, RCC_SRDCFGR_SRDPPRE, (RCC_ClkInitStruct->APB4CLKDivider) );
     }
-#endif
   }
 
    /*-------------------------- HCLK Configuration --------------------------*/
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
   {
-#if defined (RCC_D1CFGR_HPRE)
-    if((RCC_ClkInitStruct->AHBCLKDivider) > (RCC->D1CFGR & RCC_D1CFGR_HPRE))
+    if((RCC_ClkInitStruct->AHBCLKDivider) > (RCC->CDCFGR1 & RCC_CDCFGR1_HPRE))
     {
       /* Set the new HCLK clock divider */
-      assert_param(IS_RCC_HCLK(RCC_ClkInitStruct->AHBCLKDivider));
-      modify_reg(RCC->D1CFGR, RCC_D1CFGR_HPRE, RCC_ClkInitStruct->AHBCLKDivider);
-    }
-#else
-        if((RCC_ClkInitStruct->AHBCLKDivider) > (RCC->CDCFGR1 & RCC_CDCFGR1_HPRE))
-    {
-      /* Set the new HCLK clock divider */
-      assert_param(IS_RCC_HCLK(RCC_ClkInitStruct->AHBCLKDivider));
       modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_HPRE, RCC_ClkInitStruct->AHBCLKDivider);
     }
-#endif
   }
 
     /*------------------------- SYSCLK Configuration -------------------------*/
     if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_SYSCLK) == RCC_CLOCKTYPE_SYSCLK)
     {
-      assert_param(IS_RCC_SYSCLK(RCC_ClkInitStruct->SYSCLKDivider));
-      assert_param(IS_RCC_SYSCLKSOURCE(RCC_ClkInitStruct->SYSCLKSource));
 #if defined(RCC_D1CFGR_D1CPRE)
       modify_reg(RCC->D1CFGR, RCC_D1CFGR_D1CPRE, RCC_ClkInitStruct->SYSCLKDivider);
 #else
@@ -660,21 +592,11 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
    /*-------------------------- HCLK Configuration --------------------------*/
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
   {
-#if defined(RCC_D1CFGR_HPRE)
-    if((RCC_ClkInitStruct->AHBCLKDivider) < (RCC->D1CFGR & RCC_D1CFGR_HPRE))
-    {
-      /* Set the new HCLK clock divider */
-      assert_param(IS_RCC_HCLK(RCC_ClkInitStruct->AHBCLKDivider));
-      modify_reg(RCC->D1CFGR, RCC_D1CFGR_HPRE, RCC_ClkInitStruct->AHBCLKDivider);
-    }
-#else
     if((RCC_ClkInitStruct->AHBCLKDivider) < (RCC->CDCFGR1 & RCC_CDCFGR1_HPRE))
     {
       /* Set the new HCLK clock divider */
-      assert_param(IS_RCC_HCLK(RCC_ClkInitStruct->AHBCLKDivider));
       modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_HPRE, RCC_ClkInitStruct->AHBCLKDivider);
     }
-#endif
   }
 
   /* Decreasing the number of wait states because of lower CPU frequency */
@@ -689,79 +611,43 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     {
       return HAL_ERROR;
     }
- }
+  }
 
   /*-------------------------- D1PCLK1/CDPCLK Configuration ---------------------------*/
- if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D1PCLK1) == RCC_CLOCKTYPE_D1PCLK1)
- {
-#if defined(RCC_D1CFGR_D1PPRE)
-   if((RCC_ClkInitStruct->APB3CLKDivider) < (RCC->D1CFGR & RCC_D1CFGR_D1PPRE))
-   {
-     assert_param(IS_RCC_D1PCLK1(RCC_ClkInitStruct->APB3CLKDivider));
-     modify_reg(RCC->D1CFGR, RCC_D1CFGR_D1PPRE, RCC_ClkInitStruct->APB3CLKDivider);
-   }
-#else
-   if((RCC_ClkInitStruct->APB3CLKDivider) < (RCC->CDCFGR1 & RCC_CDCFGR1_CDPPRE))
-   {
-     assert_param(IS_RCC_CDPCLK1(RCC_ClkInitStruct->APB3CLKDivider));
-     modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_CDPPRE, RCC_ClkInitStruct->APB3CLKDivider);
-   }
-#endif
- }
+  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D1PCLK1) == RCC_CLOCKTYPE_D1PCLK1)
+  {
+    if((RCC_ClkInitStruct->APB3CLKDivider) < (RCC->CDCFGR1 & RCC_CDCFGR1_CDPPRE))
+    {
+      modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_CDPPRE, RCC_ClkInitStruct->APB3CLKDivider);
+    }
+  }
 
   /*-------------------------- PCLK1 Configuration ---------------------------*/
- if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
- {
-#if defined(RCC_D2CFGR_D2PPRE1)
-   if((RCC_ClkInitStruct->APB1CLKDivider) < (RCC->D2CFGR & RCC_D2CFGR_D2PPRE1))
-   {
-     assert_param(IS_RCC_PCLK1(RCC_ClkInitStruct->APB1CLKDivider));
-     modify_reg(RCC->D2CFGR, RCC_D2CFGR_D2PPRE1, (RCC_ClkInitStruct->APB1CLKDivider));
-   }
-#else
-   if((RCC_ClkInitStruct->APB1CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE1))
-   {
-     assert_param(IS_RCC_PCLK1(RCC_ClkInitStruct->APB1CLKDivider));
-     modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE1, (RCC_ClkInitStruct->APB1CLKDivider));
-   }
-#endif
- }
+  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
+  {
+    if((RCC_ClkInitStruct->APB1CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE1))
+    {
+      modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE1, (RCC_ClkInitStruct->APB1CLKDivider));
+    }
+  }
 
   /*-------------------------- PCLK2 Configuration ---------------------------*/
- if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2)
- {
-#if defined (RCC_D2CFGR_D2PPRE2)
-   if((RCC_ClkInitStruct->APB2CLKDivider) < (RCC->D2CFGR & RCC_D2CFGR_D2PPRE2))
-   {
-     assert_param(IS_RCC_PCLK2(RCC_ClkInitStruct->APB2CLKDivider));
-     modify_reg(RCC->D2CFGR, RCC_D2CFGR_D2PPRE2, (RCC_ClkInitStruct->APB2CLKDivider));
-   }
-#else
-   if((RCC_ClkInitStruct->APB2CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE2))
-   {
-     assert_param(IS_RCC_PCLK2(RCC_ClkInitStruct->APB2CLKDivider));
-     modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE2, (RCC_ClkInitStruct->APB2CLKDivider));
-   }
-#endif
- }
+  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2)
+  {
+    if((RCC_ClkInitStruct->APB2CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE2))
+    {
+      modify_reg(RCC->CDCFGR2, RCC_CDCFGR2_CDPPRE2, (RCC_ClkInitStruct->APB2CLKDivider));
+    }
+  }
 
-  /*-------------------------- D3PCLK1/SRDPCLK1 Configuration ---------------------------*/
- if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D3PCLK1) == RCC_CLOCKTYPE_D3PCLK1)
- {
-#if defined(RCC_D3CFGR_D3PPRE)
-   if((RCC_ClkInitStruct->APB4CLKDivider) < (RCC->D3CFGR & RCC_D3CFGR_D3PPRE))
-   {
-     assert_param(IS_RCC_D3PCLK1(RCC_ClkInitStruct->APB4CLKDivider));
-     modify_reg(RCC->D3CFGR, RCC_D3CFGR_D3PPRE, (RCC_ClkInitStruct->APB4CLKDivider) );
-   }
-#else
-   if((RCC_ClkInitStruct->APB4CLKDivider) < (RCC->SRDCFGR & RCC_SRDCFGR_SRDPPRE))
-   {
-     assert_param(IS_RCC_SRDPCLK1(RCC_ClkInitStruct->APB4CLKDivider));
-     modify_reg(RCC->SRDCFGR, RCC_SRDCFGR_SRDPPRE, (RCC_ClkInitStruct->APB4CLKDivider) );
-   }
-#endif
- }
+  // D3PCLK1/SRDPCLK1 Configuration
+  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D3PCLK1) == RCC_CLOCKTYPE_D3PCLK1)
+  {
+    if((RCC_ClkInitStruct->APB4CLKDivider) < (RCC->SRDCFGR & RCC_SRDCFGR_SRDPPRE))
+    {
+      modify_reg(RCC->SRDCFGR, RCC_SRDCFGR_SRDPPRE, (RCC_ClkInitStruct->APB4CLKDivider) );
+    }
+  }
 
   halstatus = HAL_OK;
 

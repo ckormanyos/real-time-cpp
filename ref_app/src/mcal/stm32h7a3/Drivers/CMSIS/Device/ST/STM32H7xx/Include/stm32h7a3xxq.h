@@ -22,16 +22,14 @@
   ******************************************************************************
   */
 
-/** @addtogroup CMSIS_Device
-  * @{
-  */
-
-/** @addtogroup stm32h7a3xxq
-  * @{
-  */
-
 #ifndef STM32H7A3xxQ_H
 #define STM32H7A3xxQ_H
+
+#if defined(_MSC_VER)
+#if !defined(__IO)
+#define __IO
+#endif
+#endif
 
 typedef enum
 {
@@ -90,7 +88,10 @@ IRQn_Type;
 #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 #define __ICACHE_PRESENT          1U       /*!< CM7 instruction cache present                 */
 #define __DCACHE_PRESENT          1U       /*!< CM7 data cache present                        */
+
+#if !defined(_MSC_VER)
 #include "core_cm7.h"                     /*!< Cortex-M7 processor and core peripherals      */
+#endif
 
 #include <cstdint>
 
@@ -251,37 +252,19 @@ typedef struct
 #define SRD_AHB4PERIPH_BASE      (PERIPH_BASE + 0x18020000UL)   /*!<  D3_AHB1PERIPH_BASE       (PERIPH_BASE + 0x18020000UL)                    */
 #define CD_AHB3PERIPH_BASE       (PERIPH_BASE + 0x12000000UL)   /*!<  D1_AHB1PERIPH_BASE       (PERIPH_BASE + 0x12000000UL)                    */
 
-#define RCC_BASE              (SRD_AHB4PERIPH_BASE + 0x4400UL)
-#define PWR_BASE              (SRD_AHB4PERIPH_BASE + 0x4800UL)
-#define FLASH_R_BASE          (CD_AHB3PERIPH_BASE + 0x2000UL)
-
-#define RCC                 ((RCC_TypeDef *) RCC_BASE)
-#define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
-#define PWR                 ((PWR_TypeDef *) PWR_BASE)
+#define RCC_BASE                       (SRD_AHB4PERIPH_BASE + 0x4400UL)
+#define PWR_BASE                       (SRD_AHB4PERIPH_BASE + 0x4800UL)
+#define FLASH_R_BASE                   (CD_AHB3PERIPH_BASE + 0x2000UL)
 
 #define PWR_CR1_DBP_Pos                (8U)
 #define PWR_CR1_DBP_Msk                (0x1UL << PWR_CR1_DBP_Pos)              /*!< 0x00000100 */
 #define PWR_CR1_DBP                    PWR_CR1_DBP_Msk                         /*!< Disable Back-up domain Protection */
 
-/********************  Bit definition for PWR_CR3 register  *******************/
-#define PWR_CR3_USB33RDY_Pos           (26U)
-#define PWR_CR3_USB33RDY_Msk           (0x1UL << PWR_CR3_USB33RDY_Pos)         /*!< 0x04000000 */
-#define PWR_CR3_USB33RDY               PWR_CR3_USB33RDY_Msk                    /*!< USB supply ready */
-#define PWR_CR3_USBREGEN_Pos           (25U)
-#define PWR_CR3_USBREGEN_Msk           (0x1UL << PWR_CR3_USBREGEN_Pos)         /*!< 0x02000000 */
-#define PWR_CR3_USBREGEN               PWR_CR3_USBREGEN_Msk                    /*!< USB regulator enable */
-#define PWR_CR3_USB33DEN_Pos           (24U)
-#define PWR_CR3_USB33DEN_Msk           (0x1UL << PWR_CR3_USB33DEN_Pos)         /*!< 0x01000000 */
-#define PWR_CR3_USB33DEN               PWR_CR3_USB33DEN_Msk                    /*!< VDD33_USB voltage level detector enable */
-#define PWR_CR3_SMPSEXTRDY_Pos         (16U)
-#define PWR_CR3_SMPSEXTRDY_Msk         (0x1UL << PWR_CR3_SMPSEXTRDY_Pos)       /*!< 0x00010000 */
-#define PWR_CR3_SMPSEXTRDY             PWR_CR3_SMPSEXTRDY_Msk                  /*!< SMPS External supply ready */
-#define PWR_CR3_VBRS_Pos               (9U)
-#define PWR_CR3_VBRS_Msk               (0x1UL << PWR_CR3_VBRS_Pos)             /*!< 0x00000200 */
-#define PWR_CR3_VBRS                   PWR_CR3_VBRS_Msk                        /*!< VBAT charging resistor selection */
-#define PWR_CR3_VBE_Pos                (8U)
-#define PWR_CR3_VBE_Msk                (0x1UL << PWR_CR3_VBE_Pos)              /*!< 0x00000100 */
-#define PWR_CR3_VBE                    PWR_CR3_VBE_Msk                         /*!< VBAT charging enable */
+#define RCC                            ((RCC_TypeDef *) RCC_BASE)
+#define FLASH                          ((FLASH_TypeDef *) FLASH_R_BASE)
+#define PWR                            ((PWR_TypeDef *) PWR_BASE)
+
+// Bit definitions for PWR_CR3 register
 #define PWR_CR3_SMPSLEVEL_Pos          (4U)
 #define PWR_CR3_SMPSLEVEL_Msk          (0x3UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000030 */
 #define PWR_CR3_SMPSLEVEL              PWR_CR3_SMPSLEVEL_Msk                   /*!< SMPS output Voltage */
@@ -300,7 +283,7 @@ typedef struct
 #define PWR_CR3_BYPASS_Msk             (0x1UL << PWR_CR3_BYPASS_Pos)           /*!< 0x00000001 */
 #define PWR_CR3_BYPASS                 PWR_CR3_BYPASS_Msk                      /*!< Power Management Unit bypass */
 
-/********************  Bit definition for PWR_CPUCR register  *****************/
+// Bit definitions for PWR_CPUCR register
 #define PWR_CPUCR_RUN_SRD_Pos          (11U)
 #define PWR_CPUCR_RUN_SRD_Msk          (0x1UL << PWR_CPUCR_RUN_SRD_Pos)        /*!< 0x00000800 */
 #define PWR_CPUCR_RUN_SRD              PWR_CPUCR_RUN_SRD_Msk                   /*!< Keep system SRD domain in RUN mode regardless of the CPU sub-systems modes */
@@ -319,7 +302,8 @@ typedef struct
 #define PWR_CPUCR_RETDS_CD_Pos         (0U)
 #define PWR_CPUCR_RETDS_CD_Msk         (0x1UL << PWR_CPUCR_RETDS_CD_Pos)       /*!< 0x00000001 */
 #define PWR_CPUCR_RETDS_CD             PWR_CPUCR_RETDS_CD_Msk                  /*!< CD domain Power Down Deepsleep selection */
-/********************  Bit definition for PWR_SRDCR register  *****************/
+
+// Bit definitions for PWR_SRDCR register
 #define PWR_SRDCR_VOS_Pos              (14U)
 #define PWR_SRDCR_VOS_Msk              (0x3UL << PWR_SRDCR_VOS_Pos)             /*!< 0x0000C000 */
 #define PWR_SRDCR_VOS                  PWR_SRDCR_VOS_Msk                        /*!< Voltage Scaling selection according performance */
@@ -329,7 +313,7 @@ typedef struct
 #define PWR_SRDCR_VOSRDY_Msk           (0x1UL << PWR_SRDCR_VOSRDY_Pos)          /*!< 0x00002000 */
 #define PWR_SRDCR_VOSRDY               PWR_SRDCR_VOSRDY_Msk                     /*!< VOS Ready bit for VDD11 Voltage Scaling output selection */
 
-/*******************  Bits definition for FLASH_ACR register  **********************/
+// Bit definitions for FLASH_ACR register
 #define FLASH_ACR_LATENCY_Pos                (0U)
 #define FLASH_ACR_LATENCY_Msk                (0xFUL << FLASH_ACR_LATENCY_Pos)  /*!< 0x0000000F: bit4 is kept only for legacy purpose */
 #define FLASH_ACR_LATENCY                    FLASH_ACR_LATENCY_Msk             /*!< Read Latency */
