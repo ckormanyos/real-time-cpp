@@ -1,5 +1,9 @@
-/* USER CODE BEGIN Header */
-/**
+///////////////////////////////////////////////////////////////////////////////
+//  Modified by Christopher Kormanyos 2022.
+//  Distributed under (see below).
+//
+
+/*
   ******************************************************************************
   * @file    stm32h7xx_hal_conf.h
   * @author  MCD Application Team
@@ -15,15 +19,13 @@
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
-  */
-/* USER CODE END Header */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef STM32H7xx_HAL_CONF_H
-#define STM32H7xx_HAL_CONF_H
+*/
 
+#ifndef STM32H7XX_HAL_CONF_2022_08_05_H_
+  #define STM32H7XX_HAL_CONF_2022_08_05_H_
 
-#include "stm32h7xx_hal_rcc.h"
-#include "stm32h7xx_hal_flash.h"
-#include "stm32h7xx_hal_pwr.h"
+  #include "stm32h7xx_hal_rcc.h"
+  #include "stm32h7xx_hal_flash.h"
+  #include "stm32h7xx_hal_pwr.h"
 
-#endif // STM32H7xx_HAL_CONF_H
+#endif // STM32H7XX_HAL_CONF_2022_08_05_H_

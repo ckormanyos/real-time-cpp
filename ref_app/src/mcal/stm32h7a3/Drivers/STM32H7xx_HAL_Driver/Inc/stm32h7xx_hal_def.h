@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Modified by Christopher Kormanyos 2022.
+//  Distributed under (see below).
+//
+
 /*
   ******************************************************************************
   * @file    stm32h7xx_hal_def.h
@@ -17,10 +22,9 @@
   ******************************************************************************
 */
 
-#ifndef STM32H7xx_HAL_DEF
-  #define STM32H7xx_HAL_DEF
+#ifndef STM32H7XX_HAL_DEF_2022_08_05_H_
+  #define STM32H7XX_HAL_DEF_2022_08_05_H_
 
-  #include <cmath>
   #include <cstddef>
 
   #include "stm32h7xx.h"
@@ -34,6 +38,4 @@
   }
   HAL_StatusTypeDef;
 
-  #define UNUSED(x) ((void)(x))
-
-#endif // STM32H7xx_HAL_DEF
+#endif // STM32H7XX_HAL_DEF_2022_08_05_H_
