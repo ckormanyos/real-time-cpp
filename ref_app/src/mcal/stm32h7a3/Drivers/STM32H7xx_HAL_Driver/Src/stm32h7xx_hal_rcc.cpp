@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
   ******************************************************************************
   * @file    stm32h7xx_hal_rcc.c
   * @author  MCD Application Team
@@ -8,49 +8,6 @@
   *           + Initialization and de-initialization functions
   *           + Peripheral Control functions
   *
-  @verbatim
-  ==============================================================================
-                      ##### RCC specific features #####
-  ==============================================================================
-    [..]
-      After reset the device is running from Internal High Speed oscillator
-      (HSI 64MHz) with Flash 0 wait state,and all peripherals are off except
-      internal SRAM, Flash, JTAG and PWR
-      (+) There is no pre-scaler on High speed (AHB) and Low speed (APB) buses;
-          all peripherals mapped on these buses are running at HSI speed.
-      (+) The clock for all peripherals is switched off, except the SRAM and FLASH.
-      (+) All GPIOs are in analogue mode , except the JTAG pins which
-          are assigned to be used for debug purpose.
-
-    [..]
-      Once the device started from reset, the user application has to:
-      (+) Configure the clock source to be used to drive the System clock
-          (if the application needs higher frequency/performance)
-      (+) Configure the System clock frequency and Flash settings
-      (+) Configure the AHB and APB buses pre-scalers
-      (+) Enable the clock for the peripheral(s) to be used
-      (+) Configure the clock kernel source(s) for peripherals which clocks are not
-          derived from the System clock through :RCC_D1CCIPR,RCC_D2CCIP1R,RCC_D2CCIP2R
-          and RCC_D3CCIPR registers
-
-                      ##### RCC Limitations #####
-  ==============================================================================
-    [..]
-      A delay between an RCC peripheral clock enable and the effective peripheral
-      enabling should be taken into account in order to manage the peripheral read/write
-      from/to registers.
-      (+) This delay depends on the peripheral mapping.
-      (+) If peripheral is mapped on AHB: the delay is 2 AHB clock cycle
-          after the clock enable bit is set on the hardware register
-      (+) If peripheral is mapped on APB: the delay is 2 APB clock cycle
-          after the clock enable bit is set on the hardware register
-
-    [..]
-      Implemented Workaround:
-      (+) For AHB & APB peripherals, a dummy read to the peripheral register has been
-          inserted in each __HAL_RCC_PPP_CLK_ENABLE() macro.
-
-  @endverbatim
  ******************************************************************************
   * @attention
   *
@@ -61,28 +18,10 @@
   * the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   ******************************************************************************
-  */
+*/
 
-/* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
 
-/** @addtogroup STM32H7xx_HAL_Driver
-  * @{
-  */
-
-/** @defgroup RCC  RCC
-  * @brief RCC HAL module driver
-  * @{
-  */
-
-#ifdef HAL_RCC_MODULE_ENABLED
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/** @defgroup RCC_Private_Macros RCC Private Macros
-  * @{
-  */
 #define MCO1_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
 #define MCO1_GPIO_PORT        GPIOA
 #define MCO1_PIN              GPIO_PIN_8
@@ -91,124 +30,45 @@
 #define MCO2_GPIO_PORT         GPIOC
 #define MCO2_PIN               GPIO_PIN_9
 
-/**
-  * @}
-  */
-/* Private variables ---------------------------------------------------------*/
-/** @defgroup RCC_Private_Variables RCC Private Variables
-  * @{
-  */
-
-/**
-  * @}
-  */
-/* Private function prototypes -----------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/
-
-/** @defgroup RCC_Exported_Functions RCC Exported Functions
-  * @{
-  */
-
-/** @defgroup RCC_Exported_Functions_Group1 Initialization and de-initialization functions
- *  @brief    Initialization and Configuration functions
- *
-@verbatim
- ===============================================================================
-           ##### Initialization functions #####
- ===============================================================================
-    [..]
-      This section provides functions allowing to configure the internal/external oscillators
-      (HSE, HSI, LSE,CSI, LSI,HSI48, PLL, CSS and MCO) and the System buses clocks (SYSCLK, AHB3, AHB1
-       AHB2,AHB4,APB3, APB1L, APB1H, APB2, and APB4).
-
-    [..] Internal/external clock and PLL configuration
-         (#) HSI (high-speed internal), 64 MHz factory-trimmed RC used directly or through
-             the PLL as System clock source.
-         (#) CSI is a low-power RC oscillator which can be used directly as system clock, peripheral
-             clock, or PLL input.But even with frequency calibration, is less accurate than an
-             external crystal oscillator or ceramic resonator.
-         (#) LSI (low-speed internal), 32 KHz low consumption RC used as IWDG and/or RTC
-             clock source.
-
-         (#) HSE (high-speed external), 4 to 48 MHz crystal oscillator used directly or
-             through the PLL as System clock source. Can be used also as RTC clock source.
-
-         (#) LSE (low-speed external), 32 KHz oscillator used as RTC clock source.
-
-         (#) PLL , The RCC features three independent PLLs (clocked by HSI , HSE or CSI),
-             featuring three different output clocks and able  to work either in integer or Fractional mode.
-           (++) A main PLL, PLL1, which is generally used to provide clocks to the CPU
-                and to some peripherals.
-           (++) Two dedicated PLLs, PLL2 and PLL3, which are used to generate the kernel clock for peripherals.
-
-
-         (#) CSS (Clock security system), once enabled and if a HSE clock failure occurs
-            (HSE used directly or through PLL as System clock source), the System clock
-             is automatically switched to HSI and an interrupt is generated if enabled.
-             The interrupt is linked to the Cortex-M NMI (Non-Mask-able Interrupt)
-             exception vector.
-
-         (#) MCO1 (micro controller clock output), used to output HSI, LSE, HSE, PLL1(PLL1_Q)
-             or HSI48 clock (through a configurable pre-scaler) on PA8 pin.
-
-         (#) MCO2 (micro controller clock output), used to output HSE, PLL2(PLL2_P), SYSCLK,
-             LSI, CSI, or PLL1(PLL1_P) clock (through a configurable pre-scaler) on PC9 pin.
-
-    [..] System, AHB and APB buses clocks configuration
-         (#) Several clock sources can be used to drive the System clock (SYSCLK): CSI,HSI,
-             HSE and PLL.
-             The AHB clock (HCLK) is derived from System core clock through configurable
-             pre-scaler and used to clock the CPU, memory and peripherals mapped
-             on AHB and APB bus of the 3 Domains (D1, D2, D3)* through configurable pre-scalers
-             and used to clock the peripherals mapped on these buses. You can use
-             "HAL_RCC_GetSysClockFreq()" function to retrieve system clock frequency.
-
-         -@- All the peripheral clocks are derived from the System clock (SYSCLK) except those
-             with dual clock domain where kernel source clock could be selected through
-             RCC_D1CCIPR,RCC_D2CCIP1R,RCC_D2CCIP2R and RCC_D3CCIPR registers.
-
-     (*) : 2 Domains (CD and SRD) for stm32h7a3xx and stm32h7b3xx family lines.
-@endverbatim
-  * @{
-  */
-
-/**
-  * @brief  Initializes the RCC Oscillators according to the specified parameters in the
-  *         RCC_OscInitTypeDef.
-  * @param  RCC_OscInitStruct: pointer to an RCC_OscInitTypeDef structure that
-  *         contains the configuration information for the RCC Oscillators.
-  * @note   The PLL is not disabled when used as system clock.
-  * @note   Transitions LSE Bypass to LSE On and LSE On to LSE Bypass are not
-  *         supported by this function. User should request a transition to LSE Off
-  *         first and then LSE On or LSE Bypass.
-  * @note   Transition HSE Bypass to HSE On and HSE On to HSE Bypass are not
-  *         supported by this function. User should request a transition to HSE Off
-  *         first and then HSE On or HSE Bypass.
-  * @retval HAL status
-  */
-__weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
+HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
 {
-  //uint32_t tickstart;
-  uint32_t temp1_pllckcfg, temp2_pllckcfg;
+  // Initializes the RCC Oscillators according to the specified parameters in the
+  // RCC_OscInitTypeDef.
+  // RCC_OscInitStruct: pointer to an RCC_OscInitTypeDef structure that
+  // contains the configuration information for the RCC Oscillators.
+  // The PLL is not disabled when used as system clock.
+  // Transitions LSE Bypass to LSE On and LSE On to LSE Bypass are not
+  // supported by this function. User should request a transition to LSE Off
+  // first and then LSE On or LSE Bypass.
+  // Transition HSE Bypass to HSE On and HSE On to HSE Bypass are not
+  // supported by this function. User should request a transition to HSE Off
+  // first and then HSE On or HSE Bypass.
 
-    /* Check Null pointer */
-  if(RCC_OscInitStruct == NULL)
-  {
-    return HAL_ERROR;
-  }
+  if(RCC_OscInitStruct == nullptr) { return HAL_ERROR; }
 
-  /* Check the parameters */
-  assert_param(IS_RCC_OSCILLATORTYPE(RCC_OscInitStruct->OscillatorType));
-  /*------------------------------- HSE Configuration ------------------------*/
+  std::uint32_t temp1_pllckcfg;
+  std::uint32_t temp2_pllckcfg;
+
+  // HSE Configuration
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSE) == RCC_OSCILLATORTYPE_HSE)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_HSE(RCC_OscInitStruct->HSEState));
+    const std::uint32_t temp_sysclksrc = hal_rcc_get_sysclk_source();
+    const std::uint32_t temp_pllckselr = RCC->PLLCKSELR;
 
-    const uint32_t temp_sysclksrc = __HAL_RCC_GET_SYSCLK_SOURCE();
-    const uint32_t temp_pllckselr = RCC->PLLCKSELR;
-    /* When the HSE is used as system clock or clock source for PLL in these cases HSE will not disabled */
-    if((temp_sysclksrc == RCC_CFGR_SWS_HSE) || ((temp_sysclksrc == RCC_CFGR_SWS_PLL1) && ((temp_pllckselr & RCC_PLLCKSELR_PLLSRC) == RCC_PLLCKSELR_PLLSRC_HSE)))
+    // When the HSE is used as system clock or clock source
+    // for PLL in these cases HSE will not disabled.
+
+    const auto
+      hse_is_system_clock =
+      (
+           (temp_sysclksrc == RCC_CFGR_SWS_HSE)
+        || (
+                 (temp_sysclksrc == RCC_CFGR_SWS_PLL1)
+             && ((temp_pllckselr & RCC_PLLCKSELR_PLLSRC) == RCC_PLLCKSELR_PLLSRC_HSE)
+           )
+      );
+
+    if(hse_is_system_clock)
     {
       if((hal_rcc_get_flag(RCC_FLAG_HSERDY) != 0U) && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF))
       {
@@ -217,101 +77,63 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
     }
     else
     {
-      /* Set the new HSE configuration ---------------------------------------*/
+      // Set the new HSE configuration.
       __HAL_RCC_HSE_CONFIG(RCC_OscInitStruct->HSEState);
 
-      /* Check the HSE State */
+      // Check the HSE State.
       if(RCC_OscInitStruct->HSEState != RCC_HSE_OFF)
       {
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
-
-        /* Wait till HSE is ready */
-        while(hal_rcc_get_flag(RCC_FLAG_HSERDY) == 0U)
-        {
-          //if((uint32_t) (HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
+        // Wait until the HSE is ready.
+        while(hal_rcc_get_flag(RCC_FLAG_HSERDY) == 0U) { ; }
       }
       else
       {
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
-
-        /* Wait till HSE is disabled */
-        while(hal_rcc_get_flag(RCC_FLAG_HSERDY) != 0U)
-        {
-          //if((uint32_t) (HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
+        // Wait until the HSE is disabled
+        while(hal_rcc_get_flag(RCC_FLAG_HSERDY) != 0U) { ; }
       }
     }
   }
-  /*----------------------------- HSI Configuration --------------------------*/
+
+  // HSI Configuration
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_HSI(RCC_OscInitStruct->HSIState));
-    assert_param(IS_RCC_HSICALIBRATION_VALUE(RCC_OscInitStruct->HSICalibrationValue));
+    // When the HSI is used as system clock it will not be disabled.
+    const auto temp_sysclksrc = hal_rcc_get_sysclk_source();
+    const auto temp_pllckselr = RCC->PLLCKSELR;
 
-    /* When the HSI is used as system clock it will not be disabled */
-    const uint32_t temp_sysclksrc = __HAL_RCC_GET_SYSCLK_SOURCE();
-    const uint32_t temp_pllckselr = RCC->PLLCKSELR;
     if((temp_sysclksrc == RCC_CFGR_SWS_HSI) || ((temp_sysclksrc == RCC_CFGR_SWS_PLL1) && ((temp_pllckselr & RCC_PLLCKSELR_PLLSRC) == RCC_PLLCKSELR_PLLSRC_HSI)))
     {
-      /* When HSI is used as system clock it will not be disabled */
+      // When the HSI is used as system clock it will not be disabled.
       if((hal_rcc_get_flag(RCC_FLAG_HSIRDY) != 0U) && (RCC_OscInitStruct->HSIState == RCC_HSI_OFF))
       {
         return HAL_ERROR;
       }
-      /* Otherwise, only HSI division and calibration are allowed */
       else
       {
-          /* Enable the Internal High Speed oscillator (HSI, HSIDIV2, HSIDIV4, or HSIDIV8) */
-          __HAL_RCC_HSI_CONFIG(RCC_OscInitStruct->HSIState);
+          // Otherwise, only HSI division and calibration are allowed.
+          // Enable the Internal High Speed oscillator (HSI, HSIDIV2, HSIDIV4, or HSIDIV8).
+          hal_rcc_hsi_config(RCC_OscInitStruct->HSIState);
 
-          /* Get Start Tick*/
-          //tickstart = HAL_GetTick();
+          // Wait until the HSI is ready.
+          while(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U) { ; }
 
-          /* Wait till HSI is ready */
-          while(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U)
-          {
-            //if((uint32_t) (HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
-            //{
-            //  return HAL_TIMEOUT;
-            //}
-          }
-        /* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
-        __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->HSICalibrationValue);
+         // Adjust the Internal High Speed oscillator (HSI) calibration value.
+         hal_rcc_hsi_calibration_value_adjust(RCC_OscInitStruct->HSICalibrationValue);
       }
     }
-
     else
     {
       /* Check the HSI State */
       if((RCC_OscInitStruct->HSIState)!= RCC_HSI_OFF)
       {
-     /* Enable the Internal High Speed oscillator (HSI, HSIDIV2,HSIDIV4, or HSIDIV8) */
-        __HAL_RCC_HSI_CONFIG(RCC_OscInitStruct->HSIState);
+        // Enable the Internal High Speed oscillator (HSI, HSIDIV2,HSIDIV4, or HSIDIV8)
+        hal_rcc_hsi_config(RCC_OscInitStruct->HSIState);
 
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
+        // Wait until the HSI is ready.
+        while(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U) { ; }
 
-        /* Wait till HSI is ready */
-        while(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U)
-        {
-          //if((HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
-
-        /* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
-        __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->HSICalibrationValue);
+        // Adjust the Internal High Speed oscillator (HSI) calibration value.
+        hal_rcc_hsi_calibration_value_adjust(RCC_OscInitStruct->HSICalibrationValue);
       }
       else
       {
@@ -340,7 +162,7 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
     assert_param(IS_RCC_CSICALIBRATION_VALUE(RCC_OscInitStruct->CSICalibrationValue));
 
     /* When the CSI is used as system clock it will not disabled */
-    const uint32_t temp_sysclksrc = __HAL_RCC_GET_SYSCLK_SOURCE();
+    const uint32_t temp_sysclksrc = hal_rcc_get_sysclk_source();
     const uint32_t temp_pllckselr = RCC->PLLCKSELR;
     if((temp_sysclksrc == RCC_CFGR_SWS_CSI) || ((temp_sysclksrc == RCC_CFGR_SWS_PLL1) && ((temp_pllckselr & RCC_PLLCKSELR_PLLSRC) == RCC_PLLCKSELR_PLLSRC_CSI)))
     {
@@ -541,37 +363,17 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
   if ((RCC_OscInitStruct->PLL.PLLState) != RCC_PLL_NONE)
   {
     /* Check if the PLL is used as system clock or not */
-    if(__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL1)
+    if(hal_rcc_get_sysclk_source() != RCC_CFGR_SWS_PLL1)
     {
       if((RCC_OscInitStruct->PLL.PLLState) == RCC_PLL_ON)
       {
-        /* Check the parameters */
-        assert_param(IS_RCC_PLLSOURCE(RCC_OscInitStruct->PLL.PLLSource));
-        assert_param(IS_RCC_PLLRGE_VALUE(RCC_OscInitStruct->PLL.PLLRGE));
-        assert_param(IS_RCC_PLLVCO_VALUE(RCC_OscInitStruct->PLL.PLLVCOSEL));
-        assert_param(IS_RCC_PLLM_VALUE(RCC_OscInitStruct->PLL.PLLM));
-        assert_param(IS_RCC_PLLN_VALUE(RCC_OscInitStruct->PLL.PLLN));
-        assert_param(IS_RCC_PLLP_VALUE(RCC_OscInitStruct->PLL.PLLP));
-        assert_param(IS_RCC_PLLQ_VALUE(RCC_OscInitStruct->PLL.PLLQ));
-        assert_param(IS_RCC_PLLR_VALUE(RCC_OscInitStruct->PLL.PLLR));
-        assert_param(IS_RCC_PLLFRACN_VALUE(RCC_OscInitStruct->PLL.PLLFRACN));
-
         /* Disable the main PLL. */
         __HAL_RCC_PLL_DISABLE();
 
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
+        // Wait until the PLL is disabled
+        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U) { ; }
 
-        /* Wait till PLL is disabled */
-        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U)
-        {
-          //if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
-
-        /* Configure the main PLL clock source, multiplication and division factors. */
+        // Configure the main PLL clock source, multiplication and division factors.
         hal_rcc_pll_config(RCC_OscInitStruct->PLL.PLLSource,
                            RCC_OscInitStruct->PLL.PLLM,
                            RCC_OscInitStruct->PLL.PLLN,
@@ -609,31 +411,16 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
         /* Get Start Tick*/
         //tickstart = HAL_GetTick();
 
-        /* Wait till PLL is ready */
-        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) == 0U)
-        {
-          //if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
+        // Wait until the PLL is ready.
+        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) == 0U) { ; }
       }
       else
       {
         /* Disable the main PLL. */
         __HAL_RCC_PLL_DISABLE();
 
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
-
-        /* Wait till PLL is disabled */
-        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U)
-        {
-          //if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
+        // Wait until the PLL is disabled.
+        while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U) { ; }
       }
     }
     else
@@ -641,18 +428,26 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       /* Do not return HAL_ERROR if request repeats the current configuration */
       temp1_pllckcfg = RCC->PLLCKSELR;
       temp2_pllckcfg = RCC->PLL1DIVR;
-      if(((RCC_OscInitStruct->PLL.PLLState) == RCC_PLL_OFF) ||
-	 (read_bit(temp1_pllckcfg, RCC_PLLCKSELR_PLLSRC) != RCC_OscInitStruct->PLL.PLLSource) ||
-         ((read_bit(temp1_pllckcfg, RCC_PLLCKSELR_DIVM1) >> RCC_PLLCKSELR_DIVM1_Pos) != RCC_OscInitStruct->PLL.PLLM) ||
-         (read_bit(temp2_pllckcfg, RCC_PLL1DIVR_N1) != (RCC_OscInitStruct->PLL.PLLN - 1U)) ||
-         ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_P1) >> RCC_PLL1DIVR_P1_Pos) != (RCC_OscInitStruct->PLL.PLLP - 1U)) ||
-         ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_Q1) >> RCC_PLL1DIVR_Q1_Pos) != (RCC_OscInitStruct->PLL.PLLQ - 1U)) ||
-         ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_R1) >> RCC_PLL1DIVR_R1_Pos) != (RCC_OscInitStruct->PLL.PLLR - 1U)))
+
+      const auto
+        read_back_is_not_ok =
+        (
+             ((RCC_OscInitStruct->PLL.PLLState) == RCC_PLL_OFF)
+          ||  (read_bit(temp1_pllckcfg, RCC_PLLCKSELR_PLLSRC) != RCC_OscInitStruct->PLL.PLLSource)
+          || ((read_bit(temp1_pllckcfg, RCC_PLLCKSELR_DIVM1) >> RCC_PLLCKSELR_DIVM1_Pos) != RCC_OscInitStruct->PLL.PLLM)
+          ||  (read_bit(temp2_pllckcfg, RCC_PLL1DIVR_N1) != (RCC_OscInitStruct->PLL.PLLN - 1U))
+          || ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_P1) >> RCC_PLL1DIVR_P1_Pos) != (RCC_OscInitStruct->PLL.PLLP - 1U))
+          || ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_Q1) >> RCC_PLL1DIVR_Q1_Pos) != (RCC_OscInitStruct->PLL.PLLQ - 1U))
+          || ((read_bit(temp2_pllckcfg, RCC_PLL1DIVR_R1) >> RCC_PLL1DIVR_R1_Pos) != (RCC_OscInitStruct->PLL.PLLR - 1U))
+        );
+
+      if(read_back_is_not_ok)
       {
         return HAL_ERROR;
       }
     }
   }
+
   return HAL_OK;
 }
 
@@ -855,19 +650,10 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
           return HAL_ERROR;
         }
       }
+
       modify_reg(RCC->CFGR, RCC_CFGR_SW, RCC_ClkInitStruct->SYSCLKSource);
 
-      /* Get Start Tick*/
-      //tickstart = HAL_GetTick();
-
-        while (__HAL_RCC_GET_SYSCLK_SOURCE() !=  (RCC_ClkInitStruct->SYSCLKSource << RCC_CFGR_SWS_Pos))
-        {
-          //if((HAL_GetTick() - tickstart ) > CLOCKSWITCH_TIMEOUT_VALUE)
-          //{
-          //  return HAL_TIMEOUT;
-          //}
-        }
-
+      while(hal_rcc_get_sysclk_source() !=  (RCC_ClkInitStruct->SYSCLKSource << RCC_CFGR_SWS_Pos)) { ; }
     }
 
     /* Decreasing the BUS frequency divider */
@@ -977,37 +763,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
 #endif
  }
 
-  /* Update the SystemCoreClock global variable */
-#if defined(RCC_D1CFGR_D1CPRE)
-  //common_system_clock = HAL_RCC_GetSysClockFreq() >> ((D1CorePrescTable[(RCC->D1CFGR & RCC_D1CFGR_D1CPRE)>> RCC_D1CFGR_D1CPRE_Pos]) & 0x1FU);
-#else
-  //common_system_clock = HAL_RCC_GetSysClockFreq() >> ((D1CorePrescTable[(RCC->CDCFGR1 & RCC_CDCFGR1_CDCPRE)>> RCC_CDCFGR1_CDCPRE_Pos]) & 0x1FU);
-#endif
-
-#if defined(RCC_D1CFGR_HPRE)
-  //SystemD2Clock = (common_system_clock >> ((D1CorePrescTable[(RCC->D1CFGR & RCC_D1CFGR_HPRE)>> RCC_D1CFGR_HPRE_Pos]) & 0x1FU));
-#else
-  //SystemD2Clock = (common_system_clock >> ((D1CorePrescTable[(RCC->CDCFGR1 & RCC_CDCFGR1_HPRE)>> RCC_CDCFGR1_HPRE_Pos]) & 0x1FU));
-#endif
-
-#if defined(DUAL_CORE) && defined(CORE_CM4)
-  //SystemCoreClock = SystemD2Clock;
-#else
-  //SystemCoreClock = common_system_clock;
-#endif /* DUAL_CORE && CORE_CM4 */
-
-  /* Configure the source of time base considering new system clocks settings*/
-  halstatus = HAL_OK;//HAL_InitTick (uwTickPrio);
+  halstatus = HAL_OK;
 
   return halstatus;
 }
-
-#endif /* HAL_RCC_MODULE_ENABLED */
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-

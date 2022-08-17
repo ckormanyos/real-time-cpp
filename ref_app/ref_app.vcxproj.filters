@@ -239,9 +239,6 @@
     <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include">
       <UniqueIdentifier>{240d6ca1-a491-4990-aeaa-eb19b87dfbfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\Legacy">
-      <UniqueIdentifier>{e9bf59d9-21e4-4692-97c4-710df888d288}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2153,18 +2150,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h">
       <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\system_stm32h7xx.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7a3xx.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32_assert_template.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>

@@ -55,30 +55,6 @@ typedef enum
 } FLASH_ProcedureTypeDef;
 
 
-/**
-  * @brief  FLASH handle Structure definition
-  */
-typedef struct
-{
-  __IO FLASH_ProcedureTypeDef ProcedureOnGoing;   /*!< Internal variable to indicate which procedure is ongoing or not in IT context */
-
-  __IO uint32_t               NbSectorsToErase;   /*!< Internal variable to save the remaining sectors to erase in IT context        */
-
-  __IO uint32_t               VoltageForErase;    /*!< Internal variable to provide voltage range selected by user in IT context     */
-
-  __IO uint32_t               Sector;             /*!< Internal variable to define the current sector which is erasing               */
-
-  __IO uint32_t               Address;            /*!< Internal variable to save address selected for program                        */
-
-  HAL_LockTypeDef             Lock;               /*!< FLASH locking object                                                          */
-
-  __IO uint32_t               ErrorCode;          /*!< FLASH error code                                                              */
-
-}FLASH_ProcessTypeDef;
-
-/**
-  * @}
-  */
 
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup FLASH_Exported_Constants FLASH Exported Constants
@@ -746,32 +722,6 @@ HAL_StatusTypeDef HAL_FLASH_OB_Launch(void);
 uint32_t HAL_FLASH_GetError(void);
 /**
   * @}
-  */
-
-/**
-  * @}
-  */
-/* Private types -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/** @defgroup FLASH_Private_Variables FLASH Private Variables
-  * @{
-  */
-extern FLASH_ProcessTypeDef pFlash;
-/**
-  * @}
-  */
-/* Private constants ---------------------------------------------------------*/
-/** @defgroup FLASH_Private_Constants FLASH Private Constants
-  * @{
-  */
-
-/**
-  * @}
-  */
-
-/* Private macros ------------------------------------------------------------*/
-/** @defgroup FLASH_Private_Macros FLASH Private Macros
-  * @{
   */
 
 #if defined (FLASH_OPTCR_PG_OTP)
