@@ -335,10 +335,6 @@
     }
   }
 
-  // Enable or disable the the RTC clock.
-  //static inline auto hal_rcc_rtc_enable () -> void { set_bit  (RCC->BDCR, static_cast<std::uint32_t>(RCC_BDCR_RTCEN)); }
-  //static inline auto hal_rcc_rtc_disablE() -> void { clear_bit(RCC->BDCR, static_cast<std::uint32_t>(RCC_BDCR_RTCEN)); }
-
   // Enable or disable the main PLL.
   static inline auto hal_rcc_pll_enable () -> void { set_bit  (RCC->CR, static_cast<std::uint32_t>(RCC_CR_PLL1ON)); }
   static inline auto hal_rcc_pll_disable() -> void { clear_bit(RCC->CR, static_cast<std::uint32_t>(RCC_CR_PLL1ON)); }
@@ -458,7 +454,7 @@
               ((flag == 3U) ? RCC->CSR : ((flag == 4U) ? RCC->RSR  : RCC->CIFR)))) & (1UL << (flag_in & RCC_FLAG_MASK))) != 0U) ? 1U : 0U);
   }
 
-  // Initialization functions
+  // Initialization functions.
   HAL_StatusTypeDef HAL_RCC_OscConfig  (const RCC_OscInitTypeDef* RCC_OscInitStruct);
   HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef* RCC_ClkInitStruct, const uint32_t FLatency);
 
