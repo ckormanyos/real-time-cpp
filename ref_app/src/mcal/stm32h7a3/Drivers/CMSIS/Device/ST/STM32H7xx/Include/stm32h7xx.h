@@ -34,6 +34,10 @@
 #ifndef STM32H7xx_H
   #define STM32H7xx_H
 
+  #if defined(_MSC_VER)
+  #define __IO
+  #endif
+
   #include <cstdint>
 
   #include "stm32h7a3xxq.h"
