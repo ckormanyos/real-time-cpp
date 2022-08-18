@@ -16,11 +16,12 @@
 
 namespace local
 {
-  void system_init();
-  void enable_i_cache();
-  void enable_d_cache();
+  auto system_init       () -> void;
+  auto system_pll_default() -> void;
+  auto enable_i_cache    () -> void;
+  auto enable_d_cache    () -> void;
 
-  void system_init()
+  auto system_init() -> void
   {
     // FPU settings.
     // set CP10 and CP11 Full Access.
@@ -60,7 +61,7 @@ namespace local
                                  mcal::reg::rcc_cfgr,
                                  static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
 
-    /* Reset HSEON, HSECSSON, CSION, HSI48ON, CSIKERON, PLL1ON, PLL2ON and PLL3ON bits */
+    // Reset the HSEON, HSECSSON, CSION, HSI48ON, CSIKERON, PLL1ON, PLL2ON and PLL3ON bits.
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_cr,
@@ -84,91 +85,33 @@ namespace local
     }
 
     // Reset CDCFGR1 register.
-    // RCC->CDCFGR1 = 0x00000000;
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_cdcfgr1,
                                  static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
 
     // Reset CDCFGR2 register.
-    // RCC->CDCFGR2 = 0x00000000;
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_cdcfgr2,
                                  static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
 
     // Reset SRDCFGR register.
-    // RCC->SRDCFGR = 0x00000000;
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_srdcfgr,
                                  static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
 
-    // Reset PLLCKSELR register.
-    // RCC->PLLCKSELR = 0x02020200;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pllckselr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x02020200))>::reg_set();
-
-    // Reset PLLCFGR register.
-    // RCC->PLLCFGR = 0x01FF0000;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pllcfgr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x01FF0000))>::reg_set();
-
-    // Reset PLL1DIVR register.
-    // RCC->PLL1DIVR = 0x01010280;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll1divr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
-
-    // Reset PLL1FRACR register.
-    // RCC->PLL1FRACR = 0x00000000;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll1fracr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
-
-    // Reset PLL2DIVR register.
-    // RCC->PLL2DIVR = 0x01010280;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll2divr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
-
-    // Reset PLL2FRACR register.
-    // RCC->PLL2FRACR = 0x00000000;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll2fracr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
-
-    // Reset PLL3DIVR register.
-    // RCC->PLL3DIVR = 0x01010280;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll3divr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
-
-    // Reset PLL3FRACR register.
-    // RCC->PLL3FRACR = 0x00000000;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_pll3fracr,
-                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
+    // Set (reset) default PLL settings.
+    system_pll_default();
 
     // Reset HSEBYP bit.
-    // RCC->CR &= 0xFFFBFFFFU;
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_cr,
                                  static_cast<std::uint32_t>(UINT32_C(0xFFFBFFFF))>::reg_and();
 
     // Disable all interrupts.
-    // RCC->CIER = 0x00000000;
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::rcc_cier,
@@ -184,7 +127,59 @@ namespace local
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, 0x08000000UL>::reg_set();
   }
 
-  void enable_i_cache()
+  auto system_pll_default() -> void
+  {
+    // Set (reset) default PLL settings.
+    // Reset PLLCKSELR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pllckselr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x02020200))>::reg_set();
+
+    // Reset PLLCFGR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pllcfgr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x01FF0000))>::reg_set();
+
+    // Reset PLL1DIVR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll1divr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
+
+    // Reset PLL1FRACR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll1fracr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
+
+    // Reset PLL2DIVR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll2divr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
+
+    // Reset PLL2FRACR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll2fracr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
+
+    // Reset PLL3DIVR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll3divr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x01010280))>::reg_set();
+
+    // Reset PLL3FRACR register.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pll3fracr,
+                                 static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
+  }
+
+  auto enable_i_cache() -> void
   {
     // Enable instruction cache.
     asm volatile("dsb");
@@ -205,7 +200,7 @@ namespace local
     asm volatile("isb");
   }
 
-  void enable_d_cache()
+  auto enable_d_cache() -> void
   {
     const auto d_cache_is_already_enabled =
       mcal::reg::reg_access_static<std::uint32_t,
