@@ -78,7 +78,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
     else
     {
       // Set the new HSE configuration.
-      __HAL_RCC_HSE_CONFIG(RCC_OscInitStruct->HSEState);
+      hal_rcc_hse_config(RCC_OscInitStruct->HSEState);
 
       // Check the HSE State.
       if(RCC_OscInitStruct->HSEState != RCC_HSE_OFF)
@@ -138,7 +138,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
       else
       {
         /* Disable the Internal High Speed oscillator (HSI). */
-        __HAL_RCC_HSI_DISABLE();
+        hal_rcc_hsi_disable();
 
         /* Get Start Tick*/
         //tickstart = HAL_GetTick();
@@ -171,7 +171,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
       else
       {
         /* Adjusts the Internal High Speed oscillator (CSI) calibration value.*/
-        __HAL_RCC_CSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->CSICalibrationValue);
+        hal_rcc_csi_calibration_value_adjust(RCC_OscInitStruct->CSICalibrationValue);
       }
     }
     else
@@ -179,8 +179,8 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
       /* Check the CSI State */
       if((RCC_OscInitStruct->CSIState)!= RCC_CSI_OFF)
       {
-        /* Enable the Internal High Speed oscillator (CSI). */
-        __HAL_RCC_CSI_ENABLE();
+        // Enable the Internal High Speed oscillator (CSI).
+        hal_rcc_csi_enable();
 
         /* Get Start Tick*/
         //tickstart = HAL_GetTick();
@@ -195,12 +195,12 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
         }
 
         /* Adjusts the Internal High Speed oscillator (CSI) calibration value.*/
-        __HAL_RCC_CSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->CSICalibrationValue);
+        hal_rcc_csi_calibration_value_adjust(RCC_OscInitStruct->CSICalibrationValue);
       }
       else
       {
-        /* Disable the Internal High Speed oscillator (CSI). */
-        __HAL_RCC_CSI_DISABLE();
+        // Disable the Internal High Speed oscillator (CSI).
+        hal_rcc_csi_disable();
 
         /* Get Start Tick*/
         //tickstart = HAL_GetTick();
@@ -223,7 +223,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
     if((RCC_OscInitStruct->LSIState)!= RCC_LSI_OFF)
     {
       /* Enable the Internal Low Speed oscillator (LSI). */
-      __HAL_RCC_LSI_ENABLE();
+      hal_rcc_lsi_enable();
 
       /* Get Start Tick*/
       //tickstart = HAL_GetTick();
@@ -240,7 +240,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
     else
     {
       /* Disable the Internal Low Speed oscillator (LSI). */
-      __HAL_RCC_LSI_DISABLE();
+      hal_rcc_lsi_disable();
 
       /* Get Start Tick*/
       //tickstart = HAL_GetTick();
@@ -262,8 +262,8 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
     /* Check the HSI48 State */
     if((RCC_OscInitStruct->HSI48State)!= RCC_HSI48_OFF)
     {
-      /* Enable the Internal Low Speed oscillator (HSI48). */
-      __HAL_RCC_HSI48_ENABLE();
+      // Enable the Internal Low Speed oscillator (HSI48).
+      hal_rcc_hsi48_enable();
 
       /* Get time-out */
       //tickstart = HAL_GetTick();
@@ -279,82 +279,48 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
     }
     else
     {
-      /* Disable the Internal Low Speed oscillator (HSI48). */
-      __HAL_RCC_HSI48_DISABLE();
+      // Disable the Internal Low Speed oscillator (HSI48).
+      hal_rcc_hsi48_disable();
 
-      /* Get time-out */
-      //tickstart = HAL_GetTick();
-
-      /* Wait till HSI48 is ready */
-      while(hal_rcc_get_flag(RCC_FLAG_HSI48RDY) != 0U)
-      {
-        //if((HAL_GetTick() - tickstart ) > HSI48_TIMEOUT_VALUE)
-        //{
-        //  return HAL_TIMEOUT;
-        //}
-      }
+      // Wait until the HSI48 is ready.
+      while(hal_rcc_get_flag(RCC_FLAG_HSI48RDY) != 0U) { ; }
     }
   }
-  /*------------------------------ LSE Configuration -------------------------*/
+
+  // LSE Configuration
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE)
   {
-    /* Enable write access to Backup domain */
+    // Enable write access to Backup domain.
     PWR->CR1 |= PWR_CR1_DBP;
 
-    /* Wait for Backup domain Write protection disable */
-    //tickstart = HAL_GetTick();
+    while((PWR->CR1 & PWR_CR1_DBP) == 0U) { ; }
 
-    while((PWR->CR1 & PWR_CR1_DBP) == 0U)
-    {
-      //if((HAL_GetTick() - tickstart ) > RCC_DBP_TIMEOUT_VALUE)
-      //{
-      //  return HAL_TIMEOUT;
-      //}
-    }
+    // Set the new LSE configuration.
+    hal_rcc_lse_config(RCC_OscInitStruct->LSEState);
 
-    /* Set the new LSE configuration -----------------------------------------*/
-    __HAL_RCC_LSE_CONFIG(RCC_OscInitStruct->LSEState);
-    /* Check the LSE State */
+    // Check the LSE State.
     if((RCC_OscInitStruct->LSEState) != RCC_LSE_OFF)
     {
-      /* Get Start Tick*/
-      //tickstart = HAL_GetTick();
-
-      /* Wait till LSE is ready */
-      while(hal_rcc_get_flag(RCC_FLAG_LSERDY) == 0U)
-      {
-        //if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
-        //{
-        //  return HAL_TIMEOUT;
-        //}
-      }
+      // Wait until the LSE is ready.
+      while(hal_rcc_get_flag(RCC_FLAG_LSERDY) == 0U) { ; }
     }
     else
     {
-      /* Get Start Tick*/
-      //tickstart = HAL_GetTick();
-
-      /* Wait till LSE is disabled */
-      while(hal_rcc_get_flag(RCC_FLAG_LSERDY) != 0U)
-      {
-        //if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
-        //{
-        //  return HAL_TIMEOUT;
-        //}
-      }
+      // Wait until the LSE is disabled.
+      while(hal_rcc_get_flag(RCC_FLAG_LSERDY) != 0U) { ; }
     }
   }
 
   // PLL Configuration
   if ((RCC_OscInitStruct->PLL.PLLState) != RCC_PLL_NONE)
   {
-    /* Check if the PLL is used as system clock or not */
+    // Check if the PLL is used as system clock or not.
     if(hal_rcc_get_sysclk_source() != RCC_CFGR_SWS_PLL1)
     {
       if((RCC_OscInitStruct->PLL.PLLState) == RCC_PLL_ON)
       {
-        /* Disable the main PLL. */
-        __HAL_RCC_PLL_DISABLE();
+        // Disable the main PLL.
+        hal_rcc_pll_disable();
 
         // Wait until the PLL is disabled
         while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U) { ; }
@@ -367,43 +333,40 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
                            RCC_OscInitStruct->PLL.PLLQ,
                            RCC_OscInitStruct->PLL.PLLR);
 
-         /* Disable PLLFRACN . */
-         __HAL_RCC_PLLFRACN_DISABLE();
+        // Disable PLLFRACN.
+        hal_rcc_pllfracn_disable();
 
-         /* Configure PLL PLL1FRACN */
-         __HAL_RCC_PLLFRACN_CONFIG(RCC_OscInitStruct->PLL.PLLFRACN);
+        // Configure PLL PLL1FRACN.
+        hal_rcc_pllfracn_config(RCC_OscInitStruct->PLL.PLLFRACN);
 
-        /* Select PLL1 input reference frequency range: VCI */
-        __HAL_RCC_PLL_VCIRANGE(RCC_OscInitStruct->PLL.PLLRGE) ;
+        // Select PLL1 input reference frequency range: VCI.
+        hal_rcc_pll_vcirange(RCC_OscInitStruct->PLL.PLLRGE) ;
 
-        /* Select PLL1 output frequency range : VCO */
-        __HAL_RCC_PLL_VCORANGE(RCC_OscInitStruct->PLL.PLLVCOSEL) ;
+        // Select PLL1 output frequency range : VCO.
+        hal_rcc_pll_vcorange(RCC_OscInitStruct->PLL.PLLVCOSEL) ;
 
-        /* Enable PLL System Clock output. */
-         __HAL_RCC_PLLCLKOUT_ENABLE(RCC_PLL1_DIVP);
+        // Enable PLL System Clock output.
+        hal_rcc_pllclkout_enable(RCC_PLL1_DIVP);
 
-        /* Enable PLL1Q Clock output. */
-         __HAL_RCC_PLLCLKOUT_ENABLE(RCC_PLL1_DIVQ);
+        // Enable PLL1Q Clock output.
+        hal_rcc_pllclkout_enable(RCC_PLL1_DIVQ);
 
-        /* Enable PLL1R  Clock output. */
-         __HAL_RCC_PLLCLKOUT_ENABLE(RCC_PLL1_DIVR);
+        // Enable PLL1R  Clock output.
+        hal_rcc_pllclkout_enable(RCC_PLL1_DIVR);
 
-        /* Enable PLL1FRACN . */
-         __HAL_RCC_PLLFRACN_ENABLE();
+        // Enable PLL1FRACN.
+        hal_rcc_pllfracn_enable();
 
-        /* Enable the main PLL. */
-        __HAL_RCC_PLL_ENABLE();
-
-        /* Get Start Tick*/
-        //tickstart = HAL_GetTick();
+        // Enable the main PLL.
+        hal_rcc_pll_enable();
 
         // Wait until the PLL is ready.
         while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) == 0U) { ; }
       }
       else
       {
-        /* Disable the main PLL. */
-        __HAL_RCC_PLL_DISABLE();
+        // Disable the main PLL.
+        hal_rcc_pll_disable();
 
         // Wait until the PLL is disabled.
         while(hal_rcc_get_flag(RCC_FLAG_PLLRDY) != 0U) { ; }
@@ -463,29 +426,25 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef* RCC_OscInitStruct)
   *         (for more details refer to section above "Initialization/de-initialization functions")
   * @retval None
   */
-HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, uint32_t FLatency)
+HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef* RCC_ClkInitStruct, const uint32_t FLatency)
 {
+  if(RCC_ClkInitStruct == nullptr) { return HAL_ERROR; }
+
   HAL_StatusTypeDef halstatus;
 
-   /* Check Null pointer */
-  if(RCC_ClkInitStruct == NULL)
-  {
-    return HAL_ERROR;
-  }
+  // To correctly read data from FLASH memory, the number of wait states (LATENCY)
+  // must be correctly programmed according to the frequency of the CPU clock
+  // (HCLK) and the supply voltage of the device.
 
-  /* To correctly read data from FLASH memory, the number of wait states (LATENCY)
-    must be correctly programmed according to the frequency of the CPU clock
-    (HCLK) and the supply voltage of the device. */
-
-  /* Increasing the CPU frequency */
-  if(FLatency > __HAL_FLASH_GET_LATENCY())
+  // Increase the CPU frequency.
+  if(FLatency > hal_flash_get_latency())
   {
-    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
-    __HAL_FLASH_SET_LATENCY(FLatency);
+    // Program the new number of wait states to the LATENCY bits in the FLASH_ACR register.
+    hal_flash_set_latency(FLatency);
 
     /* Check that the new number of wait states is taken into account to access the Flash
     memory by reading the FLASH_ACR register */
-    if(__HAL_FLASH_GET_LATENCY() != FLatency)
+    if(hal_flash_get_latency() != FLatency)
     {
       return HAL_ERROR;
     }
@@ -501,7 +460,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-  /*-------------------------- PCLK1 Configuration ---------------------------*/
+  // PCLK1 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
   {
     if((RCC_ClkInitStruct->APB1CLKDivider) > (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE1))
@@ -510,7 +469,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-  /*-------------------------- PCLK2 Configuration ---------------------------*/
+  // PCLK2 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2)
   {
      if((RCC_ClkInitStruct->APB2CLKDivider) > (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE2))
@@ -519,7 +478,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-  /*-------------------------- D3PCLK1 Configuration ---------------------------*/
+  // D3PCLK1 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D3PCLK1) == RCC_CLOCKTYPE_D3PCLK1)
   {
     if((RCC_ClkInitStruct->APB4CLKDivider) > (RCC->SRDCFGR & RCC_SRDCFGR_SRDPPRE))
@@ -528,7 +487,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-   /*-------------------------- HCLK Configuration --------------------------*/
+  // HCLK Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
   {
     if((RCC_ClkInitStruct->AHBCLKDivider) > (RCC->CDCFGR1 & RCC_CDCFGR1_HPRE))
@@ -538,82 +497,79 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-    /*------------------------- SYSCLK Configuration -------------------------*/
-    if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_SYSCLK) == RCC_CLOCKTYPE_SYSCLK)
+  // SYSCLK Configuration
+  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_SYSCLK) == RCC_CLOCKTYPE_SYSCLK)
+  {
+    modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_CDCPRE, RCC_ClkInitStruct->SYSCLKDivider);
+
+    if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE)
     {
-#if defined(RCC_D1CFGR_D1CPRE)
-      modify_reg(RCC->D1CFGR, RCC_D1CFGR_D1CPRE, RCC_ClkInitStruct->SYSCLKDivider);
-#else
-      modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_CDCPRE, RCC_ClkInitStruct->SYSCLKDivider);
-#endif
-      /* HSE is selected as System Clock Source */
-      if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE)
+      // HSE is selected as System Clock Source.
+      // Check the HSE ready flag.
+      if(hal_rcc_get_flag(RCC_FLAG_HSERDY) == 0U)
       {
-        /* Check the HSE ready flag */
-        if(hal_rcc_get_flag(RCC_FLAG_HSERDY) == 0U)
-        {
-          return HAL_ERROR;
-        }
+        return HAL_ERROR;
       }
-      /* PLL is selected as System Clock Source */
-      else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK)
+    }
+    else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK)
+    {
+      // PLL is selected as System Clock Source.
+      // Check the PLL ready flag.
+      if(hal_rcc_get_flag(RCC_FLAG_PLLRDY) == 0U)
       {
-        /* Check the PLL ready flag */
-        if(hal_rcc_get_flag(RCC_FLAG_PLLRDY) == 0U)
-        {
-          return HAL_ERROR;
-        }
+        return HAL_ERROR;
       }
-      /* CSI is selected as System Clock Source */
-      else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_CSI)
+    }
+    else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_CSI)
+    {
+      // CSI is selected as System Clock Source.
+      // Check the PLL ready flag.
+      if(hal_rcc_get_flag(RCC_FLAG_CSIRDY) == 0U)
       {
-        /* Check the PLL ready flag */
-        if(hal_rcc_get_flag(RCC_FLAG_CSIRDY) == 0U)
-        {
-          return HAL_ERROR;
-        }
+        return HAL_ERROR;
       }
-      /* HSI is selected as System Clock Source */
-      else
+    }
+    else
+    {
+      // HSI is selected as System Clock Source.
+      // Check the HSI ready flag.
+      if(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U)
       {
-        /* Check the HSI ready flag */
-        if(hal_rcc_get_flag(RCC_FLAG_HSIRDY) == 0U)
-        {
-          return HAL_ERROR;
-        }
+        return HAL_ERROR;
       }
-
-      modify_reg(RCC->CFGR, RCC_CFGR_SW, RCC_ClkInitStruct->SYSCLKSource);
-
-      while(hal_rcc_get_sysclk_source() !=  (RCC_ClkInitStruct->SYSCLKSource << RCC_CFGR_SWS_Pos)) { ; }
     }
 
-    /* Decreasing the BUS frequency divider */
-   /*-------------------------- HCLK Configuration --------------------------*/
+    modify_reg(RCC->CFGR, RCC_CFGR_SW, RCC_ClkInitStruct->SYSCLKSource);
+
+    while(hal_rcc_get_sysclk_source() !=  (RCC_ClkInitStruct->SYSCLKSource << RCC_CFGR_SWS_Pos)) { ; }
+  }
+
+  // Decrease the BUS frequency divider.
+  // HCLK Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
   {
     if((RCC_ClkInitStruct->AHBCLKDivider) < (RCC->CDCFGR1 & RCC_CDCFGR1_HPRE))
     {
-      /* Set the new HCLK clock divider */
+      // Set the new HCLK clock divider.
       modify_reg(RCC->CDCFGR1, RCC_CDCFGR1_HPRE, RCC_ClkInitStruct->AHBCLKDivider);
     }
   }
 
-  /* Decreasing the number of wait states because of lower CPU frequency */
-  if(FLatency < __HAL_FLASH_GET_LATENCY())
+  // Decrease the number of wait states because of lower CPU frequency.
+  if(FLatency < hal_flash_get_latency())
   {
-    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
-    __HAL_FLASH_SET_LATENCY(FLatency);
+    // Program the new number of wait states to the LATENCY bits in the FLASH_ACR register.
+    hal_flash_set_latency(FLatency);
 
-    /* Check that the new number of wait states is taken into account to access the Flash
-    memory by reading the FLASH_ACR register */
-    if(__HAL_FLASH_GET_LATENCY() != FLatency)
+    // Check that the new number of wait states is taken into account to access the Flash
+    // memory by reading the FLASH_ACR register.
+    if(hal_flash_get_latency() != FLatency)
     {
       return HAL_ERROR;
     }
   }
 
-  /*-------------------------- D1PCLK1/CDPCLK Configuration ---------------------------*/
+  // D1PCLK1/CDPCLK Configuration.
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_D1PCLK1) == RCC_CLOCKTYPE_D1PCLK1)
   {
     if((RCC_ClkInitStruct->APB3CLKDivider) < (RCC->CDCFGR1 & RCC_CDCFGR1_CDPPRE))
@@ -622,7 +578,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-  /*-------------------------- PCLK1 Configuration ---------------------------*/
+  // PCLK1 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
   {
     if((RCC_ClkInitStruct->APB1CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE1))
@@ -631,7 +587,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
   }
 
-  /*-------------------------- PCLK2 Configuration ---------------------------*/
+  // PCLK2 Configuration
   if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2)
   {
     if((RCC_ClkInitStruct->APB2CLKDivider) < (RCC->CDCFGR2 & RCC_CDCFGR2_CDPPRE2))

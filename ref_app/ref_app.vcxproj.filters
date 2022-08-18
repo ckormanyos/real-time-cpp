@@ -2163,9 +2163,6 @@
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr.h">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr_ex.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_rcc.h">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>

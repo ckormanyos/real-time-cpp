@@ -50,10 +50,10 @@
   #define STM32H7
   #endif
 
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN = static_cast<unsigned int>(0x01);
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 = static_cast<unsigned int>(0x0A);
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 = static_cast<unsigned int>(0x02);
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_RC   = static_cast<unsigned int>(0x00);
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN = static_cast<unsigned int>(UINT8_C(0x01));
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 = static_cast<unsigned int>(UINT8_C(0x0A));
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 = static_cast<unsigned int>(UINT8_C(0x02));
+  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_RC   = static_cast<unsigned int>(UINT8_C(0x00));
   constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION      = static_cast<unsigned int>
                                                          (
                                                              (__STM32H7xx_CMSIS_DEVICE_VERSION_MAIN << 24U)
@@ -64,26 +64,11 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
-  {
-    using local_value_type = UnknownValueType;
-
-    auto addr = (volatile local_value_type*) &reg;
-
-    const local_value_type result = *addr;
-
-    return static_cast<local_value_type>(result & bit);
-  }
-
-  template<typename UnknownAddressType,
-           typename UnknownValueType>
   static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
   {
     using local_value_type = UnknownValueType;
 
-    auto addr = (volatile local_value_type*) &reg;
-
-    *addr = val;
+    *((volatile local_value_type*) &reg) = val;
   }
 
   template<typename UnknownAddressType>
@@ -91,9 +76,16 @@
   {
     using local_value_type = std::uint32_t;
 
-    const auto addr = (const volatile local_value_type*) &reg;
+    return *((const volatile local_value_type*) &reg);
+  }
 
-    return *addr;
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
+  {
+    using local_value_type = UnknownValueType;
+
+    return static_cast<local_value_type>(read_reg(reg) & bit);
   }
 
   template<typename UnknownAddressType,
