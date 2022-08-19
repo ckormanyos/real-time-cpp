@@ -44,29 +44,29 @@
 
   typedef struct
   {
-    uint32_t           OscillatorType;       // The oscillators to be configured.
-    uint32_t           HSEState;             // The new state of the HSE.
-    uint32_t           LSEState;             // The new state of the LSE.
-    uint32_t           HSIState;             // The new state of the HSI.
-    uint32_t           HSICalibrationValue;  // The calibration trimming value.
-    uint32_t           LSIState;             // The new state of the LSI.
-    uint32_t           HSI48State;           // The new state of the HSI48.
-    uint32_t           CSIState;             // The new state of the CSI.
-    uint32_t           CSICalibrationValue;  // The calibration trimming value.
+    std::uint32_t      OscillatorType;       // The oscillators to be configured.
+    std::uint32_t      HSEState;             // The new state of the HSE.
+    std::uint32_t      LSEState;             // The new state of the LSE.
+    std::uint32_t      HSIState;             // The new state of the HSI.
+    std::uint32_t      HSICalibrationValue;  // The calibration trimming value.
+    std::uint32_t      LSIState;             // The new state of the LSI.
+    std::uint32_t      HSI48State;           // The new state of the HSI48.
+    std::uint32_t      CSIState;             // The new state of the CSI.
+    std::uint32_t      CSICalibrationValue;  // The calibration trimming value.
     RCC_PLLInitTypeDef PLL;                  // PLL structure parameters
   }
   RCC_OscInitTypeDef;
 
   typedef struct
   {
-    uint32_t ClockType;      // The clock to be configured.
-    uint32_t SYSCLKSource;   // The clock source (SYSCLKS) used as system clock.
-    uint32_t SYSCLKDivider;  // The system clock  divider. This parameter can be
-    uint32_t AHBCLKDivider;  // The AHB clock (HCLK) divider. This clock is derived from the system clock (SYSCLK).
-    uint32_t APB3CLKDivider; // The APB3 clock (D1PCLK1) divider. This clock is derived from the AHB clock (HCLK).
-    uint32_t APB1CLKDivider; // The APB1 clock (PCLK1) divider. This clock is derived from the AHB clock (HCLK).
-    uint32_t APB2CLKDivider; // The APB2 clock (PCLK2) divider. This clock is derived from the AHB clock (HCLK).
-    uint32_t APB4CLKDivider; // The APB4 clock (D3PCLK1) divider. This clock is derived from the AHB clock (HCLK).
+    std::uint32_t ClockType;      // The clock to be configured.
+    std::uint32_t SYSCLKSource;   // The clock source (SYSCLKS) used as system clock.
+    std::uint32_t SYSCLKDivider;  // The system clock  divider. This parameter can be
+    std::uint32_t AHBCLKDivider;  // The AHB clock (HCLK) divider. This clock is derived from the system clock (SYSCLK).
+    std::uint32_t APB3CLKDivider; // The APB3 clock (D1PCLK1) divider. This clock is derived from the AHB clock (HCLK).
+    std::uint32_t APB1CLKDivider; // The APB1 clock (PCLK1) divider. This clock is derived from the AHB clock (HCLK).
+    std::uint32_t APB2CLKDivider; // The APB2 clock (PCLK2) divider. This clock is derived from the AHB clock (HCLK).
+    std::uint32_t APB4CLKDivider; // The APB4 clock (D3PCLK1) divider. This clock is derived from the AHB clock (HCLK).
   }
   RCC_ClkInitTypeDef;
 
@@ -197,24 +197,24 @@
   #define RCC_APB4_DIV16                 RCC_SRDCFGR_SRDPPRE_DIV16
 
   // Flags in the CR register
-  #define RCC_FLAG_HSIRDY                ((uint8_t)0x22)
-  #define RCC_FLAG_HSIDIV                ((uint8_t)0x25)
-  #define RCC_FLAG_CSIRDY                ((uint8_t)0x28)
-  #define RCC_FLAG_HSI48RDY              ((uint8_t)0x2D)
-  #define RCC_FLAG_CPUCKRDY              ((uint8_t)0x2E)
+  #define RCC_FLAG_HSIRDY                (0x22)
+  #define RCC_FLAG_HSIDIV                (0x25)
+  #define RCC_FLAG_CSIRDY                (0x28)
+  #define RCC_FLAG_HSI48RDY              (0x2D)
+  #define RCC_FLAG_CPUCKRDY              (0x2E)
   #define RCC_FLAG_D1CKRDY               RCC_FLAG_CPUCKRDY
-  #define RCC_FLAG_CDCKRDY               ((uint8_t)0x2F)
+  #define RCC_FLAG_CDCKRDY               (0x2F)
   #define RCC_FLAG_D2CKRDY               RCC_FLAG_CDCKRDY
-  #define RCC_FLAG_HSERDY                ((uint8_t)0x31)
-  #define RCC_FLAG_PLLRDY                ((uint8_t)0x39)
-  #define RCC_FLAG_PLL2RDY               ((uint8_t)0x3B)
-  #define RCC_FLAG_PLL3RDY               ((uint8_t)0x3D)
+  #define RCC_FLAG_HSERDY                (0x31)
+  #define RCC_FLAG_PLLRDY                (0x39)
+  #define RCC_FLAG_PLL2RDY               (0x3B)
+  #define RCC_FLAG_PLL3RDY               (0x3D)
 
   // Flags in the BDCR register
-  #define RCC_FLAG_LSERDY                ((uint8_t)0x41)
+  #define RCC_FLAG_LSERDY                (0x41)
 
   // Flags in the CSR register
-  #define RCC_FLAG_LSIRDY                ((uint8_t)0x61)
+  #define RCC_FLAG_LSIRDY                (0x61)
 
   // Macro to enable or disable the Internal High Speed oscillator (HSI).
   static inline auto hal_rcc_hsi_config(const std::uint32_t state) -> void
@@ -236,7 +236,7 @@
     // Adjust the Internal High Speed oscillator (HSI) calibration value.
     // The calibration is used to compensate for the variations in voltage
     // and temperature that influence the frequency of the internal HSI RC.
-    // __HSICalibrationValue__: specifies the calibration trimming value.
+    // HSICalibrationValue: specifies the calibration trimming value.
     // This parameter must be a number between 0 and 0x7F (3F for Rev Y device).
 
     modify_reg
@@ -280,7 +280,7 @@
 
   static inline auto hal_rcc_hse_config(const std::uint32_t state) -> void
   {
-    // Configure the External High Speed oscillator (__HSE__).
+    // Configure the External High Speed oscillator (HSE).
     if(state == RCC_HSE_ON)
     {
       set_bit(RCC->CR, RCC_CR_HSEON);
@@ -357,36 +357,36 @@
     // Configures the main PLL clock source, multiplication and division factors.
     // This function must be used only when the main PLL is disabled.
     //
-    // __RCC_PLLSOURCE__: specifies the PLL entry clock source.
+    // RCC_PLLSOURCE: specifies the PLL entry clock source.
     //  This parameter can be one of the following values:
     //    RCC_PLLSOURCE_CSI: CSI oscillator clock selected as PLL clock entry
     //    RCC_PLLSOURCE_HSI: HSI oscillator clock selected as PLL clock entry
     //    RCC_PLLSOURCE_HSE: HSE oscillator clock selected as PLL clock entry
-    // This clock source (__RCC_PLLSource__) is common for the main PLL1 (main PLL) and PLL2 & PLL3 .
+    // This clock source (RCC_PLLSource) is common for the main PLL1 (main PLL) and PLL2 & PLL3 .
     //
-    // __PLLM1__: specifies the division factor for PLL VCO input clock
+    // PLLM1: specifies the division factor for PLL VCO input clock
     //  This parameter must be a number between 1 and 63.
     // You have to set the PLLM parameter correctly to ensure that the VCO input
     // frequency ranges from 1 to 16 MHz.
     //
-    // __PLLN1__: specifies the multiplication factor for PLL VCO output clock
+    // PLLN1: specifies the multiplication factor for PLL VCO output clock
     //  This parameter must be a number between 4 and 512 or between 8 and 420(*).
     // You have to set the PLLN parameter correctly to ensure that the VCO
     // output frequency is between 150 and 420 MHz (when in medium VCO range) or
     // between 192 and 836 MHZ or between 128 and 560 MHZ(*) (when in wide VCO range)
     //
-    // __PLLP1__: specifies the division factor for system  clock.
+    // PLLP1: specifies the division factor for system  clock.
     //  This parameter must be a number between 2 or 1(**) and 128 (where odd numbers are not allowed) 
     //
-    // __PLLQ1__: specifies the division factor for peripheral kernel clocks
+    // PLLQ1: specifies the division factor for peripheral kernel clocks
     //  This parameter must be a number between 1 and 128
     //
-    // __PLLR1__: specifies the division factor for peripheral kernel clocks
+    // PLLR1: specifies the division factor for peripheral kernel clocks
     //  This parameter must be a number between 1 and 128
     //
     // To insure an optimal behavior of the PLL when one of the post-divider (DIVP, DIVQ or DIVR)
     // is not used, application shall clear the enable bit (DIVyEN) and assign lowest possible 
-    // value to  __PLL1P__, __PLL1Q__ or __PLL1R__ parameters.
+    // value to  PLL1P, PLL1Q or PLL1R parameters.
     // None
     //
     // (*) : For stm32h7a3xx and stm32h7b3xx family lines.

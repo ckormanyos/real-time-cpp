@@ -34,49 +34,41 @@
 #ifndef STM32H7XX_2022_08_05_H_
   #define STM32H7XX_2022_08_05_H_
 
-  #if defined(_MSC_VER)
-  #if !defined(__IO)
-  #define __IO
-  #endif
-  #endif
-
   #include <cstdint>
 
   #include "stm32h7a3xxq.h"
 
   #include <mcal_reg.h>
 
-  #if !defined  (STM32H7)
+  #if !defined(STM32H7)
   #define STM32H7
   #endif
 
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN = static_cast<unsigned int>(UINT8_C(0x01));
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 = static_cast<unsigned int>(UINT8_C(0x0A));
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 = static_cast<unsigned int>(UINT8_C(0x02));
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION_RC   = static_cast<unsigned int>(UINT8_C(0x00));
-  constexpr auto __STM32H7xx_CMSIS_DEVICE_VERSION      = static_cast<unsigned int>
-                                                         (
-                                                             (__STM32H7xx_CMSIS_DEVICE_VERSION_MAIN << 24U)
-                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 << 16U)
-                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 <<  8U)
-                                                           | (__STM32H7xx_CMSIS_DEVICE_VERSION_RC   <<  0U)
-                                                         );
+  // Extracted from version:
+  //   __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN 0x01
+  //   __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 0x0A
+  //   __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 0x02
+  //   __STM32H7xx_CMSIS_DEVICE_VERSION_RC   0x00
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
   static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
   {
-    using local_value_type = UnknownValueType;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
 
-    *((volatile local_value_type*) &reg) = val;
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_set((local_address_type) &reg, val);
   }
 
   template<typename UnknownAddressType>
   static inline auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
   {
-    using local_value_type = std::uint32_t;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = std::uint32_t;
 
-    return *((const volatile local_value_type*) &reg);
+    return mcal::reg::reg_access_dynamic<local_address_type,
+                                         local_value_type>::reg_get((local_address_type) &reg);
   }
 
   template<typename UnknownAddressType,
