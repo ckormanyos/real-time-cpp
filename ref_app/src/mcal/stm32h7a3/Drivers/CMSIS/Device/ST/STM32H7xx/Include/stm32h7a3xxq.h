@@ -30,11 +30,41 @@
 #ifndef STM32H7A3XXQ_2022_08_05_H_
   #define STM32H7A3XXQ_2022_08_05_H_
 
-  #if defined(_MSC_VER)
-  #if !defined(__IO)
-  #define __IO
+  #include <cstdint>
+
+  // Switched mode power supply feature
+  #define SMPS
+
+  // IO definitions (access restrictions to peripheral registers).
+  #if defined(__cplusplus)
+  #define   __I    volatile
+  #else
+  #define   __I    volatile const
   #endif
-  #endif
+  #define   __O    volatile
+  #define   __IO   volatile
+
+  // following defines should be used for structure members
+  #define   __IM   volatile const
+  #define   __OM   volatile
+  #define   __IOM  volatile
+
+  // SCB D-Cache Invalidate by Set-way Register Definitions.
+  #define SCB_DCISW_WAY_Pos                  30U
+  #define SCB_DCISW_WAY_Msk                  (3UL << SCB_DCISW_WAY_Pos)
+
+  #define SCB_DCISW_SET_Pos                  5U
+  #define SCB_DCISW_SET_Msk                  (0x1FFUL << SCB_DCISW_SET_Pos)
+
+  #define SCB_CCSIDR_NUMSETS_Pos             13U
+  #define SCB_CCSIDR_NUMSETS_Msk             (0x7FFFUL << SCB_CCSIDR_NUMSETS_Pos)
+
+  #define SCB_CCSIDR_ASSOCIATIVITY_Pos       3U
+  #define SCB_CCSIDR_ASSOCIATIVITY_Msk       (0x3FFUL << SCB_CCSIDR_ASSOCIATIVITY_Pos)
+
+  // Cache Size ID Register Macros
+  #define CCSIDR_WAYS(x)         (((x) & SCB_CCSIDR_ASSOCIATIVITY_Msk) >> SCB_CCSIDR_ASSOCIATIVITY_Pos)
+  #define CCSIDR_SETS(x)         (((x) & SCB_CCSIDR_NUMSETS_Msk      ) >> SCB_CCSIDR_NUMSETS_Pos      )
 
   typedef enum
   {
@@ -82,24 +112,6 @@
     UnusedHandler_31            = 31
   }
   IRQn_Type;
-
-  // Switched mode power supply feature
-  #define SMPS
-
-  // Configuration of the Cortex-M7 Processor and Core Peripherals
-  #define __CM7_REV               0x0100U  /* Cortex-M7 revision r1p0                        */
-  #define __MPU_PRESENT             1U     /*  CM7 provides an MPU                           */
-  #define __NVIC_PRIO_BITS          4U     /*  CM7 uses 4 Bits for the Priority Levels       */
-  #define __Vendor_SysTickConfig    0U     /*  Set to 1 if different SysTick Config is used  */
-  #define __FPU_PRESENT             1U     /*  FPU present                                   */
-  #define __ICACHE_PRESENT          1U     /*  CM7 instruction cache present                 */
-  #define __DCACHE_PRESENT          1U     /*  CM7 data cache present                        */
-
-  #if !defined(_MSC_VER)
-  #include "core_cm7.h"                     /*!< Cortex-M7 processor and core peripherals      */
-  #endif
-
-  #include <cstdint>
 
   // FLASH Registers
   typedef struct
@@ -250,85 +262,84 @@
   }
   RCC_TypeDef;
 
-  #define PERIPH_BASE                    (0x40000000UL)
-  #define SRD_AHB4PERIPH_BASE            (PERIPH_BASE + 0x18020000UL)
-  #define CD_AHB3PERIPH_BASE             (PERIPH_BASE + 0x12000000UL)
+  constexpr auto PERIPH_BASE                     = static_cast<std::uint32_t>(0x40000000UL);
+  constexpr auto SRD_AHB4PERIPH_BASE             = static_cast<std::uint32_t>(PERIPH_BASE + 0x18020000UL);
+  constexpr auto CD_AHB3PERIPH_BASE              = static_cast<std::uint32_t>(PERIPH_BASE + 0x12000000UL);
+  constexpr auto RCC_BASE                        = static_cast<std::uint32_t>(SRD_AHB4PERIPH_BASE + 0x4400UL);
+  constexpr auto PWR_BASE                        = static_cast<std::uint32_t>(SRD_AHB4PERIPH_BASE + 0x4800UL);
+  constexpr auto FLASH_R_BASE                    = static_cast<std::uint32_t>(CD_AHB3PERIPH_BASE + 0x2000UL);
 
-  #define RCC_BASE                       (SRD_AHB4PERIPH_BASE + 0x4400UL)
-  #define PWR_BASE                       (SRD_AHB4PERIPH_BASE + 0x4800UL)
-  #define FLASH_R_BASE                   (CD_AHB3PERIPH_BASE + 0x2000UL)
+  #define RCC                                    ((RCC_TypeDef*) RCC_BASE)
+  #define FLASH                                  ((FLASH_TypeDef*) FLASH_R_BASE)
+  #define PWR                                    ((PWR_TypeDef*) PWR_BASE)
 
-  #define PWR_CR1_DBP_Pos                (8U)
-  #define PWR_CR1_DBP_Msk                (0x1UL << PWR_CR1_DBP_Pos)              /*!< 0x00000100 */
-  #define PWR_CR1_DBP                    PWR_CR1_DBP_Msk                         /*!< Disable Back-up domain Protection */
-
-  #define RCC                            ((RCC_TypeDef *) RCC_BASE)
-  #define FLASH                          ((FLASH_TypeDef *) FLASH_R_BASE)
-  #define PWR                            ((PWR_TypeDef *) PWR_BASE)
+  #define PWR_CR1_DBP_Pos                        (8U)
+  #define PWR_CR1_DBP_Msk                        (0x1UL << PWR_CR1_DBP_Pos)              /*!< 0x00000100 */
+  #define PWR_CR1_DBP                            PWR_CR1_DBP_Msk                         /*!< Disable Back-up domain Protection */
 
   // Bit definitions for PWR_CR3 register
-  #define PWR_CR3_SMPSLEVEL_Pos          (4U)
-  #define PWR_CR3_SMPSLEVEL_Msk          (0x3UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000030 */
-  #define PWR_CR3_SMPSLEVEL              PWR_CR3_SMPSLEVEL_Msk                   /*!< SMPS output Voltage */
-  #define PWR_CR3_SMPSLEVEL_0            (0x1UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000010 */
-  #define PWR_CR3_SMPSLEVEL_1            (0x2UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000020 */
-  #define PWR_CR3_SMPSEXTHP_Pos          (3U)
-  #define PWR_CR3_SMPSEXTHP_Msk          (0x1UL << PWR_CR3_SMPSEXTHP_Pos)        /*!< 0x00000008 */
-  #define PWR_CR3_SMPSEXTHP              PWR_CR3_SMPSEXTHP_Msk                   /*!< SMPS forced ON and in High Power MR mode */
-  #define PWR_CR3_SMPSEN_Pos             (2U)
-  #define PWR_CR3_SMPSEN_Msk             (0x1UL << PWR_CR3_SMPSEN_Pos)           /*!< 0x00000004 */
-  #define PWR_CR3_SMPSEN                 PWR_CR3_SMPSEN_Msk                      /*!< SMPS Enable */
-  #define PWR_CR3_LDOEN_Pos              (1U)
-  #define PWR_CR3_LDOEN_Msk              (0x1UL << PWR_CR3_LDOEN_Pos)            /*!< 0x00000002 */
-  #define PWR_CR3_LDOEN                  PWR_CR3_LDOEN_Msk                       /*!< Low Drop Output regulator enable */
-  #define PWR_CR3_BYPASS_Pos             (0U)
-  #define PWR_CR3_BYPASS_Msk             (0x1UL << PWR_CR3_BYPASS_Pos)           /*!< 0x00000001 */
-  #define PWR_CR3_BYPASS                 PWR_CR3_BYPASS_Msk                      /*!< Power Management Unit bypass */
+  #define PWR_CR3_SMPSLEVEL_Pos                  (4U)
+  #define PWR_CR3_SMPSLEVEL_Msk                  (0x3UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000030 */
+  #define PWR_CR3_SMPSLEVEL                      PWR_CR3_SMPSLEVEL_Msk                   /*!< SMPS output Voltage */
+  #define PWR_CR3_SMPSLEVEL_0                    (0x1UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000010 */
+  #define PWR_CR3_SMPSLEVEL_1                    (0x2UL << PWR_CR3_SMPSLEVEL_Pos)        /*!< 0x00000020 */
+  #define PWR_CR3_SMPSEXTHP_Pos                  (3U)
+  #define PWR_CR3_SMPSEXTHP_Msk                  (0x1UL << PWR_CR3_SMPSEXTHP_Pos)        /*!< 0x00000008 */
+  #define PWR_CR3_SMPSEXTHP                      PWR_CR3_SMPSEXTHP_Msk                   /*!< SMPS forced ON and in High Power MR mode */
+  #define PWR_CR3_SMPSEN_Pos                     (2U)
+  #define PWR_CR3_SMPSEN_Msk                     (0x1UL << PWR_CR3_SMPSEN_Pos)           /*!< 0x00000004 */
+  #define PWR_CR3_SMPSEN                         PWR_CR3_SMPSEN_Msk                      /*!< SMPS Enable */
+  #define PWR_CR3_LDOEN_Pos                      (1U)
+  #define PWR_CR3_LDOEN_Msk                      (0x1UL << PWR_CR3_LDOEN_Pos)            /*!< 0x00000002 */
+  #define PWR_CR3_LDOEN                          PWR_CR3_LDOEN_Msk                       /*!< Low Drop Output regulator enable */
+  #define PWR_CR3_BYPASS_Pos                     (0U)
+  #define PWR_CR3_BYPASS_Msk                     (0x1UL << PWR_CR3_BYPASS_Pos)           /*!< 0x00000001 */
+  #define PWR_CR3_BYPASS                         PWR_CR3_BYPASS_Msk                      /*!< Power Management Unit bypass */
 
   // Bit definitions for PWR_CPUCR register
-  #define PWR_CPUCR_RUN_SRD_Pos          (11U)
-  #define PWR_CPUCR_RUN_SRD_Msk          (0x1UL << PWR_CPUCR_RUN_SRD_Pos)        /*!< 0x00000800 */
-  #define PWR_CPUCR_RUN_SRD              PWR_CPUCR_RUN_SRD_Msk                   /*!< Keep system SRD domain in RUN mode regardless of the CPU sub-systems modes */
-  #define PWR_CPUCR_CSSF_Pos             (9U)
-  #define PWR_CPUCR_CSSF_Msk             (0x1UL << PWR_CPUCR_CSSF_Pos)           /*!< 0x00000200 */
-  #define PWR_CPUCR_CSSF                 PWR_CPUCR_CSSF_Msk                      /*!< Clear D1 domain CPU1 STANDBY, STOP and HOLD flags */
-  #define PWR_CPUCR_SBF_Pos              (6U)
-  #define PWR_CPUCR_SBF_Msk              (0x1UL << PWR_CPUCR_SBF_Pos)            /*!< 0x00000040 */
-  #define PWR_CPUCR_SBF                  PWR_CPUCR_SBF_Msk                       /*!< System STANDBY Flag */
-  #define PWR_CPUCR_STOPF_Pos            (5U)
-  #define PWR_CPUCR_STOPF_Msk            (0x1UL << PWR_CPUCR_STOPF_Pos)          /*!< 0x00000020 */
-  #define PWR_CPUCR_STOPF                PWR_CPUCR_STOPF_Msk                     /*!< STOP Flag */
-  #define PWR_CPUCR_PDDS_SRD_Pos         (2U)
-  #define PWR_CPUCR_PDDS_SRD_Msk         (0x1UL << PWR_CPUCR_PDDS_SRD_Pos)       /*!< 0x00000004 */
-  #define PWR_CPUCR_PDDS_SRD             PWR_CPUCR_PDDS_SRD_Msk                  /*!< System SRD domain Power Down Deepsleep */
-  #define PWR_CPUCR_RETDS_CD_Pos         (0U)
-  #define PWR_CPUCR_RETDS_CD_Msk         (0x1UL << PWR_CPUCR_RETDS_CD_Pos)       /*!< 0x00000001 */
-  #define PWR_CPUCR_RETDS_CD             PWR_CPUCR_RETDS_CD_Msk                  /*!< CD domain Power Down Deepsleep selection */
+  #define PWR_CPUCR_RUN_SRD_Pos                  (11U)
+  #define PWR_CPUCR_RUN_SRD_Msk                  (0x1UL << PWR_CPUCR_RUN_SRD_Pos)        /*!< 0x00000800 */
+  #define PWR_CPUCR_RUN_SRD                      PWR_CPUCR_RUN_SRD_Msk                   /*!< Keep system SRD domain in RUN mode regardless of the CPU sub-systems modes */
+  #define PWR_CPUCR_CSSF_Pos                     (9U)
+  #define PWR_CPUCR_CSSF_Msk                     (0x1UL << PWR_CPUCR_CSSF_Pos)           /*!< 0x00000200 */
+  #define PWR_CPUCR_CSSF                         PWR_CPUCR_CSSF_Msk                      /*!< Clear D1 domain CPU1 STANDBY, STOP and HOLD flags */
+  #define PWR_CPUCR_SBF_Pos                      (6U)
+  #define PWR_CPUCR_SBF_Msk                      (0x1UL << PWR_CPUCR_SBF_Pos)            /*!< 0x00000040 */
+  #define PWR_CPUCR_SBF                          PWR_CPUCR_SBF_Msk                       /*!< System STANDBY Flag */
+  #define PWR_CPUCR_STOPF_Pos                    (5U)
+  #define PWR_CPUCR_STOPF_Msk                    (0x1UL << PWR_CPUCR_STOPF_Pos)          /*!< 0x00000020 */
+  #define PWR_CPUCR_STOPF                        PWR_CPUCR_STOPF_Msk                     /*!< STOP Flag */
+  #define PWR_CPUCR_PDDS_SRD_Pos                 (2U)
+  #define PWR_CPUCR_PDDS_SRD_Msk                 (0x1UL << PWR_CPUCR_PDDS_SRD_Pos)       /*!< 0x00000004 */
+  #define PWR_CPUCR_PDDS_SRD                     PWR_CPUCR_PDDS_SRD_Msk                  /*!< System SRD domain Power Down Deepsleep */
+  #define PWR_CPUCR_RETDS_CD_Pos                 (0U)
+  #define PWR_CPUCR_RETDS_CD_Msk                 (0x1UL << PWR_CPUCR_RETDS_CD_Pos)       /*!< 0x00000001 */
+  #define PWR_CPUCR_RETDS_CD                     PWR_CPUCR_RETDS_CD_Msk                  /*!< CD domain Power Down Deepsleep selection */
 
   // Bit definitions for PWR_SRDCR register
-  #define PWR_SRDCR_VOS_Pos              (14U)
-  #define PWR_SRDCR_VOS_Msk              (0x3UL << PWR_SRDCR_VOS_Pos)             /*!< 0x0000C000 */
-  #define PWR_SRDCR_VOS                  PWR_SRDCR_VOS_Msk                        /*!< Voltage Scaling selection according performance */
-  #define PWR_SRDCR_VOS_0                (0x1UL << PWR_SRDCR_VOS_Pos)             /*!< 0x00004000 */
-  #define PWR_SRDCR_VOS_1                (0x2UL << PWR_SRDCR_VOS_Pos)             /*!< 0x00008000 */
-  #define PWR_SRDCR_VOSRDY_Pos           (13U)
-  #define PWR_SRDCR_VOSRDY_Msk           (0x1UL << PWR_SRDCR_VOSRDY_Pos)          /*!< 0x00002000 */
-  #define PWR_SRDCR_VOSRDY               PWR_SRDCR_VOSRDY_Msk                     /*!< VOS Ready bit for VDD11 Voltage Scaling output selection */
+  #define PWR_SRDCR_VOS_Pos                      (14U)
+  #define PWR_SRDCR_VOS_Msk                      (0x3UL << PWR_SRDCR_VOS_Pos)             /*!< 0x0000C000 */
+  #define PWR_SRDCR_VOS                          PWR_SRDCR_VOS_Msk                        /*!< Voltage Scaling selection according performance */
+  #define PWR_SRDCR_VOS_0                        (0x1UL << PWR_SRDCR_VOS_Pos)             /*!< 0x00004000 */
+  #define PWR_SRDCR_VOS_1                        (0x2UL << PWR_SRDCR_VOS_Pos)             /*!< 0x00008000 */
+  #define PWR_SRDCR_VOSRDY_Pos                   (13U)
+  #define PWR_SRDCR_VOSRDY_Msk                   (0x1UL << PWR_SRDCR_VOSRDY_Pos)          /*!< 0x00002000 */
+  #define PWR_SRDCR_VOSRDY                       PWR_SRDCR_VOSRDY_Msk                     /*!< VOS Ready bit for VDD11 Voltage Scaling output selection */
 
   // Bit definitions for FLASH_ACR register
-  #define FLASH_ACR_LATENCY_Pos                (0U)
-  #define FLASH_ACR_LATENCY_Msk                (0xFUL << FLASH_ACR_LATENCY_Pos)  /*!< 0x0000000F: bit4 is kept only for legacy purpose */
-  #define FLASH_ACR_LATENCY                    FLASH_ACR_LATENCY_Msk             /*!< Read Latency */
-  #define FLASH_ACR_LATENCY_0WS                (0x00000000UL)
-  #define FLASH_ACR_LATENCY_1WS                (0x00000001UL)
-  #define FLASH_ACR_LATENCY_2WS                (0x00000002UL)
-  #define FLASH_ACR_LATENCY_3WS                (0x00000003UL)
-  #define FLASH_ACR_LATENCY_4WS                (0x00000004UL)
-  #define FLASH_ACR_LATENCY_5WS                (0x00000005UL)
-  #define FLASH_ACR_LATENCY_6WS                (0x00000006UL)
-  #define FLASH_ACR_LATENCY_7WS                (0x00000007UL)
+  #define FLASH_ACR_LATENCY_Pos                  (0U)
+  #define FLASH_ACR_LATENCY_Msk                  (0xFUL << FLASH_ACR_LATENCY_Pos)  /*!< 0x0000000F: bit4 is kept only for legacy purpose */
+  #define FLASH_ACR_LATENCY                      FLASH_ACR_LATENCY_Msk             /*!< Read Latency */
+  #define FLASH_ACR_LATENCY_0WS                  (0x00000000UL)
+  #define FLASH_ACR_LATENCY_1WS                  (0x00000001UL)
+  #define FLASH_ACR_LATENCY_2WS                  (0x00000002UL)
+  #define FLASH_ACR_LATENCY_3WS                  (0x00000003UL)
+  #define FLASH_ACR_LATENCY_4WS                  (0x00000004UL)
+  #define FLASH_ACR_LATENCY_5WS                  (0x00000005UL)
+  #define FLASH_ACR_LATENCY_6WS                  (0x00000006UL)
+  #define FLASH_ACR_LATENCY_7WS                  (0x00000007UL)
 
-  #define FLASH_LATENCY_DEFAULT                FLASH_ACR_LATENCY_3WS /* FLASH Three Latency cycles */
+  #define FLASH_LATENCY_DEFAULT                  FLASH_ACR_LATENCY_3WS /* FLASH Three Latency cycles */
 
   // Reset and Clock Control
   #define RCC_VER_2_0
@@ -370,9 +381,9 @@
   #define RCC_CR_HSI48RDY_Msk                    (0x1UL << RCC_CR_HSI48RDY_Pos)  /*!< 0x00002000 */
   #define RCC_CR_HSI48RDY                        RCC_CR_HSI48RDY_Msk             /*!< HSI48 clock ready */
 
-  #define RCC_CR_CPUCKRDY_Pos                     (14U)
-  #define RCC_CR_CPUCKRDY_Msk                     (0x1UL << RCC_CR_CPUCKRDY_Pos)   /*!< 0x00004000 */
-  #define RCC_CR_CPUCKRDY                         RCC_CR_CPUCKRDY_Msk              /*!< CPU domain clocks ready flag  */
+  #define RCC_CR_CPUCKRDY_Pos                    (14U)
+  #define RCC_CR_CPUCKRDY_Msk                    (0x1UL << RCC_CR_CPUCKRDY_Pos)   /*!< 0x00004000 */
+  #define RCC_CR_CPUCKRDY                        RCC_CR_CPUCKRDY_Msk              /*!< CPU domain clocks ready flag  */
   #define RCC_CR_CDCKRDY_Pos                     (15U)
   #define RCC_CR_CDCKRDY_Msk                     (0x1UL << RCC_CR_CDCKRDY_Pos)   /*!< 0x00008000 */
   #define RCC_CR_CDCKRDY                         RCC_CR_CDCKRDY_Msk              /*!< CD domain clocks ready flag */
@@ -390,9 +401,9 @@
   #define RCC_CR_CSSHSEON_Msk                    (0x1UL << RCC_CR_CSSHSEON_Pos)  /*!< 0x00080000 */
   #define RCC_CR_CSSHSEON                        RCC_CR_CSSHSEON_Msk             /*!< HSE Clock security System enable */
 
-  #define RCC_CR_HSEEXT_Pos                    (20U)
-  #define RCC_CR_HSEEXT_Msk                    (0x1UL << RCC_CR_HSEEXT_Pos)  /*!< 0x00080000 */
-  #define RCC_CR_HSEEXT                        RCC_CR_HSEEXT_Msk             /*!< HSE Clock security System enable */
+  #define RCC_CR_HSEEXT_Pos                      (20U)
+  #define RCC_CR_HSEEXT_Msk                      (0x1UL << RCC_CR_HSEEXT_Pos)  /*!< 0x00080000 */
+  #define RCC_CR_HSEEXT                          RCC_CR_HSEEXT_Msk             /*!< HSE Clock security System enable */
 
   #define RCC_CR_PLL1ON_Pos                      (24U)
   #define RCC_CR_PLL1ON_Msk                      (0x1UL << RCC_CR_PLL1ON_Pos)    /*!< 0x01000000 */
@@ -427,7 +438,6 @@
   #define RCC_HSICFGR_HSITRIM_5                  (0x20UL << RCC_HSICFGR_HSITRIM_Pos) /*!< 0x20000000 */
   #define RCC_HSICFGR_HSITRIM_6                  (0x40UL << RCC_HSICFGR_HSITRIM_Pos) /*!< 0x40000000 */
 
-
   // Bit definitions for RCC_CRRCR register
 
   // HSI48CAL configuration
@@ -444,21 +454,6 @@
   #define RCC_CRRCR_HSI48CAL_7                   (0x080UL << RCC_CRRCR_HSI48CAL_Pos) /*!< 0x00000080 */
   #define RCC_CRRCR_HSI48CAL_8                   (0x100UL << RCC_CRRCR_HSI48CAL_Pos) /*!< 0x00000100 */
   #define RCC_CRRCR_HSI48CAL_9                   (0x200UL << RCC_CRRCR_HSI48CAL_Pos) /*!< 0x00000200 */
-
-
-  // Bit definitions for RCC_CSICFGR register
-  // CSICAL configuration
-  #define RCC_CSICFGR_CSICAL_Pos                 (0U)
-  #define RCC_CSICFGR_CSICAL_Msk                 (0xFFUL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x000000FF */
-  #define RCC_CSICFGR_CSICAL                     RCC_CSICFGR_CSICAL_Msk          /*!< CSICAL[7:0] bits */
-  #define RCC_CSICFGR_CSICAL_0                   (0x01UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000001 */
-  #define RCC_CSICFGR_CSICAL_1                   (0x02UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000002 */
-  #define RCC_CSICFGR_CSICAL_2                   (0x04UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000004 */
-  #define RCC_CSICFGR_CSICAL_3                   (0x08UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000008 */
-  #define RCC_CSICFGR_CSICAL_4                   (0x10UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000010 */
-  #define RCC_CSICFGR_CSICAL_5                   (0x20UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000020 */
-  #define RCC_CSICFGR_CSICAL_6                   (0x40UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000040 */
-  #define RCC_CSICFGR_CSICAL_7                   (0x80UL << RCC_CSICFGR_CSICAL_Pos) /*!< 0x00000080 */
 
   // CSITRIM configuration
   #define RCC_CSICFGR_CSITRIM_Pos                (24U)
@@ -498,184 +493,164 @@
   #define RCC_CFGR_SWS_HSE                       (0x00000010UL)                       /*!< HSE used as system clock */
   #define RCC_CFGR_SWS_PLL1                      (0x00000018UL)                       /*!< PLL1 used as system clock */
 
-  #define RCC_CFGR_STOPWUCK_Pos                  (6U)
-  #define RCC_CFGR_STOPWUCK_Msk                  (0x1UL << RCC_CFGR_STOPWUCK_Pos)     /*!< 0x00000040 */
-  #define RCC_CFGR_STOPWUCK                      RCC_CFGR_STOPWUCK_Msk                /*!< Wake Up from stop and CSS backup clock selection */
-
-  #define RCC_CFGR_STOPKERWUCK_Pos               (7U)
-  #define RCC_CFGR_STOPKERWUCK_Msk               (0x1UL << RCC_CFGR_STOPKERWUCK_Pos)  /*!< 0x00000080 */
-  #define RCC_CFGR_STOPKERWUCK                   RCC_CFGR_STOPKERWUCK_Msk             /*!< Kernel Clock Selection after a Wake Up from STOP */
-
-  // RTCPRE configuration
-  #define RCC_CFGR_RTCPRE_Pos                    (8U)
-  #define RCC_CFGR_RTCPRE_Msk                    (0x3FUL << RCC_CFGR_RTCPRE_Pos)
-  #define RCC_CFGR_RTCPRE                        RCC_CFGR_RTCPRE_Msk                  /*!< 0x00003F00 */
-  #define RCC_CFGR_RTCPRE_0                      (0x1UL << RCC_CFGR_RTCPRE_Pos)        /*!< 0x00000100 */
-  #define RCC_CFGR_RTCPRE_1                      (0x2UL << RCC_CFGR_RTCPRE_Pos)        /*!< 0x00000200 */
-  #define RCC_CFGR_RTCPRE_2                      (0x4UL << RCC_CFGR_RTCPRE_Pos)        /*!< 0x00000400 */
-  #define RCC_CFGR_RTCPRE_3                      (0x8UL << RCC_CFGR_RTCPRE_Pos)        /*!< 0x00000800 */
-  #define RCC_CFGR_RTCPRE_4                      (0x10UL << RCC_CFGR_RTCPRE_Pos)       /*!< 0x00001000 */
-  #define RCC_CFGR_RTCPRE_5                      (0x20UL << RCC_CFGR_RTCPRE_Pos)       /*!< 0x00002000 */
-
-  // Bit definitions for RCC_D1CFGR register
+  // Bit definitions for RCC_CDCFGR1 register
   // D1HPRE configuration
-  #define RCC_CDCFGR1_HPRE_Pos                    (0U)
-  #define RCC_CDCFGR1_HPRE_Msk                    (0xFUL << RCC_CDCFGR1_HPRE_Pos)  /*!< 0x0000000F */
-  #define RCC_CDCFGR1_HPRE                        RCC_CDCFGR1_HPRE_Msk             /*!< HPRE[3:0] bits (AHB3 prescaler) */
-  #define RCC_CDCFGR1_HPRE_0                      (0x1UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000001 */
-  #define RCC_CDCFGR1_HPRE_1                      (0x2UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000002 */
-  #define RCC_CDCFGR1_HPRE_2                      (0x4UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000004 */
-  #define RCC_CDCFGR1_HPRE_3                      (0x8UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000008 */
+  #define RCC_CDCFGR1_HPRE_Pos                   (0U)
+  #define RCC_CDCFGR1_HPRE_Msk                   (0xFUL << RCC_CDCFGR1_HPRE_Pos)  /*!< 0x0000000F */
+  #define RCC_CDCFGR1_HPRE                       RCC_CDCFGR1_HPRE_Msk             /*!< HPRE[3:0] bits (AHB3 prescaler) */
+  #define RCC_CDCFGR1_HPRE_0                     (0x1UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000001 */
+  #define RCC_CDCFGR1_HPRE_1                     (0x2UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000002 */
+  #define RCC_CDCFGR1_HPRE_2                     (0x4UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000004 */
+  #define RCC_CDCFGR1_HPRE_3                     (0x8UL << RCC_CDCFGR1_HPRE_Pos)   /*!< 0x00000008 */
 
-  #define RCC_CDCFGR1_HPRE_DIV1                   ((uint32_t)0x00000000)                 /*!< AHB3 Clock not divided */
-  #define RCC_CDCFGR1_HPRE_DIV2_Pos               (3U)
-  #define RCC_CDCFGR1_HPRE_DIV2_Msk               (0x1UL << RCC_CDCFGR1_HPRE_DIV2_Pos)   /*!< 0x00000008 */
-  #define RCC_CDCFGR1_HPRE_DIV2                   RCC_CDCFGR1_HPRE_DIV2_Msk              /*!< AHB3 Clock divided by 2 */
-  #define RCC_CDCFGR1_HPRE_DIV4_Pos               (0U)
-  #define RCC_CDCFGR1_HPRE_DIV4_Msk               (0x9UL << RCC_CDCFGR1_HPRE_DIV4_Pos)   /*!< 0x00000009 */
-  #define RCC_CDCFGR1_HPRE_DIV4                   RCC_CDCFGR1_HPRE_DIV4_Msk              /*!< AHB3 Clock divided by 4 */
-  #define RCC_CDCFGR1_HPRE_DIV8_Pos               (1U)
-  #define RCC_CDCFGR1_HPRE_DIV8_Msk               (0x5UL << RCC_CDCFGR1_HPRE_DIV8_Pos)   /*!< 0x0000000A */
-  #define RCC_CDCFGR1_HPRE_DIV8                   RCC_CDCFGR1_HPRE_DIV8_Msk              /*!< AHB3 Clock divided by 8 */
-  #define RCC_CDCFGR1_HPRE_DIV16_Pos              (0U)
-  #define RCC_CDCFGR1_HPRE_DIV16_Msk              (0xBUL << RCC_CDCFGR1_HPRE_DIV16_Pos)  /*!< 0x0000000B */
-  #define RCC_CDCFGR1_HPRE_DIV16                  RCC_CDCFGR1_HPRE_DIV16_Msk             /*!< AHB3 Clock divided by 16 */
-  #define RCC_CDCFGR1_HPRE_DIV64_Pos              (2U)
-  #define RCC_CDCFGR1_HPRE_DIV64_Msk              (0x3UL << RCC_CDCFGR1_HPRE_DIV64_Pos)  /*!< 0x0000000C */
-  #define RCC_CDCFGR1_HPRE_DIV64                  RCC_CDCFGR1_HPRE_DIV64_Msk             /*!< AHB3 Clock divided by 64 */
-  #define RCC_CDCFGR1_HPRE_DIV128_Pos             (0U)
-  #define RCC_CDCFGR1_HPRE_DIV128_Msk             (0xDUL << RCC_CDCFGR1_HPRE_DIV128_Pos) /*!< 0x0000000D */
-  #define RCC_CDCFGR1_HPRE_DIV128                 RCC_CDCFGR1_HPRE_DIV128_Msk            /*!< AHB3 Clock divided by 128 */
-  #define RCC_CDCFGR1_HPRE_DIV256_Pos             (1U)
-  #define RCC_CDCFGR1_HPRE_DIV256_Msk             (0x7UL << RCC_CDCFGR1_HPRE_DIV256_Pos) /*!< 0x0000000E */
-  #define RCC_CDCFGR1_HPRE_DIV256                 RCC_CDCFGR1_HPRE_DIV256_Msk            /*!< AHB3 Clock divided by 256 */
-  #define RCC_CDCFGR1_HPRE_DIV512_Pos             (0U)
-  #define RCC_CDCFGR1_HPRE_DIV512_Msk             (0xFUL << RCC_CDCFGR1_HPRE_DIV512_Pos) /*!< 0x0000000F */
-  #define RCC_CDCFGR1_HPRE_DIV512                 RCC_CDCFGR1_HPRE_DIV512_Msk            /*!< AHB3 Clock divided by 512 */
+  #define RCC_CDCFGR1_HPRE_DIV1                  ((uint32_t)0x00000000)                 /*!< AHB3 Clock not divided */
+  #define RCC_CDCFGR1_HPRE_DIV2_Pos              (3U)
+  #define RCC_CDCFGR1_HPRE_DIV2_Msk              (0x1UL << RCC_CDCFGR1_HPRE_DIV2_Pos)   /*!< 0x00000008 */
+  #define RCC_CDCFGR1_HPRE_DIV2                  RCC_CDCFGR1_HPRE_DIV2_Msk              /*!< AHB3 Clock divided by 2 */
+  #define RCC_CDCFGR1_HPRE_DIV4_Pos              (0U)
+  #define RCC_CDCFGR1_HPRE_DIV4_Msk              (0x9UL << RCC_CDCFGR1_HPRE_DIV4_Pos)   /*!< 0x00000009 */
+  #define RCC_CDCFGR1_HPRE_DIV4                  RCC_CDCFGR1_HPRE_DIV4_Msk              /*!< AHB3 Clock divided by 4 */
+  #define RCC_CDCFGR1_HPRE_DIV8_Pos              (1U)
+  #define RCC_CDCFGR1_HPRE_DIV8_Msk              (0x5UL << RCC_CDCFGR1_HPRE_DIV8_Pos)   /*!< 0x0000000A */
+  #define RCC_CDCFGR1_HPRE_DIV8                  RCC_CDCFGR1_HPRE_DIV8_Msk              /*!< AHB3 Clock divided by 8 */
+  #define RCC_CDCFGR1_HPRE_DIV16_Pos             (0U)
+  #define RCC_CDCFGR1_HPRE_DIV16_Msk             (0xBUL << RCC_CDCFGR1_HPRE_DIV16_Pos)  /*!< 0x0000000B */
+  #define RCC_CDCFGR1_HPRE_DIV16                 RCC_CDCFGR1_HPRE_DIV16_Msk             /*!< AHB3 Clock divided by 16 */
+  #define RCC_CDCFGR1_HPRE_DIV64_Pos             (2U)
+  #define RCC_CDCFGR1_HPRE_DIV64_Msk             (0x3UL << RCC_CDCFGR1_HPRE_DIV64_Pos)  /*!< 0x0000000C */
+  #define RCC_CDCFGR1_HPRE_DIV64                 RCC_CDCFGR1_HPRE_DIV64_Msk             /*!< AHB3 Clock divided by 64 */
+  #define RCC_CDCFGR1_HPRE_DIV128_Pos            (0U)
+  #define RCC_CDCFGR1_HPRE_DIV128_Msk            (0xDUL << RCC_CDCFGR1_HPRE_DIV128_Pos) /*!< 0x0000000D */
+  #define RCC_CDCFGR1_HPRE_DIV128                RCC_CDCFGR1_HPRE_DIV128_Msk            /*!< AHB3 Clock divided by 128 */
+  #define RCC_CDCFGR1_HPRE_DIV256_Pos            (1U)
+  #define RCC_CDCFGR1_HPRE_DIV256_Msk            (0x7UL << RCC_CDCFGR1_HPRE_DIV256_Pos) /*!< 0x0000000E */
+  #define RCC_CDCFGR1_HPRE_DIV256                RCC_CDCFGR1_HPRE_DIV256_Msk            /*!< AHB3 Clock divided by 256 */
+  #define RCC_CDCFGR1_HPRE_DIV512_Pos            (0U)
+  #define RCC_CDCFGR1_HPRE_DIV512_Msk            (0xFUL << RCC_CDCFGR1_HPRE_DIV512_Pos) /*!< 0x0000000F */
+  #define RCC_CDCFGR1_HPRE_DIV512                RCC_CDCFGR1_HPRE_DIV512_Msk            /*!< AHB3 Clock divided by 512 */
 
-  // D1PPRE configuration
-  #define RCC_CDCFGR1_CDPPRE_Pos                  (4U)
-  #define RCC_CDCFGR1_CDPPRE_Msk                  (0x7UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000070 */
-  #define RCC_CDCFGR1_CDPPRE                      RCC_CDCFGR1_CDPPRE_Msk                 /*!< CDPRE[2:0] bits (APB3 prescaler) */
-  #define RCC_CDCFGR1_CDPPRE_0                    (0x1UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000010 */
-  #define RCC_CDCFGR1_CDPPRE_1                    (0x2UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000020 */
-  #define RCC_CDCFGR1_CDPPRE_2                    (0x4UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000040 */
+  #define RCC_CDCFGR1_CDPPRE_Pos                 (4U)
+  #define RCC_CDCFGR1_CDPPRE_Msk                 (0x7UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000070 */
+  #define RCC_CDCFGR1_CDPPRE                     RCC_CDCFGR1_CDPPRE_Msk                 /*!< CDPRE[2:0] bits (APB3 prescaler) */
+  #define RCC_CDCFGR1_CDPPRE_0                   (0x1UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000010 */
+  #define RCC_CDCFGR1_CDPPRE_1                   (0x2UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000020 */
+  #define RCC_CDCFGR1_CDPPRE_2                   (0x4UL << RCC_CDCFGR1_CDPPRE_Pos)      /*!< 0x00000040 */
 
-  #define RCC_CDCFGR1_CDPPRE_DIV1                 ((uint32_t)0x00000000)                 /*!< APB3 clock not divided */
-  #define RCC_CDCFGR1_CDPPRE_DIV2_Pos             (6U)
-  #define RCC_CDCFGR1_CDPPRE_DIV2_Msk             (0x1UL << RCC_CDCFGR1_CDPPRE_DIV2_Pos) /*!< 0x00000040 */
-  #define RCC_CDCFGR1_CDPPRE_DIV2                 RCC_CDCFGR1_CDPPRE_DIV2_Msk            /*!< APB3 clock divided by 2 */
-  #define RCC_CDCFGR1_CDPPRE_DIV4_Pos             (4U)
-  #define RCC_CDCFGR1_CDPPRE_DIV4_Msk             (0x5UL << RCC_CDCFGR1_CDPPRE_DIV4_Pos) /*!< 0x00000050 */
-  #define RCC_CDCFGR1_CDPPRE_DIV4                 RCC_CDCFGR1_CDPPRE_DIV4_Msk            /*!< APB3 clock divided by 4 */
-  #define RCC_CDCFGR1_CDPPRE_DIV8_Pos             (5U)
-  #define RCC_CDCFGR1_CDPPRE_DIV8_Msk             (0x3UL << RCC_CDCFGR1_CDPPRE_DIV8_Pos) /*!< 0x00000060 */
-  #define RCC_CDCFGR1_CDPPRE_DIV8                 RCC_CDCFGR1_CDPPRE_DIV8_Msk            /*!< APB3 clock divided by 8 */
-  #define RCC_CDCFGR1_CDPPRE_DIV16_Pos            (4U)
-  #define RCC_CDCFGR1_CDPPRE_DIV16_Msk            (0x7UL << RCC_CDCFGR1_CDPPRE_DIV16_Pos) /*!< 0x00000070 */
-  #define RCC_CDCFGR1_CDPPRE_DIV16                RCC_CDCFGR1_CDPPRE_DIV16_Msk            /*!< APB3 clock divided by 16 */
+  #define RCC_CDCFGR1_CDPPRE_DIV1                ((uint32_t)0x00000000)                 /*!< APB3 clock not divided */
+  #define RCC_CDCFGR1_CDPPRE_DIV2_Pos            (6U)
+  #define RCC_CDCFGR1_CDPPRE_DIV2_Msk            (0x1UL << RCC_CDCFGR1_CDPPRE_DIV2_Pos) /*!< 0x00000040 */
+  #define RCC_CDCFGR1_CDPPRE_DIV2                RCC_CDCFGR1_CDPPRE_DIV2_Msk            /*!< APB3 clock divided by 2 */
+  #define RCC_CDCFGR1_CDPPRE_DIV4_Pos            (4U)
+  #define RCC_CDCFGR1_CDPPRE_DIV4_Msk            (0x5UL << RCC_CDCFGR1_CDPPRE_DIV4_Pos) /*!< 0x00000050 */
+  #define RCC_CDCFGR1_CDPPRE_DIV4                RCC_CDCFGR1_CDPPRE_DIV4_Msk            /*!< APB3 clock divided by 4 */
+  #define RCC_CDCFGR1_CDPPRE_DIV8_Pos            (5U)
+  #define RCC_CDCFGR1_CDPPRE_DIV8_Msk            (0x3UL << RCC_CDCFGR1_CDPPRE_DIV8_Pos) /*!< 0x00000060 */
+  #define RCC_CDCFGR1_CDPPRE_DIV8                RCC_CDCFGR1_CDPPRE_DIV8_Msk            /*!< APB3 clock divided by 8 */
+  #define RCC_CDCFGR1_CDPPRE_DIV16_Pos           (4U)
+  #define RCC_CDCFGR1_CDPPRE_DIV16_Msk           (0x7UL << RCC_CDCFGR1_CDPPRE_DIV16_Pos) /*!< 0x00000070 */
+  #define RCC_CDCFGR1_CDPPRE_DIV16               RCC_CDCFGR1_CDPPRE_DIV16_Msk            /*!< APB3 clock divided by 16 */
 
-  #define RCC_CDCFGR1_CDCPRE_Pos                  (8U)
-  #define RCC_CDCFGR1_CDCPRE_Msk                  (0xFUL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000F00 */
-  #define RCC_CDCFGR1_CDCPRE                      RCC_CDCFGR1_CDCPRE_Msk                  /*!< CDCPRE[2:0] bits (Domain 1 Core prescaler) */
-  #define RCC_CDCFGR1_CDCPRE_0                    (0x1UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000100 */
-  #define RCC_CDCFGR1_CDCPRE_1                    (0x2UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000200 */
-  #define RCC_CDCFGR1_CDCPRE_2                    (0x4UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000400 */
-  #define RCC_CDCFGR1_CDCPRE_3                    (0x8UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000800 */
+  #define RCC_CDCFGR1_CDCPRE_Pos                 (8U)
+  #define RCC_CDCFGR1_CDCPRE_Msk                 (0xFUL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000F00 */
+  #define RCC_CDCFGR1_CDCPRE                     RCC_CDCFGR1_CDCPRE_Msk                  /*!< CDCPRE[2:0] bits (Domain 1 Core prescaler) */
+  #define RCC_CDCFGR1_CDCPRE_0                   (0x1UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000100 */
+  #define RCC_CDCFGR1_CDCPRE_1                   (0x2UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000200 */
+  #define RCC_CDCFGR1_CDCPRE_2                   (0x4UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000400 */
+  #define RCC_CDCFGR1_CDCPRE_3                   (0x8UL << RCC_CDCFGR1_CDCPRE_Pos)       /*!< 0x00000800 */
 
-  #define RCC_CDCFGR1_CDCPRE_DIV1                 ((uint32_t)0x00000000)                  /*!< Domain 1 Core clock not divided */
-  #define RCC_CDCFGR1_CDCPRE_DIV2_Pos             (11U)
-  #define RCC_CDCFGR1_CDCPRE_DIV2_Msk             (0x1UL << RCC_CDCFGR1_CDCPRE_DIV2_Pos)  /*!< 0x00000800 */
-  #define RCC_CDCFGR1_CDCPRE_DIV2                 RCC_CDCFGR1_CDCPRE_DIV2_Msk             /*!< Domain 1 Core clock divided by 2 */
-  #define RCC_CDCFGR1_CDCPRE_DIV4_Pos             (8U)
-  #define RCC_CDCFGR1_CDCPRE_DIV4_Msk             (0x9UL << RCC_CDCFGR1_CDCPRE_DIV4_Pos)  /*!< 0x00000900 */
-  #define RCC_CDCFGR1_CDCPRE_DIV4                 RCC_CDCFGR1_CDCPRE_DIV4_Msk             /*!< Domain 1 Core clock divided by 4 */
-  #define RCC_CDCFGR1_CDCPRE_DIV8_Pos             (9U)
-  #define RCC_CDCFGR1_CDCPRE_DIV8_Msk             (0x5UL << RCC_CDCFGR1_CDCPRE_DIV8_Pos)  /*!< 0x00000A00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV8                 RCC_CDCFGR1_CDCPRE_DIV8_Msk             /*!< Domain 1 Core clock divided by 8 */
-  #define RCC_CDCFGR1_CDCPRE_DIV16_Pos            (8U)
-  #define RCC_CDCFGR1_CDCPRE_DIV16_Msk            (0xBUL << RCC_CDCFGR1_CDCPRE_DIV16_Pos) /*!< 0x00000B00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV16                RCC_CDCFGR1_CDCPRE_DIV16_Msk            /*!< Domain 1 Core clock divided by 16 */
-  #define RCC_CDCFGR1_CDCPRE_DIV64_Pos            (10U)
-  #define RCC_CDCFGR1_CDCPRE_DIV64_Msk            (0x3UL << RCC_CDCFGR1_CDCPRE_DIV64_Pos) /*!< 0x00000C00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV64                RCC_CDCFGR1_CDCPRE_DIV64_Msk            /*!< Domain 1 Core clock divided by 64 */
-  #define RCC_CDCFGR1_CDCPRE_DIV128_Pos           (8U)
-  #define RCC_CDCFGR1_CDCPRE_DIV128_Msk           (0xDUL << RCC_CDCFGR1_CDCPRE_DIV128_Pos)/*!< 0x00000D00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV128               RCC_CDCFGR1_CDCPRE_DIV128_Msk           /*!< Domain 1 Core clock divided by 128 */
-  #define RCC_CDCFGR1_CDCPRE_DIV256_Pos           (9U)
-  #define RCC_CDCFGR1_CDCPRE_DIV256_Msk           (0x7UL << RCC_CDCFGR1_CDCPRE_DIV256_Pos)/*!< 0x00000E00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV256               RCC_CDCFGR1_CDCPRE_DIV256_Msk           /*!< Domain 1 Core clock divided by 256 */
-  #define RCC_CDCFGR1_CDCPRE_DIV512_Pos           (8U)
-  #define RCC_CDCFGR1_CDCPRE_DIV512_Msk           (0xFUL << RCC_CDCFGR1_CDCPRE_DIV512_Pos)/*!< 0x00000F00 */
-  #define RCC_CDCFGR1_CDCPRE_DIV512               RCC_CDCFGR1_CDCPRE_DIV512_Msk           /*!< Domain 1 Core clock divided by 512 */
+  #define RCC_CDCFGR1_CDCPRE_DIV1                ((uint32_t)0x00000000)                  /*!< Domain 1 Core clock not divided */
+  #define RCC_CDCFGR1_CDCPRE_DIV2_Pos            (11U)
+  #define RCC_CDCFGR1_CDCPRE_DIV2_Msk            (0x1UL << RCC_CDCFGR1_CDCPRE_DIV2_Pos)  /*!< 0x00000800 */
+  #define RCC_CDCFGR1_CDCPRE_DIV2                RCC_CDCFGR1_CDCPRE_DIV2_Msk             /*!< Domain 1 Core clock divided by 2 */
+  #define RCC_CDCFGR1_CDCPRE_DIV4_Pos            (8U)
+  #define RCC_CDCFGR1_CDCPRE_DIV4_Msk            (0x9UL << RCC_CDCFGR1_CDCPRE_DIV4_Pos)  /*!< 0x00000900 */
+  #define RCC_CDCFGR1_CDCPRE_DIV4                RCC_CDCFGR1_CDCPRE_DIV4_Msk             /*!< Domain 1 Core clock divided by 4 */
+  #define RCC_CDCFGR1_CDCPRE_DIV8_Pos            (9U)
+  #define RCC_CDCFGR1_CDCPRE_DIV8_Msk            (0x5UL << RCC_CDCFGR1_CDCPRE_DIV8_Pos)  /*!< 0x00000A00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV8                RCC_CDCFGR1_CDCPRE_DIV8_Msk             /*!< Domain 1 Core clock divided by 8 */
+  #define RCC_CDCFGR1_CDCPRE_DIV16_Pos           (8U)
+  #define RCC_CDCFGR1_CDCPRE_DIV16_Msk           (0xBUL << RCC_CDCFGR1_CDCPRE_DIV16_Pos) /*!< 0x00000B00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV16               RCC_CDCFGR1_CDCPRE_DIV16_Msk            /*!< Domain 1 Core clock divided by 16 */
+  #define RCC_CDCFGR1_CDCPRE_DIV64_Pos           (10U)
+  #define RCC_CDCFGR1_CDCPRE_DIV64_Msk           (0x3UL << RCC_CDCFGR1_CDCPRE_DIV64_Pos) /*!< 0x00000C00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV64               RCC_CDCFGR1_CDCPRE_DIV64_Msk            /*!< Domain 1 Core clock divided by 64 */
+  #define RCC_CDCFGR1_CDCPRE_DIV128_Pos          (8U)
+  #define RCC_CDCFGR1_CDCPRE_DIV128_Msk          (0xDUL << RCC_CDCFGR1_CDCPRE_DIV128_Pos)/*!< 0x00000D00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV128              RCC_CDCFGR1_CDCPRE_DIV128_Msk           /*!< Domain 1 Core clock divided by 128 */
+  #define RCC_CDCFGR1_CDCPRE_DIV256_Pos          (9U)
+  #define RCC_CDCFGR1_CDCPRE_DIV256_Msk          (0x7UL << RCC_CDCFGR1_CDCPRE_DIV256_Pos)/*!< 0x00000E00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV256              RCC_CDCFGR1_CDCPRE_DIV256_Msk           /*!< Domain 1 Core clock divided by 256 */
+  #define RCC_CDCFGR1_CDCPRE_DIV512_Pos          (8U)
+  #define RCC_CDCFGR1_CDCPRE_DIV512_Msk          (0xFUL << RCC_CDCFGR1_CDCPRE_DIV512_Pos)/*!< 0x00000F00 */
+  #define RCC_CDCFGR1_CDCPRE_DIV512              RCC_CDCFGR1_CDCPRE_DIV512_Msk           /*!< Domain 1 Core clock divided by 512 */
 
   // Bit definitions for RCC_CDCFGR2 register
   // CDPPRE1 configuration
-  #define RCC_CDCFGR2_CDPPRE1_Pos                 (4U)
-  #define RCC_CDCFGR2_CDPPRE1_Msk                 (0x7UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000070 */
-  #define RCC_CDCFGR2_CDPPRE1                     RCC_CDCFGR2_CDPPRE1_Msk          /*!< D1PPRE1[2:0] bits (APB1 prescaler) */
-  #define RCC_CDCFGR2_CDPPRE1_0                   (0x1UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000010 */
-  #define RCC_CDCFGR2_CDPPRE1_1                   (0x2UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000020 */
-  #define RCC_CDCFGR2_CDPPRE1_2                   (0x4UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000040 */
+  #define RCC_CDCFGR2_CDPPRE1_Pos                (4U)
+  #define RCC_CDCFGR2_CDPPRE1_Msk                (0x7UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000070 */
+  #define RCC_CDCFGR2_CDPPRE1                    RCC_CDCFGR2_CDPPRE1_Msk          /*!< D1PPRE1[2:0] bits (APB1 prescaler) */
+  #define RCC_CDCFGR2_CDPPRE1_0                  (0x1UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000010 */
+  #define RCC_CDCFGR2_CDPPRE1_1                  (0x2UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000020 */
+  #define RCC_CDCFGR2_CDPPRE1_2                  (0x4UL << RCC_CDCFGR2_CDPPRE1_Pos) /*!< 0x00000040 */
 
-  #define RCC_CDCFGR2_CDPPRE1_DIV1                ((uint32_t)0x00000000)          /*!< APB1 clock not divided */
-  #define RCC_CDCFGR2_CDPPRE1_DIV2_Pos            (6U)
-  #define RCC_CDCFGR2_CDPPRE1_DIV2_Msk            (0x1UL << RCC_CDCFGR2_CDPPRE1_DIV2_Pos) /*!< 0x00000040 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV2                RCC_CDCFGR2_CDPPRE1_DIV2_Msk     /*!< APB1 clock divided by 2 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV4_Pos            (4U)
-  #define RCC_CDCFGR2_CDPPRE1_DIV4_Msk            (0x5UL << RCC_CDCFGR2_CDPPRE1_DIV4_Pos) /*!< 0x00000050 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV4                RCC_CDCFGR2_CDPPRE1_DIV4_Msk     /*!< APB1 clock divided by 4 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV8_Pos            (5U)
-  #define RCC_CDCFGR2_CDPPRE1_DIV8_Msk            (0x3UL << RCC_CDCFGR2_CDPPRE1_DIV8_Pos) /*!< 0x00000060 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV8                RCC_CDCFGR2_CDPPRE1_DIV8_Msk     /*!< APB1 clock divided by 8 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV16_Pos           (4U)
-  #define RCC_CDCFGR2_CDPPRE1_DIV16_Msk           (0x7UL << RCC_CDCFGR2_CDPPRE1_DIV16_Pos) /*!< 0x00000070 */
-  #define RCC_CDCFGR2_CDPPRE1_DIV16               RCC_CDCFGR2_CDPPRE1_DIV16_Msk    /*!< APB1 clock divided by 16 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV1               ((uint32_t)0x00000000)          /*!< APB1 clock not divided */
+  #define RCC_CDCFGR2_CDPPRE1_DIV2_Pos           (6U)
+  #define RCC_CDCFGR2_CDPPRE1_DIV2_Msk           (0x1UL << RCC_CDCFGR2_CDPPRE1_DIV2_Pos) /*!< 0x00000040 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV2               RCC_CDCFGR2_CDPPRE1_DIV2_Msk     /*!< APB1 clock divided by 2 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV4_Pos           (4U)
+  #define RCC_CDCFGR2_CDPPRE1_DIV4_Msk           (0x5UL << RCC_CDCFGR2_CDPPRE1_DIV4_Pos) /*!< 0x00000050 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV4               RCC_CDCFGR2_CDPPRE1_DIV4_Msk     /*!< APB1 clock divided by 4 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV8_Pos           (5U)
+  #define RCC_CDCFGR2_CDPPRE1_DIV8_Msk           (0x3UL << RCC_CDCFGR2_CDPPRE1_DIV8_Pos) /*!< 0x00000060 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV8               RCC_CDCFGR2_CDPPRE1_DIV8_Msk     /*!< APB1 clock divided by 8 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV16_Pos          (4U)
+  #define RCC_CDCFGR2_CDPPRE1_DIV16_Msk          (0x7UL << RCC_CDCFGR2_CDPPRE1_DIV16_Pos) /*!< 0x00000070 */
+  #define RCC_CDCFGR2_CDPPRE1_DIV16              RCC_CDCFGR2_CDPPRE1_DIV16_Msk    /*!< APB1 clock divided by 16 */
 
   // CDPPRE2 configuration
-  #define RCC_CDCFGR2_CDPPRE2_Pos                 (8U)
-  #define RCC_CDCFGR2_CDPPRE2_Msk                 (0x7UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000700 */
-  #define RCC_CDCFGR2_CDPPRE2                     RCC_CDCFGR2_CDPPRE2_Msk          /*!< CDPPRE2[2:0] bits (APB2 prescaler) */
-  #define RCC_CDCFGR2_CDPPRE2_0                   (0x1UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000100 */
-  #define RCC_CDCFGR2_CDPPRE2_1                   (0x2UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000200 */
-  #define RCC_CDCFGR2_CDPPRE2_2                   (0x4UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000400 */
+  #define RCC_CDCFGR2_CDPPRE2_Pos                (8U)
+  #define RCC_CDCFGR2_CDPPRE2_Msk                (0x7UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000700 */
+  #define RCC_CDCFGR2_CDPPRE2                    RCC_CDCFGR2_CDPPRE2_Msk          /*!< CDPPRE2[2:0] bits (APB2 prescaler) */
+  #define RCC_CDCFGR2_CDPPRE2_0                  (0x1UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000100 */
+  #define RCC_CDCFGR2_CDPPRE2_1                  (0x2UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000200 */
+  #define RCC_CDCFGR2_CDPPRE2_2                  (0x4UL << RCC_CDCFGR2_CDPPRE2_Pos) /*!< 0x00000400 */
 
-  #define RCC_CDCFGR2_CDPPRE2_DIV1                ((uint32_t)0x00000000)          /*!< APB2 clock not divided */
-  #define RCC_CDCFGR2_CDPPRE2_DIV2_Pos            (10U)
-  #define RCC_CDCFGR2_CDPPRE2_DIV2_Msk            (0x1UL << RCC_CDCFGR2_CDPPRE2_DIV2_Pos) /*!< 0x00000400 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV2                RCC_CDCFGR2_CDPPRE2_DIV2_Msk     /*!< APB2 clock divided by 2 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV4_Pos            (8U)
-  #define RCC_CDCFGR2_CDPPRE2_DIV4_Msk            (0x5UL << RCC_CDCFGR2_CDPPRE2_DIV4_Pos) /*!< 0x00000500 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV4                RCC_CDCFGR2_CDPPRE2_DIV4_Msk     /*!< APB2 clock divided by 4 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV8_Pos            (9U)
-  #define RCC_CDCFGR2_CDPPRE2_DIV8_Msk            (0x3UL << RCC_CDCFGR2_CDPPRE2_DIV8_Pos) /*!< 0x00000600 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV8                RCC_CDCFGR2_CDPPRE2_DIV8_Msk     /*!< APB2 clock divided by 8 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV16_Pos           (8U)
-  #define RCC_CDCFGR2_CDPPRE2_DIV16_Msk           (0x7UL << RCC_CDCFGR2_CDPPRE2_DIV16_Pos) /*!< 0x00000700 */
-  #define RCC_CDCFGR2_CDPPRE2_DIV16               RCC_CDCFGR2_CDPPRE2_DIV16_Msk    /*!< APB2 clock divided by 16 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV1               ((uint32_t)0x00000000)          /*!< APB2 clock not divided */
+  #define RCC_CDCFGR2_CDPPRE2_DIV2_Pos           (10U)
+  #define RCC_CDCFGR2_CDPPRE2_DIV2_Msk           (0x1UL << RCC_CDCFGR2_CDPPRE2_DIV2_Pos) /*!< 0x00000400 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV2               RCC_CDCFGR2_CDPPRE2_DIV2_Msk     /*!< APB2 clock divided by 2 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV4_Pos           (8U)
+  #define RCC_CDCFGR2_CDPPRE2_DIV4_Msk           (0x5UL << RCC_CDCFGR2_CDPPRE2_DIV4_Pos) /*!< 0x00000500 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV4               RCC_CDCFGR2_CDPPRE2_DIV4_Msk     /*!< APB2 clock divided by 4 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV8_Pos           (9U)
+  #define RCC_CDCFGR2_CDPPRE2_DIV8_Msk           (0x3UL << RCC_CDCFGR2_CDPPRE2_DIV8_Pos) /*!< 0x00000600 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV8               RCC_CDCFGR2_CDPPRE2_DIV8_Msk     /*!< APB2 clock divided by 8 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV16_Pos          (8U)
+  #define RCC_CDCFGR2_CDPPRE2_DIV16_Msk          (0x7UL << RCC_CDCFGR2_CDPPRE2_DIV16_Pos) /*!< 0x00000700 */
+  #define RCC_CDCFGR2_CDPPRE2_DIV16              RCC_CDCFGR2_CDPPRE2_DIV16_Msk    /*!< APB2 clock divided by 16 */
 
   // Bit definitions for RCC_SRDCFGR register
   // SRDPPRE configuration
-  #define RCC_SRDCFGR_SRDPPRE_Pos                  (4U)
-  #define RCC_SRDCFGR_SRDPPRE_Msk                  (0x7UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000070 */
-  #define RCC_SRDCFGR_SRDPPRE                      RCC_SRDCFGR_SRDPPRE_Msk           /*!< SRDPPRE1[2:0] bits (APB4 prescaler) */
-  #define RCC_SRDCFGR_SRDPPRE_0                    (0x1UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000010 */
-  #define RCC_SRDCFGR_SRDPPRE_1                    (0x2UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000020 */
-  #define RCC_SRDCFGR_SRDPPRE_2                    (0x4UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000040 */
+  #define RCC_SRDCFGR_SRDPPRE_Pos                (4U)
+  #define RCC_SRDCFGR_SRDPPRE_Msk                (0x7UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000070 */
+  #define RCC_SRDCFGR_SRDPPRE                    RCC_SRDCFGR_SRDPPRE_Msk           /*!< SRDPPRE1[2:0] bits (APB4 prescaler) */
+  #define RCC_SRDCFGR_SRDPPRE_0                  (0x1UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000010 */
+  #define RCC_SRDCFGR_SRDPPRE_1                  (0x2UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000020 */
+  #define RCC_SRDCFGR_SRDPPRE_2                  (0x4UL << RCC_SRDCFGR_SRDPPRE_Pos) /*!< 0x00000040 */
 
-  #define RCC_SRDCFGR_SRDPPRE_DIV1                 ((uint32_t)0x00000000)          /*!< APB4 clock not divided */
-  #define RCC_SRDCFGR_SRDPPRE_DIV2_Pos             (6U)
-  #define RCC_SRDCFGR_SRDPPRE_DIV2_Msk             (0x1UL << RCC_SRDCFGR_SRDPPRE_DIV2_Pos) /*!< 0x00000040 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV2                 RCC_SRDCFGR_SRDPPRE_DIV2_Msk      /*!< APB4 clock divided by 2 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV4_Pos             (4U)
-  #define RCC_SRDCFGR_SRDPPRE_DIV4_Msk             (0x5UL << RCC_SRDCFGR_SRDPPRE_DIV4_Pos) /*!< 0x00000050 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV4                 RCC_SRDCFGR_SRDPPRE_DIV4_Msk      /*!< APB4 clock divided by 4 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV8_Pos             (5U)
-  #define RCC_SRDCFGR_SRDPPRE_DIV8_Msk             (0x3UL << RCC_SRDCFGR_SRDPPRE_DIV8_Pos) /*!< 0x00000060 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV8                 RCC_SRDCFGR_SRDPPRE_DIV8_Msk      /*!< APB4 clock divided by 8 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV16_Pos            (4U)
-  #define RCC_SRDCFGR_SRDPPRE_DIV16_Msk            (0x7UL << RCC_SRDCFGR_SRDPPRE_DIV16_Pos) /*!< 0x00000070 */
-  #define RCC_SRDCFGR_SRDPPRE_DIV16                RCC_SRDCFGR_SRDPPRE_DIV16_Msk     /*!< APB4 clock divided by 16 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV1               ((uint32_t)0x00000000)          /*!< APB4 clock not divided */
+  #define RCC_SRDCFGR_SRDPPRE_DIV2_Pos           (6U)
+  #define RCC_SRDCFGR_SRDPPRE_DIV2_Msk           (0x1UL << RCC_SRDCFGR_SRDPPRE_DIV2_Pos) /*!< 0x00000040 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV2               RCC_SRDCFGR_SRDPPRE_DIV2_Msk      /*!< APB4 clock divided by 2 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV4_Pos           (4U)
+  #define RCC_SRDCFGR_SRDPPRE_DIV4_Msk           (0x5UL << RCC_SRDCFGR_SRDPPRE_DIV4_Pos) /*!< 0x00000050 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV4               RCC_SRDCFGR_SRDPPRE_DIV4_Msk      /*!< APB4 clock divided by 4 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV8_Pos           (5U)
+  #define RCC_SRDCFGR_SRDPPRE_DIV8_Msk           (0x3UL << RCC_SRDCFGR_SRDPPRE_DIV8_Pos) /*!< 0x00000060 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV8               RCC_SRDCFGR_SRDPPRE_DIV8_Msk      /*!< APB4 clock divided by 8 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV16_Pos          (4U)
+  #define RCC_SRDCFGR_SRDPPRE_DIV16_Msk          (0x7UL << RCC_SRDCFGR_SRDPPRE_DIV16_Pos) /*!< 0x00000070 */
+  #define RCC_SRDCFGR_SRDPPRE_DIV16              RCC_SRDCFGR_SRDPPRE_DIV16_Msk     /*!< APB4 clock divided by 16 */
 
   // Bit definitions for RCC_PLLCKSELR register
   #define RCC_PLLCKSELR_PLLSRC_Pos               (0U)
@@ -795,7 +770,6 @@
   #define RCC_PLLCFGR_DIVR3EN_Pos                (24U)
   #define RCC_PLLCFGR_DIVR3EN_Msk                (0x1UL << RCC_PLLCFGR_DIVR3EN_Pos) /*!< 0x01000000 */
   #define RCC_PLLCFGR_DIVR3EN                    RCC_PLLCFGR_DIVR3EN_Msk
-
 
   // Bit definitions for RCC_PLL1DIVR register
   #define RCC_PLL1DIVR_N1_Pos                    (0U)
