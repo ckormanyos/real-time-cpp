@@ -44,7 +44,7 @@
   #define STM32H7
   #endif
 
-  // Extracted from version:
+  // The following values have been extracted from the original version tags.
   //   __STM32H7xx_CMSIS_DEVICE_VERSION_MAIN 0x01
   //   __STM32H7xx_CMSIS_DEVICE_VERSION_SUB1 0x0A
   //   __STM32H7xx_CMSIS_DEVICE_VERSION_SUB2 0x02
@@ -75,9 +75,15 @@
            typename UnknownValueType>
   static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
   {
-    using local_value_type = UnknownValueType;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
 
-    return static_cast<local_value_type>(read_reg(reg) & bit);
+    return
+      static_cast<local_value_type>
+      (
+        mcal::reg::reg_access_dynamic<local_address_type,
+                                      local_value_type>::reg_get((local_address_type) &reg) & bit
+      );
   }
 
   template<typename UnknownAddressType,
@@ -85,16 +91,11 @@
   static inline auto set_bit(      UnknownAddressType& reg,
                              const UnknownValueType    bit) -> void
   {
-    using local_value_type = UnknownValueType;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
 
-    const auto val =
-      static_cast<local_value_type>
-      (
-          static_cast<local_value_type>(read_reg(reg))
-        | static_cast<local_value_type>(bit)
-      );
-
-    write_reg(reg, val);
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_or((local_address_type) &reg, static_cast<local_value_type>(bit));
   }
 
   template<typename UnknownAddressType,
@@ -102,16 +103,11 @@
   static inline auto clear_bit(      UnknownAddressType& reg,
                                const UnknownValueType    bit) -> void
   {
-    using local_value_type = UnknownValueType;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
 
-    const auto val =
-      static_cast<local_value_type>
-      (
-          static_cast<local_value_type>(read_reg(reg))
-        & static_cast<local_value_type>(~bit)
-      );
-
-    write_reg(reg, val);
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_and((local_address_type) &reg, static_cast<local_value_type>(~bit));
   }
 
   template<typename UnknownAddressType,
@@ -120,16 +116,13 @@
                                 const UnknownValueType    clearmask,
                                 const UnknownValueType    setmask) -> void
   {
-    using local_value_type = std::uint32_t;
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
 
-    const auto reg_val =
-      static_cast<local_value_type>
-      (
-          (read_reg(reg) & static_cast<local_value_type>(~clearmask))
-        | static_cast<local_value_type>(setmask)
-      );
-
-    write_reg(reg, reg_val);
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_msk((local_address_type) &reg,
+                                                             setmask,
+                                                             clearmask);
   }
 
 #endif // STM32H7XX_2022_08_05_H_

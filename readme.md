@@ -302,11 +302,15 @@ cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolc
 make -j ref_app
 ```
 
-### Build with ATMEL(R) AtmelStudio(R)
+### Build with MICROCHIP's ATMEL Studio
 
 There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
 It is called `ref_app.atsln` and is also located
 in the [./ref_app](./ref_app) directory.
+
+If you decide to use ATMEL Studio, you should not need any additional
+libraries for these projects other than those that are installed
+during the standard installation of ATMEL Studio.
 
 ## Target Details
 

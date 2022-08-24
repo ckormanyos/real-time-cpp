@@ -1,9 +1,17 @@
-## These examples are motivated by the book "Real-Time C++".
+﻿## These examples are motivated by the book "Real-Time C++".
 
 See : C.M. Kormanyos, [Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
 (Springer, Heidelberg, 2021). ISBN 9783662629956
+
+The first couple of example projects can use the ARDUINO board directly.
+Examples from later chapters in the book do, however, need additional components.
+The examples of Chapter4, for instance, use additional LEDs.
+These need to be provided. In the book, I decided to make
+a custom breadboard, as shown
+[here](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter04_04).
+Other examples use even more customization.
 
 ## Summary of the Examples
 
