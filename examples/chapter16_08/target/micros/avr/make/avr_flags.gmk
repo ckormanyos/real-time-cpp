@@ -25,8 +25,7 @@ TGT_CFLAGS    = -Os                                            \
 
 TGT_CPPFLAGS  = -std=c++14
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
-                -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

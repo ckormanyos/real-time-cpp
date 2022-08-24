@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2017.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,22 +31,29 @@
 
   extern "C"
   {
-    void abort (void);
-    int  atexit(void(*)(void)) noexcept;
-    void exit  (int);
+    void        abort (void);
+    int         atexit(void(*)(void)) noexcept;
+    void        exit  (int);
+    float       strtof(const char* str, char** str_end);
+    double      strtod(const char* str, char** str_end);
+    long double strtold(const char* str, char** str_end);
   }
 
   namespace std
   {
     inline int         abs(int       a) { return ((a < 0) ? -a : a); }
-    inline long        abs(long      a) { return ((a < 0) ? -a : a); }
-    inline long long   abs(long long a) { return ((a < 0) ? -a : a); }
+    //inline long        abs(long      a) { return ((a < 0) ? -a : a); }
+    //inline long long   abs(long long a) { return ((a < 0) ? -a : a); }
     inline long       labs(long      a) { return ((a < 0) ? -a : a); }
     inline long long llabs(long long a) { return ((a < 0) ? -a : a); }
 
     using ::abort;
     using ::atexit;
     using ::exit;
+
+    using ::strtof;
+    using ::strtod;
+    using ::strtold;
 
     struct   div_t { int       quot; int       rem; };
     struct  ldiv_t { long      quot; long      rem; };

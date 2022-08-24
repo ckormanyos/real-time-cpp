@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -28,11 +28,6 @@
 // a copy of the GCC Runtime Library Exception along with this program;
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
-
-/** @file bits/ptr_traits.h
- *  This is an internal header file, included by other library headers.
- *  Do not attempt to use it directly. @headername{memory}
- */
 
 #ifndef PTR_TRAITS_2021_01_26_H_
   #define PTR_TRAITS_2021_01_26_H_

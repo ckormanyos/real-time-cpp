@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,8 +29,8 @@
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
 
-#ifndef PTR_TRAITS_2021_01_26_H
-  #define PTR_TRAITS_2021_01_26_H
+#ifndef PTR_TRAITS_2021_01_26_H_
+  #define PTR_TRAITS_2021_01_26_H_
 
   namespace std
   {
@@ -180,4 +180,4 @@
     #endif // C++2a
   }
 
-#endif // PTR_TRAITS_2021_01_26_H
+#endif // PTR_TRAITS_2021_01_26_H_
