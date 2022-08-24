@@ -2523,7 +2523,7 @@
             ? static_cast<size_t>(std::numeric_limits<local_unknown_builtin_integral_type>::digits + 1)
             : static_cast<size_t>(std::numeric_limits<local_unknown_builtin_integral_type>::digits + 0)>::exact_unsigned_type;
 
-      static constexpr unsigned_fast_type value = 
+      static constexpr unsigned_fast_type value =
         static_cast<unsigned_fast_type>(  std::numeric_limits<local_unsigned_conversion_type>::digits
                                         / std::numeric_limits<limb_type>::digits);
 
@@ -5595,7 +5595,7 @@
       static_assert((digits_generator_result_type % UINT32_C(8)) == UINT32_C(0),
                     "Error: Generator result type must have a multiple of 8 bits.");
 
-      constexpr auto digits_limb_ratio = 
+      constexpr auto digits_limb_ratio =
         static_cast<std::uint32_t>(std::numeric_limits<local_limb_type>::digits / 8U);
 
       constexpr auto digits_gtor_ratio = static_cast<std::uint32_t>(digits_generator_result_type / 8U);
@@ -5733,7 +5733,7 @@
         // See also:
         // https://www.wolframalpha.com/input/?i=Table%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+49%7D%5D
 
-        constexpr std::array<local_limb_type, 48U> small_primes = 
+        constexpr std::array<local_limb_type, 48U> small_primes =
         {{
           UINT8_C(  3), UINT8_C(  5), UINT8_C(  7), UINT8_C( 11), UINT8_C( 13), UINT8_C( 17), UINT8_C( 19), UINT8_C( 23),
           UINT8_C( 29), UINT8_C( 31), UINT8_C( 37), UINT8_C( 41), UINT8_C( 43), UINT8_C( 47), UINT8_C( 53), UINT8_C( 59),
