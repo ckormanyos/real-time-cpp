@@ -5,13 +5,17 @@ Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
 (Springer, Heidelberg, 2021). ISBN 9783662629956
 
-The first couple of example projects can use the ARDUINO board directly.
-Examples from later chapters in the book do, however, need additional components.
-The examples of Chapter4, for instance, use additional LEDs.
-These need to be provided. In the book, I decided to make
-a custom breadboard, as shown
-[here](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter04_04).
-Other examples use even more customization.
+The first couple of example projects can use the ARDUINO board directly
+and non-modified. Examples from the later chapters in the book do, however,
+need additional components at times. These need to be provided independently.
+
+Consider, for instance,
+[example chapter04_04](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter04_04).
+It employs a self-fitted DIY custom breadboard.
+Other examples use even higher levels of customization such as
+[example chapter10_08a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08a)
+which requires sophistocated breadboard and laboratory techniques,
+providing a DIY challenge at an advanced level.
 
 ## Summary of the Examples
 

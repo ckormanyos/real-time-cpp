@@ -1,4 +1,4 @@
-# Example Chapter04_04
+﻿# Example Chapter04_04
 # LED Objects and Polymorphism
 
 Example chapter04_04 uses an intuitive LED class hierarchy
@@ -9,10 +9,14 @@ of approximately 1/2Hz.
 
 # LED Classes
 
-The class hierarchy consists of an LED base class called `pwm_base`
-from which two LED classes are derived, `led_port` and `led_pwm`.
+The class hierarchy consists of an LED base class called
+[`led_base`](https://github.com/ckormanyos/real-time-cpp/blob/26cb8f63b555e7ee6c3afc96ce53646e070aeb67/examples/chapter04_04/src/mcal_led/mcal_led_base.h#L8)
+which is located in namespace `mcal::led`.
+Two LED classes `led_port` and `led_pwm` are derived from the
+LED base class.
+
 The port class `led_port` itself uses two kinds of ports,
-one microcontroller port and three other ports on an external
+including one microcontroller port and three other ports on an external
 serial SPI(TM) port axpander chip of type MICROCHIP(R) MCP23S17.
 The PWM based LED is toggled via the dimming of the PWM duty cycle.
 
