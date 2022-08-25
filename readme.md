@@ -50,7 +50,8 @@ then passed to a simple multitasking scheduler that schedules the
 LED application, calls a cyclic a benchmark task, and services the watchdog.
 
 The LED application toggles a user-LED with a frequency of 1/2 Hz
-The result is LED on for one second, LED off for one second --- cyclically and perpetually
+The result is LED on for one second, LED off for one second.
+The LED application runs cyclically and perpetually
 without break or pause.
 
 ## Portability
@@ -307,10 +308,15 @@ make -j ref_app
 There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
 It is called `ref_app.atsln` and is also located
 in the [./ref_app](./ref_app) directory.
+There are ATMEL Studio projects for
+both the reference application as well as for each of the examples.
+ATMEL Studio projects in this repository support
+the AVR target only.
 
-If you decide to use ATMEL Studio, you should not need any additional
-libraries for these projects other than those that are installed
-during the standard installation of ATMEL Studio.
+If you decide to use ATMEL Studio, you do not need to use or include
+any additional libraries for these projects
+(other than those that are ordinarily installed
+during the standard installation of ATMEL Studio).
 
 ## Target Details
 
@@ -360,7 +366,8 @@ The program toggles the green LED on `porta.5`.
 The first ARM(R) Cortex(TM)-M7 configuration (called `target stm32h7a3`) runs on
 the STM32H7A3 Nucleo-144 board commercially available from ST Microelectronics(R).
 The program toggles the green LED on `portb.0`. At the moment, the target
-implementation (temporarily) uses some third party code (licensed separately).
+implementation (temporarily) uses small portions of third party code
+which is licensed separately.
 
 The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
