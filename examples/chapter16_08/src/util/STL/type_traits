@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2013 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -89,6 +89,11 @@
     {
       typedef false_type type;
     };
+
+    template<const bool boolean_value,
+             typename true_type,
+             typename false_type>
+    using conditional_t = typename conditional<boolean_value, true_type, false_type>::type;
 
     template<typename the_value_type1,
              typename the_value_type2>
