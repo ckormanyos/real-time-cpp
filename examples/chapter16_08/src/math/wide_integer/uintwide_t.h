@@ -10,6 +10,9 @@
 
   #include <algorithm>
   #include <array>
+  #if defined(__cpp_lib_to_chars)
+  #include <charconv>
+  #endif
   #include <cinttypes>
   #if !defined(WIDE_INTEGER_DISABLE_FLOAT_INTEROP)
   #include <cmath>
@@ -31,6 +34,9 @@
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
   #include <ostream>
   #include <sstream>
+  #endif
+  #if !defined(WIDE_INTEGER_DISABLE_TO_STRING)
+  #include <string>
   #endif
   #include <type_traits>
 
@@ -814,6 +820,25 @@
                           DistributionType&                                      distribution,
                           GeneratorType&                                         generator) -> bool;
 
+  #if defined(__cpp_lib_to_chars)
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  auto to_chars(char* first,
+                char* last,
+                const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
+                int base = static_cast<int>(INT8_C(10))) -> std::to_chars_result;
+  #endif
+
+  #if !defined(WIDE_INTEGER_DISABLE_TO_STRING)
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x) -> std::string;
+  #endif
+
   #if(__cplusplus >= 201703L)
   } // namespace math::wide_integer
   #else
@@ -1292,16 +1317,15 @@
 
     // The type of the internal data representation.
     using representation_type =
-      typename std::conditional
+      std::conditional_t
         <std::is_same<AllocatorType, void>::value,
          detail::fixed_static_array <limb_type,
                                      number_of_limbs>,
          detail::fixed_dynamic_array<limb_type,
                                      number_of_limbs,
-                                     typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                              std::allocator<void>,
-                                                                                              AllocatorType>::type>::template rebind_alloc<limb_type>>
-        >::type;
+                                     typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                       std::allocator<void>,
+                                                                                       AllocatorType>>::template rebind_alloc<limb_type>>>;
 
     // The iterator types of the internal data representation.
     using iterator               = typename representation_type::iterator;
@@ -2098,16 +2122,15 @@
         const auto mask = static_cast<limb_type>(static_cast<std::uint8_t>(0x7U));
 
         using string_storage_oct_type =
-          typename std::conditional
+          std::conditional_t
             <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_oct>,
              detail::fixed_dynamic_array<char,
                                          wr_string_max_buffer_size_oct,
-                                         typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                  std::allocator<void>,
-                                                                                                  AllocatorType>::type>::template rebind_alloc<limb_type>>
-            >::type;
+                                         typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                           std::allocator<void>,
+                                                                                           AllocatorType>>::template rebind_alloc<limb_type>>>;
 
         string_storage_oct_type str_temp; // LCOV_EXCL_LINE
 
@@ -2185,16 +2208,15 @@
         }
 
         using string_storage_dec_type =
-          typename std::conditional
+          std::conditional_t
             <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_dec>,
              detail::fixed_dynamic_array<char,
                                          wr_string_max_buffer_size_dec,
-                                         typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                  std::allocator<void>,
-                                                                                                  AllocatorType>::type>::template rebind_alloc<limb_type>>
-            >::type;
+                                         typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                           std::allocator<void>,
+                                                                                           AllocatorType>>::template rebind_alloc<limb_type>>>;
 
         string_storage_dec_type str_temp;
 
@@ -2252,16 +2274,15 @@
         uintwide_t<my_width2, limb_type, AllocatorType, false> t(*this);
 
         using string_storage_hex_type =
-          typename std::conditional
+          std::conditional_t
             <my_width2 <= static_cast<size_t>(UINT32_C(2048)),
              detail::fixed_static_array <char,
                                          wr_string_max_buffer_size_hex>,
              detail::fixed_dynamic_array<char,
                                          wr_string_max_buffer_size_hex,
-                                         typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                  std::allocator<void>,
-                                                                                                  AllocatorType>::type>::template rebind_alloc<limb_type>>
-            >::type;
+                                         typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                           std::allocator<void>,
+                                                                                           AllocatorType>>::template rebind_alloc<limb_type>>>;
 
         string_storage_hex_type str_temp;
 
@@ -2673,22 +2694,22 @@
       // Good examples for this (both threaded as well as non-threaded)
       // can be found in the wide_decimal project.
       using result_array_type =
-        typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                  detail::fixed_static_array <limb_type, number_of_limbs * 2U>,
-                                  detail::fixed_dynamic_array<limb_type,
-                                                              number_of_limbs * 2U,
-                                                              typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                                       std::allocator<void>,
-                                                                                                                       AllocatorType>::type>::template rebind_alloc<limb_type>>>::type;
+        std::conditional_t<std::is_same<AllocatorType, void>::value,
+                           detail::fixed_static_array <limb_type, number_of_limbs * 2U>,
+                           detail::fixed_dynamic_array<limb_type,
+                                                       number_of_limbs * 2U,
+                                                       typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                                         std::allocator<void>,
+                                                                                                         AllocatorType>>::template rebind_alloc<limb_type>>>;
 
       using storage_array_type =
-        typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                  detail::fixed_static_array <limb_type, number_of_limbs * 4U>,
-                                  detail::fixed_dynamic_array<limb_type,
-                                                              number_of_limbs * 4U,
-                                                              typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                                       std::allocator<void>,
-                                                                                                                       AllocatorType>::type>::template rebind_alloc<limb_type>>>::type;
+        std::conditional_t<std::is_same<AllocatorType, void>::value,
+                           detail::fixed_static_array <limb_type, number_of_limbs * 4U>,
+                           detail::fixed_dynamic_array<limb_type,
+                                                       number_of_limbs * 4U,
+                                                       typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                                         std::allocator<void>,
+                                                                                                         AllocatorType>>::template rebind_alloc<limb_type>>>;
 
       result_array_type  result;
       storage_array_type t;
@@ -3263,7 +3284,12 @@
 
           for(auto j = static_cast<unsigned_fast_type>(0U); j < static_cast<unsigned_fast_type>(count - i); ++j)
           {
-            const auto i_plus_j = static_cast<result_difference_type>(i + j);
+            const auto i_plus_j =
+              static_cast<result_difference_type>
+              (
+                  static_cast<result_difference_type>(i)
+                + static_cast<result_difference_type>(j)
+              );
 
             carry = static_cast<local_double_limb_type>(carry + static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(*(a + static_cast<left_difference_type>(i))) * *(b + static_cast<right_difference_type>(j))));
             carry = static_cast<local_double_limb_type>(carry + *(r + i_plus_j));
@@ -3704,13 +3730,13 @@
         // Step D1(c): normalize v -> v * d = vv.
 
         using uu_array_type =
-          typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                    detail::fixed_static_array <limb_type, number_of_limbs + 1U>,
-                                    detail::fixed_dynamic_array<limb_type,
-                                                                number_of_limbs + 1U,
-                                                                typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                                          std::allocator<void>,
-                                                                                                                          AllocatorType>::type>::template rebind_alloc<limb_type>>>::type;
+          std::conditional_t<std::is_same<AllocatorType, void>::value,
+                             detail::fixed_static_array <limb_type, number_of_limbs + 1U>,
+                             detail::fixed_dynamic_array<limb_type,
+                                                         number_of_limbs + 1U,
+                                                         typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                                           std::allocator<void>,
+                                                                                                           AllocatorType>>::template rebind_alloc<limb_type>>>;
 
         uu_array_type       uu;
         representation_type vv;
@@ -4229,7 +4255,7 @@
            typename AllocatorType,
            const bool IsSigned>
   WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits_uintwide_t_base
-    : public std::numeric_limits<typename std::conditional<(!IsSigned), unsigned int, signed int>::type>
+    : public std::numeric_limits<std::conditional_t<(!IsSigned), unsigned int, signed int>>
   {
   private:
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
@@ -4469,16 +4495,15 @@
     if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(8)))
     {
       using string_storage_oct_type =
-        typename std::conditional
+        std::conditional_t
           <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_oct>,
             detail::fixed_dynamic_array<char,
                                         local_wide_integer_type::wr_string_max_buffer_size_oct,
-                                        typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                std::allocator<void>,
-                                                                                                AllocatorType>::type>::template rebind_alloc<typename local_wide_integer_type::limb_type>>
-          >::type;
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
@@ -4493,16 +4518,15 @@
     else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(10)))
     {
       using string_storage_dec_type =
-        typename std::conditional
+        std::conditional_t
           <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_dec>,
             detail::fixed_dynamic_array<char,
                                         local_wide_integer_type::wr_string_max_buffer_size_dec,
-                                        typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                std::allocator<void>,
-                                                                                                AllocatorType>::type>::template rebind_alloc<typename local_wide_integer_type::limb_type>>
-          >::type;
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                          std::allocator<void>,
+                                                                                          AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
@@ -4517,16 +4541,15 @@
     else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(16)))
     {
       using string_storage_hex_type =
-        typename std::conditional
+        std::conditional_t
           <local_wide_integer_type::my_width2 <= static_cast<size_t>(UINT32_C(2048)),
             detail::fixed_static_array <char,
                                         local_wide_integer_type::wr_string_max_buffer_size_hex>,
             detail::fixed_dynamic_array<char,
                                         local_wide_integer_type::wr_string_max_buffer_size_hex,
-                                        typename std::allocator_traits<typename std::conditional<std::is_same<AllocatorType, void>::value,
-                                                                                                std::allocator<void>,
-                                                                                                AllocatorType>::type>::template rebind_alloc<typename local_wide_integer_type::limb_type>>
-          >::type;
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<typename local_wide_integer_type::limb_type>>>;
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
@@ -5901,6 +5924,249 @@
     // of the very high probability resulting from Miller-Rabin.
     return is_probably_prime;
   }
+
+  #if defined(__cpp_lib_to_chars)
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  auto to_chars(char* first,
+                char* last,
+                const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
+                int base) -> std::to_chars_result
+  {
+    using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+    using local_limb_type         = typename local_wide_integer_type::limb_type;
+
+    constexpr auto local_my_width2 = local_wide_integer_type::my_width2;
+
+    constexpr auto char_fill = '.';
+
+    const auto base_rep     = static_cast<std::uint_fast8_t>(base);
+    const auto show_base    = false;
+    const auto show_pos     = false;
+    const auto is_uppercase = false;
+
+    std::to_chars_result result { last, std::errc::value_too_large };
+
+    if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(8)))
+    {
+      using string_storage_oct_type =
+        std::conditional_t
+          <local_my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_oct>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_oct,
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<local_limb_type>>>;
+
+      string_storage_oct_type str_temp { };
+
+      str_temp.fill(char_fill);
+
+      const auto wr_string_is_ok = x.wr_string(str_temp.data(), base_rep, show_base, show_pos, is_uppercase);
+
+      auto rit_trim = std::find_if(str_temp.crbegin(),
+                                   str_temp.crend(),
+                                   [](const char& c)
+                                   {
+                                     return (c != char_fill);
+                                   });
+
+      const auto wr_string_and_trim_is_ok =
+        (
+             (rit_trim != str_temp.crend())
+          &&  wr_string_is_ok
+        );
+
+      if(wr_string_and_trim_is_ok)
+      {
+        const auto chars_retrieved =
+          static_cast<std::size_t>
+          (
+            str_temp.size() - static_cast<std::size_t>(std::distance(str_temp.crbegin(), rit_trim))
+          );
+
+        const auto chars_to_get = static_cast<std::size_t>(std::distance(first, last));
+
+        result.ptr = std::copy(str_temp.data(),
+                               str_temp.data() + (std::min)(chars_retrieved, chars_to_get),
+                               first);
+
+        result.ec = std::errc();
+      }
+    }
+    else if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(16)))
+    {
+      using string_storage_hex_type =
+        std::conditional_t
+          <local_my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_hex>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_hex,
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<local_limb_type>>>;
+
+      string_storage_hex_type str_temp { };
+
+      str_temp.fill(char_fill);
+
+      const auto wr_string_is_ok = x.wr_string(str_temp.data(), base_rep, show_base, show_pos, is_uppercase);
+
+      auto rit_trim = std::find_if(str_temp.crbegin(),
+                                   str_temp.crend(),
+                                   [](const char& c)
+                                   {
+                                     return (c != char_fill);
+                                   });
+
+      const auto wr_string_and_trim_is_ok =
+        (
+             (rit_trim != str_temp.crend())
+          &&  wr_string_is_ok
+        );
+
+      if(wr_string_and_trim_is_ok)
+      {
+        const auto chars_retrieved =
+          static_cast<std::size_t>
+          (
+            str_temp.size() - static_cast<std::size_t>(std::distance(str_temp.crbegin(), rit_trim))
+          );
+
+        const auto chars_to_get = static_cast<std::size_t>(std::distance(first, last));
+
+        result.ptr = std::copy(str_temp.data(),
+                               str_temp.data() + (std::min)(chars_retrieved, chars_to_get),
+                               first);
+
+        result.ec = std::errc();
+      }
+    }
+    else
+    {
+      using string_storage_dec_type =
+        std::conditional_t
+          <local_my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+            detail::fixed_static_array <char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_dec>,
+            detail::fixed_dynamic_array<char,
+                                        local_wide_integer_type::wr_string_max_buffer_size_dec,
+                                        typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                         std::allocator<void>,
+                                                                                         AllocatorType>>::template rebind_alloc<local_limb_type>>>;
+
+      string_storage_dec_type str_temp { };
+
+      str_temp.fill(char_fill);
+
+      const auto wr_string_is_ok = x.wr_string(str_temp.data(), base_rep, show_base, show_pos, is_uppercase);
+
+      auto rit_trim = std::find_if(str_temp.crbegin(),
+                                   str_temp.crend(),
+                                   [](const char& c)
+                                   {
+                                     return (c != char_fill);
+                                   });
+
+      const auto wr_string_and_trim_is_ok =
+        (
+             (rit_trim != str_temp.crend())
+          &&  wr_string_is_ok
+        );
+
+      if(wr_string_and_trim_is_ok)
+      {
+        const auto chars_retrieved =
+          static_cast<std::size_t>
+          (
+            str_temp.size() - static_cast<std::size_t>(std::distance(str_temp.crbegin(), rit_trim))
+          );
+
+        const auto chars_to_get = static_cast<std::size_t>(std::distance(first, last));
+
+        result.ptr = std::copy(str_temp.data(),
+                               str_temp.data() + (std::min)(chars_retrieved, chars_to_get),
+                               first);
+
+        result.ec = std::errc();
+      }
+    }
+
+    return result;
+  }
+  #endif
+
+  #if !defined(WIDE_INTEGER_DISABLE_TO_STRING)
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSigned>
+  auto to_string(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x) -> std::string
+  {
+    using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+    using local_limb_type         = typename local_wide_integer_type::limb_type;
+
+    constexpr auto local_my_width2 = local_wide_integer_type::my_width2;
+
+    using string_storage_dec_type =
+      std::conditional_t
+        <local_my_width2 <= static_cast<size_t>(UINT32_C(2048)),
+          detail::fixed_static_array <char,
+                                      local_wide_integer_type::wr_string_max_buffer_size_dec>,
+          detail::fixed_dynamic_array<char,
+                                      local_wide_integer_type::wr_string_max_buffer_size_dec,
+                                      typename std::allocator_traits<std::conditional_t<std::is_same<AllocatorType, void>::value,
+                                                                                       std::allocator<void>,
+                                                                                       AllocatorType>>::template rebind_alloc<local_limb_type>>>;
+
+    string_storage_dec_type str_temp; // LCOV_EXCL_LINE
+
+    constexpr auto char_fill = '.';
+
+    str_temp.fill(char_fill);
+
+    const auto base_rep     = static_cast<std::uint_fast8_t>(UINT8_C(10));
+    const auto show_base    = false;
+    const auto show_pos     = false;
+    const auto is_uppercase = false;
+
+    const auto wr_string_is_ok = x.wr_string(str_temp.data(), base_rep, show_base, show_pos, is_uppercase);
+
+    auto rit_trim = std::find_if(str_temp.crbegin(),
+                                 str_temp.crend(),
+                                 [](const char& c)
+                                 {
+                                   return (c != char_fill);
+                                 });
+
+    const auto wr_string_and_trim_is_ok =
+      (
+           (rit_trim != str_temp.crend())
+        &&  wr_string_is_ok
+      );
+
+    std::string str_result { };
+
+    if(wr_string_and_trim_is_ok)
+    {
+      const auto str_result_size =
+        static_cast<std::size_t>
+        (
+            str_temp.size()
+          - static_cast<std::size_t>(std::distance(str_temp.crbegin(), rit_trim))
+        );
+
+      str_result = std::string(str_temp.cbegin(), str_temp.cbegin() + str_result_size);
+    }
+
+    return str_result;
+  }
+  #endif
 
   #if(__cplusplus >= 201703L)
   } // namespace math::wide_integer
