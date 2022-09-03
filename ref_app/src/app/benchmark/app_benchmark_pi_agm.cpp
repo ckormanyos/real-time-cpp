@@ -37,7 +37,6 @@
 
 auto app::benchmark::run_pi_agm() -> bool
 {
-  // N[Pi, 106] and truncate the final digit.
   using local_limb_type = std::uint16_t;
 
   #if defined(APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS)
@@ -72,13 +71,15 @@ auto app::benchmark::run_pi_agm() -> bool
                                                 float>;
   #endif
 
+  // Use the Wolfram Alpha expression:
+  //   N[Pi, 106] and truncate the final digit.
+
   #if defined(APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS)
   static const mcal::memory::progmem::array<typename local_wide_decimal_type::limb_type, 26U> app_benchmark_pi_agm_control MY_PROGMEM =
   #else
   static const mcal::memory::progmem::array<typename local_wide_decimal_type::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
   #endif
   {{
-    #if defined(APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS)
     static_cast<local_limb_type>(UINT16_C(   3)),
     static_cast<local_limb_type>(UINT16_C(1415)),
     static_cast<local_limb_type>(UINT16_C(9265)),
@@ -93,6 +94,7 @@ auto app::benchmark::run_pi_agm() -> bool
     static_cast<local_limb_type>(UINT16_C(6939)),
     static_cast<local_limb_type>(UINT16_C(9375)),
     static_cast<local_limb_type>(UINT16_C(1058)),
+    #if defined(APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS)
     static_cast<local_limb_type>(UINT16_C(2097)),
     static_cast<local_limb_type>(UINT16_C(4944)),
     static_cast<local_limb_type>(UINT16_C(5923)),
@@ -105,21 +107,6 @@ auto app::benchmark::run_pi_agm() -> bool
     static_cast<local_limb_type>(UINT16_C(2534)),
     static_cast<local_limb_type>(UINT16_C(2117)),
     static_cast<local_limb_type>(UINT16_C( 679))
-    #else
-    static_cast<local_limb_type>(UINT16_C(   3)),
-    static_cast<local_limb_type>(UINT16_C(1415)),
-    static_cast<local_limb_type>(UINT16_C(9265)),
-    static_cast<local_limb_type>(UINT16_C(3589)),
-    static_cast<local_limb_type>(UINT16_C(7932)),
-    static_cast<local_limb_type>(UINT16_C(3846)),
-    static_cast<local_limb_type>(UINT16_C(2643)),
-    static_cast<local_limb_type>(UINT16_C(3832)),
-    static_cast<local_limb_type>(UINT16_C(7950)),
-    static_cast<local_limb_type>(UINT16_C(2884)),
-    static_cast<local_limb_type>(UINT16_C(1971)),
-    static_cast<local_limb_type>(UINT16_C(6939)),
-    static_cast<local_limb_type>(UINT16_C(9375)),
-    static_cast<local_limb_type>(UINT16_C(1058))
     #endif
   }};
 

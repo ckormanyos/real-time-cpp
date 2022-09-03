@@ -62,14 +62,14 @@
   //  4201, 4409, 4637, 4831, 5039, 5279, 5483, 5693, 5881, 6133, 6337,
   //  6571, 6793, 6997, 7237, 7499, 7687, 7919
 
-  #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_type::task_id_end)
+  constexpr auto OS_TASK_COUNT = static_cast<std::size_t>(os::task_id_type::task_id_end);
 
   #define OS_TASK_LIST                                                                            \
   {                                                                                               \
     {                                                                                             \
       os::task_control_block(app::led::task_init,                                                 \
                              app::led::task_func,                                                 \
-                             os::timer_type::microseconds(UINT32_C(  12000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   4000)),                     \
                              os::timer_type::microseconds(UINT32_C(      0))),                    \
       os::task_control_block(app::benchmark::task_init,                                           \
                              app::benchmark::task_func,                                           \
@@ -82,6 +82,6 @@
     }                                                                                             \
   }
 
-  static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
+  static_assert(OS_TASK_COUNT > static_cast<std::size_t>(UINT8_C(0)), "the task count must exceed zero");
 
 #endif // OS_CFG_2011_10_20_H_
