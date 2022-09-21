@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2012 - 2021.                 //
+﻿///////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2012 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -9,180 +9,297 @@
 // SoftFloat IEEE Floating-Point Arithmetic Package,
 // Release 3e, by John R. Hauser.
 
-// Full original copyright information is included
-// at the bottom of this header file.
+// Full original SoftFloat 3e copyright information follows.
+/*----------------------------------------------------------------------------
 
-#ifndef SOFT_DOUBLE_2020_10_27_H_
-  #define SOFT_DOUBLE_2020_10_27_H_
+This C header file is part of the SoftFloat IEEE Floating-Point Arithmetic
+Package, Release 3e, by John R. Hauser.
+
+Copyright 2011, 2012, 2013, 2014, 2015, 2016, 2017 The Regents of the
+University of California.  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions, and the following disclaimer.
+
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions, and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+ 3. Neither the name of the University nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS", AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE
+DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-----------------------------------------------------------------------------*/
+
+#ifndef SOFT_DOUBLE_2020_10_27_H
+  #define SOFT_DOUBLE_2020_10_27_H
 
   //#define SOFT_DOUBLE_DISABLE_IOSTREAM
 
   #include <array>
-  #include <cstdint>
   #include <cstddef>
+  #include <cstdint>
   #if !defined(SOFT_DOUBLE_DISABLE_IOSTREAM)
   #include <iomanip>
-  #include <sstream>
   #endif
   #include <limits>
+  #if !defined(SOFT_DOUBLE_DISABLE_IOSTREAM)
+  #include <sstream>
+  #endif
   #include <type_traits>
 
-  namespace math { namespace softfloat {
+  #if (defined(__clang__) && (__clang_major__ <= 9))
+  #define SOFT_DOUBLE_NUM_LIMITS_CLASS_TYPE struct // NOLINT(cppcoreguidelines-macro-usage)
+  #else
+  #define SOFT_DOUBLE_NUM_LIMITS_CLASS_TYPE class  // NOLINT(cppcoreguidelines-macro-usage)
+  #endif
+
+  #if defined(_MSC_VER)
+    #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
+      #define SOFT_DOUBLE_CONSTEXPR constexpr               // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 1 // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_NODISCARD [[nodiscard]]           // NOLINT(cppcoreguidelines-macro-usage)
+    #else
+      #define SOFT_DOUBLE_CONSTEXPR
+      #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 0 // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_NODISCARD
+    #endif
+  #else
+    #if (defined(__cplusplus) && (__cplusplus >= 201402L))
+      #if defined(__AVR__) && (!defined(__GNUC__) || (defined(__GNUC__) && (__cplusplus >= 202002L)))
+      #define SOFT_DOUBLE_CONSTEXPR constexpr               // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 1 // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_NODISCARD [[nodiscard]]           // NOLINT(cppcoreguidelines-macro-usage)
+      #elif (defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms>=201806))
+        #if defined(__clang__)
+          #if (__clang_major__ > 9)
+          #define SOFT_DOUBLE_CONSTEXPR constexpr               // NOLINT(cppcoreguidelines-macro-usage)
+          #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 1 // NOLINT(cppcoreguidelines-macro-usage)
+          #define SOFT_DOUBLE_NODISCARD [[nodiscard]]           // NOLINT(cppcoreguidelines-macro-usage)
+          #else
+          #define SOFT_DOUBLE_CONSTEXPR
+          #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 0 // NOLINT(cppcoreguidelines-macro-usage)
+          #define SOFT_DOUBLE_NODISCARD
+          #endif
+        #else
+        #define SOFT_DOUBLE_CONSTEXPR constexpr               // NOLINT(cppcoreguidelines-macro-usage)
+        #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 1 // NOLINT(cppcoreguidelines-macro-usage)
+        #define SOFT_DOUBLE_NODISCARD [[nodiscard]]           // NOLINT(cppcoreguidelines-macro-usage)
+        #endif
+      #elif (defined(__clang__) && (__clang_major__ >= 10)) && (defined(__cplusplus) && (__cplusplus > 201703L))
+        #if defined(__x86_64__)
+        #define SOFT_DOUBLE_CONSTEXPR constexpr               // NOLINT(cppcoreguidelines-macro-usage)
+        #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 1 // NOLINT(cppcoreguidelines-macro-usage)
+        #define SOFT_DOUBLE_NODISCARD [[nodiscard]]           // NOLINT(cppcoreguidelines-macro-usage)
+        #else
+        #define SOFT_DOUBLE_CONSTEXPR
+        #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 0 // NOLINT(cppcoreguidelines-macro-usage)
+        #define SOFT_DOUBLE_NODISCARD
+        #endif
+      #else
+      #define SOFT_DOUBLE_CONSTEXPR
+      #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 0 // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_NODISCARD
+      #endif
+    #else
+      #define SOFT_DOUBLE_CONSTEXPR
+      #define SOFT_DOUBLE_CONSTEXPR_IS_COMPILE_TIME_CONST 0 // NOLINT(cppcoreguidelines-macro-usage)
+      #define SOFT_DOUBLE_NODISCARD
+    #endif
+  #endif
+
+  #if(__cplusplus >= 201703L)
+  namespace math::softfloat {
+  #else
+  namespace math { namespace softfloat { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   // Forward declaration the math::softfloat::soft_double class.
   class soft_double;
 
-  } }
+  #if(__cplusplus >= 201703L)
+  } // namespace math::softfloat
+  #else
+  } // namespace softfloat
+  } // namespace math
+  #endif
 
   namespace std {
 
   // Forward declaration of the specialization of numeric_limits for soft_double.
   template<>
-  class numeric_limits<math::softfloat::soft_double>;
+  SOFT_DOUBLE_NUM_LIMITS_CLASS_TYPE numeric_limits< ::math::softfloat::soft_double>;
 
-  }
+  } // namespace std
 
-  namespace math { namespace softfloat {
+  #if(__cplusplus >= 201703L)
+  namespace math::softfloat {
+  #else
+  namespace math { namespace softfloat { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   namespace detail {
 
-  struct uint128_as_struct  { std::uint64_t v0, v64; };
-  struct uint64_extra       { std::uint64_t extra, v; };
+  struct uint128_as_struct { std::uint64_t v0;    std::uint64_t v64; };
+  struct uint64_extra      { std::uint64_t extra; std::uint64_t v; };
 
   template<typename UnsignedIntegralType>
-  constexpr typename std::enable_if<   (std::is_integral<UnsignedIntegralType>::value == true)
-                                    && (std::is_unsigned<UnsignedIntegralType>::value == true), UnsignedIntegralType>::type
-  negate(UnsignedIntegralType u)
+  constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<   std::is_integral<UnsignedIntegralType>::value
+                                                                           && std::is_unsigned<UnsignedIntegralType>::value, UnsignedIntegralType>::type
   {
-    return (UnsignedIntegralType) (((UnsignedIntegralType) ~u) + 1U);
+    return
+      static_cast<UnsignedIntegralType>
+      (
+          static_cast<UnsignedIntegralType>(~u)
+        + static_cast<UnsignedIntegralType>(UINT8_C(1))
+      );
   }
 
   template<typename SignedIntegralType>
-  constexpr typename std::enable_if<   (std::is_integral<SignedIntegralType>::value == true)
-                                    && (std::is_signed  <SignedIntegralType>::value == true), SignedIntegralType>::type
-  negate(SignedIntegralType n)
+  constexpr auto negate(SignedIntegralType n) -> typename std::enable_if<   std::is_integral<SignedIntegralType>::value
+                                                                         && std::is_signed  <SignedIntegralType>::value, SignedIntegralType>::type
   {
-    return (SignedIntegralType) detail::negate((unsigned long long) n);
+    return static_cast<SignedIntegralType>(detail::negate(static_cast<unsigned long long>(n))); // NOLINT(google-runtime-int)
   }
 
-  inline constexpr bool          signF32UI(std::uint32_t a) { return ((bool) ((std::uint32_t) (a)>>31)); }
-  inline constexpr std::int16_t  expF32UI (std::uint32_t a) { return ((std::int16_t) ((a)>>23) & 0xFF); }
-  inline constexpr std::uint32_t fracF32UI(std::uint32_t a) { return ((a) & UINT32_C(0x007FFFFF)); }
+  inline constexpr auto signF32UI(std::uint32_t a) -> bool          { return (static_cast<unsigned>(a >> 31U) != static_cast<unsigned>(UINT8_C(0))); }
+  inline constexpr auto expF32UI (std::uint32_t a) -> std::int16_t  { return static_cast<std::int16_t>(static_cast<std::int16_t>(a >> 23U) & static_cast<std::int16_t>(INT16_C(0xFF))); } // NOLINT(hicpp-signed-bitwise)
+  inline constexpr auto fracF32UI(std::uint32_t a) -> std::uint32_t { return static_cast<std::uint32_t>(a & static_cast<std::uint32_t>(UINT32_C(0x007FFFFF))); }
 
-  inline constexpr bool          signF64UI(std::uint64_t a) { return ((unsigned) ((std::uint64_t) a >> 63U) != 0U); }
-  inline constexpr std::int16_t  expF64UI (std::uint64_t a) { return (std::int16_t) (a >> 52U) & INT16_C(0x7FF); }
-  inline constexpr std::uint64_t fracF64UI(std::uint64_t a) { return (std::uint64_t) (a & UINT64_C(0x000FFFFFFFFFFFFF)); }
+  inline constexpr auto signF64UI(std::uint64_t a) -> bool          { return (static_cast<unsigned>(a >> 63U) != static_cast<unsigned>(UINT8_C(0))); }
+  inline constexpr auto expF64UI (std::uint64_t a) -> std::int16_t  { return static_cast<std::int16_t>(static_cast<std::int16_t>(a >> 52U) & static_cast<std::int16_t>(INT16_C(0x7FF))); } // NOLINT(hicpp-signed-bitwise)
+  inline constexpr auto fracF64UI(std::uint64_t a) -> std::uint64_t { return static_cast<std::uint64_t>(a & static_cast<std::uint64_t>(UINT64_C(0x000FFFFFFFFFFFFF))); }
 
   template<typename IntegralTypeExp,
            typename IntegralTypeSig>
-  constexpr std::uint64_t packToF64UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
-  {
-    return ((std::uint64_t) ((std::uint64_t) (((std::uint64_t) (sign ? 1U : 0U))<<63) + (std::uint64_t) (((std::uint64_t) expA)<<52) + (std::uint64_t) sig));
-  }
-
-  template<typename IntegralTypeExp,
-           typename IntegralTypeSig>
-  constexpr std::uint32_t packToF32UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig)
-  {
-    return ((std::uint32_t) ((std::uint32_t) (((std::uint32_t) (sign ? 1U : 0U))<<31) + (std::uint32_t) (((std::uint32_t) expA)<<23) + (std::uint32_t) sig));
-  }
-
-  /*----------------------------------------------------------------------------
-  | Shifts 'a' right by the number of bits given in 'dist', which must be in
-  | the range 1 to 63.  If any nonzero bits are shifted off, they are "jammed"
-  | into the least-significant bit of the shifted value by setting the least-
-  | significant bit to 1.  This shifted-and-jammed value is returned.
-  *----------------------------------------------------------------------------*/
-  constexpr std::uint64_t softfloat_shortShiftRightJam64(std::uint64_t a, uint_fast8_t dist)
-  {
-    return a >> dist | ((a & ((UINT64_C(1) << dist) - 1)) != 0 ? 1U : 0U);
-  }
-
-  /*----------------------------------------------------------------------------
-  | Shifts 'a' right by the number of bits given in 'dist', which must not
-  | be zero.  If any nonzero bits are shifted off, they are "jammed" into the
-  | least-significant bit of the shifted value by setting the least-significant
-  | bit to 1.  This shifted-and-jammed value is returned.
-  *----------------------------------------------------------------------------*/
-  constexpr std::uint32_t softfloat_shiftRightJam32(std::uint32_t a, std::uint16_t dist)
-  {
-    return (dist < 31) ? a >> dist | ((std::uint32_t)(a << (negate(dist) & 31)) != 0U ? 1U : 0U) : (a != 0U ? 1U : 0U);
-  }
-
-  /*----------------------------------------------------------------------------
-  | Shifts 'a' right by the number of bits given in 'dist', which must not
-  | be zero.
-  *----------------------------------------------------------------------------*/
-  constexpr std::uint64_t softfloat_shiftRightJam64(std::uint64_t a, std::uint32_t dist)
-  {
-    return (dist < 63) ? a >> dist | ((std::uint64_t)(a << (negate(dist) & 63)) != 0 ? 1U : 0U) : (a != 0 ? 1U : 0U);
-  }
-
-  /*----------------------------------------------------------------------------
-  | A constant table that translates an 8-bit unsigned integer (the array index)
-  | into the number of leading 0 bits before the most-significant 1 of that
-  | integer.  For integer zero (index 0), the corresponding table element is 8.
-  *----------------------------------------------------------------------------*/
-  constexpr uint_fast8_t softfloat_countLeadingZeros8_z_table(const uint_fast8_t index)
-  {
-    return ((index < 0x1U) ? 4U :
-           ((index < 0x2U) ? 3U :
-           ((index < 0x4U) ? 2U :
-           ((index < 0x8U) ? 1U : 0U))));
-  }
-
-  constexpr uint_fast8_t softfloat_countLeadingZeros8(const uint_fast8_t index)
-  {
-    return (index < 0x10U) ? (uint_fast8_t) (4U + softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index &  0xFU)))
-                           :                      softfloat_countLeadingZeros8_z_table((uint_fast8_t) (index >>   4U));
-  }
-
-  constexpr uint_fast8_t softfloat_countLeadingZeros16(std::uint16_t a)
-  {
-    return (a < UINT16_C(0x100)) ? (uint_fast8_t) (8U + softfloat_countLeadingZeros8((uint_fast8_t) a))
-                                 :                      softfloat_countLeadingZeros8((uint_fast8_t) (a >> 8U));
-  }
-
-  constexpr uint_fast8_t softfloat_countLeadingZeros32(std::uint32_t a)
-  {
-    // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT32_C(0x10000)) ? (uint_fast8_t) (16U + softfloat_countLeadingZeros16((std::uint16_t) a))
-                                   :                       softfloat_countLeadingZeros16((std::uint16_t) (a >> 16U));
-  }
-
-  /*----------------------------------------------------------------------------
-  | Returns the number of leading 0 bits before the most-significant 1 bit of
-  | 'a'.  If 'a' is zero, 64 is returned.
-  *----------------------------------------------------------------------------*/
-  constexpr uint_fast8_t softfloat_countLeadingZeros64(std::uint64_t a)
-  {
-    // TBD: Finding MSB to count leading zeros can probably be done more efficiently.
-    return (a < UINT64_C(0x100000000)) ? (uint_fast8_t) (32U + softfloat_countLeadingZeros32((std::uint32_t) a))
-                                       :                       softfloat_countLeadingZeros32((std::uint32_t) (a >> 32U));
-  }
-
-  /*----------------------------------------------------------------------------
-  | Returns an approximation to the reciprocal of the number represented by 'a',
-  | where 'a' is interpreted as an unsigned fixed-point number with one integer
-  | bit and 31 fraction bits.
-  *----------------------------------------------------------------------------*/
-  constexpr std::uint32_t softfloat_approxRecip32_1(std::uint32_t a)
-  {
-    return (std::uint32_t) (UINT64_C(0x7FFFFFFFFFFFFFFF) / a);
-  }
-
-  /*----------------------------------------------------------------------------
-  | Shifts the 128 bits formed by concatenating 'a' and 'extra' right by 64
-  | _plus_ the number of bits given in 'dist', which must not be zero.  This
-  | shifted value is at most 64 nonzero bits and is returned in the 'v' field
-  | of the 'struct uint64_extra' result.
-  *----------------------------------------------------------------------------*/
-  constexpr struct uint64_extra softfloat_shiftRightJam64Extra(std::uint64_t a, std::uint64_t extra, std::uint32_t dist)
+  constexpr auto packToF64UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig) -> std::uint64_t
   {
     return
+      static_cast<std::uint64_t>
+      (
+          static_cast<std::uint64_t>(sign ? 1ULL << 63U : 0ULL)
+        + static_cast<std::uint64_t>(static_cast<std::uint64_t>(expA) << 52U)
+        + static_cast<std::uint64_t>(sig)
+      );
+  }
+
+  template<typename IntegralTypeExp,
+           typename IntegralTypeSig>
+  constexpr auto packToF32UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig) -> std::uint32_t
+  {
+    return
+      static_cast<std::uint32_t>
+      (
+          static_cast<std::uint32_t>(sign ? 1ULL << 31U : 0ULL)
+        + static_cast<std::uint32_t>(static_cast<std::uint32_t>(expA) << 23U)
+        + static_cast<std::uint32_t>(sig)
+      );
+  }
+
+  inline constexpr auto softfloat_shortShiftRightJam64(std::uint64_t a, std::uint_fast16_t dist) -> std::uint64_t
+  {
+    return
+      static_cast<std::uint64_t>
+      (
+          static_cast<std::uint64_t>(a >> dist)
+        | static_cast<unsigned>
+          (
+            (static_cast<std::uint64_t>(a << static_cast<unsigned>(negate(dist) & 63U)) != static_cast<std::uint64_t>(UINT8_C(0)))
+              ? static_cast<unsigned>(UINT8_C(1))
+              : static_cast<unsigned>(UINT8_C(0))
+          )
+      );
+  }
+
+  inline constexpr auto softfloat_shiftRightJam64(std::uint64_t a, std::uint_fast16_t dist) -> std::uint64_t
+  {
+    return
+      (dist < static_cast<std::uint32_t>(UINT8_C(63)))
+        ? softfloat_shortShiftRightJam64(a, dist)
+        : static_cast<std::uint64_t>
+          (
+            (a != static_cast<std::uint64_t>(UINT8_C(0)))
+              ? static_cast<unsigned>(UINT8_C(1))
+              : static_cast<unsigned>(UINT8_C(0))
+          );
+  }
+
+  inline constexpr auto softfloat_countLeadingZeros8_z_table(std::uint_fast8_t index) -> std::uint_fast8_t
+  {
+    // A constant table that translates an 8-bit unsigned integer (the array index)
+    // into the number of leading 0 bits before the most-significant 1 of that
+    // integer.  For integer zero (index 0), the corresponding table element is 8.
+    return   ((index < static_cast<std::uint_fast8_t>(UINT8_C(0x1))) ? static_cast<std::uint_fast8_t>(UINT8_C(4))
+           : ((index < static_cast<std::uint_fast8_t>(UINT8_C(0x2))) ? static_cast<std::uint_fast8_t>(UINT8_C(3))
+           : ((index < static_cast<std::uint_fast8_t>(UINT8_C(0x4))) ? static_cast<std::uint_fast8_t>(UINT8_C(2))
+           : ((index < static_cast<std::uint_fast8_t>(UINT8_C(0x8))) ? static_cast<std::uint_fast8_t>(UINT8_C(1))
+                                                                     : static_cast<std::uint_fast8_t>(UINT8_C(0))))));
+  }
+
+  inline constexpr auto softfloat_countLeadingZeros8(std::uint8_t a) -> std::uint_fast8_t
+  {
+    return
+      (a < static_cast<std::uint_fast8_t>(UINT8_C(0x10)))
+        ? static_cast<std::uint_fast8_t>(4U + softfloat_countLeadingZeros8_z_table(static_cast<std::uint_fast8_t>(a &  0xFU)))
+        :                                     softfloat_countLeadingZeros8_z_table(static_cast<std::uint_fast8_t>(a >>   4U));
+  }
+
+  inline constexpr auto softfloat_countLeadingZeros16(std::uint16_t a) -> std::uint_fast8_t
+  {
+    return
+      (a < static_cast<std::uint16_t>(UINT16_C(0x100)))
+        ? static_cast<std::uint_fast8_t>(8U + softfloat_countLeadingZeros8(static_cast<std::uint8_t>(a)))
+        :                                     softfloat_countLeadingZeros8(static_cast<std::uint8_t>(a >> 8U));
+  }
+
+  inline constexpr auto softfloat_countLeadingZeros32(std::uint32_t a) -> std::uint_fast8_t
+  {
+    return
+      (a < static_cast<std::uint32_t>(UINT32_C(0x10000)))
+        ? static_cast<std::uint_fast8_t>(16U + softfloat_countLeadingZeros16(static_cast<std::uint16_t>(a)))
+        :                                      softfloat_countLeadingZeros16(static_cast<std::uint16_t>(a >> 16U));
+  }
+
+  inline constexpr auto softfloat_countLeadingZeros64(std::uint64_t a) -> std::uint_fast8_t
+  {
+    return
+      (a < static_cast<std::uint64_t>(UINT64_C(0x100000000)))
+        ? static_cast<std::uint_fast8_t>(32U + softfloat_countLeadingZeros32(static_cast<std::uint32_t>(a)))
+        :                                      softfloat_countLeadingZeros32(static_cast<std::uint32_t>(a >> 32U));
+  }
+
+  inline constexpr auto softfloat_approxRecip32_1(std::uint32_t a) -> std::uint32_t
+  {
+    // Returns an approximation to the reciprocal of the number represented by a,
+    // where a is interpreted as an unsigned fixed-point number with one integer
+    // bit and 31 fraction bits.
+    return static_cast<std::uint32_t>(static_cast<std::uint64_t>(UINT64_C(0x7FFFFFFFFFFFFFFF)) / a);
+  }
+
+  inline constexpr auto softfloat_shiftRightJam64Extra(std::uint64_t a, std::uint64_t extra, std::uint32_t dist) -> struct uint64_extra
+  {
+    // Shifts the 128 bits formed by concatenating a and extra right by 64
+    // _plus_ the number of bits given in dist, which must not be zero. This
+    // shifted value is at most 64 nonzero bits and is returned in the v field
+    // of the struct uint64_extra result.
+    return
     {
-      (dist < 64U) ? (a << (negate(dist) & 63U)) | (extra != 0U ? 1U : 0U) : ((dist == 64U) ? a : (a != 0U ? 1U : 0U))  | (extra != 0U ? 1U : 0U),
-      (dist < 64U) ? (a >> dist)                                           : 0U
+      (dist < 64U) ? static_cast<std::uint64_t>(a << static_cast<unsigned>(static_cast<unsigned>(negate(dist)) & 63U)) | (extra != 0U ? 1U : 0U) : ((dist == 64U) ? a : ((a != 0U) || (extra != 0U)) ? 1U : 0U),
+      (dist < 64U) ? static_cast<std::uint64_t>(a >>                       static_cast<unsigned>       (dist))                                   : 0U
     };
   }
 
@@ -215,470 +332,457 @@
     const float_type    my_f;
     const unsigned_type my_u;
 
-    constexpr uz_type(float_type    f) : my_f(f) { }
-    constexpr uz_type(unsigned_type u) : my_u(u) { }
+    constexpr uz_type(float_type    f) : my_f(f) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    constexpr uz_type(unsigned_type u) : my_u(u) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
   };
 
   struct nothing { };
 
-  }
+  } // namespace detail
 
   class soft_double;
 
-  inline soft_double operator+(const soft_double& a, const soft_double& b);
-  inline soft_double operator-(const soft_double& a, const soft_double& b);
-  inline soft_double operator*(const soft_double& a, const soft_double& b);
-  inline soft_double operator/(const soft_double& a, const soft_double& b);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& a, const soft_double& b) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& a, const soft_double& b) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& a, const soft_double& b) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& a, const soft_double& b) -> soft_double;
 
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator+(const soft_double& u, UnsignedIntegralType n);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator-(const soft_double& u, UnsignedIntegralType n);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator*(const soft_double& u, UnsignedIntegralType n);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator/(const soft_double& u, UnsignedIntegralType n);
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
 
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator+(UnsignedIntegralType n, const soft_double& u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator-(UnsignedIntegralType n, const soft_double& u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator*(UnsignedIntegralType n, const soft_double& u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator/(UnsignedIntegralType n, const soft_double& u);
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator+(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator-(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator*(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
+  template<typename UnsignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator/(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type;
 
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator+(const soft_double& u, SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator-(const soft_double& u, SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator*(const soft_double& u, SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator/(const soft_double& u, SignedIntegralType n);
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
 
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator+(SignedIntegralType n, const soft_double& u);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator-(SignedIntegralType n, const soft_double& u);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator*(SignedIntegralType n, const soft_double& u);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator/(SignedIntegralType n, const soft_double& u);
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator+(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator-(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator*(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
+  template<typename SignedIntegralType> SOFT_DOUBLE_CONSTEXPR auto operator/(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type;
 
-  inline soft_double operator+(const soft_double& u, float f);
-  inline soft_double operator-(const soft_double& u, float f);
-  inline soft_double operator*(const soft_double& u, float f);
-  inline soft_double operator/(const soft_double& u, float f);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, float f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, float f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, float f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, float f) -> soft_double;
 
-  inline soft_double operator+(float f, const soft_double& u);
-  inline soft_double operator-(float f, const soft_double& u);
-  inline soft_double operator*(float f, const soft_double& u);
-  inline soft_double operator/(float f, const soft_double& u);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(float f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(float f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(float f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(float f, const soft_double& u) -> soft_double;
 
-  inline soft_double operator+(const soft_double& u, double f);
-  inline soft_double operator-(const soft_double& u, double f);
-  inline soft_double operator*(const soft_double& u, double f);
-  inline soft_double operator/(const soft_double& u, double f);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, double f) -> soft_double;
 
-  inline soft_double operator+(double f, const soft_double& u);
-  inline soft_double operator-(double f, const soft_double& u);
-  inline soft_double operator*(double f, const soft_double& u);
-  inline soft_double operator/(double f, const soft_double& u);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(double f, const soft_double& u) -> soft_double;
 
-  inline soft_double operator+(const soft_double& u, long double f);
-  inline soft_double operator-(const soft_double& u, long double f);
-  inline soft_double operator*(const soft_double& u, long double f);
-  inline soft_double operator/(const soft_double& u, long double f);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, long double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, long double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, long double f) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, long double f) -> soft_double;
 
-  inline soft_double operator+(long double f, const soft_double& u);
-  inline soft_double operator-(long double f, const soft_double& u);
-  inline soft_double operator*(long double f, const soft_double& u);
-  inline soft_double operator/(long double f, const soft_double& u);
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(long double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(long double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(long double f, const soft_double& u) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(long double f, const soft_double& u) -> soft_double;
 
-  inline constexpr bool operator< (const soft_double& a, const soft_double& b);
-  inline constexpr bool operator<=(const soft_double& a, const soft_double& b);
-  inline constexpr bool operator==(const soft_double& a, const soft_double& b);
-  inline constexpr bool operator!=(const soft_double& a, const soft_double& b);
-  inline constexpr bool operator>=(const soft_double& a, const soft_double& b);
-  inline constexpr bool operator> (const soft_double& a, const soft_double& b);
+  inline constexpr auto operator< (const soft_double& a, const soft_double& b) -> bool;
+  inline constexpr auto operator<=(const soft_double& a, const soft_double& b) -> bool;
+  inline constexpr auto operator==(const soft_double& a, const soft_double& b) -> bool;
+  inline constexpr auto operator!=(const soft_double& a, const soft_double& b) -> bool;
+  inline constexpr auto operator>=(const soft_double& a, const soft_double& b) -> bool;
+  inline constexpr auto operator> (const soft_double& a, const soft_double& b) -> bool;
 
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator< (const soft_double& a, const UnsignedIntegralType u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator<=(const soft_double& a, const UnsignedIntegralType u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator==(const soft_double& a, const UnsignedIntegralType u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator!=(const soft_double& a, const UnsignedIntegralType u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator>=(const soft_double& a, const UnsignedIntegralType u);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator> (const soft_double& a, const UnsignedIntegralType u);
+  template<typename UnsignedIntegralType> constexpr auto operator< (const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator<=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator==(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator!=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator>=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator> (const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
 
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator< (const UnsignedIntegralType u, const soft_double& a);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator<=(const UnsignedIntegralType u, const soft_double& a);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator==(const UnsignedIntegralType u, const soft_double& a);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator!=(const UnsignedIntegralType u, const soft_double& a);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator>=(const UnsignedIntegralType u, const soft_double& a);
-  template<typename UnsignedIntegralType> typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator> (const UnsignedIntegralType u, const soft_double& a);
+  template<typename UnsignedIntegralType> constexpr auto operator< (UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator<=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator==(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator!=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator>=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
+  template<typename UnsignedIntegralType> constexpr auto operator> (UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type;
 
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator< (const soft_double& a, const SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator<=(const soft_double& a, const SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator==(const soft_double& a, const SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator!=(const soft_double& a, const SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator>=(const soft_double& a, const SignedIntegralType n);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator> (const soft_double& a, const SignedIntegralType n);
+  template<typename SignedIntegralType> constexpr auto operator< (const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator<=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator==(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator!=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator>=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator> (const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
 
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator< (const SignedIntegralType n, const soft_double& a);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator<=(const SignedIntegralType n, const soft_double& a);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator==(const SignedIntegralType n, const soft_double& a);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator!=(const SignedIntegralType n, const soft_double& a);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator>=(const SignedIntegralType n, const soft_double& a);
-  template<typename SignedIntegralType> typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator> (const SignedIntegralType n, const soft_double& a);
+  template<typename SignedIntegralType> constexpr auto operator< (SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator<=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator==(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator!=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator>=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
+  template<typename SignedIntegralType> constexpr auto operator> (SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type;
 
-  inline bool operator< (const soft_double& a, const float f);
-  inline bool operator<=(const soft_double& a, const float f);
-  inline bool operator==(const soft_double& a, const float f);
-  inline bool operator!=(const soft_double& a, const float f);
-  inline bool operator>=(const soft_double& a, const float f);
-  inline bool operator> (const soft_double& a, const float f);
+  inline constexpr auto operator< (const soft_double& a, float f) -> bool;
+  inline constexpr auto operator<=(const soft_double& a, float f) -> bool;
+  inline constexpr auto operator==(const soft_double& a, float f) -> bool;
+  inline constexpr auto operator!=(const soft_double& a, float f) -> bool;
+  inline constexpr auto operator>=(const soft_double& a, float f) -> bool;
+  inline constexpr auto operator> (const soft_double& a, float f) -> bool;
 
-  inline bool operator< (const float f, const soft_double& a);
-  inline bool operator<=(const float f, const soft_double& a);
-  inline bool operator==(const float f, const soft_double& a);
-  inline bool operator!=(const float f, const soft_double& a);
-  inline bool operator>=(const float f, const soft_double& a);
-  inline bool operator> (const float f, const soft_double& a);
+  inline constexpr auto operator< (float f, const soft_double& a) -> bool;
+  inline constexpr auto operator<=(float f, const soft_double& a) -> bool;
+  inline constexpr auto operator==(float f, const soft_double& a) -> bool;
+  inline constexpr auto operator!=(float f, const soft_double& a) -> bool;
+  inline constexpr auto operator>=(float f, const soft_double& a) -> bool;
+  inline constexpr auto operator> (float f, const soft_double& a) -> bool;
 
-  inline bool operator< (const soft_double& a, const double f);
-  inline bool operator<=(const soft_double& a, const double f);
-  inline bool operator==(const soft_double& a, const double f);
-  inline bool operator!=(const soft_double& a, const double f);
-  inline bool operator>=(const soft_double& a, const double f);
-  inline bool operator> (const soft_double& a, const double f);
+  inline constexpr auto operator< (const soft_double& a, double f) -> bool;
+  inline constexpr auto operator<=(const soft_double& a, double f) -> bool;
+  inline constexpr auto operator==(const soft_double& a, double f) -> bool;
+  inline constexpr auto operator!=(const soft_double& a, double f) -> bool;
+  inline constexpr auto operator>=(const soft_double& a, double f) -> bool;
+  inline constexpr auto operator> (const soft_double& a, double f) -> bool;
 
-  inline bool operator< (const double f, const soft_double& a);
-  inline bool operator<=(const double f, const soft_double& a);
-  inline bool operator==(const double f, const soft_double& a);
-  inline bool operator!=(const double f, const soft_double& a);
-  inline bool operator>=(const double f, const soft_double& a);
-  inline bool operator> (const double f, const soft_double& a);
+  inline constexpr auto operator< (double f, const soft_double& a) -> bool;
+  inline constexpr auto operator<=(double f, const soft_double& a) -> bool;
+  inline constexpr auto operator==(double f, const soft_double& a) -> bool;
+  inline constexpr auto operator!=(double f, const soft_double& a) -> bool;
+  inline constexpr auto operator>=(double f, const soft_double& a) -> bool;
+  inline constexpr auto operator> (double f, const soft_double& a) -> bool;
 
-  inline bool operator< (const soft_double& a, const long double f);
-  inline bool operator<=(const soft_double& a, const long double f);
-  inline bool operator==(const soft_double& a, const long double f);
-  inline bool operator!=(const soft_double& a, const long double f);
-  inline bool operator>=(const soft_double& a, const long double f);
-  inline bool operator> (const soft_double& a, const long double f);
+  inline constexpr auto operator< (const soft_double& a, long double f) -> bool;
+  inline constexpr auto operator<=(const soft_double& a, long double f) -> bool;
+  inline constexpr auto operator==(const soft_double& a, long double f) -> bool;
+  inline constexpr auto operator!=(const soft_double& a, long double f) -> bool;
+  inline constexpr auto operator>=(const soft_double& a, long double f) -> bool;
+  inline constexpr auto operator> (const soft_double& a, long double f) -> bool;
 
-  inline bool operator< (const long double f, const soft_double& a);
-  inline bool operator<=(const long double f, const soft_double& a);
-  inline bool operator==(const long double f, const soft_double& a);
-  inline bool operator!=(const long double f, const soft_double& a);
-  inline bool operator>=(const long double f, const soft_double& a);
-  inline bool operator> (const long double f, const soft_double& a);
+  inline constexpr auto operator< (long double f, const soft_double& a) -> bool;
+  inline constexpr auto operator<=(long double f, const soft_double& a) -> bool;
+  inline constexpr auto operator==(long double f, const soft_double& a) -> bool;
+  inline constexpr auto operator!=(long double f, const soft_double& a) -> bool;
+  inline constexpr auto operator>=(long double f, const soft_double& a) -> bool;
+  inline constexpr auto operator> (long double f, const soft_double& a) -> bool;
 
   #if !defined(SOFT_DOUBLE_DISABLE_IOSTREAM)
-  template<typename char_type, typename traits_type> std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& os, const soft_double& f);
-  template<typename char_type, typename traits_type> std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& is,       soft_double& f);
+  template<typename char_type, typename traits_type> auto operator<<(std::basic_ostream<char_type, traits_type>& os, const soft_double& f) -> std::basic_ostream<char_type, traits_type>&;
+  template<typename char_type, typename traits_type> auto operator>>(std::basic_istream<char_type, traits_type>& is,       soft_double& f) -> std::basic_istream<char_type, traits_type>&;
   #endif // !WIDE_DECIMAL_DISABLE_IOSTREAM
 
-  inline bool        isnan   (const soft_double x);
-  inline bool        isinf   (const soft_double x);
-  inline bool        isfinite(const soft_double x);
-  inline soft_double fabs    (const soft_double x);
-  inline soft_double frexp   (const soft_double x, int* expptr);
-  inline soft_double ldexp   (const soft_double x, int expval);
-  inline soft_double floor   (const soft_double x);
-  inline soft_double ceil    (const soft_double x);
-  inline soft_double sqrt    (const soft_double x);
-  inline soft_double exp     (const soft_double x);
-  inline soft_double log     (const soft_double x);
-  inline soft_double pow     (const soft_double x, const soft_double a);
-  inline soft_double sin     (const soft_double x);
-  inline soft_double cos     (const soft_double x);
-  inline soft_double tan     (const soft_double x);
-  inline soft_double sinh    (const soft_double x);
-  inline soft_double cosh    (const soft_double x);
-  inline soft_double tanh    (const soft_double x);
+  inline SOFT_DOUBLE_CONSTEXPR auto isnan   (soft_double x) -> bool;
+  inline SOFT_DOUBLE_CONSTEXPR auto isinf   (soft_double x) -> bool;
+  inline SOFT_DOUBLE_CONSTEXPR auto isfinite(soft_double x) -> bool;
+  inline SOFT_DOUBLE_CONSTEXPR auto fabs    (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto frexp   (soft_double x, int* expptr) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto ldexp   (soft_double x, int expval) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto floor   (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto ceil    (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto sqrt    (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto exp     (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto log     (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto pow     (soft_double x, soft_double a) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto sin     (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto cos     (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto tan     (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto sinh    (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto cosh    (soft_double x) -> soft_double;
+  inline SOFT_DOUBLE_CONSTEXPR auto tanh    (soft_double x) -> soft_double;
 
   template<typename UnsignedIntegralType,
-           typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
-                                    && (std::is_unsigned<UnsignedIntegralType>::value == true))>::type const* = nullptr>
-  soft_double pow(const soft_double x, const UnsignedIntegralType u);
+           typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                    && std::is_unsigned<UnsignedIntegralType>::value)>::type const* = nullptr>
+  SOFT_DOUBLE_CONSTEXPR auto pow(soft_double x, UnsignedIntegralType u) -> soft_double;
 
   template<typename SignedIntegralType,
-           typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                    && (std::is_signed  <SignedIntegralType>::value == true))>::type const* = nullptr>
-  soft_double pow(const soft_double x, const SignedIntegralType n);
+           typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                    && std::is_signed  <SignedIntegralType>::value)>::type const* = nullptr>
+  SOFT_DOUBLE_CONSTEXPR auto pow(soft_double x, SignedIntegralType n) -> soft_double;
 
   class soft_double final
   {
+  public:
     static_assert(sizeof(float) == 4U,
                   "Error: This template is designed for 4 byte built-in float");
-  public:
+
     using representation_type = std::uint64_t;
 
-    soft_double() { }
+    soft_double() = default;
 
     template<typename UnsignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
-                                      && (std::is_unsigned<UnsignedIntegralType>::value == true)
+             typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                      && std::is_unsigned<UnsignedIntegralType>::value
                                       && (sizeof(UnsignedIntegralType) <= sizeof(std::uint32_t)))>::type const* = nullptr>
-    constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui32_to_f64((std::uint32_t) u)) { }
+    constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui32_to_f64(static_cast<std::uint32_t>(u))) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
     template<typename UnsignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
-                                      && (std::is_unsigned<UnsignedIntegralType>::value == true)
-                                      && !(sizeof(UnsignedIntegralType) <= sizeof(std::uint32_t)))>::type const* = nullptr>
-    constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui64_to_f64((std::uint64_t) u)) { }
+             typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                      && std::is_unsigned<UnsignedIntegralType>::value
+                                      && (!(sizeof(UnsignedIntegralType) <= sizeof(std::uint32_t))))>::type const* = nullptr>
+    constexpr soft_double(UnsignedIntegralType u) : my_value(my_ui64_to_f64(static_cast<std::uint64_t>(u))) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
     template<typename SignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                      && (std::is_signed  <SignedIntegralType>::value == true)
+             typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                      && std::is_signed  <SignedIntegralType>::value
                                       && (sizeof(SignedIntegralType) <= sizeof(int32_t)))>::type const* = nullptr>
-    constexpr soft_double(SignedIntegralType n) : my_value(my__i32_to_f64((std::int32_t) n)) { }
+    constexpr soft_double(SignedIntegralType n) : my_value(my__i32_to_f64(static_cast<std::int32_t>(n))) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
     template<typename SignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                      && (std::is_signed  <SignedIntegralType>::value == true)
-                                      && !(sizeof(SignedIntegralType) <= sizeof(int32_t)))>::type const* = nullptr>
-    constexpr soft_double(SignedIntegralType n) : my_value(my__i64_to_f64((std::int64_t) n)) { }
+             typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                      && std::is_signed  <SignedIntegralType>::value
+                                      && (!(sizeof(SignedIntegralType) <= sizeof(int32_t))))>::type const* = nullptr>
+    constexpr soft_double(SignedIntegralType n) : my_value(my__i64_to_f64(static_cast<std::int64_t>(n))) { } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
-    constexpr soft_double(float f)
+    constexpr soft_double(float f) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
       : my_value
         (
-          ((detail::expF32UI (detail::uz_type<float>(f).my_u) == 0) && (detail::fracF32UI(detail::uz_type<float>(f).my_u) == 0U))
-            ? detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), 0, 0)
-            : detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), detail::expF32UI(detail::uz_type<float>(f).my_u) + 0x380, (std::uint64_t) detail::fracF32UI(detail::uz_type<float>(f).my_u) << 29)
+          ((detail::expF32UI (detail::uz_type<float>(f).my_u) == 0) && (detail::fracF32UI(detail::uz_type<float>(f).my_u) == 0U))                                                                                                    // NOLINT(cppcoreguidelines-pro-type-union-access)
+            ? detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), 0, 0)                                                                                                                                           // NOLINT(cppcoreguidelines-pro-type-union-access)
+            : detail::packToF64UI(detail::signF32UI(detail::uz_type<float>(f).my_u), detail::expF32UI(detail::uz_type<float>(f).my_u) + 0x380, static_cast<std::uint64_t>(detail::fracF32UI(detail::uz_type<float>(f).my_u)) << 29U) // NOLINT(cppcoreguidelines-pro-type-union-access)
         ) { }
 
-    constexpr soft_double(double d)
-      : my_value(detail::uz_type<double>(d).my_u) { }
+    constexpr soft_double(double d)                   // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+      : my_value(detail::uz_type<double>(d).my_u) { } // NOLINT(cppcoreguidelines-pro-type-union-access)
 
-    constexpr soft_double(const long double ld)
-      : my_value(detail::uz_type<double>((double) ld).my_u) { }
+    constexpr soft_double(long double ld)                                   // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+      : my_value(detail::uz_type<double>(static_cast<double>(ld)).my_u) { } // NOLINT(cppcoreguidelines-pro-type-union-access)
 
-    constexpr soft_double(const soft_double& other) noexcept
+    constexpr soft_double(const soft_double&) = default;
+
+    constexpr soft_double(soft_double&& other) noexcept
       : my_value(other.my_value) { }
 
-    constexpr soft_double(const soft_double&& other) noexcept
-      : my_value(other.my_value) { }
+    constexpr soft_double(std::uint64_t n, detail::nothing&&) noexcept // NOLINT(hicpp-named-parameter,readability-named-parameter)
+      : my_value(static_cast<std::uint64_t>(n)) { }
 
-    constexpr soft_double(std::uint64_t n, const detail::nothing&) noexcept
-      : my_value((std::uint64_t) n) { }
+    SOFT_DOUBLE_CONSTEXPR ~soft_double() = default;
 
-    ~soft_double() = default;
+    SOFT_DOUBLE_CONSTEXPR auto operator=(const soft_double&) -> soft_double& = default;
 
-    soft_double& operator=(const soft_double& other)
-    {
-      if(this != &other)
-      {
-        my_value = other.my_value;
-      }
+    SOFT_DOUBLE_CONSTEXPR auto operator=(soft_double&&) noexcept -> soft_double& = default;
 
-      return *this;
-    }
+                          SOFT_DOUBLE_CONSTEXPR auto  representation()       ->       representation_type& { return my_value; }
+    SOFT_DOUBLE_NODISCARD SOFT_DOUBLE_CONSTEXPR auto  representation() const -> const representation_type& { return my_value; }
+    SOFT_DOUBLE_NODISCARD SOFT_DOUBLE_CONSTEXPR auto crepresentation() const -> const representation_type& { return my_value; }
 
-    soft_double& operator=(soft_double&& other)
-    {
-      my_value = other.my_value;
+    static constexpr auto get_rep(soft_double a) -> representation_type { return a.my_value; }
 
-      return *this;
-    }
+    SOFT_DOUBLE_CONSTEXPR operator   signed char     () const { return static_cast<signed char>     (f64_to__i32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator   signed short    () const { return static_cast<signed short>    (f64_to__i32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
+    SOFT_DOUBLE_CONSTEXPR operator   signed int      () const { return static_cast<signed int>      (f64_to__i32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator   signed long     () const { return static_cast<signed long>     (f64_to__i64(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
+    SOFT_DOUBLE_CONSTEXPR operator   signed long long() const { return static_cast<signed long long>(f64_to__i64(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
 
-          representation_type&  representation()       { return my_value; }
-    const representation_type&  representation() const { return my_value; }
-    const representation_type& crepresentation() const { return my_value; }
-
-    static constexpr representation_type get_rep(soft_double a) { return a.my_value; }
-
-    operator   signed char     () const { return   (signed char)      f64_to__i32(my_value); }
-    operator   signed short    () const { return   (signed short)     f64_to__i32(my_value); }
-    operator   signed int      () const { return   (signed int)       f64_to__i32(my_value); }
-    operator   signed long     () const { return   (signed long)      f64_to__i64(my_value); }
-    operator   signed long long() const { return   (signed long long) f64_to__i64(my_value); }
-
-    operator unsigned char     () const { return (unsigned char)      f64_to_ui32(my_value); }
-    operator unsigned short    () const { return (unsigned short)     f64_to_ui32(my_value); }
-    operator unsigned int      () const { return (unsigned int)       f64_to_ui32(my_value); }
-    operator unsigned long     () const { return (unsigned long)      f64_to_ui64(my_value); }
-    operator unsigned long long() const { return (unsigned long long) f64_to_ui64(my_value); }
-
-    operator float() const noexcept
-    {
-      return to_float<float>();
-    }
-
-    operator double() const noexcept
-    {
-      return to_float<double>();
-    }
-
-    operator long double() const noexcept
-    {
-      return (long double) ((double) *this);
-    }
-
-    soft_double& operator+=(const soft_double& other) { my_value = f64_add(my_value, other.my_value); return *this; }
-    soft_double& operator-=(const soft_double& other) { my_value = f64_sub(my_value, other.my_value); return *this; }
-    soft_double& operator*=(const soft_double& other) { my_value = f64_mul(my_value, other.my_value); return *this; }
-    soft_double& operator/=(const soft_double& other) { my_value = f64_div(my_value, other.my_value); return *this; }
-
-    // Operators pre-increment and pre-decrement.
-    soft_double& operator++() { return *this += my_value_one(); }
-    soft_double& operator--() { return *this -= my_value_one(); }
-
-    // Operators post-increment and post-decrement.
-    soft_double operator++(int) { const soft_double w(*this); static_cast<void>(++(*this)); return w; }
-    soft_double operator--(int) { const soft_double w(*this); static_cast<void>(--(*this)); return w; }
-
-    const soft_double& operator+() const { return *this; }
-          soft_double  operator-() const { return soft_double(my_value ^ (std::uint64_t) (1ULL << 63U), detail::nothing()); }
-
-    static constexpr soft_double my_value_zero   () { return soft_double(UINT64_C(0),                   detail::nothing()); }
-    static constexpr soft_double my_value_one    () { return soft_double(UINT64_C(0x3FF0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_two    () { return soft_double(UINT64_C(0x4000000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_half   () { return soft_double(UINT64_C(0x3FE0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_pi     () { return soft_double(UINT64_C(4614256656552045848), detail::nothing()); }
-    static constexpr soft_double my_value_pi_half() { return soft_double(UINT64_C(0x3FF921FB54442D18),  detail::nothing()); }
-
-    static constexpr soft_double my_value_ln2 () { return soft_double(UINT64_C(4604418534313441775), detail::nothing()); }
-
-    static constexpr soft_double my_value_min()           { return soft_double(UINT64_C(4503599627370496),    detail::nothing()); }
-    static constexpr soft_double my_value_max()           { return soft_double(UINT64_C(9218868437227405311), detail::nothing()); }
-    static constexpr soft_double my_value_lowest()        { return soft_double(UINT64_C(18442240474082181119),detail::nothing()); }
-    static constexpr soft_double my_value_epsilon()       { return soft_double(UINT64_C(4372995238176751616), detail::nothing()); }
-    static constexpr soft_double my_value_round_error()   { return soft_double(UINT64_C(0x3FE0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_denorm_min()    { return soft_double(UINT64_C(1),                   detail::nothing()); }
-    static constexpr soft_double my_value_infinity()      { return soft_double(UINT64_C(0x7FF0000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_quiet_NaN()     { return soft_double(UINT64_C(0xFFF8000000000000),  detail::nothing()); }
-    static constexpr soft_double my_value_signaling_NaN() { return soft_double(UINT64_C(0x7FF8000000000000),  detail::nothing()); }
+    SOFT_DOUBLE_CONSTEXPR operator unsigned char     () const { return static_cast<unsigned char>     (f64_to_ui32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator unsigned short    () const { return static_cast<unsigned short>    (f64_to_ui32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
+    SOFT_DOUBLE_CONSTEXPR operator unsigned int      () const { return static_cast<unsigned int>      (f64_to_ui32(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator unsigned long     () const { return static_cast<unsigned long>     (f64_to_ui64(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
+    SOFT_DOUBLE_CONSTEXPR operator unsigned long long() const { return static_cast<unsigned long long>(f64_to_ui64(my_value)); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,google-runtime-int)
 
   private:
-    representation_type my_value;
-
     template<typename FloatingPointType>
-    typename std::enable_if<(   (sizeof(FloatingPointType) == 4)
-                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    SOFT_DOUBLE_NODISCARD SOFT_DOUBLE_CONSTEXPR auto to_float() const -> typename std::enable_if<(   (sizeof(FloatingPointType) == 4)
+                                                                                                  && std::numeric_limits<FloatingPointType>::is_iec559), FloatingPointType>::type
     {
       return f64_to_f32(my_value);
     }
 
     template<typename FloatingPointType>
-    typename std::enable_if<(   (sizeof(FloatingPointType) == 8)
-                             && (std::numeric_limits<FloatingPointType>::is_iec559 == true)), FloatingPointType>::type to_float() const
+    SOFT_DOUBLE_NODISCARD SOFT_DOUBLE_CONSTEXPR auto to_float() const -> typename std::enable_if<(   (sizeof(FloatingPointType) == 8)
+                                                                                                  && std::numeric_limits<FloatingPointType>::is_iec559), FloatingPointType>::type
     {
-      return (FloatingPointType) (*(volatile FloatingPointType*) (this));
+      return static_cast<FloatingPointType>(*static_cast<const volatile FloatingPointType*>(static_cast<const volatile void*>(this)));
     }
 
-    static constexpr bool my_le(const soft_double& a, const soft_double& b)
+  public:
+    SOFT_DOUBLE_CONSTEXPR operator float      () const noexcept { return to_float<float>(); }                            // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator double     () const noexcept { return to_float<double>(); }                           // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    SOFT_DOUBLE_CONSTEXPR operator long double() const noexcept { return static_cast<long double>(to_float<double>()); } // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+
+    SOFT_DOUBLE_CONSTEXPR auto operator+=(const soft_double& other) -> soft_double& { my_value = f64_add(my_value, other.my_value); return *this; }
+    SOFT_DOUBLE_CONSTEXPR auto operator-=(const soft_double& other) -> soft_double& { my_value = f64_sub(my_value, other.my_value); return *this; }
+    SOFT_DOUBLE_CONSTEXPR auto operator*=(const soft_double& other) -> soft_double& { my_value = f64_mul(my_value, other.my_value); return *this; }
+    SOFT_DOUBLE_CONSTEXPR auto operator/=(const soft_double& other) -> soft_double& { my_value = f64_div(my_value, other.my_value); return *this; }
+
+    // Operators pre-increment and pre-decrement.
+    SOFT_DOUBLE_CONSTEXPR auto operator++() -> soft_double& { return *this += my_value_one(); }
+    SOFT_DOUBLE_CONSTEXPR auto operator--() -> soft_double& { return *this -= my_value_one(); }
+
+    // Operators post-increment and post-decrement.
+    SOFT_DOUBLE_CONSTEXPR auto operator++(int) -> soft_double { const soft_double w(*this); static_cast<void>(++(*this)); return w; }
+    SOFT_DOUBLE_CONSTEXPR auto operator--(int) -> soft_double { const soft_double w(*this); static_cast<void>(--(*this)); return w; }
+
+    SOFT_DOUBLE_CONSTEXPR auto operator+() const -> const soft_double& { return *this; }
+    SOFT_DOUBLE_CONSTEXPR auto operator-() const ->       soft_double  { return { my_value ^ static_cast<std::uint64_t>(1ULL << 63U), detail::nothing() }; }
+
+    static constexpr auto my_value_zero   () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0)),                   detail::nothing() }; }
+    static constexpr auto my_value_one    () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x3FF0000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_two    () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x4000000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_half   () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x3FE0000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_pi     () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(4614256656552045848)), detail::nothing() }; }
+    static constexpr auto my_value_pi_half() -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x3FF921FB54442D18)),  detail::nothing() }; }
+    static constexpr auto my_value_ln2    () -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(4604418534313441775)), detail::nothing() }; }
+
+    static constexpr auto my_value_min()           -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(4503599627370496)),    detail::nothing() }; }
+    static constexpr auto my_value_max()           -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(9218868437227405311)), detail::nothing() }; }
+    static constexpr auto my_value_lowest()        -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(18442240474082181119)),detail::nothing() }; }
+    static constexpr auto my_value_epsilon()       -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(4372995238176751616)), detail::nothing() }; }
+    static constexpr auto my_value_round_error()   -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x3FE0000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_denorm_min()    -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(1)),                   detail::nothing() }; }
+    static constexpr auto my_value_infinity()      -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x7FF0000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_quiet_NaN()     -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0xFFF8000000000000)),  detail::nothing() }; }
+    static constexpr auto my_value_signaling_NaN() -> soft_double { return { static_cast<std::uint64_t>(UINT64_C(0x7FF8000000000000)),  detail::nothing() }; }
+
+  private:
+    representation_type my_value;
+
+    static constexpr auto my_le(const soft_double& a, const soft_double& b) -> bool
     {
       return (detail::signF64UI(a.my_value) != detail::signF64UI(b.my_value))
-               ? (detail::signF64UI(a.my_value) || !((a.my_value | b.my_value) & UINT64_C(0x7FFFFFFFFFFFFFFF)))
-               : (a.my_value == b.my_value) || (detail::signF64UI(a.my_value) ^ (a.my_value < b.my_value));
+               ? (detail::signF64UI(a.my_value) ||  (static_cast<std::uint64_t>(a.my_value | b.my_value) & static_cast<std::uint64_t>(UINT64_C(0x7FFFFFFFFFFFFFFF))) == static_cast<std::uint64_t>(UINT8_C(0)))
+               : (a.my_value == b.my_value)     || ((static_cast<unsigned>(detail::signF64UI(a.my_value) ? 1U : 0U) ^ static_cast<unsigned>((a.my_value < b.my_value) ? 1U : 0U)) != 0U);
     }
 
-    static constexpr bool my_lt(const soft_double& a, const soft_double& b)
+    static constexpr auto my_lt(const soft_double& a, const soft_double& b) -> bool
     {
       return (detail::signF64UI(a.my_value) != detail::signF64UI(b.my_value))
-               ? detail::signF64UI(a.my_value) && ((a.my_value | b.my_value) & UINT64_C(0x7FFFFFFFFFFFFFFF))
-               : (a.my_value != b.my_value) && (detail::signF64UI(a.my_value) ^ (a.my_value < b.my_value));
+               ? (detail::signF64UI(a.my_value) &&  (static_cast<std::uint64_t>(a.my_value | b.my_value) & static_cast<std::uint64_t>(UINT64_C(0x7FFFFFFFFFFFFFFF))) != static_cast<std::uint64_t>(UINT8_C(0)))
+               : (a.my_value != b.my_value)     && ((static_cast<unsigned>(detail::signF64UI(a.my_value) ? 1U : 0U) ^ static_cast<unsigned>((a.my_value < b.my_value) ? 1U : 0U)) != 0U);
     }
 
-    static std::uint64_t f64_add(const std::uint64_t a, const std::uint64_t b)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_add(const std::uint64_t a, const std::uint64_t b) -> std::uint64_t
     {
-      const bool signA = detail::signF64UI(a);
-      const bool signB = detail::signF64UI(b);
+      const auto signA = detail::signF64UI(a);
 
-      if(signA == signB)
+      return ((signA == detail::signF64UI(b)) ? softfloat_addMagsF64(a, b, signA)
+                                              : softfloat_subMagsF64(a, b, signA));
+    }
+
+    static SOFT_DOUBLE_CONSTEXPR auto f64_sub(const std::uint64_t a, const std::uint64_t b) -> std::uint64_t
+    {
+      const auto signA = detail::signF64UI(a);
+
+      return ((signA == detail::signF64UI(b)) ? softfloat_subMagsF64(a, b, signA)
+                                              : softfloat_addMagsF64(a, b, signA));
+    }
+
+    static SOFT_DOUBLE_CONSTEXPR auto f64_mul(const std::uint64_t a, const std::uint64_t b) -> std::uint64_t
+    {
+      const auto signA = detail::signF64UI(a);
+      const auto expA  = detail::expF64UI (a);
+            auto sigA  = detail::fracF64UI(a);
+
+      const auto signB = detail::signF64UI(b);
+      const auto expB  = detail::expF64UI (b);
+            auto sigB  = detail::fracF64UI(b);
+
+      const auto signZ =
+        static_cast<unsigned>
+        (
+          static_cast<unsigned>(signA ? 1U : 0U) ^ static_cast<unsigned>(signB ? 1U : 0U)
+        ) != 0U;
+
+      auto result = std::uint64_t { };
+
+      if(    (   (expA == static_cast<std::int16_t> ( INT8_C(0)))
+              && (sigA == static_cast<std::uint64_t>(UINT8_C(0))))
+          || (   (expB == static_cast<std::int16_t> ( INT8_C(0)))
+              && (sigB == static_cast<std::uint64_t>(UINT8_C(0)))))
       {
-        return softfloat_addMagsF64(a, b, signA);
+        result = detail::packToF64UI(signZ, 0, 0);
       }
       else
       {
-        return softfloat_subMagsF64(a, b, signA);
-      }
-    }
+        auto expZ =
+          static_cast<std::int16_t>
+          (
+              static_cast<std::int16_t>(expA + expB)
+            - static_cast<std::int16_t>(INT16_C(0x3FF))
+          );
 
-    static std::uint64_t f64_sub(const std::uint64_t a, const std::uint64_t b)
-    {
-      const bool signA = detail::signF64UI(a);
-      const bool signB = detail::signF64UI(b);
-
-      if(signA == signB)
-      {
-        return softfloat_subMagsF64(a, b, signA);
-      }
-      else
-      {
-        return softfloat_addMagsF64(a, b, signA);
-      }
-    }
-
-    static std::uint64_t f64_mul(const std::uint64_t a, const std::uint64_t b)
-    {
-      const bool          signA = detail::signF64UI(a);
-      const std::int16_t  expA  = detail::expF64UI (a);
-            std::uint64_t sigA  = detail::fracF64UI(a);
-
-      const bool          signB = detail::signF64UI(b);
-      const std::int16_t  expB  = detail::expF64UI (b);
-            std::uint64_t sigB  = detail::fracF64UI(b);
-
-      const bool signZ = signA ^ signB;
-
-      if(((!expA) && (!sigA)) || ((!expB) && (!sigB)))
-      {
-        return detail::packToF64UI(signZ, 0, 0);
-      }
-      else
-      {
-        std::int16_t expZ =  (std::int16_t) ((std::int16_t) (expA + expB) -  (std::int16_t) 0x3FF);
-
-        sigA = (sigA | UINT64_C(0x0010000000000000)) << 10U;
-        sigB = (sigB | UINT64_C(0x0010000000000000)) << 11U;
-
+        sigA = static_cast<std::uint64_t>(static_cast<std::uint64_t>(sigA | static_cast<std::uint64_t>(UINT64_C(0x0010000000000000))) << 10U);
+        sigB = static_cast<std::uint64_t>(static_cast<std::uint64_t>(sigB | static_cast<std::uint64_t>(UINT64_C(0x0010000000000000))) << 11U);
 
         // Compute the 128-bit product of sigA and sigB.
 
-        const std::uint32_t a32 = (std::uint32_t) (sigA >> 32U);
-        const std::uint32_t a0  = (std::uint32_t)  sigA;
-        const std::uint32_t b32 = (std::uint32_t) (sigB >> 32U);
-        const std::uint32_t b0  = (std::uint32_t)  sigB;
+        const auto a32 = static_cast<std::uint32_t>(sigA >> 32U);
+        const auto a0  = static_cast<std::uint32_t>(sigA);
+        const auto b32 = static_cast<std::uint32_t>(sigB >> 32U);
+        const auto b0  = static_cast<std::uint32_t>(sigB);
 
-        struct detail::uint128_as_struct sig128Z;
+        struct detail::uint128_as_struct sig128Z { };
 
-        sig128Z.v0 = ((std::uint64_t) a0) * b0;
+        sig128Z.v0 = static_cast<std::uint64_t>(static_cast<std::uint64_t>(a0) * b0);
 
-        std::uint64_t mid1 =                    ((std::uint64_t) a32) * b0;
-        std::uint64_t mid  = mid1 + (std::uint64_t) (((std::uint64_t) b32) * a0);
+        auto mid1 = static_cast<std::uint64_t>(                                  (static_cast<std::uint64_t>(a32)) * b0);
+        auto mid  = static_cast<std::uint64_t>(mid1 + static_cast<std::uint64_t>((static_cast<std::uint64_t>(b32)) * a0));
 
-        sig128Z.v64  = ((std::uint64_t) a32) * b32;
-        sig128Z.v64 += ((std::uint64_t) (mid < mid1) << 32U) | (std::uint32_t) (mid >> 32U);
+        sig128Z.v64  = static_cast<std::uint64_t> (static_cast<std::uint64_t>(a32) * b32);
+        sig128Z.v64 += static_cast<std::uint64_t>((static_cast<std::uint64_t>(mid < mid1) << 32U) | static_cast<std::uint32_t>(mid >> 32U));
 
         mid <<= 32U;
 
         sig128Z.v0  += mid;
-        sig128Z.v64 += (sig128Z.v0 < mid);
+        sig128Z.v64 += static_cast<unsigned>(sig128Z.v0 < mid ? 1U : 0U);
 
         if(sig128Z.v0 != 0U)
         {
           sig128Z.v64 |= 1U;
         }
 
-        if(sig128Z.v64 < UINT64_C(0x4000000000000000))
+        if(sig128Z.v64 < static_cast<std::uint64_t>(UINT64_C(0x4000000000000000)))
         {
           --expZ;
 
           sig128Z.v64 <<= 1U;
         }
 
-        return softfloat_roundPackToF64(signZ, expZ, sig128Z.v64);
+        result = softfloat_roundPackToF64(signZ, expZ, sig128Z.v64);
       }
+
+      return result;
     }
 
-    static std::uint64_t f64_div(const std::uint64_t a, const std::uint64_t b)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_div(const std::uint64_t a, const std::uint64_t b) -> std::uint64_t
     {
-      const bool          signA = detail::signF64UI(a);
-            std::int16_t  expA  = detail::expF64UI (a);
-            std::uint64_t sigA  = detail::fracF64UI(a);
+      const auto signA = detail::signF64UI(a);
+            auto expA  = detail::expF64UI (a);
+            auto sigA  = detail::fracF64UI(a);
 
-      const bool          signB = detail::signF64UI(b);
-            std::int16_t  expB  = detail::expF64UI (b);
-            std::uint64_t sigB  = detail::fracF64UI(b);
+      const auto signB = detail::signF64UI(b);
+            auto expB  = detail::expF64UI (b);
+            auto sigB  = detail::fracF64UI(b);
 
       const bool signZ = signA ^ signB;
 
-      if((!expA) && (!sigA))
+      auto result = std::uint64_t { };
+
+      const auto a_is_zero = (   (expA == static_cast<std::int16_t> ( INT8_C(0)))
+                              && (sigA == static_cast<std::uint64_t>(UINT8_C(0))));
+
+      if(a_is_zero)
       {
-        return detail::packToF64UI(signZ, 0, 0);
+        result = detail::packToF64UI(signZ, 0, 0);
       }
       else
       {
-        std::int16_t expZ =   (std::int16_t) ((std::int16_t) (expA - expB) +  (std::int16_t) 0x3FE);
+        auto expZ =
+          static_cast<std::int16_t>
+          (
+            static_cast<std::int16_t>(expA - expB) + static_cast<std::int16_t>(INT16_C(0x3FE))
+          );
 
-        sigA |= UINT64_C(0x0010000000000000);
-        sigB |= UINT64_C(0x0010000000000000);
+        sigA |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
+        sigB |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
 
         if(sigA < sigB)
         {
@@ -693,72 +797,123 @@
 
         sigB <<= 11U;
 
-        const std::uint32_t recip32 = detail::softfloat_approxRecip32_1((uint32_t) (sigB >> 32U)) - 2U;
-        const std::uint32_t sig32Z  = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (sigA >> 32U) * (std::uint64_t) recip32) >> 32U);
+        const auto recip32 = static_cast<std::uint32_t>(detail::softfloat_approxRecip32_1(static_cast<std::uint32_t>(sigB >> 32U)) - 2U);
+        const auto sig32Z  = static_cast<std::uint32_t>(static_cast<std::uint64_t>(static_cast<std::uint32_t>(sigA >> 32U) * static_cast<std::uint64_t>(recip32)) >> 32U);
 
-        std::uint32_t doubleTerm = sig32Z << 1U;
+        auto doubleTerm = static_cast<std::uint32_t>(sig32Z << 1U);
 
-        std::uint64_t rem =   ((sigA - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
-                                - (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
+        auto rem =
+          static_cast<std::uint64_t>
+          (
+            static_cast<std::uint64_t>
+            (
+              (sigA - static_cast<std::uint64_t>(static_cast<std::uint64_t>(doubleTerm) * static_cast<std::uint32_t>(sigB >> 32U))) << 28U
+            )
+          - static_cast<std::uint64_t>
+            (
+              static_cast<std::uint64_t>(doubleTerm) * static_cast<std::uint32_t>(static_cast<std::uint32_t>(sigB) >> 4U)
+            )
+          );
 
-        std::uint32_t q = (std::uint32_t) ((std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 32U) * (std::uint64_t) recip32) >> 32U) + 4U);
+        auto q =
+          static_cast<std::uint32_t>
+          (
+              static_cast<std::uint32_t>
+              (
+                   static_cast<std::uint64_t>(static_cast<std::uint32_t>(rem >> 32U) * static_cast<std::uint64_t>(recip32))
+                >> 32U
+              )
+            + 4U
+          );
 
-        std::uint64_t sigZ = ((std::uint64_t) sig32Z << 32U) + ((std::uint64_t) q << 4U);
+        auto sigZ =
+          static_cast<std::uint64_t>
+          (
+              static_cast<std::uint64_t>(static_cast<std::uint64_t>(sig32Z) << 32U)
+            + static_cast<std::uint64_t>(static_cast<std::uint64_t>(q)      <<  4U)
+          );
 
-        if((sigZ & 0x1FF) < (4UL << 4U))
+        if(static_cast<std::uint_fast16_t>(sigZ & 0x1FFU) < static_cast<std::uint_fast16_t>(4UL << 4U))
         {
-          q    &=  (std::uint32_t) ~7U;
-          sigZ &= ~(std::uint64_t) 0x7F;
+          q    &= static_cast<std::uint32_t>(~static_cast<std::uint32_t>(UINT8_C(7)));
+          sigZ &= static_cast<std::uint64_t>(~static_cast<std::uint64_t>(UINT8_C(0x7F)));
 
-          doubleTerm = q << 1U;
+          doubleTerm = static_cast<std::uint32_t>(q << 1U);
 
-          rem =   ((rem - (std::uint64_t) doubleTerm *  (std::uint32_t) (sigB >> 32U)) << 28U)
-                -         (std::uint64_t) doubleTerm * ((std::uint32_t)  sigB >> 4U);
+          rem =
+            static_cast<std::uint64_t>
+            (
+                static_cast<std::uint64_t>
+                (
+                  static_cast<std::uint64_t>
+                  (
+                    rem - static_cast<std::uint64_t>(static_cast<std::uint64_t>(doubleTerm) * static_cast<std::uint32_t>(sigB >> 32U))
+                  ) << 28U
+                )
+              - static_cast<std::uint64_t>
+                (
+                  static_cast<std::uint64_t>(doubleTerm) * static_cast<std::uint32_t>(static_cast<std::uint32_t>(sigB) >> 4U)
+                )
+            );
 
-          if(rem & UINT64_C(0x8000000000000000))
+          const auto rem_hi_bit_is_set = (static_cast<unsigned>(rem >> 63U) != static_cast<unsigned>(UINT8_C(0)));
+
+          if(rem_hi_bit_is_set)
           {
-            sigZ -= (1UL << 7U);
+            sigZ = static_cast<std::uint64_t>(sigZ - static_cast<std::uint_fast8_t>(1UL << 7U));
           }
           else
           {
-            if(rem)
+            if(rem != static_cast<std::uint64_t>(UINT8_C(0)))
             {
-              sigZ |= 1U;
+              sigZ = static_cast<std::uint64_t>(sigZ | static_cast<std::uint_fast8_t>(UINT8_C(1)));
             }
           }
         }
 
-        return softfloat_roundPackToF64(signZ, expZ, sigZ);
+        result = softfloat_roundPackToF64(signZ, expZ, sigZ);
       }
+
+      return result;
     }
 
-    static std::uint64_t f64_sqrt(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_sqrt(const std::uint64_t a) -> std::uint64_t
     {
-      bool          signA = detail::signF64UI(a);
-      std::int16_t  expA  = detail::expF64UI (a);
-      std::uint64_t sigA  = detail::fracF64UI(a);
+      auto expA = detail::expF64UI (a);
+      auto sigA = detail::fracF64UI(a);
 
-      if(((!expA) && (!sigA)) || signA)
+      auto result = std::uint64_t { };
+
+      if(  (   (expA == static_cast<std::int16_t> ( INT8_C(0)))
+            && (sigA == static_cast<std::uint64_t>(UINT8_C(0))))
+         || detail::signF64UI(a))
       {
-        return a;
+        result = a;
       }
       else
       {
-        /*------------------------------------------------------------------------
-        | (`sig32Z' is guaranteed to be a lower bound on the square root of
-        | `sig32A', which makes `sig32Z' also a lower bound on the square root of
-        | `sigA'.)
-        *------------------------------------------------------------------------*/
-        const std::int16_t expZ = (std::int16_t) ((std::int16_t) ((std::int16_t) (expA - 0x3FF) >> 1) + (std::int16_t) 0x3FE);
+        // sig32Z is guaranteed to be a lower bound on the square root
+        // of sig32A, which makes sig32Z also a lower bound on the
+        // square root of sigA.
 
-        expA &= 1;
-        sigA |= UINT64_C(0x0010000000000000);
+        const auto expZ =
+          static_cast<std::int16_t>
+          (
+              static_cast<std::int16_t>(static_cast<std::int16_t>(expA - static_cast<std::int16_t>(INT16_C(0x3FF))) >> 1U) // NOLINT(hicpp-signed-bitwise)
+            + static_cast<std::int16_t>(INT16_C(0x3FE))
+          );
 
-        std::uint32_t sig32A      = (std::uint32_t) (sigA >> 21U);
-        std::uint32_t recipSqrt32 = softfloat_approxRecipSqrt32_1((std::uint32_t) expA, sig32A);
-        std::uint32_t sig32Z      = (std::uint32_t) ((std::uint64_t) ((std::uint64_t) sig32A * recipSqrt32) >> 32U);
+        expA = static_cast<std::int16_t>(expA & static_cast<std::int16_t>(INT8_C(1))); // NOLINT(hicpp-signed-bitwise)
+        sigA = static_cast<std::uint64_t>(sigA | static_cast<std::uint64_t>(UINT64_C(0x0010000000000000)));
 
-        if(expA != 0)
+        const auto sig32A      = static_cast<std::uint32_t>(sigA >> 21U);
+              auto recipSqrt32 = softfloat_approxRecipSqrt32_1(static_cast<std::uint32_t>(expA), sig32A);
+              auto sig32Z      = static_cast<std::uint32_t>
+                                 (
+                                   static_cast<std::uint64_t>(static_cast<std::uint64_t>(sig32A) * recipSqrt32) >> 32U
+                                 );
+
+        if(expA != static_cast<std::int16_t>(INT8_C(0)))
         {
           sigA   <<= 8U;
           sig32Z >>= 1U;
@@ -768,301 +923,465 @@
           sigA <<= 9U;
         }
 
-              std::uint64_t rem = sigA - (std::uint64_t) sig32Z * sig32Z;
-        const std::uint32_t q   = (std::uint32_t) ((std::uint64_t) ((std::uint32_t) (rem >> 2U) * (std::uint64_t) recipSqrt32) >> 32U);
+              auto rem = static_cast<std::uint64_t>(sigA - static_cast<std::uint64_t>(static_cast<std::uint64_t>(sig32Z) * sig32Z));
+        const auto q   = static_cast<std::uint32_t>
+                         (
+                           static_cast<std::uint64_t>
+                           (
+                             static_cast<std::uint32_t>(rem >> 2U) * static_cast<std::uint64_t>(recipSqrt32)
+                           ) >> 32U
+                         );
 
-        std::uint64_t sigZ = (std::uint64_t) (((std::uint64_t) sig32Z << 32U | (1UL << 5U)) + ((std::uint64_t) q << 3U));
+        auto sigZ =
+          static_cast<std::uint64_t>
+          (
+              static_cast<std::uint64_t>
+              (
+                  static_cast<std::uint64_t>(static_cast<std::uint64_t>(sig32Z) << 32U)
+                | static_cast<std::uint_fast8_t>(1UL << 5U)
+              )
+            + static_cast<std::uint64_t>((static_cast<std::uint64_t>(q) << 3U))
+          );
 
-        if((sigZ & 0x1FFU) < 0x22U)
+        const auto sig_z_is_small =
+          (static_cast<std::uint_fast16_t>(sigZ & static_cast<std::uint_fast16_t>(UINT16_C(0x1FF))) < static_cast<std::uint_fast16_t>(UINT16_C(0x22)));
+
+        if(sig_z_is_small)
         {
-          sigZ &= ~(std::uint64_t) 0x3FU;
+          sigZ &= static_cast<std::uint64_t>(~static_cast<std::uint64_t>(UINT8_C(0x3F)));
 
-          const std::uint64_t shiftedSigZ = sigZ >> 6U;
+          const auto shiftedSigZ = static_cast<std::uint64_t>(sigZ >> 6U);
 
-          rem = (sigA << 52U) - shiftedSigZ * shiftedSigZ;
+          rem =
+            static_cast<std::uint64_t>
+            (
+                static_cast<std::uint64_t>(sigA << 52U)
+              - static_cast<std::uint64_t>(shiftedSigZ * shiftedSigZ)
+            );
 
-          if((std::uint64_t) (rem & UINT64_C(0x8000000000000000)) != 0U)
+          const auto rem_hi_bit_is_set = (static_cast<unsigned>(rem >> 63U) != static_cast<unsigned>(UINT8_C(0)));
+
+          if(rem_hi_bit_is_set)
           {
             --sigZ;
           }
           else
           {
-            if(rem != 0U)
+            if(rem != static_cast<std::uint64_t>(UINT8_C(0)))
             {
               sigZ |= 1U;
             }
           }
         }
 
-        return softfloat_roundPackToF64(0, expZ, sigZ);
+        result = softfloat_roundPackToF64(false, expZ, sigZ);
       }
+
+      return result;
     }
 
-    static std::uint32_t f64_to_ui32(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_to_ui32(const std::uint64_t a) -> std::uint32_t
     {
-      const bool          sign = detail::signF64UI(a);
-      const std::int16_t  expA = detail::expF64UI (a);
-            std::uint64_t sig  = detail::fracF64UI(a);
+      const auto expA = detail::expF64UI (a);
+            auto sig  = detail::fracF64UI(a);
 
-      if(expA)
+      if(expA != static_cast<std::int16_t>(INT8_C(0)))
       {
-        sig |= UINT64_C(0x0010000000000000);
+        sig |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
       }
 
-      const std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x427 - expA);
+      const auto shiftDist = static_cast<std::int16_t>(static_cast<std::int16_t>(INT16_C(0x427)) - expA);
 
-      if(0 < shiftDist)
+      if(static_cast<std::int16_t>(INT16_C(0)) < shiftDist)
       {
-        sig = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) shiftDist);
+        sig = detail::softfloat_shiftRightJam64(sig, static_cast<std::uint_fast16_t>(shiftDist));
       }
 
-      return softfloat_roundToUI32(sign, sig);
+      return softfloat_roundToUI32(detail::signF64UI(a), sig);
     }
 
-    static int32_t f64_to__i32(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_to__i32(std::uint64_t a) -> std::int32_t // NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
     {
-      const bool     sign = detail::signF64UI(a);
-      const std::int16_t  expA = detail::expF64UI (a);
-            std::uint64_t sig  = detail::fracF64UI(a);
+      const auto expA = detail::expF64UI (a);
+            auto sig  = detail::fracF64UI(a);
 
-      if(expA)
+      if(expA != static_cast<std::int16_t>(INT8_C(0)))
       {
-        sig |= UINT64_C(0x0010000000000000);
+        sig |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
       }
 
-      std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x427 - expA);
+      const auto shiftDist = static_cast<std::int16_t>(static_cast<std::int16_t>(INT16_C(0x427)) - expA);
 
-      if(0 < shiftDist)
+      if(static_cast<std::int16_t>(INT16_C(0)) < shiftDist)
       {
-        sig = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) shiftDist);
+        sig = detail::softfloat_shiftRightJam64(sig, static_cast<std::uint_fast16_t>(shiftDist));
       }
 
-      return softfloat_roundToI32(sign, sig);
+      return softfloat_roundToI32(detail::signF64UI(a), sig);
     }
 
-    static std::uint64_t f64_to_ui64(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_to_ui64(std::uint64_t a) -> std::uint64_t
     {
-      const bool          sign = detail::signF64UI(a);
-      const std::int16_t  expA = detail::expF64UI (a);
-            std::uint64_t sig  = detail::fracF64UI(a);
+      const auto expA = detail::expF64UI (a);
+            auto sig  = detail::fracF64UI(a);
 
-      if(expA)
+      if(expA != static_cast<std::int16_t>(INT8_C(0)))
       {
-        sig |= UINT64_C(0x0010000000000000);
+        sig |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
       }
 
-      std::int16_t shiftDist = (std::int16_t) ((std::int16_t) 0x433 - expA);
+      auto shiftDist = static_cast<std::int16_t>(static_cast<std::int16_t>(INT16_C(0x433)) - expA);
 
-      struct detail::uint64_extra sigExtra;
+      struct detail::uint64_extra sigExtra { };
 
-      if(shiftDist <= 0)
+      if(shiftDist <= static_cast<std::int16_t>(INT16_C(0)))
       {
-        if(shiftDist < -11)
+        if(shiftDist < static_cast<std::int16_t>(INT16_C(-11)))
         {
-          shiftDist = -11;
+          shiftDist = static_cast<std::int16_t>(INT16_C(-11));
         }
 
-        sigExtra.v = sig << -shiftDist;
-        sigExtra.extra = 0;
+        sigExtra.v     = static_cast<std::uint64_t>(sig << static_cast<std::uint_fast16_t>(-shiftDist));
+        sigExtra.extra = static_cast<std::uint64_t>(UINT8_C(0));
       }
       else
       {
-        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (std::uint32_t) shiftDist);
+        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, static_cast<std::uint32_t>(shiftDist));
       }
 
-      return softfloat_roundToUI64(sign, sigExtra.v);
+      return softfloat_roundToUI64(detail::signF64UI(a), sigExtra.v);
     }
 
-    static int64_t f64_to__i64(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_to__i64(std::uint64_t a) -> std::int64_t // NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
     {
-      const bool          sign = detail::signF64UI(a);
-      const std::int16_t  expA = detail::expF64UI (a);
-            std::uint64_t sig  = detail::fracF64UI(a);
+      const auto expA = detail::expF64UI (a);
+            auto sig  = detail::fracF64UI(a);
 
-      if(expA)
+      if(expA != static_cast<std::int16_t>(INT8_C(0)))
       {
-        sig |= UINT64_C(0x0010000000000000);
+        sig |= static_cast<std::uint64_t>(UINT64_C(0x0010000000000000));
       }
 
-      std::int16_t shiftDist = (std::int16_t) (INT16_C(0x433) - expA);
+      auto shiftDist = static_cast<std::int16_t>(static_cast<std::int16_t>(INT16_C(0x433)) - expA);
 
-      struct detail::uint64_extra sigExtra;
+      struct detail::uint64_extra sigExtra { };
 
-      if(shiftDist <= 0)
+      if(shiftDist <= static_cast<std::int16_t>(INT16_C(0)))
       {
-        if(shiftDist < -11)
+        if(shiftDist < static_cast<std::int16_t>(INT16_C(-11)))
         {
-          shiftDist = -11;
+          shiftDist = static_cast<std::int16_t>(INT16_C(-11));
         }
 
-        sigExtra.v = sig << -shiftDist;
-        sigExtra.extra = 0;
+        sigExtra.v     = static_cast<std::uint64_t>(sig << static_cast<std::uint_fast16_t>(-shiftDist));
+        sigExtra.extra = static_cast<std::uint64_t>(UINT8_C(0));
       }
       else
       {
-        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, (std::uint32_t) shiftDist);
+        sigExtra = detail::softfloat_shiftRightJam64Extra(sig, 0U, static_cast<std::uint32_t>(shiftDist));
       }
 
-      return softfloat_roundToI64(sign, sigExtra.v);
+      return softfloat_roundToI64(detail::signF64UI(a), sigExtra.v);
     }
 
-    static float f64_to_f32(const std::uint64_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto f64_to_f32(const std::uint64_t a) -> float
     {
-      const bool     sign = detail::signF64UI(a);
-      const std::int16_t  expA = detail::expF64UI (a);
-      const std::uint64_t frac = detail::fracF64UI(a);
-
-      const std::uint32_t frac32 = (std::uint32_t) detail::softfloat_shortShiftRightJam64(frac, 22);
-
-      const float f = softfloat_roundPackToF32(sign, (std::int16_t) (expA - INT16_C(0x381)), frac32 | UINT32_C(0x40000000));
-
-      return f;
+      return
+        softfloat_roundPackToF32
+        (
+          detail::signF64UI(a),
+          static_cast<std::int16_t>(detail::expF64UI(a) - static_cast<std::int16_t>(INT16_C(0x381))),
+          static_cast<std::uint32_t>
+          (
+              static_cast<std::uint32_t>
+              (
+                detail::softfloat_shortShiftRightJam64(detail::fracF64UI(a), static_cast<std::uint_fast16_t>(UINT8_C(22)))
+              )
+            | static_cast<std::uint32_t>(UINT32_C(0x40000000))
+          )
+        );
     }
 
-    static float softfloat_roundPackToF32(bool sign, std::int16_t expA, std::uint32_t sig)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_roundPackToF32(bool sign, std::int16_t expA, std::uint32_t sig) -> float
     {
-      constexpr uint_fast8_t roundIncrement = UINT8_C(0x40);
+      constexpr auto roundIncrement = static_cast<std::uint_fast8_t>(UINT8_C(0x40));
 
-      const uint_fast8_t roundBits = sig & 0x7F;
+      const auto roundBits =
+        static_cast<std::uint_fast8_t>
+        (
+          sig & static_cast<std::uint_fast8_t>(UINT8_C(0x7F))
+        );
 
-      sig = (sig + roundIncrement)>>7;
+      sig = static_cast<std::uint32_t>((sig + roundIncrement) >> 7U);
 
-      sig &= ~(uint_fast32_t) (((roundBits ^ 0x40) == 0U ? 1U : 0U) & 1U);
+      sig =
+        static_cast<std::uint32_t>
+        (
+            sig
+          & static_cast<std::uint32_t>
+            (
+              ~static_cast<std::uint32_t>
+               (
+                   static_cast<std::uint_fast8_t>
+                   (
+                     (static_cast<std::uint_fast8_t>(roundBits ^ static_cast<std::uint_fast8_t>(UINT8_C(0x40))) == static_cast<std::uint_fast8_t>(UINT8_C(0)))
+                       ? static_cast<std::uint_fast8_t>(UINT8_C(1))
+                       : static_cast<std::uint_fast8_t>(UINT8_C(0))
+                   )
+                 & static_cast<std::uint_fast8_t>(UINT8_C(1))
+               )
+            )
+        );
 
-      if(!sig)
+      if(sig == static_cast<std::uint32_t>(UINT8_C(0)))
       {
-        expA = 0;
+        expA = static_cast<std::int16_t>(INT8_C(0));
       }
 
-      return detail::uz_type<float>(detail::packToF32UI(sign, expA, sig)).my_f;
+      return detail::uz_type<float>(detail::packToF32UI(sign, expA, sig)).my_f; // NOLINT(cppcoreguidelines-pro-type-union-access)
     }
 
-    static constexpr std::uint64_t my__i32_to_f64(const int32_t a)
+    static constexpr auto my__i32_to_f64(const std::int32_t a) -> std::uint64_t // NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
     {
       return
-        (!a) ? 0U
-             : detail::packToF64UI((a < 0), 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a)) + 21U)), (std::uint64_t) std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(std::uint32_t((a < 0) ? detail::negate((std::uint32_t) a) : (std::uint32_t) a)) + 21U)));
+        (a == static_cast<std::int32_t>(INT8_C(0)))
+          ? static_cast<std::uint64_t>(UINT8_C(0))
+          : detail::packToF64UI
+            (
+              (a < static_cast<std::int32_t>(INT8_C(0))),
+              static_cast<std::int_fast16_t>
+              (
+                  static_cast<std::int_fast16_t>(INT16_C(0x432))
+                - static_cast<std::int_fast16_t>
+                  (
+                      static_cast<std::uint_fast16_t>
+                      (
+                        detail::softfloat_countLeadingZeros32
+                        (
+                          static_cast<std::uint32_t>
+                          (
+                            (a < static_cast<std::int32_t>(INT8_C(0))) ? detail::negate(static_cast<std::uint32_t>(a))
+                                                                       :                static_cast<std::uint32_t>(a)
+                          )
+                        )
+                      )
+                    + static_cast<std::uint_fast16_t>(UINT16_C(21))
+                  )
+              ),
+              static_cast<std::uint64_t>
+              (
+                   static_cast<std::uint64_t>
+                   (
+                     (a < static_cast<std::int32_t>(INT8_C(0))) ? detail::negate(static_cast<std::uint32_t>(a))
+                                                                :                static_cast<std::uint32_t>(a)
+                   )
+                << static_cast<std::uint_fast16_t>
+                   (
+                       static_cast<std::uint_fast16_t>
+                       (
+                         detail::softfloat_countLeadingZeros32
+                         (
+                           static_cast<std::uint32_t>
+                           (
+                             (a < static_cast<std::int32_t>(INT8_C(0))) ? detail::negate(static_cast<std::uint32_t>(a))
+                                                                        :                static_cast<std::uint32_t>(a)
+                           )
+                         )
+                       )
+                     + static_cast<std::uint_fast16_t>(UINT8_C(21))
+                   )
+              )
+            );
     }
 
-    static constexpr std::uint64_t my__i64_to_f64(const int64_t a)
+    static constexpr auto my__i64_to_f64(const int64_t a) -> std::uint64_t // NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
     {
       return
-        (!((std::uint64_t) a & UINT64_C(0x7FFFFFFFFFFFFFFF)))
-          ? ((a < 0) ? detail::packToF64UI(1, 0x43E, 0) : 0U)
-          : softfloat_normRoundPackToF64((a < 0), 0x43C, std::uint64_t((a < 0) ? detail::negate((std::uint64_t) a) : (std::uint64_t) a));
+        (static_cast<std::uint64_t>(static_cast<std::uint64_t>(a) & static_cast<std::uint64_t>(UINT64_C(0x7FFFFFFFFFFFFFFF))) == static_cast<std::uint64_t>(UINT8_C(0)))
+          ? static_cast<std::uint64_t>
+            (
+              (a < static_cast<std::int64_t>(INT8_C(0)))
+                ? detail::packToF64UI(true, static_cast<std::int16_t>(INT16_C(0x43E)), 0)
+                : static_cast<std::uint64_t>(UINT8_C(0))
+            )
+          : softfloat_normRoundPackToF64
+            (
+              (a < static_cast<std::int64_t>(INT8_C(0))),
+              static_cast<std::int16_t>(INT16_C(0x43C)),
+              static_cast<std::uint64_t>
+              (
+                (a < static_cast<std::int64_t>(INT8_C(0))) ? detail::negate(static_cast<std::uint64_t>(a))
+                                                            :                static_cast<std::uint64_t>(a)
+              )
+            );
     }
 
-    static constexpr std::uint64_t my_ui32_to_f64(const std::uint32_t a)
+    static constexpr auto my_ui32_to_f64(const std::uint32_t a) -> std::uint64_t
     {
       return
-        ((a == 0U)
-          ? 0U
-          : detail::packToF64UI(0, 0x432 - int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U)), ((std::uint64_t) a) << int_fast8_t((int_fast8_t) (detail::softfloat_countLeadingZeros32(a) + 21U))));
+        (a == static_cast<std::uint32_t>(UINT8_C(0)))
+          ? static_cast<std::uint64_t>(UINT8_C(0))
+          : detail::packToF64UI
+            (
+              false,
+              static_cast<std::int_fast16_t>
+              (
+                  static_cast<std::int_fast16_t>(INT16_C(0x432))
+                - static_cast<std::int_fast16_t>
+                  (
+                      static_cast<std::uint_fast16_t>(detail::softfloat_countLeadingZeros32(a))
+                    + static_cast<std::uint_fast16_t>(UINT8_C(21))
+                  )
+              ),
+              static_cast<std::uint64_t>
+              (
+                    static_cast<std::uint64_t>(a)
+                << static_cast<std::uint_fast16_t>
+                    (
+                        static_cast<std::uint_fast16_t>(detail::softfloat_countLeadingZeros32(a))
+                      + static_cast<std::uint_fast16_t>(UINT8_C(21))
+                    )
+              )
+            );
     }
 
-    static constexpr std::uint64_t my_ui64_to_f64(const std::uint64_t a)
+    static constexpr auto my_ui64_to_f64(const std::uint64_t a) -> std::uint64_t
     {
-      return (!a) ? (std::uint64_t) 0U
-                  : (a & UINT64_C(0x8000000000000000)) ? softfloat_roundPackToF64(0, 0x43D, detail::softfloat_shortShiftRightJam64(a, 1))
-                                                       : softfloat_normRoundPackToF64(0, 0x43C, a);
+      return
+        (a == static_cast<std::uint64_t>(UINT8_C(0)))
+          ? static_cast<std::uint64_t>(UINT8_C(0))
+          : (static_cast<std::uint64_t>(a & static_cast<std::uint64_t>(UINT64_C(0x8000000000000000))) != static_cast<std::uint64_t>(UINT8_C(0)))
+              ? softfloat_roundPackToF64    (false, static_cast<std::int16_t>(INT16_C(0x43D)), detail::softfloat_shortShiftRightJam64(a, static_cast<std::uint_fast16_t>(UINT8_C(1))))
+              : softfloat_normRoundPackToF64(false, static_cast<std::int16_t>(INT16_C(0x43C)), a);
     }
 
-    static constexpr int32_t softfloat_roundToI32(bool sign, std::uint64_t sig)
+    static constexpr auto softfloat_roundToI32(bool sign, std::uint64_t sig) -> std::int32_t
     {
-      return (int32_t) ((std::uint32_t) (sign ? detail::negate((std::uint32_t) (sig >> 12U)) : (std::uint32_t) (sig >> 12U)));
+      return
+        static_cast<std::int32_t>
+        (
+          static_cast<std::uint32_t>
+          (
+            sign ? detail::negate(static_cast<std::uint32_t>(sig >> 12U))
+                 :                static_cast<std::uint32_t>(sig >> 12U)
+          )
+        );
     }
 
-    static constexpr int64_t softfloat_roundToI64(bool sign, std::uint64_t sig)
+    static constexpr auto softfloat_roundToI64(bool sign, std::uint64_t sig) -> std::int64_t
     {
-      return (int64_t) ((std::uint64_t) (sign ? detail::negate(sig) : sig));
+      return
+        static_cast<std::int64_t>
+        (
+          static_cast<std::uint64_t>(sign ? detail::negate(sig) : sig)
+        );
     }
 
-    static constexpr std::uint32_t softfloat_roundToUI32(bool sign, std::uint64_t sig)
+    static constexpr auto softfloat_roundToUI32(bool sign, std::uint64_t sig) -> std::uint32_t
     {
-      return ((sign) && (sig == 0U)) ? 0U : (std::uint32_t) (sig >> 12);
+      return
+        static_cast<std::uint32_t>
+        (
+          (sign && (sig == static_cast<std::uint64_t>(UINT8_C(0))))
+            ? static_cast<std::uint32_t>(UINT8_C(0))
+            : static_cast<std::uint32_t>(sig >> 12U)
+        );
     }
 
-    static constexpr std::uint64_t softfloat_roundToUI64(bool sign, std::uint64_t sig)
+    static constexpr auto softfloat_roundToUI64(bool sign, std::uint64_t sig) -> std::uint64_t
     {
-      return ((sign) && (sig == 0U)) ? 0U : sig;
+      return
+        static_cast<std::uint64_t>
+        (
+          (sign && (sig == static_cast<std::uint64_t>(UINT8_C(0))))
+            ? static_cast<std::uint64_t>(UINT8_C(0))
+            : sig
+        );
     }
 
-    static std::uint64_t softfloat_addMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_addMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ) -> std::uint64_t
     {
-      const std::int16_t  expA = detail::expF64UI (uiA);
-            std::uint64_t sigA = detail::fracF64UI(uiA);
-      const std::int16_t  expB = detail::expF64UI (uiB);
-            std::uint64_t sigB = detail::fracF64UI(uiB);
+      const auto expA = detail::expF64UI (uiA);
+            auto sigA = detail::fracF64UI(uiA);
+      const auto expB = detail::expF64UI (uiB);
+            auto sigB = detail::fracF64UI(uiB);
 
-      const std::int16_t expDiff = (std::int16_t) (expA - expB);
+      const auto expDiff = static_cast<std::int16_t>(expA - expB);
 
-      std::int16_t  expZ;
-      std::uint64_t sigZ;
+      std::int16_t  expZ { };
+      std::uint64_t sigZ { };
 
-      if(expDiff == 0)
+      if(expDiff == static_cast<std::int16_t>(INT8_C(0)))
       {
         expZ = expA;
-        sigZ = (std::uint64_t) (UINT64_C(0x0020000000000000) + sigA) + sigB;
-        sigZ <<= 9U;
+        sigZ = static_cast<std::uint64_t>
+               (
+                 static_cast<std::uint64_t>
+                 (
+                     static_cast<std::uint64_t>(sigA + static_cast<std::uint64_t>(UINT64_C(0x0020000000000000)))
+                   + sigB
+                 )
+                 << 9U
+               );
       }
       else
       {
-        sigA <<= 9U;
-        sigB <<= 9U;
+        sigA = static_cast<std::uint64_t>(sigA << 9U);
+        sigB = static_cast<std::uint64_t>(sigB << 9U);
 
-        if(expDiff < 0)
+        if(expDiff < static_cast<std::int16_t>(INT8_C(0)))
         {
           expZ = expB;
 
-          if(expA)
+          if(expA != static_cast<std::int16_t>(INT8_C(0)))
           {
-            sigA += UINT64_C(0x2000000000000000);
+            sigA = static_cast<std::uint64_t>(sigA + static_cast<std::uint64_t>(UINT64_C(0x2000000000000000)));
           }
           else
           {
-            sigA <<= 1;
+            sigA = static_cast<std::uint64_t>(sigA << 1U);
           }
 
-          sigA = detail::softfloat_shiftRightJam64(sigA, (std::uint32_t) (-expDiff));
+          sigA = detail::softfloat_shiftRightJam64(sigA, static_cast<std::uint_fast16_t>(-expDiff));
         }
         else
         {
           expZ = expA;
 
-          if(expB)
+          if(expB != static_cast<std::int16_t>(INT8_C(0)))
           {
-            sigB += UINT64_C(0x2000000000000000);
+            sigB = static_cast<std::uint64_t>(sigB + static_cast<std::uint64_t>(UINT64_C(0x2000000000000000)));
           }
           else
           {
-            sigB <<= 1U;
+            sigB = static_cast<std::uint64_t>(sigB << 1U);
           }
 
-          sigB = detail::softfloat_shiftRightJam64(sigB, (std::uint32_t) expDiff);
+          sigB = detail::softfloat_shiftRightJam64(sigB, static_cast<std::uint_fast16_t>(expDiff));
         }
 
-        sigZ = (std::uint64_t) (UINT64_C(0x2000000000000000) + sigA) + sigB;
+        sigZ = static_cast<std::uint64_t>(static_cast<std::uint64_t>(sigA + static_cast<std::uint64_t>(UINT64_C(0x2000000000000000))) + sigB);
 
-        if(sigZ < UINT64_C(0x4000000000000000))
+        if(sigZ < static_cast<std::uint64_t>(UINT64_C(0x4000000000000000)))
         {
           --expZ;
 
-          sigZ <<= 1U;
+          sigZ = static_cast<std::uint64_t>(sigZ << 1U);
         }
       }
 
       return softfloat_roundPackToF64(signZ, expZ, sigZ);
     }
 
-    /*----------------------------------------------------------------------------
-    | Returns an approximation to the reciprocal of the square root of the number
-    | represented by 'a', where 'a' is interpreted as an unsigned fixed-point
-    | number either with one integer bit and 31 fraction bits or with two integer
-    | bits and 30 fraction bits.
-    *----------------------------------------------------------------------------*/
-    static std::uint32_t softfloat_approxRecipSqrt32_1(std::uint32_t oddExpA, std::uint32_t a)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_approxRecipSqrt32_1(std::uint32_t oddExpA, std::uint32_t a) -> std::uint32_t
     {
-      constexpr std::array<std::uint16_t, 16U> softfloat_approxRecipSqrt_1k0s =
+      // Returns an approximation to the reciprocal of the square root of the number
+      // represented by a, where a is interpreted as an unsigned fixed-point
+      // number either with one integer bit and 31 fraction bits or with two integer
+      // bits and 30 fraction bits.
+      using softfloat_approx_recip_sqrt_array_type = std::array<std::uint16_t, 16U>;
+
+      constexpr softfloat_approx_recip_sqrt_array_type softfloat_approxRecipSqrt_1k0s =
       {{
         UINT16_C(0xB4C9), UINT16_C(0xFFAB), UINT16_C(0xAA7D), UINT16_C(0xF11C),
         UINT16_C(0xA1C5), UINT16_C(0xE4C7), UINT16_C(0x9A43), UINT16_C(0xDA29),
@@ -1070,7 +1389,7 @@
         UINT16_C(0x88C6), UINT16_C(0xC16D), UINT16_C(0x8424), UINT16_C(0xBAE1)
       }};
 
-      constexpr std::array<std::uint16_t, 16U> softfloat_approxRecipSqrt_1k1s =
+      constexpr softfloat_approx_recip_sqrt_array_type softfloat_approxRecipSqrt_1k1s =
       {{
         UINT16_C(0xA5A5), UINT16_C(0xEA42), UINT16_C(0x8C21), UINT16_C(0xC62D),
         UINT16_C(0x788F), UINT16_C(0xAA7F), UINT16_C(0x6928), UINT16_C(0x94B6),
@@ -1078,159 +1397,265 @@
         UINT16_C(0x4A3E), UINT16_C(0x68FE), UINT16_C(0x432B), UINT16_C(0x5EFD)
       }};
 
-      std::int16_t index       = (std::int16_t) (((std::uint32_t) (a >> 27U) & 0xEU) + oddExpA);
-      std::uint16_t     eps    = (std::uint16_t) (a >> 12);
-      std::uint16_t     r0     = (std::uint16_t)
-                                 (
-                                                                       softfloat_approxRecipSqrt_1k0s[(std::size_t) index]
-                                   - (std::uint16_t) ((std::uint32_t) (softfloat_approxRecipSqrt_1k1s[(std::size_t) index] * (std::uint32_t) eps) >> 20U)
-                                 );
-      std::uint32_t     ESqrR0 = (std::uint32_t) r0 * r0;
+      const auto index  =
+        static_cast<std::int16_t>
+        (
+            static_cast<std::uint32_t>
+            (
+              static_cast<std::uint32_t>(a >> 27U) & static_cast<std::uint32_t>(UINT8_C(0xE))
+            )
+          + oddExpA
+        );
 
-      if(!oddExpA)
+      auto eps = static_cast<std::uint16_t>(a >> 12U);
+
+      const auto r0 =
+        static_cast<std::uint16_t>
+        (
+            softfloat_approxRecipSqrt_1k0s[static_cast<std::size_t>(index)]
+          - static_cast<std::uint16_t>
+            (
+              static_cast<std::uint32_t>
+              (
+                  softfloat_approxRecipSqrt_1k1s[static_cast<std::size_t>(index)]
+                * static_cast<std::uint32_t>(eps)
+              ) >> 20U
+            )
+        );
+
+      auto ESqrR0 = static_cast<std::uint32_t>(static_cast<std::uint32_t>(r0) * r0);
+
+      if(oddExpA == static_cast<std::uint32_t>(UINT8_C(0)))
       {
         ESqrR0 <<= 1U;
       }
 
-      const std::uint32_t sigma0 = ~(std::uint32_t) (((std::uint32_t) ESqrR0 * (std::uint64_t) a) >> 23U);
+      const auto sigma0 =
+        static_cast<std::uint32_t>
+        (
+          ~static_cast<std::uint32_t>
+           (
+             static_cast<std::uint64_t>(ESqrR0 * static_cast<std::uint64_t>(a)) >> 23U
+           )
+        );
 
-      std::uint32_t r = (((std::uint32_t) r0) << 16U) + (std::uint32_t) ((r0 * (std::uint64_t) sigma0) >> 25U);
+      auto r =
+        static_cast<std::uint32_t>
+        (
+            static_cast<std::uint32_t>(static_cast<std::uint32_t>(r0) << 16U)
+          + static_cast<std::uint32_t>(static_cast<std::uint64_t>(r0 * static_cast<std::uint64_t>(sigma0)) >> 25U)
+        );
 
-      const std::uint32_t sqrSigma0 = (std::uint32_t) ((std::uint64_t) ((std::uint64_t) sigma0 * sigma0) >> 32U);
+      r +=
+        static_cast<std::uint32_t>
+        (
+          static_cast<std::uint64_t>
+          (
+              static_cast<std::uint32_t>
+              (
+                  static_cast<std::uint32_t>
+                  (
+                    static_cast<std::uint64_t>(r >> 1U) + static_cast<std::uint32_t>(r >> 3U)
+                  )
+                - static_cast<std::uint32_t>
+                  (
+                    static_cast<std::uint32_t>(r0) << 14U
+                  )
+              )
+            *
+              static_cast<std::uint64_t>
+              (
+                static_cast<std::uint32_t>
+                (
+                  static_cast<std::uint64_t>(static_cast<std::uint64_t>(sigma0) * sigma0) >> 32U
+                )
+              )
+          ) >> 48U
+        );
 
-      r += (std::uint32_t) ((std::uint64_t) ((std::uint32_t) ((std::uint32_t) ((r >> 1U) + (r >> 3U)) - ((std::uint32_t) r0 << 14U)) * (std::uint64_t) sqrSigma0) >> 48U);
-
-      if(!(r & UINT32_C(0x80000000)))
+      if((r & static_cast<std::uint32_t>(UINT32_C(0x80000000))) == static_cast<std::uint32_t>(UINT8_C(0)))
       {
-        r = UINT32_C(0x80000000);
+        r = static_cast<std::uint32_t>(UINT32_C(0x80000000));
       }
 
       return r;
     }
 
-    static std::uint64_t softfloat_normRoundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_normRoundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig) -> std::uint64_t
     {
-      const int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64(sig) - 1U);
+      std::uint64_t result { };
 
-      expA = (std::int16_t) (expA - (std::int16_t) shiftDist);
+      const auto shiftDist =
+        static_cast<std::int_fast8_t>
+        (
+            detail::softfloat_countLeadingZeros64(sig)
+          - static_cast<std::uint_fast8_t>(UINT8_C(1))
+        );
 
-      if((10 <= shiftDist) && ((std::uint32_t) expA < 0x7FDU))
+      expA = static_cast<std::int16_t>(expA - static_cast<std::int16_t>(shiftDist));
+
+      if(   (static_cast<std::int_fast8_t>(INT8_C(10)) <= shiftDist)
+         && (static_cast<std::uint_fast16_t>(expA) < static_cast<std::uint_fast16_t>(UINT16_C(0x7FD))))
       {
-        const std::uint64_t uZ = detail::packToF64UI(sign, sig ? expA : 0, sig << (shiftDist - 10));
-
-        return uZ;
+        result =
+          detail::packToF64UI
+          (
+            sign,
+            static_cast<std::int16_t>(sig != static_cast<std::uint64_t>(UINT8_C(0)) ? expA : static_cast<std::int16_t>(INT8_C(0))),
+            sig << static_cast<unsigned>(shiftDist - static_cast<std::int_fast8_t>(INT8_C(10)))
+          );
       }
       else
       {
-        return softfloat_roundPackToF64(sign, expA, sig << shiftDist);
+        result = softfloat_roundPackToF64(sign, expA, static_cast<std::uint64_t>(sig << static_cast<unsigned>(shiftDist)));
       }
+
+      return result;
     }
 
-    static std::uint64_t softfloat_roundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_roundPackToF64(bool sign, std::int16_t expA, std::uint64_t sig) -> std::uint64_t
     {
-      if(0x7FDU <= (std::uint16_t) expA)
+      if(static_cast<std::uint16_t>(UINT16_C(0x7FD)) <= static_cast<std::uint16_t>(expA))
       {
-        if(expA < 0)
+        if(expA < static_cast<std::int16_t>(INT8_C(0)))
         {
-          sig  = detail::softfloat_shiftRightJam64(sig, (std::uint32_t) -expA);
-          expA = 0;
+          sig  = detail::softfloat_shiftRightJam64(sig, static_cast<std::uint_fast16_t>(-expA));
+          expA = static_cast<std::int16_t>(INT8_C(0));
         }
       }
 
-      const std::uint16_t roundBits = sig & 0x3FFU;
+      const auto roundBits = static_cast<std::uint16_t>(sig & static_cast<std::uint64_t>(UINT16_C(0x3FF)));
 
-      sig = (sig + 0x200U) >> 10U;
+      sig = static_cast<std::uint64_t>(static_cast<std::uint64_t>(sig + 0x200U) >> 10U);
 
-      sig &= (std::uint64_t) (~(std::uint64_t) (((roundBits ^ 0x200U) == 0U ? 1U : 0U) & 1U));
+      sig =
+        static_cast<std::uint64_t>
+        (
+            sig
+          & static_cast<std::uint64_t>
+            (
+              ~static_cast<std::uint64_t>
+               (
+                 (static_cast<std::uint16_t>(roundBits ^ static_cast<std::uint16_t>(UINT16_C(0x200))) == static_cast<std::uint16_t>(UINT8_C(0)))
+                   ? static_cast<unsigned>(UINT8_C(1))
+                   : static_cast<unsigned>(UINT8_C(0))
+               )
+            )
+        );
 
-      if(!sig)
+      if(sig == static_cast<std::uint64_t>(UINT8_C(0)))
       {
-        expA = 0;
+        expA = static_cast<std::int16_t>(INT8_C(0));
       }
 
-      const std::uint64_t uiZ = detail::packToF64UI(sign, expA, sig);
-
-      return uiZ;
+      return detail::packToF64UI(sign, expA, sig);
     }
 
-    static std::uint64_t softfloat_subMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ)
+    static SOFT_DOUBLE_CONSTEXPR auto softfloat_subMagsF64(std::uint64_t uiA, std::uint64_t uiB, bool signZ) -> std::uint64_t
     {
-      std::uint64_t uiZ;
-      std::int16_t  expZ;
+      std::uint64_t uiZ { };
+      std::int16_t  expZ { };
 
-      std::int16_t  expA = detail::expF64UI(uiA);
-      std::uint64_t sigA = detail::fracF64UI(uiA);
-      std::int16_t  expB = detail::expF64UI(uiB);
-      std::uint64_t sigB = detail::fracF64UI(uiB);
+      auto expA = detail::expF64UI (uiA);
+      auto sigA = detail::fracF64UI(uiA);
+      auto expB = detail::expF64UI (uiB);
+      auto sigB = detail::fracF64UI(uiB);
 
-      const std::int16_t expDiff = (std::int16_t) (expA - expB);
+      const auto expDiff = static_cast<std::int16_t>(expA - expB);
 
-      if(!expDiff)
+      if(expDiff == static_cast<std::int16_t>(INT8_C(0)))
       {
-        int64_t sigDiff = (int64_t) (sigA - sigB);
+        auto sigDiff = static_cast<std::int64_t>(sigA - sigB);
 
-        if(!sigDiff)
+        if(sigDiff == static_cast<std::int64_t>(INT8_C(0)))
         {
           uiZ = detail::packToF64UI(false, 0, 0);
         }
         else
         {
-          if(expA)
+          if(expA != static_cast<std::int16_t>(INT8_C(0)))
           {
             --expA;
           }
 
-          if(sigDiff < 0)
+          if(sigDiff < static_cast<std::int64_t>(INT8_C(0)))
           {
             signZ   = (!signZ);
             sigDiff = -sigDiff;
           }
 
-          int_fast8_t shiftDist = (int_fast8_t) (detail::softfloat_countLeadingZeros64((std::uint64_t) sigDiff) - 11U);
+          auto shiftDist =
+            static_cast<std::int_fast8_t>
+            (
+                detail::softfloat_countLeadingZeros64(static_cast<std::uint64_t>(sigDiff))
+              - static_cast<std::uint_fast8_t>(UINT8_C(11))
+            );
 
-          expZ = (std::int16_t) (expA - shiftDist);
+          expZ = static_cast<std::int16_t>(expA - static_cast<std::int16_t>(shiftDist));
 
-          if(expZ < 0)
+          if(expZ < static_cast<std::int16_t>(INT8_C(0)))
           {
-            shiftDist = (int_fast8_t) expA;
+            shiftDist = static_cast<std::int_fast8_t>(expA);
 
-            expZ = 0;
+            expZ = static_cast<std::int16_t>(INT8_C(0));
           }
 
-          uiZ = detail::packToF64UI(signZ, expZ, sigDiff << shiftDist);
+          uiZ = detail::packToF64UI(signZ, expZ, sigDiff << shiftDist); // NOLINT(hicpp-signed-bitwise)
         }
       }
       else
       {
-        sigA <<= 10U;
-        sigB <<= 10U;
+        sigA = static_cast<std::uint64_t>(sigA << 10U);
+        sigB = static_cast<std::uint64_t>(sigB << 10U);
 
-        std::uint64_t sigZ;
+        auto sigZ = std::uint64_t { };
 
-        if(expDiff < 0)
+        if(expDiff < static_cast<std::int16_t>(INT8_C(0)))
         {
           signZ = (!signZ);
 
-          sigA += ((expA != 0) ? UINT64_C(0x4000000000000000) : sigA);
-          sigA  = detail::softfloat_shiftRightJam64(sigA, (std::uint32_t) -expDiff);
+          sigA =
+            static_cast<std::uint64_t>
+            (
+                sigA
+              + static_cast<std::uint64_t>
+                (
+                  (expA != static_cast<std::int16_t>(INT8_C(0)))
+                    ? static_cast<std::uint64_t>(UINT64_C(0x4000000000000000))
+                    : sigA
+                )
+            );
 
-          sigB |= UINT64_C(0x4000000000000000);
+          sigA = detail::softfloat_shiftRightJam64(sigA, static_cast<std::uint_fast16_t>(-expDiff));
+
+          sigB = static_cast<std::uint64_t>(sigB | static_cast<std::uint64_t>(UINT64_C(0x4000000000000000)));
 
           expZ = expB;
-          sigZ = sigB - sigA;
+          sigZ = static_cast<std::uint64_t>(sigB - sigA);
         }
         else
         {
-          sigB += ((expB != 0) ? UINT64_C(0x4000000000000000) : sigB);
-          sigB  = detail::softfloat_shiftRightJam64(sigB, (std::uint32_t) expDiff);
+          sigB =
+            static_cast<std::uint64_t>
+            (
+                sigB
+              + static_cast<std::uint64_t>
+                (
+                  (expB != static_cast<std::int16_t>(INT8_C(0)))
+                    ? static_cast<std::uint64_t>(UINT64_C(0x4000000000000000))
+                    : sigB
+                )
+            );
 
-          sigA |= UINT64_C(0x4000000000000000);
+          sigB = detail::softfloat_shiftRightJam64(sigB, static_cast<std::uint_fast16_t>(expDiff));
+
+          sigA = static_cast<std::uint64_t>(sigA | static_cast<std::uint64_t>(UINT64_C(0x4000000000000000)));
 
           expZ = expA;
-          sigZ = sigA - sigB;
+          sigZ = static_cast<std::uint64_t>(sigA - sigB);
         }
 
-        return softfloat_normRoundPackToF64(signZ, (std::int16_t) (expZ - 1), sigZ);
+        return softfloat_normRoundPackToF64(signZ, static_cast<std::int16_t>(expZ - static_cast<std::int16_t>(INT8_C(1))), sigZ);
       }
 
       return uiZ;
@@ -1238,8 +1663,11 @@
 
     #if !defined(SOFT_DOUBLE_DISABLE_IOSTREAM)
     template<typename char_type, typename traits_type>
-    friend std::basic_ostream<char_type, traits_type>& operator<<(std::basic_ostream<char_type, traits_type>& os, const soft_double& f)
+    friend auto operator<<(std::basic_ostream<char_type, traits_type>& os, const soft_double& f) -> std::basic_ostream<char_type, traits_type>&
     {
+      // Note that this output stream function relies on
+      // the availability of 64-bit native double.
+
       std::basic_ostringstream<char_type, traits_type> ostr;
 
       // Copy all ostream settings from out to local ostr.
@@ -1247,15 +1675,18 @@
       ostr.imbue(os.getloc());
       ostr.precision(os.precision());
 
-      static_cast<void>(ostr << (double) f);
+      static_cast<void>(ostr << static_cast<double>(f));
 
       return (os << ostr.str());
     }
 
     template<typename char_type, typename traits_type>
-    friend std::basic_istream<char_type, traits_type>& operator>>(std::basic_istream<char_type, traits_type>& is, soft_double& f)
+    friend auto operator>>(std::basic_istream<char_type, traits_type>& is, soft_double& f) -> std::basic_istream<char_type, traits_type>&
     {
-      double v;
+      // Note that this input stream function relies on
+      // the availability of 64-bit native double.
+
+      double v { };
 
       // Receive a floating-point number from the input stream.
       static_cast<void>(is >> v);
@@ -1267,180 +1698,50 @@
     }
     #endif // !SOFT_DOUBLE_DISABLE_IOSTREAM
 
-    friend bool isfinite(const soft_double x) { return ((isnan(x) == false) && (isinf(x) == false)); }
-    friend bool isnan   (const soft_double x) { return  (x.my_value == my_value_quiet_NaN().my_value); }
-    friend bool isinf   (const soft_double x) { return ((x.my_value & my_value_infinity().my_value) == my_value_infinity().my_value); }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto isfinite(soft_double x) -> bool { return ((!(isnan)(x)) && (!(isinf)(x))); }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto isnan   (soft_double x) -> bool { return  (x.my_value == my_value_quiet_NaN().my_value); }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto isinf   (soft_double x) -> bool { return ((x.my_value & my_value_infinity().my_value) == my_value_infinity().my_value); }
 
-    friend inline soft_double fabs (const soft_double x) { return soft_double((std::uint64_t) (x.my_value & UINT64_C(0x7FFFFFFFFFFFFFFF)), detail::nothing()); }
-    friend inline soft_double sqrt (const soft_double x) { return soft_double(f64_sqrt(x.my_value), detail::nothing()); }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto fabs (soft_double x) -> soft_double { return { static_cast<std::uint64_t>(x.my_value & static_cast<std::uint64_t>(UINT64_C(0x7FFFFFFFFFFFFFFF))), detail::nothing() }; }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto sqrt (soft_double x) -> soft_double { return { f64_sqrt(x.my_value), detail::nothing() }; }
 
-    friend inline soft_double frexp(const soft_double x, int* expptr)
+    friend inline SOFT_DOUBLE_CONSTEXPR auto frexp(soft_double x, int* expptr) -> soft_double
     {
-      const bool          sign =                 detail::signF64UI(x.my_value);
-      const std::int16_t  expA = (std::int16_t) (detail::expF64UI (x.my_value) - INT16_C(0x3FE));
-      const std::uint64_t frac =                 detail::fracF64UI(x.my_value);
+      const auto expA =
+        static_cast<std::int16_t>
+        (
+          detail::expF64UI(x.my_value) - static_cast<std::int16_t>(INT16_C(0x3FE))
+        );
 
       if(expptr != nullptr)
       {
-        *expptr = (int) expA;
+        *expptr = static_cast<int>(expA);
       }
 
-      return soft_double(detail::packToF64UI(sign, INT16_C(0x3FE), frac), detail::nothing());
+      return
+      {
+        detail::packToF64UI
+        (
+          detail::signF64UI(x.my_value),
+          static_cast<std::int16_t>(INT16_C(0x3FE)),
+          detail::fracF64UI(x.my_value)
+        ),
+        detail::nothing()
+      };
     }
 
-    friend inline soft_double ldexp(const soft_double x, int expval)
-    {
-      const int expA = (int) (detail::expF64UI(x.my_value) + expval);
-
-      return soft_double((std::uint64_t) ((std::uint64_t) (x.my_value & (std::uint64_t) ~(UINT64_C(0x7FF) << 52U)) | (std::uint64_t) expA << 52U), detail::nothing());
-    }
-
-    friend inline soft_double floor(const soft_double x)
-    {
-      soft_double result;
-
-      if(x < 0)
-      {
-        const int64_t     xn = (int64_t) x;
-        const soft_double fn = soft_double(xn);
-
-        const bool is_pure_integer = (fn.my_value == x.my_value);
-
-        result =
-          (is_pure_integer ? fn : soft_double((int64_t) (x - soft_double::my_value_one())));
-      }
-      else
-      {
-        result = soft_double((int64_t)  x);
-      }
-
-      return result;
-    }
-
-    friend inline soft_double ceil(const soft_double x)
-    {
-      soft_double result;
-
-      if(x < 0)
-      {
-        result = soft_double((int64_t)  x);
-      }
-      else
-      {
-        const int64_t     xn = (int64_t) x;
-        const soft_double fn = soft_double(xn);
-
-        const bool is_pure_integer = (fn.my_value == x.my_value);
-
-        result =
-          (is_pure_integer ? fn : soft_double((int64_t) (x + soft_double::my_value_one())));
-      }
-
-      return result;
-    }
-
-    friend inline soft_double exp(const soft_double x)
-    {
-      // PadeApproximant[Exp[x] - 1, {x, 0, {6, 6}}]
-      // FullSimplify[%]
-      //   (84 x (7920 + 240 x^2 + x^4))
-      // / (665280 + x (-332640 + x (75600 + x (-10080 + x (840 + (-42 + x) x)))))
-
-      const int n = (int) (x / soft_double::my_value_ln2());
-
-      // Scale the argument such that Exp[x] = Exp[a + n * ln2].
-      soft_double a = x - (n * soft_double::my_value_ln2());
-
-      // Scale the argument yet again with division by 4.
-      const int expA = (int) (detail::expF64UI(a.my_value) - 2);
-
-      a.my_value &= (std::uint64_t) ~(UINT64_C(0x7FF) << 52U);
-      a.my_value |= (std::uint64_t) expA << 52U;
-
-      const soft_double a2 = a * a;
-
-      // Use the small-argument Pade approximation having coefficients shown above.
-      const soft_double top = (84 * a * (7920 + (240 + a2) * a2));
-      const soft_double bot = (665280 + a * (-332640 + a * (75600 + a * (-10080 + a * (840 + (-42 + a) * a)))));
-
-      soft_double result  = soft_double::my_value_one() + (top / bot);
-
-      result *= result;
-      result *= result;
-
-      return ((n != 0) ? ldexp(result, n) : result);
-    }
-
-    friend inline soft_double log(const soft_double x)
-    {
-      soft_double result;
-
-      if(x < soft_double::my_value_one())
-      {
-        result = -log(soft_double::my_value_one() / x);
-      }
-      else if(x > soft_double::my_value_one())
-      {
-        // See J.F. Hart et al., "Computer Approximations" (Krieger Publishing 1978),
-        // page 111 (with correction) log_e = zP(z^2) / Q(z^2), where the leading 'z'
-        // in the book is incorrect and coefficients are listed in LOGE 2688 on page 194.
-
-        // P00 = -0.9812796124599728774775146E3;
-        // P01 = +0.2098680741193909440902139E4;
-        // P02 = -0.149596980292286125003062E4;
-        // P03 = +0.39599373637329080057224E3;
-        // P04 = -0.2857383397938418121918E2;
-        // Q00 = -0.4906398062299865742258528E3;
-        // Q01 = +0.1212886972673648778600404E4;
-        // Q02 = -0.1054152597775536603834536E4;
-        // Q03 = +0.37689507387121749065832E3;
-        // Q04 = -0.4784212345106557147125E2;
-        // Q05 = +0.1E1;
-
-        // Scale the argument such that 1 <= a < 2.
-        const std::int16_t n = (std::int16_t) (detail::expF64UI(x.my_value) - INT16_C(0x3FF));
-
-        const soft_double a((std::uint64_t) ((std::uint64_t) (x.my_value & (std::uint64_t) ~(UINT64_C(0x7FF) << 52U)) | UINT64_C(0x3FF) << 52U), detail::nothing());
-
-        const soft_double z  = (a - 1) / (a + 1);
-        const soft_double z2 = z * z;
-
-        const soft_double pz2 =  (((((     + soft_double(UINT64_C(0xC03C92E6C89EC9E1), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0x4078BFE6581C8213), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0xC0975FE114047504), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0x40A0655C8A1C19C3), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0xC08EAA3CA575191A), detail::nothing()));
-
-        const soft_double qz2 = ((((((     + soft_double(UINT64_C(0x3FF0000000000000), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0xC047EBCAB384C2B9), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0x40778E5238FAC622), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0xC090789C42975D7D), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0x4092F38C42908712), detail::nothing()))
-                                      * z2 + soft_double(UINT64_C(0xC07EAA3CA575191C), detail::nothing()));
-
-        result  = ((z * pz2) / qz2);
-
-        result += (n * soft_double::my_value_ln2());
-      }
-      else
-      {
-        result = soft_double::my_value_zero();
-      }
-
-      return result;
-    }
-
-    friend inline soft_double pow(const soft_double x, const soft_double a)
-    {
-      return exp(a * log(x));
-    }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto ldexp(soft_double x, int expval) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto floor(soft_double x) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto ceil (soft_double x) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto exp  (soft_double x) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto log  (soft_double x) -> soft_double;
 
     template<typename UnsignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<UnsignedIntegralType>::value == true)
-                                      && (std::is_unsigned<UnsignedIntegralType>::value == true))>::type const*>
-    friend soft_double pow(const soft_double x, const UnsignedIntegralType u)
+             typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
+                                      && std::is_unsigned<UnsignedIntegralType>::value)>::type const*>
+    friend SOFT_DOUBLE_CONSTEXPR auto pow(soft_double x, UnsignedIntegralType u) -> soft_double
     {
-      soft_double result;
+      soft_double result { };
 
       if     (u == 0U) { result = soft_double::my_value_one(); }
       else if(u == 1U) { result = x; }
@@ -1453,9 +1754,14 @@
 
         floating_point_type y(x);
 
-        for(std::uint32_t p_local = (std::uint32_t) u; p_local != 0U; p_local >>= 1U)
+        for(auto p_local   = static_cast<std::uint32_t>(u);
+                 p_local  != static_cast<std::uint32_t>(UINT8_C(0));
+                 p_local >>= 1U)
         {
-          if((p_local & 1U) != 0U)
+          const auto bit_is_set =
+            (static_cast<std::uint8_t>(p_local & static_cast<std::uint8_t>(UINT8_C(1))) != static_cast<std::uint8_t>(UINT8_C(0)));
+
+          if(bit_is_set)
           {
             result *= y;
           }
@@ -1468,13 +1774,13 @@
     }
 
     template<typename SignedIntegralType,
-             typename std::enable_if<(   (std::is_integral<SignedIntegralType>::value == true)
-                                      && (std::is_signed  <SignedIntegralType>::value == true))>::type const*>
-    friend soft_double pow(const soft_double x, const SignedIntegralType n)
+             typename std::enable_if<(   std::is_integral<SignedIntegralType>::value
+                                      && std::is_signed  <SignedIntegralType>::value)>::type const*>
+    friend SOFT_DOUBLE_CONSTEXPR auto pow(soft_double x, SignedIntegralType n) -> soft_double
     {
-      soft_double result;
+      soft_double result { };
 
-      if     (n <  0) { result = soft_double::my_value_one() / pow(x, (SignedIntegralType) -n); }
+      if     (n <  0) { result = soft_double::my_value_one() / pow(x, static_cast<typename std::make_unsigned<SignedIntegralType>::type>(-n)); }
       else if(n == 0) { result = soft_double::my_value_one(); }
       else if(n == 1) { result = x; }
       else if(n == 2) { result = x * x; }
@@ -1486,9 +1792,14 @@
 
         floating_point_type y(x);
 
-        for(std::uint32_t p_local = (std::uint32_t) n; p_local != 0U; p_local >>= 1U)
+        for(auto p_local   = static_cast<std::uint32_t>(n);
+                 p_local  != static_cast<std::uint32_t>(UINT8_C(0));
+                 p_local >>= 1U)
         {
-          if((p_local & 1U) != 0U)
+          const auto bit_zero_is_set =
+            (static_cast<std::uint8_t>(p_local & static_cast<std::uint8_t>(UINT8_C(1))) != static_cast<std::uint8_t>(UINT8_C(0)));
+
+          if(bit_zero_is_set)
           {
             result *= y;
           }
@@ -1500,146 +1811,179 @@
       return result;
     }
 
-    friend inline soft_double sin(const soft_double x);
-    friend inline soft_double cos(const soft_double x);
-    friend inline soft_double tan(const soft_double x);
+    friend inline SOFT_DOUBLE_CONSTEXPR auto sin(soft_double x) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto cos(soft_double x) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto tan(soft_double x) -> soft_double;
 
-    friend inline soft_double operator+(const soft_double& a, const soft_double& b) { return soft_double(f64_add(a.my_value, b.my_value), detail::nothing()); }
-    friend inline soft_double operator-(const soft_double& a, const soft_double& b) { return soft_double(f64_sub(a.my_value, b.my_value), detail::nothing()); }
-    friend inline soft_double operator*(const soft_double& a, const soft_double& b) { return soft_double(f64_mul(a.my_value, b.my_value), detail::nothing()); }
-    friend inline soft_double operator/(const soft_double& a, const soft_double& b) { return soft_double(f64_div(a.my_value, b.my_value), detail::nothing()); }
+    friend inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& a, const soft_double& b) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& a, const soft_double& b) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& a, const soft_double& b) -> soft_double;
+    friend inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& a, const soft_double& b) -> soft_double;
 
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator+(const soft_double& u, UnsignedIntegralType n) { return soft_double(u) += soft_double(n); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator-(const soft_double& u, UnsignedIntegralType n) { return soft_double(u) -= soft_double(n); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator*(const soft_double& u, UnsignedIntegralType n) { return soft_double(u) *= soft_double(n); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator/(const soft_double& u, UnsignedIntegralType n) { return soft_double(u) /= soft_double(n); }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(u) += soft_double(n); }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(u) -= soft_double(n); }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(u) *= soft_double(n); }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, UnsignedIntegralType n) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(u) /= soft_double(n); }
 
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator+(UnsignedIntegralType n, const soft_double& u) { return soft_double(n) += u; }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator-(UnsignedIntegralType n, const soft_double& u) { return soft_double(n) -= u; }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator*(UnsignedIntegralType n, const soft_double& u) { return soft_double(n) *= u; }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), soft_double>::type operator/(UnsignedIntegralType n, const soft_double& u) { return soft_double(n) /= u; }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator+(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(n) += u; }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator-(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(n) -= u; }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator*(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(n) *= u; }
+    template<typename UnsignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator/(UnsignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, soft_double>::type { return soft_double(n) /= u; }
 
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator+(const soft_double& u, SignedIntegralType n) { return soft_double(u) += soft_double(n); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator-(const soft_double& u, SignedIntegralType n) { return soft_double(u) -= soft_double(n); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator*(const soft_double& u, SignedIntegralType n) { return soft_double(u) *= soft_double(n); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator/(const soft_double& u, SignedIntegralType n) { return soft_double(u) /= soft_double(n); }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(u) += soft_double(n); }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(u) -= soft_double(n); }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(u) *= soft_double(n); }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(u) /= soft_double(n); }
 
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator+(SignedIntegralType n, const soft_double& u) { return soft_double(n) += u; }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator-(SignedIntegralType n, const soft_double& u) { return soft_double(n) -= u; }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator*(SignedIntegralType n, const soft_double& u) { return soft_double(n) *= u; }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), soft_double>::type operator/(SignedIntegralType n, const soft_double& u) { return soft_double(n) /= u; }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator+(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(n) += u; }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator-(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(n) -= u; }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator*(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(n) *= u; }
+    template<typename SignedIntegralType> friend SOFT_DOUBLE_CONSTEXPR auto operator/(SignedIntegralType n, const soft_double& u) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, soft_double>::type { return soft_double(n) /= u; }
 
-    friend inline soft_double operator+(const soft_double& u, float f) { return soft_double(u) += soft_double(f); }
-    friend inline soft_double operator-(const soft_double& u, float f) { return soft_double(u) -= soft_double(f); }
-    friend inline soft_double operator*(const soft_double& u, float f) { return soft_double(u) *= soft_double(f); }
-    friend inline soft_double operator/(const soft_double& u, float f) { return soft_double(u) /= soft_double(f); }
+    friend inline constexpr auto operator< (const soft_double& a, const soft_double& b) -> bool;
+    friend inline constexpr auto operator<=(const soft_double& a, const soft_double& b) -> bool;
+    friend inline constexpr auto operator==(const soft_double& a, const soft_double& b) -> bool;
 
-    friend inline soft_double operator+(float f, const soft_double& u) { return soft_double(f) += u; }
-    friend inline soft_double operator-(float f, const soft_double& u) { return soft_double(f) -= u; }
-    friend inline soft_double operator*(float f, const soft_double& u) { return soft_double(f) *= u; }
-    friend inline soft_double operator/(float f, const soft_double& u) { return soft_double(f) /= u; }
+    template<typename UnsignedIntegralType> friend constexpr auto operator< (const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return soft_double::my_lt(a, soft_double(u)); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator<=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return soft_double::my_le(a, soft_double(u)); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator==(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return  (a.my_value == soft_double(u).my_value); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator!=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(a == soft_double(u))); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator>=(const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(a <  soft_double(u))); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator> (const soft_double& a, UnsignedIntegralType u) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(a <= soft_double(u))); }
 
-    friend inline soft_double operator+(const soft_double& u, double f) { return soft_double(u) += soft_double(f); }
-    friend inline soft_double operator-(const soft_double& u, double f) { return soft_double(u) -= soft_double(f); }
-    friend inline soft_double operator*(const soft_double& u, double f) { return soft_double(u) *= soft_double(f); }
-    friend inline soft_double operator/(const soft_double& u, double f) { return soft_double(u) /= soft_double(f); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator< (UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return soft_double::my_lt(soft_double(u), a); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator<=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return soft_double::my_le(soft_double(u), a); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator==(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return  (soft_double(u).my_value == a.my_value); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator!=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(soft_double(u) == a)); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator>=(UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(soft_double(u) <  a)); }
+    template<typename UnsignedIntegralType> friend constexpr auto operator> (UnsignedIntegralType u, const soft_double& a) -> typename std::enable_if<std::is_integral<UnsignedIntegralType>::value && std::is_unsigned<UnsignedIntegralType>::value, bool>::type { return (!(soft_double(u) <= a)); }
 
-    friend inline soft_double operator+(double f, const soft_double& u) { return soft_double(f) += u; }
-    friend inline soft_double operator-(double f, const soft_double& u) { return soft_double(f) -= u; }
-    friend inline soft_double operator*(double f, const soft_double& u) { return soft_double(f) *= u; }
-    friend inline soft_double operator/(double f, const soft_double& u) { return soft_double(f) /= u; }
+    template<typename SignedIntegralType> friend constexpr auto operator< (const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return soft_double::my_lt(a, soft_double(n)); }
+    template<typename SignedIntegralType> friend constexpr auto operator<=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return soft_double::my_le(a, soft_double(n)); }
+    template<typename SignedIntegralType> friend constexpr auto operator==(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return  (a.my_value == soft_double(n).my_value); }
+    template<typename SignedIntegralType> friend constexpr auto operator!=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(a == soft_double(n))); }
+    template<typename SignedIntegralType> friend constexpr auto operator>=(const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(a <  soft_double(n))); }
+    template<typename SignedIntegralType> friend constexpr auto operator> (const soft_double& a, SignedIntegralType n) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(a <= soft_double(n))); }
 
-    friend inline soft_double operator+(const soft_double& u, long double f)  { return soft_double(u) += soft_double((double) f); }
-    friend inline soft_double operator-(const soft_double& u, long double f)  { return soft_double(u) -= soft_double((double) f); }
-    friend inline soft_double operator*(const soft_double& u, long double f)  { return soft_double(u) *= soft_double((double) f); }
-    friend inline soft_double operator/(const soft_double& u, long double f)  { return soft_double(u) /= soft_double((double) f); }
+    template<typename SignedIntegralType> friend constexpr auto operator< (SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return soft_double::my_lt(soft_double(n), a); }
+    template<typename SignedIntegralType> friend constexpr auto operator<=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return soft_double::my_le(soft_double(n), a); }
+    template<typename SignedIntegralType> friend constexpr auto operator==(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return  (soft_double(n).my_value == a.my_value); }
+    template<typename SignedIntegralType> friend constexpr auto operator!=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(soft_double(n) == a)); }
+    template<typename SignedIntegralType> friend constexpr auto operator>=(SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(soft_double(n) <  a)); }
+    template<typename SignedIntegralType> friend constexpr auto operator> (SignedIntegralType n, const soft_double& a) -> typename std::enable_if<std::is_integral<SignedIntegralType>::value && std::is_signed<SignedIntegralType>::value, bool>::type { return (!(soft_double(n) <= a)); }
 
-    friend inline soft_double operator+(long double f, const soft_double& u) { return soft_double((double) f) += u; }
-    friend inline soft_double operator-(long double f, const soft_double& u) { return soft_double((double) f) -= u; }
-    friend inline soft_double operator*(long double f, const soft_double& u) { return soft_double((double) f) *= u; }
-    friend inline soft_double operator/(long double f, const soft_double& u) { return soft_double((double) f) /= u; }
+    friend inline constexpr auto operator< (const soft_double& a, float f) -> bool;
+    friend inline constexpr auto operator<=(const soft_double& a, float f) -> bool;
+    friend inline constexpr auto operator==(const soft_double& a, float f) -> bool;
 
-    friend inline constexpr bool operator< (const soft_double& a, const soft_double& b) { return my_lt(a, b); }
-    friend inline constexpr bool operator<=(const soft_double& a, const soft_double& b) { return my_le(a, b); }
-    friend inline constexpr bool operator==(const soft_double& a, const soft_double& b) { return  (a.my_value == b.my_value); }
-    friend inline constexpr bool operator!=(const soft_double& a, const soft_double& b) { return ((a == b) == false); }
-    friend inline constexpr bool operator>=(const soft_double& a, const soft_double& b) { return ((a <  b) == false); }
-    friend inline constexpr bool operator> (const soft_double& a, const soft_double& b) { return ((a <= b) == false); }
+    friend inline constexpr auto operator< (float f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator<=(float f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator==(float f, const soft_double& a) -> bool;
 
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator< (const soft_double& a, const UnsignedIntegralType u) { return soft_double::my_lt(a, soft_double(u)); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator<=(const soft_double& a, const UnsignedIntegralType u) { return soft_double::my_le(a, soft_double(u)); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator==(const soft_double& a, const UnsignedIntegralType u) { return  (a.my_value == soft_double(u).my_value); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator!=(const soft_double& a, const UnsignedIntegralType u) { return ((a == soft_double(u)) == false); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator>=(const soft_double& a, const UnsignedIntegralType u) { return ((a <  soft_double(u)) == false); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator> (const soft_double& a, const UnsignedIntegralType u) { return ((a <= soft_double(u)) == false); }
+    friend inline constexpr auto operator< (const soft_double& a, double f) -> bool;
+    friend inline constexpr auto operator<=(const soft_double& a, double f) -> bool;
+    friend inline constexpr auto operator==(const soft_double& a, double f) -> bool;
 
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator< (const UnsignedIntegralType u, const soft_double& a) { return soft_double::my_lt(soft_double(u), a); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator<=(const UnsignedIntegralType u, const soft_double& a) { return soft_double::my_le(soft_double(u), a); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator==(const UnsignedIntegralType u, const soft_double& a) { return  (soft_double(u).my_value == a.my_value); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator!=(const UnsignedIntegralType u, const soft_double& a) { return ((soft_double(u) == a) == false); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator>=(const UnsignedIntegralType u, const soft_double& a) { return ((soft_double(u) <  a) == false); }
-    template<typename UnsignedIntegralType> friend typename std::enable_if<(std::is_integral<UnsignedIntegralType>::value == true) && (std::is_unsigned<UnsignedIntegralType>::value == true), bool>::type operator> (const UnsignedIntegralType u, const soft_double& a) { return ((soft_double(u) <= a) == false); }
+    friend inline constexpr auto operator< (double f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator<=(double f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator==(double f, const soft_double& a) -> bool;
 
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator< (const soft_double& a, const SignedIntegralType n) { return soft_double::my_lt(a, soft_double(n)); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator<=(const soft_double& a, const SignedIntegralType n) { return soft_double::my_le(a, soft_double(n)); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator==(const soft_double& a, const SignedIntegralType n) { return  (a.my_value == soft_double(n).my_value); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator!=(const soft_double& a, const SignedIntegralType n) { return ((a == soft_double(n)) == false); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator>=(const soft_double& a, const SignedIntegralType n) { return ((a <  soft_double(n)) == false); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator> (const soft_double& a, const SignedIntegralType n) { return ((a <= soft_double(n)) == false); }
+    friend inline constexpr auto operator< (const soft_double& a, long double f) -> bool;
+    friend inline constexpr auto operator<=(const soft_double& a, long double f) -> bool;
+    friend inline constexpr auto operator==(const soft_double& a, long double f) -> bool;
 
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator< (const SignedIntegralType n, const soft_double& a) { return soft_double::my_lt(soft_double(n), a); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator<=(const SignedIntegralType n, const soft_double& a) { return soft_double::my_le(soft_double(n), a); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator==(const SignedIntegralType n, const soft_double& a) { return  (soft_double(n).my_value == a.my_value); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator!=(const SignedIntegralType n, const soft_double& a) { return ((soft_double(n) == a) == false); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator>=(const SignedIntegralType n, const soft_double& a) { return ((soft_double(n) <  a) == false); }
-    template<typename SignedIntegralType> friend typename std::enable_if<(std::is_integral<SignedIntegralType>::value == true) && (std::is_signed<SignedIntegralType>::value == true), bool>::type operator> (const SignedIntegralType n, const soft_double& a) { return ((soft_double(n) <= a) == false); }
-
-    friend inline bool operator< (const soft_double& a, const float f) { return soft_double::my_lt(a, soft_double(f)); }
-    friend inline bool operator<=(const soft_double& a, const float f) { return soft_double::my_le(a, soft_double(f)); }
-    friend inline bool operator==(const soft_double& a, const float f) { return  (a.my_value == soft_double(f).my_value); }
-    friend inline bool operator!=(const soft_double& a, const float f) { return ((a == soft_double(f)) == false); }
-    friend inline bool operator>=(const soft_double& a, const float f) { return ((a <  soft_double(f)) == false); }
-    friend inline bool operator> (const soft_double& a, const float f) { return ((a <= soft_double(f)) == false); }
-
-    friend inline bool operator< (const float f, const soft_double& a) { return soft_double::my_lt(soft_double(f), a); }
-    friend inline bool operator<=(const float f, const soft_double& a) { return soft_double::my_le(soft_double(f), a); }
-    friend inline bool operator==(const float f, const soft_double& a) { return  (soft_double(f).my_value == a.my_value); }
-    friend inline bool operator!=(const float f, const soft_double& a) { return ((soft_double(f) == a) == false); }
-    friend inline bool operator>=(const float f, const soft_double& a) { return ((soft_double(f) <  a) == false); }
-    friend inline bool operator> (const float f, const soft_double& a) { return ((soft_double(f) <= a) == false); }
-
-    friend inline bool operator< (const soft_double& a, const double f) { return soft_double::my_lt(a, soft_double(f)); }
-    friend inline bool operator<=(const soft_double& a, const double f) { return soft_double::my_le(a, soft_double(f)); }
-    friend inline bool operator==(const soft_double& a, const double f) { return  (a.my_value == soft_double(f).my_value); }
-    friend inline bool operator!=(const soft_double& a, const double f) { return ((a == soft_double(f)) == false); }
-    friend inline bool operator>=(const soft_double& a, const double f) { return ((a <  soft_double(f)) == false); }
-    friend inline bool operator> (const soft_double& a, const double f) { return ((a <= soft_double(f)) == false); }
-
-    friend inline bool operator< (const double f, const soft_double& a) { return soft_double::my_lt(soft_double(f), a); }
-    friend inline bool operator<=(const double f, const soft_double& a) { return soft_double::my_le(soft_double(f), a); }
-    friend inline bool operator==(const double f, const soft_double& a) { return  (soft_double(f).my_value == a.my_value); }
-    friend inline bool operator!=(const double f, const soft_double& a) { return ((soft_double(f) == a) == false); }
-    friend inline bool operator>=(const double f, const soft_double& a) { return ((soft_double(f) <  a) == false); }
-    friend inline bool operator> (const double f, const soft_double& a) { return ((soft_double(f) <= a) == false); }
-
-    friend inline bool operator< (const soft_double& a, const long double f) { return soft_double::my_lt(a, soft_double((double) f)); }
-    friend inline bool operator<=(const soft_double& a, const long double f) { return soft_double::my_le(a, soft_double((double) f)); }
-    friend inline bool operator==(const soft_double& a, const long double f) { return  (a.my_value == soft_double((double) f).my_value); }
-    friend inline bool operator!=(const soft_double& a, const long double f) { return ((a == soft_double((double) f)) == false); }
-    friend inline bool operator>=(const soft_double& a, const long double f) { return ((a <  soft_double((double) f)) == false); }
-    friend inline bool operator> (const soft_double& a, const long double f) { return ((a <= soft_double((double) f)) == false); }
-
-    friend inline bool operator< (const long double f, const soft_double& a) { return soft_double::my_lt(soft_double((double) f), a); }
-    friend inline bool operator<=(const long double f, const soft_double& a) { return soft_double::my_le(soft_double((double) f), a); }
-    friend inline bool operator==(const long double f, const soft_double& a) { return  (soft_double((double) f).my_value == a.my_value); }
-    friend inline bool operator!=(const long double f, const soft_double& a) { return ((soft_double((double) f) == a) == false); }
-    friend inline bool operator>=(const long double f, const soft_double& a) { return ((soft_double((double) f) <  a) == false); }
-    friend inline bool operator> (const long double f, const soft_double& a) { return ((soft_double((double) f) <= a) == false); }
+    friend inline constexpr auto operator< (long double f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator<=(long double f, const soft_double& a) -> bool;
+    friend inline constexpr auto operator==(long double f, const soft_double& a) -> bool;
   };
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& a, const soft_double& b) -> soft_double { return { soft_double::f64_add(a.my_value, b.my_value), detail::nothing() }; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& a, const soft_double& b) -> soft_double { return { soft_double::f64_sub(a.my_value, b.my_value), detail::nothing() }; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& a, const soft_double& b) -> soft_double { return { soft_double::f64_mul(a.my_value, b.my_value), detail::nothing() }; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& a, const soft_double& b) -> soft_double { return { soft_double::f64_div(a.my_value, b.my_value), detail::nothing() }; }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, float f) -> soft_double { return soft_double(u) += soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, float f) -> soft_double { return soft_double(u) -= soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, float f) -> soft_double { return soft_double(u) *= soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, float f) -> soft_double { return soft_double(u) /= soft_double(f); }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(float f, const soft_double& u) -> soft_double { return soft_double(f) += u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(float f, const soft_double& u) -> soft_double { return soft_double(f) -= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(float f, const soft_double& u) -> soft_double { return soft_double(f) *= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(float f, const soft_double& u) -> soft_double { return soft_double(f) /= u; }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, double f) -> soft_double { return soft_double(u) += soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, double f) -> soft_double { return soft_double(u) -= soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, double f) -> soft_double { return soft_double(u) *= soft_double(f); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, double f) -> soft_double { return soft_double(u) /= soft_double(f); }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(double f, const soft_double& u) -> soft_double { return soft_double(f) += u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(double f, const soft_double& u) -> soft_double { return soft_double(f) -= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(double f, const soft_double& u) -> soft_double { return soft_double(f) *= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(double f, const soft_double& u) -> soft_double { return soft_double(f) /= u; }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(const soft_double& u, long double f) -> soft_double { return soft_double(u) += soft_double(static_cast<double>(f)); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(const soft_double& u, long double f) -> soft_double { return soft_double(u) -= soft_double(static_cast<double>(f)); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(const soft_double& u, long double f) -> soft_double { return soft_double(u) *= soft_double(static_cast<double>(f)); }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(const soft_double& u, long double f) -> soft_double { return soft_double(u) /= soft_double(static_cast<double>(f)); }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto operator+(long double f, const soft_double& u) -> soft_double { return soft_double(static_cast<double>(f)) += u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator-(long double f, const soft_double& u) -> soft_double { return soft_double(static_cast<double>(f)) -= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator*(long double f, const soft_double& u) -> soft_double { return soft_double(static_cast<double>(f)) *= u; }
+  inline SOFT_DOUBLE_CONSTEXPR auto operator/(long double f, const soft_double& u) -> soft_double { return soft_double(static_cast<double>(f)) /= u; }
+
+  inline constexpr auto operator< (const soft_double& a, const soft_double& b) -> bool { return soft_double::my_lt(a, b); }
+  inline constexpr auto operator<=(const soft_double& a, const soft_double& b) -> bool { return soft_double::my_le(a, b); }
+  inline constexpr auto operator==(const soft_double& a, const soft_double& b) -> bool { return (a.my_value == b.my_value); }
+  inline constexpr auto operator!=(const soft_double& a, const soft_double& b) -> bool { return (!(a == b)); }
+  inline constexpr auto operator>=(const soft_double& a, const soft_double& b) -> bool { return (!(a <  b)); }
+  inline constexpr auto operator> (const soft_double& a, const soft_double& b) -> bool { return (!(a <= b)); }
+
+  inline constexpr auto operator< (const soft_double& a, float f) -> bool { return soft_double::my_lt(a, soft_double(f)); }
+  inline constexpr auto operator<=(const soft_double& a, float f) -> bool { return soft_double::my_le(a, soft_double(f)); }
+  inline constexpr auto operator==(const soft_double& a, float f) -> bool { return  (a.my_value == soft_double(f).my_value); }
+  inline constexpr auto operator!=(const soft_double& a, float f) -> bool { return (!(a == soft_double(f))); }
+  inline constexpr auto operator>=(const soft_double& a, float f) -> bool { return (!(a <  soft_double(f))); }
+  inline constexpr auto operator> (const soft_double& a, float f) -> bool { return (!(a <= soft_double(f))); }
+
+  inline constexpr auto operator< (float f, const soft_double& a) -> bool { return soft_double::my_lt(soft_double(f), a); }
+  inline constexpr auto operator<=(float f, const soft_double& a) -> bool { return soft_double::my_le(soft_double(f), a); }
+  inline constexpr auto operator==(float f, const soft_double& a) -> bool { return  (soft_double(f).my_value == a.my_value); }
+  inline constexpr auto operator!=(float f, const soft_double& a) -> bool { return (!(soft_double(f) == a)); }
+  inline constexpr auto operator>=(float f, const soft_double& a) -> bool { return (!(soft_double(f) <  a)); }
+  inline constexpr auto operator> (float f, const soft_double& a) -> bool { return (!(soft_double(f) <= a)); }
+
+  inline constexpr auto operator< (const soft_double& a, double f) -> bool { return soft_double::my_lt(a, soft_double(f)); }
+  inline constexpr auto operator<=(const soft_double& a, double f) -> bool { return soft_double::my_le(a, soft_double(f)); }
+  inline constexpr auto operator==(const soft_double& a, double f) -> bool { return  (a.my_value == soft_double(f).my_value); }
+  inline constexpr auto operator!=(const soft_double& a, double f) -> bool { return (!(a == soft_double(f))); }
+  inline constexpr auto operator>=(const soft_double& a, double f) -> bool { return (!(a <  soft_double(f))); }
+  inline constexpr auto operator> (const soft_double& a, double f) -> bool { return (!(a <= soft_double(f))); }
+
+  inline constexpr auto operator< (double f, const soft_double& a) -> bool { return soft_double::my_lt(soft_double(f), a); }
+  inline constexpr auto operator<=(double f, const soft_double& a) -> bool { return soft_double::my_le(soft_double(f), a); }
+  inline constexpr auto operator==(double f, const soft_double& a) -> bool { return  (soft_double(f).my_value == a.my_value); }
+  inline constexpr auto operator!=(double f, const soft_double& a) -> bool { return (!(soft_double(f) == a)); }
+  inline constexpr auto operator>=(double f, const soft_double& a) -> bool { return (!(soft_double(f) <  a)); }
+  inline constexpr auto operator> (double f, const soft_double& a) -> bool { return (!(soft_double(f) <= a)); }
+
+  inline constexpr auto operator< (const soft_double& a, long double f) -> bool { return soft_double::my_lt(a, soft_double(static_cast<double>(f))); }
+  inline constexpr auto operator<=(const soft_double& a, long double f) -> bool { return soft_double::my_le(a, soft_double(static_cast<double>(f))); }
+  inline constexpr auto operator==(const soft_double& a, long double f) -> bool { return  (a.my_value == soft_double(static_cast<double>(f)).my_value); }
+  inline constexpr auto operator!=(const soft_double& a, long double f) -> bool { return (!(a == soft_double(static_cast<double>(f)))); }
+  inline constexpr auto operator>=(const soft_double& a, long double f) -> bool { return (!(a <  soft_double(static_cast<double>(f)))); }
+  inline constexpr auto operator> (const soft_double& a, long double f) -> bool { return (!(a <= soft_double(static_cast<double>(f)))); }
+
+  inline constexpr auto operator< (long double f, const soft_double& a) -> bool { return soft_double::my_lt(soft_double(static_cast<double>(f)), a); }
+  inline constexpr auto operator<=(long double f, const soft_double& a) -> bool { return soft_double::my_le(soft_double(static_cast<double>(f)), a); }
+  inline constexpr auto operator==(long double f, const soft_double& a) -> bool { return  (soft_double(static_cast<double>(f)).my_value == a.my_value); }
+  inline constexpr auto operator!=(long double f, const soft_double& a) -> bool { return (!(soft_double(static_cast<double>(f)) == a)); }
+  inline constexpr auto operator>=(long double f, const soft_double& a) -> bool { return (!(soft_double(static_cast<double>(f)) <  a)); }
+  inline constexpr auto operator> (long double f, const soft_double& a) -> bool { return (!(soft_double(static_cast<double>(f)) <= a)); }
 
   namespace detail {
 
-  inline soft_double sin_pade(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto sin_pade(soft_double x) -> soft_double
   {
     // PadeApproximant[Sin[x], {x, 0, {7,7}}]
     // FullSimplify[%]
@@ -1647,15 +1991,15 @@
     //    x (11511339840 - 1640635920 x^2 + 52785432 x^4 - 479249 x^6)
     // / (7 ( 1644477120  +  39702960 x^2 +   453960 x^4 +   2623 x^6))
 
-    static const soft_double coef_sin_top_0(INT64_C(+11511339840));
-    static const soft_double coef_sin_top_1(INT32_C(-1640635920));
-    static const soft_double coef_sin_top_2(INT32_C(+52785432));
-    static const soft_double coef_sin_top_3(INT32_C(-479249));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_top_0(INT64_C(+11511339840));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_top_1(INT32_C(-1640635920));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_top_2(INT32_C(+52785432));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_top_3(INT32_C(-479249));
 
-    static const soft_double coef_sin_bot_0(UINT32_C(+1644477120));
-    static const soft_double coef_sin_bot_1(UINT32_C(+39702960));
-    static const soft_double coef_sin_bot_2(UINT32_C(+453960));
-    static const soft_double coef_sin_bot_3(UINT32_C(+2623));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_bot_0(UINT32_C(+1644477120));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_bot_1(UINT32_C(+39702960));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_bot_2(UINT32_C(+453960));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_sin_bot_3(UINT32_C(+2623));
 
 
     const soft_double x2(x * x);
@@ -1673,7 +2017,7 @@
     return (x * top) / (bot * 7);
   }
 
-  inline soft_double cos_pade(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto cos_pade(soft_double x) -> soft_double
   {
     // PadeApproximant[Cos[x] - 1, {x, 0, {8,6}}]
     // FullSimplify[%]
@@ -1681,15 +2025,15 @@
     //   (x^2 (-5491886400 + 346666320 x^2 - 7038360 x^4 + 45469 x^6))
     // / (24  (  457657200 +   9249240 x^2 +   86030 x^4 +   389 x^6))
 
-    static const soft_double coef_cos_top_0(INT64_C(-5491886400));
-    static const soft_double coef_cos_top_1(INT32_C(+346666320));
-    static const soft_double coef_cos_top_2(INT32_C(-7038360));
-    static const soft_double coef_cos_top_3(INT32_C(+45469));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_top_0(INT64_C(-5491886400));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_top_1(INT32_C(+346666320));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_top_2(INT32_C(-7038360));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_top_3(INT32_C(+45469));
 
-    static const soft_double coef_cos_bot_0(UINT32_C(457657200));
-    static const soft_double coef_cos_bot_1(UINT32_C(9249240));
-    static const soft_double coef_cos_bot_2(UINT32_C(86030));
-    static const soft_double coef_cos_bot_3(UINT32_C(389));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_bot_0(UINT32_C(457657200));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_bot_1(UINT32_C(9249240));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_bot_2(UINT32_C(86030));
+    SOFT_DOUBLE_CONSTEXPR soft_double coef_cos_bot_3(UINT32_C(389));
 
     const soft_double x2(x * x);
 
@@ -1706,11 +2050,11 @@
     return 1U + ((x2 * top) / (bot * 24));
   }
 
-  }
+  } // namespace detail
 
-  inline soft_double sin(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto sin(soft_double x) -> soft_double // NOLINT(misc-no-recursion)
   {
-    soft_double s;
+    soft_double s { };
 
     if(x < 0)
     {
@@ -1722,7 +2066,7 @@
 
       bool b_negate_sin = false;
 
-      const std::uint32_t n_pi = (std::uint32_t) (x / soft_double::my_value_pi());
+      const std::uint32_t n_pi = static_cast<std::uint32_t>(x / soft_double::my_value_pi());
 
       if(n_pi != 0U)
       {
@@ -1745,15 +2089,15 @@
         //   (39251520 - 18471600 dx^2 + 1075032 dx^4 - 14615 dx^6)
         // / (39251520 +  1154160 dx^2 +   16632 dx^4 +   127 dx^6)
 
-        static const soft_double coef_top_0(INT32_C(+39251520));
-        static const soft_double coef_top_1(INT32_C(-18471600));
-        static const soft_double coef_top_2(INT32_C(+1075032));
-        static const soft_double coef_top_3(INT32_C(-14615));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_top_0(INT32_C(+39251520));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_top_1(INT32_C(-18471600));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_top_2(INT32_C(+1075032));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_top_3(INT32_C(-14615));
 
-        static const soft_double coef_bot_0(UINT32_C(39251520));
-        static const soft_double coef_bot_1(UINT32_C(1154160));
-        static const soft_double coef_bot_2(UINT32_C(16632));
-        static const soft_double coef_bot_3(UINT32_C(127));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_bot_0(UINT32_C(39251520));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_bot_1(UINT32_C(1154160));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_bot_2(UINT32_C(16632));
+        SOFT_DOUBLE_CONSTEXPR soft_double coef_bot_3(UINT32_C(127));
 
         const soft_double x2(delta_pi_half * delta_pi_half);
 
@@ -1815,9 +2159,9 @@
     return s;
   }
 
-  inline soft_double cos(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto cos(soft_double x) -> soft_double // NOLINT(misc-no-recursion)
   {
-    soft_double c;
+    soft_double c { };
 
     if(x < 0)
     {
@@ -1829,7 +2173,7 @@
 
       bool b_negate_cos = false;
 
-      const std::uint32_t n_pi = (std::uint32_t) (x / soft_double::my_value_pi());
+      const std::uint32_t n_pi = static_cast<std::uint32_t>(x / soft_double::my_value_pi());
 
       if(n_pi != 0U)
       {
@@ -1904,26 +2248,181 @@
     return c;
   }
 
-  inline soft_double tan(const soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto ldexp(soft_double x, int expval) -> soft_double
+  {
+    const auto expA = static_cast<int>(detail::expF64UI(x.my_value) + expval);
+
+    return
+    {
+      static_cast<std::uint64_t>(static_cast<std::uint64_t>(x.my_value & static_cast<std::uint64_t>(~(static_cast<std::uint64_t>(UINT64_C(0x7FF)) << 52U))) | static_cast<std::uint64_t>(expA) << 52U),
+      detail::nothing()
+    };
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto floor(soft_double x) -> soft_double
+  {
+    soft_double result { };
+
+    if(x < 0)
+    {
+      const auto xn = static_cast<std::int64_t>(x);
+      const auto fn = soft_double(xn);
+
+      const bool is_pure_integer = (fn.my_value == x.my_value);
+
+      result =
+        (is_pure_integer ? fn : soft_double(static_cast<std::int64_t>(x - soft_double::my_value_one())));
+    }
+    else
+    {
+      result = soft_double(static_cast<std::int64_t>(x));
+    }
+
+    return result;
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto ceil(soft_double x) -> soft_double
+  {
+    soft_double result { };
+
+    if(x < 0)
+    {
+      result = soft_double(static_cast<std::int64_t>(x));
+    }
+    else
+    {
+      const auto xn = static_cast<std::int64_t>(x);
+      const auto fn = soft_double(xn);
+
+      const bool is_pure_integer = (fn.my_value == x.my_value);
+
+      result =
+        (is_pure_integer ? fn : soft_double(static_cast<std::int64_t>(x + soft_double::my_value_one())));
+    }
+
+    return result;
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto exp(soft_double x) -> soft_double
+  {
+    // PadeApproximant[Exp[x] - 1, {x, 0, {6, 6}}]
+    // FullSimplify[%]
+    //   (84 x (7920 + 240 x^2 + x^4))
+    // / (665280 + x (-332640 + x (75600 + x (-10080 + x (840 + (-42 + x) x)))))
+
+    const auto n = static_cast<int>(x / soft_double::my_value_ln2());
+
+    // Scale the argument such that Exp[x] = Exp[a + n * ln2].
+    soft_double a = x - (n * soft_double::my_value_ln2());
+
+    // Scale the argument yet again with division by 4.
+    const auto expA = static_cast<int>(detail::expF64UI(a.my_value) - 2);
+
+    a.my_value &= static_cast<std::uint64_t>(~static_cast<std::uint64_t>(static_cast<std::uint64_t>(UINT64_C(0x7FF)) << 52U));
+    a.my_value |= static_cast<std::uint64_t>(static_cast<std::uint64_t>(expA) << 52U);
+
+    const soft_double a2 = a * a;
+
+    // Use the small-argument Pade approximation having coefficients shown above.
+    const soft_double top = (84 * a * (7920 + (240 + a2) * a2));
+    const soft_double bot = (665280 + a * (-332640 + a * (75600 + a * (-10080 + a * (840 + (-42 + a) * a)))));
+
+    soft_double result  = soft_double::my_value_one() + (top / bot);
+
+    result *= result;
+    result *= result;
+
+    return ((n != 0) ? ldexp(result, n) : result);
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto log(soft_double x) -> soft_double // NOLINT(misc-no-recursion)
+  {
+    soft_double result { };
+
+    if(x < soft_double::my_value_one())
+    {
+      result = -log(soft_double::my_value_one() / x);
+    }
+    else if(x > soft_double::my_value_one())
+    {
+      // See J.F. Hart et al., "Computer Approximations" (Krieger Publishing 1978),
+      // page 111 (with correction) log_e = zP(z^2) / Q(z^2), where the leading z
+      // in the book is incorrect and coefficients are listed in LOGE 2688 on page 194.
+
+      // P00 = -0.9812796124599728774775146E3;
+      // P01 = +0.2098680741193909440902139E4;
+      // P02 = -0.149596980292286125003062E4;
+      // P03 = +0.39599373637329080057224E3;
+      // P04 = -0.2857383397938418121918E2;
+      // Q00 = -0.4906398062299865742258528E3;
+      // Q01 = +0.1212886972673648778600404E4;
+      // Q02 = -0.1054152597775536603834536E4;
+      // Q03 = +0.37689507387121749065832E3;
+      // Q04 = -0.4784212345106557147125E2;
+      // Q05 = +0.1E1;
+
+      // Scale the argument such that 1 <= a < 2.
+      const auto n =
+        static_cast<std::int16_t>
+        (
+          detail::expF64UI(x.my_value) - static_cast<std::int16_t>(INT16_C(0x3FF))
+        );
+
+      const soft_double a(static_cast<std::uint64_t>(static_cast<std::uint64_t>(x.my_value & static_cast<std::uint64_t>(~(static_cast<std::uint64_t>(UINT64_C(0x7FF)) << 52U))) | UINT64_C(0x3FF) << 52U), detail::nothing());
+
+      const soft_double z  = (a - 1) / (a + 1);
+      const soft_double z2 = z * z;
+
+      const soft_double pz2 =  (((((     + soft_double(UINT64_C(0xC03C92E6C89EC9E1), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0x4078BFE6581C8213), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0xC0975FE114047504), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0x40A0655C8A1C19C3), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0xC08EAA3CA575191A), detail::nothing()));
+
+      const soft_double qz2 = ((((((     + soft_double(UINT64_C(0x3FF0000000000000), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0xC047EBCAB384C2B9), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0x40778E5238FAC622), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0xC090789C42975D7D), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0x4092F38C42908712), detail::nothing()))
+                                    * z2 + soft_double(UINT64_C(0xC07EAA3CA575191C), detail::nothing()));
+
+      result  = ((z * pz2) / qz2);
+
+      result += (n * soft_double::my_value_ln2());
+    }
+    else
+    {
+      result = soft_double::my_value_zero();
+    }
+
+    return result;
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto pow(soft_double x, soft_double a) -> soft_double
+  {
+    return exp(a * log(x));
+  }
+
+  inline SOFT_DOUBLE_CONSTEXPR auto tan(soft_double x) -> soft_double
   {
     return sin(x) / cos(x);
   }
 
-  inline soft_double sinh(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto sinh(soft_double x) -> soft_double
   {
     const soft_double ep = exp(x);
 
     return (ep - (1 / ep)) / 2;
   }
 
-  inline soft_double cosh(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto cosh(soft_double x) -> soft_double
   {
     const soft_double ep = exp(x);
 
     return (ep + (1 / ep)) / 2;
   }
 
-  inline soft_double tanh(soft_double x)
+  inline SOFT_DOUBLE_CONSTEXPR auto tanh(soft_double x) -> soft_double
   {
     const soft_double ep = exp(x);
     const soft_double em = 1 / ep;
@@ -1933,13 +2432,18 @@
 
   using float64_t = soft_double;
 
-  } } // namespace math::softfloat
+  #if(__cplusplus >= 201703L)
+  } // namespace math::softfloat
+  #else
+  } // namespace softfloat
+  } // namespace math
+  #endif
 
   namespace std {
 
   // Specialization of numeric_limits for soft_double.
   template<>
-  class numeric_limits<math::softfloat::soft_double>
+  SOFT_DOUBLE_NUM_LIMITS_CLASS_TYPE numeric_limits< ::math::softfloat::soft_double>
   {
   public:
     static constexpr bool               is_specialized    = true;
@@ -1967,52 +2471,17 @@
     static constexpr int                min_exponent      = -1021;
     static constexpr int                min_exponent10    = -307;
 
-    static constexpr math::softfloat::soft_double (min)        () noexcept { return math::softfloat::soft_double::my_value_min(); }
-    static constexpr math::softfloat::soft_double (max)        () noexcept { return math::softfloat::soft_double::my_value_max(); }
-    static constexpr math::softfloat::soft_double lowest       () noexcept { return math::softfloat::soft_double::my_value_lowest(); }
-    static constexpr math::softfloat::soft_double epsilon      () noexcept { return math::softfloat::soft_double::my_value_epsilon(); }
-    static constexpr math::softfloat::soft_double round_error  () noexcept { return math::softfloat::soft_double::my_value_round_error(); }
-    static constexpr math::softfloat::soft_double denorm_min   () noexcept { return math::softfloat::soft_double::my_value_denorm_min(); }
-    static constexpr math::softfloat::soft_double infinity     () noexcept { return math::softfloat::soft_double::my_value_infinity(); }
-    static constexpr math::softfloat::soft_double quiet_NaN    () noexcept { return math::softfloat::soft_double::my_value_quiet_NaN(); }
-    static constexpr math::softfloat::soft_double signaling_NaN() noexcept { return math::softfloat::soft_double::my_value_signaling_NaN(); }
+    static constexpr auto (min)        () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_min(); }
+    static constexpr auto (max)        () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_max(); }
+    static constexpr auto lowest       () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_lowest(); }
+    static constexpr auto epsilon      () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_epsilon(); }
+    static constexpr auto round_error  () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_round_error(); }
+    static constexpr auto denorm_min   () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_denorm_min(); }
+    static constexpr auto infinity     () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_infinity(); }
+    static constexpr auto quiet_NaN    () noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_quiet_NaN(); }
+    static constexpr auto signaling_NaN() noexcept -> math::softfloat::soft_double { return math::softfloat::soft_double::my_value_signaling_NaN(); }
   };
 
-  }
+  } // namespace std
 
-#endif // SOFT_DOUBLE_2020_10_27_H_
-
-/*----------------------------------------------------------------------------
-
-This C header file is part of the SoftFloat IEEE Floating-Point Arithmetic
-Package, Release 3e, by John R. Hauser.
-
-Copyright 2011, 2012, 2013, 2014, 2015, 2016, 2017 The Regents of the
-University of California.  All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
- 1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions, and the following disclaimer.
-
- 2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions, and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
- 3. Neither the name of the University nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS "AS IS", AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE
-DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
------------------------------------------------------------------------------*/
+#endif // SOFT_DOUBLE_2020_10_27_H
