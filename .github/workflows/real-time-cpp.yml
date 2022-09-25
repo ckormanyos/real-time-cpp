@@ -10,8 +10,6 @@ on:
     branches:
       - '**'
   pull_request:
-  schedule:
-    - cron: '45 23 * * *' # run at 11:45 PM UTC
 jobs:
   gnumake-clang-tidy-native:
     runs-on: ubuntu-latest
