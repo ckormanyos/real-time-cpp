@@ -377,13 +377,13 @@
   {
     using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
-    const bool size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
+    const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
 
     bool b_result { };
 
     if(size_of_left_is_zero)
     {
-      const bool size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
+      const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
 
       b_result = (!size_of_right_is_zero);
     }
@@ -391,7 +391,7 @@
     {
       if(size_of_left_is_zero)
       {
-        const bool size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
+        const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
 
         b_result = (!size_of_right_is_zero);
       }
@@ -514,7 +514,7 @@
   template<const size_t Width2> struct verify_power_of_two // NOLINT(altera-struct-pack-align)
   {
     // TBD: Which powers should be checked if size_t is not 32 bits?
-    static constexpr bool conditional_value =
+    static constexpr auto conditional_value =
          (Width2 == static_cast<size_t>(1ULL <<  0U)) || (Width2 == static_cast<size_t>(1ULL <<  1U)) || (Width2 == static_cast<size_t>(1ULL <<  2U)) || (Width2 == static_cast<size_t>(1ULL <<  3U))
       || (Width2 == static_cast<size_t>(1ULL <<  4U)) || (Width2 == static_cast<size_t>(1ULL <<  5U)) || (Width2 == static_cast<size_t>(1ULL <<  6U)) || (Width2 == static_cast<size_t>(1ULL <<  7U))
       || (Width2 == static_cast<size_t>(1ULL <<  8U)) || (Width2 == static_cast<size_t>(1ULL <<  9U)) || (Width2 == static_cast<size_t>(1ULL << 10U)) || (Width2 == static_cast<size_t>(1ULL << 11U))
@@ -1139,7 +1139,7 @@
   template<const size_t Width2> struct verify_power_of_two_times_granularity_one_sixty_fourth // NOLINT(altera-struct-pack-align)
   {
     // List of numbers used to identify the form 2^n times 1...63.
-    static constexpr bool conditional_value =
+    static constexpr auto conditional_value =
        (   verify_power_of_two<static_cast<size_t>(Width2 /  1U)>::conditional_value || verify_power_of_two<static_cast<size_t>(Width2 /  3U)>::conditional_value
         || verify_power_of_two<static_cast<size_t>(Width2 /  5U)>::conditional_value || verify_power_of_two<static_cast<size_t>(Width2 /  7U)>::conditional_value
         || verify_power_of_two<static_cast<size_t>(Width2 /  9U)>::conditional_value || verify_power_of_two<static_cast<size_t>(Width2 / 11U)>::conditional_value
@@ -1599,7 +1599,7 @@
       using local_unsigned_integral_type =
         typename detail::uint_type_helper<static_cast<size_t>(std::numeric_limits<local_signed_integral_type>::digits + 1)>::exact_unsigned_type;
 
-      const bool v_is_neg = (v < static_cast<local_signed_integral_type>(0));
+      const auto v_is_neg = (v < static_cast<local_signed_integral_type>(0));
 
       const local_unsigned_integral_type u =
         ((!v_is_neg) ? static_cast<local_unsigned_integral_type>(v)
@@ -1625,11 +1625,11 @@
       }
       else
       {
-        const bool f_is_neg = (f < static_cast<local_builtin_float_type>(0.0F));
+        const auto f_is_neg = (f < static_cast<local_builtin_float_type>(0.0F));
 
         const local_builtin_float_type a = ((!f_is_neg) ? f : -f);
 
-        const bool a_is_zero = (a < static_cast<local_builtin_float_type>(1.0F));
+        const auto a_is_zero = (a < static_cast<local_builtin_float_type>(1.0F));
 
         if(!a_is_zero)
         {
@@ -1682,7 +1682,7 @@
     {
       using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>;
 
-      const bool v_is_neg = (other_wide_integer_type::is_neg(v));
+      const auto v_is_neg = (other_wide_integer_type::is_neg(v));
 
       constexpr auto sz = static_cast<size_t>(number_of_limbs);
 
@@ -1817,7 +1817,7 @@
              const bool OtherIsSigned>
     WIDE_INTEGER_CONSTEXPR operator uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>() const // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
     {
-      const bool this_is_neg = (is_neg(*this));
+      const auto this_is_neg = is_neg(*this);
 
       using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>;
 
@@ -1971,8 +1971,8 @@
       {
         // Unary division function.
 
-        const bool numererator_was_neg = is_neg(*this);
-        const bool denominator_was_neg = is_neg(other);
+        const auto numererator_was_neg = is_neg(*this);
+        const auto denominator_was_neg = is_neg(other);
 
         if(numererator_was_neg || denominator_was_neg)
         {
@@ -2008,8 +2008,8 @@
       else
       {
         // Unary modulus function.
-        const bool numererator_was_neg = is_neg(*this);
-        const bool denominator_was_neg = is_neg(other);
+        const auto numererator_was_neg = is_neg(*this);
+        const auto denominator_was_neg = is_neg(other);
 
         if(numererator_was_neg || denominator_was_neg)
         {
@@ -2320,7 +2320,7 @@
                                                 unsigned_fast_type field_width   = static_cast<unsigned_fast_type>(UINT8_C(0)),
                                           const char               fill_char_str = '0') const -> bool
     {
-      bool wr_string_is_ok = true;
+      auto wr_string_is_ok = true;
 
       if(base_rep == static_cast<std::uint_fast8_t>(UINT8_C(8)))
       {
@@ -2407,7 +2407,7 @@
       {
         uintwide_t t(*this);
 
-        const bool str_has_neg_sign = is_neg(t);
+        const auto str_has_neg_sign = is_neg(t);
 
         if(str_has_neg_sign)
         {
@@ -3981,8 +3981,8 @@
       {
         const auto result_of_compare_left_with_right = compare(other);
 
-        const bool left_is_less_than_right = (result_of_compare_left_with_right == INT8_C(-1));
-        const bool left_is_equal_to_right  = (result_of_compare_left_with_right == INT8_C( 0));
+        const auto left_is_less_than_right = (result_of_compare_left_with_right == INT8_C(-1));
+        const auto left_is_equal_to_right  = (result_of_compare_left_with_right == INT8_C( 0));
 
         if(left_is_less_than_right)
         {
@@ -4159,7 +4159,7 @@
 
           *(nv.begin() + static_cast<size_t>(n)) = eval_multiply_1d(nv.begin(), vv.cbegin(), q_hat, n);
 
-          const bool has_borrow =
+          const auto has_borrow =
             eval_subtract_n(detail::advance_and_point(uu.begin(),  static_cast<size_t>(static_cast<local_uint_index_type>(uj - n))),
                             detail::advance_and_point(uu.cbegin(), static_cast<size_t>(static_cast<local_uint_index_type>(uj - n))),
                             nv.cbegin(),
@@ -4438,7 +4438,7 @@
         }
       }
 
-      bool char_is_valid = true;
+      auto char_is_valid = true;
 
       while((pos < str_length) && char_is_valid) // NOLINT(altera-id-dependent-backward-branch)
       {
@@ -4733,7 +4733,7 @@
   {
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
-    const bool u_is_neg = local_wide_integer_type::is_neg(u);
+    const auto u_is_neg = local_wide_integer_type::is_neg(u);
 
     local_wide_integer_type remainder;
 
@@ -4852,9 +4852,9 @@
 
     const std::ios::fmtflags my_flags = out.flags();
 
-    const bool show_pos     = ((my_flags & std::ios::showpos)   == std::ios::showpos);
-    const bool show_base    = ((my_flags & std::ios::showbase)  == std::ios::showbase);
-    const bool is_uppercase = ((my_flags & std::ios::uppercase) == std::ios::uppercase);
+    const auto show_pos     = ((my_flags & std::ios::showpos)   == std::ios::showpos);
+    const auto show_base    = ((my_flags & std::ios::showbase)  == std::ios::showbase);
+    const auto is_uppercase = ((my_flags & std::ios::uppercase) == std::ios::uppercase);
 
     auto base_rep = std::uint_fast8_t { };
 
@@ -5683,8 +5683,8 @@
     using local_ushort_type       = typename local_wide_integer_type::limb_type;
     using local_ularge_type       = typename local_wide_integer_type::double_limb_type;
 
-    const bool u_is_neg = local_wide_integer_type::is_neg(a);
-    const bool v_is_neg = local_wide_integer_type::is_neg(b);
+    const auto u_is_neg = local_wide_integer_type::is_neg(a);
+    const auto v_is_neg = local_wide_integer_type::is_neg(b);
 
     local_wide_integer_type u((!u_is_neg) ? a : -a);
     local_wide_integer_type v((!v_is_neg) ? b : -b);
@@ -5836,9 +5836,9 @@
     const local_integer_type ap = abs(a);
     const local_integer_type bp = abs(b);
 
-    const bool a_is_greater_than_b = (ap > bp);
+    const auto a_is_greater_than_b = (ap > bp);
 
-    const local_integer_type gcd_of_ab = gcd(a, b);
+    const auto gcd_of_ab = gcd(a, b);
 
     return (a_is_greater_than_b ? ap * (bp / gcd_of_ab)
                                 : bp * (ap / gcd_of_ab));
@@ -6286,7 +6286,7 @@
 
     const local_param_type params(local_wide_integer_type(2U), np - 2U);
 
-    bool is_probably_prime = true;
+    auto is_probably_prime = true;
 
     auto i = static_cast<unsigned_fast_type>(UINT8_C(0));
 
