@@ -22,7 +22,7 @@ jobs:
         standard: [ c++14 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -49,7 +49,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -69,7 +69,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -89,7 +89,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-osx-cross-homebrew-avr-and-install
@@ -133,7 +133,7 @@ jobs:
       matrix:
         example: [ chapter02_02, chapter02_06 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -155,7 +155,7 @@ jobs:
       matrix:
         example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter10_08, chapter10_08a, chapter11_07, chapter12_04, chapter16_08, chapter17_03, chapter17_03a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -176,7 +176,7 @@ jobs:
       matrix:
         example: [ chapter10_09 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -197,7 +197,7 @@ jobs:
       matrix:
         example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter10_08, chapter10_08a, chapter10_09, chapter11_07, chapter12_04, chapter17_03, chapter17_03a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: target-msvc-examples
@@ -215,7 +215,7 @@ jobs:
       matrix:
         example: [ chapter16_08 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -248,7 +248,7 @@ jobs:
       matrix:
         example: [ chapter02_02, chapter02_06 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -280,7 +280,7 @@ jobs:
       matrix:
         example: [ chapter02_03, chapter02_03a, chapter03_02, chapter04_04, chapter04_04a, chapter06_01, chapter06_14, chapter09_07, chapter09_08, chapter10_08, chapter10_08a, chapter11_07, chapter12_04, chapter17_03, chapter17_03a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -312,7 +312,7 @@ jobs:
       matrix:
         example: [ chapter10_09 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -344,7 +344,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -364,7 +364,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -384,7 +384,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-armmbed-homebrew-formulae-and-install
@@ -408,7 +408,7 @@ jobs:
   target-x86_64:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: build-target-x86_64-w64-mingw32
@@ -420,7 +420,7 @@ jobs:
   target-host-cmake:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: build-target-host
@@ -442,7 +442,7 @@ jobs:
       matrix:
         suite: [ Debug, Release ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: msvc-msbuild-${{ matrix.suite }}
@@ -462,7 +462,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560, atmega4809 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -496,7 +496,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -530,7 +530,7 @@ jobs:
       matrix:
         suite: [ rl78 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -564,7 +564,7 @@ jobs:
       matrix:
         suite: [ rx63n ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -598,7 +598,7 @@ jobs:
       matrix:
         suite: [ v850es_fx2 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -632,7 +632,7 @@ jobs:
       matrix:
         suite: [ x86_64-w64-mingw32 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -666,7 +666,7 @@ jobs:
       matrix:
         suite: [ xtensa32 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
@@ -701,7 +701,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -731,7 +731,7 @@ jobs:
         compiler: [ g++-8, g++-9, clang++-8, clang++-9 ]
         standard: [ c++14, c++17 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -761,7 +761,7 @@ jobs:
         compiler: [ g++-10, clang++-10 ]
         standard: [ c++14, c++17, c++20 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -788,7 +788,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -815,7 +815,7 @@ jobs:
       matrix:
         standard: [ c++14 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -833,7 +833,7 @@ jobs:
       matrix:
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -858,7 +858,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -881,7 +881,7 @@ jobs:
         compiler: [ g++-10, clang++-10 ]
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -895,12 +895,12 @@ jobs:
           ./bin/app_benchmark_cnl_scaled_integer.exe
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu-cnl:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -909,8 +909,8 @@ jobs:
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
-          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v7.1.0-1/xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: benchmark_single-stm32f429-qemu-cnl
         run: |
@@ -922,7 +922,7 @@ jobs:
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          ./emu_env/xpack-qemu-arm-2.8.0-13/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          ./emu_env/xpack-qemu-arm-7.1.0-1/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
@@ -932,12 +932,12 @@ jobs:
           echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -946,8 +946,8 @@ jobs:
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v2.8.0-13/xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
-          tar -xvzf xpack-qemu-arm-2.8.0-13-linux-x64.tar.gz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v7.1.0-1/xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
+          tar -xvzf xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
@@ -958,7 +958,7 @@ jobs:
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          ./emu_env/xpack-qemu-arm-2.8.0-13/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          ./emu_env/xpack-qemu-arm-7.1.0-1/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
