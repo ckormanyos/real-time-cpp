@@ -21,11 +21,11 @@ auto app::benchmark::run_crc() -> bool
     0x31U, 0x32U, 0x33U, 0x34U, 0x35U, 0x36U, 0x37U, 0x38U, 0x39U
   }};
 
-  const std::uint32_t app_benchmark_crc =
+  const auto app_benchmark_crc =
     math::checksums::crc::crc32_mpeg2(app_benchmark_crc_data.cbegin(),
                                       app_benchmark_crc_data.cend());
 
-  const bool result_is_ok = (app_benchmark_crc == UINT32_C(0x0376E6E7));
+  const auto result_is_ok = (app_benchmark_crc == static_cast<std::uint32_t>(UINT32_C(0x0376E6E7)));
 
   return result_is_ok;
 }
@@ -42,7 +42,7 @@ extern "C"
 
   auto app_benchmark_run_standalone(void) -> bool
   {
-    bool result_is_ok = true;
+    auto result_is_ok = true;
 
     for(unsigned i = 0U; i < 64U; ++i)
     {
@@ -52,7 +52,7 @@ extern "C"
     app_benchmark_standalone_result =
       static_cast<std::uint32_t>
       (
-        result_is_ok ? app_benchmark_standalone_foodcafe : UINT32_C(0xFFFFFFFF)
+        result_is_ok ? app_benchmark_standalone_foodcafe : static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF))
       );
 
     return result_is_ok;
@@ -61,7 +61,7 @@ extern "C"
   auto app_benchmark_get_standalone_result(void) -> bool
   {
     volatile auto result_is_ok =
-      (app_benchmark_standalone_result == UINT32_C(0xF00DCAFE));
+      (app_benchmark_standalone_result == static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE)));
 
     return result_is_ok;
   }

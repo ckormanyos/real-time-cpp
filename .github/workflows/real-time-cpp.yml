@@ -40,7 +40,7 @@ jobs:
           echo "verify empty word count of ./tmp/all.tidy_txt"
           wc ./tmp/all.tidy_txt | grep '0 0 0'
   target-avr:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -60,7 +60,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-cmake:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -124,7 +124,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-example_led:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -146,7 +146,7 @@ jobs:
         working-directory: ./examples/
         shell: bash
   target-avr-examples:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -167,7 +167,7 @@ jobs:
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
   target-bcm2835_raspi_b-example10_09:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -188,10 +188,10 @@ jobs:
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex ./bin/kernel.img
         working-directory: ./examples/
   target-msvc-examples:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
-        shell: pwsh
+        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -200,16 +200,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: target-msvc-examples
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           cd ${{ matrix.example }}
           MSBuild -m ${{ matrix.example }}.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/${{ matrix.example }}.exe
         working-directory: ./examples/
   target-msvc-example16_08:
-    runs-on: windows-2019
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -228,18 +233,19 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: target-msvc-example16_08
-        shell: cmd
-        working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
+        working-directory: ./
   target-avr-win-batch-example_led:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -271,7 +277,7 @@ jobs:
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
         working-directory: ./examples/
   target-avr-win-batch-examples:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -303,7 +309,7 @@ jobs:
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
         working-directory: ./examples/
   target-arm-win-batch-examples:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -335,7 +341,7 @@ jobs:
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-arm-none-eabi\bin" arm-none-eabi
         working-directory: ./examples/
   target-arm:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -355,7 +361,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-arm-cmake:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -406,7 +412,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-x86_64:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -418,7 +424,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-host-cmake:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -433,7 +439,7 @@ jobs:
         working-directory: ./
         shell: bash
   msvc-msbuild:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -445,15 +451,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration=${{ matrix.suite }} -p:Platform=x64 /t:Rebuild
           dir .\tmp\${{ matrix.suite }}\ref_app.exe
         working-directory: ./ref_app/
   msvc-msbuild-avr:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -479,15 +487,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-arm:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -513,15 +523,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rl78:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -547,15 +559,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rl78-unknown-elf"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-rx63n:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -581,15 +595,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rx-elf"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-v850:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -615,15 +631,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-v850-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-v850-unknown-elf"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-x86_64-w64-mingw32:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -649,15 +667,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-x86_64-w64-mingw32.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-x86_64-w64-mingw32"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.exe
         working-directory: ./ref_app/
   msvc-msbuild-xtensa:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -683,15 +703,17 @@ jobs:
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
         working-directory: ./
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   benchmark_gcc-clang:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -806,7 +828,7 @@ jobs:
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-avr:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -824,7 +846,7 @@ jobs:
         run: ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-stm32f446:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -853,7 +875,7 @@ jobs:
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_single-stm32f446:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
