@@ -189,9 +189,6 @@ jobs:
         working-directory: ./examples/
   target-msvc-examples:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -200,21 +197,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: target-msvc-examples
+        shell: cmd
+        working-directory: ./examples/
         run: |
           cd ${{ matrix.example }}
           MSBuild -m ${{ matrix.example }}.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir ./Release/${{ matrix.example }}.exe
-        working-directory: ./examples/
   target-msvc-example16_08:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -234,16 +228,19 @@ jobs:
           ./bootstrap.bat
           ./b2 headers
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: target-msvc-example16_08
+        shell: cmd
+        working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
-        working-directory: ./
   target-avr-win-batch-example_led:
     runs-on: windows-latest
     defaults:
