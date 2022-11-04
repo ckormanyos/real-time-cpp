@@ -232,10 +232,10 @@ jobs:
       - name: target-msvc-example16_08
         run: |
           cd examples/${{ matrix.example }}
-          set INCLUDE=%CD%\src\mcal\win32;%CD%\src;%CD%\..\..\..\boost-root;%INCLUDE%
+          set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
-        working-directory: ./
+        working-directory: ./examples/
   target-avr-win-batch-example_led:
     runs-on: windows-latest
     defaults:
