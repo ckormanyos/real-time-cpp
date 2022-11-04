@@ -471,8 +471,6 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
-        shell: cmd
-        working-directory: ./
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -485,10 +483,11 @@ jobs:
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
+        shell: cmd
+        working-directory: ./ref_app/
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
-        working-directory: ./ref_app/
   msvc-msbuild-arm:
     runs-on: windows-latest
     strategy:
@@ -511,7 +510,6 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
-        working-directory: ./
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
@@ -570,7 +568,6 @@ jobs:
         run: |
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
-        working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
@@ -579,7 +576,6 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rx-elf"
-        working-directory: ./
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
@@ -636,7 +632,6 @@ jobs:
         run: |
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
-        working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
@@ -677,7 +672,6 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
-        working-directory: ./
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
