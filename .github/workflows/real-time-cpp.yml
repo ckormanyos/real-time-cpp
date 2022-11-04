@@ -26,7 +26,7 @@ jobs:
           toolset: 14.2
       - name: target-msvc-examples
         shell: cmd
-        working-directory: ./examples/
+        working-directory: .\examples
         run: |
           cd ${{ matrix.example }}
           MSBuild -m ${{ matrix.example }}.sln -p:Configuration=Release -p:Platform=x64 /t:Rebuild
@@ -96,7 +96,7 @@ jobs:
         run: |
           cd ${{ matrix.example }}
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
-        working-directory: ./examples/
+        working-directory: .\examples
   msvc-msbuild:
     runs-on: windows-latest
     strategy:
@@ -133,7 +133,6 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -141,13 +140,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
@@ -166,7 +166,6 @@ jobs:
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -174,13 +173,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
@@ -200,7 +200,6 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -208,6 +207,7 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rl78-unknown-elf"
+          cd ..\..\..\..\..\..
         working-directory: ./
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
@@ -215,7 +215,7 @@ jobs:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
@@ -234,7 +234,6 @@ jobs:
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -242,13 +241,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rx-elf"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
@@ -267,7 +267,6 @@ jobs:
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -275,13 +274,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-v850-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-v850-unknown-elf"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
@@ -300,7 +300,6 @@ jobs:
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -308,13 +307,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-11.2.0-x86_64-w64-mingw32.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-x86_64-w64-mingw32"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.exe
@@ -333,7 +333,6 @@ jobs:
           echo Cloning GNU/GCC toolchain
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ../toolchains
       - name: extract-real-time-cpp-toolchain
-        shell: pwsh
         run: |
           echo Moving GNU/GCC toolchain
           move ..\toolchains\ref_app\tools .\ref_app\tools
@@ -341,13 +340,14 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait .\gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
+          cd ..\..\..\..\..\..
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
-        working-directory: ./ref_app/
+        working-directory: .\ref_app
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
