@@ -47,11 +47,6 @@ jobs:
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
-          echo 'dir ${{runner.workspace}}/toolchains'
-          echo .
-          dir ${{runner.workspace}}/toolchains
-          echo .
+          dir ${{runner.workspace}}\toolchains
           echo ${{ matrix.suite }}
-          echo .
           echo empty for now
-          echo .
