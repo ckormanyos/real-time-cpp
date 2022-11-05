@@ -39,7 +39,7 @@ jobs:
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          copy /Y ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          xcopy /s /y ${{runner.workspace}}\toolchains\ref_app\tools* .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
