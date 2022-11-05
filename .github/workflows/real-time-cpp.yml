@@ -29,9 +29,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ../toolchains
-          key: ${{ runner.os }}-toolchains-${{ hashFiles('**/toolchains*') }}
-          restore-keys: |
-           ${{ runner.os }}-toolchains-
+          key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
