@@ -4,6 +4,15 @@
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-arm-none-eabi.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-avr.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rl78-unknown-elf.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rx-elf.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-v850-unknown-elf.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-x86_54-w64-mingw32.*
+#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-8.4.0-xtensa-esp32-elf.*
+
+
 name: real-time-cpp
 on:
   push:
@@ -29,12 +38,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{runner.workspace}}/toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-toolchains-gcc-11.2.0-arm-non-eabi
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-avr.*
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rl78-unknown-elf.*
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rx-elf.*
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-v850-unknown-elf.*
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-x86_54-w64-mingw32.*
+          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-8.4.0-xtensa-esp32-elf.*
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
