@@ -252,7 +252,7 @@ version:
 	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
-	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
+	@$(ECHO) +++ Print compiler include paths for VisualStudio browsing
 	@$(ECHO) $(addsuffix ;,$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler definitions
