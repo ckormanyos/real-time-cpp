@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: clone-real-time-cpp-toolchains-master
-      - uses: actions/cache@v3
+        uses: actions/cache@v3
         id: cache-toolchains
         with:
           path: ../toolchains
