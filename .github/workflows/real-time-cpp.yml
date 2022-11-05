@@ -40,6 +40,8 @@ jobs:
           toolset: 14.2
       - name: target-msvc-example16_08
         run: |
+          dir ${{runner.workspace}}
+          echo %INCLUDE%
           cd examples/${{ matrix.example }}
           set INCLUDE=${{runner.workspace}}\examples\${{ matrix.example }}\src\mcal\win32;${{runner.workspace}}\examples\${{ matrix.example }}\src;${{runner.workspace}}\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
