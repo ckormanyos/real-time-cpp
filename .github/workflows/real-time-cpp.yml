@@ -43,7 +43,7 @@ jobs:
         run: |
           cd examples/${{ matrix.example }}
           dir ${{runner.workspace}}
-          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src;${{runner.workspace}}\..\boost-root;%INCLUDE%
+          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src;${{runner.workspace}}\real-time-cpp\..\boost-root;%INCLUDE%
           echo 'echo INCLUDE'
           echo %INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
