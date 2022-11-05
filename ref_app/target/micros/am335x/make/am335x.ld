@@ -1,4 +1,4 @@
-﻿
+
 /*
  Copyright Michael Schnerr 2011 - 2014.
  Copyright Christopher Kormanyos 2007 - 2022.

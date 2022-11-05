@@ -32,10 +32,10 @@ DQUOTE = \"
 # paths
 # ------------------------------------------------------------------------------
 PATH_TOOLS           = tools
-PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
-PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
-PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
+PATH_TOOLS_UTIL      = $(PATH_TOOLS)\\Util
+PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\\msys64\\usr
+PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\\local\\gcc-$(GCC_VERSION)-$(GCC_TARGET)\\bin
 
 PATH_APP             = src
 PATH_TGT             = target/micros/$(TGT)
@@ -52,11 +52,11 @@ PATH_ERR             = $(PATH_TMP)/err
 # standard shell tools
 # ------------------------------------------------------------------------------
 
-ECHO                 = $(PATH_TOOLS_MINGW_BIN)\echo.exe
-MAKE                 = $(PATH_TOOLS_MINGW_BIN)\make.exe
-MKDIR                = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
-RM                   = $(PATH_TOOLS_MINGW_BIN)\rm.exe
-SED                  = $(PATH_TOOLS_MINGW_BIN)\sed.exe
+ECHO                 = $(PATH_TOOLS_MINGW_BIN)\\echo.exe
+MAKE                 = $(PATH_TOOLS_MINGW_BIN)\\make.exe
+MKDIR                = $(PATH_TOOLS_MINGW_BIN)\\mkdir.exe
+RM                   = $(PATH_TOOLS_MINGW_BIN)\\rm.exe
+SED                  = $(PATH_TOOLS_MINGW_BIN)\\sed.exe
 
 
 # ------------------------------------------------------------------------------
@@ -108,27 +108,27 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # Development tools
 # ------------------------------------------------------------------------------
 ifeq ($(GCC_PREFIX),)
-AR        = $(PATH_TOOLS_CC)\ar.exe
-AS        = $(PATH_TOOLS_CC)\g++.exe
-CC        = $(PATH_TOOLS_CC)\g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\c++filt.exe
-NM        = $(PATH_TOOLS_CC)\nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\objdump.exe
-OBJCOPY   = $(PATH_TOOLS_CC)\objcopy.exe
-READELF   = $(PATH_TOOLS_CC)\readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\size.exe
+AR        = $(PATH_TOOLS_CC)\\ar.exe
+AS        = $(PATH_TOOLS_CC)\\g++.exe
+CC        = $(PATH_TOOLS_CC)\\g++.exe
+CPPFILT   = $(PATH_TOOLS_CC)\\c++filt.exe
+NM        = $(PATH_TOOLS_CC)\\nm.exe
+OBJDUMP   = $(PATH_TOOLS_CC)\\objdump.exe
+OBJCOPY   = $(PATH_TOOLS_CC)\\objcopy.exe
+READELF   = $(PATH_TOOLS_CC)\\readelf.exe
+SIZE      = $(PATH_TOOLS_CC)\\size.exe
 else
-AR        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
-AS        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CC        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
-NM        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
+AR        = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-ar.exe
+AS        = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-g++.exe
+CC        = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-g++.exe
+CPPFILT   = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-c++filt.exe
+NM        = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-nm.exe
+OBJDUMP   = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-objdump.exe
 ifeq ($(OBJCOPY),)
-OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+OBJCOPY   = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-objcopy.exe
 endif
-READELF   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
+READELF   = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-readelf.exe
+SIZE      = $(PATH_TOOLS_CC)\\$(GCC_PREFIX)-size.exe
 endif
 
 # ------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ version:
 	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
-	@$(ECHO) +++ Print compiler include paths for Visual Studio browsing
+	@$(ECHO) +++ Print compiler include paths for VisualStudio browsing
 	@$(ECHO) $(addsuffix ;,$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler definitions
