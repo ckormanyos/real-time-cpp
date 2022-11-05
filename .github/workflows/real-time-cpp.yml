@@ -207,7 +207,7 @@ jobs:
           dir ./Release/${{ matrix.example }}.exe
         working-directory: ./examples/
   target-msvc-example16_08:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -229,19 +229,16 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.bat
           ./b2 headers
-      - name: add msbuild to path
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x64
-      - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+      - uses: actions/checkout@v1
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: target-msvc-example16_08
+        shell: cmd
+        working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
           set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
-        working-directory: ./
   target-avr-win-batch-example_led:
     runs-on: windows-latest
     defaults:
