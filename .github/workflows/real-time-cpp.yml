@@ -207,33 +207,40 @@ jobs:
           dir ./Release/${{ matrix.example }}.exe
         working-directory: ./examples/
   target-msvc-example16_08:
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         example: [ chapter16_08 ]
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: '0'
-      - name: clone-submods-bootstrap-headers-boost-develop
+      - name: clone-boost-develop
+        working-directory: ${{runner.workspace}}
         run: |
-          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
-          cd ../boost-root
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ${{runner.workspace}}/boost-root
+      - name: clone-boost-submods
+        working-directory: ${{runner.workspace}}/boost-root
+        run: |
           git submodule update --init tools
           git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
+      - name: bootstrap-boost
+        working-directory: ${{runner.workspace}}/boost-root
+        run: |
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v1
       - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: target-msvc-example16_08
         shell: cmd
         working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
-          set INCLUDE=%cd%\src\mcal\win32;%cd%\src;%cd%\..\..\..\boost-root;%INCLUDE%
+          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;%INCLUDE%
+          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src;%INCLUDE%
+          set INCLUDE=${{runner.workspace}}\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
   target-avr-win-batch-example_led:
