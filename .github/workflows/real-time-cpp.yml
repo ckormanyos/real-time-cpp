@@ -12,7 +12,7 @@ on:
   pull_request:
 jobs:
   msvc-msbuild-arm:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: cmd
@@ -44,6 +44,8 @@ jobs:
           msbuild-architecture: x64
       - name: msvc-msbuild-${{ matrix.suite }}
         shell: cmd
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
         run: |
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
