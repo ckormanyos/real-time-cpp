@@ -28,7 +28,7 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
@@ -38,24 +38,4 @@ jobs:
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
-          echo Moving GNU/GCC toolchain
-          cd ref_app
-          mkdir tools
-          cd ..
-          xcopy /s /e /y ${{runner.workspace}}\toolchains\ref_app\tools ref_app\tools
-          cd .\ref_app\tools\Util\msys64\usr\local
-          dir
-          echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
-        working-directory: ./
-      - name: add msbuild to path
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x64
-      - name: msvc-msbuild-${{ matrix.suite }}
-        env:
-          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
-        run: |
-          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
-          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
-        working-directory: ./ref_app/
+          echo empty for now
