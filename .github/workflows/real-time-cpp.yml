@@ -261,7 +261,7 @@ jobs:
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
+          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2
         working-directory: ./
       - name: target-avr-win-batch-example_led
         run: |
@@ -293,7 +293,7 @@ jobs:
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
+          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2
         working-directory: ./
       - name: target-avr-win-batch-examples
         run: |
@@ -325,7 +325,7 @@ jobs:
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi"
+          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
         working-directory: ./
       - name: target-arm-win-batch-examples
         run: |
@@ -476,7 +476,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-avr"
+          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -510,7 +510,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-arm-none-eabi-avr"
+          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -544,7 +544,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-rl78-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rl78-unknown-elf"
+          start /b /wait ./gcc-11.2.0-rl78-unknown-elf.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -578,7 +578,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-rx-elf"
+          start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -612,7 +612,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-v850-unknown-elf.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-v850-unknown-elf"
+          start /b /wait ./gcc-11.2.0-v850-unknown-elf.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -646,7 +646,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-11.2.0-x86_64-w64-mingw32.exe -y -gm2 -InstallPath=".\\gcc-11.2.0-x86_64-w64-mingw32"
+          start /b /wait ./gcc-11.2.0-x86_64-w64-mingw32.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
@@ -680,7 +680,7 @@ jobs:
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
-          start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2 -InstallPath=".\\gcc-8.4.0-xtensa-esp32-elf"
+          start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2
         working-directory: ./
       - name: msvc-msbuild-${{ matrix.suite }}
         env:
