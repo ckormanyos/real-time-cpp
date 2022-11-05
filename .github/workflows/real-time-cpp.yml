@@ -4,15 +4,6 @@
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-arm-none-eabi.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-avr.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rl78-unknown-elf.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-rx-elf.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-v850-unknown-elf.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-11.2.0-x86_54-w64-mingw32.*
-#          del /y ${{runner.workspace}}/toolchains/ref_app/tools/Util/msys64/usr/local/gcc-8.4.0-xtensa-esp32-elf.*
-
-
 name: real-time-cpp
 on:
   push:
@@ -20,6 +11,51 @@ on:
       - '**'
   pull_request:
 jobs:
+  msvc-msbuild-avr:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ avr, atmega2560, atmega4809 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-11.2.0-avr.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app/
   msvc-msbuild-arm:
     runs-on: windows-latest
     defaults:
@@ -53,6 +89,231 @@ jobs:
           dir
           echo Extracting GNU/GCC toolchain
           start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app/
+  msvc-msbuild-rl78:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ rl78 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-11.2.0-rl78-unknown-elf.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app/
+  msvc-msbuild-rx63n:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ rx63n ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-11.2.0-rx-elf.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app/
+  msvc-msbuild-v850:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ rx63n ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-11.2.0-v850-unknown-elf.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app/
+  msvc-msbuild-x86_64-w64-mingw32:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ x86_64-w64-mingw32 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-11.2.0-x86_64-w64-mingw32.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.exe
+        working-directory: ./ref_app/
+  msvc-msbuild-xtensa:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ xtensa32 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache win toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
+      - name: clone-real-time-cpp-toolchains-master
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        run: |
+          echo Cloning GNU/GCC toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+        working-directory: ./
+      - name: extract-real-time-cpp-toolchain
+        run: |
+          echo Moving GNU/GCC toolchain
+          move ..\toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting GNU/GCC toolchain
+          start /b /wait ./gcc-8.4.0-xtensa-esp32-elf.exe -y -gm2
         working-directory: ./
       - name: add msbuild to path
         uses: microsoft/setup-msbuild@v1.1
