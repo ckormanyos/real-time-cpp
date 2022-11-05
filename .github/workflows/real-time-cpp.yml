@@ -39,6 +39,9 @@ jobs:
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
+          cd ref_app
+          mkdir tools
+          cd ..
           xcopy /s /e /y ${{runner.workspace}}\toolchains\ref_app\tools ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
