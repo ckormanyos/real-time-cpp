@@ -13,9 +13,6 @@ on:
 jobs:
   target-msvc-example16_08:
     runs-on: windows-2019
-    defaults:
-      run:
-        shell: cmd
     strategy:
       fail-fast: false
       matrix:
@@ -34,8 +31,10 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.bat
           ./b2 headers
+      - uses: actions/checkout@v1
       - uses: ilammy/msvc-dev-cmd@v1
       - name: target-msvc-example16_08
+        shell: cmd
         working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
