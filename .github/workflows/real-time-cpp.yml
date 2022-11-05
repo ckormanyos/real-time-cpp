@@ -35,7 +35,6 @@ jobs:
         run: |
           ./bootstrap.bat
           ./b2 headers
-      - uses: actions/checkout@v1
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
@@ -43,12 +42,9 @@ jobs:
         shell: cmd
         working-directory: ./
         run: |
-          dir ${{runner.workspace}}
           cd examples/${{ matrix.example }}
           set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;%INCLUDE%
           set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src;%INCLUDE%
           set INCLUDE=${{runner.workspace}}\boost-root;%INCLUDE%
-          echo 'echo INCLUDE'
-          echo %INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
