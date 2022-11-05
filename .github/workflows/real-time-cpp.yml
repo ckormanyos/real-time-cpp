@@ -77,7 +77,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-arm:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
@@ -217,7 +217,7 @@ jobs:
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
         working-directory: ./ref_app/
   msvc-msbuild-x86_64-w64-mingw32:
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         shell: cmd
