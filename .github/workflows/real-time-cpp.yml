@@ -37,23 +37,21 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{ runner.workspace }}/toolchains
-          key: ${{ runner.os }}-toolchains-gcc-11.2.0-arm-non-eabi
+          path: ${{runner.workspace}}/toolchains
+          key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
-          cd ${{ runner.workspace }}/toolchains/ref_app/tools/Util/msys64/usr/local
-          dir
-          del /q gcc-11.2.0-avr.*
-          del /q gcc-11.2.0-rl78-unknown-elf.*
-          del /q gcc-11.2.0-rx-elf.*
-          del /q gcc-11.2.0-v850-unknown-elf.*
-          del /q gcc-11.2.0-x86_54-w64-mingw32.*
-          del /q gcc-8.4.0-xtensa-esp32-elf.*
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
+          echo 'dir ${{runner.workspace}}/toolchains'
+          echo .
+          dir ${{runner.workspace}}/toolchains
+          echo .
           echo ${{ matrix.suite }}
+          echo .
           echo empty for now
+          echo .
