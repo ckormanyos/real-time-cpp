@@ -42,14 +42,14 @@ jobs:
         run: |
           cd ${{ runner.workspace }}/macos-gnu-arm-toolchain
           tar -xvf gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
-      - name: add-path-macos-gnu-arm-toolchain
-        run: |
-          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07/bin:$PATH"
-          echo 'arm-none-eabi-g++ -v'
-          arm-none-eabi-g++ -v
-        working-directory: ./
       - name: target-arm-macos-${{ matrix.suite }}
         run: |
+          echo 'set and verify add path macos gnu arm toolchain'
+          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07/bin:$PATH"
+          echo ""
+          echo 'arm-none-eabi-g++ -v'
+          arm-none-eabi-g++ -v
+          echo ""
           echo Install make via brew
           brew install make
           echo ""
