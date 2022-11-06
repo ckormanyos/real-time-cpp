@@ -24,24 +24,24 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - name: cache win toolchains
+      - name: cache win-toolchains
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: toolchains
-          key: ${{ runner.os }}-toolchains
+          path: win-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git .\toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/win-toolchains
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move /Y .\toolchains\ref_app\tools .\ref_app\tools
+          move /Y ${{ runner.workspace }}\win-toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
-          echo Extracting GNU/GCC toolchain
+          echo Extracting the necessary GNU/GCC toolchains
           start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
         working-directory: ./
       - name: add msbuild to path
@@ -52,6 +52,7 @@ jobs:
         env:
           PATH: '${env:PATH};tools\Util\msys64\usr\bin'
         run: |
+          cd ref_app
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
-        working-directory: ./ref_app/
+
