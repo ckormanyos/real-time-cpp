@@ -33,13 +33,13 @@ jobs:
           echo 'Clone osx-cross/homebrew-avr'
           echo ""
           git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr ${{runner.workspace}}/homebrew-avr-root
+        working-directory: ./
+      - name: install-osx-cross-homebrew-avr
+        run: |
           echo 'Tap osx-cross/homebrew-avr on MacOS via brew'
           echo ""
           cd ${{runner.workspace}}/homebrew-avr-root
           brew tap osx-cross/avr
-        working-directory: ./
-      - name: install-osx-cross-homebrew-avr
-        run: |
           echo 'Install osx-cross/homebrew-avr on MacOS via brew'
           brew install avr-gcc@11
         working-directory: ./
