@@ -52,7 +52,10 @@ jobs:
         env:
           PATH: '${env:PATH};tools\Util\msys64\usr\bin'
         run: |
-          cd ref_app
           MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
           dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
-
+        working-directory: ./ref_app
+      - name: restore-win-toolchains-for-cache-if-needed
+        if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
+        run: |
+          move /Y .\ref_app\tools ${{ runner.workspace }}\win-toolchains\ref_app\tools
