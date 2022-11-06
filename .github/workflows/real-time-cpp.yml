@@ -28,7 +28,7 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ..\toolchains
+          path: toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
