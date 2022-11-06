@@ -96,20 +96,20 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/homebrew-avr-root
+          path: ${{ runner.workspace }}/homebrew-avr-root
           key: ${{ runner.os }}-homebrew-avr-root
       - name: clone-osx-cross-homebrew-avr
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo 'Clone osx-cross/homebrew-avr'
           echo ""
-          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr ${{runner.workspace}}/homebrew-avr-root
+          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr ${{ runner.workspace }}/homebrew-avr-root
         working-directory: ./
       - name: install-osx-cross-homebrew-avr
         run: |
           echo 'Tap osx-cross/homebrew-avr on MacOS via brew'
           echo ""
-          cd ${{runner.workspace}}/homebrew-avr-root
+          cd ${{ runner.workspace }}/homebrew-avr-root
           brew tap osx-cross/avr
           echo 'Install osx-cross/homebrew-avr on MacOS via brew'
           brew install avr-gcc@11
@@ -228,18 +228,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: clone-boost-develop
-        working-directory: ${{runner.workspace}}
+        working-directory: ${{ runner.workspace }}
         run: |
-          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ${{runner.workspace}}/boost-root
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ${{ runner.workspace }}/boost-root
       - name: clone-boost-submods
-        working-directory: ${{runner.workspace}}/boost-root
+        working-directory: ${{ runner.workspace }}/boost-root
         run: |
           git submodule update --init tools
           git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
       - name: bootstrap-boost
-        working-directory: ${{runner.workspace}}/boost-root
+        working-directory: ${{ runner.workspace }}/boost-root
         run: |
           ./bootstrap.bat
           ./b2 headers
@@ -251,9 +251,9 @@ jobs:
         working-directory: ./
         run: |
           cd examples/${{ matrix.example }}
-          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;%INCLUDE%
-          set INCLUDE=${{runner.workspace}}\real-time-cpp\examples\${{ matrix.example }}\src;%INCLUDE%
-          set INCLUDE=${{runner.workspace}}\boost-root;%INCLUDE%
+          set INCLUDE=${{ runner.workspace }}\real-time-cpp\examples\${{ matrix.example }}\src\mcal\win32;%INCLUDE%
+          set INCLUDE=${{ runner.workspace }}\real-time-cpp\examples\${{ matrix.example }}\src;%INCLUDE%
+          set INCLUDE=${{ runner.workspace }}\boost-root;%INCLUDE%
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
   target-avr-win-batch-example_led:
@@ -273,18 +273,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
+          move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -312,18 +312,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
+          move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -351,18 +351,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
+          move ..\toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -426,11 +426,25 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - name: clone-armmbed-homebrew-formulae-and-install
+      - name: cache macos toolchains
+        id: cache-toolchains
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.workspace }}/homebrew-avr-root
+          key: ${{ runner.os }}-armmbed-root
+      - name: clone-osx-cross-homebrew-avr
+        if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
-          echo Install gcc-arm-none-eabi on MacOS via ArmMbed/homebrew-formulae
-          git clone -b master --depth 1 https://github.com/ARMmbed/homebrew-formulae.git ../ARMmbed-root
-          cd ../ARMmbed-root
+          echo 'Clone ArmMbed/homebrew-formulae'
+          echo ""
+          git clone -b master --depth 1 https://github.com/ARMmbed/homebrew-formulae.git ${{ runner.workspace }}/armmbed-root
+        working-directory: ./
+      - name: install-armmbed-homebrew-formulae
+        run: |
+          echo 'Tap ArmMbed/homebrew-formulae on MacOS via brew'
+          echo ""
+          echo 'Install gcc-arm-none-eabi on MacOS via ArmMbed/homebrew-formulae'
+          cd ${{ runner.workspace }}/armmbed-root
           brew tap ArmMbed/homebrew-formulae
           brew install arm-none-eabi-gcc
         working-directory: ./
@@ -438,10 +452,16 @@ jobs:
         run: |
           echo Install make via brew
           brew install make
+          echo ""
+          echo Add the brew-installed-make path
+          PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+          echo ""
           echo query the GNUmake version
-          gmake --version
+          make --version
           echo Manually call GNUmake to build the target
-          gmake -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }} MY_GMAKE=gmake
+          echo ""
+          make -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }}
+          echo ""
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-x86_64:
@@ -509,18 +529,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -554,18 +574,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}/toolchains/ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -599,18 +619,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -644,18 +664,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -689,18 +709,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -734,18 +754,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
@@ -779,18 +799,18 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{runner.workspace}}/toolchains
+          path: ${{ runner.workspace }}/toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{runner.workspace}}/toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{runner.workspace}}\toolchains\ref_app\tools .\ref_app\tools
+          move ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
