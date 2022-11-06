@@ -23,13 +23,13 @@ jobs:
           fetch-depth: '0'
       - name: clone-ckormanyos-homebrew-avr-originally-from-osx-cross-homebrew-avr
         run: |
-          echo Clone avr-gcc on MacOS from ckormanyos/homebrew-avr (originally from osx-cross/homebrew-avr)
+          echo 'Clone ckormanyos/homebrew-avr originally from osx-cross/homebrew-avr'
           echo ""
           git clone -b main --depth 1 https://github.com/ckormanyos/homebrew-avr ${{runner.workspace}}/homebrew-avr-root
         working-directory: ./
       - name: install-ckormanyos-homebrew-avr-originally-from-osx-cross-homebrew-avr
         run: |
-          echo Install avr-gcc on MacOS via brew (originally from osx-cross/homebrew-avr)
+          echo 'Install ckormanyos/homebrew-avr on MacOS via brew originally from osx-cross/homebrew-avr'
           echo ""
           cd ${{runner.workspace}}/homebrew-avr-root
           brew tap ckormanyos/avr
