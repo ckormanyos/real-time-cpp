@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ am335x ]
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -37,4 +37,21 @@ jobs:
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/win-toolchains
       - name: extract-real-time-cpp-toolchain
         run: |
-          echo Empty steps for now
+          echo Moving GNU/GCC toolchain
+          move /Y ${{ runner.workspace }}\win-toolchains\ref_app\tools .\ref_app\tools
+          cd .\ref_app\tools\Util\msys64\usr\local
+          dir
+          echo Extracting the necessary GNU/GCC toolchains
+          start /b /wait ./gcc-11.2.0-arm-none-eabi.exe -y -gm2
+        working-directory: ./
+      - name: add msbuild to path
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: msvc-msbuild-${{ matrix.suite }}
+        env:
+          PATH: '${env:PATH};tools\Util\msys64\usr\bin'
+        run: |
+          MSBuild -m ref_app.sln -p:Configuration="target ${{ matrix.suite }}" -p:Platform=x64 /t:Rebuild
+          dir .\bin\ref_app.elf .\bin\ref_app.hex .\bin\ref_app.s19
+        working-directory: ./ref_app
