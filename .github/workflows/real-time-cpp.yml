@@ -96,22 +96,22 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{ runner.workspace }}/homebrew-avr-root
-          key: ${{ runner.os }}-homebrew-avr-root
+          path: ${{runner.workspace}}/homebrew-avr-root
+          key: ${{ runner.os }}-homebrew-avr
       - name: clone-osx-cross-homebrew-avr
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo 'Clone osx-cross/homebrew-avr'
           echo ""
-          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr ${{ runner.workspace }}/homebrew-avr-root
+          git clone -b main --depth 1 https://github.com/osx-cross/homebrew-avr ${{runner.workspace}}/homebrew-avr-root
         working-directory: ./
       - name: install-osx-cross-homebrew-avr
         run: |
           echo 'Tap osx-cross/homebrew-avr on MacOS via brew'
           echo ""
-          cd ${{ runner.workspace }}/homebrew-avr-root
-          brew tap osx-cross/avr
           echo 'Install osx-cross/homebrew-avr on MacOS via brew'
+          cd ${{runner.workspace}}/homebrew-avr-root
+          brew tap osx-cross/avr
           brew install avr-gcc@11
         working-directory: ./
       - name: target-avr-macos-${{ matrix.suite }}
@@ -430,21 +430,21 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{ runner.workspace }}/homebrew-avr-root
-          key: ${{ runner.os }}-armmbed-root
+          path: ${{runner.workspace}}/armmbed-root
+          key: ${{ runner.os }}-armmbed
       - name: clone-osx-cross-homebrew-avr
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo 'Clone ArmMbed/homebrew-formulae'
           echo ""
-          git clone -b master --depth 1 https://github.com/ARMmbed/homebrew-formulae.git ${{ runner.workspace }}/armmbed-root
+          git clone -b master --depth 1 https://github.com/ARMmbed/homebrew-formulae.git ${{runner.workspace}}/armmbed-root
         working-directory: ./
       - name: install-armmbed-homebrew-formulae
         run: |
           echo 'Tap ArmMbed/homebrew-formulae on MacOS via brew'
           echo ""
           echo 'Install gcc-arm-none-eabi on MacOS via ArmMbed/homebrew-formulae'
-          cd ${{ runner.workspace }}/armmbed-root
+          cd ${{runner.workspace}}/armmbed-root
           brew tap ArmMbed/homebrew-formulae
           brew install arm-none-eabi-gcc
         working-directory: ./
