@@ -317,17 +317,18 @@ jobs:
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/win-toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}\win-toolchains
+        working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move ${{ runner.workspace }}\win-toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
+          move /Y ${{ runner.workspace }}\win-toolchains\ref_app\tools .\examples\${{ matrix.example }}\tools
           cd .\examples\${{ matrix.example }}\tools\Util\msys64\usr\local
           dir
           echo Extracting the necessary GNU/GCC toolchains
           start /b /wait ./gcc-11.2.0-avr.exe -y -gm2
         working-directory: ./
-      - name: target-avr-win-batch-examples
+      - name: target-avr-win-batch-examples-${{ matrix.example }}
         run: |
           cd ${{ matrix.example }}
           .\build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
