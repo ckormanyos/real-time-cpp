@@ -4,9 +4,6 @@
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
-
-
 name: real-time-cpp
 on:
   push:
@@ -19,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ am335x ]
+        suite: [ am335x, bcm2835_raspi_b, lpc11c24, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -30,7 +27,7 @@ jobs:
         with:
           path: ${{ runner.workspace }}/macos-gnu-arm-toolchain
           key: ${{ runner.os }}-macos-gnu-arm-toolchain
-      - name: wget-unpack-macos-gnu-arm-toolchain
+      - name: wget-macos-gnu-arm-toolchain
         if: steps.cache-macos-gnu-arm-toolchain.outputs.cache-hit != 'true'
         run: |
           echo 'wget-macos-gnu-arm-toolchain'
