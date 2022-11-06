@@ -28,18 +28,17 @@ jobs:
         id: cache-toolchains
         uses: actions/cache@v3
         with:
-          path: ${{ runner.workspace }}\toolchains
+          path: ..\toolchains
           key: ${{ runner.os }}-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}\toolchains
-        working-directory: ./
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ..\toolchains
       - name: extract-real-time-cpp-toolchain
         run: |
           echo Moving GNU/GCC toolchain
-          move /Y ${{ runner.workspace }}\toolchains\ref_app\tools .\ref_app\tools
+          move /Y ..\toolchains\ref_app\tools .\ref_app\tools
           cd .\ref_app\tools\Util\msys64\usr\local
           dir
           echo Extracting GNU/GCC toolchain
