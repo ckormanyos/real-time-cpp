@@ -41,7 +41,7 @@ jobs:
         working-directory: ${{runner.workspace}}
       - name: add-path-macos-gnu-arm-toolchain
         run: |
-          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6/bin:$PATH"
+          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07/bin:$PATH"
           echo 'arm-none-eabi -v'
           arm-none-eabi -v
         working-directory: ./
