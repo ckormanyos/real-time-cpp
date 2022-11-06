@@ -429,7 +429,7 @@ jobs:
         with:
           path: ${{runner.workspace}}/homebrew-armmbed
           key: ${{ runner.os }}-homebrew-armmbed
-      - name: clone-osx-cross-homebrew-avr
+      - name: clone-armmbed-homebrew-formulae
         if: steps.cache-homebrew-armmbed.outputs.cache-hit != 'true'
         run: |
           echo 'Clone ArmMbed/homebrew-formulae'
