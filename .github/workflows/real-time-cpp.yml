@@ -494,7 +494,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -539,7 +539,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -584,7 +584,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -629,7 +629,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -674,7 +674,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -719,7 +719,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
@@ -764,7 +764,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}\win-toolchains
-          key: ${{ runner.os }}-toolchains
+          key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
