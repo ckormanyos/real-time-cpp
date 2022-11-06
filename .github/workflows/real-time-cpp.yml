@@ -38,11 +38,11 @@ jobs:
           mkdir -p macos-gnu-arm-toolchain && cd macos-gnu-arm-toolchain
           wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.07/gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
           tar -xvf gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
-        working-directory: ${{runner.workspace}}
+        working-directory: ${{ runner.workspace }}
       - name: add-path-macos-gnu-arm-toolchain
         run: |
           PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07/bin:$PATH"
-          echo 'arm-none-eabi -v'
+          echo 'arm-none-eabi-g++ -v'
           arm-none-eabi -v
         working-directory: ./
       - name: target-arm-macos-${{ matrix.suite }}
