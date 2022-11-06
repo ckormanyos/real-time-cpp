@@ -24,14 +24,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - name: cache win-toolchains
-        id: cache-toolchains
+      - name: cache-win-toolchains
+        id: cache-win-toolchains
         uses: actions/cache@v3
         with:
-          path: win-toolchains
+          path: ${{ runner.workspace }}\win-toolchains
           key: ${{ runner.os }}-win-toolchains
       - name: clone-real-time-cpp-toolchains-master
-        if: steps.cache-toolchains.outputs.cache-hit != 'true'
+        if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
           git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}/win-toolchains
