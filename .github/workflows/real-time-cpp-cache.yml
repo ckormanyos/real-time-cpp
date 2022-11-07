@@ -34,4 +34,4 @@ jobs:
       - name: verify-win-toolchains
         run: |
           echo Verify the non-moved GNU/GCC win-toolchains
-          dir win-toolchains
+          dir ${{ runner.workspace }}\win-toolchains
