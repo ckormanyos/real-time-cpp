@@ -42,7 +42,7 @@ jobs:
         if: steps.cache-win-toolchains.outputs.cache-hit != 'true'
         run: |
           echo Cloning GNU/GCC toolchains
-          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git ${{ runner.workspace }}\win-toolchains
+          git clone -b master --depth 1 https://github.com/ckormanyos/real-time-cpp-toolchains.git win-toolchains
         working-directory: ./
       - name: extract-real-time-cpp-toolchain
         run: |
