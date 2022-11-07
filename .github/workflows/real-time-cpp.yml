@@ -416,7 +416,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
+      - name: cache-macos-gnu-arm-toolchain
+        id: cache-macos-gnu-arm-toolchain
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.workspace }}/macos-gnu-arm-toolchain
+          key: ${{ runner.os }}-macos-gnu-arm-toolchain
       - name: wget-macos-gnu-arm-toolchain
+        if: steps.cache-macos-gnu-arm-toolchain.outputs.cache-hit != 'true'
         run: |
           echo 'wget-macos-gnu-arm-toolchain'
           echo ""
