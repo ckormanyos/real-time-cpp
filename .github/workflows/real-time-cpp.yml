@@ -48,4 +48,6 @@ jobs:
         run: |
           echo Moving GNU/GCC toolchain
           echo empty at the moment
+          dir win-toolchains
+
 
