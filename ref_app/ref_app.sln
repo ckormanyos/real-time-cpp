@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{FF08
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{05C8F17D-422D-4E38-BC39-07809736C953}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\real-time-cpp-cache.yml = ..\.github\workflows\real-time-cpp-cache.yml
 		..\.github\workflows\real-time-cpp-sonar.yml = ..\.github\workflows\real-time-cpp-sonar.yml
 		..\.github\workflows\real-time-cpp.yml = ..\.github\workflows\real-time-cpp.yml
 	EndProjectSection
