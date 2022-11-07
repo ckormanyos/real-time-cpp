@@ -4,7 +4,7 @@
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-# TBD: When buildinjg -DTRIPLE=arm-none-eabi -DTARGET=stm32f446
+# TBD: When building -DTRIPLE=arm-none-eabi -DTARGET=stm32f446
 # we find from LGTM system "arm-none-eabi/bin/ld: cannot find libc" (and also libm).
 # Try to correct this problem one day, maybe link with nano-specs or similar.
 
