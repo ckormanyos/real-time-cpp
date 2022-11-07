@@ -35,3 +35,27 @@ jobs:
         run: |
           echo Verify the non-moved GNU/GCC win-toolchains
           dir ${{ runner.workspace }}\win-toolchains
+  create-cache-macos-gnu-arm-toolchain:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: cache-macos-gnu-arm-toolchain
+        id: cache-macos-gnu-arm-toolchain
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.workspace }}/macos-gnu-arm-toolchain
+          key: ${{ runner.os }}-macos-gnu-arm-toolchain
+      - name: wget-macos-gnu-arm-toolchain
+        if: steps.cache-macos-gnu-arm-toolchain.outputs.cache-hit != 'true'
+        run: |
+          echo 'wget-macos-gnu-arm-toolchain'
+          echo ""
+          mkdir -p macos-gnu-arm-toolchain && cd macos-gnu-arm-toolchain
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.07/gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
+        working-directory: ${{ runner.workspace }}
+      - name: verify-macos-gnu-arm-toolchain
+        run: |
+          echo 'Verify the wget-retrieved MacOS gnu-arm-toolchain'
+          ls -la ${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
