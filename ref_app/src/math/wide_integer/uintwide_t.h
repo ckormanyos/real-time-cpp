@@ -2742,7 +2742,9 @@
         );
     }
 
+  #if !defined(WIDE_INTEGER_DISABLE_PRIVATE_CLASS_DATA_MEMBERS)
   private:
+  #endif
     representation_type
       values // NOLINT(readability-identifier-naming)
       {
@@ -2751,6 +2753,9 @@
         typename representation_type::allocator_type()
       };
 
+  #if defined(WIDE_INTEGER_DISABLE_PRIVATE_CLASS_DATA_MEMBERS)
+  private:
+  #endif
     friend auto ::test_uintwide_t_edge::test_various_isolated_edge_cases() -> bool;
 
     explicit constexpr uintwide_t(const representation_type& other_rep)
@@ -5080,7 +5085,7 @@
 
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    auto mask = static_cast<local_unsigned_integral_type>(u);
+    auto mask = static_cast<local_unsigned_integral_type>(u); // NOLINT(altera-id-dependent-backward-branch)
 
     // This assumes that at least one bit is set.
     // Otherwise saturation of the index will occur.
@@ -5502,15 +5507,15 @@
     local_wide_integer_type result;
     auto p0 = static_cast<local_limb_type>(p);
 
-    if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == OtherIntegralTypeP(0)))
+    if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(0)))
     {
       result = local_wide_integer_type(static_cast<std::uint8_t>(1U));
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == OtherIntegralTypeP(1)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(1)))
     {
       result = b;
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == OtherIntegralTypeP(2)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == static_cast<OtherIntegralTypeP>(2)))
     {
       result  = b;
       result *= b;
@@ -5558,17 +5563,17 @@
           local_double_width_type y      (b);
     const local_double_width_type m_local(m);
 
-    auto p0 = static_cast<local_limb_type>(p);
+    auto p0 = static_cast<local_limb_type>(p); // NOLINT(altera-id-dependent-backward-branch)
 
-    if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == OtherIntegralTypeP(0)))
+    if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(0)))
     {
       result = local_normal_width_type((m != 1U) ? static_cast<std::uint8_t>(1U) : static_cast<std::uint8_t>(UINT8_C(0)));
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == OtherIntegralTypeP(1)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(1)))
     {
       result = b % m;
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == OtherIntegralTypeP(2)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == static_cast<OtherIntegralTypeP>(2)))
     {
       y *= y;
       y %= m_local;
@@ -6790,8 +6795,8 @@
     const auto val_unsigned =
     (
       (!uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::is_neg(val))
-        ? local_unsigned_wide_integer_type(val)
-        : local_unsigned_wide_integer_type(-val)
+        ? static_cast<local_unsigned_wide_integer_type>(val)
+        : static_cast<local_unsigned_wide_integer_type>(-val)
     );
 
     static_assert(std::numeric_limits<local_result_value_type>::digits == std::numeric_limits<local_input_value_type>::digits,
@@ -6906,8 +6911,8 @@
     const auto val_unsigned =
     (
       (!uintwide_t<Width2, LimbType, AllocatorType, IsSigned>::is_neg(val))
-        ? local_unsigned_wide_integer_type(val)
-        : local_unsigned_wide_integer_type(-val)
+        ? static_cast<local_unsigned_wide_integer_type>(val)
+        : static_cast<local_unsigned_wide_integer_type>(-val)
     );
 
     static_assert(std::numeric_limits<local_result_value_type>::digits != std::numeric_limits<local_input_value_type>::digits,
