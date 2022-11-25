@@ -123,16 +123,20 @@
 
       // RCC registers.
       constexpr std::uint32_t rcc_cr               = rcc_base        + UINT32_C(0x0000); // RCC clock control register
+      static_assert(rcc_cr == UINT32_C(0x58024400), "Error: Verification of rcc_cr failed");
       constexpr std::uint32_t rcc_hsicfgr          = rcc_base        + UINT32_C(0x0004); // HSI Clock Calibration Register
       constexpr std::uint32_t rcc_crrcr            = rcc_base        + UINT32_C(0x0008); // Clock Recovery RC  Register
       constexpr std::uint32_t rcc_csicfgr          = rcc_base        + UINT32_C(0x000C); // CSI Clock Calibration Register
       constexpr std::uint32_t rcc_cfgr             = rcc_base        + UINT32_C(0x0010); // RCC clock configuration register
+      static_assert(rcc_cfgr == UINT32_C(0x58024410), "Error: Verification of rcc_cfgr failed");
       constexpr std::uint32_t rcc_cdcfgr1          = rcc_base        + UINT32_C(0x0018); // RCC Domain 1 configuration register
       constexpr std::uint32_t rcc_cdcfgr2          = rcc_base        + UINT32_C(0x001C); // RCC Domain 2 configuration register
       constexpr std::uint32_t rcc_srdcfgr          = rcc_base        + UINT32_C(0x0020); // RCC Domain 3 configuration register
       constexpr std::uint32_t rcc_pllckselr        = rcc_base        + UINT32_C(0x0028); // RCC PLLs Clock Source Selection Register
+      static_assert(rcc_pllckselr == UINT32_C(0x58024428), "Error: Verification of rcc_pllckselr failed");
       constexpr std::uint32_t rcc_pllcfgr          = rcc_base        + UINT32_C(0x002C); // RCC PLLs  Configuration Register
       constexpr std::uint32_t rcc_pll1divr         = rcc_base        + UINT32_C(0x0030); // RCC PLL1 Dividers Configuration Register
+      static_assert(rcc_pll1divr == UINT32_C(0x58024430), "Error: Verification of rcc_pll1divr failed");
       constexpr std::uint32_t rcc_pll1fracr        = rcc_base        + UINT32_C(0x0034); // RCC PLL1 Fractional Divider Configuration Register
       constexpr std::uint32_t rcc_pll2divr         = rcc_base        + UINT32_C(0x0038); // RCC PLL2 Dividers Configuration Register
       constexpr std::uint32_t rcc_pll2fracr        = rcc_base        + UINT32_C(0x003C); // RCC PLL2 Fractional Divider Configuration Register
