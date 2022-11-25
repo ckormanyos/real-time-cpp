@@ -21,6 +21,11 @@
 #include "STM32H7x3.h"
 #include "Cache.h"
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 
 //-----------------------------------------------------------------------------
 /// \brief
@@ -114,8 +119,8 @@ void Cache_InvalidateICache(void)
 extern "C"
 void Cache_EnableDCache(void)
 {
-  uint32 sets = 0;
-  uint32 ways = 0;
+  uint32_t sets = 0;
+  uint32_t ways = 0;
 
   if(!SCB->CCR.bit.DC)
   {
@@ -157,8 +162,8 @@ void Cache_EnableDCache(void)
 extern "C"
 void Cache_DisableDCache(void)
 {
-  uint32 sets = 0;
-  uint32 ways = 0;
+  uint32_t sets = 0;
+  uint32_t ways = 0;
 
   if(SCB->CCR.bit.DC)
   {
@@ -202,8 +207,8 @@ void Cache_DisableDCache(void)
 extern "C"
 void Cache_InvalidateDCache(void)
 {
-  uint32 sets = 0;
-  uint32 ways = 0;
+  uint32_t sets = 0;
+  uint32_t ways = 0;
 
   /* Enable selection of data cache */
   CSSELR->reg = 0;
@@ -239,8 +244,8 @@ void Cache_InvalidateDCache(void)
 extern "C"
 void Cache_CleanDCache(void)
 {
-  uint32 sets = 0;
-  uint32 ways = 0;
+  uint32_t sets = 0;
+  uint32_t ways = 0;
 
   /* Enable selection of data cache */
   CSSELR->reg = 0;
@@ -276,8 +281,8 @@ void Cache_CleanDCache(void)
 extern "C"
 void Cache_CleanInvlaidateDCache(void)
 {
-  uint32 sets = 0;
-  uint32 ways = 0;
+  uint32_t sets = 0;
+  uint32_t ways = 0;
 
   /* Enable selection of data cache */
   CSSELR->reg = 0;
@@ -300,3 +305,7 @@ void Cache_CleanInvlaidateDCache(void)
   __asm("DSB");
   __asm("ISB");
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

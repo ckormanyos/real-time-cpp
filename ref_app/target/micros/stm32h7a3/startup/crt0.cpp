@@ -8,11 +8,6 @@
 // STM32 EABI ARM(R) Cortex-M4(TM) startup code.
 // Expressed with C++ for STM32F429 by Chris.
 
-extern "C"
-{
-  #include "Cache.h"
-}
-
 #include <mcal/mcal.h>
 
 namespace crt
@@ -41,10 +36,6 @@ void __my_startup()
   // Call all ctor initializations.
   crt::init_ctors();
   mcal::wdg::secure::trigger();
-
-  // Enable the Cache-I and Cache-D.
-  Cache_EnableICache();
-  Cache_EnableDCache();
 
   // Jump to main (and never return).
   asm volatile("ldr r3, =main");

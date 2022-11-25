@@ -52,3 +52,10 @@ void mcal::cpu::init()
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }
+
+void mcal::cpu::post_init()
+{
+  // Enable the Cache-I and Cache-D.
+  Cache_EnableICache();
+  Cache_EnableDCache();
+}
