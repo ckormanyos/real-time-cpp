@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <STM32H7x3.h>
 
@@ -29,11 +30,17 @@ void mcal::osc::init(const config_type*)
   RCC->CR.bit.PLL1ON = 1u;
 
   // Wait for PLL1 to become ready.
-  while(!RCC->CR.bit.PLL1RDY);
+  while(!RCC->CR.bit.PLL1RDY)
+  {
+    mcal::cpu::nop();
+  }
 
   // Set pll1_p_ck as the system clock.
   RCC->CFGR.bit.SW = 3u;
 
   // Wait for pll1_p_ck to become the system clock.
-  while(RCC->CFGR.bit.SWS != 3u);
+  while(RCC->CFGR.bit.SWS != 3u)
+  {
+    mcal::cpu::nop();
+  }
 }

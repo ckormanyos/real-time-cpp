@@ -1786,42 +1786,16 @@ typedef struct {                                /*!< (@ 0xE000ED00) SCB Structur
 
 /** @} */ /* End of group Device_Peripheral_peripherals */
 
-
-/* =========================================================================================================================== */
-/* ================                          Device Specific Peripheral Address Map                           ================ */
-/* =========================================================================================================================== */
-
-
-/** @addtogroup Device_Peripheral_peripheralAddr
-  * @{
-  */
-
-#define RCC_BASE                    0x58024400UL
-#define Flash_BASE                  0x52002000UL
-#define SCB_BASE                    0xE000ED00UL
-
-/** @} */ /* End of group Device_Peripheral_peripheralAddr */
-
-
-/* =========================================================================================================================== */
-/* ================                                  Peripheral declaration                                   ================ */
-/* =========================================================================================================================== */
-
-
-/** @addtogroup Device_Peripheral_declaration
-  * @{
-  */
-
-#define RCC                         ((RCC_Type*)               RCC_BASE)
-#define Flash                       ((Flash_Type*)             Flash_BASE)
-#define SCB                         ((SCB_Type*)               SCB_BASE)
-
-#define CPACR  (*(volatile unsigned long*)(0xE000ED88UL))
-#define ITCMCR (*(volatile unsigned long*)(0xE000EF90UL))
-#define DTCMCR (*(volatile unsigned long*)(0xE000EF94UL))
-
 #ifdef __cplusplus
 }
 #endif
+
+#define RCC_BASE   0x58024400UL
+#define Flash_BASE 0x52002000UL
+#define SCB_BASE   0xE000ED00UL
+
+#define RCC   ((RCC_Type*)   RCC_BASE)
+#define Flash ((Flash_Type*) Flash_BASE)
+#define SCB   ((SCB_Type*)   SCB_BASE)
 
 #endif /* STM32H7X3_H */
