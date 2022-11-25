@@ -30,7 +30,7 @@ extern "C" void __sys_tick_handler(void) __attribute__((used, noinline));
 
 extern "C" void __sys_tick_handler(void)
 {
-  // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/168].
+  // Increment the 64-bit system tick with 0x01000000, representing (2^24) [microseconds/280].
 
   mcal_gpt_system_tick =
     static_cast<mcal::gpt::value_type>
@@ -102,7 +102,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
     const mcal::gpt::value_type consistent_microsecond_tick =
       static_cast<mcal::gpt::value_type>
       (
-        static_cast<std::uint64_t>(consistent_tick + UINT32_C(48)) / UINT32_C(96)
+        static_cast<std::uint64_t>(consistent_tick + UINT32_C(140)) / UINT32_C(280)
       );
 
     return consistent_microsecond_tick;

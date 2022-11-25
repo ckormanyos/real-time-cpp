@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -7,6 +7,11 @@
 
 // STM32 EABI ARM(R) Cortex-M4(TM) startup code.
 // Expressed with C++ for STM32F429 by Chris.
+
+extern "C"
+{
+  #include "Cache.h"
+}
 
 #include <mcal/mcal.h>
 
@@ -36,6 +41,10 @@ void __my_startup()
   // Call all ctor initializations.
   crt::init_ctors();
   mcal::wdg::secure::trigger();
+
+  // Enable the Cache-I and Cache-D.
+  Cache_EnableICache();
+  Cache_EnableDCache();
 
   // Jump to main (and never return).
   asm volatile("ldr r3, =main");
