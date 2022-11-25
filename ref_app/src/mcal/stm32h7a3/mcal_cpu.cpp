@@ -5,48 +5,36 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-extern "C"
-{
-  #include "STM32H7x3.h"
-
-  #include "Cache.h"
-}
-
+#include <Cache.h>
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
+#include <STM32H7x3.h>
 
 extern "C"
 {
   extern unsigned long __INTVECT_BASE_ADDRESS;
 }
 
-namespace local
-{
-  auto system_init() -> void;
-
-  auto system_init() -> void
-  {
-    /* Setup the VTOR */
-    SCB->VTOR.reg = (unsigned long)&__INTVECT_BASE_ADDRESS;
-  
-    /* Initialize the FPU: Enable CP10 and CP11. */
-    CPACR |= 0x00F00000UL;
-
-    /* Enable ITCM and DTCM */
-    ITCMCR |= 1UL;
-    DTCMCR |= 1UL;
-
-    __asm("DSB");
-    __asm("ISB");
-  }
-} // namespace local
-
 void mcal::cpu::init()
 {
-  local::system_init();
+  // Configure the flash wait states (280 MHz --> 6 WS).
+  Flash->ACR.bit.LATENCY = 6u;
+
+  // Setup the VTOR.
+  SCB->VTOR.reg = (unsigned long)& __INTVECT_BASE_ADDRESS;
+
+  // Initialize the FPU: Enable CP10 and CP11.
+  CPACR |= 0x00F00000UL;
+
+  // Enable ITCM and DTCM.
+  ITCMCR |= 1UL;
+  DTCMCR |= 1UL;
+
+  __asm("DSB");
+  __asm("ISB");
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
