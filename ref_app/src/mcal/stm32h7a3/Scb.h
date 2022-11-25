@@ -1,6 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2022.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
-#ifndef STM32H7X3_2022_11_25_H_
-#define STM32H7X3_2022_11_25_H_
+#ifndef SCB_2022_11_25_H_
+#define SCB_2022_11_25_H_
 
 #include <stdint.h>
 
@@ -20,23 +26,6 @@ extern "C" {
 #define     __OM     volatile
 #define     __IOM    volatile
 
-// Flash
-typedef struct{                                /*!< (@ 0x52002000) Flash Structure                                            */
-
-  union {
-    __IOM uint32_t reg;                         /*!< (@ 0x00000000) Access control register                                    */
-    
-    struct {
-      __IOM uint32_t LATENCY    : 3;            /*!< [2..0] Read latency                                                       */
-            uint32_t            : 1;
-      __IOM uint32_t WRHIGHFREQ : 2;            /*!< [5..4] Flash signal delay                                                 */
-            uint32_t            : 26;
-    } bit;
-  } ACR;
-
-} Flash_Type;                                   /*!< Size = 356 (0x164)                                                        */
-
-// SCB
 typedef struct {                                /*!< (@ 0xE000ED00) SCB Structure                                              */
   
   union {
@@ -249,8 +238,6 @@ typedef struct {                                /*!< (@ 0xE000ED00) SCB Structur
 }
 #endif
 
-#define RCC   ((RCC_Type*)   UINT32_C(0x58024400))
-#define Flash ((Flash_Type*) UINT32_C(0x52002000))
 #define SCB   ((SCB_Type*)   UINT32_C(0xE000ED00))
 
-#endif // STM32H7X3_2022_11_25_H_
+#endif // SCB_2022_11_25_H_

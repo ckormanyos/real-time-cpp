@@ -1,7 +1,16 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2022.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from
+
 /******************************************************************************************
   Filename    : Cache.c
 
-  Core        : ARM Cortex®-M7
+  Core        : ARM Cortex-M7
 
   MCU         : STM32H7A3ZI
 
@@ -19,23 +28,13 @@
 // Includes
 //=========================================================================================
 #include <Cache.h>
-#include <STM32H7x3.h>
+#include <Scb.h>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
-
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_EnableICache(void)
 {
@@ -56,15 +55,6 @@ void Cache_EnableICache(void)
   }
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_DisableICache(void)
 {
@@ -85,15 +75,6 @@ void Cache_DisableICache(void)
   }
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_InvalidateICache(void)
 {
@@ -107,15 +88,6 @@ void Cache_InvalidateICache(void)
   __asm("ISB");
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_EnableDCache(void)
 {
@@ -150,15 +122,6 @@ void Cache_EnableDCache(void)
   }
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_DisableDCache(void)
 {
@@ -195,15 +158,6 @@ void Cache_DisableDCache(void)
   }
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_InvalidateDCache(void)
 {
@@ -232,15 +186,6 @@ void Cache_InvalidateDCache(void)
   __asm("ISB");
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_CleanDCache(void)
 {
@@ -269,15 +214,6 @@ void Cache_CleanDCache(void)
   __asm("ISB");
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 extern "C"
 void Cache_CleanInvlaidateDCache(void)
 {

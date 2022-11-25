@@ -2094,7 +2094,7 @@
     <ClInclude Include="src\mcal\stm32h7a3\Cache.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\STM32H7x3.h">
+    <ClInclude Include="src\mcal\stm32h7a3\Scb.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
   </ItemGroup>
