@@ -16,25 +16,33 @@ GCC_PREFIX    = arm-none-eabi
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                                            \
-                -march=armv7e-m+fpv5                                           \
-                -mthumb                                                        \
-                -mfloat-abi=hard                                               \
-                -ffast-math                                                    \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
+                -mcpu=cortex-m7                                                \
+                -mtune=cortex-m7                                               \
+                -mthumb                                                        \
+                -mfloat-abi=hard                                               \
+                -mfpu=fpv5-d16                                                 \
+                -ffast-math                                                    \
                 -mno-unaligned-access                                          \
                 -mno-long-calls
 
 TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \
                 -Wno-sign-conversion                                           \
-                $(TGT_ALLFLAGS)
+                $(TGT_ALLFLAGS)                                                \
+                -DSTM32H7A3xxQ
 
 TGT_CXXFLAGS  = -std=c++14                                                     \
                 -Wno-psabi                                                     \
-                $(TGT_ALLFLAGS)
+                $(TGT_ALLFLAGS)                                                \
+                -Wno-sign-conversion                                           \
+                -DSTM32H7A3xxQ
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Drivers/STM32H7xx_HAL_Driver/Inc                  \
+                -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Device/ST/STM32H7xx/Include         \
+                -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Core/Include                        \
+                -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

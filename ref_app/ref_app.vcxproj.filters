@@ -203,6 +203,36 @@
     <Filter Include="src\mcal\stm32h7a3">
       <UniqueIdentifier>{02419671-0191-4497-bd3d-09e3ff4a4d61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers">
+      <UniqueIdentifier>{9e7c908b-e566-4724-8744-431dffd28bc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver">
+      <UniqueIdentifier>{fb36e30a-2d29-4cc8-99bf-1fed85a0e077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc">
+      <UniqueIdentifier>{bf5fd7df-a260-4e19-b742-c77bf6dafa63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS">
+      <UniqueIdentifier>{ac364fa6-bcf4-4ff0-88a6-4b355bf89de7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core">
+      <UniqueIdentifier>{84c41d17-98a0-411d-8053-0c62098c9214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device">
+      <UniqueIdentifier>{91f37400-9b47-4669-853e-f924682d3f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include">
+      <UniqueIdentifier>{8d890fa5-828e-4098-bc48-26f166f1bae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST">
+      <UniqueIdentifier>{ced13c65-d480-415d-bc6a-64a630a4b389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx">
+      <UniqueIdentifier>{c638038d-5e62-4e61-ac07-1cea0fd6ae66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include">
+      <UniqueIdentifier>{240d6ca1-a491-4990-aeaa-eb19b87dfbfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -902,9 +932,6 @@
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
-      <Filter>src\mcal\stm32h7a3</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32h7a3\Cache.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2091,11 +2118,29 @@
     <ClInclude Include="src\mcal\stm32h7a3\mcal_irq.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Cache.h">
-      <Filter>src\mcal\stm32h7a3</Filter>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_compiler.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Scb.h">
-      <Filter>src\mcal\stm32h7a3</Filter>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_gcc.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\cmsis_version.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include\mpu_armv7.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Core\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7a3xxq.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr.h">
+      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

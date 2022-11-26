@@ -37,17 +37,24 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
     ${PATH_APP}/util/STL
+    ${PATH_APP}/mcal/stm32h7a3/Drivers/STM32H7xx_HAL_Driver/Inc
+    ${PATH_APP}/mcal/stm32h7a3/Drivers/CMSIS/Device/ST/STM32H7xx/Include
+    ${PATH_APP}/mcal/stm32h7a3/Drivers/CMSIS/Core/Include
 )
 
 set(_TARGET_CFLAGS
     -finline-functions
     -finline-limit=32
-    -mfloat-abi=hard
+    -mcpu=cortex-m7
+    -mtune=cortex-m7
     -mthumb
-    -march=armv7e-m+fpv5
+    -mfloat-abi=hard
+    -mfpu=fpv5-d16
     -ffast-math
     -mno-unaligned-access
     -mno-long-calls
+    -Wno-sign-conversion
+    -DSTM32H7A3xxQ
 )
 
 set(TARGET_AFLAGS "")
@@ -64,7 +71,6 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
-    ${PATH_APP}/mcal/stm32h7a3/Cache
     ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram

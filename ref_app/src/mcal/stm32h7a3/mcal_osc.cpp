@@ -5,13 +5,186 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "stm32h7xx_hal.h"
+
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
+namespace local
+{
+  auto enable_i_cache() -> void;
+  auto enable_d_cache() -> void;
+
+  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool;
+
+  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool
+  {
+    // Set the power supply configuration.
+    modify_reg (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
+
+    constexpr auto delay_max = static_cast<std::uint32_t>(UINT32_C(1000000));
+
+    // Wait till voltage level flag is set.
+    volatile auto delay = std::uint32_t { };
+
+    for(  delay = static_cast<std::uint32_t>(UINT32_C(0));
+          delay < delay_max;
+        ++delay)
+    {
+      const auto pwr_flag_actvosrdy_is_set =
+        mcal::reg::reg_access_static<std::uint32_t,
+                                     std::uint32_t,
+                                     mcal::reg::pwr_csr1,
+                                     static_cast<std::uint32_t>(UINT8_C(13))>::bit_get();
+
+      if(pwr_flag_actvosrdy_is_set)
+      {
+        break;
+      }
+    }
+
+    return (delay < delay_max);
+  }
+
+  auto enable_i_cache() -> void
+  {
+    // Enable instruction cache.
+    asm volatile("dsb");
+    asm volatile("isb");
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::scb_iciallu,
+                                 static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
+    asm volatile("dsb");
+    asm volatile("isb");
+
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::scb_ccr,
+                                 static_cast<std::uint32_t>(UINT8_C(17))>::bit_set();
+
+    asm volatile("dsb");
+    asm volatile("isb");
+  }
+
+  auto enable_d_cache() -> void
+  {
+    const auto d_cache_is_already_enabled =
+      mcal::reg::reg_access_static<std::uint32_t,
+                                   std::uint32_t,
+                                   mcal::reg::scb_ccr,
+                                   static_cast<std::uint32_t>(UINT8_C(16))>::bit_get();
+
+    if(d_cache_is_already_enabled)
+    {
+      return;
+    }
+
+    // Select Level-1 data cache.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::scb_csselr,
+                                 static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
+
+    asm volatile("dsb");
+
+    const std::uint32_t ccsidr = mcal::reg::reg_access_static<std::uint32_t,
+                                                              std::uint32_t,
+                                                              mcal::reg::scb_ccsidr>::reg_get();
+
+    // Invalidate the data cache.
+    std::uint32_t sets = static_cast<std::uint32_t>(CCSIDR_SETS(ccsidr));
+    std::uint32_t ways { };
+
+    do
+    {
+      ways = static_cast<std::uint32_t>(CCSIDR_WAYS(ccsidr));
+
+      do
+      {
+        const auto dcisw_value_new =
+          static_cast<std::uint32_t>
+          (
+              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk)
+            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)
+          );
+
+        mcal::reg::reg_access_dynamic<std::uint32_t,
+                                      std::uint32_t>::reg_set(mcal::reg::scb_dcisw,
+                                                              dcisw_value_new);
+      }
+      while (ways-- != 0U);
+    }
+    while(sets-- != 0U);
+
+    asm volatile("dsb");
+
+    // Enable D-Cache.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::scb_ccr,
+                                 static_cast<std::uint32_t>(UINT8_C(16))>::bit_set();
+
+    asm volatile("dsb");
+    asm volatile("isb");
+  }
+} // namespace local
+
+void STM32H7A3ZI_InitClock(void);
+
 void mcal::osc::init(const config_type*)
 {
-  // Configure PLL1.
+  // AXI clock gating.
+  // RCC->CKGAENR = 0xFFFFFFFF;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_ckgaenr,
+                               static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF))>::reg_set();
+
+  // Supply configuration update enable
+  static_cast<void>
+  (
+    local::hal_pwr_ex_config_supply(PWR_DIRECT_SMPS_SUPPLY)
+  );
+
+  // Configure the main internal regulator output voltage
+  // Configure the Voltage Scaling.
+  // __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::pwr_srdcr,
+                               static_cast<std::uint32_t>(PWR_REGULATOR_VOLTAGE_SCALE0)>::reg_msk<static_cast<std::uint32_t>(PWR_SRDCR_VOS)>();
+
+  // Delay after setting the voltage scaling
+  const volatile auto tmpreg =
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::pwr_srdcr>::reg_get();
+
+  static_cast<void>(tmpreg);
+
+  while(!mcal::reg::reg_access_static<std::uint32_t,
+                                      std::uint32_t,
+                                      mcal::reg::pwr_srdcr,
+                                      static_cast<std::uint32_t>(UINT8_C(13))>::bit_get()) { ; }
+
+ // Configure the flash wait states (280 MHz --> 6 WS).
+  //Flash->ACR.bit.LATENCY = 6u;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, UINT32_C(6)>::reg_msk<UINT32_C(7)>();
+
+  STM32H7A3ZI_InitClock();
+
+  // Enable instruction cache.
+  local::enable_i_cache();
+
+  // Enable data cache.
+  local::enable_d_cache();
+}
+
+void STM32H7A3ZI_InitClock(void)
+{
+ // Configure PLL1.
   {
     // RCC->PLLCKSELR.bit.DIVM1    = 32u;
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllckselr, static_cast<std::uint32_t>(32ULL << 4U)>::reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
