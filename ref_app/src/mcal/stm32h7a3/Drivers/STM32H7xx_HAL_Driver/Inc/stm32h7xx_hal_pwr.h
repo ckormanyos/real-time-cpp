@@ -24,7 +24,7 @@
 #ifndef STM32H7XX_HAL_PWR_2022_08_05_H_
   #define STM32H7XX_HAL_PWR_2022_08_05_H_
 
-  #include "stm32h7xx_hal_def.h"
+  #include "stm32h7xx.h"
 
   // PWR_Regulator_Voltage_Scale PWR Regulator Voltage Scale
   #define PWR_REGULATOR_VOLTAGE_SCALE0           (PWR_SRDCR_VOS_1 | PWR_SRDCR_VOS_0)

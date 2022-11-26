@@ -182,21 +182,6 @@ void mcal::cpu::init()
 {
   local::system_init();
 
-  // Enable RCC peripheral clock(s).
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_apb4enr,
-                               static_cast<std::uint32_t>(UINT8_C(1))>::bit_set();
-
-  // Delay after an RCC peripheral clock enabling.
-  volatile bool rcc_apb4enr_is_set = 
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_apb4enr,
-                                 static_cast<std::uint32_t>(UINT8_C(1))>::bit_get();
-
-  static_cast<void>(rcc_apb4enr_is_set);
-
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);

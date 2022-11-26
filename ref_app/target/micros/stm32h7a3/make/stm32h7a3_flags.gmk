@@ -42,7 +42,6 @@ TGT_CXXFLAGS  = -std=c++14                                                     \
 TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Drivers/STM32H7xx_HAL_Driver/Inc                  \
                 -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Device/ST/STM32H7xx/Include         \
                 -I$(PATH_APP)/mcal/$(TGT)/Drivers/CMSIS/Core/Include                        \
-                -I$(PATH_APP)/mcal/$(TGT)/Inc                                               \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =

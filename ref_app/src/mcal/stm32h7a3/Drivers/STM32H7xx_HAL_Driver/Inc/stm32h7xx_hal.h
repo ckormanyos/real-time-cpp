@@ -25,6 +25,6 @@
 #ifndef STM32H7XX_HAL_2022_08_05_H_
   #define STM32H7XX_HAL_2022_08_05_H_
 
-  #include "stm32h7xx_hal_conf.h"
+  #include "stm32h7xx_hal_pwr.h"
 
 #endif // STM32H7XX_HAL_2022_08_05_H_

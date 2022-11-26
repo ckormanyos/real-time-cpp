@@ -16,42 +16,21 @@ namespace local
   auto enable_i_cache() -> void;
   auto enable_d_cache() -> void;
 
-  HAL_StatusTypeDef hal_pwr_ex_config_supply(std::uint32_t SupplySource);
+  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool;
 
-  HAL_StatusTypeDef hal_pwr_ex_config_supply(std::uint32_t SupplySource)
+  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool
   {
-    // Check if supply source was configured.
-    volatile auto pwr_cr3_value = mcal::reg::reg_access_static<std::uint32_t,
-                                                               std::uint32_t,
-                                                               mcal::reg::pwr_cr3>::reg_get();
-
-    if ((pwr_cr3_value & (PWR_CR3_SMPSEN | PWR_CR3_LDOEN | PWR_CR3_BYPASS)) != (PWR_CR3_SMPSEN | PWR_CR3_LDOEN))
-    {
-      // Check supply configuration.
-      pwr_cr3_value = mcal::reg::reg_access_static<std::uint32_t,
-                                                   std::uint32_t,
-                                                   mcal::reg::pwr_cr3>::reg_get();
-
-      if ((pwr_cr3_value & PWR_SUPPLY_CONFIG_MASK) != SupplySource)
-      {
-        // Supply configuration update locked, can't apply a new supply config.
-        return HAL_ERROR;
-      }
-      else
-      {
-        // Supply configuration update locked, but new supply configuration
-        // matches with old supply configuration : nothing to do.
-        return HAL_OK;
-      }
-    }
-
     // Set the power supply configuration.
     modify_reg (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
 
-    /* Wait till voltage level flag is set */
-    volatile std::uint32_t delay { };
+    constexpr auto delay_max = static_cast<std::uint32_t>(UINT32_C(1000000));
 
-    for(delay = static_cast<std::uint32_t>(UINT32_C(0)); delay < static_cast<std::uint32_t>(UINT32_C(1000000)); ++delay)
+    // Wait till voltage level flag is set.
+    volatile auto delay = std::uint32_t { };
+
+    for(  delay = static_cast<std::uint32_t>(UINT32_C(0));
+          delay < delay_max;
+        ++delay)
     {
       const auto pwr_flag_actvosrdy_is_set =
         mcal::reg::reg_access_static<std::uint32_t,
@@ -65,39 +44,7 @@ namespace local
       }
     }
 
-    if(delay == static_cast<std::uint32_t>(UINT32_C(1000000)))
-    {
-      return HAL_ERROR;
-    }
-
-    /* When the SMPS supplies external circuits verify that SDEXTRDY flag is set */
-    if ((SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT_AND_LDO) ||
-        (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT_AND_LDO) ||
-        (SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT)         ||
-        (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT))
-    {
-
-      for(delay = static_cast<std::uint32_t>(UINT32_C(0)); delay < static_cast<std::uint32_t>(UINT32_C(1000000)); ++delay)
-      {
-        const auto pwr_flag_smpsextrdy_is_set =
-          mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       mcal::reg::pwr_cr3,
-                                       static_cast<std::uint32_t>(UINT8_C(16))>::bit_get();
-
-        if(pwr_flag_smpsextrdy_is_set)
-        {
-          break;
-        }
-      }
-
-      if(delay == static_cast<std::uint32_t>(UINT32_C(1000000)))
-      {
-        return HAL_ERROR;
-      }
-    }
-
-    return HAL_OK;
+    return (delay < delay_max);
   }
 
   auto enable_i_cache() -> void
@@ -196,7 +143,10 @@ void mcal::osc::init(const config_type*)
                                static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF))>::reg_set();
 
   // Supply configuration update enable
-  static_cast<void>(local::hal_pwr_ex_config_supply(PWR_DIRECT_SMPS_SUPPLY));
+  static_cast<void>
+  (
+    local::hal_pwr_ex_config_supply(PWR_DIRECT_SMPS_SUPPLY)
+  );
 
   // Configure the main internal regulator output voltage
   // Configure the Voltage Scaling.
