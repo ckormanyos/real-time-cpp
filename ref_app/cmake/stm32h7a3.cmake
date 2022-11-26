@@ -71,7 +71,6 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 
 set(FILES_TARGET
-    ${PATH_APP}/mcal/stm32h7a3/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
     ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_TGT}/startup/crt0
