@@ -99,6 +99,7 @@
       constexpr std::uint32_t scb_ccsidr           = scb_base        + UINT32_C(0x0080); // (R/ )  Cache Size ID Register */
       constexpr std::uint32_t scb_csselr           = scb_base        + UINT32_C(0x0084); // (R/W)  Cache Size Selection Register */
       constexpr std::uint32_t scb_cpacr            = scb_base        + UINT32_C(0x0088); // (R/W)  Coprocessor Access Control Register */
+      static_assert(scb_cpacr == UINT32_C(0xE000ED88), "Error: Verification of scb_cpacr failed");
       constexpr std::uint32_t scb_stir             = scb_base        + UINT32_C(0x0200); // ( /W)  Software Triggered Interrupt Register */
       constexpr std::uint32_t scb_mvfr0            = scb_base        + UINT32_C(0x0240); // (R/ )  Media and VFP Feature Register 0 */
       constexpr std::uint32_t scb_mvfr1            = scb_base        + UINT32_C(0x0244); // (R/ )  Media and VFP Feature Register 1 */
@@ -113,6 +114,7 @@
       constexpr std::uint32_t scb_dccimvac         = scb_base        + UINT32_C(0x0270); // ( /W)  D-Cache Clean and Invalidate by MVA to PoC */
       constexpr std::uint32_t scb_dccisw           = scb_base        + UINT32_C(0x0274); // ( /W)  D-Cache Clean and Invalidate by Set-way */
       constexpr std::uint32_t scb_itcmcr           = scb_base        + UINT32_C(0x0290); // (R/W)  Instruction Tightly-Coupled Memory Control Register */
+      static_assert(scb_itcmcr == UINT32_C(0xE000EF90), "Error: Verification of scb_itcmcr failed");
       constexpr std::uint32_t scb_dtcmcr           = scb_base        + UINT32_C(0x0294); // (R/W)  Data Tightly-Coupled Memory Control Registers */
       constexpr std::uint32_t scb_ahbpcr           = scb_base        + UINT32_C(0x0298); // (R/W)  AHBP Control Register */
       constexpr std::uint32_t scb_cacr             = scb_base        + UINT32_C(0x029C); // (R/W)  L1 Cache Control Register */
@@ -121,16 +123,20 @@
 
       // RCC registers.
       constexpr std::uint32_t rcc_cr               = rcc_base        + UINT32_C(0x0000); // RCC clock control register
+      static_assert(rcc_cr == UINT32_C(0x58024400), "Error: Verification of rcc_cr failed");
       constexpr std::uint32_t rcc_hsicfgr          = rcc_base        + UINT32_C(0x0004); // HSI Clock Calibration Register
       constexpr std::uint32_t rcc_crrcr            = rcc_base        + UINT32_C(0x0008); // Clock Recovery RC  Register
       constexpr std::uint32_t rcc_csicfgr          = rcc_base        + UINT32_C(0x000C); // CSI Clock Calibration Register
       constexpr std::uint32_t rcc_cfgr             = rcc_base        + UINT32_C(0x0010); // RCC clock configuration register
+      static_assert(rcc_cfgr == UINT32_C(0x58024410), "Error: Verification of rcc_cfgr failed");
       constexpr std::uint32_t rcc_cdcfgr1          = rcc_base        + UINT32_C(0x0018); // RCC Domain 1 configuration register
       constexpr std::uint32_t rcc_cdcfgr2          = rcc_base        + UINT32_C(0x001C); // RCC Domain 2 configuration register
       constexpr std::uint32_t rcc_srdcfgr          = rcc_base        + UINT32_C(0x0020); // RCC Domain 3 configuration register
       constexpr std::uint32_t rcc_pllckselr        = rcc_base        + UINT32_C(0x0028); // RCC PLLs Clock Source Selection Register
+      static_assert(rcc_pllckselr == UINT32_C(0x58024428), "Error: Verification of rcc_pllckselr failed");
       constexpr std::uint32_t rcc_pllcfgr          = rcc_base        + UINT32_C(0x002C); // RCC PLLs  Configuration Register
       constexpr std::uint32_t rcc_pll1divr         = rcc_base        + UINT32_C(0x0030); // RCC PLL1 Dividers Configuration Register
+      static_assert(rcc_pll1divr == UINT32_C(0x58024430), "Error: Verification of rcc_pll1divr failed");
       constexpr std::uint32_t rcc_pll1fracr        = rcc_base        + UINT32_C(0x0034); // RCC PLL1 Fractional Divider Configuration Register
       constexpr std::uint32_t rcc_pll2divr         = rcc_base        + UINT32_C(0x0038); // RCC PLL2 Dividers Configuration Register
       constexpr std::uint32_t rcc_pll2fracr        = rcc_base        + UINT32_C(0x003C); // RCC PLL2 Fractional Divider Configuration Register
@@ -178,6 +184,7 @@
 
       // Flash memory registers.
       constexpr std::uint32_t flash_acr            = flash_r_base    + UINT32_C(0x0000);  // 32-bit register.
+      static_assert(flash_acr == UINT32_C(0x52002000), "Error: Verification of flash_acr failed");
       constexpr std::uint32_t flash_keyr           = flash_r_base    + UINT32_C(0x0004);  // 32-bit register.
       constexpr std::uint32_t flash_optkeyr        = flash_r_base    + UINT32_C(0x0008);  // 32-bit register.
       constexpr std::uint32_t flash_sr             = flash_r_base    + UINT32_C(0x000C);  // 32-bit register.

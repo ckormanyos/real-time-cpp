@@ -5,182 +5,89 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "stm32h7xx_hal.h"
-
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-namespace local
-{
-  HAL_StatusTypeDef hal_pwr_ex_config_supply(std::uint32_t SupplySource);
-
-  HAL_StatusTypeDef hal_pwr_ex_config_supply(std::uint32_t SupplySource)
-  {
-    // Check if supply source was configured.
-    volatile auto pwr_cr3_value = mcal::reg::reg_access_static<std::uint32_t,
-                                                               std::uint32_t,
-                                                               mcal::reg::pwr_cr3>::reg_get();
-
-    if ((pwr_cr3_value & (PWR_CR3_SMPSEN | PWR_CR3_LDOEN | PWR_CR3_BYPASS)) != (PWR_CR3_SMPSEN | PWR_CR3_LDOEN))
-    {
-      // Check supply configuration.
-      pwr_cr3_value = mcal::reg::reg_access_static<std::uint32_t,
-                                                   std::uint32_t,
-                                                   mcal::reg::pwr_cr3>::reg_get();
-
-      if ((pwr_cr3_value & PWR_SUPPLY_CONFIG_MASK) != SupplySource)
-      {
-        // Supply configuration update locked, can't apply a new supply config.
-        return HAL_ERROR;
-      }
-      else
-      {
-        // Supply configuration update locked, but new supply configuration
-        // matches with old supply configuration : nothing to do.
-        return HAL_OK;
-      }
-    }
-
-    // Set the power supply configuration.
-    modify_reg (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
-
-    /* Wait till voltage level flag is set */
-    volatile std::uint32_t delay { };
-    
-    for(delay = static_cast<std::uint32_t>(UINT32_C(0)); delay < static_cast<std::uint32_t>(UINT32_C(1000000)); ++delay)
-    {
-      const auto pwr_flag_actvosrdy_is_set =
-        mcal::reg::reg_access_static<std::uint32_t,
-                                     std::uint32_t,
-                                     mcal::reg::pwr_csr1,
-                                     static_cast<std::uint32_t>(UINT8_C(13))>::bit_get();
-
-      if(pwr_flag_actvosrdy_is_set)
-      {
-        break;
-      }
-    }
-
-    if(delay == static_cast<std::uint32_t>(UINT32_C(1000000)))
-    {
-      return HAL_ERROR;
-    }
-
-    /* When the SMPS supplies external circuits verify that SDEXTRDY flag is set */
-    if ((SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT_AND_LDO) ||
-        (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT_AND_LDO) ||
-        (SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT)         ||
-        (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT))
-    {
-
-      for(delay = static_cast<std::uint32_t>(UINT32_C(0)); delay < static_cast<std::uint32_t>(UINT32_C(1000000)); ++delay)
-      {
-        const auto pwr_flag_smpsextrdy_is_set =
-          mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       mcal::reg::pwr_cr3,
-                                       static_cast<std::uint32_t>(UINT8_C(16))>::bit_get();
-
-        if(pwr_flag_smpsextrdy_is_set)
-        {
-          break;
-        }
-      }
-
-      if(delay == static_cast<std::uint32_t>(UINT32_C(1000000)))
-      {
-        return HAL_ERROR;
-      }
-    }
-
-    return HAL_OK;
-  }
-} // namespace local
-
 void mcal::osc::init(const config_type*)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL } };
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL };
-
-  // AXI clock gating.
-  // RCC->CKGAENR = 0xFFFFFFFF;
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_ckgaenr,
-                               static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF))>::reg_set();
-
-  // Supply configuration update enable
-  static_cast<void>(local::hal_pwr_ex_config_supply(PWR_DIRECT_SMPS_SUPPLY));
-
-  // Configure the main internal regulator output voltage
-  // Configure the Voltage Scaling.
-  // __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::pwr_srdcr,
-                               static_cast<std::uint32_t>(PWR_REGULATOR_VOLTAGE_SCALE0)>::reg_msk<static_cast<std::uint32_t>(PWR_SRDCR_VOS)>();
-
-  // Delay after setting the voltage scaling
-  const volatile auto tmpreg =
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::pwr_srdcr>::reg_get();
-
-  static_cast<void>(tmpreg);
-
-  while(!mcal::reg::reg_access_static<std::uint32_t,
-                                      std::uint32_t,
-                                      mcal::reg::pwr_srdcr,
-                                      static_cast<std::uint32_t>(UINT8_C(13))>::bit_get()) { ; }
-
-  // Initializes the RCC Oscillators according to the specified parameters
-  // in the RCC_OscInitTypeDef structure.
-
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 24;
-  RCC_OscInitStruct.PLL.PLLP = 2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
-  RCC_OscInitStruct.PLL.PLLR = 2;
-  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_3;
-  RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-  RCC_OscInitStruct.PLL.PLLFRACN = 0;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  // Configure PLL1.
   {
-    for(;;) { ; }
+    // RCC->PLLCKSELR.bit.DIVM1    = 32u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllckselr, static_cast<std::uint32_t>(32ULL << 4U)>::reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
+
+    // RCC->PLLCFGR.bit.PLL1RGE    = 0u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::reg_msk<static_cast<std::uint32_t>(3ULL << 2U)>();
+
+    // RCC->PLLCFGR.bit.PLL1VCOSEL = 0u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(1)>::bit_clr();
+
+    // RCC->PLLCFGR.bit.PLL1FRACEN = 0u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::bit_clr();
   }
 
-  // Initializes the CPU, AHB and APB buses clocks
+  {
+    // RCC->PLLCFGR.bit.DIVP1EN = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(16)>::bit_set();
 
-  RCC_ClkInitStruct.ClockType = static_cast<std::uint32_t>
-                                (
-                                    RCC_CLOCKTYPE_HCLK
-                                  | RCC_CLOCKTYPE_SYSCLK
-                                  | RCC_CLOCKTYPE_PCLK1
-                                  | RCC_CLOCKTYPE_PCLK2
-                                  | RCC_CLOCKTYPE_D3PCLK1
-                                  | RCC_CLOCKTYPE_D1PCLK1
-                                );
+    // RCC->PLLCFGR.bit.DIVQ1EN = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(17)>::bit_set();
 
-  RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.SYSCLKDivider  = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.AHBCLKDivider  = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
-  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
+    // RCC->PLLCFGR.bit.DIVR1EN = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(18)>::bit_set();
+  }
 
-  static_cast<void>
-  (
-    HAL_RCC_ClockConfig
-    (
-      &RCC_ClkInitStruct,
-      static_cast<std::uint32_t>(FLASH_ACR_LATENCY_2WS)
-    )
-  );
+  {
+    // VCO = 560 MHz
+    // RCC->PLL1DIVR.bit.DIVN1 = 279u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, UINT32_C(279)>::reg_msk<static_cast<std::uint32_t>(511ULL << 0U)>();
+
+    // pll1_p_ck = 280 MHz
+    // RCC->PLL1DIVR.bit.DIVP1 = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 9U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 9U)>();
+
+    // pll1_q_ck = 280 MHz
+    // RCC->PLL1DIVR.bit.DIVQ1 = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 16U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 16U)>();
+
+    // pll1_r_ck = 280 MHz
+    // RCC->PLL1DIVR.bit.DIVR1 = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 24U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 24U)>();
+  }
+
+  // Enable PLL1.
+  //RCC->CR.bit.PLL1ON = 1u;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(24)>::bit_set();
+
+  // Wait for PLL1 to become ready.
+  //while(!RCC->CR.bit.PLL1RDY) { ; }
+  while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, UINT32_C(25)>::bit_get())
+  {
+    mcal::cpu::nop();
+  }
+
+  // Set pll1_p_ck as the system clock.
+  //RCC->CFGR.bit.SW = 3u;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, UINT32_C(3)>::reg_msk<static_cast<std::uint32_t>(7ULL << 0U)>();
+
+  // Wait for pll1_p_ck to become the system clock.
+  //while(RCC->CFGR.bit.SWS != 3u) { ; }
+  for(;;)
+  {
+    const auto sws_value =
+      static_cast<std::uint32_t>
+      (
+          static_cast<std::uint32_t>
+          (
+            mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr>::reg_get() >> 3U
+          )
+        &
+          static_cast<std::uint32_t>(UINT8_C(7))
+      );
+
+    if(sws_value == static_cast<std::uint32_t>(UINT8_C(3)))
+    {
+      break;
+    }
+  }
 }
