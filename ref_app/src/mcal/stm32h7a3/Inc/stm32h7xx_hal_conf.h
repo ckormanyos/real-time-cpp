@@ -24,7 +24,6 @@
 #ifndef STM32H7XX_HAL_CONF_2022_08_05_H_
   #define STM32H7XX_HAL_CONF_2022_08_05_H_
 
-  #include "stm32h7xx_hal_rcc.h"
   #include "stm32h7xx_hal_flash.h"
   #include "stm32h7xx_hal_pwr.h"
 

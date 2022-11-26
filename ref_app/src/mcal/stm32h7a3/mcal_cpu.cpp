@@ -18,8 +18,6 @@ namespace local
 {
   auto system_init       () -> void;
   auto system_pll_default() -> void;
-  auto enable_i_cache    () -> void;
-  auto enable_d_cache    () -> void;
 
   auto system_init() -> void
   {
@@ -178,100 +176,11 @@ namespace local
                                  mcal::reg::rcc_pll3fracr,
                                  static_cast<std::uint32_t>(UINT32_C(0x00000000))>::reg_set();
   }
-
-  auto enable_i_cache() -> void
-  {
-    // Enable instruction cache.
-    asm volatile("dsb");
-    asm volatile("isb");
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::scb_iciallu,
-                                 static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
-    asm volatile("dsb");
-    asm volatile("isb");
-
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::scb_ccr,
-                                 static_cast<std::uint32_t>(UINT8_C(17))>::bit_set();
-
-    asm volatile("dsb");
-    asm volatile("isb");
-  }
-
-  auto enable_d_cache() -> void
-  {
-    const auto d_cache_is_already_enabled =
-      mcal::reg::reg_access_static<std::uint32_t,
-                                   std::uint32_t,
-                                   mcal::reg::scb_ccr,
-                                   static_cast<std::uint32_t>(UINT8_C(16))>::bit_get();
-
-    if(d_cache_is_already_enabled)
-    {
-      return;
-    }
-
-    // Select Level-1 data cache.
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::scb_csselr,
-                                 static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
-
-    asm volatile("dsb");
-
-    const std::uint32_t ccsidr = mcal::reg::reg_access_static<std::uint32_t,
-                                                              std::uint32_t,
-                                                              mcal::reg::scb_ccsidr>::reg_get();
-
-    // Invalidate the data cache.
-    std::uint32_t sets = static_cast<std::uint32_t>(CCSIDR_SETS(ccsidr));
-    std::uint32_t ways { };
-
-    do
-    {
-      ways = static_cast<std::uint32_t>(CCSIDR_WAYS(ccsidr));
-
-      do
-      {
-        const auto dcisw_value_new =
-          static_cast<std::uint32_t>
-          (
-              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk)
-            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)
-          );
-
-        mcal::reg::reg_access_dynamic<std::uint32_t,
-                                      std::uint32_t>::reg_set(mcal::reg::scb_dcisw,
-                                                              dcisw_value_new);
-      }
-      while (ways-- != 0U);
-    }
-    while(sets-- != 0U);
-
-    asm volatile("dsb");
-
-    // Enable D-Cache.
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::scb_ccr,
-                                 static_cast<std::uint32_t>(UINT8_C(16))>::bit_set();
-
-    asm volatile("dsb");
-    asm volatile("isb");
-  }
 } // namespace local
 
 void mcal::cpu::init()
 {
   local::system_init();
-
-  // Enable instruction cache.
-  local::enable_i_cache();
-
-  // Enable data cache.
-  local::enable_d_cache();
 
   // Enable RCC peripheral clock(s).
   mcal::reg::reg_access_static<std::uint32_t,

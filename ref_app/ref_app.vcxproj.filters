@@ -209,9 +209,6 @@
     <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver">
       <UniqueIdentifier>{fb36e30a-2d29-4cc8-99bf-1fed85a0e077}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src">
-      <UniqueIdentifier>{0a861e69-6e99-467d-b7ac-c4ebd391c059}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc">
       <UniqueIdentifier>{bf5fd7df-a260-4e19-b742-c77bf6dafa63}</UniqueIdentifier>
     </Filter>
@@ -939,9 +936,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_rcc.cpp">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2158,9 +2152,6 @@
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_rcc.h">
       <Filter>src\mcal\stm32h7a3\Drivers\STM32H7xx_HAL_Driver\Inc</Filter>
     </ClInclude>
   </ItemGroup>
