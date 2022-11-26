@@ -13,22 +13,11 @@
   #include <cstdint>
   #include <type_traits>
 
-  extern "C"
-  {
-    void Cache_EnableICache(void);
-    void Cache_EnableDCache(void);
-  }
-
   namespace mcal { namespace cpu {
 
   void init();
 
-  inline void post_init()
-  {
-    // Enable the Cache-I and Cache-D.
-    ::Cache_EnableICache();
-    ::Cache_EnableDCache();
-  }
+  inline void post_init() { }
 
   inline void nop() { asm volatile("nop"); }
 

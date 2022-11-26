@@ -16,12 +16,12 @@ GCC_PREFIX    = arm-none-eabi
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                                            \
+                -march=armv7e-m+fpv5                                           \
+                -mthumb                                                        \
+                -mfloat-abi=hard                                               \
+                -ffast-math                                                    \
                 -finline-functions                                             \
                 -finline-limit=32                                              \
-                -mfloat-abi=hard                                               \
-                -mthumb                                                        \
-                -march=armv7e-m+fpv5                                           \
-                -ffast-math                                                    \
                 -mno-unaligned-access                                          \
                 -mno-long-calls
 

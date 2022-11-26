@@ -10,6 +10,7 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
+#include <Cache.h>
 
 void mcal::cpu::init()
 {
@@ -36,4 +37,8 @@ void mcal::cpu::init()
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
+
+  // Enable the Cache-I and Cache-D.
+  ::Cache_EnableICache();
+  ::Cache_EnableDCache();
 }

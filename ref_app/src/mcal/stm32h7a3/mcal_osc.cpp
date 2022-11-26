@@ -20,10 +20,10 @@ void mcal::osc::init(const config_type*)
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::reg_msk<static_cast<std::uint32_t>(3ULL << 2U)>();
 
     // RCC->PLLCFGR.bit.PLL1VCOSEL = 0u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::reg_msk<static_cast<std::uint32_t>(1ULL << 1U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(1)>::bit_clr();
 
     // RCC->PLLCFGR.bit.PLL1FRACEN = 0u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::reg_msk<static_cast<std::uint32_t>(1ULL << 0U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, UINT32_C(0)>::bit_clr();
   }
 
   {
