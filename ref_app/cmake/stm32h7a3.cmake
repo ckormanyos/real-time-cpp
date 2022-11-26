@@ -36,10 +36,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/util/STL
-    ${PATH_APP}/mcal/stm32h7a3/Drivers/STM32H7xx_HAL_Driver/Inc
     ${PATH_APP}/mcal/stm32h7a3/Drivers/CMSIS/Device/ST/STM32H7xx/Include
-    ${PATH_APP}/mcal/stm32h7a3/Drivers/CMSIS/Core/Include
+    ${PATH_APP}/util/STL
 )
 
 set(_TARGET_CFLAGS

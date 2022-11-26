@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "stm32h7xx_hal.h"
+#include "stm32h7xx.h"
 
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
