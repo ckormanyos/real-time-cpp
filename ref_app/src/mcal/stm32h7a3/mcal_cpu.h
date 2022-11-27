@@ -17,19 +17,19 @@
 
   auto init() -> void;
 
-  inline constexpr auto post_init() -> void { }
+  inline auto post_init() -> void { }
 
   inline auto nop() -> void { asm volatile("nop"); }
 
   // SCB D-Cache Invalidate by set-way Register Definitions.
-  constexpr auto scb_dcisw_way_pos            = static_cast<std::uint32_t>(30UL);
-  constexpr auto scb_dcisw_way_msk            = static_cast<std::uint32_t>(3UL << scb_dcisw_way_pos);
-  constexpr auto scb_dcisw_set_pos            = static_cast<std::uint32_t>(5UL);
-  constexpr auto scb_dcisw_set_msk            = static_cast<std::uint32_t>(0x1FFUL << scb_dcisw_set_pos);
-  constexpr auto scb_ccsidr_numsets_pos       = static_cast<std::uint32_t>(13UL);
-  constexpr auto scb_ccsidr_numsets_msk       = static_cast<std::uint32_t>(0x7FFFUL << scb_ccsidr_numsets_pos);
-  constexpr auto scb_ccsidr_associativity_pos = static_cast<std::uint32_t>(3UL);
-  constexpr auto scb_ccsidr_associativity_msk = static_cast<std::uint32_t>(0x3FFUL << scb_ccsidr_associativity_pos);
+  constexpr auto scb_dcisw_way_pos            = static_cast<std::uint32_t>(UINT8_C(30));
+  constexpr auto scb_dcisw_way_msk            = static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(3)) << scb_dcisw_way_pos);
+  constexpr auto scb_dcisw_set_pos            = static_cast<std::uint32_t>(UINT8_C(5));
+  constexpr auto scb_dcisw_set_msk            = static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(0x1FF)) << scb_dcisw_set_pos);
+  constexpr auto scb_ccsidr_numsets_pos       = static_cast<std::uint32_t>(UINT8_C(13));
+  constexpr auto scb_ccsidr_numsets_msk       = static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(0x7FFF)) << scb_ccsidr_numsets_pos);
+  constexpr auto scb_ccsidr_associativity_pos = static_cast<std::uint32_t>(UINT8_C(3));
+  constexpr auto scb_ccsidr_associativity_msk = static_cast<std::uint32_t>(static_cast<std::uint32_t>(UINT32_C(0x3FF)) << scb_ccsidr_associativity_pos);
 
   // Bit definitions for FLASH_ACR register.
   constexpr auto flash_acr_latency     = static_cast<std::uint32_t>(UINT8_C(0xF)); // Set to 0xF, but only 0x7 since bit 4 is only kept for legacy purposes.
