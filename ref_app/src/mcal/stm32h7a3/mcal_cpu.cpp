@@ -5,8 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "stm32h7xx_hal.h"
-
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
@@ -34,24 +32,28 @@ namespace local
       const volatile std::uint32_t flash_latency_from_flash_acr = 
         mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
-                                     mcal::reg::flash_acr>::reg_get() & static_cast<std::uint32_t>(FLASH_ACR_LATENCY);
+                                     mcal::reg::flash_acr>::reg_get() & mcal::cpu::flash_acr_latency;
 
       // Increase the CPU frequency.
-      if(FLASH_LATENCY_DEFAULT > flash_latency_from_flash_acr)
+      if(mcal::cpu::flash_latency_default > flash_latency_from_flash_acr)
       {
         // Program the new number of wait states to the LATENCY bits in the FLASH_ACR register.
         mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
                                      mcal::reg::flash_acr,
-                                     static_cast<std::uint32_t>(FLASH_LATENCY_DEFAULT)>::reg_msk<static_cast<std::uint32_t>(FLASH_ACR_LATENCY)>();
+                                     static_cast<std::uint32_t>(mcal::cpu::flash_latency_default)>::reg_msk<mcal::cpu::flash_acr_latency>();
       }
     }
 
     // Set HSION bit.
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_cr,
-                                 static_cast<std::uint32_t>(RCC_CR_HSION)>::reg_or();
+    {
+      constexpr auto rcc_cr_hsion = static_cast<std::uint32_t>(UINT8_C(1));
+
+      mcal::reg::reg_access_static<std::uint32_t,
+                                   std::uint32_t,
+                                   mcal::reg::rcc_cr,
+                                   rcc_cr_hsion>::reg_or();
+    }
 
     // Reset CFGR register.
     mcal::reg::reg_access_static<std::uint32_t,
@@ -66,19 +68,19 @@ namespace local
                                  static_cast<std::uint32_t>(UINT32_C(0xEAF6ED7F))>::reg_and();
 
     {
-      const volatile std::uint32_t flash_latency_from_flash_acr = 
+      const volatile std::uint32_t flash_latency_from_flash_acr =
         mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
-                                     mcal::reg::flash_acr>::reg_get() & static_cast<std::uint32_t>(FLASH_ACR_LATENCY);
+                                     mcal::reg::flash_acr>::reg_get() & mcal::cpu::flash_acr_latency;
 
       // Decrease the number of wait states because of lower CPU frequency.
-      if(FLASH_LATENCY_DEFAULT < flash_latency_from_flash_acr)
+      if(mcal::cpu::flash_latency_default < flash_latency_from_flash_acr)
       {
         // Program the new number of wait states to the LATENCY bits in the FLASH_ACR register.
         mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
                                      mcal::reg::flash_acr,
-                                     static_cast<std::uint32_t>(FLASH_LATENCY_DEFAULT)>::reg_msk<static_cast<std::uint32_t>(FLASH_ACR_LATENCY)>();
+                                     mcal::cpu::flash_latency_default>::reg_msk<mcal::cpu::flash_acr_latency>();
       }
     }
 
@@ -119,7 +121,10 @@ namespace local
     // This prevents CPU speculation access on this bank which blocks
     // the use of the FMC for 24us. During this time the other FMC masters
     // (such as LTDC) cannot use it.
-    ((FMC_Bank1_TypeDef*) mcal::reg::fmc_bank1_r_base)->BTCR[0U] = UINT32_C(0x000030D2);
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::fmc_bank1_r_btcr0,
+                                 static_cast<std::uint32_t>(UINT32_C(0x000030D2))>::reg_set();
 
     // Relocate the vector table to internal flash.
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, 0x08000000UL>::reg_set();

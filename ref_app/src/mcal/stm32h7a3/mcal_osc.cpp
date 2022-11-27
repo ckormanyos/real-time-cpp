@@ -5,8 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "stm32h7xx_hal.h"
-
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
@@ -15,37 +13,6 @@ namespace local
 {
   auto enable_i_cache() -> void;
   auto enable_d_cache() -> void;
-
-  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool;
-
-  auto hal_pwr_ex_config_supply(std::uint32_t SupplySource) -> bool
-  {
-    // Set the power supply configuration.
-    modify_reg (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
-
-    constexpr auto delay_max = static_cast<std::uint32_t>(UINT32_C(1000000));
-
-    // Wait till voltage level flag is set.
-    volatile auto delay = std::uint32_t { };
-
-    for(  delay = static_cast<std::uint32_t>(UINT32_C(0));
-          delay < delay_max;
-        ++delay)
-    {
-      const auto pwr_flag_actvosrdy_is_set =
-        mcal::reg::reg_access_static<std::uint32_t,
-                                     std::uint32_t,
-                                     mcal::reg::pwr_csr1,
-                                     static_cast<std::uint32_t>(UINT8_C(13))>::bit_get();
-
-      if(pwr_flag_actvosrdy_is_set)
-      {
-        break;
-      }
-    }
-
-    return (delay < delay_max);
-  }
 
   auto enable_i_cache() -> void
   {
@@ -94,20 +61,20 @@ namespace local
                                                               mcal::reg::scb_ccsidr>::reg_get();
 
     // Invalidate the data cache.
-    std::uint32_t sets = static_cast<std::uint32_t>(CCSIDR_SETS(ccsidr));
+    std::uint32_t sets = static_cast<std::uint32_t>(mcal::cpu::ccsidr_sets(ccsidr));
     std::uint32_t ways { };
 
     do
     {
-      ways = static_cast<std::uint32_t>(CCSIDR_WAYS(ccsidr));
+      ways = static_cast<std::uint32_t>(mcal::cpu::ccsidr_ways(ccsidr));
 
       do
       {
         const auto dcisw_value_new =
           static_cast<std::uint32_t>
           (
-              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk)
-            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)
+              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << mcal::cpu::scb_dcisw_set_pos) & mcal::cpu::scb_dcisw_set_msk)
+            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << mcal::cpu::scb_dcisw_way_pos) & mcal::cpu::scb_dcisw_way_msk)
           );
 
         mcal::reg::reg_access_dynamic<std::uint32_t,
@@ -142,19 +109,52 @@ void mcal::osc::init(const config_type*)
                                mcal::reg::rcc_ckgaenr,
                                static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF))>::reg_set();
 
-  // Supply configuration update enable
-  static_cast<void>
-  (
-    local::hal_pwr_ex_config_supply(PWR_DIRECT_SMPS_SUPPLY)
-  );
+  {
+    // Supply configuration update enable.
+
+    constexpr auto pwr_supply_config_mask = static_cast<std::uint32_t>(UINT8_C(0x3F));
+    constexpr auto pwr_direct_smps_supply = static_cast<std::uint32_t>(UINT8_C(4));
+
+    // Set the power supply configuration.
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::pwr_cr3,
+                                 pwr_direct_smps_supply>::reg_msk<pwr_supply_config_mask>();
+
+    constexpr auto delay_max = static_cast<std::uint32_t>(UINT32_C(1000000));
+
+    // Wait until the voltage level flag is set.
+    volatile auto delay = std::uint32_t { };
+
+    for(  delay = static_cast<std::uint32_t>(UINT32_C(0));
+          delay < delay_max;
+        ++delay)
+    {
+      const auto pwr_flag_actvosrdy_is_set =
+        mcal::reg::reg_access_static<std::uint32_t,
+                                     std::uint32_t,
+                                     mcal::reg::pwr_csr1,
+                                     static_cast<std::uint32_t>(UINT8_C(13))>::bit_get();
+
+      if(pwr_flag_actvosrdy_is_set)
+      {
+        break;
+      }
+    }
+  }
 
   // Configure the main internal regulator output voltage
   // Configure the Voltage Scaling.
   // __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::pwr_srdcr,
-                               static_cast<std::uint32_t>(PWR_REGULATOR_VOLTAGE_SCALE0)>::reg_msk<static_cast<std::uint32_t>(PWR_SRDCR_VOS)>();
+  {
+    constexpr auto pwr_regulator_voltage_scale0 = static_cast<std::uint32_t>(UINT32_C(0x0000C000));
+    constexpr auto pwr_srdcr_vos_msk            = static_cast<std::uint32_t>(UINT32_C(0x0000C000));
+
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::pwr_srdcr,
+                                 pwr_regulator_voltage_scale0>::reg_msk<pwr_srdcr_vos_msk>();
+  }
 
   // Delay after setting the voltage scaling
   const volatile auto tmpreg =
@@ -171,7 +171,10 @@ void mcal::osc::init(const config_type*)
 
  // Configure the flash wait states (280 MHz --> 6 WS).
   //Flash->ACR.bit.LATENCY = 6u;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, UINT32_C(6)>::reg_msk<UINT32_C(7)>();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::flash_acr,
+                               mcal::cpu::flash_acr_latency_6ws>::reg_msk<mcal::cpu::flash_acr_latency>();
 
   STM32H7A3ZI_InitClock();
 
