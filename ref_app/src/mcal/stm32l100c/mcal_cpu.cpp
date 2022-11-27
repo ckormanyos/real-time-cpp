@@ -59,7 +59,7 @@ void mcal::cpu::init()
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cir, 0x00000000UL>::reg_set();
 
   // Relocate the vector table to internal flash.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, 0x08000000UL>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, static_cast<std::uint32_t>(UINT32_C(0x08000000))>::reg_set();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
