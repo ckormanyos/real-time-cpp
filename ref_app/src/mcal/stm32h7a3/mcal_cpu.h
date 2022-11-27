@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_CPU_2009_02_14_H_
-  #define MCAL_CPU_2009_02_14_H_
+#ifndef MCAL_CPU_2022_08_03_H_
+  #define MCAL_CPU_2022_08_03_H_
 
   #define MY_PROGMEM
 
@@ -15,11 +15,11 @@
 
   namespace mcal { namespace cpu {
 
-  void init();
+  auto init() -> void;
 
-  inline void post_init() { }
+  inline constexpr auto post_init() -> void { }
 
-  inline void nop() { asm volatile("nop"); }
+  inline auto nop() -> void { asm volatile("nop"); }
 
   // SCB D-Cache Invalidate by set-way Register Definitions.
   constexpr auto scb_dcisw_way_pos            = static_cast<std::uint32_t>(30UL);
@@ -45,9 +45,9 @@
   constexpr auto flash_latency_default = flash_acr_latency_3ws;
 
   // Cache Size ID Register functions.
-  inline constexpr auto ccsidr_ways(std::uint32_t x) -> std::uint32_t {return (((x) & scb_ccsidr_associativity_msk) >> scb_ccsidr_associativity_pos); }
-  inline constexpr auto ccsidr_sets(std::uint32_t x) -> std::uint32_t {return (((x) & scb_ccsidr_numsets_msk      ) >> scb_ccsidr_numsets_pos      ); }
+  inline constexpr auto ccsidr_ways(std::uint32_t x) -> std::uint32_t {return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & scb_ccsidr_associativity_msk) >> scb_ccsidr_associativity_pos); }
+  inline constexpr auto ccsidr_sets(std::uint32_t x) -> std::uint32_t {return static_cast<std::uint32_t>(static_cast<std::uint32_t>(x & scb_ccsidr_numsets_msk)       >> scb_ccsidr_numsets_pos); }
 
   } } // namespace mcal::cpu
 
-#endif // MCAL_CPU_2009_02_14_H_
+#endif // MCAL_CPU_2022_08_03_H_

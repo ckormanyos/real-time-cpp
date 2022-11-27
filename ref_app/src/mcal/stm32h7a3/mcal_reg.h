@@ -296,7 +296,7 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
+  auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = UnknownValueType;
@@ -306,7 +306,7 @@
   }
 
   template<typename UnknownAddressType>
-  static inline auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
+  auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = std::uint32_t;
@@ -317,7 +317,7 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
+  auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = UnknownValueType;
@@ -332,8 +332,8 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto set_bit(      UnknownAddressType& reg,
-                             const UnknownValueType    bit) -> void
+  auto set_bit(      UnknownAddressType& reg,
+               const UnknownValueType    bit) -> void
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = UnknownValueType;
@@ -344,8 +344,8 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto clear_bit(      UnknownAddressType& reg,
-                               const UnknownValueType    bit) -> void
+  auto clear_bit(      UnknownAddressType& reg,
+                 const UnknownValueType    bit) -> void
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = UnknownValueType;
@@ -356,9 +356,9 @@
 
   template<typename UnknownAddressType,
            typename UnknownValueType>
-  static inline auto modify_reg(      UnknownAddressType& reg,
-                                const UnknownValueType    clearmask,
-                                const UnknownValueType    setmask) -> void
+  auto modify_reg(      UnknownAddressType& reg,
+                  const UnknownValueType    clearmask,
+                  const UnknownValueType    setmask) -> void
   {
     using local_address_type = UnknownAddressType;
     using local_value_type   = UnknownValueType;
