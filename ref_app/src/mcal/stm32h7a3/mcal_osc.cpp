@@ -5,8 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "stm32h7xx.h"
-
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
@@ -63,20 +61,20 @@ namespace local
                                                               mcal::reg::scb_ccsidr>::reg_get();
 
     // Invalidate the data cache.
-    std::uint32_t sets = static_cast<std::uint32_t>(CCSIDR_SETS(ccsidr));
+    std::uint32_t sets = static_cast<std::uint32_t>(mcal::cpu::ccsidr_sets(ccsidr));
     std::uint32_t ways { };
 
     do
     {
-      ways = static_cast<std::uint32_t>(CCSIDR_WAYS(ccsidr));
+      ways = static_cast<std::uint32_t>(mcal::cpu::ccsidr_ways(ccsidr));
 
       do
       {
         const auto dcisw_value_new =
           static_cast<std::uint32_t>
           (
-              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk)
-            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)
+              static_cast<std::uint32_t>(static_cast<std::uint32_t>(sets << mcal::cpu::scb_dcisw_set_pos) & mcal::cpu::scb_dcisw_set_msk)
+            | static_cast<std::uint32_t>(static_cast<std::uint32_t>(ways << mcal::cpu::scb_dcisw_way_pos) & mcal::cpu::scb_dcisw_way_msk)
           );
 
         mcal::reg::reg_access_dynamic<std::uint32_t,
@@ -173,7 +171,10 @@ void mcal::osc::init(const config_type*)
 
  // Configure the flash wait states (280 MHz --> 6 WS).
   //Flash->ACR.bit.LATENCY = 6u;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, UINT32_C(6)>::reg_msk<UINT32_C(7)>();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::flash_acr,
+                               mcal::cpu::flash_acr_latency_6ws>::reg_msk<mcal::cpu::flash_acr_latency>();
 
   STM32H7A3ZI_InitClock();
 

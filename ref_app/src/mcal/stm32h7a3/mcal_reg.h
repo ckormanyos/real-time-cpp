@@ -33,6 +33,14 @@
 
       constexpr std::uint32_t flash_r_base         = cd_ahb3periph_base  + UINT32_C(0x2000);
       constexpr std::uint32_t fmc_bank1_r_base     = fmc_r_base          + UINT32_C(0x0000);
+      constexpr std::uint32_t fmc_bank1_r_btcr0    = fmc_r_base          + UINT32_C(0x0000);
+      constexpr std::uint32_t fmc_bank1_r_btcr1    = fmc_r_base          + UINT32_C(0x0004);
+      constexpr std::uint32_t fmc_bank1_r_btcr2    = fmc_r_base          + UINT32_C(0x0008);
+      constexpr std::uint32_t fmc_bank1_r_btcr3    = fmc_r_base          + UINT32_C(0x000C);
+      constexpr std::uint32_t fmc_bank1_r_btcr4    = fmc_r_base          + UINT32_C(0x0010);
+      constexpr std::uint32_t fmc_bank1_r_btcr5    = fmc_r_base          + UINT32_C(0x0014);
+      constexpr std::uint32_t fmc_bank1_r_btcr6    = fmc_r_base          + UINT32_C(0x0018);
+      constexpr std::uint32_t fmc_bank1_r_btcr7    = fmc_r_base          + UINT32_C(0x001C);
 
       constexpr std::uint32_t sys_tick_ctrl        = sys_tick_base   + UINT32_C(0x0000);
       constexpr std::uint32_t sys_tick_load        = sys_tick_base   + UINT32_C(0x0004);
@@ -285,5 +293,80 @@
 
   #include <mcal/mcal_reg_access_dynamic.h>
   #include <mcal/mcal_reg_access_static.h>
+
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto write_reg(UnknownAddressType& reg, const UnknownValueType val) -> void
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
+
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_set((local_address_type) &reg, val);
+  }
+
+  template<typename UnknownAddressType>
+  static inline auto read_reg(const UnknownAddressType& reg) -> std::uint32_t
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = std::uint32_t;
+
+    return mcal::reg::reg_access_dynamic<local_address_type,
+                                         local_value_type>::reg_get((local_address_type) &reg);
+  }
+
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto read_bit(const UnknownAddressType& reg, const UnknownValueType bit) -> UnknownValueType
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
+
+    return
+      static_cast<local_value_type>
+      (
+        mcal::reg::reg_access_dynamic<local_address_type,
+                                      local_value_type>::reg_get((local_address_type) &reg) & bit
+      );
+  }
+
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto set_bit(      UnknownAddressType& reg,
+                             const UnknownValueType    bit) -> void
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
+
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_or((local_address_type) &reg, static_cast<local_value_type>(bit));
+  }
+
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto clear_bit(      UnknownAddressType& reg,
+                               const UnknownValueType    bit) -> void
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
+
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_and((local_address_type) &reg, static_cast<local_value_type>(~bit));
+  }
+
+  template<typename UnknownAddressType,
+           typename UnknownValueType>
+  static inline auto modify_reg(      UnknownAddressType& reg,
+                                const UnknownValueType    clearmask,
+                                const UnknownValueType    setmask) -> void
+  {
+    using local_address_type = UnknownAddressType;
+    using local_value_type   = UnknownValueType;
+
+    mcal::reg::reg_access_dynamic<local_address_type,
+                                  local_value_type>::reg_msk((local_address_type) &reg,
+                                                             setmask,
+                                                             clearmask);
+  }
 
 #endif // MCAL_REG_2022_08_03_H_

@@ -36,7 +36,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/mcal/stm32h7a3/Drivers/CMSIS/Device/ST/STM32H7xx/Include
     ${PATH_APP}/util/STL
 )
 
@@ -69,7 +68,6 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
-    ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1

@@ -365,9 +365,7 @@ The program toggles the green LED on `porta.5`.
 
 The first ARM(R) Cortex(TM)-M7 configuration (called `target stm32h7a3`) runs on
 the STM32H7A3 Nucleo-144 board commercially available from ST Microelectronics(R).
-The program toggles the green LED on `portb.0`. At the moment, the target
-implementation (temporarily) uses small portions of third party code
-which is licensed separately.
+The program toggles the green LED on `portb.0`.
 
 The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced

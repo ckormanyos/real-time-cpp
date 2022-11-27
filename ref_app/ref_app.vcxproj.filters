@@ -203,24 +203,6 @@
     <Filter Include="src\mcal\stm32h7a3">
       <UniqueIdentifier>{02419671-0191-4497-bd3d-09e3ff4a4d61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers">
-      <UniqueIdentifier>{9e7c908b-e566-4724-8744-431dffd28bc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS">
-      <UniqueIdentifier>{ac364fa6-bcf4-4ff0-88a6-4b355bf89de7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device">
-      <UniqueIdentifier>{91f37400-9b47-4669-853e-f924682d3f90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST">
-      <UniqueIdentifier>{ced13c65-d480-415d-bc6a-64a630a4b389}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx">
-      <UniqueIdentifier>{c638038d-5e62-4e61-ac07-1cea0fd6ae66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include">
-      <UniqueIdentifier>{240d6ca1-a491-4990-aeaa-eb19b87dfbfa}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2105,12 +2087,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\mcal_irq.h">
       <Filter>src\mcal\stm32h7a3</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7a3xxq.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h">
-      <Filter>src\mcal\stm32h7a3\Drivers\CMSIS\Device\ST\STM32H7xx\Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
