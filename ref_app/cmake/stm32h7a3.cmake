@@ -42,16 +42,13 @@ set(TARGET_INCLUDES
 set(_TARGET_CFLAGS
     -finline-functions
     -finline-limit=32
-    -mcpu=cortex-m7
+    -march=armv7e-m+fpv5-d16
     -mtune=cortex-m7
     -mthumb
     -mfloat-abi=hard
-    -mfpu=fpv5-d16
     -ffast-math
     -mno-unaligned-access
     -mno-long-calls
-    -Wno-sign-conversion
-    -DSTM32H7A3xxQ
 )
 
 set(TARGET_AFLAGS "")
@@ -68,6 +65,7 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
+    ${PATH_APP}/mcal/stm32h7a3/mcal_cache
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1
