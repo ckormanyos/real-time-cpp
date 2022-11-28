@@ -28,7 +28,7 @@
 // Includes
 //=========================================================================================
 #include <mcal_cache.h>
-#include <Scb.h>
+#include <mcal_cache_scb.h>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -38,7 +38,7 @@
 extern "C"
 void Cache_EnableICache(void)
 {
-  if(!SCB->CCR.bit.IC)
+  if(!SCB_PARTIAL->CCR.bit.IC)
   {
     __asm("DSB");
     __asm("ISB");
@@ -49,7 +49,7 @@ void Cache_EnableICache(void)
     __asm("ISB");
 
     /* Enable the Instruction cache */
-    SCB->CCR.bit.IC = 1U;
+    SCB_PARTIAL->CCR.bit.IC = 1U;
     __asm("DSB");
     __asm("ISB");
   }
@@ -58,13 +58,13 @@ void Cache_EnableICache(void)
 extern "C"
 void Cache_DisableICache(void)
 {
-  if(SCB->CCR.bit.IC)
+  if(SCB_PARTIAL->CCR.bit.IC)
   {
     __asm("DSB");
     __asm("ISB");
 
     /* Disable the Instruction cache */
-    SCB->CCR.bit.IC = 0U;
+    SCB_PARTIAL->CCR.bit.IC = 0U;
     __asm("DSB");
     __asm("ISB");
 
@@ -94,7 +94,7 @@ void Cache_EnableDCache(void)
   uint32_t sets = 0U;
   uint32_t ways = 0U;
 
-  if(!SCB->CCR.bit.DC)
+  if(!SCB_PARTIAL->CCR.bit.DC)
   {
     /* Enable selection of data cache */
     CSSELR->reg = 0U;
@@ -118,7 +118,7 @@ void Cache_EnableDCache(void)
     __asm("DSB");
 
     /* Enable the data cache */
-    SCB->CCR.bit.DC = 1U;
+    SCB_PARTIAL->CCR.bit.DC = 1U;
     __asm("DSB");
     __asm("ISB");
   }
@@ -130,14 +130,14 @@ void Cache_DisableDCache(void)
   uint32_t sets = 0U;
   uint32_t ways = 0U;
 
-  if(SCB->CCR.bit.DC)
+  if(SCB_PARTIAL->CCR.bit.DC)
   {
     /* Enable selection of data cache */
     CSSELR->reg = 0U;
     __asm("DSB");
 
     /* Disable the data cache */
-    SCB->CCR.bit.DC = 0U;
+    SCB_PARTIAL->CCR.bit.DC = 0U;
     __asm("DSB");
     __asm("ISB");
 
