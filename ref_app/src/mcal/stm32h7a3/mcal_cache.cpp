@@ -27,7 +27,7 @@
 //=========================================================================================
 // Includes
 //=========================================================================================
-#include <Cache.h>
+#include <mcal_cache.h>
 #include <Scb.h>
 
 #if defined(__GNUC__)
@@ -49,7 +49,7 @@ void Cache_EnableICache(void)
     __asm("ISB");
 
     /* Enable the Instruction cache */
-    SCB->CCR.bit.IC = 1u;
+    SCB->CCR.bit.IC = 1U;
     __asm("DSB");
     __asm("ISB");
   }
@@ -64,7 +64,7 @@ void Cache_DisableICache(void)
     __asm("ISB");
 
     /* Disable the Instruction cache */
-    SCB->CCR.bit.IC = 0u;
+    SCB->CCR.bit.IC = 0U;
     __asm("DSB");
     __asm("ISB");
 
@@ -91,13 +91,13 @@ void Cache_InvalidateICache(void)
 extern "C"
 void Cache_EnableDCache(void)
 {
-  uint32_t sets = 0;
-  uint32_t ways = 0;
+  uint32_t sets = 0U;
+  uint32_t ways = 0U;
 
   if(!SCB->CCR.bit.DC)
   {
     /* Enable selection of data cache */
-    CSSELR->reg = 0;
+    CSSELR->reg = 0U;
     __asm("DSB");
 
     /* Invalidate the data cache */
@@ -109,16 +109,16 @@ void Cache_EnableDCache(void)
       __asm("DSB");
       do
       {
-        DCISW->reg = (ways << 30u) | (sets << 5u);
+        DCISW->reg = (uint32_t) ((uint32_t) (ways << 30U) | (uint32_t) (sets << 5U));
         __asm("DSB");
-      }while(ways-- != 0);
+      }while(ways-- != 0U);
       __asm("DSB");
     
-    }while(sets-- != 0);
+    }while(sets-- != 0U);
     __asm("DSB");
 
     /* Enable the data cache */
-    SCB->CCR.bit.DC = 1u;
+    SCB->CCR.bit.DC = 1U;
     __asm("DSB");
     __asm("ISB");
   }
@@ -127,17 +127,17 @@ void Cache_EnableDCache(void)
 extern "C"
 void Cache_DisableDCache(void)
 {
-  uint32_t sets = 0;
-  uint32_t ways = 0;
+  uint32_t sets = 0U;
+  uint32_t ways = 0U;
 
   if(SCB->CCR.bit.DC)
   {
     /* Enable selection of data cache */
-    CSSELR->reg = 0;
+    CSSELR->reg = 0U;
     __asm("DSB");
 
     /* Disable the data cache */
-    SCB->CCR.bit.DC = 0u;
+    SCB->CCR.bit.DC = 0U;
     __asm("DSB");
     __asm("ISB");
 
@@ -149,11 +149,11 @@ void Cache_DisableDCache(void)
       __asm("DSB");
       do
       {
-        DCCISW->reg = (ways << 30u) | (sets << 5u);
+        DCCISW->reg = (uint32_t) ((uint32_t) (ways << 30U) | (uint32_t) (sets << 5U));
         __asm("DSB");
-      }while(ways-- != 0);
+      }while(ways-- != 0U);
     
-    }while(sets-- != 0);
+    }while(sets-- != 0U);
     
     __asm("DSB");
     __asm("ISB");
@@ -163,11 +163,11 @@ void Cache_DisableDCache(void)
 extern "C"
 void Cache_InvalidateDCache(void)
 {
-  uint32_t sets = 0;
-  uint32_t ways = 0;
+  uint32_t sets = 0U;
+  uint32_t ways = 0U;
 
   /* Enable selection of data cache */
-  CSSELR->reg = 0;
+  CSSELR->reg = 0U;
   __asm("DSB");
 
   /* Invalidate the data cache */
@@ -178,11 +178,11 @@ void Cache_InvalidateDCache(void)
     __asm("DSB");
     do
     {
-      DCISW->reg = (ways << 30u) | (sets << 5u);
+      DCISW->reg = (uint32_t) ((uint32_t) (ways << 30U) | (uint32_t) (sets << 5U));
       __asm("DSB");
-    }while(ways-- != 0);
+    }while(ways-- != 0U);
   
-  }while(sets-- != 0);
+  }while(sets-- != 0U);
   
   __asm("DSB");
   __asm("ISB");
@@ -191,11 +191,11 @@ void Cache_InvalidateDCache(void)
 extern "C"
 void Cache_CleanDCache(void)
 {
-  uint32_t sets = 0;
-  uint32_t ways = 0;
+  uint32_t sets = 0U;
+  uint32_t ways = 0U;
 
   /* Enable selection of data cache */
-  CSSELR->reg = 0;
+  CSSELR->reg = 0U;
   __asm("DSB");
 
   /* Clean the data cache */
@@ -206,11 +206,11 @@ void Cache_CleanDCache(void)
     __asm("DSB");
     do
     {
-      DCCSW->reg = (ways << 30u) | (sets << 5u);
+      DCCSW->reg = (uint32_t) ((uint32_t) (ways << 30U) | (uint32_t) (sets << 5U));
       __asm("DSB");
-    }while(ways-- != 0);
+    }while(ways-- != 0U);
   
-  }while(sets-- != 0);
+  }while(sets-- != 0U);
   
   __asm("DSB");
   __asm("ISB");
@@ -219,11 +219,11 @@ void Cache_CleanDCache(void)
 extern "C"
 void Cache_CleanInvlaidateDCache(void)
 {
-  uint32_t sets = 0;
-  uint32_t ways = 0;
+  uint32_t sets = 0U;
+  uint32_t ways = 0U;
 
   /* Enable selection of data cache */
-  CSSELR->reg = 0;
+  CSSELR->reg = 0U;
   __asm("DSB");
 
   /* Clean and invalidate the data cache */
@@ -234,11 +234,11 @@ void Cache_CleanInvlaidateDCache(void)
     __asm("DSB");
     do
     {
-      DCCISW->reg = (ways << 30u) | (sets << 5u);
+      DCCISW->reg = (uint32_t) ((uint32_t) (ways << 30U) | (uint32_t) (sets << 5U));
       __asm("DSB");
-    }while(ways-- != 0);
+    }while(ways-- != 0U);
   
-  }while(sets-- != 0);
+  }while(sets-- != 0U);
   
   __asm("DSB");
   __asm("ISB");

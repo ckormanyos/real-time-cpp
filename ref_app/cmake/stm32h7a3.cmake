@@ -42,9 +42,10 @@ set(TARGET_INCLUDES
 set(_TARGET_CFLAGS
     -finline-functions
     -finline-limit=32
-    -mfloat-abi=hard
+    -march=armv7e-m+fpv5-d16
+    -mtune=cortex-m7
     -mthumb
-    -march=armv7e-m+fpv5
+    -mfloat-abi=hard
     -ffast-math
     -mno-unaligned-access
     -mno-long-calls
@@ -64,8 +65,7 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
-    ${PATH_APP}/mcal/stm32h7a3/Cache
-    ${PATH_APP}/util/STD_LIBC/memory
+    ${PATH_APP}/mcal/stm32h7a3/mcal_cache
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1

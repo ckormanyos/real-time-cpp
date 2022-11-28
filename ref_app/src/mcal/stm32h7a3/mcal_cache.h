@@ -23,8 +23,8 @@
   Description : Cache maintenance header file
 
 ******************************************************************************************/
-#ifndef CACHE_2022_11_25_H_
-#define CACHE_2022_11_25_H_
+#ifndef MCAL_CACHE_2022_11_25_H_
+#define MCAL_CACHE_2022_11_25_H_
 
 #if defined(__cplusplus)
 extern "C"
@@ -228,4 +228,4 @@ void Cache_CleanInvlaidateDCache(void);
 }
 #endif
 
-#endif // CACHE_2022_11_25_H_
+#endif // MCAL_CACHE_2022_11_25_H_

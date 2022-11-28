@@ -10,7 +10,7 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
-#include <Cache.h>
+#include <mcal_cache.h>
 
 void mcal::cpu::init()
 {

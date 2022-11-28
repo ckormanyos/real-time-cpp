@@ -904,7 +904,7 @@
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32h7a3\Cache.cpp">
+    <ClCompile Include="src\mcal\stm32h7a3\mcal_cache.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2091,7 +2091,7 @@
     <ClInclude Include="src\mcal\stm32h7a3\mcal_irq.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\stm32h7a3\Cache.h">
+    <ClInclude Include="src\mcal\stm32h7a3\mcal_cache.h">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32h7a3\Scb.h">
