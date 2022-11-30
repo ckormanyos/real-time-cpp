@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2013 - 2022.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
@@ -9,8 +9,8 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
-// This file implements a naive FFT used for large-digit
-// FFT multiplication in decwide_t.
+// This file implements a somewhat naive FFT used
+// for large-digit FFT multiplication in decwide_t.
 
 #ifndef DECWIDE_T_DETAIL_FFT_2013_01_08_H // NOLINT(llvm-header-guard)
   #define DECWIDE_T_DETAIL_FFT_2013_01_08_H
@@ -112,39 +112,30 @@
     return template_sin_order_1<float_type>(static_cast<std::uint32_t>(num_points / 2U));
   }
 
-  // TBD: Use constexpr functions here, depending on availability.
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_real_init(      std::uint32_t num_points,
-                                                 bool = IsForwardFft,                                                  // NOLINT(readability-named-parameter,hicpp-named-parameter)
-                                           const typename std::enable_if<IsForwardFft>::type* = nullptr) -> float_type // NOLINT(readability-named-parameter,hicpp-named-parameter)
+  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> typename std::enable_if<IsForwardFft, float_type>::type
   {
     return template_sin_order_1<float_type>(num_points);
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_real_init(      std::uint32_t num_points,
-                                                 bool = IsForwardFft,                                                     // NOLINT(readability-named-parameter,hicpp-named-parameter)
-                                           const typename std::enable_if<(!IsForwardFft)>::type* = nullptr) -> float_type // NOLINT(readability-named-parameter,hicpp-named-parameter)
+  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> typename std::enable_if<(!IsForwardFft), float_type>::type
   {
     return static_cast<float_type>(-template_sin_order_1<float_type>(num_points));
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_imag(      std::uint32_t num_points,
-                                            bool = IsForwardFft,                                                  // NOLINT(readability-named-parameter,hicpp-named-parameter)
-                                      const typename std::enable_if<IsForwardFft>::type* = nullptr) -> float_type // NOLINT(readability-named-parameter,hicpp-named-parameter)
+  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> typename std::enable_if<IsForwardFft, float_type>::type
   {
     return template_sin_order_2<float_type>(num_points);
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_imag(      std::uint32_t num_points,
-                                            bool = IsForwardFft,                                                     // NOLINT(readability-named-parameter,hicpp-named-parameter)
-                                      const typename std::enable_if<(!IsForwardFft)>::type* = nullptr) -> float_type // NOLINT(readability-named-parameter,hicpp-named-parameter)
+  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> typename std::enable_if<(!IsForwardFft), float_type>::type
   {
     return static_cast<float_type>(-template_sin_order_2<float_type>(num_points));
   }
@@ -153,8 +144,12 @@
            const bool IsForwardFft>
   constexpr auto const_unique_wp_real(std::uint32_t num_points) -> float_type
   {
-    return static_cast<float_type>(static_cast<float_type>(-2) * (  const_unique_wp_real_init<float_type, IsForwardFft>(num_points)
-                                                                  * const_unique_wp_real_init<float_type, IsForwardFft>(num_points)));
+    return
+      static_cast<float_type>
+      (
+        -2 * (  const_unique_wp_real_init<float_type, IsForwardFft>(num_points)
+              * const_unique_wp_real_init<float_type, IsForwardFft>(num_points))
+      );
   }
 
   template<typename float_type,
@@ -163,8 +158,7 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto danielson_lanczos_apply(std::uint32_t num_points, // NOLINT(misc-no-recursion)
-                               float_type*   data) -> void
+  auto danielson_lanczos_apply(std::uint32_t num_points, float_type* data) -> void // NOLINT(misc-no-recursion)
   {
     if(num_points == static_cast<std::uint32_t>(UINT8_C(8)))
     {
@@ -180,7 +174,9 @@
     auto real_part = static_cast<float_type>(1);
     auto imag_part = static_cast<float_type>(0);
 
-    for(auto i = static_cast<std::uint32_t>(0U); i < num_points; i += 2U)
+    for(auto i  = static_cast<std::uint32_t>(UINT8_C(0));
+             i  < num_points;
+             i += static_cast<std::uint32_t>(UINT8_C(2)))
     {
             auto tmp_real = static_cast<float_type>((real_part * data[i + (num_points + 0U)]) - (imag_part * data[i + (num_points + 1U)])); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
       const auto tmp_imag = static_cast<float_type>((real_part * data[i + (num_points + 1U)]) + (imag_part * data[i + (num_points + 0U)])); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -242,12 +238,13 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto fft_lanczos_fft(std::uint32_t num_points,
-                       float_type*   data) -> void
+  auto fft_lanczos_fft(std::uint32_t num_points, float_type* data) -> void
   {
-    auto j = static_cast<std::uint32_t>(1U);
+    auto j = static_cast<std::uint32_t>(UINT8_C(1));
 
-    for(auto i = static_cast<std::uint32_t>(1U); i < static_cast<std::uint32_t>(num_points << 1U); i += 2U)
+    for(auto i  = static_cast<std::uint32_t>(UINT8_C(1));
+             i  < static_cast<std::uint32_t>(num_points << 1U);
+             i += static_cast<std::uint32_t>(UINT8_C(2)))
     {
       if(j > i)
       {
@@ -255,9 +252,9 @@
         std::swap(data[j],      data[i]);      // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
       }
 
-      std::uint32_t m = num_points;
+      auto m = num_points;
 
-      while((m > static_cast<std::uint32_t>(1U)) && (j > m))
+      while((m > static_cast<std::uint32_t>(UINT8_C(1))) && (j > m))
       {
         j  -= m;
         m >>= 1U;
@@ -271,20 +268,16 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto rfft_lanczos_rfft(      std::uint32_t num_points,
-                               float_type*   data,
-                               bool          my_fwd = IsForwardFft,
-                         const typename std::enable_if<IsForwardFft>::type* p_nullparam = nullptr) -> void
+  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> typename std::enable_if<IsForwardFft, void>::type
   {
-    static_cast<void>(my_fwd);
-    static_cast<void>(p_nullparam);
-
     fft_lanczos_fft<float_type, true>(num_points / 2U, data);
 
     auto real_part = static_cast<float_type>(static_cast<float_type>(1) + const_unique_wp_real<float_type, true>(num_points));
     auto imag_part = static_cast<float_type>(                             const_unique_wp_imag<float_type, true>(num_points));
 
-    for(auto i = static_cast<std::uint32_t>(1U); i < static_cast<std::uint32_t>(num_points >> 2U); ++i)
+    for(auto   i = static_cast<std::uint32_t>(UINT8_C(1));
+               i < static_cast<std::uint32_t>(num_points >> 2U);
+             ++i)
     {
       const auto i1 = static_cast<std::uint32_t>(i          + i);
       const auto i3 = static_cast<std::uint32_t>(num_points - i1);
@@ -319,18 +312,14 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto rfft_lanczos_rfft(      std::uint32_t num_points,
-                               float_type*   data,
-                               bool          my_fwd = IsForwardFft,
-                         const typename std::enable_if<(!IsForwardFft)>::type* p_nullparam = nullptr) -> void
+  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> typename std::enable_if<(!IsForwardFft), void>::type
   {
-    static_cast<void>(my_fwd);
-    static_cast<void>(p_nullparam);
-
     auto real_part = static_cast<float_type>(static_cast<float_type>(1) + const_unique_wp_real<float_type, false>(num_points));
     auto imag_part = static_cast<float_type>(                             const_unique_wp_imag<float_type, false>(num_points));
 
-    for(auto i = static_cast<std::uint32_t>(1U); i < static_cast<std::uint32_t>(num_points >> 2U); ++i)
+    for(auto   i = static_cast<std::uint32_t>(UINT8_C(1));
+               i < static_cast<std::uint32_t>(num_points >> 2U);
+             ++i)
     {
       const auto i1 = static_cast<std::uint32_t>(i          + i);
       const auto i3 = static_cast<std::uint32_t>(num_points - i1);
