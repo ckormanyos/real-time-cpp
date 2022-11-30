@@ -98,6 +98,7 @@
       constexpr std::uint32_t scb_ctr              = scb_base        + UINT32_C(0x007C); // (R/ )  Cache Type register */
       constexpr std::uint32_t scb_ccsidr           = scb_base        + UINT32_C(0x0080); // (R/ )  Cache Size ID Register */
       constexpr std::uint32_t scb_csselr           = scb_base        + UINT32_C(0x0084); // (R/W)  Cache Size Selection Register */
+      static_assert(scb_csselr == UINT32_C(0xE000ED84), "Error: Verification of scb_csselr failed");
       constexpr std::uint32_t scb_cpacr            = scb_base        + UINT32_C(0x0088); // (R/W)  Coprocessor Access Control Register */
       static_assert(scb_cpacr == UINT32_C(0xE000ED88), "Error: Verification of scb_cpacr failed");
       constexpr std::uint32_t scb_stir             = scb_base        + UINT32_C(0x0200); // ( /W)  Software Triggered Interrupt Register */

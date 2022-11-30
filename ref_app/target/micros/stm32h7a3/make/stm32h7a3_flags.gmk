@@ -28,7 +28,6 @@ TGT_ALLFLAGS  = -Os                                                            \
 
 TGT_CFLAGS    = -std=c99                                                       \
                 -Wunsuffixed-float-constants                                   \
-                -Wno-sign-conversion                                           \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++14                                                     \
