@@ -75,7 +75,7 @@
     return
       static_cast<local_unsigned_integral_type>
       (
-        (static_cast<local_unsigned_integral_type>(~u)) + static_cast<local_unsigned_integral_type>(1U)
+        (static_cast<local_unsigned_integral_type>(~u)) + static_cast<local_unsigned_integral_type>(UINT8_C(1))
       );
   }
 
@@ -176,13 +176,23 @@
   constexpr auto pow10_maker(std::uint32_t n) noexcept -> std::uint32_t // NOLINT(misc-no-recursion)
   {
     // Make the constant power of 10^n.
-    return ((n == UINT32_C(0)) ? UINT32_C(1) : pow10_maker(n - UINT32_C(1)) * UINT32_C(10));
+    return
+      static_cast<std::uint32_t>
+      (
+        (n == static_cast<std::uint32_t>(UINT8_C(0)))
+          ? static_cast<std::uint32_t>(UINT8_C(1))
+          : static_cast<std::uint32_t>
+            (
+                pow10_maker(static_cast<std::uint32_t>(n - static_cast<std::uint32_t>(UINT8_C(1))))
+              * static_cast<std::uint32_t>(UINT8_C(10))
+            )
+      );
   }
   // LCOV_EXCL_STOP
 
   static inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
   {
-    using local_array_type = std::array<std::uint32_t, 10U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    using local_array_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(10))>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
     constexpr local_array_type local_p10_table =
     {{
@@ -198,32 +208,40 @@
       UINT32_C(1000000000)
     }};
 
-    return ((n < static_cast<std::uint32_t>(std::tuple_size<local_array_type>::value))
-             ? local_p10_table[typename local_array_type::size_type(n)]
-             : local_p10_table.back()); // LCOV_EXCL_LINE
+    {
+      using local_size_type = typename local_array_type::size_type;
+
+      return ((n < static_cast<std::uint32_t>(std::tuple_size<local_array_type>::value))
+               ? local_p10_table[static_cast<local_size_type>(n)]
+               : local_p10_table.back()); // LCOV_EXCL_LINE
+    }
   }
 
   template<typename LimbType>
   struct decwide_t_helper_base
   {
+  private:
+    using local_limb_type = LimbType;
+
+  public:
     static constexpr std::int32_t elem_digits10     =
-      (std::is_same<LimbType, std::uint32_t>::value
+      (std::is_same<local_limb_type, std::uint32_t>::value
         ? static_cast<std::int32_t>(8)
-        : (std::is_same<LimbType, std::uint16_t>::value ? static_cast<std::int32_t>(4)
-                                                        : static_cast<std::int32_t>(2)));
+        : (std::is_same<local_limb_type, std::uint16_t>::value ? static_cast<std::int32_t>(INT8_C(4))
+                                                               : static_cast<std::int32_t>(INT8_C(2))));
 
     static constexpr auto elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
     static constexpr auto elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));
 
-    static constexpr auto digit_at_pos_in_limb(LimbType u, unsigned pos) noexcept -> std::uint8_t
+    static constexpr auto digit_at_pos_in_limb(local_limb_type u, unsigned pos) noexcept -> std::uint8_t
     {
       return
         static_cast<std::uint8_t>
         (
-          static_cast<LimbType>
+          static_cast<local_limb_type>
           (
-              static_cast<LimbType>(u / pow10_maker_as_runtime_value(static_cast<std::uint32_t>(pos)))
-            % static_cast<LimbType>(10U) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+              static_cast<local_limb_type>(u / pow10_maker_as_runtime_value(static_cast<std::uint32_t>(pos)))
+            % static_cast<local_limb_type>(UINT8_C(10)) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
           )
         );
     }
@@ -243,7 +261,7 @@
   public:
     static constexpr std::int32_t digits10          = ParamDigitsBaseTen;
     static constexpr std::int32_t digits            = digits10;
-    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + 4);
+    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + static_cast<std::int32_t>(INT32_C(4)));
     static constexpr std::int32_t radix             = static_cast<std::int32_t>(INT32_C(10));
 
     static constexpr std::int32_t elem_number_extra = static_cast<std::int32_t>(INT32_C(3));
@@ -358,7 +376,7 @@
 
         std::fill(base_class_type::begin() + size_to_copy,
                   base_class_type::end(),
-                  static_cast<typename base_class_type::value_type>(0U));
+                  static_cast<typename base_class_type::value_type>(UINT8_C(0)));
       }
       else
       {
@@ -392,9 +410,9 @@
     using   signed_type =   SignedIntegerType;
 
     constexpr explicit unsigned_wrap(signed_type n)
-      : my_neg  (n < static_cast<signed_type>(0)),
+      : my_neg  (n < static_cast<signed_type>(INT8_C(0))),
         my_value(static_cast<unsigned_type>((!my_neg ) ? static_cast<unsigned_type>(n)
-                                                       : static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(n)) + 1U))) { }
+                                                       : static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(n)) + static_cast<unsigned_type>(UINT8_C(1))))) { }
 
     constexpr unsigned_wrap(const unsigned_wrap& other)
       : my_neg  (other.my_neg),
@@ -448,14 +466,14 @@
           if(my_value > other.my_value)
           {
             // +3 + (-2)
-            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + 1U));
+            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + static_cast<unsigned_type>(UINT8_C(1))));
           }
           else
           {
             // +2 + (-3)
-            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + 1U));
+            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + static_cast<unsigned_type>(UINT8_C(1))));
 
-            my_neg = (my_value != 0U);
+            my_neg = (my_value != static_cast<unsigned_type>(UINT8_C(0)));
           }
         }
         else
@@ -463,12 +481,12 @@
           if(my_value > other.my_value)
           {
             // -3 + (+2)
-            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + 1U));
+            my_value = static_cast<unsigned_type>(my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(other.my_value)) + static_cast<unsigned_type>(UINT8_C(1))));
           }
           else
           {
             // -2 + (+3)
-            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + 1U));
+            my_value = static_cast<unsigned_type>(other.my_value + static_cast<unsigned_type>(static_cast<unsigned_type>(~static_cast<unsigned_type>(my_value)) + static_cast<unsigned_type>(UINT8_C(1))));
 
             my_neg = false;
           }
@@ -480,9 +498,9 @@
 
     auto operator-=(const unsigned_wrap& other) -> unsigned_wrap&
     {
-      if(my_value == 0U)
+      if(my_value == static_cast<unsigned_type>(UINT8_C(0)))
       {
-        if(other.my_value != 0U)
+        if(other.my_value != static_cast<unsigned_type>(UINT8_C(0)))
         {
           my_value = other.my_value;
 
@@ -493,7 +511,7 @@
       {
         my_neg = (!my_neg);
         operator+=(other);
-        my_neg = (my_value != 0U) ? (!my_neg) : false;
+        my_neg = (my_value != static_cast<unsigned_type>(UINT8_C(0))) ? (!my_neg) : false;
       }
 
       return *this;
