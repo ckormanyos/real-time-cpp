@@ -23,15 +23,18 @@
 #include <mcal_memory/mcal_memory_progmem_array.h>
 #include <util/memory/util_n_slot_array_allocator.h>
 
-// Define this to go up to 101 decimal digits in the pi AGM calculation.
+// Define APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS in order
+// to go up to 101 decimal digits in the pi AGM calculation.
 // If this is done, however, the AVR target needs a bit more RAM,
 // which can be subtracted from the ample stack in the LD file.
 
 // When using 101 decmial digits on the AVR, also consider
 // switching the optimization level to -O2 in order to speed
-// up the calculation a bit. Benchmarks (with -O2) on AVR
-// show about 200ms needed for 53 decimal digits, whereas
-// about 480ms are needed for the 101 decimal digit calculation.
+// up the calculation a bit.
+
+// Benchmarks (with -O2) on AVR show about 200ms needed
+// for 53 decimal digits, whereas about 480ms are needed
+// for the 101 decimal digit calculation.
 
 //#define APP_BENCHMARK_TYPE_PI_AGM_USES_101_DIGITS
 
