@@ -11,6 +11,8 @@
   #include <chrono>
   #include <cstdint>
 
+  #include <mcal/mcal_gpt_arm_sys_tick.h>
+
   // Forward declaration of the util::timer template class.
   namespace util
   {
@@ -22,8 +24,11 @@
   {
     namespace gpt
     {
-      typedef void          config_type;
-      typedef std::uint64_t value_type;
+      using arm_sys_tick_type =
+        arm_sys_tick<static_cast<std::uint32_t>(UINT32_C(280)), std::uint64_t>;
+
+      using config_type = void;
+      using value_type  = typename arm_sys_tick_type::value_type;
 
       void init(const config_type*);
 

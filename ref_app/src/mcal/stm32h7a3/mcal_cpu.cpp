@@ -22,20 +22,20 @@ void mcal::cpu::init()
 {
   // Configure the flash wait states (280 MHz --> 6 WS).
   //Flash->ACR.bit.LATENCY = 6u;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, UINT32_C(6)>::reg_msk<UINT32_C(7)>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, static_cast<std::uint32_t>(UINT8_C(6))>::reg_msk<UINT32_C(7)>();
 
   // Relocate the vector table to internal flash.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, UINT32_C(0x08000000)>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, static_cast<std::uint32_t>(UINT32_C(0x08000000))>::reg_set();
 
   // Initialize the FPU: Enable CP10 and CP11.
   //CPACR |= 0x00F00000UL;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_cpacr, UINT32_C(0x00F00000)>::reg_or();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_cpacr, static_cast<std::uint32_t>(UINT32_C(0x00F00000))>::reg_or();
 
   // Enable ITCM and DTCM.
   //ITCMCR |= 1UL;
   //DTCMCR |= 1UL;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_itcmcr, UINT32_C(1)>::reg_or();
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_dtcmcr, UINT32_C(1)>::reg_or();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_itcmcr, static_cast<std::uint32_t>(UINT8_C(1))>::reg_or();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_dtcmcr, static_cast<std::uint32_t>(UINT8_C(1))>::reg_or();
 
   asm volatile("dsb");
   asm volatile("isb");
@@ -43,7 +43,10 @@ void mcal::cpu::init()
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
+}
 
+void mcal::cpu::post_init()
+{
   // Enable the Cache-I and Cache-D.
   detail::enable_i_cache();
   detail::enable_d_cache();
@@ -84,7 +87,7 @@ void mcal::cpu::detail::enable_d_cache()
           static_cast<std::uint32_t>
           (
                mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get()
-            >> 13U
+            >> static_cast<unsigned>(UINT8_C(13))
           )
         &
           static_cast<std::uint32_t>(UINT32_C(0x7FFF))
@@ -99,7 +102,7 @@ void mcal::cpu::detail::enable_d_cache()
       ways =
         static_cast<std::uint32_t>
         (
-            static_cast<std::uint32_t>(ways >> 3U)
+            static_cast<std::uint32_t>(ways >> static_cast<unsigned>(UINT8_C(3)))
           & static_cast<std::uint32_t>(UINT32_C(0x3FF))
         );
 
@@ -108,8 +111,8 @@ void mcal::cpu::detail::enable_d_cache()
         const auto dcisw_reg_val =
           static_cast<std::uint32_t>
           (
-              static_cast<std::uint32_t>(ways << 30U)
-            | static_cast<std::uint32_t>(sets <<  5U)
+              static_cast<std::uint32_t>(ways << static_cast<unsigned>(UINT8_C(30)))
+            | static_cast<std::uint32_t>(sets << static_cast<unsigned>(UINT8_C( 5)))
           );
 
         mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::scb_dcisw, dcisw_reg_val);
