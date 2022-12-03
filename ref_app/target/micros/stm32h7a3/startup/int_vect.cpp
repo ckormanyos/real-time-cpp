@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,27 +11,27 @@
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __my_startup         () __attribute__((used, noinline));
-extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
-extern "C" void __nmi_handler        () __attribute__((used, noinline));
-extern "C" void __hard_fault_handler () __attribute__((used, noinline));
-extern "C" void __mem_manage_handler () __attribute__((used, noinline));
-extern "C" void __bus_fault_handler  () __attribute__((used, noinline));
-extern "C" void __usage_fault_handler() __attribute__((used, noinline));
-extern "C" void __svc_handler        () __attribute__((used, noinline));
-extern "C" void __debug_mon_handler  () __attribute__((used, noinline));
-extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
-extern "C" void __sys_tick_handler   () __attribute__((used, noinline));
+extern "C" void __my_startup         () noexcept __attribute__((used, noinline));
+extern "C" void __vector_unused_irq  () noexcept __attribute__((used, noinline));
+extern "C" void __nmi_handler        () noexcept __attribute__((used, noinline));
+extern "C" void __hard_fault_handler () noexcept __attribute__((used, noinline));
+extern "C" void __mem_manage_handler () noexcept __attribute__((used, noinline));
+extern "C" void __bus_fault_handler  () noexcept __attribute__((used, noinline));
+extern "C" void __usage_fault_handler() noexcept __attribute__((used, noinline));
+extern "C" void __svc_handler        () noexcept __attribute__((used, noinline));
+extern "C" void __debug_mon_handler  () noexcept __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    () noexcept __attribute__((used, noinline));
+extern "C" void __sys_tick_handler   () noexcept __attribute__((used, noinline));
 
-extern "C" void __vector_unused_irq  () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __nmi_handler        () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __hard_fault_handler () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __mem_manage_handler () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __bus_fault_handler  () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __usage_fault_handler() { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __svc_handler        () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __debug_mon_handler  () { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __pend_sv_handler    () { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __vector_unused_irq  () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __nmi_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __hard_fault_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __mem_manage_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __bus_fault_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __usage_fault_handler() noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __svc_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __debug_mon_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __pend_sv_handler    () noexcept { for(;;) { mcal::cpu::nop(); } }
 
 namespace
 {
