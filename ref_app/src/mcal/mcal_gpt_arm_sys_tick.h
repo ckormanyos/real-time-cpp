@@ -9,8 +9,7 @@
   #define MCAL_GPT_ARM_SYS_TICK_2022_11_30_H_
 
   #include <cstdint>
-
-  #include <mcal_reg.h>
+  #include <limits>
 
   extern "C" auto __sys_tick_handler(void) noexcept -> void
   #if defined(__GNUC__)
@@ -21,48 +20,81 @@
   namespace mcal { namespace gpt {
 
   template<const std::uint32_t SysTickMHz,
-           typename ValueType         = std::uint64_t,
-           typename TimerAddressType  = std::uint32_t,
-           typename TimerRegisterType = std::uint32_t>
-  class arm_sys_tick
+           typename ValueType,
+           typename RegisterAddressType,
+           typename RegisterValueType>
+  class arm_sys_tick_base
   {
-  private:
-    using timer_address_type  = TimerAddressType;
-    using timer_register_type = TimerRegisterType;
-    using value_type          = ValueType;
+  protected:
+    using register_address_type = RegisterAddressType;
+    using register_value_type   = RegisterValueType;
+    using value_type            = ValueType;
+
+    static_assert(std::numeric_limits<register_address_type>::digits == 32,
+                  "Error: Wrong width of register address type");
+
+    static_assert(std::numeric_limits<register_value_type>::digits == 32,
+                  "Error: Wrong width of register value type");
 
     static constexpr auto sys_tick_mhz = SysTickMHz;
 
-    static constexpr auto scs_base        = static_cast<timer_address_type>(UINT32_C(0xE000E000));
-    static constexpr auto sys_tick_base   = static_cast<timer_address_type>(scs_base        + static_cast<timer_address_type>(UINT8_C(0x10)));
-    static constexpr auto sys_tick_ctrl   = static_cast<timer_address_type>(sys_tick_base   + static_cast<timer_address_type>(UINT8_C(0x00)));
-    static constexpr auto sys_tick_load   = static_cast<timer_address_type>(sys_tick_base   + static_cast<timer_address_type>(UINT8_C(0x04)));
-    static constexpr auto sys_tick_val    = static_cast<timer_address_type>(sys_tick_base   + static_cast<timer_address_type>(UINT8_C(0x08)));
-    static constexpr auto sys_tick_cal    = static_cast<timer_address_type>(sys_tick_base   + static_cast<timer_address_type>(UINT8_C(0x0C)));
+    static constexpr auto scs_base      = static_cast<register_address_type>(UINT32_C(0xE000E000));
+    static constexpr auto sys_tick_base = static_cast<register_address_type>(scs_base        + static_cast<register_address_type>(UINT8_C(0x10)));
+    static constexpr auto sys_tick_ctrl = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x00)));
+    static constexpr auto sys_tick_load = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x04)));
+    static constexpr auto sys_tick_val  = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x08)));
+    static constexpr auto sys_tick_cal  = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x0C)));
+
+    template<const register_address_type address,
+             const register_value_type value = static_cast<register_value_type>(0)>
+    struct reg_access_static
+    {
+      static register_value_type
+                  reg_get() { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
+
+      static void reg_set() { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
+
+      static void reg_or () { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
+    };
+  };
+
+  template<const std::uint32_t SysTickMHz,
+           typename ValueType,
+           typename RegisterAddressType = std::uint32_t,
+           typename RegisterValueType   = std::uint32_t>
+  class arm_sys_tick : private arm_sys_tick_base<SysTickMHz, ValueType, RegisterAddressType, RegisterValueType>
+  {
+  private:
+    using base_class_type = arm_sys_tick_base<SysTickMHz, ValueType, RegisterAddressType, RegisterValueType>;
+
+    using register_address_type = typename base_class_type::register_address_type;
+    using register_value_type   = typename base_class_type::register_value_type;
 
   public:
+    using value_type = typename base_class_type::value_type;
+
     static auto init() noexcept -> void
     {
       if(!my_is_init)
       {
         // Set up an interrupt on ARM(R) sys tick.
 
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_ctrl, static_cast<timer_register_type>(UINT8_C(0))>::reg_set();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(0))>::reg_set();
 
         // Set sys tick reload register.
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_load, static_cast<timer_register_type>(UINT32_C(0x00FFFFFF))>::reg_set();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_load, static_cast<register_value_type>(UINT32_C(0x00FFFFFF))>::reg_set();
 
         // Initialize sys tick counter value.
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_val,  static_cast<timer_register_type>(UINT8_C(0))>::reg_set();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_val,  static_cast<register_value_type>(UINT8_C(0))>::reg_set();
 
         // Set sys tick clock source to ahb.
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_ctrl, static_cast<timer_register_type>(UINT8_C(4))>::reg_or();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(4))>::reg_or();
 
         // Enable sys tick interrupt.
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_ctrl, static_cast<timer_register_type>(UINT8_C(2))>::reg_or();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(2))>::reg_or();
 
         // Enable sys tick timer.
-        mcal::reg::reg_access_static<timer_address_type, timer_register_type, sys_tick_ctrl, static_cast<timer_register_type>(UINT8_C(1))>::reg_or();
+        base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(1))>::reg_or();
 
         my_is_init = true;
       }
@@ -77,14 +109,12 @@
         // Do the first read of the sys tick counter and the system tick.
         // Handle reverse counting for sys tick counting down.
         const auto sys_tick_val_1 =
-          static_cast<timer_register_type>
+          static_cast<register_value_type>
           (
-            static_cast<timer_register_type>
+            static_cast<register_value_type>
             (
-                static_cast<timer_register_type>(UINT32_C(0x00FFFFFF))
-              - mcal::reg::reg_access_static<timer_address_type,
-                                             timer_register_type,
-                                             sys_tick_val>::reg_get()
+                static_cast<register_value_type>(UINT32_C(0x00FFFFFF))
+              - base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get()
             )
           );
 
@@ -93,14 +123,12 @@
         // Do the second read of the sys tick counter.
         // Handle reverse counting for sys tick counting down.
         const auto sys_tick_val_2 =
-          static_cast<timer_register_type>
+          static_cast<register_value_type>
           (
-            static_cast<timer_register_type>
+            static_cast<register_value_type>
             (
-                static_cast<timer_register_type>(UINT32_C(0x00FFFFFF))
-              - mcal::reg::reg_access_static<timer_address_type,
-                                             timer_register_type,
-                                             sys_tick_val>::reg_get()
+                static_cast<register_value_type>(UINT32_C(0x00FFFFFF))
+              - base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get()
             )
           );
 
@@ -120,9 +148,9 @@
           (
               static_cast<std::uint64_t>
               (
-                consistent_tick_value + static_cast<std::uint32_t>(sys_tick_mhz / 2U)
+                consistent_tick_value + static_cast<std::uint32_t>(base_class_type::sys_tick_mhz / 2U)
               )
-            / sys_tick_mhz
+            / base_class_type::sys_tick_mhz
           );
       }
       else
