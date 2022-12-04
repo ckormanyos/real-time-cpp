@@ -8,14 +8,6 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 
-namespace local
-{
-  using led_port_type = mcal::port::port_pin<std::uint32_t,
-                                             std::uint32_t,
-                                             mcal::reg::gpiob_base,
-                                             static_cast<std::uint32_t>(UINT8_C(0))>;
-} // namespace local
-
 void mcal::port::init(const config_type*)
 {
   mcal::reg::reg_access_static<std::uint32_t,
