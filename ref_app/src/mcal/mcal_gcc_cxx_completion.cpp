@@ -139,9 +139,8 @@ extern "C"
 
   #if (defined(__GNUC__) && defined(__v850__))
   #else
-  static int __my_errno;
   int* __errno(void);
-  int* __errno(void) { return &__my_errno; }
+  int* __errno(void) { static int __my_errno; return &__my_errno; }
   #endif
 
   std::uint8_t __fdlib_version;
