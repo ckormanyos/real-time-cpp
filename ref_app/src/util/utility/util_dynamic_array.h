@@ -9,6 +9,8 @@
   #define UTIL_DYNAMIC_ARRAY_2012_05_16_H
 
   #include <algorithm>
+  #include <cstddef>
+  #include <cstdint>
   #include <initializer_list>
   #include <iterator>
   #include <memory>
@@ -44,13 +46,13 @@
     using const_reverse_iterator =       std::reverse_iterator<const_iterator>;
 
     // Constructors.
-    explicit dynamic_array(      size_type       count = static_cast<size_type>(0U),
+    explicit dynamic_array(      size_type       count = static_cast<size_type>(UINT8_C(0)),
                                  const_reference v     = value_type(),
                            const allocator_type& a     = allocator_type())
       : elem_count(count),
         elems     (nullptr)
     {
-      if(elem_count > 0U)
+      if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
         allocator_type my_a(a);
 
@@ -73,7 +75,7 @@
     {
       allocator_type my_a;
 
-      if(elem_count > 0U)
+      if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
         elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
       }
@@ -90,7 +92,7 @@
     {
       allocator_type my_a(a);
 
-      if(elem_count > 0U)
+      if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
         elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
       }
@@ -105,7 +107,7 @@
     {
       allocator_type my_a(a);
 
-      if(elem_count > 0U)
+      if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
         elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
       }
@@ -117,7 +119,7 @@
     dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
                                                     elems     (other.elems)
     {
-      other.elem_count = 0U;
+      other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
     }
 
@@ -164,40 +166,40 @@
     }
 
     // Iterator members:
-    auto begin  ()       -> iterator               { return elems; }
-    auto end    ()       -> iterator               { return elems + elem_count; }
-    auto begin  () const -> const_iterator         { return elems; }
-    auto end    () const -> const_iterator         { return elems + elem_count; }
-    auto cbegin () const -> const_iterator         { return elems; }
-    auto cend   () const -> const_iterator         { return elems + elem_count; }
-    auto rbegin ()       -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
-    auto rend   ()       -> reverse_iterator       { return reverse_iterator(elems); }
-    auto rbegin () const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto rend   () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
-    auto crbegin() const -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
-    auto crend  () const -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    auto begin  ()       noexcept -> iterator               { return elems; }
+    auto end    ()       noexcept -> iterator               { return elems + elem_count; }
+    auto begin  () const noexcept -> const_iterator         { return elems; }
+    auto end    () const noexcept -> const_iterator         { return elems + elem_count; }
+    auto cbegin () const noexcept -> const_iterator         { return elems; }
+    auto cend   () const noexcept -> const_iterator         { return elems + elem_count; }
+    auto rbegin ()       noexcept -> reverse_iterator       { return reverse_iterator(elems + elem_count); }
+    auto rend   ()       noexcept -> reverse_iterator       { return reverse_iterator(elems); }
+    auto rbegin () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    auto rend   () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
+    auto crbegin() const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems + elem_count); }
+    auto crend  () const noexcept -> const_reverse_iterator { return const_reverse_iterator(elems); }
 
     // Raw pointer access.
-    auto data()       -> pointer       { return elems; }
-    auto data() const -> const_pointer { return elems; }
+    auto data()       noexcept -> pointer       { return elems; }
+    auto data() const noexcept -> const_pointer { return elems; }
 
     // Size and capacity.
-    constexpr auto size    () const -> size_type { return  elem_count; }
-    constexpr auto max_size() const -> size_type { return  elem_count; }
-    constexpr auto empty   () const -> bool      { return (elem_count == 0U); }
+    constexpr auto size    () const noexcept -> size_type { return  elem_count; }
+    constexpr auto max_size() const noexcept -> size_type { return  elem_count; }
+    constexpr auto empty   () const noexcept -> bool      { return (elem_count == static_cast<size_type>(UINT8_C(0))); }
 
     // Element access members.
-    auto operator[](const size_type i)       -> reference       { return elems[i]; }
-    auto operator[](const size_type i) const -> const_reference { return elems[i]; }
+    auto operator[](const size_type i)       noexcept -> reference       { return elems[i]; }
+    auto operator[](const size_type i) const noexcept -> const_reference { return elems[i]; }
 
-    auto front()       -> reference       { return elems[0U]; }
-    auto front() const -> const_reference { return elems[0U]; }
+    auto front()       noexcept -> reference       { return elems[static_cast<size_type>(UINT8_C(0))]; }
+    auto front() const noexcept -> const_reference { return elems[static_cast<size_type>(UINT8_C(0))]; }
 
-    auto back()       -> reference       { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
-    auto back() const -> const_reference { return ((elem_count > static_cast<size_type>(0U)) ? elems[elem_count - 1U] : elems[0U]); }
+    auto back()       noexcept -> reference       { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    auto back() const noexcept -> const_reference { return ((elem_count > static_cast<size_type>(UINT8_C(0))) ? elems[static_cast<size_type>(elem_count - static_cast<size_type>(UINT8_C(1)))] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
-    auto at(const size_type i)       -> reference       { return ((i < elem_count) ? elems[i] : elems[0U]); }
-    auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[0U]); }
+    auto at(const size_type i)       noexcept -> reference       { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
+    auto at(const size_type i) const noexcept -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
     auto fill(const value_type& v) -> void
@@ -237,7 +239,7 @@
     {
       using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
-      const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
+      const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
 
       left_and_right_are_equal =
         (size_of_left_is_zero || std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin()));
@@ -252,13 +254,13 @@
   {
     using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
-    const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(0U));
+    const auto size_of_left_is_zero = (lhs.size() == static_cast<size_type>(UINT8_C(0)));
 
     bool b_result { };
 
     if(size_of_left_is_zero)
     {
-      const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
+      const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
 
       b_result = (!size_of_right_is_zero);
     }
@@ -266,7 +268,7 @@
     {
       if(size_of_left_is_zero)
       {
-        const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(0U));
+        const auto size_of_right_is_zero = (rhs.size() == static_cast<size_type>(UINT8_C(0)));
 
         b_result = (!size_of_right_is_zero);
       }

@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -105,7 +105,7 @@
 
       auto out_first = out;
 
-      while(x != static_cast<unsigned_integer_type>(0U))
+      while(x != static_cast<unsigned_integer_type>(UINT8_C(0)))
       {
         const auto c =
           static_cast<output_value_type>
@@ -125,7 +125,7 @@
             x / static_cast<unsigned_integer_type>(BaseRepresentation)
           );
 
-        if(x != static_cast<unsigned_integer_type>(0U))
+        if(x != static_cast<unsigned_integer_type>(UINT8_C(0)))
         {
           ++out;
         }

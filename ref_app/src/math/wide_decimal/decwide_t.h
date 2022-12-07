@@ -535,15 +535,13 @@
     static constexpr std::int32_t  decwide_t_digits         = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::digits;
     static constexpr std::int32_t  decwide_t_max_digits10   = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::max_digits10;
     static constexpr std::int32_t  decwide_t_radix          = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::radix;
-
     static constexpr std::int32_t  decwide_t_elem_digits10  = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_digits10;
     static constexpr std::int32_t  decwide_t_elem_number    = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_number;
     static constexpr std::int32_t  decwide_t_elem_mask      = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_mask;
     static constexpr std::int32_t  decwide_t_elem_mask_half = detail::decwide_t_helper<ParamDigitsBaseTen, LimbType>::elem_mask_half;
     static constexpr std::int32_t  decwide_t_elem_mask_min1 = static_cast<std::int32_t>(decwide_t_elem_mask - static_cast<std::int32_t>(INT8_C(1)));
-
-    static constexpr std::int32_t  decwide_t_elems_for_kara = static_cast<std::int32_t>( 112 + 1);
-    static constexpr std::int32_t  decwide_t_elems_for_fft  = static_cast<std::int32_t>(1792 + 1);
+    static constexpr std::int32_t  decwide_t_elems_for_kara = static_cast<std::int32_t>(INT32_C( 112) + INT32_C(1));
+    static constexpr std::int32_t  decwide_t_elems_for_fft  = static_cast<std::int32_t>(INT32_C(1792) + INT32_C(1));
 
     static constexpr exponent_type decwide_t_max_exp10      =  static_cast<exponent_type>(UINTMAX_C(1) << static_cast<unsigned>(std::numeric_limits<exponent_type>::digits - (std::is_same<exponent_type, std::int64_t>::value ? 4 : (std::is_same<exponent_type, std::int32_t>::value ? 3 : (std::is_same<exponent_type, std::int16_t>::value ? 2 : 1)))));
     static constexpr exponent_type decwide_t_min_exp10      = -static_cast<exponent_type>(decwide_t_max_exp10);
@@ -639,9 +637,9 @@
 
         auto man = static_cast<native_float_type>(frexp(static_cast<long double>(f), &my_exponent_part));
 
-        auto n2 = static_cast<unsigned>(0U);
+        auto n2 = static_cast<unsigned>(UINT8_C(0));
 
-        for(auto   i = static_cast<std::uint_fast16_t>(0U);
+        for(auto   i = static_cast<std::uint_fast16_t>(UINT8_C(0));
                    i < static_cast<std::uint_fast16_t>(std::numeric_limits<native_float_type>::digits);
                  ++i)
         {
@@ -680,7 +678,7 @@
         my_exponent_part -= 1;
       }
 
-      constexpr native_float_parts(const native_float_parts& other)
+      constexpr native_float_parts(const native_float_parts& other) noexcept
         : my_mantissa_part(other.my_mantissa_part),
           my_exponent_part(other.my_exponent_part) { }
 
@@ -690,7 +688,7 @@
 
       native_float_parts() = delete;
 
-      ~native_float_parts() = default; // LCOV_EXCL_LINE
+      ~native_float_parts() noexcept = default; // LCOV_EXCL_LINE
 
       auto operator=(const native_float_parts& other) noexcept -> native_float_parts& // NOLINT(cert-oop54-cpp)
       {
@@ -711,8 +709,8 @@
         return *this;
       }
 
-     WIDE_DECIMAL_NODISCARD constexpr auto get_mantissa() const -> unsigned long long { return my_mantissa_part; } // NOLINT(google-runtime-int)
-     WIDE_DECIMAL_NODISCARD constexpr auto get_exponent() const -> int                { return my_exponent_part; }
+     WIDE_DECIMAL_NODISCARD constexpr auto get_mantissa() const noexcept -> unsigned long long { return my_mantissa_part; } // NOLINT(google-runtime-int)
+     WIDE_DECIMAL_NODISCARD constexpr auto get_exponent() const noexcept -> int                { return my_exponent_part; }
 
     private:
       unsigned long long my_mantissa_part { }; // NOLINT(readability-identifier-naming,google-runtime-int)
@@ -733,7 +731,7 @@
       initializer(const initializer&) = delete;
       initializer(initializer&&) = delete;
 
-      auto operator=(const initializer&) -> initializer& = delete;
+      auto operator=(const initializer&) noexcept -> initializer& = delete;
       auto operator=(initializer&&) noexcept -> initializer& = delete;
 
       ~initializer() noexcept = default;
@@ -778,9 +776,7 @@
         my_prec_elem(decwide_t_elem_number)
     {
       const auto u_is_less_than_mask =
-        (
-          static_cast<limb_type>(u) < static_cast<limb_type>(decwide_t_elem_mask)
-        );
+        (static_cast<limb_type>(u) < static_cast<limb_type>(decwide_t_elem_mask));
 
       using local_size_type = typename representation_type::size_type;
 
@@ -898,7 +894,7 @@
         (
           (
               (std::numeric_limits<internal_float_type>::min)()
-            * (static_cast<internal_float_type>(1.0L) + std::numeric_limits<internal_float_type>::epsilon())
+            * (static_cast<internal_float_type>(1.0F) + std::numeric_limits<internal_float_type>::epsilon())
           )
         );
 
@@ -1078,7 +1074,7 @@
 
       if(my_neg == v.my_neg)
       {
-        limb_type carry { };
+        auto carry = limb_type { };
 
         // Add v to *this, where the data array of either *this or v
         // might have to be treated with a positive, negative or zero offset.
@@ -1299,7 +1295,10 @@
                          return (d == static_cast<limb_type>(UINT8_C(0)));
                        }))
         {
-          operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>());
+          static_cast<void>
+          (
+            operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
+          );
         }
       }
 
@@ -1338,12 +1337,12 @@
         if((!result_exp.get_is_neg()) && (result_exp.get_value_unsigned() >= decwide_t_max_exp10))
         {
           // Check for (and handle overflow).
-          operator=(my_value_max());
+          static_cast<void>(operator=(my_value_max()));
         }
         else if((result_exp.get_is_neg()) && (result_exp.get_value_unsigned() >= decwide_t_max_exp10))
         {
           // Check for (and handle underflow).
-          operator=(my_value_min());
+          static_cast<void>(operator=(my_value_min()));
         }
         else
         {
@@ -1380,7 +1379,10 @@
       {
         const auto negate_one = (my_neg != v.my_neg);
 
-        static_cast<void>(operator=(one<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>()));
+        static_cast<void>
+        (
+          operator=(one<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
+        );
 
         if(negate_one)
         {
@@ -1839,7 +1841,7 @@
             static_cast<internal_float_type>(1.0F) / dd
           );
 
-        operator=(decwide_t(one_over_d, static_cast<exponent_type>(-ne)));
+        static_cast<void>(operator=(decwide_t(one_over_d, static_cast<exponent_type>(-ne))));
       }
 
       // Compute the inverse of *this. Quadratically convergent Newton-Raphson iteration
@@ -1933,7 +1935,7 @@
 
       const auto original_prec_elem = my_prec_elem;
 
-      operator=(decwide_t(sqd, static_cast<exponent_type>(ne / 2)));
+      static_cast<void>(operator=(decwide_t(sqd, static_cast<exponent_type>(ne / 2))));
 
       // Estimate 1.0 / (2.0 * x0) using simple manipulations.
       const auto inv_half_sqd =
@@ -2410,7 +2412,7 @@
       if(   iszero()
          || (xx.cmp(long_double_min<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>()) < 0))
       {
-        return static_cast<long double>(0.0L);
+        return static_cast<long double>(0.0F);
       }
 
       // Check if *this decwide_t over/under-flows the min/max of long double.
@@ -2819,7 +2821,7 @@
     template<typename FloatingPointType>
     auto from_builtin_float_type(FloatingPointType flt) -> void
     {
-      const auto b_neg = (flt < static_cast<FloatingPointType>(0.0L));
+      const auto b_neg = (flt < static_cast<FloatingPointType>(0.0F));
 
       const native_float_parts<FloatingPointType> ld_parts((!b_neg) ? flt : -flt);
 
@@ -3344,8 +3346,11 @@
             (digits_limb_1_to_n_elem_digits10_mod != static_cast<std::int32_t>(INT8_C(0)))
               ? static_cast<std::int32_t>
                 (
-                    decwide_t_elem_digits10
-                  - digits_limb_1_to_n_elem_digits10_mod
+                    static_cast<std::int32_t>
+                    (
+                        decwide_t_elem_digits10
+                      - digits_limb_1_to_n_elem_digits10_mod
+                    )
                 )
               : static_cast<std::int32_t>(INT8_C(0))
           );
@@ -3509,7 +3514,7 @@
         static_assert(std::numeric_limits<signed long long>::digits >= std::numeric_limits<exponent_type>::digits, // NOLINT(google-runtime-int)
                       "Error: Type long long is not wide enough to hold result of type exponent_type");
 
-        char* ptr_end; // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-init-variables)
+        auto ptr_end = static_cast<char*>(nullptr); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-init-variables,llvm-qualified-auto,readability-qualified-auto)
 
         my_exp =
           static_cast<exponent_type>
@@ -3550,7 +3555,10 @@
         {
           // The string contains nothing but leading zeros.
           // This string represents zero.
-          operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>());
+          static_cast<void>
+          (
+            operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
+          );
 
           return true;
         }
@@ -3606,7 +3614,10 @@
 
           if(input_is_identically_zero)
           {
-            operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>());
+            static_cast<void>
+            (
+              operator=(zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>())
+            );
 
             return true;
           }
@@ -3660,7 +3671,7 @@
 
       // Shift the decimal point such that the exponent
       // is an even multiple of decwide_t_elem_digits10.
-      auto n_shift   = static_cast<std::ptrdiff_t>(INT8_C(0));
+      auto n_shift = static_cast<std::ptrdiff_t>(INT8_C(0));
 
       {
         const auto n_exp_rem =
@@ -3697,7 +3708,11 @@
         const auto cnt =
           static_cast<std::ptrdiff_t>
           (
-            n_shift - (static_cast<std::ptrdiff_t>(str.length()) - pos_plus_one)
+              n_shift
+            - static_cast<std::ptrdiff_t>
+              (
+                static_cast<std::ptrdiff_t>(str.length()) - pos_plus_one
+              )
           );
 
         str.append(static_cast<std::size_t>(cnt), '0');
@@ -3788,7 +3803,7 @@
         static_assert(std::numeric_limits<unsigned long>::digits >= std::numeric_limits<limb_type>::digits, // NOLINT(google-runtime-int)
                       "Error: Type unsigned long is not wide enough to hold result of type limb_type");
 
-        char* ptr_end { }; // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
+        auto ptr_end = static_cast<char*>(nullptr); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
 
         // First get the digits to the left of the decimal point...
 
@@ -3838,7 +3853,7 @@
         static_assert(std::numeric_limits<unsigned long>::digits >= std::numeric_limits<limb_type>::digits, // NOLINT(google-runtime-int)
                       "Error: Type unsigned long is not wide enough to hold result of type limb_type");
 
-        char* ptr_end { }; // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
+        auto ptr_end = static_cast<char*>(nullptr); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
 
         my_data[i1] =
           static_cast<limb_type>
@@ -4085,7 +4100,7 @@
 
       std::array<char, static_cast<std::size_t>(UINT8_C(20))> ptr_str = {{ '\0' }}; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-      char* ptr_end = util::baselexical_cast(u_exp, ptr_str.data()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
+      auto ptr_end = util::baselexical_cast(u_exp, ptr_str.data()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
 
       auto str_exp = std::string(ptr_str.data(), ptr_end);
 
@@ -4526,8 +4541,8 @@
           : static_cast<std::uint_fast32_t>(ostrm_precision))
       );
 
-    bool use_scientific = false;
-    bool use_fixed      = false;
+    auto use_scientific = false;
+    auto use_fixed      = false;
 
     if     (my_float_field == detail::os_float_field_type::scientific) { use_scientific = true; }
     else if(my_float_field == detail::os_float_field_type::fixed)      { use_fixed      = true; }
@@ -5518,74 +5533,57 @@
   WIDE_DECIMAL_NAMESPACE_END
 
   // Specialization of std::numeric_limits<decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>>.
-  namespace std
+  namespace std // NOLINT(cert-dcl58-cpp)
   {
+    namespace nonstd
+    {
+      #if defined(WIDE_DECIMAL_NAMESPACE)
+      namespace wide_decimal_namespace = WIDE_DECIMAL_NAMESPACE::math::wide_decimal;
+      #else
+      namespace wide_decimal_namespace = ::math::wide_decimal;
+      #endif
+    } // namespace nonstd
+
     template<const std::int32_t ParamDigitsBaseTen,
              typename LimbType,
              typename AllocatorType,
              typename InternalFloatType,
              typename ExponentType,
              typename FftFloatType>
-    #if defined(WIDE_DECIMAL_NAMESPACE)
-    class numeric_limits<WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>>
-    #else
-    class numeric_limits<math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>>
-    #endif
+    class numeric_limits<nonstd::wide_decimal_namespace::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>>
     {
+    private:
+      using local_wide_decimal_type =
+        nonstd::wide_decimal_namespace::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
+
     public:
-      #if defined(WIDE_DECIMAL_NAMESPACE)
-      using local_wide_decimal_type =
-        WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
-      #else
-      using local_wide_decimal_type =
-        math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
-      #endif
-
-      using local_exponent_type =
-        typename local_wide_decimal_type::exponent_type;
-
-      static constexpr bool                    is_specialized    = true;
-      static constexpr bool                    is_signed         = true;
-      static constexpr bool                    is_integer        = false;
-      static constexpr bool                    is_exact          = false;
-      static constexpr bool                    is_bounded        = true;
-      static constexpr bool                    is_modulo         = false;
-      static constexpr bool                    is_iec559         = false;
-      #if defined(WIDE_DECIMAL_NAMESPACE)
-      static constexpr std::int32_t            digits            = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_digits;       // Type differs from int.
-      static constexpr std::int32_t            digits10          = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_digits10;     // Type differs from int.
-      static constexpr std::int32_t            max_digits10      = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_digits10; // Type differs from int.
-      static constexpr local_exponent_type     min_exponent      = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_min_exp;      // Type differs from int.
-      static constexpr local_exponent_type     min_exponent10    = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_min_exp10;    // Type differs from int.
-      static constexpr local_exponent_type     max_exponent      = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_exp;      // Type differs from int.
-      static constexpr local_exponent_type     max_exponent10    = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_exp10;    // Type differs from int.
-      static constexpr int                     radix             = WIDE_DECIMAL_NAMESPACE::math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_radix;
-      #else
-      static constexpr std::int32_t            digits            = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_digits;       // Type differs from int.
-      static constexpr std::int32_t            digits10          = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_digits10;     // Type differs from int.
-      static constexpr std::int32_t            max_digits10      = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_digits10; // Type differs from int.
-      static constexpr local_exponent_type     min_exponent      = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_min_exp;      // Type differs from int.
-      static constexpr local_exponent_type     min_exponent10    = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_min_exp10;    // Type differs from int.
-      static constexpr local_exponent_type     max_exponent      = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_exp;      // Type differs from int.
-      static constexpr local_exponent_type     max_exponent10    = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_max_exp10;    // Type differs from int.
-      static constexpr int                     radix             = math::wide_decimal::decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>::decwide_t_radix;
-      #endif
-      static constexpr std::float_round_style  round_style       = std::round_to_nearest;
-      static constexpr bool                    has_infinity      = false;
-      static constexpr bool                    has_quiet_NaN     = false;
-      static constexpr bool                    has_signaling_NaN = false;
-      static constexpr std::float_denorm_style has_denorm        = std::denorm_absent;
-      static constexpr bool                    has_denorm_loss   = false;
-      static constexpr bool                    traps             = false;
-      static constexpr bool                    tinyness_before   = false;
+      static constexpr auto is_specialized    = true;
+      static constexpr auto is_signed         = true;
+      static constexpr auto is_integer        = false;
+      static constexpr auto is_exact          = false;
+      static constexpr auto is_bounded        = true;
+      static constexpr auto is_modulo         = false;
+      static constexpr auto is_iec559         = false;
+      static constexpr auto digits            = local_wide_decimal_type::decwide_t_digits;       // Type differs from int.
+      static constexpr auto digits10          = local_wide_decimal_type::decwide_t_digits10;     // Type differs from int.
+      static constexpr auto max_digits10      = local_wide_decimal_type::decwide_t_max_digits10; // Type differs from int.
+      static constexpr auto min_exponent      = local_wide_decimal_type::decwide_t_min_exp;      // Type differs from int.
+      static constexpr auto min_exponent10    = local_wide_decimal_type::decwide_t_min_exp10;    // Type differs from int.
+      static constexpr auto max_exponent      = local_wide_decimal_type::decwide_t_max_exp;      // Type differs from int.
+      static constexpr auto max_exponent10    = local_wide_decimal_type::decwide_t_max_exp10;    // Type differs from int.
+      static constexpr auto radix             = static_cast<int>(local_wide_decimal_type::decwide_t_radix);
+      static constexpr auto round_style       = static_cast<std::float_round_style>(std::round_to_nearest);
+      static constexpr auto has_infinity      = false;
+      static constexpr auto has_quiet_NaN     = false;
+      static constexpr auto has_signaling_NaN = false;
+      static constexpr auto has_denorm        = static_cast<std::float_denorm_style>(std::denorm_absent);
+      static constexpr auto has_denorm_loss   = false;
+      static constexpr auto traps             = false;
+      static constexpr auto tinyness_before   = false;
 
       static constexpr auto (min)  () -> local_wide_decimal_type { return local_wide_decimal_type::my_value_min(); }
       static constexpr auto (max)  () -> local_wide_decimal_type { return local_wide_decimal_type::my_value_max(); }
-      #if defined(WIDE_DECIMAL_NAMESPACE)
-      static constexpr auto lowest () -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      #else
-      static constexpr auto lowest () -> local_wide_decimal_type { return math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      #endif
+      static constexpr auto lowest () -> local_wide_decimal_type { return local_wide_decimal_type(); }
       static constexpr auto epsilon() -> local_wide_decimal_type
       {
         return local_wide_decimal_type::from_lst
@@ -5593,11 +5591,7 @@
           {
             static_cast<typename local_wide_decimal_type::limb_type>
             (
-              #if defined(WIDE_DECIMAL_NAMESPACE)
-              WIDE_DECIMAL_NAMESPACE::math::wide_decimal::detail::pow10_maker
-              #else
-              math::wide_decimal::detail::pow10_maker
-              #endif
+              nonstd::wide_decimal_namespace::detail::pow10_maker
               (
                 static_cast<std::uint32_t>
                 (
@@ -5617,20 +5611,13 @@
           static_cast<typename local_wide_decimal_type::exponent_type>(static_cast<std::int32_t>(-local_wide_decimal_type::decwide_t_digits10_for_epsilon()))
         );
       }
+
       // LCOV_EXCL_START
-      #if defined(WIDE_DECIMAL_NAMESPACE)
-      static constexpr auto round_error  () -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::half<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto infinity     () -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto quiet_NaN    () -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto signaling_NaN() -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto denorm_min   () -> local_wide_decimal_type { return WIDE_DECIMAL_NAMESPACE::math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      #else
-      static constexpr auto round_error  () -> local_wide_decimal_type { return math::wide_decimal::half<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto infinity     () -> local_wide_decimal_type { return math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      static constexpr auto quiet_NaN    () -> local_wide_decimal_type { return math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); } // NOLINT(readability-identifier-naming)
-      static constexpr auto signaling_NaN() -> local_wide_decimal_type { return math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); } // NOLINT(readability-identifier-naming)
-      static constexpr auto denorm_min   () -> local_wide_decimal_type { return math::wide_decimal::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
-      #endif
+      static constexpr auto round_error  () -> local_wide_decimal_type { return nonstd::wide_decimal_namespace::half<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
+      static constexpr auto infinity     () -> local_wide_decimal_type { return nonstd::wide_decimal_namespace::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
+      static constexpr auto quiet_NaN    () -> local_wide_decimal_type { return nonstd::wide_decimal_namespace::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); } // NOLINT(readability-identifier-naming)
+      static constexpr auto signaling_NaN() -> local_wide_decimal_type { return nonstd::wide_decimal_namespace::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); } // NOLINT(readability-identifier-naming)
+      static constexpr auto denorm_min   () -> local_wide_decimal_type { return nonstd::wide_decimal_namespace::zero<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>(); }
       // LCOV_EXCL_STOP
     };
   } // namespace std

@@ -34,13 +34,13 @@
   constexpr auto template_half() -> float_type { return static_cast<float_type>(static_cast<float_type>(1) / 2); }
 
   template<>
-  constexpr auto template_one<float>() -> float { return static_cast<float>(1.0L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<float>() -> float { return static_cast<float>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
-  constexpr auto template_one<double>() -> double { return static_cast<double>(1.0L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<double>() -> double { return static_cast<double>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
-  constexpr auto template_one<long double>() -> long double { return 1.0L; } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<long double>() -> long double { return 1.0F; } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
   constexpr auto template_half<float>() -> float { return static_cast<float>(0.5L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -69,7 +69,7 @@
   {
     // Mathematica command: Table[N[Sin[Pi / (2^n)], 41], {n, 1, 31, 1}]
     return
-      (num_points == static_cast<std::uint32_t>(UINT32_C(2)       )) ? static_cast<float_type>(1.0L)                                            : // Pi / 2    : as uint64_t --> UINT64_C(0x3FF0000000000000) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+      (num_points == static_cast<std::uint32_t>(UINT32_C(2)       )) ? static_cast<float_type>(1.0F)                                            : // Pi / 2    : as uint64_t --> UINT64_C(0x3FF0000000000000) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(4)       )) ? static_cast<float_type>(7.0710678118654752440084436210484903928484E-01L) : // Pi / 4    : as uint64_t --> UINT64_C(0x3FE6A09E667F3BCD) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(8)       )) ? static_cast<float_type>(3.8268343236508977172845998403039886676134E-01L) : // Pi / 8    : as uint64_t --> UINT64_C(0x3FD87DE2A6AEA963) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(16)      )) ? static_cast<float_type>(1.9509032201612826784828486847702224092769E-01L) : // Pi / 16   : as uint64_t --> UINT64_C(0x3FC8F8B83C69A60B) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -102,7 +102,7 @@
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 30U)) ? static_cast<float_type>(2.9258361585343193579282304690689559020176E-09L) : // Pi / 2^30 : as uint64_t --> UINT64_C(0x3E2921FB54442D18) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       (num_points == static_cast<std::uint32_t>(UINT32_C(1) << 31U)) ? static_cast<float_type>(1.4629180792671596805295321618659637103743E-09L) : // Pi / 2^31 : as uint64_t --> UINT64_C(0x3E1921FB54442D18) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       // LCOV_EXCL_STOP
-                                                                       static_cast<float_type>(0.0L)                                              // Pi        : as uint64_t --> UINT64_C(0x0000000000000000) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+                                                                       static_cast<float_type>(0.0F)                                              // Pi        : as uint64_t --> UINT64_C(0x0000000000000000) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
       ;
   }
 
