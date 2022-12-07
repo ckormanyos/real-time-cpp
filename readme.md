@@ -6,12 +6,8 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
         <img src="https://custom-icon-badges.herokuapp.com/github/issues-raw/ckormanyos/real-time-cpp?logo=github" alt="Issues" /></a>
-    <a href="https://lgtm.com/projects/g/ckormanyos/real-time-cpp/context:cpp">
-        <img src="https://img.shields.io/lgtm/grade/cpp/g/ckormanyos/real-time-cpp.svg?logo=lgtm&logoWidth=18" alt="Language grade: C/C++"></a>
-    <a href="https://lgtm.com/projects/g/ckormanyos/real-time-cpp/context:python">
-        <img src="https://img.shields.io/lgtm/grade/python/g/ckormanyos/real-time-cpp.svg?logo=lgtm&logoWidth=18" alt="Language grade: Python"></a>
-    <a href="https://lgtm.com/projects/g/ckormanyos/real-time-cpp/alerts/">
-        <img src="https://img.shields.io/lgtm/alerts/g/ckormanyos/real-time-cpp.svg?logo=lgtm&logoWidth=18" alt="Total alerts" /></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml/badge.svg" alt="CodeQL"></a>
     <a href="https://scan.coverity.com/projects/ckormanyos-real-time-cpp">
         <img src="https://scan.coverity.com/projects/24862/badge.svg" alt="Coverity Scan"></a>
     <a href="https://sonarcloud.io/summary/new_code?id=ckormanyos_real-time-cpp">
