@@ -29,7 +29,7 @@
 
   template<typename OutputIterator,
            const bool UpperCase>
-  struct baselexical_cast_helper<OutputIterator, UpperCase, 16U> // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  struct baselexical_cast_helper<OutputIterator, UpperCase, static_cast<std::uint_fast8_t>(UINT8_C(16))> // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
   {
   private:
     using output_value_type = typename std::iterator_traits<OutputIterator>::value_type;
@@ -61,7 +61,7 @@
 
   template<typename OutputIterator,
            const bool UpperCase>
-  struct baselexical_cast_helper<OutputIterator, UpperCase, 10U> // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  struct baselexical_cast_helper<OutputIterator, UpperCase, static_cast<std::uint_fast8_t>(UINT8_C(10))> // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
   {
   private:
     using output_value_type = typename std::iterator_traits<OutputIterator>::value_type;
@@ -84,7 +84,7 @@
 
   template<typename UnsignedIntegerType,
            typename OutputIterator,
-           const std::uint_fast8_t BaseRepresentation = 10U, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+           const std::uint_fast8_t BaseRepresentation = static_cast<std::uint_fast8_t>(UINT8_C(10)), // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
            const bool UpperCase = true>
   auto baselexical_cast(const UnsignedIntegerType& u, OutputIterator out) -> OutputIterator
   {
@@ -105,7 +105,7 @@
 
       auto out_first = out;
 
-      while(x != static_cast<unsigned_integer_type>(UINT8_C(0)))
+      while(x != static_cast<unsigned_integer_type>(UINT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
       {
         const auto c =
           static_cast<output_value_type>

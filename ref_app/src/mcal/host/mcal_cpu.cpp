@@ -7,7 +7,7 @@
 
 #include <mcal_cpu.h>
 
-void mcal::cpu::init()
+auto mcal::cpu::init() -> void
 {
   // Subroutine is empty on purpose.
 }

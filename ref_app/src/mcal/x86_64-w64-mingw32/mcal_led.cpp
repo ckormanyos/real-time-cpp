@@ -8,9 +8,9 @@
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_console.h>
 
-mcal::led::led_base& mcal::led::led0()
+auto mcal::led::led0() -> mcal::led::led_base&
 {
-  static mcal::led::led_console l0(0U);
+  static mcal::led::led_console local_led0(static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
-  return l0;
+  return local_led0;
 }

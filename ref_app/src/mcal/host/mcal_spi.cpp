@@ -9,7 +9,7 @@
 
 #include <mcal_spi/mcal_spi_software_dummy.h>
 
-auto mcal::spi::init(const mcal::spi::config_type*) -> void // NOLINT(readability-named-parameter)
+auto mcal::spi::init(const mcal::spi::config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
   // Subroutine is empty on purpose.
 }

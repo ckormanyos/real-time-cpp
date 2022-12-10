@@ -9,11 +9,12 @@
 
 #include <mcal_spi/mcal_spi_software_dummy.h>
 
-void mcal::spi::init(const mcal::spi::config_type*)
+auto mcal::spi::init(const mcal::spi::config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
+  // Subroutine is empty on purpose.
 }
 
-util::communication_base& mcal::spi::spi0()
+auto mcal::spi::spi0() -> util::communication_base&
 {
   static mcal::spi::spi_software_dummy com0;
 
