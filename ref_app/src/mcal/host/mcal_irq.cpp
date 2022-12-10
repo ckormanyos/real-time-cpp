@@ -7,7 +7,7 @@
 
 #include <mcal_irq.h>
 
-auto mcal::irq::init(const config_type*) -> void // NOLINT(readability-named-parameter)
+auto mcal::irq::init(const config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
   mcal::irq::enable_all();
 }

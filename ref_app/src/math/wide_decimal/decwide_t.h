@@ -27,9 +27,7 @@
   #include <cmath>
   #include <cstddef>
   #include <cstdlib>
-  #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
   #include <cstring>
-  #endif
   #if !defined(WIDE_DECIMAL_DISABLE_USE_STD_FUNCTION)
   #include <functional>
   #endif
@@ -904,7 +902,7 @@
 
       if(mantissa_is_iszero)
       {
-        my_data.fill(static_cast<limb_type>(UINT8_C(0)));
+        my_data.fill(static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else
       {
@@ -919,12 +917,12 @@
           constexpr auto f_ten = static_cast<internal_float_type>(static_cast<std::uint_fast8_t>(UINT8_C(10)));
           constexpr auto f_one = static_cast<internal_float_type>(static_cast<std::uint_fast8_t>(UINT8_C(1)));
 
-          while(d > f_ten) { d /= f_ten; ++e; }
-          while(d < f_one) { d *= f_ten; --e; }
+          while(d > f_ten) { d /= f_ten; ++e; } // NOLINT(altera-id-dependent-backward-branch)
+          while(d < f_one) { d *= f_ten; --e; } // NOLINT(altera-id-dependent-backward-branch)
 
           auto shift = static_cast<std::int32_t>(e % static_cast<std::int32_t>(decwide_t_elem_digits10));
 
-          while(static_cast<std::int32_t>(shift % decwide_t_elem_digits10) != static_cast<std::int32_t>(INT8_C(0)))
+          while(static_cast<std::int32_t>(shift % decwide_t_elem_digits10) != static_cast<std::int32_t>(INT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
           {
             d *= f_ten;
             --e;
@@ -962,7 +960,7 @@
         // Extract the mantissa's decimal digits.
 
         for(  limb_index = static_cast<local_size_type>(UINT8_C(0));
-              limb_index < static_cast<local_size_type>(digit_loops);
+              limb_index < static_cast<local_size_type>(digit_loops); // NOLINT(altera-id-dependent-backward-branch)
             ++limb_index)
         {
           const auto n = static_cast<limb_type>(d);
@@ -1094,8 +1092,8 @@
 
           // Addition.
           carry = detail::eval_add_n(my_data.data(),
-                                     const_limb_pointer_type(my_data.data()),
-                                     const_limb_pointer_type(my_n_data_for_add_sub.data()),
+                                     static_cast<const_limb_pointer_type>(my_data.data()),
+                                     static_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()),
                                      prec_elems_for_add_sub);
         }
         else
@@ -1106,35 +1104,43 @@
 
           std::fill(my_n_data_for_add_sub.begin(),
                     my_n_data_for_add_sub.begin() + static_cast<std::ptrdiff_t>(-ofs),
-                    static_cast<limb_type>(UINT8_C(0)));
+                    static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
 
           using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
           // Addition.
+          // LCOV_EXCL_START
           carry = detail::eval_add_n(my_n_data_for_add_sub.data(),
-                                     const_limb_pointer_type(my_n_data_for_add_sub.data()), // LCOV_EXCL_LINE
-                                     const_limb_pointer_type(v.my_data.data()),
-                                     prec_elems_for_add_sub); // LCOV_EXCL_LINE
+                                     const_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                     const_cast<const_limb_pointer_type>(v.my_data.data()),             // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                     prec_elems_for_add_sub);
+          // LCOV_EXCL_STOP
 
-          #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Warray-bounds"
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Wrestrict"
+          #endif
+          #if(__GNUC__ >= 8)
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Wstringop-overflow="
+          #endif
+          #endif
 
-          {
-            const auto memmove_dif =
-              static_cast<std::ptrdiff_t>
-              (
-                  static_cast<std::ptrdiff_t>(prec_elems_for_add_sub)
-                * static_cast<std::ptrdiff_t>(sizeof(limb_type))
-              );
+          std::copy(static_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()),
+                    static_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()) + static_cast<std::ptrdiff_t>(prec_elems_for_add_sub),
+                    my_data.data());
 
-            std::memmove(static_cast<void*>(my_data.data()), static_cast<const void*>(my_n_data_for_add_sub.data()), static_cast<std::size_t>(memmove_dif));
-          }
-
-          #else
-
-          std::copy(my_n_data_for_add_sub.data(),
-                    my_n_data_for_add_sub.data() + static_cast<std::size_t>(prec_elems_for_add_sub),
-                    my_data.begin());
-
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic pop
+          #pragma GCC diagnostic pop
+          #endif
+          #if(__GNUC__ >= 8)
+          #pragma GCC diagnostic pop
+          #endif
           #endif
 
           my_exp = v.my_exp;
@@ -1195,8 +1201,8 @@
           // Subtraction.
           const auto has_borrow =
             detail::eval_subtract_n(my_data.data(),
-                                    const_limb_pointer_type(my_data.data()),
-                                    const_limb_pointer_type(my_n_data_for_add_sub.data()),
+                                    static_cast<const_limb_pointer_type>(my_data.data()),
+                                    static_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()),
                                     prec_elems_for_add_sub);
 
           static_cast<void>(has_borrow);
@@ -1229,8 +1235,8 @@
           // Subtraction.
           const auto has_borrow =
             detail::eval_subtract_n(my_n_data_for_add_sub.data(),
-                                    const_limb_pointer_type(my_n_data_for_add_sub.data()),
-                                    const_limb_pointer_type(my_data.data()),
+                                    static_cast<const_limb_pointer_type>(my_n_data_for_add_sub.data()),
+                                    static_cast<const_limb_pointer_type>(my_data.data()),
                                     prec_elems_for_add_sub);
 
           static_cast<void>(has_borrow);
@@ -1356,7 +1362,27 @@
 
           const auto prec_elems_for_multiply = (std::min)(my_prec_elem, v.my_prec_elem);
 
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Warray-bounds"
+          #endif
+          #if(__GNUC__ >= 8)
+          #pragma GCC diagnostic push
+          #pragma GCC diagnostic ignored "-Wstringop-overflow="
+          #endif
+          #endif
+
           eval_mul_dispatch_multiplication_method(v, prec_elems_for_multiply);
+
+          #if (defined(__GNUC__) && !defined(__clang__))
+          #if(__GNUC__ >= 12)
+          #pragma GCC diagnostic pop
+          #endif
+          #if(__GNUC__ >= 8)
+          #pragma GCC diagnostic pop
+          #endif
+          #endif
         }
       }
 
@@ -1849,7 +1875,7 @@
       // to the minimum required in order to minimize the run-time.
 
       for(auto digits  = static_cast<std::int32_t>(std::numeric_limits<internal_float_type>::digits10 - 1);
-               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10);
+               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10); // NOLINT(altera-id-dependent-backward-branch)
                digits *= static_cast<std::int32_t>(INT8_C(2)))
       {
         // Adjust precision of the terms.
@@ -1963,7 +1989,7 @@
       // http://www.springer.com/gp/book/9783642567353
 
       for(auto digits  = static_cast<std::int32_t>(std::numeric_limits<internal_float_type>::digits10 - 1);
-               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10);
+               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10); // NOLINT(altera-id-dependent-backward-branch)
                digits *= static_cast<std::int32_t>(INT8_C(2)))
       {
         // Adjust precision of the terms.
@@ -2048,7 +2074,7 @@
       *this = decwide_t(one_over_rtn_d, static_cast<exponent_type>(static_cast<exponent_type>(-ne) / p));
 
       for(auto digits  = static_cast<std::int32_t>(std::numeric_limits<internal_float_type>::digits10 - 1);
-               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10);
+               digits  < static_cast<std::int32_t>(original_prec_elem * decwide_t_elem_digits10); // NOLINT(altera-id-dependent-backward-branch)
                digits *= static_cast<std::int32_t>(INT8_C(2)))
       {
         // Adjust precision of the terms.
@@ -2339,7 +2365,7 @@
       using local_size_type = typename representation_type::size_type;
 
       for(auto   limb_index = static_cast<local_size_type>(UINT8_C(0));
-               ((limb_index < my_data.size()) && (limb_index < static_cast<local_size_type>(digit_loops)));
+               ((limb_index < my_data.size()) && (limb_index < static_cast<local_size_type>(digit_loops))); // NOLINT(altera-id-dependent-backward-branch)
                ++limb_index)
       {
         mantissa += (static_cast<internal_float_type>(my_data[limb_index]) * scale);
@@ -2373,7 +2399,7 @@
       {
         // The number is too large to resolve the integer part.
         // Thus it is already a pure integer part.
-        return *this;
+        return *this; // LCOV_EXCL_LINE
       }
 
       // Make a local copy.
@@ -2582,7 +2608,7 @@
             using local_size_type = typename representation_type::size_type;
 
             for(auto  limb_index  = static_cast<local_size_type>(UINT8_C(1));
-                      limb_index <= static_cast<local_size_type>(static_cast<std::uint32_t>(imax));
+                      limb_index <= static_cast<local_size_type>(static_cast<std::uint32_t>(imax)); // NOLINT(altera-id-dependent-backward-branch)
                     ++limb_index)
             {
               val *= static_cast<unsigned long long>(decwide_t_elem_mask);    // NOLINT(google-runtime-int)
@@ -2643,7 +2669,7 @@
             using local_size_type = typename representation_type::size_type;
 
             for(auto   limb_index  = static_cast<local_size_type>(UINT8_C(1));
-                       limb_index <= static_cast<local_size_type>(static_cast<std::uint32_t>(imax));
+                       limb_index <= static_cast<local_size_type>(static_cast<std::uint32_t>(imax)); // NOLINT(altera-id-dependent-backward-branch)
                      ++limb_index)
             {
               val *= static_cast<unsigned long long>(decwide_t_elem_mask);    // NOLINT(google-runtime-int)
@@ -2774,7 +2800,7 @@
 
       while
       (
-           (uu != static_cast<unsigned long long>(UINT8_C(0))) // NOLINT(google-runtime-int)
+           (uu != static_cast<unsigned long long>(UINT8_C(0))) // NOLINT(google-runtime-int,altera-id-dependent-backward-branch)
         && (i  <  static_cast<std::uint_fast32_t>(std::tuple_size<local_tmp_array_type>::value))
       )
       {
@@ -2880,8 +2906,8 @@
       using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
       detail::eval_multiply_n_by_n_to_2n(result,
-                                         const_limb_pointer_type(my_data.data()),
-                                         const_limb_pointer_type(v.my_data.data()),
+                                         const_cast<const_limb_pointer_type>(my_data.data()),   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                         const_cast<const_limb_pointer_type>(v.my_data.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
                                          prec_elems_for_multiply);
 
       // Handle a potential carry.
@@ -2900,7 +2926,7 @@
           static_cast<std::ptrdiff_t>
           (
             (std::min)(static_cast<std::int32_t>(prec_elems_for_multiply + static_cast<std::int32_t>(INT8_C(1))),
-                       decwide_t_elem_number)
+                       (std::min)(decwide_t_elem_number, decwide_t_elems_for_kara))
           );
 
         std::copy(result + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -2943,8 +2969,8 @@
         using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
         detail::eval_multiply_n_by_n_to_2n(result,
-                                           const_limb_pointer_type(my_data.data()),
-                                           const_limb_pointer_type(v.my_data.data()),
+                                           const_cast<const_limb_pointer_type>(my_data.data()),   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                           const_cast<const_limb_pointer_type>(v.my_data.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
                                            prec_elems_for_multiply);
 
         // Handle a potential carry.
@@ -2952,15 +2978,9 @@
         {
           my_exp = static_cast<exponent_type>(my_exp + static_cast<exponent_type>(decwide_t_elem_digits10));
 
-          const auto copy_limit =
-            static_cast<std::ptrdiff_t>
-            (
-              (std::min)(prec_elems_for_multiply, decwide_t_elems_for_kara)
-            );
-
           // Shift the result of the multiplication one element to the right.
           std::copy(result,
-                    result + copy_limit, // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                    result + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     my_data.begin());
         }
         else
@@ -2969,7 +2989,7 @@
             static_cast<std::ptrdiff_t>
             (
               (std::min)(static_cast<std::int32_t>(prec_elems_for_multiply + static_cast<std::int32_t>(INT8_C(1))),
-                         decwide_t_elems_for_kara)
+                         (std::min)(decwide_t_elem_number, decwide_t_elems_for_kara))
             );
 
           std::copy(result + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3006,32 +3026,7 @@
         limb_type* t       = my_kara_mul_pool.data() + static_cast<std::size_t>(static_cast<std::size_t>(kara_elems_for_multiply) * static_cast<std::size_t>(UINT8_C(4))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
         std::copy(my_data.cbegin(), my_data.cbegin() + prec_elems_for_multiply, u_local);
-
-        #if (defined(__GNUC__) && !defined(__clang__) && (__GNUC__ >= 12))
-
-        {
-          #pragma GCC diagnostic push
-          #pragma GCC diagnostic ignored "-Warray-bounds"
-          #pragma GCC diagnostic push
-          #pragma GCC diagnostic ignored "-Wstringop-overflow"
-
-          const auto memmove_dif =
-            static_cast<std::ptrdiff_t>
-            (
-                static_cast<std::ptrdiff_t>(prec_elems_for_multiply)
-              * static_cast<std::ptrdiff_t>(sizeof(limb_type))
-            );
-
-          std::memmove(static_cast<void*>(v_local), static_cast<const void*>(v.my_data.data()), static_cast<std::size_t>(memmove_dif));
-          #pragma GCC diagnostic pop
-          #pragma GCC diagnostic pop
-        }
-
-        #else
-
-        std::copy(v.my_data.cbegin(), v.my_data.cbegin() + prec_elems_for_multiply, v_local);
-
-        #endif
+        std::copy(v.my_data.cbegin(), v.my_data.cbegin() + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), v_local);
 
         std::fill(u_local + prec_elems_for_multiply, u_local + kara_elems_for_multiply, static_cast<limb_type>(UINT8_C(0))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         std::fill(v_local + prec_elems_for_multiply, v_local + kara_elems_for_multiply, static_cast<limb_type>(UINT8_C(0))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3047,15 +3042,9 @@
         {
           my_exp = static_cast<exponent_type>(my_exp + static_cast<exponent_type>(decwide_t_elem_digits10));
 
-          const auto copy_limit =
-            static_cast<std::ptrdiff_t>
-            (
-              (std::min)(prec_elems_for_multiply, decwide_t_elem_number)
-            );
-
           // Shift the result of the multiplication one element to the right.
           std::copy(result,
-                    result + copy_limit, // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                    result + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     my_data.begin());
         }
         else
@@ -3064,7 +3053,7 @@
             static_cast<std::ptrdiff_t>
             (
               (std::min)(static_cast<std::int32_t>(prec_elems_for_multiply + static_cast<std::int32_t>(INT8_C(1))),
-                         decwide_t_elem_number)
+                         (std::min)(decwide_t_elem_number, decwide_t_elems_for_fft))
             );
 
           std::copy(result + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3108,8 +3097,8 @@
         using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
         detail::eval_multiply_n_by_n_to_2n(result,
-                                           const_limb_pointer_type(my_data.data()),
-                                           const_limb_pointer_type(v.my_data.data()),
+                                           const_cast<const_limb_pointer_type>(my_data.data()),   // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                           const_cast<const_limb_pointer_type>(v.my_data.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
                                            prec_elems_for_multiply);
 
         // Handle a potential carry.
@@ -3117,15 +3106,9 @@
         {
           my_exp += static_cast<exponent_type>(decwide_t_elem_digits10);
 
-          const auto copy_limit =
-            static_cast<std::ptrdiff_t>
-            (
-              (std::min)(prec_elems_for_multiply, decwide_t_elems_for_kara)
-            );
-
           // Shift the result of the multiplication one element to the right.
           std::copy(result,
-                    result + copy_limit, // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                    result + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     my_data.begin());
         }
         else
@@ -3134,7 +3117,7 @@
             static_cast<std::ptrdiff_t>
             (
               (std::min)(static_cast<std::int32_t>(prec_elems_for_multiply + static_cast<std::int32_t>(INT8_C(1))),
-                         decwide_t_elems_for_kara)
+                         (std::min)(decwide_t_elem_number, decwide_t_elems_for_kara))
             );
 
           std::copy(result + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3145,12 +3128,11 @@
       else if(   (prec_elems_for_multiply >= decwide_t_elems_for_kara)
               && (prec_elems_for_multiply <  decwide_t_elems_for_fft))
       {
-        // Use Karatsuba multiplication multiplication.
+        // Use Karatsuba multiplication.
 
         // Sloanes's A029750: Numbers of the form 2^k times 1, 3, 5 or 7.
         const auto kara_elems_for_multiply =
-          (std::min)(detail::a029750::a029750_as_runtime_value(static_cast<std::uint32_t>(prec_elems_for_multiply)),
-                     static_cast<std::uint32_t>(detail::a029750::a029750_as_runtime_value(decwide_t_elems_for_fft - 1) * static_cast<std::uint32_t>(UINT8_C(8))));
+          detail::a029750::a029750_as_runtime_value(static_cast<std::uint32_t>(prec_elems_for_multiply));
 
         #if !defined(WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION)
         using kara_mul_pool_type = util::dynamic_array<limb_type>;
@@ -3164,7 +3146,6 @@
               * static_cast<typename kara_mul_pool_type::size_type>(UINT8_C(8))
             )
           );
-
         #endif
 
         limb_type* u_local = my_kara_mul_pool.data() + static_cast<std::size_t>(static_cast<std::size_t>(kara_elems_for_multiply) * static_cast<std::size_t>(UINT8_C(0))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3172,8 +3153,9 @@
         limb_type* result  = my_kara_mul_pool.data() + static_cast<std::size_t>(static_cast<std::size_t>(kara_elems_for_multiply) * static_cast<std::size_t>(UINT8_C(2))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         limb_type* t       = my_kara_mul_pool.data() + static_cast<std::size_t>(static_cast<std::size_t>(kara_elems_for_multiply) * static_cast<std::size_t>(UINT8_C(4))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-        std::copy(  my_data.cbegin(),   my_data.cbegin() + prec_elems_for_multiply, u_local);
-        std::copy(v.my_data.cbegin(), v.my_data.cbegin() + prec_elems_for_multiply, v_local);
+        std::copy(my_data.cbegin(), my_data.cbegin() + prec_elems_for_multiply, u_local);
+        std::copy(v.my_data.cbegin(), v.my_data.cbegin() + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), v_local);
+
         std::fill(u_local + prec_elems_for_multiply, u_local + kara_elems_for_multiply, static_cast<limb_type>(UINT8_C(0))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         std::fill(v_local + prec_elems_for_multiply, v_local + kara_elems_for_multiply, static_cast<limb_type>(UINT8_C(0))); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
@@ -3188,15 +3170,9 @@
         {
           my_exp = static_cast<exponent_type>(my_exp + static_cast<exponent_type>(decwide_t_elem_digits10));
 
-          const auto copy_limit =
-            static_cast<std::ptrdiff_t>
-            (
-              (std::min)(prec_elems_for_multiply, decwide_t_elems_for_fft)
-            );
-
           // Shift the result of the multiplication one element to the right.
           std::copy(result,
-                    result + copy_limit, // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                    result + static_cast<std::ptrdiff_t>(prec_elems_for_multiply), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     my_data.begin());
         }
         else
@@ -3205,7 +3181,7 @@
             static_cast<std::ptrdiff_t>
             (
               (std::min)(static_cast<std::int32_t>(prec_elems_for_multiply + static_cast<std::int32_t>(INT8_C(1))),
-                         decwide_t_elems_for_fft)
+                         (std::min)(decwide_t_elem_number, decwide_t_elems_for_fft))
             );
 
           std::copy(result + static_cast<std::ptrdiff_t>(INT8_C(1)), // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -3249,8 +3225,8 @@
         using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
         detail::mul_loop_fft(my_data.data(),
-                             const_limb_pointer_type(  my_data.data()),
-                             const_limb_pointer_type(v.my_data.data()),
+                             const_cast<const_limb_pointer_type>(  my_data.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                             const_cast<const_limb_pointer_type>(v.my_data.data()), // NOLINT(cppcoreguidelines-pro-type-const-cast)
                              my_af_fft_mul_pool.data(),
                              my_bf_fft_mul_pool.data(),
                              static_cast<std::int32_t>(prec_elems_for_multiply),
@@ -3294,7 +3270,7 @@
         auto tmp_limb_0 = my_data[static_cast<local_size_type>(UINT8_C(0))];
 
         // Manually count the number of base-10 digits on the zero'th limb.
-        while(tmp_limb_0 > static_cast<local_limb_type>(UINT8_C(0)))
+        while(tmp_limb_0 > static_cast<local_limb_type>(UINT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
         {
           tmp_limb_0 = static_cast<local_limb_type>(tmp_limb_0 / static_cast<local_limb_type>(UINT8_C(10))); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
@@ -3429,7 +3405,7 @@
                 - static_cast<limb_type>(decwide_t_elem_mask)
               );
 
-            while(   (--least_digit_idx >= static_cast<std::int32_t>(0))
+            while(   (--least_digit_idx >= static_cast<std::int32_t>(0)) // NOLINT(altera-id-dependent-backward-branch)
                   && (carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0))))
             {
               const auto tt =
@@ -3824,7 +3800,7 @@
           / static_cast<std::string::difference_type>(decwide_t_elem_digits10)
         );
 
-      for(auto i = static_cast<std::string::difference_type>(INT8_C(0)); i < i_end; ++i)
+      for(auto i = static_cast<std::string::difference_type>(INT8_C(0)); i < i_end; ++i) // NOLINT(altera-id-dependent-backward-branch)
       {
         const auto idigits =
           static_cast<std::string::difference_type>
@@ -3911,14 +3887,14 @@
 
       // Extract the digits following the decimal point from decwide_t,
       // beginning with the data element having index 1.
-      while(it_rep != (x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements)))
+      while(it_rep != (x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements))) // NOLINT(altera-id-dependent-backward-branch)
       {
         p_end = util::baselexical_cast(*it_rep, data_elem_buf.data());
 
         ++it_rep;
 
-        auto rit = std::copy(std::reverse_iterator<const char*>(p_end),
-                             std::reverse_iterator<const char*>(static_cast<const char*>(data_elem_buf.data())),
+        auto rit = std::copy(static_cast<std::reverse_iterator<const char*>>(p_end),
+                             static_cast<std::reverse_iterator<const char*>>(static_cast<const char*>(data_elem_buf.data())),
                              data_elem_array.rbegin());
 
         std::fill(rit, data_elem_array.rend(), '0');
@@ -3991,7 +3967,7 @@
           auto ix = static_cast<std::string::size_type>(str.length() - static_cast<std::size_t>(UINT8_C(1)));
 
           // Every trailing 9 must be rounded up.
-          while(   (ix != static_cast<std::size_t>(UINT8_C(0)))
+          while(   (ix != static_cast<std::size_t>(UINT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
                 && (static_cast<int>(static_cast<int>(str.at(ix)) - static_cast<int>('0')) == static_cast<int>(INT8_C(9))))
           {
             str.at(ix) = '0';
@@ -4138,7 +4114,7 @@
           static_cast<std::size_t>
           (
               static_cast<exponent_type>(-the_exp)
-            - static_cast<exponent_type>(INT8_C(1))
+            - static_cast<exponent_type>(INT8_C(1)) // LCOV_EXCL_LINE
           );
 
         const auto n_pad =
@@ -4253,8 +4229,7 @@
 
       // Check if the input number is less than 1.
       if(   (str.at(static_cast<std::size_t>(UINT8_C(0))) == '0')
-         && (str.at(static_cast<std::size_t>(UINT8_C(1))) == '.')
-        )
+         && (str.at(static_cast<std::size_t>(UINT8_C(1))) == '.'))
       {
         if(str.length() == static_cast<std::uint_fast32_t>(UINT8_C(2)))
         {
@@ -4393,7 +4368,7 @@
 
       auto p10 = static_cast<exponent_type>(-1);
 
-      while(static_cast<limb_type>(static_cast<limb_type>(xx + static_cast<std::uint8_t>(UINT8_C(9))) / static_cast<std::uint8_t>(UINT8_C(10))) > static_cast<std::uint8_t>(UINT8_C(0)))
+      while(static_cast<limb_type>(static_cast<limb_type>(xx + static_cast<std::uint8_t>(UINT8_C(9))) / static_cast<std::uint8_t>(UINT8_C(10))) > static_cast<std::uint8_t>(UINT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
       {
         xx = static_cast<limb_type>(xx / static_cast<std::uint8_t>(UINT8_C(10)));
 
@@ -4525,7 +4500,7 @@
 
     if     ((ostrm_flags & std::ios::scientific) != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::scientific; }
     else if((ostrm_flags & std::ios::fixed)      != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::fixed; }
-    else                                                                               { my_float_field = detail::os_float_field_type::none; }
+    else                                                                                       { my_float_field = detail::os_float_field_type::none; }
 
     // Get the output stream's precision and limit it to max_digits10.
     // Erroneous negative precision (theoretically impossible) will be
@@ -4556,7 +4531,7 @@
               const auto pos_bound_for_scientific_pos_exp = (std::min)(static_cast<exponent_type>(decwide_t_digits10), min_bound_for_scientific_pos_exp);
 
       if(   (the_exp <  neg_bound_for_scientific_neg_exp)
-          || (the_exp >= pos_bound_for_scientific_pos_exp)
+         || (the_exp >= pos_bound_for_scientific_pos_exp)
         )
       {
         use_scientific = true;
@@ -6113,7 +6088,7 @@
         exp_result = exp_estimate;
 
         for(auto digits  = static_cast<std::int32_t>(std::numeric_limits<InternalFloatType>::digits10 - 1);
-                 digits  < precision_of_x;
+                 digits  < precision_of_x; // NOLINT(altera-id-dependent-backward-branch)
                  digits *= static_cast<std::int32_t>(INT8_C(2)))
         {
           // Adjust precision of the terms.
@@ -6194,7 +6169,7 @@
 
       const auto precision_of_x = floating_point_type::get_precision(x);
 
-      floating_point_type xh((xx - floating_point_type(nf * ln2)) / p2);
+      floating_point_type xh((xx - static_cast<floating_point_type>(nf * ln2)) / p2);
 
       xh.precision(precision_of_x);
 

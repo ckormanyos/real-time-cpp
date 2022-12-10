@@ -42,7 +42,7 @@
 
     InputIteratorRightType it_a_end(pa + count);
 
-    while(pa != it_a_end)
+    while(pa != it_a_end) // NOLINT(altera-id-dependent-backward-branch)
     {
       using value_left_type =
         typename std::iterator_traits<InputIteratorLeftType>::value_type;
@@ -83,7 +83,7 @@
 
     auto j = static_cast<std::int32_t>(count - static_cast<std::int32_t>(INT8_C(1)));
 
-    while(j >= static_cast<std::int32_t>(INT8_C(0)))
+    while(j >= static_cast<std::int32_t>(INT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
     {
       const auto t =
         static_cast<local_limb_type>
@@ -123,7 +123,7 @@
 
     auto j = static_cast<std::int32_t>(count - static_cast<std::int32_t>(INT8_C(1)));
 
-    while(static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(INT8_C(0)))
+    while(static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(INT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
     {
       const auto vjb =
         static_cast<local_limb_type>
@@ -204,7 +204,7 @@
       );
 
     for(auto   i  = count_minus_one;
-               i >= static_cast<std::int_fast32_t>(INT8_C(0));
+               i >= static_cast<std::int_fast32_t>(INT8_C(0)); // NOLINT(altera-id-dependent-backward-branch)
              --i)
     {
       auto j = count_minus_one;
@@ -218,7 +218,7 @@
           + static_cast<std::int_fast32_t>(i + j)
         );
 
-      while(j >= static_cast<std::int_fast32_t>(INT8_C(0)))
+      while(j >= static_cast<std::int_fast32_t>(INT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
       {
         carry = static_cast<local_double_limb_type>(carry + static_cast<local_double_limb_type>(static_cast<local_double_limb_type>(a[i]) * b[j]));
         carry = static_cast<local_double_limb_type>(carry + r[one_plus_i_plus_j]);
@@ -279,12 +279,12 @@
       );
 
     for(auto   j  = static_cast<std::int32_t>(count_minus_one);
-               j >= static_cast<std::int32_t>(INT8_C(1));
+               j >= static_cast<std::int32_t>(INT8_C(1)); // NOLINT(altera-id-dependent-backward-branch)
              --j)
     {
       auto sum = carry;
 
-      for(auto i = static_cast<std::int32_t>(count_minus_one); i >= j; --i)
+      for(auto i = static_cast<std::int32_t>(count_minus_one); i >= j; --i) // NOLINT(altera-id-dependent-backward-branch)
       {
         sum +=
           static_cast<local_double_limb_type>
@@ -299,12 +299,12 @@
     }
 
     for(auto   j  = static_cast<std::int32_t>(count_minus_one);
-               j >= static_cast<std::int32_t>(INT8_C(0));
+               j >= static_cast<std::int32_t>(INT8_C(0)); // NOLINT(altera-id-dependent-backward-branch)
              --j)
     {
       auto sum = carry;
 
-      for(auto i = j; i >= static_cast<std::int32_t>(INT8_C(0)); --i)
+      for(auto i = j; i >= static_cast<std::int32_t>(INT8_C(0)); --i) // NOLINT(altera-id-dependent-backward-branch)
       {
         sum += static_cast<local_double_limb_type>(a[j - i] * static_cast<local_double_limb_type>(b[i]));
       }
@@ -334,7 +334,7 @@
 
     // Multiplication loop.
     for(auto   j  = static_cast<std::int32_t>(p - static_cast<std::int32_t>(INT8_C(1)));
-               j >= static_cast<std::int32_t>(INT8_C(0));
+               j >= static_cast<std::int32_t>(INT8_C(0)); // NOLINT(altera-id-dependent-backward-branch)
              --j)
     {
       const auto t =
@@ -411,7 +411,7 @@
     local_reverse_iterator_type ri_t  (t + n);
     local_reverse_iterator_type rend_t(t);
 
-    while((carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0))) && (ri_t != rend_t))
+    while((carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0))) && (ri_t != rend_t)) // NOLINT(altera-id-dependent-backward-branch)
     {
       const auto tt = static_cast<local_limb_type>(*ri_t + static_cast<local_limb_type>(carry_out));
 
@@ -454,7 +454,7 @@
     local_reverse_iterator_type ri_t  (t + n);
     local_reverse_iterator_type rend_t(t);
 
-    while((borrow != static_cast<std::int_fast8_t>(INT8_C(0))) && (ri_t != rend_t))
+    while((borrow != static_cast<std::int_fast8_t>(INT8_C(0))) && (ri_t != rend_t)) // NOLINT(altera-id-dependent-backward-branch)
     {
       using local_signed_limb_type = typename std::make_signed<local_limb_type>::type;
 
@@ -743,7 +743,7 @@
       );
 
     for(auto                           j   = static_cast<std::uint32_t>(recombine_size);
-             static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(INT8_C(0));
+             static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(INT8_C(0)); // NOLINT(altera-id-dependent-backward-branch)
                                        j  -= static_cast<std::uint32_t>(UINT8_C(2)))
     {
             auto xaj   = static_cast<local_fft_float_type>(af[j] / (n_fft / 2U)); // NOLINT(bugprone-integer-division)

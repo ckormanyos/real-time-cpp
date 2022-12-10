@@ -7,7 +7,7 @@
 
 #include <mcal_port.h>
 
-auto mcal::port::init(const config_type*) -> void // NOLINT(readability-named-parameter)
+auto mcal::port::init(const config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
   // Subroutine is empty on purpose.
 }

@@ -5,17 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_OSC_2011_10_20_H_
-  #define MCAL_OSC_2011_10_20_H_
+#ifndef MCAL_OSC_2011_10_20_H
+  #define MCAL_OSC_2011_10_20_H
 
   namespace mcal
   {
     namespace osc
     {
-      typedef void config_type;
+      using config_type = void;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
     }
   }
 
-#endif // MCAL_OSC_2011_10_20_H_
+#endif // MCAL_OSC_2011_10_20_H

@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H_
-  #define MCAL_GPT_2011_10_20_H_
+#ifndef MCAL_GPT_2011_10_20_H
+  #define MCAL_GPT_2011_10_20_H
 
   #include <chrono>
   #include <cstdint>
@@ -24,14 +24,14 @@
   {
     namespace gpt
     {
-      typedef void          config_type;
-      typedef std::uint64_t value_type;
+      using config_type = void;
+      using value_type  = std::uint64_t;
 
-      inline void init(const config_type*) { }
+      inline auto init(const config_type*) noexcept -> void { }
 
       class secure final
       {
-        static value_type get_time_elapsed();
+        static auto get_time_elapsed() -> value_type;
 
         friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT;
 
@@ -41,4 +41,4 @@
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H_
+#endif // MCAL_GPT_2011_10_20_H

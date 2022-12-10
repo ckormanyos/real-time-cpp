@@ -254,7 +254,7 @@
 
       auto m = num_points;
 
-      while((m > static_cast<std::uint32_t>(UINT8_C(1))) && (j > m))
+      while((m > static_cast<std::uint32_t>(UINT8_C(1))) && (j > m)) // NOLINT(altera-id-dependent-backward-branch)
       {
         j  -= m;
         m >>= 1U;

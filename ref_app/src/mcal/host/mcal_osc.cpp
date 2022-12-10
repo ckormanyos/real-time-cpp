@@ -7,7 +7,7 @@
 
 #include <mcal_osc.h>
 
-auto mcal::osc::init(const config_type*) -> void // NOLINT(readability-named-parameter)
+auto mcal::osc::init(const config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
   // Subroutine is empty on purpose.
 }

@@ -7,14 +7,18 @@
 
 #include <mcal_wdg_watchdog.h>
 
-auto mcal::wdg::init(const config_type*) -> void // NOLINT(readability-named-parameter)
+auto mcal::wdg::init(const config_type*) -> void // NOLINT(readability-named-parameter,hicpp-named-parameter)
 {
   // Subroutine is empty on purpose.
 }
 
 auto mcal::wdg::secure::trigger() -> void
 {
-  using local_watchdog_type = watchdog<watchdog_base::base_timer_type::seconds(2U)>;
+  using local_watchdog_timer_type = watchdog_base::base_timer_type;
+
+  constexpr auto time_two_seconds = static_cast<typename local_watchdog_timer_type::tick_type>(UINT8_C(2));
+
+  using local_watchdog_type = watchdog<local_watchdog_timer_type::seconds(time_two_seconds)>;
 
   local_watchdog_type::my_watchdog.reset_watchdog_timer();
 }

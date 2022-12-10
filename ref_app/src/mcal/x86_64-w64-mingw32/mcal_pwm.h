@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_2010_09_14_H_
-  #define MCAL_PWM_2010_09_14_H_
+#ifndef MCAL_PWM_2010_09_14_H
+  #define MCAL_PWM_2010_09_14_H
 
   #include <mcal_pwm/mcal_pwm_base.h>
 
@@ -14,12 +14,12 @@
   {
     namespace pwm
     {
-      typedef void config_type;
+      using config_type = void;
 
-      inline void init(const config_type*) { }
+      inline auto init(const config_type*) -> void { }
 
-      mcal::pwm::pwm_base& pwm0() noexcept;
+      auto pwm0() noexcept -> mcal::pwm::pwm_base&;
     }
   }
 
-#endif // MCAL_PWM_2010_09_14_H_
+#endif // MCAL_PWM_2010_09_14_H
