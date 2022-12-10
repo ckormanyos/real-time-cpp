@@ -17,7 +17,7 @@ namespace local
 
   auto mcal_gpt_time_point_init() noexcept -> const mcal_gpt_time_point_type&;
 
-  std::uint_fast16_t mcal_gpt_sleep_prescaler;
+  std::uint_fast16_t mcal_gpt_sleep_prescaler; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 } // namespace local
 
 auto local::mcal_gpt_time_point_init() noexcept -> const mcal_gpt_time_point_type&

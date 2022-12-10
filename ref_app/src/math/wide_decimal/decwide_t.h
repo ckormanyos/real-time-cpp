@@ -902,7 +902,7 @@
 
       if(mantissa_is_iszero)
       {
-        my_data.fill(static_cast<limb_type>(UINT8_C(0)));
+        my_data.fill(static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else
       {
@@ -1104,7 +1104,7 @@
 
           std::fill(my_n_data_for_add_sub.begin(),
                     my_n_data_for_add_sub.begin() + static_cast<std::ptrdiff_t>(-ofs),
-                    static_cast<limb_type>(UINT8_C(0)));
+                    static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
 
           using const_limb_pointer_type = typename std::add_const<limb_type*>::type;
 
@@ -2399,7 +2399,7 @@
       {
         // The number is too large to resolve the integer part.
         // Thus it is already a pure integer part.
-        return *this;
+        return *this; // LCOV_EXCL_LINE
       }
 
       // Make a local copy.
@@ -4114,7 +4114,7 @@
           static_cast<std::size_t>
           (
               static_cast<exponent_type>(-the_exp)
-            - static_cast<exponent_type>(INT8_C(1))
+            - static_cast<exponent_type>(INT8_C(1)) // LCOV_EXCL_LINE
           );
 
         const auto n_pad =
@@ -4229,8 +4229,7 @@
 
       // Check if the input number is less than 1.
       if(   (str.at(static_cast<std::size_t>(UINT8_C(0))) == '0')
-         && (str.at(static_cast<std::size_t>(UINT8_C(1))) == '.')
-        )
+         && (str.at(static_cast<std::size_t>(UINT8_C(1))) == '.'))
       {
         if(str.length() == static_cast<std::uint_fast32_t>(UINT8_C(2)))
         {
@@ -4501,7 +4500,7 @@
 
     if     ((ostrm_flags & std::ios::scientific) != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::scientific; }
     else if((ostrm_flags & std::ios::fixed)      != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::fixed; }
-    else                                                                               { my_float_field = detail::os_float_field_type::none; }
+    else                                                                                       { my_float_field = detail::os_float_field_type::none; }
 
     // Get the output stream's precision and limit it to max_digits10.
     // Erroneous negative precision (theoretically impossible) will be
@@ -4532,7 +4531,7 @@
               const auto pos_bound_for_scientific_pos_exp = (std::min)(static_cast<exponent_type>(decwide_t_digits10), min_bound_for_scientific_pos_exp);
 
       if(   (the_exp <  neg_bound_for_scientific_neg_exp)
-          || (the_exp >= pos_bound_for_scientific_pos_exp)
+         || (the_exp >= pos_bound_for_scientific_pos_exp)
         )
       {
         use_scientific = true;

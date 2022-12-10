@@ -20,10 +20,10 @@ namespace local
   using task_index_type = std::uint_fast8_t;
 
   // The one (and only one) operating system task list.
-  task_list_type os_task_list(OS_TASK_LIST); // NOLINT(cert-err58-cpp)
+  task_list_type os_task_list(OS_TASK_LIST); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
   // The index of the running task.
-  task_index_type os_task_index;
+  task_index_type os_task_index; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 } // namespace local
 
 OS_NORETURN auto os::start_os() -> void

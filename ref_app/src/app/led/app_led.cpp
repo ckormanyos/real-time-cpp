@@ -20,14 +20,16 @@ namespace local
 {
   using app_led_timer_type = util::timer<std::uint32_t>;
 
-  auto app_led_timer() -> app_led_timer_type&;
+  auto app_led_timer() noexcept -> app_led_timer_type&;
 } // namespace local
 
-auto local::app_led_timer() -> app_led_timer_type&
+auto local::app_led_timer() noexcept -> app_led_timer_type&
 {
-  static app_led_timer_type t(app_led_timer_type::seconds(1U));
+  using local_app_led_tick_type = typename app_led_timer_type::tick_type;
 
-  return t;
+  static app_led_timer_type local_app_led_timer(app_led_timer_type::seconds(static_cast<local_app_led_tick_type>(UINT8_C(1))));
+
+  return local_app_led_timer;
 }
 
 auto app::led::task_init() -> void
