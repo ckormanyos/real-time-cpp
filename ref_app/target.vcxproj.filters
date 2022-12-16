@@ -196,6 +196,15 @@
     <Filter Include="micros\stm32h7a3\startup">
       <UniqueIdentifier>{6c38201f-e52f-4dcd-8802-12544cc6c099}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\riscvfe310">
+      <UniqueIdentifier>{555a27b8-f410-42e5-9855-90fcad8d25e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\riscvfe310\make">
+      <UniqueIdentifier>{2df2c49c-b1ff-40ee-82df-01e55e210f91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\riscvfe310\startup">
+      <UniqueIdentifier>{8d939918-1160-4e85-89a2-0dc14dba8062}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -462,6 +471,18 @@
     <None Include="target\micros\stm32h7a3\make\stm32h7a3.ld">
       <Filter>micros\stm32h7a3\make</Filter>
     </None>
+    <None Include="target\micros\riscvfe310\make\riscvfe310_flags.gmk">
+      <Filter>micros\riscvfe310\make</Filter>
+    </None>
+    <None Include="target\micros\riscvfe310\make\riscvfe310.ld">
+      <Filter>micros\riscvfe310\make</Filter>
+    </None>
+    <None Include="target\micros\riscvfe310\make\riscvfe310_files.gmk">
+      <Filter>micros\riscvfe310\make</Filter>
+    </None>
+    <None Include="target\micros\riscvfe310\startup\boot.s">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -655,6 +676,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\startup\crt0_init_ram.cpp">
       <Filter>micros\stm32h7a3\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

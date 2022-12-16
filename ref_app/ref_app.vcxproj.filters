@@ -203,6 +203,9 @@
     <Filter Include="src\mcal\stm32h7a3">
       <UniqueIdentifier>{02419671-0191-4497-bd3d-09e3ff4a4d61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\riscvfe310">
+      <UniqueIdentifier>{67b61401-3c8f-42ec-ba55-e2f18af39387}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -903,6 +906,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_led.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_osc.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_port.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_pwm.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_spi.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_wdg.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_cpu.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_eep.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_gpt.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mcal_irq.cpp">
+      <Filter>src\mcal\riscvfe310</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2090,6 +2123,48 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_gpt_arm_sys_tick.h">
       <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_irq.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_led.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_memory_progmem.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_osc.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_port.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_pwm.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_reg.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_ser.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_spi.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_wdg.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_benchmark.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_cpu.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_eep.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_gpt.h">
+      <Filter>src\mcal\riscvfe310</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
