@@ -937,6 +937,15 @@
     <ClCompile Include="src\mcal\riscvfe310\mcal_irq.cpp">
       <Filter>src\mcal\riscvfe310</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\Clock.c">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\Mcu.c">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\riscvfe310\mtimer.c">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2164,6 +2173,24 @@
       <Filter>src\mcal\riscvfe310</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\mcal_gpt.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\Clock.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\FE310.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\Mcu.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\Platform_Types.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\riscv-csr.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mtimer.h">
       <Filter>src\mcal\riscvfe310</Filter>
     </ClInclude>
   </ItemGroup>

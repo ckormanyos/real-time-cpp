@@ -9,9 +9,12 @@
 # File list of the stm32f100 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
-             $(PATH_TGT)/startup/boot                                  \
-             $(PATH_TGT)/startup/crt0                                  \
-             $(PATH_TGT)/startup/crt0_init_ram                         \
-             $(PATH_TGT)/startup/crt1                                  \
-             $(PATH_TGT)/startup/int_vect
+FILES_CPP :=
+
+FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/main                              \
+             $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
+             $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
+             $(PATH_APP)/mcal/$(TGT)/Mcal/mtimer                       \
+             $(PATH_APP)/mcal/$(TGT)/Startup/boot                      \
+             $(PATH_APP)/mcal/$(TGT)/Startup/intvect                   \
+             $(PATH_APP)/mcal/$(TGT)/Startup/Startup

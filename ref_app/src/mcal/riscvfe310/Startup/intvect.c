@@ -1,12 +1,3 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
-// Originally from:
-
 /******************************************************************************************************
   Filename    : intvect.c
   
@@ -27,84 +18,9 @@
 //=====================================================================================================
 // Includes
 //=====================================================================================================
-#include <cstdint>
-
-extern "C"
-{
-
-#if defined(__riscv_xlen)
-#if (__riscv_xlen == 32)
-typedef uint32_t uint_xlen_t;
-typedef uint32_t uint_csr32_t;
-typedef uint32_t uint_csr64_t;
-#elif (__riscv_xlen == 64)
-typedef uint64_t uint_xlen_t;
-typedef uint32_t uint_csr32_t;
-typedef uint64_t uint_csr64_t;
-#else
-#error "Unknown XLEN"
-#endif
-#else
-#error "Unknown RISCV"
-#endif
-
-typedef void (*InterruptHandler)(void);
-
-using uint32 = std::uint32_t;
-
-static inline uint_xlen_t csr_read_mcause(void) {
-    uint_xlen_t value;        
-    __asm__ volatile ("csrr    %0, mcause" 
-                      : "=r" (value)  /* output : register */
-                      : /* input : none */
-                      : /* clobbers: none */);
-    return value;
-}
-
-/**
-  * @brief Platform Level Interrupt Control (PLIC)
-  */
-
-#ifdef __cplusplus
-  #define   __I     volatile        
-#else
-  #define   __I     volatile const  
-#endif
-
-#define     __O     volatile        
-#define     __IO    volatile        
-
-#define     __IM     volatile const 
-#define     __OM     volatile       
-#define     __IOM    volatile       
-
-typedef struct {                                    /*!< (@ 0x0C000000) PLIC Structure                                         */
-  
-  union {
-    __IO uint32  reg;                             /*!< (@ 0x0C000000) Interrupt Priority Register                            */
-    
-    struct {
-      __IO uint32  priority   :  3;               /*!< [0..2] (null)                                                         */
-    } bit;                                          /*!< [3] BitSize                                                           */
-  } priority[53];
-  __I  uint32  RESERVED[971];
-  __IO uint32  pending[2];                        /*!< (@ 0x0C001000) Interrupt Pending Register                             */
-  __I  uint32  RESERVED1[1022];
-  __IO uint32  enable[2];                         /*!< (@ 0x0C002000) Interrupt Enable Register                              */
-  __I  uint32  RESERVED2[522238];
-  
-  union {
-    __IO uint32  reg;                             /*!< (@ 0x0C200000) Priority Threshold Register                            */
-    
-    struct {
-      __IO uint32  priority   :  3;               /*!< [0..2] (null)                                                         */
-    } bit;                                          /*!< [3] BitSize                                                           */
-  } threshold;
-  __IO uint32  claim;                             /*!< (@ 0x0C200004) Claim/Complete Register                                */
-} PLIC_Type;
-
-#define PLIC_BASE                       0x0C000000UL
-#define PLIC                            ((PLIC_Type               *) PLIC_BASE)
+#include "FE310.h"
+#include "riscv-csr.h"
+#include "Platform_Types.h"
 
 //=====================================================================================================
 // Functions prototype
@@ -328,6 +244,4 @@ void Isr_MachineExternalInterrupt(void)
 
   /* set the interrupt as completed */
    PLIC->claim = IntId;
-}
-
 }

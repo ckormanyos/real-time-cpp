@@ -1,137 +1,156 @@
-/*
- Copyright Christopher Kormanyos 2022.
- Distributed under the Boost Software License,
- Version 1.0. (See accompanying file LICENSE_1_0.txt
- or copy at http://www.boost.org/LICENSE_1_0.txt)
-*/
+/******************************************************************************************
+  Filename    : Memory_Map.ld
+  
+  Core        : RV32IMAC
+  
+  MCU         : FE310-G002 (SiFive)
+    
+  Author      : Chalandi Amine
+ 
+  Owner       : Chalandi Amine
+  
+  Date        : 04.06.2021
+  
+  Description : Linker description file for FE310 SiFive
+  
+******************************************************************************************/
 
-/* Linker script for RISC-V FE310 MCU */
-
+/******************************************************************************************
+ ELF Entrypoint
+******************************************************************************************/
 ENTRY(_start)
 
-INPUT(libc.a libm.a libgcc.a)
+/******************************************************************************************
+ Globals
+******************************************************************************************/
 
-__STACK_SIZE = 2K;
+__FLASH_START_ADDRESS = 0x20000000;
+__FLASH_SIZE          = 4M;
+
+__ITIM_START_ADDRESS = 0x08000000;
+__ITIM_SIZE          = 8K;
+
+__STACK_START_ADDRESS = 0x80000000;
+__STACK_SIZE = 1K;
+
+__RAM_START_ADDRESS = 0x80000000 + __STACK_SIZE;
+__RAM_SIZE =  16K - __STACK_SIZE;
+
+/******************************************************************************************
+ Memory configuration
+******************************************************************************************/
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0x20000000,                LENGTH = 64K
-  ITIM(rx)  : ORIGIN = 0x08000000,                LENGTH = 8K
-  STACK(rw) : ORIGIN = 0x08000000,                LENGTH = __STACK_SIZE
-  RAM(rwx)  : ORIGIN = 0x08000000 + __STACK_SIZE, LENGTH = 16K - __STACK_SIZE
+  FLASH(rx)   : ORIGIN = __FLASH_START_ADDRESS, LENGTH = __FLASH_SIZE
+  ITIM(rx)    : ORIGIN = __ITIM_START_ADDRESS,  LENGTH = __ITIM_SIZE
+  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
+  RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS,   LENGTH = __RAM_SIZE
 }
 
+/******************************************************************************************
+ Sections definition
+******************************************************************************************/
 SECTIONS
 {
-  . = 0x20000000;
-
+  /* Program code (text) */
   .boot : ALIGN(4)
   {
+    PROVIDE(__BOOT_BASE_ADDRESS = .);
     *boot.o(.text)
     . = ALIGN(4);
-  } > ROM
-
-  /* Program code (text), read-only data and static ctors */
-  .text :
+  } > FLASH
+  
+  /* Program code (text) */
+  .text : ALIGN(4)
   {
-    _ctors_begin = .;
-    *(.init_array)
-    . = ALIGN(4);
-    KEEP (*(SORT(.init_array)))
-    _ctors_end = .;
+    PROVIDE(__CODE_BASE_ADDRESS = .);
     *(.text)
     . = ALIGN(4);
-    *(.text*)
-    . = ALIGN(4);
+  } > FLASH
+
+  /* Read-only data (.rodata) */
+  .rodata : ALIGN(4)
+  {
+    PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
     . = ALIGN(4);
-    *(.rodata*)
-    . = ALIGN(4);
-  } > ROM
+  } > FLASH
 
-  .text :
+ /* Section for constructors */
+  .ctors : ALIGN(4)
   {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
+    __CTOR_LIST__ = . ;
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array))
+    LONG(-1) ;
+    __CTOR_END__ = . ;
+  }  > FLASH
 
-  .exidx :
+
+  /* Section for destructors */
+  .dtors : ALIGN(4)
   {
-    . = ALIGN(4);
-    PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
-    . = ALIGN(4);
-    PROVIDE(__exidx_end = .);
-  } > ROM
+    __DTOR_LIST__ = . ;
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array))
+    LONG(-1) ;
+    __DTOR_END__ = . ;
+  } > FLASH
 
-  .riscv.attributes :
+  /* Runtime clear table */
+  .clear_sec : ALIGN(4)
   {
-    *(.riscv.attributes)
-  } > ROM
+    PROVIDE(__RUNTIME_CLEAR_TABLE = .) ;
+    LONG(0 + ADDR(.bss));   LONG(SIZEOF(.bss));
+    LONG(0 + ADDR(.sbss));  LONG(SIZEOF(.sbss));
+    LONG(-1);               LONG(-1);
+  } > FLASH
 
-  . = 0x80000000;
+  /* Runtime copy table */
+  .copy_sec : ALIGN(4)
+  {
+    PROVIDE(__RUNTIME_COPY_TABLE = .) ;
+    LONG(LOADADDR(.data));   LONG(0 + ADDR(.data));   LONG(SIZEOF(.data));
+    LONG(LOADADDR(.sdata));  LONG(0 + ADDR(.sdata));  LONG(SIZEOF(.sdata));
+    LONG(-1);                LONG(-1);                LONG(-1);
+  } > FLASH 
+
+  /* The FLASH-to-RAM initialized data sections */
+  .data : ALIGN(4) 
+  {
+    *(.data)
+    . = ALIGN(4);
+  } > RAM  AT>FLASH
+  
+  .sdata : ALIGN(4) 
+  {
+    *(.sdata)
+    . = ALIGN(4);
+  } > RAM  AT>FLASH
+
+  /* The uninitialized (zero-cleared) data sections */
+  .bss : ALIGN(4)
+  {
+    *(.bss)
+    . = ALIGN(4);
+  } > RAM
+  
+  .sbss : ALIGN(4)
+  {
+    *(.sbss)
+    . = ALIGN(4);
+  } > RAM
 
   /* stack definition */
   .stack :
   {
-    . = ALIGN(MAX(__STACK_SIZE, .), 8);
-    PROVIDE(__STACK_TOP = .);
+    . = ALIGN(MAX(__STACK_SIZE , .), 8);
+    PROVIDE(__STACK_TOP = .) ;
   } > STACK
 
-  . = 0x80000000 + __STACK_SIZE;
-  . = ALIGN(4);
-
-  /* The ROM-to-RAM initialized data section */
-  .data :
-  {
-    _data_begin = .;
-    *(.data)
-    . = ALIGN(4);
-    KEEP (*(.data))
-    *(.data*)
-    . = ALIGN(4);
-    KEEP (*(.data*))
-    _data_end = .;
-  } > RAM AT > ROM
-
-  /* The ROM-to-RAM initialized sdata section */
-  .sdata :
-  {
-    _sdata_begin = .;
-    *(.sdata)
-    . = ALIGN(4);
-    KEEP (*(.sdata))
-    *(.sdata*)
-    . = ALIGN(4);
-    KEEP (*(.sdata*))
-    _sdata_end = .;
-  } > RAM AT > ROM
-
-  /* The uninitialized (zero-cleared) bss section */
-  .bss :
-  {
-    _bss_begin = .;
-    *(.bss)
-    . = ALIGN(4);
-    KEEP (*(.bss))
-    *(.bss*)
-    . = ALIGN(4);
-    KEEP (*(.bss*))
-    _bss_end = .;
-  } > RAM
-
-  /* The uninitialized (zero-cleared) sbss section */
-  .sbss :
-  {
-    _sbss_begin = .;
-    *(.sbss)
-    . = ALIGN(4);
-    KEEP (*(.sbss))
-    *(.sbss*)
-    . = ALIGN(4);
-    KEEP (*(.sbss*))
-    _sbss_end = .;
-  } > RAM
-
-  _rom_data_begin = LOADADDR(.data);
-  _rom_sdata_begin = LOADADDR(.sdata);
 }

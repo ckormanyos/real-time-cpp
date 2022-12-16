@@ -686,7 +686,10 @@
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
+    <ClCompile Include="target\micros\riscvfe310\startup\Startup.c">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\intvect.c">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
   </ItemGroup>
