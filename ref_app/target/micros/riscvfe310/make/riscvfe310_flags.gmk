@@ -12,58 +12,32 @@ GCC_VERSION   = 10.2.0
 GCC_TARGET    = riscv64-unknown-elf
 GCC_PREFIX    = riscv64-unknown-elf
 
-CFLAGS       :=
-CXXFLAGS     :=
-AFLAGS       :=
-LDFLAGS      :=
-
-NO_OPT        = -O0
-
-OPT           = -O2
-#OPT           = $(NO_OPT)
-
 TGT_SUFFIX    = elf
 
-ARCH = -mcpu=sifive-e31 -mabi=ilp32 -msmall-data-limit=0 -falign-functions=4
+TGT_ALLFLAGS  = -O2                                            \
+                -finline-functions                             \
+                -finline-limit=32                              \
+                -ffast-math                                    \
+                -mcpu=sifive-e31                               \
+                -mabi=ilp32                                    \
+                -msmall-data-limit=0                           \
+                -falign-functions=4
 
-############################################################################################
-# C Compiler flags
-############################################################################################
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
 
-TGT_CFLAGS  = $(OPT)                                        \
-              $(ARCH)                                       \
-              -ffast-math                                   \
-              -g3                                           \
-              -Wconversion                                  \
-              -Wsign-conversion                             \
-              -Wunused-parameter                            \
-              -Wuninitialized                               \
-              -Wmissing-declarations                        \
-              -Wshadow                                      \
-              -Wunreachable-code                            \
-              -Wmissing-include-dirs                        \
-              -Wno-cast-align                               \
-              -std=c99                                      \
-              -Wall                                         \
-              -Wextra                                       \
-              -Wpedantic                                    \
-              -fomit-frame-pointer                          \
-              -gdwarf-2                                     \
-              -fno-exceptions
-
-TGT_CXXFLAGS  =
-
-C_INCLUDES   :=
+TGT_CXXFLAGS  = -std=c++14                                     \
+                -Wno-psabi                                     \
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostartfiles                          \
-                -e Startup_Init                        \
-                $(ARCH)                                \
-                -ffast-math                            \
-                -Wl,--print-memory-usage               \
-                -Wl,--print-map                        \
-                -T $(LINKER_DEFINITION_FILE)           \
-                -Wl,-Map,$(APP).map
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -e Startup_Init                                \
+                -Wl,--print-memory-usage                       \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)
