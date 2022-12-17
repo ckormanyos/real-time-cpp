@@ -15,6 +15,11 @@
   
 ******************************************************************************************/
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+#endif
+
 //=========================================================================================
 // Includes
 //=========================================================================================
@@ -63,3 +68,6 @@ void mtimer_StopTimer(void)
   MTIMECMP64 = (uint64)-1;
 }
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
