@@ -17,6 +17,8 @@
       constexpr auto clint_base        = static_cast<std::uint32_t>(UINT32_C(0x02000000));
       constexpr auto clint_mtime       = static_cast<std::uint32_t>(clint_base + static_cast<std::uint32_t>(UINT32_C(0x0000BFF8)));
       constexpr auto clint_mtimeh      = static_cast<std::uint32_t>(clint_base + static_cast<std::uint32_t>(UINT32_C(0x0000BFFC)));
+      constexpr auto clint_mtimecmp    = static_cast<std::uint32_t>(clint_base + static_cast<std::uint32_t>(UINT32_C(0x00004000)));
+      constexpr auto clint_mtimecmph   = static_cast<std::uint32_t>(clint_base + static_cast<std::uint32_t>(UINT32_C(0x00004004)));
 
       constexpr auto gpio0_base        = static_cast<std::uint32_t>(UINT32_C(0x10012000));
       constexpr auto gpio0_input_val   = static_cast<std::uint32_t>(gpio0_base + static_cast<std::uint32_t>(UINT32_C(0x00000000)));

@@ -6,6 +6,7 @@
 
 #include <mcal_led/mcal_led_port.h>
 #include <util/utility/util_time.h>
+#include <util/utility/util_two_part_data_manipulation.h>
 
 extern "C" auto appl_main(void) -> void;
 
@@ -23,6 +24,8 @@ namespace
 
 extern "C" auto appl_main(void) -> void
 {
+  mcal::reg::reg_access_static<std::uint32_t, std::uint64_t, mcal::reg::clint_mtimecmp, static_cast<std::uint64_t>(UINT64_C(0xFFFFFFFFFFFFFFFF))>::reg_set();
+
   led0_port_type::set_pin_high();
   led0_port_type::set_direction_output();
 
@@ -40,17 +43,46 @@ extern "C" auto appl_main(void) -> void
 
 auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
-  const auto tick_unscaled =
-    mcal::reg::reg_access_static<std::uint32_t, std::uint64_t, mcal::reg::clint_mtime>::reg_get();
+  auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtime >::reg_get(); };
+  auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtimeh>::reg_get(); };
 
-  const auto microsecond_tick =
+  auto to_microseconds =
+    [](const std::uint32_t tick_val) -> std::uint32_t
+    {
+      const auto result_non_trimmed =
+        static_cast<std::uint64_t>
+        (
+            static_cast<std::uint64_t>(static_cast<std::uint64_t>(tick_val) * static_cast<std::uint8_t>(UINT8_C(61)))
+          / static_cast<std::uint8_t>(UINT8_C(2))
+        );
+
+      const auto trimming_amount =
+        static_cast<std::uint64_t>
+        (
+            static_cast<std::uint64_t>(static_cast<std::uint64_t>(tick_val) * static_cast<std::uint8_t>(UINT8_C(19)))
+          / static_cast<std::uint32_t>(UINT32_C(32768))
+        );
+
+      return
+        static_cast<std::uint32_t>
+        (
+          static_cast<std::uint64_t>(result_non_trimmed + trimming_amount)
+        );
+    };
+
+  const auto mt_lo_1 = to_microseconds(read_lo());
+  const auto mt_hi_1 = to_microseconds(read_hi());
+
+  const auto mt_lo_2 = to_microseconds(read_lo());
+
+  const auto consistent_microsecond_tick =
     static_cast<std::uint64_t>
     (
-        static_cast<std::uint64_t>(tick_unscaled * static_cast<std::uint8_t>(UINT8_C(61)))
-      / static_cast<std::uint8_t>(UINT8_C(2))
+      (mt_lo_2 > mt_lo_1) ? util::make_long(mt_lo_1, mt_hi_1)
+                          : util::make_long(mt_lo_2, to_microseconds(read_hi()))
     );
 
-  return static_cast<mcal::gpt::value_type>(microsecond_tick);
+  return static_cast<mcal::gpt::value_type>(consistent_microsecond_tick);
 }
 
 void operator delete(void*)        noexcept;

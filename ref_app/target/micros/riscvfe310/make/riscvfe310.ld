@@ -69,6 +69,12 @@ SECTIONS
     . = ALIGN(4);
   } > FLASH
 
+  /* Program code (riscv.attributes) */
+  .riscv.attributes : ALIGN(4)
+  {
+    *(.riscv.attributes)
+  } > FLASH
+
   /* Read-only data (.rodata) */
   .rodata : ALIGN(4)
   {
