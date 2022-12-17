@@ -1,8 +1,6 @@
 #include <cstddef>
 
-#include "FE310.h"
-#include "mtimer.h"
-#include "riscv-csr.h"
+#include <mtimer.h>
 #include <mcal_port.h>
 
 #include <mcal_led/mcal_led_port.h>
@@ -27,8 +25,8 @@ namespace
 
 extern "C" auto appl_main(void) -> void
 {
-  //led0_port_type::set_pin_low();
-  //led0_port_type::set_direction_output();
+  led0_port_type::set_pin_high();
+  led0_port_type::set_direction_output();
 
   /* start the mtimer */
   mtimer_StartTimer(MTIME_TIMEOUT_MS(MTIME_TIMEOUT_LED_PHASE));
@@ -44,8 +42,7 @@ extern "C"
 void Isr_MachineTimerInterrupt(void)
 {
   /* toggle the blue led */
-  //led0_port_type::toggle_pin();
-  GPIO0->output_val.bit.pin5 ^= 1;
+  led0_port_type::toggle_pin();
 
   /* reload the mtimer */
   mtimer_ReloadTimer(MTIME_TIMEOUT_MS(MTIME_TIMEOUT_LED_PHASE));
