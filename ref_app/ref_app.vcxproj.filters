@@ -916,9 +916,6 @@
     <ClCompile Include="src\mcal\riscvfe310\Mcal\Mcu.c">
       <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Mcal\mtimer.c">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\riscvfe310\Mcal\Clock.c">
       <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClCompile>
@@ -2122,9 +2119,6 @@
       <Filter>src\mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\Mcu.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\mtimer.h">
       <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\Platform_Types.h">

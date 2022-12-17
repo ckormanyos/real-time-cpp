@@ -24,16 +24,16 @@
   {
     namespace gpt
     {
-      typedef void          config_type;
-      typedef std::uint64_t value_type;
+      using config_type = void;
+      using value_type  = std::uint64_t;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       class secure final
       {
-        static value_type get_time_elapsed();
+        static auto get_time_elapsed() -> value_type;
 
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT;
+        friend auto std::chrono::high_resolution_clock::now() UTIL_NOEXCEPT -> std::chrono::high_resolution_clock::time_point;
 
         template<typename unsigned_tick_type>
         friend class util::timer;

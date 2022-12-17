@@ -15,7 +15,6 @@ FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/appl                              \
              $(PATH_APP)/mcal/$(TGT)/main                              \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/mtimer                       \
              $(PATH_APP)/mcal/$(TGT)/Startup/boot                      \
              $(PATH_APP)/mcal/$(TGT)/Startup/intvect                   \
              $(PATH_APP)/mcal/$(TGT)/Startup/Startup

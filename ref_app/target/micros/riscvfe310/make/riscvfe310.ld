@@ -89,19 +89,6 @@ SECTIONS
     __CTOR_END__ = . ;
   }  > FLASH
 
-
-  /* Section for destructors */
-  .dtors : ALIGN(4)
-  {
-    __DTOR_LIST__ = . ;
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    KEEP (*(SORT(.fini_array.*)))
-    KEEP (*(.fini_array))
-    LONG(-1) ;
-    __DTOR_END__ = . ;
-  } > FLASH
-
   /* Runtime clear table */
   .clear_sec : ALIGN(4)
   {
