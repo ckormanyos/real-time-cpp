@@ -67,6 +67,8 @@ SECTIONS
     PROVIDE(__CODE_BASE_ADDRESS = .);
     *(.text)
     . = ALIGN(4);
+    *(.text.*)
+    . = ALIGN(4);
   } > FLASH
 
   /* Program code (riscv.attributes) */
@@ -80,6 +82,8 @@ SECTIONS
   {
     PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
+    . = ALIGN(4);
+    *(.rodata.*)
     . = ALIGN(4);
   } > FLASH
 
@@ -130,6 +134,8 @@ SECTIONS
   .bss : ALIGN(4)
   {
     *(.bss)
+    . = ALIGN(4);
+    *(.bss.*)
     . = ALIGN(4);
   } > RAM
   

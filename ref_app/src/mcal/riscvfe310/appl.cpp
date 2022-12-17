@@ -12,10 +12,19 @@ extern "C" auto appl_main(void) -> void;
 
 namespace
 {
-  using led0_port_type = mcal::port::port_pin<std::uint32_t,
-                                              std::uint32_t,
-                                              mcal::reg::gpio0_base,
-                                              UINT8_C(5)>;
+  mcal::led::led_base& led0()
+  {
+    using led0_port_type = mcal::port::port_pin<std::uint32_t,
+                                                std::uint32_t,
+                                                mcal::reg::gpio0_base,
+                                                UINT8_C(5)>;
+
+    using led0_led_type = mcal::led::led_port<led0_port_type>;
+
+    static led0_led_type l0;
+
+    return l0;
+  }
 
   using app_led_timer_type = util::timer<std::uint32_t>;
 
@@ -26,15 +35,15 @@ extern "C" auto appl_main(void) -> void
 {
   mcal::reg::reg_access_static<std::uint32_t, std::uint64_t, mcal::reg::clint_mtimecmp, static_cast<std::uint64_t>(UINT64_C(0xFFFFFFFFFFFFFFFF))>::reg_set();
 
-  led0_port_type::set_pin_high();
-  led0_port_type::set_direction_output();
+  led0().toggle();
 
-  /* endless loop*/
+  // Enter an endless loop.
   for(;;)
   {
+    // Toggle the LED upon timeout and reset the timer.
     if(timer.timeout())
     {
-      led0_port_type::toggle_pin();
+      led0().toggle();
 
       timer.start_interval(app_led_timer_type::seconds(1U));
     }
