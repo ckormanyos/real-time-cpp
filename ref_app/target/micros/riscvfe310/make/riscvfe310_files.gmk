@@ -13,6 +13,8 @@ FILES_CPP :=
 
 FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/appl                              \
              $(PATH_APP)/mcal/$(TGT)/main                              \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led                          \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
              $(PATH_APP)/mcal/$(TGT)/Startup/boot                      \
