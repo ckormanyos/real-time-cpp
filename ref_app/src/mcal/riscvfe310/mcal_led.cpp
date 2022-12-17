@@ -13,7 +13,7 @@ mcal::led::led_base& mcal::led::led0()
   using led0_port_type = mcal::port::port_pin<std::uint32_t,
                                               std::uint32_t,
                                               mcal::reg::gpio0_base,
-                                              UINT8_C(5)>;
+                                              static_cast<std::uint32_t>(UINT8_C(5))>;
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 

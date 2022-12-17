@@ -14,7 +14,7 @@ GCC_PREFIX    = riscv64-unknown-elf
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                            \
+TGT_ALLFLAGS  = -Os                                            \
                 -finline-functions                             \
                 -finline-limit=32                              \
                 -ffast-math                                    \
@@ -32,8 +32,6 @@ TGT_CXXFLAGS  = -std=c++14                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
-                -I$(PATH_APP)/mcal/$(TGT)                      \
-                -I$(PATH_APP)                                  \
                 -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =

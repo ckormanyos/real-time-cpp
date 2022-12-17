@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2022.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,14 +9,9 @@
 # File list of the stm32f100 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_CPP :=
-
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/appl                              \
-             $(PATH_APP)/mcal/$(TGT)/main                              \
-             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
-             $(PATH_APP)/mcal/$(TGT)/mcal_led                          \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
+FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
-             $(PATH_APP)/mcal/$(TGT)/Startup/boot                      \
-             $(PATH_APP)/mcal/$(TGT)/Startup/intvect                   \
-             $(PATH_APP)/mcal/$(TGT)/Startup/Startup
+             $(PATH_TGT)/startup/boot                                  \
+             $(PATH_TGT)startup/intvect                                \
+             $(PATH_TGT)startup/patch                                  \
+             $(PATH_TGT)startup/Startup

@@ -480,6 +480,9 @@
     <None Include="target\micros\riscvfe310\make\riscvfe310_files.gmk">
       <Filter>micros\riscvfe310\make</Filter>
     </None>
+    <None Include="target\micros\riscvfe310\startup\boot.s">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -673,6 +676,15 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\startup\crt0_init_ram.cpp">
       <Filter>micros\stm32h7a3\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\intvect.c">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\patch.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\Startup.c">
+      <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

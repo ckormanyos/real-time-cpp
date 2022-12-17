@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2022.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
 // ***************************************************************************************
 // Filename    : Startup.c
 //
@@ -144,8 +152,12 @@ static void Startup_InitCtors(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_RunApplication(void)
 {
-  /* Call the main function */
-  main();
+  /* check the weak function */
+  if((unsigned int) &main != 0)
+  {
+    /* Call the main function */
+    main();
+  }
 
   /* Catch unexpected exit from main or if main does not exist */
   Startup_Unexpected_Exit();
@@ -171,5 +183,8 @@ static void Startup_Unexpected_Exit(void)
 //-----------------------------------------------------------------------------------------
 static void Startup_InitMcuSystem(void)
 {
-  FE310_HwInitialization();
+  if(0 != (unsigned long) &FE310_HwInitialization)
+  {
+    FE310_HwInitialization();
+  }
 }
