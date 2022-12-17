@@ -1,0 +1,44 @@
+#  Copyright Christopher Kormanyos 2022.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 10.2.0
+GCC_TARGET    = riscv64-unknown-elf
+GCC_PREFIX    = riscv64-unknown-elf
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -Os                                            \
+                -finline-functions                             \
+                -finline-limit=32                              \
+                -ffast-math                                    \
+                -mcpu=sifive-e31                               \
+                -mabi=ilp32                                    \
+                -msmall-data-limit=0                           \
+                -falign-functions=4
+
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++14                                     \
+                -Wno-psabi                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
+                -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -e Startup_Init                                \
+                -Wl,--print-memory-usage                       \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)
