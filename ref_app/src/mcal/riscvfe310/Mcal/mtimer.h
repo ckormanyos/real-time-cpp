@@ -37,6 +37,11 @@
 #define MTIME_TIMEOUT_MS(t)    (uint64)((uint64)(MTIME_FREQ_KHZ * t) / 1000U)
 #define MTIME_TIMEOUT_US(t)    (uint64)((uint64)(MTIME_FREQ_KHZ * t) / 1000000UL)
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 //=========================================================================================
 // Function prototypes
 //========================================================================================= 
@@ -44,5 +49,8 @@ void mtimer_StopTimer(void);
 void mtimer_ReloadTimer(uint64 timeout);
 void mtimer_StartTimer(uint64 timeout);
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* __MTIME_H__ */
