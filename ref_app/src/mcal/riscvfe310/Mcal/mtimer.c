@@ -20,52 +20,14 @@
 #pragma GCC diagnostic ignored "-Wcast-align"
 #endif
 
-//=========================================================================================
-// Includes
-//=========================================================================================
 #include "mtimer.h"
 #include "riscv-csr.h"
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
-void mtimer_ReloadTimer(uint64 timeout)
-{
-  /* set the reload value */
-  MTIMECMP64 = MTIME64 + timeout;
-}
+#define MTIME64 *(volatile uint64*)(&(CLINT->mtime))
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
-void mtimer_StartTimer(uint64 timeout)
+uint64 mtimer_GetTick(void)
 {
-  /* configure the timer counters */
-  MTIMECMP64 = MTIME64 + timeout;
-
-  /* enable the timer interrupt */
-  csr_set_bits_mie(MIE_MTI_BIT_MASK);
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
-void mtimer_StopTimer(void)
-{
-  /* stop the timer (will never overflow) */
-  MTIMECMP64 = (uint64)-1;
+  return MTIME64;
 }
 
 #if defined(__GNUC__)

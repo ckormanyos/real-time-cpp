@@ -2145,6 +2145,9 @@
     <ClInclude Include="src\mcal\riscvfe310\mcal_reg.h">
       <Filter>src\mcal\riscvfe310</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\riscvfe310\mcal_gpt.h">
+      <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
