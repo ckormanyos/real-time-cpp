@@ -27,16 +27,16 @@
 //=====================================================================================================
 // Includes
 //=====================================================================================================
+#include <stdint.h>
+
 #include "FE310.h"
-#include "riscv-csr.h"
-#include "Platform_Types.h"
 
 //=====================================================================================================
 // Functions prototype
 //=====================================================================================================
-static void UndefinedHandler(void);
+static void UndefinedHandler(void) __attribute__ ((used, noinline));
 void DirectModeInterruptHandler(void) __attribute__ ((interrupt ("machine")));
-void Isr_MachineExternalInterrupt(void);
+void Isr_MachineExternalInterrupt(void) __attribute__ ((used, noinline));
 
 void Isr_InstructionAddressMisaligned (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_InstructionAccessFault       (void) __attribute__((weak, alias("UndefinedHandler")));
@@ -103,10 +103,32 @@ void Isr_PWM2CMP2_IRQn                (void) __attribute__((weak, alias("Undefin
 void Isr_PWM2CMP3_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_I2C0_IRQn                    (void) __attribute__((weak, alias("UndefinedHandler")));
 
+#if __riscv_xlen==32
+typedef uint32_t uint_xlen_t;
+typedef uint32_t uint_csr32_t;
+typedef uint32_t uint_csr64_t;
+#elif __riscv_xlen==64
+typedef uint64_t uint_xlen_t;
+typedef uint32_t uint_csr32_t;
+typedef uint64_t uint_csr64_t;
+#else
+#error "Unknown XLEN"
+#endif
+
+static inline uint_xlen_t csr_read_mcause(void)
+{
+  uint_xlen_t value;        
+  __asm__ volatile ("csrr    %0, mcause" 
+                    : "=r" (value)  /* output : register */
+                    : /* input : none */
+                    : /* clobbers: none */);
+  return value;
+}
+
 //=====================================================================================================
 // Platform-Level Interrupts vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(4))) PLIVT[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(4), used)) PLIVT[] =
 {
     (InterruptHandler)&Isr_WATCHDOG_IRQn,   /* IRQ 01  WATCHDOG  */
     (InterruptHandler)&Isr_RTC_IRQn,        /* IRQ 02  RTC       */
@@ -165,7 +187,7 @@ const InterruptHandler __attribute__((aligned(4))) PLIVT[] =
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(64))) IVT[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(64), used)) IVT[] =
 {
     /* Core-Local Exceptions */
     (InterruptHandler)&Isr_InstructionAddressMisaligned,  /* 0  - Instruction address misaligned */
@@ -209,7 +231,7 @@ const InterruptHandler __attribute__((aligned(64))) IVT[] =
 //-----------------------------------------------------------------------------------------
 static void UndefinedHandler(void)
 {
-  for(;;);
+  for(;;) { ; }
 }
 
 //-----------------------------------------------------------------------------------------

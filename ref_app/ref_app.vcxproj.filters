@@ -209,9 +209,6 @@
     <Filter Include="src\mcal\riscvfe310\Mcal">
       <UniqueIdentifier>{2f442742-abee-409d-9fc3-9ad7c2ca0d47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\riscvfe310\Startup">
-      <UniqueIdentifier>{38d11da1-8639-4fcb-95b2-672846abd366}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -913,18 +910,6 @@
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Mcal\Mcu.c">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Mcal\Clock.c">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Startup\Startup.c">
-      <Filter>src\mcal\riscvfe310\Startup</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Startup\intvect.c">
-      <Filter>src\mcal\riscvfe310\Startup</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\riscvfe310\mcal_gpt.cpp">
       <Filter>src\mcal\riscvfe310</Filter>
     </ClCompile>
@@ -954,9 +939,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\riscvfe310\mcal_wdg.cpp">
       <Filter>src\mcal\riscvfe310</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Startup\patch.cpp">
-      <Filter>src\mcal\riscvfe310\Startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2145,16 +2127,7 @@
     <ClInclude Include="src\mcal\mcal_gpt_arm_sys_tick.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Mcu.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\Platform_Types.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\riscv-csr.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Clock.h">
       <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\FE310.h">
@@ -2374,9 +2347,6 @@
     </None>
     <None Include="cmake\stm32h7a3.cmake">
       <Filter>src\cmake</Filter>
-    </None>
-    <None Include="src\mcal\riscvfe310\Startup\boot.s">
-      <Filter>src\mcal\riscvfe310\Startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
