@@ -51,41 +51,8 @@ extern unsigned long __CTOR_LIST__[];
 //=========================================================================================
 // Function prototype
 //=========================================================================================
-void Startup_Init(void);
-static void Startup_InitRam(void);
-static void Startup_InitCtors(void);
-static void Startup_RunApplication(void);
-static void Startup_Unexpected_Exit(void);
-static void Startup_InitMcuSystem(void);
-
-//=========================================================================================
-// Extern function prototype
-//=========================================================================================
-int main(void) __attribute__((weak));
-void FE310_HwInitialization(void) __attribute__((weak));
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Init function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-void Startup_Init(void)
-{
-  /* Initialize the MCU system */
-  Startup_InitMcuSystem();
-  
-  /* Initialize the RAM memory */
-  Startup_InitRam();
-  
-  /* Initialize the non-local C++ objects */
-  Startup_InitCtors();
-  
-  /* Run the main application */
-  Startup_RunApplication();
-
-}
+void Startup_InitRam(void);
+void Startup_InitCtors(void);
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_InitRam function
@@ -94,7 +61,7 @@ void Startup_Init(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-static void Startup_InitRam(void)
+void Startup_InitRam(void)
 {
   unsigned long ClearTableIdx = 0;
   unsigned long CopyTableIdx  = 0;
@@ -133,58 +100,12 @@ static void Startup_InitRam(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-static void Startup_InitCtors(void)
+void Startup_InitCtors(void)
 {
   unsigned long CtorIdx = 0U;
-  
+
   while((__STARTUP_RUNTIME_CTORS)[CtorIdx] != ((unsigned long)-1))
   {
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
-  }
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_RunApplication(void)
-{
-  /* check the weak function */
-  if((unsigned int) &main != 0)
-  {
-    /* Call the main function */
-    main();
-  }
-
-  /* Catch unexpected exit from main or if main does not exist */
-  Startup_Unexpected_Exit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Unexpected_Exit function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_Unexpected_Exit(void)
-{
-  for(;;);
-}
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitMcuSystem function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_InitMcuSystem(void)
-{
-  if(0 != (unsigned long) &FE310_HwInitialization)
-  {
-    FE310_HwInitialization();
   }
 }
