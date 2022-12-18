@@ -68,10 +68,8 @@ SECTIONS
     PROVIDE(__BOOT_BASE_ADDRESS = .);
     *(.boot)
     . = ALIGN(4);
-  } > FLASH
-
-  .intvect : ALIGN(4)
-  {
+    *(.startup)
+    . = ALIGN(4);
     *(.intvect)
     . = ALIGN(4);
   } > FLASH

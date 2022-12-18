@@ -394,6 +394,10 @@ Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
 starter kit is used.
 
+The `riscvfe310` target utilizes the RISC-V FE310 SiFive
+on Spark Fun's commercially available _Red_ _Thing_ Board.
+The blue LED on port GPIO0.5 is toggled.
+
 For other compatible boards, feel free contact me directly or submit
 an issue requesting support for your desired target system.
 

@@ -51,8 +51,8 @@ extern unsigned long __CTOR_LIST__[];
 //=========================================================================================
 // Function prototype
 //=========================================================================================
-void Startup_InitRam(void);
-void Startup_InitCtors(void);
+void Startup_InitRam  (void) __attribute__((section(".startup")));
+void Startup_InitCtors(void) __attribute__((section(".startup")));
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_InitRam function

@@ -458,6 +458,30 @@ jobs:
           echo ""
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
+  target-riscvfe310:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ riscvfe310 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+          tar -xvzf riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+        working-directory: ./
+      - name: target-riscvfe310-${{ matrix.suite }}
+        run: |
+          PATH=../riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14/bin:$PATH
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
+        working-directory: ./ref_app/
   target-x86_64:
     runs-on: ubuntu-22.04
     steps:
