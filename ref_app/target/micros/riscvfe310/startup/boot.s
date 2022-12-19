@@ -38,24 +38,24 @@
 .align 4
 .extern __STACK_TOP
 .extern DirectModeInterruptHandler
-.extern Startup_Init
+.extern __my_startup
 .globl _start
 
 _start:
-        /* disable all interrupts flag */
-        csrrs x0, mstatus, x0
+  /* disable all interrupts flag */
+  csrrs x0, mstatus, x0
 
-        /* disable all specific interrupt sources */
-        csrrs x0, mie, x0
+  /* disable all specific interrupt sources */
+  csrrs x0, mie, x0
 
-        /* setup the stack pointer */
-        la sp, __STACK_TOP
-       
-        /* setup the direct interrupt handler */
-        la t0, DirectModeInterruptHandler
-        csrrs x0, mtvec, t0
+  /* setup the stack pointer */
+  la sp, __STACK_TOP
+ 
+  /* setup the direct interrupt handler */
+  la t0, DirectModeInterruptHandler
+  csrrs x0, mtvec, t0
 
-        jal   Startup_Init
+  jal __my_startup
 
 .size _start, .-_start
 

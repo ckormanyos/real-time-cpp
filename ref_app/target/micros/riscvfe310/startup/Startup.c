@@ -51,7 +51,7 @@ extern unsigned long __CTOR_LIST__[];
 //=========================================================================================
 // Function prototype
 //=========================================================================================
-void Startup_Init(void);
+void __my_startup(void) __attribute__((aligned(4), used, noinline));
 
 static void Startup_InitRam  (void);
 static void Startup_InitCtors(void);
@@ -59,8 +59,9 @@ static void Startup_InitCtors(void);
 //=========================================================================================
 // Extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak, used, noinline));
-void mcal_cpu_init(void);
+__asm(".extern main");
+
+extern void mcal_cpu_init(void);
 
 //-----------------------------------------------------------------------------------------
 /// \brief  Startup_Init function
@@ -69,7 +70,7 @@ void mcal_cpu_init(void);
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-void Startup_Init(void)
+void __my_startup(void)
 {
   /* Initialize the MCU system */
   mcal_cpu_init();
@@ -81,7 +82,7 @@ void Startup_Init(void)
   Startup_InitCtors();
 
   /* Run the main application */
-  main();
+  __asm volatile("jal main");
 }
 
 //-----------------------------------------------------------------------------------------
