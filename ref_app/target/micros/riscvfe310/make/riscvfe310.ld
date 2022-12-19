@@ -27,7 +27,7 @@
 /******************************************************************************************
  ELF Entrypoint
 ******************************************************************************************/
-ENTRY(__my_startup)
+ENTRY(_start)
 
 /******************************************************************************************
  Globals
@@ -66,43 +66,24 @@ SECTIONS
   .boot : ALIGN(4)
   {
     PROVIDE(__BOOT_BASE_ADDRESS = .);
-    *(.boot)
-    . = ALIGN(4);
-    *(.startup)
-    . = ALIGN(4);
-    *(.intvect)
+    *boot.o(.text)
     . = ALIGN(4);
   } > FLASH
-
+  
   /* Program code (text) */
   .text : ALIGN(4)
   {
     PROVIDE(__CODE_BASE_ADDRESS = .);
-    *(.progmem*)
-    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
-    *(.text*)
+    *(.text.*)
     . = ALIGN(4);
-    *(.glue_7)
-    . = ALIGN(4);
-    *(.glue_7t)
-    . = ALIGN(4);
-  } > FLASH
-
-  .exidx : ALIGN(4)
-  {
-    PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
-    . = ALIGN(4);
-    PROVIDE(__exidx_end = .);
   } > FLASH
 
   /* Program code (riscv.attributes) */
   .riscv.attributes : ALIGN(4)
   {
     *(.riscv.attributes)
-    . = ALIGN(4);
   } > FLASH
 
   /* Read-only data (.rodata) */
@@ -150,13 +131,13 @@ SECTIONS
   {
     *(.data)
     . = ALIGN(4);
-  } > RAM AT > FLASH
+  } > RAM  AT>FLASH
   
   .sdata : ALIGN(4) 
   {
     *(.sdata)
     . = ALIGN(4);
-  } > RAM AT > FLASH
+  } > RAM  AT>FLASH
 
   /* The uninitialized (zero-cleared) data sections */
   .bss : ALIGN(4)
@@ -179,4 +160,5 @@ SECTIONS
     . = ALIGN(MAX(__STACK_SIZE , .), 8);
     PROVIDE(__STACK_TOP = .) ;
   } > STACK
+
 }

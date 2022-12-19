@@ -17,7 +17,7 @@ mcal::led::led_base& mcal::led::led0()
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 
-  static led0_led_type local_led0;
+  static led0_led_type l0;
 
-  return local_led0;
+  return l0;
 }
