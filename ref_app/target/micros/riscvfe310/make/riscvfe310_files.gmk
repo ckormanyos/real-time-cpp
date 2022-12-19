@@ -9,9 +9,7 @@
 # File list of the stm32f100 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/Mcal/Clock                        \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
-             $(PATH_TGT)/startup/boot                                  \
-             $(PATH_TGT)startup/intvect                                \
-             $(PATH_TGT)startup/patch                                  \
-             $(PATH_TGT)startup/Startup
+FILES_TGT  = $(PATH_TGT)/startup/boot                                  \
+             $(PATH_TGT)/startup/intvect                               \
+             $(PATH_TGT)/startup/patch                                 \
+             $(PATH_TGT)/startup/Startup

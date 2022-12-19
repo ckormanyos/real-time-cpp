@@ -913,12 +913,6 @@
     <ClCompile Include="src\mcal\stm32h7a3\mcal_irq.cpp">
       <Filter>src\mcal\stm32h7a3</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Mcal\Mcu.c">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\riscvfe310\Mcal\Clock.c">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\riscvfe310\Startup\Startup.c">
       <Filter>src\mcal\riscvfe310\Startup</Filter>
     </ClCompile>
@@ -2145,16 +2139,7 @@
     <ClInclude Include="src\mcal\mcal_gpt_arm_sys_tick.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Mcu.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\Platform_Types.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\riscv-csr.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Clock.h">
       <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\Mcal\FE310.h">

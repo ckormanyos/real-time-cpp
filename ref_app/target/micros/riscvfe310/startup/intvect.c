@@ -28,7 +28,6 @@
 // Includes
 //=====================================================================================================
 #include "FE310.h"
-#include "riscv-csr.h"
 #include "Platform_Types.h"
 
 //=====================================================================================================
@@ -102,6 +101,28 @@ void Isr_PWM2CMP1_IRQn                (void) __attribute__((weak, alias("Undefin
 void Isr_PWM2CMP2_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_PWM2CMP3_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_I2C0_IRQn                    (void) __attribute__((weak, alias("UndefinedHandler")));
+
+#if __riscv_xlen==32
+typedef uint32 uint_xlen_t;
+typedef uint32 uint_csr32_t;
+typedef uint32 uint_csr64_t;
+#elif __riscv_xlen==64
+typedef uint64 uint_xlen_t;
+typedef uint32 uint_csr32_t;
+typedef uint64 uint_csr64_t;
+#else
+#error "Unknown XLEN"
+#endif
+
+static inline uint_xlen_t csr_read_mcause(void)
+{
+  uint_xlen_t value;        
+  __asm__ volatile ("csrr    %0, mcause" 
+                    : "=r" (value)  /* output : register */
+                    : /* input : none */
+                    : /* clobbers: none */);
+  return value;
+}
 
 //=====================================================================================================
 // Platform-Level Interrupts vector table
