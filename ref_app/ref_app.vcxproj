@@ -1514,14 +1514,6 @@
     <ClInclude Include="src\mcal\mcal_helper.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\FE310.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Platform_Types.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\mcal_benchmark.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

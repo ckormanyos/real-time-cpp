@@ -206,9 +206,6 @@
     <Filter Include="src\mcal\riscvfe310">
       <UniqueIdentifier>{67b61401-3c8f-42ec-ba55-e2f18af39387}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\riscvfe310\Mcal">
-      <UniqueIdentifier>{2f442742-abee-409d-9fc3-9ad7c2ca0d47}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2126,12 +2123,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_gpt_arm_sys_tick.h">
       <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\Platform_Types.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\riscvfe310\Mcal\FE310.h">
-      <Filter>src\mcal\riscvfe310\Mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\mcal_port.h">
       <Filter>src\mcal\riscvfe310</Filter>
