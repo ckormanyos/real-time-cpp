@@ -39,7 +39,6 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
-                -e __my_startup                                \
-                -Wl,--print-memory-usage                       \
+                -e _start                                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)

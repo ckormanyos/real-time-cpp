@@ -19,7 +19,7 @@
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::gpio0_base,
-                                   static_cast<std::uint32_t>(UINT8_C(4))> benchmark_port_type;
+                                   static_cast<std::uint32_t>(UINT8_C(19))> benchmark_port_type;
     }
   }
 

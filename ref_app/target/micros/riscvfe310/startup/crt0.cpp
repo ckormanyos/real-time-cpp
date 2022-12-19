@@ -11,14 +11,13 @@ asm(".extern __STACK_TOP");
 asm(".extern DirectModeInterruptHandler");
 asm(".extern Startup_Init");
 
-extern "C"
+namespace crt
 {
-  void __my_startup(void) __attribute__ ((section(".boot"), used, noinline));
-
-  void Startup_InitRam(void);
-
-  void Startup_InitCtors(void);
+  void init_ram();
+  void init_ctors();
 }
+
+extern "C" void __my_startup(void) __attribute__ ((section(".startup"), used, noinline));
 
 void __my_startup()
 {
@@ -40,11 +39,11 @@ void __my_startup()
 
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
-  ::Startup_InitRam();
+  crt::init_ram();
   mcal::wdg::secure::trigger();
 
   // Call all ctor initializations.
-  ::Startup_InitCtors();
+  crt::init_ctors();
   mcal::wdg::secure::trigger();
 
   // Jump to main (and never return).

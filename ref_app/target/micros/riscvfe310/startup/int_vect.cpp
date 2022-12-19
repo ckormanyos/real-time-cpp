@@ -9,34 +9,33 @@
 
 /******************************************************************************************************
   Filename    : intvect.c
-  
+
   Core        : RV32IMAC
-  
+
   MCU         : FE310-G002 (SiFive)
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 04.06.2021
-  
+
   Description : Interrupt vector table implementation
-  
+
 ******************************************************************************************************/
 
-//=====================================================================================================
-// Includes
-//=====================================================================================================
-#include <stdint.h>
+#include <cstdint>
 
-#include "FE310.h"
+#include <mcal_reg.h>
 
-//=====================================================================================================
-// Functions prototype
-//=====================================================================================================
-static void UndefinedHandler(void) __attribute__ ((used, noinline));
+extern "C"
+{
+
+typedef void (*InterruptHandler)(void);
+
+static void UndefinedHandler(void);
 void DirectModeInterruptHandler(void) __attribute__ ((interrupt ("machine")));
-void Isr_MachineExternalInterrupt(void) __attribute__ ((used, noinline));
+void Isr_MachineExternalInterrupt(void);
 
 void Isr_InstructionAddressMisaligned (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_InstructionAccessFault       (void) __attribute__((weak, alias("UndefinedHandler")));
@@ -104,13 +103,13 @@ void Isr_PWM2CMP3_IRQn                (void) __attribute__((weak, alias("Undefin
 void Isr_I2C0_IRQn                    (void) __attribute__((weak, alias("UndefinedHandler")));
 
 #if __riscv_xlen==32
-typedef uint32_t uint_xlen_t;
-typedef uint32_t uint_csr32_t;
-typedef uint32_t uint_csr64_t;
+typedef std::uint32_t uint_xlen_t;
+typedef std::uint32_t uint_csr32_t;
+typedef std::uint32_t uint_csr64_t;
 #elif __riscv_xlen==64
-typedef uint64_t uint_xlen_t;
-typedef uint32_t uint_csr32_t;
-typedef uint64_t uint_csr64_t;
+typedef std::uint64_t uint_xlen_t;
+typedef std::uint32_t uint_csr32_t;
+typedef std::uint64_t uint_csr64_t;
 #else
 #error "Unknown XLEN"
 #endif
@@ -231,7 +230,7 @@ const InterruptHandler __attribute__((section(".intvect"), aligned(64), used)) I
 //-----------------------------------------------------------------------------------------
 static void UndefinedHandler(void)
 {
-  for(;;) { ; }
+  for(;;);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -244,8 +243,8 @@ static void UndefinedHandler(void)
 void DirectModeInterruptHandler(void)
 {
   /* get the exception cause number */
-  const uint32 mcause = csr_read_mcause();
-  const uint32 idx    = (mcause & ((1UL<< 10u) - 1u)) + 12 * (mcause >> 31u);
+  const uint32_t mcause = csr_read_mcause();
+  const uint32_t idx    = (mcause & ((1UL<< 10u) - 1u)) + 12 * (mcause >> 31u);
 
   if(idx < 24u)
   {
@@ -265,7 +264,7 @@ void DirectModeInterruptHandler(void)
 void Isr_MachineExternalInterrupt(void)
 {
   /* get the PLIC pending interrupt ID */
-  const uint32 IntId = PLIC->claim;
+  const uint32_t IntId = mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::plic_claim>::reg_get();
 
   if(IntId < 52u)
   {
@@ -274,5 +273,7 @@ void Isr_MachineExternalInterrupt(void)
   }
 
   /* set the interrupt as completed */
-   PLIC->claim = IntId;
+  mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::plic_claim, IntId);
+}
+
 }

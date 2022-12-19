@@ -7,48 +7,51 @@
 
 #include <cstdint>
 
-#include "FE310.h"
-
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-extern "C"
-{
-  void FE310_ClockInitialization(void);
-}
-
 void mcal::osc::init(const config_type*)
 {
-  ::FE310_ClockInitialization();
-}
+  // Wait for HFXOSC to be become ready.
+  //while(!PRCI->hfxosccfg.bit.ready);
+  while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_hfxosccfg, static_cast<std::uint32_t>(UINT8_C(31))>::bit_get())
+  {
+    mcal::cpu::nop();
+  }
 
-extern "C"
-void FE310_ClockInitialization(void)
-{
-  /* wait for HFXOSC to be become ready */
-  while(!PRCI->hfxosccfg.bit.ready);
+  // Select pllref clock (HFXOSC).
+  //PRCI->pllcfg.bit.refsel = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(17))>::bit_set();
 
-  /* select pllref clock (HFXOSC) */
-  PRCI->pllcfg.bit.refsel = 1;
+  // Divide pllref (HFXOSC) by 2 ==> refr = 8 MHz.
+  //PRCI->pllcfg.bit.pllr = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(1))>::reg_msk<static_cast<std::uint32_t>(UINT8_C(7))>();
 
-  /* divide pllref (HFXOSC) by 2 ==> refr = 8 MHz */
-  PRCI->pllcfg.bit.pllr = 1;
+  // multiply refr by 96 ==> vco = 768 MHz.
+  //PRCI->pllcfg.bit.pllf = 47;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(47ULL << 4U)>::reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
 
-  /* multiply refr by 96 ==> vco = 768 MHz */
-  PRCI->pllcfg.bit.pllf = 47;
+  // Divide vco by 4 ==> pllout = 192 MHz.
+  //PRCI->pllcfg.bit.pllq = 2;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(2ULL << 10U)>::reg_msk<static_cast<std::uint32_t>(3ULL << 10U)>();
 
-  /* divide vco by 4 ==> pllout = 192 MHz */
-  PRCI->pllcfg.bit.pllq = 2;
+  // Bypass final pllout divider.
+  //PRCI->plloutdiv.bit.divby1 = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_plloutdiv, static_cast<std::uint32_t>(UINT8_C(8))>::bit_set();
 
-  /* bypass final pllout divider */
-  PRCI->plloutdiv.bit.divby1 = 1;
+  // Drive the final hfclk with the PLL output.
+  //PRCI->pllcfg.bit.sel = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(16))>::bit_set();
 
-  /* drive the final hfclk with the PLL output */
-  PRCI->pllcfg.bit.sel = 1;
+  // Disable pll bypass.
+  //PRCI->pllcfg.bit.bypass = 0;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(18))>::bit_clr();
 
-  /* disable pll bypass */
-  PRCI->pllcfg.bit.bypass = 0;
-
-  /* wait for pll to lock */
-  while(!PRCI->pllcfg.bit.lock);
+  // Wait for the pll to lock.
+  //while(!PRCI->pllcfg.bit.lock);
+  while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(31))>::bit_get())
+  {
+    mcal::cpu::nop();
+  }
 }
