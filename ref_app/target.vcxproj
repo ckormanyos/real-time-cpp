@@ -811,9 +811,10 @@
     <ClCompile Include="target\micros\lpc11c24\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\crt1.cpp" />
     <ClCompile Include="target\micros\lpc11c24\startup\int_vect.cpp" />
-    <ClCompile Include="target\micros\riscvfe310\startup\intvect.c" />
-    <ClCompile Include="target\micros\riscvfe310\startup\patch.cpp" />
-    <ClCompile Include="target\micros\riscvfe310\startup\Startup.c" />
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />

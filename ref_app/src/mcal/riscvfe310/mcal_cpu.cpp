@@ -27,8 +27,6 @@ extern "C"
   #error "Unknown XLEN"
   #endif
 
-  void mcal_cpu_init(void);
-
   static inline void csr_write_mstatus(uint_xlen_t value)
   {
     __asm__ volatile ("csrw    mstatus, %0" 
@@ -36,11 +34,6 @@ extern "C"
                       : "r" (value) /* input : from register */
                       :             /* clobbers: none */);
   }
-}
-
-extern "C" void mcal_cpu_init(void)
-{
-  mcal::cpu::init();
 }
 
 void mcal::cpu::init()

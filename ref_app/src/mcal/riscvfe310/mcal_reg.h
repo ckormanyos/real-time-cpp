@@ -17,6 +17,7 @@
       constexpr auto plic_base         = static_cast<std::uint32_t>(UINT32_C(0x0C000000));
       constexpr auto plic_enable_0     = static_cast<std::uint32_t>(plic_base + static_cast<std::uint32_t>(UINT32_C(0x00002000)));
       constexpr auto plic_enable_1     = static_cast<std::uint32_t>(plic_base + static_cast<std::uint32_t>(UINT32_C(0x00002004)));
+      constexpr auto plic_claim        = static_cast<std::uint32_t>(plic_base + static_cast<std::uint32_t>(UINT32_C(0x00200004)));
 
       constexpr auto clint_base        = static_cast<std::uint32_t>(UINT32_C(0x02000000));
       constexpr auto clint_mtime       = static_cast<std::uint32_t>(clint_base + static_cast<std::uint32_t>(UINT32_C(0x0000BFF8)));

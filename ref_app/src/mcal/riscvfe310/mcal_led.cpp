@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,7 +17,7 @@ mcal::led::led_base& mcal::led::led0()
 
   using led0_led_type = mcal::led::led_port<led0_port_type>;
 
-  static led0_led_type l0;
+  static led0_led_type local_led0;
 
-  return l0;
+  return local_led0;
 }

@@ -677,13 +677,16 @@
     <ClCompile Include="target\micros\stm32h7a3\startup\crt0_init_ram.cpp">
       <Filter>micros\stm32h7a3\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\intvect.c">
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\patch.cpp">
+    <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\Startup.c">
+    <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp">
+      <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
   </ItemGroup>

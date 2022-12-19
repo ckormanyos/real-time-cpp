@@ -24,17 +24,18 @@
   
 ******************************************************************************************/
 
-/******************************************************************************************
- ELF Entrypoint
-******************************************************************************************/
+/* Linker script for RISC-V FE310 SiFive MCU */
+
 ENTRY(_start)
+
+INPUT(libc.a libm.a libgcc.a)
 
 /******************************************************************************************
  Globals
 ******************************************************************************************/
 
 __FLASH_START_ADDRESS = 0x20000000;
-__FLASH_SIZE          = 4M;
+__FLASH_SIZE          = 64K;
 
 __ITIM_START_ADDRESS = 0x08000000;
 __ITIM_SIZE          = 8K;
@@ -65,26 +66,42 @@ SECTIONS
   /* Program code (text) */
   .boot : ALIGN(4)
   {
-    PROVIDE(__BOOT_BASE_ADDRESS = .);
-    *(.boot)
+    *boot.o(.text)
     . = ALIGN(4);
   } > FLASH
 
-  .intvect : ALIGN(4)
+  .startup : ALIGN(0x10)
+  {
+    *(.startup)
+    . = ALIGN(4);
+    *(.startup*)
+    . = ALIGN(4);
+  } > FLASH
+
+  .intvect : ALIGN(0x100)
   {
     *(.intvect)
+    . = ALIGN(4);
+    *(.intvect*)
     . = ALIGN(4);
   } > FLASH
 
   /* Program code (text) */
-  .text : ALIGN(4)
+  .text : ALIGN(0x100)
   {
-    PROVIDE(__CODE_BASE_ADDRESS = .);
+    _ctors_begin = .;
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array*))
+    _ctors_end = .;
     *(.progmem*)
     . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
+    . = ALIGN(4);
+    *(.rodata)
+    . = ALIGN(4);
+    *(.rodata*)
     . = ALIGN(4);
     *(.glue_7)
     . = ALIGN(4);
@@ -107,73 +124,36 @@ SECTIONS
     . = ALIGN(4);
   } > FLASH
 
-  /* Read-only data (.rodata) */
-  .rodata : ALIGN(4)
-  {
-    PROVIDE(__RODATA_BASE_ADDRESS = .);
-    *(.rodata)
-    . = ALIGN(4);
-    *(.rodata.*)
-    . = ALIGN(4);
-  } > FLASH
-
- /* Section for constructors */
-  .ctors : ALIGN(4)
-  {
-    __CTOR_LIST__ = . ;
-    KEEP (*(SORT(.ctors.*)))
-    KEEP (*(.ctors))
-    KEEP (*(SORT(.init_array.*)))
-    KEEP (*(.init_array))
-    LONG(-1) ;
-    __CTOR_END__ = . ;
-  }  > FLASH
-
-  /* Runtime clear table */
-  .clear_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_CLEAR_TABLE = .) ;
-    LONG(0 + ADDR(.bss));   LONG(SIZEOF(.bss));
-    LONG(0 + ADDR(.sbss));  LONG(SIZEOF(.sbss));
-    LONG(-1);               LONG(-1);
-  } > FLASH
-
-  /* Runtime copy table */
-  .copy_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_COPY_TABLE = .) ;
-    LONG(LOADADDR(.data));   LONG(0 + ADDR(.data));   LONG(SIZEOF(.data));
-    LONG(LOADADDR(.sdata));  LONG(0 + ADDR(.sdata));  LONG(SIZEOF(.sdata));
-    LONG(-1);                LONG(-1);                LONG(-1);
-  } > FLASH 
-
   /* The FLASH-to-RAM initialized data sections */
   .data : ALIGN(4) 
   {
+    _data_begin = .;
     *(.data)
     . = ALIGN(4);
-  } > RAM AT > FLASH
-  
-  .sdata : ALIGN(4) 
-  {
-    *(.sdata)
+    KEEP (*(.data))
+    *(.data*)
     . = ALIGN(4);
+    KEEP (*(.data*))
+    _data_end = .;
   } > RAM AT > FLASH
 
   /* The uninitialized (zero-cleared) data sections */
   .bss : ALIGN(4)
   {
+    _bss_begin = .;
     *(.bss)
     . = ALIGN(4);
-    *(.bss.*)
+    KEEP (*(.bss))
+    *(.bss*)
     . = ALIGN(4);
+    KEEP (*(.bss*))
+    _bss_end = .;
   } > RAM
-  
-  .sbss : ALIGN(4)
-  {
-    *(.sbss)
-    . = ALIGN(4);
-  } > RAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
+
+  _rom_data_begin = LOADADDR(.data);
 
   /* stack definition */
   .stack :

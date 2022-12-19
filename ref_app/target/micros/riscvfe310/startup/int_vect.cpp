@@ -30,9 +30,11 @@
 #include "FE310.h"
 #include "Platform_Types.h"
 
-//=====================================================================================================
-// Functions prototype
-//=====================================================================================================
+extern "C"
+{
+
+typedef void (*InterruptHandler)(void);
+
 static void UndefinedHandler(void);
 void DirectModeInterruptHandler(void) __attribute__ ((interrupt ("machine")));
 void Isr_MachineExternalInterrupt(void);
@@ -127,7 +129,7 @@ static inline uint_xlen_t csr_read_mcause(void)
 //=====================================================================================================
 // Platform-Level Interrupts vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(4))) PLIVT[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(4), used)) PLIVT[] =
 {
     (InterruptHandler)&Isr_WATCHDOG_IRQn,   /* IRQ 01  WATCHDOG  */
     (InterruptHandler)&Isr_RTC_IRQn,        /* IRQ 02  RTC       */
@@ -186,7 +188,7 @@ const InterruptHandler __attribute__((aligned(4))) PLIVT[] =
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(64))) IVT[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(64), used)) IVT[] =
 {
     /* Core-Local Exceptions */
     (InterruptHandler)&Isr_InstructionAddressMisaligned,  /* 0  - Instruction address misaligned */
@@ -274,4 +276,6 @@ void Isr_MachineExternalInterrupt(void)
 
   /* set the interrupt as completed */
    PLIC->claim = IntId;
+}
+
 }
