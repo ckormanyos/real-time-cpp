@@ -31,14 +31,15 @@ TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
-                -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
-                -e _start                                      \
+                -e __my_startup                                \
                 -Wl,-Map,$(APP).map                            \
-                -T $(LINKER_DEFINITION_FILE)
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+                --specs=nosys.specs

@@ -26,7 +26,7 @@
 
 /* Linker script for RISC-V FE310 SiFive MCU */
 
-ENTRY(_start)
+ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
 
@@ -63,13 +63,6 @@ MEMORY
 ******************************************************************************************/
 SECTIONS
 {
-  /* Program code (text) */
-  .boot : ALIGN(4)
-  {
-    *boot.o(.text)
-    . = ALIGN(4);
-  } > FLASH
-
   .startup : ALIGN(0x10)
   {
     *(.startup)
