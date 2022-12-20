@@ -152,6 +152,6 @@ SECTIONS
   .stack :
   {
     . = ALIGN(MAX(__STACK_SIZE , .), 8);
-    PROVIDE(__STACK_TOP = .) ;
+    PROVIDE(__initial_stack_pointer = .) ;
   } > STACK
 }

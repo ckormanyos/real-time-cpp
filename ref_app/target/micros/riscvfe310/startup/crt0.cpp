@@ -7,7 +7,7 @@
 
 #include <mcal/mcal.h>
 
-asm(".extern __STACK_TOP");
+asm(".extern __initial_stack_pointer");
 asm(".extern DirectModeInterruptHandler");
 asm(".extern Startup_Init");
 
@@ -22,17 +22,17 @@ extern "C" void __my_startup(void) __attribute__ ((section(".startup"), naked, u
 void __my_startup()
 {
   // Disable all interrupts flag.
-  asm volatile("csrrs x0, mstatus, x0");
-
   // Disable all specific interrupt sources.
-  asm volatile("csrrs x0, mie, x0");
-
   // Setup the stack pointer.
-  asm volatile("la sp, __STACK_TOP");
-
   // setup the direct interrupt handler.
-  asm volatile("la t0, DirectModeInterruptHandler");
-  asm volatile("csrrs x0, mtvec, t0");
+  asm volatile
+  (
+    "csrrs x0, mstatus, x0\n\t"
+    "csrrs x0, mie, x0\n\t"
+    "la sp, __initial_stack_pointer\n\t"
+    "la t0, DirectModeInterruptHandler\n\t"
+    "csrrs x0, mtvec, t0"
+  );
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
