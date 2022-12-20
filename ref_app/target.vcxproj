@@ -736,7 +736,6 @@
     <None Include="target\micros\riscvfe310\make\riscvfe310.ld" />
     <None Include="target\micros\riscvfe310\make\riscvfe310_files.gmk" />
     <None Include="target\micros\riscvfe310\make\riscvfe310_flags.gmk" />
-    <None Include="target\micros\riscvfe310\startup\boot.s" />
     <None Include="target\micros\rx63n\make\rx63n.ld" />
     <None Include="target\micros\rx63n\make\rx63n_files.gmk" />
     <None Include="target\micros\rx63n\make\rx63n_flags.gmk" />
