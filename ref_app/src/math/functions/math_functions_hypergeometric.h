@@ -48,7 +48,7 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
           ++bp;
 
@@ -97,7 +97,7 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
           ++ap;
           ++bp;
@@ -200,7 +200,7 @@
         for(n = static_cast<std::uint_fast16_t>(2U); n < max_iteration; ++n)
         {
           x_pow_n_div_n_fact *= x;
-          x_pow_n_div_n_fact /= n;
+          x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
           if(count_of_a_terms_is_zero == false)
           {
