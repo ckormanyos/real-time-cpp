@@ -40,11 +40,10 @@ set(TARGET_INCLUDES
 )
 
 set(_TARGET_CFLAGS
-    -std=c++11
     -finline-functions
     -finline-limit=8
     -ffast-math
-    -march=rv32i
+    -mcpu=sifive-e31
     -mabi=ilp32
     -msmall-data-limit=0
     -falign-functions=4
