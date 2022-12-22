@@ -56,8 +56,6 @@ set(_TARGET_LDFLAGS
     -nostartfiles
     -Wl,--gc-sections
     -e __my_startup
-    --specs=nano.specs
-    --specs=nosys.specs
     -T ${LINKER_DEFINITION_FILE}
 )
 
