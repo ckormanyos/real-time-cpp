@@ -35,7 +35,8 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
+TGT_LDFLAGS   = $(TGT_ALLFLAGS)                                \
+                -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
                 -e __my_startup                                \

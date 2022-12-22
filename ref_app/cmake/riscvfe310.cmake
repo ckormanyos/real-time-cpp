@@ -52,6 +52,13 @@ set(_TARGET_CFLAGS
 set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
+    -finline-functions
+    -finline-limit=8
+    -ffast-math
+    -mcpu=sifive-e31
+    -mabi=ilp32
+    -msmall-data-limit=0
+    -falign-functions=4
     -nostdlib
     -nostartfiles
     -Wl,--gc-sections
