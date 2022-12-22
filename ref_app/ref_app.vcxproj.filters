@@ -2339,6 +2339,9 @@
     <None Include="cmake\stm32h7a3.cmake">
       <Filter>src\cmake</Filter>
     </None>
+    <None Include="cmake\riscvfe310.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
