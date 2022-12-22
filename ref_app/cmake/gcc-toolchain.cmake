@@ -141,6 +141,7 @@ set(_AFLAGS ${GCCFLAGS}
 set(_LDFLAGS ${GCCFLAGS}
     -x none
     -Wl,--gc-sections
+    -Wl,--print-memory-usage
     -Wl,-Map,${APP}.map
 )
 

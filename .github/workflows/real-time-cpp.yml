@@ -473,15 +473,43 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
-          tar -xvzf riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+          mkdir -p riscv64-unknown-elf && cd riscv64-unknown-elf
+          wget https://github.com/stnolting/riscv-gcc-prebuilt/releases/download/rv64imc-3.0.0/riscv64-unknown-elf.gcc-12.1.0.tar.gz
+          tar -xvzf ./riscv64-unknown-elf.gcc-12.1.0.tar.gz
         working-directory: ./
       - name: target-riscvfe310-${{ matrix.suite }}
         run: |
-          PATH=../riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14/bin:$PATH
+          PATH=../riscv64-unknown-elf/bin:$PATH
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
+  target-riscvfe310-cmake:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ riscvfe310 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          mkdir -p riscv64-unknown-elf && cd riscv64-unknown-elf
+          wget https://github.com/stnolting/riscv-gcc-prebuilt/releases/download/rv64imc-3.0.0/riscv64-unknown-elf.gcc-12.1.0.tar.gz
+          tar -xvzf ./riscv64-unknown-elf.gcc-12.1.0.tar.gz
+        working-directory: ./
+      - name: target-riscvfe310-cmake-${{ matrix.suite }}
+        run: |
+          mkdir -p build && cd build
+          PATH=../riscv64-unknown-elf/bin:$PATH
+          cmake ../ref_app -DTRIPLE=riscv64-unknown-elf -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          make -j ref_app
+          ls -la ref_app.hex ref_app.s19 ref_app.map
+        working-directory: ./
   target-x86_64:
     runs-on: ubuntu-22.04
     steps:

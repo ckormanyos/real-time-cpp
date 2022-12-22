@@ -232,7 +232,7 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
         ${BIN_FILE}
 
         DESTINATION
-        
+
         ${CMAKE_CURRENT_SOURCE_DIR}/bin/${APP}-${NAME}-${CMAKE_BUILD_TYPE}
     )
 

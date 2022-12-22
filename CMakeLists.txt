@@ -48,6 +48,8 @@ set(TARGET_CFG_LIST
     atmega2560|atmega2560|avr
     atmega328p|avr|avr
 
+    riscvfe310|riscvfe310|riscv64-unknown-elf
+
     rl78|rl78|rl78-elf
 
     rx63n|rx63n|rx-elf
