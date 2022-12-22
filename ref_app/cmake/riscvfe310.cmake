@@ -52,13 +52,6 @@ set(_TARGET_CFLAGS
 set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
-    -finline-functions
-    -finline-limit=8
-    -ffast-math
-    -mcpu=sifive-e31
-    -mabi=ilp32
-    -msmall-data-limit=0
-    -falign-functions=4
     -nostdlib
     -nostartfiles
     -Wl,--gc-sections
@@ -74,6 +67,7 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
+    ${PATH_APP}/util/STD_LIBC/memory
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1

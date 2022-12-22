@@ -31,7 +31,6 @@ ENTRY(__my_startup)
 INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
-/*OUTPUT_ARCH(littleriscv)*/
 
 /******************************************************************************************
  Globals
