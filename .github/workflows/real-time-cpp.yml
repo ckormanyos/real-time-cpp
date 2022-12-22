@@ -60,7 +60,7 @@ jobs:
           mkdir build
           cd build
           PATH=../riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14/bin:$PATH
-          cmake ../ref_app -DTRIPLE=risc64-unknown-elf -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake ../ref_app -DTRIPLE=riscv64-unknown-elf -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
