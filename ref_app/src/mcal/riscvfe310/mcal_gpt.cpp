@@ -29,6 +29,41 @@ namespace
 namespace local
 {
   auto get_consistent_microsecond_tick() -> mcal::gpt::value_type;
+
+  auto constexpr to_microseconds(std::uint64_t tick_val) -> std::uint64_t;
+
+  auto constexpr to_microseconds(std::uint64_t tick_val) -> std::uint64_t
+  {
+    return
+      static_cast<std::uint64_t>
+      (
+          static_cast<std::uint64_t>
+          (
+            static_cast<std::uint64_t>
+            (
+                static_cast<std::uint64_t>
+                (
+                  tick_val * static_cast<std::uint8_t>(UINT8_C(61))
+                )
+              + static_cast<std::uint64_t>(UINT8_C(1))
+            )
+            / static_cast<std::uint64_t>(UINT8_C(2))
+          )
+        +
+          static_cast<std::uint64_t>
+          (
+            static_cast<std::uint64_t>
+            (
+                static_cast<std::uint64_t>
+                (
+                  tick_val * static_cast<std::uint8_t>(UINT8_C(36))
+                )
+              + static_cast<std::uint64_t>(UINT8_C(1024))
+            )
+            / static_cast<std::uint64_t>(UINT8_C(2048))
+          )
+      );
+  }
 }
 
 void mcal::gpt::init(const config_type*)
@@ -54,41 +89,24 @@ auto local::get_consistent_microsecond_tick() -> mcal::gpt::value_type
   auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtime >::reg_get(); };
   auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtimeh>::reg_get(); };
 
-  auto to_microseconds =
-    [](const std::uint32_t tick_val) -> std::uint32_t
+  auto consistent_unscaled_tick = std::uint64_t { };
+
+  for(;;)
+  {
+    const auto mt_lo = read_lo();
+    const auto mt_hi = read_hi();
+
+    if(read_lo() > mt_lo)
     {
-      const auto result_non_trimmed =
-        static_cast<std::uint64_t>
-        (
-            static_cast<std::uint64_t>(static_cast<std::uint64_t>(tick_val) * static_cast<std::uint8_t>(UINT8_C(61)))
-          / static_cast<std::uint8_t>(UINT8_C(2))
-        );
+      consistent_unscaled_tick = util::make_long(mt_lo, mt_hi);
 
-      const auto trimming_amount =
-        static_cast<std::uint64_t>
-        (
-            static_cast<std::uint64_t>(static_cast<std::uint64_t>(tick_val) * static_cast<std::uint8_t>(UINT8_C(19)))
-          / static_cast<std::uint32_t>(UINT32_C(32768))
-        );
+      break;
+    }
+  }
 
-      return
-        static_cast<std::uint32_t>
-        (
-          static_cast<std::uint64_t>(result_non_trimmed + trimming_amount)
-        );
-    };
-
-  const auto mt_lo_1 = to_microseconds(read_lo());
-  const auto mt_hi_1 = to_microseconds(read_hi());
-
-  const auto mt_lo_2 = to_microseconds(read_lo());
-
-  const auto consistent_microsecond_tick =
-    static_cast<std::uint64_t>
+  return
+    static_cast<mcal::gpt::value_type>
     (
-      (mt_lo_2 > mt_lo_1) ? util::make_long(mt_lo_1, mt_hi_1)
-                          : util::make_long(mt_lo_2, to_microseconds(read_hi()))
+      to_microseconds(consistent_unscaled_tick)
     );
-
-  return static_cast<mcal::gpt::value_type>(consistent_microsecond_tick);
 }

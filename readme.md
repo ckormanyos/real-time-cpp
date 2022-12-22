@@ -75,7 +75,7 @@ The reference application supports the following targets:
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
-| `riscvfe310`                           | RISC-V FE310 SiFive (on Red Thing Board)                    |
+| `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
 | `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3        |
@@ -394,8 +394,8 @@ Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
 starter kit is used.
 
-The `riscvfe310` target utilizes the RISC-V FE310 SiFive
-on Spark Fun's commercially available _Red_ _Thing_ Board.
+The `riscvfe310` target utilizes the SiFive RISC-V FE310 SoC
+on Spark Fun's commercially available _Red_ _Thing_ _Plus_ Board.
 The blue LED on port GPIO0.5 is toggled.
 
 For other compatible boards, feel free contact me directly or submit

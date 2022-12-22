@@ -14,9 +14,9 @@ GCC_PREFIX    = riscv64-unknown-elf
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                            \
+TGT_ALLFLAGS  = -O2                                            \
                 -finline-functions                             \
-                -finline-limit=32                              \
+                -finline-limit=8                               \
                 -ffast-math                                    \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \
@@ -27,7 +27,7 @@ TGT_CFLAGS    = -std=c99                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++14                                     \
+TGT_CXXFLAGS  = -std=c++20                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
