@@ -54,8 +54,6 @@ set(TARGET_AFLAGS "")
 set(_TARGET_LDFLAGS
     -nostdlib
     -nostartfiles
-    -Wl,--gc-sections
-    -e __my_startup
     -T ${LINKER_DEFINITION_FILE}
 )
 
