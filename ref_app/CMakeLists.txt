@@ -30,7 +30,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-project(ref_app VERSION "${REALTIME_CPP_VERSION}" LANGUAGES CXX ASM)
+project(ref_app VERSION "${REALTIME_CPP_VERSION}" LANGUAGES ASM C CXX)
 
 message(STATUS "Generator .............. ${CMAKE_GENERATOR}")
 message(STATUS "Build Type ............. ${CMAKE_BUILD_TYPE}")
@@ -48,6 +48,10 @@ endif()
 
 if(NOT NAME)
     set(NAME ${TARGET})
+endif()
+
+if(NOT OBJDUMP)
+    set(OBJDUMP objdump)
 endif()
 
 if(NOT NM)
@@ -191,6 +195,9 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
 
         COMMENT "Generating Post Build Artifacts"
 
+        # generate assembly listing
+        COMMAND ${OBJDUMP} -h -S ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}.lss
+
         # parsing symbols with nm to generate: ${APP}_nm.txt
         COMMAND ${NM} --numeric-sort ${PARSE_SYMBOL_OPTIONS} ${APP}${CMAKE_EXECUTABLE_SUFFIX} > ${APP}_nm.txt
 
@@ -216,6 +223,7 @@ elseif(("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf") OR ("${CMAKE_EXECUTABLE_SU
     install(FILES
 
         ${CMAKE_BINARY_DIR}/${APP}${CMAKE_EXECUTABLE_SUFFIX}
+        ${CMAKE_BINARY_DIR}/${APP}.lss
         ${CMAKE_BINARY_DIR}/${APP}_cppfilt.txt
         ${CMAKE_BINARY_DIR}/${APP}_size.txt
         ${MAP_FILE}
