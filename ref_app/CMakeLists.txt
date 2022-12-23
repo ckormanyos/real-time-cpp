@@ -155,10 +155,19 @@ set(app_src
     ${PATH_APP}/sys/start/sys_start
 )
 
-add_executable(ref_app
+if("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".exe")
+add_executable(ref_app.exe
     ${app_src}
     ${FILES_TARGET}
 )
+endif()
+
+if("${CMAKE_EXECUTABLE_SUFFIX}" STREQUAL ".elf")
+add_executable(ref_app.elf
+    ${app_src}
+    ${FILES_TARGET}
+)
+endif()
 
 target_include_directories(ref_app PUBLIC
     ${TARGET_INCLUDES}
