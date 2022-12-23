@@ -26,11 +26,12 @@
 
 /* Linker script for RISC-V FE310 SiFive MCU */
 
+OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
+OUTPUT_ARCH(riscv)
+
 ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
-
-OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
 
 /******************************************************************************************
  Globals
