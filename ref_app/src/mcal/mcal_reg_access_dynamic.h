@@ -17,10 +17,13 @@
   {
     namespace reg
     {
-      template<typename register_address_type,
-               typename register_value_type>
+      template<typename RegisterAddressType,
+               typename RegisterValueType>
       struct reg_access_dynamic final
       {
+        using register_address_type = RegisterAddressType;
+        using register_value_type   = RegisterValueType;
+
         static register_value_type
                     reg_get(const register_address_type address) { return *reinterpret_cast<volatile register_value_type*>(address); }
 

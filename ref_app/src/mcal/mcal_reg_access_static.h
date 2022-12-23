@@ -17,12 +17,15 @@
   {
     namespace reg
     {
-      template<typename register_address_type,
-               typename register_value_type,
-               const register_address_type address,
-               const register_value_type value = static_cast<register_value_type>(0)>
+      template<typename RegisterAddressType,
+               typename RegisterValueType,
+               const RegisterAddressType address,
+               const RegisterValueType value = static_cast<RegisterValueType>(UINT8_C(0))>
       struct reg_access_static final
       {
+        using register_value_type   = RegisterValueType;
+        using register_address_type = RegisterAddressType;
+
         static register_value_type
                     reg_get() { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
 
