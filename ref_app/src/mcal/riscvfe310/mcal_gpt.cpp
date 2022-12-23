@@ -7,9 +7,10 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <limits>
+#include <type_traits>
 
 #include <mcal_gpt.h>
-#include <mcal_led.h>
 #include <mcal_reg.h>
 
 #include <util/utility/util_two_part_data_manipulation.h>
@@ -34,17 +35,12 @@ namespace local
 
   auto constexpr to_microseconds(std::uint64_t tick_val) noexcept -> std::uint64_t
   {
-    // The frequency of the underlying 64-bit tick is 32,768kHz
+    // The frequency of the underlying 64-bit tick is 32.768kHz
 
-    // Let's consider:
-    // (((t * 61) + 1)/2) + (((t * 9) + 256)/512)
-    // FullSimplify[%]
-    // 1 + (15,625 * t) / 512
+    // Consider the following tick scaling:
+    //   (((t * 61) + 1)/2) + (((t * 9) + 256)/512)
 
-    // Test case: t = 32768 --> 1,000,001
-
-    // This scaling does, however, lead to multiplication with 15,625.
-    // So we stick with the long-form of scaling prior to simplification.
+    // Test case: t = 32768 --> 999424 + 576 = 1,000,000
 
     return
       static_cast<std::uint64_t>
@@ -76,15 +72,32 @@ namespace local
           )
       );
   }
+
+  auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtime >::reg_get(); };
+  auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtimeh>::reg_get(); };
 }
 
 void mcal::gpt::init(const config_type*)
 {
   if(!gpt_is_initialized())
   {
+    using clint_mtimecmp_reg_address_type = std::uint32_t;
+    using clint_mtimecmp_reg_value_type   = std::uint64_t;
+
+    using clint_mtimecmp_reg_access_type =
+      mcal::reg::reg_access_static<clint_mtimecmp_reg_address_type,
+                                   clint_mtimecmp_reg_value_type,
+                                   mcal::reg::clint_mtimecmp,
+                                   (std::numeric_limits<clint_mtimecmp_reg_value_type>::max)()>;
+
+    using clint_mtimecmp_reg_value_type = typename clint_mtimecmp_reg_access_type::register_value_type;
+
+    static_assert(std::is_same<typename clint_mtimecmp_reg_access_type::register_value_type, clint_mtimecmp_reg_value_type>::value,
+                  "Error: Unexpected clint_mtimecmp register value type");
+
     // Set the 64-bit mtimer compare register to its maximum value.
     // This results in an essentially infinite timeout.
-    mcal::reg::reg_access_static<std::uint32_t, std::uint64_t, mcal::reg::clint_mtimecmp, static_cast<std::uint64_t>(UINT64_C(0xFFFFFFFFFFFFFFFF))>::reg_set();
+    clint_mtimecmp_reg_access_type::reg_set();
 
     gpt_is_initialized() = true;
   }
@@ -98,32 +111,21 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
 
 auto local::get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
 {
-  auto get_consistent_unscaled_tick =
-    [](void) noexcept -> std::uint64_t
+  auto consistent_unscaled_tick = std::uint64_t { };
+
+  for(;;)
+  {
+    const auto mt_lo1 __attribute__((no_reorder)) = read_lo();
+    const auto mt_hi  __attribute__((no_reorder)) = read_hi();
+    const auto mt_lo2 __attribute__((no_reorder)) = read_lo();
+
+    if(mt_lo2 > mt_lo1)
     {
-      auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtime >::reg_get(); };
-      auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::clint_mtimeh>::reg_get(); };
+      consistent_unscaled_tick = util::make_long(mt_lo1, mt_hi);
 
-      auto local_tick = std::uint64_t { };
-
-      for(;;)
-      {
-        const auto mt_lo1 __attribute__((no_reorder)) = read_lo();
-        const auto mt_hi  __attribute__((no_reorder)) = read_hi();
-        const auto mt_lo2 __attribute__((no_reorder)) = read_lo();
-
-        if(mt_lo2 > mt_lo1)
-        {
-          local_tick = util::make_long(mt_lo1, mt_hi);
-
-          break;
-        }
-      }
-
-      return local_tick;
-    };
-
-  const auto consistent_unscaled_tick = get_consistent_unscaled_tick();
+      break;
+    }
+  }
 
   return
     static_cast<mcal::gpt::value_type>
