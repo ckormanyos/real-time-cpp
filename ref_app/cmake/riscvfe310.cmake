@@ -45,6 +45,7 @@ set(_TARGET_CFLAGS
     -ffast-math
     -mcpu=sifive-e31
     -mabi=ilp32
+    -march=rv32imac
     -msmall-data-limit=0
     -falign-functions=4
 )
@@ -52,10 +53,18 @@ set(_TARGET_CFLAGS
 set(TARGET_AFLAGS "")
 
 set(_TARGET_LDFLAGS
+    -finline-functions
+    -finline-limit=8
+    -ffast-math
+    -mcpu=sifive-e31
+    -mabi=ilp32
+    -march=rv32imac
+    -msmall-data-limit=0
+    -falign-functions=4
     -nostdlib
     -nostartfiles
-    -Wl,--gc-sections
-    -e __my_startup
+    --specs=nano.specs
+    --specs=nosys.specs
     -T ${LINKER_DEFINITION_FILE}
 )
 

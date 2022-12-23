@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-// Implement some efficient memory functions from the standard C library.
+// Implement some memory functions from the standard C library.
 // If this file is included in the project, the linker will take these
 // functions instead of its own corresponding functions from the C-library.
 // The functions in this file *might* potentially save some code and/or
@@ -20,11 +20,11 @@ void* memmove(void* dst, const void* src, size_t n)      __attribute__((used, no
 
 void* memset(void* dest, int val, size_t count)
 {
-  unsigned char* ptr = (unsigned char*) dest;
+  unsigned char* puchar_dest = (uint8_t*) dest;
 
-  while(count-- > 0)
+  for(size_t i = 0U; i < count; ++i)
   {
-    *ptr++ = (unsigned char) val;
+    puchar_dest[i] = (uint8_t) val;
   }
 
   return dest;
@@ -40,10 +40,10 @@ void* memcpy(void* dest, const void* src, size_t count)
     puchar_dest[i] = puchar_src[i];
   }
 
-  return (void*) (puchar_dest + count);
+  return (void*) puchar_dest;
 }
 
-void* memmove(void *dest, const void *src, size_t n)
+void* memmove(void* dest, const void* src, size_t n)
 {
   uint8_t* from = (uint8_t*) src;
   uint8_t* to   = (uint8_t*) dest;

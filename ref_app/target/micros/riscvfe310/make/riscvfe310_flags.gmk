@@ -20,6 +20,7 @@ TGT_ALLFLAGS  = -O2                                            \
                 -ffast-math                                    \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \
+                -march=rv32imac                                \
                 -msmall-data-limit=0                           \
                 -falign-functions=4
 
@@ -35,7 +36,15 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
+TGT_LDFLAGS   = -finline-functions                             \
+                -finline-limit=8                               \
+                -ffast-math                                    \
+                -mcpu=sifive-e31                               \
+                -mabi=ilp32                                    \
+                -march=rv32imac                                \
+                -msmall-data-limit=0                           \
+                -falign-functions=4                            \
+                -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
                 -e __my_startup                                \

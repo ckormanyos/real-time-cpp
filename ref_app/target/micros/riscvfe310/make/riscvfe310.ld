@@ -26,11 +26,12 @@
 
 /* Linker script for RISC-V FE310 SiFive MCU */
 
+OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
+OUTPUT_ARCH(riscv)
+
 ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
-
-OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
 
 /******************************************************************************************
  Globals
@@ -102,14 +103,6 @@ SECTIONS
     . = ALIGN(4);
     *(.glue_7t)
     . = ALIGN(4);
-  } > FLASH
-
-  .exidx : ALIGN(4)
-  {
-    PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
-    . = ALIGN(4);
-    PROVIDE(__exidx_end = .);
   } > FLASH
 
   /* Program code (riscv.attributes) */
