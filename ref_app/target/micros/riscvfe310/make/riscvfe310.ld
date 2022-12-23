@@ -105,14 +105,6 @@ SECTIONS
     . = ALIGN(4);
   } > FLASH
 
-  .exidx : ALIGN(4)
-  {
-    PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
-    . = ALIGN(4);
-    PROVIDE(__exidx_end = .);
-  } > FLASH
-
   /* Program code (riscv.attributes) */
   .riscv.attributes : ALIGN(4)
   {
