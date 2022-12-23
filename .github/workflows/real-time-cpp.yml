@@ -80,7 +80,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTRIPLE=avr -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake -Wno-dev ../ref_app -DTRIPLE=avr -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
@@ -404,7 +404,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake -Wno-dev ../ref_app -DTRIPLE=arm-none-eabi -DTARGET=${{ matrix.suite }} -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
           ls -la ref_app.hex ref_app.s19 ref_app.map
         working-directory: ./
@@ -504,7 +504,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake -Wno-dev ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
           ls ref_app.exe ref_app.map
         working-directory: ./

@@ -51,7 +51,7 @@ jobs:
           echo 'Build with CMake for target host'
           mkdir -p build_host
           cd build_host
-          cmake ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
+          cmake -Wno-dev ../ref_app -DTARGET=host -DCMAKE_TOOLCHAIN_FILE=../ref_app/cmake/gcc-toolchain.cmake
           make -j ref_app
 
       - name: Perform CodeQL Analysis
