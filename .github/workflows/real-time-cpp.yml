@@ -229,14 +229,8 @@ jobs:
       - name: clone-boost-submods
         working-directory: ${{ runner.workspace }}/boost-root
         run: |
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-      - name: bootstrap-boost
-        working-directory: ${{ runner.workspace }}/boost-root
-        run: |
-          ./bootstrap.bat
-          ./b2 headers
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           toolset: 14.2
@@ -862,11 +856,8 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-          ./bootstrap.sh
-          ./b2 headers
         working-directory: ./
       - name: benchmark_gcc-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -891,11 +882,8 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-          ./bootstrap.sh
-          ./b2 headers
         working-directory: ./
       - name: benchmark_gcc-clang-8-9
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -920,11 +908,8 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-          ./bootstrap.sh
-          ./b2 headers
         working-directory: ./
       - name: benchmark_gcc-clang-10
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -944,11 +929,8 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-          ./bootstrap.sh
-          ./b2 headers
         working-directory: ./
       - name: benchmark_apple-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -990,11 +972,8 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
-          git submodule update --init tools
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
-          ./bootstrap.sh
-          ./b2 headers
         working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
