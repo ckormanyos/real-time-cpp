@@ -37,10 +37,6 @@
 #define BOOST_NO_EXCEPTIONS
 #endif
 
-#if !defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-#define BOOST_MATH_DISABLE_ERROR_HANDLING
-#endif
-
 #if !defined(BOOST_NO_CXX11_THREAD_LOCAL)
 #define BOOST_NO_CXX11_THREAD_LOCAL
 #endif
@@ -109,7 +105,6 @@ int main()
 #endif
 
 #if defined(__GNUC__)
-// -Wfloat-equal
 #pragma GCC diagnostic pop
 #endif
 

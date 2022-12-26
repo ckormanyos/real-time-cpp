@@ -37,10 +37,13 @@ namespace local
   {
     // The frequency of the underlying 64-bit tick is 32.768kHz
 
-    // Consider the following tick scaling:
+    // Consider the following tick scaling from 32.768kHz to 1MHz:
     //   (((t * 61) + 1)/2) + (((t * 9) + 256)/512)
 
-    // Test case: t = 32768 --> 999424 + 576 = 1,000,000
+    // Test case: t = 32768 -->   999,424
+    //                          +     576
+    //                          ---------
+    //                          1,000,000
 
     return
       static_cast<std::uint64_t>
@@ -89,8 +92,6 @@ void mcal::gpt::init(const config_type*)
                                    clint_mtimecmp_reg_value_type,
                                    mcal::reg::clint_mtimecmp,
                                    (std::numeric_limits<clint_mtimecmp_reg_value_type>::max)()>;
-
-    using clint_mtimecmp_reg_value_type = typename clint_mtimecmp_reg_access_type::register_value_type;
 
     static_assert(std::is_same<typename clint_mtimecmp_reg_access_type::register_value_type, clint_mtimecmp_reg_value_type>::value,
                   "Error: Unexpected clint_mtimecmp register value type");

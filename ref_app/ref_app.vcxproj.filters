@@ -182,18 +182,6 @@
     <Filter Include="src\math\softfloat">
       <UniqueIdentifier>{edc2180f-2a1e-4ee1-8b2f-e51592be2ebf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\boost_metal_bindings">
-      <UniqueIdentifier>{46a2d805-8bc6-4d6e-a05f-ccc9153db65d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\boost_metal_bindings\boost">
-      <UniqueIdentifier>{64c8e075-90ba-43ca-ab80-388357d3b0c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\boost_metal_bindings\boost\math">
-      <UniqueIdentifier>{56834106-6f69-45d7-a76e-6a98c3fb64e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util\boost_metal_bindings\boost\math\policies">
-      <UniqueIdentifier>{72c5030d-41c0-4152-9a9c-0cf5f18cd189}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\cmake">
       <UniqueIdentifier>{f93f7228-dccf-4716-a98e-7f05d4c20a8c}</UniqueIdentifier>
     </Filter>
@@ -936,6 +924,9 @@
     </ClCompile>
     <ClCompile Include="src\mcal\riscvfe310\mcal_wdg.cpp">
       <Filter>src\mcal\riscvfe310</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cyl_bessel_j.cpp">
+      <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2030,9 +2021,6 @@
     </ClInclude>
     <ClInclude Include="src\math\softfloat\soft_double.h">
       <Filter>src\math\softfloat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\boost_metal_bindings\boost\math\policies\error_handling.hpp">
-      <Filter>src\util\boost_metal_bindings\boost\math\policies</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\v850es_fx2\mcal_benchmark.h">
       <Filter>src\mcal\v850es_fx2</Filter>

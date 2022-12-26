@@ -104,6 +104,10 @@ auto app::benchmark::task_func() -> void
 
   const bool result_is_ok = app::benchmark::run_boost_multiprecision_cbrt();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J)
+
+  const bool result_is_ok = app::benchmark::run_boost_math_cbrt_cyl_bessel_j();
+
   #endif
 
   // Set the benchmark port pin level to low.

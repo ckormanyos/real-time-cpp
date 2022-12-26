@@ -40,6 +40,7 @@ $GCC -std=$STD -Wall -Werror -O3 -march=native -fsanitize=address -fsanitize=shi
 $GCC -std=$STD -Wall -Werror -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum -I./src/mcal/host -I./src                    -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_INTEGER               -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_wide_integer.cpp               -o ./bin/app_benchmark_wide_integer.exe
 $GCC -std=$STD -Wall -Werror -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum -I./src/mcal/host -I./src                    -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL         -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_trapezoid_integral.cpp         -o ./bin/app_benchmark_trapezoid_integral.exe
 $GCC -std=$STD -Wall         -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum -I./src/mcal/host -I./src -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA     -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_math_cbrt_tgamma.cpp     -o ./bin/app_benchmark_boost_math_cbrt_tgamma.exe
+$GCC -std=$STD -Wall         -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum -I./src/mcal/host -I./src -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J    -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_math_cyl_bessel_j.cpp    -o ./bin/app_benchmark_boost_math_cyl_bessel_j.exe
 $GCC -std=$STD -Wall         -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum -I./src/mcal/host -I./src -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT  -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_boost_multiprecision_cbrt.cpp  -o ./bin/app_benchmark_boost_multiprecision_cbrt.exe
 
 ./bin/app_benchmark_complex.exe
@@ -90,6 +91,9 @@ result_var_wide_integer=$?
 ./bin/app_benchmark_boost_math_cbrt_tgamma.exe
 result_var_boost_math_cbrt_tgamma=$?
 
+./bin/app_benchmark_boost_math_cyl_bessel_j.exe
+result_var_boost_math_cyl_bessel_j=$?
+
 ./bin/app_benchmark_boost_multiprecision_cbrt.exe
 result_var_boost_multiprecision_cbrt=$?
 
@@ -109,9 +113,10 @@ echo "result_var_trapezoid_integral       : "  "$result_var_trapezoid_integral"
 echo "result_var_wide_decimal             : "  "$result_var_wide_decimal"
 echo "result_var_wide_integer             : "  "$result_var_wide_integer"
 echo "result_var_boost_math_cbrt_tgamma   : "  "$result_var_boost_math_cbrt_tgamma"
+echo "result_var_boost_math_cyl_bessel_j  : "  "$result_var_boost_math_cyl_bessel_j"
 echo "result_var_boost_multiprecision_cbrt: "  "$result_var_boost_multiprecision_cbrt"
 
-result_total=$((result_var_complex+result_var_crc+result_var_fast_math+result_var_filter+result_var_fixed_point+result_var_float+result_var_hash+result_var_none+result_var_pi_agm+result_var_pi_spigot+result_var_pi_spigot_single+$result_var_soft_double_h2f1+result_var_trapezoid_integral+result_var_wide_decimal+result_var_wide_integer+result_var_boost_math_cbrt_tgamma+$result_var_boost_multiprecision_cbrt))
+result_total=$((result_var_complex+result_var_crc+result_var_fast_math+result_var_filter+result_var_fixed_point+result_var_float+result_var_hash+result_var_none+result_var_pi_agm+result_var_pi_spigot+result_var_pi_spigot_single+$result_var_soft_double_h2f1+result_var_trapezoid_integral+result_var_wide_decimal+result_var_wide_integer+result_var_boost_math_cbrt_tgamma+result_var_boost_math_cyl_bessel_j+result_var_boost_multiprecision_cbrt))
 
 echo "result_total                        : "  "$result_total"
 

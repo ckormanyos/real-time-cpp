@@ -1935,8 +1935,8 @@
       // Generate the initial estimate using division.
       // Extract the mantissa and exponent for a "manual"
       // computation of the estimate.
-      InternalFloatType dd;
-      exponent_type     ne;
+      InternalFloatType dd { };
+      exponent_type     ne { };
 
       extract_parts(dd, ne);
 
