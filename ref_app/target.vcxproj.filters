@@ -205,6 +205,9 @@
     <Filter Include="micros\riscvfe310\startup">
       <UniqueIdentifier>{8d939918-1160-4e85-89a2-0dc14dba8062}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32h7a3\make\single">
+      <UniqueIdentifier>{f64f0280-3cc8-4e24-8487-a3687bad71b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -480,6 +483,12 @@
     <None Include="target\micros\riscvfe310\make\riscvfe310_files.gmk">
       <Filter>micros\riscvfe310\make</Filter>
     </None>
+    <None Include="target\micros\stm32h7a3\make\stm32h7a3_with_stdlib.ld">
+      <Filter>micros\stm32h7a3\make</Filter>
+    </None>
+    <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld">
+      <Filter>micros\stm32f429\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -685,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32h7a3\make\single\crt.cpp">
+      <Filter>micros\stm32h7a3\make\single</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

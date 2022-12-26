@@ -185,7 +185,8 @@ AFLAGS      = $(GCCFLAGS)                       \
 
 LDFLAGS     = $(CXXFLAGS)                       \
               $(TGT_LDFLAGS)                    \
-              -x none
+              -x none                           \
+              -Wl,--print-memory-usage
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
@@ -258,8 +259,10 @@ version:
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
+ifneq ($(GCC_TARGET),riscv64-unknown-elf)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
+endif
 
 
 # ------------------------------------------------------------------------------

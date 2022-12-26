@@ -1,43 +1,144 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2018 - 2019.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
-#include <mcal_cpu.h>
+#include <cstdint>
+#include <cstdlib>
+#include <iterator>
+
+// STM32 EABI ARM(R) Cortex-M4(TM) startup code.
+// Expressed with C++ for STM32F446 by Chris.
+
+// C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin\arm-none-eabi-g++ -std=c++14 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
+
+namespace crt
+{
+  void init_ram();
+}
+
+namespace crt
+{
+  void init_ctors();
+}
+
+extern "C" void __my_startup(void) __attribute__((used, noinline));
+
+void __my_startup(void)
+{
+  // Load the stack pointer.
+  // The stack pointer is automatically loaded from
+  // the base position of the interrupt vector table.
+  // So we do nothing here.
+
+  // TBD: Chip init: Watchdog, port, and oscillator, if any needed.
+
+  // Initialize statics from ROM to RAM.
+  // Zero-clear default-initialized static RAM.
+  crt::init_ram();
+
+  // Call all ctor initializations.
+  crt::init_ctors();
+
+  // Jump to main (and never return).
+  asm volatile("ldr r3, =main");
+  asm volatile("blx r3");
+
+  exit(EXIT_SUCCESS);
+
+  // TBD: Nothing on return from main.
+}
+
+extern "C" void _exit (int);
+
+extern "C" void _exit (int) { }
+
+extern "C"
+{
+  extern std::uintptr_t _rom_data_begin; // Start address for the initialization values of the rom-to-ram section.
+  extern std::uintptr_t _data_begin;     // Start address for the .data section.
+  extern std::uintptr_t _data_end;       // End address for the .data section.
+  extern std::uintptr_t _bss_begin;      // Start address for the .bss section.
+  extern std::uintptr_t _bss_end;        // End address for the .bss section.
+}
+
+void crt::init_ram()
+{
+  typedef std::uint32_t memory_aligned_type;
+
+  // Copy the data segment initializers from ROM to RAM.
+  // Note that all data segments are aligned by 4.
+  const std::size_t size_data =
+    std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
+                - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
+
+  std::copy(static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)),
+            static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)) + size_data,
+            static_cast<      memory_aligned_type*>(static_cast<      void*>(&_data_begin)));
+
+  // Clear the bss segment.
+  // Note that the bss segment is aligned by 4.
+  std::fill(static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_begin)),
+            static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_end)),
+            static_cast<memory_aligned_type>(0U));
+}
+
+extern "C"
+{
+  struct ctor_type
+  {
+    typedef void(*function_type)();
+    typedef std::reverse_iterator<const function_type*> const_reverse_iterator;
+  };
+
+  extern ctor_type::function_type _ctors_end[];
+  extern ctor_type::function_type _ctors_begin[];
+}
+
+void crt::init_ctors()
+{
+  std::for_each(ctor_type::const_reverse_iterator(_ctors_end),
+                ctor_type::const_reverse_iterator(_ctors_begin),
+                [](const ctor_type::function_type pf)
+                {
+                  pf();
+                });
+}
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __my_startup         () noexcept __attribute__((used, noinline));
-extern "C" void __vector_unused_irq  () noexcept __attribute__((used, noinline));
-extern "C" void __nmi_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __hard_fault_handler () noexcept __attribute__((used, noinline));
-extern "C" void __mem_manage_handler () noexcept __attribute__((used, noinline));
-extern "C" void __bus_fault_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __usage_fault_handler() noexcept __attribute__((used, noinline));
-extern "C" void __svc_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __debug_mon_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __pend_sv_handler    () noexcept __attribute__((used, noinline));
-extern "C" void __sys_tick_handler   () noexcept __attribute__((used, noinline));
+extern "C" void __vector_unused_irq  (void) __attribute__((used, noinline));
+extern "C" void __nmi_handler        (void) __attribute__((used, noinline));
+extern "C" void __hard_fault_handler (void) __attribute__((used, noinline));
+extern "C" void __mem_manage_handler (void) __attribute__((used, noinline));
+extern "C" void __bus_fault_handler  (void) __attribute__((used, noinline));
+extern "C" void __usage_fault_handler(void) __attribute__((used, noinline));
+extern "C" void __svc_handler        (void) __attribute__((used, noinline));
+extern "C" void __debug_mon_handler  (void) __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    (void) __attribute__((used, noinline));
+extern "C" void __sys_tick_handler   (void) __attribute__((used, noinline));
 
-extern "C" void __vector_unused_irq  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __nmi_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __hard_fault_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __mem_manage_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __bus_fault_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __usage_fault_handler() noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __svc_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __debug_mon_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __pend_sv_handler    () noexcept { for(;;) { mcal::cpu::nop(); } }
+extern "C" void __vector_unused_irq  (void) { for(;;) { ; } }
+extern "C" void __nmi_handler        (void) { for(;;) { ; } }
+extern "C" void __hard_fault_handler (void) { for(;;) { ; } }
+extern "C" void __mem_manage_handler (void) { for(;;) { ; } }
+extern "C" void __bus_fault_handler  (void) { for(;;) { ; } }
+extern "C" void __usage_fault_handler(void) { for(;;) { ; } }
+extern "C" void __svc_handler        (void) { for(;;) { ; } }
+extern "C" void __debug_mon_handler  (void) { for(;;) { ; } }
+extern "C" void __pend_sv_handler    (void) { for(;;) { ; } }
+extern "C" void __sys_tick_handler   (void) { ; }
 
 namespace
 {
   typedef void(*isr_type)(void);
 
-  constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(128));
+  constexpr std::size_t number_of_interrupts = 128U;
 }
 
 extern "C"

@@ -37,15 +37,10 @@
 #define BOOST_NO_EXCEPTIONS
 #endif
 
-#if !defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-#define BOOST_MATH_DISABLE_ERROR_HANDLING
-#endif
-
 #if !defined(BOOST_NO_CXX11_THREAD_LOCAL)
 #define BOOST_NO_CXX11_THREAD_LOCAL
 #endif
 
-#include <boost/config.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
 #if defined(APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT)
 #include <boost/multiprecision/cpp_bin_float.hpp>
@@ -109,7 +104,6 @@ int main()
 #endif
 
 #if defined(__GNUC__)
-// -Wfloat-equal
 #pragma GCC diagnostic pop
 #endif
 

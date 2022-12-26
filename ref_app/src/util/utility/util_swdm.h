@@ -98,7 +98,7 @@
 // void swdm::set_line(bool value) const
 // {
 //   set the state of the according swdm line/pin to value (true = high/idle, false = low)
-//   if you don't use an open collector driver, you MUST config the pin as input for high/idle levels
+//   if you don't use an open collector driver, you MUST configure the pin as input for high/idle levels
 //   and before setting the line to false/low it must be configured as an output.
 // }
 //

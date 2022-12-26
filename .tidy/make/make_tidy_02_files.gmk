@@ -7,6 +7,7 @@
 
 FILES_PRJ  = $(PATH_SRC)/app/benchmark/app_benchmark                                 \
              $(PATH_SRC)/app/benchmark/app_benchmark_boost_math_cbrt_tgamma          \
+             $(PATH_SRC)/app/benchmark/app_benchmark_boost_math_cyl_bessel_j         \
              $(PATH_SRC)/app/benchmark/app_benchmark_boost_multiprecision_cbrt       \
              $(PATH_SRC)/app/benchmark/app_benchmark_complex                         \
              $(PATH_SRC)/app/benchmark/app_benchmark_crc                             \

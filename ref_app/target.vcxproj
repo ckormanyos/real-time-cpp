@@ -751,6 +751,7 @@
     <None Include="target\micros\stm32f429\make\stm32f429.ld" />
     <None Include="target\micros\stm32f429\make\stm32f429_files.gmk" />
     <None Include="target\micros\stm32f429\make\stm32f429_flags.gmk" />
+    <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld" />
     <None Include="target\micros\stm32f446\make\stm32f446.ld" />
     <None Include="target\micros\stm32f446\make\stm32f446_files.gmk" />
     <None Include="target\micros\stm32f446\make\stm32f446_flags.gmk" />
@@ -760,6 +761,7 @@
     <None Include="target\micros\stm32h7a3\make\stm32h7a3.ld" />
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_files.gmk" />
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_flags.gmk" />
+    <None Include="target\micros\stm32h7a3\make\stm32h7a3_with_stdlib.ld" />
     <None Include="target\micros\stm32l100c\make\stm32l100c.ld" />
     <None Include="target\micros\stm32l100c\make\stm32l100c_files.gmk" />
     <None Include="target\micros\stm32l100c\make\stm32l100c_flags.gmk" />
@@ -841,6 +843,7 @@
     <ClCompile Include="target\micros\stm32f446\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32f446\startup\crt1.cpp" />
     <ClCompile Include="target\micros\stm32f446\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\stm32h7a3\make\single\crt.cpp" />
     <ClCompile Include="target\micros\stm32h7a3\startup\crt0.cpp" />
     <ClCompile Include="target\micros\stm32h7a3\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\stm32h7a3\startup\crt1.cpp" />

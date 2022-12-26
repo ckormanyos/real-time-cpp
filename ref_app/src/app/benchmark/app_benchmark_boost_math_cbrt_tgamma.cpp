@@ -13,7 +13,10 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
 
-//#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
 
 #if !defined(BOOST_MATH_STANDALONE)
 #define BOOST_MATH_STANDALONE
@@ -35,19 +38,12 @@
 #define BOOST_MATH_MAX_SERIES_ITERATION_POLICY 1000U
 #endif
 
-#if !defined(BOOST_MATH_DISABLE_ERROR_HANDLING)
-#define BOOST_MATH_DISABLE_ERROR_HANDLING
-#endif
-
 #define BOOST_MATH_PROMOTE_FLOAT_POLICY false
 
 #include <boost/cstdfloat.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/cbrt.hpp>
-#if defined(APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA)
-#else
 #include <boost/math/special_functions/gamma.hpp>
-#endif
 
 using my_float_type = boost::float64_t;
 
@@ -59,24 +55,6 @@ auto app::benchmark::run_boost_math_cbrt_tgamma() -> bool
   static_assert(std::numeric_limits<my_float_type>::digits >= 53,
                 "Error: Incorrect float64_t type definition");
 
-  #if defined(APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA)
-  // Table[N[((456 n)/(100 Pi))^(1/3), 36], {n, 1, 101, 10}]
-
-  constexpr std::array<my_float_type, 11U> app_benchmark_control =
-  {{
-    my_float_type(BOOST_FLOATMAX_C(1.13223955591538834215180569196551578)),
-    my_float_type(BOOST_FLOATMAX_C(2.51807823011086695042373251863402592)),
-    my_float_type(BOOST_FLOATMAX_C(3.12376308426998860513729941565095654)),
-    my_float_type(BOOST_FLOATMAX_C(3.55679543482482372869766829470888416)),
-    my_float_type(BOOST_FLOATMAX_C(3.90420795695072854282866828867270250)),
-    my_float_type(BOOST_FLOATMAX_C(4.19883087509735642352123538073247751)),
-    my_float_type(BOOST_FLOATMAX_C(4.45705782245778172910333795189080075)),
-    my_float_type(BOOST_FLOATMAX_C(4.68839764973308916541237692184508925)),
-    my_float_type(BOOST_FLOATMAX_C(4.89891603901205916940792293385924057)),
-    my_float_type(BOOST_FLOATMAX_C(5.09274722453205566419335519685355370)),
-    my_float_type(BOOST_FLOATMAX_C(5.27285037700955609422383709083151200))
-  }};
-  #else
   // Table[N[Gamma[((456 n)/(100 Pi))^(1/3)], 21], {n, 1, 101, 10}]
 
   constexpr std::array<my_float_type, 11U> app_benchmark_control =
@@ -93,17 +71,12 @@ auto app::benchmark::run_boost_math_cbrt_tgamma() -> bool
     my_float_type(BOOST_FLOATMAX_C(27.6240717359003789929215625751284983)),
     my_float_type(BOOST_FLOATMAX_C(36.4914014381246411895171472115548616))
   }};
-  #endif
 
   static unsigned app_benchmark_n_index      = 0U;
   static unsigned app_benchmark_n_value      = 1U;
   static bool     app_benchmark_result_is_ok = true;
 
-  #if defined(APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA)
-  cb = boost::math::cbrt(x * my_float_type(app_benchmark_n_value));
-  #else
   cb = boost::math::tgamma(boost::math::cbrt(x * my_float_type(app_benchmark_n_value)));
-  #endif
 
   app_benchmark_result_is_ok &= detail::is_close_fraction(cb, app_benchmark_control[app_benchmark_n_index]);
 
@@ -139,5 +112,9 @@ int main()
 
 my_float_type cb;
 my_float_type x = my_float_type(BOOST_FLOATMAX_C(4.56)) / boost::math::constants::pi<my_float_type>();
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA
