@@ -53,7 +53,7 @@ void mcal::gpt::init(const config_type*)
                                  mcal::reg::tdr02,
                                  0xFFFFU>::reg_set();
 
-    // config Timer mode (interval timer mode, downcounting) falling edge
+    // Configure Timer mode (interval timer mode, downcounting) falling edge
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint16_t,
                                  mcal::reg::tmr02,

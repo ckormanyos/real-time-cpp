@@ -751,6 +751,7 @@
     <None Include="target\micros\stm32f429\make\stm32f429.ld" />
     <None Include="target\micros\stm32f429\make\stm32f429_files.gmk" />
     <None Include="target\micros\stm32f429\make\stm32f429_flags.gmk" />
+    <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld" />
     <None Include="target\micros\stm32f446\make\stm32f446.ld" />
     <None Include="target\micros\stm32f446\make\stm32f446_files.gmk" />
     <None Include="target\micros\stm32f446\make\stm32f446_flags.gmk" />

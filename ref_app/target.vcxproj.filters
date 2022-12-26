@@ -486,6 +486,9 @@
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_with_stdlib.ld">
       <Filter>micros\stm32h7a3\make</Filter>
     </None>
+    <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld">
+      <Filter>micros\stm32f429\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

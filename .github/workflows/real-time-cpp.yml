@@ -230,7 +230,6 @@ jobs:
         working-directory: ${{ runner.workspace }}/boost-root
         run: |
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
       - name: bootstrap-boost
@@ -864,7 +863,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
@@ -894,7 +892,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
@@ -924,7 +921,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
@@ -949,7 +945,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
@@ -996,7 +991,6 @@ jobs:
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
           cd ../boost-root
           git submodule update --init tools
-          git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
