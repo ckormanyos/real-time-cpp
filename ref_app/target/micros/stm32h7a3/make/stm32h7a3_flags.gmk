@@ -1,5 +1,5 @@
-#
-#  Copyright Christopher Kormanyos 2022.
+﻿#
+#  Copyright Christopher Kormanyos 2007 - 2022.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,31 +15,31 @@ GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                            \
-                -march=armv7e-m+fpv5-d16                                       \
-                -mtune=cortex-m7                                               \
-                -mthumb                                                        \
-                -mfloat-abi=hard                                               \
-                -ffast-math                                                    \
-                -finline-functions                                             \
-                -finline-limit=32                                              \
-                -mno-unaligned-access                                          \
+TGT_ALLFLAGS  = -Os                                                               \
+                -march=armv7e-m+fpv5-d16                                          \
+                -mtune=cortex-m7                                                  \
+                -mthumb                                                           \
+                -mfloat-abi=hard                                                  \
+                -ffast-math                                                       \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -mno-unaligned-access                                             \
                 -mno-long-calls
 
-TGT_CFLAGS    = -std=c99                                                       \
-                -Wunsuffixed-float-constants                                   \
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++14                                                     \
-                -Wno-psabi                                                     \
+TGT_CXXFLAGS  = -std=c++14                                                        \
+                -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
-                -nostartfiles                                  \
-                -Wl,--gc-sections                              \
-                -Wl,-Map,$(APP).map                            \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)

@@ -6,7 +6,7 @@
 #
 # Created:     02/04/2021
 #
-# Copyright:   Copyright Christopher Kormanyos 2007 - 2022
+# Copyright:   Copyright Christopher Kormanyos 2020 - 2022
 #
 # Licence:     Distributed under the Boost Software License,
 #              Version 1.0. (See accompanying file LICENSE_1_0.txt
