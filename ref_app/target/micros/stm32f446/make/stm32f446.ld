@@ -1,4 +1,3 @@
-
 /*
  Copyright Christopher Kormanyos 2007 - 2022.
  Distributed under the Boost Software License,
