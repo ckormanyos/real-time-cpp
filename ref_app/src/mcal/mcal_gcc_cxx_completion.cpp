@@ -89,8 +89,8 @@ extern "C"
 
   void        abort               (void)                    __attribute__((noreturn));
   int         atexit              (void (*)(void));
-  int         at_quick_exit       (void (*)(void)) noexcept;
-  void        _Exit               (int)            noexcept __attribute__((noreturn));
+  int         at_quick_exit       (void (*)(void));
+  void        _Exit               (int)                     __attribute__((noreturn));
   void        exit                (int)                     __attribute__((noreturn));
   void        quick_exit          (int)                     __attribute__((noreturn));
   void        _exit               (int)                     __attribute__((noreturn));
@@ -111,8 +111,8 @@ extern "C"
 
   void        abort               (void)                              { for(;;) { mcal::cpu::nop(); } }
   int         atexit              (void (*)())                        { return 0; }
-  int         at_quick_exit       (void (*)()) noexcept               { return 0; }
-  void        _Exit               (int)        noexcept               { for(;;) { mcal::cpu::nop(); } }
+  int         at_quick_exit       (void (*)())                        { return 0; }
+  void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        quick_exit          (int)                               { _Exit(0); }
   void        _exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
@@ -144,4 +144,13 @@ extern "C"
   #endif
 
   std::uint8_t __fdlib_version;
+}
+
+namespace std
+{
+  void __throw_out_of_range_fmt(char const*, ...);
+
+  void __throw_out_of_range_fmt(char const*, ...)
+  {
+  }
 }
