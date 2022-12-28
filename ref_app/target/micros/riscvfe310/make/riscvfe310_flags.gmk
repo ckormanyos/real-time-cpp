@@ -14,7 +14,7 @@ GCC_PREFIX    = riscv64-unknown-elf
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O2                                            \
+TGT_ALLFLAGS  = -Os                                            \
                 -finline-functions                             \
                 -finline-limit=8                               \
                 -ffast-math                                    \
@@ -36,15 +36,7 @@ TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -finline-functions                             \
-                -finline-limit=8                               \
-                -ffast-math                                    \
-                -mcpu=sifive-e31                               \
-                -mabi=ilp32                                    \
-                -march=rv32imac                                \
-                -msmall-data-limit=0                           \
-                -falign-functions=4                            \
-                -nostdlib                                      \
+TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
                 -e __my_startup                                \

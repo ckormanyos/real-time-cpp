@@ -5,82 +5,50 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Originally from: */
-
-/******************************************************************************************
-  Filename    : Memory_Map.ld
-  
-  Core        : RV32IMAC
-  
-  MCU         : FE310-G002 (SiFive)
-    
-  Author      : Chalandi Amine
- 
-  Owner       : Chalandi Amine
-  
-  Date        : 04.06.2021
-  
-  Description : Linker description file for FE310 SiFive
-  
-******************************************************************************************/
-
 /* Linker script for RISC-V FE310 SiFive MCU */
-
-OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
-OUTPUT_ARCH(riscv)
 
 ENTRY(__my_startup)
 
 INPUT(libc.a libm.a libgcc.a)
 
-/******************************************************************************************
- Globals
-******************************************************************************************/
-
-__FLASH_START_ADDRESS = 0x20000000;
-__FLASH_SIZE          = 64K;
-
-__ITIM_START_ADDRESS = 0x08000000;
-__ITIM_SIZE          = 8K;
+OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
+OUTPUT_ARCH(riscv)
 
 __STACK_START_ADDRESS = 0x80000000;
-__STACK_SIZE = 1K;
+__STACK_SIZE = 2K;
 
 __RAM_START_ADDRESS = 0x80000000 + __STACK_SIZE;
 __RAM_SIZE =  16K - __STACK_SIZE;
 
-/******************************************************************************************
- Memory configuration
-******************************************************************************************/
-
 MEMORY
 {
-  FLASH(rx)   : ORIGIN = __FLASH_START_ADDRESS, LENGTH = __FLASH_SIZE
-  ITIM(rx)    : ORIGIN = __ITIM_START_ADDRESS,  LENGTH = __ITIM_SIZE
+  BOOT(rx)    : ORIGIN = 0x20000000,            LENGTH = 0x100
+  VEC(rx)     : ORIGIN = 0x20000100,            LENGTH = 0x300
+  ROM(rx)     : ORIGIN = 0x20000400,            LENGTH = 64K - 0x400
+  ITIM(rx)    : ORIGIN = 0x08000000,            LENGTH = 8K
   STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
   RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS,   LENGTH = __RAM_SIZE
 }
 
-/******************************************************************************************
- Sections definition
-******************************************************************************************/
 SECTIONS
 {
+  . = 0x20000000;
+
   .startup : ALIGN(0x10)
   {
     *(.startup)
-    . = ALIGN(4);
+    . = ALIGN(0x10);
     *(.startup*)
-    . = ALIGN(4);
-  } > FLASH
+    . = ALIGN(0x10);
+  } > BOOT = 0x5555
 
   .intvect : ALIGN(0x100)
   {
     *(.intvect)
-    . = ALIGN(4);
+    . = ALIGN(0x100);
     *(.intvect*)
-    . = ALIGN(4);
-  } > FLASH
+    . = ALIGN(0x100);
+  } > VEC = 0xAAAA
 
   /* Program code (text) */
   .text : ALIGN(0x100)
@@ -99,21 +67,54 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
+    *(.srodata)
+    . = ALIGN(4);
+    *(.srodata*)
+    . = ALIGN(4);
     *(.glue_7)
     . = ALIGN(4);
     *(.glue_7t)
     . = ALIGN(4);
-  } > FLASH
+  } > ROM
 
-  /* Program code (riscv.attributes) */
+  .riscv.extab :
+  {
+    . = ALIGN(4);
+    *(.riscv.extab)
+    *(.gnu.linkonce.riscvextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > ROM
+
   .riscv.attributes : ALIGN(4)
   {
     *(.riscv.attributes)
     . = ALIGN(4);
-  } > FLASH
+  } > ROM
 
-  /* The FLASH-to-RAM initialized data sections */
-  .data : ALIGN(4) 
+
+  . = __STACK_START_ADDRESS;
+
+  /* stack definition */
+  .stack :
+  {
+    . = ALIGN(MAX(__STACK_SIZE , .), 8);
+    PROVIDE(__initial_stack_pointer = .) ;
+  } > STACK
+
+  . = __RAM_START_ADDRESS;
+  . = ALIGN(4);
+
+  /* The ROM-to-RAM initialized data section */
+  .data : ALIGN(4)
   {
     _data_begin = .;
     *(.data)
@@ -123,9 +124,9 @@ SECTIONS
     . = ALIGN(4);
     KEEP (*(.data*))
     _data_end = .;
-  } > RAM AT > FLASH
+  } > RAM AT > ROM
 
-  /* The uninitialized (zero-cleared) data sections */
+  /* The uninitialized (zero-cleared) data section */
   .bss : ALIGN(4)
   {
     _bss_begin = .;
@@ -142,11 +143,4 @@ SECTIONS
   PROVIDE(_fini = .);
 
   _rom_data_begin = LOADADDR(.data);
-
-  /* stack definition */
-  .stack :
-  {
-    . = ALIGN(MAX(__STACK_SIZE , .), 8);
-    PROVIDE(__initial_stack_pointer = .) ;
-  } > STACK
 }
