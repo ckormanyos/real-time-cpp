@@ -1,4 +1,4 @@
-#  Copyright Christopher Kormanyos 2022.
+#  Copyright Christopher Kormanyos 2022 - 2023.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,8 +9,8 @@
 # ------------------------------------------------------------------------------
 
 GCC_VERSION   = 10.2.0
-GCC_TARGET    = riscv64-unknown-elf
-GCC_PREFIX    = riscv64-unknown-elf
+GCC_TARGET    = riscv-none-embed
+GCC_PREFIX    = riscv-none-embed
 
 TGT_SUFFIX    = elf
 

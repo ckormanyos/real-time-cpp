@@ -473,12 +473,12 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
-          tar -xvzf riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v10.2.0-1.2/xpack-riscv-none-embed-gcc-10.2.0-1.2-linux-x64.tar.gz
+          tar -xvzf xpack-riscv-none-embed-gcc-10.2.0-1.2-linux-x64.tar.gz
         working-directory: ./
       - name: target-riscvfe310-${{ matrix.suite }}
         run: |
-          PATH=../riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14/bin:$PATH
+          PATH=../xpack-riscv-none-embed-gcc-10.2.0-1.2/bin:$PATH
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
