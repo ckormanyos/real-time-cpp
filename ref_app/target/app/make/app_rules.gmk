@@ -39,7 +39,7 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-ifneq ($(GCC_TARGET),riscv64-unknown-elf)
+ifneq ($(findstr risc,$(GCC_TARGET)),)
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 endif
 
@@ -57,7 +57,7 @@ $(PATH_OBJ)/%.o : %.cc
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-ifneq ($(GCC_TARGET),riscv64-unknown-elf)
+ifneq ($(findstr risc,$(GCC_TARGET)),)
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 endif
 

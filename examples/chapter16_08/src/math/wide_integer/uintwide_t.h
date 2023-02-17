@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2022.                 //
+//  Copyright Christopher Kormanyos 1999 - 2023.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -545,14 +545,17 @@
 
   public:
     using exact_unsigned_type = std::uintmax_t;
+    using exact_signed_type   = std::intmax_t;
+    using fast_unsigned_type  = std::uintmax_t;
+    using fast_signed_type    = std::intmax_t;
   };
 
-  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<                     (BitCount <=   8U)>> { using exact_unsigned_type = std::uint8_t;  using exact_signed_type = std::int8_t;  using fast_unsigned_type = std::uint_fast8_t;  using fast_signed_type = std::int_fast8_t;  }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >=  9U) && (BitCount <=  16U)>> { using exact_unsigned_type = std::uint16_t; using exact_signed_type = std::int16_t; using fast_unsigned_type = std::uint_fast16_t; using fast_signed_type = std::int_fast16_t; }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= 17U) && (BitCount <=  32U)>> { using exact_unsigned_type = std::uint32_t; using exact_signed_type = std::int32_t; using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= 33U) && (BitCount <=  64U)>> { using exact_unsigned_type = std::uint64_t; using exact_signed_type = std::int64_t; using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<                                                  (BitCount <= static_cast<size_t>(UINT8_C(  8)))>> { using exact_unsigned_type = std::uint8_t;      using exact_signed_type = std::int8_t;     using fast_unsigned_type = std::uint_fast8_t;  using fast_signed_type = std::int_fast8_t;  };
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C( 9))) && (BitCount <= static_cast<size_t>(UINT8_C( 16)))>> { using exact_unsigned_type = std::uint16_t;     using exact_signed_type = std::int16_t;    using fast_unsigned_type = std::uint_fast16_t; using fast_signed_type = std::int_fast16_t; };
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(17))) && (BitCount <= static_cast<size_t>(UINT8_C( 32)))>> { using exact_unsigned_type = std::uint32_t;     using exact_signed_type = std::int32_t;    using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(33))) && (BitCount <= static_cast<size_t>(UINT8_C( 64)))>> { using exact_unsigned_type = std::uint64_t;     using exact_signed_type = std::int64_t;    using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
   #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
-  template<const size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if_t<(BitCount >= 65U) && (BitCount <= 128U)>> { using exact_unsigned_type = unsigned __int128; using exact_signed_type = signed __int128; using fast_unsigned_type = unsigned __int128;  using fast_signed_type = signed __int128;   }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(65))) && (BitCount <= static_cast<size_t>(UINT8_C(128)))>> { using exact_unsigned_type = unsigned __int128; using exact_signed_type = signed __int128; using fast_unsigned_type = unsigned __int128;  using fast_signed_type = signed __int128;   };
   #endif
 
   using unsigned_fast_type = typename uint_type_helper<static_cast<size_t>(std::numeric_limits<size_t   >::digits + 0)>::fast_unsigned_type;
@@ -886,6 +889,26 @@
                                                                                                                && (std::is_unsigned<UnsignedShortType>::value)), UnsignedShortType>;
 
   template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight,
+           std::enable_if_t<((!IsSignedLeft) && (!IsSignedRight))> const* = nullptr>
+  WIDE_INTEGER_CONSTEXPR
+  auto divmod(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+              const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>;
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight,
+           std::enable_if_t<(IsSignedLeft || IsSignedRight)> const* = nullptr>
+  WIDE_INTEGER_CONSTEXPR
+  auto divmod(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+              const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>;
+
+  template<const size_t Width2,
            typename LimbType = std::uint32_t,
            typename AllocatorType = void,
            const bool IsSigned = false>
@@ -1024,6 +1047,16 @@
   namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
+  // Use a local, constexpr, unsafe implementation of the fill-function.
+  template<typename DestinationIterator,
+           typename ValueType>
+  inline WIDE_INTEGER_CONSTEXPR auto fill_unsafe(DestinationIterator first, DestinationIterator last, ValueType val) -> void
+  {
+    using local_destination_value_type = typename std::iterator_traits<DestinationIterator>::value_type;
+
+    while (first != last) { *first++ = static_cast<local_destination_value_type>(val); }
+  }
+
   template<typename MyType,
            const size_t MySize,
            typename MyAlloc>
@@ -1040,9 +1073,9 @@
                                                         const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
       : base_class_type(MySize, typename base_class_type::value_type(), a)
     {
-      std::fill(base_class_type::begin(),
-                base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(s)),
-                v);
+      detail::fill_unsafe(base_class_type::begin(),
+                          base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(s)),
+                          v);
     }
 
     constexpr fixed_dynamic_array(const fixed_dynamic_array& other_array) = default;
@@ -1088,15 +1121,15 @@
 
       if(s < static_size())
       {
-        std::fill(base_class_type::begin(),     base_class_type::begin() + s, v);
-        std::fill(base_class_type::begin() + s, base_class_type::end(),       value_type());
+        detail::fill_unsafe(base_class_type::begin(),     base_class_type::begin() + s, v);
+        detail::fill_unsafe(base_class_type::begin() + s, base_class_type::end(),       value_type());
       }
       else
       {
         // Exclude this line from code coverage, even though explicit
         // test cases (search for "result_overshift_is_ok") are known
         // to cover this line.
-        base_class_type::fill(v); // LCOV_EXCL_LINE
+        detail::fill_unsafe(base_class_type::begin(), base_class_type::end(), v); // LCOV_EXCL_LINE
       }
     }
 
@@ -1115,9 +1148,9 @@
                   lst.begin() + size_to_copy,
                   base_class_type::begin());
 
-        std::fill(base_class_type::begin() + size_to_copy,
-                  base_class_type::end(),
-                  static_cast<typename base_class_type::value_type>(UINT8_C(0)));
+        detail::fill_unsafe(base_class_type::begin() + size_to_copy,
+                            base_class_type::end(),
+                            static_cast<typename base_class_type::value_type>(UINT8_C(0)));
       }
       else
       {
@@ -1186,15 +1219,11 @@
   // Use a local implementation of string length.
   inline WIDE_INTEGER_CONSTEXPR auto strlen_unsafe(const char* p_str) -> unsigned_fast_type
   {
-    const char* p_str_copy { };
+    auto count = static_cast<unsigned_fast_type>(UINT8_C(0));
 
-    for(p_str_copy = p_str; (*p_str_copy != '\0'); ++p_str_copy) { ; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,altera-id-dependent-backward-branch)
+    while(*p_str != '\0') { ++p_str; ++count; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,altera-id-dependent-backward-branch)
 
-    return
-      static_cast<unsigned_fast_type>
-      (
-        p_str_copy - p_str
-      );
+    return count;
   }
 
   template<typename InputIterator,
@@ -1492,16 +1521,16 @@
     #endif
 
     // Helper constants for the digit characteristics.
-    static constexpr auto my_width2 = Width2;
+    static constexpr size_t my_width2 = Width2;
 
     // The number of limbs.
-    static constexpr auto number_of_limbs =
+    static constexpr size_t number_of_limbs =
       static_cast<size_t>
       (
-        my_width2 / static_cast<size_t>(std::numeric_limits<limb_type>::digits)
+        Width2 / static_cast<size_t>(std::numeric_limits<limb_type>::digits)
       );
 
-    static constexpr auto number_of_limbs_karatsuba_threshold =
+    static constexpr size_t number_of_limbs_karatsuba_threshold =
       static_cast<size_t>
       (
         static_cast<unsigned>
@@ -1571,19 +1600,28 @@
     {
       static_cast<void>(p_nullparam == nullptr);
 
-      auto right_shift_amount_v = static_cast<unsigned_fast_type>(UINT8_C(0));
-      auto u_it                 = values.begin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+      auto u_it = values.begin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+      auto vr   = v;
 
-      for( ; (   (u_it != values.end()) // NOLINT(altera-id-dependent-backward-branch)
-              && (right_shift_amount_v < static_cast<unsigned_fast_type>(std::numeric_limits<UnsignedIntegralType>::digits)));
-          ++u_it)
+      using local_unsigned_integral_type = UnsignedIntegralType;
+
+      while(vr != static_cast<local_unsigned_integral_type>(UINT8_C(0))) // NOLINT(altera-id-dependent-backward-branch)
       {
-        *u_it = static_cast<limb_type>(v >> static_cast<unsigned>(right_shift_amount_v));
+        if(u_it != values.end())
+        {
+          *u_it = static_cast<limb_type>(vr);
 
-        right_shift_amount_v += static_cast<unsigned_fast_type>(std::numeric_limits<limb_type>::digits);
+          ++u_it;
+
+          vr = static_cast<local_unsigned_integral_type>(vr >> static_cast<unsigned>(std::numeric_limits<limb_type>::digits));
+        }
+        else
+        {
+          break;
+        }
       }
 
-      std::fill(u_it, values.end(), static_cast<limb_type>(UINT8_C(0)));
+      detail::fill_unsafe(u_it, values.end(), static_cast<limb_type>(UINT8_C(0)));
     }
 
     // Constructors from built-in signed integral types.
@@ -1721,7 +1759,7 @@
                   detail::advance_and_point(v.crepresentation().cbegin(), sz),
                   values.begin());
 
-        std::fill(detail::advance_and_point(values.begin(), sz), values.end(), static_cast<limb_type>(UINT8_C(0)));
+        detail::fill_unsafe(detail::advance_and_point(values.begin(), sz), values.end(), static_cast<limb_type>(UINT8_C(0)));
       }
       else
       {
@@ -1731,7 +1769,7 @@
                   detail::advance_and_point(uv.crepresentation().cbegin(), sz),
                   values.begin());
 
-        std::fill(detail::advance_and_point(values.begin(), sz), values.end(), static_cast<limb_type>(UINT8_C(0)));
+        detail::fill_unsafe(detail::advance_and_point(values.begin(), sz), values.end(), static_cast<limb_type>(UINT8_C(0)));
 
         negate();
       }
@@ -1833,12 +1871,18 @@
       if(!this_is_neg)
       {
         std::copy(crepresentation().cbegin(),
-                  crepresentation().cbegin() + sz,
+                  detail::advance_and_point(crepresentation().cbegin(), sz),
                   other.values.begin());
 
+        // TBD: Can proper/better template specialization remove the need for if constexpr here?
+        #if (   (defined(_MSC_VER) && ((_MSC_VER >= 1900) && defined(_HAS_CXX17) && (_HAS_CXX17 != 0))) \
+             || (defined(__cplusplus) && ((__cplusplus >= 201703L) || defined(__cpp_if_constexpr))))
+        if constexpr(Width2 < OtherWidth2)
+        #else
         if(Width2 < OtherWidth2)
+        #endif
         {
-          std::fill(other.values.begin() + sz, other.values.end(), static_cast<limb_type>(UINT8_C(0)));
+          detail::fill_unsafe(detail::advance_and_point(other.values.begin(), sz), other.values.end(), static_cast<limb_type>(UINT8_C(0)));
         }
       }
       else
@@ -1848,12 +1892,18 @@
         uv.negate();
 
         std::copy(uv.crepresentation().cbegin(),
-                  uv.crepresentation().cbegin() + sz,
+                  detail::advance_and_point(uv.crepresentation().cbegin(), sz),
                   other.values.begin());
 
+        // TBD: Can proper/better template specialization remove the need for if constexpr here?
+        #if (   (defined(_MSC_VER) && ((_MSC_VER >= 1900) && defined(_HAS_CXX17) && (_HAS_CXX17 != 0))) \
+             || (defined(__cplusplus) && ((__cplusplus >= 201703L) || defined(__cpp_if_constexpr))))
+        if constexpr(Width2 < OtherWidth2)
+        #else
         if(Width2 < OtherWidth2)
+        #endif
         {
-          std::fill(other.values.begin() + sz, other.values.end(), static_cast<limb_type>(UINT8_C(0)));
+          detail::fill_unsafe(detail::advance_and_point(other.values.begin(), sz), other.values.end(), static_cast<limb_type>(UINT8_C(0)));
         }
 
         other.negate();
@@ -1905,7 +1955,7 @@
     {
       if(this == &other)
       {
-        std::fill(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+        detail::fill_unsafe(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else
       {
@@ -1942,7 +1992,7 @@
     {
       if(v == static_cast<limb_type>(UINT8_C(0)))
       {
-        std::fill(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0)));
+        detail::fill_unsafe(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0)));
       }
       else if(v > static_cast<limb_type>(UINT8_C(1)))
       {
@@ -1961,7 +2011,7 @@
       {
         values.front() = static_cast<limb_type>(UINT8_C(1));
 
-        std::fill(detail::advance_and_point(values.begin(), 1U), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+        detail::fill_unsafe(detail::advance_and_point(values.begin(), 1U), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else if(other.is_zero())
       {
@@ -1971,22 +2021,22 @@
       {
         // Unary division function.
 
-        const auto numererator_was_neg = is_neg(*this);
-        const auto denominator_was_neg = is_neg(other);
+        const auto numer_was_neg = is_neg(*this);
+        const auto denom_was_neg = is_neg(other);
 
-        if(numererator_was_neg || denominator_was_neg)
+        if(numer_was_neg || denom_was_neg)
         {
           using local_unsigned_wide_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
 
           local_unsigned_wide_type a(*this);
           local_unsigned_wide_type b(other);
 
-          if(numererator_was_neg) { a.negate(); }
-          if(denominator_was_neg) { b.negate(); }
+          if(numer_was_neg) { a.negate(); }
+          if(denom_was_neg) { b.negate(); }
 
           a.eval_divide_knuth(b);
 
-          if(numererator_was_neg != denominator_was_neg) { a.negate(); }
+          if(numer_was_neg != denom_was_neg) { a.negate(); }
 
           values = a.values;
         }
@@ -2003,30 +2053,30 @@
     {
       if(this == &other)
       {
-        std::fill(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+        detail::fill_unsafe(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else
       {
         // Unary modulus function.
-        const auto numererator_was_neg = is_neg(*this);
-        const auto denominator_was_neg = is_neg(other);
+        const auto numer_was_neg = is_neg(*this);
+        const auto denom_was_neg = is_neg(other);
 
-        if(numererator_was_neg || denominator_was_neg)
+        if(numer_was_neg || denom_was_neg)
         {
           using local_unsigned_wide_type = uintwide_t<Width2, limb_type, AllocatorType, false>;
 
           local_unsigned_wide_type a(*this);
           local_unsigned_wide_type b(other);
 
-          if(numererator_was_neg) { a.negate(); }
-          if(denominator_was_neg) { b.negate(); }
+          if(numer_was_neg) { a.negate(); }
+          if(denom_was_neg) { b.negate(); }
 
           local_unsigned_wide_type remainder;
 
           a.eval_divide_knuth(b, &remainder);
 
           // The sign of the remainder follows the sign of the denominator.
-          if(numererator_was_neg) { remainder.negate(); }
+          if(numer_was_neg) { remainder.negate(); }
 
           values = remainder.values;
         }
@@ -2075,11 +2125,11 @@
       return *this;
     }
 
-    WIDE_INTEGER_CONSTEXPR auto operator^=(const uintwide_t& other) -> uintwide_t&
+    WIDE_INTEGER_CONSTEXPR auto operator^=(const uintwide_t& other) -> uintwide_t& // LCOV_EXCL_LINE
     {
-      if(this == &other)
+      if(this == &other) // LCOV_EXCL_LINE
       {
-        std::fill(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+        detail::fill_unsafe(values.begin(), values.end(), static_cast<typename representation_type::value_type>(UINT8_C(0))); // LCOV_EXCL_LINE
       }
       else
       {
@@ -2092,7 +2142,7 @@
         }
       }
 
-      return *this;
+      return *this; // LCOV_EXCL_LINE
     }
 
     WIDE_INTEGER_CONSTEXPR auto operator&=(const uintwide_t& other) -> uintwide_t&
@@ -2130,7 +2180,7 @@
           // Exclude this line from code coverage, even though explicit
           // test cases (search for "result_overshift_is_ok") are known
           // to cover this line.
-          std::fill(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+          detail::fill_unsafe(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
         }
         else
         {
@@ -2153,7 +2203,7 @@
           // Exclude this line from code coverage, even though explicit
           // test cases (search for "result_overshift_is_ok") are known
           // to cover this line.
-          std::fill(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+          detail::fill_unsafe(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
         }
         else
         {
@@ -2186,7 +2236,7 @@
           // Exclude this line from code coverage, even though explicit
           // test cases (search for "result_overshift_is_ok") are known
           // to cover this line.
-          std::fill(values.begin(), values.end(), right_shift_fill_value()); // LCOV_EXCL_LINE
+          detail::fill_unsafe(values.begin(), values.end(), right_shift_fill_value()); // LCOV_EXCL_LINE
         }
         else
         {
@@ -2212,7 +2262,7 @@
           // Exclude this line from code coverage, even though explicit
           // test cases (search for "result_overshift_is_ok") are known
           // to cover this line.
-          std::fill(values.begin(), values.end(), right_shift_fill_value()); // LCOV_EXCL_LINE
+          detail::fill_unsafe(values.begin(), values.end(), right_shift_fill_value()); // LCOV_EXCL_LINE
         }
         else
         {
@@ -2680,14 +2730,55 @@
 
     static constexpr auto from_rep(const representation_type& other_rep) -> uintwide_t
     {
-      // Create a factory-like object from the internal data representation.
-      return uintwide_t(static_cast<const representation_type&>(other_rep));
+      // Create a factory-like object from another (possibly different)
+      // internal data representation.
+      return
+        (number_of_limbs == other_rep.size())
+          ? uintwide_t(other_rep)
+          : [&other_rep]()
+            {
+              constexpr auto local_number_of_limbs =
+                static_cast<size_t>
+                (
+                  Width2 / static_cast<size_t>(std::numeric_limits<limb_type>::digits)
+                );
+
+              representation_type my_rep(local_number_of_limbs, static_cast<limb_type>(UINT8_C(0)));
+
+              std::copy(other_rep.cbegin(),
+                        detail::advance_and_point(other_rep.cbegin(), (std::min)(local_number_of_limbs, static_cast<size_t>(other_rep.size()))),
+                        my_rep.begin());
+
+              return uintwide_t(static_cast<representation_type&&>(my_rep));
+            }();
     }
 
-    static constexpr auto from_rep(representation_type&& other_rep) -> uintwide_t
+    static constexpr auto from_rep(representation_type&& other_rep) noexcept -> uintwide_t
     {
-      // Create a factory-like object from the internal data representation.
-      return uintwide_t(static_cast<representation_type&&>(other_rep));
+      // Create a factory-like object from another (possibly different)
+      // internal data representation (via move semantics).
+
+      return
+        (number_of_limbs == other_rep.size())
+          ? uintwide_t(static_cast<representation_type&&>(other_rep))
+          // LCOV_EXCL_START
+          : [&other_rep]()
+            {
+              constexpr auto local_number_of_limbs =
+                static_cast<size_t>
+                (
+                  Width2 / static_cast<size_t>(std::numeric_limits<limb_type>::digits)
+                );
+
+              representation_type my_rep(local_number_of_limbs, static_cast<limb_type>(UINT8_C(0)));
+
+              std::copy(other_rep.cbegin(),
+                        detail::advance_and_point(other_rep.cbegin(), (std::min)(local_number_of_limbs, static_cast<size_t>(other_rep.size()))),
+                        my_rep.begin());
+
+              return uintwide_t(static_cast<representation_type&&>(my_rep));
+            }();
+          // LCOV_EXCL_STOP
     }
 
     static constexpr auto my_fill_char() -> char { return '.'; }
@@ -2757,6 +2848,24 @@
   private:
   #endif
     friend auto ::test_uintwide_t_edge::test_various_isolated_edge_cases() -> bool;
+
+    template<const size_t OtherWidth2,
+             typename OtherLimbType,
+             typename OtherAllocatorType,
+             const bool OtherIsSignedLeft,
+             const bool OtherIsSignedRight,
+             std::enable_if_t<((!OtherIsSignedLeft) && (!OtherIsSignedRight))> const*>
+    friend WIDE_INTEGER_CONSTEXPR auto divmod(const uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedLeft >& a, // NOLINT(readability-redundant-declaration)
+                                              const uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedRight>& b) -> std::pair<uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedLeft>, uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedRight>>;
+
+    template<const size_t OtherWidth2,
+             typename OtherLimbType,
+             typename OtherAllocatorType,
+             const bool OtherIsSignedLeft,
+             const bool OtherIsSignedRight,
+             std::enable_if_t<(OtherIsSignedLeft || OtherIsSignedRight)> const*>
+    friend WIDE_INTEGER_CONSTEXPR auto divmod(const uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedLeft >& a, // NOLINT(readability-redundant-declaration)
+                                              const uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedRight>& b) -> std::pair<uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedLeft>, uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSignedRight>>;
 
     explicit constexpr uintwide_t(const representation_type& other_rep)
       : values(static_cast<const representation_type&>(other_rep)) { }
@@ -3696,7 +3805,7 @@
 
       if(b == static_cast<left_value_type>(UINT8_C(0)))
       {
-        std::fill(r, detail::advance_and_point(r, count), static_cast<limb_type>(UINT8_C(0)));
+        detail::fill_unsafe(r, detail::advance_and_point(r, count), static_cast<limb_type>(UINT8_C(0)));
       }
       else
       {
@@ -3970,7 +4079,7 @@
 
         if(remainder != nullptr) // LCOV_EXCL_LINE
         {
-          std::fill(remainder->values.begin(), remainder->values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
+          detail::fill_unsafe(remainder->values.begin(), remainder->values.end(), static_cast<limb_type>(UINT8_C(0))); // LCOV_EXCL_LINE
         }
       }
       else if(u_offset == static_cast<local_uint_index_type>(number_of_limbs))
@@ -4211,7 +4320,7 @@
               static_cast<local_uint_index_type>(m) + static_cast<local_uint_index_type>(UINT8_C(1))
             );
 
-          std::fill(detail::advance_and_point(values.begin(), m_plus_one), values.end(), static_cast<limb_type>(UINT8_C(0)));
+          detail::fill_unsafe(detail::advance_and_point(values.begin(), m_plus_one), values.end(), static_cast<limb_type>(UINT8_C(0)));
         }
 
         if(remainder != nullptr)
@@ -4252,7 +4361,7 @@
             }
           }
 
-          std::fill(rl_it_fwd, remainder->values.end(), static_cast<limb_type>(UINT8_C(0)));
+          detail::fill_unsafe(rl_it_fwd, remainder->values.end(), static_cast<limb_type>(UINT8_C(0)));
         }
       }
     }
@@ -4301,7 +4410,7 @@
                            detail::advance_and_point(values.cbegin(), static_cast<size_t>(number_of_limbs - offset)),
                            detail::advance_and_point(values.begin(), static_cast<size_t>(number_of_limbs)));
 
-        std::fill(values.begin(), detail::advance_and_point(values.begin(), static_cast<size_t>(offset)), static_cast<limb_type>(UINT8_C(0)));
+        detail::fill_unsafe(values.begin(), detail::advance_and_point(values.begin(), static_cast<size_t>(offset)), static_cast<limb_type>(UINT8_C(0)));
       }
 
       using local_integral_type = unsigned_fast_type;
@@ -4344,9 +4453,9 @@
                   detail::advance_and_point(values.cbegin(), static_cast<size_t>(number_of_limbs)),
                   values.begin());
 
-        std::fill(detail::advance_and_point(values.begin(), static_cast<size_t>(static_cast<size_t>(number_of_limbs) - static_cast<size_t>(offset))),
-                  values.end(),
-                  right_shift_fill_value());
+        detail::fill_unsafe(detail::advance_and_point(values.begin(), static_cast<size_t>(static_cast<size_t>(number_of_limbs) - static_cast<size_t>(offset))),
+                            values.end(),
+                            right_shift_fill_value());
       }
 
       using local_integral_type = unsigned_fast_type;
@@ -4388,7 +4497,7 @@
     // Read string function.
     WIDE_INTEGER_CONSTEXPR auto rd_string(const char* str_input) -> bool // NOLINT(readability-function-cognitive-complexity)
     {
-      std::fill(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0)));
+      detail::fill_unsafe(values.begin(), values.end(), static_cast<limb_type>(UINT8_C(0)));
 
       const auto str_length = detail::strlen_unsafe(str_input);
 
@@ -4993,7 +5102,7 @@
 
     const auto x_is_neg = (x < static_cast<local_floating_point_type>(0.0L));
 
-    local_floating_point_type f = (x_is_neg ? -x : x);
+    local_floating_point_type f = (x_is_neg ? -x : x); // NOLINT(altera-id-dependent-backward-branch)
 
     auto e2 = static_cast<int>(INT8_C(0));
 
@@ -5871,6 +5980,84 @@
   template<const size_t Width2,
            typename LimbType,
            typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight,
+           std::enable_if_t<((!IsSignedLeft) && (!IsSignedRight))> const*>
+  WIDE_INTEGER_CONSTEXPR
+  auto divmod(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+              const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>
+  {
+    using local_unsigned_wide_type = uintwide_t<Width2, LimbType, AllocatorType, false>;
+
+          local_unsigned_wide_type ua(a);
+    const local_unsigned_wide_type ub(b);
+
+    local_unsigned_wide_type ur { };
+
+    ua.eval_divide_knuth(ub, &ur);
+
+    using divmod_result_pair_type = std::pair<local_unsigned_wide_type, local_unsigned_wide_type>;
+
+    return divmod_result_pair_type { ua, ur };
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
+           const bool IsSignedLeft,
+           const bool IsSignedRight,
+           std::enable_if_t<(IsSignedLeft || IsSignedRight)> const*>
+  WIDE_INTEGER_CONSTEXPR
+  auto divmod(const uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft >& a,
+              const uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>& b) -> std::pair<uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>, uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>>
+  {
+    using local_unsigned_wide_type = uintwide_t<Width2, LimbType, AllocatorType, false>;
+
+    using local_unknown_signedness_left_type  = uintwide_t<Width2, LimbType, AllocatorType, IsSignedLeft>;
+    using local_unknown_signedness_right_type = uintwide_t<Width2, LimbType, AllocatorType, IsSignedRight>;
+
+    const auto numer_was_neg = local_unknown_signedness_left_type::is_neg(a);
+    const auto denom_was_neg = local_unknown_signedness_right_type::is_neg(b);
+
+    local_unsigned_wide_type ua((!numer_was_neg) ? a : -a);
+    local_unsigned_wide_type ub((!denom_was_neg) ? b : -b);
+
+    local_unsigned_wide_type ur { };
+
+    ua.eval_divide_knuth(ub, &ur);
+
+    using divmod_result_pair_type = std::pair<local_unknown_signedness_left_type, local_unknown_signedness_right_type>;
+
+    auto result = divmod_result_pair_type { };
+
+    if(numer_was_neg == denom_was_neg)
+    {
+      result.first  = local_unknown_signedness_left_type(ua);
+      result.second = (!numer_was_neg) ? local_unknown_signedness_right_type(ur) : -local_unknown_signedness_right_type(ur);
+    }
+    else
+    {
+      const auto division_is_exact = (ur == 0);
+
+      if(!division_is_exact) { ++ua; }
+
+      result.first = local_unknown_signedness_left_type(ua);
+
+      result.first.negate();
+
+      if(!division_is_exact) { ur -= ub; }
+
+      result.second = local_unknown_signedness_right_type(ur);
+
+      if(!denom_was_neg) { result.second.negate(); }
+    }
+
+    return result;
+  }
+
+  template<const size_t Width2,
+           typename LimbType,
+           typename AllocatorType,
            const bool IsSigned>
   class uniform_int_distribution
   {
@@ -6563,7 +6750,7 @@
           - static_cast<local_size_type>(std::distance(str_temp.crbegin(), rit_trim))
         );
 
-      std::fill(str_temp.begin() + str_result_size, str_temp.end(), '\0');
+      detail::fill_unsafe(str_temp.begin() + str_result_size, str_temp.end(), '\0');
 
       str_result = std::string(str_temp.data());
     }
@@ -6634,9 +6821,9 @@
                   local_result_iterator_type       (detail::advance_and_point(val.representation().begin(), copy_len)));
       }
 
-      std::fill(detail::advance_and_point(val.representation().begin(), copy_len),
-                val.representation().end(),
-                static_cast<local_result_value_type>(UINT8_C(0)));
+      detail::fill_unsafe(detail::advance_and_point(val.representation().begin(), copy_len),
+                          val.representation().end(),
+                          static_cast<local_result_value_type>(UINT8_C(0)));
     }
     else
     {
