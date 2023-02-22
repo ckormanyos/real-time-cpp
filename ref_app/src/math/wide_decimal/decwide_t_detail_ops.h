@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2022.                 //
+//  Copyright Christopher Kormanyos 1999 - 2023.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -88,7 +88,7 @@
       const auto t =
         static_cast<local_limb_type>
         (
-          static_cast<local_limb_type>(u[j] + v[j]) + carry
+          static_cast<local_limb_type>(static_cast<local_limb_type>(u[j]) + v[j]) + carry
         );
 
       carry = ((t >= static_cast<local_limb_type>(local_elem_mask)) ? static_cast<std::uint_fast8_t>(UINT8_C(1))
