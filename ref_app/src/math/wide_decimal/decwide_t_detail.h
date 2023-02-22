@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2022.                 //
+//  Copyright Christopher Kormanyos 1999 - 2023.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -65,6 +65,36 @@
   #else
   namespace math { namespace wide_decimal { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
+
+  template<const std::size_t BitCount,
+           typename EnableType = void>
+  struct uint_type_helper
+  {
+  private:
+    static constexpr auto bit_count   () -> std::size_t { return BitCount; }
+    static constexpr auto bit_count_lo() -> std::size_t { return static_cast<std::size_t>(std::numeric_limits<unsigned char>::digits); }
+    static constexpr auto bit_count_hi() -> std::size_t { return static_cast<std::size_t>(std::numeric_limits<std::uintmax_t>::digits); }
+
+    static_assert
+    (
+      (   (bit_count()    >= bit_count_lo())
+       && (BitCount       <= bit_count_hi())
+       && (bit_count_hi() >= static_cast<std::size_t>(UINT8_C(64)))
+      ),
+      "Error: uint_type_helper is not intended to be used for this BitCount"
+    );
+
+  public:
+    using exact_unsigned_type = std::uintmax_t;
+    using exact_signed_type   = std::intmax_t;
+    using fast_unsigned_type  = std::uintmax_t;
+    using fast_signed_type    = std::intmax_t;
+  };
+
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<                                                       (BitCount <= static_cast<std::size_t>(UINT8_C(  8)))>::type> { using exact_unsigned_type = std::uint8_t;  using exact_signed_type = std::int8_t;  using fast_unsigned_type = std::uint_fast8_t;  using fast_signed_type = std::int_fast8_t;  };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C( 9))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 16)))>::type> { using exact_unsigned_type = std::uint16_t; using exact_signed_type = std::int16_t; using fast_unsigned_type = std::uint_fast16_t; using fast_signed_type = std::int_fast16_t; };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C(17))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 32)))>::type> { using exact_unsigned_type = std::uint32_t; using exact_signed_type = std::int32_t; using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
+  template<const std::size_t BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= static_cast<std::size_t>(UINT8_C(33))) && (BitCount <= static_cast<std::size_t>(UINT8_C( 64)))>::type> { using exact_unsigned_type = std::uint64_t; using exact_signed_type = std::int64_t; using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
 
   template<typename UnsignedIntegralType>
   constexpr auto negate(UnsignedIntegralType u) -> typename std::enable_if<(   std::is_integral<UnsignedIntegralType>::value
@@ -190,7 +220,7 @@
   }
   // LCOV_EXCL_STOP
 
-  static inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
+  inline auto pow10_maker_as_runtime_value(std::uint32_t n) noexcept -> std::uint32_t
   {
     using local_array_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(10))>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
@@ -217,6 +247,49 @@
     }
   }
 
+  template<typename IntegralType,
+           typename ExponentType = int>
+  inline auto order_of_builtin_integer(const IntegralType n, ExponentType* p10_ptr = nullptr) -> unsigned
+  {
+    // This subroutine returns the order of an input integral type.
+    // The order is counted as 1 for 0...9, 2 for 10...99, 3 for 100...999, etc.
+    // This may differ from the order expected, for example, from the ilogb()
+    // function. So this must be taken into account at the calling point
+    // of this subroutine if needed.
+
+    static_assert(std::is_integral<IntegralType>::value, "Error: This template is intended for IntegralType to be of actual integral type");
+    static_assert(std::is_integral<ExponentType>::value, "Error: This template is intended for ExponentType to be of actual integral type");
+
+    using local_unsigned_integral_type = typename uint_type_helper<std::numeric_limits<IntegralType>::digits + (std::is_signed<IntegralType>::value ? 1 : 0)>::exact_unsigned_type;
+    using local_unsigned_exponent_type = typename uint_type_helper<std::numeric_limits<ExponentType>::digits + (std::is_signed<ExponentType>::value ? 1 : 0)>::exact_unsigned_type;
+
+    auto expval = static_cast<unsigned>(UINT8_C(0));
+    auto p10    = static_cast<local_unsigned_exponent_type>(UINT8_C(1));
+
+    auto un = static_cast<local_unsigned_integral_type>(n);
+
+    for(;;)
+    {
+      un = static_cast<local_unsigned_integral_type>(un / static_cast<local_unsigned_integral_type>(UINT8_C(10U)));
+
+      p10 = static_cast<local_unsigned_exponent_type>(p10 * static_cast<local_unsigned_exponent_type>(UINT8_C(10)));
+
+      ++expval;
+
+      if(un == static_cast<local_unsigned_exponent_type>(UINT8_C(0)))
+      {
+        break;
+      }
+    }
+
+    if(p10_ptr != nullptr)
+    {
+      *p10_ptr = static_cast<ExponentType>(p10);
+    }
+
+    return expval;
+  }
+
   template<typename LimbType>
   struct decwide_t_helper_base
   {
@@ -224,9 +297,9 @@
     using local_limb_type = LimbType;
 
   public:
-    static constexpr std::int32_t elem_digits10     =
+    static constexpr std::int32_t elem_digits10 =
       (std::is_same<local_limb_type, std::uint32_t>::value
-        ? static_cast<std::int32_t>(8)
+        ? static_cast<std::int32_t>(INT8_C(8))
         : (std::is_same<local_limb_type, std::uint16_t>::value ? static_cast<std::int32_t>(INT8_C(4))
                                                                : static_cast<std::int32_t>(INT8_C(2))));
 
@@ -288,7 +361,7 @@
 
     explicit fixed_dynamic_array(const typename base_class_type::size_type       s = MySize, // NOLINT(hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
                                  const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
-                                 const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
+                                 const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type()) noexcept
       : base_class_type(MySize, typename base_class_type::value_type(), a)
     {
       std::fill(base_class_type::begin(),
