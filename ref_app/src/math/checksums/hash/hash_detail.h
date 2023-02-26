@@ -7,45 +7,36 @@
 #ifndef HASH_DETAIL_2020_05_18_H_
   #define HASH_DETAIL_2020_05_18_H_
 
-  #include <algorithm>
   #include <cstddef>
   #include <cstdint>
 
   namespace math { namespace checksums { namespace hash { namespace detail {
 
   template<const std::uint_fast8_t digits_shift,
-            typename arithmetic_type>
-  arithmetic_type circular_right_shift(const arithmetic_type& the_value)
+           typename arithmetic_type>
+  constexpr auto circular_right_shift(arithmetic_type the_value) -> arithmetic_type
   {
-    const auto left_shift_amount =
-      static_cast<std::uint_fast8_t>
+    return
+      static_cast<arithmetic_type>
       (
-        std::numeric_limits<arithmetic_type>::digits - digits_shift
+          static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> static_cast<unsigned>(digits_shift))
+        | static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << static_cast<unsigned>(std::numeric_limits<arithmetic_type>::digits - digits_shift))
       );
-
-    const auto part1 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> (digits_shift));
-    const auto part2 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << left_shift_amount);
-
-    return static_cast<arithmetic_type>(part1 | part2);
   }
 
   template<const std::uint_fast8_t digits_shift,
-            typename arithmetic_type>
-  arithmetic_type circular_left_shift(const arithmetic_type& the_value)
+           typename arithmetic_type>
+  constexpr auto circular_left_shift(arithmetic_type the_value) -> arithmetic_type
   {
-    const auto right_shift_amount =
-      static_cast<std::uint_fast8_t>
+    return
+      static_cast<arithmetic_type>
       (
-        std::numeric_limits<arithmetic_type>::digits - digits_shift
+          static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << static_cast<unsigned>(digits_shift))
+        | static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> static_cast<unsigned>(std::numeric_limits<arithmetic_type>::digits - digits_shift))
       );
-
-    const auto part1 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << (digits_shift));
-    const auto part2 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> right_shift_amount);
-
-    return static_cast<arithmetic_type>(part1 | part2);
   }
 
-  inline void convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin)
+  inline auto convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
   {
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
@@ -69,7 +60,7 @@
     }
   }
 
-  inline void convert_uint8_input_to_uint32_output_reverse(const std::uint8_t*  in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin)
+  inline auto convert_uint8_input_to_uint32_output_reverse(const std::uint8_t*  in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin) -> void
   {
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
@@ -93,7 +84,7 @@
     }
   }
 
-  inline void convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin)
+  inline auto convert_uint32_input_to_uint8_output(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
   {
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.
@@ -113,7 +104,7 @@
     }
   }
 
-  inline void convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin)
+  inline auto convert_uint32_input_to_uint8_output_reverse(const std::uint32_t* in_begin, const std::uint32_t* in_end, std::uint8_t*  out_begin) -> void
   {
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.
