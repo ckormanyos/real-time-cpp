@@ -1,3 +1,9 @@
+//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #ifndef HASH_DETAIL_2020_05_18_H_
   #define HASH_DETAIL_2020_05_18_H_
 
@@ -11,24 +17,32 @@
             typename arithmetic_type>
   arithmetic_type circular_right_shift(const arithmetic_type& the_value)
   {
-    const std::uint_fast8_t left_shift_amount = static_cast<std::uint_fast8_t>(std::numeric_limits<arithmetic_type>::digits - digits_shift);
+    const auto left_shift_amount =
+      static_cast<std::uint_fast8_t>
+      (
+        std::numeric_limits<arithmetic_type>::digits - digits_shift
+      );
 
-    const arithmetic_type part1 = arithmetic_type(arithmetic_type(the_value) >> (digits_shift));
-    const arithmetic_type part2 = arithmetic_type(arithmetic_type(the_value) << left_shift_amount);
+    const auto part1 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> (digits_shift));
+    const auto part2 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << left_shift_amount);
 
-    return arithmetic_type(part1 | part2);
+    return static_cast<arithmetic_type>(part1 | part2);
   }
 
   template<const std::uint_fast8_t digits_shift,
             typename arithmetic_type>
   arithmetic_type circular_left_shift(const arithmetic_type& the_value)
   {
-    const std::uint_fast8_t right_shift_amount = static_cast<std::uint_fast8_t>(std::numeric_limits<arithmetic_type>::digits - digits_shift);
+    const auto right_shift_amount =
+      static_cast<std::uint_fast8_t>
+      (
+        std::numeric_limits<arithmetic_type>::digits - digits_shift
+      );
 
-    const arithmetic_type part1 = arithmetic_type(arithmetic_type(the_value) << (digits_shift));
-    const arithmetic_type part2 = arithmetic_type(arithmetic_type(the_value) >> right_shift_amount);
+    const auto part1 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) << (digits_shift));
+    const auto part2 = static_cast<arithmetic_type>(static_cast<arithmetic_type>(the_value) >> right_shift_amount);
 
-    return arithmetic_type(part1 | part2);
+    return static_cast<arithmetic_type>(part1 | part2);
   }
 
   inline void convert_uint8_input_to_uint32_output(const std::uint8_t* in_begin, const std::uint8_t*  in_end, std::uint32_t* out_begin)
@@ -36,18 +50,22 @@
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
 
-    std::size_t j = 0U;
+    auto j = static_cast<std::size_t>(UINT8_C(0));
 
     while(in_begin != in_end)
     {
-      out_begin[j / 4U] = std::uint32_t(  std::uint32_t(std::uint32_t(*(in_begin + 0U)) <<  0U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 1U)) <<  8U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 2U)) << 16U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 3U)) << 24U));
+      out_begin[static_cast<std::size_t>(j / static_cast<std::size_t>(UINT8_C(4)))] =
+        static_cast<std::uint32_t>
+        (
+            static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 0U)) << static_cast<unsigned>(UINT8_C( 0)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 1U)) << static_cast<unsigned>(UINT8_C( 8)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 2U)) << static_cast<unsigned>(UINT8_C(16)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 3U)) << static_cast<unsigned>(UINT8_C(24)))
+        );
 
-      in_begin += 4U;
+      in_begin += static_cast<std::size_t>(UINT8_C(4));
 
-      j += 4U;
+      j = static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(4)));
     }
   }
 
@@ -56,18 +74,22 @@
     // Decode the input uint8_t source into the output uint32_t destination.
     // This subroutine assumes that the length of the input is a multiple of 4.
 
-    std::size_t j = 0U;
+    auto j = static_cast<std::size_t>(UINT8_C(0));
 
     while(in_begin != in_end)
     {
-      out_begin[j / 4U] = std::uint32_t(  std::uint32_t(std::uint32_t(*(in_begin + 3U)) <<  0U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 2U)) <<  8U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 1U)) << 16U)
-                                        | std::uint32_t(std::uint32_t(*(in_begin + 0U)) << 24U));
+      out_begin[static_cast<std::size_t>(j / static_cast<std::size_t>(UINT8_C(4)))] =
+        static_cast<std::uint32_t>
+        (
+            static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 3U)) << static_cast<unsigned>(UINT8_C( 0)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 2U)) << static_cast<unsigned>(UINT8_C( 8)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 1U)) << static_cast<unsigned>(UINT8_C(16)))
+          | static_cast<std::uint32_t>(static_cast<std::uint32_t>(*(in_begin + 0U)) << static_cast<unsigned>(UINT8_C(24)))
+        );
 
-      in_begin += 4U;
+      in_begin += static_cast<std::size_t>(UINT8_C(4));
 
-      j += 4U;
+      j = static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(4)));
     }
   }
 
@@ -76,18 +98,18 @@
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.
 
-    std::size_t j = 0U;
+    auto j = static_cast<std::size_t>(UINT8_C(0));
 
     while(in_begin != in_end)
     {
-      out_begin[j + 0U] = std::uint8_t(*in_begin >>  0U);
-      out_begin[j + 1U] = std::uint8_t(*in_begin >>  8U);
-      out_begin[j + 2U] = std::uint8_t(*in_begin >> 16U);
-      out_begin[j + 3U] = std::uint8_t(*in_begin >> 24U);
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(0)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C( 0)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(1)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C( 8)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(2)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C(16)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(3)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C(24)));
 
       ++in_begin;
 
-      j += 4U;
+      j = static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(4)));
     }
   }
 
@@ -96,18 +118,18 @@
     // Encode the input uint32_t source into the output uint8_t destination.
     // This subroutine assumes that the length of the output is a multiple of 4.
 
-    std::size_t j = 0U;
+    auto j = static_cast<std::size_t>(UINT8_C(0));
 
     while(in_begin != in_end)
     {
-      out_begin[j + 3U] = std::uint8_t(*in_begin >>  0U);
-      out_begin[j + 2U] = std::uint8_t(*in_begin >>  8U);
-      out_begin[j + 1U] = std::uint8_t(*in_begin >> 16U);
-      out_begin[j + 0U] = std::uint8_t(*in_begin >> 24U);
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(3)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C( 0)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(2)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C( 8)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(1)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C(16)));
+      out_begin[static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(0)))] = static_cast<std::uint8_t>(*in_begin >> static_cast<unsigned>(UINT8_C(24)));
 
       ++in_begin;
 
-      j += 4U;
+      j = static_cast<std::size_t>(j + static_cast<std::size_t>(UINT8_C(4)));
     }
   }
 
