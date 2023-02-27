@@ -8,7 +8,7 @@
 #ifndef HASH_SHA256_2023_02_26_H_
   #define HASH_SHA256_2023_02_26_H_
 
-  // See also: https://en.wikipedia.org/wiki/SHA-1
+  // See also: https://en.wikipedia.org/wiki/SHA-2
 
   #include <algorithm>
   #include <array>
@@ -104,7 +104,7 @@
       return
         static_cast<std::uint32_t>
         (
-             detail::circular_right_shift<static_cast<unsigned>(UINT8_C(7))>(x)
+            detail::circular_right_shift<static_cast<unsigned>(UINT8_C(7))>(x)
           ^ static_cast<std::uint32_t>
             (
                 detail::circular_right_shift<static_cast<unsigned>(UINT8_C(18))>(x)
@@ -129,15 +129,13 @@
   template <typename my_count_type>
   auto hash_sha256<my_count_type>::perform_algorithm() -> void
   {
-    using local_transform_block_type = std::array<std::uint32_t, 64U>;
+    using local_transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(64))>;
 
     static constexpr std::size_t local_transform_block_size = std::tuple_size<local_transform_block_type>::value;
 
-    local_transform_block_type transform_block;
-
     // Apply the hash256 transformation algorithm to a full data block.
 
-    const local_transform_block_type transform_constants =
+    constexpr local_transform_block_type transform_constants =
     {
       UINT32_C(0x428A2F98), UINT32_C(0x71374491), UINT32_C(0xB5C0FBCF), UINT32_C(0xE9B5DBA5),
       UINT32_C(0x3956C25B), UINT32_C(0x59F111F1), UINT32_C(0x923F82A4), UINT32_C(0xAB1C5ED5),
@@ -157,6 +155,8 @@
       UINT32_C(0x90BEFFFA), UINT32_C(0xA4506CEB), UINT32_C(0xBEF9A3F7), UINT32_C(0xC67178F2)
     };
 
+    local_transform_block_type transform_block { };
+
     detail::convert_uint8_input_to_uint32_output_reverse
     (
       base_class_type::message_buffer.data(),
@@ -164,38 +164,62 @@
       transform_block.data()
     );
 
-    for(std::size_t i = 16U; i < local_transform_block_size; ++i)
+    for(auto i = static_cast<std::size_t>(UINT8_C(16)); i < local_transform_block_size; ++i)
     {
-      transform_block[i] =    transform_function4(transform_block[i - 2U])
-                            + transform_block[i - 7U]
-                            + transform_function3(transform_block[i - 15U])
-                            + transform_block[i - 16U];
+      transform_block[i] =
+        static_cast<std::uint32_t>
+        (
+            transform_function4(transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C( 2)))])
+          +                     transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C( 7)))]
+          + transform_function3(transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C(15)))])
+          +                     transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C(16)))]
+        );
     }
 
     auto hash_tmp = transform_context;
 
-    for(std::size_t i = 0U; i < local_transform_block_size; ++i)
+    for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < local_transform_block_size; ++i)
     {
-      const std::uint32_t tmp1 =   hash_tmp[7U]
-                                  + transform_function2(hash_tmp[4U])
-                                  + std::uint32_t(  std::uint32_t(hash_tmp[4U] & hash_tmp[5U])
-                                                  ^ std::uint32_t(std::uint32_t(~hash_tmp[4U]) & hash_tmp[6U]))
-                                  + transform_constants[i]
-                                  + transform_block[i];
+      const auto tmp1 =
+        static_cast<std::uint32_t>
+        (
+            hash_tmp[7U]
+          + transform_function2(hash_tmp[4U])
+          + static_cast<std::uint32_t>
+            (
+              static_cast<std::uint32_t>
+              (
+                  static_cast<std::uint32_t>(hash_tmp[static_cast<std::size_t>(UINT8_C(4))] & hash_tmp[static_cast<std::size_t>(UINT8_C(5))])
+                ^ static_cast<std::uint32_t>(static_cast<std::uint32_t>(~hash_tmp[static_cast<std::size_t>(UINT8_C(4))]) & hash_tmp[static_cast<std::size_t>(UINT8_C(6))])
+              )
+            )
+          + transform_constants[i]
+          + transform_block[i]
+        );
 
-      const std::uint32_t tmp2 =   transform_function1(hash_tmp[0U])
-                                  + std::uint32_t(std::uint32_t(  std::uint32_t(hash_tmp[0U] & hash_tmp[1U])
-                                                                ^ std::uint32_t(hash_tmp[0U] & hash_tmp[2U]))
-                                                                ^ std::uint32_t(hash_tmp[1U] & hash_tmp[2U]));
+      const auto tmp2 =
+        static_cast<std::uint32_t>
+        (
+            transform_function1(hash_tmp[static_cast<std::size_t>(UINT8_C(0))])
+          + static_cast<std::uint32_t>
+            (
+                static_cast<std::uint32_t>(hash_tmp[static_cast<std::size_t>(UINT8_C(0))] & hash_tmp[static_cast<std::size_t>(UINT8_C(1))])
+              ^ static_cast<std::uint32_t>(hash_tmp[static_cast<std::size_t>(UINT8_C(0))] & hash_tmp[static_cast<std::size_t>(UINT8_C(2))])
+              ^ static_cast<std::uint32_t>(hash_tmp[static_cast<std::size_t>(UINT8_C(1))] & hash_tmp[static_cast<std::size_t>(UINT8_C(2))])
+            )
+        );
 
-      hash_tmp[7U] = hash_tmp[6U];
-      hash_tmp[6U] = hash_tmp[5U];
-      hash_tmp[5U] = hash_tmp[4U];
-      hash_tmp[4U] = hash_tmp[3U] + tmp1;
-      hash_tmp[3U] = hash_tmp[2U];
-      hash_tmp[2U] = hash_tmp[1U];
-      hash_tmp[1U] = hash_tmp[0U];
-      hash_tmp[0U] = tmp1 + tmp2;
+      hash_tmp[static_cast<std::size_t>(UINT8_C(7))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(6))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(6))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(5))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(5))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(4))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(4))] = static_cast<std::uint32_t>
+                                                       (
+                                                         hash_tmp[static_cast<std::size_t>(UINT8_C(3))] + tmp1
+                                                       );
+      hash_tmp[static_cast<std::size_t>(UINT8_C(3))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(2))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(2))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(1))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(1))] =   hash_tmp[static_cast<std::size_t>(UINT8_C(0))];
+      hash_tmp[static_cast<std::size_t>(UINT8_C(0))] =   static_cast<std::uint32_t>(tmp1 + tmp2);
     }
 
     // Update the hash state with the transformation results.
