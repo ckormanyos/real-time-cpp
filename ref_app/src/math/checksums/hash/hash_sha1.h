@@ -57,11 +57,11 @@
     {
       base_class_type::initialize();
 
-      message_hash[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint32_t>(UINT32_C(0x67452301));
-      message_hash[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint32_t>(UINT32_C(0xEFCDAB89));
-      message_hash[static_cast<std::size_t>(UINT8_C(2))] = static_cast<std::uint32_t>(UINT32_C(0x98BADCFE));
-      message_hash[static_cast<std::size_t>(UINT8_C(3))] = static_cast<std::uint32_t>(UINT32_C(0x10325476));
-      message_hash[static_cast<std::size_t>(UINT8_C(4))] = static_cast<std::uint32_t>(UINT32_C(0xC3D2E1F0));
+      transform_context[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint32_t>(UINT32_C(0x67452301));
+      transform_context[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint32_t>(UINT32_C(0xEFCDAB89));
+      transform_context[static_cast<std::size_t>(UINT8_C(2))] = static_cast<std::uint32_t>(UINT32_C(0x98BADCFE));
+      transform_context[static_cast<std::size_t>(UINT8_C(3))] = static_cast<std::uint32_t>(UINT32_C(0x10325476));
+      transform_context[static_cast<std::size_t>(UINT8_C(4))] = static_cast<std::uint32_t>(UINT32_C(0xC3D2E1F0));
     }
 
     auto get_result(typename result_type::pointer result) -> void
@@ -69,8 +69,8 @@
       // Extract the hash result from the message digest state.
       detail::convert_uint32_input_to_uint8_output_reverse
       (
-        message_hash.data(),
-        message_hash.data() + static_cast<std::size_t>(std::tuple_size<result_type>::value / sizeof(std::uint32_t)),
+        transform_context.data(),
+        transform_context.data() + static_cast<std::size_t>(std::tuple_size<result_type>::value / sizeof(std::uint32_t)),
         result
       );
     }
@@ -78,7 +78,7 @@
   private:
     using context_type = std::array<std::uint32_t, static_cast<std::size_t>(std::tuple_size<result_type>::value / static_cast<std::size_t>(UINT8_C(4)))>;
 
-    context_type message_hash { };
+    context_type transform_context { };
 
     auto perform_algorithm() -> void override;
   };
@@ -86,8 +86,11 @@
   template <typename my_count_type>
   auto hash_sha1<my_count_type>::perform_algorithm() -> void
   {
-    // Apply the hash algorithm to a full data block.
-    constexpr std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(4))> constants
+    // Apply the hash transformation algorithm to a full data block.
+
+    using transform_constants_array_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(4))>;
+
+    constexpr transform_constants_array_type transform_constants
     {
       static_cast<std::uint32_t>(UINT32_C(0x5A827999)),
       static_cast<std::uint32_t>(UINT32_C(0x6ED9EBA1)),
@@ -95,9 +98,9 @@
       static_cast<std::uint32_t>(UINT32_C(0xCA62C1D6))
     };
 
-    using transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(base_class_type::message_buffer_static_size / static_cast<std::uint16_t>(UINT8_C(4)))>;
+    using transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(16))>;
 
-    transform_block_type transform_block;
+    transform_block_type transform_block { };
 
     detail::convert_uint8_input_to_uint32_output_reverse
     (
@@ -106,7 +109,7 @@
       transform_block.data()
     );
 
-    auto hash_tmp = message_hash;
+    auto hash_tmp = transform_context;
 
     auto loop_index = static_cast<std::uint8_t>(UINT8_C(0));
 
@@ -134,28 +137,28 @@
         else if(loop_counter == static_cast<std::uint8_t>(UINT8_C(60))) { loop_index = static_cast<std::uint8_t>(UINT8_C(3)); }
       }
 
-      const auto tmp32 =
+      const auto tmp1 =
         static_cast<std::uint32_t>
         (
-            detail::circular_left_shift<static_cast<unsigned>(UINT8_C(5))>(hash_tmp[0U])
+            detail::circular_left_shift<static_cast<unsigned>(UINT8_C(5))>(hash_tmp[static_cast<std::size_t>(UINT8_C(0))])
           + (transform_functions()[loop_index])(hash_tmp.data())
           + hash_tmp[static_cast<std::size_t>(UINT8_C(4))]
           + transform_block[static_cast<std::size_t>(loop_counter & static_cast<std::uint8_t>(UINT8_C(0x0F)))]
-          + constants[loop_index]
+          + transform_constants[loop_index]
         );
 
       hash_tmp[static_cast<std::size_t>(UINT8_C(4))] = hash_tmp[static_cast<std::size_t>(UINT8_C(3))];
       hash_tmp[static_cast<std::size_t>(UINT8_C(3))] = hash_tmp[static_cast<std::size_t>(UINT8_C(2))];
       hash_tmp[static_cast<std::size_t>(UINT8_C(2))] = detail::circular_left_shift<static_cast<unsigned>(UINT8_C(30))>(hash_tmp[static_cast<std::size_t>(UINT8_C(1))]);
       hash_tmp[static_cast<std::size_t>(UINT8_C(1))] = hash_tmp[static_cast<std::size_t>(UINT8_C(0))];
-      hash_tmp[static_cast<std::size_t>(UINT8_C(0))] = tmp32;
+      hash_tmp[static_cast<std::size_t>(UINT8_C(0))] = tmp1;
     }
 
     // Update the hash state with the transformation results.
-    std::transform(message_hash.cbegin     (),
-                   message_hash.cend       (),
+    std::transform(transform_context.cbegin(),
+                   transform_context.cend  (),
                    hash_tmp.cbegin         (),
-                   message_hash.begin      (),
+                   transform_context.begin (),
                    std::plus<std::uint32_t>());
 
     base_class_type::message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));

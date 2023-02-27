@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -74,68 +74,20 @@
 
     auto perform_algorithm() -> void override;
 
-    // BSIG0
-    static constexpr auto transform_function1(std::uint32_t x) -> std::uint32_t
-    {
-      return
-        static_cast<std::uint32_t>
-        (
-            detail::circular_right_shift<static_cast<unsigned>(UINT8_C( 2))>(x)
-          ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(13))>(x)
-          ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(22))>(x)
-        );
-    }
-
-    // BSIG1
-    static constexpr auto transform_function2(std::uint32_t x) -> std::uint32_t
-    {
-      return
-        static_cast<std::uint32_t>
-        (
-            detail::circular_right_shift<static_cast<unsigned>(UINT8_C( 6))>(x)
-          ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(11))>(x)
-          ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(25))>(x)
-        );
-    }
-
-    // SSIG0
-    static constexpr auto transform_function3(std::uint32_t x) -> std::uint32_t
-    {
-      return
-        static_cast<std::uint32_t>
-        (
-            detail::circular_right_shift<static_cast<unsigned>(UINT8_C(7))>(x)
-          ^ static_cast<std::uint32_t>
-            (
-                detail::circular_right_shift<static_cast<unsigned>(UINT8_C(18))>(x)
-              ^ static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT8_C(3)))
-            )
-        );
-    }
-
-    // SSIG1
-    static constexpr auto transform_function4(std::uint32_t x) -> std::uint32_t
-    {
-      return
-        static_cast<std::uint32_t>
-        (
-            detail::circular_right_shift<static_cast<unsigned>(UINT8_C(17))>(x)
-          ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(19))>(x)
-          ^ static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT8_C(10)))
-        );
-    }
+    static constexpr auto transform_function1(std::uint32_t x) -> std::uint32_t; // BSIG0
+    static constexpr auto transform_function2(std::uint32_t x) -> std::uint32_t; // BSIG1
+    static constexpr auto transform_function3(std::uint32_t x) -> std::uint32_t; // SSIG0
+    static constexpr auto transform_function4(std::uint32_t x) -> std::uint32_t; // SSIG1
   };
 
   template <typename my_count_type>
   auto hash_sha256<my_count_type>::perform_algorithm() -> void
   {
-    using local_transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(64))>;
+    // Apply the hash transformation algorithm to a full data block.
 
-    static constexpr std::size_t local_transform_block_size = std::tuple_size<local_transform_block_type>::value;
+    using transform_constants_array_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(64))>;
 
-    // Apply the hash256 transformation algorithm to a full data block.
-
-    constexpr local_transform_block_type transform_constants =
+    constexpr transform_constants_array_type transform_constants
     {
       UINT32_C(0x428A2F98), UINT32_C(0x71374491), UINT32_C(0xB5C0FBCF), UINT32_C(0xE9B5DBA5),
       UINT32_C(0x3956C25B), UINT32_C(0x59F111F1), UINT32_C(0x923F82A4), UINT32_C(0xAB1C5ED5),
@@ -155,7 +107,9 @@
       UINT32_C(0x90BEFFFA), UINT32_C(0xA4506CEB), UINT32_C(0xBEF9A3F7), UINT32_C(0xC67178F2)
     };
 
-    local_transform_block_type transform_block { };
+    using transform_block_type = std::array<std::uint32_t, static_cast<std::size_t>(UINT8_C(64))>;
+
+    transform_block_type transform_block { };
 
     detail::convert_uint8_input_to_uint32_output_reverse
     (
@@ -164,27 +118,31 @@
       transform_block.data()
     );
 
-    for(auto i = static_cast<std::size_t>(UINT8_C(16)); i < local_transform_block_size; ++i)
+    for(auto   loop_counter = static_cast<std::size_t>(UINT8_C(16));
+               loop_counter < std::tuple_size<transform_constants_array_type>::value;
+             ++loop_counter)
     {
-      transform_block[i] =
+      transform_block[loop_counter] =
         static_cast<std::uint32_t>
         (
-            transform_function4(transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C( 2)))])
-          +                     transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C( 7)))]
-          + transform_function3(transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C(15)))])
-          +                     transform_block[static_cast<std::size_t>(i - static_cast<std::size_t>(UINT8_C(16)))]
+            transform_function4(transform_block[static_cast<std::size_t>(loop_counter - static_cast<std::size_t>(UINT8_C( 2)))])
+          +                     transform_block[static_cast<std::size_t>(loop_counter - static_cast<std::size_t>(UINT8_C( 7)))]
+          + transform_function3(transform_block[static_cast<std::size_t>(loop_counter - static_cast<std::size_t>(UINT8_C(15)))])
+          +                     transform_block[static_cast<std::size_t>(loop_counter - static_cast<std::size_t>(UINT8_C(16)))]
         );
     }
 
     auto hash_tmp = transform_context;
 
-    for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < local_transform_block_size; ++i)
+    for(auto   loop_counter = static_cast<std::size_t>(UINT8_C(0));
+               loop_counter < std::tuple_size<transform_constants_array_type>::value;
+             ++loop_counter)
     {
       const auto tmp1 =
         static_cast<std::uint32_t>
         (
-            hash_tmp[7U]
-          + transform_function2(hash_tmp[4U])
+            hash_tmp[static_cast<std::size_t>(UINT8_C(7))]
+          + transform_function2(hash_tmp[static_cast<std::size_t>(UINT8_C(4))])
           + static_cast<std::uint32_t>
             (
               static_cast<std::uint32_t>
@@ -193,8 +151,8 @@
                 ^ static_cast<std::uint32_t>(static_cast<std::uint32_t>(~hash_tmp[static_cast<std::size_t>(UINT8_C(4))]) & hash_tmp[static_cast<std::size_t>(UINT8_C(6))])
               )
             )
-          + transform_constants[i]
-          + transform_block[i]
+          + transform_constants[loop_counter]
+          + transform_block    [loop_counter]
         );
 
       const auto tmp2 =
@@ -232,6 +190,61 @@
     base_class_type::message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
 
     base_class_type::message_index = static_cast<std::uint_least16_t>(UINT8_C(0));
+  }
+
+  template <typename my_count_type>
+  constexpr auto hash_sha256<my_count_type>::transform_function1(std::uint32_t x) -> std::uint32_t
+  {
+    // BSIG0
+    return
+      static_cast<std::uint32_t>
+      (
+          detail::circular_right_shift<static_cast<unsigned>(UINT8_C( 2))>(x)
+        ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(13))>(x)
+        ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(22))>(x)
+      );
+  }
+
+  template <typename my_count_type>
+  constexpr auto hash_sha256<my_count_type>::transform_function2(std::uint32_t x) -> std::uint32_t
+  {
+    // BSIG1
+    return
+      static_cast<std::uint32_t>
+      (
+          detail::circular_right_shift<static_cast<unsigned>(UINT8_C( 6))>(x)
+        ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(11))>(x)
+        ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(25))>(x)
+      );
+  }
+
+  template <typename my_count_type>
+  constexpr auto hash_sha256<my_count_type>::transform_function3(std::uint32_t x) -> std::uint32_t
+  {
+    // SSIG0
+    return
+      static_cast<std::uint32_t>
+      (
+          detail::circular_right_shift<static_cast<unsigned>(UINT8_C(7))>(x)
+        ^ static_cast<std::uint32_t>
+          (
+              detail::circular_right_shift<static_cast<unsigned>(UINT8_C(18))>(x)
+            ^ static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT8_C(3)))
+          )
+      );
+  }
+
+  template <typename my_count_type>
+  constexpr auto hash_sha256<my_count_type>::transform_function4(std::uint32_t x) -> std::uint32_t
+  {
+    // SSIG1
+    return
+      static_cast<std::uint32_t>
+      (
+          detail::circular_right_shift<static_cast<unsigned>(UINT8_C(17))>(x)
+        ^ detail::circular_right_shift<static_cast<unsigned>(UINT8_C(19))>(x)
+        ^ static_cast<std::uint32_t>(x >> static_cast<unsigned>(UINT8_C(10)))
+      );
   }
 
   } } } // namespace math::checksums::hash
