@@ -62,7 +62,68 @@
       }
     }
 
-    virtual auto finalize() -> void = 0;
+    auto finalize() -> void
+    {
+      message_block_type the_last_message_block;
+
+      std::copy(message_buffer.cbegin(),
+                message_buffer.cbegin() + message_index,
+                the_last_message_block.begin());
+
+      // Create the padding. Begin by setting the leading padding byte to 0x80.
+      the_last_message_block[message_index] = static_cast<std::uint8_t>(UINT8_C(0x80));
+
+      ++message_index;
+
+      // Fill the rest of the padding bytes with zero.
+      std::fill(the_last_message_block.begin() + message_index,
+                the_last_message_block.end(),
+                static_cast<std::uint8_t>(UINT8_C(0)));
+
+      // Do we need an extra block? If so, then transform the
+      // current block and pad an additional block.
+      if(message_index > static_cast<std::uint16_t>(message_buffer_static_size - 8U))
+      {
+        message_buffer = the_last_message_block;
+
+        perform_algorithm();
+
+        the_last_message_block.fill(static_cast<std::uint8_t>(UINT8_C(0)));
+      }
+
+      // Encode the number of bits. Simultaneously convert the number of bytes
+      // to the number of bits by performing a left-shift of 3 on the byte-array.
+      // The hash_sha1 stores the 8 bytes of the bit counter in reverse order,
+      // with the lowest byte being stored at the highest position of the buffer
+      auto carry = static_cast<std::uint8_t>(UINT8_C(0));
+
+      auto local_message_length_total = static_cast<std::uint64_t>(message_length_total);
+
+      std::for_each(the_last_message_block.rbegin(),
+                    the_last_message_block.rbegin() + static_cast<std::size_t>(UINT8_C(8)),
+                    [&carry, &local_message_length_total](std::uint8_t& the_byte)
+                    {
+                      const std::uint_least16_t the_word =
+                        static_cast<std::uint_least16_t>(local_message_length_total << static_cast<unsigned>(UINT8_C(3)));
+
+                      the_byte = static_cast<std::uint8_t>(the_word | carry);
+
+                      local_message_length_total >>= static_cast<unsigned>(UINT8_C(8));
+
+                      carry =
+                        static_cast<std::uint8_t>
+                        (
+                            static_cast<std::uint8_t>(the_word >> static_cast<unsigned>(UINT8_C(8)))
+                          & static_cast<std::uint8_t>(UINT8_C(0x07))
+                        );
+                    });
+
+      message_length_total = static_cast<count_type>(local_message_length_total);
+
+      message_buffer = the_last_message_block;
+
+      this->perform_algorithm();
+    }
 
     auto hash(const std::uint8_t* message, const count_type count) -> void
     {

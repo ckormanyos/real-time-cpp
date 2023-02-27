@@ -64,76 +64,15 @@
       message_hash[static_cast<std::size_t>(UINT8_C(4))] = static_cast<std::uint32_t>(UINT32_C(0xC3D2E1F0));
     }
 
-    auto finalize() -> void override
-    {
-      typename base_class_type::message_block_type the_last_message_block;
-
-      std::copy(base_class_type::message_buffer.cbegin(),
-                base_class_type::message_buffer.cbegin() + base_class_type::message_index,
-                the_last_message_block.begin());
-
-      // Create the padding. Begin by setting the leading padding byte to 0x80.
-      the_last_message_block[base_class_type::message_index] = static_cast<std::uint8_t>(UINT8_C(0x80));
-
-      ++base_class_type::message_index;
-
-      // Fill the rest of the padding bytes with zero.
-      std::fill(the_last_message_block.begin() + base_class_type::message_index,
-                the_last_message_block.end(),
-                static_cast<std::uint8_t>(UINT8_C(0)));
-
-      // Do we need an extra block? If so, then transform the
-      // current block and pad an additional block.
-      if(base_class_type::message_index > static_cast<std::uint16_t>(base_class_type::message_buffer_static_size - 8U))
-      {
-        base_class_type::message_buffer = the_last_message_block;
-
-        perform_algorithm();
-
-        the_last_message_block.fill(static_cast<std::uint8_t>(UINT8_C(0)));
-      }
-
-      // Encode the number of bits. Simultaneously convert the number of bytes
-      // to the number of bits by performing a left-shift of 3 on the byte-array.
-      // The hash_sha1 stores the 8 bytes of the bit counter in reverse order,
-      // with the lowest byte being stored at the highest position of the buffer
-      auto carry = static_cast<std::uint8_t>(UINT8_C(0));
-
-      auto local_message_length_total = static_cast<std::uint64_t>(base_class_type::message_length_total);
-
-      std::for_each(the_last_message_block.rbegin(),
-                    the_last_message_block.rbegin() + static_cast<std::size_t>(UINT8_C(8)),
-                    [&carry, &local_message_length_total](std::uint8_t& the_byte)
-                    {
-                      const std::uint_least16_t the_word =
-                        static_cast<std::uint_least16_t>(local_message_length_total << static_cast<unsigned>(UINT8_C(3)));
-
-                      the_byte = static_cast<std::uint8_t>(the_word | carry);
-
-                      local_message_length_total >>= static_cast<unsigned>(UINT8_C(8));
-
-                      carry =
-                        static_cast<std::uint8_t>
-                        (
-                            static_cast<std::uint8_t>(the_word >> static_cast<unsigned>(UINT8_C(8)))
-                          & static_cast<std::uint8_t>(UINT8_C(0x07))
-                        );
-                    });
-
-      base_class_type::message_length_total = static_cast<typename base_class_type::count_type>(local_message_length_total);
-
-      base_class_type::message_buffer = the_last_message_block;
-
-      perform_algorithm();
-    }
-
     auto get_result(typename result_type::pointer result) -> void
     {
       // Extract the hash result from the message digest state.
-      detail::convert_uint32_input_to_uint8_output_reverse(
+      detail::convert_uint32_input_to_uint8_output_reverse
+      (
         message_hash.data(),
         message_hash.data() + static_cast<std::size_t>(std::tuple_size<result_type>::value / sizeof(std::uint32_t)),
-        result);
+        result
+      );
     }
 
   private:
@@ -188,7 +127,7 @@
 
         const auto transform_block_index = static_cast<std::size_t>(loop_counter & std::uint8_t(UINT8_C(0x0F)));
 
-        transform_block[transform_block_index] = detail::circular_left_shift<1U>(the_dword);
+        transform_block[transform_block_index] = detail::circular_left_shift<static_cast<unsigned>(UINT8_C(1))>(the_dword);
 
         if     (loop_counter == static_cast<std::uint8_t>(UINT8_C(20))) { loop_index = static_cast<std::uint8_t>(UINT8_C(1)); }
         else if(loop_counter == static_cast<std::uint8_t>(UINT8_C(40))) { loop_index = static_cast<std::uint8_t>(UINT8_C(2)); }
@@ -198,9 +137,9 @@
       const auto tmp32 =
         static_cast<std::uint32_t>
         (
-            detail::circular_left_shift<5U>(hash_tmp[0U])
-          + transform_functions()[loop_index](hash_tmp.data())
-          + hash_tmp[4U]
+            detail::circular_left_shift<static_cast<unsigned>(UINT8_C(5))>(hash_tmp[0U])
+          + (transform_functions()[loop_index])(hash_tmp.data())
+          + hash_tmp[static_cast<std::size_t>(UINT8_C(4))]
           + transform_block[static_cast<std::size_t>(loop_counter & static_cast<std::uint8_t>(UINT8_C(0x0F)))]
           + constants[loop_index]
         );
@@ -218,6 +157,8 @@
                    hash_tmp.cbegin         (),
                    message_hash.begin      (),
                    std::plus<std::uint32_t>());
+
+    base_class_type::message_buffer.fill(static_cast<std::uint8_t>(UINT8_C(0)));
 
     base_class_type::message_index = static_cast<std::uint_least16_t>(UINT8_C(0));
   }

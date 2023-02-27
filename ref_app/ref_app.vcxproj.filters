@@ -928,6 +928,9 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cyl_bessel_j.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_hash_sha256.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2153,6 +2156,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\riscvfe310\mcal_wdg.h">
       <Filter>src\mcal\riscvfe310</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\hash\hash_sha256.h">
+      <Filter>src\math\checksums\hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

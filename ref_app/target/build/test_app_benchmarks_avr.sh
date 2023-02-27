@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2021.
+#  Copyright Christopher Kormanyos 2021 - 2023.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -38,6 +38,7 @@ avr-g++ -std=$STD -Wall $wflags -Os -g -gdwarf-2 -fno-exceptions -ffunction-sect
 avr-g++ -std=$STD -Wall $wflags -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -Wzero-as-null-pointer-constant -mmcu=atmega328p -mrelax -I./src/util/STL -I./src/mcal/avr -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_DECIMAL       -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_wide_decimal.cpp       ./src/mcal/mcal_gcc_cxx_completion.cpp -nostdlib  -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_wide_decimal.map       -T ./target/micros/avr/make/avr.ld -o ./bin/app_benchmark_wide_decimal.elf
 avr-g++ -std=$STD -Wall $wflags -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -Wzero-as-null-pointer-constant -mmcu=atmega328p -mrelax -I./src/util/STL -I./src/mcal/avr -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_WIDE_INTEGER       -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_wide_integer.cpp       ./src/mcal/mcal_gcc_cxx_completion.cpp -nostdlib  -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_wide_integer.map       -T ./target/micros/avr/make/avr.ld -o ./bin/app_benchmark_wide_integer.elf
 avr-g++ -std=$STD -Wall $wflags -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -Wzero-as-null-pointer-constant -mmcu=atmega328p -mrelax -I./src/util/STL -I./src/mcal/avr -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_trapezoid_integral.cpp ./src/mcal/mcal_gcc_cxx_completion.cpp -nostdlib  -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_trapezoid_integral.map -T ./target/micros/avr/make/avr.ld -o ./bin/app_benchmark_trapezoid_integral.elf
+avr-g++ -std=$STD -Wall $wflags -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -Wzero-as-null-pointer-constant -mmcu=atmega328p -mrelax -I./src/util/STL -I./src/mcal/avr -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_HASH_SHA256        -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_hash_sha256.cpp        ./src/mcal/mcal_gcc_cxx_completion.cpp -nostdlib  -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_hash_sha256.map        -T ./target/micros/avr/make/avr.ld -o ./bin/app_benchmark_hash_sha256.elf
 
 ls -la ./bin/app_benchmark_complex.elf ./bin/app_benchmark_complex.map
 result_ls_complex=$?
@@ -84,6 +85,9 @@ result_ls_wide_decimal=$?
 ls -la ./bin/app_benchmark_wide_integer.elf ./bin/app_benchmark_wide_integer.map
 result_ls_wide_integer=$?
 
+ls -la ./bin/app_benchmark_hash.elf ./bin/app_benchmark_hash_sha256.map
+result_ls_hash_sha256=$?
+
 echo "result_ls_complex           : "  "$result_ls_complex"
 echo "result_ls_crc               : "  "$result_ls_crc"
 echo "result_ls_fast_math         : "  "$result_ls_fast_math"
@@ -99,8 +103,9 @@ echo "result_ls_pi_spigot_single  : "  "$result_ls_pi_spigot_single"
 echo "result_ls_trapezoid_integral: "  "$result_ls_trapezoid_integral"
 echo "result_ls_wide_decimal      : "  "$result_ls_wide_decimal"
 echo "result_ls_wide_integer      : "  "$result_ls_wide_integer"
+echo "result_ls_hash_sha256       : "  "$result_ls_hash_sha256"
 
-result_total=$((result_ls_complex+result_ls_crc+result_ls_fast_math+result_ls_filter+result_ls_fixed_point+result_ls_float+result_ls_hash+result_ls_none+result_ls_pi_agm+result_ls_pi_spigot+result_ls_pi_spigot_single+result_ls_soft_double_h2f1+result_ls_trapezoid_integral+result_ls_wide_decimal+result_ls_wide_integer))
+result_total=$((result_ls_complex+result_ls_crc+result_ls_fast_math+result_ls_filter+result_ls_fixed_point+result_ls_float+result_ls_hash+result_ls_none+result_ls_pi_agm+result_ls_pi_spigot+result_ls_pi_spigot_single+result_ls_soft_double_h2f1+result_ls_trapezoid_integral+result_ls_wide_decimal+result_ls_wide_integer+result_ls_hash_sha256))
 
 echo "result_total                : "  "$result_total"
 
