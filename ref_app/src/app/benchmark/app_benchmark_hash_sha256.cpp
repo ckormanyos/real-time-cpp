@@ -7,14 +7,14 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH)
+#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH_SHA256)
 
-#include <math/checksums/hash/hash_sha1.h>
+#include <math/checksums/hash/hash_sha256.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>
 
 namespace
 {
-  using app_benchmark_hash_type = math::checksums::hash::hash_sha1<std::uint8_t>;
+  using app_benchmark_hash_type = math::checksums::hash::hash_sha256<std::uint8_t>;
 
   app_benchmark_hash_type app_benchmark_hash_object;
 
@@ -24,13 +24,14 @@ namespace
   const mcal::memory::progmem::array<std::uint8_t, std::tuple_size<app_benchmark_hash_result_type>::value>
   app_benchmark_hash_ctrl MY_PROGMEM =
   {
-    0xA9U, 0x99U, 0x3EU, 0x36U, 0x47U, 0x06U, 0x81U, 0x6AU,
-    0xBAU, 0x3EU, 0x25U, 0x71U, 0x78U, 0x50U, 0xC2U, 0x6CU,
-    0x9CU, 0xD0U, 0xD8U, 0x9DU
+    0xBAU, 0x78U, 0x16U, 0xBFU, 0x8FU, 0x01U, 0xCFU, 0xEAU,
+    0x41U, 0x41U, 0x40U, 0xDEU, 0x5DU, 0xAEU, 0x22U, 0x23U,
+    0xB0U, 0x03U, 0x61U, 0xA3U, 0x96U, 0x17U, 0x7AU, 0x9CU,
+    0xB4U, 0x10U, 0xFFU, 0x61U, 0xF2U, 0x00U, 0x15U, 0xADU
   };
 }
 
-auto app::benchmark::run_hash() -> bool
+auto app::benchmark::run_hash_sha256() -> bool
 {
   static constexpr std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(3))> app_benchmark_hash_data =
   {
@@ -56,17 +57,17 @@ auto app::benchmark::run_hash() -> bool
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
 int main()
 {
-  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_HASH -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_hash.cpp -o ./ref_app/bin/app_benchmark_hash.exe
+  // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE_HASH_SHA256 -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_hash.cpp -o ./ref_app/bin/app_benchmark_hash.exe
 
   auto result_is_ok = true;
 
   for(auto i = static_cast<unsigned>(UINT8_C(0)); i < static_cast<unsigned>(UINT8_C(64)); ++i)
   {
-    result_is_ok = (app::benchmark::run_hash() && result_is_ok);
+    result_is_ok = (app::benchmark::run_hash_sha256() && result_is_ok);
   }
 
   return (result_is_ok ? 0 : -1);
 }
 #endif
 
-#endif // APP_BENCHMARK_TYPE_HASH
+#endif // APP_BENCHMARK_TYPE_HASH_SHA256

@@ -200,6 +200,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_fixed_point.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_float.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_hash.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_hash_sha256.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_none.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_agm.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_pi_spigot.cpp" />
@@ -1060,6 +1061,7 @@
     <ClInclude Include="src\math\checksums\hash\hash_base.h" />
     <ClInclude Include="src\math\checksums\hash\hash_detail.h" />
     <ClInclude Include="src\math\checksums\hash\hash_sha1.h" />
+    <ClInclude Include="src\math\checksums\hash\hash_sha256.h" />
     <ClInclude Include="src\math\constants\constants.h" />
     <ClInclude Include="src\math\constants\constant_functions.h" />
     <ClInclude Include="src\math\constants\pi_spigot_base.h" />
