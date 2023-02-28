@@ -16,7 +16,7 @@ TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                            \
                 -finline-functions                             \
-                -finline-limit=8                               \
+                -finline-limit=64                              \
                 -ffast-math                                    \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \

@@ -14,7 +14,7 @@
 
 namespace
 {
-  using app_benchmark_hash_type = math::checksums::hash::hash_sha256<std::uint8_t>;
+  using app_benchmark_hash_type = math::checksums::hash::hash_sha256<std::uint_fast16_t>;
 
   app_benchmark_hash_type app_benchmark_hash_object;
 
