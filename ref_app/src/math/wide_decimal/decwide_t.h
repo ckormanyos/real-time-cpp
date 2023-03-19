@@ -654,12 +654,12 @@
 
           if(n2 != static_cast<unsigned>(UINT8_C(0)))
           {
-            my_mantissa_part |= 1U;
+            my_mantissa_part |= static_cast<unsigned>(UINT8_C(1));
           }
 
           if(i < static_cast<unsigned>(std::numeric_limits<native_float_type>::digits - 1))
           {
-            my_mantissa_part <<= 1U;
+            my_mantissa_part <<= static_cast<unsigned>(UINT8_C(1));
           }
         }
 
@@ -2770,7 +2770,7 @@
          && (x.my_exp == static_cast<exponent_type>(INT8_C(0))))
       {
         const auto it_non_zero = // NOLINT(llvm-qualified-auto,readability-qualified-auto)
-          std::find_if(x.my_data.cbegin() + 1U,
+          std::find_if(x.my_data.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(1)),
                        x.my_data.cend(),
                        [](const limb_type& d) // NOLINT(modernize-use-trailing-return-type)
                        {
@@ -2783,7 +2783,7 @@
               && (x.my_exp == static_cast<exponent_type>(-decwide_t_elem_digits10)))
       {
         const auto it_non_nine = // NOLINT(llvm-qualified-auto,readability-qualified-auto)
-          std::find_if(x.my_data.cbegin() + 1U,
+          std::find_if(x.my_data.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(1)),
                        x.my_data.cend(),
                        [](const limb_type& d) // NOLINT(modernize-use-trailing-return-type)
                        {
@@ -3517,7 +3517,7 @@
         my_exp =
           static_cast<exponent_type>
           (
-            std::strtoll(static_cast<const char*>(str.c_str() + (pos + 1U)), &ptr_end, 10) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+            std::strtoll(static_cast<const char*>(str.c_str() + static_cast<std::size_t>(pos + static_cast<std::string::size_type>(UINT8_C(1)))), &ptr_end, 10) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
           );
 
         str = str.substr(static_cast<std::size_t>(UINT8_C(0)), pos);
@@ -3634,7 +3634,7 @@
         if(str.at(static_cast<std::size_t>(UINT8_C(0))) == '.')
         {
           const auto it_non_zero =
-            std::find_if(str.cbegin() + 1U,
+            std::find_if(str.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(1)),
                          str.cend(),
                          [](const char& c) // NOLINT(modernize-use-trailing-return-type)
                          {
@@ -3645,7 +3645,7 @@
             static_cast<std::uint_fast32_t>
             (
               (str.at(static_cast<std::size_t>(UINT8_C(1))) == '0')
-                ? static_cast<std::uint_fast32_t>(std::distance((str.cbegin() + 1U), it_non_zero))
+                ? static_cast<std::uint_fast32_t>(std::distance((str.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(1))), it_non_zero))
                 : static_cast<std::uint_fast32_t>(UINT8_C(0))
             );
 
@@ -3703,7 +3703,7 @@
       // Make sure that there are enough digits for the decimal point shift.
       pos = str.find('.');
 
-      auto pos_plus_one = static_cast<std::ptrdiff_t>(pos + 1U);
+      auto pos_plus_one = static_cast<std::ptrdiff_t>(pos + static_cast<std::string::size_type>(UINT8_C(1)));
 
       if((static_cast<std::ptrdiff_t>(str.length()) - pos_plus_one) < n_shift)
       {
@@ -3946,7 +3946,7 @@
     {
       // Determine the number of elements needed to provide the requested digits from decwide_t.
       const std::uint_fast32_t number_of_elements =
-        (std::min)(static_cast<std::uint_fast32_t>((number_of_digits / static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)) + 2U),
+        (std::min)(static_cast<std::uint_fast32_t>(static_cast<std::uint_fast32_t>(number_of_digits / static_cast<std::uint_fast32_t>(decwide_t_elem_digits10)) + static_cast<std::uint_fast32_t>(UINT8_C(2))),
                    static_cast<std::uint_fast32_t>(decwide_t_elem_number));
 
       // Extract the remaining digits from decwide_t after the decimal point.
@@ -4275,7 +4275,7 @@
         {
           // This is a non-zero decimal less than 1 that needs zero extension.
           const auto it_non_zero =
-            std::find_if(str.cbegin() + 2U,
+            std::find_if(str.cbegin() + static_cast<std::ptrdiff_t>(INT8_C(2)),
                          str.cend(),
                          [](const char& c) // NOLINT(modernize-use-trailing-return-type)
                          {
@@ -4666,7 +4666,7 @@
       // Left-justify is the exception, std::right and std::internal justify right.
       const auto my_left =
       (
-        static_cast<local_flags_type>(ostrm_flags & std::ios::left) != static_cast<local_flags_type>(0U)
+        static_cast<local_flags_type>(ostrm_flags & std::ios::left) != static_cast<local_flags_type>(static_cast<unsigned>(UINT8_C(0)))
       );
 
       // Justify left or right and insert the fill characters.
@@ -4765,17 +4765,17 @@
       using std::sqrt;
 
       a      += sqrt(bB);
-      a      /= 2U;
+      a      /= static_cast<unsigned>(UINT8_C(2));
       val_pi  = a;
       val_pi *= a;
       bB      = val_pi;
       bB     -= t;
-      bB     *= 2U;
+      bB     *= static_cast<unsigned>(UINT8_C(2));
 
       floating_point_type iterate_term(bB);
 
       iterate_term -= val_pi;
-      iterate_term *= static_cast<unsigned long long>(1ULL << (k + 1U)); // NOLINT(google-runtime-int)
+      iterate_term *= static_cast<unsigned long long>(1ULL << (k + static_cast<unsigned>(UINT8_C(1)))); // NOLINT(google-runtime-int)
 
       s += iterate_term;
 
@@ -4814,7 +4814,7 @@
 
       t  = val_pi;
       t += bB;
-      t /= 4U;
+      t /= static_cast<unsigned>(UINT8_C(4));
     }
 
     val_pi += bB;
@@ -4943,7 +4943,7 @@
     // Set a0 = 1
     // Set b0 = 1 / (2^(m-2))
 
-    floating_point_type ak(1U);
+    floating_point_type ak(static_cast<unsigned>(UINT8_C(1)));
 
     constexpr auto n_times_factor =
       static_cast<float>
@@ -5022,7 +5022,7 @@
 
       using std::sqrt;
 
-      ak /= 2U;
+      ak /= static_cast<unsigned>(UINT8_C(2));
       bk *= ak_tmp;
       bk  = sqrt(bk);
     }
@@ -5048,17 +5048,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint8_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT8_C(69), UINT8_C(31), UINT8_C(47), UINT8_C(18),
-          UINT8_C( 5), UINT8_C(59), UINT8_C(94), UINT8_C(53), UINT8_C( 9), UINT8_C(41), UINT8_C(72), UINT8_C(32),
-          UINT8_C(12), UINT8_C(14), UINT8_C(58), UINT8_C(17), UINT8_C(65), UINT8_C(68), UINT8_C( 7), UINT8_C(55),
-          UINT8_C( 0), UINT8_C(13), UINT8_C(43), UINT8_C(60), UINT8_C(25), UINT8_C(52), UINT8_C(54), UINT8_C(12),
-          UINT8_C( 6), UINT8_C(80), UINT8_C( 0), UINT8_C(94), UINT8_C(93), UINT8_C(39), UINT8_C(36), UINT8_C(21),
-          UINT8_C(96), UINT8_C(96), UINT8_C(94), UINT8_C(71), UINT8_C(56), UINT8_C( 5), UINT8_C(86), UINT8_C(33),
-          UINT8_C(26), UINT8_C(99), UINT8_C(64), UINT8_C(18), UINT8_C(68), UINT8_C(75), UINT8_C(42), UINT8_C( 0),
+          static_cast<local_limb_type>(UINT8_C(69)), static_cast<local_limb_type>(UINT8_C(31)), static_cast<local_limb_type>(UINT8_C(47)), static_cast<local_limb_type>(UINT8_C(18)),
+          static_cast<local_limb_type>(UINT8_C( 5)), static_cast<local_limb_type>(UINT8_C(59)), static_cast<local_limb_type>(UINT8_C(94)), static_cast<local_limb_type>(UINT8_C(53)), static_cast<local_limb_type>(UINT8_C( 9)), static_cast<local_limb_type>(UINT8_C(41)), static_cast<local_limb_type>(UINT8_C(72)), static_cast<local_limb_type>(UINT8_C(32)),
+          static_cast<local_limb_type>(UINT8_C(12)), static_cast<local_limb_type>(UINT8_C(14)), static_cast<local_limb_type>(UINT8_C(58)), static_cast<local_limb_type>(UINT8_C(17)), static_cast<local_limb_type>(UINT8_C(65)), static_cast<local_limb_type>(UINT8_C(68)), static_cast<local_limb_type>(UINT8_C( 7)), static_cast<local_limb_type>(UINT8_C(55)),
+          static_cast<local_limb_type>(UINT8_C( 0)), static_cast<local_limb_type>(UINT8_C(13)), static_cast<local_limb_type>(UINT8_C(43)), static_cast<local_limb_type>(UINT8_C(60)), static_cast<local_limb_type>(UINT8_C(25)), static_cast<local_limb_type>(UINT8_C(52)), static_cast<local_limb_type>(UINT8_C(54)), static_cast<local_limb_type>(UINT8_C(12)),
+          static_cast<local_limb_type>(UINT8_C( 6)), static_cast<local_limb_type>(UINT8_C(80)), static_cast<local_limb_type>(UINT8_C( 0)), static_cast<local_limb_type>(UINT8_C(94)), static_cast<local_limb_type>(UINT8_C(93)), static_cast<local_limb_type>(UINT8_C(39)), static_cast<local_limb_type>(UINT8_C(36)), static_cast<local_limb_type>(UINT8_C(21)),
+          static_cast<local_limb_type>(UINT8_C(96)), static_cast<local_limb_type>(UINT8_C(96)), static_cast<local_limb_type>(UINT8_C(94)), static_cast<local_limb_type>(UINT8_C(71)), static_cast<local_limb_type>(UINT8_C(56)), static_cast<local_limb_type>(UINT8_C( 5)), static_cast<local_limb_type>(UINT8_C(86)), static_cast<local_limb_type>(UINT8_C(33)),
+          static_cast<local_limb_type>(UINT8_C(26)), static_cast<local_limb_type>(UINT8_C(99)), static_cast<local_limb_type>(UINT8_C(64)), static_cast<local_limb_type>(UINT8_C(18)), static_cast<local_limb_type>(UINT8_C(68)), static_cast<local_limb_type>(UINT8_C(75)), static_cast<local_limb_type>(UINT8_C(42)), static_cast<local_limb_type>(UINT8_C( 0)),
         },
         static_cast<typename floating_point_type::exponent_type>(INT8_C(-2))
       );
@@ -5073,17 +5075,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint16_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT16_C(6931), UINT16_C(4718),
-          UINT16_C( 559), UINT16_C(9453), UINT16_C( 941), UINT16_C(7232),
-          UINT16_C(1214), UINT16_C(5817), UINT16_C(6568), UINT16_C( 755),
-          UINT16_C(  13), UINT16_C(4360), UINT16_C(2552), UINT16_C(5412),
-          UINT16_C( 680), UINT16_C(  94), UINT16_C(9339), UINT16_C(3621),
-          UINT16_C(9696), UINT16_C(9471), UINT16_C(5605), UINT16_C(8633),
-          UINT16_C(2699), UINT16_C(6418), UINT16_C(6875), UINT16_C(4200),
+          static_cast<local_limb_type>(UINT16_C(6931)), static_cast<local_limb_type>(UINT16_C(4718)),
+          static_cast<local_limb_type>(UINT16_C( 559)), static_cast<local_limb_type>(UINT16_C(9453)), static_cast<local_limb_type>(UINT16_C( 941)), static_cast<local_limb_type>(UINT16_C(7232)),
+          static_cast<local_limb_type>(UINT16_C(1214)), static_cast<local_limb_type>(UINT16_C(5817)), static_cast<local_limb_type>(UINT16_C(6568)), static_cast<local_limb_type>(UINT16_C( 755)),
+          static_cast<local_limb_type>(UINT16_C(  13)), static_cast<local_limb_type>(UINT16_C(4360)), static_cast<local_limb_type>(UINT16_C(2552)), static_cast<local_limb_type>(UINT16_C(5412)),
+          static_cast<local_limb_type>(UINT16_C( 680)), static_cast<local_limb_type>(UINT16_C(  94)), static_cast<local_limb_type>(UINT16_C(9339)), static_cast<local_limb_type>(UINT16_C(3621)),
+          static_cast<local_limb_type>(UINT16_C(9696)), static_cast<local_limb_type>(UINT16_C(9471)), static_cast<local_limb_type>(UINT16_C(5605)), static_cast<local_limb_type>(UINT16_C(8633)),
+          static_cast<local_limb_type>(UINT16_C(2699)), static_cast<local_limb_type>(UINT16_C(6418)), static_cast<local_limb_type>(UINT16_C(6875)), static_cast<local_limb_type>(UINT16_C(4200)),
         },
         static_cast<typename floating_point_type::exponent_type>(INT8_C(-4))
       );
@@ -5098,17 +5102,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint32_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT32_C(69314718),
-          UINT32_C( 5599453), UINT32_C( 9417232),
-          UINT32_C(12145817), UINT32_C(65680755),
-          UINT32_C(  134360), UINT32_C(25525412),
-          UINT32_C( 6800094), UINT32_C(93393621),
-          UINT32_C(96969471), UINT32_C(56058633),
-          UINT32_C(26996418), UINT32_C(68754200),
+          static_cast<local_limb_type>(UINT32_C(69314718)),
+          static_cast<local_limb_type>(UINT32_C( 5599453)), static_cast<local_limb_type>(UINT32_C( 9417232)),
+          static_cast<local_limb_type>(UINT32_C(12145817)), static_cast<local_limb_type>(UINT32_C(65680755)),
+          static_cast<local_limb_type>(UINT32_C(  134360)), static_cast<local_limb_type>(UINT32_C(25525412)),
+          static_cast<local_limb_type>(UINT32_C( 6800094)), static_cast<local_limb_type>(UINT32_C(93393621)),
+          static_cast<local_limb_type>(UINT32_C(96969471)), static_cast<local_limb_type>(UINT32_C(56058633)),
+          static_cast<local_limb_type>(UINT32_C(26996418)), static_cast<local_limb_type>(UINT32_C(68754200)),
         },
         static_cast<typename floating_point_type::exponent_type>(INT8_C(-8))
       );
@@ -5123,17 +5129,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint8_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT8_C( 2),
-          UINT8_C(30), UINT8_C(25), UINT8_C(85), UINT8_C( 9), UINT8_C(29), UINT8_C(94), UINT8_C( 4), UINT8_C(56),
-          UINT8_C(84), UINT8_C( 1), UINT8_C(79), UINT8_C(91), UINT8_C(45), UINT8_C(46), UINT8_C(84), UINT8_C(36),
-          UINT8_C(42), UINT8_C( 7), UINT8_C(60), UINT8_C(11), UINT8_C( 1), UINT8_C(48), UINT8_C(86), UINT8_C(28),
-          UINT8_C(77), UINT8_C(29), UINT8_C(76), UINT8_C( 3), UINT8_C(33), UINT8_C(27), UINT8_C(90), UINT8_C( 9),
-          UINT8_C(67), UINT8_C(57), UINT8_C(26), UINT8_C( 9), UINT8_C(67), UINT8_C(73), UINT8_C(52), UINT8_C(48),
-          UINT8_C( 2), UINT8_C(35), UINT8_C(99), UINT8_C(72), UINT8_C( 5), UINT8_C( 8), UINT8_C(95), UINT8_C(98),
+          static_cast<local_limb_type>(UINT8_C( 2)),
+          static_cast<local_limb_type>(UINT8_C(30)), static_cast<local_limb_type>(UINT8_C(25)), static_cast<local_limb_type>(UINT8_C(85)), static_cast<local_limb_type>(UINT8_C( 9)), static_cast<local_limb_type>(UINT8_C(29)), static_cast<local_limb_type>(UINT8_C(94)), static_cast<local_limb_type>(UINT8_C( 4)), static_cast<local_limb_type>(UINT8_C(56)),
+          static_cast<local_limb_type>(UINT8_C(84)), static_cast<local_limb_type>(UINT8_C( 1)), static_cast<local_limb_type>(UINT8_C(79)), static_cast<local_limb_type>(UINT8_C(91)), static_cast<local_limb_type>(UINT8_C(45)), static_cast<local_limb_type>(UINT8_C(46)), static_cast<local_limb_type>(UINT8_C(84)), static_cast<local_limb_type>(UINT8_C(36)),
+          static_cast<local_limb_type>(UINT8_C(42)), static_cast<local_limb_type>(UINT8_C( 7)), static_cast<local_limb_type>(UINT8_C(60)), static_cast<local_limb_type>(UINT8_C(11)), static_cast<local_limb_type>(UINT8_C( 1)), static_cast<local_limb_type>(UINT8_C(48)), static_cast<local_limb_type>(UINT8_C(86)), static_cast<local_limb_type>(UINT8_C(28)),
+          static_cast<local_limb_type>(UINT8_C(77)), static_cast<local_limb_type>(UINT8_C(29)), static_cast<local_limb_type>(UINT8_C(76)), static_cast<local_limb_type>(UINT8_C( 3)), static_cast<local_limb_type>(UINT8_C(33)), static_cast<local_limb_type>(UINT8_C(27)), static_cast<local_limb_type>(UINT8_C(90)), static_cast<local_limb_type>(UINT8_C( 9)),
+          static_cast<local_limb_type>(UINT8_C(67)), static_cast<local_limb_type>(UINT8_C(57)), static_cast<local_limb_type>(UINT8_C(26)), static_cast<local_limb_type>(UINT8_C( 9)), static_cast<local_limb_type>(UINT8_C(67)), static_cast<local_limb_type>(UINT8_C(73)), static_cast<local_limb_type>(UINT8_C(52)), static_cast<local_limb_type>(UINT8_C(48)),
+          static_cast<local_limb_type>(UINT8_C( 2)), static_cast<local_limb_type>(UINT8_C(35)), static_cast<local_limb_type>(UINT8_C(99)), static_cast<local_limb_type>(UINT8_C(72)), static_cast<local_limb_type>(UINT8_C( 5)), static_cast<local_limb_type>(UINT8_C( 8)), static_cast<local_limb_type>(UINT8_C(95)), static_cast<local_limb_type>(UINT8_C(98)),
         }
       );
   }
@@ -5147,17 +5155,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint16_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT16_C(   2),
-          UINT16_C(3025), UINT16_C(8509), UINT16_C(2994), UINT16_C( 456),
-          UINT16_C(8401), UINT16_C(7991), UINT16_C(4546), UINT16_C(8436),
-          UINT16_C(4207), UINT16_C(6011), UINT16_C( 148), UINT16_C(8628),
-          UINT16_C(7729), UINT16_C(7603), UINT16_C(3327), UINT16_C(9009),
-          UINT16_C(6757), UINT16_C(2609), UINT16_C(6773), UINT16_C(5248),
-          UINT16_C( 235), UINT16_C(9972), UINT16_C( 508), UINT16_C(9598)
+          static_cast<local_limb_type>(UINT16_C(   2)),
+          static_cast<local_limb_type>(UINT16_C(3025)), static_cast<local_limb_type>(UINT16_C(8509)), static_cast<local_limb_type>(UINT16_C(2994)), static_cast<local_limb_type>(UINT16_C( 456)),
+          static_cast<local_limb_type>(UINT16_C(8401)), static_cast<local_limb_type>(UINT16_C(7991)), static_cast<local_limb_type>(UINT16_C(4546)), static_cast<local_limb_type>(UINT16_C(8436)),
+          static_cast<local_limb_type>(UINT16_C(4207)), static_cast<local_limb_type>(UINT16_C(6011)), static_cast<local_limb_type>(UINT16_C( 148)), static_cast<local_limb_type>(UINT16_C(8628)),
+          static_cast<local_limb_type>(UINT16_C(7729)), static_cast<local_limb_type>(UINT16_C(7603)), static_cast<local_limb_type>(UINT16_C(3327)), static_cast<local_limb_type>(UINT16_C(9009)),
+          static_cast<local_limb_type>(UINT16_C(6757)), static_cast<local_limb_type>(UINT16_C(2609)), static_cast<local_limb_type>(UINT16_C(6773)), static_cast<local_limb_type>(UINT16_C(5248)),
+          static_cast<local_limb_type>(UINT16_C( 235)), static_cast<local_limb_type>(UINT16_C(9972)), static_cast<local_limb_type>(UINT16_C( 508)), static_cast<local_limb_type>(UINT16_C(9598))
         }
       );
   }
@@ -5171,17 +5181,19 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, std::uint32_t, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
+    using local_limb_type = typename floating_point_type::limb_type;
+
     return
       floating_point_type::from_lst
       (
         {
-          UINT32_C(       2),
-          UINT32_C(30258509), UINT32_C(29940456),
-          UINT32_C(84017991), UINT32_C(45468436),
-          UINT32_C(42076011), UINT32_C( 1488628),
-          UINT32_C(77297603), UINT32_C(33279009),
-          UINT32_C(67572609), UINT32_C(67735248),
-          UINT32_C( 2359972), UINT32_C( 5089598)
+          static_cast<local_limb_type>(UINT32_C(       2)),
+          static_cast<local_limb_type>(UINT32_C(30258509)), static_cast<local_limb_type>(UINT32_C(29940456)),
+          static_cast<local_limb_type>(UINT32_C(84017991)), static_cast<local_limb_type>(UINT32_C(45468436)),
+          static_cast<local_limb_type>(UINT32_C(42076011)), static_cast<local_limb_type>(UINT32_C( 1488628)),
+          static_cast<local_limb_type>(UINT32_C(77297603)), static_cast<local_limb_type>(UINT32_C(33279009)),
+          static_cast<local_limb_type>(UINT32_C(67572609)), static_cast<local_limb_type>(UINT32_C(67735248)),
+          static_cast<local_limb_type>(UINT32_C( 2359972)), static_cast<local_limb_type>(UINT32_C( 5089598))
         }
       );
   }
@@ -6017,7 +6029,7 @@
         static_cast<local_exponent_type>
         (
             static_cast<local_exponent_type>(std::numeric_limits<floating_point_type>::digits10)
-          + static_cast<local_exponent_type>(5)
+          + static_cast<local_exponent_type>(INT8_C(5))
         );
 
       const auto y =
@@ -6092,9 +6104,9 @@
             exp
             (
                 x
-              + (ln_two<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>() * 2U)
+              + (ln_two<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>() * static_cast<unsigned>(UINT8_C(2)))
             )
-            / 4U;
+            / static_cast<unsigned>(UINT8_C(4));
         }
         else
         {
@@ -6104,7 +6116,7 @@
                 x
               + ln_two<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>()
             )
-            / 2U;
+            / static_cast<unsigned>(UINT8_C(2));
         }
       }
       else
@@ -6200,7 +6212,7 @@
 
       // Compute the exponential series of the scaled argument.
       // The scaling is 2^11 = 2048.
-      const auto p2 = static_cast<std::uint32_t>(UINTMAX_C(1) << 11U);
+      const auto p2 = static_cast<std::uint32_t>(UINTMAX_C(1) << static_cast<unsigned>(UINT8_C(11)));
 
       // Compute the series representation of Hypergeometric0F0 taken from
       // http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric0F0/06/01/
@@ -6295,9 +6307,9 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
-    const floating_point_type ep = exp(x);
+    const auto ep = exp(x);
 
-    return (ep - floating_point_type(ep).calculate_inv()) / 2U;
+    return (ep - floating_point_type(ep).calculate_inv()) / static_cast<unsigned>(UINT8_C(2));
   }
 
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
@@ -6306,9 +6318,9 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
-    const floating_point_type ep = exp(x);
+    const auto ep = exp(x);
 
-    return (ep + floating_point_type(ep).calculate_inv()) / 2U;
+    return (ep + floating_point_type(ep).calculate_inv()) / static_cast<unsigned>(UINT8_C(2));
   }
 
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
@@ -6317,8 +6329,8 @@
     using floating_point_type =
       decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
 
-    const floating_point_type ep = exp(x);
-    const floating_point_type em(floating_point_type(ep).calculate_inv());
+    const auto ep = exp(x);
+    const auto em(floating_point_type(ep).calculate_inv());
 
     return (ep - em) / (ep + em);
   }
@@ -6333,14 +6345,14 @@
     floating_point_type result;
 
     if     (p <  static_cast<std::int64_t>(INT8_C(0))) { result = pow(b, -p).calculate_inv(); }
-    else if(p == static_cast<std::int64_t>(INT8_C(0))) { result = floating_point_type(1U); }
+    else if(p == static_cast<std::int64_t>(INT8_C(0))) { result = floating_point_type(static_cast<unsigned>(UINT8_C(1))); }
     else if(p == static_cast<std::int64_t>(INT8_C(1))) { result = b; }
     else if(p == static_cast<std::int64_t>(INT8_C(2))) { result = b; result *= b; }
     else if(p == static_cast<std::int64_t>(INT8_C(3))) { result = b; result *= b; result *= b; }
     else if(p == static_cast<std::int64_t>(INT8_C(4))) { result = b; result *= b; result *= result; }
     else
     {
-      result = floating_point_type(1U);
+      result = floating_point_type(static_cast<unsigned>(UINT8_C(1)));
 
       floating_point_type y(b);
 
@@ -6350,14 +6362,14 @@
       for(;;)
       {
         const auto do_power_multiply =
-          (static_cast<std::uint_fast8_t>(p_local & 1U) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
+          (static_cast<std::uint_fast8_t>(p_local & static_cast<unsigned>(UINT8_C(1))) != static_cast<std::uint_fast8_t>(UINT8_C(0)));
 
         if(do_power_multiply)
         {
           result *= y;
         }
 
-        p_local >>= 1U;
+        p_local >>= static_cast<unsigned>(UINT8_C(1));
 
         if(p_local == static_cast<std::uint64_t>(UINT8_C(0)))
         {

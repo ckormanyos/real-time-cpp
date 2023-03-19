@@ -2957,7 +2957,7 @@
 
         ++dst;
 
-        tu >>= 4;
+        tu >>= static_cast<unsigned>(UINT8_C(4));
       }
 
       return dst;
@@ -4283,7 +4283,7 @@
 
         const auto n   = static_cast<local_uint_index_type>                                   (number_of_limbs - v_offset);
         const auto m   = static_cast<local_uint_index_type>(static_cast<local_uint_index_type>(number_of_limbs - u_offset) - n);
-        const auto vj0 = static_cast<local_uint_index_type>(static_cast<local_uint_index_type>(number_of_limbs - 1U) - v_offset);
+        const auto vj0 = static_cast<local_uint_index_type>(static_cast<local_uint_index_type>(n - static_cast<local_uint_index_type>(UINT8_C(1))));
 
         auto vv_at_vj0_it = detail::advance_and_point(vv.cbegin(), static_cast<size_t>(vj0)); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
@@ -4332,7 +4332,7 @@
           // Replace u[j, ... j + n] by u[j, ... j + n] - q_hat * v[1, ... n].
 
           // Set nv = q_hat * (v[1, ... n]).
-          uu_array_type nv;
+          uu_array_type nv { };
 
           *(nv.begin() + static_cast<size_t>(n)) = eval_multiply_1d(nv.begin(), vv.cbegin(), q_hat, n);
 
@@ -4341,7 +4341,6 @@
                             detail::advance_and_point(uu.cbegin(), static_cast<size_t>(static_cast<local_uint_index_type>(uj - n))),
                             nv.cbegin(),
                             n + 1U);
-
 
           // Step D5: Test the remainder.
           // Set the result value: Set result.m_data[m - j] = q_hat.
@@ -4639,7 +4638,7 @@
             {
               const auto uc_oct = static_cast<std::uint8_t>(c - static_cast<char>(UINT8_C(0x30)));
 
-              operator<<=(3U);
+              operator<<=(static_cast<unsigned>(UINT8_C(3)));
 
               *values.begin() = static_cast<limb_type>(*values.begin() | uc_oct);
             }
@@ -4673,7 +4672,7 @@
               else if(char_is_a_to_f_hi) { uc_hex = static_cast<std::uint8_t>(c - static_cast<char>(UINT8_C(  55))); }
               else if(char_is_0_to_9)    { uc_hex = static_cast<std::uint8_t>(c - static_cast<char>(UINT8_C(0x30))); }
 
-              operator<<=(4U);
+              operator<<=(static_cast<unsigned>(UINT8_C(4)));
 
               *values.begin() = static_cast<limb_type>(*values.begin() | uc_hex);
             }
@@ -4920,13 +4919,13 @@
 
     local_wide_integer_type remainder;
 
-    local_wide_integer_type((!u_is_neg) ? u : -u).eval_divide_by_single_limb(v, 0U, &remainder);
+    local_wide_integer_type((!u_is_neg) ? u : -u).eval_divide_by_single_limb(v, static_cast<unsigned_fast_type>(UINT8_C(0)), &remainder);
 
     using local_limb_type = typename local_wide_integer_type::limb_type;
 
     auto u_rem = static_cast<local_limb_type>(remainder);
 
-    return ((!u_is_neg) ? u_rem : static_cast<local_limb_type>(static_cast<local_limb_type>(~u_rem) + 1U));
+    return ((!u_is_neg) ? u_rem : static_cast<local_limb_type>(static_cast<local_limb_type>(~u_rem) + static_cast<local_limb_type>(UINT8_C(1))));
   }
 
   template<typename IntegralType, const size_t Width2, typename LimbType, typename AllocatorType, const bool IsSigned>
@@ -5273,7 +5272,7 @@
     // on the lowest bit position of the fundamental type.
     while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(mask) & static_cast<std::uint_fast8_t>(UINT8_C(1))) == static_cast<std::uint_fast8_t>(UINT8_C(0))) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
     {
-      mask = static_cast<local_unsigned_integral_type>(mask >> 1U);
+      mask = static_cast<local_unsigned_integral_type>(mask >> static_cast<unsigned>(UINT8_C(1)));
 
       ++result;
     }
@@ -5509,7 +5508,7 @@
       {
         s = u;
 
-        u = (s + (m / s)) >> 1;
+        u = (s + (m / s)) >> static_cast<unsigned>(UINT8_C(1));
 
         if(u >= s) { break; } // LCOV_EXCL_LINE
       }
@@ -5580,7 +5579,7 @@
           m_over_s_pow_3_minus_one /= s;
         }
 
-        u = ((s * three_minus_one) + m_over_s_pow_3_minus_one) / 3U;
+        u = ((s * three_minus_one) + m_over_s_pow_3_minus_one) / static_cast<unsigned>(UINT8_C(3));
 
         if(u >= s) { break; }
       }
@@ -5687,7 +5686,7 @@
 
     if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(0)))
     {
-      result = local_wide_integer_type(static_cast<std::uint8_t>(1U));
+      result = local_wide_integer_type(static_cast<std::uint8_t>(UINT8_C(1)));
     }
     else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(1)))
     {
@@ -5705,7 +5704,7 @@
       local_wide_integer_type y      (b);
       local_wide_integer_type p_local(p);
 
-      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != 0U)) // NOLINT(altera-id-dependent-backward-branch)
+      while(((p0 = static_cast<local_limb_type>(p_local)) != static_cast<local_limb_type>(UINT8_C(0))) || (p_local != static_cast<local_wide_integer_type>(UINT8_C(0)))) // NOLINT(altera-id-dependent-backward-branch)
       {
         if(static_cast<unsigned_fast_type>(p0 & static_cast<local_limb_type>(UINT8_C(1))) != static_cast<unsigned_fast_type>(UINT8_C(0)))
         {
@@ -5745,7 +5744,7 @@
 
     if((p0 == static_cast<local_limb_type>(UINT8_C(0))) && (p == static_cast<OtherIntegralTypeP>(0)))
     {
-      result = local_normal_width_type((m != 1U) ? static_cast<std::uint8_t>(1U) : static_cast<std::uint8_t>(UINT8_C(0)));
+      result = local_normal_width_type((m != static_cast<unsigned>(UINT8_C(1))) ? static_cast<std::uint8_t>(UINT8_C(1)) : static_cast<std::uint8_t>(UINT8_C(0)));
     }
     else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(1)))
     {
@@ -5760,10 +5759,12 @@
     }
     else
     {
-      local_double_width_type x      (static_cast<std::uint8_t>(UINT8_C(1)));
-      OtherIntegralTypeP      p_local(p);
+      using local_other_integral_p_type = OtherIntegralTypeP;
 
-      while(((p0 = static_cast<local_limb_type>(p_local)) != 0U) || (p_local != static_cast<OtherIntegralTypeP>(0))) // NOLINT(altera-id-dependent-backward-branch)
+      local_double_width_type     x      (static_cast<std::uint8_t>(UINT8_C(1)));
+      local_other_integral_p_type p_local(p);
+
+      while(((p0 = static_cast<local_limb_type>(p_local)) != static_cast<local_limb_type>(UINT8_C(0))) || (p_local != static_cast<local_other_integral_p_type>(0))) // NOLINT(altera-id-dependent-backward-branch)
       {
         if(static_cast<unsigned_fast_type>(p0 & static_cast<local_limb_type>(UINT8_C(1))) != static_cast<unsigned_fast_type>(UINT8_C(0)))
         {
@@ -5841,9 +5842,9 @@
 
       v -= u;
 
-      while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(v) & UINT8_C(1)) == UINT8_C(0)) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
+      while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(v) & static_cast<std::uint_fast8_t>(UINT8_C(1))) == static_cast<std::uint_fast8_t>(UINT8_C(0))) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
       {
-        v >>= 1U;
+        v >>= static_cast<unsigned>(UINT8_C(1));
       }
     }
 
@@ -6289,13 +6290,13 @@
 
       constexpr auto digits_generator_result_type = static_cast<std::uint32_t>(GeneratorResultBits);
 
-      static_assert((digits_generator_result_type % UINT32_C(8)) == UINT32_C(0),
+      static_assert(static_cast<std::uint32_t>(digits_generator_result_type % static_cast<std::uint32_t>(UINT8_C(8))) == static_cast<std::uint32_t>(UINT32_C(0)),
                     "Error: Generator result type must have a multiple of 8 bits.");
 
       constexpr auto digits_limb_ratio =
-        static_cast<std::uint32_t>(std::numeric_limits<local_limb_type>::digits / 8U);
+        static_cast<std::uint32_t>(std::numeric_limits<local_limb_type>::digits / static_cast<int>(INT8_C(8)));
 
-      constexpr auto digits_gtor_ratio = static_cast<std::uint32_t>(digits_generator_result_type / 8U);
+      constexpr auto digits_gtor_ratio = static_cast<std::uint32_t>(digits_generator_result_type / static_cast<std::uint32_t>(UINT8_C(8)));
 
       generator_result_type value = generator_result_type();
 
@@ -6539,7 +6540,7 @@
 
       const auto fn0 = static_cast<local_limb_type>(fn);
 
-      if((fn0 != 1U) && (fn != 1U))
+      if((fn0 != static_cast<local_limb_type>(UINT8_C(1))) && (fn != 1U))
       {
         return false;
       }
@@ -6572,7 +6573,7 @@
       {
         const local_limb_type y0(y);
 
-        if((y0 == 1U) && (y == 1U))
+        if((y0 == static_cast<local_limb_type>(UINT8_C(1))) && (y == 1U))
         {
           if(j != static_cast<unsigned_fast_type>(UINT8_C(0)))
           {
