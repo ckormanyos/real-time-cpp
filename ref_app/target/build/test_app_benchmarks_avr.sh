@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 #
 #  Copyright Christopher Kormanyos 2021 - 2023.
 #  Distributed under the Boost Software License,
