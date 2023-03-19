@@ -29,7 +29,7 @@
     public:
       using tick_type = unsigned_tick_type;
 
-      template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return value_microseconds; }
+      template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return static_cast<tick_type>(value_microseconds); }
       template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
       template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
       template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      noexcept -> tick_type { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }

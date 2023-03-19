@@ -15,7 +15,7 @@ OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
 OUTPUT_ARCH(riscv)
 
 __STACK_START_ADDRESS = 0x80000000;
-__STACK_SIZE = 2K;
+__STACK_SIZE = 4K;
 
 __RAM_START_ADDRESS = 0x80000000 + __STACK_SIZE;
 __RAM_SIZE =  16K - __STACK_SIZE;

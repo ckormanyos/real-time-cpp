@@ -83,8 +83,13 @@
       // available for storing the total bit count. So we must
       // transform the current block, then create and pad yet another
       // additional block.
+      const auto message_top =
+        static_cast<std::uint16_t>
+        (
+          message_index + static_cast<std::uint_least16_t>(message_length_total_width())
+        );
 
-      if(static_cast<std::uint16_t>(message_index + static_cast<std::uint_least16_t>(message_length_total_width())) > message_buffer_static_size())
+      if(message_top > message_buffer_static_size())
       {
         my_perform_algorithm();
       }
@@ -97,7 +102,7 @@
       auto carry = static_cast<std::uint_fast8_t>(UINT8_C(0));
 
       for(auto   ri  = message_buffer.rbegin();
-                 ri != message_buffer.rbegin() + message_length_total_width();
+                 ri != message_buffer.rbegin() + static_cast<std::size_t>(message_length_total_width());
                ++ri)
       {
         const std::uint_least16_t the_word =

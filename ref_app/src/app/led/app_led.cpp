@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,14 +20,18 @@ namespace local
 {
   using app_led_timer_type = util::timer<std::uint32_t>;
 
+  using app_led_tick_type = typename app_led_timer_type::tick_type;
+
   auto app_led_timer() noexcept -> app_led_timer_type&;
 } // namespace local
 
 auto local::app_led_timer() noexcept -> app_led_timer_type&
 {
-  using local_app_led_tick_type = typename app_led_timer_type::tick_type;
-
-  static app_led_timer_type local_app_led_timer(app_led_timer_type::seconds(static_cast<local_app_led_tick_type>(UINT8_C(1))));
+  static auto local_app_led_timer =
+    static_cast<app_led_timer_type>
+    (
+      app_led_timer_type::seconds(static_cast<app_led_tick_type>(UINT8_C(1)))
+    );
 
   return local_app_led_timer;
 }
@@ -41,7 +45,10 @@ auto app::led::task_func() -> void
 {
   if(local::app_led_timer().timeout())
   {
-    local::app_led_timer().start_interval(local::app_led_timer_type::seconds(1U));
+    local::app_led_timer().start_interval
+    (
+      local::app_led_timer_type::seconds(static_cast<local::app_led_tick_type>(UINT8_C(1)))
+    );
 
     mcal::led::led0().toggle();
   }

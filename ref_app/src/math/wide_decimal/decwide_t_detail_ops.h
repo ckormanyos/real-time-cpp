@@ -290,7 +290,7 @@
           static_cast<local_double_limb_type>
           (
               static_cast<local_double_limb_type>(a[i])
-            * b[count_minus_one - static_cast<std::int32_t>(i - j)]
+            * b[count_minus_one - static_cast<std::int_fast32_t>(i - j)]
           );
       }
 
