@@ -12,7 +12,6 @@
 
 void mcal::wdg::init(const config_type*)
 {
-  #if 0
   // Write access to the IWDG_PR and IWDG_RLR registers is protected
   // Register access unlock protection
   mcal::reg::reg_access_static<std::uint32_t,
@@ -51,16 +50,13 @@ void mcal::wdg::init(const config_type*)
                                  mcal::reg::iwdg_sr>::reg_get();
 
   static_cast<void>(dummy_read);
-  #endif
 }
 
 void mcal::wdg::secure::trigger()
 {
-  #if 0
   // Reload the watchdog counter with value in iwdg_rlr
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::iwdg_kr,
                                0x0000AAAAUL>::reg_set();
-  #endif
 }
