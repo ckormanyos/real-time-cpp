@@ -225,6 +225,12 @@ int main()
 
   return (result_is_ok ? 0 : -1);
 }
+
+auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
+{
+  return mcal::gpt::value_type { };
+}
+
 #endif
 
 #endif // APP_BENCHMARK_TYPE_HASH_SHA256
