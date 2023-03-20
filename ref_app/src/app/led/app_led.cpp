@@ -30,7 +30,7 @@ auto local::app_led_timer() noexcept -> app_led_timer_type&
   static auto local_app_led_timer =
     static_cast<app_led_timer_type>
     (
-      app_led_timer_type::seconds(static_cast<app_led_tick_type>(UINT8_C(8)))
+      app_led_timer_type::seconds(static_cast<app_led_tick_type>(UINT8_C(1)))
     );
 
   return local_app_led_timer;
@@ -47,7 +47,7 @@ auto app::led::task_func() -> void
   {
     local::app_led_timer().start_interval
     (
-      local::app_led_timer_type::seconds(static_cast<local::app_led_tick_type>(UINT8_C(8)))
+      local::app_led_timer_type::seconds(static_cast<local::app_led_tick_type>(UINT8_C(1)))
     );
 
     mcal::led::led0().toggle();

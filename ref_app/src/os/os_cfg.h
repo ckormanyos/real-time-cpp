@@ -69,15 +69,15 @@
     {                                                                                             \
       os::task_control_block(app::led::task_init,                                                 \
                              app::led::task_func,                                                 \
-                             os::timer_type::microseconds(UINT32_C( 112000)),                     \
+                             os::timer_type::microseconds(UINT32_C(   4000)),                     \
                              os::timer_type::microseconds(UINT32_C(      0))),                    \
       os::task_control_block(app::benchmark::task_init,                                           \
                              app::benchmark::task_func,                                           \
-                             os::timer_type::microseconds(UINT32_C(7000000)),                     \
+                             os::timer_type::microseconds(UINT32_C( 750000)),                     \
                              os::timer_type::microseconds(UINT32_C(    379))),                    \
       os::task_control_block(sys::mon::task_init,                                                 \
                              sys::mon::task_func,                                                 \
-                             os::timer_type::microseconds(UINT32_C( 627000)),                     \
+                             os::timer_type::microseconds(UINT32_C(  27000)),                     \
                              os::timer_type::microseconds(UINT32_C(    541))),                    \
     }                                                                                             \
   }
