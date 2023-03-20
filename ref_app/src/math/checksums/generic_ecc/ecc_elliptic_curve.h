@@ -317,11 +317,8 @@ namespace generic_ecc
       using local_distribution_type = WIDE_INTEGER_NAMESPACE::math::wide_integer::uniform_int_distribution<local_wide_unsigned_integer_type::my_width2, typename local_wide_unsigned_integer_type::limb_type>;
 
       using local_random_engine_type = std::linear_congruential_engine<std::uint32_t, UINT32_C(48271), UINT32_C(0), UINT32_C(2147483647)>;
-      using local_random_device_type = std::random_device;
 
-      local_random_device_type dev;
-
-      const auto seed_value = static_cast<typename local_random_engine_type::result_type>(dev());
+      const auto seed_value = static_cast<typename local_random_engine_type::result_type>(static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE)));
 
       local_random_engine_type generator(seed_value);
 
