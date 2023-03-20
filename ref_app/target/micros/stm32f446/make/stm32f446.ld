@@ -22,7 +22,7 @@ _rom_end   = _rom_begin + _rom_size;
 
 /* The beginning and end (i.e., the top) of the stack */
 /* Set up a stack with a size of 4K */
-_stack_begin = 0x20007000;
+_stack_begin = 0x20004000;
 _stack_end   = 0x20008000;
 
 __initial_stack_pointer = _stack_end - 4;
@@ -31,7 +31,7 @@ MEMORY
 {
   VEC(rx)  : ORIGIN = 0x08000000, LENGTH = 0x300
   ROM(rx)  : ORIGIN = 0x08000300, LENGTH = _rom_size - 0x300
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x4000
 }
 
 SECTIONS

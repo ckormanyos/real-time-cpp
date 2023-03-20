@@ -15,6 +15,7 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                            
              $(PATH_APP)/app/benchmark/app_benchmark_boost_multiprecision_cbrt       \
              $(PATH_APP)/app/benchmark/app_benchmark_complex                         \
              $(PATH_APP)/app/benchmark/app_benchmark_crc                             \
+             $(PATH_APP)/app/benchmark/app_benchmark_ecc_generic_ecc                 \
              $(PATH_APP)/app/benchmark/app_benchmark_fast_math                       \
              $(PATH_APP)/app/benchmark/app_benchmark_filter                          \
              $(PATH_APP)/app/benchmark/app_benchmark_fixed_point                     \

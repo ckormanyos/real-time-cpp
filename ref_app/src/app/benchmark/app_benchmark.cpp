@@ -112,6 +112,10 @@ auto app::benchmark::task_func() -> void
 
   const bool result_is_ok = app::benchmark::run_hash_sha256();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_ECC_GENERIC_ECC)
+
+  const bool result_is_ok = app::benchmark::run_ecc_generic_ecc();
+
   #endif
 
   // Set the benchmark port pin level to low.

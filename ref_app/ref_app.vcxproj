@@ -195,6 +195,7 @@
     <ClCompile Include="src\app\benchmark\app_benchmark_cnl_scaled_integer.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_complex.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_crc.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_ecc_generic_ecc.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fast_math.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_filter.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_fixed_point.cpp" />
@@ -1058,6 +1059,9 @@
     <ClInclude Include="src\math\calculus\derivative.h" />
     <ClInclude Include="src\math\calculus\integral.h" />
     <ClInclude Include="src\math\checksums\crc\crc32.h" />
+    <ClInclude Include="src\math\checksums\generic_ecc\digital_signature_base.h" />
+    <ClInclude Include="src\math\checksums\generic_ecc\digital_signature_generic_ecc.h" />
+    <ClInclude Include="src\math\checksums\generic_ecc\ecc_elliptic_curve.h" />
     <ClInclude Include="src\math\checksums\hash\hash_base.h" />
     <ClInclude Include="src\math\checksums\hash\hash_detail.h" />
     <ClInclude Include="src\math\checksums\hash\hash_sha1.h" />
