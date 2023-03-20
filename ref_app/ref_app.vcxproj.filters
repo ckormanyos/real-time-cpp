@@ -194,6 +194,9 @@
     <Filter Include="src\mcal\riscvfe310">
       <UniqueIdentifier>{67b61401-3c8f-42ec-ba55-e2f18af39387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\checksums\generic_ecc">
+      <UniqueIdentifier>{670dd0a9-e49b-4103-b26c-c437459bc844}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -929,6 +932,9 @@
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_hash_sha256.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_ecc_generic_ecc.cpp">
       <Filter>src\app\benchmark</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2159,6 +2165,15 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\hash\hash_sha256.h">
       <Filter>src\math\checksums\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\generic_ecc\digital_signature_generic_ecc.h">
+      <Filter>src\math\checksums\generic_ecc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\generic_ecc\ecc_elliptic_curve.h">
+      <Filter>src\math\checksums\generic_ecc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\checksums\generic_ecc\digital_signature_base.h">
+      <Filter>src\math\checksums\generic_ecc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
