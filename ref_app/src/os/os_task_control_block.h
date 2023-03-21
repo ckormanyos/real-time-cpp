@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,8 +25,7 @@
         : my_init (init),
           my_func (func),
           my_cycle(cycle),
-          my_timer(offset),
-          my_event() { }
+          my_timer(offset) { }
 
       task_control_block(const task_control_block& other_tcb) noexcept
         : my_init (other_tcb.my_init),
@@ -54,7 +53,7 @@
       const function_type my_func;
       const tick_type     my_cycle;
             timer_type    my_timer;
-            event_type    my_event;
+            event_type    my_event { };
 
       auto initialize() const -> void { my_init(); }
 
