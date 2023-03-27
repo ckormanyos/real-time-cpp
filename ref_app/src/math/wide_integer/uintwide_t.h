@@ -225,22 +225,22 @@
     // Constructors.
     constexpr dynamic_array() : elem_count(static_cast<size_type>(UINT8_C(0))) { }
 
-    explicit WIDE_INTEGER_CONSTEXPR dynamic_array(      size_type count,
-                                                        const_reference v = value_type(),
-                                                  const allocator_type& a = allocator_type())
-      : elem_count(count)
+    explicit WIDE_INTEGER_CONSTEXPR dynamic_array(      size_type       count_in,
+                                                        const_reference value_in = value_type(),
+                                                  const allocator_type& alloc_in = allocator_type())
+      : elem_count(count_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        allocator_type my_a(a);
+        allocator_type my_alloc(alloc_in);
 
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
 
         iterator it = begin();
 
         while(it != end())
         {
-          std::allocator_traits<allocator_type>::construct(my_a, it, v);
+          std::allocator_traits<allocator_type>::construct(my_alloc, it, value_in);
 
           ++it;
         }
@@ -250,11 +250,11 @@
     WIDE_INTEGER_CONSTEXPR dynamic_array(const dynamic_array& other)
       : elem_count(other.size())
     {
-      allocator_type my_a;
+      allocator_type my_alloc;
 
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
       }
 
       math::wide_integer::detail::copy_unsafe(other.elems, other.elems + elem_count, elems);
@@ -263,28 +263,28 @@
     template<typename input_iterator>
     WIDE_INTEGER_CONSTEXPR dynamic_array(input_iterator first,
                                          input_iterator last,
-                                         const allocator_type& a = allocator_type())
+                                         const allocator_type& alloc_in = allocator_type())
       : elem_count(static_cast<size_type>(last - first))
     {
-      allocator_type my_a(a);
+      allocator_type my_alloc(alloc_in);
 
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
       }
 
       math::wide_integer::detail::copy_unsafe(first, last, elems);
     }
 
     WIDE_INTEGER_CONSTEXPR dynamic_array(std::initializer_list<value_type> lst,
-                                         const allocator_type& a = allocator_type())
+                                         const allocator_type& alloc_in = allocator_type())
       : elem_count(lst.size())
     {
-      allocator_type my_a(a);
+      allocator_type my_alloc(alloc_in);
 
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
       {
-        elems = std::allocator_traits<allocator_type>::allocate(my_a, elem_count);
+        elems = std::allocator_traits<allocator_type>::allocate(my_alloc, elem_count);
       }
 
       math::wide_integer::detail::copy_unsafe(lst.begin(), lst.end(), elems);
@@ -305,19 +305,19 @@
       {
         using local_allocator_traits_type = std::allocator_traits<allocator_type>;
 
-        allocator_type my_a;
+        allocator_type my_alloc;
 
         auto p = begin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
         while(p != end())
         {
-          local_allocator_traits_type::destroy(my_a, p);
+          local_allocator_traits_type::destroy(my_alloc, p);
 
           ++p;
         }
 
         // Destroy the elements and deallocate the range.
-        local_allocator_traits_type::deallocate(my_a, elems, elem_count);
+        local_allocator_traits_type::deallocate(my_alloc, elems, elem_count);
       }
     }
 
@@ -380,9 +380,9 @@
     WIDE_INTEGER_CONSTEXPR auto at(const size_type i) const -> const_reference { return ((i < elem_count) ? elems[i] : elems[static_cast<size_type>(UINT8_C(0))]); }
 
     // Element manipulation members.
-    WIDE_INTEGER_CONSTEXPR auto fill(const value_type& v) -> void
+    WIDE_INTEGER_CONSTEXPR auto fill(const value_type& value_in) -> void
     {
-      math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, v);
+      math::wide_integer::detail::fill_unsafe(begin(), begin() + elem_count, value_in);
     }
 
     WIDE_INTEGER_CONSTEXPR auto swap(dynamic_array& other) noexcept -> void
@@ -449,12 +449,12 @@
       }
       else
       {
-        const size_type count = (std::min)(lhs.size(), rhs.size());
+        const size_type my_count = (std::min)(lhs.size(), rhs.size());
 
         b_result= std::lexicographical_compare(lhs.cbegin(),
-                                               lhs.cbegin() + count,
+                                               lhs.cbegin() + my_count,
                                                rhs.cbegin(),
-                                               rhs.cbegin() + count);
+                                               rhs.cbegin() + my_count);
       }
     }
 
@@ -607,7 +607,14 @@
   template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(17))) && (BitCount <= static_cast<size_t>(UINT8_C( 32)))>> { using exact_unsigned_type = std::uint32_t;     using exact_signed_type = std::int32_t;    using fast_unsigned_type = std::uint_fast32_t; using fast_signed_type = std::int_fast32_t; };
   template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(33))) && (BitCount <= static_cast<size_t>(UINT8_C( 64)))>> { using exact_unsigned_type = std::uint64_t;     using exact_signed_type = std::int64_t;    using fast_unsigned_type = std::uint_fast64_t; using fast_signed_type = std::int_fast64_t; };
   #if defined(WIDE_INTEGER_HAS_LIMB_TYPE_UINT64)
+  #if (defined(__GNUC__) && !defined(__clang__))
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wpedantic"
+  #endif
   template<const size_t BitCount> struct uint_type_helper<BitCount, std::enable_if_t<(BitCount >= static_cast<size_t>(UINT8_C(65))) && (BitCount <= static_cast<size_t>(UINT8_C(128)))>> { using exact_unsigned_type = unsigned __int128; using exact_signed_type = signed __int128; using fast_unsigned_type = unsigned __int128;  using fast_signed_type = signed __int128;   };
+  #if (defined(__GNUC__) && !defined(__clang__))
+  #pragma GCC diagnostic pop
+  #endif
   #endif
 
   using unsigned_fast_type = typename uint_type_helper<static_cast<size_t>(std::numeric_limits<size_t   >::digits + 0)>::fast_unsigned_type;
@@ -1110,14 +1117,14 @@
   public:
     static constexpr auto static_size() -> typename base_class_type::size_type { return MySize; }
 
-    explicit WIDE_INTEGER_CONSTEXPR fixed_dynamic_array(const typename base_class_type::size_type       s = MySize,
-                                                        const typename base_class_type::value_type&     v = typename base_class_type::value_type(),
-                                                        const typename base_class_type::allocator_type& a = typename base_class_type::allocator_type())
-      : base_class_type(MySize, typename base_class_type::value_type(), a)
+    explicit WIDE_INTEGER_CONSTEXPR fixed_dynamic_array(const typename base_class_type::size_type       size_in  = MySize,
+                                                        const typename base_class_type::value_type&     value_in = typename base_class_type::value_type(),
+                                                        const typename base_class_type::allocator_type& alloc_in = typename base_class_type::allocator_type())
+      : base_class_type(MySize, typename base_class_type::value_type(), alloc_in)
     {
       detail::fill_unsafe(base_class_type::begin(),
-                          base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(s)),
-                          v);
+                          base_class_type::begin() + (std::min)(MySize, static_cast<typename base_class_type::size_type>(size_in)),
+                          value_in);
     }
 
     constexpr fixed_dynamic_array(const fixed_dynamic_array& other_array) = default;
@@ -1155,23 +1162,23 @@
 
     constexpr fixed_static_array() = default;
 
-    explicit WIDE_INTEGER_CONSTEXPR fixed_static_array(const size_type   s,
-                                                       const value_type& v = value_type(),
-                                                       allocator_type a = allocator_type())
+    explicit WIDE_INTEGER_CONSTEXPR fixed_static_array(const size_type   size_in,
+                                                       const value_type& value_in = value_type(),
+                                                       allocator_type    alloc_in = allocator_type())
     {
-      static_cast<void>(a);
+      static_cast<void>(alloc_in);
 
-      if(s < static_size())
+      if(size_in < static_size())
       {
-        detail::fill_unsafe(base_class_type::begin(),     base_class_type::begin() + s, v);
-        detail::fill_unsafe(base_class_type::begin() + s, base_class_type::end(),       value_type());
+        detail::fill_unsafe(base_class_type::begin(),     base_class_type::begin() + size_in, value_in);
+        detail::fill_unsafe(base_class_type::begin() + size_in, base_class_type::end(),       value_type());
       }
       else
       {
         // Exclude this line from code coverage, even though explicit
         // test cases (search for "result_overshift_is_ok") are known
         // to cover this line.
-        detail::fill_unsafe(base_class_type::begin(), base_class_type::end(), v); // LCOV_EXCL_LINE
+        detail::fill_unsafe(base_class_type::begin(), base_class_type::end(), value_in); // LCOV_EXCL_LINE
       }
     }
 
@@ -1261,11 +1268,11 @@
   // Use a local implementation of string length.
   inline WIDE_INTEGER_CONSTEXPR auto strlen_unsafe(const char* p_str) -> unsigned_fast_type
   {
-    auto count = static_cast<unsigned_fast_type>(UINT8_C(0));
+    auto str_len_count = static_cast<unsigned_fast_type>(UINT8_C(0));
 
-    while(*p_str != '\0') { ++p_str; ++count; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,altera-id-dependent-backward-branch)
+    while(*p_str != '\0') { ++p_str; ++str_len_count; } // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic,altera-id-dependent-backward-branch)
 
-    return count;
+    return str_len_count;
   }
 
   template<typename InputIterator,
