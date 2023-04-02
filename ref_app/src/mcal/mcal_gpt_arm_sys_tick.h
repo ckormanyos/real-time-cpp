@@ -1,12 +1,12 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+//  Copyright Christopher Kormanyos 2022 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_ARM_SYS_TICK_2022_11_30_H_
-  #define MCAL_GPT_ARM_SYS_TICK_2022_11_30_H_
+#ifndef MCAL_GPT_ARM_SYS_TICK_2022_11_30_H
+  #define MCAL_GPT_ARM_SYS_TICK_2022_11_30_H
 
   #include <cstdint>
   #include <limits>
@@ -28,9 +28,8 @@
     using register_value_type   = RegisterValueType;
     using value_type            = ValueType;
 
-    static constexpr auto sys_tick_mhz = SysTickMHz;
-
     static constexpr auto scs_base      = static_cast<register_address_type>(UINT32_C(0xE000E000));
+    static constexpr auto sys_tick_mhz  = SysTickMHz;
     static constexpr auto sys_tick_base = static_cast<register_address_type>(scs_base        + static_cast<register_address_type>(UINT8_C(0x10)));
     static constexpr auto sys_tick_ctrl = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x00)));
     static constexpr auto sys_tick_load = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x04)));
@@ -51,7 +50,7 @@
   };
 
   template<const std::uint32_t SysTickMHz,
-           typename ValueType>
+           typename ValueType = std::uint64_t>
   class arm_sys_tick : private arm_sys_tick_base<SysTickMHz, ValueType, std::uint32_t, std::uint32_t>
   {
   private:
@@ -75,23 +74,23 @@
       {
         my_is_init = true;
 
-        // Set up an interrupt on ARM(R) sys tick.
+        // Set up an interrupt on the ARM(R) sys-tick.
 
         base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(0))>::reg_set();
 
-        // Set sys tick reload register.
+        // Set the sys-tick reload register.
         base_class_type::template reg_access_static<base_class_type::sys_tick_load, static_cast<register_value_type>(UINT32_C(0x00FFFFFF))>::reg_set();
 
-        // Initialize sys tick counter value.
+        // Initialize the sys-tick counter value.
         base_class_type::template reg_access_static<base_class_type::sys_tick_val,  static_cast<register_value_type>(UINT8_C(0))>::reg_set();
 
-        // Set sys tick clock source to ahb.
+        // Set the sys-tick clock source to be the processor clock.
         base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(4))>::reg_or();
 
-        // Enable sys tick interrupt.
+        // Enable the sys-tick interrupt.
         base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(2))>::reg_or();
 
-        // Enable sys tick timer.
+        // Enable the sys-tick timer.
         base_class_type::template reg_access_static<base_class_type::sys_tick_ctrl, static_cast<register_value_type>(UINT8_C(1))>::reg_or();
       }
     }
@@ -106,47 +105,51 @@
     }
 
   private:
-    static volatile value_type my_system_tick;
+    static volatile value_type my_sys_tick_value;
     static          bool       my_is_init;
 
     static auto get_consistent_microsecond_tick() noexcept -> value_type
     {
       // Return the system tick using a multiple read to ensure data consistency.
 
-      // Do the first read of the sys tick counter and the system tick.
-      // Handle reverse counting for sys tick counting down.
-      const auto sys_tick_val_1 =
+      // Do the first read of the sys-tick counter and the sys-tick
+      // value. Handle reverse counting for sys-tick counter, which is
+      // counting down.
+
+      const auto sys_tick_counter_1 =
         static_cast<register_value_type>
         (
           static_cast<register_value_type>
           (
               static_cast<register_value_type>(UINT32_C(0x00FFFFFF))
-            - base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get()
+            - static_cast<register_value_type>(base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get())
           )
         );
 
-      const auto system_tick_gpt = my_system_tick;
+      const auto sys_tick_value = my_sys_tick_value;
 
-      // Do the second read of the sys tick counter.
-      // Handle reverse counting for sys tick counting down.
-      const auto sys_tick_val_2 =
+      // Do the second read of the sys-tick counter and the sys-tick
+      // value. Handle reverse counting for sys-tick counter, which is
+      // counting down.
+
+      const auto sys_tick_counter_2 =
         static_cast<register_value_type>
         (
           static_cast<register_value_type>
           (
               static_cast<register_value_type>(UINT32_C(0x00FFFFFF))
-            - base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get()
+            - static_cast<register_value_type>(base_class_type::template reg_access_static<base_class_type::sys_tick_val>::reg_get())
           )
         );
 
       // Perform the consistency check.
-      const auto tick_is_consistent = (sys_tick_val_2 >= sys_tick_val_1);
 
-      const auto consistent_tick_value =
+      const auto sys_tick_consistent_value =
         static_cast<std::uint64_t>
         (
-          (tick_is_consistent ? static_cast<std::uint64_t>(system_tick_gpt | sys_tick_val_1)
-                              : static_cast<std::uint64_t>(my_system_tick  | sys_tick_val_2))
+          ((sys_tick_counter_2 >= sys_tick_counter_1)
+            ? static_cast<std::uint64_t>(   sys_tick_value | sys_tick_counter_1)
+            : static_cast<std::uint64_t>(my_sys_tick_value | sys_tick_counter_2))
         );
 
       // Perform scaling and include a rounding correction.
@@ -155,7 +158,7 @@
         (
             static_cast<std::uint64_t>
             (
-                consistent_tick_value
+                sys_tick_consistent_value
               + static_cast<std::uint32_t>(base_class_type::sys_tick_mhz / static_cast<std::uint32_t>(UINT8_C(2)))
             )
           / base_class_type::sys_tick_mhz
@@ -168,8 +171,8 @@
   };
 
   template<const std::uint32_t SysTickMHz, typename ValueType>          bool                                                     arm_sys_tick<SysTickMHz, ValueType>::my_is_init;
-  template<const std::uint32_t SysTickMHz, typename ValueType> volatile typename arm_sys_tick<SysTickMHz, ValueType>::value_type arm_sys_tick<SysTickMHz, ValueType>::my_system_tick;
+  template<const std::uint32_t SysTickMHz, typename ValueType> volatile typename arm_sys_tick<SysTickMHz, ValueType>::value_type arm_sys_tick<SysTickMHz, ValueType>::my_sys_tick_value;
 
   } }
 
-#endif // MCAL_GPT_ARM_SYS_TICK_2022_11_30_H_
+#endif // MCAL_GPT_ARM_SYS_TICK_2022_11_30_H
