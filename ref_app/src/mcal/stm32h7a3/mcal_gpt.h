@@ -40,15 +40,11 @@
 
       class secure final
       {
-        static value_type get_time_elapsed()
+        static auto get_time_elapsed() -> value_type
         {
           using local_arm_sys_tick_type = arm_sys_tick_type;
 
-          return
-            static_cast<mcal::gpt::value_type>
-            (
-              local_arm_sys_tick_type::get_time_elapsed()
-            );
+          return static_cast<value_type>(local_arm_sys_tick_type::get_time_elapsed());
         }
 
         friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
