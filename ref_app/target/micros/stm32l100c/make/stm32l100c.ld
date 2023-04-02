@@ -18,16 +18,16 @@ _rom_begin = 0x08000000;
 _rom_end   = 0x08007FFC;
 
 /* The beginning and end (i.e., top) of the stack */
-/* Set up a stack with a size of 1K */
-_stack_begin = 0x20003C00;
-_stack_end   = 0x20004000;
+/* Set up a stack with a size of 2K */
+_stack_begin = 0x20001800;
+_stack_end   = 0x20002000;
 
-__initial_stack_pointer = 0x20002000;
+__initial_stack_pointer = 0x20002000 - 4;
 
 MEMORY
 {
   ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 32K - 4
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x3C00
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x1800
 }
 
 SECTIONS

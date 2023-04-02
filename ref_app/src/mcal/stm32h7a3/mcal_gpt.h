@@ -1,5 +1,5 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,17 +24,28 @@
   {
     namespace gpt
     {
-      using arm_sys_tick_type =
-        arm_sys_tick<static_cast<std::uint32_t>(UINT32_C(280)), std::uint64_t>;
+      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(280))>;
 
       using config_type = void;
       using value_type  = typename arm_sys_tick_type::value_type;
 
-      void init(const config_type*);
+      inline auto init(const config_type*) -> void;
+
+      inline auto init(const config_type*) -> void
+      {
+        using local_arm_sys_tick_type = arm_sys_tick_type;
+
+        local_arm_sys_tick_type::init();
+      }
 
       class secure final
       {
-        static value_type get_time_elapsed();
+        static auto get_time_elapsed() -> value_type
+        {
+          using local_arm_sys_tick_type = arm_sys_tick_type;
+
+          return static_cast<value_type>(local_arm_sys_tick_type::get_time_elapsed());
+        }
 
         friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
 
