@@ -21,13 +21,13 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mmcu=atmega4809                                                  \
                 -mrelax                                                           \
                 -mdouble=32                                                       \
-                -finline-limit=32                                                 \
+                -finline-functions                                                \
+                -finline-limit=16                                                 \
                 -fsigned-char                                                     \
 
 ifeq ($(GCC_VERSION),11.2.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mlong-double=64                                                  \
-                -finline-functions                                                \
                 -DAVR_LIBC_LEGACY_IO=0                                            \
                 -D__AVR_DEV_LIB_NAME__=atmega4809
 endif
@@ -48,22 +48,21 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
 
-# echo Forcing reset using 1200bps open/close on port COM9
-# c:\windows\system32\mode.com com9: baud=1200 dtr=on > NUL  1> NUL
-# c:\windows\system32\mode.com com9: dtr=off > NUL  1> NUL
-# C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\bin\avrdude.exe -CC:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\etc\avrdude.conf -v -patmega4809 -cjtag2updi -PCOM9 -b115200 -e -D -Uflash:w:C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\bin\ref_app.hex:i -Ufuse2:w:0x01:m -Ufuse5:w:0xC9:m -Ufuse8:w:0x00:m {upload.extra_files}
+# echo Forcing reset using 1200bps open/close on port COM7
+# c:\windows\system32\mode.com com7: baud=1200 dtr=on > NUL  1> NUL
+# c:\windows\system32\mode.com com7: dtr=off > NUL  1> NUL
+# C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\avrdude_7_1\avrdude.exe -CC:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\etc\avrdude.conf -v -e -patmega4809 -cjtag2updi -PCOM7 -b115200 -Uflash:w:C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\bin\ref_app.hex:i -Ufuse2:w:0x01:m -Ufuse5:w:0xC9:m -Ufuse8:w:0x00:m {upload.extra_files}
 
-AVR_AVRDUDE_TOOL               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/6.3.0-arduino17/bin/avrdude.exe
-AVR_AVRDUDE_CONF               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/6.3.0-arduino17/etc/avrdude.conf
+AVR_AVRDUDE_TOOL               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude_7_1/avrdude.exe
+AVR_AVRDUDE_CONF               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude_7_1/avrdude.conf
 
 AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
                                  -v                                  \
+                                 -e                                  \
                                  -patmega4809                        \
                                  -cjtag2updi                         \
-                                 -PCOM9                              \
+                                 -PCOM7                              \
                                  -b115200                            \
-                                 -e                                  \
-                                 -D                                  \
                                  -Uflash:w:$(CURDIR)/$(APP).hex:i    \
                                  -Ufuse0:w:0x09:m                    \
                                  -Ufuse2:w:0x02:m                    \
@@ -73,9 +72,9 @@ AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
                                  {upload.extra_files}
 
 
-AVR_AVRDUDE_FLAG_ECHO_PART1    = $(ECHO) echo Forcing reset using 1200bps open/close on port COM9             > $(CURDIR)/bin/flash.bat
-AVR_AVRDUDE_FLAG_ECHO_PART2    = $(ECHO) c:\windows\system32\mode.com com9: baud=1200 dtr=on > NUL 1> NUL    >> $(CURDIR)/bin/flash.bat
-AVR_AVRDUDE_FLAG_ECHO_PART3    = $(ECHO) c:\windows\system32\mode.com com9: dtr=off > NUL 1> NUL             >> $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART1    = $(ECHO) echo Forcing reset using 1200bps open/close on port COM7             > $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART2    = $(ECHO) c:\windows\system32\mode.com com7: baud=1200 dtr=on > NUL 1> NUL    >> $(CURDIR)/bin/flash.bat
+AVR_AVRDUDE_FLAG_ECHO_PART3    = $(ECHO) c:\windows\system32\mode.com com7: dtr=off > NUL 1> NUL             >> $(CURDIR)/bin/flash.bat
 AVR_AVRDUDE_FLAG_ECHO_PART4    = $(ECHO) $(subst /,\,$(AVR_AVRDUDE_TOOL)) $(subst /,\,$(AVR_AVRDUDE_FLAGS))  >> $(CURDIR)/bin/flash.bat
 
 
