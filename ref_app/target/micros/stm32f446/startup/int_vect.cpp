@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -134,7 +134,7 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   __vector_unused_irq,       // 0x0150, dma2 stream5
   __vector_unused_irq,       // 0x0154, dma2 stream6
   __vector_unused_irq,       // 0x0158, dma2 stream7
-  __vector_unused_irq,       // 0x015C, usart6 usart6
+  __vector_unused_irq,       // 0x015C, usart6
   __vector_unused_irq,       // 0x0160, i2c3 event
   __vector_unused_irq,       // 0x0164, i2c3 error
   __vector_unused_irq,       // 0x0168, usb on the go hs end point 1 out
