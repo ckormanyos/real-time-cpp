@@ -5,7 +5,7 @@
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for STM32F446 ARM(R) Cortex(TM)-M4 MCU */
+/* Linker script for STM32F4xx ARM(R) Cortex(TM)-M4 MCU */
 
 ENTRY(__my_startup)
 
@@ -42,7 +42,6 @@ SECTIONS
   /* ISR vectors */
   .isr_vector :
   {
-    PROVIDE(__INTVECT_BASE_ADDRESS = .) ;
     *(.isr_vector)
     . = ALIGN(0x100);
     KEEP(*(.isr_vector))

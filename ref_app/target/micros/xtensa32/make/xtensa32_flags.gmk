@@ -94,7 +94,7 @@ TGT_LDFLAGS   = -nostdlib                                                       
 
 # copy "C:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32\\tools\\partitions\\default.csv" "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943\\partitions.csv"
 # C:\Program Files (x86)\Arduino\hardware\espressif\esp32\tools\gen_esp32part.exe -q "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943/partitions.csv" "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943/Blink.ino.partitions.bin"
-# C:\Program Files (x86)\Arduino\hardware\espressif\esp32\tools\esptool\esptool.exe --chip esp32 --port COM7 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size detect 0xe000 C:\Program Files (x86)\Arduino\hardware\espressif\esp32/tools/partitions/boot_app0.bin 0x1000 C:\Program Files (x86)\Arduino\hardware\espressif\esp32/tools/sdk/bin/bootloader_qio_80m.bin 0x10000 C:\Users\User\AppData\Local\Temp\arduino_build_746296/Blink.ino.bin 0x8000 C:\Users\User\AppData\Local\Temp\arduino_build_746296/Blink.ino.partitions.bin
+# C:\Program Files (x86)\Arduino\hardware\espressif\esp32\tools\esptool\esptool.exe --chip esp32 --port COM6 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size detect 0xe000 C:\Program Files (x86)\Arduino\hardware\espressif\esp32/tools/partitions/boot_app0.bin 0x1000 C:\Program Files (x86)\Arduino\hardware\espressif\esp32/tools/sdk/bin/bootloader_qio_80m.bin 0x10000 C:\Users\User\AppData\Local\Temp\arduino_build_746296/Blink.ino.bin 0x8000 C:\Users\User\AppData\Local\Temp\arduino_build_746296/Blink.ino.partitions.bin
 
 
 # TBD: ESP tool commands use WinDOS commands. Are there *nix equivalents?
@@ -112,7 +112,7 @@ ESP32_ESP_TOOL_FLAGS_IMAG      = --chip esp32                         \
                                  $(APP).elf
 
 ESP32_ESP_TOOL_FLAGS_PROG      = --chip esp32                         \
-                                 --port COM7                          \
+                                 --port COM6                          \
                                  --baud 115200                        \
                                  --before default_reset               \
                                  --after hard_reset write_flash       \

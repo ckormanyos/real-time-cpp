@@ -6,6 +6,7 @@
 //
 
 #include <cstdint>
+
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_osc_detail.h>

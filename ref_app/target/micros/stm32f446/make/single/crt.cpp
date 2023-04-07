@@ -13,7 +13,7 @@
 #include <iterator>
 
 // STM32 EABI ARM(R) Cortex-M4(TM) startup code.
-// Expressed with C++ for STM32F446 by Chris.
+// Expressed with C++ for STM32Fx by Chris.
 
 // C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\Util\MinGW\msys\1.0\local\gcc-9.3.1-arm-none-eabi\bin\arm-none-eabi-g++ -std=c++14 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -fno-exceptions -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f446 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f446/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f446/make/stm32f446.ld -o ./bin/app_benchmark_crc.elf
 
@@ -112,6 +112,7 @@ void crt::init_ctors()
 
 extern "C" void __initial_stack_pointer();
 
+extern "C" void __my_startup         () __attribute__((used, noinline));
 extern "C" void __vector_unused_irq  (void) __attribute__((used, noinline));
 extern "C" void __nmi_handler        (void) __attribute__((used, noinline));
 extern "C" void __hard_fault_handler (void) __attribute__((used, noinline));
@@ -132,7 +133,7 @@ extern "C" void __usage_fault_handler(void) { for(;;) { ; } }
 extern "C" void __svc_handler        (void) { for(;;) { ; } }
 extern "C" void __debug_mon_handler  (void) { for(;;) { ; } }
 extern "C" void __pend_sv_handler    (void) { for(;;) { ; } }
-extern "C" void __sys_tick_handler   (void) { ; }
+extern "C" void __sys_tick_handler   (void) { for(;;) { ; } }
 
 namespace
 {

@@ -43,7 +43,6 @@ SECTIONS
   /* ISR vectors */
   .isr_vector :
   {
-    PROVIDE(__INTVECT_BASE_ADDRESS = .) ;
     *(.isr_vector)
     . = ALIGN(0x100);
     KEEP(*(.isr_vector))
