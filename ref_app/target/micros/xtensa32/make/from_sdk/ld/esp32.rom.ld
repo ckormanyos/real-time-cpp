@@ -55,13 +55,6 @@ PROVIDE ( xthal_set_intclear = 0x4000c1ec );
 PROVIDE ( _xtos_set_intlevel = 0x4000bfdc );
 PROVIDE ( g_ticks_per_us_pro = 0x3ffe01e0 );
 PROVIDE ( g_ticks_per_us_app = 0x3ffe40f0 );
-PROVIDE ( esp_rom_spiflash_config_param = 0x40063238 );
-PROVIDE ( esp_rom_spiflash_read_user_cmd = 0x400621b0 );
-PROVIDE ( esp_rom_spiflash_write_encrypted_disable = 0x40062e60 );
-PROVIDE ( esp_rom_spiflash_write_encrypted_enable = 0x40062df4 );
-PROVIDE ( esp_rom_spiflash_prepare_encrypted_data = 0x40062e1c );
-PROVIDE ( esp_rom_spiflash_select_qio_pins = 0x40061ddc );
-PROVIDE ( esp_rom_spiflash_attach = 0x40062a6c );
 PROVIDE ( esp_rom_spiflash_config_clk = 0x40062bc8 );
 PROVIDE ( g_rom_spiflash_chip = 0x3ffae270 );
 

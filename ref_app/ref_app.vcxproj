@@ -59,12 +59,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\boost\modular_boost\boost\libs\config\include;C:\boost\modular_boost\boost\libs\math\include;C:\boost\modular_boost\boost\libs\multiprecision\include;$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\boost\modular_boost\boost\libs\config\include;C:\boost\modular_boost\boost\libs\math\include;C:\boost\modular_boost\boost\libs\multiprecision\include;$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)/src;$(SolutionDir)/src/mcal/host;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)tmp\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
   </PropertyGroup>
