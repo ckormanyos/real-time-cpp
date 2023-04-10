@@ -163,8 +163,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       static_cast<std::uint64_t>
       (
           static_cast<std::uint64_t>(sign ? 1ULL << 63U : 0ULL)
-        + static_cast<std::uint64_t>(static_cast<std::uint64_t>(static_cast<std::make_unsigned_t<IntegralTypeExp>>(expA)) << 52U)
-        + static_cast<std::uint64_t>(static_cast<std::make_unsigned_t<IntegralTypeSig>>(sig))
+        + static_cast<std::uint64_t>(static_cast<std::uint64_t>(static_cast<typename std::make_unsigned<IntegralTypeExp>::type>(expA)) << 52U)
+        + static_cast<std::uint64_t>(static_cast<typename std::make_unsigned<IntegralTypeSig>::type>(sig))
       );
   }
 
