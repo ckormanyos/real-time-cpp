@@ -14,8 +14,9 @@
   {
     namespace port
     {
-      typedef void config_type;
-      void init(const config_type*);
+      using config_type = void;
+
+      auto init(const config_type*) -> void;
 
       template<typename addr_type,
                typename reg_type,
@@ -24,7 +25,7 @@
       class port_pin
       {
       public:
-        static void set_direction_output()
+        static auto set_direction_output() -> void
         {
           // Set the port pin control bits.
 
@@ -73,7 +74,7 @@
           }
         }
 
-        static void set_direction_input()
+        static auto set_direction_input() -> void
         {
           // Set the port pin direction to digital input.
           mcal::reg::reg_access_static<addr_type,
@@ -91,7 +92,7 @@
                                        bpos>::bit_set();
         }
 
-        static void set_pin_low()
+        static auto set_pin_low() -> void
         {
           // Set the port output value to low.
           mcal::reg::reg_access_static<addr_type,
@@ -100,7 +101,7 @@
                                        bpos>::bit_clr();
         }
 
-        static bool read_input_value()
+        static auto read_input_value() -> bool
         {
           // Read the port input value.
           return mcal::reg::reg_access_static<addr_type,
@@ -109,7 +110,7 @@
                                               bpos>::bit_get();
         }
 
-        static void toggle_pin()
+        static auto toggle_pin() -> void
         {
           // Toggle the port output value.
           mcal::reg::reg_access_static<addr_type,
