@@ -117,6 +117,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   template<typename T>
   constexpr auto my_max(T a, T b) noexcept -> T { return ((a > b) ? a : b); }
 
+  template<const int BitCount,
+           typename EnableType = void>
+  struct uint_type_helper
+  {
+    static_assert(((BitCount >= 8) && (BitCount <= 64)),
+                  "Error: uint_type_helper is not intended to be used for this BitCount");
+
+    using exact_unsigned_type = std::uintmax_t;
+  };
+
+  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<                    (BitCount <=  8)>::type> { using exact_unsigned_type = std::uint8_t;  };
+  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >=  9) && (BitCount <= 16)>::type> { using exact_unsigned_type = std::uint16_t; };
+  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= 17) && (BitCount <= 32)>::type> { using exact_unsigned_type = std::uint32_t; };
+  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= 33) && (BitCount <= 64)>::type> { using exact_unsigned_type = std::uint64_t; };
+
   struct uint128_compound
   {
     constexpr uint128_compound(std::uint64_t a = std::uint64_t(), // NOLINT(google-explicit-constructor,hicpp-explicit-conversions,bugprone-easily-swappable-parameters)
@@ -159,12 +174,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
            typename IntegralTypeSig>
   constexpr auto packToF64UI(bool sign, IntegralTypeExp expA, IntegralTypeSig sig) -> std::uint64_t
   {
+    using local_unsigned_sig_type =
+      typename detail::uint_type_helper<std::numeric_limits<IntegralTypeSig>::digits>::exact_unsigned_type;
+
+    using local_unsigned_exp_type =
+      typename detail::uint_type_helper<std::numeric_limits<IntegralTypeExp>::digits>::exact_unsigned_type;
+
     return
       static_cast<std::uint64_t>
       (
           static_cast<std::uint64_t>(sign ? 1ULL << 63U : 0ULL)
-        + static_cast<std::uint64_t>(static_cast<std::uint64_t>(static_cast<typename std::make_unsigned<IntegralTypeExp>::type>(expA)) << 52U)
-        + static_cast<std::uint64_t>(static_cast<typename std::make_unsigned<IntegralTypeSig>::type>(sig))
+        + static_cast<std::uint64_t>(static_cast<std::uint64_t>(static_cast<local_unsigned_exp_type>(expA)) << 52U)
+        + static_cast<std::uint64_t>(static_cast<local_unsigned_sig_type>(sig))
       );
   }
 
@@ -273,21 +294,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       (dist < static_cast<std::uint32_t>(UINT8_C(64))) ? static_cast<std::uint64_t>(a >>                       static_cast<unsigned>       (dist))                                   : 0U
     };
   }
-
-  template<const int BitCount,
-           typename EnableType = void>
-  struct uint_type_helper
-  {
-    static_assert(((BitCount >= 8) && (BitCount <= 64)),
-                  "Error: uint_type_helper is not intended to be used for this BitCount");
-
-    using exact_unsigned_type = std::uintmax_t;
-  };
-
-  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<                    (BitCount <=  8)>::type> { using exact_unsigned_type = std::uint8_t;  };
-  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >=  9) && (BitCount <= 16)>::type> { using exact_unsigned_type = std::uint16_t; };
-  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= 17) && (BitCount <= 32)>::type> { using exact_unsigned_type = std::uint32_t; };
-  template<const int BitCount> struct uint_type_helper<BitCount, typename std::enable_if<(BitCount >= 33) && (BitCount <= 64)>::type> { using exact_unsigned_type = std::uint64_t; };
 
   template<typename BuiltInFloatType,
            typename ExactUnsignedIntegralType = typename uint_type_helper<std::numeric_limits<BuiltInFloatType>::digits>::exact_unsigned_type>
@@ -1977,16 +1983,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     //    x (11511339840 - 1640635920 x^2 + 52785432 x^4 - 479249 x^6)
     // / (7 ( 1644477120  +  39702960 x^2 +   453960 x^4 +   2623 x^6))
 
-    constexpr soft_double coef_sin_top_0(INT64_C(+11511339840));
-    constexpr soft_double coef_sin_top_1(INT32_C(-1640635920));
-    constexpr soft_double coef_sin_top_2(INT32_C(+52785432));
-    constexpr soft_double coef_sin_top_3(INT32_C(-479249));
+    const soft_double coef_sin_top_0(INT64_C(+11511339840));
+    const soft_double coef_sin_top_1(INT32_C(-1640635920));
+    const soft_double coef_sin_top_2(INT32_C(+52785432));
+    const soft_double coef_sin_top_3(INT32_C(-479249));
 
-    constexpr soft_double coef_sin_bot_0(UINT32_C(+1644477120));
-    constexpr soft_double coef_sin_bot_1(UINT32_C(+39702960));
-    constexpr soft_double coef_sin_bot_2(UINT32_C(+453960));
-    constexpr soft_double coef_sin_bot_3(UINT32_C(+2623));
-
+    const soft_double coef_sin_bot_0(UINT32_C(+1644477120));
+    const soft_double coef_sin_bot_1(UINT32_C(+39702960));
+    const soft_double coef_sin_bot_2(UINT32_C(+453960));
+    const soft_double coef_sin_bot_3(UINT32_C(+2623));
 
     const soft_double x2(x * x);
 
@@ -2011,15 +2016,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     //   (x^2 (-5491886400 + 346666320 x^2 - 7038360 x^4 + 45469 x^6))
     // / (24  (  457657200 +   9249240 x^2 +   86030 x^4 +   389 x^6))
 
-    constexpr soft_double coef_cos_top_0(INT64_C(-5491886400));
-    constexpr soft_double coef_cos_top_1(INT32_C(+346666320));
-    constexpr soft_double coef_cos_top_2(INT32_C(-7038360));
-    constexpr soft_double coef_cos_top_3(INT32_C(+45469));
+    const soft_double coef_cos_top_0(INT64_C(-5491886400));
+    const soft_double coef_cos_top_1(INT32_C(+346666320));
+    const soft_double coef_cos_top_2(INT32_C(-7038360));
+    const soft_double coef_cos_top_3(INT32_C(+45469));
 
-    constexpr soft_double coef_cos_bot_0(UINT32_C(457657200));
-    constexpr soft_double coef_cos_bot_1(UINT32_C(9249240));
-    constexpr soft_double coef_cos_bot_2(UINT32_C(86030));
-    constexpr soft_double coef_cos_bot_3(UINT32_C(389));
+    const soft_double coef_cos_bot_0(UINT32_C(457657200));
+    const soft_double coef_cos_bot_1(UINT32_C(9249240));
+    const soft_double coef_cos_bot_2(UINT32_C(86030));
+    const soft_double coef_cos_bot_3(UINT32_C(389));
 
     const soft_double x2(x * x);
 
@@ -2075,15 +2080,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         //   (39251520 - 18471600 dx^2 + 1075032 dx^4 - 14615 dx^6)
         // / (39251520 +  1154160 dx^2 +   16632 dx^4 +   127 dx^6)
 
-        constexpr soft_double coef_top_0(INT32_C(+39251520));
-        constexpr soft_double coef_top_1(INT32_C(-18471600));
-        constexpr soft_double coef_top_2(INT32_C(+1075032));
-        constexpr soft_double coef_top_3(INT32_C(-14615));
+        const soft_double coef_top_0(INT32_C(+39251520));
+        const soft_double coef_top_1(INT32_C(-18471600));
+        const soft_double coef_top_2(INT32_C(+1075032));
+        const soft_double coef_top_3(INT32_C(-14615));
 
-        constexpr soft_double coef_bot_0(UINT32_C(39251520));
-        constexpr soft_double coef_bot_1(UINT32_C(1154160));
-        constexpr soft_double coef_bot_2(UINT32_C(16632));
-        constexpr soft_double coef_bot_3(UINT32_C(127));
+        const soft_double coef_bot_0(UINT32_C(39251520));
+        const soft_double coef_bot_1(UINT32_C(1154160));
+        const soft_double coef_bot_2(UINT32_C(16632));
+        const soft_double coef_bot_3(UINT32_C(127));
 
         const soft_double x2(delta_pi_half * delta_pi_half);
 
