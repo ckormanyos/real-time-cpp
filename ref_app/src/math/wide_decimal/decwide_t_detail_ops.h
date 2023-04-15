@@ -268,7 +268,7 @@
         static_cast<std::size_t>(count) * static_cast<std::size_t>(UINT8_C(2))
       );
 
-    local_reverse_iterator_type ir(r + r_range);
+    auto ir = local_reverse_iterator_type { r + r_range };
 
     auto carry = static_cast<local_double_limb_type>(0U);
 
@@ -408,8 +408,8 @@
 
     using local_reverse_iterator_type = std::reverse_iterator<LimbIteratorType>;
 
-    local_reverse_iterator_type ri_t  (t + n);
-    local_reverse_iterator_type rend_t(t);
+    auto ri_t   = local_reverse_iterator_type { t + n };
+    auto rend_t = local_reverse_iterator_type { t };
 
     while((carry_out != static_cast<std::uint_fast8_t>(UINT8_C(0))) && (ri_t != rend_t)) // NOLINT(altera-id-dependent-backward-branch)
     {
@@ -451,8 +451,8 @@
 
     using local_reverse_iterator_type = std::reverse_iterator<LimbIteratorType>;
 
-    local_reverse_iterator_type ri_t  (t + n);
-    local_reverse_iterator_type rend_t(t);
+    auto ri_t   = local_reverse_iterator_type { t + n };
+    auto rend_t = local_reverse_iterator_type { t };
 
     while((borrow != static_cast<std::int_fast8_t>(INT8_C(0))) && (ri_t != rend_t)) // NOLINT(altera-id-dependent-backward-branch)
     {
@@ -746,14 +746,23 @@
              static_cast<std::int32_t>(j) >= static_cast<std::int32_t>(INT8_C(0)); // NOLINT(altera-id-dependent-backward-branch)
                                        j  -= static_cast<std::uint32_t>(UINT8_C(2)))
     {
-            auto xaj   = static_cast<local_fft_float_type>(af[j] / (n_fft / 2U)); // NOLINT(bugprone-integer-division)
+      const auto n_fft_half =
+        static_cast<local_fft_float_type>
+        (
+          static_cast<std::uint32_t>
+          (
+            n_fft >> static_cast<unsigned>(UINT8_C(1))
+          )
+        );
+
+            auto xaj   = static_cast<local_fft_float_type>(af[j] / n_fft_half);
       const auto xlo   = static_cast<fft_carry_type> (xaj + detail::fft::template_half<local_fft_float_type>()) + carry;
                  carry = static_cast<fft_carry_type> (xlo / local_elem_mask_half);
       const auto nlo   = static_cast<local_limb_type>(xlo - static_cast<fft_carry_type>(carry * local_elem_mask_half));
 
       const auto j_is_non_zero = (j != static_cast<std::uint32_t>(UINT8_C(0)));
 
-                 xaj   = (j_is_non_zero ? static_cast<local_fft_float_type>(af[j - 1U] / (n_fft / 2U)) : static_cast<local_fft_float_type>(0)); // NOLINT(bugprone-integer-division)
+                 xaj   = (j_is_non_zero ? static_cast<local_fft_float_type>(af[j - 1U] / n_fft_half) : static_cast<local_fft_float_type>(0));
       const auto xhi   = static_cast<fft_carry_type> (xaj + detail::fft::template_half<local_fft_float_type>()) + carry;
                  carry = static_cast<fft_carry_type> (xhi / local_elem_mask_half);
       const auto nhi   = static_cast<local_limb_type>(xhi - static_cast<fft_carry_type>(carry * local_elem_mask_half));
