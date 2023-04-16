@@ -1670,10 +1670,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       auto uiZ  = std::uint64_t { };
       auto expZ = std::int16_t  { };
 
-      auto expA = detail::expF64UI (uiA);
-      auto sigA = detail::fracF64UI(uiA);
+            auto expA = detail::expF64UI (uiA);
+            auto sigA = detail::fracF64UI(uiA);
       const auto expB = detail::expF64UI (uiB);
-      auto sigB = detail::fracF64UI(uiB);
+            auto sigB = detail::fracF64UI(uiB);
 
       const auto expDiff = static_cast<std::int16_t>(expA - expB);
 
@@ -1905,8 +1905,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         auto y = x;
 
-        for(auto p_local   = static_cast<std::uint32_t>(u);
-                 p_local  != static_cast<std::uint32_t>(UINT8_C(0));
+        for(auto p_local  = static_cast<std::uint32_t>(u);
+                 p_local != static_cast<std::uint32_t>(UINT8_C(0));
                  p_local  = static_cast<std::uint32_t>(p_local >> static_cast<unsigned>(UINT8_C(1))))
         {
           const auto bit_is_set =
@@ -1941,8 +1941,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         auto y = x;
 
-        for(auto p_local   = static_cast<std::uint32_t>(n);
-                 p_local  != static_cast<std::uint32_t>(UINT8_C(0));
+        for(auto p_local  = static_cast<std::uint32_t>(n);
+                 p_local != static_cast<std::uint32_t>(UINT8_C(0));
                  p_local  = static_cast<std::uint32_t>(p_local >> static_cast<unsigned>(UINT8_C(1))))
         {
           const auto bit_zero_is_set =
@@ -1958,7 +1958,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       }
 
       return result;
-    }
+    } // LCOV_EXCL_LINE
+    // Bogus report from LCOV on certain ditros
 
     friend constexpr auto sin(soft_double x) -> soft_double;
     friend constexpr auto cos(soft_double x) -> soft_double;
