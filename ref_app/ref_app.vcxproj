@@ -1035,6 +1035,7 @@
     <ClCompile Include="src\os\os_task_control_block.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\mon\sys_mon.cpp" />
+    <ClCompile Include="src\sys\start\coverity.c" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
     <ClCompile Include="src\util\STD_LIBC\memory.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
