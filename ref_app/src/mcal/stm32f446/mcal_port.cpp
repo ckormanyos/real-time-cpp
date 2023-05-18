@@ -10,7 +10,7 @@
 
 void mcal::port::init(const config_type*)
 {
-  // Enable the peripheral clocks for porta.
+  // Enable the peripheral clocks for porta, portc.
   // 0x01 = porta
   // 0x02 = portb
   // 0x04 = portc

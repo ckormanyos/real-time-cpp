@@ -217,7 +217,7 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_BIN) 2>NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -231,10 +231,10 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_LST)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_OBJ) 2>NUL
+	@-$(RM) -r $(PATH_ERR) 2>NUL
+	@-$(RM) -r $(PATH_LST) 2>NUL
+	@-$(RM) -r $(PATH_BIN) 2>NUL
 	@-$(MKDIR) -p $(PATH_BIN)
 
 

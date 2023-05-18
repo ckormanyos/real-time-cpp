@@ -98,8 +98,11 @@
   {
   #endif
 
-  void     mcal_reg_access32_write(const uint32_t address, const uint32_t value) __attribute__((naked));
-  uint32_t mcal_reg_access32_read (const uint32_t address)                       __attribute__((naked));
+  extern void     Mcu_WriteBcm2835Register(uint32_t address, uint32_t value) __attribute__((naked));
+  extern uint32_t Mcu_ReadBcm2835Register (uint32_t address)                 __attribute__((naked));
+
+  static inline void     mcal_reg_access32_write(const uint32_t address, const uint32_t value) { Mcu_WriteBcm2835Register(address, value); }
+  static inline uint32_t mcal_reg_access32_read (const uint32_t address)                       { return Mcu_ReadBcm2835Register(address); }
 
   static inline void     mcal_reg_access32_reg_set(const uint32_t address, const uint32_t value) { mcal_reg_access32_write(address, value); }
   static inline void     mcal_reg_access32_reg_and(const uint32_t address, const uint32_t value) { const uint32_t r = mcal_reg_access32_read(address); mcal_reg_access32_write(address, (uint32_t) (r & value)); }

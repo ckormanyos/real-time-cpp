@@ -10,9 +10,16 @@
 
 void mcal::port::init(const config_type*)
 {
-  // Power management: Enable power for I/O ports : portc.
+  // Enable the peripheral clocks for portb, portc.
+  // 0x01 = porta
+  // 0x02 = portb
+  // 0x04 = portc
+  // ------------
+  // So we have:
+  // (portb + portc) = (0x02 + 0x04) = 0x06.
+
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_ahbenr,
-                               UINT32_C(0x00000004)>::reg_or();
+                               static_cast<std::uint32_t>(UINT32_C(0x00000006))>::reg_or();
 }

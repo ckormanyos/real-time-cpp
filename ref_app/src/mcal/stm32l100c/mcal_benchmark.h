@@ -19,7 +19,7 @@
     {
       using benchmark_port_type = mcal::port::port_pin<std::uint32_t,
                                                        std::uint32_t,
-                                                       mcal::reg::gpioc_base,
+                                                       mcal::reg::gpiob_base,
                                                        static_cast<std::uint32_t>(UINT32_C(9))>;
     }
   }
