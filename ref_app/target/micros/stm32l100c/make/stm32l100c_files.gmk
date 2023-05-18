@@ -1,16 +1,15 @@
 #
-#  Copyright Christopher Kormanyos 2017 - 2018.
+#  Copyright Christopher Kormanyos 2007 - 2023.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #
 
 # ------------------------------------------------------------------------------
-# File list of the stm32l152 files in the project
+# File list of the stm32l1xx files in the project
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
-             $(PATH_APP)/util/STD_LIBC/memory                          \
              $(PATH_TGT)/startup/crt0                                  \
              $(PATH_TGT)/startup/crt0_init_ram                         \
              $(PATH_TGT)/startup/crt1                                  \
