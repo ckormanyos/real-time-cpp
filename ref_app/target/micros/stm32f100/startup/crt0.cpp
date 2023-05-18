@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,7 +23,7 @@ void __my_startup()
   // Load the stack pointer.
   // The stack pointer is automatically loaded from
   // the base position of the interrupt vector table.
-  // So do nothing here.
+  // So we do nothing here.
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();

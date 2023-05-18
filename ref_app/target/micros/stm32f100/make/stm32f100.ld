@@ -1,32 +1,24 @@
-
 /*
- Copyright Christopher Kormanyos 2007 - 2018.
+ Copyright Christopher Kormanyos 2007 - 2023.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for STM32F103x ARM(R) Cortex(TM)-M3 MCU */
+/* Linker script for STM32F1xx ARM(R) Cortex(TM)-M3 MCU */
 
 INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/* The beginning and end of the program ROM area */
-_rom_begin = 0x08000000;
-_rom_end   = 0x08007FFC;
-
-/* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 2K */
-_stack_begin = 0x20001800;
-_stack_end   = 0x20002000;
-
-__initial_stack_pointer = 0x20002000;
+__initial_stack_pointer = 0x20002000 - 4;
 
 MEMORY
 {
-  ROM(rx)  : ORIGIN = 0x08000000, LENGTH = 32K - 4
+  VEC(rx)  : ORIGIN = 0x08000000, LENGTH = 0x300
+  ROM(rx)  : ORIGIN = 0x08000300, LENGTH = 32K - 0x300
   RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x1800
 }
 
@@ -41,16 +33,25 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x100);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > VEC = 0xAAAA
+
+  /* startup */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0x5555
 
   /* Program code (text), read-only data and static ctors */
   .text :
   {
     _ctors_begin = .;
-    *(.init_array)
-    . = ALIGN(4);
-    KEEP (*(SORT(.init_array)))
+    KEEP(*(SORT(.init_array.*)))
+    KEEP(*(.init_array*))
     _ctors_end = .;
+    *(.progmem*)
+    . = ALIGN(4);
     *(.text)
     . = ALIGN(4);
     *(.text*)
@@ -59,12 +60,33 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
+    *(.glue_7)
+    . = ALIGN(4);
+    *(.glue_7t)
+    . = ALIGN(4);
   } > ROM
 
-  .text :
+  .ARM.extab :
   {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
+    . = ALIGN(4);
+    *(.ARM.extab)
+    *(.gnu.linkonce.armextab.*)
+    . = ALIGN(4);
+  } > ROM
+
+  .exidx :
+  {
+    . = ALIGN(4);
+    PROVIDE(__exidx_start = .);
+    *(.ARM.exidx*)
+    . = ALIGN(4);
+    PROVIDE(__exidx_end = .);
+  } > ROM
+
+  .ARM.attributes :
+  {
+    *(.ARM.attributes)
+  } > ROM
 
   . = 0x20000000;
   . = ALIGN(4);
@@ -94,6 +116,9 @@ SECTIONS
     KEEP (*(.bss*))
     _bss_end = .;
   } > RAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
 
   _rom_data_begin = LOADADDR(.data);
 }
