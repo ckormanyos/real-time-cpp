@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+//  Copyright Christopher Kormanyos 2022 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,6 +23,10 @@
   Description : Interrupt vector table implementation
 
 ******************************************************************************************************/
+
+#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
+asm(".option arch, +zicsr");
+#endif
 
 #include <cstdint>
 
@@ -116,11 +120,13 @@ typedef std::uint64_t uint_csr64_t;
 
 static inline uint_xlen_t csr_read_mcause(void)
 {
-  uint_xlen_t value;        
-  __asm__ volatile ("csrr    %0, mcause" 
-                    : "=r" (value)  /* output : register */
-                    : /* input : none */
-                    : /* clobbers: none */);
+  uint_xlen_t value;
+
+  asm volatile ("csrr    %0, mcause" 
+                : "=r" (value)  /* output : register */
+                : /* input : none */
+                : /* clobbers: none */);
+
   return value;
 }
 
