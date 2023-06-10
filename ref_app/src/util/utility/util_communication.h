@@ -30,7 +30,7 @@
       virtual auto select_channel(const std::size_t) -> bool { return true; }
 
       template<typename send_iterator_type>
-      auto send_n(send_iterator_type first, send_iterator_type last) -> bool
+      auto send_n(send_iterator_type first, send_iterator_type last) noexcept -> bool
       {
         auto send_result = true;
 
@@ -44,7 +44,7 @@
         return send_result;
       }
 
-      virtual auto send(const std::uint8_t byte_to_send) -> bool = 0;
+      virtual auto send(const std::uint8_t byte_to_send) noexcept -> bool = 0;
 
     protected:
       communication_base() = default;
@@ -86,7 +86,7 @@
 
       ~communication_multi_channel() override = default;
 
-      auto send(const std::uint8_t byte_to_send) -> bool override
+      auto send(const std::uint8_t byte_to_send) noexcept -> bool override
       {
         return my_com_channels[my_index]->send(byte_to_send);
       }
