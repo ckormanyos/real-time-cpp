@@ -2300,6 +2300,8 @@
     <ClInclude Include="src\mcal_pwm\mcal_pwm_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_base.h" />
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_nec_fm20x2kb.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />
@@ -2354,6 +2356,7 @@
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
     <ClInclude Include="src\util\utility\util_countof.h" />
+    <ClInclude Include="src\util\utility\util_display.h" />
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h" />
     <ClInclude Include="src\util\utility\util_linear_interpolate.h" />

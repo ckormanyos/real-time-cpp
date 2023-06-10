@@ -197,6 +197,9 @@
     <Filter Include="src\math\checksums\generic_ecc">
       <UniqueIdentifier>{670dd0a9-e49b-4103-b26c-c437459bc844}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal_vfd">
+      <UniqueIdentifier>{f6877e42-0bc8-4704-ae4d-7dbf77b803d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2177,6 +2180,15 @@
     </ClInclude>
     <ClInclude Include="src\math\checksums\generic_ecc\digital_signature_base.h">
       <Filter>src\math\checksums\generic_ecc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_display.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_base.h">
+      <Filter>src\mcal_vfd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_nec_fm20x2kb.h">
+      <Filter>src\mcal_vfd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

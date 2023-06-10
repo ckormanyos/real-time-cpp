@@ -29,14 +29,11 @@ void __my_startup()
   // Disable all specific interrupt sources.
   // Setup the stack pointer.
   // setup the direct interrupt handler.
-  asm volatile
-  (
-    "csrrs x0, mstatus, x0\n\t"
-    "csrrs x0, mie, x0\n\t"
-    "la sp, __initial_stack_pointer\n\t"
-    "la t0, DirectModeInterruptHandler\n\t"
-    "csrrs x0, mtvec, t0"
-  );
+  asm volatile("csrrs x0, mstatus, x0");
+  asm volatile("csrrs x0, mie, x0");
+  asm volatile("la sp, __initial_stack_pointer");
+  asm volatile("la t0, DirectModeInterruptHandler");
+  asm volatile("csrrs x0, mtvec, t0");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
