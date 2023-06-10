@@ -5,14 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef VACUUM_FLUORESCENT_DISPLAY_NEC_FM20X2KB_2023_06_08_H
-  #define VACUUM_FLUORESCENT_DISPLAY_NEC_FM20X2KB_2023_06_08_H
+#ifndef MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
+  #define MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
 
   #include <algorithm>
   #include <array>
 
   #include <util/utility/util_communication.h>
-  #include <mcal_vfd/mcal_vfd_vacuum_fluorescent_display_base.h>
+  #include <mcal_vfd/mcal_vfd_base.h>
 
   namespace mcal { namespace vfd {
 
@@ -134,4 +134,4 @@
 
   } } // namespace mcal::vfd
 
-#endif // VACUUM_FLUORESCENT_DISPLAY_NEC_FM20X2KB_2023_06_08_H
+#endif // MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
