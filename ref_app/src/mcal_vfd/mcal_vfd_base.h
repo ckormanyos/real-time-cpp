@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef VACUUM_FLUORESCENT_DISPLAY_BASE_2023_06_08_H
-  #define VACUUM_FLUORESCENT_DISPLAY_BASE_2023_06_08_H
+#ifndef MCAL_VFD_BASE_2023_06_08_H
+  #define MCAL_VFD_BASE_2023_06_08_H
 
   #include <cstddef>
   #include <cstdint>
@@ -47,4 +47,4 @@
 
   } } // namespace mcal::vfd
 
-#endif // VACUUM_FLUORESCENT_DISPLAY_BASE_2023_06_08_H
+#endif // MCAL_VFD_BASE_2023_06_08_H

@@ -2184,10 +2184,10 @@
     <ClInclude Include="src\util\utility\util_display.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_base.h">
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_base.h">
       <Filter>src\mcal_vfd</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_vfd\mcal_vfd_vacuum_fluorescent_display_nec_fm20x2kb.h">
+    <ClInclude Include="src\mcal_vfd\mcal_vfd_nec_fm20x2kb.h">
       <Filter>src\mcal_vfd</Filter>
     </ClInclude>
   </ItemGroup>
