@@ -8,11 +8,10 @@
 #ifndef MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
   #define MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
 
-  #include <algorithm>
   #include <array>
 
-  #include <util/utility/util_communication.h>
   #include <mcal_vfd/mcal_vfd_base.h>
+  #include <util/utility/util_communication.h>
 
   namespace mcal { namespace vfd {
 
@@ -24,6 +23,9 @@
     using base_class_type =
       ::mcal::vfd::vacuum_fluorescent_display_base<static_cast<unsigned>(UINT8_C(1)),
                                                    static_cast<unsigned>(UINT8_C(40))>;
+
+    using cmd_line_buffer_type =
+      std::array<std::uint8_t, static_cast<std::size_t>(base_class_type::number_of_columns + static_cast<unsigned>(UINT8_C(2)))>;
 
   public:
     vacuum_fluorescent_display_nec_fm20x2kb(util::communication_base& ser)
@@ -81,34 +83,29 @@
       return result_init_is_ok;
     }
 
-    auto write(const char* pstr,
-               const std::uint_fast8_t length,
-               const std::uint_fast8_t line_index) -> bool override
+    virtual auto write(const char* pstr,
+                       const std::uint_fast8_t length,
+                       const std::uint_fast8_t line_index = static_cast<std::uint_fast8_t>(UINT8_C(0))) -> bool
     {
       static_cast<void>(line_index);
 
-      using cmd_line_array_type =
-        std::array<std::uint8_t, static_cast<std::size_t>(number_of_columns + static_cast<unsigned>(UINT8_C(2)))>;
+      my_cmd_line_buffer.fill(static_cast<std::uint8_t>(' '));
 
-      auto line_cmd_array = cmd_line_array_type { };
-
-      line_cmd_array.fill(static_cast<std::uint8_t>(' '));
-
-      line_cmd_array[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint8_t>(UINT8_C(0x1B));
-      line_cmd_array[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint8_t>(UINT8_C(0x5B));
+      my_cmd_line_buffer[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint8_t>(UINT8_C(0x1B));
+      my_cmd_line_buffer[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint8_t>(UINT8_C(0x5B));
 
       const auto my_count = (std::min)(static_cast<unsigned>(length), base_class_type::number_of_columns);
 
       std::copy(pstr,
                 pstr + static_cast<std::size_t>(my_count),
-                line_cmd_array.begin() + static_cast<std::size_t>(UINT8_C(2)));
+                my_cmd_line_buffer.begin() + static_cast<std::size_t>(UINT8_C(2)));
 
-      const auto result_write_is_ok = my_serial.send_n(line_cmd_array.cbegin(), line_cmd_array.cend());
+      const auto result_write_is_ok = my_serial.send(my_cmd_line_buffer.cbegin(), my_cmd_line_buffer.cend());
 
       return result_write_is_ok;
     }
 
-    auto clear_line(const unsigned line_number) noexcept -> bool override
+    virtual auto clear_line(const unsigned = static_cast<unsigned>(UINT8_C(0))) noexcept -> bool
     {
       using cmd_clr_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(4))>;
 
@@ -130,6 +127,7 @@
 
   private:
     ::util::communication_base& my_serial;
+    cmd_line_buffer_type my_cmd_line_buffer { };
   };
 
   } } // namespace mcal::vfd

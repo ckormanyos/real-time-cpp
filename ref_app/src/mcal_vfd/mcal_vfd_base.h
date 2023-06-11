@@ -20,6 +20,9 @@
   class vacuum_fluorescent_display_base : public ::util::display_multiline_base
   {
   public:
+    static constexpr unsigned number_of_lines   = NumberOfLines;
+    static constexpr unsigned number_of_columns = NumberOfColumns;
+
     vacuum_fluorescent_display_base(const vacuum_fluorescent_display_base&) = delete;
     vacuum_fluorescent_display_base(vacuum_fluorescent_display_base&&) noexcept = delete;
 
@@ -39,9 +42,6 @@
     virtual auto set_line_index(const std::uint8_t) noexcept -> bool = 0;
 
   protected:
-    static constexpr unsigned number_of_lines   = NumberOfLines;
-    static constexpr unsigned number_of_columns = NumberOfColumns;
-
     vacuum_fluorescent_display_base() = default;
   };
 
