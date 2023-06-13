@@ -110,7 +110,7 @@
       }
 
     private:
-      tick_type my_tick { };
+      tick_type my_tick { my_now() };
 
       constexpr static auto my_now() noexcept -> tick_type
       {
