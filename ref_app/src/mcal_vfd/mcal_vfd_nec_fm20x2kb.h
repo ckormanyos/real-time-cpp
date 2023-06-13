@@ -24,11 +24,16 @@
       ::mcal::vfd::vacuum_fluorescent_display_base<static_cast<unsigned>(UINT8_C(1)),
                                                    static_cast<unsigned>(UINT8_C(40))>;
 
-    using cmd_line_buffer_type =
-      std::array<std::uint8_t, static_cast<std::size_t>(base_class_type::number_of_columns + static_cast<unsigned>(UINT8_C(2)))>;
+    static constexpr auto cmd_line_buffer_size =
+      static_cast<std::size_t>
+      (
+        base_class_type::number_of_columns + static_cast<unsigned>(UINT8_C(2))
+      );
+
+    using cmd_line_buffer_type = std::array<std::uint8_t, cmd_line_buffer_size>;
 
   public:
-    vacuum_fluorescent_display_nec_fm20x2kb(util::communication_base& ser)
+    explicit vacuum_fluorescent_display_nec_fm20x2kb(serial& ser)
       : my_serial(ser) { }
 
     ~vacuum_fluorescent_display_nec_fm20x2kb() override = default;
@@ -100,7 +105,7 @@
                 pstr + static_cast<std::size_t>(my_count),
                 my_cmd_line_buffer.begin() + static_cast<std::size_t>(UINT8_C(2)));
 
-      const auto result_write_is_ok = my_serial.send(my_cmd_line_buffer.cbegin(), my_cmd_line_buffer.cend());
+      const auto result_write_is_ok = my_serial.send_n(my_cmd_line_buffer.cbegin(), my_cmd_line_buffer.cend());
 
       return result_write_is_ok;
     }
