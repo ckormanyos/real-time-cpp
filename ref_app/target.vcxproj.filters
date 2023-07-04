@@ -208,6 +208,15 @@
     <Filter Include="micros\stm32h7a3\make\single">
       <UniqueIdentifier>{f64f0280-3cc8-4e24-8487-a3687bad71b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\nxp_imxrt1062">
+      <UniqueIdentifier>{e0829884-bb9f-46d7-913c-60e2de2ee286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\nxp_imxrt1062\make">
+      <UniqueIdentifier>{b6b66698-d8c3-413f-9a56-fb0160ddcfef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\nxp_imxrt1062\startup">
+      <UniqueIdentifier>{c1ad125d-ff5b-4c6d-a130-eecf66eaf6d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -489,6 +498,15 @@
     <None Include="target\micros\stm32f429\make\stm32f429_with_stdlib.ld">
       <Filter>micros\stm32f429\make</Filter>
     </None>
+    <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062.ld">
+      <Filter>micros\nxp_imxrt1062\make</Filter>
+    </None>
+    <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062_files.gmk">
+      <Filter>micros\nxp_imxrt1062\make</Filter>
+    </None>
+    <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062_flags.gmk">
+      <Filter>micros\nxp_imxrt1062\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -697,6 +715,21 @@
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\make\single\crt.cpp">
       <Filter>micros\stm32h7a3\make\single</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt0.cpp">
+      <Filter>micros\nxp_imxrt1062\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt0_init_ram.cpp">
+      <Filter>micros\nxp_imxrt1062\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\crt1.cpp">
+      <Filter>micros\nxp_imxrt1062\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\int_vect.cpp">
+      <Filter>micros\nxp_imxrt1062\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\bootdata.cpp">
+      <Filter>micros\nxp_imxrt1062\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

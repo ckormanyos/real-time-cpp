@@ -200,6 +200,9 @@
     <Filter Include="src\mcal_vfd">
       <UniqueIdentifier>{f6877e42-0bc8-4704-ae4d-7dbf77b803d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\nxp_imxrt1062">
+      <UniqueIdentifier>{5590de56-a0fc-4a52-b84d-742784937219}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -942,6 +945,36 @@
     </ClCompile>
     <ClCompile Include="src\sys\start\coverity.c">
       <Filter>src\sys\start</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_eep.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_gpt.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_irq.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_led.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_osc.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_port.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_pwm.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_spi.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_wdg.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_cpu.cpp">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2190,6 +2223,48 @@
     <ClInclude Include="src\mcal_vfd\mcal_vfd_nec_fm20x2kb.h">
       <Filter>src\mcal_vfd</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_cpu.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_eep.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_gpt.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_irq.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_led.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_memory_progmem.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_osc.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_port.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_pwm.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_reg.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_ser.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_spi.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_wdg.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_benchmark.h">
+      <Filter>src\mcal\nxp_imxrt1062</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -2364,6 +2439,9 @@
       <Filter>src\cmake</Filter>
     </None>
     <None Include="cmake\riscvfe310.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\nxp_imxrt1062.cmake">
       <Filter>src\cmake</Filter>
     </None>
   </ItemGroup>

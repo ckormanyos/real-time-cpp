@@ -1,0 +1,46 @@
+﻿#
+#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 11.2.0
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -mcpu=cortex-m7                                                   \
+                -mtune=cortex-m7                                                  \
+                -mthumb                                                           \
+                -mfloat-abi=hard                                                  \
+                -march=armv7e-m+fpv5-d16                                          \
+                -ffast-math                                                       \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -mno-unaligned-access                                             \
+                -mno-long-calls
+
+TGT_CFLAGS    = -std=c99                                                          \
+                -Wunsuffixed-float-constants                                      \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++20                                                        \
+                -Wno-psabi                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)
