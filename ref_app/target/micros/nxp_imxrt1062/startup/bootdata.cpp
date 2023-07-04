@@ -27,10 +27,10 @@ constexpr auto ImageVectorTableHeaderMagicNumber = static_cast<unsigned int>(0x4
 
 extern "C"
 {
-  extern unsigned int __BOOT_ROM_CFG_BASE_ADDRESS;
-  extern unsigned int __IVT_BASE_ADDRESS;
-  extern unsigned int __IMAGE_SIZE;
-}
+
+extern unsigned int __BOOT_ROM_CFG_BASE_ADDRESS;
+extern unsigned int __IVT_BASE_ADDRESS;
+extern unsigned int __IMAGE_SIZE;
 
 typedef struct
 {
@@ -53,24 +53,25 @@ typedef struct
 }
 tBootData;
 
-const tBootData BootData =
+extern "C"
+const tBootData BootData __attribute__((section(".rodata.teensy"))) =
 {
-  .start  = (unsigned int) &__BOOT_ROM_CFG_BASE_ADDRESS,
-  .length = (unsigned int) &__IMAGE_SIZE,
-  .plugin = 0U
+  (unsigned int) &__BOOT_ROM_CFG_BASE_ADDRESS,
+  (unsigned int) &__IMAGE_SIZE,
+  0U
 };
 
 extern "C"
 const tImageVectorTable ImageVectorTable __attribute__((section(".ImageVectorTable"),aligned(4096))) =
 {
-  .header    = ImageVectorTableHeaderMagicNumber,
-  .entry     = (unsigned int) &__IVT_BASE_ADDRESS,
-  .reserved1 = 0U,
-  .dcd       = 0U,
-  .boot_data = (unsigned int) &BootData,
-  .ivt       = (unsigned int) &ImageVectorTable,
-  .csf       = 0U,
-  .reserved2 = 0U
+  ImageVectorTableHeaderMagicNumber,
+  (unsigned int) &__IVT_BASE_ADDRESS,
+  0U,
+  0U,
+  (unsigned int) &BootData,
+  (unsigned int) &ImageVectorTable,
+  0U,
+  0U
 };
 
 extern "C"
@@ -109,3 +110,5 @@ const unsigned char FlexSPIConfigurationblock[512U] __attribute__((section(".Fle
   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,
   0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U
 };
+
+}
