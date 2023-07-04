@@ -2441,6 +2441,9 @@
     <None Include="cmake\riscvfe310.cmake">
       <Filter>src\cmake</Filter>
     </None>
+    <None Include="cmake\nxp_imxrt1062.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

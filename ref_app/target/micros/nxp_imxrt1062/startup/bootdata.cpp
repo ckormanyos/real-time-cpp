@@ -1,4 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2023.
 //  Copyright Amine Chalandi 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -22,46 +23,36 @@
   
 ******************************************************************************************/
 
-//=========================================================================================
-// Defines
-//=========================================================================================
-#define ImageVectorTableHeaderMagicNumber  0x402000D1UL
+constexpr auto ImageVectorTableHeaderMagicNumber = static_cast<unsigned int>(0x402000D1UL);
 
-//=========================================================================================
-// Externs
-//=========================================================================================
-extern unsigned int __BOOT_ROM_CFG_BASE_ADDRESS;
-extern unsigned int __IVT_BASE_ADDRESS;
-extern unsigned int __IMAGE_SIZE;
+extern "C"
+{
+  extern unsigned int __BOOT_ROM_CFG_BASE_ADDRESS;
+  extern unsigned int __IVT_BASE_ADDRESS;
+  extern unsigned int __IMAGE_SIZE;
+}
 
-//=========================================================================================
-// Types
-//=========================================================================================
 typedef struct
 {
   unsigned int header;
-  unsigned int entry;      /* Absolute address of the first instruction to execute from the image */
-  unsigned int reserved1;  /* Reserved and should be zero */
-  unsigned int dcd;        /* Absolute address of the image DCD, NULL if no DCD is required */
-  unsigned int boot_data;  /* Absolute address of the boot data */
-  unsigned int ivt;        /* Absolute address of the IVT. Used internally by the ROM */
-  unsigned int csf;        /* Absolute address of the Command Sequence File, NULL if a CSF is not provided in the image */
-  unsigned int reserved2;  /* Reserved and should be zero */
+  unsigned int entry;      // Absolute address of the first instruction to execute from the image
+  unsigned int reserved1;  // Reserved and should be zero
+  unsigned int dcd;        // Absolute address of the image DCD, NULL if no DCD is required
+  unsigned int boot_data;  // Absolute address of the boot data
+  unsigned int ivt;        // Absolute address of the IVT. Used internally by the ROM
+  unsigned int csf;        // Absolute address of the Command Sequence File, NULL if a CSF is not provided in the image
+  unsigned int reserved2;  // Reserved and should be zero
 }
 tImageVectorTable;
 
-
 typedef struct
 {
-  unsigned int start;   /* Absolute address of the image */
-  unsigned int length;  /* Size of the program image */
-  unsigned int plugin;  /* Plugin flag, NULL if a Plugin is not provided in the image */
+  unsigned int start;   // Absolute address of the image
+  unsigned int length;  // Size of the program image
+  unsigned int plugin;  // Plugin flag, NULL if a Plugin is not provided in the image
 }
 tBootData;
 
-//=========================================================================================
-// Globals
-//=========================================================================================
 const tBootData BootData =
 {
   .start  = (unsigned int) &__BOOT_ROM_CFG_BASE_ADDRESS,
@@ -69,7 +60,8 @@ const tBootData BootData =
   .plugin = 0U
 };
 
-const tImageVectorTable ImageVectorTable __attribute__((section(".ImageVectorTable"), aligned(4096))) =
+extern "C"
+const tImageVectorTable ImageVectorTable __attribute__((section(".ImageVectorTable"),aligned(4096))) =
 {
   .header    = ImageVectorTableHeaderMagicNumber,
   .entry     = (unsigned int) &__IVT_BASE_ADDRESS,
@@ -81,7 +73,7 @@ const tImageVectorTable ImageVectorTable __attribute__((section(".ImageVectorTab
   .reserved2 = 0U
 };
 
-
+extern "C"
 const unsigned char FlexSPIConfigurationblock[512U] __attribute__((section(".FlexSPI_NOR_Config"))) =
 {
   0x46U, 0x43U, 0x46U, 0x42U, 0x00U, 0x00U, 0x01U, 0x56U, 0x00U, 0x00U, 0x00U, 0x00U, 0x01U, 0x01U, 0x02U, 0x00U,

@@ -44,6 +44,7 @@ set(TARGET_CFG_LIST
     stm32l152|stm32l152|arm-none-eabi
     rpi3|bcm2835_raspi_b|arm-none-eabi
     nxp|lpc11c24|arm-none-eabi
+    nxp|nxp_imxrt1062|arm-none-eabi
 
     atmega2560|atmega2560|avr
     atmega328p|avr|avr

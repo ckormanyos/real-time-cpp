@@ -728,7 +728,7 @@
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\int_vect.cpp">
       <Filter>micros\nxp_imxrt1062\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\nxp_imxrt1062\startup\bootdata.c">
+    <ClCompile Include="target\micros\nxp_imxrt1062\startup\bootdata.cpp">
       <Filter>micros\nxp_imxrt1062\startup</Filter>
     </ClCompile>
   </ItemGroup>
