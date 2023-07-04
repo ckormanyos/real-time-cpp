@@ -75,6 +75,7 @@ The reference application supports the following targets:
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
+| `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(TM)-M7    |
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
@@ -397,6 +398,9 @@ starter kit is used.
 The `riscvfe310` target utilizes the SiFive RISC-V FE310 SoC
 on Spark Fun's commercially available _Red_ _Thing_ _Plus_ Board.
 The blue LED on port GPIO0.5 is toggled.
+
+Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
+The orange user-LED is toggled.
 
 For other compatible boards, feel free contact me directly or submit
 an issue requesting support for your desired target system.
