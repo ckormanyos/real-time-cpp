@@ -1,14 +1,15 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_COMMUNICATION_2012_05_31_H_
-  #define UTIL_COMMUNICATION_2012_05_31_H_
+#ifndef UTIL_COMMUNICATION_2012_05_31_H
+  #define UTIL_COMMUNICATION_2012_05_31_H
 
   #include <algorithm>
+  #include <array>
   #include <cstddef>
   #include <cstdint>
 
@@ -21,31 +22,29 @@
     public:
       virtual ~communication_base() = default;
 
-      virtual bool recv(std::uint8_t& byte_to_recv) = 0;
+      virtual auto recv(std::uint8_t& byte_to_recv) -> bool = 0;
 
-      virtual void   select() = 0;
-      virtual void deselect() = 0;
+      virtual auto   select() -> void = 0;
+      virtual auto deselect() -> void = 0;
 
-      virtual bool select_channel(const std::size_t) { return true; }
+      virtual auto select_channel(const std::size_t) -> bool { return true; }
 
       template<typename send_iterator_type>
-      bool send_n(send_iterator_type first, send_iterator_type last)
+      auto send_n(send_iterator_type first, send_iterator_type last) -> bool
       {
-        bool send_result = true;
+        auto send_result = true;
 
-        while(first != last)
+        while((first != last) && send_result)
         {
           using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
-          send_result &= this->send(std::uint8_t(send_value_type(*first)));
-
-          ++first;
+          send_result = (this->send(static_cast<std::uint8_t>(send_value_type(*first++))) && send_result);
         }
 
         return send_result;
       }
 
-      virtual bool send(const std::uint8_t byte_to_send) = 0;
+      virtual auto send(const std::uint8_t byte_to_send) -> bool = 0;
 
     protected:
       communication_base() = default;
@@ -58,17 +57,17 @@
     class communication_buffer_depth_one_byte : public communication_base
     {
     public:
-      typedef std::uint8_t buffer_type;
+      using buffer_type = std::uint8_t;
 
-      virtual ~communication_buffer_depth_one_byte() = default;
+      ~communication_buffer_depth_one_byte() override = default;
 
     protected:
-      communication_buffer_depth_one_byte() : recv_buffer(0U) { }
+      buffer_type recv_buffer { };
 
-      buffer_type recv_buffer;
+      communication_buffer_depth_one_byte() = default;
 
     private:
-      virtual bool recv(std::uint8_t& byte_to_recv)
+      auto recv(std::uint8_t& byte_to_recv) -> bool override
       {
         byte_to_recv = recv_buffer;
 
@@ -79,36 +78,28 @@
     template<const std::size_t channel_count>
     class communication_multi_channel : public communication_base
     {
-    private:
-      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
-
     public:
-      communication_multi_channel(communication_base** p_com_channels)
-        : my_com_channels(),
-          my_index       (0U)
+      explicit communication_multi_channel(communication_base** p_com_channels)
       {
-        for(std::size_t i = 0U; i < channel_count; ++i)
-        {
-          my_com_channels[i] = p_com_channels[i];
-        }
+        std::copy(p_com_channels, p_com_channels + channel_count, my_com_channels.begin());
       }
 
-      ~communication_multi_channel() = default;
+      ~communication_multi_channel() override = default;
 
-      virtual bool send(const std::uint8_t byte_to_send)
+      auto send(const std::uint8_t byte_to_send) -> bool override
       {
         return my_com_channels[my_index]->send(byte_to_send);
       }
 
-      virtual bool recv(std::uint8_t& byte_to_recv)
+      auto recv(std::uint8_t& byte_to_recv) -> bool override
       {
         return my_com_channels[my_index]->recv(byte_to_recv);
       }
 
-      virtual void   select() { my_com_channels[my_index]->select(); }
-      virtual void deselect() { my_com_channels[my_index]->deselect(); }
+      auto   select() -> void override { my_com_channels[my_index]->select(); }
+      auto deselect() -> void override { my_com_channels[my_index]->deselect(); }
 
-      virtual bool select_channel(const std::size_t index)
+      auto select_channel(const std::size_t index) -> bool override
       {
         const bool select_channel_is_ok = (index < channel_count);
 
@@ -121,11 +112,13 @@
       }
 
     private:
-      communication_base* my_com_channels[channel_count];
-      std::size_t         my_index;
+      std::array<communication_base*, channel_count> my_com_channels { };
+      std::size_t         my_index { };
 
       communication_multi_channel() = delete;
+
+      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
     };
   }
 
-#endif // UTIL_COMMUNICATION_2012_05_31_H_
+#endif // UTIL_COMMUNICATION_2012_05_31_H
