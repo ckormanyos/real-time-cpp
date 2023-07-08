@@ -76,7 +76,7 @@ in the following way:
 | LED        | Port                        | Details                                                      |
 | ---------- | --------------------------- | -------------------------------------------------------      |
 | LED0       | microcontroller `portb.5`   | port toggle high / low, $750~\Omega$                         |
-| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $100\%~/~0\%$, $750~\Omega$          |
+| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $0~\ldots~100{\%}$, $750~\Omega$     |
 | LED2       | port expander pin `GPA0`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
 | LED3       | port expander pin `GPA1`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
 | LED4       | port expander pin `GPA2`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
@@ -85,25 +85,25 @@ In this example, we use ports from both the microcontroller as well
 as an external port expander chip. Hardware adressing is used
 on the port expander chip. The port expander address is
 hard-wired to the value 7 via connecting each of the three
-pins `A0` ... `A2` to $\plus{5}~\text{V}$.
+pins `A0` ... `A2` to $+{5}~\text{V}$.
 
 The connections of the port expander chip are tabulated below.
 
-| Port Expander Pin | Expander Function | Connection         |
-| ------------- | ---------------- | ----------              |
-|    9          | VDD              | $\plus{5}~\text{V}$     |
-|    10         | VSS              | GND                     |
-|    11         | CS (NOT)         | `portc.4`               |
-|    12         | SCK              | `portc.3`               |
-|    13         | SI               | `portc.1`               |
-|    14         | SO               | `portc.2`               |
-|    15         | A0               | $\plus{5}~\text{V}$     |
-|    16         | A1               | $\plus{5}~\text{V}$     |
-|    17         | A2               | $\plus{5}~\text{V}$     |
-|    18         | RESET (NOT)      | 15 kOhm to $\plus{5}~\text{V}$ pullup over switch to GND |
-|    21         | GPA0             | $750~\Omega$ to LED2    |
-|    22         | GPA1             | $750~\Omega$ to LED3    |
-|    23         | GPA2             | $750~\Omega$ to LED4    |
+| Port Expander Pin | Expander Function | Connection      |
+| ------------- | ---------------- | ----------           |
+|    9          | VDD              | $+{5}~\text{V}$      |
+|    10         | VSS              | GND                  |
+|    11         | CS (NOT)         | `portc.4`            |
+|    12         | SCK              | `portc.3`            |
+|    13         | SI               | `portc.1`            |
+|    14         | SO               | `portc.2`            |
+|    15         | A0               | $+{5}~\text{V}$      |
+|    16         | A1               | $+{5}~\text{V}$      |
+|    17         | A2               | $+{5}~\text{V}$      |
+|    18         | RESET (NOT)      | 15 kOhm to $+{5}~\text{V}$ pullup over switch to GND |
+|    21         | GPA0             | $750~\Omega$ to LED2 |
+|    22         | GPA1             | $750~\Omega$ to LED3 |
+|    23         | GPA2             | $750~\Omega$ to LED4 |
 
 The hardware setup is pictured in the image below.
 
