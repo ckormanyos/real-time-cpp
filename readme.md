@@ -74,8 +74,8 @@ The reference application supports the following targets:
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
-| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0          |
-| `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(TM)-M7    |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0           |
+| `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     |
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
@@ -274,7 +274,7 @@ Switch these options to the ones intended for the `stm32f446` ARM(R)-based targe
 ```
 
 Let's clarify the commands in their entirety in order to run a CMake build for `stm32f446`
-(i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(TM)-M4).
+(i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(R)-M4).
 
 ```sh
 cd real-time-cpp
@@ -338,30 +338,30 @@ The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
 with a single OS task exclusively on 1 of its cores.
 
-The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(TM)-M0 configuration
+The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0 configuration
 called "target lpc11c24" toggles the LED on `port0.8`.
 
-The ARM(R) Cortex(TM)-M3 configuration (called `target stm32f100`) runs on
+The ARM(R) Cortex(R)-M3 configuration (called `target stm32f100`) runs on
 the STM32VLDISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on `portc.8`.
 
-The second ARM(R) Cortex(TM)-M3 configuration (called `target stm32l100c`)
+The second ARM(R) Cortex(R)-M3 configuration (called `target stm32l100c`)
 runs on the STM32L100 DISCOVERY board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on `portc.8`.
 
-The third ARM(R) Cortex(TM)-M3 configuration (called `target stm32l152`)
+The third ARM(R) Cortex(R)-M3 configuration (called `target stm32l152`)
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
 
-The first ARM(R) Cortex(TM)-M4 configuration (called `target stm32f407`) runs on
+The first ARM(R) Cortex(R)-M4 configuration (called `target stm32f407`) runs on
 the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on `portd.15`.
 
-Another ARM(R) Cortex(TM)-M4 configuration (called `target stm32f446`) runs on
+Another ARM(R) Cortex(R)-M4 configuration (called `target stm32f446`) runs on
 the STM32F446 Nucleo-64 board commercially available from ST Microelectronics(R).
 The program toggles the green LED on `porta.5`.
 
-The first ARM(R) Cortex(TM)-M7 configuration (called `target stm32h7a3`) runs on
+The first ARM(R) Cortex(R)-M7 configuration (called `target stm32h7a3`) runs on
 the STM32H7A3 Nucleo-144 board commercially available from ST Microelectronics(R).
 The program toggles the green LED on `portb.0`.
 
