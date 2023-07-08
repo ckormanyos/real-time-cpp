@@ -73,13 +73,13 @@ void app::led::task_func()
 The five discrete LEDs in this example are fitted and setup
 in the following way:
 
-| LED        | Port                        | Details                                                      |
-| ---------- | --------------------------- | -------------------------------------------------------      |
-| LED0       | microcontroller `portb.5`   | port toggle high / low, $750~\Omega$                         |
-| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $0~\ldots~100{\%}$, $750~\Omega$     |
-| LED2       | port expander pin `GPA0`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
-| LED3       | port expander pin `GPA1`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
-| LED4       | port expander pin `GPA2`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$ |
+| LED        | Port                        | Details                                                       |
+| ---------- | --------------------------- | -------------------------------------------------------       |
+| LED0       | microcontroller `portb.5`   | port toggle high / low, $750~\Omega$                          |
+| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $0~\ldots~100\text{\%}$, $750~\Omega$ |
+| LED2       | port expander pin `GPA0`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$  |
+| LED3       | port expander pin `GPA1`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$  |
+| LED4       | port expander pin `GPA2`    | port toggle high / low, SPI(TM) software drive, $750~\Omega$  |
 
 In this example, we use ports from both the microcontroller as well
 as an external port expander chip. Hardware adressing is used
