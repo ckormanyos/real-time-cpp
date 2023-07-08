@@ -486,7 +486,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\chapter09_08.rc">
+    <ResourceCompile Include="src\chapter09_08a.rc">
       <Filter>src</Filter>
     </ResourceCompile>
   </ItemGroup>
