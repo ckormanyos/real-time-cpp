@@ -22,8 +22,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Debug|x64.Build.0 = Debug|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.Release|x64.Build.0 = Release|x64
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.ActiveCfg = Debug|x64
-		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.Build.0 = Debug|x64
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target avr|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

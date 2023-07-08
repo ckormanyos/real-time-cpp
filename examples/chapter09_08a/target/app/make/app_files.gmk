@@ -10,7 +10,6 @@ FILES_CPP  = $(PATH_APP)/app/led/app_led                                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_irq                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_led_monochrome                 \
              $(PATH_APP)/mcal/$(TGT)/mcal_led_rgb                        \
-             $(PATH_APP)/mcal/$(TGT)/mcal_led_rgb_board                  \
              $(PATH_APP)/mcal/$(TGT)/mcal_led_sys_start_interface        \
              $(PATH_APP)/mcal/$(TGT)/mcal_osc                            \
              $(PATH_APP)/mcal/$(TGT)/mcal_port                           \

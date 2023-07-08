@@ -12,15 +12,15 @@
 @rem build.bat directory_of_gcc_bin prefix_of_avr_gcc
 
 @rem Usage example A,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08"
-@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
+@rem build.bat "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
 
 @rem Usage example A1 (use a relative tool path),
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08"
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
 @rem build.bat ".\tools\Util\msys64\usr\local\gcc-11.2.0-avr\bin" avr
 
 @rem Usage example B,
-@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08"
+@rem cd "C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\examples\chapter09_08a"
 @rem build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
 
 
@@ -37,9 +37,9 @@
 @echo.Using tool prefix    : %TOOL_PREFIX%
 @echo.Create bin directory : bin\
 @if not exist bin mkdir bin
-@echo.Clean  bin directory : bin\*.o bin\chapter09_08*.*
+@echo.Clean  bin directory : bin\*.o bin\chapter09_08a*.*
 @if exist bin\*.o del /Q bin\*.o
-@if exist bin\chapter09_08*.* del /Q bin\chapter09_08*.*
+@if exist bin\chapter09_08a*.* del /Q bin\chapter09_08a*.*
 @echo.
 
 @echo.Compile  : app_led.cpp to bin/app_led.o
@@ -65,9 +65,6 @@
 
 @echo.Compile  : mcal_led_rgb.cpp to bin/mcal_led_rgb.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_led_rgb.cpp -o bin/mcal_led_rgb.o
-
-@echo.Compile  : mcal_led_rgb_board.cpp to bin/mcal_led_rgb_board.o
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_led_rgb_board.cpp -o bin/mcal_led_rgb_board.o
 
 @echo.Compile  : mcal_led_sys_start_interface.cpp to bin/mcal_led_sys_start_interface.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c src/mcal/avr/mcal_led_sys_start_interface.cpp -o bin/mcal_led_sys_start_interface.o
@@ -111,28 +108,28 @@
 @echo.Compile  : int_vect.cpp to bin/int_vect.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c++ %CFLAGS% %CPPFLAGS% %CINCLUDES% -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
-@echo.Link     : objects to bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter09_08.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_led_monochrome.o bin/mcal_led_rgb.o bin/mcal_led_rgb_board.o bin/mcal_led_sys_start_interface.o bin/mcal_irq.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_08.elf
+@echo.Link     : objects to bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x none -mrelax -nostartfiles %CFLAGS% %CPPFLAGS% %CINCLUDES% -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter09_08a.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_led_monochrome.o bin/mcal_led_rgb.o bin/mcal_led_sys_start_interface.o bin/mcal_irq.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_08a.elf
 
 @echo.
-@echo.Extract  : executable hex file : from bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter09_08.elf bin/chapter09_08.hex
+@echo.Extract  : executable hex file : from bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-objcopy -O ihex bin/chapter09_08a.elf bin/chapter09_08a.hex
 
-@echo.Extract  : assembly list file  : from bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter09_08.elf > bin/chapter09_08.lss
+@echo.Extract  : assembly list file  : from bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-objdump --disassemble bin/chapter09_08a.elf > bin/chapter09_08a.lss
 
-@echo.Extract  : size information    : from bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter09_08.elf > bin\chapter09_08_size.txt
+@echo.Extract  : size information    : from bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-size -A -t bin/chapter09_08a.elf > bin\chapter09_08a_size.txt
 
-@echo.Extract  : name information    : from bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter09_08.elf > bin\chapter09_08_nm.txt
+@echo.Extract  : name information    : from bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter09_08a.elf > bin\chapter09_08a_nm.txt
 
-@echo.Extract  : demangled names     : from bin/chapter09_08.elf
-@%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter09_08.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter09_08_cppfilt.txt
+@echo.Extract  : demangled names     : from bin/chapter09_08a.elf
+@%TOOL_PATH%\%TOOL_PREFIX%-nm --numeric-sort --print-size bin/chapter09_08a.elf | %TOOL_PATH%\%TOOL_PREFIX%-c++filt > bin\chapter09_08a_cppfilt.txt
 
-dir .\bin\chapter09_08.elf .\bin\chapter09_08.hex
+dir .\bin\chapter09_08a.elf .\bin\chapter09_08a.hex
 
-if not exist .\bin\chapter09_08.elf exit 1
-if not exist .\bin\chapter09_08.hex exit 1
+if not exist .\bin\chapter09_08a.elf exit 1
+if not exist .\bin\chapter09_08a.hex exit 1
 
 exit 0

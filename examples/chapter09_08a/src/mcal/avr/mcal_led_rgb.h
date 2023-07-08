@@ -5,15 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal/mcal_led_rgb.h>
-#include <mcal_reg.h>
-#include <mcal_led_rgb_board_ws2812.h>
+#ifndef MCAL_LED_RGB_2017_11_12_H
+  #define MCAL_LED_RGB_2017_11_12_H
 
-util::device::led_rgb& mcal::led::led_rgb0()
-{
-  using led_rgb0_type = mcal::led::led_rgb_board<mcal::reg::portd, UINT8_C(3)>;
+  #include <mcal_led/mcal_led_rgb_base.h>
 
-  static led_rgb0_type the_rgb_led;
+  namespace mcal
+  {
+    namespace led
+    {
+      led_rgb_base& led_rgb0();
+    }
+  }
 
-  return the_rgb_led;
-}
+#endif // MCAL_LED_RGB_2017_11_12_H

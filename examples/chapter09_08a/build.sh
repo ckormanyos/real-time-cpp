@@ -22,12 +22,12 @@
 # ./build.sh /usr/bin avr
 #
 # Usage example A (from *nix shell)
-# cd /usr/local/real-time-cpp/examples/chapter09_08
-# ./build.sh /usr/local/real-time-cpp/examples/chapter09_08/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd /usr/local/real-time-cpp/examples/chapter09_08a
+# ./build.sh /usr/local/real-time-cpp/examples/chapter09_08a/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 # Usage example B (from Win* shell such as in Git for Win*)
-# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08
-# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
+# cd C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08a
+# ./build.sh C:/Users/User/Documents/Ks/uC_Software/Boards/real-time-cpp/examples/chapter09_08a/tools/Util/MinGW/msys/1.0/local/gcc-9.2.0-avr/bin avr
 
 if [[ $# == 0 ]]; then                   ##  $# is the number of arguments
     if [[ -n "$(which avr-g++)" ]]; then ## -n tests if string is not empty
@@ -79,9 +79,6 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/
 echo "Compile  : mcal_led_rgb.cpp to bin/mcal_led_rgb.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_led_rgb.cpp -o bin/mcal_led_rgb.o
 
-echo "Compile  : mcal_led_rgb_board.cpp to bin/mcal_led_rgb_board.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_led_rgb_board.cpp -o bin/mcal_led_rgb_board.o
-
 echo "Compile  : mcal_led_sys_start_interface.cpp to bin/mcal_led_sys_start_interface.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c src/mcal/avr/mcal_led_sys_start_interface.cpp -o bin/mcal_led_sys_start_interface.o
 
@@ -130,21 +127,21 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros
 echo "Compile  : int_vect.cpp to bin/int_vect.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
-echo "Link     : objects to bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter09_08.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led_monochrome.o bin/mcal_led_rgb.o bin/mcal_led_rgb_board.o bin/mcal_led_sys_start_interface.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_08.elf
+echo "Link     : objects to bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter09_08a.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led_monochrome.o bin/mcal_led_rgb.o bin/mcal_led_sys_start_interface.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_pwm.o bin/mcal_wdg.o bin/os.o bin/os_task_control_block.o bin/sys_idle.o bin/sys_mon.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter09_08a.elf
 
 echo
-echo "Extract  : executable hex file : from bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter09_08.elf bin/chapter09_08.hex
+echo "Extract  : executable hex file : from bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-objcopy -O ihex bin/chapter09_08a.elf bin/chapter09_08a.hex
 
-echo "Extract  : assembly list file  : from bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-objdump --disassemble bin/chapter09_08.elf > bin/chapter09_08.lss
+echo "Extract  : assembly list file  : from bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-objdump --disassemble bin/chapter09_08a.elf > bin/chapter09_08a.lss
 
-echo "Extract  : size information    : from bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter09_08.elf > bin/chapter09_08_size.txt
+echo "Extract  : size information    : from bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-size -A -t bin/chapter09_08a.elf > bin/chapter09_08a_size.txt
 
-echo "Extract  : name information    : from bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_08.elf > bin/chapter09_08_nm.txt
+echo "Extract  : name information    : from bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_08a.elf > bin/chapter09_08a_nm.txt
 
-echo "Extract  : demangled names     : from bin/chapter09_08.elf"
-$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_08.elf | $TOOL_PATH/$TOOL_PREFIX-c++filt > bin/chapter09_08_cppfilt.txt
+echo "Extract  : demangled names     : from bin/chapter09_08a.elf"
+$TOOL_PATH/$TOOL_PREFIX-nm --numeric-sort --print-size bin/chapter09_08a.elf | $TOOL_PATH/$TOOL_PREFIX-c++filt > bin/chapter09_08a_cppfilt.txt

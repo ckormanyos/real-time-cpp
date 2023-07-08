@@ -30,3 +30,9 @@ The user LED is simultaneously toggled at the usual 1/2Hz.
 In this particular example, we have simply used a commercially-available
 Arduino-Nano placed on a breadboard. The wiring to the industry-standard
 WS2812 RGB breakout board is simple and shown in the image below.
+
+The hardware setup is pictured in the image below in action with two pictures
+showing two different colors of the bright RGB LED of type WS2812.
+
+![](./images/board09_08a_green.jpg)
+![](./images/board09_08a_blue.jpg)
