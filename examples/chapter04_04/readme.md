@@ -100,7 +100,7 @@ The connections of the port expander chip are tabulated below.
 |    15         | A0               | $+{5}~\text{V}$      |
 |    16         | A1               | $+{5}~\text{V}$      |
 |    17         | A2               | $+{5}~\text{V}$      |
-|    18         | RESET (NOT)      | 15 kOhm to $+{5}~\text{V}$ pullup over switch to GND |
+|    18         | RESET (NOT)      | $15~\text{k}\Omega$ to pullup over switch to GND |
 |    21         | GPA0             | $750~\Omega$ to LED2 |
 |    22         | GPA1             | $750~\Omega$ to LED3 |
 |    23         | GPA2             | $750~\Omega$ to LED4 |
