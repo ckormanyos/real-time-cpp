@@ -471,7 +471,7 @@
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\chapter09_08.rc" />
+    <ResourceCompile Include="src\chapter09_08a.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\circle_blue.ico" />

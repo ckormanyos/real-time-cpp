@@ -301,7 +301,7 @@ int WINAPI WinMain(HINSTANCE handle_to_instance, HINSTANCE, LPSTR, int)
   // of the RGB LED and the monochrome LED.
   const bool create_window_is_ok =
     mcal::led::driver_pc::instance().create_window(handle_to_instance,
-                                                   "LED Animation chapter09_08",
+                                                   "LED Animation chapter09_08a",
                                                    color_red,
                                                    DWORD(IDI_CIRCLE_RED));
 
