@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ProjectGuid>{9c2d4315-d501-4961-b0d1-4cc0f4ab0d17}</ProjectGuid>
+    <avrdevice>ATmega328P</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>chapter09_08</AssemblyName>
+    <Name>chapter09_08a</Name>
+    <RootNamespace>chapter09_08</RootNamespace>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolName xmlns="">AVR Simulator</ToolName>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <Channel xmlns="">
+        <host>127.0.0.1</host>
+        <port>54605</port>
+        <ssl>False</ssl>
+      </Channel>
+    </com_atmel_avrdbg_tool_simulator>
+    <avrtoolinterface />
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <OverrideVtorValue />
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <AsfVersion>3.0.1</AsfVersion>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <BootSegment>2</BootSegment>
+    <AsfFrameworkConfig>
+      <framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.39.0" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+    <ResetRule>0</ResetRule>
+    <EraseKey />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputFileName>chapter09_08</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\gcc\dev\atmega328p"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../src</Value>
+      <Value>../src/mcal/avr</Value>
+      <Value>../src/util/STL</Value>
+      <Value>../src/util/STL_C++XX_stdfloat</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -finline-functions -finline-limit=64 -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
+  <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
+  <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
+  <avrgcccpp.linker.memorysettings.InitialStack>0x800</avrgcccpp.linker.memorysettings.InitialStack>
+  <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
+  <avrgcccpp.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcccpp.assembler.general.IncludePaths>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputFileName>chapter09_08</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\gcc\dev\atmega328p"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.warnings.Pedantic>True</avrgcc.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../src</Value>
+      <Value>../src/mcal/avr</Value>
+      <Value>../src/util/STL</Value>
+      <Value>../src/util/STL_C++XX_stdfloat</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.warnings.Pedantic>True</avrgcccpp.compiler.warnings.Pedantic>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-Wextra -gdwarf-2 -fno-use-cxa-atexit -fno-exceptions -fno-inline-functions -std=c++14 -fno-rtti -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.general.DoNotUseStandardStartFiles>True</avrgcccpp.linker.general.DoNotUseStandardStartFiles>
+  <avrgcccpp.linker.general.DoNotUseDefaultLibraries>True</avrgcccpp.linker.general.DoNotUseDefaultLibraries>
+  <avrgcccpp.linker.general.NoStartupOrDefaultLibs>True</avrgcccpp.linker.general.NoStartupOrDefaultLibs>
+  <avrgcccpp.linker.miscellaneous.LinkerFlags>-Wl,-T../target/micros/avr/make/avr.ld</avrgcccpp.linker.miscellaneous.LinkerFlags>
+  <avrgcccpp.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
+    </ListValues>
+  </avrgcccpp.assembler.general.IncludePaths>
+  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app" />
+    <Folder Include="src\app\led" />
+    <Folder Include="src\mcal_memory" />
+    <Folder Include="src\os" />
+    <Folder Include="src\sys\idle" />
+    <Folder Include="src\sys\mon" />
+    <Folder Include="src\util\memory" />
+    <Folder Include="src\util\STD_LIBC" />
+    <Folder Include="src\util\STL_C++XX_stdfloat\" />
+    <Folder Include="target" />
+    <Folder Include="src" />
+    <Folder Include="src\mcal" />
+    <Folder Include="src\mcal\avr" />
+    <Folder Include="src\sys" />
+    <Folder Include="src\sys\start" />
+    <Folder Include="src\util" />
+    <Folder Include="src\util\STL" />
+    <Folder Include="src\util\STL\impl" />
+    <Folder Include="src\util\STL\impl\avr" />
+    <Folder Include="src\util\utility" />
+    <Folder Include="target\micros" />
+    <Folder Include="target\micros\avr" />
+    <Folder Include="target\micros\avr\make" />
+    <Folder Include="target\micros\avr\startup" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\app\led\app_led.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_benchmark.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_cpu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_cpu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_gpt.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_gpt.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_irq.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_irq.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_monochrome.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_monochrome_board.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb_board_ws2812.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_rgb_board_ws2812_detail.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_sys_start_interface.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_led_sys_start_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_memory_progmem.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_osc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_pwm_board.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_reg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\avr\mcal_wdg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_led_monochrome.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_led_rgb.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_pwm_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_reg_access_dynamic.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal\mcal_reg_access_static.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_access.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_iterator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_ptr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_memory\mcal_memory_progmem_ref.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_task_control_block.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\os\os_task_control_block.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\idle\sys_idle.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\mon\sys_mon.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\start\sys_start.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\memory\util_factory.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\memory\util_placed_pointer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\memory\util_ring_allocator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\memory\util_static_allocator.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STD_LIBC\memory.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\allocator_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\alloc_traits.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\avr\avr_atomic.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\ptr_traits.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\stl_local_constexpr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\stl_local_noexcept.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\impl\xcmath_impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL\time.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\crt0.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\crt0_init_ram.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\crt1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="target\micros\avr\startup\int_vect.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\util\STL\algorithm">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\any">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\array">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\atomic">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\basic_string">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\bitset">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cfloat">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\charconv">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\chrono">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cinttypes">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\climits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cmath">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\complex">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdbool">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstddef">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdint">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstdlib">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\cstring">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\ctime">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\functional">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\initializer_list">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\iterator">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\limits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\memory">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\numeric">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\random">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\ratio">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\span">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\stdexcept">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\string">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\tuple">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\type_traits">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\utility">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL\vector">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="target\micros\avr\make\avr.ld">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
+</Project>

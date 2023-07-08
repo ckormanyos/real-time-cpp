@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------
+# List of the source files in the project
+# ------------------------------------------------------------------------------
+
+FILES_CPP  = $(PATH_APP)/app/led/app_led                                 \
+             $(PATH_APP)/mcal/mcal                                       \
+             $(PATH_APP)/mcal/mcal_gcc_cxx_completion                    \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu                            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_irq                            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led_monochrome                 \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led_rgb                        \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led_sys_start_interface        \
+             $(PATH_APP)/mcal/$(TGT)/mcal_osc                            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_port                           \
+             $(PATH_APP)/mcal/$(TGT)/mcal_pwm                            \
+             $(PATH_APP)/mcal/$(TGT)/mcal_wdg                            \
+             $(PATH_APP)/os/os                                           \
+             $(PATH_APP)/os/os_task_control_block                        \
+             $(PATH_APP)/sys/idle/sys_idle                               \
+             $(PATH_APP)/sys/mon/sys_mon                                 \
+             $(PATH_APP)/sys/start/sys_start

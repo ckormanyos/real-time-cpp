@@ -61,6 +61,11 @@ This example makes use of object oriented programming methods to control a seven
 Example ![chapter09_08](./chapter09_08) Controlling an RGB LED.\
 This example utilizes object oriented programming techniques to control an RGB LED.
 
+Example ![chapter09_08a](./chapter09_08a) Controlling an RGB LED of Type WS2812.\
+This uses essensially the tame programming techniques as in example chapter09_08
+to control an RGB LED. The difference is that a _digitally_-controlled industry-standard
+RGB LED of type WS2812 is used.
+
 Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
 This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits
 of the mathematical constant
