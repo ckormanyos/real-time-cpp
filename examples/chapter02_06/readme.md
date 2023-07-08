@@ -22,11 +22,11 @@ class running on a homemade target system.
 A manually executed digital oscilloscope measurement is used
 to capture the runtime of the port toggle.
 The toggle signal has a width of approximately
-$310~\mbox{ns}$, which agrees well with the claim in the book.
+$310~\text{ns}$, which agrees well with the claim in the book.
 
 ![](./images/2020-01-12.pdf)
 
-The toggle signal having a width of approximately $310\text{ns}$
+The toggle signal having a width of approximately $310~\text{ns}$
 captured by a digital oscilloscope is shown.
 
 Manually measuring the toggle signal with a _scope_ might require laboratory skill,

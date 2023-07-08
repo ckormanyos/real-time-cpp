@@ -59,7 +59,7 @@ int main()
 }
 ```
 
-# In `Win*`
+## In `Win*`
 The `Win*` batch file searches for a pre-installed instance
 of the avr-g++ tool chain. 
 

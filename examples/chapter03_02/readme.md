@@ -9,8 +9,8 @@ and portability of fixed-width integer types.
 ## Fixed-Width Integer Types
 
 The code below asserts that
-the <img src="https://render.githubusercontent.com/render/math?math=664999^{th}">
-prime number is <img src="https://render.githubusercontent.com/render/math?math=10006721">.
+the $664,999^{th}$ prime number is $10,006,721$.
+
 This integer is stored in a fixed width
 unsigned integer variable having 32 bits. The storage
 is of type `constexpr`, which is compile-time constant.
@@ -24,8 +24,8 @@ constexpr auto prime_664999 = static_cast<std::uint32_t>(UINT32_C(10’006’721
 ```
 
 The $664,999^{th}$ prime number is, in fact, $10,006,721$.
-See also [`www.wolframalpha.com/input?i=Prime%5B664999%5D`](https://www.wolframalpha.com/input?i=Prime%5B664999%5D))
-at Wolfram Alpha.
+See also [WolframAlpha](https://www.wolframalpha.com/input?i=Prime%5B664999%5D))
+with the input `Prime[664999]`.
 
 Although this example is quite straightforward, it shows that fixed-width
 types such as `std::uint32_t` and macros such as `UINT32_C` can
@@ -90,11 +90,11 @@ assumption that the famous Riemann hypothesis is true,
 the prime counting function
 is related to the logarithmic integral function via
 
-$$\text{Li}(x)-\pi(x)=O(\sqrt{x}\log{x}\text{,}$$
+$$\text{Li}(x)-\pi(x)~=~O\left(\sqrt{x}\log{x}\right)\text{,}$$
 
 In other words the ratio
 
-$$\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1$$
+$$\dfrac{\text{Li}(x)}{\pi(x)}~{\sim}~1$$
 
 asymptotically approaches $1$ for large $x$.
 
@@ -106,8 +106,9 @@ and
 
 $$\text{li}(2)\approx{1.045}\ldots\text{.}$$
 
-See also the Wiki article on the
-[Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
+See also the
+[Wiki article](http://en.wikipedia.org/wiki/Prime-counting_function)
+on the _Prime_-_counting_ _function_.
 
 So let's reconsider the $664,999^{th}$ prime number, which is $10,006,721$.
 How close is the ratio in the prime number theorem to $1$
