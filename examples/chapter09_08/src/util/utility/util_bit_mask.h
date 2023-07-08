@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,6 +17,8 @@
              const unsigned bit_cnt>
     struct bit_mask_multi_value
     {
+      // This bit mask contains bit_cnt continuous bits starting at bit_pos.
+
       // Ensure that the data_type is an integer type.
       static_assert(std::numeric_limits<data_type>::is_integer == true,
                     "the data_type of the bit_mask template must be an integer type");
@@ -36,6 +38,8 @@
              const unsigned bit_pos>
     struct bit_mask_multi_value<data_type, bit_pos, 1U>
     {
+      // This bit mask contains one bit at bit_pos.
+
       // Ensure that the data_type is an integer type.
       static_assert(std::numeric_limits<data_type>::is_integer == true,
                     "the data_type of the bit_mask template must be an integer type");
@@ -55,6 +59,8 @@
              const unsigned bit_pos>
     struct bit_mask_single_value
     {
+      // This bit mask contains one bit at bit_pos.
+
       // Ensure that the data_type is an integer type.
       static_assert(std::numeric_limits<data_type>::is_integer == true,
                     "the data_type of the bit_mask template must be an integer type");

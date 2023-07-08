@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,18 +7,17 @@
 
 // Implement templates for the standard complex class and
 // its associated functions. These are intended to be used
-// with both user-defined types as well as built-in float,
-// double and long double.
+// with the built-in types float, double and long double.
 
 #ifndef COMPLEX_2012_02_20_
   #define COMPLEX_2012_02_20_
 
   #if !defined(STD_COMPLEX_DISABLE_IOSTREAM)
-    #define STD_COMPLEX_DISABLE_IOSTREAM
+  #define STD_COMPLEX_DISABLE_IOSTREAM
   #endif
 
   #if defined(__GNUC__)
-    #pragma GCC system_header
+  #pragma GCC system_header
   #endif
 
   #include <impl/stl_local_constexpr.h>
@@ -1288,7 +1287,7 @@
   } // namespace std
 
   /*
-  8-bit microcontroller @ 16MHz
+  8-bit microcontroller at 16MHz
 
   std::complex<float> x(1.23F, 3.45F);
   std::complex<float> y(0.77F, 0.22F);

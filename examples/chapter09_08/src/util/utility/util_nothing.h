@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2014.
+//  Copyright Christopher Kormanyos 2007 - 2018.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,9 +13,12 @@
     // This is a structure that is used to represent *nothing*.
     struct nothing final
     {
-      nothing() { }
+      nothing() = default;
+
       nothing(const nothing&) { }
-      ~nothing() { }
+
+      ~nothing() = default;
+
       nothing& operator=(const nothing&) { return *this; }
     };
 

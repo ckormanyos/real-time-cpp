@@ -1,5 +1,12 @@
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2011 - 2022.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 ///////////////////////////////////////////////////////////////////////////////
-/// \author (c) Marco Paland (info@paland.com)
+/// \author (c) Marco Paland (info (AT) paland.com)
 ///             2011-2012, PALANDesign Hannover, Germany
 ///
 /// \license LGPLv3
@@ -15,15 +22,15 @@
 /// along with chrono. If not, see <http://www.gnu.org/licenses/>.
 ///
 ///
-/// \brief <chrono> implementation of C++11 on Windows(tm)
+/// \brief <chrono> implementation of C++11 chronological classes
 ///
-/// This class implements the <chrono> class of C++11 for compilers
-/// which do not support this standard.
-/// Needs <ratio>, and standard <limits>, <ctime> headers
+/// This class implements the <chrono> classes of C++11 for compilers
+/// which do not yet support this standard.
+/// Needs <ratio>, and standard <limits>, <ctime> headers.
 ///
-/// To adapt <chrono> to you own system you need to write your own
+/// To adapt <chrono> to your own system you need to write your own
 /// xxx_clock::now() functions and define your clock accuracy in CLOCKS section.
-/// This is the only part which is OS dependent!
+/// This is the only part which is dependent on hardware of the OS!
 /// This way you can easily adapt <chrono> to your target system
 ///
 /// \todo - add more specializations of missing common_types for duration arithmetic
@@ -69,7 +76,7 @@
       };
 
       // TBD: Add more specializations of common_type here
-      // common_type is in namespace std::chrono cause its usage is private here
+      // common_type is in namespace std::chrono because its usage is private here
       template<typename Tp, typename Up>
       struct common_type
       { typedef Tp type; };   // default return is 1. param (Tp) if no specialization is found
@@ -98,7 +105,6 @@
       template<>
       struct common_type<int64_t, int64_t>
       { typedef int64_t type; };
-
 
       // specialization of common_type (for duration)
       template<typename Rep1, typename Period1, typename Rep2, typename Period2>
@@ -133,7 +139,7 @@
         duration()
          : rep_() { }
 
-        ~duration() { }
+        ~duration() = default;
 
         template<typename Rep2>
         explicit duration(const Rep2& r)
@@ -278,7 +284,6 @@
         return _ct(lhs) %= rhs;
       }
 
-
       // comparisons
       template<typename Rep1, typename Period1, typename Rep2, typename Period2>
       inline bool operator==(const duration<Rep1, Period1>& lhs,
@@ -318,7 +323,7 @@
       inline bool operator>(const duration<Rep1, Period1>& lhs,
                             const duration<Rep2, Period2>& rhs)
       {
-        return rhs < lhs;
+        return (rhs < lhs);
       }
 
       template<typename Rep1, typename Period1, typename Rep2, typename Period2>
@@ -392,13 +397,13 @@
       typedef duration<int64_t, milli>        milliseconds;
 
       // seconds
-      typedef duration<int64_t, ratio<1> >    seconds;
+      typedef duration<int64_t, ratio<1>>     seconds;
 
       // minutes
-      typedef duration<int32_t, ratio<60> >   minutes;
+      typedef duration<int32_t, ratio<60>>    minutes;
 
       // hours
-      typedef duration<int32_t, ratio<3600> > hours;
+      typedef duration<int32_t, ratio<3600>>  hours;
 
 
       //////////////////////////////////////////////////////////////////////////
@@ -425,6 +430,8 @@
         time_point(const time_point<clock, Duration2>& t)
          : d_(t.time_since_epoch())
         { }
+
+        ~time_point() = default;
 
         // observer
         duration time_since_epoch() const
@@ -525,7 +532,7 @@
       inline bool operator>(const time_point<Clock, Dur1>& lhs,
                             const time_point<Clock, Dur2>& rhs)
       {
-        return rhs < lhs;
+        return (rhs < lhs);
       }
 
       template<typename Clock, typename Dur1, typename Dur2>
@@ -538,7 +545,7 @@
 
 
       //////////////////////////////////////////////////////////////////////////
-      // C L O C K S
+      // The CLOCKS Section
       //
 
       class system_clock
@@ -606,6 +613,13 @@
       typedef high_resolution_clock steady_clock;
     } // namespace chrono
 
+    //////////////////////////////////////////////////////////////////////////
+    // The String Literals Section
+    //
+
+    #if defined(__GNUC__) && (__GNUC__ < 5)
+    #else
+
     namespace literals
     {
       namespace chrono_literals
@@ -642,6 +656,8 @@
       using std::literals::chrono_literals::operator""min;
       using std::literals::chrono_literals::operator""h;
     }
+
+    #endif // __GNUC__ >= 5
   } // namespace std
 
 #endif // CHRONO_2012_06_01_

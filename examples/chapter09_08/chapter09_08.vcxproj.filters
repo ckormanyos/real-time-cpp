@@ -87,9 +87,6 @@
     <ClCompile Include="src\app\led\app_led.cpp">
       <Filter>src\app\led</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\avr\mcal_cpu.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
@@ -132,9 +129,6 @@
     <ClCompile Include="src\mcal\avr\mcal_led_sys_start_interface.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
-      <Filter>src\util\STD_LIBC</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_led_driver_pc.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
@@ -156,6 +150,18 @@
     <ClCompile Include="src\mcal\win32\mcal_wdg_watchdog.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
+      <Filter>src\util\STL\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
+      <Filter>src\util\STL\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
+      <Filter>src\util\STL\impl\avr</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
+      <Filter>src\util\STD_LIBC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mcal\mcal.h">
@@ -163,42 +169,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\mcal_reg_access_template.h">
       <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_bit_mask.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_noncopyable.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_nothing.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_null_ptr_workaround.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_time.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_two_part_data_manipulation.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_utype_helper.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_communication.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_dynamic_array.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_circular_buffer.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_linear_interpolate.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_point.h">
-      <Filter>src\util\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\os\os.h">
       <Filter>src\os</Filter>
@@ -209,35 +179,8 @@
     <ClInclude Include="src\os\os_task_control_block.h">
       <Filter>src\os</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_alignas.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_countof.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_noexcept.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_stopwatch.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\impl\allocator_impl.h">
-      <Filter>src\util\STL\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\impl\stl_local_constexpr.h">
-      <Filter>src\util\STL\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\impl\stl_local_noexcept.h">
-      <Filter>src\util\STL\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\STL\time.h">
-      <Filter>src\util\STL</Filter>
     </ClInclude>
     <ClInclude Include="src\util\device\util_device_led_base.h">
       <Filter>src\util\device</Filter>
@@ -356,9 +299,114 @@
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\alloc_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\allocator_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\ptr_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\stl_local_constexpr.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\stl_local_noexcept.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\xcmath_impl.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">
+      <Filter>src\util\STL\impl\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\time.h">
+      <Filter>src\util\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_linear_interpolate.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_noexcept.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_noncopyable.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_nothing.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_point.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_stopwatch.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_time.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_two_part_data_manipulation.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_utype_helper.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_alignas.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_bit_mask.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_circular_buffer.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_communication.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_countof.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_dynamic_array.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
+      <Filter>src\util\STL_C++XX_stdfloat</Filter>
+    </None>
+    <None Include="src\util\STL\numeric">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\random">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\ratio">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\span">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\stdexcept">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\string">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\tuple">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\type_traits">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\utility">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\vector">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\algorithm">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\any">
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\array">
@@ -370,10 +418,25 @@
     <None Include="src\util\STL\basic_string">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\bitset">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\cfloat">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\charconv">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\chrono">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cinttypes">
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="src\util\STL\climits">
@@ -394,6 +457,12 @@
     <None Include="src\util\STL\cstdint">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\cstdlib">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cstring">
+      <Filter>src\util\STL</Filter>
+    </None>
     <None Include="src\util\STL\ctime">
       <Filter>src\util\STL</Filter>
     </None>
@@ -411,33 +480,6 @@
     </None>
     <None Include="src\util\STL\memory">
       <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\numeric">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\ratio">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\string">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\tuple">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\type_traits">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\utility">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\vector">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL\cstdlib">
-      <Filter>src\util\STL</Filter>
-    </None>
-    <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">
-      <Filter>src\util\STL_C++XX_stdfloat</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

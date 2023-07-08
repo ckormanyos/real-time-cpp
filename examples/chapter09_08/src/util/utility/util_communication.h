@@ -1,112 +1,124 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2015.
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_COMMUNICATION_2012_05_31_H_
-  #define UTIL_COMMUNICATION_2012_05_31_H_
+#ifndef UTIL_COMMUNICATION_2012_05_31_H
+  #define UTIL_COMMUNICATION_2012_05_31_H
 
   #include <algorithm>
+  #include <array>
   #include <cstddef>
   #include <cstdint>
-  #include <util/utility/util_circular_buffer.h>
+
+  #include <util/utility/util_noncopyable.h>
 
   namespace util
   {
-    class communication_base
+    class communication_base : private util::noncopyable
     {
     public:
-      typedef std::size_t size_type;
+      virtual ~communication_base() = default;
 
-      virtual ~communication_base() { }
+      virtual auto recv(std::uint8_t& byte_to_recv) -> bool = 0;
 
-      virtual bool send           (const std::uint8_t byte_to_send) = 0;
-      virtual bool recv           (std::uint8_t& byte_to_recv) = 0;
-      virtual size_type recv_ready() const = 0;
-      virtual bool idle           () const = 0;
+      virtual auto   select() -> void = 0;
+      virtual auto deselect() -> void = 0;
+
+      virtual auto select_channel(const std::size_t) -> bool { return true; }
 
       template<typename send_iterator_type>
-      bool send_n(send_iterator_type first,
-                  send_iterator_type last)
+      auto send_n(send_iterator_type first, send_iterator_type last) noexcept -> bool
       {
-        bool send_result = true;
+        auto send_result = true;
 
-        while(first != last)
+        while((first != last) && send_result)
         {
-          typedef typename
-          std::iterator_traits<send_iterator_type>::value_type
-          send_value_type;
+          using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
-          const send_value_type value(*first);
-
-          send_result &= send(std::uint8_t(value));
-
-          ++first;
+          send_result = (this->send(static_cast<std::uint8_t>(send_value_type(*first++))) && send_result);
         }
 
         return send_result;
       }
 
-      template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first,
-                  size_type count)
-      {
-        const size_type count_to_recv = (std::min)(count, recv_ready());
-
-        recv_iterator_type last = first + count_to_recv;
-
-        bool recv_result = true;
-
-        while(first != last)
-        {
-          std::uint8_t byte_to_recv;
-
-          recv_result &= recv(byte_to_recv);
-
-          typedef typename
-          std::iterator_traits<recv_iterator_type>::value_type
-          recv_value_type;
-
-          *first = recv_value_type(byte_to_recv);
-
-          ++first;
-        }
-
-        return recv_result;
-      }
-
-      template<typename recv_iterator_type>
-      bool recv_n(recv_iterator_type first, recv_iterator_type last)
-      {
-        const size_type count_to_recv = size_type(std::distance(first, last));
-
-        return recv_n(first, count_to_recv);
-      }
+      virtual auto send(const std::uint8_t byte_to_send) noexcept -> bool = 0;
 
     protected:
-      communication_base() { }
+      communication_base() = default;
+
+    private:
+      template<const std::size_t channel_count>
+      friend class communication_multi_channel;
     };
 
-    template<const std::size_t buffer_size = 16U>
-    class communication : public communication_base
+    class communication_buffer_depth_one_byte : public communication_base
     {
     public:
-      typedef util::circular_buffer<std::uint8_t, buffer_size> buffer_type;
+      using buffer_type = std::uint8_t;
 
-      virtual ~communication();
+      ~communication_buffer_depth_one_byte() override = default;
 
     protected:
-      communication() : send_buffer(),
-                        recv_buffer() { }
+      buffer_type recv_buffer { };
 
-      buffer_type send_buffer;
-      buffer_type recv_buffer;
+      communication_buffer_depth_one_byte() = default;
+
+    private:
+      auto recv(std::uint8_t& byte_to_recv) -> bool override
+      {
+        byte_to_recv = recv_buffer;
+
+        return true;
+      }
     };
 
-    template<const std::size_t buffer_size>
-    communication<buffer_size>::~communication() { }
+    template<const std::size_t channel_count>
+    class communication_multi_channel : public communication_base
+    {
+    public:
+      explicit communication_multi_channel(communication_base** p_com_channels)
+      {
+        std::copy(p_com_channels, p_com_channels + channel_count, my_com_channels.begin());
+      }
+
+      ~communication_multi_channel() override = default;
+
+      auto send(const std::uint8_t byte_to_send) noexcept -> bool override
+      {
+        return my_com_channels[my_index]->send(byte_to_send);
+      }
+
+      auto recv(std::uint8_t& byte_to_recv) -> bool override
+      {
+        return my_com_channels[my_index]->recv(byte_to_recv);
+      }
+
+      auto   select() -> void override { my_com_channels[my_index]->select(); }
+      auto deselect() -> void override { my_com_channels[my_index]->deselect(); }
+
+      auto select_channel(const std::size_t index) -> bool override
+      {
+        const bool select_channel_is_ok = (index < channel_count);
+
+        if(select_channel_is_ok)
+        {
+          my_index = index;
+        }
+
+        return select_channel_is_ok;
+      }
+
+    private:
+      std::array<communication_base*, channel_count> my_com_channels { };
+      std::size_t         my_index { };
+
+      communication_multi_channel() = delete;
+
+      static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
+    };
   }
 
-#endif // UTIL_COMMUNICATION_2012_05_31_H_
+#endif // UTIL_COMMUNICATION_2012_05_31_H
