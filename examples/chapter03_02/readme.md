@@ -1,6 +1,11 @@
 # Example Chapter03_02
 ## Integer Types Having Fixed Widths and Prime Numbers
 
+<p align="center">
+    <a href="https://godbolt.org/z/dPbM7v4ff" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
 Example chapter03_02 focuses on integer types having fixed widths.
 The example gets into a fascinating calculation of prime numbers
 that is simultaneously intended to emphasize the usefullness
@@ -24,7 +29,7 @@ constexpr auto prime_664999 = static_cast<std::uint32_t>(UINT32_C(10’006’721
 ```
 
 The $664,999^{th}$ prime number is, in fact, $10,006,721$.
-See also [WolframAlpha](https://www.wolframalpha.com/input?i=Prime%5B664999%5D))
+See also [WolframAlpha](https://www.wolframalpha.com/input?i=Prime%5B664999%5D)
 with the input `Prime[664999]`.
 
 Although this example is quite straightforward, it shows that fixed-width
@@ -80,7 +85,10 @@ The runtime of the prime sieve cycle task is depicted below.
 ## A PC-Based example
 
 A nifty little PC-based sieving program from the code snippets area helps to
-[explore prime numbers](../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp)
+[explore prime numbers](../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp).
+
+This code can be run in its entirety at the following
+[short link](https://godbolt.org/z/dPbM7v4ff) to [godbolt](https://godbolt.org).
 
 ## Prime Counting Function
 
@@ -100,11 +108,11 @@ asymptotically approaches $1$ for large $x$.
 
 Here
 
-$$\text{Li}(x)=\text{li}(x)-\text{li}(2)\text{,}$$
+$$\text{Li}(x)~=~\text{li}(x)-\text{li}(2)\text{,}$$
 
 and
 
-$$\text{li}(2)\approx{1.045}\ldots\text{.}$$
+$$\text{li}(2)\approx{1.045}\ldots~\text{.}$$
 
 See also the
 [Wiki article](http://en.wikipedia.org/wiki/Prime-counting_function)
@@ -114,11 +122,12 @@ So let's reconsider the $664,999^{th}$ prime number, which is $10,006,721$.
 How close is the ratio in the prime number theorem to $1$
 at this numerical point?
 
-For the input
+Consider the following input.
 
 ```
 N[(LogIntegral[10006721] - LogIntegral[2])/664999, 20]
 ```
 
-[WolframAlpha](http://www.wolframalpha.com) results in
-$1.0005042653265034897\ldots$, which is indeed quite close to $1$.
+For this input,
+[WolframAlpha](https://www.wolframalpha.com/input?i=N%5B%28LogIntegral%5B10006721%5D+-+LogIntegral%5B2%5D%29%2F664999%2C+20%5D)
+results in $1.0005042653265034897\ldots$ which is indeed quite close to $1$.
