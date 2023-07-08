@@ -1,12 +1,12 @@
 # Example Chapter04_04a
-# LED Objects and Polymorphism via References
+## LED Objects and Polymorphism via References
 
 Example chapter04_04a implements the same basic functionality
 as does example chapter04_04. Example chapter04_04a, however,
 uses an `std::array` of LED base class references instead
 of base class pointers in order to exercise object oriented polymorphism.
 
-# Application Description
+## Application Description
 
 The LED base class references are stored within template
 instances of `std::reference_wrapper` from the `<functional>` library.
@@ -54,7 +54,7 @@ void app::led::task_func()
 }
 ```
 
-# Hardware Setup
+## Hardware Setup
 
 The hardware setup for example chapter04_04a is the same as that of
 example chapter04_04.
