@@ -1,5 +1,5 @@
 # Example chapter02_03a
-# The LED program with cooperative multitasking scheduler
+## The LED program with cooperative multitasking scheduler
 
 This example implements the LED program with
 a tiny cooperative multitasking scheduler for the
@@ -23,7 +23,7 @@ Project workspaces providing code visualization
 and single-click build are provided for both
 VC as well as Atmel Studio.
 
-# Application Description
+## Application Description
 
 In the LED program with timing, the blinking is controlled
 in the application task `app::led::task_func`

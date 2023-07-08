@@ -1,12 +1,12 @@
 # Example Chapter03_02
-# Integer Types Having Fixed Widths and Prime Numbers
+## Integer Types Having Fixed Widths and Prime Numbers
 
 Example chapter03_02 focuses on integer types having fixed widths.
 The example gets into a fascinating calculation of prime numbers
 that is simultaneously intended to emphasize the usefullness
 and portability of fixed-width integer types.
 
-# Fixed-Width Integer Types
+## Fixed-Width Integer Types
 
 The code below asserts that
 the <img src="https://render.githubusercontent.com/render/math?math=664999^{th}">
@@ -20,24 +20,27 @@ is of type `constexpr`, which is compile-time constant.
 
 // Initialize the 664,999th prime number.
 
-constexpr std::uint32_t prime_664999 = UINT32_C(10’006’721);
+constexpr auto prime_664999 = static_cast<std::uint32_t>(UINT32_C(10’006’721));
 ```
+
+The $664,999^{th}$ prime number is, in fact, $10,006,721$.
+See also [`www.wolframalpha.com/input?i=Prime%5B664999%5D`](https://www.wolframalpha.com/input?i=Prime%5B664999%5D))
+at Wolfram Alpha.
 
 Although this example is quite straightforward, it shows that fixed-width
 types such as `std::uint32_t` and macros such as `UINT32_C` can
-facilitate portability, especially when used consistently throughout
-the entire code in the project.
+facilitate portability. This is especially true when they are
+used consistently throughout the entire code in the project.
 
-# Application Description
+## Application Description
 
-In example chapter03_02, the first 100 prime numbers are calculated
+In example chapter03_02, the first $100$ prime numbers are calculated
 with a sieve method. The sieve-based prime number calculation
 is realized within the application task of the software in the
 cooperative multitasking scheduler.
 
-We note that the <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
-prime number is <img src="https://render.githubusercontent.com/render/math?math=541">.
-This can, for instance, be verified at [WolframAlpha](http://www.wolframalpha.com)
+We note that the $100^{th}$ prime number is $541$.
+This can, for instance, be verified at [WolframAlpha](https://www.wolframalpha.com/input?i=Prime%5B100%5D)
 with the input `Prime[100]`.
 
 The example begins by querying the number of entries required
@@ -46,8 +49,8 @@ asymptotic series approximation of the lograithmic integral function is used.
 Instead of 100, the approximation returns 108, which is
 adequately close to the desired limit and large enough.
 
-Although both the exact number of 100 primes as well as
-the value 541 of the <img src="https://render.githubusercontent.com/render/math?math=100^{th}">
+Although both the exact number of $100$ primes as well as
+the value $541$ of the $100^{th}$
 prime are known at the outset,
 it is common practice to approximate these before beginning
 a sieve calculation of primes. Imagine, for instance, calculating
@@ -55,11 +58,11 @@ ten million primes. In this case, it might make sense to first
 approximate the upper bound of sieving with the prime counting function
 before beginning the sieve iteration.
 
-# Running the Setup
+## Running the Setup
 
-The prime sieve cycle task `void app::prime::task_func()` runs every 50ms.
+The prime sieve cycle task `void app::prime::task_func()` runs every $50\text{ms}$.
 The approximate runtime of each task call required for the
-entire sieve calculation of 100 prime numbers is approximately 5ms.
+entire sieve calculation of $100$ prime numbers is approximately $5\text{ms}$.
 
 A debug port, in this case `portd.3` is toggled high and low
 just prior to and after the call of the prime sieve cacle task.
@@ -74,12 +77,12 @@ The runtime of the prime sieve cycle task is depicted below.
 
 ![](./images/scope03_02.jpg)
 
-# A PC-Based example
+## A PC-Based example
 
 A nifty little PC-based sieving program from the code snippets area helps to
 [explore prime numbers](../../code_snippets/chapter03/chapter03_02-002a_explore_prime_numbers.cpp)
 
-# Prime Counting Function
+## Prime Counting Function
 
 The prime counting function fascinates mathematicians and
 hobbyists alike. In the prime number theorem, under
@@ -87,30 +90,27 @@ assumption that the famous Riemann hypothesis is true,
 the prime counting function
 is related to the logarithmic integral function via
 
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)-\pi(x)=O(\sqrt{x}\log{x})">,
+$$\text{Li}(x)-\pi(x)=O(\sqrt{x}\log{x}\text{,}$$
 
 In other words the ratio
 
-<img src="https://render.githubusercontent.com/render/math?math=\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1">
+$$\dfrac{\text{Li}(x)}{\pi(x)}{\sim}1$$
 
-asymptotically approaches <img src="https://render.githubusercontent.com/render/math?math=1">
-for large x.
+asymptotically approaches $1$ for large $x$.
 
 Here
 
-<img src="https://render.githubusercontent.com/render/math?math=\text{Li}(x)=\text{li}(x)-\text{li}(2)">,
+$$\text{Li}(x)=\text{li}(x)-\text{li}(2)\text{,}$$
 
 and
 
-<img src="https://render.githubusercontent.com/render/math?math=\text{li}(2)\approx{1.045}\ldots">.
+$$\text{li}(2)\approx{1.045}\ldots\text{.}$$
 
-See also this article on the
+See also the Wiki article on the
 [Prime-counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
 
-So for the <img src="https://render.githubusercontent.com/render/math?math=664999^{th}">
-prime number, which is <img src="https://render.githubusercontent.com/render/math?math=10006721">,
-how close is the ratio in the prime number theorem
-to <img src="https://render.githubusercontent.com/render/math?math=1">
+So let's reconsider the $664,999^{th}$ prime number, which is $10,006,721$.
+How close is the ratio in the prime number theorem to $1$
 at this numerical point?
 
 For the input
@@ -119,5 +119,5 @@ For the input
 N[(LogIntegral[10006721] - LogIntegral[2])/664999, 20]
 ```
 
-[WolframAlpha](http://www.wolframalpha.com) gives
-<img src="https://render.githubusercontent.com/render/math?math=1.0005042653265034897">.
+[WolframAlpha](http://www.wolframalpha.com) results in
+$1.0005042653265034897\ldots$, which is indeed quite close to $1$.

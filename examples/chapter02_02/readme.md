@@ -1,5 +1,5 @@
 # Example chapter02_02
-# The LED program
+## The LED program
 
 This example implements the LED program (blinky) for the
 target with the 8-bit microcontroller. This example has
@@ -31,7 +31,7 @@ The steps of the build include the following.
 - Extract  : name information    : from bin/led.elf
 - Extract  : demangled names     : from bin/led.elf
 
-# Blinking Frequency
+## Blinking Frequency
 
 In the LED program, the blinking is controlled directly
 from the `main` subroutine of the program. The blinking
@@ -68,11 +68,11 @@ accomplished in a cmd window. Use a command command such as
 shown below, where the full path of the pre-installed 
 gcc-avr is listed in its entirety.
 
-```sh
+```DOS
 build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
 ```
 
-# In `*nix`
+## In `*nix`
 
 On `*nix`-like systems, gcc-avr can be installed from a package manager.
 A common example is shown below.
