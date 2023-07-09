@@ -2,7 +2,7 @@
 ## External SPI RAM and Computing 10,001 Digits of Pi
 
 <p align="center">
-    <a href="https://godbolt.org/z/bf9PsPK4b" alt="godbolt">
+    <a href="https://godbolt.org/z/Wsrd4bdKh" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -65,7 +65,7 @@ A similar implementation of the Pi Spigot program has been setup
 at [godbolt](https://godbolt.org), where it can be compiled and executed.
 This setup computes $10,001$ decimal digits of $\pi$.
 
-Use the following [short link](https://godbolt.org/z/bf9PsPK4b)
+Use the following [short link](https://godbolt.org/z/Wsrd4bdKh)
 to further explore this program.
 
 ## 8-Bit MCU Adaptions
@@ -168,6 +168,6 @@ in action.
 ![](./images/board10_08.jpg)
 
 The PWM signal representing calculation progress is shown below.
-The PWM signal has a frequency of approximately two kilohertz.
+The PWM signal has a frequency of approximately $2~\text{kHz}$.
 
 ![](./images/scope10_08.jpg)

@@ -25,7 +25,7 @@ for instance, have a Bessel function Taylor series representation:
 
 $$
 J_{\nu}(z)~=~\left(\frac{1}{2}z\right)^{\nu}\sum_{k=0}^{\infty}
-\frac{\left(-\frac{1}{4}z^{2}\right)^{k}}{k!\,\Gamma\left(\nu+k+1\right)}~{\text{.}}
+\frac{\left(-\frac{1}{4}z^{2}\right)^{k}}{{k!}\Gamma\left(\nu+k+1\right)}~{\text{.}}
 $$
 
 ## Application Description
@@ -41,8 +41,13 @@ of
 
 $$J_{11/9}\left(\gamma\right)~{\approx}~0.1890533651853886085356717332711858771597{\ldots}$$
 
-at fixed parameter points. Other fixed parameter points have been selected
-for the Legendre and hypergeometric functions as well.
+at fixed parameter points.
+See also [WolframAlpha](https://www.wolframalpha.com/input?i=N%5BBesselJ%5B11%2F9%2C+EulerGamma%5D%2C+40%5D)
+with the input `N[BesselJ[11/9, EulerGamma], 40]`.
+
+Other fixed parameter points have been selected
+for the Legendre and hypergeometric functions as well, can be found
+in the original example code and is also shown in the snippet below.
 
 ```cpp
 void app::benchmark::task_func()
