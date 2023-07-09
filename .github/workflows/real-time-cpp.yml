@@ -111,12 +111,6 @@ jobs:
         working-directory: ./
       - name: target-avr-macos-${{ matrix.suite }}
         run: |
-          echo Install make via brew
-          brew install make
-          echo ""
-          echo Add the brew-installed-make path
-          PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-          echo ""
           echo query the GNUmake version
           make --version
           echo Add the brew-installed-avr-gcc@11 path
@@ -322,12 +316,6 @@ jobs:
           echo ""
           echo 'arm-none-eabi-g++ -v'
           arm-none-eabi-g++ -v
-          echo ""
-          echo Install make via brew
-          brew install make
-          echo ""
-          echo Add the brew-installed-make path
-          PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
           echo ""
           echo query the GNUmake version
           make --version
