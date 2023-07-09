@@ -1,11 +1,6 @@
 # Example Chapter06_14
 ## A CRC Benchmark with ROM-based Table and Data
 
-<p align="center">
-    <a href="https://godbolt.org/z/W8vnaP66P" alt="godbolt">
-        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
-</p>
-
 Example chapter06_14 has essentially the same functionality
 as example chapter06_01. The checksum table and
 benchmark data, however, are ROM-able.

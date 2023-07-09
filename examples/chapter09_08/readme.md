@@ -25,6 +25,8 @@ Color hues of RGB blend in a smooth fashion around the entire
 spectrum to produce the appearance of slowly varying colors.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
+### Windows Simulation
+
 The chapter09_08 Win32-API simulation in its Windows-based
 application is shown in action in the image below.
 
