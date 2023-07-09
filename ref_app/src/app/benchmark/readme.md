@@ -28,8 +28,8 @@
   - ![app_benchmark_boost_math_cbrt_tgamma.cpp](./app_benchmark_boost_math_cbrt_tgamma.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA` uses [Boost.Math](https://www.boost.org/doc/libs/1_81_0/libs/math/doc/html/index.html) to compute the cube root of various Gamma functions values.
   - ![app_benchmark_boost_math_cyl_bessel_j.cpp](./app_benchmark_boost_math_cyl_bessel_j.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J` also uses [Boost.Math](https://www.boost.org/doc/libs/1_81_0/libs/math/doc/html/index.html) to calculate cylindrical Bessel functions of small, non-integer order.
   - ![app_benchmark_cnl_scaled_integer.cpp](./app_benchmark_cnl_scaled_integer.cpp) via `#define APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER` brings a small subset of the [CNL Library](https://github.com/johnmcfarlane/cnl) _onto the metal_ by exercising various elementary quadratic calculations with the fixed-point representations of [`cnl::scaled_integer`](https://github.com/johnmcfarlane/cnl/tree/main/include/cnl/_impl/scaled_integer).
-  - ![app_benchmark_soft_double_h2f1.cpp](./app_benchmark_soft_double_h2f1.cpp) via `#define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1` calculates an <img src="https://render.githubusercontent.com/render/math?math=\approx\,15"> decimal digit hypergeometric function value using a classic iterative rational approximation scheme. This calculation is also included as an example in the [soft_double](https://github.com/ckormanyos/soft_double) project.
-  - ![app_benchmark_boost_multiprecision_cbrt.cpp](./app_benchmark_boost_multiprecision_cbrt.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT` uses [Boost.Multiprecision](https://www.boost.org/doc/libs/1_81_0/libs/multiprecision/doc/html/index.html) in combination with [Boost.Math](https://www.boost.org/doc/libs/1_81_0/libs/math/doc/html/index.html) to compute 101 decimal digits of a cube root function.
+  - ![app_benchmark_soft_double_h2f1.cpp](./app_benchmark_soft_double_h2f1.cpp) via `#define APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1` calculates an ${\approx}~{15}$ decimal digit hypergeometric function value using a classic iterative rational approximation scheme. This calculation is also included as an example in the [soft_double](https://github.com/ckormanyos/soft_double) project.
+  - ![app_benchmark_boost_multiprecision_cbrt.cpp](./app_benchmark_boost_multiprecision_cbrt.cpp) via `#define APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT` uses [Boost.Multiprecision](https://www.boost.org/doc/libs/1_81_0/libs/multiprecision/doc/html/index.html) in combination with [Boost.Math](https://www.boost.org/doc/libs/1_81_0/libs/math/doc/html/index.html) to compute $101$ decimal digits of a cube root function.
   - ![app_benchmark_hash_sha256.cpp](./app_benchmark_hash_sha256.cpp) via `#define APP_BENCHMARK_TYPE_HASH_SHA256` computes a 256-bit hash checksum of a 3-character message.
   - ![app_benchmark_ecc_generic_ecc.cpp](./app_benchmark_ecc_generic_ecc.cpp) via `#define APP_BENCHMARK_TYPE_ECC_GENERIC_ECC` provides an intuitive view on elliptic-curve algebra, depicting a well-known 256-bit cryptographic key-gen/sign/verify method. This benchmark is actually too lengthy to run on most of our embedded targets (other than BBB or RPI-zero) and adaptions of OS/watchdog are required in order to run this benchmark on the metal.
 
@@ -38,12 +38,11 @@
 
 Most of the benchmarks run on each supported target system.
 Experience with runs on the individual target systems reveal
-a wide range of microcontroller _performance classes_.
+a wide range of microcontroller _performance_ _classes_.
 
 Consider, for instance, the [`APP_BENCHMARK_TYPE_PI_AGM`](./app_benchmark_pi_agm.cpp)
-benchmark. This program compute 53 decimal digits of the mathematical constant
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-using a Gauss AGM method with help
+benchmark. This program compute $53$ decimal digits of the mathematical constant
+$\pi$ using a Gauss AGM method with help
 from the [`decwide_t`](../../math/wide_decimal/decwide_t.h) template class.
 
 The [PDF image](./images/app_benchmark_pi_agm.pdf)
@@ -53,6 +52,6 @@ performance classes:
 the 8-bit MICROCHIP(R) AVR controller of the Arduino
 and the 32-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
-The <img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation requires approximately 470ms and 1.5ms,
+The $\pi$ calculation requires approximately
+$470~\text{ms}$ and $1.5~\text{ms}$,
 respectively, on these two microcontroller systems.

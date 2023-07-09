@@ -1,5 +1,5 @@
 # Example Chapter17_03a
-# Traditional C-Language in Modern C++, Using Time Slices
+## Traditional C-Language in Modern C++, Using Time Slices
 
 Example chapter17_03a is almost identical with
 example chapter17_03. It performs the same CRC calculations
@@ -9,7 +9,7 @@ modern C++ project. Example chapter17_03a, however,
 distributes the CRC calculations over multitasking using
 time slices to process one single byte at a time, per task schedule call.
 
-# Application Description
+## Application Description
 
 The application task `app::crc::task_func()` implements a state machine
 that performs initialization, data processing and finalization

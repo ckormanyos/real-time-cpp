@@ -66,25 +66,22 @@ This uses essensially the tame programming techniques as in example chapter09_08
 to control an RGB LED. The difference is that a _digitally_-controlled industry-standard
 RGB LED of type WS2812 is used.
 
-Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing 10,001 Digits of Pi.\
-This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm to compute 10,001 digits
-of the mathematical constant
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
+Example ![chapter10_08](./chapter10_08) External SPI RAM and Computing $10,001$ Digits of Pi.\
+This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm
+to compute $10,001$ digits of the mathematical constant $\pi$
 showing fascinating memory management iterators, containers and algorithms along the way.
 This example depicts algorithmic complexity running in a real-world system
 and highlights the real-time numeric expression of the detailed description
 of algorithmic complexity in the corresponding book section.
 
-Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing 100,001 Digits of Pi.\
-This advanced example extends RAM even further with a 2 MByte parallel SRAM brick. This extended memory
-is used for storage in Pi Spigot calculations of the mathematical constant
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-up to 100,001 decimal digits.
+Example ![chapter10_08a](./chapter10_08a) Parallel SRAM and Computing $100,001$ Digits of Pi.\
+This advanced example extends RAM even further with a $2~\text{MByte}$ parallel SRAM brick. This extended memory
+is used for storage in Pi Spigot calculations
+of the mathematical constant $\pi$ up to $100,001$ decimal digits.
 
-Example ![chapter10_09](./chapter10_09) 100,001 Digits of Pi on Raspberry Pi(R).\
+Example ![chapter10_09](./chapter10_09) $100,001$ Digits of Pi on Raspberry Pi(R).\
 This advanced example ports the Pi Spigot calculation
-of 100,001 decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
+of $100,001$ decimal digits of $\pi$
 to the powerful Arm(R)-based Raspberry Pi(R) single-board computer.
 
 Example ![chapter11_07](./chapter11_07) Preemptive Multitasking.\

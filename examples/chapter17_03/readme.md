@@ -1,5 +1,5 @@
 # Example Chapter17_03
-# Traditional C Language Code in a Modern C++ Project
+## Traditional C Language Code in a Modern C++ Project
 
 Example chapter17_03 depicts some methods that potentially allow
 the successful use of traditional C-language code within a
@@ -10,7 +10,7 @@ library of well-tested, efficient and trusted C-language code
 available in the local project domain and it is desired to make
 use of this code within a modern C++ project.
 
-# CRC Functions in Traditional C
+## CRC Functions in Traditional C
 
 In order to emulate this situation, we have built up a
 little library of CRC functions that are specified in the
@@ -56,7 +56,7 @@ void Crc08_Finalize    (Crc08_Context_Type* Crc_Context);
 #endif
 ```
 
-# Application Description
+## Application Description
 
 On top of the existing C-language CRC library we have built a skinny
 object-oriented C++ wrapper class architecture that
