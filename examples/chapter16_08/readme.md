@@ -107,7 +107,11 @@ for large integer $n$ the density of prime numbers is close to
 $$\frac{1}{\log(n)}\text{.}$$
 
 Consider 128-bit unsigned integers having numerical value around
-${2^{128}}~{\approx}~{3.4}{\times}{10^{38}}$.
+
+$$2^{128}
+\approx
+{3.4}{\times} 10^{38}
+\text{.}$$
 
 The probability that a randomly chosen 128-bit unsigned integer is prime is about
 
