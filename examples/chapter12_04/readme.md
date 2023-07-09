@@ -1,11 +1,11 @@
 # Example Chapter12_04
-# Benchmarking Floating-Point Calculations
+## Benchmarking Floating-Point Calculations
 
 Example chapter12_04 performs a variety of floating-point
 calculations of selected special functions of pure and applied
 mathematics.
 
-# Selected Special Functions
+## Selected Special Functions
 
 Special functions such as the gamma function, Bessel functions,
 Legendre functions, zeta-type functions and many others
@@ -18,21 +18,31 @@ logarithmic functions, exponential functions and the like.
 Many special functions, although they can be very difficult to calculate
 over wide parameter and argument ranges, have remarkably
 simple small-argument approximations such as a modest Taylor series.
-Cylindrical Bessel functions of complex-valued argument
-<img src="https://render.githubusercontent.com/render/math?math={z}">
-and complex-valued order
-<img src="https://render.githubusercontent.com/render/math?math={\nu}">,
-for instance, have a
-[Bessel function Taylor series representation](http://functions.wolfram.com/Bessel-TypeFunctions/BesselJ/06/01/04/01/01)
 
+Cylindrical Bessel functions of complex-valued argument $z$
+and complex-valued order $\nu$,
+for instance, have a Bessel function Taylor series representation:
 
-# Application Description
+$$
+J_{\nu}(z)~=~\left(\frac{1}{2}z\right)^{\nu}\sum_{k\,=\,0}^{\infty}
+\frac{\left(-\frac{1}{4}z^{2}\right)^{k}}{k!\,\Gamma\left(\nu+k+1\right)}~{\text{.}}
+$$
+
+## Application Description
 
 The application benchmark task `app::benchmark::task_func()`
 calculates three individual floating-point special function
 values in small argument range. These include a cylindrical Bessel function,
 a generalized hypergeometric geometric function and a generalized
 Legendre function.
+
+The Bessel function calculation, for instance, calculates the approximate numerical value
+of
+
+$$J_{11/9}\left(\gamma\right)~{\approx}~0.1890533651853886085356717332711858771597{\ldots}\text{.}$$
+
+at fixed parameter points. Other fixed parameter points have been selected
+for the Legendre and hypergeometric functions as well.
 
 ```cpp
 void app::benchmark::task_func()
@@ -120,7 +130,6 @@ void app::benchmark::task_func()
   {
     app_benchmark_index = 0U;
   }
-
 
   if(app_benchmark_result_is_ok == false)
   {

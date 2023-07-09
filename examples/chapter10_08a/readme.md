@@ -63,9 +63,7 @@ calculations up to and a slightly beyond $50,001$
 decimal digits, whereas the full $2~\text{MByte}$ brick
 is required for the $100,001$ digit calculation.
 
-Calculation progress has a resolution of
-
-$$\Bigl[\frac{1}{10}\Bigr]{\\%}\text{.}$$
+Calculation progress has a resolution of $\Bigl[\frac{1}{10}\Bigr]{\\%}\text{.}$.
 
 This progress is expressed in alpha-numeric form on an LCD module.
 The LCD is of type NHD-0216K1Z-FSW-FBW-L-42862
