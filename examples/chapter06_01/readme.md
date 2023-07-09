@@ -2,7 +2,7 @@
 ## A CRC Benchmark
 
 <p align="center">
-    <a href="https://godbolt.org/z/48TrP6bs5" alt="godbolt">
+    <a href="https://godbolt.org/z/ssTK8TjWj" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -91,7 +91,7 @@ The expected result of the CRC-32/MPEG-2 of these
 data bytes is `0x0376'E6E7`.
 
 This code can be run in its entirety at the following
-[short link](https://godbolt.org/z/48TrP6bs5) to [godbolt](https://godbolt.org).
+[short link](https://godbolt.org/z/ssTK8TjWj) to [godbolt](https://godbolt.org).
 
 The application benchmark task `app::benchmark::task_func`
 computes the CRC-32/MPEG-2. The computation is run to completion

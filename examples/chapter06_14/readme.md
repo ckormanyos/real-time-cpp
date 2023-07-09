@@ -1,21 +1,25 @@
 # Example Chapter06_14
-# A CRC Benchmark with ROM-based Table and Data
+## A CRC Benchmark with ROM-based Table and Data
+
+<p align="center">
+    <a href="https://godbolt.org/z/W8vnaP66P" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
 
 Example chapter06_14 has essentially the same functionality
 as example chapter06_01. The checksum table and
 benchmark data, however, are ROM-able.
 
-# ROM-ing the Table and Data
+## ROM-ing the Table and Data
 
 Close examination of map files created in the
 previous example chapter06_01 reveals that both the benchmark data
-<img src="https://render.githubusercontent.com/render/math?math=1{\ldots}9">
-as well as the CRC32/MPEG2 `table` are stored in
+$1~{\ldots}~9$ as well as the CRC32/MPEG2 `table` are stored in
 static RAM.
 
 The present example chapter06_14 purposely places
 these objects in program ROM code and uses a specialized
-"ROM iterator" to access their data.
+_ROM_-_iterator_ to access their data.
 
 A complete rebuild of this project and subsequent analysis
 of the map files reveals that the data objects
@@ -28,7 +32,7 @@ for the gcc-avr tool chain. Example chapter06_14 puts some
 semi-formal structure (in C++11-style) around this architectural
 characteristic.
 
-# Examine the Map File
+## Examine the Map File
 
 Examination of the map file can lead to insightful understanding
 of what objects get placed in which parts of the memory of a microcontroller
@@ -40,9 +44,11 @@ The partial image of a memory map file from example chapter06_14 for
 the 8-bit target shows us that the data objects mentioned above have,
 in fact, been _ROM_'ed.
 
-![Objects in ROM](./images/romdata.jpg)
+![](./images/romdata.jpg)
 
-# Application Description
+The objects in the map-snippet above are in ROM.
+
+## Application Description
 
 The same standard CRC checksum and verification
 is carried out in the `app::benchmark::task_func`
