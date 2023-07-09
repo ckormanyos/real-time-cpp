@@ -1,6 +1,11 @@
 # Example chapter02_02
 ## The LED program
 
+<p align="center">
+    <a href="https://godbolt.org/z/qGa8z7vaa" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
 This example implements the LED program (blinky) for the
 target with the 8-bit microcontroller. This example has
 originally been presented in the book with a homemade
@@ -88,3 +93,13 @@ such as:
 ## bash will typically use dirname, so this might be equivalent to: ./build.sh /usr/bin avr
 ./build.sh "$(dirname $(which avr-g++))" avr
 ```
+
+## Try it at _godbolt_
+
+This program can also be compiled with `avr-gcc`
+(but not executed) at [godbolt](https://godbolt.org).
+
+Use the following [short link](https://godbolt.org/z/qGa8z7vaa) to try it out.
+If you search toward the assembly output near the bottom of the tab,
+the bit-set and bit-clear operations for toggling `portb.5`
+can be recognized.

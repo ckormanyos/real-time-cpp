@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef _MCAL_REG_2011_11_04_H_
-  #define _MCAL_REG_2011_11_04_H_
+#ifndef MCAL_REG_2011_11_04_H
+  #define MCAL_REG_2011_11_04_H
 
   #include <cstdint>
 
@@ -27,4 +27,4 @@
     }
   }
 
-#endif // _MCAL_REGISTERS_2011_11_04_H_
+#endif // MCAL_REG_2011_11_04_H
