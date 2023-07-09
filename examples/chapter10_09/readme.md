@@ -1,5 +1,5 @@
 # Example Chapter10_09 (advanced level)
-# 100,001 Digits of Pi on Raspberry Pi(R)
+## 100,001 Digits of Pi on Raspberry Pi(R)
 
 This advanced example ports the Pi Spigot
 calculation to a powerful 32-bit single-board computer.
@@ -7,17 +7,14 @@ The Raspberry Pi(R) Zero WH with Arm1176JZF-S(TM) single core
 controller is used.
 
 Using the single-board computer system with its more powerful controller
-and ample 512 MByte SRAM simplifies and speeds up the
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation using the Pi Spigot program.
+and ample $512~\text{MByte}$ SRAM simplifies and speeds up the $100,001$
+decimal digit $\pi$ calculation using the Pi Spigot program.
 In particular, tedious wiring and software development efforts required
 for our target with the 8-bit microcontroller in previous
 Examples Chapter10_08 and 10_08a are drastically reduced
 or even entirely eliminated in this example.
 
-# Application Description
+## Application Description
 
 The same Pi Spigot algorithm is used yet again
 in this example. It can be found in identically the same form
@@ -29,11 +26,8 @@ manually-written startup sequence and memory-access optimization code.
 A skinny MCAL layer provides the needed peripheral abstractions
 for timer, port I/O driver, etc.
 
-The application exercises consecutive, back-to-back
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculations.
+The application exercises consecutive, back-to-back $100,001$
+decimal digit  $\pi$ calculations.
 Calculation progress is displayed on
 an LCD module of type NHD-0216K1Z-FSW-FBW-L-42862
 from Newhaven Display International.
@@ -55,7 +49,7 @@ GPIO-status-LED fitted on the Raspberry Pi(R) Zero board.
 The second LED is manually fitted on the breadboard,
 attached over a resistor to one of the port pins on the port expander.
 
-# Booting from SD Card
+## Booting from SD Card
 
 The Raspberry Pi(R) bootloader is used to boot from the
 contents of the micro SD card in the on-board tray upon power-up.
@@ -202,7 +196,7 @@ friend inline void mcal::cpu::detail::init()
 }
 ```
 
-# SD Card Contents
+## SD Card Contents
 
 For exemplary purposes, the entire contents of an RpiZero
 SD card for booting and running Example Chapter10_09
@@ -217,7 +211,7 @@ The build of Example Chapter10_09 extracts the application file
 The other file(s) in the boot image are for standard
 RpiZero boot.
 
-# Hardware Setup
+## Hardware Setup
 
 The Raspberry Pi(R) Zero WH is used out-of-the-box
 without modification.
@@ -229,7 +223,7 @@ in order to reduce parasitic dissipation
 in the currrent-carrying lines.
 
 The logic gate sharpens port output signal edges
-and performs the conversion from 3.3V CMOS to 5V TTL.
+and performs the conversion from $3.3~\text{V}$ CMOS to $5~\text{V}$ TTL.
 A hand-sawed, flat-bottomed piece of corrugated aluminum is attached
 to the Broadcom(R) chip for cooling.
 
@@ -264,9 +258,6 @@ Pinning in this example is summarized in the table below.
 
 
 The hardware setup with the RpiZero in action calculating
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
-is pictured in the image below.
+$100,001$ decimal digits of  $\pi$ is pictured in the image below.
 
 ![](./images/board10_09.jpg)

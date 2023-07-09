@@ -129,7 +129,7 @@ which mimics the nature of the calculation itself.
 ## Hardware Setup
 
 Memory extension uses two serial SPI SRAM chips of type Microchip(R) 23LC1024.
-Each chip has 1 Mbit (128 kByte) of asynchronous SRAM.
+Each chip has $1~\text{Mbit}$, in other words $128~\text{kByte}$, of asynchronous SRAM.
 These 8-pin SRAM chips are straightforward to use.
 They are controlled with easy-to-understand commands
 that execute read/write operations in either single byte sequences

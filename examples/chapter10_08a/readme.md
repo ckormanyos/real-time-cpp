@@ -5,7 +5,7 @@ This advanced example picks up on the idea of the previous Example Chapter10_08
 and extends RAM even further with an external
 $2~\text{MByte}$ asynchronous parallel SRAM brick.
 This memory extension significantly expands the range of the Pi Spigot calculation
-with the 8-bit MCU. This 2 MByte RAM extension enables, in fact,
+with the 8-bit MCU. This $2~\text{MByte}$ RAM extension enables, in fact,
 the computation and verification of up to and beyond $100,001$
 decimal digits of the mathematical constant $\pi$.
 
@@ -40,9 +40,9 @@ found in the files
 [mcal_memory_sram_parallel_cypress_cy62158e.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62158e.h)
 and
 [mcal_memory_sram_parallel_cypress_cy62167gn.h](./src/mcal/avr/mcal_memory_sram_parallel_cypress_cy62167gn.h),
-respectively. The former controls a 1 MByte parallel SRAM
+respectively. The former controls a $1~\text{MByte}$ parallel SRAM
 brick of type CY62158E
-while the latter controls a 2 MByte parallel SRAM
+while the latter controls a $2~\text{MByte}$ parallel SRAM
 brick of type
 CY62167GN, both from Cypress(R), an Infineon Company.
 The class for the larger brick is cleverly devised
@@ -127,10 +127,10 @@ itself actually needs to be meticulously soldered.
 
 Pinning in this example is, indeed, rich in detail.
 Pinning variants differ slightly depending on whether
-we intend to use either the 1 MByte brick
-or the 2 MByte brick.
+we intend to use either the $1~\text{MByte}$ brick
+or the $2~\text{MByte}$ brick.
 
-The pin connections of the 2 MByte memory brick
+The pin connections of the $2~\text{MByte}$ memory brick
 of type Cypress(R) MoBL(R) CY62167GN in 48-pin TSOP
 are shown in the table below. The pinnning has
 been selected with certain considerations in mind that
@@ -191,12 +191,12 @@ read/write operations on the driver level.
 | 47                       | BYTE_NOT   | GND                     |
 | 48                       | A16        | Port Expander GPB_4     |
 
-The hardware setup with the 2 MByte SRAM brick
+The hardware setup with the $2~\text{MByte}$ SRAM brick
 is pictured in the image below.
 
 ![](./images/board10_08a_2MB.jpg)
 
-The hardware setup with the 1 MByte SRAM brick
+The hardware setup with the $1~\text{MByte}$ SRAM brick
 is pictured in the image below.
 
 ![](./images/board10_08a_1MB.jpg)
