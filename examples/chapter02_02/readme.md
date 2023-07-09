@@ -102,6 +102,8 @@ can, in fact, also be compiled with `avr-gcc`
 
 Use the following [short link](https://godbolt.org/z/WET4rT19Y)
 to further explore this program.
-If you search toward the assembly output near the bottom of the tab,
-the bit-set and bit-clear operations for toggling `portb.5`
-can be recognized.
+
+If you search toward the assembly output near the bottom
+of the page in the right-side tab,
+the bit-set and bit-clear opcodes (`sbi` and `cbi`)
+for toggling `portb.5` can be recognized.
