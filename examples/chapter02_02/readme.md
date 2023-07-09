@@ -96,7 +96,7 @@ such as:
 
 ## Try it at _godbolt_
 
-The file [`led.cpp`](./examples/chapter02_02/led.cpp)
+The file [`led.cpp`](./led.cpp)
 can, in fact, also be compiled with `avr-gcc`
 (but not executed) at [godbolt](https://godbolt.org).
 

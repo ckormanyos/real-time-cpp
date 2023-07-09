@@ -1,15 +1,13 @@
 # Example Chapter10_08a (advanced level)
-# Parallel SRAM and Computing 100,001 Digits of Pi
+## Parallel SRAM and Computing 100,001 Digits of Pi
 
 This advanced example picks up on the idea of the previous Example Chapter10_08
 and extends RAM even further with an external
-2 MByte asynchronous parallel SRAM brick.
+$2~\text{MByte}$ asynchronous parallel SRAM brick.
 This memory extension significantly expands the range of the Pi Spigot calculation
 with the 8-bit MCU. This 2 MByte RAM extension enables, in fact,
-the computation and verification of up to and beyond
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digits of the mathematical
-constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
+the computation and verification of up to and beyond $100,001$
+decimal digits of the mathematical constant $\pi$.
 
 This example is challenging and requires utmost attention to detail
 combined with advanced
@@ -19,15 +17,14 @@ iterator-based programmatic access to the external parallel SRAM bricks),
 Example Chapter10_08a makes this mammoth numerical calculation let's say as
 _easy_ _as_ _pie_.
 
-# Application Description
+## Application Description
 
 The Pi Spigot program used in this example has essentially
 the exact form that has been used in the previous Example Chapter10_08.
 The algorithms and their implementations remain,
 in fact, identically the same.
-The difference in this example is the extension to up to 2 MByte
-SRAM allowing for the calculation of even more digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
+The difference in this example is the extension to up to $2~\text{MByte}$
+SRAM allowing for the calculation of even more digits of $\pi$.
 
 Care needs to be taken to wire the parallel SRAM brick properly
 (as shown below). When the hardware setup is correct,
@@ -61,18 +58,16 @@ that _looks_ _and_ _feels_ essentially the same as would be expected
 from normal iterator/container access within the context of modern C++
 programming.
 
-The 1 MByte version can handle
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculations up to and a slightly beyond
-<img src="https://render.githubusercontent.com/render/math?math=50,001">
-decimal digits, whereas the full 2 MByte brick is required for the
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-digit calculation.
+The $1~\text{MByte}$ version can handle $\pi$
+calculations up to and a slightly beyond $50,001$
+decimal digits, whereas the full $2~\text{MByte}$ brick
+is required for the $100,001$ digit calculation.
 
-Calculation progress having resolution of
-<img src="https://render.githubusercontent.com/render/math?math=[1/10]">
-percent
-is expressed in alpha-numeric form on an LCD module.
+Calculation progress has a resolution of
+
+$$\Bigl[\frac{1}{10}\Bigr]{\\%}\text{.}$$
+
+This progress is expressed in alpha-numeric form on an LCD module.
 The LCD is of type NHD-0216K1Z-FSW-FBW-L-42862
 from Newhaven Display international and features
 two-by-sixteen characters. It uses standard
@@ -99,26 +94,20 @@ Although we're not intending to break any super-computing
 performace or speed records with the 8-bit MCU hooked up
 to external parallel SRAM, the advantage of parallel port access
 can be noticed.
-Indeed, in this setup, the
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation takes approximately 50s compared with approximately 90s
+Indeed, in this setup, the $1,001$
+decimal digit $\pi$ calculation takes
+approximately $50~\text{s}$ compared with approximately $90~\text{s}$
 in the previous example using serial SRAM chips.
 
 Do, however, be prepared for a bit of a wait as
 the digit count in the Pi Spigot calculation
 (having quadratically increasing computational complexity)
 climbs higher and higher.
-The full
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation
-requires about 6 days to run on the 8-bit MCU with external
+The full $100,001$ decimal digit $\pi$ calculation
+requires about $6~\text{days}$ to run on the 8-bit MCU with external
 asynchronous parallel SRAM memory.
 
-# Hardware Setup
+## Hardware Setup
 
 It is hoped that this example will challenge the microcontroller
 laboratory enthusiast and provide for a fulfilling technical experience
