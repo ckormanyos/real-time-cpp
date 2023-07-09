@@ -48,7 +48,7 @@ with many, many millions of primes found. These have been independently verified
 with separate computer and software algebra system(s).
 The default PC configuration built with the VisualStudio(R)
 project uses
-[Boost.Multiprecision](https://www.boost.org/doc/libs/1_81_0/libs/multiprecision/doc/html/index.html)
+[Boost.Multiprecision](https://www.boost.org/doc/libs/1_82_0/libs/multiprecision/doc/html/index.html)
 for its 128-bit integer representation and independent primality testing.
 
 This advanced example's software running on an 8-bit micrcocontroller
@@ -67,7 +67,7 @@ random bits are collected and directly collated into 128-bit prime candidates.
 
 The target hardware is shown in the image below.
 The random noise subcircuit can be observed in the central right portion
-of the breadboard. The 12V supply (center left) stems from a classic LM7812
+of the breadboard. The $12~\text{V}$ supply (center left) stems from a classic LM7812
 voltage regulator, from which TTL $+5~\text{V}$ (upper left) is also derived for
 the MCU and logic power rail.
 
@@ -87,12 +87,15 @@ is sketched below.
 
 The oscilloscope image below shows a small snapshot
 of the random digitized noise from this circuit.
+The square-wave-like pulses result from digitizing the random signal
+above/below $0~\text{V}$. This is done with an op-amp and rudimentary logic,
+as shown in the circuit.
 
 ![](./images/signal16_08.jpg)
 
 ## Deep Connection to the Prime Number Theorem
 
-Recal the prime counting function
+Recall the prime counting function
 previously encountered in Example Chapter03_02
 [here](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter03_02#prime-counting-function).
 The prime number theorem known from mathematical number theory
@@ -108,10 +111,12 @@ $$\frac{1}{\log(n)}\text{.}$$
 
 Consider 128-bit unsigned integers having numerical value around
 
-$$2^{128}
+$$
+2^{128}
 \approx
 {3.4}{\times} 10^{38}
-\text{.}$$
+\text{.}
+$$
 
 The probability that a randomly chosen 128-bit unsigned integer is prime is about
 
@@ -140,9 +145,7 @@ $$
 {\div}
 \left(\frac{4}{10}\right)
 {\div}
-\left(\frac{2}{3}\right)
-{\approx}
-\frac{1}{24}\text{,}
+\left(\frac{2}{3}\right)~{\approx}~\frac{1}{24}\text{,}
 $$
 
 which is around $4\\%$.
