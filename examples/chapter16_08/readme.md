@@ -110,7 +110,7 @@ $2^{128}~{\approx}~{3.4}{\times}10^{38}$.
 
 The probability that a randomly chosen 128-bit unsigned integer is prime is about
 
-$$\frac{1}{\log\left(2^{128}\right)~{\approx}~\frac{1}{89}\text{,}$$
+$$\frac{1}{\log\left(2^{128}\right)}~{\approx}~\frac{1}{89}\text{,}$$
 
 or a bit in excess of one percent.
 
