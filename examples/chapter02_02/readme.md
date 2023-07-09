@@ -2,7 +2,7 @@
 ## The LED program
 
 <p align="center">
-    <a href="https://godbolt.org/z/dvKsK33oa" alt="godbolt">
+    <a href="https://godbolt.org/z/WET4rT19Y" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -96,10 +96,12 @@ such as:
 
 ## Try it at _godbolt_
 
-This program can also be compiled with `avr-gcc`
+The file [`led.cpp`](./led.cpp)
+can, in fact, also be compiled with `avr-gcc`
 (but not executed) at [godbolt](https://godbolt.org).
 
-Use the following [short link](https://godbolt.org/z/dvKsK33oa) to try it out.
+Use the following [short link](https://godbolt.org/z/WET4rT19Y)
+to further explore this program.
 If you search toward the assembly output near the bottom of the tab,
 the bit-set and bit-clear operations for toggling `portb.5`
 can be recognized.

@@ -1,11 +1,14 @@
 # Example Chapter10_08 (advanced level)
-# External SPI RAM and Computing 10,001 Digits of Pi
+## External SPI RAM and Computing 10,001 Digits of Pi
+
+<p align="center">
+    <a href="https://godbolt.org/z/bf9PsPK4b" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
 
 This advanced example extends available RAM via SPI SRAM chips.
 It uses a Pi Spigot algorithm to compute up to approximately
-<img src="https://render.githubusercontent.com/render/math?math=10,001">
-decimal digits of the mathematical
-constant <img src="https://render.githubusercontent.com/render/math?math=\pi">.
+$10,001$ decimal digits of the mathematical constant $\pi$.
 Along the way, this example implements fascinating memory management mechanisms
 including external-RAM-based iterators, containers and algorithms
 in modern C++ style.
@@ -17,19 +20,17 @@ it simultaneously highlights the quite detailed description
 of the Pi Spigot algorithm's complexity that can
 be found in the corresponding book section.
 
-# Application Description
+## Application Description
 
 The famous Pi Spigot algorithm is often used to compute
-modestly small numbers of decimal digits of the mathematical constant
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
+modestly small numbers of decimal digits of the mathematical constant $\pi$.
 
 A simple expression of a Spigot algorithm
-for the base-10 representation of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
+for the base-10 representation of $\pi$
 is provided in Eq. 6.1, Sect. 6.1,
 page 78 of Arndt and Haenel's [Pi Unleashed](https://www.springer.com/gp/book/9783642567353).
 
-<img src="https://render.githubusercontent.com/render/math?math=\pi\,=\,2\,+\,\dfrac{1}{3}\Biggl(2\,+\,\dfrac{2}{5}\Biggl(2\,+\,\dfrac{3}{7}\Biggl(2\,+\,\ldots\Biggr)\Biggr)\Biggr)">
+$$\dfrac{1}{3}\Biggl(2 + \dfrac{2}{5}\Biggl( 2 + \dfrac{3}{7}\Biggl(2 + \ldots \Biggr)\Biggr)\Biggr)$$
 
 This equation has been templated and extended in the Pi Spigot program
 of our book. Consider, in particular, the code snippet
@@ -49,36 +50,35 @@ result_is_ok: true
 
 In the default release of this program
 from the code snippets area running on a PC,
-the Pi Spigot algorithm is set up to compute
-<img src="https://render.githubusercontent.com/render/math?math=10,001">
-digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
+the Pi Spigot algorithm is set up to compute $10,001$
+digits of $\pi$.
 Play around with the output digit count in the program.
-Switch from the default setting of
-<img src="https://render.githubusercontent.com/render/math?math=10,001">
-digits down to
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-digits or even up to
-<img src="https://render.githubusercontent.com/render/math?math=100,001">
-digits.
+Switch from the default setting of $10,001$
+digits down to  $1,001$
+digits or even up to $100,001$ digits.
 Watch the operation count and memory consumption vary with
 size of the output digit count.
 
-# 8-Bit MCU Adaptions
+## Try it at godbolt
+
+A similar implementation of the Pi Spigot program has been setup
+at [godbolt](https://godbolt.org), where it can be compiled and executed.
+This setup computes $10,001$ decimal digits of $\pi$.
+
+Use the following [short link](https://godbolt.org/z/bf9PsPK4b)
+to further explore this program.
+
+## 8-Bit MCU Adaptions
 
 In this example, the Pi Spigot program has been adapted
 to run on our target system with the 8-bit microcontroller.
 In order to do so, two external serial SPI SRAM chips
 have been used.
-The default release on the 8-bit MCU is set up for
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">.
-The
-<img src="https://render.githubusercontent.com/render/math?math=1,001">
-decimal digit
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation requires approximately 90s on this particular setup.
+The default release on the 8-bit MCU is set up for $1,001$
+decimal digits of $\pi$.
+
+The $1,001$ decimal digit $\pi$
+calculation requires approximately $90~\text{s}$ on this particular setup.
 
 Memory allocation schemes and external SRAM iterators/containers
 are described fully in the book. These have been used to
@@ -104,14 +104,11 @@ when the previous one finishes.
 Simultaneously, the well-known _blinky_ application with
 1s blinking on/off is handled in the LED task.
 
-A tabulated, known control value containing
-<img src="https://render.githubusercontent.com/render/math?math=\gtrsim\,10,011">
-decimal digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
+A tabulated, known control value containing $10,011$
+decimal digits of $\pi$
 is stored in the constant-valued, ROM-based `array` variable
 called `local::control::sys_idle_pi_spigot_cntrl`. This control value
-is used to check the calculated digits of
-<img src="https://render.githubusercontent.com/render/math?math=\pi">
+is used to check the calculated digits of $\pi$
 on the fly as they are retrieved from each successive iteration
 of the calculation.
 
@@ -129,10 +126,10 @@ The duty cycle representing number of digits computed
 accelerates toward the end of each calculation,
 which mimics the nature of the calculation itself.
 
-# Hardware Setup
+## Hardware Setup
 
 Memory extension uses two serial SPI SRAM chips of type Microchip(R) 23LC1024.
-Each chip has 1 Mbit (128 kByte) of asynchronous SRAM.
+Each chip has $1~\text{Mbit}$, in other words $128~\text{kByte}$, of asynchronous SRAM.
 These 8-pin SRAM chips are straightforward to use.
 They are controlled with easy-to-understand commands
 that execute read/write operations in either single byte sequences
@@ -142,14 +139,10 @@ that is used to control the SRAM chips can be found
 in the file
 [mcal_memory_sram_microchip_23lc1024.h](./src/mcal/avr/mcal_memory_sram_microchip_23lc1024.h)
 
-The <img src="https://render.githubusercontent.com/render/math?math=10,001">
-decimal digit
-The <img src="https://render.githubusercontent.com/render/math?math=\pi">
-calculation requires approximately 140 kByte RAM.
-Thus two 128 kByte chips are required
-for the full
-<img src="https://render.githubusercontent.com/render/math?math=10,001">
-digit range intended for this example.
+The $10,001$ decimal digit $\pi$
+calculation requires approximately $140~\text{kByte}$ RAM.
+Thus two $128~\text{kByte}$ chips are required
+for the full $10,001$ digit range intended for this example.
 
 The [all-software SPI driver](./src/mcal_spi/mcal_spi_software_port_driver.h)
 communicates directly with the off-chip SRAM devices.
