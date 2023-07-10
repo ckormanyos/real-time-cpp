@@ -1,4 +1,4 @@
-﻿##############################################################################
+##############################################################################
 #  Copyright Christopher Kormanyos 2021 - 2022.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -303,16 +303,16 @@ jobs:
           echo 'wget-macos-gnu-arm-toolchain'
           echo ""
           mkdir -p macos-gnu-arm-toolchain && cd macos-gnu-arm-toolchain
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.07/gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
         working-directory: ${{ runner.workspace }}
       - name: unpack-macos-gnu-arm-toolchain
         run: |
           cd ${{ runner.workspace }}/macos-gnu-arm-toolchain
-          tar -xvf gcc-arm-none-eabi-10.3-2021.07-mac-10.14.6.tar.bz2
+          tar -xvf arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
       - name: target-arm-macos-${{ matrix.suite }}
         run: |
           echo 'set and verify add path macos gnu arm toolchain'
-          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/gcc-arm-none-eabi-10.3-2021.07/bin:$PATH"
+          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi/bin:$PATH"
           echo ""
           echo 'arm-none-eabi-g++ -v'
           arm-none-eabi-g++ -v
