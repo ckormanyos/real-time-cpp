@@ -8,13 +8,11 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_TARGET    = riscv-none-embed
-GCC_PREFIX    = riscv-none-embed
+GCC_TARGET   := riscv32-unknown-elf
+GCC_PREFIX   := riscv32-unknown-elf
 
 ifneq ($(MAKE),make)
 GCC_VERSION  := 13.1.0
-GCC_TARGET   := riscv32-unknown-elf
-GCC_PREFIX   := riscv32-unknown-elf
 endif
 
 TGT_SUFFIX    = elf
@@ -33,7 +31,7 @@ TGT_CFLAGS    = -std=c99                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++20                                     \
+TGT_CXXFLAGS  = -std=c++23                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
