@@ -6,3 +6,4 @@
 
 *.sh text eol=lf
 *.gmk text eol=lf
+*.yml text eol=lf
