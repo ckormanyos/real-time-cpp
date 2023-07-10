@@ -42,7 +42,7 @@ jobs:
           echo "verify empty word count of ./tmp/all.tidy_txt"
           wc ./tmp/all.tidy_txt | grep '0 0 0'
   target-avr:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -62,7 +62,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-cmake:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -107,14 +107,14 @@ jobs:
           echo 'Install osx-cross/homebrew-avr on MacOS via brew'
           cd ${{ runner.workspace }}/homebrew-avr
           brew tap osx-cross/avr
-          brew install avr-gcc@11
+          brew install avr-gcc@12
         working-directory: ./
       - name: target-avr-macos-${{ matrix.suite }}
         run: |
           echo query the GNUmake version
           make --version
-          echo Add the brew-installed-avr-gcc@11 path
-          PATH="/usr/local/opt/avr-gcc@11/bin:$PATH"
+          echo Add the brew-installed-avr-gcc@12 path
+          PATH="/usr/local/opt/avr-gcc@12/bin:$PATH"
           echo ""
           echo Query the avr-gcc version
           avr-g++ -v
@@ -126,7 +126,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-avr-example_led:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -148,7 +148,7 @@ jobs:
         working-directory: ./examples/
         shell: bash
   target-avr-examples:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -169,7 +169,7 @@ jobs:
           ls -la ./bin/${{ matrix.example }}.elf ./bin/${{ matrix.example }}.map ./bin/${{ matrix.example }}.hex
         working-directory: ./examples/
   target-bcm2835_raspi_b-example10_09:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -246,7 +246,7 @@ jobs:
           MSBuild -m ${{ matrix.example }}.sln -p:useenv=true -p:Configuration=Release -p:Platform=x64 /t:Rebuild
           dir .\Release\${{ matrix.example }}.exe
   target-arm:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -266,7 +266,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-arm-cmake:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -326,7 +326,7 @@ jobs:
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
   target-riscvfe310:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -350,7 +350,7 @@ jobs:
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
   target-x86_64:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -362,7 +362,7 @@ jobs:
         working-directory: ./ref_app/
         shell: bash
   target-host-cmake:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -511,7 +511,7 @@ jobs:
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-avr:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -529,7 +529,7 @@ jobs:
         run: ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-stm32f446:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -558,7 +558,7 @@ jobs:
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_single-stm32f446:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -576,21 +576,19 @@ jobs:
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
   benchmark_single-cnl:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
     strategy:
       fail-fast: false
       matrix:
-        compiler: [ g++-10, clang++-10 ]
+        compiler: [ g++, clang++ ]
         standard: [ c++20 ]
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - name: update-tools
-        run: sudo apt install g++-10 clang-10
       - name: benchmark_single-cnl
         run: |
           git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
