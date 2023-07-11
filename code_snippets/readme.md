@@ -22,7 +22,8 @@ book but extend these in rudimentary ways to include
 a main subroutine and usually some sensible short messages
 to the output console.
 
-Consider, for instance, the code snippet `chapter03_11-001_array.cpp`.
+Consider, for instance, the code snippet
+[`chapter03_11-001_array.cpp`](https://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_11-001_array.cpp).
 
 ```cpp
 // chapter03_11-001_array.cpp
@@ -80,13 +81,14 @@ Use the following [short link](https://godbolt.org/z/qfafePavo)
 to [godbolt](https://godbolt.org) in order to further explore this program.
 
 In the afore-mentioned link, the file
-[`chapter03_11-001_array`](https://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_11-001_array.cpp)
+[`chapter03_11-001_array.cpp`](https://github.com/ckormanyos/real-time-cpp/blob/master/code_snippets/chapter03/chapter03_11-001_array.cpp)
 is, in fact, compiled with a modern GCC host-compiler.
 
-This is an example, compiling, linking and running on a PC host.
-To be clear, the file is actually compiled, linked and also executed.
+This is an example of compiling, linking and running on a PC host.
+
+To clearly reiterate: The file is actually compiled, linked and also executed.
 This provides keen insight into both this particular code-snippet
-as well as code and compiler exploration in your own domain(s).
+as well as potential code and compiler exploration in your own domain(s).
 
 In todays fast-paced, modern coding world,
 it is fun, educational, exciting and effective to try out and share
