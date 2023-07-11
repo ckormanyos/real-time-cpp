@@ -2,7 +2,7 @@
 ## The LED program
 
 <p align="center">
-    <a href="https://godbolt.org/z/YhPzbvWTo" alt="godbolt">
+    <a href="https://godbolt.org/z/v5f45fMqq" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -156,14 +156,20 @@ such as:
 
 ## Try it at _godbolt_
 
-The file [`led.cpp`](./led.cpp) can, in fact, also be compiled
-with `avr-gcc` at [godbolt](https://godbolt.org).
-It can be compiled and linked there, but not executed.
-
-Use the following [short link](https://godbolt.org/z/YhPzbvWTo)
+Use the following [short link](https://godbolt.org/z/v5f45fMqq)
 to [godbolt](https://godbolt.org) in order to further explore this program.
 
-If you search toward the assembly output near the bottom
+In the afore-mentioned link, the file [`led.cpp`](./led.cpp) is,
+in fact, compiled with a modern `avr-gcc`.
+Of course, the file can be compiled and linked there,
+but not executed because there is no target hardware available.
+
+### _Clear_ and _Set_ Bit on the Metal
+
+Upon investigation of the assembly output near the bottom
 of the page in the right-side tab,
-the bit-set and bit-clear opcodes (`sbi` and `cbi`)
-for toggling `portb.5` can be recognized.
+the bit-_clear_ and bit-_set_ opcodes (`cbi` and `sbi`)
+can be recognized.
+
+These opcodes are responsible for actually toggling the mocrocontroller's
+port pin `portb.5`.
