@@ -164,10 +164,11 @@ in fact, compiled with a modern `avr-gcc`.
 Of course, the file can be compiled and linked there,
 but not executed because there is no target hardware available.
 
-### _Clear_ and _Set_ Bit on the Metal
+### On the Metal: _Clear_ and _Set_ Bit
 
-Upon investigation of the assembly output near the bottom
-of the page in the right-side tab,
+Consider the assembly output near the bottom of the page in the right-side tab
+of the [short link](https://godbolt.org/z/v5f45fMqq)
+to [godbolt](https://godbolt.org). Upon close investigation,
 the bit-_clear_ and bit-_set_ opcodes (`cbi` and `sbi`)
 can be recognized.
 
