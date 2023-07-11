@@ -23,6 +23,19 @@ Color hues of RGB blend in a smooth fashion around the entire
 spectrum to produce the appearance of slowly varying colors.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
+### Enhanced RGB-Color-Light-Show
+
+The RGB-color-light-show in example chapter09_08a (this example)
+differs slightly from the one in example chapter09_08 (the previous example).
+
+In this example the color transitions are a bit lenghtier in time
+($30~\text{ms}$ as opposed to $20~\text{ms}$). Also the color transitions
+at and around $255~\text{bits}$-red/$255~\text{bits}$-green/$255~\text{bits}$-blue
+have been lengthened for color emphasis around the turning points.
+
+This enhanced RGB-color-light-show can be found in the file
+[`app_led.cpp`](./src/app/led/app_led.cpp).
+
 ### Windows Simulation
 
 The chapter09_08a Win32-API simulation in its Windows-based
