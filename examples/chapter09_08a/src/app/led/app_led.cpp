@@ -26,21 +26,19 @@ namespace
   using app_led_monochrome_timer_type = util::timer<std::uint32_t>;
   using app_led_rgb_timer_type        = util::timer<std::uint16_t>;
 
-  app_led_monochrome_timer_type app_led_monochrome_timer(app_led_monochrome_timer_type::seconds(1U));
-  app_led_rgb_timer_type        app_led_rgb_timer       (app_led_rgb_timer_type::milliseconds(20U));
+  auto app_led_monochrome_timer = static_cast<app_led_monochrome_timer_type>(app_led_monochrome_timer_type::seconds(1U));
+  auto app_led_rgb_timer        = static_cast<app_led_rgb_timer_type>(app_led_rgb_timer_type::milliseconds(30U));
 
-  std::uint_fast8_t app_led_hue_r = static_cast<std::uint_fast8_t>(UINT8_C(255));
-  std::uint_fast8_t app_led_hue_g;
-  std::uint_fast8_t app_led_hue_b;
+  auto app_led_hue_r = static_cast<std::uint_fast8_t>(UINT8_C(255));
+  auto app_led_hue_g = static_cast<std::uint_fast8_t>(UINT8_C(0));
+  auto app_led_hue_b = static_cast<std::uint_fast8_t>(UINT8_C(0));
 }
 
 auto app::led::task_init() -> void
 {
   mcal::led::led_monochrome0().on();
 
-  mcal::led::led_rgb0().set_color(app_led_hue_r,
-                                  app_led_hue_g,
-                                  app_led_hue_b);
+  mcal::led::led_rgb0().set_color(app_led_hue_r, app_led_hue_g, app_led_hue_b);
 }
 
 auto app::led::task_func() -> void
@@ -110,24 +108,21 @@ auto app::led::task_func() -> void
       else                                                     { color_persist_time = static_cast<unsigned>(UINT8_C(100)); }
     }
 
-    // Make a smooth color transition and
-    // increment the color transition state
+    // Make a smooth color transition and increment the color transition state
     // if necessary.
     switch(color_transition_state)
     {
-      case color_transition_type::red_to_yellow:   { if(++app_led_hue_g == UINT8_C(255)) { color_transition_state = color_transition_type::yellow_to_green; } } break;
-      case color_transition_type::yellow_to_green: { if(--app_led_hue_r == UINT8_C(  0)) { color_transition_state = color_transition_type::green_to_cyan;   } } break;
-      case color_transition_type::green_to_cyan:   { if(++app_led_hue_b == UINT8_C(255)) { color_transition_state = color_transition_type::cyan_to_blue;    } } break;
-      case color_transition_type::cyan_to_blue:    { if(--app_led_hue_g == UINT8_C(  0)) { color_transition_state = color_transition_type::blue_to_magenta; } } break;
-      case color_transition_type::blue_to_magenta: { if(++app_led_hue_r == UINT8_C(255)) { color_transition_state = color_transition_type::magenta_to_red;  } } break;
+      case color_transition_type::red_to_yellow:   { if(++app_led_hue_g == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::yellow_to_green; } } break;
+      case color_transition_type::yellow_to_green: { if(--app_led_hue_r == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::green_to_cyan;   } } break;
+      case color_transition_type::green_to_cyan:   { if(++app_led_hue_b == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::cyan_to_blue;    } } break;
+      case color_transition_type::cyan_to_blue:    { if(--app_led_hue_g == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::blue_to_magenta; } } break;
+      case color_transition_type::blue_to_magenta: { if(++app_led_hue_r == static_cast<std::uint_fast8_t>(UINT8_C(255))) { color_transition_state = color_transition_type::magenta_to_red;  } } break;
       default:
-      case color_transition_type::magenta_to_red:  { if(--app_led_hue_b == UINT8_C(  0)) { color_transition_state = color_transition_type::red_to_yellow;   } } break;
+      case color_transition_type::magenta_to_red:  { if(--app_led_hue_b == static_cast<std::uint_fast8_t>(UINT8_C(  0))) { color_transition_state = color_transition_type::red_to_yellow;   } } break;
     }
 
     // Write the next color to the RGB LED.
-    mcal::led::led_rgb0().set_color(app_led_hue_r,
-                                    app_led_hue_g,
-                                    app_led_hue_b);
+    mcal::led::led_rgb0().set_color(app_led_hue_r, app_led_hue_g, app_led_hue_b);
 
     // Start the next timer interval for the RGB LED.
     app_led_rgb_timer.start_interval(app_led_rgb_timer_type::milliseconds(color_persist_time));
