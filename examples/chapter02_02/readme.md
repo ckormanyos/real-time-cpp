@@ -25,18 +25,19 @@ to make more complicated builds on your own in the future.
 
 The results of the build will be stored in the `bin`
 directory. After successful build, files such as the HEX-file
-`led.hex` and othe name and map files can be found in `bin`.
+`led.hex` and other associated useful _symbol_-_name_ and _map_ files
+can be found in `bin`.
 
 The steps of the build include the following.
 
-- Assemble : crt0.s  to bin/crt0.o
-- Compile  : led.cpp to bin/led.o
-- Link     : objects to bin/led.elf
-- Extract  : executalbe hex file : from bin/led.elf
-- Extract  : assembly list file  : from bin/led.elf
-- Extract  : size information    : from bin/led.elf
-- Extract  : name information    : from bin/led.elf
-- Extract  : demangled names     : from bin/led.elf
+- <code>Assemble : crt0.s  to bin/crt0.o</code>
+- <code>Compile  : led.cpp to bin/led.o</code>
+- <code>Link     : objects to the absolute object file bin/led.elf</code>
+- <code>Extract  : executalbe hex file      : from bin/led.elf</code>
+- <code>Extract  : assembly list file       : from bin/led.elf</code>
+- <code>Extract  : size information         : from bin/led.elf</code>
+- <code>Extract  : symbol name information  : from bin/led.elf</code>
+- <code>Extract  : (demangled) c++ names    : from bin/led.elf</code>
 
 ## Blinking Frequency
 
@@ -133,7 +134,7 @@ shown below, where the full path of the pre-installed
 gcc-avr is listed in its entirety.
 
 ```DOS
-build.bat "C:\Program Files (x86)\gcc-7.2.0-avr\bin" avr
+build.bat "C:\Program Files (x86)\gcc-11.2.0-avr\bin" avr
 ```
 
 ## In `*nix`
@@ -160,7 +161,7 @@ with `avr-gcc` at [godbolt](https://godbolt.org).
 It can be compiled and linked there, but not executed.
 
 Use the following [short link](https://godbolt.org/z/YhPzbvWTo)
-to further explore this program.
+to [godbolt](https://godbolt.org) in order to further explore this program.
 
 If you search toward the assembly output near the bottom
 of the page in the right-side tab,
