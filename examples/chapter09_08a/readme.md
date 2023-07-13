@@ -30,6 +30,26 @@ Color hues of RGB blend in a smooth fashion around the entire
 spectrum to produce the appearance of slowly varying colors.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
+```cpp
+  namespace mcal { namespace led {
+
+  // The industry-standard RGB LED on the board is of type ws2812.
+
+  template<const std::uint8_t PortAddr,
+           const std::uint8_t PortBpos,
+           const unsigned LedCount = static_cast<unsigned>(UINT8_C(1))>
+  class led_rgb_ws2812;
+} } // namespace mcal::led
+```
+
+The full template signature of the `led_rgb_ws2812` class is shown below.
+Template parameters control the digital I/O port and its address.
+The third template parameter `LedCount` provides the ability
+to link multiple WS2812 devices and control them in an LED
+chain, as si common for this particular device.
+
+In example chapter09_98a, a chain of eight WS2812 LED devices is used.
+
 ### Enhanced RGB-Color-Light-Show
 
 The RGB-color-light-show in example chapter09_08a (this example)
