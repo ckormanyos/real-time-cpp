@@ -49,9 +49,6 @@
     <Filter Include="src\app\led">
       <UniqueIdentifier>{dfa2f093-24da-4076-a6b5-1c263efdd637}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\util\device">
-      <UniqueIdentifier>{5969634a-9ce9-4555-b087-bd87a0c61b21}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\util\STL_C++XX_stdfloat">
       <UniqueIdentifier>{91752c8a-7e79-4bfb-b230-ef3355e8a033}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="src\util\STD_LIBC">
       <UniqueIdentifier>{22848557-a8bc-4a7f-b163-5229e2d20e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal_led">
+      <UniqueIdentifier>{4a0c1add-bc26-42d9-ad1d-f78a4cfe2afd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +90,6 @@
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_led_monochrome.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_led_rgb.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
@@ -103,9 +100,6 @@
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_led_driver_pc.cpp">
-      <Filter>src\mcal\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\win32\mcal_led_monochrome_pc.cpp">
       <Filter>src\mcal\win32</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_led_rgb_pc.cpp">
@@ -156,7 +150,10 @@
     <ClCompile Include="src\mcal\avr\mcal_irq.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_led_monochrome.cpp">
+    <ClCompile Include="src\mcal\win32\mcal_led.cpp">
+      <Filter>src\mcal\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <Filter>src\mcal\avr</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,17 +176,8 @@
     <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\device\util_device_led_base.h">
-      <Filter>src\util\device</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\device\util_device_led_rgb.h">
-      <Filter>src\util\device</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\device\util_device_led_monochrome.h">
-      <Filter>src\util\device</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_cpu.h">
       <Filter>src\mcal\win32</Filter>
@@ -323,9 +311,6 @@
     <ClInclude Include="src\util\utility\util_dynamic_array.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_monochrome_board.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led_rgb.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
@@ -369,6 +354,33 @@
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_irq.h">
+      <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_console.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_pwm.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_led.h">
+      <Filter>src\mcal\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_led.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
   </ItemGroup>

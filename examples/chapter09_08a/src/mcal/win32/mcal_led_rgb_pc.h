@@ -10,13 +10,13 @@
 
   #include <cstdint>
 
-  #include <util/device/util_device_led_rgb.h>
+  #include <mcal_led/mcal_led_rgb_base.h>
 
   namespace mcal
   {
     namespace led
     {
-      class led_rgb_pc final : public util::device::led_rgb
+      class led_rgb_pc final : public mcal::led::led_rgb_base
       {
       public:
         led_rgb_pc() { }

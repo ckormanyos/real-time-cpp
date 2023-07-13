@@ -114,7 +114,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\mcal\avr\mcal_led_monochrome.cpp">
+    <ClCompile Include="src\mcal\avr\mcal_led.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -149,9 +149,8 @@
     </ClCompile>
     <ClCompile Include="src\mcal\win32\mcal_gpt.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_irq.cpp" />
+    <ClCompile Include="src\mcal\win32\mcal_led.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_driver_pc.cpp" />
-    <ClCompile Include="src\mcal\win32\mcal_led_monochrome.cpp" />
-    <ClCompile Include="src\mcal\win32\mcal_led_monochrome_pc.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_rgb.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_rgb_pc.cpp" />
     <ClCompile Include="src\mcal\win32\mcal_led_sys_start_interface.cpp" />
@@ -196,7 +195,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_monochrome_board.h">
+    <ClInclude Include="src\mcal\avr\mcal_led.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -253,6 +252,7 @@
     <ClInclude Include="src\mcal\win32\mcal_cpu.h" />
     <ClInclude Include="src\mcal\win32\mcal_gpt.h" />
     <ClInclude Include="src\mcal\win32\mcal_irq.h" />
+    <ClInclude Include="src\mcal\win32\mcal_led.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_driver_pc.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_monochrome_pc.h" />
     <ClInclude Include="src\mcal\win32\mcal_led_rgb_pc.h" />
@@ -263,13 +263,17 @@
     <ClInclude Include="src\mcal\win32\mcal_reg_access.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg.h" />
     <ClInclude Include="src\mcal\win32\mcal_wdg_watchdog.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_base.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_console.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_port.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_pwm.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />
     <ClInclude Include="src\resource.h" />
-    <ClInclude Include="src\util\device\util_device_led_base.h" />
-    <ClInclude Include="src\util\device\util_device_led_monochrome.h" />
-    <ClInclude Include="src\util\device\util_device_led_rgb.h" />
     <ClInclude Include="src\util\memory\util_factory.h" />
     <ClInclude Include="src\util\memory\util_placed_pointer.h" />
     <ClInclude Include="src\util\memory\util_ring_allocator.h" />

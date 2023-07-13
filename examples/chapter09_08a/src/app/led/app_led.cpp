@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include <mcal/mcal_led_monochrome.h>
+#include <mcal_led.h>
 #include <mcal/mcal_led_rgb.h>
 #include <util/utility/util_time.h>
 
@@ -36,7 +36,7 @@ namespace
 
 auto app::led::task_init() -> void
 {
-  mcal::led::led_monochrome0().on();
+  mcal::led::led0().toggle();
 
   mcal::led::led_rgb0().set_color(app_led_hue_r, app_led_hue_g, app_led_hue_b);
 }
@@ -46,7 +46,7 @@ auto app::led::task_func() -> void
   if(app_led_monochrome_timer.timeout())
   {
     // Toggle the monochrome user LED at 1/2 Hz.
-    mcal::led::led_monochrome0().toggle();
+    mcal::led::led0().toggle();
 
     // Start the next timer interval for the monochrome user LED.
     app_led_monochrome_timer.start_interval(app_led_monochrome_timer_type::seconds(1U));

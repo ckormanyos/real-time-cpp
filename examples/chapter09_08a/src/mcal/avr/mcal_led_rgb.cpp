@@ -9,7 +9,7 @@
 #include <mcal_reg.h>
 #include <mcal_led_rgb_board_ws2812.h>
 
-util::device::led_rgb& mcal::led::led_rgb0()
+mcal::led::led_rgb_base& mcal::led::led_rgb0()
 {
   using led_rgb0_type = mcal::led::led_rgb_board<mcal::reg::portd, UINT8_C(3)>;
 
