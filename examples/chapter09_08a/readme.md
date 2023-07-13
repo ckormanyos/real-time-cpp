@@ -4,7 +4,7 @@
 Example chapter09_08a utilizes object oriented programming techniques
 to control an RGB LED.
 
-This example uses essensially the tame programming techniques as in the previous example chapter09_08
+This example uses essensially the same programming techniques as the previous example chapter09_08
 to control an RGB LED, but with a sligthly modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
 RGB LED of type WS2812 is used. In addition, the color transitions

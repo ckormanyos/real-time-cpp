@@ -62,8 +62,8 @@ Example ![chapter09_08](https://github.com/ckormanyos/real-time-cpp/tree/master/
 This example utilizes object oriented programming techniques to control an RGB LED.
 
 Example ![chapter09_08a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter09_08a) Controlling an RGB LED of Type WS2812.\
-This uses essensially the tame programming techniques as in the previous example chapter09_08
-to control an RGB LED, but with a sligthly modernized LED-class hierarchy.
+This example uses essensially the same programming techniques as the previous example chapter09_08
+to control an RGB LED. It also uses a sligthly refactored, modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
 RGB LED of type WS2812 is used. In addition, the color transitions
 at and around $255~\text{bits}$-RGB are emphasized providing longer-lasting

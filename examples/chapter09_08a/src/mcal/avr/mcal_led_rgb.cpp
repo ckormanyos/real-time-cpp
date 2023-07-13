@@ -7,11 +7,14 @@
 
 #include <mcal/mcal_led_rgb.h>
 #include <mcal_reg.h>
-#include <mcal_led_rgb_board_ws2812.h>
+#include <mcal_led_rgb_ws2812.h>
 
 mcal::led::led_rgb_base& mcal::led::led_rgb0()
 {
-  using led_rgb0_type = mcal::led::led_rgb_board<mcal::reg::portd, UINT8_C(3)>;
+  using led_rgb0_type =
+    mcal::led::led_rgb_ws2812<mcal::reg::portd,
+                              static_cast<std::uint8_t>(UINT8_C(3)),
+                              static_cast<unsigned>(UINT8_C(8))>;
 
   static led_rgb0_type the_rgb_led;
 
