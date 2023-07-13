@@ -4,9 +4,16 @@
 Example chapter09_08a utilizes object oriented programming techniques
 to control an RGB LED.
 
+This example uses essensially the tame programming techniques as in the previous example chapter09_08
+to control an RGB LED, but with a sligthly modernized LED-class hierarchy.
+The main difference, however, is that a _digitally_-controlled industry-standard
+RGB LED of type WS2812 is used. In addition, the color transitions
+at and around $255~\text{bits}$-RGB are emphasized providing longer-lasting
+hues near the turning points.
+
 ## Controlling the WS2812
 
-This RGB LED is controlled by a very specifically timed,
+The WS2812 RGB LED is controlled by a very specifically timed,
 novel digital signal. In this signal, each of the $24$ RGB
 color bits is set to the value $1$ or $0$ depending on the
 half-width of a low/high signal pair.
