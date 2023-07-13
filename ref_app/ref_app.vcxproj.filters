@@ -2265,6 +2265,9 @@
     <ClInclude Include="src\mcal\nxp_imxrt1062\mcal_benchmark.h">
       <Filter>src\mcal\nxp_imxrt1062</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
