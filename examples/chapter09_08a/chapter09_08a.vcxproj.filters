@@ -314,10 +314,7 @@
     <ClInclude Include="src\mcal\avr\mcal_led_rgb.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_rgb_board_ws2812.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_rgb_board_ws2812_detail.h">
+    <ClInclude Include="src\mcal\avr\mcal_led_rgb_ws2812.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led_sys_start_interface.h">
@@ -333,9 +330,6 @@
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_pwm.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_pwm_board.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_reg.h">
