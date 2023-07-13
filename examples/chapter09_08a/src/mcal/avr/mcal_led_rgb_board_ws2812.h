@@ -14,7 +14,7 @@
   #include <mcal_irq.h>
   #include <mcal_port.h>
   #include <mcal_led_rgb_board_ws2812_detail.h>
-  #include <util/device/util_device_led_rgb.h>
+  #include <mcal_led/mcal_led_rgb_base.h>
 
   namespace mcal { namespace led {
 
@@ -22,10 +22,10 @@
 
   template<const std::uint8_t port_addr,
            const std::uint8_t port_bpos>
-  class led_rgb_board final : public util::device::led_rgb
+  class led_rgb_board final : public mcal::led::led_rgb_base
   {
   private:
-    using base_class_type = util::device::led_rgb;
+    using base_class_type = mcal::led::led_rgb_base;
 
   public:
     led_rgb_board()

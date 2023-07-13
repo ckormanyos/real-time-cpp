@@ -8,7 +8,7 @@
 #include <mcal/mcal_led_rgb.h>
 #include <mcal_led_rgb_pc.h>
 
-util::device::led_rgb& mcal::led::led_rgb0()
+mcal::led::led_rgb_base& mcal::led::led_rgb0()
 {
   static mcal::led::led_rgb_pc the_led;
 

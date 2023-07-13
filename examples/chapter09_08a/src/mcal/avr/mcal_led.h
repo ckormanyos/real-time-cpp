@@ -1,21 +1,21 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2020.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_2010_09_14_H
-  #define MCAL_PWM_2010_09_14_H
+#ifndef MCAL_LED_2010_09_14_H_
+  #define MCAL_LED_2010_09_14_H_
+
+  #include <mcal_led/mcal_led_base.h>
 
   namespace mcal
   {
-    namespace pwm
+    namespace led
     {
-      using config_type = void;
-
-      void init(const config_type*);
+      led_base& led0();
     }
   }
 
-#endif // MCAL_PWM_2010_09_14_H
+#endif // MCAL_LED_2010_09_14_H_

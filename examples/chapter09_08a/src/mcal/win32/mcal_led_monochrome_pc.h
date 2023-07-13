@@ -10,21 +10,35 @@
 
   #include <cstdint>
 
-  #include <util/device/util_device_led_monochrome.h>
+  #include <mcal_led/mcal_led_boolean_state_base.h>
+
+  extern auto post_message_led_monochrome(const bool is_on) -> void;
 
   namespace mcal
   {
     namespace led
     {
-      class led_monochrome_pc final : public util::device::led_monochrome
+      class led_monochrome_pc final : public mcal::led::led_boolean_state_base
       {
+      private:
+        using base_class_type = mcal::led::led_boolean_state_base;
+
       public:
-        led_monochrome_pc() { }
+        led_monochrome_pc() = default;
 
-        virtual ~led_monochrome_pc() { }
+        ~led_monochrome_pc() override = default;
 
-        virtual void my_on ();
-        virtual void my_off();
+        auto toggle() -> void override
+        {
+          // Toggle the LED state.
+          (base_class_type::state_is_on() ? my_off() : my_on());
+
+          base_class_type::toggle();
+        }
+
+      private:
+        void my_on () { post_message_led_monochrome(true); }
+        void my_off() { post_message_led_monochrome(false); }
       };
     }
   }
