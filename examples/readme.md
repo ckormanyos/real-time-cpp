@@ -62,12 +62,11 @@ Example ![chapter09_08](https://github.com/ckormanyos/real-time-cpp/tree/master/
 This example utilizes object oriented programming techniques to control an RGB LED.
 
 Example ![chapter09_08a](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter09_08a) Controlling an RGB LED of Type WS2812.\
-This example uses essensially the same programming techniques as the previous example chapter09_08
-to control an RGB LED. It also uses a sligthly refactored, modernized LED-class hierarchy.
+This example controls an RGB LED using programming techniques similar to those used in the previous example.
+There are, however, several differences such as the refactored, modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
-RGB LED of type WS2812 is used. In addition, the color transitions
-at and around $255~\text{bits}$-RGB are emphasized providing longer-lasting
-hues near the turning points.
+RGB LED of type WS2812 is used. In addition, the color transitions at and around $255~\text{bits}$-RGB
+are slowed down providing emphasized, longer-lasting RGB hues near these points.
 
 Example ![chapter10_08](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter10_08) External SPI RAM and Computing $10,001$ Digits of Pi.\
 This advanced example extends available RAM via SPI SRAM chips and uses a Pi Spigot algorithm
