@@ -4,12 +4,11 @@
 Example chapter09_08a utilizes object oriented programming techniques
 to control an RGB LED.
 
-This example uses essensially the same programming techniques as the previous example chapter09_08
-to control an RGB LED, but with a sligthly modernized LED-class hierarchy.
+This example controls an RGB LED using programming techniques similar to those used in the previous example.
+There are, however, several differences such as the refactored, modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
-RGB LED of type WS2812 is used. In addition, the color transitions
-at and around $255~\text{bits}$-RGB are emphasized providing longer-lasting
-hues near the turning points.
+RGB LED of type WS2812 is used. In addition, the color transitions at and around $255~\text{bits}$-RGB
+are slowed down providing emphasized, longer-lasting RGB hues near these points.
 
 ## Controlling the WS2812
 
@@ -30,6 +29,8 @@ Color hues of RGB blend in a smooth fashion around the entire
 spectrum to produce the appearance of slowly varying colors.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
+The full template signature of the `led_rgb_ws2812` class is shown below.
+
 ```cpp
   namespace mcal { namespace led {
 
@@ -42,8 +43,10 @@ The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 } } // namespace mcal::led
 ```
 
-The full template signature of the `led_rgb_ws2812` class is shown below.
-Template parameters control the digital I/O port and its address.
+The first two template parameters `PortAddr` and `PortBpos`
+are used to set the port address and bit position of the digital I/O port
+used to generate the WS2812 control signal.
+
 The third template parameter `LedCount` provides the ability
 to link multiple WS2812 devices and control them in an LED
 chain, as si common for this particular device.
