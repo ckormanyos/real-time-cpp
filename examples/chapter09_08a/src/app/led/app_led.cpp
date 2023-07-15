@@ -9,7 +9,7 @@
 #include <cstdlib>
 
 #include <mcal_led.h>
-#include <mcal/mcal_led_rgb.h>
+#include <mcal_led_rgb.h>
 #include <util/utility/util_time.h>
 
 namespace app

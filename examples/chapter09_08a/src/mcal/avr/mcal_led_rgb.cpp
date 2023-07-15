@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <mcal/mcal_led_rgb.h>
-#include <mcal_reg.h>
+#include <mcal_led_rgb.h>
 #include <mcal_led_rgb_ws2812.h>
+#include <mcal_reg.h>
 
 mcal::led::led_rgb_base& mcal::led::led_rgb0()
 {
