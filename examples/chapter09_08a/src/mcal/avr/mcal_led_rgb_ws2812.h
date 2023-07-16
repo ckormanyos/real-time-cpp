@@ -19,6 +19,36 @@
 
   // The industry-standard RGB LED on the board is of type ws2812.
 
+  // Timing of WS2812.
+
+  // Next bit is 0:
+  //   T0H = 0.35us
+  //   T0L = 0.80us
+
+  // Next bit is 1:
+  //   T1H = 0.70us
+  //   T1L = 0.60us
+
+  #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) \
+  port_pin_type::set_pin_high(); \
+  if(next_bit_is_zero) \
+  { \
+    mcal::cpu::nop(); mcal::cpu::nop(); \
+    port_pin_type::set_pin_low(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); \
+  } \
+  else \
+  { \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    port_pin_type::set_pin_low(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
+  }
+
   template<const std::uint8_t PortAddr,
            const std::uint8_t PortBpos,
            const unsigned LedCount = static_cast<unsigned>(UINT8_C(1))>
@@ -47,73 +77,52 @@
                            port_addr(),
                            port_bpos()>;
 
+    #if defined(__GNUC__)
+    #pragma GCC push_options
+    #pragma GCC optimize("-O3")
+    #endif
+
     auto push_color() -> void
     {
-      std::uint8_t red   = base_class_type::get_hue_r();
-      std::uint8_t green = base_class_type::get_hue_g();
-      std::uint8_t blue  = base_class_type::get_hue_b();
-
-      const auto push_data =
-        [](const std::uint8_t data_value)
-        {
-          const auto next_bit_value = static_cast<std::uint8_t>(data_value & static_cast<std::uint8_t>(UINT8_C(0x80)));
-
-          const auto next_bit_is_zero = (next_bit_value == static_cast<std::uint8_t>(UINT8_C(0)));
-
-          port_pin_type::set_pin_high();
-
-          if(next_bit_is_zero)
-          {
-            // Next bit is 0:
-            //   T0H = 0.35us
-            //   T0L = 0.80us
-            mcal::cpu::nop(); mcal::cpu::nop();
-            port_pin_type::set_pin_low();
-            mcal::cpu::nop(); mcal::cpu::nop();
-          }
-          else
-          {
-            // Next bit is 1:
-            //   T1H = 0.70us
-            //   T1L = 0.60us
-            mcal::cpu::nop(); mcal::cpu::nop();
-            mcal::cpu::nop(); mcal::cpu::nop();
-            mcal::cpu::nop(); mcal::cpu::nop();
-            port_pin_type::set_pin_low();
-          }
-        };
+      const auto red   = static_cast<std::uint8_t>(base_class_type::get_hue_r());
+      const auto green = static_cast<std::uint8_t>(base_class_type::get_hue_g());
+      const auto blue  = static_cast<std::uint8_t>(base_class_type::get_hue_b());
 
       mcal::irq::disable_all();
 
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
-      push_data(green); green = static_cast<std::uint8_t>(green << static_cast<unsigned>(UINT8_C(1)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x80))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x40))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x20))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x10))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x08))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x04))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x02))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(green & static_cast<std::uint8_t>(UINT8_C(0x01))) == static_cast<std::uint8_t>(UINT8_C(0)));
 
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
-      push_data(red);   red   = static_cast<std::uint8_t>(red   << static_cast<unsigned>(UINT8_C(1)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x80))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x40))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x20))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x10))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x08))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x04))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x02))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(red   & static_cast<std::uint8_t>(UINT8_C(0x01))) == static_cast<std::uint8_t>(UINT8_C(0)));
 
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
-      push_data(blue);  blue  = static_cast<std::uint8_t>(blue  << static_cast<unsigned>(UINT8_C(1)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x80))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x40))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x20))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x10))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x08))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x04))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x02))) == static_cast<std::uint8_t>(UINT8_C(0)));
+      MCAL_LED_RGB_WS2812_PUSH_DATA(static_cast<std::uint8_t>(blue  & static_cast<std::uint8_t>(UINT8_C(0x01))) == static_cast<std::uint8_t>(UINT8_C(0)));
 
       mcal::irq::enable_all();
     }
+
+    #if defined(__GNUC__)
+    #pragma GCC pop_options
+    #endif
 
     auto apply_color() -> void override
     {

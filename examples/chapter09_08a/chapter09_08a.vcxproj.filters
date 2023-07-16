@@ -227,15 +227,6 @@
     <ClInclude Include="src\mcal\win32\mcal_led_rgb_pc.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\mcal_led_monochrome.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_led_rgb.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\mcal_pwm_base.h">
-      <Filter>src\mcal</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\win32\mcal_memory_progmem.h">
       <Filter>src\mcal\win32</Filter>
     </ClInclude>
@@ -359,9 +350,6 @@
     <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h">
       <Filter>src\mcal_led</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal_led\mcal_led_pwm.h">
-      <Filter>src\mcal_led</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_led\mcal_led_base.h">
       <Filter>src\mcal_led</Filter>
     </ClInclude>
@@ -376,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led.h">
       <Filter>src\mcal\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\win32\mcal_led_rgb.h">
+      <Filter>src\mcal\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
