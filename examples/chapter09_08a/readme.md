@@ -2,12 +2,12 @@
 ## Controlling an RGB LED of type WS2812
 
 Example chapter09_08a utilizes object oriented programming techniques
-to control an RGB LED.
+to control a sequential chain of eight industry-standard RGB LEDs of type ws2812
 
 This example controls an RGB LED using programming techniques similar to those used in the previous example.
 There are, however, several differences such as the refactored, modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
-RGB LED of type WS2812 is used. In addition, the color transitions at and around $255~\text{bits}$-RGB
+RGB LED of type WS2812 is used. In addition, the color transitions at (and around) $255~\text{bits}$-RGB
 are slowed down providing emphasized, longer-lasting RGB hues near these points.
 
 ## Controlling the WS2812
@@ -34,8 +34,6 @@ The full template signature of the `led_rgb_ws2812` class is shown below.
 ```cpp
   namespace mcal { namespace led {
 
-  // The industry-standard RGB LED on the board is of type ws2812.
-
   template<const std::uint8_t PortAddr,
            const std::uint8_t PortBpos,
            const unsigned LedCount = static_cast<unsigned>(UINT8_C(1))>
@@ -48,8 +46,8 @@ are used to set the port address and bit position of the digital I/O port
 used to generate the WS2812 control signal.
 
 The third template parameter `LedCount` provides the ability
-to link multiple WS2812 devices and control them in an LED
-chain, as si common for this particular device.
+to link multiple WS2812 devices seqentially and control them
+in an LED chain, as is common for this particular device.
 
 In example chapter09_98a, a chain of eight WS2812 LED devices is used.
 
@@ -76,12 +74,11 @@ application is shown in action in the image below.
 ## Hardware Setup
 
 In this particular example, we have simply used a commercially-available
-Arduino-Nano placed on a breadboard. The wiring to the industry-standard
-WS2812 RGB breakout board is simple and shown in the image below.
+Arduino-Nano placed on a breadboard. The wiring is straightforward.
 
 The hardware setup is pictured in the image below in action.
-There are two pictures showing two different colors eminating
-from the bright RGB LED of type WS2812.
+There picture shows a colorful aqua-blue hue eminating
+from the sequential chain of bright RGB LEDs of type WS2812.
 
 ![](./images/board09_08a_green.jpg)
 ![](./images/board09_08a_blue.jpg)
