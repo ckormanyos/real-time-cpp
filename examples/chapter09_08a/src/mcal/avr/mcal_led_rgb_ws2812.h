@@ -25,6 +25,9 @@
   class led_rgb_ws2812 final : public mcal::led::led_rgb_base
   {
   private:
+    #if defined(__GNUC__)
+    __attribute__((optimize(3)))
+    #endif
     auto push_color() -> void;
 
   public:
@@ -51,11 +54,7 @@
 
     static constexpr auto led_count() noexcept -> unsigned { return LedCount; }
 
-    using port_pin_type =
-      mcal::port::port_pin<std::uint8_t,
-                           std::uint8_t,
-                           port_addr(),
-                           port_bpos()>;
+    using port_pin_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, port_addr(), port_bpos()>;
   };
 
   // Timing of WS2812.
@@ -68,26 +67,16 @@
   //   T1H = 0.70us
   //   T1L = 0.60us
 
-  #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) \
-  port_pin_type::set_pin_high(); \
-  if(next_bit_is_zero) \
-  { \
-    mcal::cpu::nop(); mcal::cpu::nop(); \
-    port_pin_type::set_pin_low(); \
-    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
-    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
-  } \
-  else \
-  { \
-    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
-    port_pin_type::set_pin_low(); \
-    mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); mcal::cpu::nop(); \
-  }
+  #define MCAL_LED_RGB_WS2812_NOPS_01() asm volatile("nop")
+  #define MCAL_LED_RGB_WS2812_NOPS_02() MCAL_LED_RGB_WS2812_NOPS_01(); MCAL_LED_RGB_WS2812_NOPS_01()
+  #define MCAL_LED_RGB_WS2812_NOPS_03() MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_01()
+  #define MCAL_LED_RGB_WS2812_NOPS_05() MCAL_LED_RGB_WS2812_NOPS_03(); MCAL_LED_RGB_WS2812_NOPS_02();
+  #define MCAL_LED_RGB_WS2812_NOPS_06() MCAL_LED_RGB_WS2812_NOPS_03(); MCAL_LED_RGB_WS2812_NOPS_03();
+  #define MCAL_LED_RGB_WS2812_NOPS_11() MCAL_LED_RGB_WS2812_NOPS_06(); MCAL_LED_RGB_WS2812_NOPS_05()
 
-  #if defined(__GNUC__)
-  #pragma GCC push_options
-  #pragma GCC optimize("-O3")
-  #endif
+  #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) port_pin_type::set_pin_high(); \
+  if   (next_bit_is_zero) { MCAL_LED_RGB_WS2812_NOPS_02(); port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_11(); } \
+  else                    { MCAL_LED_RGB_WS2812_NOPS_06(); port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_06(); }
 
   template<const std::uint8_t PortAddr,
            const std::uint8_t PortBpos,
@@ -129,11 +118,28 @@
     mcal::irq::enable_all();
   }
 
-  #if defined(__GNUC__)
-  #pragma GCC pop_options
+  #if defined(MCAL_LED_RGB_WS2812_PUSH_DATA)
+  #undef MCAL_LED_RGB_WS2812_PUSH_DATA
   #endif
 
-  #undef MCAL_LED_RGB_WS2812_PUSH_DATA
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_01)
+  #undef MCAL_LED_RGB_WS2812_NOPS_01
+  #endif
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_02)
+  #undef MCAL_LED_RGB_WS2812_NOPS_02
+  #endif
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_03)
+  #undef MCAL_LED_RGB_WS2812_NOPS_03
+  #endif
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_05)
+  #undef MCAL_LED_RGB_WS2812_NOPS_05
+  #endif
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_06)
+  #undef MCAL_LED_RGB_WS2812_NOPS_06
+  #endif
+  #if defined(MCAL_LED_RGB_WS2812_NOPS_11)
+  #undef MCAL_LED_RGB_WS2812_NOPS_11
+  #endif
 
   } } // namespace mcal::led
 
