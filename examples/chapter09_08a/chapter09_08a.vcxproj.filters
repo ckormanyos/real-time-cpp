@@ -61,6 +61,9 @@
     <Filter Include="src\mcal_led">
       <UniqueIdentifier>{4a0c1add-bc26-42d9-ad1d-f78a4cfe2afd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_doc">
+      <UniqueIdentifier>{a0535197-0c3a-4d51-b990-93cef869c23a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -480,6 +483,9 @@
     </None>
     <None Include="src\util\STL\memory">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="readme.md">
+      <Filter>_doc</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

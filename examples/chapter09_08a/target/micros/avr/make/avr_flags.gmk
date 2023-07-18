@@ -21,7 +21,7 @@ TGT_ALLFLAGS  = -Os                                                             
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
                 -finline-functions                                                \
-                -finline-limit=32                                                 \
+                -finline-limit=128                                                \
                 -fsigned-char
 
 ifeq ($(GCC_VERSION),11.2.0)

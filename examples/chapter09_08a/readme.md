@@ -75,10 +75,26 @@ application is shown in action in the image below.
 
 In this particular example, we have simply used a commercially-available
 Arduino-Nano placed on a breadboard. The wiring is straightforward.
+The ws2812 port control uses port pin `portd.3`.
 
-The hardware setup is pictured in the image below in action.
-There picture shows a colorful aqua-blue hue eminating
+The hardware setup with the RGB LED chain in action is pictured
+in the images below. The pictures show colorful RGB hues eminating
 from the sequential chain of bright RGB LEDs of type WS2812.
 
-![](./images/board09_08a_green.jpg)
-![](./images/board09_08a_blue.jpg)
+![](./images/board09_08a_01r.jpg)
+![](./images/board09_08a_02g.jpg)
+![](./images/board09_08a_03b.jpg)
+
+### Bit Timing: WS2812
+
+The approximate bit timing needed by the ws2812 is shown in the following table.
+
+| Bit Value | $T_{hi}~{ns}$ ] | $T_{lo}~{ns}$ ] |
+| --------- | --------------- | --------------- |
+|    $0$    |    $350$        |    $800$        |
+|    $1$    |    $700$        |    $600$        |
+
+A sample of the control signal on `portd.3` is shown
+in the oscilloscpoe trace in the image below.
+
+![](./images/ws2812_signal.jpg)
