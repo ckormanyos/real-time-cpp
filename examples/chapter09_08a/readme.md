@@ -1,5 +1,5 @@
 # Example Chapter09_08a
-## Controlling an RGB LED of type WS2812
+## Controlling an RGB LED of type ws2812
 
 Example chapter09_08a utilizes object oriented programming techniques
 to control a sequential chain of eight industry-standard RGB LEDs of type ws2812
@@ -7,12 +7,12 @@ to control a sequential chain of eight industry-standard RGB LEDs of type ws2812
 This example controls an RGB LED using programming techniques similar to those used in the previous example.
 There are, however, several differences such as the refactored, modernized LED-class hierarchy.
 The main difference, however, is that a _digitally_-controlled industry-standard
-RGB LED of type WS2812 is used. In addition, the color transitions at (and around) $255~\text{bits}$-RGB
+RGB LED of type ws2812 is used. In addition, the color transitions at (and around) $255~\text{bits}$-RGB
 are slowed down providing emphasized, longer-lasting RGB hues near these points.
 
-## Controlling the WS2812
+## Controlling the ws2812
 
-The WS2812 RGB LED is controlled by a very specifically timed,
+The ws2812 RGB LED is controlled by a very specifically timed,
 novel digital signal. In this signal, each of the $24$ RGB
 color bits is set to the value $1$ or $0$ depending on the
 half-width of a low/high signal pair.
@@ -43,13 +43,13 @@ The full template signature of the `led_rgb_ws2812` class is shown below.
 
 The first two template parameters `PortAddr` and `PortBpos`
 are used to set the port address and bit position of the digital I/O port
-used to generate the WS2812 control signal.
+used to generate the ws2812 control signal.
 
 The third template parameter `LedCount` provides the ability
-to link multiple WS2812 devices seqentially and control them
+to link multiple ws2812 devices seqentially and control them
 in an LED chain, as is common for this particular device.
 
-In example chapter09_98a, a chain of eight WS2812 LED devices is used.
+In example chapter09_98a, a chain of eight ws2812 LED devices is used.
 
 ### Enhanced RGB-Color-Light-Show
 
@@ -79,17 +79,17 @@ The ws2812 port control uses port pin `portd.3`.
 
 The hardware setup with the RGB LED chain in action is pictured
 in the images below. The pictures show colorful RGB hues eminating
-from the sequential chain of bright RGB LEDs of type WS2812.
+from the sequential chain of bright RGB LEDs of type ws2812.
 
 ![](./images/board09_08a_01r.jpg)
 ![](./images/board09_08a_02g.jpg)
 ![](./images/board09_08a_03b.jpg)
 
-### Bit Timing: WS2812
+### Bit Timing: ws2812
 
 The approximate bit timing needed by the ws2812 is shown in the following table.
 
-| Bit Value | $T_{hi}~{ns}$ ] | $T_{lo}~{ns}$ ] |
+| Bit Value | $T_{hi}~\left[{ns}\right]$ | $T_{lo}~\left[{ns}\right]$ |
 | --------- | --------------- | --------------- |
 |    $0$    |    $350$        |    $800$        |
 |    $1$    |    $700$        |    $600$        |
