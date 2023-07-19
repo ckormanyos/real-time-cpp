@@ -9,7 +9,7 @@
 #include <mcal_led_rgb_ws2812.h>
 #include <mcal_reg.h>
 
-mcal::led::led_rgb_base& mcal::led::led_rgb0()
+auto mcal::led::led_rgb0() -> led_rgb_base&
 {
   using led_rgb0_type =
     mcal::led::led_rgb_ws2812<mcal::reg::portd,

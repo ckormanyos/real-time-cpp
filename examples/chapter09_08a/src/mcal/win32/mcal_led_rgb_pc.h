@@ -19,12 +19,10 @@
       class led_rgb_pc final : public mcal::led::led_rgb_base
       {
       public:
-        led_rgb_pc() { }
-
-        virtual ~led_rgb_pc() { }
+        constexpr led_rgb_pc() = default;
 
       private:
-        virtual void apply_color();
+        auto apply_color() -> void override;
       };
     }
   }

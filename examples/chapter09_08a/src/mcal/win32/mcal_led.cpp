@@ -8,7 +8,7 @@
 #include <mcal_led.h>
 #include <mcal_led_monochrome_pc.h>
 
-auto mcal::led::led0() -> mcal::led::led_base&
+auto mcal::led::led0() -> led_base&
 {
   static mcal::led::led_monochrome_pc local_led0;
 

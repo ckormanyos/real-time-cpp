@@ -36,8 +36,6 @@
       port_pin_type::set_direction_output();
     }
 
-    ~led_rgb_ws2812() override = default;
-
     auto apply_color() -> void override
     {
       for(auto i = static_cast<unsigned>(UINT8_C(0)); i < led_count(); ++i)
@@ -47,8 +45,6 @@
     }
 
   private:
-    using base_class_type = mcal::led::led_rgb_base;
-
     static constexpr auto port_addr() noexcept -> std::uint8_t { return PortAddr; }
     static constexpr auto port_bpos() noexcept -> std::uint8_t { return PortBpos; }
 
@@ -67,12 +63,9 @@
   //   T1H = 0.70us
   //   T1L = 0.60us
 
-  #define MCAL_LED_RGB_WS2812_NOPS_01() asm volatile("nop")
-  #define MCAL_LED_RGB_WS2812_NOPS_02() MCAL_LED_RGB_WS2812_NOPS_01(); MCAL_LED_RGB_WS2812_NOPS_01()
-  #define MCAL_LED_RGB_WS2812_NOPS_03() MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_01()
-  #define MCAL_LED_RGB_WS2812_NOPS_05() MCAL_LED_RGB_WS2812_NOPS_03(); MCAL_LED_RGB_WS2812_NOPS_02();
-  #define MCAL_LED_RGB_WS2812_NOPS_06() MCAL_LED_RGB_WS2812_NOPS_03(); MCAL_LED_RGB_WS2812_NOPS_03();
-  #define MCAL_LED_RGB_WS2812_NOPS_11() MCAL_LED_RGB_WS2812_NOPS_06(); MCAL_LED_RGB_WS2812_NOPS_05()
+  #define MCAL_LED_RGB_WS2812_NOPS_02() asm volatile("nop"); asm volatile("nop")
+  #define MCAL_LED_RGB_WS2812_NOPS_06() MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02();
+  #define MCAL_LED_RGB_WS2812_NOPS_11() MCAL_LED_RGB_WS2812_NOPS_06(); MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02(); asm volatile("nop")
 
   #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) port_pin_type::set_pin_high(); \
   if   (next_bit_is_zero) { MCAL_LED_RGB_WS2812_NOPS_02(); port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_11(); } \
@@ -82,6 +75,8 @@
            const std::uint8_t PortBpos,
            const unsigned LedCount> auto led_rgb_ws2812<PortAddr, PortBpos, LedCount>::push_color() -> void
   {
+    using base_class_type = mcal::led::led_rgb_base;
+
     const auto red   = static_cast<std::uint8_t>(base_class_type::get_hue_r());
     const auto green = static_cast<std::uint8_t>(base_class_type::get_hue_g());
     const auto blue  = static_cast<std::uint8_t>(base_class_type::get_hue_b());
@@ -122,21 +117,14 @@
   #undef MCAL_LED_RGB_WS2812_PUSH_DATA
   #endif
 
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_01)
-  #undef MCAL_LED_RGB_WS2812_NOPS_01
-  #endif
   #if defined(MCAL_LED_RGB_WS2812_NOPS_02)
   #undef MCAL_LED_RGB_WS2812_NOPS_02
   #endif
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_03)
-  #undef MCAL_LED_RGB_WS2812_NOPS_03
-  #endif
-  #if defined(MCAL_LED_RGB_WS2812_NOPS_05)
-  #undef MCAL_LED_RGB_WS2812_NOPS_05
-  #endif
+
   #if defined(MCAL_LED_RGB_WS2812_NOPS_06)
   #undef MCAL_LED_RGB_WS2812_NOPS_06
   #endif
+
   #if defined(MCAL_LED_RGB_WS2812_NOPS_11)
   #undef MCAL_LED_RGB_WS2812_NOPS_11
   #endif

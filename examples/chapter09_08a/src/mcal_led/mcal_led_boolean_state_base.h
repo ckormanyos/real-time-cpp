@@ -14,11 +14,8 @@
 
   class led_boolean_state_base : public mcal::led::led_base
   {
-  public:
-    ~led_boolean_state_base() override = default;
-
   protected:
-    led_boolean_state_base() = default;
+    constexpr led_boolean_state_base() = default;
 
     auto toggle() -> void override
     {
@@ -26,7 +23,7 @@
       is_on = (!is_on);
     }
 
-    auto state_is_on() const -> bool override { return is_on; }
+    constexpr auto state_is_on() const -> bool { return is_on; }
 
   private:
     bool is_on { };

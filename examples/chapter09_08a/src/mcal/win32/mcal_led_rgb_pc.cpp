@@ -9,9 +9,9 @@
 
 #include <mcal_led_rgb_pc.h>
 
-void post_message_led_rgb(const std::uint32_t color);
+auto post_message_led_rgb(const std::uint32_t color) -> void;
 
-void mcal::led::led_rgb_pc::apply_color()
+auto mcal::led::led_rgb_pc::apply_color() -> void
 {
   post_message_led_rgb(get_color());
 }

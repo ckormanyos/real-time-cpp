@@ -24,7 +24,7 @@ namespace
   constexpr COLORREF color_gray  = RGB(200U, 200U, 200U);
 }
 
-void post_message_led_rgb(const std::uint32_t color)
+auto post_message_led_rgb(const std::uint32_t color) -> void
 {
   if(mcal::led::sys_start_interface::my_exit_pc_api_flag() == false)
   {
@@ -35,25 +35,25 @@ void post_message_led_rgb(const std::uint32_t color)
   }
 }
 
-void post_message_led_monochrome(const bool is_on)
+auto post_message_led_monochrome(const bool is_on) -> void
 {
   if(mcal::led::sys_start_interface::my_exit_pc_api_flag() == false)
   {
     ::PostMessage(mcal::led::driver_pc::instance().get_handle_to_window(),
                   WM_MESSAGE_FROM_LED_MONOCHROME,
-                  0U,
-                  static_cast<LPARAM>(is_on ? 1U : 0U));
+                  static_cast<UINT>(UINT8_C(0)),
+                  static_cast<LPARAM>(is_on ? static_cast<unsigned>(UINT8_C(1)) : static_cast<unsigned>(UINT8_C(0))));
   }
 }
 
-mcal::led::driver_pc& mcal::led::driver_pc::instance()
+auto mcal::led::driver_pc::instance() -> mcal::led::driver_pc&
 {
   static mcal::led::driver_pc driver_pc_instance;
 
   return driver_pc_instance;
 }
 
-bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
+auto mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
                                          const char*    window_caption,
                                          const COLORREF initial_rgb_color,
                                          const int      initial_icon_id,
@@ -62,7 +62,7 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
                                          const int      window_width,
                                          const int      window_height,
                                          const DWORD    basic_style,
-                                         const DWORD    extended_style)
+                                         const DWORD    extended_style) -> bool
 {
   my_handle_to_instance = handle_to_instance;
 
@@ -76,8 +76,8 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
                                                     | UINT(CS_VREDRAW)
                                                     | UINT(CS_OWNDC));
     window_class.lpfnWndProc   =  my_window_callback;
-    window_class.cbClsExtra    =  0;
-    window_class.cbWndExtra    =  0;
+    window_class.cbClsExtra    =  static_cast<int>(INT8_C(0));
+    window_class.cbWndExtra    =  static_cast<int>(INT8_C(0));
     window_class.hInstance     =  my_handle_to_instance;
     window_class.hIcon         =  LoadIcon(my_handle_to_instance, MAKEINTRESOURCE(initial_icon_id));
     window_class.hCursor       =  LoadCursor(nullptr, IDC_ARROW);
@@ -109,7 +109,7 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
   {
     // Show the window.
     const bool redraw_window_is_ok =
-      (RedrawWindow(my_handle_to_window, nullptr, nullptr, 0U) == TRUE);
+      (RedrawWindow(my_handle_to_window, nullptr, nullptr, static_cast<UINT>(UINT8_C(0))) == TRUE);
 
     create_window_is_ok &= redraw_window_is_ok;
 
@@ -142,12 +142,12 @@ bool mcal::led::driver_pc::create_window(HINSTANCE      handle_to_instance,
   return create_window_result;
 }
 
-bool mcal::led::driver_pc::draw_circle(const int      center_x,
+auto mcal::led::driver_pc::draw_circle(const int      center_x,
                                        const int      center_y,
                                        const int      radius,
                                        const int      pen_width,
                                        const COLORREF pen_color,
-                                       const bool     use_fill)
+                                       const bool     use_fill) -> bool
 {
   // Get the handle to the window device context.
   const HDC handle_to_dc = GetDC(my_handle_to_window);
@@ -192,7 +192,7 @@ bool mcal::led::driver_pc::draw_circle(const int      center_x,
   return ((handle_to_dc != nullptr) && draw_elipse_is_ok);
 }
 
-bool mcal::led::driver_pc::set_icon(const int icon_id)
+auto mcal::led::driver_pc::set_icon(const int icon_id) -> bool
 {
   // Set the icon of the application based on the icon ID.
 
@@ -231,7 +231,7 @@ LRESULT CALLBACK mcal::led::driver_pc::my_window_callback(HWND   handle_to_windo
     // Toggle the monochrome user LED on and off
     // according to the Boolean input from the application.
 
-    const bool is_on = ((l_param != 0U) ? true : false);
+    const bool is_on = ((l_param != static_cast<LPARAM>(INT8_C(0))) ? true : false);
 
     const bool draw_circle_is_ok =
       instance().draw_circle(290,
@@ -249,17 +249,17 @@ LRESULT CALLBACK mcal::led::driver_pc::my_window_callback(HWND   handle_to_windo
     // Animate the RGB LED with the colors of the spectrum
     // according to the RGB color input from the application.
 
-    const std::uint8_t hue_r(std::uint8_t(l_param >>  0));
-    const std::uint8_t hue_g(std::uint8_t(l_param >>  8));
-    const std::uint8_t hue_b(std::uint8_t(l_param >> 16));
+    const auto hue_r = static_cast<std::uint8_t>(static_cast<std::uint32_t>(l_param) >> static_cast<unsigned>(UINT8_C( 0)));
+    const auto hue_g = static_cast<std::uint8_t>(static_cast<std::uint32_t>(l_param) >> static_cast<unsigned>(UINT8_C( 8)));
+    const auto hue_b = static_cast<std::uint8_t>(static_cast<std::uint32_t>(l_param) >> static_cast<unsigned>(UINT8_C(16)));
 
     // Handle possible icon transition, if any needs to be performed.
-    if((hue_r == UINT8_C(255)) && (hue_g == UINT8_C(  0)) && (hue_b == UINT8_C(  0))) { instance().set_icon(IDI_CIRCLE_RED); }
-    if((hue_r == UINT8_C(255)) && (hue_g == UINT8_C(255)) && (hue_b == UINT8_C(  0))) { instance().set_icon(IDI_CIRCLE_YELLOW); }
-    if((hue_r == UINT8_C(  0)) && (hue_g == UINT8_C(255)) && (hue_b == UINT8_C(  0))) { instance().set_icon(IDI_CIRCLE_GREEN); }
-    if((hue_r == UINT8_C(  0)) && (hue_g == UINT8_C(255)) && (hue_b == UINT8_C(255))) { instance().set_icon(IDI_CIRCLE_CYAN); }
-    if((hue_r == UINT8_C(  0)) && (hue_g == UINT8_C(  0)) && (hue_b == UINT8_C(255))) { instance().set_icon(IDI_CIRCLE_BLUE); }
-    if((hue_r == UINT8_C(255)) && (hue_g == UINT8_C(  0)) && (hue_b == UINT8_C(255))) { instance().set_icon(IDI_CIRCLE_MAGENTA); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(  0)))) { instance().set_icon(IDI_CIRCLE_RED); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(  0)))) { instance().set_icon(IDI_CIRCLE_YELLOW); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(  0)))) { instance().set_icon(IDI_CIRCLE_GREEN); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(255)))) { instance().set_icon(IDI_CIRCLE_CYAN); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(255)))) { instance().set_icon(IDI_CIRCLE_BLUE); }
+    if((hue_r == static_cast<std::uint8_t>(UINT8_C(255))) && (hue_g == static_cast<std::uint8_t>(UINT8_C(  0))) && (hue_b == static_cast<std::uint8_t>(UINT8_C(255)))) { instance().set_icon(IDI_CIRCLE_MAGENTA); }
 
     const COLORREF rgb_color = RGB(hue_r, hue_g, hue_b);
 
@@ -293,6 +293,7 @@ LRESULT CALLBACK mcal::led::driver_pc::my_window_callback(HWND   handle_to_windo
   return def_window_proc_result;
 }
 
+extern "C"
 int WINAPI WinMain(HINSTANCE handle_to_instance, HINSTANCE, LPSTR, int)
 {
   // This is the standard Win32 API main function.

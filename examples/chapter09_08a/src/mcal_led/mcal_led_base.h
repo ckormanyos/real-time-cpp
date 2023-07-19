@@ -16,12 +16,9 @@
   {
   public:
     virtual auto toggle() -> void = 0;
-    virtual auto state_is_on() const -> bool = 0;
-
-    virtual ~led_base() = default;
 
   protected:
-    led_base() = default;
+    constexpr led_base() = default;
   };
 
   } // namespace led
