@@ -20,15 +20,11 @@
   class driver_pc final
   {
   public:
-    driver_pc() : my_handle_to_window  (nullptr),
-                  my_handle_to_instance(nullptr),
-                  my_str_class_name    () { }
+    driver_pc() = default;
 
-    ~driver_pc() { }
+    auto get_handle_to_window() const -> const HWND { return my_handle_to_window; }
 
-    const HWND get_handle_to_window() const { return my_handle_to_window; }
-
-    bool create_window(HINSTANCE      handle_to_instance,                        // Handle to window instance
+    auto create_window(HINSTANCE      handle_to_instance,                        // Handle to window instance
                        const char*    window_caption,                            // Window caption
                        const COLORREF initial_rgb_color,                         // Initial RGB color
                        const int      initial_icon_id,                           // ID of initial icon
@@ -40,30 +36,30 @@
                                                               | WS_CAPTION
                                                               | WS_POPUP
                                                               | WS_SYSMENU),     // Window basic style
-                       const DWORD    extended_style      =   0U);               // Window extended style
+                       const DWORD    extended_style      =   0U) -> bool;       // Window extended style
 
-    static driver_pc& instance();
+    static auto instance() -> driver_pc&;
 
   private:
-    HWND        my_handle_to_window;
-    HINSTANCE   my_handle_to_instance;
-    std::string my_str_class_name;
+    HWND        my_handle_to_window   { nullptr };
+    HINSTANCE   my_handle_to_instance { nullptr };
+    std::string my_str_class_name     { };
 
-    static int scale_x() { return 1; }
-    static int scale_y() { return 1; }
+    static auto scale_x() -> int { return 1; }
+    static auto scale_y() -> int { return 1; }
 
-    const std::string& str_class_name() const { return my_str_class_name; }
+    auto str_class_name() const -> const std::string& { return my_str_class_name; }
 
-    const HINSTANCE get_handle_to_instance() const { return my_handle_to_instance; }
+    auto get_handle_to_instance() const -> const HINSTANCE { return my_handle_to_instance; }
 
-    bool draw_circle(const int      center_x,
+    auto draw_circle(const int      center_x,
                      const int      center_y,
                      const int      radius,
                      const int      pen_width,
                      const COLORREF pen_color,
-                     const bool     use_fill);
+                     const bool     use_fill) -> bool;
 
-    bool set_icon(const int icon_id);
+    auto set_icon(const int icon_id) -> bool;
 
     // This is the standard Win32 API callback function.
     static LRESULT CALLBACK my_window_callback(HWND   handle_to_window,

@@ -16,14 +16,13 @@
 
   class led_rgb_base : public mcal::led::led_boolean_state_base
   {
-  private:
-    using base_class_type = mcal::led::led_boolean_state_base;
-
   public:
     auto toggle() -> void override
     {
+      using base_class_type = mcal::led::led_boolean_state_base;
+
       // Toggle the LED state.
-      base_class_type::state_is_on() ? my_off() : my_on();
+      (base_class_type::state_is_on() ? my_off() : my_on());
 
       base_class_type::toggle();
     }
@@ -43,13 +42,13 @@
     {
       set_color
       (
-        static_cast<std::uint8_t>(color >>  0U),
-        static_cast<std::uint8_t>(color >>  8U),
-        static_cast<std::uint8_t>(color >> 16U)
+        static_cast<std::uint8_t>(color >> static_cast<unsigned>(UINT8_C( 0))),
+        static_cast<std::uint8_t>(color >> static_cast<unsigned>(UINT8_C( 8))),
+        static_cast<std::uint8_t>(color >> static_cast<unsigned>(UINT8_C(16)))
       );
     }
 
-    auto get_color() const noexcept -> std::uint32_t
+    constexpr auto get_color() const noexcept -> std::uint32_t
     {
       return
         static_cast<std::uint32_t>
@@ -60,12 +59,12 @@
         );
     }
 
-    auto get_hue_r() const noexcept -> std::uint_fast8_t { return my_hue_r; }
-    auto get_hue_g() const noexcept -> std::uint_fast8_t { return my_hue_g; }
-    auto get_hue_b() const noexcept -> std::uint_fast8_t { return my_hue_b; }
+    constexpr auto get_hue_r() const noexcept -> std::uint_fast8_t { return my_hue_r; }
+    constexpr auto get_hue_g() const noexcept -> std::uint_fast8_t { return my_hue_g; }
+    constexpr auto get_hue_b() const noexcept -> std::uint_fast8_t { return my_hue_b; }
 
   protected:
-    ~led_rgb_base() override = default;
+    constexpr led_rgb_base() = default;
 
   private:
     std::uint_fast8_t my_hue_r { };

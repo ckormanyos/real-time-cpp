@@ -14,7 +14,7 @@
   {
     namespace led
     {
-      mcal::led::led_rgb_base& led_rgb0();
+      auto led_rgb0() -> led_rgb_base&;
     }
   }
 

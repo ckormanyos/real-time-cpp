@@ -20,16 +20,13 @@
     {
       class led_monochrome_pc final : public mcal::led::led_boolean_state_base
       {
-      private:
-        using base_class_type = mcal::led::led_boolean_state_base;
-
       public:
-        led_monochrome_pc() = default;
-
-        ~led_monochrome_pc() override = default;
+        constexpr led_monochrome_pc() = default;
 
         auto toggle() -> void override
         {
+          using base_class_type = mcal::led::led_boolean_state_base;
+
           // Toggle the LED state.
           (base_class_type::state_is_on() ? my_off() : my_on());
 
@@ -37,8 +34,8 @@
         }
 
       private:
-        void my_on () { post_message_led_monochrome(true); }
-        void my_off() { post_message_led_monochrome(false); }
+        auto my_on () -> void { post_message_led_monochrome(true); }
+        auto my_off() -> void { post_message_led_monochrome(false); }
       };
     }
   }

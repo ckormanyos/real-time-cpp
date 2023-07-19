@@ -23,8 +23,6 @@
       port_type::set_direction_output();
     }
 
-    ~led_port() override = default;
-
   private:
     auto toggle() -> void override
     {

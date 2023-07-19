@@ -18,23 +18,23 @@
   class led_console final : public mcal::led::led_boolean_state_base
   {
   public:
-    explicit led_console(const std::uint_fast8_t i)
+    explicit constexpr led_console(const std::uint_fast8_t i)
       : my_index(i) { }
-
-    ~led_console() override = default;
 
   private:
     const std::uint_fast8_t my_index;
 
     auto toggle() -> void override
     {
-      led_boolean_state_base::toggle();
+      using base_class_type = mcal::led::led_boolean_state_base;
+
+      base_class_type::toggle();
 
       // Print the LED state.
       std::cout << "LED"
                 << unsigned(my_index)
                 << " is "
-                << (led_boolean_state_base::state_is_on() ? "on" : "off")
+                << (base_class_type::state_is_on() ? "on" : "off")
                 << std::endl;
     }
   };

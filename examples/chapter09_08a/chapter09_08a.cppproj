@@ -79,8 +79,6 @@
       <Value>../src</Value>
       <Value>../src/mcal/avr</Value>
       <Value>../src/util/STL</Value>
-      <Value>../src/util/STL_C++XX_stdfloat</Value>
-      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize more (-O2)</avrgcccpp.compiler.optimization.level>
@@ -125,8 +123,6 @@
       <Value>../src</Value>
       <Value>../src/mcal/avr</Value>
       <Value>../src/util/STL</Value>
-      <Value>../src/util/STL_C++XX_stdfloat</Value>
-      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\2.0.401\include\</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
@@ -151,6 +147,7 @@
     <Folder Include="src\app" />
     <Folder Include="src\app\led" />
     <Folder Include="src\mcal_memory" />
+    <Folder Include="src\mcal_led" />
     <Folder Include="src\os" />
     <Folder Include="src\sys\idle" />
     <Folder Include="src\sys\mon" />
@@ -198,10 +195,10 @@
     <Compile Include="src\mcal\avr\mcal_irq.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_monochrome.cpp">
+    <Compile Include="src\mcal\avr\mcal_led.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_monochrome_board.h">
+    <Compile Include="src\mcal\avr\mcal_led.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_led_rgb.cpp">
@@ -210,10 +207,7 @@
     <Compile Include="src\mcal\avr\mcal_led_rgb.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_rgb_board_ws2812.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\avr\mcal_led_rgb_board_ws2812_detail.h">
+    <Compile Include="src\mcal\avr\mcal_led_rgb_ws2812.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\avr\mcal_led_sys_start_interface.cpp">
@@ -243,9 +237,6 @@
     <Compile Include="src\mcal\avr\mcal_pwm.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\avr\mcal_pwm_board.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\avr\mcal_reg.h">
       <SubType>compile</SubType>
     </Compile>
@@ -264,19 +255,28 @@
     <Compile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mcal\mcal_led_monochrome.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\mcal_led_rgb.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mcal\mcal_pwm_base.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\mcal\mcal_reg_access_dynamic.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal\mcal_reg_access_static.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_console.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_port_inverted.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\mcal_led\mcal_led_rgb_base.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
@@ -364,6 +364,51 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\util\STL_C++XX_stdfloat\stdfloat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_alignas.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_bit_mask.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_circular_buffer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_communication.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_countof.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_dynamic_array.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_linear_interpolate.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_noexcept.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_noncopyable.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_nothing.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_point.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_stopwatch.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_time.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_two_part_data_manipulation.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\util\utility\util_utype_helper.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="target\micros\avr\startup\crt0.cpp">

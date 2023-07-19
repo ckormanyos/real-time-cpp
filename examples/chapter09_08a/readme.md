@@ -29,7 +29,11 @@ Color hues of RGB blend in a smooth fashion around the entire
 spectrum to produce the appearance of slowly varying colors.
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
-The full template signature of the `led_rgb_ws2812` class is shown below.
+The `led_rgb_ws2812` template class can be found in its entirety in the file
+[`mcal_led_rgb_ws2812.h`](./src/mcal/avr/mcal_led_rgb_ws2812.h).
+
+The template signature of the `led_rgb_ws2812` template class is shown
+in the declaration below.
 
 ```cpp
   namespace mcal { namespace led {
@@ -42,14 +46,16 @@ The full template signature of the `led_rgb_ws2812` class is shown below.
 ```
 
 The first two template parameters `PortAddr` and `PortBpos`
-are used to set the port address and bit position of the digital I/O port
-used to generate the ws2812 control signal.
+are used to set the port address and bit position of the digital I/O port.
+These very specific mcal/microcontroller-dependent parameters
+are used to generate the real-time ws2812 control signal.
 
 The third template parameter `LedCount` provides the ability
 to link multiple ws2812 devices seqentially and control them
 in an LED chain, as is common for this particular device.
 
-In example chapter09_98a, a chain of eight ws2812 LED devices is used.
+In example chapter09_98a, a chain of eight sequential ws2812 LED devices
+is used.
 
 ### Enhanced RGB-Color-Light-Show
 
