@@ -23,8 +23,6 @@
       port_type::set_direction_output();
     }
 
-    ~led_port_inverted() override = default;
-
     auto toggle() -> void override
     {
       using base_class_type = led_boolean_state_base;
