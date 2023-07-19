@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,14 +23,13 @@
       port_type::set_direction_output();
     }
 
-    ~led_port_inverted() override = default;
-
-  private:
     auto toggle() -> void override
     {
-      led_boolean_state_base::toggle();
+      using base_class_type = led_boolean_state_base;
 
       port_type::toggle_pin();
+
+      base_class_type::toggle();
     }
   };
 

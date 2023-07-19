@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2022.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,22 +21,22 @@
     explicit constexpr led_console(const std::uint_fast8_t i)
       : my_index(i) { }
 
-  private:
-    const std::uint_fast8_t my_index;
-
     auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
-      base_class_type::toggle();
-
       // Print the LED state.
       std::cout << "LED"
-                << unsigned(my_index)
+                << static_cast<unsigned>(my_index)
                 << " is "
                 << (base_class_type::state_is_on() ? "on" : "off")
                 << std::endl;
+
+      base_class_type::toggle();
     }
+
+  private:
+    const std::uint_fast8_t my_index;
   };
 
   } } // namespace mcal::led
