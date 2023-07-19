@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2022.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,14 +28,14 @@
     {
       using base_class_type = mcal::led::led_boolean_state_base;
 
-      base_class_type::toggle();
-
       // Print the LED state.
       std::cout << "LED"
                 << unsigned(my_index)
                 << " is "
                 << (base_class_type::state_is_on() ? "on" : "off")
                 << std::endl;
+
+      base_class_type::toggle();
     }
   };
 

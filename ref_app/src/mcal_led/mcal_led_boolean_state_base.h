@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,11 +14,8 @@
 
   class led_boolean_state_base : public mcal::led::led_base
   {
-  public:
-    ~led_boolean_state_base() override = default;
-
   protected:
-    led_boolean_state_base() = default;
+    constexpr led_boolean_state_base() = default;
 
     auto toggle() -> void override
     {

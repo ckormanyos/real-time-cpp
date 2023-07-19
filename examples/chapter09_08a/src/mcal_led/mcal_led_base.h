@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2022.
+//  Copyright Christopher Kormanyos 2013 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_BASE_2020_04_32_H_
-  #define MCAL_LED_BASE_2020_04_32_H_
+#ifndef MCAL_LED_BASE_2020_04_32_H
+  #define MCAL_LED_BASE_2020_04_32_H
 
   #include <util/utility/util_noncopyable.h>
 
@@ -17,6 +17,8 @@
   public:
     virtual auto toggle() -> void = 0;
 
+    virtual auto state_is_on() const -> bool = 0;
+
   protected:
     constexpr led_base() = default;
   };
@@ -24,4 +26,4 @@
   } // namespace led
   } // namespace mcal
 
-#endif // MCAL_LED_BASE_2020_04_32_H_
+#endif // MCAL_LED_BASE_2020_04_32_H
