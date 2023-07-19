@@ -25,8 +25,9 @@ using old-school traditional Win32-API programming.
 
 ## Application Description
 
-Color hues of RGB blend in a smooth fashion around the entire
-spectrum to produce the appearance of slowly varying colors.
+Strikingly bright, vibrant hues of RGB blend in a smooth fashion around the entire
+spectrum to produce the appearance of evenly varying colors.
+
 The user LED is simultaneously toggled at the usual $\frac{1}{2}~\text{Hz}$.
 
 The `led_rgb_ws2812` template class can be found in its entirety in the file
@@ -54,7 +55,7 @@ The third template parameter `LedCount` provides the ability
 to link multiple ws2812 devices seqentially and control them
 in an LED chain, as is common for this particular device.
 
-In example chapter09_98a, a chain of eight sequential ws2812 LED devices
+In example chapter09_08a, a chain of $8$ sequential ws2812 LED devices
 is used.
 
 ### Enhanced RGB-Color-Light-Show
@@ -63,9 +64,10 @@ The RGB-color-light-show in example chapter09_08a (this example)
 differs slightly from the one in example chapter09_08 (the previous example).
 
 In this example the color transitions are a bit lenghtier in time
-($30~\text{ms}$ as opposed to $20~\text{ms}$). Also the color transitions
-at and around $255~\text{bits}$-RGB
-have been lengthened for color emphasis near the turning points.
+(instead of the normal $20~\text{ms}$). Also the color transitions
+at and around the points $255~\text{bits}$-RGB
+have been lengthened in time. This results in color emphasis
+near these points.
 
 This enhanced RGB-color-light-show can be found in the file
 [`app_led.cpp`](./src/app/led/app_led.cpp).
@@ -100,7 +102,7 @@ The approximate bit timing needed by the ws2812 is shown in the following table.
 |    $0$    |    $350$        |    $800$        |
 |    $1$    |    $700$        |    $600$        |
 
-A sample of the control signal on `portd.3` is shown
-in the oscilloscpoe trace in the image below.
+A sample partial-trace of the control signal on `portd.3` is shown
+below in a representation of an image from a digital oscilloscpoe.
 
 ![](./images/ws2812_signal.jpg)
