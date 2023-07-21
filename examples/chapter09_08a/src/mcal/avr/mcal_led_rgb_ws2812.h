@@ -19,22 +19,22 @@
 
   // The industry-standard RGB LED on the board is of type ws2812.
 
-  template<const std::uint8_t PortAddr,
-           const std::uint8_t PortBpos,
+  template<typename PortPinType,
            const unsigned LedCount = static_cast<unsigned>(UINT8_C(1))>
   class led_rgb_ws2812 final : public mcal::led::led_rgb_base
   {
   private:
+    using port_pin_type = PortPinType;
+
     #if defined(__GNUC__)
     __attribute__((optimize(3)))
     #endif
     auto push_color() -> void;
 
+    static constexpr auto led_count() noexcept -> unsigned { return LedCount; }
+
   public:
-    led_rgb_ws2812()
-    {
-      port_pin_type::set_direction_output();
-    }
+    led_rgb_ws2812() { port_pin_type::set_direction_output(); }
 
     auto apply_color() -> void override
     {
@@ -43,14 +43,6 @@
         push_color();
       }
     }
-
-  private:
-    static constexpr auto port_addr() noexcept -> std::uint8_t { return PortAddr; }
-    static constexpr auto port_bpos() noexcept -> std::uint8_t { return PortBpos; }
-
-    static constexpr auto led_count() noexcept -> unsigned { return LedCount; }
-
-    using port_pin_type = mcal::port::port_pin<std::uint8_t, std::uint8_t, port_addr(), port_bpos()>;
   };
 
   // Timing of WS2812.
@@ -63,17 +55,16 @@
   //   T1H = 0.70us
   //   T1L = 0.60us
 
-  #define MCAL_LED_RGB_WS2812_NOPS_02() asm volatile("nop"); asm volatile("nop")
-  #define MCAL_LED_RGB_WS2812_NOPS_06() MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02();
-  #define MCAL_LED_RGB_WS2812_NOPS_11() MCAL_LED_RGB_WS2812_NOPS_06(); MCAL_LED_RGB_WS2812_NOPS_02(); MCAL_LED_RGB_WS2812_NOPS_02(); asm volatile("nop")
+  #define MCAL_LED_RGB_WS2812_NOPS_02 { asm volatile("nop"); asm volatile("nop"); }
+  #define MCAL_LED_RGB_WS2812_NOPS_06 { MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 }
+  #define MCAL_LED_RGB_WS2812_NOPS_11 { MCAL_LED_RGB_WS2812_NOPS_06 MCAL_LED_RGB_WS2812_NOPS_02 MCAL_LED_RGB_WS2812_NOPS_02 asm volatile("nop"); }
 
   #define MCAL_LED_RGB_WS2812_PUSH_DATA(next_bit_is_zero) port_pin_type::set_pin_high(); \
-  if   (next_bit_is_zero) { MCAL_LED_RGB_WS2812_NOPS_02(); port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_11(); } \
-  else                    { MCAL_LED_RGB_WS2812_NOPS_06(); port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_06(); }
+  if   (next_bit_is_zero) { MCAL_LED_RGB_WS2812_NOPS_02 port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_11 } \
+  else                    { MCAL_LED_RGB_WS2812_NOPS_06 port_pin_type::set_pin_low(); MCAL_LED_RGB_WS2812_NOPS_06 }
 
-  template<const std::uint8_t PortAddr,
-           const std::uint8_t PortBpos,
-           const unsigned LedCount> auto led_rgb_ws2812<PortAddr, PortBpos, LedCount>::push_color() -> void
+  template<typename PortPinType,
+           const unsigned LedCount> auto led_rgb_ws2812<PortPinType, LedCount>::push_color() -> void
   {
     using base_class_type = mcal::led::led_rgb_base;
 

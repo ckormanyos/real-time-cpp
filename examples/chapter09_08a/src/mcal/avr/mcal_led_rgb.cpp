@@ -11,10 +11,12 @@
 
 auto mcal::led::led_rgb0() -> led_rgb_base&
 {
-  using led_rgb0_type =
-    mcal::led::led_rgb_ws2812<mcal::reg::portd,
-                              static_cast<std::uint8_t>(UINT8_C(3)),
-                              static_cast<unsigned>(UINT8_C(8))>;
+  using led_rgb0_port_pin_type = mcal::port::port_pin<std::uint8_t,
+                                                      std::uint8_t,
+                                                      mcal::reg::portd,
+                                                      static_cast<std::uint8_t>(UINT8_C(3))>;
+
+  using led_rgb0_type = led_rgb_ws2812<led_rgb0_port_pin_type, static_cast<unsigned>(UINT8_C(8))>;
 
   static led_rgb0_type the_rgb_led;
 

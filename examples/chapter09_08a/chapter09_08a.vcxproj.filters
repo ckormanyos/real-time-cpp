@@ -332,9 +332,6 @@
     <ClInclude Include="src\mcal\avr\mcal_wdg.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_benchmark.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_cpu.h">
       <Filter>src\mcal\avr</Filter>
     </ClInclude>
