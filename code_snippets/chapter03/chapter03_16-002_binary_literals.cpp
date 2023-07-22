@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,22 +12,32 @@
 #include <iostream>
 
 // The simulated portb register.
-static std::uint8_t simulated_portb;
+static auto simulated_portb = std::uint8_t { };
 
 void do_something()
 {
   // Switch portb.5 from low to high.
-  *reinterpret_cast<volatile std::uint8_t*>(&simulated_portb)
-    |= UINT8_C(0b0010'0000);
+  volatile auto pb = reinterpret_cast<volatile std::uint8_t*>(&simulated_portb);
+
+  *pb =
+    static_cast<std::uint8_t>
+    (
+        static_cast<std::uint8_t>(*pb)
+      | static_cast<std::uint8_t>(UINT8_C(0b0010'0000))
+    );
 }
 
 int main()
 {
   do_something();
 
+  const auto flg = std::cout.flags();
+
   std::cout << "simulated portb is "
             << std::hex
             << std::showbase
             << unsigned(simulated_portb)
             << std::endl;
+
+  std::cout.flags(flg);
 }

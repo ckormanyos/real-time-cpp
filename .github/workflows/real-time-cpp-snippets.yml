@@ -11,7 +11,7 @@ on:
       - '**'
   pull_request:
   schedule:
-    - cron: '00 00 * * *' # run at 00:00 AM UTC
+    - cron: '48 23 * * *' # run at 11:48 PM UTC
 jobs:
   host-snippets-all:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter: [ chapter01 ]
+        chapter: [ chapter01, chapter03 ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,5 +29,5 @@ jobs:
       - name: host-snippets-all
         run: |
           cd ${{ matrix.chapter }}
-          ./${{ matrix.chapter }}.sh
+          ./${{ matrix.chapter }}.sh g++ c++20
         working-directory: ./code_snippets

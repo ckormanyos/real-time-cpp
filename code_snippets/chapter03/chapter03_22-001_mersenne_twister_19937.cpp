@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2020.
+//  Copyright Christopher Kormanyos 2018 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,20 +15,22 @@
 
 void do_something()
 {
-  using res_type =
-    typename std::random_device::result_type;
+  using local_result_type = typename std::random_device::result_type;
 
-  std::random_device  device;
-  const res_type seed(device());
-  std::mt19937        gtor(seed);
-  const std::uniform_int_distribution<res_type>
-   distribution(1U, 1023U);
+        std::random_device                               device;
+  const local_result_type                                seed(device());
+        std::mt19937                                     gtor(seed);
+        std::uniform_int_distribution<local_result_type> distribution
+                                                         {
+                                                           static_cast<local_result_type>(UINT16_C(1)),
+                                                           static_cast<local_result_type>(UINT16_C(1023))
+                                                         };
 
   // Print the seed.
   std::cout << "Seed is: 0x"
             << std::hex
             << std::setw(8)
-            << std::setfill(char('0'))
+            << std::setfill('0')
             << std::uppercase
             << seed
             << ". ";

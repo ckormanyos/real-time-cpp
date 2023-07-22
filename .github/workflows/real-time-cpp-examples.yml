@@ -11,7 +11,7 @@ on:
       - '**'
   pull_request:
   schedule:
-    - cron: '55 23 * * *' # run at 11:55 PM UTC
+    - cron: '46 23 * * *' # run at 11:46 PM UTC
 jobs:
   target-avr-example_led:
     runs-on: ubuntu-latest
