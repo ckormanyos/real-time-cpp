@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter: [ chapter01, chapter03 ]
+        chapter: [ chapter01, chapter03, chapter12 ]
     steps:
       - uses: actions/checkout@v3
         with:
