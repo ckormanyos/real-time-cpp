@@ -1,16 +1,23 @@
-## These are the code snippets from the book "Real-Time C++".
+Real-Time-C++ - Code Snippets
+==================
 
 <p align="center">
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
+        <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
     <a href="https://godbolt.org/z/qfafePavo" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-See : C.M. Kormanyos, [Real-Time C++](https://www.springer.com/de/book/9783662629956):
+These are the code snippets from the book
+C.M. Kormanyos,
+[Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021). ISBN 9783662629956
+(Springer, Heidelberg, 2021) ISBN 9783662629956.
 
-## Code Snippets
+## Summary of the Code Snippets
 
 The code snippets are organized according to chapter
 and section.

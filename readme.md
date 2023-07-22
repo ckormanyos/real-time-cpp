@@ -27,7 +27,7 @@ for the book C.M. Kormanyos,
 [Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021). ISBN 9783662629956
+(Springer, Heidelberg, 2021) ISBN 9783662629956.
 
 This repository has three main parts.
   - Reference Application `ref_app` located in [./ref_app](./ref_app)

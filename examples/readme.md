@@ -8,12 +8,13 @@ Real-Time-C++ - Examples
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
 </p>
 
-﻿## These examples are motivated by the book "Real-Time C++".
-
-See : C.M. Kormanyos, [Real-Time C++](https://www.springer.com/de/book/9783662629956):
+﻿These examples are motivated by the book
+C.M. Kormanyos,
+[Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
-(Springer, Heidelberg, 2021). ISBN 9783662629956
+(Springer, Heidelberg, 2021) ISBN 9783662629956.
+
 
 The first couple of example projects can use the ARDUINO board directly
 and non-modified. Examples from the later chapters in the book do, however,

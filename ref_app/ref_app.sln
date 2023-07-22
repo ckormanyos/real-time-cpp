@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\CodeQL.yml = ..\.github\workflows\CodeQL.yml
 		..\.github\workflows\real-time-cpp-examples.yml = ..\.github\workflows\real-time-cpp-examples.yml
+		..\.github\workflows\real-time-cpp-snippets.yml = ..\.github\workflows\real-time-cpp-snippets.yml
 		..\.github\workflows\real-time-cpp-sonar.yml = ..\.github\workflows\real-time-cpp-sonar.yml
 		..\.github\workflows\real-time-cpp.yml = ..\.github\workflows\real-time-cpp.yml
 	EndProjectSection

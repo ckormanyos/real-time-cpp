@@ -1,0 +1,33 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2023.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+name: real-time-cpp-snippets
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+  schedule:
+    - cron: '48 23 * * *' # run at 11:48 PM UTC
+jobs:
+  host-snippets-all:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter: [ chapter01, chapter03, chapter12 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: host-snippets-all
+        run: |
+          cd ${{ matrix.chapter }}
+          ./${{ matrix.chapter }}.sh g++ c++20
+        working-directory: ./code_snippets

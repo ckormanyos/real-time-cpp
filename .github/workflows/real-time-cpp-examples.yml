@@ -1,5 +1,5 @@
 ##############################################################################
-#  Copyright Christopher Kormanyos 2021 - 2023.
+#  Copyright Christopher Kormanyos 2023.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +11,7 @@ on:
       - '**'
   pull_request:
   schedule:
-    - cron: '55 23 * * *' # run at 11:55 PM UTC
+    - cron: '46 23 * * *' # run at 11:46 PM UTC
 jobs:
   target-avr-example_led:
     runs-on: ubuntu-latest
@@ -34,7 +34,6 @@ jobs:
           ./build.sh /usr/bin avr
           ls -la ./bin/led.elf ./bin/led.map ./bin/led.hex
         working-directory: ./examples/
-        shell: bash
   target-avr-examples:
     runs-on: ubuntu-latest
     defaults:

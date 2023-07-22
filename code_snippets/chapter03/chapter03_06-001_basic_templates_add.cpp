@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,7 +29,7 @@ const std::string str = add(std::string("abc"),
 
 int main()
 {
-  std::cout << "int    addition result is " << n << std::endl;
-  std::cout << "float  addition result is " << f << std::endl;
-  std::cout << "string addition result is " << s << std::endl;
+  std::cout << "int    addition result is " << n   << std::endl;
+  std::cout << "float  addition result is " << f   << std::endl;
+  std::cout << "string addition result is " << str << std::endl;
 }
