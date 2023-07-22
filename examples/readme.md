@@ -1,3 +1,13 @@
+Real-Time-C++ - Examples
+==================
+
+<p align="center">
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
+        <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
+</p>
+
 ﻿## These examples are motivated by the book "Real-Time C++".
 
 See : C.M. Kormanyos, [Real-Time C++](https://www.springer.com/de/book/9783662629956):
