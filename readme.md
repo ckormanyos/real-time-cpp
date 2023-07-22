@@ -175,11 +175,6 @@ in MacOS for an ARM(R) target. Consider, for example, the build variant
 `target stm32f446`. The NUCLEO-F446RE board from STMicroelectronics(R)
 can conveniently be used for this.
 
-Install (or `wget`) the `gcc-arm-none-eabi` toolchain
-if needed. In this case, I have found it convenient to use
-a modern GCC-`arm-none-eabi` for MacOS which can be found at
-[Arm GNU Toolchain Downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads).
-
 Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
 repository.
 
@@ -199,8 +194,14 @@ make -f target/app/make/app_make_linux.gmk rebuild TGT=stm32f446
 If the toolchain is needed then it must be installed or retrieved
 prior to building the target of the reference application.
 
+You can `wget` (or with a slightly different procedure optionally install)
+the `gcc-arm-none-eabi` toolchain if needed.
+In this case, I have found it convenient to use
+a modern GCC-`arm-none-eabi` for MacOS which can be found at
+[Arm GNU Toolchain Downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads).
+
 The `arm-non-eabi` toolchain can be fetched via `wget`
-and successfully used locally in the shell. If this is needed,
+and successfully used locally in the shell. If this is desired,
 follow the step-by-step procedure below.
 
 Step 1: Make a local directory (such as `macos-gnu-arm-toolchain`) and `cd` into it.
