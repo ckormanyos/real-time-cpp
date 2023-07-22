@@ -34,7 +34,6 @@ jobs:
           ./build.sh /usr/bin avr
           ls -la ./bin/led.elf ./bin/led.map ./bin/led.hex
         working-directory: ./examples/
-        shell: bash
   target-avr-examples:
     runs-on: ubuntu-latest
     defaults:

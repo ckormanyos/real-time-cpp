@@ -28,6 +28,6 @@ jobs:
           fetch-depth: '0'
       - name: host-snippets-all
         run: |
+          cd ${{ matrix.chapter }}
           ./${{ matrix.chapter }}.sh
-        working-directory: ${{ matrix.code_snippets }}/${{ matrix.chapter }}
-        shell: bash
+        working-directory: ./code_snippets
