@@ -177,7 +177,7 @@ can conveniently be used for this.
 
 Install (or `wget`) the `gcc-arm-none-eabi` toolchain
 if needed. In this case, I have found it convenient to use
-a modern `gcc-arm-none-eabi` for MacOS which can be found at
+a modern GCC-`arm-none-eabi` for MacOS which can be found at
 [Arm GNU Toolchain Downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads).
 
 Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp)
@@ -203,10 +203,7 @@ The `arm-non-eabi` toolchain can be fetched via `wget`
 and successfully used locally in the shell. If this is needed,
 follow the step-by-step procedure below.
 
-Step 1: `wget` the toolchain's _tarball_, unpack it and add `arm-non-eabi`'s
-executable `bin`-directory to your local shell's `PATH`.
-For this, make a local directory (such as `macos-gnu-arm-toolchain`)
-and `cd` into it.
+Step 1: Make a local directory (such as `macos-gnu-arm-toolchain`) and `cd` into it.
 
 ```sh
 cd real-time-cpp
@@ -214,7 +211,7 @@ mkdir -p macos-gnu-arm-toolchain
 cd macos-gnu-arm-toolchain
 ```
 
-Step 2: Fetch the toolchain's _tarball_' with `wget`, unpack it
+Step 2: Fetch the toolchain's tarball with `wget`, unpack it
 and add the compiler's `bin`-directory to the shell's executable path.
 
 ```sh
