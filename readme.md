@@ -6,6 +6,8 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
         <img src="https://custom-icon-badges.herokuapp.com/github/issues-raw/ckormanyos/real-time-cpp?logo=github" alt="Issues" /></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml">
@@ -471,11 +473,25 @@ depending on the particular OS/build/target-configuration.
 
 ### Build Status
 
-Here is the build status badge.
+At the moment, there are three major builds. Each build emphasizes
+different capabilities of the companion code.
 
-[![Build Status](https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg)](https://github.com/ckormanyos/real-time-cpp/actions)
+  - Build `ref_app` and benchmarks for various targets and host(s) on  both `*nix` as well as `Win*`.
+  - Build the examples on `*nix`.
+  - Build the code snippets on `*nix`.
 
-The build status badge represents the state of the nightly CI builds and tests.
+Here are the build status badges.
+
+<p align="center">
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
+</p>
+
+The build status badges represent the state of the nightly CI builds and tests.
 
 ## GNU/GCC Compilers
 
