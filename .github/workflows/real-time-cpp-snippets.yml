@@ -55,6 +55,7 @@ jobs:
           git submodule update --init libs/iterator
           git submodule update --init libs/mpl
           git submodule update --init libs/preprocessor
+          git submodule update --init libs/type_traits
           ./bootstrap.sh
           ./b2 headers
       - name: host-snippets-chapter06
