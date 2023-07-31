@@ -7,15 +7,16 @@
 
 // chapter05_08-003_std_for_each.cpp
 
+#include <array>
 #include <iostream>
 
-namespace std
+namespace non_std
 {
-  template<typename iterator_type,
-           typename function_type>
-  function_type for_each(iterator_type first,
-                         iterator_type last,
-                         function_type function)
+  template<typename IteratorType,
+           typename FunctionType>
+  FunctionType for_each(IteratorType first,
+                        IteratorType last,
+                        FunctionType function)
   {
     while(first != last)
     {
@@ -28,14 +29,24 @@ namespace std
   }
 }
 
-int main()
-{
-  const unsigned a[3U] = { 1U, 2U, 3U };
+auto main() -> int;
 
-  std::for_each(a,
-                a + 3U,
-                [](const unsigned & u)
-                {
-                  std::cout << u << std::endl;
-                });
+auto main() -> int
+{
+  const auto a =
+    std::array<unsigned, static_cast<std::size_t>(UINT8_C(3))>
+    {
+      static_cast<unsigned>(UINT8_C(1)),
+      static_cast<unsigned>(UINT8_C(2)),
+      static_cast<unsigned>(UINT8_C(3))
+    };
+
+  using non_std::for_each;
+
+  for_each(a.cbegin(),
+           a.cend(),
+           [](const unsigned & u)
+           {
+             std::cout << u << std::endl;
+           });
 }
