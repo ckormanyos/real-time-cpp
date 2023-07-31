@@ -16,5 +16,5 @@ program at the following
 
 See also the following informative links to Wolfram Alpha(R).
 
-  - [`PrimeQ[10006721]`](https://www.wolframalpha.com/input?i=PrimeQ%5B10006721%5D)
-  - [`[Prime[664999]`](https://www.wolframalpha.com/input?i=Prime%5B664999%5D)
+  - Verify that $10006721$ is prime with [`PrimeQ[10006721]`](https://www.wolframalpha.com/input?i=PrimeQ%5B10006721%5D)
+  - Query the $6649991^{th}$ prime number with [`Prime[664999]`](https://www.wolframalpha.com/input?i=Prime%5B664999%5D)
