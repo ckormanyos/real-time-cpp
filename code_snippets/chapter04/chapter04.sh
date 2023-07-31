@@ -44,8 +44,18 @@ ls -la \
 ./bin/chapter04_08-002_nonconst_com_class.exe         \
 ./bin/chapter04_08-003_poll_communication.exe
 
-result_ls=$?
+result_all=$?
 
-echo "result_ls: "  "$result_ls"
+# Ensure that compile chapter04_06-001_abstract_compile_error.cpp fails.
 
-exit $result_ls
+g++ -x c++ -Wall -Wextra -Wpedantic -Wsign-conversion -Wconversion -std=gnu++20 -fpermissive -c ./chapter04_06-001_abstract_compile_error.cpp -o ./bin/chapter04_06-001_abstract_compile_error.o 2> /dev/null
+
+if [ $? -eq 0 ]; then
+  result_all=$((result_all+1))
+else
+  echo Compile fail is OK
+fi
+
+echo "result_all: "  "$result_all"
+
+exit $result_all

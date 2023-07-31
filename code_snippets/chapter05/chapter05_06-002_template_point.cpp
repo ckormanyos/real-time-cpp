@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2017 - 2018.
+//  Copyright Christopher Kormanyos 2017 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,12 +15,13 @@ template<typename x_type,
 class point
 {
 public:
-  x_type my_x;
-  y_type my_y;
+  x_type my_x { };
+  y_type my_y { };
 
-  point(const x_type& x = x_type(),
-        const y_type& y = y_type()) : my_x(x),
-                                      my_y(y) { }
+  explicit constexpr point(const x_type& x = x_type { },
+                           const y_type& y = y_type { })
+    : my_x(x),
+      my_y(y) { }
 };
 
 // A partial specialization of the point
@@ -30,12 +31,13 @@ template<typename y_type>
 class point<std::uint8_t, y_type>
 {
 public:
-  std::uint8_t my_x;
-  y_type       my_y;
+  std::uint8_t my_x { };
+  y_type       my_y { };
 
-  point(const std::uint8_t& x = x_type(),
-        const y_type&       y = y_type()) : my_x(x),
-                                            my_y(y)
+  explicit constexpr point(const std::uint8_t& x = std::uint8_t { },
+                           const y_type&       y = y_type { })
+    : my_x(x),
+      my_y(y)
   {
     std::cout << "In the constructor of the template specialization." << std::endl;
   }
@@ -44,8 +46,8 @@ public:
 // An (x8, y16) point.
 point<std::uint8_t, std::uint16_t> pt08_16
 {
-  UINT8_C(34),
-  UINT16_C(5678)
+  static_cast<std::uint8_t>(UINT8_C(34)),
+  static_cast<std::uint16_t>(UINT16_C(5678))
 };
 
 int main()

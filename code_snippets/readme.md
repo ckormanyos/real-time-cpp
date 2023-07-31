@@ -84,7 +84,12 @@ login_key is 0x1,0x2,0x3,
 
 ## Try it at _godbolt_
 
-Use the following [short link](https://godbolt.org/z/qfafePavo)
+<p align="center">
+    <a href="https://godbolt.org/z/qfafePavo" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
+Use this [short link](https://godbolt.org/z/qfafePavo)
 to [godbolt](https://godbolt.org) in order to further explore this program.
 
 In the afore-mentioned link, the file
