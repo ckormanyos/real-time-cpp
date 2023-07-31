@@ -1,11 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 // chapter06_15-001_minimize_interrupt_frame.cpp
+
+// See also https://godbolt.org/z/8TGE7zqPY
 
 #include <chrono>
 #include <cstdint>
@@ -14,30 +16,42 @@
 
 namespace
 {
-  volatile std::uint32_t system_tick;
+  volatile auto system_tick = std::uint32_t { };
 }
 
 extern "C"
-void __vector_simulated_timer(void)
 {
-  ++system_tick;
+  auto __vector_simulated_timer(void) -> void;
 
-  std::cout << "system:tick: " << system_tick << std::endl;
+  auto __vector_simulated_timer(void) -> void
+  {
+    system_tick =
+      static_cast<std::uint32_t>
+      (
+        system_tick + static_cast<std::uint32_t>(UINT8_C(1))
+      );
+
+    std::cout << "system:tick: " << system_tick << std::endl;
+  }
 }
 
-void simulated_timer_thread()
+auto simulated_timer_thread() -> void;
+
+auto simulated_timer_thread() -> void
 {
-  for(;;)
+  for(auto i = static_cast<unsigned>(UINT8_C(0)); i < static_cast<unsigned>(UINT8_C(8)); ++i)
   {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100U));
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned>(UINT8_C(100))));
 
     __vector_simulated_timer();
   }
 }
 
-int main()
-{
- std::thread t1(simulated_timer_thread);
+auto main() -> int;
 
- t1.join();
+auto main() -> int
+{
+  std::thread t1 { simulated_timer_thread };
+
+  t1.join();
 }

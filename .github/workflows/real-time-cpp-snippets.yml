@@ -31,3 +31,36 @@ jobs:
           cd ${{ matrix.chapter }}
           ./${{ matrix.chapter }}.sh g++ c++20
         working-directory: ./code_snippets
+  host-snippets-chapter06:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter: [ chapter06 ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: clone-submods-bootstrap-headers-boost-develop
+        run: |
+          git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
+          cd ../boost-root
+          git submodule update --init tools
+          git submodule update --init libs/config
+          git submodule update --init libs/core
+          git submodule update --init libs/detail
+          git submodule update --init libs/iterator
+          git submodule update --init libs/mpl
+          git submodule update --init libs/preprocessor
+          git submodule update --init libs/static_assert
+          git submodule update --init libs/type_traits
+          ./bootstrap.sh
+          ./b2 headers
+      - name: host-snippets-chapter06
+        run: |
+          cd ${{ matrix.chapter }}
+          ./${{ matrix.chapter }}.sh g++ c++20
+        working-directory: ./code_snippets
