@@ -7,6 +7,8 @@
 
 // chapter06_14-005_iterator_facade.cpp
 
+// See also https://godbolt.org/z/PndaEn9de
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
