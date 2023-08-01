@@ -5,6 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
 // chapter10_08-001_pi_millions_with_boost.cpp
 
 // This program can be used to compute millions of digits of pi.
@@ -23,11 +28,8 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
-#include <regex>
-#include <sstream>
 #include <string>
 
-#include <boost/lexical_cast.hpp>
 #include <boost/multiprecision/gmp.hpp>
 
 namespace pi { namespace millions { namespace detail {
@@ -59,14 +61,6 @@ const float_type& pi(const bool print_progress = false)
   if(!is_init)
   {
     is_init = true;
-
-    const std::regex rx("^[^e]+[e0+-]+([0-9]+)$");
-
-    std::match_results<std::string::const_iterator> mr;
-
-    std::stringstream ss;
-    ss.setf(std::ios::scientific);
-    ss.precision(static_cast<std::streamsize>(4));
 
     float_type a (1.0F);
     float_type bB(0.5F);
@@ -104,18 +98,25 @@ const float_type& pi(const bool print_progress = false)
       // parsed with a regular expression
       // for extracting the base-10 order.
 
-      // Note: We are only extracting a few digits from iterate_term.
-      // So piping it to a stringstream is not exorbitantly costly here.
-      ss << iterate_term;
+      using std::ilogb;
 
-      const std::string str_iterate_term(ss.str());
+      // Assess the number of precise digits from iterate_term.
 
-      const bool is_match =
-        std::regex_match(str_iterate_term, mr, rx);
+      const auto ilogb_as_abs_value =
+        static_cast<std::uint32_t>
+        (
+          (std::max)(static_cast<int>(-ilogb(iterate_term)), static_cast<int>(INT8_C(0)))
+        );
 
-      const std::uint64_t digits10_iterate =
-        (is_match ? (std::max)(boost::lexical_cast<std::uint64_t>(mr[1U]), std::uint64_t(0U))
-                  : UINT64_C(0));
+      const auto digits10_iterate =
+        static_cast<std::uint64_t>
+        (
+          static_cast<std::uint64_t>
+          (
+            static_cast<std::uint64_t>(ilogb_as_abs_value) * static_cast<std::uint64_t>(UINT16_C(301))
+          )
+          / static_cast<std::uint64_t>(UINT16_C(1000))
+        );
 
       if(print_progress)
       {
@@ -149,8 +150,6 @@ const float_type& pi(const bool print_progress = false)
       t  = val_pi;
       t += bB;
       t /= 4U;
-
-      ss.str(std::string());
     }
 
     if(print_progress)
@@ -238,8 +237,11 @@ void print_pi(std::ostream& os)
   //        4811174502 8410270193 8521105559 6446229489 5493038196 : 200
   //        ...
 
-  BOOST_CONSTEXPR_OR_CONST char* char_set_separator   = " ";
-  BOOST_CONSTEXPR_OR_CONST char* char_group_separator = "\n";
+  const char pstr_char_set_separator  [] = " ";
+  const char pstr_char_group_separator[] = "\n";
+
+  const char* char_set_separator   = pstr_char_set_separator;
+  const char* char_group_separator = pstr_char_group_separator;
 
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_set   = 10U;
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_line  = digits_per_set * 5U;
@@ -353,3 +355,7 @@ int main()
 
   return 0;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

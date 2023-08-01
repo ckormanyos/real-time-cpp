@@ -1,11 +1,13 @@
 /////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter16_07-001_random_engine.cpp
+// chapter16_08-001_random_engine.cpp
+
+// See also https://godbolt.org/z/8c1v1rboh
 
 #include <array>
 #include <chrono>
@@ -22,33 +24,34 @@ class random_engine
 public:
   using result_type = std::uint32_t;
 
-  random_engine() { }
+  random_engine() = default;
 
   ~random_engine() = default;
 
-  random_engine& operator=
-    (const random_engine&) = delete;
+  random_engine(const random_engine&) = delete;
+  random_engine(random_engine&&) noexcept = delete;
 
-  std::uint_fast8_t entropy() const
+  auto operator=(const random_engine&) -> random_engine& = delete;
+  auto operator=(random_engine&&) noexcept -> random_engine& = delete;
+
+  auto entropy() const noexcept -> std::uint_fast8_t
   {
     return 4U;
   }
 
   result_type operator()()
   {
-    using clock_type =
-      std::chrono::high_resolution_clock;
+    using clock_type = std::chrono::high_resolution_clock;
 
     const result_type basis_for_seed =
-      result_type(
-        clock_type::now().time_since_epoch().count());
+      static_cast<result_type>(clock_type::now().time_since_epoch().count());
 
-    return result_type(crc32_mpeg2(basis_for_seed));
+    return static_cast<result_type>(crc32_mpeg2(basis_for_seed));
   }
 
 private:
   template<typename IntegralType>
-  std::uint32_t crc32_mpeg2(const IntegralType v)
+  auto crc32_mpeg2(const IntegralType v) -> std::uint32_t
   {
     // Calculate a bitwise CRC32/MPEG-2 over the
     // individual bytes of the input parameter v.
@@ -57,52 +60,82 @@ private:
     std::array<std::uint8_t,
                std::numeric_limits<IntegralType>::digits / 8U> data;
 
-    for(std::uint_fast8_t i = 0U; i < data.size(); ++ i)
+    for(auto i = static_cast<std::uint_fast8_t>(UINT8_C(0)); i < static_cast<std::uint_fast8_t>(data.size()); ++ i)
     {
       data[i] = std::uint8_t(v >> (i * 8U));
     }
 
-    std::uint32_t crc = UINT32_C(0xFFFFFFFF);
+    auto crc = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
 
     // Perform modulo-2 division, one byte at a time.
-    for(std::size_t byte = 0U; byte < data.size(); ++byte)
+    for(auto byte = static_cast<std::size_t>(UINT8_C(0)); byte < data.size(); ++byte)
     {
+      constexpr auto left_shift_amount =
+        static_cast<unsigned>
+        (
+          std::numeric_limits<std::uint32_t>::digits - static_cast<int>(INT8_C(8))
+        );
+
       // Bring the next byte into the result.
-      crc ^= (std::uint32_t(data[byte]) << (std::numeric_limits<std::uint32_t>::digits - 8U));
+      crc ^= static_cast<std::uint32_t>(static_cast<std::uint32_t>(data[byte]) << left_shift_amount);
 
       // Perform a modulo-2 division, one bit at a time.
-      for(std::int_fast8_t bit = 8; bit > 0; --bit)
+      for(auto bit = static_cast<std::int_fast8_t>(INT8_C(8)); bit > static_cast<std::int_fast8_t>(INT8_C(0)); --bit)
       {
+        constexpr auto left_shift_amount =
+          static_cast<unsigned>
+          (
+            std::numeric_limits<std::uint32_t>::digits - static_cast<int>(INT8_C(1))
+          );
+
+        constexpr auto mask =
+          static_cast<std::uint32_t>(static_cast<std::uintmax_t>(UINT8_C(1)) << left_shift_amount);
+
         // Divide the current data bit.
-        if((crc & (std::uintmax_t(1U) << (std::numeric_limits<std::uint32_t>::digits - 1U))) != 0U)
+        if(static_cast<std::uint32_t>(crc & mask) != static_cast<std::uint32_t>(UINT8_C(0)))
         {
-          crc = std::uint32_t(crc << 1) ^ UINT32_C(0x04C11DB7);
+          crc =
+            static_cast<std::uint32_t>
+            (
+                static_cast<std::uint32_t>(crc << static_cast<unsigned>(UINT8_C(1)))
+              ^ static_cast<std::uint32_t>(UINT32_C(0x04C11DB7))
+            );
         }
         else
         {
-          crc <<= 1;
+          crc <<= static_cast<unsigned>(UINT8_C(1));
         }
       }
     }
 
-    return std::uint32_t(crc);
+    return static_cast<std::uint32_t>(crc);
   }
 };
 
 } } // namespace mcal::random
 
-void do_something()
+auto do_something() -> void;
+
+auto do_something() -> void
 {
         mcal::random::random_engine                       rng;
   const typename mcal::random::random_engine::result_type seed(rng());
         std::mt19937                                      generator(seed);
-        std::uniform_int_distribution<unsigned> distribution(1U, 1023U);
+
+  std::uniform_int_distribution<unsigned>
+    distribution
+    {
+      static_cast<unsigned>(UINT8_C(1)),
+      static_cast<unsigned>(UINT16_C(1023))
+    };
+
+  const auto flg = std::cout.flags();
 
   // Print the seed.
   std::cout << "Seed is: 0x"
             << std::hex
-            << std::setw(8)
-            << std::setfill(char('0'))
+            << std::setw(static_cast<std::streamsize>(INT8_C(8)))
+            << std::setfill('0')
             << std::uppercase
             << seed
             << ". ";
@@ -116,15 +149,19 @@ void do_something()
   };
 
   std::cout << "Random numbers in [1, 1023]: ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[0U] << ", ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[1U] << ", ";
-  std::cout << std::dec << std::setw(5) << std::setfill(char(' ')) << random_numbers[2U] << std::endl;
+  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(0))] << ", ";
+  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(1))] << ", ";
+  std::cout << std::dec << std::setw(static_cast<std::streamsize>(INT8_C(5))) << std::setfill(' ') << random_numbers[static_cast<std::size_t>(UINT8_C(2))] << std::endl;
+
+  std::cout.flags(flg);
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   // Generate 20 sequences of 3 pseudo-random numbers.
-  for(std::uint_fast8_t i = 0U; i < 20U; ++i)
+  for(auto i = static_cast<std::uint_fast8_t>(UINT8_C(0)); i < static_cast<std::uint_fast8_t>(UINT8_C(20)); ++i)
   {
     do_something();
   }

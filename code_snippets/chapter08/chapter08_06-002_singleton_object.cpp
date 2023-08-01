@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,29 +7,29 @@
 
 // chapter08_06-002_singleton_object.cpp
 
+// See also https://godbolt.org/z/oh9PEqqnW
+
 #include <cstdint>
 #include <iostream>
 
 struct alpha
 {
-  std::uint16_t value;
+  std::uint16_t value { };
 
-  alpha(const std::uint16_t a) : value(a) { }
+  explicit constexpr alpha(const std::uint16_t a) : value(a) { }
 };
-
 
 // In file beta.cpp.
 // OK, but mind the overhead.
-extern alpha& safe_reference_to_alpha();
+extern auto safe_reference_to_alpha() -> alpha&;
 
 // OK, safe_reference_to_alpha() returns
 // an initialized, fully-formed object.
-std::uint16_t beta
-{
-  safe_reference_to_alpha().value
-};
+auto beta = std::uint16_t { safe_reference_to_alpha().value };
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   std::cout << "instance_of_alpha.value: "
             << static_cast<std::uint32_t>(safe_reference_to_alpha().value)
@@ -41,9 +41,9 @@ int main()
 }
 
 // In file alpha.cpp.
-alpha& safe_reference_to_alpha()
+auto safe_reference_to_alpha() -> alpha&
 {
-  static alpha instance_of_alpha { 3U };
+  static auto instance_of_alpha = alpha { static_cast<std::uint16_t>(UINT8_C(3)) };
 
   return instance_of_alpha;
 }

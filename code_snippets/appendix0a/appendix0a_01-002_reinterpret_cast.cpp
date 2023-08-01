@@ -20,11 +20,10 @@ int main()
 {
   // Cast std::uint8_t to std::uint8_t*.
   // For PC simulation, use the address of portb.
-  volatile std::uint8_t* pb =
-    reinterpret_cast<volatile std::uint8_t*>(&portb);
+  volatile std::uint8_t* pb = reinterpret_cast<volatile std::uint8_t*>(&portb);
 
   // Set portb.5.
-  *pb |= UINT8_C(0x20);
+  *pb = static_cast<std::uint8_t>(*pb | static_cast<std::uint8_t>(UINT8_C(0x20)));
 
   std::cout << "portb: 0x"
             << std::hex

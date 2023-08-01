@@ -23,8 +23,10 @@ The code snippets are organized according to chapter
 and section.
 
 Each code snippet in intended to be a complete standalone
-C++ project that compiles and runs on a PC. The code
-snippets correspond to individual code samples in the
+C++ project that compiles and runs on a PC host using
+the host's compiler system such as MSVC on `Win*` or GCC on `*nix`.
+
+The code snippets correspond to individual code samples in the
 book but extend these in rudimentary ways to include
 a main subroutine and usually some sensible short messages
 to the output console.
