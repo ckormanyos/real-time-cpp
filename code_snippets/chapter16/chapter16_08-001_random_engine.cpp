@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// chapter16_07-001_random_engine.cpp
+// chapter16_08-001_random_engine.cpp
 
-// See also https://godbolt.org/z/j6Yz9YMc7
+// See also https://godbolt.org/z/8c1v1rboh
 
 #include <array>
 #include <chrono>

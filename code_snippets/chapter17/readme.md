@@ -10,6 +10,6 @@ This folder contains the code snippets for Chapter 17.
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-Try the [`chapter16_07-001_random_engine.cpp`](./chapter16_07-001_random_engine.cpp)
+Try the [`chapter17_02-001_crc32_mpeg2.cpp`](./chapter17_02-001_crc32_mpeg2.cpp)
 program at this
 [short link](https://godbolt.org/z/PeM54nnEW) to [godbolt](https://godbolt.org/).
