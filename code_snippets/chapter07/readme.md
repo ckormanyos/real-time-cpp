@@ -12,4 +12,4 @@ This folder contains the code snippets for Chapter 7.
 
 Try the [`chapter07_01-002_register_address.cpp`](./chapter07_01-002_register_address.cpp)
 program at this
-[short link](https://godbolt.org/z/9Wejhs9xT) to [godbolt](https://godbolt.org/).
+[short link](https://godbolt.org/z/MoK9q9qY5) to [godbolt](https://godbolt.org/).
