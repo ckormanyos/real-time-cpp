@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -7,31 +7,21 @@
 
 // chapter07_03-002_register_access.cpp
 
+#include <cstdint>
 #include <iomanip>
 #include <iostream>
-#include <cstdint>
 
-template<typename addr_type,
-         typename reg_type>
-struct reg_access_dynamic
+template<typename RegisterAddressType,
+         typename RegisterValueType>
+struct reg_access_dynamic final
 {
-  static void reg_set(const addr_type addr,
-                      const reg_type val)
-  {
-    *reinterpret_cast<volatile reg_type*>(addr) = val;
-  }
+  using register_address_type = RegisterAddressType;
+  using register_value_type   = RegisterValueType;
 
-  static void reg_or (const addr_type addr,
-                      const reg_type val)
-  {
-    *reinterpret_cast<volatile reg_type*>(addr) |= val;
-  }
+  static auto reg_set(const register_address_type address, const register_value_type value) -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = value; }
+  static auto reg_or (const register_address_type address, const register_value_type value) -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa | value); }
 
-  static void bit_not(const addr_type addr,
-                      const reg_type val)
-  {
-    *reinterpret_cast<volatile reg_type*>(addr) ^= reg_type(reg_type(1U) << val);
-  }
+  static auto bit_not(const register_address_type address, const register_value_type value) -> void { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = static_cast<register_value_type>(*pa ^ static_cast<register_value_type>(1UL << value)); }
 };
 
 // The simulated portb.

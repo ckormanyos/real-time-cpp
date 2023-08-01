@@ -21,4 +21,3 @@ Accordingly, the Chapter 6 snippets make use of some higher-level C++ host progr
 
   - Snippet [`chapter06_14-005_iterator_facade.cpp`](./chapter06_14-005_iterator_facade.cpp) makes use of Boost's iterator-facade library. See also this [short link](https://godbolt.org/z/PndaEn9de) to [godbolt](https://godbolt.org/)
   - Snippets [`chapter06_15-001_minimize_interrupt_frame.cpp`](./chapter06_15-001_minimize_interrupt_frame.cpp) [`chapter06_15-002_minimize_interrupt_frame.cpp`](./chapter06_15-002_minimize_interrupt_frame.cpp) utilize the `<thread>` library and must be linked with _pthread_, as shown in CI. See also this [short link](https://godbolt.org/z/8TGE7zqPY) to [godbolt](https://godbolt.org/)
-  
