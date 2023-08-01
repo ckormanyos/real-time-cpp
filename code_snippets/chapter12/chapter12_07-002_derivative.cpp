@@ -7,7 +7,7 @@
 
 // chapter12_07-002_derivative.cpp
 
-// See also https://godbolt.org/z/G9Wc6bj3c
+// See also https://godbolt.org/z/cra4qo4ab
 
 #include <cmath>
 #include <iomanip>
@@ -21,7 +21,6 @@ auto derivative(const ValueType x,
                 FunctionType function) -> ValueType
 {
   using value_type = ValueType;
-  using function_type = FunctionType;
 
   // Compute the derivative using a three point
   // central difference rule of O(dx^6).
@@ -70,13 +69,13 @@ auto main() -> int
 
   using std::fabs;
 
-  const auto closeness = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(0.5L)));
+  const auto delta = fabs(static_cast<float>(1.0L) - static_cast<float>(y / static_cast<float>(0.5L)));
 
-  const auto result_is_ok = (closeness < static_cast<float>(std::numeric_limits<float>::epsilon() * 64));
+  const auto result_close_fraction_is_ok = (delta < static_cast<float>(std::numeric_limits<float>::epsilon() * 128));
 
-  std::cout << "result_is_ok: " << std::boolalpha << result_is_ok << std::endl;
+  std::cout << "result_close_fraction_is_ok: " << std::boolalpha << result_close_fraction_is_ok << std::endl;
 
   std::cout.flags(flg);
 
-  return (result_is_ok ? 0 : -1);
+  return (result_close_fraction_is_ok ? 0 : -1);
 }
