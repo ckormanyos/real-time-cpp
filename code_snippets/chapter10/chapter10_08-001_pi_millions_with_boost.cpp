@@ -5,6 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
 // chapter10_08-001_pi_millions_with_boost.cpp
 
 // This program can be used to compute millions of digits of pi.
@@ -238,8 +243,11 @@ void print_pi(std::ostream& os)
   //        4811174502 8410270193 8521105559 6446229489 5493038196 : 200
   //        ...
 
-  BOOST_CONSTEXPR_OR_CONST char* char_set_separator   = " ";
-  BOOST_CONSTEXPR_OR_CONST char* char_group_separator = "\n";
+  const char pstr_char_set_separator  [] = " ";
+  const char pstr_char_group_separator[] = "\n";
+
+  const char* char_set_separator   = pstr_char_set_separator;
+  const char* char_group_separator = pstr_char_group_separator;
 
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_set   = 10U;
   BOOST_CONSTEXPR_OR_CONST std::size_t digits_per_line  = digits_per_set * 5U;
@@ -353,3 +361,7 @@ int main()
 
   return 0;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
