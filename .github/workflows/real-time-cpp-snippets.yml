@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chapter: [ appendix0a, chapter01, chapter03, chapter04, chapter05, chapter07, chapter08, chapter09, chapter12 ]
+        chapter: [ appendix0a, chapter01, chapter03, chapter04, chapter05, chapter07, chapter08, chapter09, chapter12, chapter16, chapter17 ]
     steps:
       - uses: actions/checkout@v3
         with:

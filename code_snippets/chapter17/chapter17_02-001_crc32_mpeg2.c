@@ -1,11 +1,13 @@
 /*//////////////////////////////////////////////////////////*/
-/*  Copyright Christopher Kormanyos 2017 - 2018.            */
+/*  Copyright Christopher Kormanyos 2017 - 2023.            */
 /*  Distributed under the Boost Software License,           */
 /*  Version 1.0. (See accompanying file LICENSE_1_0.txt     */
 /*  or copy at http://www.boost.org/LICENSE_1_0.txt)        */
 /*//////////////////////////////////////////////////////////*/
 
-/* chapter0e_02-001_crc32_mpeg2.c */
+/* chapter17_02-001_crc32_mpeg2.c */
+
+/* See also https://godbolt.org/z/PeM54nnEW */
 
 /* This is in a C file. */
 
