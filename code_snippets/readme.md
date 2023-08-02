@@ -10,7 +10,7 @@ Real-Time-C++ - Code Snippets
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-These are the code snippets from the book
+These are the code snippets from the chapters of the book
 C.M. Kormanyos,
 [Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
