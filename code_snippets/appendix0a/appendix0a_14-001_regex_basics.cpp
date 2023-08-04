@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if defined(__GNUC__)
+#if (defined(__GNUC__) && !defined(__clang__))
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
@@ -18,7 +18,9 @@
 #include <regex>
 #include <string>
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   const auto rx =
     std::regex
@@ -43,6 +45,6 @@ int main()
   }
 }
 
-#if defined(__GNUC__)
+#if (defined(__GNUC__) && !defined(__clang__))
 #pragma GCC diagnostic pop
 #endif

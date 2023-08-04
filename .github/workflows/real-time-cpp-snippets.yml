@@ -22,6 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         chapter: [ appendix0a, chapter01, chapter03, chapter04, chapter05, chapter07, chapter08, chapter09, chapter12, chapter16, chapter17 ]
+        compiler: [ g++, clang++ ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,7 +30,7 @@ jobs:
       - name: host-snippets-all
         run: |
           cd ${{ matrix.chapter }}
-          ./${{ matrix.chapter }}.sh g++ c++20
+          ./${{ matrix.chapter }}.sh ${{ matrix.compiler }} c++20
         working-directory: ./code_snippets
   host-snippets-chapter06:
     runs-on: ubuntu-latest
@@ -40,6 +41,7 @@ jobs:
       fail-fast: false
       matrix:
         chapter: [ chapter06 ]
+        compiler: [ g++, clang++ ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -62,7 +64,7 @@ jobs:
       - name: host-snippets-chapter06
         run: |
           cd ${{ matrix.chapter }}
-          ./${{ matrix.chapter }}.sh g++ c++20
+          ./${{ matrix.chapter }}.sh ${{ matrix.compiler }} c++20
         working-directory: ./code_snippets
   host-snippets-chapter10:
     runs-on: ubuntu-latest
@@ -73,6 +75,7 @@ jobs:
       fail-fast: false
       matrix:
         chapter: [ chapter10 ]
+        compiler: [ g++, clang++ ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -91,5 +94,5 @@ jobs:
       - name: host-snippets-chapter10
         run: |
           cd ${{ matrix.chapter }}
-          ./${{ matrix.chapter }}.sh g++ c++20
+          ./${{ matrix.chapter }}.sh ${{ matrix.compiler }} c++20
         working-directory: ./code_snippets

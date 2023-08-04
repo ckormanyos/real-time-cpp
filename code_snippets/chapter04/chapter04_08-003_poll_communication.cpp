@@ -60,8 +60,8 @@ public:
   }
 
 private:
-  static constexpr std::uint8_t* tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
-  static constexpr std::uint8_t* rbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_rbuf);
+  static std::uint8_t* tbuf;
+  static std::uint8_t* rbuf;
 
   std::uint8_t recv_buf;
   bool has_recv;
@@ -72,6 +72,9 @@ private:
 
   friend void task_poll_communication();
 };
+
+std::uint8_t* communication::tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
+std::uint8_t* communication::rbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_rbuf);
 
 extern communication com;
 

@@ -13,10 +13,14 @@
 class led
 {
 public:
-  led(const std::uintptr_t addr,
-      const std::uint8_t   bval) : my_addr(addr),
-                                   my_bval(bval)
+  explicit led(const std::uintptr_t addr = static_cast<std::uintptr_t>(UINT8_C(0)),
+               const std::uint8_t   bval = static_cast<std::uint8_t>  (UINT8_C(0)))
+    : my_addr(addr),
+      my_bval(bval)
   {
+    static_cast<void>(my_addr);
+    static_cast<void>(my_bval);
+
     std::cout << "in class led constructor" << std::endl;
   }
 
@@ -28,13 +32,13 @@ public:
   }
 
 private:
-  const std::uintptr_t my_addr;
-  const std::uint8_t   my_bval;
+  const std::uintptr_t my_addr { };
+  const std::uint8_t   my_bval { };
 };
 
 // The simulated portb.
-std::uint8_t simulated_register_portb;
-std::uint8_t bit5 = 0x20U;
+auto simulated_register_portb = std::uint8_t { };
+auto bit5                     = static_cast<std::uint8_t>(UINT8_C(0x20));
 
 const std::uintptr_t address =
   reinterpret_cast<std::uintptr_t>(&simulated_register_portb);

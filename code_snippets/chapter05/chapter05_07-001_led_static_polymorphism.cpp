@@ -30,10 +30,10 @@ private:
 class led_port // No base class.
 {
 public:
-  led_port(const std::uint8_t p,
-           const std::uint8_t b) : is_on(false),
-                                   port (p),
-                                   bval (b) { }
+  led_port(const std::uint8_t p, const std::uint8_t b)
+    : is_on(false),
+      port (p),
+      bval (b) { static_cast<void>(bval); }
 
   void toggle() const // Not virtual.
   {

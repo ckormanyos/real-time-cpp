@@ -10,7 +10,7 @@ Real-Time-C++ - Code Snippets
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
-These are the code snippets from the book
+These are the code snippets from the chapters of the book
 C.M. Kormanyos,
 [Real-Time C++](https://www.springer.com/de/book/9783662629956):
 Efficient Object-Oriented
@@ -83,6 +83,12 @@ The expected output message text is
 ```sh
 login_key is 0x1,0x2,0x3,
 ```
+
+## Testing and CI
+
+The code snippets have been tested locally on GCC, clang and MSVC.
+CI for the code snippets runs with GCC and clang on `*nix`
+using (at the moment) build-only.
 
 ## Try it at _godbolt_
 

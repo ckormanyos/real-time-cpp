@@ -14,13 +14,24 @@
 
 int main()
 {
-  constexpr float pi_half = std::acos(-1.0F) / 2.0F;
+  using std::acos;
+  using std::ellint_1;
 
-  const float e1 = std::ellint_1(0.5F, pi_half);
+  const auto pi_half =
+    static_cast<float>
+    (
+      acos(static_cast<float>(-1.0L)) / static_cast<float>(2.0L)
+    );
+
+  const float e1 = ellint_1(static_cast<float>(0.5L), pi_half);
+
+  const auto flg = std::cout.flags();
 
   std::cout << std::setprecision(std::numeric_limits<float>::digits10)
             << e1
             << std::endl;
 
   // 1.68575
+
+  std::cout.flags(flg);
 }

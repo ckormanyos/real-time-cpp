@@ -24,7 +24,7 @@ rm -f ./bin/*.*
 
 echo build snippets with GCC=$GCC STD=$STD
 
-$GCC -std=c11 -x c -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -march=native -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter17_02-001_crc32_mpeg2.c        -o ./bin/chapter17_02-001_crc32_mpeg2.exe
+$GCC -std=c11 -x c -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter17_02-001_crc32_mpeg2.c        -o ./bin/chapter17_02-001_crc32_mpeg2.exe
 
 ls -la \
 ./bin/chapter17_02-001_crc32_mpeg2.exe
