@@ -45,7 +45,7 @@ public:
   explicit constexpr led_port(const port_type p,
                               const bval_type b = static_cast<bval_type>(UINT8_C(0)))
     : port(p),
-      bval(b) { }
+      bval(b) { static_cast<void>(bval); }
 
   ~led_port() override = default;
 

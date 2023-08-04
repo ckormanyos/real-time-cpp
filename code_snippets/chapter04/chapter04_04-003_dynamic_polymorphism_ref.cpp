@@ -40,12 +40,9 @@ public:
   typedef std::uint8_t port_type;
   typedef std::uint8_t bval_type;
 
-  led_port(const port_type p,
-           const bval_type b) : port(p),
-                                bval(b)
-  {
-    // ...
-  }
+  led_port(const port_type p, const bval_type b)
+    : port(p),
+      bval(b) { static_cast<void>(bval); }
 
   virtual ~led_port() { }
 

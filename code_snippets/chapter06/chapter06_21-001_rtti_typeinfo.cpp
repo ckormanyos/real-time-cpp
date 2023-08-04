@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019.
+//  Copyright Christopher Kormanyos 2019 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,21 +16,22 @@
 
 struct test_typeid
 {
-  explicit test_typeid(const unsigned u)
-    : my_u(u) { }
+  explicit test_typeid(const unsigned u = static_cast<unsigned>(UINT8_C(0)))
+    : my_u(u) { static_cast<void>(my_u); }
 
   ~test_typeid() = default;
 
 private:
-  unsigned my_u;
+  unsigned my_u { };
 };
 
-bool verify_typeid(const char* pn);
+auto verify_typeid(const char* pn) -> bool;
+auto do_something() -> void;
 
-void do_something()
+auto do_something() -> void
 {
   // Create an instance of the struct.
-  const test_typeid a(7U);
+  const test_typeid a(static_cast<unsigned>(UINT8_C(7)));
 
   // Obtain a const ref to the typeid of a.
   const std::type_info& tia = typeid(a);
@@ -48,14 +49,16 @@ void do_something()
   }
 }
 
-int main()
+auto main() -> int;
+
+auto main() -> int
 {
   do_something();
 }
 
 // Put this subroutine in a file that
 // differs from the file calling it.
-bool verify_typeid(const char* pn)
+auto verify_typeid(const char* pn) -> bool
 {
   std::cout << "pn: "
             << pn
@@ -66,8 +69,7 @@ bool verify_typeid(const char* pn)
   // "struct test_typeid" or similar,
   // depending on the compiler.
 
-  const bool type_id_name_is_ok =
-    (strcmp(pn, "struct test_typeid") == 0);
+  const bool type_id_name_is_ok = (strcmp(pn, "struct test_typeid") == static_cast<int>(INT8_C(0)));
 
   return type_id_name_is_ok;
 }

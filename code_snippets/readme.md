@@ -84,6 +84,12 @@ The expected output message text is
 login_key is 0x1,0x2,0x3,
 ```
 
+## Testing and CI
+
+The code snippets have been tested locally on GCC, clang and MSVC.
+CI for the code snippets runs with GCC and clang on `*nix`
+using (at the moment) build-only.
+
 ## Try it at _godbolt_
 
 <p align="center">

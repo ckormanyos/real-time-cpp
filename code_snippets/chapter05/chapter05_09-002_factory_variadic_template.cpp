@@ -7,6 +7,7 @@
 
 // chapter05_09-002_factory_variadic_template.cpp
 
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 
@@ -27,9 +28,14 @@ type_to_make* factory(void* mem,
 class something_else
 {
 public:
-  something_else(const int M,
-                 const int N) : m(M),
-                                n(N) { }
+  explicit something_else(const int M = static_cast<int>(INT8_C(0)),
+                          const int N = static_cast<int>(INT8_C(0)))
+    : m(M),
+      n(N)
+  {
+    static_cast<void>(m);
+    static_cast<void>(n);
+  }
 
   virtual ~something_else() = default;
 
@@ -45,8 +51,7 @@ private:
 
 extern void* pool;
 
-something_else* p_else
-  = factory<something_else>(pool, 12, 34);
+something_else* p_else = factory<something_else>(pool, 12, 34);
 
 int main()
 {
@@ -54,6 +59,6 @@ int main()
 }
 
 // Consider the buffer and pool pointer to be in another file.
-std::uint8_t buffer[256U];
+std::uint8_t buffer[static_cast<std::size_t>(UINT16_C(256))];
 
-void* pool = reinterpret_cast<void*>(&buffer[0U]);
+void* pool = reinterpret_cast<void*>(&buffer[static_cast<std::size_t>(UINT8_C(0))]);

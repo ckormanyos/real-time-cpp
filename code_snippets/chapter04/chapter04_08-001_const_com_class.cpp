@@ -59,8 +59,8 @@ public:
   }
 
 private:
-  static constexpr std::uint8_t* tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
-  static constexpr std::uint8_t* rbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_rbuf);
+  static       std::uint8_t* tbuf;
+  static const std::uint8_t* rbuf;
 
   std::uint8_t recv_buf;
   bool has_recv;
@@ -71,6 +71,9 @@ private:
 
   friend void com_recv_isr();
 };
+
+      std::uint8_t* communication::tbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_tbuf);
+const std::uint8_t* communication::rbuf = reinterpret_cast<std::uint8_t*>(&mcal::reg::dummy_register_rbuf);
 
 bool wakeup(const communication& com) // Emohasize: com is a comst reference.
 {

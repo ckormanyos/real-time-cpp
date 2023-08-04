@@ -24,12 +24,10 @@ ularge_type make_large(const ushort_type& lo,
     = std::numeric_limits<ularge_type>::digits;
 
   // Ensure proper width of the large type.
-  static_assert(ularge_digits == (2 * ushort_digits),
-                "error: ularge_type size mismatch");
+  static_assert(ularge_digits == (2 * ushort_digits), "error: ularge_type size mismatch");
 
   // Shift the high part to the left.
-  const ularge_type uh
-    = static_cast<ularge_type>(hi) << ushort_digits;
+  const auto uh = static_cast<ularge_type>(static_cast<ularge_type>(hi) << ushort_digits);
 
   // Return the composite result.
   return static_cast<ularge_type>(uh | lo);
