@@ -30,11 +30,11 @@
 
     static constexpr auto scs_base      = static_cast<register_address_type>(UINT32_C(0xE000E000));
     static constexpr auto sys_tick_mhz  = SysTickMHz;
-    static constexpr auto sys_tick_base = static_cast<register_address_type>(scs_base        + static_cast<register_address_type>(UINT8_C(0x10)));
-    static constexpr auto sys_tick_ctrl = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x00)));
-    static constexpr auto sys_tick_load = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x04)));
-    static constexpr auto sys_tick_val  = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x08)));
-    static constexpr auto sys_tick_cal  = static_cast<register_address_type>(sys_tick_base   + static_cast<register_address_type>(UINT8_C(0x0C)));
+    static constexpr auto sys_tick_base = static_cast<register_address_type>(scs_base      + static_cast<register_address_type>(UINT8_C(0x10)));
+    static constexpr auto sys_tick_ctrl = static_cast<register_address_type>(sys_tick_base + static_cast<register_address_type>(UINT8_C(0x00)));
+    static constexpr auto sys_tick_load = static_cast<register_address_type>(sys_tick_base + static_cast<register_address_type>(UINT8_C(0x04)));
+    static constexpr auto sys_tick_val  = static_cast<register_address_type>(sys_tick_base + static_cast<register_address_type>(UINT8_C(0x08)));
+    static constexpr auto sys_tick_cal  = static_cast<register_address_type>(sys_tick_base + static_cast<register_address_type>(UINT8_C(0x0C)));
 
     template<const register_address_type address,
              const register_value_type value = static_cast<register_value_type>(0)>
@@ -148,8 +148,8 @@
         static_cast<std::uint64_t>
         (
           ((sys_tick_counter_2 >= sys_tick_counter_1)
-            ? static_cast<std::uint64_t>(   sys_tick_value | sys_tick_counter_1)
-            : static_cast<std::uint64_t>(my_sys_tick_value | sys_tick_counter_2))
+            ? static_cast<std::uint64_t>(static_cast<std::uint64_t>(   sys_tick_value) | sys_tick_counter_1)
+            : static_cast<std::uint64_t>(static_cast<std::uint64_t>(my_sys_tick_value) | sys_tick_counter_2))
         );
 
       // Perform scaling and include a rounding correction.
