@@ -49,7 +49,7 @@ initializes a skinny microcontroller abstraction layer (MCAL). Control is
 then passed to a simple multitasking scheduler that schedules the
 LED application, calls a cyclic a benchmark task, and services the watchdog.
 
-The LED application toggles a user-LED with a frequency of 1/2 Hz
+The LED application toggles a user-LED with a frequency of $\frac{1}{2}~\text{Hz}$
 The result is LED on for one second, LED off for one second.
 The LED application runs cyclically and perpetually
 without break or pause.
@@ -197,7 +197,7 @@ prior to building the target of the reference application.
 You can `wget` (or with a slightly different procedure optionally install)
 the `gcc-arm-none-eabi` toolchain if needed.
 In this case, I have found it convenient to use
-a modern GCC-`arm-none-eabi` for MacOS which can be found at
+a modern `gcc-arm-none-eabi` for MacOS which can be found at
 [Arm GNU Toolchain Downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads).
 
 The `arm-non-eabi` toolchain can be fetched via `wget`
@@ -356,7 +356,7 @@ The program toggles the yellow LED on `portb.5`.
 The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
 on an ARDUINO(R) EVERY compatible board clocked
-with the internal resonator at 20MHz.
+with the internal resonator at $20~\text{MHz}$.
 The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
 The Espressif (XTENSA) NodeMCU ESP32 implementation uses
@@ -392,7 +392,7 @@ The program toggles the green LED on `portb.0`.
 
 The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
 board (black edition). For the white edition, the CPU clock needs to be reduced
-from 900MHz to something like 600MHz. This project creates a bare-metal program
+from $900~\text{MHz}$ to something like $600~\text{MHz}$. This project creates a bare-metal program
 for the BeagleBone that runs independently from any kind of `*nix` distro on
 the board. Our program is designed to boot the BeagleBone from a raw binary file
 called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a

@@ -4328,15 +4328,15 @@
                                                                                                            std::allocator<void>,
                                                                                                            AllocatorType>>::template rebind_alloc<limb_type>>>;
 
-        uu_array_type uu { };
+        uu_array_type uu;
 
         representation_type
-          vv
-          {
-            static_cast<typename representation_type::size_type>(number_of_limbs),
-            static_cast<typename representation_type::value_type>(UINT8_C(0)),
-            typename representation_type::allocator_type() // LCOV_EXCL_LINE
-          };
+        vv
+        {
+          static_cast<typename representation_type::size_type>(number_of_limbs),
+          static_cast<typename representation_type::value_type>(UINT8_C(0)),
+          typename representation_type::allocator_type() // LCOV_EXCL_LINE
+        };
 
         if(d > static_cast<limb_type>(UINT8_C(1)))
         {
@@ -4437,7 +4437,7 @@
             eval_subtract_n(detail::advance_and_point(uu.begin(),  static_cast<size_t>(static_cast<local_uint_index_type>(uj - n))),
                             detail::advance_and_point(uu.cbegin(), static_cast<size_t>(static_cast<local_uint_index_type>(uj - n))),
                             nv.cbegin(),
-                            n + static_cast<size_t>(UINT8_C(1)));
+                            n + 1U);
 
           // Step D5: Test the remainder.
           // Set the result value: Set result.m_data[m - j] = q_hat.
@@ -4594,13 +4594,11 @@
               | part_from_previous_value
             );
 
-          const auto right_shift_prev_amount =
-            static_cast<local_integral_type>
+          part_from_previous_value =
+            static_cast<limb_type>
             (
-              static_cast<unsigned_fast_type>(std::numeric_limits<limb_type>::digits - left_shift_amount)
+              t >> static_cast<local_integral_type>(static_cast<unsigned_fast_type>(std::numeric_limits<limb_type>::digits - left_shift_amount))
             );
-
-          part_from_previous_value = static_cast<limb_type>(t >> right_shift_prev_amount);
         }
       }
     }
@@ -4654,23 +4652,9 @@
         {
           const limb_type t = *r_ai;
 
-          *r_ai++ =
-            static_cast<limb_type>
-            (
-                static_cast<limb_type>
-                (
-                  t >> static_cast<local_integral_type>(right_shift_amount)
-                )
-              | part_from_previous_value
-            );
+          *r_ai++ = static_cast<limb_type>(static_cast<limb_type>(t >> static_cast<local_integral_type>(right_shift_amount)) | part_from_previous_value);
 
-          const auto left_shift_prev_amount =
-            static_cast<local_integral_type>
-            (
-              static_cast<unsigned_fast_type>(std::numeric_limits<limb_type>::digits - right_shift_amount)
-            );
-
-          part_from_previous_value = static_cast<limb_type>(t << left_shift_prev_amount);
+          part_from_previous_value = static_cast<limb_type>(t << static_cast<local_integral_type>(static_cast<unsigned_fast_type>(std::numeric_limits<limb_type>::digits - right_shift_amount)));
         }
       }
     }
