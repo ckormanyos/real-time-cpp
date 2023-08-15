@@ -14,9 +14,15 @@
   #endif
   #endif
 
+  #if ((__cplusplus < 202100L) || (defined(__GNUC__) && defined(__AVR__)))
+  #include <ciso646>
+  #else
+  #include <version>
+  #endif
+
   #include <algorithm>
   #include <array>
-  #if defined(__cpp_lib_to_chars)
+  #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
   #include <charconv>
   #endif
   #include <cinttypes>
@@ -39,6 +45,9 @@
   #endif
   #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
   #include <memory>
+  #endif
+  #if (defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606L))
+  #include <numeric>
   #endif
   #if !defined(WIDE_INTEGER_DISABLE_IOSTREAM)
   #include <ostream>
@@ -179,6 +188,99 @@
     }
 
     return dest;
+  }
+
+  template <class UnsignedIntegralType>
+  WIDE_INTEGER_CONSTEXPR auto clz_unsafe(UnsignedIntegralType v) noexcept -> std::enable_if_t<(   (std::is_integral<UnsignedIntegralType>::value)
+                                                                                               && (std::is_unsigned<UnsignedIntegralType>::value)), unsigned>
+  {
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    auto yy = static_cast<local_unsigned_integral_type>(UINT8_C(0));
+
+    auto nn = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
+
+    auto cc = // NOLINT(altera-id-dependent-backward-branch)
+      static_cast<unsigned>
+      (
+        std::numeric_limits<local_unsigned_integral_type>::digits / static_cast<int>(INT8_C(2))
+      );
+
+    do
+    {
+      yy = static_cast<local_unsigned_integral_type>(v >> cc);
+
+      if(yy != static_cast<local_unsigned_integral_type>(UINT8_C(0)))
+      {
+        nn -= cc;
+
+        v = yy;
+      }
+
+      cc >>= static_cast<unsigned>(UINT8_C(1));
+    }
+    while(cc != static_cast<unsigned>(UINT8_C(0))); // NOLINT(altera-id-dependent-backward-branch)
+
+    return
+      static_cast<unsigned>
+      (
+        static_cast<unsigned>(nn) - static_cast<unsigned>(v)
+      );
+  }
+
+  template<typename UnsignedIntegralType>
+  WIDE_INTEGER_CONSTEXPR auto ctz_unsafe(const UnsignedIntegralType v) noexcept -> std::enable_if_t<(   (std::is_integral<UnsignedIntegralType>::value)
+                                                                                                     && (std::is_unsigned<UnsignedIntegralType>::value)), unsigned>
+  {
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    constexpr auto local_digits = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
+
+    const auto clz_mask =
+      static_cast<local_unsigned_integral_type>
+      (
+          static_cast<local_unsigned_integral_type>(~v)
+        & static_cast<local_unsigned_integral_type>(v - static_cast<local_unsigned_integral_type>(UINT8_C(1)))
+      );
+
+    return static_cast<unsigned>(local_digits - clz_unsafe(clz_mask));
+  }
+
+  template<typename UnsignedIntegralType>
+  WIDE_INTEGER_CONSTEXPR auto gcd_unsafe(UnsignedIntegralType u, UnsignedIntegralType v) -> std::enable_if_t<(   (std::is_integral<UnsignedIntegralType>::value) // NOLINT(altera-id-dependent-backward-branch)
+                                                                                                              && (std::is_unsigned<UnsignedIntegralType>::value)), UnsignedIntegralType>
+  {
+    using local_unsigned_integral_type = UnsignedIntegralType;
+
+    // Handle cases having (u != 0) and (v != 0).
+    if(u == static_cast<local_unsigned_integral_type>(UINT8_C(0))) { return v; }
+
+    if(v == static_cast<local_unsigned_integral_type>(UINT8_C(0))) { return u; }
+
+    // Shift the greatest power of 2 dividing both u and v.
+    const auto trz = static_cast<unsigned>(ctz_unsafe(u));
+
+    const auto shift_amount = (std::min)(trz, ctz_unsafe(v));
+
+    v >>= shift_amount;
+    u >>= trz;
+
+    do
+    {
+      // Reduce the GCD.
+
+      v >>= ctz_unsafe(v);
+
+      if(u > v)
+      {
+        std::swap(u, v);
+      }
+
+      v -= u;
+    }
+    while(v != static_cast<local_unsigned_integral_type>(UINT8_C(0))); // NOLINT(altera-id-dependent-backward-branch)
+
+    return static_cast<local_unsigned_integral_type>(u << shift_amount);
   }
 
   #if(__cplusplus >= 201703L)
@@ -1006,7 +1108,7 @@
                           DistributionType&                                      distribution,
                           GeneratorType&                                         generator) -> bool;
 
-  #if defined(__cpp_lib_to_chars)
+  #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
   template<const size_t Width2,
            typename LimbType,
            typename AllocatorType,
@@ -5884,68 +5986,13 @@
   namespace detail {
 
   template<typename UnsignedShortType>
-  WIDE_INTEGER_CONSTEXPR auto integer_gcd_reduce_short(UnsignedShortType u, UnsignedShortType v) -> UnsignedShortType
+  WIDE_INTEGER_CONSTEXPR auto integer_gcd_reduce(UnsignedShortType u, UnsignedShortType v) -> UnsignedShortType
   {
-    // This implementation of GCD reduction is based on an
-    // adaptation of existing code from Boost.Multiprecision.
-
-    for(;;)
-    {
-      if(u > v)
-      {
-        std::swap(u, v);
-      }
-
-      if(u == v)
-      {
-        break;
-      }
-
-      v  -= u;
-      v >>= detail::lsb_helper(v);
-    }
-
-    return u;
-  }
-
-  template<typename UnsignedLargeType>
-  WIDE_INTEGER_CONSTEXPR auto integer_gcd_reduce_large(UnsignedLargeType u, UnsignedLargeType v) -> UnsignedLargeType
-  {
-    // This implementation of GCD reduction is based on an
-    // adaptation of existing code from Boost.Multiprecision.
-
-    using local_ularge_type = UnsignedLargeType;
-    using local_ushort_type = typename detail::uint_type_helper<static_cast<size_t>(std::numeric_limits<local_ularge_type>::digits / 2)>::exact_unsigned_type;
-
-    for(;;)
-    {
-      if(u > v)
-      {
-        std::swap(u, v);
-      }
-
-      if(u == v)
-      {
-        break;
-      }
-
-      if(v <= static_cast<local_ularge_type>((std::numeric_limits<local_ushort_type>::max)()))
-      {
-        u = integer_gcd_reduce_short(static_cast<local_ushort_type>(v),
-                                     static_cast<local_ushort_type>(u));
-
-        break;
-      }
-
-      v -= u;
-
-      while(static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(v) & static_cast<std::uint_fast8_t>(UINT8_C(1))) == static_cast<std::uint_fast8_t>(UINT8_C(0))) // NOLINT(hicpp-signed-bitwise,altera-id-dependent-backward-branch)
-      {
-        v >>= static_cast<unsigned>(UINT8_C(1));
-      }
-    }
-
-    return u;
+    #if (defined(__cpp_lib_gcd_lcm) && (__cpp_lib_gcd_lcm >= 201606L))
+    return std::gcd(u, v);
+    #else
+    return detail::gcd_unsafe(u, v);
+    #endif
   }
 
   } // namespace detail
@@ -5975,18 +6022,16 @@
     using local_size_type = typename local_wide_integer_type::representation_type::size_type;
 
     if(u == v)
-    {
+    { // NOLINT(bugprone-branch-clone)
       // This handles cases having (u = v) and also (u = v = 0).
       result = u; // LCOV_EXCL_LINE
     }
-
-    if((static_cast<local_ushort_type>(v) == static_cast<local_ushort_type>(UINT8_C(0))) && (v == 0U))
+    else if((static_cast<local_ushort_type>(v) == static_cast<local_ushort_type>(UINT8_C(0))) && (v == 0U))
     {
       // This handles cases having (v = 0) with (u != 0).
       result = u; // LCOV_EXCL_LINE
     }
-
-    if((static_cast<local_ushort_type>(u) == static_cast<local_ushort_type>(UINT8_C(0))) && (u == 0U))
+    else if((static_cast<local_ushort_type>(u) == static_cast<local_ushort_type>(UINT8_C(0))) && (u == 0U))
     {
       // This handles cases having (u = 0) with (v != 0).
       result = v;
@@ -6028,7 +6073,7 @@
             const auto vs = *v.crepresentation().cbegin();
             const auto us = *u.crepresentation().cbegin();
 
-            u = detail::integer_gcd_reduce_short(vs, us);
+            u = detail::integer_gcd_reduce(vs, us);
           }
           else
           {
@@ -6051,7 +6096,7 @@
             const local_ularge_type v_large = detail::make_large(*v.crepresentation().cbegin(), my_v_hi);
             const local_ularge_type u_large = detail::make_large(*u.crepresentation().cbegin(), my_u_hi);
 
-            u = detail::integer_gcd_reduce_large(v_large, u_large);
+            u = detail::integer_gcd_reduce(v_large, u_large);
           }
 
           break;
@@ -6071,38 +6116,7 @@
   WIDE_INTEGER_CONSTEXPR auto gcd(const UnsignedShortType& u, const UnsignedShortType& v) -> std::enable_if_t<(   (std::is_integral<UnsignedShortType>::value)
                                                                                                                && (std::is_unsigned<UnsignedShortType>::value)), UnsignedShortType>
   {
-    using local_unsigned_short_type = UnsignedShortType;
-
-    auto result = local_unsigned_short_type { };
-
-    if(u > v)
-    {
-      result = gcd(v, u);
-    }
-
-    if(u == v)
-    {
-      // This handles cases having (u = v) and also (u = v = 0).
-      result = u;
-    }
-
-    if(v == static_cast<local_unsigned_short_type>(UINT8_C(0)))
-    {
-      // This handles cases having (v = 0) with (u != 0).
-      result = u;
-    }
-
-    if(u == static_cast<local_unsigned_short_type>(UINT8_C(0)))
-    {
-      // This handles cases having (u = 0) with (v != 0).
-      result = v;
-    }
-    else
-    {
-      result = detail::integer_gcd_reduce_short(u, v);
-    }
-
-    return result;
+    return detail::gcd_unsafe(u, v);
   }
 
   namespace detail {
@@ -6397,7 +6411,7 @@
 
       generator_result_type value = generator_result_type();
 
-      auto it = result.representation().begin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+      auto it = result.representation().begin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto,altera-id-dependent-backward-branch)
 
       auto j = static_cast<unsigned_fast_type>(UINT8_C(0));
 
@@ -6536,14 +6550,14 @@
         // See also:
         // https://www.wolframalpha.com/input/?i=Table%5BPrime%5Bi%5D%2C+%7Bi%2C+2%2C+49%7D%5D
 
-        constexpr std::array<local_limb_type, 48U> small_primes =
+        constexpr std::array<local_limb_type, static_cast<std::size_t>(UINT8_C(48))> small_primes =
         {{
-          UINT8_C(  3), UINT8_C(  5), UINT8_C(  7), UINT8_C( 11), UINT8_C( 13), UINT8_C( 17), UINT8_C( 19), UINT8_C( 23),
-          UINT8_C( 29), UINT8_C( 31), UINT8_C( 37), UINT8_C( 41), UINT8_C( 43), UINT8_C( 47), UINT8_C( 53), UINT8_C( 59),
-          UINT8_C( 61), UINT8_C( 67), UINT8_C( 71), UINT8_C( 73), UINT8_C( 79), UINT8_C( 83), UINT8_C( 89), UINT8_C( 97),
-          UINT8_C(101), UINT8_C(103), UINT8_C(107), UINT8_C(109), UINT8_C(113), UINT8_C(127), UINT8_C(131), UINT8_C(137),
-          UINT8_C(139), UINT8_C(149), UINT8_C(151), UINT8_C(157), UINT8_C(163), UINT8_C(167), UINT8_C(173), UINT8_C(179),
-          UINT8_C(181), UINT8_C(191), UINT8_C(193), UINT8_C(197), UINT8_C(199), UINT8_C(211), UINT8_C(223), UINT8_C(227)
+          static_cast<local_limb_type>(UINT8_C(  3)), static_cast<local_limb_type>(UINT8_C(  5)), static_cast<local_limb_type>(UINT8_C(  7)), static_cast<local_limb_type>(UINT8_C( 11)), static_cast<local_limb_type>(UINT8_C( 13)), static_cast<local_limb_type>(UINT8_C( 17)), static_cast<local_limb_type>(UINT8_C( 19)), static_cast<local_limb_type>(UINT8_C( 23)),
+          static_cast<local_limb_type>(UINT8_C( 29)), static_cast<local_limb_type>(UINT8_C( 31)), static_cast<local_limb_type>(UINT8_C( 37)), static_cast<local_limb_type>(UINT8_C( 41)), static_cast<local_limb_type>(UINT8_C( 43)), static_cast<local_limb_type>(UINT8_C( 47)), static_cast<local_limb_type>(UINT8_C( 53)), static_cast<local_limb_type>(UINT8_C( 59)),
+          static_cast<local_limb_type>(UINT8_C( 61)), static_cast<local_limb_type>(UINT8_C( 67)), static_cast<local_limb_type>(UINT8_C( 71)), static_cast<local_limb_type>(UINT8_C( 73)), static_cast<local_limb_type>(UINT8_C( 79)), static_cast<local_limb_type>(UINT8_C( 83)), static_cast<local_limb_type>(UINT8_C( 89)), static_cast<local_limb_type>(UINT8_C( 97)),
+          static_cast<local_limb_type>(UINT8_C(101)), static_cast<local_limb_type>(UINT8_C(103)), static_cast<local_limb_type>(UINT8_C(107)), static_cast<local_limb_type>(UINT8_C(109)), static_cast<local_limb_type>(UINT8_C(113)), static_cast<local_limb_type>(UINT8_C(127)), static_cast<local_limb_type>(UINT8_C(131)), static_cast<local_limb_type>(UINT8_C(137)),
+          static_cast<local_limb_type>(UINT8_C(139)), static_cast<local_limb_type>(UINT8_C(149)), static_cast<local_limb_type>(UINT8_C(151)), static_cast<local_limb_type>(UINT8_C(157)), static_cast<local_limb_type>(UINT8_C(163)), static_cast<local_limb_type>(UINT8_C(167)), static_cast<local_limb_type>(UINT8_C(173)), static_cast<local_limb_type>(UINT8_C(179)),
+          static_cast<local_limb_type>(UINT8_C(181)), static_cast<local_limb_type>(UINT8_C(191)), static_cast<local_limb_type>(UINT8_C(193)), static_cast<local_limb_type>(UINT8_C(197)), static_cast<local_limb_type>(UINT8_C(199)), static_cast<local_limb_type>(UINT8_C(211)), static_cast<local_limb_type>(UINT8_C(223)), static_cast<local_limb_type>(UINT8_C(227))
         }};
 
         return std::binary_search(small_primes.cbegin(),
@@ -6562,7 +6576,7 @@
 
       const auto m0 = static_cast<std::uint64_t>(np % pp0);
 
-      if(detail::integer_gcd_reduce_large(m0, pp0) != static_cast<std::uint64_t>(UINT8_C(1)))
+      if((m0 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m0, pp0) != static_cast<std::uint64_t>(UINT8_C(1))))
       {
         return false;
       }
@@ -6576,7 +6590,7 @@
 
       const auto m1 = static_cast<std::uint64_t>(np % pp1);
 
-      if(detail::integer_gcd_reduce_large(m1, pp1) != static_cast<std::uint64_t>(UINT8_C(1)))
+      if((m1 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m1, pp1) != static_cast<std::uint64_t>(UINT8_C(1))))
       {
         return false;
       }
@@ -6590,7 +6604,7 @@
 
       const auto m2 = static_cast<std::uint64_t>(np % pp2);
 
-      if(detail::integer_gcd_reduce_large(m2, pp2) != static_cast<std::uint64_t>(UINT8_C(1)))
+      if((m2 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m2, pp2) != static_cast<std::uint64_t>(UINT8_C(1))))
       {
         return false;
       }
@@ -6604,7 +6618,7 @@
 
       const auto m3 = static_cast<std::uint64_t>(np % pp3);
 
-      if(detail::integer_gcd_reduce_large(m3, pp3) != static_cast<std::uint64_t>(UINT8_C(1)))
+      if((m3 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m3, pp3) != static_cast<std::uint64_t>(UINT8_C(1))))
       {
         return false;
       }
@@ -6618,13 +6632,13 @@
 
       const auto m4 = static_cast<std::uint64_t>(np % pp4);
 
-      if(detail::integer_gcd_reduce_large(m4, pp4) != static_cast<std::uint64_t>(UINT8_C(1)))
+      if((m4 == static_cast<std::uint64_t>(UINT8_C(0))) || (detail::integer_gcd_reduce(m4, pp4) != static_cast<std::uint64_t>(UINT8_C(1))))
       {
         return false;
       }
     }
 
-    const local_wide_integer_type nm1(np - 1U);
+    const auto nm1 = static_cast<local_wide_integer_type>(np - static_cast<unsigned>(UINT8_C(1)));
 
     // Since we have already excluded all small factors
     // up to and including 227, n is greater than 227.
@@ -6655,8 +6669,8 @@
 
     auto i = static_cast<unsigned_fast_type>(UINT8_C(0));
 
-    local_wide_integer_type x;
-    local_wide_integer_type y;
+    auto x = local_wide_integer_type { };
+    auto y = local_wide_integer_type { };
 
     // Execute the random trials.
     do
@@ -6705,7 +6719,7 @@
     return is_probably_prime;
   }
 
-  #if defined(__cpp_lib_to_chars)
+  #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
   template<const size_t Width2,
            typename LimbType,
            typename AllocatorType,
