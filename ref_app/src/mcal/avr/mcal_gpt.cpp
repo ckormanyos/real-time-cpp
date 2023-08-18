@@ -11,32 +11,36 @@
 namespace
 {
   // The one (and only one) system tick.
-  volatile mcal::gpt::value_type mcal_gpt_system_tick;
+  volatile auto mcal_gpt_system_tick = mcal::gpt::value_type { };
 
-  bool& gpt_is_initialized() __attribute__((used, noinline));
+  auto gpt_is_initialized() -> bool& __attribute__((used, noinline));
 
-  bool& gpt_is_initialized()
+  auto gpt_is_initialized() -> bool&
   {
-    static bool is_init = bool();
+    static auto is_init = bool { };
 
     return is_init;
   }
 }
 
 extern "C"
-void __vector_16() __attribute__((signal, used, externally_visible));
+auto __vector_16(void) -> void __attribute__((signal, used, externally_visible));
 
-void __vector_16()
+auto __vector_16(void) -> void
 {
-  // Increment the 32-bit system tick with 0x80, representing 128 microseconds.
-  const mcal::gpt::value_type new_tick = mcal_gpt_system_tick + static_cast<std::uint8_t>(0x80U);
+  // Increment the 32-bit system tick with 0x100, representing 256 [(1/2) microseconds].
+  const auto new_tick =
+    static_cast<mcal::gpt::value_type>
+    (
+      mcal_gpt_system_tick + static_cast<std::uint16_t>(UINT16_C(0x100))
+    );
 
   mcal_gpt_system_tick = new_tick;
 }
 
-void mcal::gpt::init(const config_type*)
+auto mcal::gpt::init(const config_type*) -> void
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // Clear the timer0 overflow flag.
     mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x01U>::reg_set();
@@ -52,31 +56,46 @@ void mcal::gpt::init(const config_type*)
   }
 }
 
-mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
+auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 {
   if(gpt_is_initialized())
   {
     // Return the system tick using a multiple read to ensure data consistency.
 
-    typedef std::uint8_t timer_address_type;
-    typedef std::uint8_t timer_register_type;
+    using timer_address_type  = std::uint8_t;
+    using timer_register_type = std::uint8_t;
 
     // Do the first read of the timer0 counter and the system tick.
-    const timer_register_type   tim0_cnt_1 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
-    const mcal::gpt::value_type sys_tick_1 = mcal_gpt_system_tick;
+    const auto t0_cnt_1   = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+    const auto sys_tick_1 = mcal_gpt_system_tick;
 
     // Do the second read of the timer0 counter.
-    const timer_register_type tim0_cnt_2   = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+    const auto t0_cnt_2 = mcal::reg::reg_access_static<timer_address_type, timer_register_type, mcal::reg::tcnt0>::reg_get();
+
+    const auto t0_tick_is_consistent = (t0_cnt_2 >= t0_cnt_1);
 
     // Perform the consistency check.
-    const mcal::gpt::value_type consistent_microsecond_tick =
-      ((tim0_cnt_2 >= tim0_cnt_1) ? mcal::gpt::value_type(sys_tick_1           | std::uint8_t(tim0_cnt_1 >> 1U))
-                                  : mcal::gpt::value_type(mcal_gpt_system_tick | std::uint8_t(tim0_cnt_2 >> 1U)));
+    const auto consistent_half_microsecond_tick =
+      static_cast<value_type>
+      (
+        t0_tick_is_consistent ? static_cast<value_type>(sys_tick_1           | static_cast<std::uint8_t>(t0_cnt_1))
+                              : static_cast<value_type>(mcal_gpt_system_tick | static_cast<std::uint8_t>(t0_cnt_2))
+      );
+
+    const auto consistent_microsecond_tick =
+      static_cast<value_type>
+      (
+        static_cast<value_type>
+        (
+          consistent_half_microsecond_tick + static_cast<std::uint8_t>(UINT8_C(1))
+        )
+        / static_cast<std::uint8_t>(UINT8_C(2))
+      );
 
     return consistent_microsecond_tick;
   }
   else
   {
-    return mcal::gpt::value_type(0U);
+    return static_cast<value_type>(UINT8_C(0));
   }
 }
