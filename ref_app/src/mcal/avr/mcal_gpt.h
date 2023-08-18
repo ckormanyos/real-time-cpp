@@ -5,13 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H_
-  #define MCAL_GPT_2011_10_20_H_
+#ifndef MCAL_GPT_2011_10_20_H
+  #define MCAL_GPT_2011_10_20_H
 
   #include <chrono>
   #include <cstdint>
-
-  #include <util/utility/util_noexcept.h>
 
   // Forward declaration of the util::timer template class.
   namespace util
@@ -24,17 +22,17 @@
   {
     namespace gpt
     {
-      typedef void          config_type;
-      typedef std::uint64_t value_type;
+      using config_type = void;
+      using value_type = std::uint64_t;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
       struct secure final
       {
       private:
-        static value_type get_time_elapsed();
+        static auto get_time_elapsed() -> value_type;
 
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
+        friend auto std::chrono::high_resolution_clock::now() noexcept -> std::chrono::high_resolution_clock::time_point;
 
         template<typename unsigned_tick_type>
         friend class util::timer;
@@ -42,4 +40,4 @@
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H_
+#endif // MCAL_GPT_2011_10_20_H
