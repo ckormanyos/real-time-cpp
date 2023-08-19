@@ -15,11 +15,11 @@
 
   namespace mcal { namespace cpu {
 
-  void init();
+  auto init() -> void;
 
-  inline void post_init() { }
+  inline auto post_init() noexcept -> void { }
 
-  inline void nop() { asm volatile("nop"); }
+  inline auto nop() noexcept -> void { asm volatile("nop"); }
 
   } } // namespace mcal::cpu
 
