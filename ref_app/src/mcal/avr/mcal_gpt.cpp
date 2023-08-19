@@ -28,7 +28,9 @@ auto __vector_16(void) -> void __attribute__((signal, used, externally_visible))
 
 auto __vector_16(void) -> void
 {
-  // Increment the 32-bit system tick with 0x100, representing 256 [(1/2) microseconds].
+  // Increment the 32-bit system tick with 0x100, representing 256 [(1/2) us].
+  // This is basically the roll-over of the 8-bit timer0 at 2MHz each 128us.
+
   const auto new_tick =
     static_cast<mcal::gpt::value_type>
     (
@@ -43,13 +45,13 @@ auto mcal::gpt::init(const config_type*) -> void
   if(!gpt_is_initialized())
   {
     // Clear the timer0 overflow flag.
-    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x01U>::reg_set();
+    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tifr0, static_cast<std::uint8_t>(UINT8_C(0x01))>::reg_set();
 
     // Enable the timer0 overflow interrupt.
-    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::timsk0, 0x01U>::reg_set();
+    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::timsk0, static_cast<std::uint8_t>(UINT8_C(0x01))>::reg_set();
 
     // Set the timer0 clock source to f_osc/8 = 2MHz and begin counting.
-    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, 0x02U>::reg_set();
+    mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tccr0b, static_cast<std::uint8_t>(UINT8_C(0x02))>::reg_set();
 
     // Set the is-initialized indication flag.
     gpt_is_initialized() = true;
@@ -78,21 +80,24 @@ auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
     const auto consistent_half_microsecond_tick =
       static_cast<value_type>
       (
-        t0_tick_is_consistent ? static_cast<value_type>(sys_tick_1           | static_cast<std::uint8_t>(t0_cnt_1))
-                              : static_cast<value_type>(mcal_gpt_system_tick | static_cast<std::uint8_t>(t0_cnt_2))
+        t0_tick_is_consistent ? static_cast<value_type>(sys_tick_1           | t0_cnt_1)
+                              : static_cast<value_type>(mcal_gpt_system_tick | t0_cnt_2)
       );
 
-    const auto consistent_microsecond_tick =
+    // Scale the timer0 tick to 1MHz and perform a rounding correction.
+    return
       static_cast<value_type>
       (
-        static_cast<value_type>
+        static_cast<std::uint64_t>
         (
-          consistent_half_microsecond_tick + static_cast<std::uint8_t>(UINT8_C(1))
+          static_cast<std::uint64_t>
+          (
+              static_cast<std::uint64_t>(consistent_half_microsecond_tick)
+            + static_cast<std::uint8_t>(UINT8_C(1))
+          )
+          / static_cast<std::uint8_t>(UINT8_C(2))
         )
-        / static_cast<std::uint8_t>(UINT8_C(2))
       );
-
-    return consistent_microsecond_tick;
   }
   else
   {
