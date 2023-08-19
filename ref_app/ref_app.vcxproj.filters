@@ -502,9 +502,6 @@
     <ClCompile Include="src\mcal\stm32f446\mcal_osc.cpp">
       <Filter>src\mcal\stm32f446</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\stm32f446\mcal_osc_detail.cpp">
-      <Filter>src\mcal\stm32f446</Filter>
-    </ClCompile>
     <ClCompile Include="src\mcal\stm32f446\mcal_port.cpp">
       <Filter>src\mcal\stm32f446</Filter>
     </ClCompile>
@@ -1456,9 +1453,6 @@
       <Filter>src\mcal\stm32f446</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f446\mcal_osc.h">
-      <Filter>src\mcal\stm32f446</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32f446\mcal_osc_detail.h">
       <Filter>src\mcal\stm32f446</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\stm32f446\mcal_port.h">

@@ -37,15 +37,12 @@
     static constexpr auto sys_tick_cal  = static_cast<register_address_type>(sys_tick_base + static_cast<register_address_type>(UINT8_C(0x0C)));
 
     template<const register_address_type address,
-             const register_value_type value = static_cast<register_value_type>(0)>
+             const register_value_type value = static_cast<register_value_type>(UINT8_C(0))>
     struct reg_access_static
     {
-      static register_value_type
-                  reg_get() { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
-
-      static void reg_set() { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
-
-      static void reg_or () { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
+      static auto reg_get() noexcept -> register_value_type { volatile register_value_type* pa = reinterpret_cast<register_value_type*>(address); return *pa; }
+      static auto reg_set() noexcept -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa =       value; }
+      static auto reg_or () noexcept -> void                { volatile register_value_type* pa = reinterpret_cast<volatile register_value_type*>(address); *pa = *pa | value; }
     };
   };
 
@@ -59,14 +56,16 @@
     using register_address_type = typename base_class_type::register_address_type;
     using register_value_type   = typename base_class_type::register_value_type;
 
-    static_assert(std::numeric_limits<register_address_type>::digits == 32,
+    static_assert(std::numeric_limits<register_address_type>::digits == static_cast<int>(INT8_C(32)),
                   "Error: Wrong width of register address type");
 
-    static_assert(std::numeric_limits<register_value_type>::digits == 32,
+    static_assert(std::numeric_limits<register_value_type>::digits == static_cast<int>(INT8_C(32)),
                   "Error: Wrong width of register value type");
 
   public:
     using value_type = typename base_class_type::value_type;
+
+    static constexpr auto sys_tick_mhz() noexcept -> std::uint32_t { return SysTickMHz; }
 
     static auto init() noexcept -> void
     {

@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H_
-  #define MCAL_GPT_2011_10_20_H_
+#ifndef MCAL_GPT_2011_10_20_H
+  #define MCAL_GPT_2011_10_20_H
 
   #include <chrono>
   #include <cstdint>
@@ -24,7 +24,7 @@
   {
     namespace gpt
     {
-      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(168))>;
+      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(180))>;
 
       using config_type = void;
       using value_type  = typename arm_sys_tick_type::value_type;
@@ -47,7 +47,7 @@
           return static_cast<value_type>(local_arm_sys_tick_type::get_time_elapsed());
         }
 
-        friend std::chrono::high_resolution_clock::time_point std::chrono::high_resolution_clock::now() noexcept;
+        friend auto std::chrono::high_resolution_clock::now() noexcept -> std::chrono::high_resolution_clock::time_point;
 
         template<typename unsigned_tick_type>
         friend class util::timer;
@@ -55,4 +55,4 @@
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H_
+#endif // MCAL_GPT_2011_10_20_H
