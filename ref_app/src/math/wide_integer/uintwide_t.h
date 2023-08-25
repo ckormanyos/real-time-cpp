@@ -2925,7 +2925,7 @@
       {
         return uintwide_t(static_cast<representation_type&&>(other_rep));
       }
-      else
+      else // NOLINT(llvm-else-after-return,readability-else-after-return)
       {
         // In the from_rep() function it is actually possible to have
         // a source representation that differs in size from the destination
