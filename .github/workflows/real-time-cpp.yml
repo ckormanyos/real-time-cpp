@@ -183,7 +183,7 @@ jobs:
           echo 'wget-macos-gnu-arm-toolchain'
           echo ""
           mkdir -p macos-gnu-arm-toolchain && cd macos-gnu-arm-toolchain
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi.tar.xz
         working-directory: ${{ runner.workspace }}
       - name: unpack-macos-gnu-arm-toolchain
         run: |
