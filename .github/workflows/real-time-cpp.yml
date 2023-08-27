@@ -183,16 +183,16 @@ jobs:
           echo 'wget-macos-gnu-arm-toolchain'
           echo ""
           mkdir -p macos-gnu-arm-toolchain && cd macos-gnu-arm-toolchain
-          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi.tar.xz
         working-directory: ${{ runner.workspace }}
       - name: unpack-macos-gnu-arm-toolchain
         run: |
           cd ${{ runner.workspace }}/macos-gnu-arm-toolchain
-          tar -xvf arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+          tar -xvf arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi.tar.xz
       - name: target-arm-macos-${{ matrix.suite }}
         run: |
           echo 'set and verify add path macos gnu arm toolchain'
-          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/arm-gnu-toolchain-12.2.rel1-darwin-x86_64-arm-none-eabi/bin:$PATH"
+          PATH="${{ runner.workspace }}/macos-gnu-arm-toolchain/arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi/bin:$PATH"
           echo ""
           echo 'arm-none-eabi-g++ -v'
           arm-none-eabi-g++ -v
