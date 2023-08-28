@@ -53,8 +53,8 @@ TGT_LDFLAGS   = -nostdlib                                                       
 # c:\windows\system32\mode.com com7: dtr=off > NUL  1> NUL
 # C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\avrdude_7_1\avrdude.exe -CC:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\tools\AVR\avrdude\6.3.0-arduino17\etc\avrdude.conf -v -e -patmega4809 -cjtag2updi -PCOM7 -b115200 -Uflash:w:C:\Users\User\Documents\Ks\uC_Software\Boards\real-time-cpp\ref_app\bin\ref_app.hex:i -Ufuse2:w:0x01:m -Ufuse5:w:0xC9:m -Ufuse8:w:0x00:m {upload.extra_files}
 
-AVR_AVRDUDE_TOOL               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude_7_1/avrdude.exe
-AVR_AVRDUDE_CONF               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude_7_1/avrdude.conf
+AVR_AVRDUDE_TOOL               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude-v7.2-windows-x64/avrdude.exe
+AVR_AVRDUDE_CONF               = $(CURDIR)/$(PATH_TOOLS)/AVR/avrdude/avrdude-v7.2-windows-x64/avrdude.conf
 
 AVR_AVRDUDE_FLAGS              = -C$(AVR_AVRDUDE_CONF)               \
                                  -v                                  \
