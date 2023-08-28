@@ -19,10 +19,12 @@
       constexpr std::uint8_t   sfr_offset        = 0x00;
 
       // System registers.
-      constexpr std::uint8_t   reg_ccp           = sfr_offset + 0x34U;
-      constexpr std::uint8_t   reg_mclkctrla     = 0x0060 + 0x00;
-      constexpr std::uint8_t   reg_mclkctrlb     = 0x0060 + 0x01;
-      constexpr std::uint8_t   reg_mclklock      = 0x0060 + 0x02;
+      constexpr std::uint8_t   sys_ccp           = sfr_offset + 0x34U;
+
+      // Clock registers.
+      constexpr std::uint8_t   clk_mclkctrla     = 0x0060 + 0x00;
+      constexpr std::uint8_t   clk_mclkctrlb     = 0x0060 + 0x01;
+      constexpr std::uint8_t   clk_mclklock      = 0x0060 + 0x02;
 
       // Port registers.
       constexpr std::uint16_t  porta             = 0x0400U;
