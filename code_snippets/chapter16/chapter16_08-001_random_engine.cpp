@@ -70,19 +70,21 @@ private:
     // Perform modulo-2 division, one byte at a time.
     for(auto byte = static_cast<std::size_t>(UINT8_C(0)); byte < data.size(); ++byte)
     {
-      constexpr auto left_shift_amount =
-        static_cast<unsigned>
-        (
-          std::numeric_limits<std::uint32_t>::digits - static_cast<int>(INT8_C(8))
-        );
+      {
+        constexpr auto left_shift_amount =
+          static_cast<unsigned>
+          (
+            std::numeric_limits<std::uint32_t>::digits - static_cast<int>(INT8_C(8))
+          );
 
-      // Bring the next byte into the result.
-      crc ^= static_cast<std::uint32_t>(static_cast<std::uint32_t>(data[byte]) << left_shift_amount);
+        // Bring the next byte into the result.
+        crc ^= static_cast<std::uint32_t>(static_cast<std::uint32_t>(data[byte]) << left_shift_amount);
+      }
 
       // Perform a modulo-2 division, one bit at a time.
       for(auto bit = static_cast<std::int_fast8_t>(INT8_C(8)); bit > static_cast<std::int_fast8_t>(INT8_C(0)); --bit)
       {
-        constexpr auto left_shift_amount =
+        const auto left_shift_amount =
           static_cast<unsigned>
           (
             std::numeric_limits<std::uint32_t>::digits - static_cast<int>(INT8_C(1))
