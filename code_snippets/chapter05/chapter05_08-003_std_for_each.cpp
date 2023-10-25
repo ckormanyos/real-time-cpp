@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018.
+//  Copyright Christopher Kormanyos 2018 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,8 @@
 // chapter05_08-003_std_for_each.cpp
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 
 namespace non_std
