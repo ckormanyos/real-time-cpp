@@ -22,7 +22,7 @@ namespace mcal { namespace gpt {
 
   auto init(const config_type*) -> void;
 
-  std::atomic<bool> simulation_is_ended = false;
+  std::atomic<bool> simulation_is_ended { };
 
   struct secure
   {
