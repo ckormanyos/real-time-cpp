@@ -41,10 +41,9 @@ public:
 
   result_type operator()()
   {
-    using clock_type = std::chrono::high_resolution_clock;
+    const auto time_stamp = static_cast<result_type>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
-    const result_type basis_for_seed =
-      static_cast<result_type>(clock_type::now().time_since_epoch().count());
+    const result_type basis_for_seed = static_cast<result_type>(time_stamp);
 
     return static_cast<result_type>(crc32_mpeg2(basis_for_seed));
   }
