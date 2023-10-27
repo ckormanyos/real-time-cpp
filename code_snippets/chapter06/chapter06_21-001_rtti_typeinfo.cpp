@@ -7,6 +7,7 @@
 
 // chapter06_21-001_rtti_typeinfo.cpp
 
+#include <cstdint>
 #include <cstring>
 #include <iostream>
 #include <typeinfo>
