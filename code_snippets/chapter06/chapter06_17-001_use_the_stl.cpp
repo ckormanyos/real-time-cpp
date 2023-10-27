@@ -8,6 +8,7 @@
 // chapter06_17-001_use_the_stl.cpp
 
 #include <array>
+#include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <numeric>

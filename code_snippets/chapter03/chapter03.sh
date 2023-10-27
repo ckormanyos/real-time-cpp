@@ -44,14 +44,18 @@ $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsa
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_11-001_array.cpp                    -o ./bin/chapter03_11-001_array.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_12-001_basic_stl.cpp                -o ./bin/chapter03_12-001_basic_stl.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_13-001_basic_stl_numeric.cpp        -o ./bin/chapter03_13-001_basic_stl_numeric.exe
+if [[ "$GCC" == "g++" ]]; then
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_14-001_atomic_operations.cpp        -o ./bin/chapter03_14-001_atomic_operations.exe
+fi
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_15-001_digit_separators.cpp         -o ./bin/chapter03_15-001_digit_separators.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_15-002_digit_separators.cpp         -o ./bin/chapter03_15-002_digit_separators.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_16-001_binary_literals.cpp          -o ./bin/chapter03_16-001_binary_literals.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_16-002_binary_literals.cpp          -o ./bin/chapter03_16-002_binary_literals.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-001_user_defined_literals.cpp    -o ./bin/chapter03_17-001_user_defined_literals.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-002_user_defined_literals.cpp    -o ./bin/chapter03_17-002_user_defined_literals.exe
+if [[ "$GCC" == "g++" ]]; then
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-003_user_defined_literals.cpp    -o ./bin/chapter03_17-003_user_defined_literals.exe
+fi
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-004_user_defined_literals.cpp    -o ./bin/chapter03_17-004_user_defined_literals.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-005_user_defined_literals.cpp    -o ./bin/chapter03_17-005_user_defined_literals.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_17-006_user_defined_literals.cpp    -o ./bin/chapter03_17-006_user_defined_literals.exe
@@ -65,6 +69,7 @@ $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsa
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_22-001_mersenne_twister_19937.cpp   -o ./bin/chapter03_22-001_mersenne_twister_19937.exe
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter03_22-002_test_random_engines.cpp      -o ./bin/chapter03_22-002_test_random_engines.exe
 
+if [[ "$GCC" == "g++" ]]; then
 ls -la \
 ./bin/chapter03_01-001_declare_locals.exe             \
 ./bin/chapter03_02-001_fixed_size_integer.exe         \
@@ -106,6 +111,47 @@ ls -la \
 ./bin/chapter03_21-001_span.exe                       \
 ./bin/chapter03_22-001_mersenne_twister_19937.exe     \
 ./bin/chapter03_22-002_test_random_engines.exe
+else
+ls -la \
+./bin/chapter03_01-001_declare_locals.exe             \
+./bin/chapter03_02-001_fixed_size_integer.exe         \
+./bin/chapter03_02-002_prime_number.exe               \
+./bin/chapter03_02-002a_explore_prime_numbers.exe     \
+./bin/chapter03_03-001_bool_type.exe                  \
+./bin/chapter03_04-001_namespaces.exe                 \
+./bin/chapter03_04-002_anonymous_namespace.exe        \
+./bin/chapter03_04-003_nested_namespace.exe           \
+./bin/chapter03_05-001_basic_classes.exe              \
+./bin/chapter03_06-001_basic_templates_add.exe        \
+./bin/chapter03_06-002_basic_templates_xy_point.exe   \
+./bin/chapter03_07-001_nullptr.exe                    \
+./bin/chapter03_08-001_constexpr.exe                  \
+./bin/chapter03_08-002_constexpr_more.exe             \
+./bin/chapter03_08-003_constexpr_pown.exe             \
+./bin/chapter03_09-001_static_assert.exe              \
+./bin/chapter03_10-001_limits.exe                     \
+./bin/chapter03_11-001_array.exe                      \
+./bin/chapter03_12-001_basic_stl.exe                  \
+./bin/chapter03_13-001_basic_stl_numeric.exe          \
+./bin/chapter03_15-001_digit_separators.exe           \
+./bin/chapter03_15-002_digit_separators.exe           \
+./bin/chapter03_16-001_binary_literals.exe            \
+./bin/chapter03_16-002_binary_literals.exe            \
+./bin/chapter03_17-001_user_defined_literals.exe      \
+./bin/chapter03_17-002_user_defined_literals.exe      \
+./bin/chapter03_17-004_user_defined_literals.exe      \
+./bin/chapter03_17-005_user_defined_literals.exe      \
+./bin/chapter03_17-006_user_defined_literals.exe      \
+./bin/chapter03_18-001_alignment.exe                  \
+./bin/chapter03_18-002_alignment.exe                  \
+./bin/chapter03_19-001_final.exe                      \
+./bin/chapter03_19-002_final.exe                      \
+./bin/chapter03_20-001_alias.exe                      \
+./bin/chapter03_20-002_alias.exe                      \
+./bin/chapter03_21-001_span.exe                       \
+./bin/chapter03_22-001_mersenne_twister_19937.exe     \
+./bin/chapter03_22-002_test_random_engines.exe
+fi
 
 result_ls=$?
 
