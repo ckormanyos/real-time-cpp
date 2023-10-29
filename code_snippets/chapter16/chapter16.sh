@@ -24,16 +24,10 @@ rm -f ./bin/*.*
 
 echo build snippets with GCC=$GCC STD=$STD
 
-if [[ "$GCC" == "g++" ]]; then
 $GCC -std=$STD -Wall -Wextra -Wpedantic -Werror -Wconversion -Wsign-conversion -O3 -m64 -fsanitize=address -fsanitize=shift -fsanitize=shift-exponent -fsanitize=shift-base -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=enum ./chapter16_08-001_random_engine.cpp        -o ./bin/chapter16_08-001_random_engine.exe
-fi
 
-if [[ "$GCC" == "g++" ]]; then
 ls -la \
 ./bin/chapter16_08-001_random_engine.exe
-else
-ls -la
-fi
 
 result_ls=$?
 
