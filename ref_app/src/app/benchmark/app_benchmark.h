@@ -29,6 +29,7 @@
   #define APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J            18
   #define APP_BENCHMARK_TYPE_HASH_SHA256                        19
   #define APP_BENCHMARK_TYPE_ECC_GENERIC_ECC                    20
+  #define APP_BENCHMARK_TYPE_NON_STD_DECIMAL                    21
 
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -51,6 +52,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_HASH_SHA256
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_ECC_GENERIC_ECC
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NON_STD_DECIMAL
 
   #if !defined(APP_BENCHMARK_TYPE)
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
@@ -100,6 +102,8 @@
   auto run_hash_sha256() -> bool;
   #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_ECC_GENERIC_ECC)
   auto run_ecc_generic_ecc() -> bool;
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL)
+  auto run_non_std_decimal() -> bool;
   #else
   #error APP_BENCHMARK_TYPE is undefined.
   #endif

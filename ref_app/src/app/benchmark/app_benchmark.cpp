@@ -116,6 +116,10 @@ auto app::benchmark::task_func() -> void
 
   const bool result_is_ok = app::benchmark::run_ecc_generic_ecc();
 
+  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL)
+
+  const bool result_is_ok = app::benchmark::run_non_std_decimal();
+
   #endif
 
   // Set the benchmark port pin level to low.

@@ -973,6 +973,9 @@
     <ClCompile Include="src\mcal\nxp_imxrt1062\mcal_cpu.cpp">
       <Filter>src\mcal\nxp_imxrt1062</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\benchmark\app_benchmark_non_std_decimal.cpp">
+      <Filter>src\app\benchmark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
