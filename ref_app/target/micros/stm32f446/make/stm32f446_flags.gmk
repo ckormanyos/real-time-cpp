@@ -15,7 +15,6 @@ GCC_PREFIX    = arm-none-eabi
 
 LINKER_DEFINITION_FILE  := $(PATH_TGT_MAKE)/$(TGT)_with_stdlib.ld
 
-
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                                               \
@@ -36,9 +35,11 @@ TGT_CXXFLAGS  = -std=c++20                                                      
                 -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -IC:/MyGitRepos/cppalliance/decimal/include                       \
-                -IC:/boost/modular_boost/libs/core/include                        \
-                -IC:/boost/modular_boost/libs/config/include
+TGT_INCLUDES  =
+
+#TGT_INCLUDES  = -IC:/MyGitRepos/cppalliance/decimal/include                       \
+#                -IC:/boost/modular_boost/libs/core/include                        \
+#                -IC:/boost/modular_boost/libs/config/include
 
 TGT_AFLAGS    =
 
