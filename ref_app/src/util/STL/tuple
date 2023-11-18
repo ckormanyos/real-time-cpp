@@ -33,11 +33,7 @@
     struct xnothing final
     {
       constexpr xnothing() = default;
-      constexpr xnothing(const xnothing&) = default;
-      constexpr xnothing(xnothing&&) noexcept = default;
       ~xnothing() = default;
-      constexpr auto operator=(const xnothing&) -> xnothing& = default;
-      constexpr auto operator=(xnothing&&) noexcept -> xnothing& = default;
     };
 
     inline constexpr auto operator==(const xnothing&, const xnothing&) noexcept -> bool { return true; }
