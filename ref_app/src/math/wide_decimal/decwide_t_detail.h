@@ -155,7 +155,7 @@
     {
       using local_array_type = std::array<std::uint32_t, 65U>; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-      // Sloane's A029750 List of numbers of the form 2^k times 1, 3, 5 or 7.
+      // Use Sloane's A029750: The so-called 7-smooth numbers having the form 2^k times 1, 3, 5 or 7.
       // CoefficientList[Series[-(x + 1)^2 (x^2 + 1)^2/(2 x^4 - 1), {x, 0, 91}], x]
       constexpr local_array_type a029750_data =
       {{
@@ -188,7 +188,7 @@
   {
     static constexpr auto a000079_as_constexpr(const std::uint32_t value) noexcept -> std::uint32_t // NOLINT(readability-function-cognitive-complexity)
     {
-      // Sloane's A000079 List of numbers of powers of 2.
+      // Use Sloane's A000079: List of numbers of powers of 2.
       // Table[2^n, {n, 0, 31, 1}]
       return ((value <= static_cast<std::uint32_t>(UINT32_C(        8))) ? static_cast<std::uint32_t>(UINT32_C(        8)) : ((value <=  static_cast<std::uint32_t>(UINT32_C(       16))) ?  static_cast<std::uint32_t>(UINT32_C(       16)) : ((value <= static_cast<std::uint32_t>(UINT32_C(       32))) ? static_cast<std::uint32_t>(UINT32_C(       32)) : ((value <= static_cast<std::uint32_t>(UINT32_C(        64))) ? static_cast<std::uint32_t>(UINT32_C(        64)) :
              ((value <= static_cast<std::uint32_t>(UINT32_C(      128))) ? static_cast<std::uint32_t>(UINT32_C(      128)) : ((value <=  static_cast<std::uint32_t>(UINT32_C(      256))) ?  static_cast<std::uint32_t>(UINT32_C(      256)) : ((value <= static_cast<std::uint32_t>(UINT32_C(      512))) ? static_cast<std::uint32_t>(UINT32_C(      512)) : ((value <= static_cast<std::uint32_t>(UINT32_C(      1024))) ? static_cast<std::uint32_t>(UINT32_C(      1024)) :
@@ -303,8 +303,8 @@
         : (std::is_same<local_limb_type, std::uint16_t>::value ? static_cast<std::int32_t>(INT8_C(4))
                                                                : static_cast<std::int32_t>(INT8_C(2))));
 
-    static constexpr auto elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
-    static constexpr auto elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));
+    static constexpr std::int32_t elem_mask      = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10)));
+    static constexpr std::int32_t elem_mask_half = static_cast<std::int32_t>(pow10_maker(static_cast<std::uint32_t>(elem_digits10 / 2)));
 
     static constexpr auto digit_at_pos_in_limb(local_limb_type u, unsigned pos) noexcept -> std::uint8_t
     {
@@ -332,13 +332,13 @@
     using base_class_type = decwide_t_helper_base<LimbType>;
 
   public:
-    static constexpr auto digits10          = ParamDigitsBaseTen;
-    static constexpr auto digits            = digits10;
-    static constexpr auto max_digits10      = static_cast<std::int32_t>(digits10 + static_cast<std::int32_t>(INT32_C(4)));
-    static constexpr auto radix             = static_cast<std::int32_t>(INT32_C(10));
+    static constexpr std::int32_t digits10          = ParamDigitsBaseTen;
+    static constexpr std::int32_t digits            = digits10;
+    static constexpr std::int32_t max_digits10      = static_cast<std::int32_t>(digits10 + static_cast<std::int32_t>(INT32_C(4)));
+    static constexpr std::int32_t radix             = static_cast<std::int32_t>(INT32_C(10));
 
-    static constexpr auto elem_number_extra = static_cast<std::int32_t>(INT32_C(3));
-    static constexpr auto elem_number       = static_cast<std::int32_t>(((digits10 / base_class_type::elem_digits10) + (((digits10 % base_class_type::elem_digits10) != 0) ? 1 : 0)) + elem_number_extra);
+    static constexpr std::int32_t elem_number_extra = static_cast<std::int32_t>(INT32_C(3));
+    static constexpr std::int32_t elem_number       = static_cast<std::int32_t>(((digits10 / base_class_type::elem_digits10) + (((digits10 % base_class_type::elem_digits10) != 0) ? 1 : 0)) + elem_number_extra);
   };
 
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType> constexpr std::int32_t decwide_t_helper<ParamDigitsBaseTen, LimbType>::digits10;          // NOLINT(readability-redundant-declaration,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)

@@ -151,10 +151,17 @@
   namespace math { namespace wide_integer { namespace detail { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
+  // Use a local, constexpr, unsafe implementation of the abs-function.
+  template<typename ArithmeticType>
+  WIDE_INTEGER_CONSTEXPR auto abs_unsafe(ArithmeticType val) -> ArithmeticType
+  {
+    return ((val > static_cast<int>(INT8_C(0))) ? val : -val);
+  }
+
   // Use a local, constexpr, unsafe implementation of the fill-function.
   template<typename DestinationIterator,
            typename ValueType>
-  inline WIDE_INTEGER_CONSTEXPR auto fill_unsafe(DestinationIterator first, DestinationIterator last, ValueType val) -> void
+  WIDE_INTEGER_CONSTEXPR auto fill_unsafe(DestinationIterator first, DestinationIterator last, ValueType val) -> void
   {
     while(first != last)
     {
@@ -167,7 +174,7 @@
   // Use a local, constexpr, unsafe implementation of the copy-function.
   template<typename InputIterator,
            typename DestinationIterator>
-  inline WIDE_INTEGER_CONSTEXPR auto copy_unsafe(InputIterator first, InputIterator last, DestinationIterator dest) -> DestinationIterator
+  WIDE_INTEGER_CONSTEXPR auto copy_unsafe(InputIterator first, InputIterator last, DestinationIterator dest) -> DestinationIterator
   {
     while(first != last)
     {
@@ -191,11 +198,11 @@
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    auto yy = static_cast<local_unsigned_integral_type>(UINT8_C(0));
+    auto yy_val = static_cast<local_unsigned_integral_type>(UINT8_C(0));
 
-    auto nn = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
+    auto nn_val = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
 
-    auto cc = // NOLINT(altera-id-dependent-backward-branch)
+    auto cc_val = // NOLINT(altera-id-dependent-backward-branch)
       static_cast<unsigned>
       (
         std::numeric_limits<local_unsigned_integral_type>::digits / static_cast<int>(INT8_C(2))
@@ -203,23 +210,23 @@
 
     do
     {
-      yy = static_cast<local_unsigned_integral_type>(v >> cc);
+      yy_val = static_cast<local_unsigned_integral_type>(v >> cc_val);
 
-      if(yy != static_cast<local_unsigned_integral_type>(UINT8_C(0)))
+      if(yy_val != static_cast<local_unsigned_integral_type>(UINT8_C(0)))
       {
-        nn -= cc;
+        nn_val -= cc_val;
 
-        v = yy;
+        v = yy_val;
       }
 
-      cc >>= static_cast<unsigned>(UINT8_C(1));
+      cc_val >>= static_cast<unsigned>(UINT8_C(1));
     }
-    while(cc != static_cast<unsigned>(UINT8_C(0))); // NOLINT(altera-id-dependent-backward-branch)
+    while(cc_val != static_cast<unsigned>(UINT8_C(0))); // NOLINT(altera-id-dependent-backward-branch)
 
     return
       static_cast<unsigned>
       (
-        static_cast<unsigned>(nn) - static_cast<unsigned>(v)
+        static_cast<unsigned>(nn_val) - static_cast<unsigned>(v)
       );
   }
 
@@ -495,7 +502,7 @@
 
     WIDE_INTEGER_CONSTEXPR auto swap(dynamic_array&& other) noexcept -> void
     {
-      auto tmp = std::move(*this);
+      const auto tmp = std::move(*this);
 
       *this = std::move(other);
       other = std::move(tmp);
@@ -5738,11 +5745,7 @@
             : static_cast<unsigned_fast_type>(1U + static_cast<unsigned_fast_type>((msb_pos + static_cast<unsigned_fast_type>(UINT8_C(1))) / 2U)))
         );
 
-      local_wide_integer_type
-      u
-      (
-        local_wide_integer_type(static_cast<std::uint_fast8_t>(1U)) << left_shift_amount
-      );
+      auto u = static_cast<local_wide_integer_type>(static_cast<std::uint_fast8_t>(UINT8_C(1))) << left_shift_amount;
 
       // Perform the iteration for the square root.
       // See Algorithm 1.13 SqrtInt, Sect. 1.5.1
@@ -5799,7 +5802,7 @@
             : static_cast<unsigned_fast_type>(static_cast<unsigned_fast_type>(UINT8_C(1)) + static_cast<unsigned_fast_type>(static_cast<unsigned_fast_type>(msb_pos + static_cast<unsigned_fast_type>(static_cast<unsigned_fast_type>(UINT8_C(3)) - msb_pos_mod_3)) / 3U))
         );
 
-      local_wide_integer_type u(local_wide_integer_type(static_cast<std::uint_fast8_t>(1U)) << left_shift_amount);
+      auto u = static_cast<local_wide_integer_type>(static_cast<std::uint_fast8_t>(UINT8_C(1))) << left_shift_amount;
 
       // Perform the iteration for the k'th root.
       // See Algorithm 1.14 RootInt, Sect. 1.5.2
@@ -5880,7 +5883,7 @@
               : static_cast<unsigned_fast_type>(UINT8_C(1)) + static_cast<unsigned_fast_type>(static_cast<unsigned_fast_type>(msb_pos + static_cast<unsigned_fast_type>(k - msb_pos_mod_k)) / k))
           );
 
-        local_wide_integer_type u(local_wide_integer_type(static_cast<std::uint_fast8_t>(1U)) << left_shift_amount);
+        auto u = static_cast<local_wide_integer_type>(static_cast<std::uint_fast8_t>(UINT8_C(1))) << left_shift_amount;
 
         // Perform the iteration for the k'th root.
         // See Algorithm 1.14 RootInt, Sect. 1.5.2
@@ -5933,11 +5936,11 @@
     {
       result = local_wide_integer_type(static_cast<std::uint8_t>(UINT8_C(1)));
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(1)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(1))) && (p == static_cast<OtherIntegralTypeP>(UINT8_C(1))))
     {
       result = b;
     }
-    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == static_cast<OtherIntegralTypeP>(2)))
+    else if((p0 == static_cast<local_limb_type>(UINT8_C(2))) && (p == static_cast<OtherIntegralTypeP>(UINT8_C(2))))
     {
       result  = b;
       result *= b;
@@ -6072,12 +6075,12 @@
       // This handles cases having (u = v) and also (u = v = 0).
       result = u; // LCOV_EXCL_LINE
     }
-    else if((static_cast<local_ushort_type>(v) == static_cast<local_ushort_type>(UINT8_C(0))) && (v == 0U))
+    else if((static_cast<local_ushort_type>(v) == static_cast<local_ushort_type>(UINT8_C(0))) && (v == static_cast<unsigned>(UINT8_C(0))))
     {
       // This handles cases having (v = 0) with (u != 0).
       result = u; // LCOV_EXCL_LINE
     }
-    else if((static_cast<local_ushort_type>(u) == static_cast<local_ushort_type>(UINT8_C(0))) && (u == 0U))
+    else if((static_cast<local_ushort_type>(u) == static_cast<local_ushort_type>(UINT8_C(0))) && (u == static_cast<unsigned>(UINT8_C(0))))
     {
       // This handles cases having (u = 0) with (v != 0).
       result = v;
@@ -6126,7 +6129,7 @@
             const auto my_v_hi =
               static_cast<local_ushort_type>
               (
-                (v.crepresentation().size() >= static_cast<typename local_wide_integer_type::representation_type::size_type>(2U))
+                (v.crepresentation().size() >= static_cast<typename local_wide_integer_type::representation_type::size_type>(UINT8_C(2)))
                   ? static_cast<local_ushort_type>(*detail::advance_and_point(v.crepresentation().cbegin(), static_cast<local_size_type>(UINT8_C(1))))
                   : static_cast<local_ushort_type>(UINT8_C(0))
               );
@@ -6134,7 +6137,7 @@
             const auto my_u_hi =
               static_cast<local_ushort_type>
               (
-                (u.crepresentation().size() >= static_cast<typename local_wide_integer_type::representation_type::size_type>(2U))
+                (u.crepresentation().size() >= static_cast<typename local_wide_integer_type::representation_type::size_type>(UINT8_C(2)))
                   ? static_cast<local_ushort_type>(*detail::advance_and_point(u.crepresentation().cbegin(), static_cast<local_size_type>(UINT8_C(1))))
                   : static_cast<local_ushort_type>(UINT8_C(0))
               );
@@ -6172,10 +6175,8 @@
   {
     using local_integer_type = IntegerType;
 
-    using std::abs;
-
-    const local_integer_type ap = abs(a);
-    const local_integer_type bp = abs(b);
+    const local_integer_type ap = detail::abs_unsafe(a);
+    const local_integer_type bp = detail::abs_unsafe(b);
 
     const auto a_is_greater_than_b = (ap > bp);
 
@@ -6270,7 +6271,7 @@
     }
     else
     {
-      const auto division_is_exact = (ur == 0);
+      const auto division_is_exact = (ur == static_cast<unsigned>(UINT8_C(0)));
 
       if(!division_is_exact) { ++ua; }
 
@@ -6468,16 +6469,14 @@
           value = input_generator();
         }
 
-        const auto next_byte =
-          static_cast<std::uint8_t>
+        const auto right_shift_amount =
+          static_cast<unsigned>
           (
-               value
-            >> static_cast<unsigned>
-               (
-                   static_cast<unsigned_fast_type>(j % digits_gtor_ratio)
-                 * static_cast<unsigned_fast_type>(UINT8_C(8))
-               )
+              static_cast<unsigned_fast_type>(j % digits_gtor_ratio)
+            * static_cast<unsigned_fast_type>(UINT8_C(8))
           );
+
+        const auto next_byte = static_cast<std::uint8_t>(value >> right_shift_amount);
 
         *it =
           static_cast<typename result_type::limb_type>
@@ -6497,7 +6496,7 @@
          || (input_params.get_b() != (std::numeric_limits<result_type>::max)()))
       {
         // Note that this restricts the range r to:
-        //   r = {[input_generator() % ((b - a) + 1)] + a}
+        //   r = { [input_generator() % ((b - a) + 1)] + a }
 
         result_type range(input_params.get_b() - input_params.get_a());
 
