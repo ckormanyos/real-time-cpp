@@ -2102,7 +2102,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       auto result = soft_double { };
 
-      if     (n <  static_cast<SignedIntegralType>(INT8_C(0))) { result = soft_double::my_value_one() / pow(x, static_cast<typename std::make_unsigned<SignedIntegralType>::type>(-n)); }
+      if     (n <  static_cast<SignedIntegralType>(INT8_C(0))) { result = soft_double::my_value_one() / pow(x, static_cast<std::make_unsigned_t<SignedIntegralType>>(-n)); }
       else if(n == static_cast<SignedIntegralType>(INT8_C(0))) { result = soft_double::my_value_one(); }
       else if(n == static_cast<SignedIntegralType>(INT8_C(1))) { result = x; }
       else if(n == static_cast<SignedIntegralType>(INT8_C(2))) { result = x * x; }

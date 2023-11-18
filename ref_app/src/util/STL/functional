@@ -14,6 +14,16 @@
 
   namespace std
   {
+    template <typename T>
+    struct hash
+    {
+        // Since the underlying type is a std::uint64_t we will rely on its hash function from the STL
+        auto operator()(const T&) const noexcept -> std::size_t
+        {
+          return std::size_t { };
+        }
+    };
+
     namespace xfunctional_impl
     {
       template <typename T> constexpr T& func_ref_or_moveref(T& t) noexcept { return t; }
