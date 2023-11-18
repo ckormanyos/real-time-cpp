@@ -98,7 +98,6 @@ fixed_point_dec_type c_dec(fixed_point_dec_type(56) / 10);
 fixed_point_dec_type x_dec(fixed_point_dec_type( 1) /  2);
 fixed_point_dec_type r_dec(fixed_point_dec_type(76) / 10);
 
-
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
 constexpr auto app_benchmark_standalone_foodcafe = static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE));
 
