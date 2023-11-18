@@ -765,8 +765,8 @@
     }
 
     template<typename swap_type>
-    void swap(swap_type& left,
-              swap_type& right)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type& left,
+                                             swap_type& right)
     {
       if(&left != &right)
       {
@@ -775,6 +775,16 @@
         left  = right;
         right = tmp;
       }
+    }
+
+    template<typename swap_type>
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(swap_type&& left,
+                                             swap_type&& right)
+    {
+      const swap_type tmp(left);
+
+      left  = right;
+      right = tmp;
     }
 
     template<typename input_iterator1,
@@ -793,9 +803,9 @@
 
     template<typename input_iterator1,
              typename input_iterator2>
-    input_iterator2 swap_ranges(input_iterator1 first1,
-                                input_iterator1 last1,
-                                input_iterator2 first2)
+    STL_LOCAL_CONSTEXPR_ALGORITHMS input_iterator2 swap_ranges(input_iterator1 first1,
+                                                               input_iterator1 last1,
+                                                               input_iterator2 first2)
     {
       while(first1 != last1)
       {
@@ -810,8 +820,8 @@
 
     template<typename value_type,
              std::size_t N>
-    void swap(value_type(&left) [N],
-              value_type(&right)[N])
+    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(value_type(&left) [N],
+                                             value_type(&right)[N])
     {
       swap_ranges(&left[0U], &left[N], &right[0U]);
     }
