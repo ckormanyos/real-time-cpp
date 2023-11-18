@@ -36,16 +36,16 @@
       constexpr xnothing(const xnothing&) = default;
       constexpr xnothing(xnothing&&) noexcept = default;
       ~xnothing() = default;
-      constexpr xnothing& operator=(const xnothing&) { return *this; }
-      constexpr xnothing& operator=(xnothing&&) noexcept { return *this; }
+      constexpr auto operator=(const xnothing&) -> xnothing& = default;
+      constexpr auto operator=(xnothing&&) noexcept -> xnothing& = default;
     };
 
-    inline constexpr bool operator==(const xnothing&, const xnothing&) { return true; }
-    inline constexpr bool operator!=(const xnothing&, const xnothing&) { return false; }
-    inline constexpr bool operator< (const xnothing&, const xnothing&) { return false; }
-    inline constexpr bool operator<=(const xnothing&, const xnothing&) { return false; }
-    inline constexpr bool operator> (const xnothing&, const xnothing&) { return false; }
-    inline constexpr bool operator>=(const xnothing&, const xnothing&) { return false; }
+    inline constexpr auto operator==(const xnothing&, const xnothing&) noexcept -> bool { return true; }
+    inline constexpr auto operator!=(const xnothing&, const xnothing&) noexcept -> bool { return false; }
+    inline constexpr auto operator< (const xnothing&, const xnothing&) noexcept -> bool { return false; }
+    inline constexpr auto operator<=(const xnothing&, const xnothing&) noexcept -> bool { return false; }
+    inline constexpr auto operator> (const xnothing&, const xnothing&) noexcept -> bool { return false; }
+    inline constexpr auto operator>=(const xnothing&, const xnothing&) noexcept -> bool { return false; }
   }
 
   namespace std
