@@ -35,6 +35,7 @@
   #include <iomanip>
   #include <istream>
   #endif
+  #include <iterator>
   #include <limits>
   #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
   #include <memory>
