@@ -2444,6 +2444,8 @@
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
+    <ClInclude Include="src\util\utility\util_constexpr_algorithm_unsafe.h" />
+    <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h" />
     <ClInclude Include="src\util\utility\util_countof.h" />
     <ClInclude Include="src\util\utility\util_display.h" />
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />

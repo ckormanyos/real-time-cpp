@@ -54,10 +54,7 @@
       typedef const value_type&           reference;
       typedef random_access_iterator_tag  iterator_category;
     };
-  }
 
-  namespace std
-  {
     template<typename my_category,
              typename my_value_type,
              typename my_difference_type = std::ptrdiff_t,

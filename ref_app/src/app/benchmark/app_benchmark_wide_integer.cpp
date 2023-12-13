@@ -9,6 +9,7 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
 
+#define WIDE_INTEGER_DISABLE_WIDE_INTEGER_CONSTEXPR
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 #define WIDE_INTEGER_DISABLE_TO_STRING
 #define WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY
@@ -30,8 +31,8 @@ namespace
   using ::math::wide_integer::uint512_t;
   #endif
 
-  static_assert((   std::numeric_limits<uint256_t>::digits == 256
-                 && std::numeric_limits<uint512_t>::digits == 512),
+  static_assert((   std::numeric_limits<uint256_t>::digits == static_cast<int>(INT16_C(256))
+                 && std::numeric_limits<uint512_t>::digits == static_cast<int>(INT16_C(512))),
                 "Error: Incorrect digit count for this example");
 
   // Note: Some of the comments in this file use the Wolfram Language(TM).
@@ -62,7 +63,7 @@ namespace
 
   auto run_wide_integer_mul() -> bool
   {
-    WIDE_INTEGER_CONSTEXPR bool result_of_mul_is_ok = ((uint512_t(a) * uint512_t(b)) == c);
+    WIDE_INTEGER_CONSTEXPR auto result_of_mul_is_ok = ((uint512_t(a) * uint512_t(b)) == c);
 
     #if (defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0))
     static_assert(result_of_mul_is_ok == true, "Error: result_of_mul_is_ok not OK!");
@@ -75,7 +76,7 @@ namespace
   {
     WIDE_INTEGER_CONSTEXPR uint256_t q(static_cast<std::uint8_t>(UINT8_C(10)));
 
-    WIDE_INTEGER_CONSTEXPR bool result_of_div_is_ok = ((a / b) == q);
+    WIDE_INTEGER_CONSTEXPR auto result_of_div_is_ok = ((a / b) == q);
 
     #if (defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0))
     static_assert(result_of_div_is_ok == true, "Error: result_of_div_is_ok not OK!");
@@ -86,7 +87,7 @@ namespace
 
   auto run_wide_integer_mod() -> bool
   {
-    WIDE_INTEGER_CONSTEXPR bool result_of_mod_is_ok = ((a % b) == m);
+    WIDE_INTEGER_CONSTEXPR auto result_of_mod_is_ok = ((a % b) == m);
 
     #if (defined(WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST) && (WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONST != 0))
     static_assert(result_of_mod_is_ok == true, "Error: result_of_div_is_ok not OK!");
@@ -102,15 +103,15 @@ auto app::benchmark::run_wide_integer() -> bool
 
   bool result_is_ok { };
 
-  if(select_test_case == 0U)
+  if(select_test_case == static_cast<std::uint_fast8_t>(UINT8_C(0)))
   {
     result_is_ok = run_wide_integer_mul();
   }
-  else if(select_test_case == 1U)
+  else if(select_test_case == static_cast<std::uint_fast8_t>(UINT8_C(1)))
   {
     result_is_ok = run_wide_integer_div();
   }
-  else if(select_test_case == 2U)
+  else if(select_test_case == static_cast<std::uint_fast8_t>(UINT8_C(2)))
   {
     result_is_ok = run_wide_integer_mod();
   }

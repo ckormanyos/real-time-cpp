@@ -2262,6 +2262,12 @@
     <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
       <Filter>src\mcal_led</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_constexpr_algorithm_unsafe.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
