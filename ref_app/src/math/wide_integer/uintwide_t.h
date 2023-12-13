@@ -35,7 +35,6 @@
   #include <iomanip>
   #include <istream>
   #endif
-  #include <iterator>
   #include <limits>
   #if !defined(WIDE_INTEGER_DISABLE_IMPLEMENT_UTIL_DYNAMIC_ARRAY)
   #include <memory>
@@ -379,7 +378,7 @@
   {
     using local_iterator_type = ForwardIt;
 
-    using local_difference_type = typename std::iterator_traits<ForwardIt>::difference_type;
+    using local_difference_type = typename iterator_detail::iterator_traits<ForwardIt>::difference_type;
 
     local_difference_type step { };
 
@@ -421,35 +420,25 @@
   namespace distance_detail
   {
     template<class It>
-    constexpr auto do_distance(It first, It last, iterator_detail::input_iterator_tag) -> typename iterator_detail::iterator_traits<It>::difference_type // NOLINT(hicpp-named-parameter,readability-named-parameter)
+    constexpr auto do_distance(It first, It last, detail::iterator_detail::random_access_iterator_tag) -> typename detail::iterator_detail::iterator_traits<It>::difference_type // NOLINT(hicpp-named-parameter,readability-named-parameter)
     {
-      typename iterator_detail::iterator_traits<It>::difference_type result = 0;
+      using local_difference_type = typename detail::iterator_detail::iterator_traits<It>::difference_type;
 
-      while (first != last)
-      {
-        ++first;
-        ++result;
-      }
-
-      return result;
-    }
- 
-    template<class It>
-    constexpr auto do_distance(It first, It last, std::random_access_iterator_tag) -> typename iterator_detail::iterator_traits<It>::difference_type // NOLINT(hicpp-named-parameter,readability-named-parameter)
-    {
-      return last - first;
+      return static_cast<local_difference_type>(last - first);
     }
   } // namespace distance_detail
 
   template<class It>
   constexpr auto distance_unsafe(It first, It last) -> typename iterator_detail::iterator_traits<It>::difference_type
   {
+    using local_iterator_category_type = typename iterator_detail::iterator_traits<It>::iterator_category;
+
     return
-      detail::distance_detail::do_distance
+      distance_detail::do_distance
       (
         first,
         last,
-        typename detail::iterator_detail::iterator_traits<It>::iterator_category()
+        local_iterator_category_type()
       );
   }
 
@@ -7540,7 +7529,17 @@
     const auto chunk_is_whole =
       (chunk_size == static_cast<unsigned>(std::numeric_limits<local_result_value_type>::digits));
 
-    const auto input_distance = static_cast<std::size_t>(detail::distance_unsafe(first, last));
+    std::size_t input_distance { };
+
+    {
+      local_input_iterator_type non_const_first = first;
+
+      while(non_const_first != last) // NOLINT(altera-id-dependent-backward-branch)
+      {
+        ++non_const_first;
+        ++input_distance;
+      }
+    }
 
     if(chunk_is_whole)
     {
@@ -7643,7 +7642,17 @@
     static_assert(std::numeric_limits<local_result_value_type>::digits != std::numeric_limits<local_input_value_type>::digits,
                   "Error: Erroneous match for input element width and result uintwide_t limb width");
 
-    const auto input_distance = static_cast<std::size_t>(detail::distance_unsafe(first, last));
+    std::size_t input_distance { };
+
+    {
+      local_input_iterator_type non_const_first = first;
+
+      while(non_const_first != last) // NOLINT(altera-id-dependent-backward-branch)
+      {
+        ++non_const_first;
+        ++input_distance;
+      }
+    }
 
     val = 0;
 
