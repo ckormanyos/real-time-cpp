@@ -561,8 +561,8 @@ The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
 provides _very_ up-to-date `*nix`-based `avr-gcc` toolchains.
 In this repo, YAML and shell scripts are provided for building `avr-gcc`
 directly from source on GHA runner(s). The Workflow-Run of this repository
-builds GCC on the branches `trunk` and `gcc-13` at the moment.
-The compiler support in this repo is limited to `*nix`'s popular ' `x86_64-linux-gnu` host
+builds GCC on the branches `trunk` and `releases/gcc-13` at the moment.
+Compiler support in this repo is limited to `*nix`'s popular ' `x86_64-linux-gnu` host
 (i.e., runs on LINUX) and cross-compiling for `x86_64-w64-mingw32` does not
 work at the moment (with help wanted flag).
 
