@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2022.
+#  Copyright Christopher Kormanyos 2007 - 2023.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,21 @@
 # punctuation
 # ------------------------------------------------------------------------------
 
-DQUOTE = \"
+DQUOTE       := \"
+$(DQUOTE)    := \"
+
+SEMICOLON    := ;
+$(SEMICOLON) := ;
+
+DOLLAR       := $$
+$(DOLLAR)    := $$
+
+# ------------------------------------------------------------------------------
+# null device
+# ------------------------------------------------------------------------------
+
+NULL_DEVICE     := /dev/null
+$(NULL_DEVICE)  := /dev/null
 
 # ------------------------------------------------------------------------------
 # paths
@@ -136,7 +150,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
 ifeq ($(WARN_FLAGS),)
 WARN_FLAGS =  -Wall                             \
               -Wextra                           \
-              -pedantic                         \
+              -Wpedantic                        \
               -Wmain                            \
               -Wundef                           \
               -Wconversion                      \
@@ -212,7 +226,7 @@ clean_prj:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -226,10 +240,10 @@ clean_all:
 	@-$(MKDIR) -p $(PATH_OBJ)
 	@-$(MKDIR) -p $(PATH_ERR)
 	@-$(MKDIR) -p $(PATH_LST)
-	@-$(RM) -r $(PATH_OBJ)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_ERR)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_LST)   > NUL  2> NUL
-	@-$(RM) -r $(PATH_BIN)   > NUL  2> NUL
+	@-$(RM) -r $(PATH_OBJ) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_ERR) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_LST) 2>$(NULL_DEVICE)
+	@-$(RM) -r $(PATH_BIN) 2>$(NULL_DEVICE)
 	@-$(MKDIR) -p $(PATH_BIN)
 
 
@@ -239,6 +253,7 @@ clean_all:
 .PHONY: version
 version:
   # Print the GNU make version and the compiler version
+	@$(ECHO)
 	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
@@ -251,6 +266,9 @@ version:
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)
 	@$(ECHO)
+	@$(ECHO) +++ Print compiler CXXFLAGS flags
+	@$(ECHO) $(CXXFLAGS)
+	@$(ECHO)
 
 
 # ------------------------------------------------------------------------------
@@ -259,7 +277,7 @@ version:
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
-ifneq ($(GCC_TARGET),riscv64-unknown-elf)
+ifneq ($(findstr risc,$(GCC_TARGET)),)
 	@-$(ECHO) +++ generating assembly list file: $(APP).lss
 	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
 endif

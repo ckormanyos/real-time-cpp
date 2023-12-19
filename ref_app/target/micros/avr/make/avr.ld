@@ -68,12 +68,11 @@ SECTIONS
     . = ALIGN(2);
     *(.text*)
     . = ALIGN(2);
+    *(.rodata)
+    . = ALIGN(2);
+    *(.rodata*)
+    . = ALIGN(2);
   } > ROM
-
-  .text :
-  {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
 
   . = 0x00800100;
   . = ALIGN(2);
@@ -88,12 +87,6 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
-    *(.rodata)  /* Do *NOT* move this! Include .rodata here if gcc is used with -fdata-sections. */
-    . = ALIGN(2);
-    KEEP (*(.rodata))
-    *(.rodata*)
-    . = ALIGN(2);
-    KEEP (*(.rodata*))
     _data_end = .;
   } > RAM AT > ROM
 
