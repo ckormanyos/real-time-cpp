@@ -71,6 +71,9 @@ void* operator new(std::size_t size) noexcept
 }
 
 void operator delete(void*)              noexcept { }
+#if (defined(__GNUC__) && (__GNUC__ >= 12))
+inline
+#endif
 void operator delete(void*, void*)       noexcept { }
 #if(__cplusplus >= 201400L)
 void operator delete(void*, std::size_t) noexcept { }
@@ -145,11 +148,8 @@ extern "C"
 
 namespace std
 {
-  void __throw_out_of_range_fmt(char const*, ...);
-
-  void __throw_out_of_range_fmt(char const*, ...)
-  {
-  }
+  [[noreturn]]
+  void __throw_out_of_range_fmt(char const*, ...)  { for(;;) { ; } }
 }
 
 #if defined(__GNUC__)
