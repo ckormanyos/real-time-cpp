@@ -433,7 +433,7 @@ an issue requesting support for your desired target system.
 ## Benchmarks
 
 [Benchmarks](./ref_app/src/app/benchmark)
-provide scalable, portable C++11 means for identifying
+provide scalable, portable C++14 means for identifying
 the performance and the performance class of the microcontroller.
 For more information, see the detailed information
 on the [benchmarks](./ref_app/src/app/benchmark) pages.
@@ -557,15 +557,24 @@ repository. These instructions provide guidance on using these toolchains
 when selecting the Microsoft(R) VisualStudio(R) project
 (via the usual, above-described MSVC/`Win*`-way) to build the reference application.
 
+The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
+provides _very_ up-to-date `*nix`-based `avr-gcc` toolchains.
+In this repo, YAML and shell scripts are provided for building `avr-gcc`
+directly from source on GHA runner(s). The Workflow-Run of this repository
+builds GCC on the branches `trunk` and `releases/gcc-13` at the moment.
+Compiler support in this repo is limited to `*nix`'s popular ' `x86_64-linux-gnu` host
+(i.e., runs on LINUX) and cross-compiling for `x86_64-w64-mingw32` does not
+work at the moment (with help wanted flag).
+
 ## C++ Language Adherence
 
 A GNU/GCC port (or other compiler)
-with a high level of C++11/14 awareness and adherence
+with a high level of C++14 (or higher) awareness and adherence
 such as GCC 5 through 13 (higher generally being more advantageous)
 or MSVC 14.2 or higher is required for building the reference application
 (and the examples and code snippets).
 
-Some of the code snippets demonstrate language elements not only from C++11/14,
+Some of the code snippets demonstrate language elements not only from C++14,
 but also from C++17, 20, 23. A compiler with C++17 support
 or even C++20, 23 support (such as GCC 13, clang 15, MSVC 14.3, or beyond) can,
 therefore, be beneficial for success with *all* of the code snippets.
