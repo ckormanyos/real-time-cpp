@@ -285,10 +285,6 @@ version:
 $(APP).$(TGT_SUFFIX) : $(LINKER_DEFINITION_FILE) $(FILES_O)
 	@-$(ECHO) +++ linking application to generate: $(APP).$(TGT_SUFFIX)
 	@-$(CC) $(LDFLAGS) $(FILES_O) -o $(APP).$(TGT_SUFFIX)
-ifneq ($(findstr risc,$(GCC_TARGET)),)
-	@-$(ECHO) +++ generating assembly list file: $(APP).lss
-	@-$(OBJDUMP) -h -S $(APP).$(TGT_SUFFIX) > $(APP).lss
-endif
 
 
 # ------------------------------------------------------------------------------
