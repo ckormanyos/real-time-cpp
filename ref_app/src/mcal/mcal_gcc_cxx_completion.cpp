@@ -72,9 +72,9 @@ void* operator new(std::size_t size) noexcept
 
 void operator delete(void*)              noexcept { }
 #if (defined(__GNUC__) && (__GNUC__ >= 12))
-inline
-#endif
+#else
 void operator delete(void*, void*)       noexcept { }
+#endif
 #if(__cplusplus >= 201400L)
 void operator delete(void*, std::size_t) noexcept { }
 #endif
