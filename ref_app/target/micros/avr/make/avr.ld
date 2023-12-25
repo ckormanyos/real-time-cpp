@@ -12,10 +12,6 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:5)
 
-/* The beginning and end of the program ROM area. */
-_rom_begin = 0x00000000;
-_rom_end   = 0x00007FFC;
-
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 0x180=(3/8)K */
 _stack_begin = 0x00800780;
@@ -26,8 +22,9 @@ __initial_stack_pointer = 0x00800900 - 2;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 32K - 4
-  RAM(rw!x) : ORIGIN = 0x00800100, LENGTH = 0x00000780 - 0x00000100
+  VEC(rx)  : ORIGIN = 0,          LENGTH = 0x80
+  ROM(rx)  : ORIGIN = 0x80,       LENGTH = 32K - 0x80
+  RAM(rwx) : ORIGIN = 0x00800100, LENGTH = 0x00000780 - 0x00000100
 }
 
 SECTIONS
@@ -41,7 +38,7 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > VEC = 0x5555
 
   /* Startup code */
   .startup :
