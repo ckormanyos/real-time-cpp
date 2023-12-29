@@ -22,8 +22,8 @@ __initial_stack_pointer = 0x00803FFE;
 
 MEMORY
 {
-  VEC(rx)  : ORIGIN = 0,          LENGTH = 0x100
-  ROM(rx)  : ORIGIN = 0x100,      LENGTH = 48K - 0x100
+  VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000100
+  ROM(rx)  : ORIGIN = 0x00000100, LENGTH = 48K - 0x00000100
   RAM(rwx) : ORIGIN = 0x00802800, LENGTH = 0x00001600
 }
 
@@ -65,10 +65,6 @@ SECTIONS
     . = ALIGN(2);
     *(.text*)
     . = ALIGN(2);
-    *(.rodata)
-    . = ALIGN(2);
-    *(.rodata*)
-    . = ALIGN(2);
   } > ROM
 
   . = 0x00802800;
@@ -84,6 +80,12 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
+    *(.rodata)  /* Use special handling of rodata (i.e., as part of data since _const_ variables are stored in RAM for AVR arch). */
+    . = ALIGN(2);
+    KEEP (*(.rodata))
+    *(.rodata*)
+    . = ALIGN(2);
+    KEEP (*(.rodata*))
     _data_end = .;
   } > RAM AT > ROM
 
