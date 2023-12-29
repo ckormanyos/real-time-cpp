@@ -1,6 +1,5 @@
-
 /*
- Copyright Christopher Kormanyos 2021.
+ Copyright Christopher Kormanyos 2021 - 2023.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,14 +7,10 @@
 
 /* Linker script for ATMEL(R) AVR(R) ATmega32P. */
 
-INPUT(libgcc.a libc.a libm.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:103)
-
-/* The beginning and end of the program ROM area. */
-_rom_begin = 0x00000000;
-_rom_end   = 0x0000BFFC;
 
 /* The beginning and end (i.e., top) of the stack */
 /* Set up a stack with a size of 0x200=(1/2)K */
@@ -27,8 +22,9 @@ __initial_stack_pointer = 0x00803FFE;
 
 MEMORY
 {
-  ROM(rx)   : ORIGIN = 0, LENGTH = 48K - 4
-  RAM(rw!x) : ORIGIN = 0x00802800, LENGTH = 0x00001600
+  VEC(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00000100
+  ROM(rx)  : ORIGIN = 0x00000100, LENGTH = 48K - 0x00000100
+  RAM(rwx) : ORIGIN = 0x00802800, LENGTH = 0x00001600
 }
 
 SECTIONS
@@ -42,7 +38,7 @@ SECTIONS
     *(.isr_vector)
     . = ALIGN(0x10);
     KEEP(*(.isr_vector))
-  } > ROM = 0xAAAA
+  } > VEC = 0x5555
 
   /* Startup code */
   .startup :
@@ -71,11 +67,6 @@ SECTIONS
     . = ALIGN(2);
   } > ROM
 
-  .text :
-  {
-    . = ALIGN(0x10);
-  } > ROM = 0xAAAA
-
   . = 0x00802800;
   . = ALIGN(2);
 
@@ -89,7 +80,7 @@ SECTIONS
     *(.data*)
     . = ALIGN(2);
     KEEP (*(.data*))
-    *(.rodata)  /* Do *NOT* move this! Include .rodata here if gcc is used with -fdata-sections. */
+    *(.rodata)  /* Use special handling of rodata (i.e., as part of data since _const_ variables are stored in RAM for AVR arch). */
     . = ALIGN(2);
     KEEP (*(.rodata))
     *(.rodata*)

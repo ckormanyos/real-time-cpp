@@ -1,11 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2019.
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <mcal_cpu.h>
 
@@ -22,63 +23,63 @@ void __vector_unused_irq()
   }
 }
 
-namespace
+namespace local
 {
   typedef struct struct_isr_type
   {
     typedef void(*function_type)();
 
-    const std::uint8_t  jmp[2]; // JMP instruction (0x940C): 0x0C = low byte, 0x94 = high byte.
-    const function_type func;   // The interrupt service routine.
+    const std::uint8_t  jmp[static_cast<std::size_t>(UINT8_C(2))]; // JMP instruction (0x940C): 0x0C = low byte, 0x94 = high byte.
+    const function_type func;                                      // The interrupt service routine.
   }
   isr_type;
+
+  constexpr auto count_of_isr_vector = static_cast<std::size_t>(UINT8_C(40));
+
+  using isr_vector_array_type = std::array<isr_type, count_of_isr_vector>;
 }
 
-extern "C"
-const volatile std::array<isr_type, 40U> __isr_vector __attribute__((section(".isr_vector")));
-
-extern "C"
-const volatile std::array<isr_type, 40U> __isr_vector =
+const volatile local::isr_vector_array_type my_isr_vector __attribute__((section(".isr_vector"))) =
 {{
-                                              // addr.  nr. interrupt source
-  { { 0x0C, 0x94 }, __my_startup },           // 0x00 RESET
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x02 NMI    Non-Maskable Interrupt from CRC 2
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x04 VLM    Voltage Level Monitor 3
-  { { 0x0C, 0x94 }, __vector_3 },             // 0x06 RTC    Overflow or compare match 4
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x08 PIT    Periodic interrupt 5
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x0A CCL    Configurable Custom Logic 6
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x0C PORTA  External interrupt 7
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x0E TCA0   Overflow 8
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x10 TCA0   Underflow (Split mode) 9
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x12 TCA0   Compare channel 0 
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x14 TCA0   Compare channel 1 11
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x16 TCA0   Compare channel 2 12
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x18 TCB0   Capture 13
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x1A TCB1   Capture 14
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x1C TWI0   Slave 15
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x1E TWI0   Master 16
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x20 SPI0   Serial Peripheral Interface 0 17
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x22 USART0 Receive Complete 18
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x24 USART0 Data Register Empty 19
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x26 USART0 Transmit Complete 20
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x28 PORTD  External interrupt 21
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x2A AC0    Compare 22
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x2C ADC0   Result Ready 23
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x2E ADC0   Window Compare 24
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x30 PORTC  External interrupt 25
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x32 TCB2   Capture 26
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x34 USART1 Receive Complete 27
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x36 USART1 Data Register Empty 28
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x38 USART1 Transmit Complete 29
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x3A PORTF  External interrupt 30
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x3C NVM    Ready 31
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x3E USART2 Receive Complete 32
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x40 USART2 Data Register Empty 33
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x42 USART2 Transmit Complete 34
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x44 PORTB  External interruptX35
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x46 PORTE  External interrupt 36
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x48 TCB3   Capture 37
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x4A USART3 Receive Complete 38
-  { { 0x0C, 0x94 }, __vector_unused_irq },    // 0x4C USART3 Data Register Empty 39
-  { { 0x0C, 0x94 }, __vector_unused_irq }     // 0x4E USART3 Transmit Complete
+                                                                                                                      // address   index   interrupt source
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __my_startup },           // 0x00      0       RESET
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x02      1       NMI    Non-Maskable Interrupt from CRC
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x04      2       VLM    Voltage Level Monitor
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_3 },             // 0x06      3       RTC    Overflow or compare match
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x08      4       PIT    Periodic interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x0A      5       CCL    Configurable Custom Logic
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x0C      6       PORTA  External interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x0E      7       TCA0   Overflow
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x10      8       TCA0   Underflow (Split mode)
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x12      9       TCA0   Compare channel
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x14      10      TCA0   Compare channel 1
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x16      11      TCA0   Compare channel 2
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x18      12      TCB0   Capture
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x1A      13      TCB1   Capture
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x1C      14      TWI0   Slave
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x1E      15      TWI0   Master
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x20      16      SPI0   Serial Peripheral Interface 0
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x22      17      USART0 Receive Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x24      18      USART0 Data Register Empty
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x26      19      USART0 Transmit Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x28      20      PORTD  External interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x2A      21      AC0    Compare
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x2C      22      ADC0   Result Ready
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x2E      23      ADC0   Window Compare
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x30      24      PORTC  External interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x32      25      TCB2   Capture
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x34      26      USART1 Receive Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x36      27      USART1 Data Register Empty
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x38      28      USART1 Transmit Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x3A      29      PORTF  External interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x3C      30      NVM    Ready
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x3E      31      USART2 Receive Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x40      32      USART2 Data Register Empty
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x42      33      USART2 Transmit Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x44      34      PORTB  External interruptX
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x46      35      PORTE  External interrupt
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x48      36      TCB3   Capture
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x4A      37      USART3 Receive Complete
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq },    // 0x4C      38      USART3 Data Register Empty
+  { { static_cast<std::uint8_t>(UINT8_C(0x0C)), static_cast<std::uint8_t>(UINT8_C(0x94)) }, __vector_unused_irq }     // 0x4E      39      USART3 Transmit Complete
 }};
