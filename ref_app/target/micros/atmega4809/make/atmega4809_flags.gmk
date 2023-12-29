@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 
 ifneq ($(MAKE),make)
-GCC_VERSION   = 11.2.0
+GCC_VERSION   = 12.3.0
 endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
@@ -25,11 +25,10 @@ TGT_ALLFLAGS  = -O2                                                             
                 -finline-limit=16                                                 \
                 -fsigned-char                                                     \
 
-ifeq ($(GCC_VERSION),11.2.0)
+ifeq ($(GCC_VERSION),12.3.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
-                -mlong-double=64                                                  \
-                -DAVR_LIBC_LEGACY_IO=0                                            \
-                -D__AVR_DEV_LIB_NAME__=atmega4809
+                -mdouble=32                                                       \
+                -mlong-double=64
 endif
 
 TGT_CFLAGS    = -std=c99                                                          \
