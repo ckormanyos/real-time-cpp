@@ -514,6 +514,21 @@ Here are the build status badges.
 
 The build status badges represent the state of the nightly CI builds and tests.
 
+## Modern `avr-gcc` Toolchain
+
+The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
+builds _very_ up-to-date `avr-gcc` toolchains.
+Shell and YAML scripts build `avr-gcc`
+directly from source on GHA runner(s). The Workflow-Run(s)
+build `avr-gcc` from up-to-date releases such as `12.3.0` or other
+modern branches like `trunk` or `releases/gcc-13`.
+An `x86_64-linux-gnu`-build on `*nix` is provided.
+There is also a dependency-free, statically-linked `x86_64-w64-mingw32`-build
+intended for `Win*`.
+This repo is a great place to learn how to build your own `avr-gcc` toolchain
+from source since the straightforward shell and YAML scripts are easy to use
+or adapt.
+
 ## GNU/GCC Compilers
 
 The reference application and the examples (also the code snippets)
@@ -556,19 +571,6 @@ are available in the
 repository. These instructions provide guidance on using these toolchains
 when selecting the Microsoft(R) VisualStudio(R) project
 (via the usual, above-described MSVC/`Win*`-way) to build the reference application.
-
-The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
-provides _very_ up-to-date `avr-gcc` toolchains.
-In this repo, shell and YAML scripts are provided for building `avr-gcc`
-directly from source on GHA runner(s). The Workflow-Runs of this repository
-build `avr-gcc` from up-to-date releases such as 12.3.0 or modern branches
-like `trunk` and `releases/gcc-13`.
-The is both a build for `x86_64-linux-gnu` on a `*nix` host as well as
-a dependency-free, statically-linked `x86_64-w64-mingw32` build
-for developers using `Win*`.
-This is a great place to learn how to build your own `avr-gcc` toolchain
-from source since the shell and YAML scripts are quite straightforward
-and easy to use or adapt for local builds.
 
 ## C++ Language Adherence
 
