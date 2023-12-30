@@ -558,13 +558,17 @@ when selecting the Microsoft(R) VisualStudio(R) project
 (via the usual, above-described MSVC/`Win*`-way) to build the reference application.
 
 The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
-provides _very_ up-to-date `*nix`-based `avr-gcc` toolchains.
-In this repo, YAML and shell scripts are provided for building `avr-gcc`
-directly from source on GHA runner(s). The Workflow-Run of this repository
-builds GCC on the branches `trunk` and `releases/gcc-13` at the moment.
-Compiler support in this repo is limited to `*nix`'s popular ' `x86_64-linux-gnu` host
-(i.e., runs on LINUX) and cross-compiling for `x86_64-w64-mingw32` does not
-work at the moment (with help wanted flag).
+provides _very_ up-to-date `avr-gcc` toolchains.
+In this repo, shell and YAML scripts are provided for building `avr-gcc`
+directly from source on GHA runner(s). The Workflow-Runs of this repository
+build `avr-gcc` from up-to-date releases such as 12.3.0 or modern branches
+like `trunk` and `releases/gcc-13`.
+The is both a build for `x86_64-linux-gnu` on a `*nix` host as well as
+a dependency-free, statically-linked `x86_64-w64-mingw32` build
+for developers using `Win*`.
+This is a great place to learn how to build your own `avr-gcc` toolchain
+from source since the shell and YAML scripts are quite straightforward
+and easy to use or adapt for local builds.
 
 ## C++ Language Adherence
 
