@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 
 ifneq ($(MAKE),make)
-GCC_VERSION   = 12.3.0
+GCC_VERSION   = 13.2.0
 endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
@@ -24,7 +24,7 @@ TGT_ALLFLAGS  = -Os                                                             
                 -finline-limit=32                                                 \
                 -fsigned-char
 
-ifeq ($(GCC_VERSION),12.3.0)
+ifeq ($(GCC_VERSION),13.2.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=32                                                       \
                 -mlong-double=64

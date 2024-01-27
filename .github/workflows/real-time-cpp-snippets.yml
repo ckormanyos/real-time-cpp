@@ -1,5 +1,5 @@
 ##############################################################################
-#  Copyright Christopher Kormanyos 2023.
+#  Copyright Christopher Kormanyos 2023 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,7 @@ jobs:
         chapter: [ appendix0a, chapter01, chapter03, chapter04, chapter05, chapter07, chapter08, chapter09, chapter12, chapter16, chapter17 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: host-snippets-all
@@ -43,7 +43,7 @@ jobs:
         chapter: [ chapter06 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -77,7 +77,7 @@ jobs:
         chapter: [ chapter10 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop

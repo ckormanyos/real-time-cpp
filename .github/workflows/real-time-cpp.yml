@@ -1,5 +1,5 @@
 ##############################################################################
-#  Copyright Christopher Kormanyos 2021 - 2023.
+#  Copyright Christopher Kormanyos 2021 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,7 @@ jobs:
         standard: [ c++14 ]
         compiler: [ g++, clang++ ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -51,7 +51,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -71,7 +71,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -91,7 +91,7 @@ jobs:
       matrix:
         suite: [ avr, atmega2560 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-osx-cross-homebrew-avr
@@ -135,7 +135,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -155,7 +155,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -175,7 +175,7 @@ jobs:
       matrix:
         suite: [ am335x, bcm2835_raspi_b, lpc11c24, nxp_imxrt1062, stm32f100, stm32f407, stm32f429, stm32f446, stm32h7a3, stm32l100c, stm32l152 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: wget-macos-gnu-arm-toolchain
@@ -215,7 +215,7 @@ jobs:
       matrix:
         suite: [ riscvfe310 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -232,7 +232,7 @@ jobs:
   target-x86_64:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: build-target-x86_64-w64-mingw32
@@ -244,7 +244,7 @@ jobs:
   target-host-cmake:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: build-target-host
@@ -266,7 +266,7 @@ jobs:
       matrix:
         suite: [ Debug, Release ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - uses: ilammy/msvc-dev-cmd@v1
@@ -288,7 +288,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -316,7 +316,7 @@ jobs:
         compiler: [ g++-8, g++-9, clang++-8, clang++-9 ]
         standard: [ c++14, c++17 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -346,7 +346,7 @@ jobs:
         compiler: [ g++-10, clang++-10 ]
         standard: [ c++14, c++17, c++20 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -373,7 +373,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: clone-submods-bootstrap-headers-boost-develop
@@ -400,7 +400,7 @@ jobs:
       matrix:
         standard: [ c++14 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -418,7 +418,7 @@ jobs:
       matrix:
         standard: [ c++14, c++17, c++2a ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -443,7 +443,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -466,7 +466,7 @@ jobs:
         compiler: [ g++, clang++ ]
         standard: [ c++20 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: benchmark_single-cnl
@@ -483,7 +483,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
@@ -520,7 +520,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
