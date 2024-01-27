@@ -10,7 +10,7 @@
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
 
 #if (defined(__GNUC__) && defined(__AVR__) && (__GNUC__ < 10))
-#define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST cons              // NOLINT(cppcoreguidelines-macro-usage)
+#define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST const             // NOLINT(cppcoreguidelines-macro-usage)
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT 0 // NOLINT(cppcoreguidelines-macro-usage)
 #else
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST constexpr         // NOLINT(cppcoreguidelines-macro-usage)
