@@ -17,9 +17,14 @@
 #if !defined(BOOST_DECIMAL_DISABLE_CLIB)
 #define BOOST_DECIMAL_DISABLE_CLIB
 #endif
+#else
+namespace boost
+{
+  using int128_type  = __int128;
+  using uint128_type = unsigned __int128;
+} // namespace boost
 #endif
 
-#include <boost/config.hpp>
 #include <boost/decimal.hpp>
 
 #include <app/benchmark/app_benchmark_detail.h>
