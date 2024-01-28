@@ -19,6 +19,7 @@
 #endif
 #endif
 
+#include <boost/config.hpp>
 #include <boost/decimal.hpp>
 
 #include <app/benchmark/app_benchmark_detail.h>
