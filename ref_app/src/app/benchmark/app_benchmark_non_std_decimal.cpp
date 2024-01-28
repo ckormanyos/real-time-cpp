@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023.
+//  Copyright Christopher Kormanyos 2023 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,23 +13,23 @@
 #define BOOST_DECIMAL_STANDALONE
 #endif
 
-#if !defined(BOOST_DECIMAL_DISABLE_IOSTREAM)
-#define BOOST_DECIMAL_DISABLE_IOSTREAM
+#if !defined(BOOST_DECIMAL_DISABLE_CLIB)
+#define BOOST_DECIMAL_DISABLE_CLIB
 #endif
 
-#include <boost/config.hpp>
 #include <boost/decimal.hpp>
 
 #include <app/benchmark/app_benchmark_detail.h>
-#include <math/softfloat/soft_double.h>
 
 using builtin_float_type    = double;
 using decimal_float_type    = boost::decimal::decimal64;
-using softfloat_type        = ::math::softfloat::float64_t;
 
 //using arithmetic_float_type = builtin_float_type;
-//using arithmetic_float_type = decimal_float_type;
-using arithmetic_float_type = softfloat_type;
+using arithmetic_float_type = decimal_float_type;
+
+static_assert(std::numeric_limits<builtin_float_type>::digits == 53,
+              "Error: Incorrect builtin_float_type definition");
+
 
 #if 0
 GCC11, arm-none-eabi, float-abi=soft, -O2
@@ -55,7 +55,7 @@ target-specific flags
 |--------------------------------|---------------|------------|-------------------|
 | double (built-in, no FPU)      |  22           |   1.0      |       5.6         |
 | ::math::softfloat::float64_t   |  27           |   1.2      |       8.5         |
-| boost::decimal::decimal64      |  2800         |   130      |       34          |
+| boost::decimal::decimal64      |  490          |    22      |       20          |
 #endif
 
 namespace local
@@ -66,12 +66,10 @@ namespace numbers {
 template <typename T> constexpr T                  ln2_v = static_cast<T>(UINT64_C(6931471805599453094)) / UINT64_C(10000000000000000000);
 template <>           constexpr builtin_float_type ln2_v<builtin_float_type> = static_cast<builtin_float_type>(0.6931471805599453094L);
 template <>           constexpr decimal_float_type ln2_v<decimal_float_type> = decimal_float_type { UINT64_C(6931471805599453094), -19 };
-template <>           constexpr softfloat_type     ln2_v<softfloat_type> = softfloat_type::my_value_ln2();
 
 template <typename T> constexpr T                  half_v = static_cast<T>(5) / 10;
 template <>           constexpr builtin_float_type half_v<builtin_float_type> = static_cast<builtin_float_type>(0.5L);
 template <>           constexpr decimal_float_type half_v<decimal_float_type> = decimal_float_type { 5, -1 };
-template <>           constexpr softfloat_type     half_v<softfloat_type> = softfloat_type::my_value_half();
 
 } // namespace numbers
 
@@ -252,7 +250,7 @@ auto exp(T x) noexcept -> T
 extern arithmetic_float_type xarg;
 extern arithmetic_float_type ctrl;
 
-bool app::benchmark::run_non_std_decimal()
+auto app::benchmark::run_non_std_decimal() -> bool
 {
   auto app_benchmark_result_is_ok = true;
 
