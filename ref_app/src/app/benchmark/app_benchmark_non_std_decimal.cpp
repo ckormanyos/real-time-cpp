@@ -13,8 +13,10 @@
 #define BOOST_DECIMAL_STANDALONE
 #endif
 
+#if (defined(__arm__) || defined(__AVR__))
 #if !defined(BOOST_DECIMAL_DISABLE_CLIB)
 #define BOOST_DECIMAL_DISABLE_CLIB
+#endif
 #endif
 
 #include <boost/decimal.hpp>
