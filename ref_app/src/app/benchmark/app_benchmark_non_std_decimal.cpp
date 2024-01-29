@@ -5,6 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <cinttypes>
+#include <cstdint>
+#include <limits>
+#include <type_traits>
+
 #include <app/benchmark/app_benchmark.h>
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL)
@@ -17,20 +22,14 @@
 #if !defined(BOOST_DECIMAL_DISABLE_CLIB)
 #define BOOST_DECIMAL_DISABLE_CLIB
 #endif
-#else
-namespace boost
-{
-  using int128_type  = __int128;
-  using uint128_type = unsigned __int128;
-} // namespace boost
 #endif
 
 #include <boost/decimal.hpp>
 
 #include <app/benchmark/app_benchmark_detail.h>
 
-using builtin_float_type    = double;
-using decimal_float_type    = boost::decimal::decimal64;
+using builtin_float_type = double;
+using decimal_float_type = boost::decimal::decimal64;
 
 //using arithmetic_float_type = builtin_float_type;
 using arithmetic_float_type = decimal_float_type;
