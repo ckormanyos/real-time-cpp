@@ -48,13 +48,11 @@ $\pi$ using a Gauss AGM method with help
 from the [`decwide_t`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/math/wide_decimal/decwide_t.h)
 template class.
 
-The [PDF image](https://github.com/ckormanyos/real-time-cpp/blob/update_docs/ref_app/src/app/benchmark/images/app_benchmark_pi_agm.pdf)
-shows the real-time measurement of this benchmark
-on two of our target systems having vastly different
-performance classes:
-the $8$-bit MICROCHIP(R) AVR controller of the Arduino
+There are strikingly differing performance classes
+for the $8$-bit MICROCHIP(R) AVR controller of the Arduino
 and the $32$-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
+
 The $\pi$ calculation requires approximately
 $470~\text{ms}$ and $1.5~\text{ms}$,
 respectively, on these two microcontroller systems.
