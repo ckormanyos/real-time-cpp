@@ -302,6 +302,10 @@ jobs:
           ./bootstrap.sh
           ./b2 headers
         working-directory: ./
+      - name: clone-cppalliance-decimal
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
+        working-directory: ./
       - name: benchmark_gcc-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
@@ -331,6 +335,10 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
           ./b2 headers
+        working-directory: ./
+      - name: clone-cppalliance-decimal
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
         working-directory: ./
       - name: benchmark_gcc-clang-8-9
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -362,6 +370,10 @@ jobs:
           ./bootstrap.sh
           ./b2 headers
         working-directory: ./
+      - name: clone-cppalliance-decimal
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
+        working-directory: ./
       - name: benchmark_gcc-clang-10
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
         working-directory: ./ref_app/
@@ -386,6 +398,10 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
           ./b2 headers
+        working-directory: ./
+      - name: clone-cppalliance-decimal
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
         working-directory: ./
       - name: benchmark_apple-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -433,6 +449,10 @@ jobs:
           git submodule update --init libs/multiprecision
           ./bootstrap.sh
           ./b2 headers
+        working-directory: ./
+      - name: clone-cppalliance-decimal
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
         working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}

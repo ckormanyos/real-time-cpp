@@ -22,6 +22,7 @@ FILES_CPP  = $(PATH_APP)/app/benchmark/app_benchmark                            
              $(PATH_APP)/app/benchmark/app_benchmark_float                           \
              $(PATH_APP)/app/benchmark/app_benchmark_hash                            \
              $(PATH_APP)/app/benchmark/app_benchmark_hash_sha256                     \
+             $(PATH_APP)/app/benchmark/app_benchmark_non_std_decimal                 \
              $(PATH_APP)/app/benchmark/app_benchmark_none                            \
              $(PATH_APP)/app/benchmark/app_benchmark_pi_agm                          \
              $(PATH_APP)/app/benchmark/app_benchmark_pi_spigot                       \

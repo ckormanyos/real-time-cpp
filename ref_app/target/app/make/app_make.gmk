@@ -155,23 +155,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
 ifeq ($(WARN_FLAGS),)
 WARN_FLAGS =  -Wall                             \
               -Wextra                           \
-              -Wpedantic                        \
-              -Wmain                            \
-              -Wundef                           \
-              -Wconversion                      \
-              -Wsign-conversion                 \
-              -Wunused-parameter                \
-              -Wuninitialized                   \
-              -Wmissing-declarations            \
-              -Wshadow                          \
-              -Wunreachable-code                \
-              -Wswitch-default                  \
-              -Wswitch-enum                     \
-              -Wcast-align                      \
-              -Wmissing-include-dirs            \
-              -Winit-self                       \
-              -Wfloat-equal                     \
-              -Wdouble-promotion
+              -Wpedantic
 endif
 
 GCCFLAGS    = -g                                \
