@@ -54,6 +54,8 @@ The result is LED on for one second, LED off for one second.
 The LED application runs cyclically and perpetually
 without break or pause.
 
+The reference application is compatible with C++14, 17, 20, 23 and beyond.
+
 ## Portability
 
 The application software is implemented once and used uniformly
@@ -83,13 +85,13 @@ The reference application supports the following targets:
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
-| `stm32f100`                            | ST Microelectronics(R) STM32F100 ARM(R) Cortex(R)-M3        |
-| `stm32l100c`                           | ST Microelectronics(R) STM32L100 ARM(R) Cortex(R)-M3        |
-| `stm32l152`                            | ST Microelectronics(R) STM32L152 ARM(R) Cortex(R)-M3        |
-| `stm32f407`                            | ST Microelectronics(R) STM32F407 ARM(R) Cortex(R)-M4        |
-| `stm32f429`                            | ST Microelectronics(R) STM32F429 ARM(R) Cortex(R)-M4        |
-| `stm32f446`                            | ST Microelectronics(R) STM32F446 ARM(R) Cortex(R)-M4        |
-| `stm32h7a3`                            | ST Microelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7        |
+| `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         |
+| `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         |
+| `stm32l152`                            | STMicroelectronics(R) STM32L152 ARM(R) Cortex(R)-M3         |
+| `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4         |
+| `stm32f429`                            | STMicroelectronics(R) STM32F429 ARM(R) Cortex(R)-M4         |
+| `stm32f446`                            | STMicroelectronics(R) STM32F446 ARM(R) Cortex(R)-M4         |
+| `stm32h7a3`                            | STMicroelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7         |
 | `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
@@ -433,7 +435,7 @@ an issue requesting support for your desired target system.
 ## Benchmarks
 
 [Benchmarks](./ref_app/src/app/benchmark)
-provide scalable, portable C++14 means for identifying
+provide scalable, portable means for identifying
 the performance and the performance class of the microcontroller.
 For more information, see the detailed information
 on the [benchmarks](./ref_app/src/app/benchmark) pages.
@@ -446,7 +448,7 @@ No external libraries other than native C++ and its own
 standard libraries are used.
 
 Consider, for instance, the BeagleBone Black Edition
-(BBB, also known as `target am335x`) --- one
+(BBB, also known as `target am335x`) which is one
 of several popular
 target systems supported in this repository.
 The projects on this board boot from the binary image file

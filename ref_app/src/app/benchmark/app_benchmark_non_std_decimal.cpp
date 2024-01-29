@@ -65,11 +65,11 @@ namespace local
 
 namespace numbers {
 
-template <typename T> constexpr T                  ln2_v = static_cast<T>(UINT64_C(6931471805599453094)) / UINT64_C(10000000000000000000);
+template <typename T> constexpr T                  ln2_v = static_cast<T>(static_cast<T>(UINT64_C(6931471805599453094)) / UINT64_C(10000000000000000000));
 template <>           constexpr builtin_float_type ln2_v<builtin_float_type> = static_cast<builtin_float_type>(0.6931471805599453094L);
-template <>           constexpr decimal_float_type ln2_v<decimal_float_type> = decimal_float_type { UINT64_C(6931471805599453094), -19 };
+template <>           constexpr decimal_float_type ln2_v<decimal_float_type> = ::boost::decimal::numbers::ln2_v<decimal_float_type>;
 
-template <typename T> constexpr T                  half_v = static_cast<T>(5) / 10;
+template <typename T> constexpr T                  half_v = static_cast<T>(static_cast<T>(5) / 10);
 template <>           constexpr builtin_float_type half_v<builtin_float_type> = static_cast<builtin_float_type>(0.5L);
 template <>           constexpr decimal_float_type half_v<decimal_float_type> = decimal_float_type { 5, -1 };
 
@@ -82,9 +82,7 @@ auto pow_n_impl(T b, UnsignedIntegralType p) noexcept -> std::enable_if_t<(std::
 {
   using local_unsigned_integral_type = UnsignedIntegralType;
 
-  constexpr T one { 1 };
-
-  T result { };
+  T result { 1 };
 
   if (p < static_cast<local_unsigned_integral_type>(UINT8_C(5)))
   {
@@ -100,14 +98,12 @@ auto pow_n_impl(T b, UnsignedIntegralType p) noexcept -> std::enable_if_t<(std::
         result = b; break;
       case static_cast<local_unsigned_integral_type>(UINT8_C(0)):
       default:
-        result = one; break;
+        break;
     }
   }
   else
   {
     // Calculate (b ^ p) using the ladder method for powers.
-
-    result = one;
 
     T y(b);
 
@@ -141,9 +137,7 @@ auto pow_n_impl(T b, UnsignedIntegralType p) noexcept -> std::enable_if_t<(std::
 template<typename T>
 auto pow_2_impl(int e2) noexcept -> T
 {
-  constexpr T one { 1 };
-
-  T result { };
+  T result { 1 };
 
   if(e2 > 0)
   {
@@ -164,9 +158,7 @@ auto pow_2_impl(int e2) noexcept -> T
 
     if(e2 > static_cast<int>(INT8_C(-64)))
     {
-      const T local_p2 = static_cast<T>(static_cast<std::uint64_t>(UINT64_C(1) << e2_neg));
-
-      result = one / local_p2;
+      result /= static_cast<std::uint64_t>(static_cast<std::uint64_t>(UINT64_C(1) << e2_neg));
     }
     else
     {
@@ -179,7 +171,7 @@ auto pow_2_impl(int e2) noexcept -> T
   }
   else
   {
-    result = one;
+    // result = one;
   }
 
   return result;
@@ -190,14 +182,11 @@ auto pow_2_impl(int e2) noexcept -> T
 template<typename T>
 auto exp(T x) noexcept -> T
 {
-  constexpr T zero { 0 };
-  constexpr T one  { 1 };
-
-  auto result = zero;
+  T result { 1 };
 
   if (x < 0)
   {
-    result = one / local::exp(-x);
+    result /= local::exp(-x);
   }
   else if (x > 0)
   {
@@ -225,23 +214,17 @@ auto exp(T x) noexcept -> T
     const T top = T { UINT8_C(84) } * x * ( T { UINT16_C(7920) } + ( T { UINT8_C(240) } + x2) * x2);
     const T bot = T { UINT32_C(665280) } + x * (T { INT32_C(-332640) } + x * (T { UINT32_C(75600) } + x * (T { INT16_C(-10080) } + x * (T { UINT16_C(840) } + (T { INT8_C(-42) } + x) * x))));
 
-    result = one + (top / bot);
+    result += (top / bot);
 
     if (nf2 > 0)
     {
-      if (nf2 < 64)
-      {
-        result *= static_cast<T>(static_cast<std::uint64_t>(UINT64_C(1) << static_cast<unsigned>(nf2)));
-      }
-      else
-      {
-          result *= detail::pow_2_impl<T>(nf2);
-      }
+      (nf2 < 64) ? result *= static_cast<T>(static_cast<std::uint64_t>(UINT64_C(1) << static_cast<unsigned>(nf2)))
+                 : result *= detail::pow_2_impl<T>(nf2);
     }
-    else
-    {
-      result = T { 1 };
-    }
+  }
+  else
+  {
+    // result = one;
   }
 
   return result;
