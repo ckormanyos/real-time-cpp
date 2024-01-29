@@ -43,12 +43,12 @@ a wide range of microcontroller _performance_ _classes_.
 Consider, for instance,
 [app_benchmark_pi_agm.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_pi_agm.cpp)
 which exercises the benchmark of type `APP_BENCHMARK_TYPE_PI_AGM`.
-This benchmark compute $53$ decimal digits of the mathematical constant
+This benchmark compute ${\sim}~50~{\ldots}~100$ decimal digits of the mathematical constant
 $\pi$ using a Gauss AGM method with help
 from the [`decwide_t`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/math/wide_decimal/decwide_t.h)
 template class.
 
-The [PDF image](images/app_benchmark_pi_agm.pdf)
+The [PDF image](https://github.com/ckormanyos/real-time-cpp/blob/update_docs/ref_app/src/app/benchmark/images/app_benchmark_pi_agm.pdf)
 shows the real-time measurement of this benchmark
 on two of our target systems having vastly different
 performance classes:
