@@ -13,8 +13,10 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL)
 
+#if (defined(__arm__) || defined(__AVR__))
 #if !defined(BOOST_DECIMAL_DISABLE_CLIB)
 #define BOOST_DECIMAL_DISABLE_CLIB
+#endif
 #endif
 
 #include <boost/decimal.hpp>
