@@ -56,3 +56,11 @@ of the BeagleBone Black Edition, Rev. C.
 The $\pi$ calculation requires approximately
 $470~\text{ms}$ and $1.5~\text{ms}$,
 respectively, on these two microcontroller systems.
+
+The range of performance classes is shown in the following table.
+
+| Target      |  runtime [ms] |  relative  |
+|-------------|---------------|------------|
+| avr         |  470          |    370     |
+| stm32f446   |  2.5          |    1.7     |
+| am335x      |  1.5          |    1.0     |
