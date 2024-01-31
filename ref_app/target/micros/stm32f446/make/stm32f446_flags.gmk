@@ -35,11 +35,7 @@ TGT_CXXFLAGS  = -std=c++20                                                      
                 -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  =
-
-#TGT_INCLUDES  = -IC:/MyGitRepos/cppalliance/decimal/include                       \
-#                -IC:/boost/modular_boost/libs/core/include                        \
-#                -IC:/boost/modular_boost/libs/config/include
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

@@ -11,7 +11,7 @@ MEMORY
 {
   ROM  (rx)   : org = 0x00000000, len = 128K
   RAM  (rw!x) : org = 0x03FFD800, len = 0x1000
-  stack(rw!x) : org = 0x03FFE800, len = 0x0800
+  STACK(rw!x) : org = 0x03FFE800, len = 0x0800
 }
 
 SECTIONS
@@ -148,7 +148,7 @@ SECTIONS
   .stack :
   {
     *(.stack)
-  } > stack
+  } > STACK
 
   _rom_data_begin = LOADADDR(.data);
 }

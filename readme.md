@@ -31,8 +31,8 @@ Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
 (Springer, Heidelberg, 2021) ISBN 9783662629956.
 
-This repository has three main parts.
-  - Reference Application `ref_app` located in [./ref_app](./ref_app)
+This repository has several main parts.
+  - Reference Application `ref_app` located in [ref_app](./ref_app). This also includes the [benchmarks](./ref_app/src/app/benchmark).
   - [Examples](./examples) from the book
   - [Code Snippets](./code_snippets) from the book
 

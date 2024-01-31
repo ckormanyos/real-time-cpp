@@ -48,11 +48,19 @@ $\pi$ using a Gauss AGM method with help
 from the [`decwide_t`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/math/wide_decimal/decwide_t.h)
 template class.
 
+A typical range of performance classes is shown in the following table.
+The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
+
+| Target      |  runtime [ms] |  relative  |
+|-------------|---------------|------------|
+| am335x      |  1.5          |    1.0     |
+| stm32f446   |  2.5          |    1.7     |
+| avr         |  470          |    370     |
+
 There are strikingly differing performance classes
 for the $8$-bit MICROCHIP(R) AVR controller of the Arduino
 and the $32$-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
-
 The $\pi$ calculation requires approximately
 $470~\text{ms}$ and $1.5~\text{ms}$,
 respectively, on these two microcontroller systems.
