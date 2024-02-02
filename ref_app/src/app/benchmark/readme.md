@@ -1,4 +1,17 @@
-﻿# Benchmarks and Performance Classes
+﻿Real-Time-C++ - Benchmarks
+==================
+
+# Benchmarks and Performance Classes
+
+<p align="center">
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
+        <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
+    <a href="https://godbolt.org/z/j4aM9vzr9" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
 
 ## Benchmarks
 
@@ -8,6 +21,22 @@
   - Every benchmark file can also be compiled separately as a standalone C++14, 17, 20, 23 and beyond project.
   - A benchmark digital I/O pin is toggled hi/lo at begin/end of the benchmark run providing for oscilloscope real-time measurement.
   - The benchmarks provide scalable, portable means for identifying the performance class of the microcontroller.
+
+## Executing the benchmarks
+
+Executing the benchmarks is straightforward. Select the desired benchmark and
+activate its corresponding flag in [app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.h)
+Compile the reference application and run on the target.
+The benchmark timing will be reflected on microcontroller-mcal's corresponding
+benchmark port pin.
+
+Individual benchmarks can also be run standalone on any C++ cplatform.
+In the following [short link](https://godbolt.org/z/j4aM9vzr9)
+to [godbolt](https://godbolt.org), we have adapted the
+`APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` benchmark for standalone use.
+Note also that the presence of the `main()` subroutine is activated with
+the compiler definition `APP_BENCHMARK_STANDALONE_MAIN`.
+
 
 ## Benchmark details
 
