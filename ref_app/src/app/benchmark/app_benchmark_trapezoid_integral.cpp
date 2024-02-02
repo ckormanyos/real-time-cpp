@@ -14,14 +14,15 @@
 #include <cstdint>
 
 #if (defined(__has_include) && (__has_include(<stdfloat>)))
-#include <stdfloat>
-#include <util/STL_C++XX_stdfloat/cstdfloat>
+  #include <stdfloat>
+  #if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
+  using my_float_type = std::float64_t;
+  #else
+  using my_float_type = float;
 #endif
-
-#if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
-using my_float_type = std::float64_t;
 #else
-using my_float_type = float;
+  #include <util/STL_C++XX_stdfloat/cstdfloat>
+  using my_float_type = std::floatmax_t;
 #endif
 
 #include <app/benchmark/app_benchmark_detail.h>
