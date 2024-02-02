@@ -1,6 +1,17 @@
-﻿# Benchmarks and Performance Classes
+﻿Real-Time-C++ - Benchmarks
+==================
 
-## Benchmarks
+<p align="center">
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
+        <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
+    <a href="https://godbolt.org/z/j4aM9vzr9" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
+
+## Implementation details
 
   - The benchmarks provide code that exercises microcontroller performance.
   - Various efficiency aspects are emphasized such as integral and floating-point calculations, looping, branching, etc.
@@ -9,7 +20,23 @@
   - A benchmark digital I/O pin is toggled hi/lo at begin/end of the benchmark run providing for oscilloscope real-time measurement.
   - The benchmarks provide scalable, portable means for identifying the performance class of the microcontroller.
 
-## Benchmark details
+## Executing the benchmarks
+
+Executing the benchmarks is straightforward. Select the desired benchmark and
+activate its corresponding flag in [app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.h)
+Compile the reference application and run on the target.
+The benchmark timing will be reflected on microcontroller-mcal's corresponding
+benchmark port pin.
+
+Individual benchmarks can also be run standalone on any C++ cplatform.
+In the following [short link](https://godbolt.org/z/j4aM9vzr9)
+to [godbolt](https://godbolt.org), we have adapted the
+`APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` benchmark for standalone use.
+Note also that the presence of the `main()` subroutine is activated with
+the compiler definition `APP_BENCHMARK_STANDALONE_MAIN`.
+
+
+## Individual benchmarks
 
   - ![app_benchmark_none.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.cpp) via `#define APP_BENCHMARK_TYPE_NONE` is an empty benchmark with merely a Boolean function call returning `true`.
   - ![app_benchmark_complex.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_complex.cpp) via `#define APP_BENCHMARK_TYPE_COMPLEX` computes a floating-point complex-valued trigonometric sine function using the [`extended_complex::complex`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/math/extended_complex/extended_complex.h) template class.
@@ -34,7 +61,7 @@
   - ![app_benchmark_ecc_generic_ecc.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_ecc_generic_ecc.cpp) via `#define APP_BENCHMARK_TYPE_ECC_GENERIC_ECC` provides an intuitive view on elliptic-curve algebra, depicting a well-known $256$-bit cryptographic key-gen/sign/verify method. This benchmark is actually too lengthy to run on most of our embedded targets (other than BBB or RPI-zero) and adaptions of OS/watchdog are required in order to run this benchmark on the metal.
   - ![app_benchmark_non_std_decimal.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_non_std_decimal.cpp) via `#define APP_BENCHMARK_TYPE_NON_STD_DECIMAL` carries out a $64$-bit decimal-floating-point calculation of the exponential function using the contemporary [cpplliance/decimal](https://github.com/cppalliance/decimal) library. This benchmark does not, at the moment, run on the AVR target, but requires a larger microcontroller such as one of the $32$-bit ARM(R) devices.
 
-## Performance classes
+## Benchmarks and performance classes
 
 Most of the benchmarks run on each supported target system.
 Experience with runs on the individual target systems reveal

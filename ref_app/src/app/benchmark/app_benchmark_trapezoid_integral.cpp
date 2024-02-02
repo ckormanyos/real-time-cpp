@@ -1,5 +1,5 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2022.
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2021 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,11 +9,24 @@
 
 #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
 
+// See also: https://godbolt.org/z/j4aM9vzr9
+
 #include <cstdint>
 
-#include <util/STL_C++XX_stdfloat/cstdfloat>
+#if (defined(__has_include) && (__has_include(<stdfloat>)))
+  #include <stdfloat>
+  #if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
+  using my_float_type = std::float64_t;
+  #else
+  using my_float_type = float;
+#endif
+#else
+  #include <util/STL_C++XX_stdfloat/cstdfloat>
+  using my_float_type = std::floatmax_t;
+#endif
 
 #include <app/benchmark/app_benchmark_detail.h>
+#include <math/calculus/derivative.h>
 #include <math/calculus/integral.h>
 #include <math/constants/constants.h>
 
@@ -49,8 +62,6 @@ namespace
 
 auto app::benchmark::run_trapezoid_integral() -> bool
 {
-  using my_float_type = std::floatmax_t;
-
   static_assert((std::numeric_limits<my_float_type>::digits >= 24),
                 "Error: Incorrect my_float_type type definition");
 
@@ -58,7 +69,7 @@ auto app::benchmark::run_trapezoid_integral() -> bool
     static_cast<my_float_type>
     (
         std::numeric_limits<my_float_type>::epsilon()
-      * static_cast<my_float_type>(FLOATMAX_C(100.0))
+      * static_cast<my_float_type>(100.0L)
     );
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333
@@ -67,13 +78,13 @@ auto app::benchmark::run_trapezoid_integral() -> bool
     cyl_bessel_j
     (
       UINT8_C(2),
-      static_cast<my_float_type>(FLOATMAX_C(1.23))
+      static_cast<my_float_type>(1.23L)
     );
 
   const bool app_benchmark_result_is_ok =
     detail::is_close_fraction
     (
-      static_cast<my_float_type>(FLOATMAX_C(0.1663693837868140735126785243)),
+      static_cast<my_float_type>(0.1663693837868140735126785243L),
       j2,
       app_benchmark_tolerance
     );
