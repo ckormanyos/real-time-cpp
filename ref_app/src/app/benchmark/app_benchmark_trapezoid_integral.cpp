@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -15,8 +15,13 @@
 
 #if (defined(__has_include) && (__has_include(<stdfloat>)))
 #include <stdfloat>
-#else
 #include <util/STL_C++XX_stdfloat/cstdfloat>
+#endif
+
+#if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
+using my_float_type = std::float64_t;
+#else
+using my_float_type = float;
 #endif
 
 #include <app/benchmark/app_benchmark_detail.h>
@@ -56,8 +61,6 @@ namespace
 
 auto app::benchmark::run_trapezoid_integral() -> bool
 {
-  using my_float_type = std::float64_t;
-
   static_assert((std::numeric_limits<my_float_type>::digits >= 24),
                 "Error: Incorrect my_float_type type definition");
 
