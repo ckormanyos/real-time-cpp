@@ -25,11 +25,12 @@
 Executing the benchmarks is straightforward. Select the desired benchmark and
 activate its corresponding flag in
 [app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark.h).
-In particular, `#define` the flag `APP_BENCHMARK_TYPE` to be one of the pre-defined benchmark types
-(typically done by sinply un-commenting one of the easily-found relevant lines.
+In particular, `#define` the flag `APP_BENCHMARK_TYPE` to be one of the pre-defined benchmark types.
+This is typically done by simply un-commenting one of the easily-found relevant lines around
+[line 34 here](https://github.com/ckormanyos/real-time-cpp/blob/da091570f30347ab729dcafb46a2e3708ba0ab22/ref_app/src/app/benchmark/app_benchmark.h#L34).
 Compile the reference application and run on the target.
 The benchmark timing will be reflected on microcontroller's corresponding
-benchmark port pin (in its MCAL).
+benchmark port pin (the definition of which can be found in its target-specific MCAL).
 
 Individual benchmarks can also be run standalone on any C++ platform.
 In the following [short link](https://godbolt.org/z/j4aM9vzr9)
