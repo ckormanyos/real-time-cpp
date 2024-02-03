@@ -519,17 +519,14 @@ The build status badges represent the state of the nightly CI builds and tests.
 ## Modern `avr-gcc` Toolchain
 
 The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
-builds _very_ up-to-date `avr-gcc` toolchains.
-Shell and YAML scripts build `avr-gcc`
-directly from source on GHA runner(s). The Workflow-Run(s)
-build `avr-gcc` from up-to-date releases such as `12.3.0` or other
-modern branches like `trunk` or `releases/gcc-13`.
-An `x86_64-linux-gnu`-build on `*nix` is provided.
-There is also a dependency-free, statically-linked `x86_64-w64-mingw32`-build
-intended for `Win*`.
+builds up-to-date `avr-gcc` toolchains for `x86_64-linux-gnu` and `x86_64-w64-mingw32`.
+Shell and YAML scripts build `avr-gcc` directly from source on GHA runner(s).
+In addition, occasional GitHub-releases provide pre-built
+`avr-gcc` toolchains for `x86_64-linux-gnu` and `x86_64-w64-mingw32`.
+
 This repo is a great place to learn how to build your own `avr-gcc` toolchain
-from source since the straightforward shell and YAML scripts are easy to use
-or adapt.
+from source. The straightforward, well-described shell and YAML scripts
+are easy to understand, use or adapt.
 
 ## GNU/GCC Compilers
 

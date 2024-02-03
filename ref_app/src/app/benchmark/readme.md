@@ -24,7 +24,9 @@
 
 Executing the benchmarks is straightforward. Select the desired benchmark and
 activate its corresponding flag in
-[app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.h)
+[app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark.h).
+In particular, `#define` the flag `APP_BENCHMARK_TYPE` to be one of the pre-defined benchmark types
+(typically done by sinply un-commenting one of the easily-found relevant lines.
 Compile the reference application and run on the target.
 The benchmark timing will be reflected on microcontroller's corresponding
 benchmark port pin (in its MCAL).
