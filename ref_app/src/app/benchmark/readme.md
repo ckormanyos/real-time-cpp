@@ -3,10 +3,10 @@
 
 <p align="center">
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
-        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-benchmarks.yml/badge.svg" alt="Build Benchmarks"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/j4aM9vzr9" alt="godbolt">
+    <a href="https://godbolt.org/z/8ahv5Ghx5" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -23,18 +23,18 @@
 ## Executing the benchmarks
 
 Executing the benchmarks is straightforward. Select the desired benchmark and
-activate its corresponding flag in [app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.h)
+activate its corresponding flag in
+[app_benchmark.h](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_none.h)
 Compile the reference application and run on the target.
-The benchmark timing will be reflected on microcontroller-mcal's corresponding
-benchmark port pin.
+The benchmark timing will be reflected on microcontroller's corresponding
+benchmark port pin (in its MCAL).
 
-Individual benchmarks can also be run standalone on any C++ cplatform.
+Individual benchmarks can also be run standalone on any C++ platform.
 In the following [short link](https://godbolt.org/z/j4aM9vzr9)
-to [godbolt](https://godbolt.org), we have adapted the
+to [godbolt](https://godbolt.org), for instance, we have adapted the
 `APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` benchmark for standalone use.
-Note also that the presence of the `main()` subroutine is activated with
-the compiler definition `APP_BENCHMARK_STANDALONE_MAIN`.
-
+The `main()` subroutine in the benchmark source files is activated
+with the compiler definition `APP_BENCHMARK_STANDALONE_MAIN`.
 
 ## Individual benchmarks
 
@@ -61,7 +61,7 @@ the compiler definition `APP_BENCHMARK_STANDALONE_MAIN`.
   - ![app_benchmark_ecc_generic_ecc.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_ecc_generic_ecc.cpp) via `#define APP_BENCHMARK_TYPE_ECC_GENERIC_ECC` provides an intuitive view on elliptic-curve algebra, depicting a well-known $256$-bit cryptographic key-gen/sign/verify method. This benchmark is actually too lengthy to run on most of our embedded targets (other than BBB or RPI-zero) and adaptions of OS/watchdog are required in order to run this benchmark on the metal.
   - ![app_benchmark_non_std_decimal.cpp](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/src/app/benchmark/app_benchmark_non_std_decimal.cpp) via `#define APP_BENCHMARK_TYPE_NON_STD_DECIMAL` carries out a $64$-bit decimal-floating-point calculation of the exponential function using the contemporary [cpplliance/decimal](https://github.com/cppalliance/decimal) library. This benchmark does not, at the moment, run on the AVR target, but requires a larger microcontroller such as one of the $32$-bit ARM(R) devices.
 
-## Benchmarks and performance classes
+## Performance classes
 
 Most of the benchmarks run on each supported target system.
 Experience with runs on the individual target systems reveal

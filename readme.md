@@ -8,6 +8,8 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-benchmarks.yml/badge.svg" alt="Build Benchmarks"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
         <img src="https://custom-icon-badges.herokuapp.com/github/issues-raw/ckormanyos/real-time-cpp?logo=github" alt="Issues" /></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions/workflows/codeql.yml">
@@ -102,7 +104,7 @@ The reference application supports the following targets:
 It is easiest to get started with the reference application using one of the
 supported boards, such as Arduino or RaspberryPi ZERO or BeagleBone, etc.
 The reference application can be found
-in the directory [./ref_app](./ref_app) and its
+in the directory [ref_app](./ref_app) and its
 subdirectories.
 
 The reference application uses cross-development based on
@@ -118,9 +120,9 @@ are available in the `bin` directory.
 ### Build with Bash Shell Script and GNU make
 
 To get started with the reference application on `*nix`
-  - Open a terminal in the directory  [./ref_app](./ref_app).
-  - The terminal should be located directly in [./ref_app](./ref_app) for the paths to work out (be found by the upcoming build).
-  - Identify the Bash shell script [./ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
+  - Open a terminal in the directory  [ref_app](./ref_app).
+  - The terminal should be located directly in [ref_app](./ref_app) for the paths to work out (be found by the upcoming build).
+  - Identify the Bash shell script [ref_app/target/build/build.sh](./ref_app/target/build/build.sh).
   - Consider which configuration (such as `target avr`) you would like to build.
   - Execute `build.sh` with the command: `./target/build/build.sh avr rebuild`.
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
@@ -242,7 +244,7 @@ To get started with the reference application on `Win*`
   - Clone or get the [ckormanyos/real-time-cpp](https://github.com/ckormanyos/real-time-cpp) repository.
   - Get and setup (from the [ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains) repository) any needed GNU/GCC cross compilers running on `Win*`, as described in detail a few paragraphs below.
   - Start Visual Studio(R) 2019 (or later, Community Edition is OK)
-  - Open the solution `ref_app.sln` in the [./ref_app](./ref_app) directory.
+  - Open the solution `ref_app.sln` in the [ref_app](./ref_app) directory.
   - Select the desired configuration.
   - Then rebuild the entire solution.
 
@@ -332,7 +334,7 @@ make -j ref_app
 
 There is also a workspace solution for ATMEL(R) AtmelStudio(R) 7.
 It is called `ref_app.atsln` and is also located
-in the [./ref_app](./ref_app) directory.
+in the [ref_app](./ref_app) directory.
 There are ATMEL Studio projects for
 both the reference application as well as for each of the examples.
 ATMEL Studio projects in this repository support
@@ -346,7 +348,7 @@ during the standard installation of ATMEL Studio).
 ## Target Details
 
 Target details including startup code and linker definition files can
-be found in the [./ref_app/target](./ref_app/target) directory
+be found in the [ref_app/target](./ref_app/target) directory
 and its subdirectories. There are individual subdirectories for
 each supported target microcontroller system.
 
