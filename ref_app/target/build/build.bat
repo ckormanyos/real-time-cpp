@@ -1,5 +1,5 @@
 @rem
-@rem  Copyright Christopher Kormanyos 2007 - 2023.
+@rem  Copyright Christopher Kormanyos 2007 - 2024.
 @rem  Distributed under the Boost Software License,
 @rem  Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +11,7 @@
 @rem
 @rem %1: target
 @rem       am335x           : BeagleBone with TI(R) AM3359, creates a bare-metal binary file "MLO"
-@rem       avr              : ATMEL(R) AVR(R) ATmega328P i.e., Arduino compatible
+@rem       avr              : ATMEL(R) AVR(R) ATmega328P i.e., ARDUINO compatible
 @rem       bcm2835_raspi_b  : RaspberryPi Zero, creates a bare-metal binary file "kernel.img"
 @rem       rl78             : Renesas(R) RL78
 @rem       rx63n            : Renesas(R) RX600

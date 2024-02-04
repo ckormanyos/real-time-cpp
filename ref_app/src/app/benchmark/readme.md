@@ -81,16 +81,16 @@ template class.
 A typical range of performance classes is shown in the following table.
 The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 
-| Target      |  runtime [ms] |  relative  |
-|-------------|---------------|------------|
-| am335x      |  1.5          |    1.0     |
-| stm32f446   |  2.5          |    1.7     |
-| avr         |  470          |    370     |
+| Target      |  runtime $[ms]$ |  relative  |
+|-------------|-----------------|------------|
+| `am335x`    |  1.5            |    1.0     |
+| `stm32f446` |  5.1            |    3.4     |
+| `avr`       |  420            |    280     |
 
 There are strikingly differing performance classes
-for the $8$-bit MICROCHIP(R) AVR controller of the Arduino
+for the $8$-bit MICROCHIP(R) AVR controller of the ARDUINO
 and the $32$-bit ARM(R) 8 controller
 of the BeagleBone Black Edition, Rev. C.
 The $\pi$ calculation requires approximately
-$470~\text{ms}$ and $1.5~\text{ms}$,
+$420~\text{ms}$ and $1.5~\text{ms}$,
 respectively, on these two microcontroller systems.

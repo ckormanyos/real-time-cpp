@@ -102,7 +102,8 @@ The reference application supports the following targets:
 ## Getting Started with the Reference Application
 
 It is easiest to get started with the reference application using one of the
-supported boards, such as Arduino or RaspberryPi ZERO or BeagleBone, etc.
+supported boards, such as `avr` (ARDUINO) or `bcm2835_raspi_b`
+(RaspberryPi ZERO) or `am335x` (BeagleBoneBlack), etc.
 The reference application can be found
 in the directory [ref_app](./ref_app) and its
 subdirectories.
