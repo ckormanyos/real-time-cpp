@@ -132,8 +132,8 @@ in each individual example directory.
 </p>
 
 Use this [short link](https://godbolt.org/z/fxWzb6h6f)
-to [godbolt](https://godbolt.org) in order to further explore this program.
-
-In the afore-mentioned link, the main source file of
+to [godbolt](https://godbolt.org) in order to further explore
 Example ![chapter02_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter02_02)
-(the LED program) is compiled with a modern `avr-gcc` compiler.
+(the LED program). In the link, the main source file of the example
+is compiled with a modern `avr-gcc` compiler and the compiler-generated
+assembly listing can also be investigated.
