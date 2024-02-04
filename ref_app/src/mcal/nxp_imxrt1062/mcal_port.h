@@ -13,7 +13,7 @@
   // NOTE: The following table reproduces the layout information of Teensy 4.0.
   // See also: https://github.com/KurtE/TeensyDocuments
   // 
-  // Teensy-Pin  "Arduino"-Pin    Name       GPIO
+  // Teensy-Pin  "ARDUINO"-Pin    Name       GPIO
   //  1                          AD_B0_02    1.02
   //  0                          AD_B0_03    1.03
   // 24           A10            AD_B0_12    1.12

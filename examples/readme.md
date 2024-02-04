@@ -6,6 +6,8 @@ Real-Time-C++ - Examples
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
+    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
 ﻿These examples are motivated by the book
@@ -14,7 +16,6 @@ C.M. Kormanyos,
 Efficient Object-Oriented
 and Template Microcontroller Programming, Fourth Edition
 (Springer, Heidelberg, 2021) ISBN 9783662629956.
-
 
 The first couple of example projects can use the ARDUINO board directly
 and non-modified. Examples from the later chapters in the book do, however,
@@ -122,3 +123,17 @@ over multitasking using time slices.
 
 For further informatin on the examples, see the readme notes
 in each individual example directory.
+
+## Try it at _godbolt_
+
+<p align="center">
+    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
+        <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
+</p>
+
+Use this [short link](https://godbolt.org/z/fxWzb6h6f)
+to [godbolt](https://godbolt.org) in order to further explore this program.
+
+In the afore-mentioned link, the main source file of
+Example ![chapter02_02](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter02_02)
+(the LED program) is compiled with a modern `avr-gcc` compiler.

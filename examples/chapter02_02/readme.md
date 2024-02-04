@@ -2,7 +2,7 @@
 ## The LED program
 
 <p align="center">
-    <a href="https://godbolt.org/z/v5f45fMqq" alt="godbolt">
+    <a href="https://godbolt.org/z/fxWzb6h6f" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
