@@ -114,28 +114,28 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> std::enable_if_t<IsForwardFft, float_type>
+  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> typename std::enable_if<IsForwardFft, float_type>::type
   {
     return template_sin_order_1<float_type>(num_points);
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> std::enable_if_t<(!IsForwardFft), float_type>
+  constexpr auto const_unique_wp_real_init(std::uint32_t num_points) -> typename std::enable_if<(!IsForwardFft), float_type>::type
   {
     return static_cast<float_type>(-template_sin_order_1<float_type>(num_points));
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> std::enable_if_t<IsForwardFft, float_type>
+  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> typename std::enable_if<IsForwardFft, float_type>::type
   {
     return template_sin_order_2<float_type>(num_points);
   }
 
   template<typename float_type,
            const bool IsForwardFft>
-  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> std::enable_if_t<(!IsForwardFft), float_type>
+  constexpr auto const_unique_wp_imag(std::uint32_t num_points) -> typename std::enable_if<(!IsForwardFft), float_type>::type
   {
     return static_cast<float_type>(-template_sin_order_2<float_type>(num_points));
   }
@@ -248,8 +248,8 @@
     {
       if(j > i)
       {
-        util::swap_unsafe(data[j - 1U], data[i - 1U]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        util::swap_unsafe(data[j],      data[i]);      // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        std::swap(data[j - 1U], data[i - 1U]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        std::swap(data[j],      data[i]);      // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
       }
 
       auto m = num_points;
@@ -268,7 +268,7 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> std::enable_if_t<IsForwardFft>
+  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> typename std::enable_if<IsForwardFft, void>::type
   {
     fft_lanczos_fft<float_type, true>(num_points / 2U, data);
 
@@ -312,7 +312,7 @@
 
   template<typename float_type,
            const bool IsForwardFft>
-  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> std::enable_if_t<(!IsForwardFft)>
+  auto rfft_lanczos_rfft(std::uint32_t num_points, float_type* data) -> typename std::enable_if<(!IsForwardFft), void>::type
   {
     auto real_part = static_cast<float_type>(static_cast<float_type>(1) + const_unique_wp_real<float_type, false>(num_points));
     auto imag_part = static_cast<float_type>(                             const_unique_wp_imag<float_type, false>(num_points));

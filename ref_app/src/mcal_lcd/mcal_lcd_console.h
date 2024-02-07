@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2023.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LCD_CONSOLE_2020_06_10_H
+#ifndef MCAL_LCD_CONSOLE_2020_06_10_H // NOLINT(llvm-header-guard)
   #define MCAL_LCD_CONSOLE_2020_06_10_H
 
   #include <iostream>
@@ -13,40 +13,51 @@
 
   #include <mcal_lcd/mcal_lcd_base.h>
 
-  namespace mcal { namespace lcd {
+  #if(__cplusplus >= 201703L)
+  namespace mcal::lcd {
+  #else
+  namespace mcal { namespace lcd { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
-  class lcd_console : public mcal::lcd::lcd_base
+  class lcd_console : public mcal::lcd::lcd_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
-    lcd_console() noexcept = default;
+    lcd_console() = default; // LCOV_EXCL_LINE
 
     ~lcd_console() override = default;
 
-    auto write(const char* pstr, const std::uint_fast8_t length, const std::uint_fast8_t line_index) noexcept -> bool override
+    auto write(const char*             pstr,
+                     std::uint_fast8_t length, // NOLINT(bugprone-easily-swappable-parameters)
+                     std::uint_fast8_t line_index) -> bool override
     {
       static_cast<void>(line_index);
 
-      auto result_write_is_ok = bool { };
+      bool write_is_ok { };
 
       if((pstr != nullptr) && (length > 0U))
       {
-        const auto str = std::string(pstr, pstr + length);
+        const std::string str(pstr, pstr + length); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
         std::cout << str << std::endl;
 
-        result_write_is_ok = true;
+        write_is_ok = true;
       }
       else
       {
-        result_write_is_ok = false;
+        write_is_ok = false;
       }
 
-      return result_write_is_ok;
+      return write_is_ok;
     }
 
-    auto init() noexcept -> bool override { return true; }
+    auto init() -> bool override { return true; } // LCOV_EXCL_LINE
   };
 
-  } } // namespace mcal::lcd
+  #if(__cplusplus >= 201703L)
+  } // namespace mcal::lcd
+  #else
+  } // namespace lcd
+  } // namespace mcal
+  #endif
 
 #endif // MCAL_LCD_CONSOLE_2020_06_10_H

@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,10 +31,10 @@
     using pointer       = value_type*;
     using const_pointer = const value_type*;
 
-    template<typename U>
+    template<typename RebindType>
     struct rebind
     {
-      using other = n_slot_array_allocator<U, SlotWidth, SlotCount>;
+      using other = n_slot_array_allocator<RebindType, SlotWidth, SlotCount>;
     };
   };
 
@@ -47,7 +47,9 @@
     static constexpr std::uint_fast32_t slot_width = SlotWidth;
     static constexpr std::size_t        slot_count = SlotCount;
 
-    using slot_array_type = std::array<T, slot_width>;
+    using slot_array_type        = std::array<T, slot_width>;
+    using slot_array_memory_type = std::array<slot_array_type, slot_count>;
+    using slot_array_flags_type  = std::array<std::uint8_t, slot_count>;
 
   public:
     using size_type       = std::size_t;
@@ -61,10 +63,10 @@
 
     constexpr n_slot_array_allocator(const n_slot_array_allocator&) = default; // LCOV_EXCL_LINE
 
-    template<typename U>
+    template<typename RebindType>
     struct rebind
     {
-      using other = n_slot_array_allocator<U, SlotWidth, SlotCount>;
+      using other = n_slot_array_allocator<RebindType, SlotWidth, SlotCount>;
     };
 
     constexpr auto max_size() const noexcept -> size_type { return slot_count; }
@@ -118,45 +120,42 @@
       *p = x;
     }
 
-    // LCOV_EXCL_START
-    auto destroy(pointer p) -> void
-    {
-      static_cast<void>(p);
-    }
-    // LCOV_EXCL_STOP
+    auto destroy(pointer p) const -> void { static_cast<void>(p); } // LCOV_EXCL_LINE
 
     auto deallocate(pointer p_slot, size_type sz) -> void
     {
       static_cast<void>(sz);
 
-      for(std::size_t i = 0U; i < slot_count; ++i)
+      auto index = static_cast<typename slot_array_memory_type::size_type>(UINT8_C(0));
+
+      for(auto& slot_array_memory_entry : slot_array_memory)
       {
-        if(p_slot == static_cast<pointer>(slot_array_memory[i].data())) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        if(p_slot == static_cast<pointer>(slot_array_memory_entry.data()))
         {
-          slot_flags[i] = 0U; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          slot_flags[index] = static_cast<typename slot_array_flags_type::value_type>(UINT8_C(0)); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
           break;
         }
+
+        ++index;
       }
     }
 
   private:
-    static std::array<slot_array_type, slot_count> slot_array_memory; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-    static std::array<std::uint8_t, slot_count>    slot_flags;        // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-    static std::size_t                             slot_max_index;    // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    static slot_array_memory_type slot_array_memory; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    static slot_array_flags_type  slot_flags;        // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    static std::size_t            slot_max_index;    // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
   };
 
   template<typename T,
            const std::uint_fast32_t SlotWidth,
            const std::size_t SlotCount>
-  std::array<typename n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_array_type, n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_count> // NOLINT(hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
-  n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_array_memory; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
+  typename n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_array_memory_type n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_array_memory; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
 
   template<typename T,
            const std::uint_fast32_t SlotWidth,
            const std::size_t SlotCount>
-  std::array<std::uint8_t, n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_count> // NOLINT(hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
-  n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_flags; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
+  typename n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_array_flags_type n_slot_array_allocator<T, SlotWidth, SlotCount>::slot_flags; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,hicpp-uppercase-literal-suffix,readability-uppercase-literal-suffix)
 
   template<typename T,
            const std::uint_fast32_t SlotWidth,
