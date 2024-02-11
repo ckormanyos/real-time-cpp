@@ -17,7 +17,7 @@ GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                                               \
+TGT_ALLFLAGS  = -O2                                                               \
                 -mmcu=atmega328p                                                  \
                 -mrelax                                                           \
                 -finline-functions                                                \
