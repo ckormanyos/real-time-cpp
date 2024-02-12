@@ -267,7 +267,7 @@ installing, moving and using these ported GNU/GCC compilers.
 
 Note on GNUmake for `Win*`: A GNUmake capable of being used on `Win*`
 can be found in the
-[make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build)
+[ckormanyos/make-4.2.1-msvc-build](https://github.com/ckormanyos/make-4.2.1-msvc-build)
 repository.
 If desired, clone or get the code of this repository.
 Build `make-4.2.1` in its `x64` `Release` configuration
@@ -497,12 +497,13 @@ depending on the particular OS/build/target-configuration.
 
 ### Build Status
 
-At the moment, there are three major builds. Each build emphasizes
-different capabilities of the companion code.
+At the moment, there are distinct and separate, major individual builds.
+Each build emphasizes different capabilities of the companion code.
 
-  - Build `ref_app` and benchmarks for various targets and host(s) on  both `*nix` as well as `Win*`.
-  - Build the examples on `*nix`.
-  - Build the code snippets on `*nix`.
+  - Build `ref_app` and benchmarks for various targets and hosts on  both `*nix` as well as `Win*`.
+  - Build the examples for selected hosts on `*nix`.
+  - Build the code snippets for selected hosts on `*nix`.
+  - Build the benchmarks for selected embedded targets and for selected hosts on `*nix`.
 
 Here are the build status badges.
 
@@ -513,13 +514,15 @@ Here are the build status badges.
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-examples.yml/badge.svg" alt="Build Examples"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-snippets.yml/badge.svg" alt="Build Snippets"></a>
+    <a href="https://github.com/ckormanyos/real-time-cpp/actions">
+        <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-benchmarks.yml/badge.svg" alt="Build Benchmarks"></a>
 </p>
 
 The build status badges represent the state of the nightly CI builds and tests.
 
 ## Modern `avr-gcc` Toolchain
 
-The repo [avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
+The repo [ckormanyos/avr-gcc-build](https://github.com/ckormanyos/avr-gcc-build)
 builds up-to-date `avr-gcc` toolchains for `x86_64-linux-gnu` and `x86_64-w64-mingw32`.
 Shell and YAML scripts build `avr-gcc` directly from source on GHA runner(s).
 In addition, occasional GitHub-releases provide pre-built
@@ -528,6 +531,12 @@ In addition, occasional GitHub-releases provide pre-built
 This repo is a great place to learn how to build your own `avr-gcc` toolchain
 from source. The straightforward, well-described shell and YAML scripts
 are easy to understand, use or adapt.
+
+As mentioned above, a much more detailed and wider scope
+of embedded toolchains are described in
+[ckormanyos/real-time-cpp-toolchains](https://github.com/ckormanyos/real-time-cpp-toolchains).
+These include the afore-mentioned `avr-gcc` toolchain as well as others
+(some hard-to-find elsewhere).
 
 ## GNU/GCC Compilers
 
@@ -581,6 +590,6 @@ or MSVC 14.2 or higher is required for building the reference application
 (and the examples and code snippets).
 
 Some of the code snippets demonstrate language elements not only from C++14,
-but also from C++17, 20, 23. A compiler with C++17 support
-or even C++20, 23 support (such as GCC 13, clang 15, MSVC 14.3, or beyond) can,
+but also from C++17, 20, 23 and beyond. A compiler with C++17 support
+or even C++20, 23 support (such as GCC 13, clang 15, MSVC 14.3, or higher) can,
 therefore, be beneficial for success with *all* of the code snippets.
