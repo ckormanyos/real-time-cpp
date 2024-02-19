@@ -20,10 +20,6 @@
         <img src="https://sonarcloud.io/api/project_badges/measure?project=ckormanyos_real-time-cpp&metric=alert_status" alt="Quality Gate Status"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://img.shields.io/github/commit-activity/y/ckormanyos/real-time-cpp">
-        <img src="https://img.shields.io/github/commit-activity/y/ckormanyos/real-time-cpp" alt="GitHub commit activity" /></a>
-    <a href="https://github.com/ckormanyos/real-time-cpp">
-        <img src="https://img.shields.io/github/languages/code-size/ckormanyos/real-time-cpp" alt="GitHub code size in bytes" /></a>
 </p>
 
 This is the companion code

@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -134,13 +134,13 @@ extern "C"
   #endif
 
   // Provide some patched data values.
-  const char*  const __env[1U] = { nullptr };
-  const char** const environ   = { nullptr };
+  const char*  const __env[1U]       = { nullptr };
+  const char** const environ         = { nullptr };
 
   #if (defined(__GNUC__) && defined(__v850__))
   #else
-  int* __errno(void);
-  int* __errno(void) { static int __my_errno; return &__my_errno; }
+  extern int* __errno(void);
+  int* __errno(void) { return nullptr; }
   #endif
 
   std::uint8_t __fdlib_version;

@@ -74,26 +74,27 @@
     constexpr auto address(      reference x) const ->       pointer { return &x; }
     constexpr auto address(const_reference x) const -> const_pointer { return &x; }
 
-    auto allocate
-    (
-      size_type                                                                    count,
-      typename n_slot_array_allocator<void, slot_width, slot_count>::const_pointer p_hint = nullptr
-    ) -> pointer
+    auto allocate(size_type count, const_pointer p_hint = nullptr) -> pointer
     {
       static_cast<void>(count);
       static_cast<void>(p_hint);
 
-      pointer p = nullptr;
+      pointer p { nullptr };
 
       // TBD: There is most likely significant optimization potential
       // capable of being unlocked if a storage/lookup mechanism can be
       // devised that uses a binary search when finding the next free slot.
 
-      for(std::size_t i = 0U; i < slot_count; ++i)
+      // (TBD) In fact, constant-time allocation probably possible, as shown in:
+      // SmallObjectAllocator from Modern C++ Design by Andrei Alexandrescu.
+
+      for(auto i = static_cast<std::size_t>(UINT8_C(0)); i < slot_count; ++i)
       {
-        if(slot_flags[i] == 0U) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        using local_flags_value_type = typename slot_array_flags_type::value_type;
+
+        if(slot_flags[i] == static_cast<local_flags_value_type>(UINT8_C(0))) // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         {
-          slot_flags[i] = 1U; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          slot_flags[i] = static_cast<local_flags_value_type>(UINT8_C(1)); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
           p = static_cast<pointer>(slot_array_memory[i].data()); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
@@ -126,13 +127,15 @@
     {
       static_cast<void>(sz);
 
-      auto index = static_cast<typename slot_array_memory_type::size_type>(UINT8_C(0));
+      typename slot_array_memory_type::size_type index { };
 
       for(auto& slot_array_memory_entry : slot_array_memory)
       {
         if(p_slot == static_cast<pointer>(slot_array_memory_entry.data()))
         {
-          slot_flags[index] = static_cast<typename slot_array_flags_type::value_type>(UINT8_C(0)); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+          using local_flags_value_type = typename slot_array_flags_type::value_type;
+
+          slot_flags[index] = static_cast<local_flags_value_type>(UINT8_C(0)); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
           break;
         }
