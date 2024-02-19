@@ -956,7 +956,7 @@
             % static_cast<int>(decwide_t_elem_digits10)
           );
 
-        constexpr auto digit_loops =
+        constexpr auto digit_loops = // NOLINT(altera-id-dependent-backward-branch)
           static_cast<int>
           (
               digit_elem_whole
@@ -2525,7 +2525,7 @@
 
         auto data_exp_buf = exp_array_type { };
 
-        const char* p_end = util::baselexical_cast(ul_exp, data_exp_buf.data());
+        const char* p_end = util::baselexical_cast(ul_exp, data_exp_buf.data(), data_exp_buf.data() + data_exp_buf.size());
 
         const auto exp_len = std::distance(static_cast<const char*>(data_exp_buf.data()), p_end);
 
@@ -2596,8 +2596,8 @@
               val += static_cast<unsigned long long>(xn.my_data[limb_index]); // NOLINT(google-runtime-int)
             }
 
-            signed_long_long_result = ((!b_neg) ? static_cast<signed long long>(val)                                   // NOLINT(google-runtime-int)
-                                                : static_cast<signed long long>(-static_cast<signed long long>(val))); // NOLINT(google-runtime-int)
+            signed_long_long_result = ((!b_neg) ? static_cast<signed long long>(val)                   // NOLINT(google-runtime-int)
+                                                : static_cast<signed long long>(detail::negate(val))); // NOLINT(google-runtime-int)
           }
         }
       }
@@ -3867,7 +3867,7 @@
       // Obtain the digits in the first limb.
       auto it_rep = x.crepresentation().cbegin(); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
-      const char* p_end = util::baselexical_cast(*it_rep, data_elem_buf.data()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
+      const char* p_end = util::baselexical_cast(*it_rep, data_elem_buf.data(), data_elem_buf.data() + data_elem_buf.size()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
 
       ++it_rep;
 
@@ -3893,7 +3893,7 @@
       // beginning with the data element having index 1.
       while(it_rep != (x.crepresentation().cbegin() + static_cast<std::size_t>(number_of_elements))) // NOLINT(altera-id-dependent-backward-branch)
       {
-        p_end = util::baselexical_cast(*it_rep, data_elem_buf.data());
+        p_end = util::baselexical_cast(*it_rep, data_elem_buf.data(), data_elem_buf.data() + data_elem_buf.size());
 
         ++it_rep;
 
@@ -4083,12 +4083,13 @@
 
       std::array<char, static_cast<std::size_t>(UINT8_C(20))> ptr_str = {{ '\0' }}; // NOLINT(,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-      auto ptr_end = util::baselexical_cast(u_exp, ptr_str.data()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
+      const char* ptr_end = util::baselexical_cast(u_exp, ptr_str.data(), ptr_str.data() + ptr_str.size()); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg,llvm-qualified-auto,readability-qualified-auto)
 
-      auto str_exp = std::string(ptr_str.data(), ptr_end);
+      const auto str_exp_len = static_cast<std::size_t>(std::distance(static_cast<const char*>(ptr_str.data()), ptr_end));
+
+      auto str_exp = std::string(ptr_str.data(), ptr_str.data() + str_exp_len);
 
       // Format the exponent string to have a width that is an even multiple of three.
-      const auto str_exp_len      = static_cast<std::size_t>(str_exp.length());
       const auto str_exp_len_mod3 = static_cast<std::size_t>(str_exp_len % static_cast<std::size_t>(UINT8_C(3)));
 
       const auto exp_has_mod3 = (str_exp_len_mod3 != static_cast<std::size_t>(UINT8_C(0)));
@@ -5878,8 +5879,12 @@
 
       // Ensure that the resulting power is non-negative.
       // Also enforce that m >= 3.
-      const auto m = (std::max)(static_cast<std::int32_t>(n_times_factor - lg_x_over_lg2),
-                                static_cast<std::int32_t>(3));
+      const auto m =
+        static_cast<std::int32_t>
+        (
+          (std::max)(static_cast<float>(n_times_factor - lg_x_over_lg2),
+                     static_cast<float>(3))
+        );
 
       local_wide_decimal_type bk =
         one<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>();
