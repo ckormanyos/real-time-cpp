@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2022.
+//  Copyright Christopher Kormanyos 2021 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,16 +24,16 @@
 #define BOOST_MATH_STANDALONE
 #endif
 
-#if !defined(BOOST_NO_RTTI)
-#define BOOST_NO_RTTI
+#if !defined(BOOST_MATH_NO_RTTI)
+#define BOOST_MATH_NO_RTTI
 #endif
 
-#if !defined(BOOST_DISABLE_THREADS)
-#define BOOST_DISABLE_THREADS
+#if !defined(BOOST_MATH_DISABLE_THREADS)
+#define BOOST_MATH_DISABLE_THREADS
 #endif
 
-#if !defined(BOOST_NO_EXCEPTIONS)
-#define BOOST_NO_EXCEPTIONS
+#if !defined(BOOST_MATH_NO_EXCEPTIONS)
+#define BOOST_MATH_NO_EXCEPTIONS
 #endif
 
 #if !defined(BOOST_MATH_DISABLE_STD_FPCLASSIFY)
