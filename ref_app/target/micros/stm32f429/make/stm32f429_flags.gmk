@@ -35,12 +35,13 @@ TGT_CXXFLAGS  = -std=c++14                                                      
                 -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -IC:/boost/modular_boost/libs/config/include                      \
+                -IC:/boost/modular_boost/libs/math/include                        \
+                -IC:/boost/modular_boost/libs/multiprecision/include
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                                         \
-                -nostartfiles                                                     \
+TGT_LDFLAGS   = -nostartfiles                                                     \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
