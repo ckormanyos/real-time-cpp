@@ -12,7 +12,6 @@ on:
       - '**'
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
   analyze:
     name: Analyze
@@ -21,7 +20,6 @@ jobs:
       actions: read
       contents: read
       security-events: write
-
     strategy:
       fail-fast: false
       matrix:
@@ -36,13 +34,13 @@ jobs:
         run: echo configure_command_empty
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v3
         if: ${{ matrix.language == 'python' }}
 
       - name: Build cpp
@@ -55,6 +53,6 @@ jobs:
           make -j ref_app
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
