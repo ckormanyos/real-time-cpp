@@ -42,10 +42,10 @@ repository.
 
 ## Details on the Reference Application
 
-The reference application boots via a small startup code and subsequently
+The reference application boots with a small startup code and subsequently
 initializes a skinny microcontroller abstraction layer (MCAL). Control is
-then passed to a simple multitasking scheduler that schedules the
-LED application, calls a cyclic a benchmark task, and services the watchdog.
+then passed to a simple multitasking scheduler that manages the
+LED application, calls a cyclic benchmark task and services the watchdog.
 
 The LED application toggles a user-LED with a frequency of $\frac{1}{2}~\text{Hz}$
 The result is LED on for one second, LED off for one second.
@@ -57,13 +57,12 @@ The reference application is compatible with C++14, 17, 20, 23 and beyond.
 ## Portability
 
 The application software is implemented once and used uniformly
-on each supported target in the reference application.
+on each supported target in the [ref_app](./ref_app).
 Differences among the individual targets arise only
 in the lower software layers pertaining
 to chip-specific and board-specific startup/MCAL details.
 
-In this way the application software exhibits a high level
-of portability.
+In this way the project exhibits a high level of portability.
 
 ## Supported Targets in the Reference Application
 
@@ -104,13 +103,15 @@ The reference application can be found
 in the directory [ref_app](./ref_app) and its
 subdirectories.
 
-The reference application uses cross-development based on
-`*nix`-like make tools in combination with either
-Bash/GNUmake, Microsoft(R) Visual Studio(R) via _External Makefile_,
-or platform-independent CMake.
+The reference application uses cross-development and
+build systems are supported on:
+  - `*nix` make tools in combination with Bash/GNUmake (bash script) on LINUX/MacOS,
+  - ported `*nix`-like make tools on `Win*` in combination with batch script or Microsoft(R) Visual Studio(R) via _External Makefile_,
+  - MICROCHIP(R) [former ATMEL(R)] Studio on `Win*`,
+  - or platform-independent CMake.
 
 Upon successful completion of the build,
-the resulting build artifacts, including HEX-files
+the resulting artifacts including HEX-files
 (such as `ref_app.hex`), map files, size reports, etc.,
 are available in the `bin` directory.
 
