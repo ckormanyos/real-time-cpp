@@ -87,12 +87,6 @@
     <ClCompile Include="src\mcal\mcal_gcc_cxx_completion.cpp">
       <Filter>src\mcal</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <Filter>src\util\STL\impl\avr</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
-      <Filter>src\util\STD_LIBC</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\led\app_led.cpp">
       <Filter>src\app\led</Filter>
     </ClCompile>
@@ -165,11 +159,11 @@
     <ClCompile Include="src\mcal\host\mcal_eep.cpp">
       <Filter>src\mcal\host</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
-      <Filter>src\util\STL\impl</Filter>
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
+      <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
-      <Filter>src\util\STL\impl</Filter>
+    <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
+      <Filter>src\util\STL\impl\avr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,9 +285,6 @@
       <Filter>src\util\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_point.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\utility\util_random_pcg32.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\util\utility\util_stopwatch.h">
@@ -425,6 +416,45 @@
     <ClInclude Include="src\util\STL\impl\xcmath_impl.h">
       <Filter>src\util\STL\impl</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\utility\util_constexpr_algorithm_unsafe.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_display.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_narrow_cast.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\utility\util_baselexical_cast.h">
+      <Filter>src\util\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\memory\util_n_slot_array_allocator.h">
+      <Filter>src\util\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\alloc_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\ptr_traits.h">
+      <Filter>src\util\STL\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\mcal_helper.h">
+      <Filter>src\mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h">
+      <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -509,6 +539,36 @@
       <Filter>src\util\STL_C++XX_stdfloat</Filter>
     </None>
     <None Include="src\util\STL\any">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\bitset">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\charconv">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cinttypes">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\ciso646">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\cstring">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\random">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\span">
+      <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="src\util\STL\stdexcept">
       <Filter>src\util\STL</Filter>
     </None>
   </ItemGroup>

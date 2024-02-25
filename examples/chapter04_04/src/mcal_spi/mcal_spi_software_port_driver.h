@@ -99,9 +99,9 @@
       port_pin_miso_type::set_direction_input();
     }
 
-    virtual ~spi_software_port_driver() = default;
+    ~spi_software_port_driver() override = default;
 
-    virtual bool send(const std::uint8_t byte_to_send)
+    auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
       base_class_type::recv_buffer = 0U;
 
@@ -131,8 +131,8 @@
       return true;
     }
 
-    virtual void   select() { port_pin_csn__type::set_pin_low(); }
-    virtual void deselect() { port_pin_csn__type::set_pin_high(); }
+    auto   select() -> void override { port_pin_csn__type::set_pin_low(); }
+    auto deselect() -> void override { port_pin_csn__type::set_pin_high(); }
   };
 
   } } // namespace mcal::spi

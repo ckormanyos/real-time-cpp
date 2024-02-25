@@ -59,12 +59,12 @@
     static constexpr std::uint8_t addr_max     = UINT8_C(7);
 
   public:
-    port_expander_microchip_mcp23s17(util::communication_base& com,
-                                          const std::uint8_t address = 0U)
+    port_expander_microchip_mcp23s17(      util::communication_base& com,
+                                     const std::uint8_t              address = 0U)
       : my_com        (com),
         my_address    ((std::min)(addr_max, address)),
         my_state_is_ok(true),
-        my_pdir       (0xFFFF),    // Default I/O mode is input (input is high) --> 0xFFFF
+        my_pdir       (0xFFFF),    // Default I/O mode is input (with direction bit set, input is high) --> 0xFFFF
         my_port       (0x0000)     // Default output state is low --> 0x0000
      {
        static constexpr std::uint8_t addr_enable = UINT8_C(0x08);
@@ -200,7 +200,7 @@
 
     bool read__byte(const std::uint8_t reg, std::uint8_t& byte_to_read)
     {
-      const std::array<std::uint8_t, 4U> cmd =
+      const std::array<std::uint8_t, 3U> cmd =
       {{
         std::uint8_t(cmd__read | std::uint8_t(my_address << 1U)),
         reg,

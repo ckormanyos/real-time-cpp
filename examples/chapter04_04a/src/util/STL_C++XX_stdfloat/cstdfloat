@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Copyright Christopher Kormanyos 2014.
+// Copyright Christopher Kormanyos 2014 - 2024.
 // Copyright John Maddock 2014.
 // Copyright Paul Bristow 2014.
 // Distributed under the Boost Software License,
@@ -11,8 +11,8 @@
 // as described in N3626 (proposed for C++14).
 // See: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3626.pdf
 
-#ifndef CSTDFLOAT_2014_01_09_
-  #define CSTDFLOAT_2014_01_09_
+#ifndef CSTDFLOAT_2014_01_09
+  #define CSTDFLOAT_2014_01_09
 
   #include <stdfloat.h>
   #include <limits>
@@ -102,4 +102,4 @@
   #undef STDFLOAT_HAS_FLOAT80_NATIVE_TYPE
   #undef STDFLOAT_HAS_FLOAT128_NATIVE_TYPE
 
-#endif // CSTDFLOAT_2014_01_09_
+#endif // CSTDFLOAT_2014_01_09

@@ -188,7 +188,7 @@ jobs:
       - name: unpack-macos-gnu-arm-toolchain
         run: |
           cd ${{ runner.workspace }}/macos-gnu-arm-toolchain
-          tar -xvf arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+          tar -xf arm-gnu-toolchain-12.3.rel1-darwin-x86_64-arm-none-eabi.tar.xz
       - name: target-arm-macos-${{ matrix.suite }}
         run: |
           echo 'set and verify add path macos gnu arm toolchain'
@@ -221,7 +221,7 @@ jobs:
       - name: update-tools
         run: |
           wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/6/artifact/riscv32-embecosm-ubuntu2204-gcc13.1.0.tar.gz
-          tar -xvzf riscv32-embecosm-ubuntu2204-gcc13.1.0.tar.gz
+          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.1.0.tar.gz
         working-directory: ./
       - name: target-riscvfe310-${{ matrix.suite }}
         run: |

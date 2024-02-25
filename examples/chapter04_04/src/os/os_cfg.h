@@ -1,12 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2016.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_CFG_2011_10_20_H_
-  #define OS_CFG_2011_10_20_H_
+#ifndef OS_CFG_2011_10_20_H
+  #define OS_CFG_2011_10_20_H
 
   #include <cstddef>
   #include <cstdint>
@@ -15,34 +15,33 @@
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
-  namespace sys { namespace idle { void task_init(); void task_func(); } }
+  namespace sys { namespace idle { auto task_init() noexcept -> void; auto task_func() -> void; } }
 
   // Define symbols for the task initialization and the task function of the idle process.
   #define OS_IDLE_TASK_INIT() sys::idle::task_init()
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led       { void task_init(); void task_func(); } }
-  namespace app { namespace benchmark { void task_init(); void task_func(); } }
+  namespace app { namespace led       { auto task_init() -> void; auto task_func() -> void; } }
+  namespace app { namespace benchmark { auto task_init() -> void; auto task_func() -> void; } }
 
   namespace os
   {
     // Enumerate the task IDs. Note that the order in this list must
     // be identical with the order of the tasks in the task list below.
-    typedef enum enum_task_id
+    enum class task_id_type
     {
       task_id_app_led,
       task_id_app_benchmark,
       task_id_end
-    }
-    task_id_type;
+    };
 
     // Configure the operating system types.
-    typedef void(*function_type)();
+    using function_type = void(*)();
 
-    typedef util::timer<std::uint_fast32_t> timer_type;
-    typedef timer_type::tick_type           tick_type;
-    typedef std::uint_fast16_t              event_type;
+    using timer_type = util::timer<std::uint_fast32_t>;
+    using tick_type  = timer_type::tick_type;
+    using event_type = std::uint_fast16_t;
 
     static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
                   "The operating system timer_type must be at least 32-bits wide.");
@@ -61,22 +60,22 @@
   //  4201, 4409, 4637, 4831, 5039, 5279, 5483, 5693, 5881, 6133, 6337,
   //  6571, 6793, 6997, 7237, 7499, 7687, 7919
 
-  #define OS_TASK_COUNT static_cast<std::size_t>(os::task_id_end)
+  constexpr auto OS_TASK_COUNT = static_cast<std::size_t>(os::task_id_type::task_id_end);
 
-  #define OS_TASK_LIST                                                                           \
-  {                                                                                              \
-    {                                                                                            \
-      os::task_control_block(app::led::task_init,                                                \
-                             app::led::task_func,                                                \
-                             os::timer_type::microseconds(UINT32_C( 2000)),                      \
-                             os::timer_type::microseconds(UINT32_C(    0))),                     \
-      os::task_control_block(app::benchmark::task_init,                                          \
-                             app::benchmark::task_func,                                          \
-                             os::timer_type::microseconds(UINT32_C(50000)),                      \
-                             os::timer_type::microseconds(UINT32_C(  379))),                     \
-    }                                                                                            \
+  #define OS_TASK_LIST                                                                            \
+  {                                                                                               \
+    {                                                                                             \
+      os::task_control_block(app::led::task_init,                                                 \
+                             app::led::task_func,                                                 \
+                             os::timer_type::microseconds(UINT32_C(   2000)),                     \
+                             os::timer_type::microseconds(UINT32_C(      0))),                    \
+      os::task_control_block(app::benchmark::task_init,                                           \
+                             app::benchmark::task_func,                                           \
+                             os::timer_type::microseconds(UINT32_C(  50000)),                     \
+                             os::timer_type::microseconds(UINT32_C(    379))),                    \
+    }                                                                                             \
   }
 
-  static_assert(OS_TASK_COUNT > std::size_t(0U), "the task count must exceed zero");
+  static_assert(OS_TASK_COUNT > static_cast<std::size_t>(UINT8_C(0)), "the task count must exceed zero");
 
-#endif // OS_CFG_2011_10_20_H_
+#endif // OS_CFG_2011_10_20_H

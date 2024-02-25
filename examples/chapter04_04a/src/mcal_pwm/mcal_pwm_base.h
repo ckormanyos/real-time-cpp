@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_BASE_2020_04_12_H_
-  #define MCAL_PWM_BASE_2020_04_12_H_
+#ifndef MCAL_PWM_BASE_2020_04_12_H
+  #define MCAL_PWM_BASE_2020_04_12_H
 
   #include <cstdint>
 
@@ -17,21 +17,25 @@
   class pwm_base : private util::noncopyable
   {
   public:
-    virtual ~pwm_base() = default;
+    using duty_type = std::uint16_t;
 
-    virtual bool init() noexcept = 0;
+    virtual ~pwm_base() noexcept = default;
 
-    virtual void set_duty(const std::uint16_t duty_cycle) = 0;
+    virtual auto init() noexcept -> bool = 0;
 
-    std::uint16_t get_duty() const noexcept { return my_duty_cycle; }
+    virtual auto set_duty(const duty_type duty_cycle) noexcept -> void { my_duty_cycle = duty_cycle; }
+
+    auto get_duty() const noexcept -> duty_type { return my_duty_cycle; }
 
   protected:
-    pwm_base() : my_duty_cycle(0U) { }
+    explicit pwm_base(const duty_type initial_duty = static_cast<duty_type>(UINT8_C(0))) noexcept
+      : my_duty_cycle(initial_duty) { }
 
-  protected:
-    std::uint16_t my_duty_cycle;
+  private:
+    duty_type my_duty_cycle { };
   };
 
-  } }
+  } // namespace pwm
+  } // namespace mcal
 
-#endif // MCAL_PWM_BASE_2020_04_12_H_
+#endif // MCAL_PWM_BASE_2020_04_12_H

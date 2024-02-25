@@ -10,6 +10,8 @@
 
   #if defined(_MSC_VER)
     #define STL_LOCAL_NOEXCEPT throw()
+  #elif defined(__IAR_SYSTEMS_ICC__)
+    #define STL_LOCAL_NOEXCEPT
   #else
     #define STL_LOCAL_NOEXCEPT noexcept
   #endif

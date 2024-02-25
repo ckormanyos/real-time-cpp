@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PWM_CONSOLE_2020_04_12_H_
-  #define MCAL_PWM_CONSOLE_2020_04_12_H_
+#ifndef MCAL_PWM_CONSOLE_2020_04_12_H
+  #define MCAL_PWM_CONSOLE_2020_04_12_H
 
   #include <iomanip>
   #include <iostream>
@@ -24,13 +24,17 @@
   public:
     pwm_console() = default;
 
-    virtual bool init() noexcept { return true; }
+    auto init() noexcept -> bool override { return true; }
 
-    virtual void set_duty(const std::uint16_t duty_cycle) noexcept
+    auto set_duty(const std::uint16_t duty_cycle) noexcept -> void override
     {
-      base_class_type::my_duty_cycle = duty_cycle;
+      base_class_type::set_duty(duty_cycle);
 
-      const float duty_cycle_as_percent = float(duty_cycle) / 10.0F;
+      const auto duty_cycle_as_percent = 
+        static_cast<float>
+        (
+          static_cast<float>(base_class_type::get_duty()) / 10.0F
+        );
 
       std::stringstream strm;
 
@@ -43,7 +47,7 @@
       std::cout << strm.str() + (std::string(2U, ' ') + "\r");
     }
 
-    virtual ~pwm_console() = default;
+    ~pwm_console() override = default;
   };
 
   } }

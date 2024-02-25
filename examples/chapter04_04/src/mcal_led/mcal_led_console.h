@@ -1,42 +1,44 @@
-#ifndef MCAL_LED_CONSOLE_2020_04_23_H_
-  #define MCAL_LED_CONSOLE_2020_04_23_H_
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef MCAL_LED_CONSOLE_2020_04_23_H
+  #define MCAL_LED_CONSOLE_2020_04_23_H
 
   #include <cstdint>
   #include <iostream>
 
-  #include <mcal_led/mcal_led_base.h>
+  #include <mcal_led/mcal_led_boolean_state_base.h>
 
   namespace mcal { namespace led {
 
-  class led_console final : public mcal::led::led_base
+  class led_console final : public mcal::led::led_boolean_state_base
   {
   public:
-    led_console(const std::uint_fast8_t i = 0)
-      : index(i),
-        is_on(false) { }
+    explicit constexpr led_console(const std::uint_fast8_t i)
+      : my_index(i) { }
 
-    virtual ~led_console() = default;
-
-    virtual void toggle()
+    auto toggle() -> void override
     {
-      // Toggle the LED state.
-      is_on = (!is_on);
+      using base_class_type = mcal::led::led_boolean_state_base;
 
       // Print the LED state.
       std::cout << "LED"
-                << unsigned(index)
+                << static_cast<unsigned>(my_index)
                 << " is "
-                << (is_on ? "on" : "off")
+                << (base_class_type::state_is_on() ? "on" : "off")
                 << std::endl;
+
+      base_class_type::toggle();
     }
 
   private:
-    const std::uint_fast8_t index;
-    bool is_on;
-
-    virtual bool state_is_on() const { return is_on; }
+    const std::uint_fast8_t my_index;
   };
 
   } } // namespace mcal::led
 
-#endif // MCAL_LED_CONSOLE_2020_04_23_H_
+#endif // MCAL_LED_CONSOLE_2020_04_23_H
