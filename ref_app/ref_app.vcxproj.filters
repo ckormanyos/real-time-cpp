@@ -2271,6 +2271,9 @@
     <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h">
       <Filter>src\util\utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h">
+      <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

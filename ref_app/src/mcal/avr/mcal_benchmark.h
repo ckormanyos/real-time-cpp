@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2023.
+//  Copyright Christopher Kormanyos 2014 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,10 +17,10 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<std::uint8_t,
-                                   std::uint8_t,
-                                   mcal::reg::portd,
-                                   UINT8_C(3)> benchmark_port_type;
+      using benchmark_port_type = mcal::port::port_pin<std::uint8_t,
+                                                       std::uint8_t,
+                                                       mcal::reg::portd,
+                                                       UINT8_C(3)>;
     }
   }
 

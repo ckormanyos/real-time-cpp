@@ -2388,6 +2388,7 @@
     <ClInclude Include="src\mcal_pwm\mcal_pwm_base.h" />
     <ClInclude Include="src\mcal_pwm\mcal_pwm_console.h" />
     <ClInclude Include="src\mcal_pwm\mcal_pwm_dummy.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\mcal_vfd\mcal_vfd_base.h" />
