@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,246 +8,668 @@
 #ifndef CMATH_2010_02_23_
   #define CMATH_2010_02_23_
 
+  #include <cstdlib>
+
   // Implement most of <cmath> for compilers that do not yet support it.
 
-  #include <cstdfloat>
+  #if defined(__GNUC__) && defined(__AVR__)
+  #include <math.h>
 
-  #if defined(__GNUC__)
+  #ifndef _HUGE_ENUF
+    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+  #endif
 
-    namespace std
-    {
-      #if defined(__AVR__)
-        #define __BUILTIN_FABSF  __builtin_fabs
-        #define __BUILTIN_FMODF  __builtin_fmod
-        #define __BUILTIN_MODFF  __builtin_modff
-        #define __BUILTIN_FLOORF __builtin_floor
-        #define __BUILTIN_CEILF  __builtin_ceil
-        #define __BUILTIN_FREXPF __builtin_frexp
-        #define __BUILTIN_LDEXPF __builtin_ldexp
-        #define __BUILTIN_SQRTF  __builtin_sqrt
-        #define __BUILTIN_SINF   __builtin_sin
-        #define __BUILTIN_COSF   __builtin_cos
-        #define __BUILTIN_TANF   __builtin_tan
-        #define __BUILTIN_ASINF  __builtin_asin
-        #define __BUILTIN_ACOSF  __builtin_acos
-        #define __BUILTIN_ATANF  __builtin_atan
-        #define __BUILTIN_ATAN2F __builtin_atan2
-        #define __BUILTIN_EXPF   __builtin_exp
-        #define __BUILTIN_POWF   __builtin_pow
-        #define __BUILTIN_LOGF   __builtin_log
-        #define __BUILTIN_LOG10F __builtin_log10
-        #define __BUILTIN_SINHF  __builtin_sinh
-        #define __BUILTIN_COSHF  __builtin_cosh
-        #define __BUILTIN_TANHF  __builtin_tanh
-      #else
-        #define __BUILTIN_FABSF  __builtin_fabsf
-        #define __BUILTIN_FMODF  __builtin_fmodf
-        #define __BUILTIN_MODFF  __builtin_modff
-        #define __BUILTIN_FLOORF __builtin_floorf
-        #define __BUILTIN_CEILF  __builtin_ceilf
-        #define __BUILTIN_FREXPF __builtin_frexpf
-        #define __BUILTIN_LDEXPF __builtin_ldexpf
-        #define __BUILTIN_SQRTF  __builtin_sqrtf
-        #define __BUILTIN_SINF   __builtin_sinf
-        #define __BUILTIN_COSF   __builtin_cosf
-        #define __BUILTIN_TANF   __builtin_tanf
-        #define __BUILTIN_ASINF  __builtin_asinf
-        #define __BUILTIN_ACOSF  __builtin_acosf
-        #define __BUILTIN_ATANF  __builtin_atanf
-        #define __BUILTIN_ATAN2F __builtin_atan2f
-        #define __BUILTIN_EXPF   __builtin_expf
-        #define __BUILTIN_POWF   __builtin_powf
-        #define __BUILTIN_LOGF   __builtin_logf
-        #define __BUILTIN_LOG10F __builtin_log10f
-        #define __BUILTIN_SINHF  __builtin_sinhf
-        #define __BUILTIN_COSHF  __builtin_coshf
-        #define __BUILTIN_TANHF  __builtin_tanhf
-      #endif // __AVR__ or not __AVR__ stuff
+  #if !defined(INFINITY)
+  #define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
+  #endif
+  #define HUGE_VAL   ((double)INFINITY)
+  #define HUGE_VALF  ((float)INFINITY)
+  #define HUGE_VALL  ((long double)INFINITY)
+  #if !defined(NAN)
+  #define NAN        (-(float)(INFINITY * 0.0F))
+  #endif
 
-      #define __BUILTIN_FABS   __builtin_fabs
-      #define __BUILTIN_FMOD   __builtin_fmod
-      #define __BUILTIN_MODF   __builtin_modf
-      #define __BUILTIN_FLOOR  __builtin_floor
-      #define __BUILTIN_CEIL   __builtin_ceil
-      #define __BUILTIN_FREXP  __builtin_frexp
-      #define __BUILTIN_LDEXP  __builtin_ldexp
-      #define __BUILTIN_SQRT   __builtin_sqrt
-      #define __BUILTIN_SIN    __builtin_sin
-      #define __BUILTIN_COS    __builtin_cos
-      #define __BUILTIN_TAN    __builtin_tan
-      #define __BUILTIN_ASIN   __builtin_asin
-      #define __BUILTIN_ACOS   __builtin_acos
-      #define __BUILTIN_ATAN   __builtin_atan
-      #define __BUILTIN_ATAN2  __builtin_atan2
-      #define __BUILTIN_EXP    __builtin_exp
-      #define __BUILTIN_POW    __builtin_pow
-      #define __BUILTIN_LOG    __builtin_log
-      #define __BUILTIN_LOG10  __builtin_log10
-      #define __BUILTIN_SINH   __builtin_sinh
-      #define __BUILTIN_COSH   __builtin_cosh
-      #define __BUILTIN_TANH   __builtin_tanh
+  #define _DENORM    (-2)
+  #define _FINITE    (-1)
+  #define _INFCODE   1
+  #define _NANCODE   2
 
-      #define __BUILTIN_FABSL  __builtin_fabsl
-      #define __BUILTIN_FMODL  __builtin_fmodl
-      #define __BUILTIN_MODFL  __builtin_modfl
-      #define __BUILTIN_FLOORL __builtin_floorl
-      #define __BUILTIN_CEILL  __builtin_ceill
-      #define __BUILTIN_FREXPL __builtin_frexpl
-      #define __BUILTIN_LDEXPL __builtin_ldexpl
-      #define __BUILTIN_SQRTL  __builtin_sqrtl
-      #define __BUILTIN_SINL   __builtin_sinl
-      #define __BUILTIN_COSL   __builtin_cosl
-      #define __BUILTIN_TANL   __builtin_tanl
-      #define __BUILTIN_ASINL  __builtin_asinl
-      #define __BUILTIN_ACOSL  __builtin_acosl
-      #define __BUILTIN_ATANL  __builtin_atanl
-      #define __BUILTIN_ATAN2L __builtin_atan2l
-      #define __BUILTIN_EXPL   __builtin_expl
-      #define __BUILTIN_POWL   __builtin_powl
-      #define __BUILTIN_LOGL   __builtin_logl
-      #define __BUILTIN_LOG10L __builtin_log10l
-      #define __BUILTIN_SINHL  __builtin_sinhl
-      #define __BUILTIN_COSHL  __builtin_coshl
-      #define __BUILTIN_TANHL  __builtin_tanhl
+  #define FP_INFINITE  _INFCODE
+  #define FP_NAN       _NANCODE
+  #define FP_NORMAL    _FINITE
+  #define FP_SUBNORMAL _DENORM
+  #define FP_ZERO      0
 
-      inline float         abs  (float       x)                 { return __BUILTIN_FABSF (x); }
-      inline double        abs  (double      x)                 { return __builtin_fabs  (x); }
-      inline long double   abs  (long double x)                 { return __BUILTIN_FABSL (x); }
+  #define _C2          1  // 0 if not 2's complement
+  #define FP_ILOGB0   (-0x7fffffff - _C2)
+  #define FP_ILOGBNAN 0x7fffffff
 
-      inline float         fabs (float       x)                 { return __BUILTIN_FABSF (x); }
-      inline double        fabs (double      x)                 { return __BUILTIN_FABS  (x); }
-      inline long double   fabs (long double x)                 { return __BUILTIN_FABSL (x); }
+  static_assert(__SIZEOF_LONG_DOUBLE__ >= __SIZEOF_DOUBLE__,
+                "Error: Configuration error regarding 64-bit double/long-double for AVR");
 
-      inline float         fmod (float       x, float       y)  { return __BUILTIN_FMODF (x, y); }
-      inline double        fmod (double      x, double      y)  { return __BUILTIN_FMOD  (x, y); }
-      inline long double   fmod (long double x, long double y)  { return __BUILTIN_FMODL (x, y); }
-
-      inline float         modf (float       x, float*       p) { return __BUILTIN_MODFF (x, p); }
-      inline double        modf (double      x, double*      p) { return __BUILTIN_MODF  (x, p); }
-      inline long double   modf (long double x, long double* p) { return __BUILTIN_MODFL (x, p); }
-
-      inline float         floor(float       x)                 { return __BUILTIN_FLOORF(x); }
-      inline double        floor(double      x)                 { return __BUILTIN_FLOOR (x); }
-      inline long double   floor(long double x)                 { return __BUILTIN_FLOORL(x); }
-
-      inline float         ceil (float       x)                 { return __BUILTIN_CEILF (x); }
-      inline double        ceil (double      x)                 { return __BUILTIN_CEIL  (x); }
-      inline long double   ceil (long double x)                 { return __BUILTIN_CEILL (x); }
-
-      inline float         frexp(float       x, int* p)         { return __BUILTIN_FREXPF(x, p); }
-      inline double        frexp(double      x, int* p)         { return __BUILTIN_FREXP (x, p); }
-      inline long double   frexp(long double x, int* p)         { return __BUILTIN_FREXPL(x, p); }
-
-      inline float         ldexp(float       x, int p)          { return __BUILTIN_LDEXPF(x, p); }
-      inline double        ldexp(double      x, int p)          { return __BUILTIN_LDEXP (x, p); }
-      inline long double   ldexp(long double x, int p)          { return __BUILTIN_LDEXPL(x, p); }
-
-      inline float         sqrt (float       x)                 { return __BUILTIN_SQRTF (x); }
-      inline double        sqrt (double      x)                 { return __BUILTIN_SQRT  (x); }
-      inline long double   sqrt (long double x)                 { return __BUILTIN_SQRTL (x); }
-
-      inline float         sin  (float       x)                 { return __BUILTIN_SINF  (x); }
-      inline double        sin  (double      x)                 { return __BUILTIN_SIN   (x); }
-      inline long double   sin  (long double x)                 { return __BUILTIN_SINL  (x); }
-
-      inline float         cos  (float       x)                 { return __BUILTIN_COSF  (x); }
-      inline double        cos  (double      x)                 { return __BUILTIN_COS   (x); }
-      inline long double   cos  (long double x)                 { return __BUILTIN_COSL  (x); }
-
-      inline float         tan  (float       x)                 { return __BUILTIN_TANF  (x); }
-      inline double        tan  (double      x)                 { return __BUILTIN_TAN   (x); }
-      inline long double   tan  (long double x)                 { return __BUILTIN_TANL  (x); }
-
-      inline float         asin (float       x)                 { return __BUILTIN_ASINF (x); }
-      inline double        asin (double      x)                 { return __BUILTIN_ASIN  (x); }
-      inline long double   asin (long double x)                 { return __BUILTIN_ASINL (x); }
-
-      inline float         acos (float       x)                 { return __BUILTIN_ACOSF (x); }
-      inline double        acos (double      x)                 { return __BUILTIN_ACOS  (x); }
-      inline long double   acos (long double x)                 { return __BUILTIN_ACOSL (x); }
-
-      inline float         atan (float       x)                 { return __BUILTIN_ATANF (x); }
-      inline double        atan (double      x)                 { return __BUILTIN_ATAN  (x); }
-      inline long double   atan (long double x)                 { return __BUILTIN_ATANL (x); }
-
-      inline float         atan2(float       y, float       x)  { return __BUILTIN_ATAN2F(y, x); }
-      inline double        atan2(double      y, double      x)  { return __BUILTIN_ATAN2 (y, x); }
-      inline long double   atan2(long double y, long double x)  { return __BUILTIN_ATAN2L(y, x); }
-
-      inline float         exp  (float       x)                 { return __BUILTIN_EXPF  (x); }
-      inline double        exp  (double      x)                 { return __BUILTIN_EXPF  (x); }
-      inline long double   exp  (long double x)                 { return __BUILTIN_EXPL  (x); }
-
-      inline float         pow  (float       x, float       a)  { return __BUILTIN_POWF  (x, a); }
-      inline double        pow  (double      x, double      a)  { return __BUILTIN_POW   (x, a); }
-      inline long double   pow  (long double x, long double a)  { return __BUILTIN_POWL  (x, a); }
-
-      inline float         log  (float       x)                 { return __BUILTIN_LOGF  (x); }
-      inline double        log  (double      x)                 { return __BUILTIN_LOG   (x); }
-      inline long double   log  (long double x)                 { return __BUILTIN_LOGL  (x); }
-
-      inline float         log10(float       x)                 { return __BUILTIN_LOG10F(x); }
-      inline double        log10(double      x)                 { return __BUILTIN_LOG10 (x); }
-      inline long double   log10(long double x)                 { return __BUILTIN_LOG10L(x); }
-
-      inline float         sinh (float       x)                 { return __BUILTIN_SINHF (x); }
-      inline double        sinh (double      x)                 { return __BUILTIN_SINH  (x); }
-      inline long double   sinh (long double x)                 { return __BUILTIN_SINHL (x); }
-
-      inline float         cosh (float       x)                 { return __BUILTIN_COSHF (x); }
-      inline double        cosh (double      x)                 { return __BUILTIN_COSH  (x); }
-      inline long double   cosh (long double x)                 { return __BUILTIN_COSHL (x); }
-
-      inline float         tanh (float       x)                 { return __BUILTIN_TANHF (x); }
-      inline double        tanh (double      x)                 { return __BUILTIN_TANH  (x); }
-      inline long double   tanh (long double x)                 { return __BUILTIN_TANHL (x); }
-    } // namespace std
-
+  #if(__SIZEOF_DOUBLE__ == 4)
+  #define __BUILTIN_ISNANF  __builtin_isnan
+  #define __BUILTIN_ISNAN   __builtin_isnan
+  #define __BUILTIN_ISNANL  __builtin_isnanl
+  #define __BUILTIN_FABSF   __builtin_fabs
+  #define __BUILTIN_FABS    __builtin_fabs
+  #define __BUILTIN_FABSL   __builtin_fabsl
+  #define __BUILTIN_FMODF   __builtin_fmod
+  #define __BUILTIN_FMOD    __builtin_fmod
+  #define __BUILTIN_FMODL   __builtin_fmodl
+  #define __BUILTIN_MODFF   __builtin_modff
+  #define __BUILTIN_MODF    __builtin_modf
+  #define __BUILTIN_MODFL   __builtin_modfl
+  #define __BUILTIN_FLOORF  __builtin_floor
+  #define __BUILTIN_FLOOR   __builtin_floor
+  #define __BUILTIN_FLOORL  __builtin_floorl
+  #define __BUILTIN_CEILF   __builtin_ceil
+  #define __BUILTIN_CEIL    __builtin_ceil
+  #define __BUILTIN_CEILL   __builtin_ceill
+  #define __BUILTIN_FREXPF  __builtin_frexp
+  #define __BUILTIN_FREXP   __builtin_frexp
+  #define __BUILTIN_FREXPL  __builtin_frexpl
+  #define __BUILTIN_LDEXPF  __builtin_ldexp
+  #define __BUILTIN_LDEXP   __builtin_ldexp
+  #define __BUILTIN_LDEXPL  __builtin_ldexpl
+  #define __BUILTIN_LROUNDF __builtin_lround
+  #define __BUILTIN_LROUND  __builtin_lround
+  #define __BUILTIN_LROUNDL __builtin_lroundl
+  #define __BUILTIN_SQRTF   __builtin_sqrt
+  #define __BUILTIN_SQRT    __builtin_sqrt
+  #define __BUILTIN_SQRTL   __builtin_sqrtl
+  #define __BUILTIN_CBRTF   __builtin_cbrt
+  #define __BUILTIN_CBRT    __builtin_cbrt
+  #define __BUILTIN_CBRTL   __builtin_cbrtl
+  #define __BUILTIN_SINF    __builtin_sin
+  #define __BUILTIN_SIN     __builtin_sin
+  #define __BUILTIN_SINL    __builtin_sinl
+  #define __BUILTIN_COSF    __builtin_cos
+  #define __BUILTIN_COS     __builtin_cos
+  #define __BUILTIN_COSL    __builtin_cosl
+  #define __BUILTIN_TANF    __builtin_tan
+  #define __BUILTIN_TAN     __builtin_tan
+  #define __BUILTIN_TANL    __builtin_tanl
+  #define __BUILTIN_ASINF   __builtin_asin
+  #define __BUILTIN_ASIN    __builtin_asin
+  #define __BUILTIN_ASINL   __builtin_asinl
+  #define __BUILTIN_ACOSF   __builtin_acos
+  #define __BUILTIN_ACOS    __builtin_acos
+  #define __BUILTIN_ACOSL   __builtin_acosl
+  #define __BUILTIN_ATANF   __builtin_atan
+  #define __BUILTIN_ATAN    __builtin_atan
+  #define __BUILTIN_ATANL   __builtin_atanl
+  #define __BUILTIN_ATAN2F  __builtin_atan2
+  #define __BUILTIN_ATAN2   __builtin_atan2
+  #define __BUILTIN_ATAN2L  __builtin_atan2l
+  #define __BUILTIN_EXPF    __builtin_exp
+  #define __BUILTIN_EXP     __builtin_exp
+  #define __BUILTIN_EXPL    __builtin_expl
+  #define __BUILTIN_POWF    __builtin_pow
+  #define __BUILTIN_POW     __builtin_pow
+  #define __BUILTIN_POWL    __builtin_powl
+  #define __BUILTIN_LOGF    __builtin_log
+  #define __BUILTIN_LOG     __builtin_log
+  #define __BUILTIN_LOGL    __builtin_logl
+  #define __BUILTIN_LOG10F  __builtin_log10
+  #define __BUILTIN_LOG10   __builtin_log10
+  #define __BUILTIN_LOG10L  __builtin_log10l
+  #define __BUILTIN_SINHF   __builtin_sinh
+  #define __BUILTIN_SINH    __builtin_sinh
+  #define __BUILTIN_SINHL   __builtin_sinhl
+  #define __BUILTIN_COSHF   __builtin_cosh
+  #define __BUILTIN_COSH    __builtin_cosh
+  #define __BUILTIN_COSHL   __builtin_coshl
+  #define __BUILTIN_TANHF   __builtin_tanh
+  #define __BUILTIN_TANH    __builtin_tanh
+  #define __BUILTIN_TANHL   __builtin_tanhl
+  #elif(__SIZEOF_DOUBLE__ == 8)
+  #define __BUILTIN_ISNANF  __builtin_isnanf
+  #define __BUILTIN_ISNAN   __builtin_isnanl
+  #define __BUILTIN_ISNANL  __builtin_isnanl
+  #define __BUILTIN_FABSF   __builtin_fabsf
+  #define __BUILTIN_FABS    __builtin_fabsl
+  #define __BUILTIN_FABSL   __builtin_fabsl
+  #define __BUILTIN_FMODF   __builtin_fmodf
+  #define __BUILTIN_FMOD    __builtin_fmodl
+  #define __BUILTIN_FMODL   __builtin_fmodl
+  #define __BUILTIN_MODFF   __builtin_modff
+  #define __BUILTIN_MODF    __builtin_modf
+  #define __BUILTIN_MODFL   __builtin_modfl
+  #define __BUILTIN_FLOORF  __builtin_floorf
+  #define __BUILTIN_FLOOR   __builtin_floorl
+  #define __BUILTIN_FLOORL  __builtin_floorl
+  #define __BUILTIN_CEILF   __builtin_ceilf
+  #define __BUILTIN_CEIL    __builtin_ceill
+  #define __BUILTIN_CEILL   __builtin_ceill
+  #define __BUILTIN_FREXPF  __builtin_frexpf
+  #define __BUILTIN_FREXP   __builtin_frexpl
+  #define __BUILTIN_FREXPL  __builtin_frexpl
+  #define __BUILTIN_LDEXPF  __builtin_ldexpf
+  #define __BUILTIN_LDEXP   __builtin_ldexpl
+  #define __BUILTIN_LDEXPL  __builtin_ldexpl
+  #define __BUILTIN_LROUNDF __builtin_lroundf
+  #define __BUILTIN_LROUND  __builtin_lroundl
+  #define __BUILTIN_LROUNDL __builtin_lroundl
+  #define __BUILTIN_SQRTF   __builtin_sqrtf
+  #define __BUILTIN_SQRT    __builtin_sqrtl
+  #define __BUILTIN_SQRTL   __builtin_sqrtl
+  #define __BUILTIN_CBRTF   __builtin_cbrtf
+  #define __BUILTIN_CBRT    __builtin_cbrtl
+  #define __BUILTIN_CBRTL   __builtin_cbrtl
+  #define __BUILTIN_SINF    __builtin_sinf
+  #define __BUILTIN_SIN     __builtin_sinl
+  #define __BUILTIN_SINL    __builtin_sinl
+  #define __BUILTIN_COSF    __builtin_cosf
+  #define __BUILTIN_COS     __builtin_cosl
+  #define __BUILTIN_COSL    __builtin_cosl
+  #define __BUILTIN_TANF    __builtin_tanf
+  #define __BUILTIN_TAN     __builtin_tanl
+  #define __BUILTIN_TANL    __builtin_tanl
+  #define __BUILTIN_ASINF   __builtin_asinf
+  #define __BUILTIN_ASIN    __builtin_asinl
+  #define __BUILTIN_ASINL   __builtin_asinl
+  #define __BUILTIN_ACOSF   __builtin_acosf
+  #define __BUILTIN_ACOS    __builtin_acosl
+  #define __BUILTIN_ACOSL   __builtin_acosl
+  #define __BUILTIN_ATANF   __builtin_atanf
+  #define __BUILTIN_ATAN    __builtin_atanl
+  #define __BUILTIN_ATANL   __builtin_atanl
+  #define __BUILTIN_ATAN2F  __builtin_atan2f
+  #define __BUILTIN_ATAN2   __builtin_atan2l
+  #define __BUILTIN_ATAN2L  __builtin_atan2l
+  #define __BUILTIN_EXPF    __builtin_expf
+  #define __BUILTIN_EXP     __builtin_expl
+  #define __BUILTIN_EXPL    __builtin_expl
+  #define __BUILTIN_POWF    __builtin_powf
+  #define __BUILTIN_POW     __builtin_powl
+  #define __BUILTIN_POWL    __builtin_powl
+  #define __BUILTIN_LOGF    __builtin_logf
+  #define __BUILTIN_LOG     __builtin_logl
+  #define __BUILTIN_LOGL    __builtin_logl
+  #define __BUILTIN_LOG10F  __builtin_log10f
+  #define __BUILTIN_LOG10   __builtin_log10l
+  #define __BUILTIN_LOG10L  __builtin_log10l
+  #define __BUILTIN_SINHF   __builtin_sinhf
+  #define __BUILTIN_SINH    __builtin_sinhl
+  #define __BUILTIN_SINHL   __builtin_sinhl
+  #define __BUILTIN_COSHF   __builtin_coshf
+  #define __BUILTIN_COSH    __builtin_coshl
+  #define __BUILTIN_COSHL   __builtin_coshl
+  #define __BUILTIN_TANHF   __builtin_tanhf
+  #define __BUILTIN_TANH    __builtin_tanhl
+  #define __BUILTIN_TANHL   __builtin_tanhl
   #else
+  #error Error: sizeof(double) is unknown or not standard for AVR.
+  #endif
 
-    #include <math.h>
+  extern "C"
+  {
+    //int isfinitef(float x);
+    int isfinitel(long double x);
+    int ilogbf(float x);
+    int ilogb (double x);
+    int ilogbl(long double x);
 
-    namespace std
-    {
-      inline float       abs(float       x) { return ::fabsf(x); }
-      inline double      abs(double      x) { return ::fabs (x); }
-      inline long double abs(long double x) { return ::fabsl(x); }
+    float       asinhf(float x);
+    double      asinh (double x);
+    long double asinhl(long double x);
 
-      using ::fabs;
-      using ::fmod;
-      using ::modf;
-      using ::floor;
-      using ::ceil;
-      using ::frexp;
-      using ::ldexp;
-      using ::sqrt;
-      using ::sin;
-      using ::cos;
-      using ::tan;
-      using ::asin;
-      using ::acos;
-      using ::atan;
-      using ::atan2;
-      using ::exp;
-      using ::pow;
-      using ::log;
-      using ::log10;
-      using ::sinh;
-      using ::cosh;
-      using ::tanh;
-    }
+    float       acoshf(float x);
+    double      acosh (double x);
+    long double acoshl(long double x);
 
-  #endif // __GNUC__ or not __GNUC__ stuff
+    float       atanhf(float x);
+    double      atanh (double x);
+    long double atanhl(long double x);
+
+    float       tgammaf(float x);
+    double      tgamma (double x);
+    long double tgammal(long double x);
+
+    float       lgammaf(float x);
+    double      lgamma (double x);
+    long double lgammal(long double x);
+  }
 
   namespace std
   {
-    // Provide certain functions that are often missing from <math.h>.
-    // Here, we patch some of these in an exemplary fashion for the
-    // proposed std::float32_t.
-    float32_t asinh (std::float32_t x);
-    float32_t acosh (std::float32_t x);
-    float32_t atanh (std::float32_t x);
-    float32_t tgamma(std::float32_t x);
+    inline bool        isfinite(float x)                            { return ::isfinitef(x) == 1; }
+    inline bool        isfinite(double x)                           { return ::isfinite (x) == 1; }
+    inline bool        isfinite(long double x)                      { return ::isfinitel(x) == 1; }
+    inline int         ilogb   (float x)                            { return ::ilogbf  (x); }
+    inline int         ilogb   (double x)                           { return ::ilogb   (x); }
+    inline int         ilogb   (long double x)                      { return ::ilogbl  (x); }
+    inline bool        isnan   (float x)                            { return __BUILTIN_ISNANF (x) == 1; }
+    inline bool        isnan   (double x)                           { return __BUILTIN_ISNAN  (x) == 1; }
+    inline bool        isnan   (long double x)                      { return __BUILTIN_ISNANL (x) == 1; }
+    inline float       fabs    (float x)                            { return __BUILTIN_FABSF (x); }
+    inline double      fabs    (double x)                           { return __BUILTIN_FABS  (x); }
+    inline long double fabs    (long double x)                      { return __BUILTIN_FABSL (x); }
+    inline float       fmod    (float x, float y)                   { return __BUILTIN_FMODF (x, y); }
+    inline double      fmod    (double x, double y)                 { return __BUILTIN_FMOD  (x, y); }
+    inline long double fmod    (long double x, long double y)       { return __BUILTIN_FMODL (x, y); }
+    inline float       modf    (float x, float* intptr)             { return __BUILTIN_MODFF (x, intptr); }
+    inline double      modf    (double x, double* intptr)           { return __BUILTIN_MODF  (x, intptr); }
+    inline long double modf    (long double x, long double* intptr) { return __BUILTIN_MODFL (x, intptr); }
+    inline float       floor   (float x)                            { return __BUILTIN_FLOORF(x); }
+    inline double      floor   (double x)                           { return __BUILTIN_FLOOR (x); }
+    inline long double floor   (long double x)                      { return __BUILTIN_FLOORL(x); }
+    inline float       ceil    (float x)                            { return __BUILTIN_CEILF (x); }
+    inline double      ceil    (double x)                           { return __BUILTIN_CEIL  (x); }
+    inline long double ceil    (long double x)                      { return __BUILTIN_CEILL (x); }
+    inline float       frexp   (float x, int* p)                    { return __BUILTIN_FREXPF(x, p); }
+    inline double      frexp   (double x, int* p)                   { return __BUILTIN_FREXP (x, p); }
+    inline long double frexp   (long double x, int* p)              { return __BUILTIN_FREXPL(x, p); }
+    inline float       ldexp   (float x, int p)                     { return __BUILTIN_LDEXPF(x, p); }
+    inline double      ldexp   (double x, int p)                    { return __BUILTIN_LDEXP (x, p); }
+    inline long double ldexp   (long double x, int p)               { return __BUILTIN_LDEXPL(x, p); }
+    inline long        lround  (float x)                            { return __BUILTIN_LROUNDF(x); }
+    inline long        lround  (double x)                           { return __BUILTIN_LROUND (x); }
+    inline long        lround  (long double x)                      { return __BUILTIN_LROUNDL(x); }
+    inline float       sqrt    (float x)                            { return __BUILTIN_SQRTF (x); }
+    inline double      sqrt    (double x)                           { return __BUILTIN_SQRT  (x); }
+    inline long double sqrt    (long double x)                      { return __BUILTIN_SQRTL (x); }
+    inline float       cbrt    (float x)                            { return __BUILTIN_CBRTF (x); }
+    inline double      cbrt    (double x)                           { return __BUILTIN_CBRT  (x); }
+    inline long double cbrt    (long double x)                      { return __BUILTIN_CBRTL (x); }
+    inline float       sin     (float x)                            { return __BUILTIN_SINF  (x); }
+    inline double      sin     (double x)                           { return __BUILTIN_SIN   (x); }
+    inline long double sin     (long double x)                      { return __BUILTIN_SINL  (x); }
+    inline float       cos     (float x)                            { return __BUILTIN_COSF  (x); }
+    inline double      cos     (double x)                           { return __BUILTIN_COS   (x); }
+    inline long double cos     (long double x)                      { return __BUILTIN_COSL  (x); }
+    inline float       tan     (float x)                            { return __BUILTIN_TANF  (x); }
+    inline double      tan     (double x)                           { return __BUILTIN_TAN   (x); }
+    inline long double tan     (long double x)                      { return __BUILTIN_TANL  (x); }
+    inline float       asin    (float x)                            { return __BUILTIN_ASINF (x); }
+    inline double      asin    (double x)                           { return __BUILTIN_ASIN  (x); }
+    inline long double asin    (long double x)                      { return __BUILTIN_ASINL (x); }
+    inline float       acos    (float x)                            { return __BUILTIN_ACOSF (x); }
+    inline double      acos    (double x)                           { return __BUILTIN_ACOS (x); }
+    inline long double acos    (long double x)                      { return __BUILTIN_ACOSL (x); }
+    inline float       atan    (float x)                            { return __BUILTIN_ATANF (x); }
+    inline double      atan    (double x)                           { return __BUILTIN_ATAN  (x); }
+    inline long double atan    (long double x)                      { return __BUILTIN_ATANL (x); }
+    inline float       atan2   (float y, float x)                   { return __BUILTIN_ATAN2F(y, x); }
+    inline double      atan2   (double y, double x)                 { return __BUILTIN_ATAN2 (y, x); }
+    inline long double atan2   (long double y, long double x)       { return __BUILTIN_ATAN2L(y, x); }
+    inline float       expf    (float x)                            { return __BUILTIN_EXPF  (x); }
+    inline double      exp     (double x)                           { return __BUILTIN_EXP   (x); }
+    inline long double exp     (long double x)                      { return __BUILTIN_EXPL  (x); }
+    inline float       pow     (float x, float a)                   { return __BUILTIN_POWF  (x, a); }
+    inline double      pow     (double x, double a)                 { return __BUILTIN_POW   (x, a); }
+    inline long double pow     (long double x, long double a)       { return __BUILTIN_POWL  (x, a); }
+    inline float       log     (float x)                            { return __BUILTIN_LOGF  (x); }
+    inline double      log     (double x)                           { return __BUILTIN_LOG   (x); }
+    inline long double log     (long double x)                      { return __BUILTIN_LOGL  (x); }
+    inline float       log10   (float x)                            { return __BUILTIN_LOG10F(x); }
+    inline double      log10   (double x)                           { return __BUILTIN_LOG10 (x); }
+    inline long double log10   (long double x)                      { return __BUILTIN_LOG10L(x); }
+    inline float       sinh    (float x)                            { return __BUILTIN_SINHF (x); }
+    inline double      sinh    (double x)                           { return __BUILTIN_SINH  (x); }
+    inline long double sinh    (long double x)                      { return __BUILTIN_SINHL (x); }
+    inline float       cosh    (float x)                            { return __BUILTIN_COSHF (x); }
+    inline double      cosh    (double x)                           { return __BUILTIN_COSH  (x); }
+    inline long double cosh    (long double x)                      { return __BUILTIN_COSHL (x); }
+    inline float       tanh    (float x)                            { return __BUILTIN_TANHF (x); }
+    inline double      tanh    (double x)                           { return __BUILTIN_TANH  (x); }
+    inline long double tanh    (long double x)                      { return __BUILTIN_TANHL (x); }
+    inline float       asinh   (float x)                            { return ::asinhf(x); }
+    inline double      asinh   (double x)                           { return ::asinh (x); }
+    inline long double asinh   (long double x)                      { return ::asinhl(x); }
+    inline float       acosh   (float x)                            { return ::acoshf(x); }
+    inline double      acosh   (double x)                           { return ::acosh (x); }
+    inline long double acosh   (long double x)                      { return ::acoshl(x); }
+    inline float       atanh   (float x)                            { return ::asinhf(x); }
+    inline double      atanh   (double x)                           { return ::asinh (x); }
+    inline long double atanh   (long double x)                      { return ::asinhl(x); }
+    inline float       tgamma  (float x)                            { return ::tgammaf(x); }
+    inline double      tgamma  (double x)                           { return ::tgamma (x); }
+    inline long double tgamma  (long double x)                      { return ::tgammal(x); }
+    inline float       lgamma  (float x)                            { return ::lgammaf(x); }
+    inline double      lgamma  (double x)                           { return ::lgamma (x); }
+    inline long double lgamma  (long double x)                      { return ::lgammal(x); }
   }
+
+  #else
+
+  #if defined(__cplusplus)
+  extern "C"
+  {
+  #endif
+    // These are (most of) the functions from <math.h> having C-linkage.
+    int         isfinitef(float);
+    int         isfinitel(long double);
+    int         ilogbf   (float);
+    int         ilogbl   (long double);
+    int         isnanf   (float);
+    int         isnanl   (long double);
+    float       fabsf    (float x);
+    long double fabsl    (long double x);
+    float       fmodf    (float x, float y);
+    long double fmodl    (long double x, long double y);
+    float       modff    (float x, float* intptr);
+    long double modfl    (long double x, long double* intptr);
+    float       floorf   (float x);
+    long double floorl   (long double x);
+    float       ceilf    (float x);
+    long double ceill    (long double x);
+    float       frexpf   (float x, int* p);
+    long double frexpl   (long double x, int* p);
+    float       ldexpf   (float x, int p);
+    long double ldexpl   (long double x, int p);
+    long        lroundf  (float x);
+    long        lroundl  (long double x);
+    float       sqrtf    (float x);
+    long double sqrtl    (long double x);
+    float       cbrtf    (float x);
+    long double cbrtl    (long double x);
+    float       sinf     (float x);
+    long double sinl     (long double x);
+    float       cosf     (float x);
+    long double cosl     (long double x);
+    float       tanf     (float x);
+    long double tanl     (long double x);
+    float       asinf    (float x);
+    long double asinl    (long double x);
+    float       acosf    (float x);
+    long double acosl    (long double x);
+    float       atanf    (float x);
+    long double atanl    (long double x);
+    float       atan2f   (float y, float x);
+    long double atan2l   (long double y, long double x);
+    float       expf     (float x);
+    long double expl     (long double x);
+    float       powf     (float x, float a);
+    long double powl     (long double x, long double a);
+    float       logf     (float x);
+    long double logl     (long double x);
+    float       log10f   (float x);
+    long double log10l   (long double x);
+    float       sinhf    (float x);
+    long double sinhl    (long double x);
+    float       coshf    (float x);
+    long double coshl    (long double x);
+    float       tanhf    (float x);
+    long double tanhl    (long double x);
+    float       asinhf   (float x);
+    long double asinhl   (long double x);
+    float       acoshf   (float x);
+    long double acoshl   (long double x);
+    float       atanhf   (float x);
+    long double atanhl   (long double x);
+    float       tgammaf  (float x);
+    long double tgammal  (long double x);
+    float       lgammaf  (float x);
+    long double lgammal  (long double x);
+  #if defined(__cplusplus)
+  }
+  #endif
+
+  #if defined(__cplusplus)
+  extern "C++"
+  {
+  #endif
+    inline bool          isfinite(float x)                       { return (::isfinitef(x) == 1); }
+    inline bool          isfinite(double x)                      { return (::isfinite (x) == 1); }
+    inline bool          isfinite(long double x)                 { return (::isfinitel(x) == 1); }
+    inline int           ilogb   (float x)                       { return ::ilogbf(x); }
+    inline int           ilogb   (double x)                      { return ::ilogb (x); }
+    inline int           ilogb   (long double x)                 { return ::ilogbl(x); }
+    #if defined(__GNUC__)
+    inline bool          isnan   (float x)                       { return __builtin_isnanf(x); }
+    inline bool          isnan   (double x)                      { return __builtin_isnan (x); }
+    inline bool          isnan   (long double x)                 { return __builtin_isnanl(x); }
+    inline float         abs     (float x)                       { return __builtin_fabsf (x); }
+    inline double        abs     (double x)                      { return __builtin_fabs  (x); }
+    inline long double   abs     (long double x)                 { return __builtin_fabsl (x); }
+    inline float         fabs    (float x)                       { return __builtin_fabsf (x); }
+    inline double        fabs    (double x)                      { return __builtin_fabs  (x); }
+    inline long double   fabs    (long double x)                 { return __builtin_fabsl (x); }
+    inline float         fmod    (float x, float y)              { return __builtin_fmodf (x, y); }
+    inline double        fmod    (double x, double y)            { return __builtin_fmod  (x, y); }
+    inline long double   fmod    (long double x, long double y)  { return __builtin_fmodl (x, y); }
+    inline float         modf    (float       x, float*       p) { return __builtin_modff (x, p); }
+    inline double        modf    (double      x, double*      p) { return __builtin_modf  (x, p); }
+    inline long double   modf    (long double x, long double* p) { return __builtin_modfl (x, p); }
+    inline float         floor   (float       x)                 { return __builtin_floorf(x); }
+    inline double        floor   (double      x)                 { return __builtin_floor (x); }
+    inline long double   floor   (long double x)                 { return __builtin_floorl(x); }
+    inline float         ceil    (float       x)                 { return __builtin_ceilf (x); }
+    inline double        ceil    (double      x)                 { return __builtin_ceil  (x); }
+    inline long double   ceil    (long double x)                 { return __builtin_ceill (x); }
+    inline float         frexp   (float       x, int* p)         { return __builtin_frexpf(x, p); }
+    inline double        frexp   (double      x, int* p)         { return __builtin_frexp (x, p); }
+    inline long double   frexp   (long double x, int* p)         { return __builtin_frexpl(x, p); }
+    inline float         ldexp   (float       x, int p)          { return __builtin_ldexpf(x, p); }
+    inline double        ldexp   (double      x, int p)          { return __builtin_ldexp (x, p); }
+    inline long double   ldexp   (long double x, int p)          { return __builtin_ldexpl(x, p); }
+    inline long          lround  (float       x)                 { return __builtin_lroundf(x); }
+    inline long          lround  (double      x)                 { return __builtin_lround (x); }
+    inline long          lround  (long double x)                 { return __builtin_lroundl(x); }
+    inline float         sqrt    (float       x)                 { return __builtin_sqrtf (x); }
+    inline double        sqrt    (double      x)                 { return __builtin_sqrt  (x); }
+    inline long double   sqrt    (long double x)                 { return __builtin_sqrtl (x); }
+    inline float         cbrt    (float       x)                 { return __builtin_cbrtf (x); }
+    inline double        cbrt    (double      x)                 { return __builtin_cbrt  (x); }
+    inline long double   cbrt    (long double x)                 { return __builtin_cbrtl (x); }
+    inline float         sin     (float       x)                 { return __builtin_sinf  (x); }
+    inline double        sin     (double      x)                 { return __builtin_sin   (x); }
+    inline long double   sin     (long double x)                 { return __builtin_sinl  (x); }
+    inline float         cos     (float       x)                 { return __builtin_cosf  (x); }
+    inline double        cos     (double      x)                 { return __builtin_cos   (x); }
+    inline long double   cos     (long double x)                 { return __builtin_cosl  (x); }
+    inline float         tan     (float       x)                 { return __builtin_tanf  (x); }
+    inline double        tan     (double      x)                 { return __builtin_tan   (x); }
+    inline long double   tan     (long double x)                 { return __builtin_tanl  (x); }
+    inline float         asin    (float       x)                 { return __builtin_asinf (x); }
+    inline double        asin    (double      x)                 { return __builtin_asin  (x); }
+    inline long double   asin    (long double x)                 { return __builtin_asinl (x); }
+    inline float         acos    (float       x)                 { return __builtin_acosf (x); }
+    inline double        acos    (double      x)                 { return __builtin_acos  (x); }
+    inline long double   acos    (long double x)                 { return __builtin_acosl (x); }
+    inline float         atan    (float       x)                 { return __builtin_atanf (x); }
+    inline double        atan    (double      x)                 { return __builtin_atan  (x); }
+    inline long double   atan    (long double x)                 { return __builtin_atanl (x); }
+    inline float         atan2   (float       y, float       x)  { return __builtin_atan2f(y, x); }
+    inline double        atan2   (double      y, double      x)  { return __builtin_atan2 (y, x); }
+    inline long double   atan2   (long double y, long double x)  { return __builtin_atan2l(y, x); }
+    inline float         exp     (float       x)                 { return __builtin_expf  (x); }
+    inline double        exp     (double      x)                 { return __builtin_exp   (x); }
+    inline long double   exp     (long double x)                 { return __builtin_expl  (x); }
+    inline float         pow     (float       x, float       a)  { return __builtin_powf  (x, a); }
+    inline double        pow     (double      x, double      a)  { return __builtin_pow   (x, a); }
+    inline long double   pow     (long double x, long double a)  { return __builtin_powl  (x, a); }
+    inline float         log     (float       x)                 { return __builtin_logf  (x); }
+    inline double        log     (double      x)                 { return __builtin_log   (x); }
+    inline long double   log     (long double x)                 { return __builtin_logl  (x); }
+    inline float         log10   (float       x)                 { return __builtin_log10f(x); }
+    inline double        log10   (double      x)                 { return __builtin_log10 (x); }
+    inline long double   log10   (long double x)                 { return __builtin_log10l(x); }
+    inline float         sinh    (float       x)                 { return __builtin_sinhf (x); }
+    inline double        sinh    (double      x)                 { return __builtin_sinh  (x); }
+    inline long double   sinh    (long double x)                 { return __builtin_sinhl (x); }
+    inline float         cosh    (float       x)                 { return __builtin_coshf (x); }
+    inline double        cosh    (double      x)                 { return __builtin_cosh  (x); }
+    inline long double   cosh    (long double x)                 { return __builtin_coshl (x); }
+    inline float         tanh    (float       x)                 { return __builtin_tanhf (x); }
+    inline double        tanh    (double      x)                 { return __builtin_tanh  (x); }
+    inline long double   tanh    (long double x)                 { return __builtin_tanhl (x); }
+    #else
+    inline bool          isnan   (float x)                       { return ::isnanf(x); }
+           bool          isnan   (double x);
+    inline bool          isnan   (long double x)                 { return ::isnanl(x); }
+    inline float         abs     (float       x)                 { return ::fabsf (x); }
+    extern "C"
+           double        abs     (double      x);
+    inline long double   abs     (long double x)                 { return ::fabsl (x); }
+    inline float         fabs    (float       x)                 { return ::fabsf (x); }
+    extern "C"
+           double        fabs    (double      x);
+    inline long double   fabs    (long double x)                 { return ::fabsl (x); }
+    inline float         fmod    (float       x, float       y)  { return ::fmodf(x, y); }
+    extern "C"
+           double        fmod    (double      x, double      y);
+    inline long double   fmod    (long double x, long double y)  { return ::fmodl(x, y); }
+    inline float         modf    (float       x, float*       p) { return ::modff (x, p); }
+    extern "C"
+           double        modf    (double      x, double*      p);
+    inline long double   modf    (long double x, long double* p) { return ::modfl (x, p); }
+    inline float         floor   (float       x)                 { return ::floorf(x); }
+    extern "C"
+           double        floor   (double      x);
+    inline long double   floor   (long double x)                 { return ::floorl(x); }
+    inline float         ceil    (float       x)                 { return ::ceilf (x); }
+    extern "C"
+           double        ceil    (double      x);
+    inline long double   ceil    (long double x)                 { return ::ceill (x); }
+    inline float         frexp   (float       x, int* p)         { return ::frexpf(x, p); }
+    extern "C"
+           double        frexp   (double      x, int* p);
+    inline long double   frexp   (long double x, int* p)         { return ::frexpl(x, p); }
+    inline float         ldexp   (float       x, int p)          { return ::ldexpf(x, p); }
+    extern "C"
+           double        ldexp   (double      x, int p);
+    inline long double   ldexp   (long double x, int p)          { return ::ldexpl (x, p); }
+    inline long          lround  (float       x)                 { return ::lroundf(x); }
+    extern "C"
+           long          lround  (double      x);
+    inline long          lround  (long double x)                 { return ::lroundl(x); }
+    inline float         sqrt    (float       x)                 { return ::sqrtf (x); }
+    extern "C"
+           double        sqrt    (double      x);
+    inline long double   sqrt    (long double x)                 { return ::sqrtl (x); }
+    inline float         cbrt    (float       x)                 { return ::cbrtf (x); }
+    extern "C"
+           double        cbrt    (double      x);
+    inline long double   cbrt    (long double x)                 { return ::cbrtl (x); }
+    inline float         sin     (float       x)                 { return ::sinf  (x); }
+    extern "C"
+           double        sin     (double      x);
+    inline long double   sin     (long double x)                 { return ::sinl  (x); }
+    inline float         cos     (float       x)                 { return ::cosf  (x); }
+    extern "C"
+           double        cos     (double      x);
+    inline long double   cos     (long double x)                 { return ::cosl  (x); }
+    inline float         tan     (float       x)                 { return ::tanf  (x); }
+    extern "C"
+           double        tan     (double      x);
+    inline long double   tan     (long double x)                 { return ::tanl  (x); }
+    inline float         asin    (float       x)                 { return ::asinf (x); }
+    extern "C"
+           double        asin    (double      x);
+    inline long double   asin    (long double x)                 { return ::asinl (x); }
+    inline float         acos    (float       x)                 { return ::acosf (x); }
+    extern "C"
+           double        acos    (double      x);
+    inline long double   acos    (long double x)                 { return ::acosl (x); }
+    inline float         atan    (float       x)                 { return ::atanf (x); }
+    extern "C"
+           double        atan    (double      x);
+    inline long double   atan    (long double x)                 { return ::atanl (x); }
+    inline float         atan2   (float       y, float       x)  { return ::atan2f(y, x); }
+    extern "C"
+           double        atan2   (double      y, double      x);
+    inline long double   atan2   (long double y, long double x)  { return ::atan2l(y, x); }
+    inline float         exp     (float       x)                 { return ::expf  (x); }
+    extern "C"
+           double        exp     (double      x);
+    inline long double   exp     (long double x)                 { return ::expl  (x); }
+    inline float         pow     (float       x, float       a)  { return ::powf  (x, a); }
+    extern "C"
+           double        pow     (double      x, double      a);
+    inline long double   pow     (long double x, long double a)  { return ::powl  (x, a); }
+    inline float         log     (float       x)                 { return ::logf  (x); }
+    extern "C"
+           double        log     (double      x);
+    inline long double   log     (long double x)                 { return ::logl  (x); }
+    inline float         log10   (float       x)                 { return ::log10f(x); }
+    extern "C"
+           double        log10   (double      x);
+    inline long double   log10   (long double x)                 { return ::log10l(x); }
+    inline float         sinh    (float       x)                 { return ::sinhf (x); }
+    extern "C"
+           double        sinh    (double      x);
+    inline long double   sinh    (long double x)                 { return ::sinhl (x); }
+    inline float         cosh    (float       x)                 { return ::coshf (x); }
+    extern "C"
+           double        cosh    (double      x);
+    inline long double   cosh    (long double x)                 { return ::coshl (x); }
+    inline float         tanh    (float       x)                 { return ::tanhf (x); }
+    extern "C"
+           double        tanh    (double      x);
+    inline long double   tanh    (long double x)                 { return ::tanhl (x); }
+    #endif
+    inline float         asinh   (float       x)                 { return ::asinhf(x); }
+    extern "C"
+           double        asinh   (double      x);
+    inline long double   asinh   (long double x)                 { return ::asinhl(x); }
+    inline float         acosh   (float       x)                 { return ::acoshf(x); }
+    extern "C"
+           double        acosh   (double      x);
+    inline long double   acosh   (long double x)                 { return ::acoshl(x); }
+    inline float         atanh   (float       x)                 { return ::atanhf(x); }
+    extern "C"
+           double        atanh   (double      x);
+    inline long double   atanh   (long double x)                 { return ::atanhl(x); }
+    inline float         tgamma  (float       x)                 { return ::tgammaf(x); }
+    extern "C"
+           double        tgamma  (double      x);
+    inline long double   tgamma  (long double x)                 { return ::tgammal(x); }
+    inline float         lgamma  (float       x)                 { return ::lgammaf(x); }
+    extern "C"
+           double        lgamma  (double      x);
+    inline long double   lgamma  (long double x)                 { return ::lgammal(x); }
+    #if __cplusplus > 201703L
+    inline float         lerp    (float       a, float       b, float       t)
+                                                                 { return a + (t * (b - a)); }
+    inline double        lerp    (double      a, double      b, double      t)
+                                                                 { return a + (t * (b - a)); }
+    inline long double   lerp    (long double a, long double b, long double t)
+                                                                 { return a + (t * (b - a)); }
+    #endif
+  #if defined(__cplusplus)
+  }
+  #endif
+
+  namespace std
+  {
+    using ::isfinite;
+    using ::ilogb;
+    using ::isnan;
+    using ::abs;
+    using ::fabs;
+    using ::fmod;
+    using ::modf;
+    using ::floor;
+    using ::ceil;
+    using ::frexp;
+    using ::ldexp;
+    using ::lround;
+    using ::sqrt;
+    using ::cbrt;
+    using ::sin;
+    using ::cos;
+    using ::tan;
+    using ::asin;
+    using ::acos;
+    using ::atan;
+    using ::atan2;
+    using ::exp;
+    using ::pow;
+    using ::log;
+    using ::log10;
+    using ::sinh;
+    using ::cosh;
+    using ::tanh;
+    using ::asinh;
+    using ::acosh;
+    using ::atanh;
+    using ::tgamma;
+    using ::lgamma;
+  } // namespace std
+
+  #endif
 
 #endif // CMATH_2010_02_23_

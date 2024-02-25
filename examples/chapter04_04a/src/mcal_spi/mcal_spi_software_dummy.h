@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H_
-  #define MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H_
+#ifndef MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H
+  #define MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H
 
   #include <util/utility/util_communication.h>
 
@@ -22,9 +22,9 @@
 
     spi_software_dummy() = default;
 
-    virtual ~spi_software_dummy() = default;
+    ~spi_software_dummy() override = default;
 
-    virtual bool send(const std::uint8_t byte_to_send)
+    auto send(const std::uint8_t byte_to_send) noexcept -> bool override
     {
       static_cast<void>(byte_to_send);
 
@@ -33,10 +33,10 @@
       return true;
     }
 
-    virtual void   select() { }
-    virtual void deselect() { }
+    auto   select() -> void override { }
+    auto deselect() -> void override { }
   };
 
   } } // namespace mcal::spi
 
-#endif // MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H_
+#endif // MCAL_SPI_SOFTWARE_DUMMY_2020_04_10_H

@@ -331,9 +331,12 @@
     <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_console.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
     <ClInclude Include="src\mcal_led\mcal_led_pwm.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />

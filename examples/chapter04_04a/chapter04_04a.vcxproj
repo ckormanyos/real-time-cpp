@@ -232,19 +232,11 @@
     <ClCompile Include="src\os\os_task_control_block.cpp" />
     <ClCompile Include="src\sys\idle\sys_idle.cpp" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
-    <ClCompile Include="src\util\STD_LIBC\memory.cpp">
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\util\STL\impl\avr\avr_float_limits.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\util\STL\impl\cmath_impl_gamma.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\util\STL\impl\cmath_impl_hyperbolic.cpp">
+    <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -272,6 +264,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal\avr\mcal_led.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\mcal\avr\mcal_led_pwm.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -331,12 +327,16 @@
     <ClInclude Include="src\mcal\host\mcal_wdg.h" />
     <ClInclude Include="src\mcal\host\mcal_wdg_watchdog.h" />
     <ClInclude Include="src\mcal\mcal.h" />
+    <ClInclude Include="src\mcal\mcal_helper.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
     <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_console.h" />
     <ClInclude Include="src\mcal_led\mcal_led_port.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h" />
     <ClInclude Include="src\mcal_led\mcal_led_pwm.h" />
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_nonconst_address_ptr.h" />
     <ClInclude Include="src\mcal_memory\mcal_memory_progmem_access.h" />
@@ -347,12 +347,14 @@
     <ClInclude Include="src\mcal_pwm\mcal_pwm_base.h" />
     <ClInclude Include="src\mcal_pwm\mcal_pwm_console.h" />
     <ClInclude Include="src\mcal_pwm\mcal_pwm_dummy.h" />
+    <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_dummy.h" />
     <ClInclude Include="src\mcal_spi\mcal_spi_software_port_driver.h" />
     <ClInclude Include="src\os\os.h" />
     <ClInclude Include="src\os\os_cfg.h" />
     <ClInclude Include="src\os\os_task_control_block.h" />
     <ClInclude Include="src\util\memory\util_factory.h" />
+    <ClInclude Include="src\util\memory\util_n_slot_array_allocator.h" />
     <ClInclude Include="src\util\memory\util_placed_pointer.h" />
     <ClInclude Include="src\util\memory\util_ring_allocator.h" />
     <ClInclude Include="src\util\memory\util_static_allocator.h" />
@@ -360,7 +362,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\util\STL\impl\alloc_traits.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\util\STL\impl\avr\avr_atomic.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\util\STL\impl\ptr_traits.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -382,18 +392,22 @@
     </ClInclude>
     <ClInclude Include="src\util\STL_C++XX_stdfloat\stdfloat.h" />
     <ClInclude Include="src\util\utility\util_alignas.h" />
+    <ClInclude Include="src\util\utility\util_baselexical_cast.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
     <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
+    <ClInclude Include="src\util\utility\util_constexpr_algorithm_unsafe.h" />
+    <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h" />
     <ClInclude Include="src\util\utility\util_countof.h" />
+    <ClInclude Include="src\util\utility\util_display.h" />
     <ClInclude Include="src\util\utility\util_dynamic_array.h" />
     <ClInclude Include="src\util\utility\util_dynamic_bitset.h" />
     <ClInclude Include="src\util\utility\util_linear_interpolate.h" />
+    <ClInclude Include="src\util\utility\util_narrow_cast.h" />
     <ClInclude Include="src\util\utility\util_noexcept.h" />
     <ClInclude Include="src\util\utility\util_noncopyable.h" />
     <ClInclude Include="src\util\utility\util_nothing.h" />
     <ClInclude Include="src\util\utility\util_point.h" />
-    <ClInclude Include="src\util\utility\util_random_pcg32.h" />
     <ClInclude Include="src\util\utility\util_stopwatch.h" />
     <ClInclude Include="src\util\utility\util_swdm.h" />
     <ClInclude Include="src\util\utility\util_time.h" />
@@ -405,7 +419,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="src\util\STL\any" />
+    <None Include="src\util\STL\any">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\util\STL\array">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -418,11 +435,35 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="src\util\STL\bitset">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\cassert">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\cerrno">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\util\STL\cfloat">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="src\util\STL\charconv">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\util\STL\chrono">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\cinttypes">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\ciso646">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
@@ -454,6 +495,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="src\util\STL\cstring">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\util\STL\ctime">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -482,7 +527,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="src\util\STL\random">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\util\STL\ratio">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\span">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\util\STL\stdexcept">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>

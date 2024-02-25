@@ -446,6 +446,15 @@
     <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h">
       <Filter>src\mcal_pwm</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_port_inverted.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

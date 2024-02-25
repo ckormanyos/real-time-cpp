@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2018.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,11 +11,18 @@
 #
 # Generic pattern rules
 #
-# Based on GNU Make 3.81
+# Based on GNU Make 4.2.1
 #
 # 07-April-2010
 #
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+# GCC dependency flags.
+# ------------------------------------------------------------------------------
+
+DEP_FLAGS   = -MMD -MF $(PATH_OBJ)/$(basename $(@F)).d
 
 
 # ------------------------------------------------------------------------------
@@ -30,12 +37,29 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and create an assembly listing using objdump,
   # ...and generate a dependency file (using the -MM flag),
   # ...and be sure to include the path in the dependency file.
-	@-$(CC) $(CPPFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S -C $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
-	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
-	@-$(CC) $(CPPFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|.hpp:\([0-9]*\),|.hpp(\1) :|' -e 's|.cpp:\([0-9]*\),|.cpp(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+ifneq ($(findstr risc,$(GCC_TARGET)),)
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
+endif
 
+# ------------------------------------------------------------------------------
+# Rule to compile C++ source file (*.cc) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+$(PATH_OBJ)/%.o : %.cc
+	@$(ECHO) +++ compile: $< to $@
+  # Compile the source file,
+  # ...and reformat (using sed) any possible error/warning messages
+  #    for the VisualStudio(R) output window,
+  # ...and create an assembly listing using objdump,
+  # ...and generate a dependency file (using the -MM flag),
+  # ...and be sure to include the path in the dependency file.
+	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|.hpp:\([0-9]*\),|.hpp(\1) :|' -e 's|.cc:\([0-9]*\),|.cc(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+ifneq ($(findstr risc,$(GCC_TARGET)),)
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
+endif
 
 # ------------------------------------------------------------------------------
 # Rule to compile C source file (*.c) to object file (*.o).
@@ -49,11 +73,9 @@ $(PATH_OBJ)/%.o : %.c
   # ...and create an assembly listing using objdump,
   # ...and generate a dependency file (using the -MM flag),
   # ...and be sure to include the path in the dependency file.
-	@-$(CC) $(CFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
-	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
-	@-$(ECHO) -n $(PATH_OBJ)/ > $(PATH_OBJ)/$(basename $(@F)).d
-	@-$(CC) $(CFLAGS) $< -MM >> $(PATH_OBJ)/$(basename $(@F)).d
+	@-$(CC) $(CFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|.c:\([0-9]*\),|.c(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 
 
 # ------------------------------------------------------------------------------
@@ -68,4 +90,4 @@ $(PATH_OBJ)/%.o : %.s
   # ...and create an assembly listing using objdump
 	@-$(CC) $(AFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_SRC)/$(basename $(@F)).lst
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst

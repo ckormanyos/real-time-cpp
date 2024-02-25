@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2021.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,27 +9,39 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-# See also: https://blog.zakkemble.net/avr-gcc-builds/
-
-GCC_VERSION   = 11.2.0
+ifneq ($(MAKE),make)
+GCC_VERSION   = 13.2.0
+endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
 
 TGT_SUFFIX    = elf
 
-TGT_CFLAGS    = -Os                                            \
-                -mmcu=atmega328p                               \
-                -fsigned-char                                  \
-                -mrelax
+TGT_ALLFLAGS  = -O2                                                               \
+                -mmcu=atmega328p                                                  \
+                -mrelax                                                           \
+                -finline-functions                                                \
+                -finline-limit=32                                                 \
+                -fsigned-char
 
-TGT_CPPFLAGS  = -std=c++11
+ifeq ($(GCC_VERSION),13.2.0)
+TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
+                -mdouble=32                                                       \
+                -mlong-double=64
+endif
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL_C++XX_stdfloat          \
-                -I$(PATH_APP)/util/STL
+TGT_CFLAGS    = -std=c99                                                          \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++14                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-TGT_LDFLAGS   = -nostdlib                                      \
-                -nostartfiles                                  \
+TGT_LDFLAGS   = -nostdlib                                                         \
+                -nostartfiles                                                     \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)
-

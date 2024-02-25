@@ -1,12 +1,12 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_CFG_2011_10_20_H_
-  #define OS_CFG_2011_10_20_H_
+#ifndef OS_CFG_2011_10_20_H
+  #define OS_CFG_2011_10_20_H
 
   #include <cstddef>
   #include <cstdint>
@@ -84,4 +84,4 @@
 
   static_assert(OS_TASK_COUNT > static_cast<std::size_t>(UINT8_C(0)), "the task count must exceed zero");
 
-#endif // OS_CFG_2011_10_20_H_
+#endif // OS_CFG_2011_10_20_H

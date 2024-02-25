@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,28 +8,29 @@
 #include <algorithm>
 #include <array>
 #include <iterator>
+
 #include <mcal_irq.h>
 #include <os/os.h>
 #include <os/os_task_control_block.h>
 
-namespace
+namespace local
 {
-  typedef std::array<os::task_control_block, OS_TASK_COUNT> task_list_type;
+  using task_list_type  = std::array<os::task_control_block, OS_TASK_COUNT>;
 
-  typedef std::uint_fast8_t task_index_type;
+  using task_index_type = std::uint_fast8_t;
 
   // The one (and only one) operating system task list.
-  task_list_type os_task_list(OS_TASK_LIST);
+  task_list_type os_task_list(OS_TASK_LIST); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
   // The index of the running task.
-  task_index_type os_task_index;
-}
+  task_index_type os_task_index; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+} // namespace local
 
-void os::start_os()
+OS_NORETURN auto os::start_os() -> void
 {
   // Initialize each task once (and only once) before the task scheduling begins.
-  auto const it_init_func = std::for_each(os_task_list.cbegin(),
-                                          os_task_list.cend(),
+  const auto it_init_func = std::for_each(local::os_task_list.cbegin(),
+                                          local::os_task_list.cend(),
                                           [](const task_control_block& the_tcb)
                                           {
                                             the_tcb.initialize();
@@ -51,36 +52,38 @@ void os::start_os()
 
     const os::tick_type timepoint_of_ckeck_ready = os::timer_type::get_mark();
 
-    os_task_index = static_cast<task_index_type>(0U);
+    local::os_task_index = static_cast<local::task_index_type>(0U);
 
-    const auto it_ready_task =
-      std::find_if(os_task_list.begin(),
-                   os_task_list.end(),
-                   [&timepoint_of_ckeck_ready](task_control_block& tcb) -> bool
+    const auto it_ready_task = // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+      std::find_if(local::os_task_list.begin(),
+                   local::os_task_list.end(),
+                   [&timepoint_of_ckeck_ready](task_control_block& tcb) // NOLINT(modernize-use-trailing-return-type)
                    {
-                     const bool task_is_ready = tcb.execute(timepoint_of_ckeck_ready);
+                     const auto task_is_ready = tcb.execute(timepoint_of_ckeck_ready);
 
-                     ++os_task_index;
+                     ++local::os_task_index;
 
                      return task_is_ready;
                    });
 
     // If no ready-task was found, then service the idle task.
-    if(it_ready_task == os_task_list.end())
+    if(it_ready_task == local::os_task_list.end())
     {
       OS_IDLE_TASK_FUNC();
     }
   }
 }
 
-bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
+auto os::set_event(const task_id_type task_id, const event_type& event_to_set) -> bool
 {
-  if(task_id < task_id_end)
+  bool result_set_is_ok { };
+
+  if(task_id < task_id_type::task_id_end)
   {
     // Get the iterator of the control block corresponding to
     // the task id that has been supplied to this subroutine.
-    const auto it_task_id = (  os_task_list.begin()
-                             + task_list_type::size_type(task_id));
+    const auto it_task_id = (  local::os_task_list.begin() // NOLINT(llvm-qualified-auto,readability-qualified-auto)
+                             + static_cast<local::task_list_type::size_type>(task_id));
 
     // Set the event of the corresponding task.
     mcal::irq::disable_all();
@@ -89,20 +92,18 @@ bool os::set_event(const task_id_type task_id, const event_type& event_to_set)
 
     mcal::irq::enable_all();
 
-    return true;
+    result_set_is_ok = true;
   }
-  else
-  {
-    return false;
-  }
+
+  return result_set_is_ok;
 }
 
-void os::get_event(event_type& event_to_get)
+auto os::get_event(event_type& event_to_get) -> void
 {
   // Get the iterator of the control block of the running task.
-  const auto it_running_task = (os_task_list.cbegin() + os_task_index);
+  const auto it_running_task = (local::os_task_list.cbegin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
-  if(it_running_task != os_task_list.cend())
+  if(it_running_task != local::os_task_list.cend())
   {
     // Get the event of the running task.
     mcal::irq::disable_all();
@@ -115,23 +116,23 @@ void os::get_event(event_type& event_to_get)
   }
   else
   {
-    event_to_get = event_type();
+    event_to_get = event_type { };
   }
 }
 
-void os::clear_event(const event_type& event_to_clear)
+auto os::clear_event(const event_type& event_to_clear) -> void
 {
   // Get the iterator of the control block of the running task.
-  const auto it_running_task = (os_task_list.begin() + os_task_index);
+  const auto it_running_task = (local::os_task_list.begin() + local::os_task_index); // NOLINT(llvm-qualified-auto,readability-qualified-auto)
 
-  if(it_running_task != os_task_list.end())
+  if(it_running_task != local::os_task_list.end())
   {
-    const volatile event_type event_clear_mask(~event_to_clear);
+    volatile const auto event_clear_mask = static_cast<event_type>(~event_to_clear);
 
     // Clear the event of the running task.
     mcal::irq::disable_all();
 
-    it_running_task->my_event &= event_clear_mask;
+    it_running_task->my_event = static_cast<event_type>(it_running_task->my_event & event_clear_mask);
 
     mcal::irq::enable_all();
   }

@@ -18,12 +18,6 @@
 
   namespace mcal { namespace memory { namespace sram {
 
-  struct input_iterator_tag                                             { };
-  struct output_iterator_tag                                            { };
-  struct forward_iterator_tag       : public input_iterator_tag         { };
-  struct bidirectional_iterator_tag : public forward_iterator_tag       { };
-  struct random_access_iterator_tag : public bidirectional_iterator_tag { };
-
   template<typename iterator_type>
   struct iterator_traits
   {
@@ -68,14 +62,14 @@
            typename AddressType,
            typename AddressDifferenceType>
   class sram_iterator
-    : public mcal::memory::sram::iterator<random_access_iterator_tag,
+    : public mcal::memory::sram::iterator<std::random_access_iterator_tag,
                                           ValueType,
                                           AddressType,
                                           AddressDifferenceType>
   {
   private:
     using base_class_type =
-      mcal::memory::sram::iterator<random_access_iterator_tag,
+      mcal::memory::sram::iterator<std::random_access_iterator_tag,
                                    ValueType,
                                    AddressType,
                                    AddressDifferenceType>;
@@ -166,7 +160,7 @@
     operator-(const sram_iterator& x,
               const sram_iterator& y) noexcept
     {
-      return (x.current.ptr - y.current.ptr);
+      return (x.current - y.current);
     }
 
     friend inline sram_iterator
@@ -178,11 +172,11 @@
   };
 
   template<typename input_iterator>
-  typename mcal::memory::sram::iterator_traits<input_iterator>::difference_type
+  typename iterator_traits<input_iterator>::difference_type
   distance(input_iterator first, input_iterator last) noexcept
   {
     using local_difference_type =
-      typename mcal::memory::sram::iterator_traits<input_iterator>::difference_type;
+      typename iterator_traits<input_iterator>::difference_type;
 
     return local_difference_type(last - first);
   }
