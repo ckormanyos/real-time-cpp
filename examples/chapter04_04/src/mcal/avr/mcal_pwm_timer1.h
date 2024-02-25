@@ -20,6 +20,7 @@
   {
   private:
     using base_class_type = mcal::pwm::pwm_base;
+    using base_class_type::duty_type;
 
   public:
     pwm_timer1() = default;
@@ -97,11 +98,11 @@
     {
       // Set the duty cycle 0...1000.
 
-      base_class_type::my_duty_cycle = (std::min)(duty_cycle, std::uint16_t(UINT16_C(1000)));
+      base_class_type::set_duty((std::min)(duty_cycle, duty_type(UINT16_C(1000))));
 
       mcal::reg::reg_access_dynamic<std::uint8_t,
                                     std::uint16_t>::reg_set(mcal::reg::ocr1a,
-                                                            base_class_type::my_duty_cycle);
+                                                            base_class_type::get_duty());
     }
   };
 

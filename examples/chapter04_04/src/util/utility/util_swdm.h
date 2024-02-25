@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// \author (c) Marco Paland (info@paland.com)
+// \author (c) Marco Paland (info (AT) paland.com)
 //             2014-2016, PALANDesign Hannover, Germany
 //
 // \license The MIT License (MIT)
@@ -98,7 +98,7 @@
 // void swdm::set_line(bool value) const
 // {
 //   set the state of the according swdm line/pin to value (true = high/idle, false = low)
-//   if you don't use an open collector driver, you MUST config the pin as input for high/idle levels
+//   if you don't use an open collector driver, you MUST configure the pin as input for high/idle levels
 //   and before setting the line to false/low it must be configured as an output.
 // }
 //

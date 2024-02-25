@@ -1,5 +1,12 @@
-#ifndef MCAL_LED_PWM_2020_04_23_H_
-  #define MCAL_LED_PWM_2020_04_23_H_
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013 - 2023.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef MCAL_LED_PWM_2020_04_23_H
+  #define MCAL_LED_PWM_2020_04_23_H
 
   #include <mcal_led/mcal_led_base.h>
   #include <mcal_pwm/mcal_pwm_base.h>
@@ -9,22 +16,25 @@
   class led_pwm : public mcal::led::led_base
   {
   public:
-    led_pwm(mcal::pwm::pwm_base& pwm) : my_pwm(pwm)
+    explicit led_pwm(mcal::pwm::pwm_base& pwm) : my_pwm(pwm)
     {
-      my_pwm.set_duty(0U);
+      my_pwm.set_duty(static_cast<std::uint16_t>(UINT8_C(0)));
     }
 
-    virtual ~led_pwm() = default;
+    auto state_is_on() const -> bool override { return (my_pwm.get_duty() > static_cast<std::uint16_t>(UINT8_C(0))); }
 
-    virtual void toggle()
+    auto toggle() -> void override
     {
       // Toggle the duty cycle.
-      const std::uint16_t new_duty = ((my_pwm.get_duty() > 0U) ? 0U : 1000U);
+      const auto new_duty =
+        static_cast<std::uint16_t>
+        (
+          state_is_on() ? static_cast<std::uint16_t>(UINT8_C(0))
+                        : static_cast<std::uint16_t>(UINT16_C(1000))
+        );
 
       my_pwm.set_duty(new_duty);
     }
-
-    virtual bool state_is_on() const { return (my_pwm.get_duty() > 0U); }
 
   private:
     mcal::pwm::pwm_base& my_pwm;
@@ -32,4 +42,4 @@
 
   } } // namespace mcal::led
 
-#endif // MCAL_LED_PWM_2020_04_23_H_
+#endif // MCAL_LED_PWM_2020_04_23_H
