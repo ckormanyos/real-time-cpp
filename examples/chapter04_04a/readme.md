@@ -66,5 +66,6 @@ void app::led::task_func()
 
 ## Hardware Setup
 
-The hardware setup for example chapter04_04a is the same as that
-used in example chapter04_04.
+The hardware setup used here in example chapter04_04a can be
+exactly the same as that used in example
+[chapter04_04](https://github.com/ckormanyos/real-time-cpp/tree/master/examples/chapter04_04).
