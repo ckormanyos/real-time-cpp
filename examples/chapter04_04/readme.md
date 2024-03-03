@@ -18,7 +18,12 @@ LED base class.
 The port class `led_port` itself uses two kinds of ports.
 These include one microcontroller port and three other ports on an external
 serial SPI port expander chip of type MICROCHIP(R) MCP23S17.
-The PWM based LED is toggled via the dimming of its PWM duty cycle.
+
+The PWM-based LED class controls its LED via dimming
+its associated PWM duty cycle. Toggling is done by
+adjusting the PWM duty cycle back-and-forth,
+switching between $0\\%$ and $100\\%$.
+There is one instantiation of this port class.
 
 The port expander chip is controlled with SPI.
 In this particular example, an all-software bus has been
@@ -35,7 +40,8 @@ The application places five LED base class pointers in an
 `for`-loop in the application task.
 
 The array of LED base class pointers is shown in pseudo-code
-below.
+below. It is a singleton-object in the `app_led_base_class_array()`
+subroutine.
 
 ```cpp
 // ...
@@ -46,14 +52,19 @@ using app_led_array_type = std::array<app_led_type*, static_cast<std::size_t>(UI
 
 // ...
 
-static app_led_array_type local_base_class_array
+app_led_array_type& app_led_base_class_array()
 {
-  mcal::led::led0(),
-  mcal::led::led1(),
-  mcal::led::led2(),
-  mcal::led::led3(),
-  mcal::led::led4()
-};
+  static app_led_array_type local_base_class_array
+  {
+    mcal::led::led0(),
+    mcal::led::led1(),
+    mcal::led::led2(),
+    mcal::led::led3(),
+    mcal::led::led4()
+  };
+
+  return local_base_class_array;
+}
 ```
 
 The application task performs the toggle functionality

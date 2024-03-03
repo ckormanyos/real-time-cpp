@@ -14,7 +14,7 @@ This is because C++ can not store references in STL containers such as
 `std::array`.
 
 The container of wrapped LED base class references is shown in pseudo-code
-below. It is a singleton-object in the `app_led_base_class_refs()`
+below. It is a singleton-object in the `app_led_base_class_array()`
 subroutine.
 
 ```cpp
@@ -26,14 +26,19 @@ subroutine.
 
 // ...
 
-static app_led_array_type local_base_class_array
+app_led_array_type& app_led_base_class_array()
 {
-  mcal::led::led0(),
-  mcal::led::led1(),
-  mcal::led::led2(),
-  mcal::led::led3(),
-  mcal::led::led4()
-};
+  static app_led_array_type local_base_class_array
+  {
+    mcal::led::led0(),
+    mcal::led::led1(),
+    mcal::led::led2(),
+    mcal::led::led3(),
+    mcal::led::led4()
+  };
+
+  return local_base_class_array;
+}
 ```
 
 The elements in the array of LED base class references
@@ -61,5 +66,5 @@ void app::led::task_func()
 
 ## Hardware Setup
 
-The hardware setup for example chapter04_04a is the same as that of
-example chapter04_04.
+The hardware setup for example chapter04_04a is the same as that
+used in example chapter04_04.
