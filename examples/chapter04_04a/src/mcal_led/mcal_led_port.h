@@ -17,7 +17,7 @@
   class led_port : public mcal::led::led_boolean_state_base
   {
   public:
-    led_port()
+    constexpr led_port()
     {
       port_type::set_pin_low();
       port_type::set_direction_output();
