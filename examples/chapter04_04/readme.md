@@ -13,15 +13,15 @@ The class hierarchy consists of an LED base class called
 [`led_base`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_base.h#L15).
 It is located in namespace `mcal::led`.
 
-Two additional LED classes
+Two additional LED classes,
 [`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17).
-`led_port` and
-[`led_pwm`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_pwm.h#L16).
+and
+[`led_pwm`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_pwm.h#L16),
 are derived from the LED base class.
 
-The port class
+The
 [`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17).
-itself uses two kinds of digital I/O-ports.
+class itself uses two kinds of digital I/O-ports.
 These include one microcontroller port and three other ports
 located on an external
 serial SPI port expander chip of type MICROCHIP(R) MCP23S17.
@@ -37,9 +37,9 @@ In this particular example, an all-software bus has been
 developed using four microcontroller port pins toggled
 manually. The SPI communication class
 is derived from a
-`communication`(https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/util/utility/util_communication.h#L20)
-base class that provides a uniform interface
-for rudimentary byte read and write functions.
+[`communication`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/util/utility/util_communication.h#L20)
+base class. It provides a uniform interface
+for rudimentary byte-read and byte-write functions.
 
 ## Application Description
 
