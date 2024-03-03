@@ -69,7 +69,8 @@ app_led_array_type& app_led_base_class_array()
 
 The application task performs the toggle functionality
 at a frequency of approximately $\frac{1}{2}~\text{Hz}$ using
-dynamic polymorphism on the base class pointer container.
+dynamic polymorphism on the elements stored
+in the base class pointer container.
 
 ```cpp
 void app::led::task_func()
@@ -98,7 +99,7 @@ as shown in the following table.
 | LED        | Port                        | Details                                                    |
 | ---------- | --------------------------- | ---------------------------------------------------------- |
 | LED0       | microcontroller `portb.5`   | port toggle high / low, $750~\Omega$                       |
-| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $100~{\ldots}~0{\\%}$              |
+| LED1       | microcontroller `portb.1`   | Timer A, PWM duty cycle $0~{\ldots}~100{\\%}$              |
 | LED2       | port expander pin `GPA0`    | port toggle high / low, SPI software drive, $750~\Omega$   |
 | LED3       | port expander pin `GPA1`    | port toggle high / low, SPI software drive, $750~\Omega$   |
 | LED4       | port expander pin `GPA2`    | port toggle high / low, SPI software drive, $750~\Omega$   |
