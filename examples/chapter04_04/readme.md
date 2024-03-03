@@ -18,10 +18,11 @@ Two additional LED classes,
 and
 [`led_pwm`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_pwm.h#L16),
 are derived from the LED base class.
+These are used for the application's functionality.
 
 The
-[`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17).
-class itself uses two kinds of digital I/O-ports.
+[`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17)
+class itself utilizes two kinds of digital I/O-ports.
 These include one microcontroller port and three other ports
 located on an external
 serial SPI port expander chip of type MICROCHIP(R) MCP23S17.
