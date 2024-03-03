@@ -10,13 +10,21 @@ of approximately $\frac{1}{2}~\text{Hz}$.
 ## LED Classes
 
 The class hierarchy consists of an LED base class called
-[`led_base`](https://github.com/ckormanyos/real-time-cpp/blob/26cb8f63b555e7ee6c3afc96ce53646e070aeb67/examples/chapter04_04/src/mcal_led/mcal_led_base.h#L8).
+[`led_base`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_base.h#L15).
 It is located in namespace `mcal::led`.
-Two LED classes `led_port` and `led_pwm` are derived from the
-LED base class.
 
-The port class `led_port` itself uses two kinds of ports.
-These include one microcontroller port and three other ports on an external
+Two additional LED classes,
+[`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17).
+and
+[`led_pwm`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_pwm.h#L16),
+are derived from the LED base class.
+These are used for the application's functionality.
+
+The
+[`led_port`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/mcal_led/mcal_led_port.h#L17)
+class itself utilizes two kinds of digital I/O-ports.
+These include one microcontroller port and three other ports
+located on an external
 serial SPI port expander chip of type MICROCHIP(R) MCP23S17.
 
 The PWM-based LED class controls its LED via dimming
@@ -29,9 +37,10 @@ The port expander chip is controlled with SPI.
 In this particular example, an all-software bus has been
 developed using four microcontroller port pins toggled
 manually. The SPI communication class
-is derived from a communication base class that provides
-a uniform interface for rudimentary byte read and write
-functions.
+is derived from a
+[`communication`](https://github.com/ckormanyos/real-time-cpp/blob/master/examples/chapter04_04/src/util/utility/util_communication.h#L20)
+base class. It provides a uniform interface
+for rudimentary byte-read and byte-write functions.
 
 ## Application Description
 
