@@ -70,6 +70,9 @@
     <Filter Include="src\mcal\host">
       <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_doc">
+      <UniqueIdentifier>{bb289bb5-4772-4eea-aeed-2104e4745d29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sys\start\sys_start.cpp">
@@ -570,6 +573,9 @@
     </None>
     <None Include="src\util\STL\stdexcept">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="readme.md">
+      <Filter>_doc</Filter>
     </None>
   </ItemGroup>
 </Project>

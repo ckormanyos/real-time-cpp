@@ -70,6 +70,9 @@
     <Filter Include="src\mcal\host">
       <UniqueIdentifier>{79de0cd1-30d8-4628-9e4d-29a4ba48c60a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_doc">
+      <UniqueIdentifier>{2cbcda50-fe32-4265-bff5-05541d202896}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sys\start\sys_start.cpp">
@@ -323,9 +326,6 @@
     <ClInclude Include="src\app\led\app_led.h">
       <Filter>src\app\led</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\avr\mcal_led_pwm.h">
-      <Filter>src\mcal\avr</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <Filter>src\mcal_memory</Filter>
     </ClInclude>
@@ -570,6 +570,9 @@
     </None>
     <None Include="src\util\STL\stdexcept">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="readme.md">
+      <Filter>_doc</Filter>
     </None>
   </ItemGroup>
 </Project>

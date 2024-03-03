@@ -6,6 +6,8 @@
 //
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
 
 #include <app/led/app_led.h>
 #include <mcal/mcal.h>
@@ -22,55 +24,59 @@ namespace app
 
 namespace
 {
-  typedef util::timer<std::uint32_t> timer_type;
+  using timer_type = util::timer<std::uint32_t>;
+
+  using app_led_type = mcal::led::led_base;
+
+  using app_led_array_type = std::array<app_led_type*, static_cast<std::size_t>(UINT8_C(5))>;
 
   constexpr auto app_led_one_sec = timer_type::seconds(1U);
 
-  timer_type app_led_timer(app_led_one_sec);
+  timer_type app_led_timer { app_led_one_sec };
 
-  std::array<mcal::led::led_base*, 5U> app_led_base_class_pointers =
-  {{
-    mcal::led::led0(),
-    mcal::led::led1(),
-    mcal::led::led2(),
-    mcal::led::led3(),
-    mcal::led::led4()
-  }};
+  app_led_array_type& app_led_base_class_array();
 
-  bool app_led_state_is_on = true;
+  app_led_array_type& app_led_base_class_array()
+  {
+    static app_led_array_type local_base_class_array
+    {
+      mcal::led::led0(),
+      mcal::led::led1(),
+      mcal::led::led2(),
+      mcal::led::led3(),
+      mcal::led::led4()
+    };
+
+    return local_base_class_array;
+  }
+
+  bool app_led_state_is_on { true };
 }
 
-bool app::led::get_state_is_ok() noexcept
+bool app::led::get_state_is_ok()
 {
-  bool app_led_state_is_ok = true;
+  const auto& local_base_class_array = app_led_base_class_array();
 
-  if(app_led_state_is_on)
-  {
-    app_led_state_is_ok &= std::all_of(app_led_base_class_pointers.cbegin(),
-                                       app_led_base_class_pointers.cend(),
-                                       [](mcal::led::led_base* p_led) -> bool
-                                       {
-                                         return (p_led->state_is_on() == true);
-                                       });
-  }
-  else
-  {
-    app_led_state_is_ok &= std::all_of(app_led_base_class_pointers.cbegin(),
-                                       app_led_base_class_pointers.cend(),
-                                       [](mcal::led::led_base* p_led) -> bool
-                                       {
-                                         return (p_led->state_is_on() == false);
-                                       });
-  }
+  const auto app_led_state_result_is_ok =
+    std::all_of
+    (
+      local_base_class_array.cbegin(),
+      local_base_class_array.cend(),
+      [](app_led_type* p_led) -> bool
+      {
+        return ((p_led != nullptr) && (app_led_state_is_on == p_led->state_is_on()));
+      });
 
-  return app_led_state_is_ok;
+  return app_led_state_result_is_ok;
 }
 
 void app::led::task_init()
 {
-  for(auto& p_led : app_led_base_class_pointers)
+  auto& local_base_class_array = app_led_base_class_array();
+
+  for(app_led_type* p_led : local_base_class_array)
   {
-    p_led->toggle();
+    if(p_led != nullptr) { p_led->toggle(); }
   }
 
   app_led_state_is_on = true;
@@ -82,9 +88,11 @@ void app::led::task_func()
   {
     app_led_timer.start_interval(app_led_one_sec);
 
-    for(mcal::led::led_base* p_led : app_led_base_class_pointers)
+    auto& local_base_class_array = app_led_base_class_array();
+
+    for(app_led_type* p_led : local_base_class_array)
     {
-      p_led->toggle();
+      if(p_led != nullptr) { p_led->toggle(); }
     }
 
     app_led_state_is_on = (!app_led_state_is_on);
