@@ -60,13 +60,11 @@ using app_led_array_type = std::array<app_led_type*, static_cast<std::size_t>(UI
 
 app_led_array_type& app_led_base_class_array()
 {
+  using namespace mcal::led;
+
   static app_led_array_type local_base_class_array
   {
-    mcal::led::led0(),
-    mcal::led::led1(),
-    mcal::led::led2(),
-    mcal::led::led3(),
-    mcal::led::led4()
+    led0(), led1(), led2(), led3(), led4()
   };
 
   return local_base_class_array;
