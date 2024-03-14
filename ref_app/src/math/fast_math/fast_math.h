@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2010 - 2019.
+//  Copyright Christopher Kormanyos 2010 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,9 +11,11 @@
   #include <cmath>
   #include <cstdint>
 
-  #if defined(__GNUC__)
+  #if (defined(__GNUC__) && !defined(__clang__))
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Werror=uninitialized"
   #endif
 
   typedef float fast_math_float32_t;
@@ -199,7 +201,8 @@
                      : series_of_alpha / (fast_math_float32_t) (uint32_t(1UL) << (-n)));
   }
 
-  #if defined(__GNUC__)
+  #if (defined(__GNUC__) && !defined(__clang__))
+  #pragma GCC diagnostic pop
   #pragma GCC diagnostic pop
   #endif
 
