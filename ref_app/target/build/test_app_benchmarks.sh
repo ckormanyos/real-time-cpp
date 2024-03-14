@@ -48,69 +48,69 @@ $GCC -std=$STD -Wall -Werror -O2 -m64 -I./src/mcal/host -I./src                 
 fi
 $GCC -std=$STD -Wall         -O2 -m64 -I./src/mcal/host -I./src -I../../cppalliance-decimal-root/include -I../../boost-root -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_NON_STD_DECIMAL            -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_non_std_decimal.cpp            -o ./bin/app_benchmark_non_std_decimal.exe
 
-setarch `uname -m` -R ./bin/app_benchmark_complex.exe
+./bin/app_benchmark_complex.exe
 result_var_complex=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_crc.exe
+./bin/app_benchmark_crc.exe
 result_var_crc=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_fast_math.exe
+./bin/app_benchmark_fast_math.exe
 result_var_fast_math=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_filter.exe
+./bin/app_benchmark_filter.exe
 result_var_filter=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_fixed_point.exe
+./bin/app_benchmark_fixed_point.exe
 result_var_fixed_point=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_float.exe
+./bin/app_benchmark_float.exe
 result_var_float=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_hash.exe
+./bin/app_benchmark_hash.exe
 result_var_hash=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_none.exe
+./bin/app_benchmark_none.exe
 result_var_none=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_pi_agm.exe
+./bin/app_benchmark_pi_agm.exe
 result_var_pi_agm=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_pi_spigot.exe
+./bin/app_benchmark_pi_spigot.exe
 result_var_pi_spigot=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_pi_spigot_single.exe
+./bin/app_benchmark_pi_spigot_single.exe
 result_var_pi_spigot_single=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_soft_double_h2f1.exe
+./bin/app_benchmark_soft_double_h2f1.exe
 result_var_soft_double_h2f1=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_trapezoid_integral.exe
+./bin/app_benchmark_trapezoid_integral.exe
 result_var_trapezoid_integral=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_wide_decimal.exe
+./bin/app_benchmark_wide_decimal.exe
 result_var_wide_decimal=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_wide_integer.exe
+./bin/app_benchmark_wide_integer.exe
 result_var_wide_integer=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_boost_math_cbrt_tgamma.exe
+./bin/app_benchmark_boost_math_cbrt_tgamma.exe
 result_var_boost_math_cbrt_tgamma=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_boost_math_cyl_bessel_j.exe
+./bin/app_benchmark_boost_math_cyl_bessel_j.exe
 result_var_boost_math_cyl_bessel_j=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_boost_multiprecision_cbrt.exe
+./bin/app_benchmark_boost_multiprecision_cbrt.exe
 result_var_boost_multiprecision_cbrt=$?
 
-setarch `uname -m` -R ./bin/app_benchmark_hash_sha256.exe
+./bin/app_benchmark_hash_sha256.exe
 result_var_hash_sha256=$?
 
 if [[ "$GCC" == "g++" ]]; then
-setarch `uname -m` -R ./bin/app_benchmark_ecc_generic_ecc.exe
+./bin/app_benchmark_ecc_generic_ecc.exe
 result_var_ecc_generic_ecc=$?
 fi
 
-setarch `uname -m` -R ./bin/app_benchmark_non_std_decimal.exe
+./bin/app_benchmark_non_std_decimal.exe
 result_var_non_std_decimal=$?
 
 echo "result_var_complex                  : "  "$result_var_complex"

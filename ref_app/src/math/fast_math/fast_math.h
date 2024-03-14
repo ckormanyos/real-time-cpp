@@ -69,8 +69,7 @@
     // The constant differs slightly from the original value.
 
     // Note that the cast in the following line breaks strict alignment rules.
-    const uint32_t i =
-      (uint32_t) 0X5F375A86ULL - (uint32_t) ((*(const uint32_t*) ((const void*) &x)) >> 1);
+    volatile uint32_t i = (uint32_t) ((uint32_t) 0X5F375A86ULL - (uint32_t) ((*(const uint32_t*) ((const void*) &x)) >> 1));
 
     // Note that the cast in the following line breaks strict alignment rules.
     fast_math_float32_t y = *(const fast_math_float32_t*) ((const void*) &i);
