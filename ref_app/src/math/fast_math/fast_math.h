@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2010 - 2019.
+//  Copyright Christopher Kormanyos 2010 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,9 +11,11 @@
   #include <cmath>
   #include <cstdint>
 
-  #if defined(__GNUC__)
+  #if (defined(__GNUC__) && !defined(__clang__))
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wuninitialized"
   #endif
 
   typedef float fast_math_float32_t;
@@ -69,8 +71,7 @@
     // The constant differs slightly from the original value.
 
     // Note that the cast in the following line breaks strict alignment rules.
-    const uint32_t i =
-      (uint32_t) 0X5F375A86ULL - (uint32_t) ((*(const uint32_t*) ((const void*) &x)) >> 1);
+    volatile uint32_t i = (uint32_t) ((uint32_t) 0X5F375A86ULL - (uint32_t) ((*(const uint32_t*) ((const void*) &x)) >> 1));
 
     // Note that the cast in the following line breaks strict alignment rules.
     fast_math_float32_t y = *(const fast_math_float32_t*) ((const void*) &i);
@@ -200,7 +201,8 @@
                      : series_of_alpha / (fast_math_float32_t) (uint32_t(1UL) << (-n)));
   }
 
-  #if defined(__GNUC__)
+  #if (defined(__GNUC__) && !defined(__clang__))
+  #pragma GCC diagnostic pop
   #pragma GCC diagnostic pop
   #endif
 
