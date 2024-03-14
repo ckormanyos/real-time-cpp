@@ -161,7 +161,7 @@ jobs:
         run: |
           git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
           mkdir -p bin
-          ${{ matrix.compiler }} -std=${{ matrix.standard }} -Wall -Werror -O3 -march=native -fsanitize=address -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp -o ./bin/app_benchmark_cnl_scaled_integer.exe
+          ${{ matrix.compiler }} -std=${{ matrix.standard }} -Wall -Werror -O2 -m64 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp -o ./bin/app_benchmark_cnl_scaled_integer.exe
           ls -la ./bin/app_benchmark_cnl_scaled_integer.exe
           ./bin/app_benchmark_cnl_scaled_integer.exe
         working-directory: ./ref_app/
