@@ -15,7 +15,7 @@
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
   #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Werror=uninitialized"
+  #pragma GCC diagnostic ignored "-Wuninitialized"
   #endif
 
   typedef float fast_math_float32_t;
