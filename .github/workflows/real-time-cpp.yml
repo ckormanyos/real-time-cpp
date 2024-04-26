@@ -114,7 +114,7 @@ jobs:
           echo query the GNUmake version
           make --version
           echo Add the brew-installed-avr-gcc@12 path
-          PATH="/usr/local/opt/avr-gcc@12/bin:$PATH"
+          PATH="/opt/homebrew/opt/avr-gcc@12/bin:$PATH"
           echo ""
           echo Query the avr-gcc version
           avr-g++ -v
