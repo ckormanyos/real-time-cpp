@@ -114,6 +114,9 @@ jobs:
           git submodule update --init libs/config
           git submodule update --init libs/math
           git submodule update --init libs/multiprecision
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 14.2
       - name: bootstrap-boost
         working-directory: ${{ runner.workspace }}/boost-root
         run: |
