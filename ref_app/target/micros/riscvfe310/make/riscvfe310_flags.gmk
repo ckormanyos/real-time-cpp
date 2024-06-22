@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------------------
 
 GCC_TARGET   := riscv32-unknown-elf
-GCC_PREFIX   := riscv32-unknown-elf
+GCC_PREFIX   := llvm-17.0.2-riscv32
 
 ifneq ($(MAKE),make)
 GCC_VERSION  := 13.2.0
@@ -19,7 +19,6 @@ TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -Os                                            \
                 -finline-functions                             \
-                -finline-limit=64                              \
                 -ffast-math                                    \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \
@@ -27,23 +26,18 @@ TGT_ALLFLAGS  = -Os                                            \
                 -msmall-data-limit=0                           \
                 -falign-functions=4
 
-TGT_CFLAGS    = -std=c99                                       \
-                -Wunsuffixed-float-constants                   \
+TGT_CFLAGS    = -std=c17                                       \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++23                                     \
-                -Wno-psabi                                     \
+                -Wno-unused-const-variable                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  =
 
 TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
-                -nostartfiles                                  \
-                -Wl,--gc-sections                              \
                 -e __my_startup                                \
                 -Wl,-Map,$(APP).map                            \
-                -T $(LINKER_DEFINITION_FILE)                   \
-                --specs=nano.specs                             \
-                --specs=nosys.specs
+                -T $(LINKER_DEFINITION_FILE)

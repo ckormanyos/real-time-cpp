@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+//  Copyright Christopher Kormanyos 2022 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,9 +17,9 @@
 
 namespace
 {
-  auto gpt_is_initialized() noexcept -> bool& __attribute__((used, noinline));
+  [[nodiscard]] auto gpt_is_initialized() noexcept -> bool&;
 
-  auto gpt_is_initialized() noexcept -> bool&
+  [[nodiscard]] auto gpt_is_initialized() noexcept -> bool&
   {
     static bool is_init { };
 
@@ -29,7 +29,7 @@ namespace
 
 namespace local
 {
-  auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type __attribute__((warn_unused_result));
+  auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type;
 
   auto constexpr to_microseconds(std::uint64_t tick_val) noexcept -> std::uint64_t;
 
@@ -116,9 +116,9 @@ auto local::get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
 
   for(;;)
   {
-    const auto mt_lo1 __attribute__((no_reorder)) = read_lo();
-    const auto mt_hi  __attribute__((no_reorder)) = read_hi();
-    const auto mt_lo2 __attribute__((no_reorder)) = read_lo();
+    const volatile std::uint32_t mt_lo1 = read_lo();
+    const volatile std::uint32_t mt_hi  = read_hi();
+    const volatile std::uint32_t mt_lo2 = read_lo();
 
     if(mt_lo2 > mt_lo1)
     {

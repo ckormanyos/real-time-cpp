@@ -49,7 +49,7 @@ PATH_TOOLS           = tools
 PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
 PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
 PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\llvm-17.0.2-riscv32\bin
 
 PATH_APP             = src
 PATH_TGT             = target/micros/$(TGT)
@@ -132,17 +132,17 @@ OBJCOPY   = $(PATH_TOOLS_CC)\objcopy.exe
 READELF   = $(PATH_TOOLS_CC)\readelf.exe
 SIZE      = $(PATH_TOOLS_CC)\size.exe
 else
-AR        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
-AS        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CC        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
-NM        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
+AR        = $(PATH_TOOLS_CC)\llvm-ar.exe
+AS        = $(PATH_TOOLS_CC)\clang++.exe
+CC        = $(PATH_TOOLS_CC)\clang++.exe
+CPPFILT   = $(PATH_TOOLS_CC)\llvm-cxxfilt.exe
+NM        = $(PATH_TOOLS_CC)\llvm-nm.exe
+OBJDUMP   = $(PATH_TOOLS_CC)\llvm-objdump.exe
 ifeq ($(OBJCOPY),)
-OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+OBJCOPY   = $(PATH_TOOLS_CC)\llvm-objcopy.exe
 endif
-READELF   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
+READELF   = $(PATH_TOOLS_CC)\llvm-readelf.exe
+SIZE      = $(PATH_TOOLS_CC)\llvm-size.exe
 endif
 
 # ------------------------------------------------------------------------------
@@ -175,9 +175,7 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               -x c++                            \
               -fno-rtti                         \
               -fno-use-cxa-atexit               \
-              -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
-              -fno-enforce-eh-specs             \
               -ftemplate-depth=128              \
               -Wzero-as-null-pointer-constant
 
@@ -297,8 +295,6 @@ $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 ifeq ($(TGT_SUFFIX),elf)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
-	@-$(ECHO) +++ creating srec module: $(APP).s19
-	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
 endif

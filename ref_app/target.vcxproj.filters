@@ -710,7 +710,7 @@
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.c">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\make\single\crt.cpp">

@@ -850,7 +850,7 @@
     <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.c" />
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
