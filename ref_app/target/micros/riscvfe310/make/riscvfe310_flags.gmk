@@ -17,9 +17,7 @@ endif
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                            \
-                -finline-functions                             \
-                -ffast-math                                    \
+TGT_ALLFLAGS  = -O1                                            \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \
                 -march=rv32imac                                \
@@ -40,4 +38,5 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostdlib                                      \
                 -e __my_startup                                \
                 -Wl,-Map,$(APP).map                            \
+                -L$(PATH_TGT)/startup -lstartup                \
                 -T $(LINKER_DEFINITION_FILE)

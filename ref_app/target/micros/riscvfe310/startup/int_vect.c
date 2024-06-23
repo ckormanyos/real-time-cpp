@@ -24,9 +24,7 @@
 
 ******************************************************************************************************/
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
-asm(".option arch, +zicsr");
-#endif
+__asm(".option arch, +zicsr");
 
 #include <stdint.h>
 
