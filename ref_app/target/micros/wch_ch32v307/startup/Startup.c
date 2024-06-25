@@ -46,9 +46,8 @@ extern unsigned long __CTOR_LIST__[];
 void Startup_Init(void);
 static void Startup_InitRam(void);
 static void Startup_InitCtors(void);
-static void Startup_RunApplication(void);
-static void Startup_Unexpected_Exit(void);
-static void Startup_InitMcuSystem(void);
+
+[[noreturn]] static void Startup_RunApplication(void);
 
 //=========================================================================================
 // Extern function prototype
@@ -66,8 +65,11 @@ void Mcu_HwInitialization(void) __attribute__((weak));
 void Startup_Init(void)
 {
   /* Initialize the MCU system */
-  Startup_InitMcuSystem();
-  
+  if(0 != (unsigned long) &Mcu_HwInitialization)
+  {
+    Mcu_HwInitialization();
+  }
+
   /* Initialize the RAM memory */
   Startup_InitRam();
   
@@ -76,7 +78,6 @@ void Startup_Init(void)
   
   /* Run the main application */
   Startup_RunApplication();
-
 }
 
 //-----------------------------------------------------------------------------------------
@@ -142,7 +143,7 @@ static void Startup_InitCtors(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-static void Startup_RunApplication(void)
+[[noreturn]] static void Startup_RunApplication(void)
 {
   /* check the weak function */
   if((unsigned int) &main != 0)
@@ -152,31 +153,5 @@ static void Startup_RunApplication(void)
   }
 
   /* Catch unexpected exit from main or if main does not exist */
-  Startup_Unexpected_Exit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Unexpected_Exit function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_Unexpected_Exit(void)
-{
-  for(;;);
-}
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitMcuSystem function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_InitMcuSystem(void)
-{
-  if(0 != (unsigned long) &Mcu_HwInitialization)
-  {
-    Mcu_HwInitialization();
-  }
+  for(;;) { ; }
 }

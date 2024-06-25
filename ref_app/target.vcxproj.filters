@@ -525,7 +525,7 @@
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld">
       <Filter>micros\wch_ch32v307\make</Filter>
     </None>
-    <None Include="target\micros\wch_ch32v307\startup\boot.s">
+    <None Include="target\micros\wch_ch32v307\startup\boot.cpp">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </None>
   </ItemGroup>

@@ -274,10 +274,10 @@ const InterruptHandler __attribute__((aligned(4))) ExceptionVectorTable[] =
 //-----------------------------------------------------------------------------------------
 static void UndefinedHandler(void)
 {
-  for(;;);
+  for(;;) { ; }
 }
 
 void Isr_HardFault(void)
 {
-  for(;;);
+  for(;;) { ; }
 }

@@ -834,7 +834,7 @@
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld" />
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_files.gmk" />
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_flags.gmk" />
-    <None Include="target\micros\wch_ch32v307\startup\boot.s" />
+    <None Include="target\micros\wch_ch32v307\startup\boot.cpp" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk" />

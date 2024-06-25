@@ -20,20 +20,14 @@ INPUT(libc.a libm.a libgcc.a)
 /******************************************************************************************
  ELF Entrypoint
 ******************************************************************************************/
-ENTRY(_start)
+ENTRY(__my_startup)
 
 /******************************************************************************************
  Globals
 ******************************************************************************************/
 
-__FLASH_START_ADDRESS = 0x00000000;
-__FLASH_SIZE          = 480K;
-
 __STACK_START_ADDRESS = 0x20000000;
 __STACK_SIZE = 1K;
-
-__RAM_START_ADDRESS = 0x20000000 + __STACK_SIZE;
-__RAM_SIZE =  64K - __STACK_SIZE;
 
 /******************************************************************************************
  Memory configuration
@@ -41,9 +35,10 @@ __RAM_SIZE =  64K - __STACK_SIZE;
 
 MEMORY
 {
-  FLASH(rx)   : ORIGIN = __FLASH_START_ADDRESS, LENGTH = __FLASH_SIZE
-  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
-  RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS,   LENGTH = __RAM_SIZE
+  BOOT(rx)    : ORIGIN = 0x00000000, LENGTH = 0x00000100
+  FLASH(rx)   : ORIGIN = 0x00000100, LENGTH = 64K
+  STACK(rw)   : ORIGIN = 0x20000000, LENGTH = 4K
+  RAM(rwx)    : ORIGIN = 0x20000000 + 4K, LENGTH = 64K - 4K
 }
 
 /******************************************************************************************
@@ -52,12 +47,13 @@ MEMORY
 SECTIONS
 {
   /* Program code (text) */
-  .boot : ALIGN(4)
+  .startup : ALIGN(0x10)
   {
-    PROVIDE(__BOOT_BASE_ADDRESS = .);
-    *boot.o(.text*)
-    . = ALIGN(4);
-  } > FLASH
+    *(.startup)
+    . = ALIGN(0x10);
+    *(.startup*)
+    . = ALIGN(0x10);
+  } > BOOT = 0x5555
   
   /* Program code (text) */
   .text : ALIGN(4)
