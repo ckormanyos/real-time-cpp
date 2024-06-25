@@ -26,8 +26,8 @@ ENTRY(__my_startup)
  Globals
 ******************************************************************************************/
 
-__STACK_START_ADDRESS = 0x20000000;
-__STACK_SIZE = 1K;
+__STACK_START = 0x20000000;
+__STACK_SIZE  = 4K;
 
 /******************************************************************************************
  Memory configuration
@@ -35,10 +35,11 @@ __STACK_SIZE = 1K;
 
 MEMORY
 {
-  BOOT(rx)    : ORIGIN = 0x00000000, LENGTH = 0x00000100
-  FLASH(rx)   : ORIGIN = 0x00000100, LENGTH = 64K
-  STACK(rw)   : ORIGIN = 0x20000000, LENGTH = 4K
-  RAM(rwx)    : ORIGIN = 0x20000000 + 4K, LENGTH = 64K - 4K
+  BOOT(rx)    : ORIGIN = 0x00000000,                   LENGTH = 0x00000100
+  VEC(rx)     : ORIGIN = 0x00000100,                   LENGTH = 0x00000300
+  FLASH(rx)   : ORIGIN = 0x00000400,                   LENGTH = 256K - 0x00000400
+  STACK(rw)   : ORIGIN = __STACK_START,                LENGTH = __STACK_SIZE
+  RAM(rwx)    : ORIGIN = __STACK_START + __STACK_SIZE, LENGTH = 64K - __STACK_SIZE
 }
 
 /******************************************************************************************
@@ -54,7 +55,15 @@ SECTIONS
     *(.startup*)
     . = ALIGN(0x10);
   } > BOOT = 0x5555
-  
+
+  .intvect : ALIGN(0x100)
+  {
+    *(.intvect)
+    . = ALIGN(0x100);
+    *(.intvect*)
+    . = ALIGN(0x100);
+  } > VEC = 0xAAAA
+
   /* Program code (text) */
   .text : ALIGN(4)
   {
@@ -128,8 +137,8 @@ SECTIONS
     *(.data*)
     . = ALIGN(4);
   } > RAM  AT>FLASH
-  
-  .sdata : ALIGN(4) 
+
+  .sdata : ALIGN(4)
   {
     *(.sdata*)
     . = ALIGN(4);
@@ -141,7 +150,7 @@ SECTIONS
     *(.bss*)
     . = ALIGN(4);
   } > RAM
-  
+
   .sbss : ALIGN(4)
   {
     *(.sbss*)
@@ -154,5 +163,4 @@ SECTIONS
     . = ALIGN(MAX(__STACK_SIZE , .), 8);
     PROVIDE(__STACK_TOP = .) ;
   } > STACK
-
 }

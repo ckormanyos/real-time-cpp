@@ -1,5 +1,4 @@
 
-#include <Port.h>
 #include <SysTick.h>
 
 #include <mcal_led.h>
@@ -16,8 +15,6 @@
 
 extern "C" int main(void)
 {
-  Port_Init();
-
   SysTick_Init();
 
   mcal::led::led0().toggle();
@@ -25,8 +22,6 @@ extern "C" int main(void)
   using local_timer_type = util::timer<std::uint32_t>;
 
   local_timer_type led_timer(local_timer_type::seconds(1U));
-
-
 
   for(;;)
   {

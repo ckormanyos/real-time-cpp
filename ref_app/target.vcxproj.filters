@@ -525,9 +525,6 @@
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld">
       <Filter>micros\wch_ch32v307\make</Filter>
     </None>
-    <None Include="target\micros\wch_ch32v307\startup\boot.cpp">
-      <Filter>micros\wch_ch32v307\startup</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -755,7 +752,13 @@
     <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.c">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\wch_ch32v307\startup\Startup.c">
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt0.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt0_init_ram.c">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.c">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp">

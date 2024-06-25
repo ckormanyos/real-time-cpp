@@ -35,7 +35,7 @@ void Isr_StoreAddressMisaligned       (void) __attribute__((weak, alias("Undefin
 void Isr_StoreAccessFault             (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_EnvironmentCallFromUmode     (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_EnvironmentCallFromMmode     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_HardFault                    (void) ;//__attribute__((weak, alias("UndefinedHandler")));
+void Isr_HardFault                    (void);
 void Isr_Ecall_M                      (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_Ecall_U                      (void) __attribute__((weak, alias("UndefinedHandler")));
 void Isr_BreakPoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
@@ -134,7 +134,7 @@ void Isr_DMA2_Channel11               (void) __attribute__((weak, alias("Undefin
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(4))) InterruptVectorTable[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(4))) InterruptVectorTable[] =
 {
     (InterruptHandler)&UndefinedHandler,    /*   0  Reserved                                                   */
     (InterruptHandler)&UndefinedHandler,    /*   1  Reserved                                                   */
@@ -245,7 +245,7 @@ const InterruptHandler __attribute__((aligned(4))) InterruptVectorTable[] =
 //=====================================================================================================
 // Exception vector table
 //=====================================================================================================
-const InterruptHandler __attribute__((aligned(4))) ExceptionVectorTable[] =
+const InterruptHandler __attribute__((section(".intvect"), aligned(4))) ExceptionVectorTable[] =
 {
     (InterruptHandler)&Isr_InstructionAddressMisaligned,  /* 0  - Instruction address misaligned */
     (InterruptHandler)&Isr_InstructionAccessFault,        /* 1  - Instruction access fault       */

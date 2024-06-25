@@ -1,59 +1,95 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022 - 2023.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+﻿// ***************************************************************************************
+// Filename    : Startup.c
 //
+// Author      : Chalandi Amine
+//
+// Owner       : Chalandi Amine
+// 
+// Date        : 11.03.2020
+// 
+// Description : C/C++ Runtime Setup (Crt0)
+// 
+// ***************************************************************************************
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
-asm(".option arch, +zicsr");
-#endif
+#include <Port.h>
 
-asm(".extern __initial_stack_pointer");
-asm(".extern DirectModeInterruptHandler");
-asm(".extern Startup_Init");
-
-#include <mcal/mcal.h>
-
-namespace crt
+//=========================================================================================
+// Function prototype
+//=========================================================================================
+extern "C"
 {
-  void init_ram();
-  void init_ctors();
+  extern void Startup_InitRam(void);
+  extern void Startup_InitCtors(void);
 }
 
-extern "C" void __my_startup(void) __attribute__ ((section(".startup"), naked, no_reorder, optimize(0), used, noinline));
+[[noreturn]] static void Startup_RunApplication(void);
 
-void __my_startup()
+//=========================================================================================
+// Extern function prototype
+//=========================================================================================
+extern "C"
 {
-  // Disable all interrupts flag.
-  // Disable all specific interrupt sources.
-  // Setup the stack pointer.
-  // setup the direct interrupt handler.
-  asm volatile("csrrs x0, mstatus, x0");
-  asm volatile("csrrs x0, mie, x0");
-  asm volatile("la sp, __initial_stack_pointer");
-  asm volatile("la t0, DirectModeInterruptHandler");
-  asm volatile("csrrs x0, mtvec, t0");
+  int main(void) __attribute__((weak));
+  void Mcu_HwInitialization(void) __attribute__((weak));
+}
 
-  // Chip init: Watchdog, port, and oscillator.
-  mcal::cpu::init();
+asm (".extern __STACK_TOP");
+asm (".extern InterruptVectorTable");
 
-  // Initialize statics from ROM to RAM.
-  // Zero-clear default-initialized static RAM.
-  crt::init_ram();
-  mcal::wdg::secure::trigger();
+extern "C"
+{
+  void __my_startup(void) __attribute__ ((section(".startup")));
+}
 
-  // Call all ctor initializations.
-  crt::init_ctors();
-  mcal::wdg::secure::trigger();
+extern "C" void __my_startup(void)
+{
+  /* setup the stack pointer */
+  asm volatile("la sp, __STACK_TOP");
 
-  // Jump to main (and never return).
-  asm volatile("jal main");
+  /* setup the interrupt vector table */
+  asm volatile("la x1, InterruptVectorTable");
+  asm volatile("ori x1, x1, 3");
+  asm volatile("csrw mtvec, x1");
 
-  // Catch an unexpected return from main.
-  for(;;)
+  /* enable both the global interrupt flag and the FPU */
+  asm volatile("li x1, 0x2008");
+  asm volatile("csrw mstatus, x1");
+
+  /* jump to the C runtime initialization */
+  /* Initialize the MCU system */
+  if(0 != (unsigned long) &Mcu_HwInitialization)
   {
-    // Replace with a loud error if desired.
-    mcal::wdg::secure::trigger();
+    Mcu_HwInitialization();
   }
+
+  Port_Init();
+
+  /* Initialize the RAM memory */
+  Startup_InitRam();
+
+  /* Initialize the non-local C++ objects */
+  Startup_InitCtors();
+
+  /* Run the main application */
+  Startup_RunApplication();
+}
+
+//-----------------------------------------------------------------------------------------
+/// \brief  Startup_RunApplication function
+///
+/// \param  void
+///
+/// \return void
+//-----------------------------------------------------------------------------------------
+[[noreturn]] static void Startup_RunApplication(void)
+{
+  /* check the weak function */
+  if((unsigned int) &main != 0)
+  {
+    /* Call the main function */
+    main();
+  }
+
+  /* Catch unexpected exit from main or if main does not exist */
+  for(;;) { ; }
 }
