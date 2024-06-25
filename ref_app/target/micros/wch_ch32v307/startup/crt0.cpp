@@ -11,7 +11,9 @@
 // 
 // ***************************************************************************************
 
-#include <Port.h>
+#include <mcal_cpu.h>
+#include <mcal_osc.h>
+#include <mcal_port.h>
 
 //=========================================================================================
 // Function prototype
@@ -29,8 +31,7 @@ extern "C"
 //=========================================================================================
 extern "C"
 {
-  int main(void) __attribute__((weak));
-  void Mcu_HwInitialization(void) __attribute__((weak));
+  int main(void);
 }
 
 asm (".extern __STACK_TOP");
@@ -51,18 +52,7 @@ extern "C" void __my_startup(void)
   asm volatile("ori x1, x1, 3");
   asm volatile("csrw mtvec, x1");
 
-  /* enable both the global interrupt flag and the FPU */
-  asm volatile("li x1, 0x2008");
-  asm volatile("csrw mstatus, x1");
-
-  /* jump to the C runtime initialization */
-  /* Initialize the MCU system */
-  if(0 != (unsigned long) &Mcu_HwInitialization)
-  {
-    Mcu_HwInitialization();
-  }
-
-  Port_Init();
+  mcal::cpu::init();
 
   /* Initialize the RAM memory */
   Startup_InitRam();
