@@ -5,17 +5,21 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <Port.h>
+
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_port.h>
 
+auto mcal::led::led_wch_temporary::toggle() -> void
+{
+  GPIOC->OUTDR.bit.ODR0 ^= 1u;
+
+  base_class_type::toggle();
+}
+
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_port_type = mcal::port::port_pin<std::uint32_t,
-                                              std::uint32_t,
-                                              mcal::reg::gpio0_base,
-                                              static_cast<std::uint32_t>(UINT8_C(5))>;
-
-  using led0_led_type = mcal::led::led_port<led0_port_type>;
+  using led0_led_type = led_wch_temporary;
 
   static led0_led_type local_led0;
 

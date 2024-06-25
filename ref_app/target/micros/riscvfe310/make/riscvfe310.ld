@@ -100,7 +100,6 @@ SECTIONS
     . = ALIGN(4);
   } > ROM
 
-
   . = __STACK_START_ADDRESS;
 
   /* stack definition */

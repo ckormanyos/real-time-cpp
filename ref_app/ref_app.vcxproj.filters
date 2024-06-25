@@ -206,6 +206,9 @@
     <Filter Include="src\mcal\wch_ch32v307">
       <UniqueIdentifier>{b5654f17-96aa-4c7c-bb49-71a3b138a796}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\wch_ch32v307\Mcal">
+      <UniqueIdentifier>{15b719c6-2b2e-411e-bc4d-263e1db16a26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1008,6 +1011,15 @@
     </ClCompile>
     <ClCompile Include="src\mcal\wch_ch32v307\mcal_eep.cpp">
       <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\Mcal\Mcu.c">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\Mcal\Port.c">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\Mcal\SysTick.c">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2348,6 +2360,24 @@
     </ClInclude>
     <ClInclude Include="src\mcal\wch_ch32v307\mcal_eep.h">
       <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\Mcu.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\Platform_Types.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\Port.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\riscv-csr.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\SysTick.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\CH32V30xxx.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-att
 #if defined(__GNUC__) && defined(__XTENSA__)
 auto app_main_loop(void) -> int
 #else
+extern "C"
 auto main() -> int
 #endif
 {

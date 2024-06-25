@@ -15,6 +15,8 @@
   class led_base : private util::noncopyable
   {
   public:
+    virtual ~led_base() = default;
+
     virtual auto toggle() -> void = 0;
 
     virtual auto state_is_on() const -> bool = 0;

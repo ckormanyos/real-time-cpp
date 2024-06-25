@@ -5,9 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <Port.h>
+
 #include <mcal_port.h>
-#include <mcal_reg.h>
 
 void mcal::port::init(const config_type*)
 {
+  ::Port_Init();
 }

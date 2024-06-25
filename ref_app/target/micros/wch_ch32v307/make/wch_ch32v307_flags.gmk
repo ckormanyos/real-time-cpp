@@ -17,13 +17,12 @@ endif
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -Os                                            \
-                -finline-functions                             \
-                -finline-limit=64                              \
+TGT_ALLFLAGS  = -O2                                            \
+                -fno-reorder-blocks-and-partition              \
+                -fno-reorder-functions                         \
                 -ffast-math                                    \
-                -mcpu=sifive-e31                               \
-                -mabi=ilp32                                    \
-                -march=rv32imac                                \
+                -march=rv32imafc                               \
+                -mabi=ilp32f                                   \
                 -msmall-data-limit=0                           \
                 -falign-functions=4
 
@@ -35,15 +34,14 @@ TGT_CXXFLAGS  = -std=c++23                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
+                -I$(PATH_APP)/util/STL                         \
 
-TGT_AFLAGS    =
+TGT_AFLAGS    = -march=rv32imafc                               \
+                -mabi=ilp32f
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 -Wl,--gc-sections                              \
-                -e __my_startup                                \
                 -Wl,-Map,$(APP).map                            \
-                -T $(LINKER_DEFINITION_FILE)                   \
-                --specs=nano.specs                             \
-                --specs=nosys.specs
+                -T $(LINKER_DEFINITION_FILE)
