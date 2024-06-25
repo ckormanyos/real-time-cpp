@@ -20,7 +20,7 @@
         using base_class_type = led_boolean_state_base;
 
       public:
-        led_wch_temporary() = default;
+        led_wch_temporary();
 
         ~led_wch_temporary() override = default;
 

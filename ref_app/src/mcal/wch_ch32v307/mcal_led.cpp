@@ -10,6 +10,12 @@
 #include <mcal_led.h>
 #include <mcal_led/mcal_led_port.h>
 
+mcal::led::led_wch_temporary::led_wch_temporary()
+{
+  // Inverted: High switches off the LED.
+  GPIOC->OUTDR.bit.ODR0 = 1u;
+}
+
 auto mcal::led::led_wch_temporary::toggle() -> void
 {
   GPIOC->OUTDR.bit.ODR0 ^= 1u;
