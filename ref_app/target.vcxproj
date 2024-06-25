@@ -927,7 +927,7 @@
     <ClCompile Include="target\micros\v850es_fx2\startup\int_vect.s" />
     <ClCompile Include="target\micros\v850es_fx2\startup\unhandled_exception.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.c" />
-    <ClCompile Include="target\micros\wch_ch32v307\startup\main.c" />
+    <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\Startup.c" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
   </ItemGroup>

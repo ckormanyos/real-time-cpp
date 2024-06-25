@@ -13,6 +13,7 @@ FILES_TGT  = $(PATH_TGT)/startup/boot                                  \
              $(PATH_TGT)startup/intvect                                \
              $(PATH_TGT)startup/main                                   \
              $(PATH_TGT)startup/Startup                                \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Mcu                          \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Port                         \
              $(PATH_APP)/mcal/$(TGT)/Mcal/SysTick

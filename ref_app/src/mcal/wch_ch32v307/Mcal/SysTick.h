@@ -129,9 +129,8 @@ typedef union
 //=========================================================================================
 // Function prototypes
 //========================================================================================= 
-void SysTick_Init(void);
-void SysTick_Start(uint64 timeout);
-void SysTick_Stop(void);
+void   SysTick_Init(void);
+uint64 SysTick_Get();
 
 #if defined(__cplusplus)
 }
