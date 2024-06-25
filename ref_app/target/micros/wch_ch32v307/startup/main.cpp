@@ -1,6 +1,5 @@
 
-#include <SysTick.h>
-
+#include <mcal_gpt.h>
 #include <mcal_led.h>
 
 #include <util/utility/util_time.h>
@@ -15,7 +14,7 @@
 
 extern "C" int main(void)
 {
-  SysTick_Init();
+  mcal::gpt::init(nullptr);
 
   mcal::led::led0().toggle();
 

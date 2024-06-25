@@ -1012,9 +1012,6 @@
     <ClCompile Include="src\mcal\wch_ch32v307\mcal_eep.cpp">
       <Filter>src\mcal\wch_ch32v307</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\wch_ch32v307\Mcal\SysTick.c">
-      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">
@@ -2358,13 +2355,10 @@
     <ClInclude Include="src\mcal\wch_ch32v307\Mcal\Platform_Types.h">
       <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\riscv-csr.h">
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\CH32V30xxx.h">
       <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\wch_ch32v307\Mcal\SysTick.h">
-      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\CH32V30xxx.h">
       <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
