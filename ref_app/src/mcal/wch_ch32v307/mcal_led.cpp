@@ -22,11 +22,14 @@ auto mcal::led::led_wch_temporary::toggle() -> void
   base_class_type::toggle();
 }
 
+namespace
+{
+  using led0_led_type = mcal::led::led_wch_temporary;
+
+  led0_led_type local_led0;
+}
+
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_led_type = led_wch_temporary;
-
-  static led0_led_type local_led0;
-
   return local_led0;
 }

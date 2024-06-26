@@ -12,17 +12,21 @@
 // cd Build
 // bash ./Rebuild.sh
 
-namespace app
-{
-  namespace led
-  {
-    void task_func();
-  } // namespace led
+namespace app { namespace led {
+
+void task_init();
+void task_func();
+
+} // namespace led
 } // namespace app
 
 auto main(void) -> int
 {
   mcal::gpt::init(nullptr);
+  app::led::task_init();
 
-  app::led::task_func();
+  for(;;)
+  {
+    app::led::task_func();
+  }
 }
