@@ -12,19 +12,13 @@
 // ***************************************************************************************
 
 #include <mcal_cpu.h>
-#include <mcal_osc.h>
-#include <mcal_port.h>
+#include <mcal_wdg.h>
 
-//=========================================================================================
-// Function prototype
-//=========================================================================================
-extern "C"
+namespace crt
 {
-  extern void Startup_InitRam(void);
-  extern void Startup_InitCtors(void);
+  void init_ram();
+  void init_ctors();
 }
-
-[[noreturn]] static void Startup_RunApplication(void);
 
 //=========================================================================================
 // Extern function prototype
@@ -34,7 +28,7 @@ extern "C"
   int main(void);
 }
 
-asm (".extern __STACK_TOP");
+asm (".extern __initial_stack_pointer");
 asm (".extern InterruptVectorTable");
 
 extern "C"
@@ -45,41 +39,32 @@ extern "C"
 extern "C" void __my_startup(void)
 {
   /* setup the stack pointer */
-  asm volatile("la sp, __STACK_TOP");
+  asm volatile("la sp, __initial_stack_pointer");
 
   /* setup the interrupt vector table */
   asm volatile("la x1, InterruptVectorTable");
   asm volatile("ori x1, x1, 3");
   asm volatile("csrw mtvec, x1");
 
+  // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
 
-  /* Initialize the RAM memory */
-  Startup_InitRam();
+  // Initialize statics from ROM to RAM.
+  // Zero-clear default-initialized static RAM.
+  crt::init_ram();
+  mcal::wdg::secure::trigger();
 
-  /* Initialize the non-local C++ objects */
-  Startup_InitCtors();
+  // Call all ctor initializations.
+  crt::init_ctors();
+  mcal::wdg::secure::trigger();
 
-  /* Run the main application */
-  Startup_RunApplication();
-}
+  // Jump to main (and never return).
+  asm volatile("jal main");
 
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-[[noreturn]] static void Startup_RunApplication(void)
-{
-  /* check the weak function */
-  if((unsigned int) &main != 0)
+  // Catch an unexpected return from main.
+  for(;;)
   {
-    /* Call the main function */
-    main();
+    // Replace with a loud error if desired.
+    mcal::wdg::secure::trigger();
   }
-
-  /* Catch unexpected exit from main or if main does not exist */
-  for(;;) { ; }
 }

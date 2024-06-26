@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PORT_2022_12_16_H_
-  #define MCAL_PORT_2022_12_16_H_
+#ifndef MCAL_PORT_2022_12_16_H
+  #define MCAL_PORT_2022_12_16_H
 
   #include <mcal_reg.h>
 
@@ -23,46 +23,33 @@
                const reg_type bpos>
       class port_pin
       {
-      private:
-        static constexpr auto input_val  = static_cast<addr_type>(port + static_cast<addr_type>(UINT32_C(0x00000000)));
-        static constexpr auto input_en   = static_cast<addr_type>(port + static_cast<addr_type>(UINT32_C(0x00000004)));
-        static constexpr auto output_en  = static_cast<addr_type>(port + static_cast<addr_type>(UINT32_C(0x00000008)));
-        static constexpr auto output_val = static_cast<addr_type>(port + static_cast<addr_type>(UINT32_C(0x0000000C)));
-
       public:
         static void set_direction_output()
         {
-          mcal::reg::reg_access_static<addr_type, reg_type, output_en, bpos>::bit_set();
-          mcal::reg::reg_access_static<addr_type, reg_type, input_en,  bpos>::bit_clr();
         }
 
         static void set_direction_input()
         {
-          mcal::reg::reg_access_static<addr_type, reg_type, input_en,  bpos>::bit_set();
-          mcal::reg::reg_access_static<addr_type, reg_type, output_en, bpos>::bit_clr();
         }
 
         static void set_pin_high()
         {
-          mcal::reg::reg_access_static<addr_type, reg_type, output_val, bpos>::bit_set();
         }
 
         static void set_pin_low()
         {
-          mcal::reg::reg_access_static<addr_type, reg_type, output_val, bpos>::bit_clr();
         }
 
         static bool read_input_value()
         {
-          return mcal::reg::reg_access_static<addr_type, reg_type, input_val, bpos>::bit_get();
+          return false;
         }
 
         static void toggle_pin()
         {
-          mcal::reg::reg_access_static<addr_type, reg_type, output_val, bpos>::bit_not();
         }
       };
     }
   }
 
-#endif // MCAL_PORT_2022_12_16_H_
+#endif // MCAL_PORT_2022_12_16_H
