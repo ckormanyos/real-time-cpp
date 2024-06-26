@@ -1,0 +1,48 @@
+#  Copyright Christopher Kormanyos 2022 - 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_TARGET   := riscv32-unknown-elf
+GCC_PREFIX   := riscv32-unknown-elf
+
+ifneq ($(MAKE),make)
+GCC_VERSION  := 13.2.0
+endif
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                            \
+                -fno-reorder-blocks-and-partition              \
+                -fno-reorder-functions                         \
+                -ffast-math                                    \
+                -march=rv32imafc                               \
+                -mabi=ilp32f                                   \
+                -msmall-data-limit=0                           \
+                -falign-functions=4
+
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++14                                     \
+                -Wno-psabi                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
+                -I$(PATH_APP)/util/STL
+
+TGT_AFLAGS    =  $(TGT_ALLFLAGS)
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+                --specs=nosys.specs

@@ -205,7 +205,7 @@ jobs:
           echo ""
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
-  target-riscvfe310:
+  target-riscv:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -213,19 +213,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ riscvfe310 ]
+        suite: [ riscvfe310, wch_ch32v307 ]
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/6/artifact/riscv32-embecosm-ubuntu2204-gcc13.1.0.tar.gz
-          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.1.0.tar.gz
+          wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/10/artifact/riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz
+          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz -C ${{ runner.workspace }}
         working-directory: ./
       - name: target-riscvfe310-${{ matrix.suite }}
         run: |
-          PATH=../riscv32-embecosm-ubuntu2204-gcc13.1.0/bin:$PATH
+          PATH="${{ runner.workspace }}/riscv32-embecosm-ubuntu2204-gcc13.2.0/bin:$PATH"
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/

@@ -153,9 +153,10 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)/mcal/$(TGT)
 
 ifeq ($(WARN_FLAGS),)
+
 WARN_FLAGS =  -Wall                             \
-              -Wextra                           \
-              -Wpedantic
+              -Wextra
+
 endif
 
 GCCFLAGS    = -g                                \
