@@ -7,10 +7,10 @@
 
 #include <mcal_gpt.h>
 
-#include <util/utility/util_two_part_data_manipulation.h>
-
 #include <CH32V30xxx.h>
 #include <SysTick.h>
+
+#include <util/utility/util_two_part_data_manipulation.h>
 
 #include <cstdint>
 
@@ -42,7 +42,7 @@ namespace local
 
       if(mt_lo2 >= mt_lo1)
       {
-        consistent_unscaled_tick = (std::uint64_t) ((std::uint64_t) (((std::uint64_t) mt_hi) << 32U) | mt_lo1);
+        consistent_unscaled_tick = util::make_long(mt_lo1, mt_hi);
 
         break;
       }
