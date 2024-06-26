@@ -217,6 +217,15 @@
     <Filter Include="micros\nxp_imxrt1062\startup">
       <UniqueIdentifier>{c1ad125d-ff5b-4c6d-a130-eecf66eaf6d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\wch_ch32v307">
+      <UniqueIdentifier>{faa10c5c-6533-4a0a-9e5b-fd4eba16f43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\wch_ch32v307\make">
+      <UniqueIdentifier>{c8c4fbf8-6b93-422b-9a43-9b1340ea146c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\wch_ch32v307\startup">
+      <UniqueIdentifier>{dfa9d9df-718d-4b4a-bbba-e79f6ae08683}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -507,6 +516,15 @@
     <None Include="target\micros\nxp_imxrt1062\make\nxp_imxrt1062_flags.gmk">
       <Filter>micros\nxp_imxrt1062\make</Filter>
     </None>
+    <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_files.gmk">
+      <Filter>micros\wch_ch32v307\make</Filter>
+    </None>
+    <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_flags.gmk">
+      <Filter>micros\wch_ch32v307\make</Filter>
+    </None>
+    <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld">
+      <Filter>micros\wch_ch32v307\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -730,6 +748,21 @@
     </ClCompile>
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\bootdata.cpp">
       <Filter>micros\nxp_imxrt1062\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.c">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt0.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt0_init_ram.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

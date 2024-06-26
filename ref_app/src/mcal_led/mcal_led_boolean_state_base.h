@@ -17,6 +17,8 @@
   protected:
     constexpr led_boolean_state_base() = default;
 
+    ~led_boolean_state_base() override = default;
+
     auto toggle() -> void override
     {
       // Toggle the LED state.

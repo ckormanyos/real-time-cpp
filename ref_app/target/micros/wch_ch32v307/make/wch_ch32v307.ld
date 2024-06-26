@@ -14,25 +14,25 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
 OUTPUT_ARCH(riscv)
 
-__STACK_START_ADDRESS = 0x80000000;
 __STACK_SIZE = 4K;
 
-__RAM_START_ADDRESS = 0x80000000 + __STACK_SIZE;
+__RAM_START_ADDRESS = 0x20000000;
 __RAM_SIZE =  16K - __STACK_SIZE;
+
+__STACK_START_ADDRESS = __RAM_START_ADDRESS + __RAM_SIZE;
 
 MEMORY
 {
-  BOOT(rx)    : ORIGIN = 0x20000000,            LENGTH = 0x100
-  VEC(rx)     : ORIGIN = 0x20000100,            LENGTH = 0x300
-  ROM(rx)     : ORIGIN = 0x20000400,            LENGTH = 64K - 0x400
-  ITIM(rx)    : ORIGIN = 0x08000000,            LENGTH = 8K
-  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
+  BOOT(rx)    : ORIGIN = 0x00000000,            LENGTH = 0x100
+  VEC(rx)     : ORIGIN = 0x00000100,            LENGTH = 0x300
+  ROM(rx)     : ORIGIN = 0x00000400,            LENGTH = 64K - 0x400
   RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS,   LENGTH = __RAM_SIZE
+  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
 }
 
 SECTIONS
 {
-  . = 0x20000000;
+  . = 0x00000000;
 
   .startup : ALIGN(0x10)
   {
@@ -89,7 +89,7 @@ SECTIONS
   {
     . = ALIGN(4);
     PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
+    *(.riscv.exidx*)
     . = ALIGN(4);
     PROVIDE(__exidx_end = .);
   } > ROM
@@ -99,15 +99,6 @@ SECTIONS
     *(.riscv.attributes)
     . = ALIGN(4);
   } > ROM
-
-  . = __STACK_START_ADDRESS;
-
-  /* stack definition */
-  .stack :
-  {
-    . = ALIGN(MAX(__STACK_SIZE , .), 8);
-    PROVIDE(__initial_stack_pointer = .) ;
-  } > STACK
 
   . = __RAM_START_ADDRESS;
   . = ALIGN(4);
@@ -140,6 +131,15 @@ SECTIONS
 
   PROVIDE(end = .);
   PROVIDE(_fini = .);
+
+  . = __STACK_START_ADDRESS;
+
+  /* stack definition */
+  .stack :
+  {
+    . = ALIGN(MAX(__STACK_SIZE , .), 8);
+    PROVIDE(__initial_stack_pointer = .) ;
+  } > STACK
 
   _rom_data_begin = LOADADDR(.data);
 }

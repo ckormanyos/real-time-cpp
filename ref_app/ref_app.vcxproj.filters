@@ -203,6 +203,12 @@
     <Filter Include="src\mcal\nxp_imxrt1062">
       <UniqueIdentifier>{5590de56-a0fc-4a52-b84d-742784937219}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\wch_ch32v307">
+      <UniqueIdentifier>{b5654f17-96aa-4c7c-bb49-71a3b138a796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\wch_ch32v307\Mcal">
+      <UniqueIdentifier>{15b719c6-2b2e-411e-bc4d-263e1db16a26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -975,6 +981,36 @@
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_non_std_decimal.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_gpt.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_irq.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_led.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_osc.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_port.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_pwm.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_spi.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_wdg.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_cpu.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307\mcal_eep.cpp">
+      <Filter>src\mcal\wch_ch32v307</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2273,6 +2309,57 @@
     </ClInclude>
     <ClInclude Include="src\mcal_pwm\mcal_pwm_port.h">
       <Filter>src\mcal_pwm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_gpt.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_irq.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_led.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_memory_progmem.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_osc.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_port.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_pwm.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_reg.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_ser.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_spi.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_wdg.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_benchmark.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_cpu.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\mcal_eep.h">
+      <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\Platform_Types.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\CH32V30xxx.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307\Mcal\SysTick.h">
+      <Filter>src\mcal\wch_ch32v307\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,12 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
-asm(".option arch, +zicsr");
-#endif
-
-asm(".extern __initial_stack_pointer");
-asm(".extern DirectModeInterruptHandler");
+asm (".extern __initial_stack_pointer");
+asm (".extern InterruptVectorTable");
 
 #include <mcal/mcal.h>
 
@@ -22,17 +18,15 @@ namespace crt
 
 extern "C" void __my_startup(void) __attribute__ ((section(".startup"), naked, no_reorder, optimize(0), used, noinline));
 
-void __my_startup()
+void __my_startup(void)
 {
-  // Disable all interrupts flag.
-  // Disable all specific interrupt sources.
   // Setup the stack pointer.
-  // setup the direct interrupt handler.
-  asm volatile("csrrs x0, mstatus, x0");
-  asm volatile("csrrs x0, mie, x0");
   asm volatile("la sp, __initial_stack_pointer");
-  asm volatile("la t0, DirectModeInterruptHandler");
-  asm volatile("csrrs x0, mtvec, t0");
+
+  // Setup the interrupt vector table.
+  asm volatile("la x1, InterruptVectorTable");
+  asm volatile("ori x1, x1, 3");
+  asm volatile("csrw mtvec, x1");
 
   // Chip init: Watchdog, port, and oscillator.
   mcal::cpu::init();
