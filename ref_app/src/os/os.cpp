@@ -19,7 +19,7 @@ namespace local
   using task_index_type = std::uint_fast8_t;
 
   // The one (and only one) operating system task list.
-  task_list_type& os_task_list()
+  auto os_task_list() -> task_list_type&
   {
     static task_list_type my_task_list(OS_TASK_LIST);
 

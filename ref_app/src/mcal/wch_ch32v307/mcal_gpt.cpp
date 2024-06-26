@@ -40,7 +40,7 @@ namespace local
       const volatile std::uint32_t mt_hi  __attribute__((no_reorder)) = R32_STK_CNTH->u32Reg;
       const volatile std::uint32_t mt_lo2 __attribute__((no_reorder)) = R32_STK_CNTL->u32Reg;
 
-      if(mt_lo2 > mt_lo1)
+      if(mt_lo2 >= mt_lo1)
       {
         consistent_unscaled_tick = (std::uint64_t) ((std::uint64_t) (((std::uint64_t) mt_hi) << 32U) | mt_lo1);
 

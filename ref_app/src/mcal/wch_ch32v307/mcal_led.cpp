@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+//  Copyright Christopher Kormanyos 2022 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,14 +22,11 @@ auto mcal::led::led_wch_temporary::toggle() -> void
   base_class_type::toggle();
 }
 
-namespace
+mcal::led::led_base& mcal::led::led0()
 {
   using led0_led_type = mcal::led::led_wch_temporary;
 
-  led0_led_type local_led0;
-}
+  static led0_led_type local_led0;
 
-mcal::led::led_base& mcal::led::led0()
-{
   return local_led0;
 }
