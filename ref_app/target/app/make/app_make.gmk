@@ -95,9 +95,6 @@ LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
 # include the target-specific make files
 # ------------------------------------------------------------------------------
 include $(PATH_APP_MAKE)/app_files.gmk      # Application file list
-
-FILES_CPP  :=
-
 include $(PATH_TGT_MAKE)/$(TGT)_files.gmk   # Target filelist
 include $(PATH_TGT_MAKE)/$(TGT)_flags.gmk   # Target compiler flags
 
@@ -166,7 +163,9 @@ GCCFLAGS    = -g                                \
               $(WARN_FLAGS)                     \
               -Wno-comment                      \
               -gdwarf-2                         \
-              -fno-exceptions
+              -fno-exceptions                   \
+              -ffunction-sections               \
+              -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \

@@ -30,15 +30,14 @@ TGT_CFLAGS    = -std=c99                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++23                                     \
+TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
-                -I$(PATH_APP)/util/STL                         \
+                -I$(PATH_APP)/util/STL
 
-TGT_AFLAGS    = -march=rv32imafc                               \
-                -mabi=ilp32f
+TGT_AFLAGS    =  $(TGT_ALLFLAGS)
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \

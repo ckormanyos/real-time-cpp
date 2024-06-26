@@ -89,7 +89,7 @@ SECTIONS
   {
     . = ALIGN(4);
     PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
+    *(.riscv.exidx*)
     . = ALIGN(4);
     PROVIDE(__exidx_end = .);
   } > ROM
