@@ -1,18 +1,14 @@
-﻿// ***************************************************************************************
-// Filename    : Startup.c
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2022 - 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Author      : Chalandi Amine
-//
-// Owner       : Chalandi Amine
-// 
-// Date        : 11.03.2020
-// 
-// Description : C/C++ Runtime Setup (Crt0)
-// 
-// ***************************************************************************************
 
-#include <mcal_cpu.h>
-#include <mcal_wdg.h>
+asm (".extern __initial_stack_pointer");
+asm (".extern InterruptVectorTable");
+
+#include <mcal/mcal.h>
 
 namespace crt
 {
@@ -20,28 +16,14 @@ namespace crt
   void init_ctors();
 }
 
-//=========================================================================================
-// Extern function prototype
-//=========================================================================================
-extern "C"
-{
-  int main(void);
-}
+extern "C" void __my_startup(void) __attribute__ ((section(".startup"), naked, no_reorder, optimize(0), used, noinline));
 
-asm (".extern __initial_stack_pointer");
-asm (".extern InterruptVectorTable");
-
-extern "C"
+void __my_startup(void)
 {
-  void __my_startup(void) __attribute__ ((section(".startup")));
-}
-
-extern "C" void __my_startup(void)
-{
-  /* setup the stack pointer */
+  // Setup the stack pointer.
   asm volatile("la sp, __initial_stack_pointer");
 
-  /* setup the interrupt vector table */
+  // Setup the interrupt vector table.
   asm volatile("la x1, InterruptVectorTable");
   asm volatile("ori x1, x1, 3");
   asm volatile("csrw mtvec, x1");

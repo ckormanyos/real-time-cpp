@@ -16,13 +16,23 @@ namespace app
 {
   namespace led
   {
-    void task_func();
+    void task_func()
+    {
+      mcal::led::led0().toggle();
+
+      using local_timer_type = util::timer<std::uint32_t>;
+
+      local_timer_type led_timer(local_timer_type::seconds(1U));
+
+      for(;;)
+      {
+        if(led_timer.timeout())
+        {
+          mcal::led::led0().toggle();
+
+          led_timer.start_interval(local_timer_type::seconds(1U));
+        }
+      }
+    }
   } // namespace led
 } // namespace app
-
-auto main(void) -> int
-{
-  mcal::gpt::init(nullptr);
-
-  app::led::task_func();
-}

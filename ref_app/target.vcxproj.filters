@@ -764,6 +764,9 @@
     <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307\startup\appl.cpp">
+      <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">

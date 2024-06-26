@@ -6,15 +6,5 @@
 //
 
 #include <mcal_pwm.h>
-#include <mcal_pwm/mcal_pwm_dummy.h>
 
-mcal::pwm::pwm_base& mcal::pwm::pwm0() noexcept
-{
-  static mcal::pwm::pwm_dummy pwm;
-
-  static const volatile bool init_is_ok = pwm.init();
-
-  static_cast<void>(init_is_ok);
-
-  return pwm;
-}
+void mcal::pwm::init(const config_type*) { }
