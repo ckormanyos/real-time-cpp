@@ -14,6 +14,12 @@
   {
     namespace reg
     {
+      constexpr std::uint32_t rcc_base    = static_cast<std::uint32_t>(UINT32_C(0x40021000));
+
+      constexpr std::uint32_t rcc_ctlr    = static_cast<std::uint32_t>(rcc_base + static_cast<std::uint32_t>(UINT32_C(0x00)));
+      constexpr std::uint32_t rcc_cfgr0   = static_cast<std::uint32_t>(rcc_base + static_cast<std::uint32_t>(UINT32_C(0x04)));
+      constexpr std::uint32_t rcc_cfgr2   = static_cast<std::uint32_t>(rcc_base + static_cast<std::uint32_t>(UINT32_C(0x2C)));
+
       constexpr auto stk_base_address  = static_cast<std::uint32_t>(UINT32_C(0xE000F000));
 
       constexpr auto r32_stk_ctlr      = static_cast<std::uint32_t>(stk_base_address + static_cast<std::uint32_t>(UINT32_C(0x00)));
