@@ -44,5 +44,6 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -Wl,--gc-sections                              \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)                   \
+                $(TGT_ALLFLAGS)                                \
                 --specs=nano.specs                             \
                 --specs=nosys.specs
