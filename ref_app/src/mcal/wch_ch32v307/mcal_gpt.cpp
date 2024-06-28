@@ -6,11 +6,9 @@
 //
 
 #include <mcal_gpt.h>
+#include <mcal_reg.h>
 
 #include <util/utility/util_two_part_data_manipulation.h>
-
-#include <CH32V30xxx.h>
-#include <SysTick.h>
 
 #include <cstdint>
 
@@ -30,19 +28,22 @@ namespace local
 {
   auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type;
 
+  auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cntl>::reg_get(); };
+  auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cnth>::reg_get(); };
+
   auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
   {
     std::uint64_t consistent_unscaled_tick { };
 
     for(;;)
     {
-      const volatile std::uint32_t mt_lo1 __attribute__((no_reorder)) = R32_STK_CNTL->u32Reg;
-      const volatile std::uint32_t mt_hi  __attribute__((no_reorder)) = R32_STK_CNTH->u32Reg;
-      const volatile std::uint32_t mt_lo2 __attribute__((no_reorder)) = R32_STK_CNTL->u32Reg;
+      const volatile std::uint32_t mt_lo1 __attribute__((no_reorder)) = read_lo();
+      const volatile std::uint32_t mt_hi  __attribute__((no_reorder)) = read_hi();
+      const volatile std::uint32_t mt_lo2 __attribute__((no_reorder)) = read_lo();
 
       if(mt_lo2 >= mt_lo1)
       {
-        consistent_unscaled_tick = (std::uint64_t) ((std::uint64_t) (((std::uint64_t) mt_hi) << 32U) | mt_lo1);
+        consistent_unscaled_tick = util::make_long(mt_lo1, mt_hi);
 
         break;
       }
@@ -56,20 +57,24 @@ void mcal::gpt::init(const config_type*)
 {
   if(!gpt_is_initialized())
   {
-    /* enable counter interrupt */
-    R32_STK_CTLR->bit.u1STIE = 1u;
+    // Clear the counter entirely and thereby initialize the count value (bits_05-30) to 0.
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_ctlr, static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
 
-    /* select HCLK as time base */
-    R32_STK_CTLR->bit.u1STCLK = 1u;
+    // Enable the counter interrupt (bit_01).
+    // R32_STK_CTLR->bit.u1STIE = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_ctlr, static_cast<std::uint32_t>(UINT8_C(1))>::bit_set();
 
-    /* select upcounting mode */
-    R32_STK_CTLR->bit.u1MODE = 0u;
+    // Select HCLK as time base (bit_02).
+    // R32_STK_CTLR->bit.u1STCLK = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_ctlr, static_cast<std::uint32_t>(UINT8_C(2))>::bit_set();
 
-    /* init the count value */
-    R32_STK_CTLR->bit.u1INIT = 0u;
+    // Select upcounting mode (bit_04).
+    // R32_STK_CTLR->bit.u1MODE = 0u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_ctlr, static_cast<std::uint32_t>(UINT8_C(4))>::bit_clr();
 
-    /* start the counter */
-    R32_STK_CTLR->bit.u1STE = 1u;
+    // Start the counter (bit_00).
+    // R32_STK_CTLR->bit.u1STE = 1u;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_ctlr, static_cast<std::uint32_t>(UINT8_C(0))>::bit_set();
 
     gpt_is_initialized() = true;
   }

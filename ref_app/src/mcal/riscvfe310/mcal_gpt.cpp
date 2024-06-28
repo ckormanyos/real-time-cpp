@@ -120,7 +120,7 @@ auto local::get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
     const auto mt_hi  __attribute__((no_reorder)) = read_hi();
     const auto mt_lo2 __attribute__((no_reorder)) = read_lo();
 
-    if(mt_lo2 > mt_lo1)
+    if(mt_lo2 >= mt_lo1)
     {
       consistent_unscaled_tick = util::make_long(mt_lo1, mt_hi);
 
