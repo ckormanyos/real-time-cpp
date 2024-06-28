@@ -5,30 +5,17 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_2022_12_16_H_
-  #define MCAL_LED_2022_12_16_H_
+#ifndef MCAL_LED_2022_12_16_H
+  #define MCAL_LED_2022_12_16_H
 
-  #include <mcal_led/mcal_led_boolean_state_base.h>
+  #include <mcal_led/mcal_led_base.h>
 
   namespace mcal
   {
     namespace led
     {
-      class led_wch_temporary : public led_boolean_state_base
-      {
-      private:
-        using base_class_type = led_boolean_state_base;
-
-      public:
-        led_wch_temporary();
-
-        ~led_wch_temporary() override = default;
-
-        auto toggle() -> void override;
-      };
-
       led_base& led0();
     }
   }
 
-#endif // MCAL_LED_2022_12_16_H_
+#endif // MCAL_LED_2022_12_16_H

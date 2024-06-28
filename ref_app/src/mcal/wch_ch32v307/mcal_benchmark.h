@@ -8,7 +8,6 @@
 #ifndef MCAL_BENCHMARK_2022_12_16_H_
   #define MCAL_BENCHMARK_2022_12_16_H_
 
-  #include <cstdint>
   #include <mcal_port.h>
   #include <mcal_reg.h>
 
@@ -18,8 +17,8 @@
     {
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   static_cast<std::uint32_t>(UINT8_C(0)),
-                                   static_cast<std::uint32_t>(UINT8_C(0))> benchmark_port_type;
+                                   mcal::reg::gpiob_base,
+                                   UINT32_C(2)> benchmark_port_type;
     }
   }
 
