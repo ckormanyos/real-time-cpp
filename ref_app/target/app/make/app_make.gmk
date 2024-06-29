@@ -83,12 +83,12 @@ IMAGE_FILE = $(APP).bin
 RULE_SPECIAL_MAKE_IMAGE_FILE  =
 RULE_SPECIAL_MAKE_FLASH_BATCH =
 
-WARN_FLAGS =
+WARN_FLAGS :=
 
 # ------------------------------------------------------------------------------
 # linker definition file
 # ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
+LINKER_DEFINITION_FILE   := $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -122,28 +122,27 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # Development tools
 # ------------------------------------------------------------------------------
 ifeq ($(GCC_PREFIX),)
-AR        = $(PATH_TOOLS_CC)\ar.exe
-AS        = $(PATH_TOOLS_CC)\g++.exe
-CC        = $(PATH_TOOLS_CC)\g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\c++filt.exe
-NM        = $(PATH_TOOLS_CC)\nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\objdump.exe
-OBJCOPY   = $(PATH_TOOLS_CC)\objcopy.exe
-READELF   = $(PATH_TOOLS_CC)\readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\size.exe
+AR        := $(PATH_TOOLS_CC)\ar.exe
+AS        := $(PATH_TOOLS_CC)\g++.exe
+CC        := $(PATH_TOOLS_CC)\g++.exe
+CPPFILT   := $(PATH_TOOLS_CC)\c++filt.exe
+NM        := $(PATH_TOOLS_CC)\nm.exe
+OBJDUMP   := $(PATH_TOOLS_CC)\objdump.exe
+OBJCOPY   := $(PATH_TOOLS_CC)\objcopy.exe
+READELF   := $(PATH_TOOLS_CC)\readelf.exe
+SIZE      := $(PATH_TOOLS_CC)\size.exe
 else
-AR        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
-AS        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CC        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
-CPPFILT   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
-NM        = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
-OBJDUMP   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
-ifeq ($(OBJCOPY),)
-OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+AR        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
+AS        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
+CC        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
+CPPFILT   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-c++filt.exe
+NM        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-nm.exe
+OBJDUMP   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
+OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+READELF   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
+SIZE      := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
 endif
-READELF   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
-SIZE      = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
-endif
+
 
 # ------------------------------------------------------------------------------
 # Tool parameters
