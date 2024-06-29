@@ -51,7 +51,6 @@ THE SOFTWARE.
 
 #include <random>
 #include <utility>
-#include <vector>
 
 #define WIDE_INTEGER_DISABLE_IOSTREAM
 #define WIDE_INTEGER_DISABLE_TO_STRING
