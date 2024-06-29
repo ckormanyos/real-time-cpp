@@ -12,7 +12,6 @@
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wall"
 #endif
 
@@ -109,7 +108,7 @@ int main()
 #endif
 
 #if defined(__GNUC__)
-#pragma GCC diagnostic push
+#pragma GCC diagnostic pop
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT

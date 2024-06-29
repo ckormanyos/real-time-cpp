@@ -15,7 +15,6 @@
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wall"
 #endif
 
@@ -115,7 +114,7 @@ my_float_type cb;
 my_float_type x = my_float_type(BOOST_FLOATMAX_C(4.56)) / boost::math::constants::pi<my_float_type>();
 
 #if defined(__GNUC__)
-#pragma GCC diagnostic push
+#pragma GCC diagnostic pop
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA
