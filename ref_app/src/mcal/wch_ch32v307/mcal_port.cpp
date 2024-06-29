@@ -14,10 +14,11 @@ void mcal::port::init(const config_type*)
   // 0x04 = porta
   // 0x08 = portb
   // 0x10 = portc
-  // ...
+  // 0x20 = portd
+  // 0x40 = porte
   // ------------
   // So we have:
-  // (portb + portc) = (0x08 + 0x10) = 0x18.
+  // (portc + portd) = (0x10 + 0x20) = 0x30.
 
   // RCC->APB2PCENR.bit.IOPBEN = 1u;
   // RCC->APB2PCENR.bit.IOPCEN = 1u;
@@ -25,5 +26,5 @@ void mcal::port::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_apb2pcenr,
-                               UINT32_C(0x18)>::reg_or();
+                               UINT32_C(0x30)>::reg_or();
 }
