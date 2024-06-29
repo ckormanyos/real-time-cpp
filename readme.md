@@ -186,12 +186,12 @@ The make files used in this repository have been made
 compatible with it. For background information, see also
 [issue 273](https://github.com/ckormanyos/real-time-cpp/issues/273).
 
-Build the target with a direct call to `make`.
+Build the target with a direct manual call to `make`.
 
 ```sh
 cd real-time-cpp
 cd ref_app
-make -f target/app/make/app_make_linux.gmk rebuild TGT=stm32f446
+make -f target/app/make/app_make.gmk rebuild TGT=stm32f446
 ```
 
 If the toolchain is needed then it must be installed or retrieved
