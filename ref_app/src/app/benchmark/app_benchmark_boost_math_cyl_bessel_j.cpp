@@ -15,7 +15,6 @@
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wall"
 #endif
 
@@ -133,7 +132,7 @@ unsigned      xn = static_cast<unsigned>(UINT8_C(1));
 my_float_type v  = static_cast<my_float_type>(BOOST_FLOATMAX_C(1.23));
 
 #if defined(__GNUC__)
-#pragma GCC diagnostic push
+#pragma GCC diagnostic pop
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J

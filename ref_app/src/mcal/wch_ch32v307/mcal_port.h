@@ -28,66 +28,68 @@
       public:
         static void set_direction_output()
         {
+          // First (re-)set the pin as input.
+          set_direction_input();
+
           // Set the port pin control bits.
-
-          // Select input mode (MODx = 00b).
-          mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       port_cfg_lo_register,
-                                       UINT32_C(0)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
-
-          // Set for Floating input mode (CNFx = 01b, with MODx = 00b).
-          mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       port_cfg_lo_register,
-                                       UINT32_C(1)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
 
           // Select the fastest output speed (MODx = 11b).
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
-                                       port_cfg_lo_register,
-                                       UINT32_C(3)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
+                                       port_cfg_my_register,
+                                       UINT32_C(3) << static_cast<unsigned>(bpos_shift + 0UL)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
 
           // Set general push-pull output mode (CNFx = 00b).
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
-                                       port_cfg_lo_register,
-                                       UINT32_C(0)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
+                                       port_cfg_my_register,
+                                       UINT32_C(0) << static_cast<unsigned>(bpos_shift + 2UL)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
         }
 
         static void set_direction_input()
         {
+          // Select input mode (MODx = 00b).
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       port_cfg_my_register,
+                                       UINT32_C(0) << static_cast<unsigned>(bpos_shift + 0UL)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
+
+          // Set for Floating input mode (CNFx = 01b, with MODx = 00b).
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       port_cfg_my_register,
+                                       UINT32_C(1) << static_cast<unsigned>(bpos_shift + 2UL)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
         }
 
         static void set_pin_high()
         {
           // Output a logic high.
-          // GPIOA->OUTDR.bit.ODR0 = 1u;
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
-                                       output_data_register,
+                                       bit_set_reset_register,
                                        bpos>::bit_set();
         }
 
         static void set_pin_low()
         {
           // Output a logic low.
-          // GPIOA->OUTDR.bit.ODR0 = 0u;
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
-                                       output_data_register,
-                                       bpos>::bit_clr();
+                                       bit_reset_register,
+                                       bpos>::bit_set();
         }
 
         static bool read_input_value()
         {
-          return false;
+          return mcal::reg::reg_access_static<std::uint32_t,
+                                              std::uint32_t,
+                                              input_data_register,
+                                              bpos>::bit_get();
         }
 
         static void toggle_pin()
         {
           // Toggle the output.
-          // GPIOA->OUTDR.bit.ODR0 ^= 0u;
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
                                        output_data_register,
@@ -95,7 +97,7 @@
         }
 
       private:
-        static constexpr reg_type  bpos_shift { bpos * 4UL };
+        static constexpr reg_type  bpos_shift { static_cast<reg_type>(bpos * 4UL) % 32UL };
 
         static constexpr addr_type port_cfg_lo_register       { static_cast<addr_type>(port + 0x00UL) }; // GPIOn_CFGLR
         static constexpr addr_type port_cfg_hi_register       { static_cast<addr_type>(port + 0x04UL) }; // GPIOn_CFGHR
@@ -104,6 +106,8 @@
         static constexpr addr_type bit_set_reset_register     { static_cast<addr_type>(port + 0x10UL) }; // GPIOn_BSHR
         static constexpr addr_type bit_reset_register         { static_cast<addr_type>(port + 0x14UL) }; // GPIOn_BCR
         static constexpr addr_type cfg_lock_register          { static_cast<addr_type>(port + 0x18UL) }; // GPIOn_LCKR
+
+        static constexpr addr_type port_cfg_my_register       { (bpos < 8U) ? port_cfg_lo_register : port_cfg_hi_register};
       };
     }
   }

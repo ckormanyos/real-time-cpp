@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_BENCHMARK_2022_12_16_H_
-  #define MCAL_BENCHMARK_2022_12_16_H_
+#ifndef MCAL_BENCHMARK_2022_12_16_H
+  #define MCAL_BENCHMARK_2022_12_16_H
 
   #include <mcal_port.h>
   #include <mcal_reg.h>
@@ -17,9 +17,9 @@
     {
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   mcal::reg::gpiob_base,
-                                   UINT32_C(2)> benchmark_port_type;
+                                   mcal::reg::gpiod_base,
+                                   UINT32_C(10)> benchmark_port_type;
     }
   }
 
-#endif // MCAL_BENCHMARK_2022_12_16_H_
+#endif // MCAL_BENCHMARK_2022_12_16_H
