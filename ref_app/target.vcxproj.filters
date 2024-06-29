@@ -324,9 +324,6 @@
     <None Include="target\build\build.sh">
       <Filter>build</Filter>
     </None>
-    <None Include="target\app\make\app_make_linux.gmk">
-      <Filter>app\make</Filter>
-    </None>
     <None Include="target\micros\stm32l152\make\stm32l152.ld">
       <Filter>micros\stm32l152\make</Filter>
     </None>

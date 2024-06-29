@@ -46,7 +46,7 @@ IMAGE_FILE   := $(PATH_BIN)/kernel.img
 # definition of OBJCOPY needed up-front in this target-specific make file
 # ------------------------------------------------------------------------------
 
-ifeq ($(OS),Windows_NT)
+ifeq ($(TYP_OS),WIN)
 OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
 else
 OBJCOPY   := $(GCC_PREFIX)-objcopy

@@ -23,6 +23,16 @@
 
 
 # ------------------------------------------------------------------------------
+# operating system
+# ------------------------------------------------------------------------------
+
+TYP_OS       := WIN
+
+ifneq ($(OS),Windows_NT)
+TYP_OS       := NIX
+endif
+
+# ------------------------------------------------------------------------------
 # punctuation
 # ------------------------------------------------------------------------------
 
@@ -39,18 +49,18 @@ $(DOLLAR)    := $$
 # null device
 # ------------------------------------------------------------------------------
 
+ifeq ($(TYP_OS),WIN)
 NULL_DEVICE     := NUL
 $(NULL_DEVICE)  := NUL
+else
+NULL_DEVICE     := /dev/null
+$(NULL_DEVICE)  := /dev/null
+endif
+
 
 # ------------------------------------------------------------------------------
 # paths
 # ------------------------------------------------------------------------------
-PATH_TOOLS           = tools
-PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
-PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
-PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
-PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
-
 PATH_APP             = src
 PATH_TGT             = target/micros/$(TGT)
 PATH_APP_MAKE        = target/app/make
@@ -66,11 +76,33 @@ PATH_ERR             = $(PATH_TMP)/err
 # standard shell tools
 # ------------------------------------------------------------------------------
 
+ifeq ($(TYP_OS),WIN)
+
+PATH_TOOLS           = tools
+PATH_TOOLS_UTIL      = $(PATH_TOOLS)\Util
+PATH_TOOLS_MINGW     = $(PATH_TOOLS_UTIL)\msys64\usr
+PATH_TOOLS_MINGW_BIN = $(PATH_TOOLS_MINGW)\bin
+PATH_TOOLS_CC        = $(PATH_TOOLS_MINGW)\local\gcc-$(GCC_VERSION)-$(GCC_TARGET)\bin
+
 ECHO                 = $(PATH_TOOLS_MINGW_BIN)\echo.exe
 MAKE                 = $(PATH_TOOLS_MINGW_BIN)\make.exe
 MKDIR                = $(PATH_TOOLS_MINGW_BIN)\mkdir.exe
 RM                   = $(PATH_TOOLS_MINGW_BIN)\rm.exe
 SED                  = $(PATH_TOOLS_MINGW_BIN)\sed.exe
+
+else
+
+ECHO      = echo
+MAKE      = make
+MKDIR     = mkdir
+RM        = rm
+SED       = sed
+
+ifneq ($(MY_GMAKE),)
+MAKE     := $(MY_GMAKE)
+endif
+
+endif
 
 
 # ------------------------------------------------------------------------------
@@ -121,6 +153,8 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # ------------------------------------------------------------------------------
 # Development tools
 # ------------------------------------------------------------------------------
+ifeq ($(TYP_OS),WIN)
+
 ifeq ($(GCC_PREFIX),)
 AR        := $(PATH_TOOLS_CC)\ar.exe
 AS        := $(PATH_TOOLS_CC)\g++.exe
@@ -141,6 +175,32 @@ OBJDUMP   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objdump.exe
 OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
 READELF   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-readelf.exe
 SIZE      := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-size.exe
+endif
+
+else
+
+ifeq ($(GCC_PREFIX),)
+AR        := ar
+AS        := g++
+CC        := g++
+CPPFILT   := c++filt
+NM        := nm
+OBJDUMP   := objdump
+OBJCOPY   := objcopy
+READELF   := readelf
+SIZE      := size
+else
+AR        := $(GCC_PREFIX)-ar
+AS        := $(GCC_PREFIX)-g++
+CC        := $(GCC_PREFIX)-g++
+CPPFILT   := $(GCC_PREFIX)-c++filt
+NM        := $(GCC_PREFIX)-nm
+OBJDUMP   := $(GCC_PREFIX)-objdump
+OBJCOPY   := $(GCC_PREFIX)-objcopy
+READELF   := $(GCC_PREFIX)-readelf
+SIZE      := $(GCC_PREFIX)-size
+endif
+
 endif
 
 
@@ -269,9 +329,11 @@ version:
 	@$(ECHO) +++ Print compiler include paths
 	@$(ECHO) $(C_INCLUDES)
 	@$(ECHO)
+ifeq ($(TYP_OS),WIN)
 	@$(ECHO) +++ Print compiler include paths (for VisualStudio(R) browsing)
 	@$(ECHO) $(addsuffix $(SEMICOLON),$(subst -I,$$\(ProjectDir\)/, $(C_INCLUDES)))
 	@$(ECHO)
+endif
 	@$(ECHO) +++ Print compiler definitions
 	@$(ECHO) $(C_DEFINES)
 	@$(ECHO)
