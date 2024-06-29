@@ -41,7 +41,7 @@
 SCRIPT_PATH=$(readlink -f "$BASH_SOURCE")
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
-build_command="make -f $SCRIPT_DIR/../app/make/app_make_linux.gmk $2 TGT=$1"
+build_command="make -f $SCRIPT_DIR/../app/make/app_make.gmk $2 TGT=$1"
 
 echo Executing Command: $build_command
 
