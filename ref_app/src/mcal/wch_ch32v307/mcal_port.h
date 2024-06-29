@@ -28,19 +28,31 @@
       public:
         static void set_direction_output()
         {
-          // Output mode, maximum speed: 50MHz.
-          // GPIOA->CFGLR.bit.MODE0 = 3u;
-          mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       port_cfg_lo_register,
-                                       UINT32_C(3)>::template reg_msk<UINT32_C(0x3) << 0U>();
+          // Set the port pin control bits.
 
-          // General push-pull output mode.
-          // GPIOC->CFGLR.bit.CNF0  = 1u;
+          // Select input mode (MODx = 00b).
           mcal::reg::reg_access_static<std::uint32_t,
                                        std::uint32_t,
                                        port_cfg_lo_register,
-                                       UINT32_C(1)>::template reg_msk<UINT32_C(0x3) << 2U>();
+                                       UINT32_C(0)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
+
+          // Set for Floating input mode (CNFx = 01b, with MODx = 00b).
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       port_cfg_lo_register,
+                                       UINT32_C(1)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
+
+          // Select the fastest output speed (MODx = 11b).
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       port_cfg_lo_register,
+                                       UINT32_C(3)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 0UL)>();
+
+          // Set general push-pull output mode (CNFx = 00b).
+          mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       port_cfg_lo_register,
+                                       UINT32_C(0)>::template reg_msk<UINT32_C(0x3) << static_cast<unsigned>(bpos_shift + 2UL)>();
         }
 
         static void set_direction_input()
@@ -83,6 +95,8 @@
         }
 
       private:
+        static constexpr reg_type  bpos_shift { bpos * 4UL };
+
         static constexpr addr_type port_cfg_lo_register       { static_cast<addr_type>(port + 0x00UL) }; // GPIOn_CFGLR
         static constexpr addr_type port_cfg_hi_register       { static_cast<addr_type>(port + 0x04UL) }; // GPIOn_CFGHR
         static constexpr addr_type input_data_register        { static_cast<addr_type>(port + 0x08UL) }; // GPIOn_INDR

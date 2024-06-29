@@ -2531,6 +2531,9 @@
     <None Include="src\util\STL\ciso646">
       <Filter>src\util\STL</Filter>
     </None>
+    <None Include="src\util\STL\version">
+      <Filter>src\util\STL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
