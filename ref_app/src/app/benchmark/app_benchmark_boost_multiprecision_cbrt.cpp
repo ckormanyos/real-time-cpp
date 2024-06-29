@@ -12,7 +12,8 @@
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wpragmas"
+#pragma GCC diagnostic ignored "-Wall"
 #endif
 
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
@@ -108,7 +109,7 @@ int main()
 #endif
 
 #if defined(__GNUC__)
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic push
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT

@@ -14,10 +14,10 @@ void mcal::osc::init(const config_type*)
   // Configure PLL1.
   {
     // RCC->PLLCKSELR.bit.DIVM1    = 32u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllckselr, static_cast<std::uint32_t>(32ULL << 4U)>::reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllckselr, static_cast<std::uint32_t>(32ULL << 4U)>::template reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
 
     // RCC->PLLCFGR.bit.PLL1RGE    = 0u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, static_cast<std::uint32_t>(UINT8_C(0))>::reg_msk<static_cast<std::uint32_t>(3ULL << 2U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, static_cast<std::uint32_t>(UINT8_C(0))>::template reg_msk<static_cast<std::uint32_t>(3ULL << 2U)>();
 
     // RCC->PLLCFGR.bit.PLL1VCOSEL = 0u;
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pllcfgr, static_cast<std::uint32_t>(UINT8_C(1))>::bit_clr();
@@ -40,19 +40,19 @@ void mcal::osc::init(const config_type*)
   {
     // VCO = 560 MHz
     // RCC->PLL1DIVR.bit.DIVN1 = 279u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(UINT32_C(279))>::reg_msk<static_cast<std::uint32_t>(511ULL << 0U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(UINT32_C(279))>::template reg_msk<static_cast<std::uint32_t>(511ULL << 0U)>();
 
     // pll1_p_ck = 280 MHz
     // RCC->PLL1DIVR.bit.DIVP1 = 1u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 9U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 9U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 9U)>::template reg_msk<static_cast<std::uint32_t>(127ULL << 9U)>();
 
     // pll1_q_ck = 280 MHz
     // RCC->PLL1DIVR.bit.DIVQ1 = 1u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 16U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 16U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 16U)>::template reg_msk<static_cast<std::uint32_t>(127ULL << 16U)>();
 
     // pll1_r_ck = 280 MHz
     // RCC->PLL1DIVR.bit.DIVR1 = 1u;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 24U)>::reg_msk<static_cast<std::uint32_t>(127ULL << 24U)>();
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_pll1divr, static_cast<std::uint32_t>(1ULL << 24U)>::template reg_msk<static_cast<std::uint32_t>(127ULL << 24U)>();
   }
 
   // Enable PLL1.
@@ -68,7 +68,7 @@ void mcal::osc::init(const config_type*)
 
   // Set pll1_p_ck as the system clock.
   //RCC->CFGR.bit.SW = 3u;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, static_cast<std::uint32_t>(UINT8_C(3))>::reg_msk<static_cast<std::uint32_t>(7ULL << 0U)>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr, static_cast<std::uint32_t>(UINT8_C(3))>::template reg_msk<static_cast<std::uint32_t>(7ULL << 0U)>();
 
   // Wait for pll1_p_ck to become the system clock.
   //while(RCC->CFGR.bit.SWS != 3u) { ; }

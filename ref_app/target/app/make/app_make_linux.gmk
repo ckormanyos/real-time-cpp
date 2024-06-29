@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -135,7 +135,9 @@ CC        = $(GCC_PREFIX)-g++
 CPPFILT   = $(GCC_PREFIX)-c++filt
 NM        = $(GCC_PREFIX)-nm
 OBJDUMP   = $(GCC_PREFIX)-objdump
+ifeq ($(OBJCOPY),)
 OBJCOPY   = $(GCC_PREFIX)-objcopy
+endif
 READELF   = $(GCC_PREFIX)-readelf
 SIZE      = $(GCC_PREFIX)-size
 endif
@@ -148,6 +150,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)/mcal/$(TGT)
 
 ifeq ($(WARN_FLAGS),)
+
 WARN_FLAGS =  -Wall                             \
               -Wextra                           \
               -Wpedantic                        \
@@ -167,6 +170,7 @@ WARN_FLAGS =  -Wall                             \
               -Winit-self                       \
               -Wfloat-equal                     \
               -Wdouble-promotion
+
 endif
 
 GCCFLAGS    = -g                                \

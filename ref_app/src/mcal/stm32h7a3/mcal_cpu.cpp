@@ -22,7 +22,7 @@ void mcal::cpu::init()
 {
   // Configure the flash wait states (280 MHz --> 6 WS).
   //Flash->ACR.bit.LATENCY = 6u;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, static_cast<std::uint32_t>(UINT8_C(6))>::reg_msk<UINT32_C(7)>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::flash_acr, static_cast<std::uint32_t>(UINT8_C(6))>::template reg_msk<UINT32_C(7)>();
 
   // Relocate the vector table to internal flash.
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_vtor, static_cast<std::uint32_t>(UINT32_C(0x08000000))>::reg_set();
