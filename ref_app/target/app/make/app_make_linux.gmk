@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -80,12 +80,12 @@ IMAGE_FILE = $(APP).bin
 RULE_SPECIAL_MAKE_IMAGE_FILE  =
 RULE_SPECIAL_MAKE_FLASH_BATCH =
 
-WARN_FLAGS =
+WARN_FLAGS :=
 
 # ------------------------------------------------------------------------------
 # linker definition file
 # ------------------------------------------------------------------------------
-LINKER_DEFINITION_FILE   = $(PATH_TGT_MAKE)/$(TGT).ld
+LINKER_DEFINITION_FILE   := $(PATH_TGT_MAKE)/$(TGT).ld
 
 
 # ------------------------------------------------------------------------------
@@ -119,26 +119,27 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 # Development tools
 # ------------------------------------------------------------------------------
 ifeq ($(GCC_PREFIX),)
-AR        = ar
-AS        = g++
-CC        = g++
-CPPFILT   = c++filt
-NM        = nm
-OBJDUMP   = objdump
-OBJCOPY   = objcopy
-READELF   = readelf
-SIZE      = size
+AR        := ar
+AS        := g++
+CC        := g++
+CPPFILT   := c++filt
+NM        := nm
+OBJDUMP   := objdump
+OBJCOPY   := objcopy
+READELF   := readelf
+SIZE      := size
 else
-AR        = $(GCC_PREFIX)-ar
-AS        = $(GCC_PREFIX)-g++
-CC        = $(GCC_PREFIX)-g++
-CPPFILT   = $(GCC_PREFIX)-c++filt
-NM        = $(GCC_PREFIX)-nm
-OBJDUMP   = $(GCC_PREFIX)-objdump
-OBJCOPY   = $(GCC_PREFIX)-objcopy
-READELF   = $(GCC_PREFIX)-readelf
-SIZE      = $(GCC_PREFIX)-size
+AR        := $(GCC_PREFIX)-ar
+AS        := $(GCC_PREFIX)-g++
+CC        := $(GCC_PREFIX)-g++
+CPPFILT   := $(GCC_PREFIX)-c++filt
+NM        := $(GCC_PREFIX)-nm
+OBJDUMP   := $(GCC_PREFIX)-objdump
+OBJCOPY   := $(GCC_PREFIX)-objcopy
+READELF   := $(GCC_PREFIX)-readelf
+SIZE      := $(GCC_PREFIX)-size
 endif
+
 
 # ------------------------------------------------------------------------------
 # Tool parameters
@@ -148,6 +149,7 @@ C_INCLUDES = $(TGT_INCLUDES)                    \
              -I$(PATH_APP)/mcal/$(TGT)
 
 ifeq ($(WARN_FLAGS),)
+
 WARN_FLAGS =  -Wall                             \
               -Wextra                           \
               -Wpedantic                        \
@@ -167,6 +169,7 @@ WARN_FLAGS =  -Wall                             \
               -Winit-self                       \
               -Wfloat-equal                     \
               -Wdouble-promotion
+
 endif
 
 GCCFLAGS    = -g                                \

@@ -54,7 +54,7 @@ void osc_detail::mpu_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_mpu,
-                               dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_mn_byp_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -65,21 +65,21 @@ void osc_detail::mpu_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clksel_dpll_mpu,
-                               std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
+                               std::uint32_t((mcu_mpu_pll_m << 8) | (mcu_mpu_pll_n))>::template reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Set the M2 divider values for the PLL. Here, we are using
   // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m2_dpll_mpu,
-                               mcu_mpu_pll_m2>::reg_msk<UINT32_C(0x0000001F)>();
+                               mcu_mpu_pll_m2>::template reg_msk<UINT32_C(0x0000001F)>();
 
   // Enable the PLL in lock mode. Here, we are using
   // bits 0...2, resulting in the bit mask 0x00000007.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_mpu,
-                               dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_lock_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_mpu, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -109,7 +109,7 @@ void osc_detail::core_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_core,
-                               dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_mn_byp_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -120,35 +120,35 @@ void osc_detail::core_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clksel_dpll_core,
-                               std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::reg_msk<UINT32_C(0x0007FF7F)>();
+                               std::uint32_t((mcu_core_pll_m << 8) | (mcu_core_pll_n))>::template reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Configure the high speed divider m4. Here, we are using
   // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m4_dpll_core,
-                               mcu_core_pll_m4>::reg_msk<UINT32_C(0x0000001F)>();
+                               mcu_core_pll_m4>::template reg_msk<UINT32_C(0x0000001F)>();
 
   // Configure the high speed divider m5. Here, we are using
   // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m5_dpll_core,
-                               mcu_core_pll_m5>::reg_msk<UINT32_C(0x0000001F)>();
+                               mcu_core_pll_m5>::template reg_msk<UINT32_C(0x0000001F)>();
 
   // Configure the high speed divider m6. Here, we are using
   // bits 0...4, resulting in the bit mask 0x0000001F.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m6_dpll_core,
-                               mcu_core_pll_m6>::reg_msk<UINT32_C(0x0000001F)>();
+                               mcu_core_pll_m6>::template reg_msk<UINT32_C(0x0000001F)>();
 
   // Enable the PLL in lock mode. Here, we are using
   // bits 0...2, resulting in the bit mask 0x00000007.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_core,
-                               dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_lock_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_core, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -169,7 +169,7 @@ void osc_detail::peripheral_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_per,
-                    dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
+                    dpll_mn_byp_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -182,19 +182,19 @@ void osc_detail::peripheral_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clksel_dpll_periph,
-                               pll_val>::reg_msk<UINT32_C(0xFF0FFFFF)>();
+                               pll_val>::template reg_msk<UINT32_C(0xFF0FFFFF)>();
 
   // Set the M2 divider values for the PLL.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m2_dpll_per,
-                               mcu_per_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
+                               mcu_per_pll_m2>::template reg_msk<UINT32_C(0x0000003F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_per,
-                               dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_lock_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_per, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -211,7 +211,7 @@ void osc_detail::ddr_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkmode_dpll_ddr,
-                               dpll_mn_byp_mode>::reg_msk<UINT32_C(0x07)>();
+                               dpll_mn_byp_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for DPLL to go into bypass mode.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_mn_bypass_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -223,19 +223,19 @@ void osc_detail::ddr_pll_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clksel_dpll_ddr,
-                               pll_val>::reg_msk<UINT32_C(0x0007FF7F)>();
+                               pll_val>::template reg_msk<UINT32_C(0x0007FF7F)>();
 
   // Set the m2 divider values for the PLL.
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::div_m2_dpll_ddr,
-                               mcu_ddr_pll_m2>::reg_msk<UINT32_C(0x0000003F)>();
+                               mcu_ddr_pll_m2>::template reg_msk<UINT32_C(0x0000003F)>();
 
   // Enable the PLL in lock mode.
   mcal::reg::reg_access_static<std::uint32_t,
                     std::uint32_t,
                     mcal::reg::cm_wkup::clkmode_dpll_ddr,
-                    dpll_lock_mode>::reg_msk<UINT32_C(0x07)>();
+                    dpll_lock_mode>::template reg_msk<UINT32_C(0x07)>();
 
   // Wait for lock.
   while(!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::idlest_dpll_ddr, st_dpll_clk_bpos>::bit_get()) { mcal::cpu::nop(); }
@@ -246,19 +246,19 @@ void osc_detail::interface_clock_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l3_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l4ls_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l4fw_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4fw_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   // Is this an error in the documentation. The entire register,
@@ -266,19 +266,19 @@ void osc_detail::interface_clock_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::l4wkup_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::l4wkup_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l3_instr_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_instr_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l4hs_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4hs_clkctrl>::reg_get() & modulemode_mask) != modulemode_enable) { mcal::cpu::nop(); }
 }
 
@@ -290,25 +290,25 @@ void osc_detail::power_domain_transition_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l3_clkstctrl,
-                               clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+                               clktrctrl_sw_wkup>::template reg_msk<clktrctrl_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l4ls_clkstctrl,
-                               clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+                               clktrctrl_sw_wkup>::template reg_msk<clktrctrl_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l4ls_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::clkstctrl,
-                               clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+                               clktrctrl_sw_wkup>::template reg_msk<clktrctrl_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_wkup::clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::l3s_clkstctrl,
-                               clktrctrl_sw_wkup>::reg_msk<clktrctrl_mask>();
+                               clktrctrl_sw_wkup>::template reg_msk<clktrctrl_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3s_clkstctrl>::reg_get() & clktrctrl_mask) != clktrctrl_sw_wkup) { mcal::cpu::nop(); }
 }
 
@@ -321,7 +321,7 @@ void osc_detail::emif_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::emif_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::l3_clkstctrl>::reg_get() & clkactivity_emif_gclk) != clkactivity_emif_gclk) { mcal::cpu::nop(); }
 }
 
@@ -334,13 +334,13 @@ void osc_detail::dm_timer7_clock_init()
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_dpll::clksel_timer7_clk,
-                               clksel_clk_m_osc>::reg_msk<UINT32_C(0x3)>();
+                               clksel_clk_m_osc>::template reg_msk<UINT32_C(0x3)>();
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_dpll::clksel_timer7_clk>::reg_get() & UINT32_C(0x3)) != clksel_clk_m_osc) { mcal::cpu::nop(); }
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_per::timer7_clkctrl,
-                               modulemode_enable>::reg_msk<modulemode_mask>();
+                               modulemode_enable>::template reg_msk<modulemode_mask>();
 
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & modulemode_mask        ) != modulemode_enable      ) { mcal::cpu::nop(); }
   while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::timer7_clkctrl>::reg_get() & idlest_mask            ) != idlest_func            ) { mcal::cpu::nop(); }
@@ -361,7 +361,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::cm_wkup::control_clkctrl,
-                               osc_detail::modulemode_enable>::reg_msk<osc_detail::modulemode_mask>();
+                               osc_detail::modulemode_enable>::template reg_msk<osc_detail::modulemode_mask>();
 
   osc_detail::emif_init();
   osc_detail::dm_timer7_clock_init();

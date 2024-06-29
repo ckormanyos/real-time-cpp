@@ -34,8 +34,7 @@ TGT_CXXFLAGS  = -std=c++23                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
-                -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -I$(PATH_APP)/util/STL
 
 TGT_AFLAGS    =  $(TGT_ALLFLAGS)
 

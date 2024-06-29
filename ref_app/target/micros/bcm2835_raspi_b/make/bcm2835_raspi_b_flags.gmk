@@ -42,8 +42,14 @@ TGT_LDFLAGS   = -nostdlib                                      \
 
 IMAGE_FILE   := $(PATH_BIN)/kernel.img
 
-ifeq ($(OBJCOPY),)
-OBJCOPY   = $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+# ------------------------------------------------------------------------------
+# definition of OBJCOPY needed up-front in this target-specific make file
+# ------------------------------------------------------------------------------
+
+ifeq ($(OS),Windows_NT)
+OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+else
+OBJCOPY   := $(GCC_PREFIX)-objcopy
 endif
 
 RULE_SPECIAL_MAKE_IMAGE_FILE := $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(IMAGE_FILE)

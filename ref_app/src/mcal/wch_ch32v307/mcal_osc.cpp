@@ -31,7 +31,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr2,
-                               UINT32_C(0)>::reg_msk<UINT32_C(0xF)>();
+                               UINT32_C(0)>::template reg_msk<UINT32_C(0xF)>();
 
   // PLL entry clock source is HSE.
   // RCC->CFGR0.bit.PLLSRC = 1u;
@@ -42,7 +42,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr0,
-                               UINT32_C(0)>::reg_msk<UINT32_C(0xF) << 18U>();
+                               UINT32_C(0)>::template reg_msk<UINT32_C(0xF) << 18U>();
 
   // HSE clock not divided for PLL entry.
   // RCC->CFGR0.bit.PLLXTPRE   = 0u;
@@ -55,21 +55,21 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr0,
-                               UINT32_C(0)>::reg_msk<UINT32_C(0xF) << 4U>();
+                               UINT32_C(0)>::template reg_msk<UINT32_C(0xF) << 4U>();
 
   // APB1 = AHB / 2 = 72 MHz.
   // RCC->CFGR0.bit.PPRE1 = 4u;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr0,
-                               UINT32_C(4)>::reg_msk<UINT32_C(0x7) << 8U>();
+                               UINT32_C(4)>::template reg_msk<UINT32_C(0x7) << 8U>();
 
   // APB2 = AHB = 144 MHz.
   // RCC->CFGR0.bit.PPRE2 = 0u;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr0,
-                               UINT32_C(0)>::reg_msk<UINT32_C(0x7) << 13U>();
+                               UINT32_C(0)>::template reg_msk<UINT32_C(0x7) << 13U>();
 
   // Enable the PLL (144 MHz).
   // RCC->CTLR.bit.PLLON = 1u;
@@ -83,7 +83,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::rcc_cfgr0,
-                               UINT32_C(2)>::reg_msk<UINT32_C(0x3) << 0U>();
+                               UINT32_C(2)>::template reg_msk<UINT32_C(0x3) << 0U>();
 
   while(((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cfgr0>::reg_get() >> 2U) & 0x3U) != 2U);
 }

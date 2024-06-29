@@ -87,7 +87,7 @@ void mcal::gpt::init(const config_type*)
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,
                                  mcal::reg::dmtimer7::irqenable_set,
-                                 UINT32_C(2)>::reg_msk<UINT32_C(7)>();
+                                 UINT32_C(2)>::template reg_msk<UINT32_C(7)>();
 
     // Set the dmtimer7 Timer CounteR Register (TCRR).
     mcal::reg::reg_access_static<std::uint32_t,

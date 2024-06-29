@@ -18,17 +18,19 @@ namespace local
 
   using task_index_type = std::uint_fast8_t;
 
-  // The one (and only one) operating system task list.
-  auto os_task_list() -> task_list_type&
-  {
-    static task_list_type my_task_list(OS_TASK_LIST);
-
-    return my_task_list;
-  }
+  auto os_task_list() -> task_list_type&;
 
   // The index of the running task.
   task_index_type os_task_index; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 } // namespace local
+
+// The one (and only one) operating system task list.
+auto local::os_task_list() -> local::task_list_type&
+{
+  static task_list_type my_task_list(OS_TASK_LIST);
+
+  return my_task_list;
+}
 
 OS_NORETURN auto os::start_os() -> void
 {

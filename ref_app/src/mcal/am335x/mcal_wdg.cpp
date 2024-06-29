@@ -69,7 +69,7 @@ void mcal::wdg::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::wdt1::wclr,
-                               UINT32_C(0)>::reg_msk<0x3C>();
+                               UINT32_C(0)>::template reg_msk<0x3C>();
 
   // Activate the watchdog prescaler.
   mcal::reg::reg_access_static<std::uint32_t,
