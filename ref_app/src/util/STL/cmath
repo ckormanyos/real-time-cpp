@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,16 +15,26 @@
   #if defined(__GNUC__) && defined(__AVR__)
   #include <math.h>
 
-  #ifndef _HUGE_ENUF
+  #if !defined(_HUGE_ENUF)
     #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
   #endif
 
   #if !defined(INFINITY)
   #define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
   #endif
+
+  #if !defined(HUGE_VAL)
   #define HUGE_VAL   ((double)INFINITY)
+  #endif
+
+  #if !defined(HUGE_VALF)
   #define HUGE_VALF  ((float)INFINITY)
+  #endif
+
+  #if !defined(HUGE_VALL)
   #define HUGE_VALL  ((long double)INFINITY)
+  #endif
+
   #if !defined(NAN)
   #define NAN        (-(float)(INFINITY * 0.0F))
   #endif

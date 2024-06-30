@@ -4401,7 +4401,12 @@
     friend constexpr auto half() -> decwide_t<OtherMyDigits10, OtherLimbType, OtherAllocatorType, OtherInternalFloatType, OtherExponentType, OtherFftFloatType>; // NOLINT(readability-redundant-declaration)
   };
 
-
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Warray-bounds"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wstringop-overread"
+  #endif
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto zero() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>
   {
@@ -4412,6 +4417,10 @@
 
     return other_wide_decimal_type::from_lst( { static_cast<other_limb_type>(UINT8_C(0)) } );
   }
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic pop
+  #pragma GCC diagnostic pop
+  #endif
 
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto one() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>
