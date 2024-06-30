@@ -22,6 +22,20 @@
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
 </p>
 
+---
+
+# :loudspeaker: **Announcement**
+
+**Make-File Unified:**
+
+The file
+[`app_make.gmk`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/target/app/make/app_make.gmk)
+is now used uniformly on all operating systems. The file `app_make_linux.gmk` has been removed.
+If you have been building target(s) via direct manual call to `make` with `app_make_linux.gmk`,
+simply use `app_make.gmk` now. Calls of `build.sh` (and `build.bat`) remain unchanged.
+
+---
+
 This is the companion code
 for the book C.M. Kormanyos,
 [Real-Time C++](https://www.springer.com/de/book/9783662629956):
@@ -186,12 +200,12 @@ The make files used in this repository have been made
 compatible with it. For background information, see also
 [issue 273](https://github.com/ckormanyos/real-time-cpp/issues/273).
 
-Build the target with a direct call to `make`.
+Build the target with a direct manual call to `make`.
 
 ```sh
 cd real-time-cpp
 cd ref_app
-make -f target/app/make/app_make_linux.gmk rebuild TGT=stm32f446
+make -f target/app/make/app_make.gmk rebuild TGT=stm32f446
 ```
 
 If the toolchain is needed then it must be installed or retrieved
