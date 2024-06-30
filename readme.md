@@ -1,21 +1,6 @@
 ﻿Real-Time-C++
 ==================
 
----
-
-# :loudspeaker: **Announcement**
-
-**Make-File Unified:**
-
-The file
-[`app_make.gmk`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/target/app/make/app_make.gmk)
-is now used uniformly on all operating systems. The file `app_make_linux.gmk` has been removed.
-If you have been building target(s) via direct manual call to `make` with `app_make_linux.gmk`,
-simply use `app_make.gmk` now. Calls of `build.sh` (and `buikld.bat`) remain unchanged.
-
----
-
-
 <p align="center">
     <a href="https://github.com/ckormanyos/real-time-cpp/actions">
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp.yml/badge.svg" alt="Build Status"></a>
@@ -36,6 +21,20 @@ simply use `app_make.gmk` now. Calls of `build.sh` (and `buikld.bat`) remain unc
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
 </p>
+
+---
+
+# :loudspeaker: **Announcement**
+
+**Make-File Unified:**
+
+The file
+[`app_make.gmk`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/target/app/make/app_make.gmk)
+is now used uniformly on all operating systems. The file `app_make_linux.gmk` has been removed.
+If you have been building target(s) via direct manual call to `make` with `app_make_linux.gmk`,
+simply use `app_make.gmk` now. Calls of `build.sh` (and `build.bat`) remain unchanged.
+
+---
 
 This is the companion code
 for the book C.M. Kormanyos,
