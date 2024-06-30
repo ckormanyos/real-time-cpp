@@ -441,6 +441,12 @@ The `riscvfe310` target utilizes the SiFive RISC-V FE310 SoC
 on Spark Fun's commercially available _Red_ _Thing_ _Plus_ Board.
 The blue LED on port `GPIO0.5` is toggled.
 
+The adaption for `wch_ch32v307` runs on the WCH CH32v307 board.
+It uses the RISC-V CH32v307 microcontroller from
+Nanjing Qinheng Microelectronics Co., Ltd.
+The blue LED1 manually connected to port `GPIOC.0`
+via wire-connection provides the blinky toggle.
+
 Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
 The orange user-LED is toggled.
 
