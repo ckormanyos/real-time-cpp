@@ -37,7 +37,6 @@ FILES_PRJ  = $(PATH_SRC)/app/benchmark/app_benchmark                            
              $(PATH_SRC)/mcal/host/mcal_wdg                                          \
              $(PATH_SRC)/mcal/mcal                                                   \
              $(PATH_SRC)/os/os                                                       \
-             $(PATH_SRC)/os/os_task_control_block                                    \
              $(PATH_SRC)/sys/idle/sys_idle                                           \
              $(PATH_SRC)/sys/mon/sys_mon                                             \
              $(PATH_SRC)/sys/start/sys_start
