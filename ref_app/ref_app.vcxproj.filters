@@ -274,9 +274,6 @@
     <ClCompile Include="src\mcal\am335x\mcal_wdg.cpp">
       <Filter>src\mcal\am335x</Filter>
     </ClCompile>
-    <ClCompile Include="src\os\os_task_control_block.cpp">
-      <Filter>src\os</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\STD_LIBC\memory.c">
       <Filter>src\util\STD_LIBC</Filter>
     </ClCompile>

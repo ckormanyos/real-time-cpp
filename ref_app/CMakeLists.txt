@@ -150,7 +150,6 @@ set(app_src
     ${PATH_APP}/mcal/${TARGET}/mcal_wdg
     ${PATH_APP}/mcal/mcal
     ${PATH_APP}/os/os
-    ${PATH_APP}/os/os_task_control_block
     ${PATH_APP}/sys/idle/sys_idle
     ${PATH_APP}/sys/mon/sys_mon
     ${PATH_APP}/sys/start/sys_start

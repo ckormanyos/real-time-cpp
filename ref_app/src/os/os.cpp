@@ -5,12 +5,12 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <algorithm>
-#include <array>
-
 #include <mcal_irq.h>
 #include <os/os.h>
 #include <os/os_task_control_block.h>
+
+#include <algorithm>
+#include <array>
 
 namespace local
 {
