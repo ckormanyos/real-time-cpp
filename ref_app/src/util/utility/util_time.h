@@ -45,7 +45,7 @@
 
       constexpr timer(timer&& other) noexcept : my_tick(other.my_tick) { }
 
-      ~timer() noexcept = default;
+      ~timer() { }
 
       auto operator=(const timer& other) noexcept -> timer&
       {

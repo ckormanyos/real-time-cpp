@@ -43,7 +43,7 @@
 
       task_control_block() = delete;
 
-      ~task_control_block() = default;
+      ~task_control_block() { }
 
       auto operator=(const task_control_block&) -> task_control_block& = delete;
       auto operator=(task_control_block&&) noexcept -> task_control_block& = delete;
