@@ -26,11 +26,16 @@
 # operating system
 # ------------------------------------------------------------------------------
 
-TYP_OS       := WIN
+ifeq ($(TYP_OS),)
 
-ifneq ($(OS),Windows_NT)
+ifeq ($(OS),Windows_NT)
+TYP_OS       := WIN
+else
 TYP_OS       := NIX
 endif
+
+endif
+
 
 # ------------------------------------------------------------------------------
 # punctuation
