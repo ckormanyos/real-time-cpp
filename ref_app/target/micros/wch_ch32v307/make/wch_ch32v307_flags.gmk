@@ -11,9 +11,7 @@
 GCC_TARGET   := riscv32-unknown-elf
 GCC_PREFIX   := riscv32-unknown-elf
 
-ifneq ($(MAKE),make)
 GCC_VERSION  := 13.2.0
-endif
 
 TGT_SUFFIX    = elf
 
