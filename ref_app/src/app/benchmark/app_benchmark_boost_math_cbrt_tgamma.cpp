@@ -15,7 +15,7 @@
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wall"
 #endif
 
 #if !defined(BOOST_MATH_STANDALONE)

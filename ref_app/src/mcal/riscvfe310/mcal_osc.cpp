@@ -26,15 +26,15 @@ void mcal::osc::init(const config_type*)
 
   // Divide pllref (HFXOSC) by 2 ==> refr = 8 MHz.
   //PRCI->pllcfg.bit.pllr = 1;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(1))>::reg_msk<static_cast<std::uint32_t>(UINT8_C(7))>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(UINT8_C(1))>::template reg_msk<static_cast<std::uint32_t>(UINT8_C(7))>();
 
   // multiply refr by 96 ==> vco = 768 MHz.
   //PRCI->pllcfg.bit.pllf = 47;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(47ULL << 4U)>::reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(47ULL << 4U)>::template reg_msk<static_cast<std::uint32_t>(63ULL << 4U)>();
 
   // Divide vco by 4 ==> pllout = 192 MHz.
   //PRCI->pllcfg.bit.pllq = 2;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(2ULL << 10U)>::reg_msk<static_cast<std::uint32_t>(3ULL << 10U)>();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::prci_pllcfg, static_cast<std::uint32_t>(2ULL << 10U)>::template reg_msk<static_cast<std::uint32_t>(3ULL << 10U)>();
 
   // Bypass final pllout divider.
   //PRCI->plloutdiv.bit.divby1 = 1;

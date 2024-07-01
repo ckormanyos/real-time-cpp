@@ -121,7 +121,7 @@ jobs:
           echo ""
           echo Manually call GNUmake to build the target
           echo ""
-          make -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }}
+          make -f target/app/make/app_make.gmk rebuild TGT=${{ matrix.suite }}
           echo ""
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/
@@ -201,7 +201,7 @@ jobs:
           make --version
           echo Manually call GNUmake to build the target
           echo ""
-          make -f target/app/make/app_make_linux.gmk rebuild TGT=${{ matrix.suite }}
+          make -f target/app/make/app_make.gmk rebuild TGT=${{ matrix.suite }}
           echo ""
           ls -la ./bin/ref_app.hex ./bin/ref_app.s19 ./bin/ref_app.map
         working-directory: ./ref_app/

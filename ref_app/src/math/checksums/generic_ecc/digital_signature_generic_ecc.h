@@ -13,7 +13,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <random>
-#include <string>
 
 #include <math/checksums/generic_ecc/digital_signature_base.h>
 #include <math/checksums/generic_ecc/ecc_elliptic_curve.h>

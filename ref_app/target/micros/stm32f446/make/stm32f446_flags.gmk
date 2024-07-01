@@ -35,7 +35,7 @@ TGT_CXXFLAGS  = -std=c++14                                                      
                 -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/util/STL
+TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

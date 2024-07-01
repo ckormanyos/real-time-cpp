@@ -9,34 +9,39 @@
 # ------------------------------------------------------------------------------
 
 GCC_TARGET   := riscv32-unknown-elf
-GCC_PREFIX   := llvm-17.0.2-riscv32
+GCC_PREFIX   := riscv32-unknown-elf
 
-ifneq ($(MAKE),make)
 GCC_VERSION  := 13.2.0
-endif
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O1                                            \
+TGT_ALLFLAGS  = -Os                                            \
+                -finline-functions                             \
+                -finline-limit=64                              \
+                -ffast-math                                    \
                 -mcpu=sifive-e31                               \
                 -mabi=ilp32                                    \
                 -march=rv32imac                                \
                 -msmall-data-limit=0                           \
                 -falign-functions=4
 
-TGT_CFLAGS    = -std=c17                                       \
+TGT_CFLAGS    = -std=c99                                       \
+                -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++23                                     \
-                -Wno-unused-const-variable                     \
+                -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  =
+TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -Wl,--gc-sections                              \
                 -e __my_startup                                \
                 -Wl,-Map,$(APP).map                            \
-                -L$(PATH_TGT)/startup -lstartup                \
-                -T $(LINKER_DEFINITION_FILE)
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+                --specs=nosys.specs

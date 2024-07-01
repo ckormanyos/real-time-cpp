@@ -612,15 +612,14 @@
       // Emphasize: This template class can be used with native
       // floating-point types like float, double and long double.
 
-      // Note: For long double, you need to verify that the
-      // mantissa fits in unsigned long long.
-
       explicit native_float_parts(FloatingPointType f)
       {
         using native_float_type = FloatingPointType;
 
-        static_assert(std::numeric_limits<native_float_type>::digits <= std::numeric_limits<unsigned long long>::digits, // NOLINT(google-runtime-int)
-                      "Error: The width of the mantissa does not fit in unsigned long long");
+        // For long double, verify that the mantissa fits in std::uintmax_t.
+
+        static_assert(std::numeric_limits<native_float_type>::digits <= std::numeric_limits<std::uintmax_t>::digits,
+                      "Error: The width of the mantissa does not fit in std::uintmax_t");
 
         const native_float_type ff = ((f < static_cast<native_float_type>(0)) ? static_cast<native_float_type>(-f) : f);
 
@@ -646,7 +645,8 @@
                  ++i)
         {
           // Extract the mantissa of the floating-point type in base-2
-          // (one bit at a time) and store it in an unsigned long long.
+          // (one bit at a time) and store it in a std::uintmax_t.
+
           man *= 2;
 
           n2   = static_cast<unsigned>(man);
@@ -668,6 +668,10 @@
         // TBD: Need to properly handle this left shift amount
         // when GCC's __float128 is active (in case of -std=gnu++XX).
         // This happens when native_float_type is of type __float128.
+
+        static_assert(std::numeric_limits<native_float_type>::digits <= std::numeric_limits<long double>::digits,
+                      "Error: The instantiated native float type does not fit in long double");
+
         constexpr auto max_left_shift_amount =
           static_cast<int>
           (
@@ -676,7 +680,17 @@
               : std::numeric_limits<long double>::digits
           );
 
-        my_mantissa_part |= static_cast<unsigned long long>(1ULL << static_cast<unsigned>(max_left_shift_amount - 1)); // NOLINT(google-runtime-int)
+        #if (defined(__GNUC__) && !defined(__clang__))
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wshift-count-overflow"
+        #endif
+
+        my_mantissa_part |= static_cast<std::uintmax_t>(UINTMAX_C(1) << static_cast<unsigned>(max_left_shift_amount - 1));
+
+        #if (defined(__GNUC__) && !defined(__clang__))
+        #pragma GCC diagnostic pop
+        #endif
+
         my_exponent_part -= 1;
       }
 
@@ -711,11 +725,11 @@
         return *this;
       }
 
-     WIDE_DECIMAL_NODISCARD constexpr auto get_mantissa() const noexcept -> unsigned long long { return my_mantissa_part; } // NOLINT(google-runtime-int)
+     WIDE_DECIMAL_NODISCARD constexpr auto get_mantissa() const noexcept -> std::uintmax_t { return my_mantissa_part; }
      WIDE_DECIMAL_NODISCARD constexpr auto get_exponent() const noexcept -> int                { return my_exponent_part; }
 
     private:
-      unsigned long long my_mantissa_part { }; // NOLINT(readability-identifier-naming,google-runtime-int)
+      std::uintmax_t my_mantissa_part { }; // NOLINT(readability-identifier-naming)
       int                my_exponent_part { }; // NOLINT(readability-identifier-naming)
     };
 
@@ -4401,7 +4415,12 @@
     friend constexpr auto half() -> decwide_t<OtherMyDigits10, OtherLimbType, OtherAllocatorType, OtherInternalFloatType, OtherExponentType, OtherFftFloatType>; // NOLINT(readability-redundant-declaration)
   };
 
-
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Warray-bounds"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wstringop-overread"
+  #endif
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto zero() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>
   {
@@ -4412,6 +4431,10 @@
 
     return other_wide_decimal_type::from_lst( { static_cast<other_limb_type>(UINT8_C(0)) } );
   }
+  #if ((defined(__GNUC__) && (__GNUC__ >= 12)) && !defined(__clang__))
+  #pragma GCC diagnostic pop
+  #pragma GCC diagnostic pop
+  #endif
 
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto one() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>

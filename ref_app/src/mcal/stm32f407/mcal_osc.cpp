@@ -90,7 +90,7 @@ namespace
       mcal::reg::reg_access_static<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::rcc_cfgr,
-                                   UINT32_C(2)>::reg_msk<UINT32_C(3)>();
+                                   UINT32_C(2)>::template reg_msk<UINT32_C(3)>();
 
       volatile std::uint32_t mcal_osc_rcc_cfgr = UINT32_C(0);
 

@@ -106,7 +106,7 @@ namespace
     mcal::reg::reg_access_static<std::uint32_t,
                                   std::uint32_t,
                                   mcal::reg::rcc_cfgr,
-                                  static_cast<std::uint32_t>(UINT8_C(2))>::reg_msk<static_cast<std::uint32_t>(UINT8_C(3))>();
+                                  static_cast<std::uint32_t>(UINT8_C(2))>::template reg_msk<static_cast<std::uint32_t>(UINT8_C(3))>();
 
     volatile auto mcal_osc_rcc_cfgr = static_cast<std::uint32_t>(UINT8_C(0));
 

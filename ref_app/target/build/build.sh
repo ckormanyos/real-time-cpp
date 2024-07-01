@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2007 - 2023.
+#  Copyright Christopher Kormanyos 2007 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -41,7 +41,7 @@
 SCRIPT_PATH=$(readlink -f "$BASH_SOURCE")
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
-build_command="make -f $SCRIPT_DIR/../app/make/app_make_linux.gmk $2 TGT=$1"
+build_command="make -f $SCRIPT_DIR/../app/make/app_make.gmk $2 TGT=$1 TYP_OS=NIX"
 
 echo Executing Command: $build_command
 

@@ -89,7 +89,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::flash_flashcfg,
-                               flashtim_50mhz_cpu_sel>::reg_msk<UINT32_C(0x03)>();
+                               flashtim_50mhz_cpu_sel>::template reg_msk<UINT32_C(0x03)>();
 
   // Set the main clock as PLL out.
   mcal::reg::reg_access_static<std::uint32_t,

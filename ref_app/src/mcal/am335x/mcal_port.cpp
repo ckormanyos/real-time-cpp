@@ -33,14 +33,14 @@ namespace
       mcal::reg::reg_access_static<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::cm_per::gpio1_clkctrl,
-                                   osc_detail::modulemode_enable>::reg_msk<osc_detail::modulemode_mask>();
+                                   osc_detail::modulemode_enable>::template reg_msk<osc_detail::modulemode_mask>();
       while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get() & osc_detail::modulemode_mask) != osc_detail::modulemode_enable) { mcal::cpu::nop(); }
 
       // Enable the optional function clock.
       mcal::reg::reg_access_static<std::uint32_t,
                                    std::uint32_t,
                                    mcal::reg::cm_per::gpio1_clkctrl,
-                                   optfclken_gpio_1_gdbclk>::reg_msk<optfclken_gpio_1_gdbclk>();
+                                   optfclken_gpio_1_gdbclk>::template reg_msk<optfclken_gpio_1_gdbclk>();
 
       while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & optfclken_gpio_1_gdbclk)   != optfclken_gpio_1_gdbclk  ) { mcal::cpu::nop(); }
       while((mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::cm_per::gpio1_clkctrl>::reg_get()  & osc_detail::idlest_mask)   != osc_detail::idlest_func)   { mcal::cpu::nop(); }

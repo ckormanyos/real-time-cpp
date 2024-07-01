@@ -10,17 +10,21 @@
 
 void mcal::port::init(const config_type*)
 {
-  // Enable the GPIO peripheral clock portb + portc energy.
+  // Enable the peripheral clocks for porta, portc.
+  // 0x04 = porta
+  // 0x08 = portb
+  // 0x10 = portc
+  // 0x20 = portd
+  // 0x40 = porte
+  // ------------
+  // So we have:
+  // (portc + portd) = (0x10 + 0x20) = 0x30.
 
   // RCC->APB2PCENR.bit.IOPBEN = 1u;
-  mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_apb2pcenr,
-                                 UINT32_C(3)>::bit_set();
-
   // RCC->APB2PCENR.bit.IOPCEN = 1u;
+
   mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::rcc_apb2pcenr,
-                                 UINT32_C(4)>::bit_set();
+                               std::uint32_t,
+                               mcal::reg::rcc_apb2pcenr,
+                               UINT32_C(0x30)>::reg_or();
 }

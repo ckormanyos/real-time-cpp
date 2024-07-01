@@ -1,11 +1,11 @@
 /*
- Copyright Christopher Kormanyos 2022.
+ Copyright Christopher Kormanyos 2021 - 2024.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-/* Linker script for RISC-V FE310 SiFive MCU */
+/* Linker script for RISC-V WCH CH32v307 SiFive MCU */
 
 ENTRY(__my_startup)
 
@@ -21,6 +21,8 @@ __RAM_SIZE =  16K - __STACK_SIZE;
 
 __STACK_START_ADDRESS = __RAM_START_ADDRESS + __RAM_SIZE;
 
+__ROM_START_ADDRESS = 0x00000000;
+
 MEMORY
 {
   BOOT(rx)    : ORIGIN = 0x00000000,            LENGTH = 0x100
@@ -32,7 +34,7 @@ MEMORY
 
 SECTIONS
 {
-  . = 0x00000000;
+  . = __ROM_START_ADDRESS;
 
   .startup : ALIGN(0x10)
   {
