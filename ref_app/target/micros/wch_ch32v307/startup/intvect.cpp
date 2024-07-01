@@ -15,120 +15,129 @@
   
 ******************************************************************************************************/
 
-static void UndefinedHandler(void);
+extern "C"
+{
+  static void UndefinedHandler(void);
+}
 
-void Isr_InstructionAddressMisaligned (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_InstructionAccessFault       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_IllegalInstruction           (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_Breakpoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_LoadAddressMisaligned        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_LoadAccessFault              (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_StoreAddressMisaligned       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_StoreAccessFault             (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EnvironmentCallFromUmode     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EnvironmentCallFromMmode     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_HardFault                    (void);
-void Isr_Ecall_M                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_Ecall_U                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_BreakPoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_NMI                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SysTick                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SoftwareInt                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_WWDG                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PVD                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TAMPER                       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_RTC                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_FLASH                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_RCC                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI0                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI1                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI2                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI3                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI4                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel1                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel2                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel3                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel4                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel5                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel6                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA1_Channel7                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_ADC                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USB_HP_CAN1_TX               (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USB_LP_CAN1_RX0              (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN1_RX1                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN1_SCE                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI9_5                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM1_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM1_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM1_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM1_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM2                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM3                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM4                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_I2C1_EV                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_I2C1_ER                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_I2C2_EV                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_I2C2_ER                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SPI1                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SPI2                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USART1                       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USART2                       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USART3                       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EXTI15_10                    (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_RTCAlarm                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USBWakeUp                    (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM8_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM8_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM8_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM8_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_RNG                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_FSMC                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SDIO                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM5                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_SPI3                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART4                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART5                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM6                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM7                         (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel1                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel2                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel3                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel4                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel5                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_ETH                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_ETH_WKUP                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN2_TX                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN2_RX0                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN2_RX1                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_CAN2_SCE                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_OTG_FS                       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USBHSWakeup                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_USBHS                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DVP                          (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART6                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART7                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART8                        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM9_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM9_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM9_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM9_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM10_BRK                    (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM10_UP                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM10_TRG_COM                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_TIM10_CC                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel6                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel7                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel8                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel9                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel10               (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_DMA2_Channel11               (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_InstructionAddressMisaligned (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_InstructionAccessFault       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_IllegalInstruction           (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_Breakpoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_LoadAddressMisaligned        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_LoadAccessFault              (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_StoreAddressMisaligned       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_StoreAccessFault             (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EnvironmentCallFromUmode     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EnvironmentCallFromMmode     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_HardFault                    (void);
+extern "C" void Isr_Ecall_M                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_Ecall_U                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_BreakPoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_NMI                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SysTick                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SoftwareInt                  (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_WWDG                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_PVD                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TAMPER                       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_RTC                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_FLASH                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_RCC                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI0                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI1                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI2                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI3                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI4                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel1                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel2                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel3                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel4                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel5                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel6                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA1_Channel7                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_ADC                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USB_HP_CAN1_TX               (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USB_LP_CAN1_RX0              (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN1_RX1                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN1_SCE                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI9_5                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM1_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM1_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM1_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM1_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM2                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM3                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM4                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_I2C1_EV                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_I2C1_ER                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_I2C2_EV                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_I2C2_ER                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SPI1                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SPI2                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USART1                       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USART2                       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USART3                       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_EXTI15_10                    (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_RTCAlarm                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USBWakeUp                    (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM8_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM8_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM8_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM8_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_RNG                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_FSMC                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SDIO                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM5                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_SPI3                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_UART4                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_UART5                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM6                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM7                         (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel1                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel2                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel3                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel4                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel5                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_ETH                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_ETH_WKUP                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN2_TX                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN2_RX0                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN2_RX1                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_CAN2_SCE                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_OTG_FS                       (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USBHSWakeup                  (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_USBHS                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DVP                          (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_UART6                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_UART7                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_UART8                        (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM9_BRK                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM9_UP_                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM9_TRG_COM                 (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM9_CC                      (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM10_BRK                    (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM10_UP                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM10_TRG_COM                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_TIM10_CC                     (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel6                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel7                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel8                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel9                (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel10               (void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void Isr_DMA2_Channel11               (void) __attribute__((weak, alias("UndefinedHandler")));
 
 //=====================================================================================================
 // Interrupt vector table
 //=====================================================================================================
-typedef void (*InterruptHandler)(void);
+extern "C"
+{
+  typedef void (*InterruptHandler)(void);
+}
 
-const InterruptHandler __attribute__((section(".intvect"), aligned(4))) InterruptVectorTable[] =
+extern "C"
+const volatile InterruptHandler __attribute__((section(".intvect"), aligned(4))) InterruptVectorTable[];
+
+const volatile InterruptHandler InterruptVectorTable[] =
 {
     (InterruptHandler)&UndefinedHandler,    /*   0  Reserved                                                   */
     (InterruptHandler)&UndefinedHandler,    /*   1  Reserved                                                   */
@@ -239,6 +248,7 @@ const InterruptHandler __attribute__((section(".intvect"), aligned(4))) Interrup
 //=====================================================================================================
 // Exception vector table
 //=====================================================================================================
+extern "C"
 const InterruptHandler __attribute__((section(".intvect"), aligned(4))) ExceptionVectorTable[] =
 {
     (InterruptHandler)&Isr_InstructionAddressMisaligned,  /* 0  - Instruction address misaligned */
@@ -266,9 +276,12 @@ const InterruptHandler __attribute__((section(".intvect"), aligned(4))) Exceptio
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-static void UndefinedHandler(void)
+extern "C"
 {
-  for(;;) { ; }
+  static void UndefinedHandler(void)
+  {
+    for(;;) { ; }
+  }
 }
 
 void Isr_HardFault(void)
