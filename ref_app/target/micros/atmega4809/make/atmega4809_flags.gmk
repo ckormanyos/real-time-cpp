@@ -9,11 +9,10 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-ifneq ($(MAKE),make)
-GCC_VERSION   = 13.2.0
-endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
+
+GCC_VERSION   = 14.1.0
 
 TGT_SUFFIX    = elf
 
@@ -25,7 +24,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -finline-limit=16                                                 \
                 -fsigned-char                                                     \
 
-ifeq ($(GCC_VERSION),13.2.0)
+ifeq ($(TYP_OS),WIN)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=32                                                       \
                 -mlong-double=64

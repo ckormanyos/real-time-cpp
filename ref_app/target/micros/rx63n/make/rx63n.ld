@@ -28,7 +28,7 @@ MEMORY
   RAM       (w)   : ORIGIN = 0x00000000, LENGTH = 0x00FFFC
   STACK     (w)   : ORIGIN = 0x00007000, LENGTH = 0x001000
   IVEC_USER (r)   : ORIGIN = 0xFFFC0000, LENGTH = 0x000400
-  ROM       (w)   : ORIGIN = 0xFFFC0400, LENGTH = 0x00FC00 - 4
+  ROM       (w)   : ORIGIN = 0xFFFC0400, LENGTH = 0x00FC00
   IVEC_FIXED(r)   : ORIGIN = 0xFFFFFFD0, LENGTH = 0x000030
 }
 
@@ -84,6 +84,11 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
+    *(.plt)
+    . = ALIGN(4);
+    *(.rodata C C_2 C_1 W W_2 W_1 .rodata.* .gnu.linkonce.r.*)
+    . = ALIGN(4);
+    *(.rodata1)
     __ctors_begin = . ;
     KEEP (*(SORT(.init_array.*)))
     . = ALIGN(4);
