@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022 - 2023.
+//  Copyright Christopher Kormanyos 2022 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,16 +24,9 @@
 
 ******************************************************************************************************/
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
-asm(".option arch, +zicsr");
-#endif
+__asm(".option arch, +zicsr");
 
-#include <cstdint>
-
-#include <mcal_reg.h>
-
-extern "C"
-{
+#include <stdint.h>
 
 typedef void (*InterruptHandler)(void);
 
@@ -107,13 +100,13 @@ void Isr_PWM2CMP3_IRQn                (void) __attribute__((weak, alias("Undefin
 void Isr_I2C0_IRQn                    (void) __attribute__((weak, alias("UndefinedHandler")));
 
 #if __riscv_xlen==32
-typedef std::uint32_t uint_xlen_t;
-typedef std::uint32_t uint_csr32_t;
-typedef std::uint32_t uint_csr64_t;
+typedef uint32_t uint_xlen_t;
+typedef uint32_t uint_csr32_t;
+typedef uint32_t uint_csr64_t;
 #elif __riscv_xlen==64
-typedef std::uint64_t uint_xlen_t;
-typedef std::uint32_t uint_csr32_t;
-typedef std::uint64_t uint_csr64_t;
+typedef uint64_t uint_xlen_t;
+typedef uint32_t uint_csr32_t;
+typedef uint64_t uint_csr64_t;
 #else
 #error "Unknown XLEN"
 #endif
@@ -122,10 +115,10 @@ static inline uint_xlen_t csr_read_mcause(void)
 {
   uint_xlen_t value;
 
-  asm volatile ("csrr    %0, mcause" 
-                : "=r" (value)  /* output : register */
-                : /* input : none */
-                : /* clobbers: none */);
+  __asm volatile ("csrr    %0, mcause" 
+                  : "=r" (value)  /* output : register */
+                  : /* input : none */
+                  : /* clobbers: none */);
 
   return value;
 }
@@ -270,7 +263,11 @@ void DirectModeInterruptHandler(void)
 void Isr_MachineExternalInterrupt(void)
 {
   /* get the PLIC pending interrupt ID */
-  const uint32_t IntId = mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::plic_claim>::reg_get();
+  #define PLIC_BASE  UINT32_C(0x0C000000)
+  #define PLIC_CLAIM (uint32_t) (PLIC_BASE + UINT32_C(0x00200004))
+
+  //const uint32_t IntId = mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::plic_claim>::reg_get();
+  const uint32_t IntId = *(volatile uint32_t*) PLIC_CLAIM;
 
   if(IntId < 52u)
   {
@@ -279,7 +276,6 @@ void Isr_MachineExternalInterrupt(void)
   }
 
   /* set the interrupt as completed */
-  mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::plic_claim, IntId);
-}
-
+  //mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::plic_claim, IntId);
+  *(volatile uint32_t*) PLIC_CLAIM = IntId;
 }

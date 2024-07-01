@@ -1,13 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
 asm(".option arch, +zicsr");
-#endif
 
 #include <cstdint>
 
@@ -19,17 +17,9 @@ asm(".option arch, +zicsr");
 
 extern "C"
 {
-  #if __riscv_xlen==32
   typedef std::uint32_t uint_xlen_t;
   typedef std::uint32_t uint_csr32_t;
   typedef std::uint32_t uint_csr64_t;
-  #elif __riscv_xlen==64
-  typedef std::uint64_t uint_xlen_t;
-  typedef std::uint32_t uint_csr32_t;
-  typedef std::uint64_t uint_csr64_t;
-  #else
-  #error "Unknown XLEN"
-  #endif
 
   static inline void csr_write_mstatus(uint_xlen_t value)
   {
