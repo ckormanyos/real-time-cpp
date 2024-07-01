@@ -139,7 +139,10 @@ jobs:
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-arm-none-eabi
+        run: |
+          wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/10/artifact/riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz
+          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz -C ${{ runner.workspace }}
+        working-directory: ./
       - name: clone-submods-bootstrap-headers-boost-develop
         run: |
           git clone -b develop --depth 1 https://github.com/boostorg/boost.git ../boost-root
@@ -155,14 +158,10 @@ jobs:
         run: |
           git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
         working-directory: ./
-      - name: update-tools
-        run: |
-          wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/10/artifact/riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz
-          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz -C ${{ runner.workspace }}
-        working-directory: ./
       - name: benchmark_builds-riscv
+        run: |
           PATH="${{ runner.workspace }}/riscv32-embecosm-ubuntu2204-gcc13.2.0/bin:$PATH"
-        run: ./target/build/test_app_benchmarks_riscv.sh ${{ matrix.standard }}
+          ./target/build/test_app_benchmarks_riscv.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_single-stm32f446:
     runs-on: ubuntu-latest
