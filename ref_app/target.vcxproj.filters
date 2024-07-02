@@ -522,6 +522,9 @@
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld">
       <Filter>micros\wch_ch32v307\make</Filter>
     </None>
+    <None Include="target\build\test_app_benchmarks_riscv.sh">
+      <Filter>build</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -671,9 +674,6 @@
     <ClCompile Include="target\micros\stm32l100c\startup\int_vect.cpp">
       <Filter>micros\stm32l100c\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp">
-      <Filter>micros\xtensa32\startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\atmega4809\startup\int_vect.cpp">
       <Filter>micros\atmega4809\startup</Filter>
     </ClCompile>
@@ -725,7 +725,7 @@
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp">
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.c">
       <Filter>micros\riscvfe310\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\stm32h7a3\make\single\crt.cpp">
@@ -746,7 +746,7 @@
     <ClCompile Include="target\micros\nxp_imxrt1062\startup\bootdata.cpp">
       <Filter>micros\nxp_imxrt1062\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.c">
+    <ClCompile Include="target\micros\wch_ch32v307\startup\int_vect.cpp">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0.cpp">
@@ -756,9 +756,6 @@
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp">
-      <Filter>micros\wch_ch32v307\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp">
       <Filter>micros\wch_ch32v307\startup</Filter>
     </ClCompile>
   </ItemGroup>

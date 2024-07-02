@@ -69,15 +69,6 @@
   namespace math { namespace wide_decimal { // NOLINT(modernize-concat-nested-namespaces)
   #endif
 
-  // Forward declaration of the decwide_t template class.
-  template<const std::int32_t ParamDigitsBaseTen,
-           typename LimbType          = std::uint32_t,
-           typename AllocatorType     = std::allocator<void>,
-           typename InternalFloatType = double,
-           typename ExponentType      = std::int64_t,
-           typename FftFloatType      = double>
-  class decwide_t;
-
   // Forward declarations of various decwide_t namespace functions.
   template<const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType>
   constexpr auto zero() -> decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>;
@@ -605,134 +596,6 @@
     };
 
   private:
-    template<typename FloatingPointType>
-    class native_float_parts final
-    {
-    public:
-      // Emphasize: This template class can be used with native
-      // floating-point types like float, double and long double.
-
-      explicit native_float_parts(FloatingPointType f)
-      {
-        using native_float_type = FloatingPointType;
-
-        // For long double, verify that the mantissa fits in std::uintmax_t.
-
-        static_assert(std::numeric_limits<native_float_type>::digits <= std::numeric_limits<std::uintmax_t>::digits,
-                      "Error: The width of the mantissa does not fit in std::uintmax_t");
-
-        const native_float_type ff = ((f < static_cast<native_float_type>(0)) ? static_cast<native_float_type>(-f) : f);
-
-        if(ff < (std::numeric_limits<native_float_type>::min)())
-        {
-          return;
-        }
-
-        using std::frexp;
-
-        // Get the fraction and base-2 exponent.
-
-        // TBD: Need to properly handle frexp when GCC's __float128
-        // is active (in case of -std=gnu++XX).
-        // This happens when native_float_type is of type __float128.
-
-        auto man = static_cast<native_float_type>(frexp(static_cast<long double>(f), &my_exponent_part));
-
-        auto n2 = static_cast<unsigned>(UINT8_C(0));
-
-        for(auto   i = static_cast<std::uint_fast16_t>(UINT8_C(0));
-                   i < static_cast<std::uint_fast16_t>(std::numeric_limits<native_float_type>::digits);
-                 ++i)
-        {
-          // Extract the mantissa of the floating-point type in base-2
-          // (one bit at a time) and store it in a std::uintmax_t.
-
-          man *= 2;
-
-          n2   = static_cast<unsigned>(man);
-          man -= static_cast<native_float_type>(n2);
-
-          if(n2 != static_cast<unsigned>(UINT8_C(0)))
-          {
-            my_mantissa_part |= static_cast<unsigned>(UINT8_C(1));
-          }
-
-          if(i < static_cast<unsigned>(std::numeric_limits<native_float_type>::digits - 1))
-          {
-            my_mantissa_part <<= static_cast<unsigned>(UINT8_C(1));
-          }
-        }
-
-        // Ensure that the value is normalized and adjust the exponent.
-
-        // TBD: Need to properly handle this left shift amount
-        // when GCC's __float128 is active (in case of -std=gnu++XX).
-        // This happens when native_float_type is of type __float128.
-
-        static_assert(std::numeric_limits<native_float_type>::digits <= std::numeric_limits<long double>::digits,
-                      "Error: The instantiated native float type does not fit in long double");
-
-        constexpr auto max_left_shift_amount =
-          static_cast<int>
-          (
-            (std::numeric_limits<native_float_type>::digits < std::numeric_limits<long double>::digits)
-              ? std::numeric_limits<native_float_type>::digits
-              : std::numeric_limits<long double>::digits
-          );
-
-        #if (defined(__GNUC__) && !defined(__clang__))
-        #pragma GCC diagnostic push
-        #pragma GCC diagnostic ignored "-Wshift-count-overflow"
-        #endif
-
-        my_mantissa_part |= static_cast<std::uintmax_t>(UINTMAX_C(1) << static_cast<unsigned>(max_left_shift_amount - 1));
-
-        #if (defined(__GNUC__) && !defined(__clang__))
-        #pragma GCC diagnostic pop
-        #endif
-
-        my_exponent_part -= 1;
-      }
-
-      constexpr native_float_parts(const native_float_parts& other) noexcept
-        : my_mantissa_part(other.my_mantissa_part),
-          my_exponent_part(other.my_exponent_part) { }
-
-      constexpr native_float_parts(native_float_parts&& other) noexcept
-        : my_mantissa_part(other.my_mantissa_part),
-          my_exponent_part(other.my_exponent_part) { }
-
-      native_float_parts() = delete;
-
-      ~native_float_parts() noexcept = default; // LCOV_EXCL_LINE
-
-      auto operator=(const native_float_parts& other) noexcept -> native_float_parts& // NOLINT(cert-oop54-cpp)
-      {
-        if(this != &other)
-        {
-          my_mantissa_part = other.my_mantissa_part;
-          my_exponent_part = other.my_exponent_part;
-        }
-
-        return *this;
-      }
-
-      auto operator=(native_float_parts&& other) noexcept -> native_float_parts&
-      {
-        my_mantissa_part = other.my_mantissa_part;
-        my_exponent_part = other.my_exponent_part;
-
-        return *this;
-      }
-
-     WIDE_DECIMAL_NODISCARD constexpr auto get_mantissa() const noexcept -> std::uintmax_t { return my_mantissa_part; }
-     WIDE_DECIMAL_NODISCARD constexpr auto get_exponent() const noexcept -> int                { return my_exponent_part; }
-
-    private:
-      std::uintmax_t my_mantissa_part { }; // NOLINT(readability-identifier-naming)
-      int                my_exponent_part { }; // NOLINT(readability-identifier-naming)
-    };
-
     #if !defined(WIDE_DECIMAL_DISABLE_CACHED_CONSTANTS)
     // LCOV_EXCL_START
     // Static data initializer
@@ -2882,7 +2745,7 @@
     {
       const auto b_neg = (flt < static_cast<FloatingPointType>(0.0F));
 
-      const native_float_parts<FloatingPointType> ld_parts((!b_neg) ? flt : -flt);
+      const detail::template native_float_parts<FloatingPointType> ld_parts((!b_neg) ? flt : -flt);
 
       // Create a decwide_t from the fractional part of the
       // mantissa expressed as an unsigned long long.

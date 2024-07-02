@@ -759,6 +759,7 @@
     <None Include="target\build\test_app_benchmarks.sh" />
     <None Include="target\build\test_app_benchmarks_avr.sh" />
     <None Include="target\build\test_app_benchmarks_emulator.py" />
+    <None Include="target\build\test_app_benchmarks_riscv.sh" />
     <None Include="target\build\test_app_benchmarks_stm32f446.sh" />
     <None Include="target\micros\am335x\make\am335x.ld" />
     <None Include="target\micros\am335x\make\am335x_files.gmk" />
@@ -879,7 +880,7 @@
     <ClCompile Include="target\micros\riscvfe310\startup\crt0.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\riscvfe310\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\riscvfe310\startup\int_vect.c" />
     <ClCompile Include="target\micros\rl78\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
@@ -927,9 +928,7 @@
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.c" />
-    <ClCompile Include="target\micros\wch_ch32v307\startup\main.cpp" />
-    <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307\startup\int_vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />

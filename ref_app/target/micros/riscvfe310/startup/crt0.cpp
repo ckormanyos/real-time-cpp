@@ -5,9 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if ((defined(__GNUC__)  && (__GNUC__ > 10)) && defined(__riscv))
 asm(".option arch, +zicsr");
-#endif
 
 asm(".extern __initial_stack_pointer");
 asm(".extern DirectModeInterruptHandler");
@@ -20,7 +18,7 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup(void) __attribute__ ((section(".startup"), naked, no_reorder, optimize(0), used, noinline));
+extern "C" void __my_startup(void) __attribute__ ((section(".startup")));
 
 void __my_startup()
 {

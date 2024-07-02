@@ -42,7 +42,7 @@ namespace std
   }
 }
 
-void* operator new(std::size_t size) noexcept
+void* operator new(std::size_t size)
 {
   // This is a naive and not completely functional
   // implementation of operator new(). In particular, there is
