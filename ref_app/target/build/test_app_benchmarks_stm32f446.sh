@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2021 - 2023.
+#  Copyright Christopher Kormanyos 2020 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -99,7 +99,7 @@ result_ls_boost_math_cyl_bessel_j=$?
 ls -la ./bin/app_benchmark_boost_multiprecision_cbrt.elf ./bin/app_benchmark_boost_multiprecision_cbrt.map
 result_ls_boost_multiprecision_cbrt=$?
 
-ls -la ./bin/app_benchmark_wide_integer.elf ./bin/app_benchmark_hash_sha256.map
+ls -la ./bin/app_benchmark_hash_sha256.elf ./bin/app_benchmark_hash_sha256.map
 result_ls_hash_sha256=$?
 
 ls -la ./bin/app_benchmark_wide_integer.elf ./bin/app_benchmark_ecc_generic_ecc.map
