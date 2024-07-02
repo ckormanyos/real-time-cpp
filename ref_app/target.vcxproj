@@ -928,7 +928,7 @@
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\wch_ch32v307\startup\intvect.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307\startup\int_vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />

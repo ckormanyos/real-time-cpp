@@ -44,11 +44,11 @@ SECTIONS
     . = ALIGN(0x10);
   } > BOOT = 0x5555
 
-  .intvect : ALIGN(0x100)
+  .isr_vector : ALIGN(0x100)
   {
-    *(.intvect)
+    *(.isr_vector)
     . = ALIGN(0x100);
-    *(.intvect*)
+    *(.isr_vector*)
     . = ALIGN(0x100);
   } > VEC = 0xAAAA
 
