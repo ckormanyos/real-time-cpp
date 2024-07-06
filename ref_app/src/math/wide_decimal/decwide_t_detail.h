@@ -432,7 +432,7 @@
 
     for(;;)
     {
-      un = static_cast<local_unsigned_integral_type>(un / static_cast<local_unsigned_integral_type>(UINT8_C(10U)));
+      un = static_cast<local_unsigned_integral_type>(un / static_cast<local_unsigned_integral_type>(UINT8_C(10)));
 
       p10 = static_cast<local_unsigned_exponent_type>(p10 * static_cast<local_unsigned_exponent_type>(UINT8_C(10)));
 

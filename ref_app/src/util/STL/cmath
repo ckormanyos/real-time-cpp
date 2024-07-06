@@ -427,7 +427,7 @@
     inline int           ilogb   (float x)                       { return ::ilogbf(x); }
     inline int           ilogb   (double x)                      { return ::ilogb (x); }
     inline int           ilogb   (long double x)                 { return ::ilogbl(x); }
-    #if defined(__GNUC__)
+    #if (defined(__GNUC__) && !defined(__clang__))
     inline bool          isnan   (float x)                       { return __builtin_isnanf(x); }
     inline bool          isnan   (double x)                      { return __builtin_isnan (x); }
     inline bool          isnan   (long double x)                 { return __builtin_isnanl(x); }

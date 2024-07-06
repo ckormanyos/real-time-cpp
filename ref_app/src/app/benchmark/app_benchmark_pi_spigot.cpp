@@ -11,7 +11,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT))
 
 #include <math/constants/pi_spigot_state.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>

@@ -10,7 +10,7 @@
 #include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER))
 
 #include <cnl/scaled_integer.h>
 

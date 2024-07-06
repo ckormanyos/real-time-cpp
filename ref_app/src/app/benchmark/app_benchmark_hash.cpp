@@ -7,7 +7,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH))
 
 #include <math/checksums/hash/hash_sha1.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>

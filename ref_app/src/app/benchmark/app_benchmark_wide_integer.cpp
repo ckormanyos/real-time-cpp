@@ -7,7 +7,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER))
 
 #if (defined(__GNUC__) && defined(__AVR__) && (__GNUC__ < 10))
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST const             // NOLINT(cppcoreguidelines-macro-usage)

@@ -40,7 +40,7 @@
   constexpr auto template_one<double>() -> double { return static_cast<double>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
-  constexpr auto template_one<long double>() -> long double { return 1.0F; } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<long double>() -> long double { return static_cast<long double>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
   constexpr auto template_half<float>() -> float { return static_cast<float>(0.5L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

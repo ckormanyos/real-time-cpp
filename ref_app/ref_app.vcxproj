@@ -1133,6 +1133,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\benchmark\app_benchmark.h" />
     <ClInclude Include="src\app\benchmark\app_benchmark_detail.h" />
+    <ClInclude Include="src\math\boost_stubs\boost\math\policies\error_handling.hpp" />
     <ClInclude Include="src\math\calculus\derivative.h" />
     <ClInclude Include="src\math\calculus\integral.h" />
     <ClInclude Include="src\math\checksums\crc\crc32.h" />

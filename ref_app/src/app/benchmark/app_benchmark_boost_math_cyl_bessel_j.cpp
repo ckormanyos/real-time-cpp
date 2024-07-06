@@ -5,13 +5,36 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+
+#include <app/benchmark/app_benchmark.h>
+
+#if (defined(__clang__) && defined(__riscv))
+
+#include <math.h>
+
+extern "C"
+{
+  long double floorl(long double x)                { return static_cast<long double>(::floor(static_cast<double>(x))); }
+  long double ceill (long double x)                { return static_cast<long double>(::ceil (static_cast<double>(x))); }
+  long double fmodl (long double x, long double y) { return static_cast<long double>(::fmod (static_cast<double>(x), static_cast<double>(y))); }
+  long double atan2l(long double y, long double x) { return static_cast<long double>(::atan2(static_cast<double>(y), static_cast<double>(x))); }
+  long double cosl  (long double x)                { return static_cast<long double>(::cos  (static_cast<double>(x))); }
+  long double sinl  (long double x)                { return static_cast<long double>(::sin  (static_cast<double>(x))); }
+  long double expl  (long double x)                { return static_cast<long double>(::exp  (static_cast<double>(x))); }
+  long double logl  (long double x)                { return static_cast<long double>(::log  (static_cast<double>(x))); }
+  long double powl  (long double x, long double a) { return static_cast<long double>(::pow  (static_cast<double>(x), static_cast<double>(a))); }
+  long double coshl (long double x)                { return static_cast<long double>(::cosh (static_cast<double>(x))); }
+  long double sinhl (long double x)                { return static_cast<long double>(::sinh (static_cast<double>(x))); }
+}
+
+#endif
+
+#include <app/benchmark/app_benchmark_detail.h>
+
 #include <array>
 #include <cstdint>
 
-#include <app/benchmark/app_benchmark.h>
-#include <app/benchmark/app_benchmark_detail.h>
-
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J))
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push

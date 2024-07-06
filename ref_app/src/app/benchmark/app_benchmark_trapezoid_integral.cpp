@@ -7,7 +7,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL))
 
 // See also: https://godbolt.org/z/8ahv5Ghx5
 
