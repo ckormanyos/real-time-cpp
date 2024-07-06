@@ -7,7 +7,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT))
 
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/constants/constants.h>

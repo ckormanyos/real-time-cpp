@@ -14,9 +14,9 @@
 
 namespace
 {
-  auto gpt_is_initialized() noexcept -> bool& __attribute__((used, noinline));
+  [[nodiscard]] auto gpt_is_initialized() noexcept -> bool&;
 
-  auto gpt_is_initialized() noexcept -> bool&
+  [[nodiscard]] auto gpt_is_initialized() noexcept -> bool&
   {
     static bool is_init { };
 
@@ -37,9 +37,9 @@ namespace local
 
     for(;;)
     {
-      const volatile std::uint32_t mt_lo1 __attribute__((no_reorder)) = read_lo();
-      const volatile std::uint32_t mt_hi  __attribute__((no_reorder)) = read_hi();
-      const volatile std::uint32_t mt_lo2 __attribute__((no_reorder)) = read_lo();
+      const volatile std::uint32_t mt_lo1 = read_lo();
+      const volatile std::uint32_t mt_hi  = read_hi();
+      const volatile std::uint32_t mt_lo2 = read_lo();
 
       if(mt_lo2 >= mt_lo1)
       {

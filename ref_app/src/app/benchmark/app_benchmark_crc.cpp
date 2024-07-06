@@ -9,7 +9,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC))
 
 #include <math/checksums/crc/crc32.h>
 #include <mcal_memory/mcal_memory_progmem_array.h>

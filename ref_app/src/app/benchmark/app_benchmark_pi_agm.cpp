@@ -10,7 +10,7 @@
 
 #include <app/benchmark/app_benchmark.h>
 
-#if((APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM) || (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
+#if (defined(APP_BENCHMARK_TYPE) && ((APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM) || (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100)))
 
 #define WIDE_DECIMAL_DISABLE_IOSTREAM
 #define WIDE_DECIMAL_DISABLE_DYNAMIC_MEMORY_ALLOCATION
@@ -40,7 +40,7 @@ auto app::benchmark::run_pi_agm() -> bool
 {
   using local_limb_type = std::uint16_t;
 
-  #if (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100)
+  #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
   constexpr auto wide_decimal_digits10 = static_cast<std::int32_t>(INT8_C(101));
   #else
   constexpr auto wide_decimal_digits10 = static_cast<std::int32_t>(INT8_C(53));
@@ -75,7 +75,7 @@ auto app::benchmark::run_pi_agm() -> bool
   // Use the Wolfram Alpha expression:
   //   N[Pi, 106] and truncate the final digit.
 
-  #if (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100)
+  #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
   static const mcal::memory::progmem::array<typename local_wide_decimal_type::limb_type, 26U> app_benchmark_pi_agm_control MY_PROGMEM =
   #else
   static const mcal::memory::progmem::array<typename local_wide_decimal_type::limb_type, 14U> app_benchmark_pi_agm_control MY_PROGMEM =
@@ -95,7 +95,7 @@ auto app::benchmark::run_pi_agm() -> bool
     static_cast<local_limb_type>(UINT16_C(6939)),
     static_cast<local_limb_type>(UINT16_C(9375)),
     static_cast<local_limb_type>(UINT16_C(1058)),
-    #if (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100)
+    #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
     static_cast<local_limb_type>(UINT16_C(2097)),
     static_cast<local_limb_type>(UINT16_C(4944)),
     static_cast<local_limb_type>(UINT16_C(5923)),
