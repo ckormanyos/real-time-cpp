@@ -146,6 +146,12 @@ extern "C"
   std::uint8_t __fdlib_version;
 }
 
+void mcal_gcc_cxx_dummy()
+{
+  static_cast<void>(__env);
+  static_cast<void>(environ);
+}
+
 namespace std
 {
   [[noreturn]]

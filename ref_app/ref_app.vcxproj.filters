@@ -206,6 +206,15 @@
     <Filter Include="src\mcal\wch_ch32v307">
       <UniqueIdentifier>{b5654f17-96aa-4c7c-bb49-71a3b138a796}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\math\boost_stubs">
+      <UniqueIdentifier>{711c48b5-4326-4ddd-9873-cbc7a2f3e2b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\boost_stubs\math">
+      <UniqueIdentifier>{1b27502b-120b-48b6-9f7f-1e2ed715e03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math\boost_stubs\math\policies">
+      <UniqueIdentifier>{84a5b0ba-4b4c-4d71-b232-b98f90134d18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2345,6 +2354,9 @@
     </ClInclude>
     <ClInclude Include="src\mcal\wch_ch32v307\mcal_eep.h">
       <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\boost_stubs\boost\math\policies\error_handling.hpp">
+      <Filter>src\math\boost_stubs\math\policies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

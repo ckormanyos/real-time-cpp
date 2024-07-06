@@ -116,9 +116,9 @@ auto local::get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
 
   for(;;)
   {
-    const auto mt_lo1 __attribute__((no_reorder)) = read_lo();
-    const auto mt_hi  __attribute__((no_reorder)) = read_hi();
-    const auto mt_lo2 __attribute__((no_reorder)) = read_lo();
+    const volatile std::uint32_t mt_lo1 = read_lo();
+    const volatile std::uint32_t mt_hi  = read_hi();
+    const volatile std::uint32_t mt_lo2 = read_lo();
 
     if(mt_lo2 >= mt_lo1)
     {

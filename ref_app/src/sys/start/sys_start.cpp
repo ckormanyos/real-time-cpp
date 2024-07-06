@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,11 +8,12 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-#if defined(__GNUC__)
+#if (defined(__GNUC__) || defined(__clang__))
 #if defined(__XTENSA__)
 extern "C"
 __attribute__((used)) auto app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #else
+extern "C"
 __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #endif
 #endif

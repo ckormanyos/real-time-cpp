@@ -12,6 +12,8 @@
 
   namespace sys { namespace idle { void task_func(); } }
 
+  namespace util { template<typename unsigned_tick_type> class timer; }
+
   namespace mcal
   {
     namespace wdg
@@ -23,6 +25,10 @@
       class secure final
       {
         static void trigger();
+
+
+        template<typename unsigned_tick_type>
+        friend class util::timer;
 
         friend void ::sys::idle::task_func();
         friend void ::__my_startup();

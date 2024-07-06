@@ -32,91 +32,91 @@ auto app::benchmark::task_func() -> void
 
   // Run the benchmark (if enabled via compiler switch).
 
-  #if(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE)
+  #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NONE))
 
   const bool result_is_ok = app::benchmark::run_none();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_COMPLEX))
 
   const bool result_is_ok = app::benchmark::run_complex();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CRC))
 
   const bool result_is_ok = app::benchmark::run_crc();
 
-  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FAST_MATH))
 
   const bool result_is_ok = app::benchmark::run_fast_math();
 
-  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FILTER))
 
   const bool result_is_ok = app::benchmark::run_filter();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FIXED_POINT))
 
   const bool result_is_ok = app::benchmark::run_fixed_point();
 
-  #elif (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_FLOAT))
 
   const bool result_is_ok = app::benchmark::run_float();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER))
 
   const bool result_is_ok = app::benchmark::run_wide_integer();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT))
 
   const bool result_is_ok = app::benchmark::run_pi_spigot();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_SPIGOT_SINGLE))
 
   const bool result_is_ok = app::benchmark::run_pi_spigot_single();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH))
 
   const bool result_is_ok = app::benchmark::run_hash();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_DECIMAL))
 
   const bool result_is_ok = app::benchmark::run_wide_decimal();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL))
 
   const bool result_is_ok = app::benchmark::run_trapezoid_integral();
 
-  #elif((APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM) || (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
+  #elif (defined(APP_BENCHMARK_TYPE) && ((APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM) || (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100)))
 
   const bool result_is_ok = app::benchmark::run_pi_agm();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA))
 
   const bool result_is_ok = app::benchmark::run_boost_math_cbrt_tgamma();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER))
 
   const bool result_is_ok = app::benchmark::run_cnl_scaled_integer();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_SOFT_DOUBLE_H2F1))
 
   const bool result_is_ok = app::benchmark::run_soft_double_h2f1();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT))
 
   const bool result_is_ok = app::benchmark::run_boost_multiprecision_cbrt();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J))
 
   const bool result_is_ok = app::benchmark::run_boost_math_cbrt_cyl_bessel_j();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH_SHA256)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_HASH_SHA256))
 
   const bool result_is_ok = app::benchmark::run_hash_sha256();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_ECC_GENERIC_ECC)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_ECC_GENERIC_ECC))
 
   const bool result_is_ok = app::benchmark::run_ecc_generic_ecc();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL)
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL))
 
   const bool result_is_ok = app::benchmark::run_non_std_decimal();
 
