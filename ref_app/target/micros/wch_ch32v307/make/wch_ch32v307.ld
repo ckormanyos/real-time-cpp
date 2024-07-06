@@ -9,7 +9,7 @@
 
 ENTRY(__my_startup)
 
-INPUT(libc_nano.a libm.a libclang_rt.builtins-riscv32.a)
+INPUT(libc.a libm.a libgcc.a)
 
 OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv", "elf32-littleriscv")
 OUTPUT_ARCH(riscv)
