@@ -16,12 +16,10 @@ GCC_VERSION  := 13.2.0
 TGT_SUFFIX    = elf
 
 TGT_ALLFLAGS  = -O2                                            \
-                -fno-reorder-blocks-and-partition              \
-                -fno-reorder-functions                         \
                 -ffast-math                                    \
                 -march=rv32imafc                               \
                 -mabi=ilp32f                                   \
-                -msmall-data-limit=0                           \
+                -msmall-data-limit=16                          \
                 -falign-functions=4
 
 TGT_CFLAGS    = -std=c11                                       \

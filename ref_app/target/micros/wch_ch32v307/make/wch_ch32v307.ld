@@ -17,7 +17,7 @@ OUTPUT_ARCH(riscv)
 __STACK_SIZE = 4K;
 
 __RAM_START_ADDRESS = 0x20000000;
-__RAM_SIZE =  16K - __STACK_SIZE;
+__RAM_SIZE =  64K - __STACK_SIZE;
 
 __STACK_START_ADDRESS = __RAM_START_ADDRESS + __RAM_SIZE;
 
@@ -28,7 +28,8 @@ MEMORY
   BOOT(rx)    : ORIGIN = 0x00000000,            LENGTH = 0x100
   VEC(rx)     : ORIGIN = 0x00000100,            LENGTH = 0x300
   ROM(rx)     : ORIGIN = 0x00000400,            LENGTH = 64K - 0x400
-  RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS,   LENGTH = __RAM_SIZE
+  SRAM(rwx)   : ORIGIN = __RAM_START_ADDRESS,        LENGTH = 32K
+  RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS + 32K,  LENGTH = __RAM_SIZE - 32K
   STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
 }
 
@@ -105,6 +106,19 @@ SECTIONS
   . = __RAM_START_ADDRESS;
   . = ALIGN(4);
 
+  /* The ROM-to-RAM initialized sdata section */
+  .sdata : ALIGN(4)
+  {
+    _sdata_begin = .;
+    *(.sdata)
+    . = ALIGN(4);
+    KEEP (*(.sdata))
+    *(.sdata*)
+    . = ALIGN(4);
+    KEEP (*(.sdata*))
+    _sdata_end = .;
+  } > SRAM AT > ROM
+
   /* The ROM-to-RAM initialized data section */
   .data : ALIGN(4)
   {
@@ -118,7 +132,20 @@ SECTIONS
     _data_end = .;
   } > RAM AT > ROM
 
-  /* The uninitialized (zero-cleared) data section */
+  /* The uninitialized (zero-cleared) sbss section */
+  .sbss : ALIGN(4)
+  {
+    _sbss_begin = .;
+    *(.sbss)
+    . = ALIGN(4);
+    KEEP (*(.sbss))
+    *(.sbss*)
+    . = ALIGN(4);
+    KEEP (*(.sbss*))
+    _sbss_end = .;
+  } > SRAM
+
+  /* The uninitialized (zero-cleared) bss section */
   .bss : ALIGN(4)
   {
     _bss_begin = .;
@@ -143,5 +170,6 @@ SECTIONS
     PROVIDE(__initial_stack_pointer = .) ;
   } > STACK
 
+  _srom_data_begin = LOADADDR(.sdata);
   _rom_data_begin = LOADADDR(.data);
 }

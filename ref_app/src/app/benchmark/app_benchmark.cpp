@@ -84,7 +84,7 @@ auto app::benchmark::task_func() -> void
 
   const bool result_is_ok = app::benchmark::run_trapezoid_integral();
 
-  #elif(APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM)
+  #elif((APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM) || (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_PI_AGM_100))
 
   const bool result_is_ok = app::benchmark::run_pi_agm();
 
