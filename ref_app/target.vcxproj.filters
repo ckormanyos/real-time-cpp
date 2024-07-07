@@ -226,6 +226,15 @@
     <Filter Include="micros\wch_ch32v307\startup">
       <UniqueIdentifier>{dfa9d9df-718d-4b4a-bbba-e79f6ae08683}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\wch_ch32v307_llvm">
+      <UniqueIdentifier>{a2e73bbf-9dd2-4dfe-b726-01e903a5923a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\wch_ch32v307_llvm\make">
+      <UniqueIdentifier>{e10ea0f5-8052-4860-ac94-ebf05dd98290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\wch_ch32v307_llvm\startup">
+      <UniqueIdentifier>{cb5b6506-a445-401d-ab39-2a42c84e3be6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -525,6 +534,15 @@
     <None Include="target\build\test_app_benchmarks_riscv.sh">
       <Filter>build</Filter>
     </None>
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm.ld">
+      <Filter>micros\wch_ch32v307_llvm\make</Filter>
+    </None>
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm_files.gmk">
+      <Filter>micros\wch_ch32v307_llvm\make</Filter>
+    </None>
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm_flags.gmk">
+      <Filter>micros\wch_ch32v307_llvm\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -757,6 +775,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp">
       <Filter>micros\wch_ch32v307\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt0.cpp">
+      <Filter>micros\wch_ch32v307_llvm\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt0_init_ram.cpp">
+      <Filter>micros\wch_ch32v307_llvm\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt1.cpp">
+      <Filter>micros\wch_ch32v307_llvm\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp">
+      <Filter>micros\wch_ch32v307_llvm\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

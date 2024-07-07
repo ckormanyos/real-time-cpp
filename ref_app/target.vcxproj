@@ -73,6 +73,10 @@
       <Configuration>target v850es_fx2</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target wch_ch32v307_llvm|x64">
+      <Configuration>target wch_ch32v307_llvm</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="target wch_ch32v307|x64">
       <Configuration>target wch_ch32v307</Configuration>
       <Platform>x64</Platform>
@@ -137,6 +141,12 @@
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -284,6 +294,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -332,6 +345,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">target\build\build.bat stm32l152</NMakeBuildCommandLine>
@@ -353,6 +367,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">target\build\build.bat stm32l152 rebuild</NMakeReBuildCommandLine>
@@ -375,6 +390,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">target\build\build.bat stm32f100 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">target\build\build.bat riscvfe310 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">target\build\build.bat wch_ch32v307 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">target\build\build.bat wch_ch32v307_llvm clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">target\build\build.bat stm32l100c clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">target\build\build.bat lpc11c24 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">target\build\build.bat stm32l152 clean_all</NMakeCleanCommandLine>
@@ -397,6 +413,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -418,6 +435,7 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'" />
@@ -439,6 +457,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/riscvfe310</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'">$(SolutionDir)/src/mcal/wch_ch32v307/Mcal; $(SolutionDir)/src/util/STL; $(SolutionDir)/src; $(SolutionDir)/src/mcal/wch_ch32v307;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">$(SolutionDir)/src/mcal/wch_ch32v307_llvm/Mcal;$(SolutionDir)/src</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f100</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\lpc11c24</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)src;$(SolutionDir)src\mcal\stm32l152</NMakeIncludeSearchPath>
@@ -460,6 +479,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'" />
@@ -481,6 +501,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'" />
@@ -502,6 +523,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f100|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target riscvfe310|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307|x64'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target lpc11c24|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32l152|x64'" />
@@ -680,6 +702,11 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target wch_ch32v307_llvm|x64'">
+    <BuildLog>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32l100c|x64'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
@@ -834,6 +861,9 @@
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307.ld" />
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_files.gmk" />
     <None Include="target\micros\wch_ch32v307\make\wch_ch32v307_flags.gmk" />
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm.ld" />
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm_files.gmk" />
+    <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm_flags.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32.ld" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_files.gmk" />
     <None Include="target\micros\x86_64-w64-mingw32\make\x86_64-w64-mingw32_flags.gmk" />
@@ -929,6 +959,10 @@
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\crt1.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />

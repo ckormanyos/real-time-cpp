@@ -215,6 +215,9 @@
     <Filter Include="src\math\boost_stubs\math\policies">
       <UniqueIdentifier>{84a5b0ba-4b4c-4d71-b232-b98f90134d18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\wch_ch32v307_llvm">
+      <UniqueIdentifier>{cad66d33-d268-43d3-b0e4-3feae9107d97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1014,6 +1017,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\wch_ch32v307\mcal_eep.cpp">
       <Filter>src\mcal\wch_ch32v307</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_eep.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_gpt.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_irq.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_led.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_osc.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_port.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_pwm.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_spi.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_wdg.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_cpu.cpp">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2357,6 +2390,48 @@
     </ClInclude>
     <ClInclude Include="src\math\boost_stubs\boost\math\policies\error_handling.hpp">
       <Filter>src\math\boost_stubs\math\policies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_cpu.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_eep.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_gpt.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_irq.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_led.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_memory_progmem.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_osc.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_port.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_pwm.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_reg.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_ser.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_spi.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_wdg.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_benchmark.h">
+      <Filter>src\mcal\wch_ch32v307_llvm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
