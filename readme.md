@@ -447,8 +447,9 @@ It uses the RISC-V CH32v307 microcontroller from
 Nanjing Qinheng Microelectronics Co., Ltd.
 The blue LED1 manually connected to port `GPIOC.0`
 via wire-connection provides the blinky toggle.
-The similar adaption `wch_ch32v307_lint` is essentially
-the same except it uses an LLVM RISC-V toolchain instead of GCC.
+The similar adaption `wch_ch32v307_llvm` is essentially
+the same except it uses an LLVM RISC-V toolchain
+instead of GCC RISC-V.
 
 Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
 The orange user-LED is toggled.
