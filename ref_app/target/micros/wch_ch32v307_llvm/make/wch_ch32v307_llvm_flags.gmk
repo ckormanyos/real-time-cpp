@@ -1,0 +1,48 @@
+#  Copyright Christopher Kormanyos 2022 - 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+PATH_TOOLS_CC := $(PATH_TOOLS_MINGW)\local\llvm-17.0.2-riscv32\bin
+
+AR            := $(PATH_TOOLS_CC)\llvm-ar.exe
+AS            := $(PATH_TOOLS_CC)\clang++.exe
+CC            := $(PATH_TOOLS_CC)\clang++.exe
+CPPFILT       := $(PATH_TOOLS_CC)\llvm-cxxfilt.exe
+NM            := $(PATH_TOOLS_CC)\llvm-nm.exe
+OBJDUMP       := $(PATH_TOOLS_CC)\llvm-objdump.exe
+OBJCOPY       := $(PATH_TOOLS_CC)\llvm-objcopy.exe
+READELF       := $(PATH_TOOLS_CC)\llvm-readelf.exe
+SIZE          := $(PATH_TOOLS_CC)\llvm-size.exe
+
+TGT_SUFFIX     = elf
+
+TGT_ALLFLAGS   = -O2                                            \
+                 -ffast-math                                    \
+                 -march=rv32imafc                               \
+                 -mabi=ilp32f                                   \
+                 -msmall-data-limit=16                          \
+                 -falign-functions=4
+
+TGT_CFLAGS     = -std=c11                                       \
+                 -Wunsuffixed-float-constants                   \
+                 $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS   = -std=c++23                                     \
+                 -Wno-psabi                                     \
+                 $(TGT_ALLFLAGS)
+
+TGT_INCLUDES   = -I$(PATH_APP)/math/boost_stubs                 \
+                 -IC:/boost/boost_1_85_0
+
+TGT_AFLAGS     =  $(TGT_ALLFLAGS)
+
+TGT_LDFLAGS    = -Wl,--gc-sections                              \
+                 -Wl,-Map,$(APP).map                            \
+                 -T $(LINKER_DEFINITION_FILE)                   \
+                 $(TGT_ALLFLAGS)

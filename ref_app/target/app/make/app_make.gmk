@@ -161,16 +161,37 @@ VPATH := $(sort $(dir $(FILES_TMP)))
 ifeq ($(TYP_OS),WIN)
 
 ifeq ($(GCC_PREFIX),)
+
+ifeq ($(AR),)
 AR        := $(PATH_TOOLS_CC)\ar.exe
+endif
+ifeq ($(AS),)
 AS        := $(PATH_TOOLS_CC)\g++.exe
+endif
+ifeq ($(CC),)
 CC        := $(PATH_TOOLS_CC)\g++.exe
+endif
+ifeq ($(CPPFILT),)
 CPPFILT   := $(PATH_TOOLS_CC)\c++filt.exe
+endif
+ifeq ($(NM),)
 NM        := $(PATH_TOOLS_CC)\nm.exe
+endif
+ifeq ($(OBJDUMP),)
 OBJDUMP   := $(PATH_TOOLS_CC)\objdump.exe
+endif
+ifeq ($(OBJCOPY),)
 OBJCOPY   := $(PATH_TOOLS_CC)\objcopy.exe
+endif
+ifeq ($(READELF),)
 READELF   := $(PATH_TOOLS_CC)\readelf.exe
+endif
+ifeq ($(SIZE),)
 SIZE      := $(PATH_TOOLS_CC)\size.exe
+endif
+
 else
+
 AR        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-ar.exe
 AS        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
 CC        := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-g++.exe
@@ -257,9 +278,7 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               -x c++                            \
               -fno-rtti                         \
               -fno-use-cxa-atexit               \
-              -fno-nonansi-builtins             \
               -fno-threadsafe-statics           \
-              -fno-enforce-eh-specs             \
               -ftemplate-depth=128              \
               -Wzero-as-null-pointer-constant
 
@@ -328,7 +347,7 @@ version:
 	@$(ECHO) +++ Print GNUmake version
 	@$(MAKE) --version
 	@$(ECHO)
-	@$(ECHO) +++ Print GCC version
+	@$(ECHO) +++ Print compiler version
 	@$(CC) -v
 	@$(ECHO)
 	@$(ECHO) +++ Print compiler include paths
@@ -382,7 +401,7 @@ ifeq ($(TGT_SUFFIX),elf)
 	@-$(ECHO) +++ creating hex module: $(APP).hex.
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
 	@-$(ECHO) +++ creating srec module: $(APP).s19
-	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec --srec-forceS3 --srec-len=16 $(APP).s19
+	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec $(APP).s19
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
 endif
