@@ -18,9 +18,7 @@ NM            := $(PATH_TOOLS_CC)\llvm-nm.exe
 OBJDUMP       := $(PATH_TOOLS_CC)\llvm-objdump.exe
 OBJCOPY       := $(PATH_TOOLS_CC)\llvm-objcopy.exe
 READELF       := $(PATH_TOOLS_CC)\llvm-readelf.exe
-SIZE          := $(PATH_TOOLS_CC)\llvm-size.exe 
-
-WARN_FLAGS    := -w
+SIZE          := $(PATH_TOOLS_CC)\llvm-size.exe
 
 TGT_SUFFIX     = elf
 

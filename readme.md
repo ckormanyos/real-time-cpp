@@ -105,6 +105,7 @@ The reference application supports the following targets:
 | `stm32h7a3`                            | STMicroelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7         |
 | `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |
+| `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            |
 
@@ -446,6 +447,8 @@ It uses the RISC-V CH32v307 microcontroller from
 Nanjing Qinheng Microelectronics Co., Ltd.
 The blue LED1 manually connected to port `GPIOC.0`
 via wire-connection provides the blinky toggle.
+The similar adaption `wch_ch32v307_lint` is essentially
+the same except it uses an LLVM RISC-V toolchain instead of GCC.
 
 Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
 The orange user-LED is toggled.
