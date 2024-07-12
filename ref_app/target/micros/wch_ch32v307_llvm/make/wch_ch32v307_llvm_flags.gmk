@@ -37,8 +37,7 @@ TGT_CXXFLAGS   = -std=c++23                                     \
                  -Wno-psabi                                     \
                  $(TGT_ALLFLAGS)
 
-TGT_INCLUDES   = -I$(PATH_APP)/math/boost_stubs                 \
-                 -IC:/boost/boost_1_85_0
+TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS     =  $(TGT_ALLFLAGS)
 
