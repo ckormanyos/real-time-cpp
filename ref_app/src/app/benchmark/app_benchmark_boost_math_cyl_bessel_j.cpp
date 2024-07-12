@@ -8,6 +8,11 @@
 
 #include <app/benchmark/app_benchmark.h>
 
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J))
+
+#include <array>
+#include <cstdint>
+
 #if (defined(__clang__) && defined(__riscv))
 
 #include <math.h>
@@ -30,11 +35,6 @@ extern "C"
 #endif
 
 #include <app/benchmark/app_benchmark_detail.h>
-
-#include <array>
-#include <cstdint>
-
-#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J))
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
