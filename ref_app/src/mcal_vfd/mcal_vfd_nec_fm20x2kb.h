@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2023.
+//  Copyright Christopher Kormanyos 2023 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,10 +8,10 @@
 #ifndef MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
   #define MCAL_VFD_NEC_FM20X2KB_2023_06_08_H
 
-  #include <array>
-
   #include <mcal_vfd/mcal_vfd_base.h>
   #include <util/utility/util_communication.h>
+
+  #include <array>
 
   namespace mcal { namespace vfd {
 
@@ -25,7 +25,7 @@
                                                    static_cast<unsigned>(UINT8_C(40))>;
 
     using cmd_line_buffer_type =
-      std::array<std::uint8_t, static_cast<std::size_t>(base_class_type::number_of_columns + static_cast<unsigned>(UINT8_C(2)))>;
+      std::array<std::uint8_t, static_cast<std::size_t>(base_class_type::number_of_cols() + static_cast<unsigned>(UINT8_C(2)))>;
 
   public:
     explicit vacuum_fluorescent_display_nec_fm20x2kb(util::communication_base& ser)
@@ -33,7 +33,7 @@
 
     ~vacuum_fluorescent_display_nec_fm20x2kb() override = default;
 
-    auto init() noexcept -> bool override
+    auto init() -> bool override
     {
       const auto clr = [this]() { return this->clear_line(static_cast<unsigned>(UINT8_C(0))); };
 
@@ -47,16 +47,16 @@
         constexpr auto cmd_id =
           cmd_id_array_type
           {
-            static_cast<std::uint8_t>(UINT8_C(0x1B)),
-            static_cast<std::uint8_t>(UINT8_C(0x5B)),
-            static_cast<std::uint8_t>(UINT8_C(0x31)),
-            static_cast<std::uint8_t>(UINT8_C(0x31)),
-            static_cast<std::uint8_t>(UINT8_C(0x48))
+            std::uint8_t { UINT8_C(0x1B) },
+            std::uint8_t { UINT8_C(0x5B) },
+            std::uint8_t { UINT8_C(0x31) },
+            std::uint8_t { UINT8_C(0x31) },
+            std::uint8_t { UINT8_C(0x48) }
           };
 
         result_init_is_ok = (my_serial.send_n(cmd_id.cbegin(), cmd_id.cend()) && result_init_is_ok);
 
-        blocking_delay(timer_type::microseconds(static_cast<unsigned>(UINT8_C(500))));
+        blocking_delay(timer_type::microseconds(unsigned { UINT8_C(500) }));
       }
 
       {
@@ -65,36 +65,36 @@
         constexpr auto cmd_tst =
           cmd_tst_array_type
           {
-            static_cast<std::uint8_t>(UINT8_C(0x1B)),
-            static_cast<std::uint8_t>(UINT8_C(0x5B)),
-            static_cast<std::uint8_t>(UINT8_C(0x30)),
-            static_cast<std::uint8_t>(UINT8_C(0x62))
+            std::uint8_t { UINT8_C(0x1B) },
+            std::uint8_t { UINT8_C(0x5B) },
+            std::uint8_t { UINT8_C(0x30) },
+            std::uint8_t { UINT8_C(0x62) }
           };
 
         result_init_is_ok = (my_serial.send_n(cmd_tst.cbegin(), cmd_tst.cend()) && result_init_is_ok);
 
-        blocking_delay(timer_type::microseconds(static_cast<unsigned>(UINT8_C(500))));
+        blocking_delay(timer_type::microseconds(unsigned { UINT8_C(500) }));
       }
 
       result_init_is_ok = (clr() && result_init_is_ok);
 
-      blocking_delay(timer_type::microseconds(static_cast<unsigned>(UINT8_C(500))));
+      blocking_delay(timer_type::microseconds(unsigned { UINT8_C(500) }));
 
       return result_init_is_ok;
     }
 
-    virtual auto write(const char* pstr,
+    auto write(const char* pstr,
                        const std::uint_fast8_t length,
-                       const std::uint_fast8_t line_index = static_cast<std::uint_fast8_t>(UINT8_C(0))) -> bool
+               const std::uint_fast8_t line_index) -> bool override
     {
       static_cast<void>(line_index);
 
       my_cmd_line_buffer.fill(static_cast<std::uint8_t>(' '));
 
-      my_cmd_line_buffer[static_cast<std::size_t>(UINT8_C(0))] = static_cast<std::uint8_t>(UINT8_C(0x1B));
-      my_cmd_line_buffer[static_cast<std::size_t>(UINT8_C(1))] = static_cast<std::uint8_t>(UINT8_C(0x5B));
+      my_cmd_line_buffer[std::size_t {  UINT8_C(0) }] = std::uint8_t { UINT8_C(0x1B) };
+      my_cmd_line_buffer[std::size_t {  UINT8_C(1) }] = std::uint8_t { UINT8_C(0x5B) };
 
-      const auto my_count = (std::min)(static_cast<unsigned>(length), base_class_type::number_of_columns);
+      const auto my_count = (std::min)(static_cast<unsigned>(length), base_class_type::number_of_cols());
 
       std::copy(pstr,
                 pstr + static_cast<std::size_t>(my_count),
@@ -105,17 +105,17 @@
       return result_write_is_ok;
     }
 
-    virtual auto clear_line(const unsigned = static_cast<unsigned>(UINT8_C(0))) noexcept -> bool
+    auto clear_line(const unsigned = static_cast<unsigned>(UINT8_C(0))) -> bool override
     {
       using cmd_clr_array_type = std::array<std::uint8_t, static_cast<std::size_t>(UINT8_C(4))>;
 
       constexpr auto cmd_clr =
         cmd_clr_array_type
         {
-          static_cast<std::uint8_t>(UINT8_C(0x1B)),
-          static_cast<std::uint8_t>(UINT8_C(0x5B)),
-          static_cast<std::uint8_t>(UINT8_C(0x0D)),
-          static_cast<std::uint8_t>(UINT8_C(0x0A))
+          std::uint8_t { UINT8_C(0x1B) },
+          std::uint8_t { UINT8_C(0x5B) },
+          std::uint8_t { UINT8_C(0x0D) },
+          std::uint8_t { UINT8_C(0x0A) }
         };
 
       const auto result_clr_is_ok = my_serial.send_n(cmd_clr.cbegin(), cmd_clr.cend());
@@ -123,7 +123,7 @@
       return result_clr_is_ok;
     }
 
-    auto set_line_index(const std::uint8_t) noexcept -> bool override { return true; }
+    auto set_line_index(const std::uint8_t) -> bool override { return true; }
 
   private:
     ::util::communication_base& my_serial;
