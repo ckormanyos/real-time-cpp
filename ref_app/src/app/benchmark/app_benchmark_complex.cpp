@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2021.
+//  Copyright Christopher Kormanyos 2014 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,18 +21,18 @@ namespace
   using complex_type = extended_complex::complex<local_floating_point_type>;
 }
 
-extern complex_type x;
-extern complex_type y;
+extern complex_type x_val;
+extern complex_type y_val;
 
 auto app::benchmark::run_complex() -> bool
 {
   using std::sin;
 
   // 14.859343457123410999 + 5.259004469728472689 i
-  y = sin(x);
+  y_val = sin(x_val);
 
-  const bool result_is_ok = (   detail::is_close_fraction(y.real(), local_floating_point_type(14.859343457123410999L))
-                             && detail::is_close_fraction(y.imag(), local_floating_point_type( 5.259004469728472689L)));
+  const bool result_is_ok = (   detail::is_close_fraction(y_val.real(), static_cast<local_floating_point_type>(14.859343457123410999L))
+                             && detail::is_close_fraction(y_val.imag(), static_cast<local_floating_point_type>( 5.259004469728472689L)));
 
   return result_is_ok;
 }
@@ -54,7 +54,7 @@ int main()
 
 #endif
 
-complex_type x(local_floating_point_type(1.23L), local_floating_point_type(3.45L));
-complex_type y;
+complex_type x_val { static_cast<local_floating_point_type>(1.23L), static_cast<local_floating_point_type>(3.45L) };
+complex_type y_val;
 
 #endif // APP_BENCHMARK_TYPE_COMPLEX
