@@ -95,6 +95,7 @@ The reference application supports the following targets:
 | `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     |
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
+| `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0    |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
 | `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         |
 | `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         |
@@ -440,6 +441,10 @@ config.txt, all described on internet. A complete set of
 [PiZero boot contents for an SD card](./ref_app/target/micros/bcm2835_raspi_b/startup/SD_CARD/PiZero)
 running the bare-metal reference application are included in this repo.
 The program toggles the GPIO status LED  at GPIO index `0x47`.
+
+The `rpi_pico_rp2040` target configuration employs the
+RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0
+clocked at $133~\text{MHz}$.
 
 Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
