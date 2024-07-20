@@ -561,6 +561,9 @@
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_flags.gmk">
       <Filter>micros\rpi_pico_rp2040\make</Filter>
     </None>
+    <None Include="target\micros\rpi_pico_rp2040\startup\util.s">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -816,6 +819,9 @@
       <Filter>micros\rpi_pico_rp2040\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\int_vect.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\SecondaryBoot.cpp">
       <Filter>micros\rpi_pico_rp2040\startup</Filter>
     </ClCompile>
   </ItemGroup>
