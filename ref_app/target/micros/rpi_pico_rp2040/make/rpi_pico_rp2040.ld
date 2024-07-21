@@ -12,28 +12,42 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/* Set up a stack with a size of 2K */
-__initial_stack_pointer = 0x20002000 - 4;
+/******************************************************************************************
+ Globals
+******************************************************************************************/
+__STACK_SIZE_CORE0 = 2K;
+__STACK_SIZE_CORE1 = 2K;
+
 
 MEMORY
 {
-  VEC(rx)  : ORIGIN = 0x08000000, LENGTH = 0x300
-  ROM(rx)  : ORIGIN = 0x08000300, LENGTH = 32K - 0x300
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x1800
+  SBL(rx)   : ORIGIN = 0x10000000, LENGTH = 0x200
+  VEC(rx)   : ORIGIN = 0x10000200, LENGTH = 0x200
+  ROM(rx)   : ORIGIN = 0x10000400, LENGTH = 2M - 0x400
+  RAM(rwx)  : ORIGIN = 0x20000000, LENGTH = 264K
 }
 
 SECTIONS
 {
-  . = 0x08000000;
-  . = ALIGN(4);
-
-  /* ISR vectors */
-  .isr_vector :
+  /* Pico Secondary bootloader */
+  .SBL :
   {
-    *(.isr_vector)
-    . = ALIGN(0x100);
-    KEEP(*(.isr_vector))
-  } > VEC = 0xAAAA
+  . = ALIGN(4);
+    PROVIDE(__SBL_BASE_ADDRESS = .);
+    *(.SBL)
+    KEEP(*(.SBL))
+  } > SBL
+
+  /* Interrupt vector table */
+  .intvect :
+  {
+    . = ALIGN(4);
+    PROVIDE(__INTVECT_BASE_ADDRESS = .);
+    *(.intvect_c0)
+    *(.intvect_c1)
+    KEEP(*(.intvect_c0))
+    KEEP(*(.intvect_c1))
+  } > VEC
 
   /* startup */
   .startup :
@@ -120,6 +134,19 @@ SECTIONS
 
   PROVIDE(end = .);
   PROVIDE(_fini = .);
+
+  /* stack definition */
+  .stack_core0 :
+  {
+    . = ALIGN(MAX(__STACK_SIZE_CORE0 , .), 8);
+    PROVIDE(__CORE0_STACK_TOP = .) ;
+  } > RAM
+
+  .stack_core1 :
+  {
+    . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 8);
+    PROVIDE(__CORE1_STACK_TOP = .) ;
+  } > RAM
 
   _rom_data_begin = LOADADDR(.data);
 }

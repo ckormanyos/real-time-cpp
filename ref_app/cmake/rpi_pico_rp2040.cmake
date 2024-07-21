@@ -74,4 +74,5 @@ set(FILES_TARGET
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1
     ${PATH_TGT}/startup/int_vect
+    ${PATH_TGT}/startup/SecondaryBoot
 )

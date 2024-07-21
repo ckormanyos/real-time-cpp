@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_GPT_2011_10_20_H_
-  #define MCAL_GPT_2011_10_20_H_
+#ifndef MCAL_GPT_2011_10_20_H
+  #define MCAL_GPT_2011_10_20_H
 
   #include <chrono>
   #include <cstdint>
@@ -24,7 +24,7 @@
   {
     namespace gpt
     {
-      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(24))>;
+      using arm_sys_tick_type = arm_sys_tick<static_cast<std::uint32_t>(UINT16_C(133))>;
 
       using config_type = void;
       using value_type  = typename arm_sys_tick_type::value_type;
@@ -55,4 +55,4 @@
     }
   }
 
-#endif // MCAL_GPT_2011_10_20_H_
+#endif // MCAL_GPT_2011_10_20_H

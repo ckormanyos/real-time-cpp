@@ -1,177 +1,184 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
+﻿/******************************************************************************************
+  Filename    : IntVect.c
+  
+  Core        : ARM Cortex-M0+
+  
+  MCU         : RP2040
+    
+  Author      : Chalandi Amine
+ 
+  Owner       : Chalandi Amine
+  
+  Date        : 07.02.2023
+  
+  Description : Interrupt vector tables for Raspberry Pi Pico
+  
+******************************************************************************************/
 
-#include <array>
-#include <cstddef>
-#include <mcal_cpu.h>
+//=============================================================================
+// Types definition
+//=============================================================================
 
-extern "C" void __initial_stack_pointer();
-
-extern "C" void __my_startup         () noexcept __attribute__((used, noinline));
-extern "C" void __vector_unused_irq  () noexcept __attribute__((used, noinline));
-extern "C" void __nmi_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __hard_fault_handler () noexcept __attribute__((used, noinline));
-extern "C" void __mem_manage_handler () noexcept __attribute__((used, noinline));
-extern "C" void __bus_fault_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __usage_fault_handler() noexcept __attribute__((used, noinline));
-extern "C" void __svc_handler        () noexcept __attribute__((used, noinline));
-extern "C" void __debug_mon_handler  () noexcept __attribute__((used, noinline));
-extern "C" void __pend_sv_handler    () noexcept __attribute__((used, noinline));
-extern "C" void __sys_tick_handler   () noexcept __attribute__((used, noinline));
-
-extern "C" void __vector_unused_irq  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __nmi_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __hard_fault_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __mem_manage_handler () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __bus_fault_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __usage_fault_handler() noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __svc_handler        () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __debug_mon_handler  () noexcept { for(;;) { mcal::cpu::nop(); } }
-extern "C" void __pend_sv_handler    () noexcept { for(;;) { mcal::cpu::nop(); } }
-
-namespace
+extern "C"
 {
-  typedef void(*isr_type)(void);
-
-  constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(128));
+  typedef void (*InterruptHandler)(void);
 }
 
-extern "C"
-const volatile std::array<isr_type, number_of_interrupts> __isr_vector __attribute__((section(".isr_vector")));
+extern "C" void UndefinedHandler(void);
+extern "C" void UndefinedHandler(void) { for(;;); }
 
+//=============================================================================
+// Functions prototype
+//=============================================================================
+extern "C" void __my_startup(void) __attribute__((used, noinline));
+extern "C" void __main_core1(void) __attribute__((weak, alias("UndefinedHandler")));
+
+extern "C" void __sys_tick_handler(void) noexcept __attribute__((used, noinline));
+
+extern "C" void __CORE0_STACK_TOP(void);
+extern "C" void __CORE1_STACK_TOP(void);
+
+/* Default interrupts handler */
+extern "C" void NMI(void)             __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void HardFault(void)       __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SVCall(void)          __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PendSV(void)          __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SysTickTimer(void)    __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void TIMER_IRQ_0(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void TIMER_IRQ_1(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void TIMER_IRQ_2(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void TIMER_IRQ_3(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PWM_IRQ_WRAP(void)    __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void USBCTRL_IRQ(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void XIP_IRQ(void)         __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PIO0_IRQ_0(void)      __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PIO0_IRQ_1(void)      __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PIO1_IRQ_0(void)      __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void PIO1_IRQ_1(void)      __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void DMA_IRQ_0(void)       __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void DMA_IRQ_1(void)       __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void IO_IRQ_BANK0(void)    __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void IO_IRQ_QSPI(void)     __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SIO_IRQ_PROC0(void)   __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SIO_IRQ_PROC1(void)   __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void CLOCKS_IRQ(void)      __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SPI0_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void SPI1_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void UART0_IRQ(void)       __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void UART1_IRQ(void)       __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void ADC_IRQ_FIFO(void)    __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void I2C0_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void I2C1_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
+extern "C" void RTC_IRQ(void)         __attribute__((weak, alias("UndefinedHandler")));
+
+//=============================================================================
+// Interrupt vector table Core0
+//=============================================================================
 extern "C"
-const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
-{{
-  __initial_stack_pointer,   // 0x0000, initial stack pointer
-  __my_startup,              // 0x0004, reset
-  __nmi_handler,             // 0x0008, nmi exception
-  __hard_fault_handler,      // 0x000C, hard fault exception
-  __mem_manage_handler,      // 0x0010, memory management exception
-  __bus_fault_handler,       // 0x0014, bus fault exception
-  __usage_fault_handler,     // 0x0018, usage fault exception
-  __vector_unused_irq,       // 0x001C, reserved
-  __vector_unused_irq,       // 0x0020, reserved
-  __vector_unused_irq,       // 0x0024, reserved
-  __vector_unused_irq,       // 0x0028, reserved
-  __svc_handler,             // 0x002C, svc handler
-  __debug_mon_handler,       // 0x0030, debug monitor
-  __vector_unused_irq,       // 0x0034, reserved
-  __pend_sv_handler,         // 0x0038, pending svc,
-  __sys_tick_handler,        // 0x003C, system tick handler,
-  __vector_unused_irq,       // 0x0040, wwdg irq handler,
-  __vector_unused_irq,       // 0x0044, pvd irq handler,
-  __vector_unused_irq,       // 0x0048, tamper irq handler,
-  __vector_unused_irq,       // 0x004C, rtc irq handler,
-  __vector_unused_irq,       // 0x0050, flash irq handler,
-  __vector_unused_irq,       // 0x0054, rcc irq handler,
-  __vector_unused_irq,       // 0x0058, exti0 irq handler,
-  __vector_unused_irq,       // 0x005C, exti1 irq handler,
-  __vector_unused_irq,       // 0x0060, exti2 irq handler,
-  __vector_unused_irq,       // 0x0064, exti3 irq handler,
-  __vector_unused_irq,       // 0x0068, exti4 irq handler,
-  __vector_unused_irq,       // 0x006C, dma_channel1 irq handler,
-  __vector_unused_irq,       // 0x0070, dma_channel2 irq handler,
-  __vector_unused_irq,       // 0x0074, dma_channel3 irq handler,
-  __vector_unused_irq,       // 0x0078, dma_channel4 irq handler,
-  __vector_unused_irq,       // 0x007C, dma_channel5 irq handler,
-  __vector_unused_irq,       // 0x0080, dma_channel6 irq handler,
-  __vector_unused_irq,       // 0x0084, dma_channel7 irq handler,
-  __vector_unused_irq,       // 0x0088, adc irq handler,
-  __vector_unused_irq,       // 0x008C, usb_hp_can_tx irq handler,
-  __vector_unused_irq,       // 0x0090, usb_lp_can_rx0 irq handler,
-  __vector_unused_irq,       // 0x0094, can_rx1 irq handler,
-  __vector_unused_irq,       // 0x0098, can_sce irq handler,
-  __vector_unused_irq,       // 0x009C, exti9_5 irq handler,
-  __vector_unused_irq,       // 0x00A0, tim1_brk irq handler,
-  __vector_unused_irq,       // 0x00A4, tim1_up irq handler,
-  __vector_unused_irq,       // 0x00A8, tim1_trg_com irq handler,
-  __vector_unused_irq,       // 0x00AC, tim1_cc irq handler,
-  __vector_unused_irq,       // 0x00B0, tim2 irq handler,
-  __vector_unused_irq,       // 0x00B4, tim3 irq handler,
-  __vector_unused_irq,       // 0x00B8, tim4 irq handler,
-  __vector_unused_irq,       // 0x00BC, i2c1_ev irq handler,
-  __vector_unused_irq,       // 0x00C0, i2c1_er irq handler,
-  __vector_unused_irq,       // 0x00C4, i2c2_ev irq handler,
-  __vector_unused_irq,       // 0x00C8, i2c2_er irq handler,
-  __vector_unused_irq,       // 0x00CC, spi1 irq handler,
-  __vector_unused_irq,       // 0x00D0, spi2 irq handler,
-  __vector_unused_irq,       // 0x00D4, usart1 irq handler,
-  __vector_unused_irq,       // 0x00D8, usart2 irq handler,
-  __vector_unused_irq,       // 0x00DC, usart3 irq handler,
-  __vector_unused_irq,       // 0x00E0, exti15_10 irq handler,
-  __vector_unused_irq,       // 0x00E4, rtcalarm irq handler,
-  __vector_unused_irq,       // 0x00E8, usbwakeup irq handler,
-  __vector_unused_irq,       // 0x00EC, reserved
-  __vector_unused_irq,       // 0x00F0, reserved
-  __vector_unused_irq,       // 0x00F4, reserved
-  __vector_unused_irq,       // 0x00F8, reserved
-  __vector_unused_irq,       // 0x00FC, reserved
-  __vector_unused_irq,       // 0x0100, reserved
-  __vector_unused_irq,       // 0x0104, reserved
-  __vector_unused_irq,       // 0x0108, this is for boot in ram mode for medium density devices.
-  __vector_unused_irq,       // 0x010C, unused
-  __vector_unused_irq,       // 0x0110, unused
-  __vector_unused_irq,       // 0x0114, unused
-  __vector_unused_irq,       // 0x0118, unused
-  __vector_unused_irq,       // 0x011C, unused
-  __vector_unused_irq,       // 0x0120, unused
-  __vector_unused_irq,       // 0x0124, unused
-  __vector_unused_irq,       // 0x0128, unused
-  __vector_unused_irq,       // 0x012C, unused
-  __vector_unused_irq,       // 0x0130, unused
-  __vector_unused_irq,       // 0x0134, unused
-  __vector_unused_irq,       // 0x0138, unused
-  __vector_unused_irq,       // 0x013C, unused
-  __vector_unused_irq,       // 0x0140, unused
-  __vector_unused_irq,       // 0x0144, unused
-  __vector_unused_irq,       // 0x0148, unused
-  __vector_unused_irq,       // 0x014C, unused
-  __vector_unused_irq,       // 0x0150, unused
-  __vector_unused_irq,       // 0x0154, unused
-  __vector_unused_irq,       // 0x0158, unused
-  __vector_unused_irq,       // 0x015C, unused
-  __vector_unused_irq,       // 0x0160, unused
-  __vector_unused_irq,       // 0x0164, unused
-  __vector_unused_irq,       // 0x0168, unused
-  __vector_unused_irq,       // 0x016C, unused
-  __vector_unused_irq,       // 0x0170, unused
-  __vector_unused_irq,       // 0x0174, unused
-  __vector_unused_irq,       // 0x0178, unused
-  __vector_unused_irq,       // 0x017C, unused
-  __vector_unused_irq,       // 0x0180, unused
-  __vector_unused_irq,       // 0x0184, unused
-  __vector_unused_irq,       // 0x0188, unused
-  __vector_unused_irq,       // 0x018C, unused
-  __vector_unused_irq,       // 0x0190, unused
-  __vector_unused_irq,       // 0x0194, unused
-  __vector_unused_irq,       // 0x0198, unused
-  __vector_unused_irq,       // 0x019C, unused
-  __vector_unused_irq,       // 0x01A0, unused
-  __vector_unused_irq,       // 0x01A4, unused
-  __vector_unused_irq,       // 0x01A8, unused
-  nullptr,                   // 0x01AC, dummy
-  nullptr,                   // 0x01B0, dummy
-  nullptr,                   // 0x01B4, dummy
-  nullptr,                   // 0x01B8, dummy
-  nullptr,                   // 0x01BC, dummy
-  nullptr,                   // 0x01C0, dummy
-  nullptr,                   // 0x01C4, dummy
-  nullptr,                   // 0x01C8, dummy
-  nullptr,                   // 0x01CC, dummy
-  nullptr,                   // 0x01D0, dummy
-  nullptr,                   // 0x01D4, dummy
-  nullptr,                   // 0x01D8, dummy
-  nullptr,                   // 0x01DC, dummy
-  nullptr,                   // 0x01E0, dummy
-  nullptr,                   // 0x01E4, dummy
-  nullptr,                   // 0x01E8, dummy
-  nullptr,                   // 0x01EC, dummy
-  nullptr,                   // 0x01F0, dummy
-  nullptr,                   // 0x01F4, dummy
-  nullptr,                   // 0x01F8, dummy
-  nullptr                    // 0x01FC, dummy
-}};
+const InterruptHandler __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[48] =
+{
+   (InterruptHandler)&__CORE0_STACK_TOP,
+   (InterruptHandler)&__my_startup,
+   (InterruptHandler)&NMI,
+   (InterruptHandler)&HardFault,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)&SVCall,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)&PendSV,
+   (InterruptHandler)&SysTickTimer,
+   (InterruptHandler)&TIMER_IRQ_0,
+   (InterruptHandler)&TIMER_IRQ_1,
+   (InterruptHandler)&TIMER_IRQ_2,
+   (InterruptHandler)&TIMER_IRQ_3,
+   (InterruptHandler)&PWM_IRQ_WRAP,
+   (InterruptHandler)&USBCTRL_IRQ,
+   (InterruptHandler)&XIP_IRQ,
+   (InterruptHandler)&PIO0_IRQ_0,
+   (InterruptHandler)&PIO0_IRQ_1,
+   (InterruptHandler)&PIO1_IRQ_0,
+   (InterruptHandler)&PIO1_IRQ_1,
+   (InterruptHandler)&DMA_IRQ_0,
+   (InterruptHandler)&DMA_IRQ_1,
+   (InterruptHandler)&IO_IRQ_BANK0,
+   (InterruptHandler)&IO_IRQ_QSPI,
+   (InterruptHandler)&SIO_IRQ_PROC0,
+   (InterruptHandler)&SIO_IRQ_PROC1,
+   (InterruptHandler)&CLOCKS_IRQ,
+   (InterruptHandler)&SPI0_IRQ,
+   (InterruptHandler)&SPI1_IRQ,
+   (InterruptHandler)&UART0_IRQ,
+   (InterruptHandler)&UART1_IRQ,
+   (InterruptHandler)&ADC_IRQ_FIFO,
+   (InterruptHandler)&I2C0_IRQ,
+   (InterruptHandler)&I2C1_IRQ,
+   (InterruptHandler)&RTC_IRQ,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0
+ };
+
+//=============================================================================
+// Interrupt vector table Core1
+//=============================================================================
+extern "C"
+const InterruptHandler __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[48] =
+{
+   (InterruptHandler)&__CORE1_STACK_TOP,
+   (InterruptHandler)&__main_core1,
+   (InterruptHandler)&NMI,
+   (InterruptHandler)&HardFault,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)&SVCall,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)&PendSV,
+   (InterruptHandler)&__sys_tick_handler,
+   (InterruptHandler)&TIMER_IRQ_0,
+   (InterruptHandler)&TIMER_IRQ_1,
+   (InterruptHandler)&TIMER_IRQ_2,
+   (InterruptHandler)&TIMER_IRQ_3,
+   (InterruptHandler)&PWM_IRQ_WRAP,
+   (InterruptHandler)&USBCTRL_IRQ,
+   (InterruptHandler)&XIP_IRQ,
+   (InterruptHandler)&PIO0_IRQ_0,
+   (InterruptHandler)&PIO0_IRQ_1,
+   (InterruptHandler)&PIO1_IRQ_0,
+   (InterruptHandler)&PIO1_IRQ_1,
+   (InterruptHandler)&DMA_IRQ_0,
+   (InterruptHandler)&DMA_IRQ_1,
+   (InterruptHandler)&IO_IRQ_BANK0,
+   (InterruptHandler)&IO_IRQ_QSPI,
+   (InterruptHandler)&SIO_IRQ_PROC0,
+   (InterruptHandler)&SIO_IRQ_PROC1,
+   (InterruptHandler)&CLOCKS_IRQ,
+   (InterruptHandler)&SPI0_IRQ,
+   (InterruptHandler)&SPI1_IRQ,
+   (InterruptHandler)&UART0_IRQ,
+   (InterruptHandler)&UART1_IRQ,
+   (InterruptHandler)&ADC_IRQ_FIFO,
+   (InterruptHandler)&I2C0_IRQ,
+   (InterruptHandler)&I2C1_IRQ,
+   (InterruptHandler)&RTC_IRQ,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0,
+   (InterruptHandler)0
+};
