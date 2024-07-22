@@ -28,7 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\.clang-tidy = ..\.clang-tidy
 		..\CMakeLists.txt = ..\CMakeLists.txt
-		..\lgtm.yml = ..\lgtm.yml
 		..\sonar-project.properties = ..\sonar-project.properties
 	EndProjectSection
 EndProject
@@ -54,6 +53,7 @@ Global
 		target nxp_imxrt1062|x64 = target nxp_imxrt1062|x64
 		target riscvfe310|x64 = target riscvfe310|x64
 		target rl78|x64 = target rl78|x64
+		target rpi_pico_rp2040|x64 = target rpi_pico_rp2040|x64
 		target rx63n|x64 = target rx63n|x64
 		target stm32f100|x64 = target stm32f100|x64
 		target stm32f407|x64 = target stm32f407|x64
@@ -82,6 +82,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target nxp_imxrt1062|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target riscvfe310|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rl78|x64.ActiveCfg = Release|x64
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rpi_pico_rp2040|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rx63n|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f100|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f407|x64.ActiveCfg = Release|x64
@@ -115,6 +116,8 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target riscvfe310|x64.Build.0 = target riscvfe310|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|x64.ActiveCfg = target rl78|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|x64.Build.0 = target rl78|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico_rp2040|x64.ActiveCfg = target rpi_pico_rp2040|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico_rp2040|x64.Build.0 = target rpi_pico_rp2040|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rx63n|x64.ActiveCfg = target rx63n|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rx63n|x64.Build.0 = target rx63n|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f100|x64.ActiveCfg = target stm32f100|x64

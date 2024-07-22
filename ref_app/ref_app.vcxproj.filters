@@ -218,6 +218,30 @@
     <Filter Include="src\mcal\wch_ch32v307_llvm">
       <UniqueIdentifier>{cad66d33-d268-43d3-b0e4-3feae9107d97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040">
+      <UniqueIdentifier>{79b28ed1-246b-4ca6-bb33-151839f7e1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal">
+      <UniqueIdentifier>{db0fa1ec-ebde-4755-9143-b0e3b4b56215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Std">
+      <UniqueIdentifier>{e16fd903-9a3e-4ebf-b6f9-5eb951f7c5f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Clock">
+      <UniqueIdentifier>{abb927b4-280c-45f5-a800-4e009b15025b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis">
+      <UniqueIdentifier>{db930ee4-0e9e-4dcc-bc0c-143ebe562002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu">
+      <UniqueIdentifier>{c863a2e9-0653-4655-9547-05debdd8f6eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Gpio">
+      <UniqueIdentifier>{59916297-16f2-4013-9a36-e79d1949e196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer">
+      <UniqueIdentifier>{6e830cfb-9d3d-4644-b52f-6fb3aa25ea0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1047,6 +1071,45 @@
     </ClCompile>
     <ClCompile Include="src\mcal\wch_ch32v307_llvm\mcal_cpu.cpp">
       <Filter>src\mcal\wch_ch32v307_llvm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_eep.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_gpt.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_irq.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_led.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_osc.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_port.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_pwm.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_spi.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_wdg.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_cpu.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Clock\Clock.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer\SysTickTimer.cpp">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2433,6 +2496,81 @@
     <ClInclude Include="src\mcal\wch_ch32v307_llvm\mcal_benchmark.h">
       <Filter>src\mcal\wch_ch32v307_llvm</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_cpu.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_eep.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_gpt.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_irq.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_led.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_memory_progmem.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_osc.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_port.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_pwm.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_reg.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_ser.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_spi.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_wdg.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_benchmark.h">
+      <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Clock\Clock.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_compiler.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_gcc.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\core_cm0plus.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_version.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\mpu_armv7.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Gpio\Gpio.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Gpio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer\SysTickTimer.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Std\Platform_Types.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\RP2040.h">
+      <Filter>src\mcal\rpi_pico_rp2040\Mcal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -2620,6 +2758,9 @@
     </None>
     <None Include="src\util\STL\stdfloat">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="cmake\rpi_pico_rp2040.cmake">
+      <Filter>src\cmake</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

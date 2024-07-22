@@ -235,6 +235,15 @@
     <Filter Include="micros\wch_ch32v307_llvm\startup">
       <UniqueIdentifier>{cb5b6506-a445-401d-ab39-2a42c84e3be6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\rpi_pico_rp2040">
+      <UniqueIdentifier>{5da4ce10-1f19-456d-aea8-97eae737e58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rpi_pico_rp2040\make">
+      <UniqueIdentifier>{1f84b105-783c-488a-923c-b9963ec66cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rpi_pico_rp2040\startup">
+      <UniqueIdentifier>{f9d8c7a7-3b11-4c4f-b19a-b247dae7e8df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -543,6 +552,15 @@
     <None Include="target\micros\wch_ch32v307_llvm\make\wch_ch32v307_llvm_flags.gmk">
       <Filter>micros\wch_ch32v307_llvm\make</Filter>
     </None>
+    <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040.ld">
+      <Filter>micros\rpi_pico_rp2040\make</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_files.gmk">
+      <Filter>micros\rpi_pico_rp2040\make</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_flags.gmk">
+      <Filter>micros\rpi_pico_rp2040\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -787,6 +805,21 @@
     </ClCompile>
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp">
       <Filter>micros\wch_ch32v307_llvm\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt0.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt0_init_ram.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt1.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\int_vect.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\SecondaryBoot.cpp">
+      <Filter>micros\rpi_pico_rp2040\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

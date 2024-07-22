@@ -1,0 +1,46 @@
+#  Copyright Christopher Kormanyos 2007 - 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 13.2.1
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                            \
+                -mlittle-endian                                \
+                -mlong-calls                                   \
+                -mcpu=cortex-m0plus                            \
+                -mthumb                                        \
+                -mabi=aapcs                                    \
+                -finline-functions                             \
+                -finline-limit=64                              \
+                -ffast-math
+
+TGT_CFLAGS    = -std=c11                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++14                                     \
+                -Wno-psabi                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis           \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal                 \
+                -I$(PATH_APP)/mcal/$(TGT)/Std                  \
+                -isystem $(PATH_APP)/util/STL
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -Wl,--gc-sections                              \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)

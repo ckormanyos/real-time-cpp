@@ -398,10 +398,12 @@ endif
 $(APP)_flash.hex : $(APP).$(TGT_SUFFIX)
 	@-$(ECHO) +++ creating hex module: $(APP).$(TGT_SUFFIX)
 ifeq ($(TGT_SUFFIX),elf)
-	@-$(ECHO) +++ creating hex module: $(APP).hex.
+	@-$(ECHO) +++ creating hex module: $(APP).hex
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O ihex $(APP).hex
 	@-$(ECHO) +++ creating srec module: $(APP).s19
 	@-$(OBJCOPY) $(APP).$(TGT_SUFFIX) -O srec $(APP).s19
+	@-$(ECHO) +++ creating disassembly listing: $(APP)_disassembly.txt
+	@-$(OBJDUMP) -D $(APP).$(TGT_SUFFIX) > $(APP)_disassembly.txt
 else
 	@-$(ECHO) +++ creating hex module disabled for non-ELF absolute objet file.
 endif
