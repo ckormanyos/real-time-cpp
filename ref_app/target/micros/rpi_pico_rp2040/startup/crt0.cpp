@@ -18,7 +18,10 @@ namespace crt
   void init_ctors();
 }
 
+extern "C" int main(void) __attribute__((used));
+
 extern "C" void __my_startup(void) __attribute__((used, noinline));
+extern "C" void __main      (void) __attribute__((used, noinline));
 extern "C" void __main_core0(void) __attribute__((used, noinline));
 extern "C" void __main_core1(void) __attribute__((used, noinline));
 
@@ -44,7 +47,7 @@ void __my_startup(void)
   // Jump to __main_core0, which subsequently starts up core1
   // (and never return).
 
-  asm volatile("ldr r3, =__main_core0");
+  asm volatile("ldr r3, =__main");
   asm volatile("blx r3");
 
   // Catch an unexpected return from main.
@@ -57,49 +60,57 @@ void __my_startup(void)
 
 extern "C"
 {
-  void __main_core0(void)
+  void __main(void)
   {
-    /* Disable interrupts on core 0 */
-    asm volatile("CPSID i");
-
-    /* Output disable on pin 25 */
-    LED_GREEN_CFG();
-
-    /* Start the Core 1 and turn on the led to be sure that we passed successfully the core 1 initiaization */
-    if(TRUE == ::RP2040_StartCore1())
-    {
-      LED_GREEN_ON();
-    }
-    else
-    {
-      /* Loop forever in case of error */
-      while(1)
-      {
-        __asm volatile("NOP");
-      }
-    }
-
-    // Run the main function of the core 0, it will start the core 1.
+    // Run the main function of core 0.
+    // This will subsequently start core 1.
+    ::__main_core0();
 
     // Synchronize with core 1.
     ::RP2040_MulticoreSync(SIO->CPUID);
 
-    /* endless loop on the core 0 */
+    // Execute an endless loop on core 0.
     for(;;) { ; }
+
+    // This point is never reached.
+  }
+
+  void __main_core0(void)
+  {
+    // Disable interrupts on core 0.
+    mcal::irq::disable_all();
+
+    // Set GPIO pin 25 to output.
+    //LED_GREEN_CFG();
+
+    // Start the core 1 and turn on the led to be sure that
+    // we passed successfully the core 1 initiaization.
+    if(TRUE == ::RP2040_StartCore1())
+    {
+      //LED_GREEN_ON();
+    }
+    else
+    {
+      // Loop forever in case of error.
+      while(1)
+      {
+        mcal::cpu::nop();
+      }
+    }
   }
 
   void __main_core1(void)
   {
-    /* Note: Core 1 is started with interrupt enabled by the BootRom */
+    // Core 1 is started via interrupt enabled by the BootRom.
 
-    /* Clear the stiky bits of the FIFO_ST on core 1 */
+    // Clear the sticky bits of the FIFO_ST on core 1.
     SIO->FIFO_ST.reg = 0xFFu;
-    __asm volatile("DSB");
+    asm volatile("dsb");
 
-    /* Clear all pending interrupts on core 1 */
-    NVIC->ICPR[0] = (uint32)-1;
+    // Clear all pending interrupts on core 1.
+    NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
 
-    /* Synchronize with core 0 */
+    // Synchronize with core 0.
     ::RP2040_MulticoreSync(SIO->CPUID);
 
     // Jump to main (and never return).

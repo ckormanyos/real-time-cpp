@@ -23,7 +23,10 @@
 //=============================================================================
 // Globals
 //=============================================================================
-static volatile uint32 u32MulticoreSync = 0;
+namespace local
+{
+  volatile uint32 Cpu_u32MulticoreSync { };
+}
 
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2040_MulticoreSync function
@@ -35,13 +38,13 @@ static volatile uint32 u32MulticoreSync = 0;
 extern "C"
 void RP2040_MulticoreSync(uint32 CpuId)
 {
-  u32MulticoreSync |= (1UL << CpuId);
+  local::Cpu_u32MulticoreSync |= (1UL << CpuId);
 
-  while(u32MulticoreSync != MULTICORE_SYNC_MASK);
+  while(local::Cpu_u32MulticoreSync != MULTICORE_SYNC_MASK);
 }
 
 //-----------------------------------------------------------------------------------------
-/// \brief  RP2040_StartCore1 function
+/// \brief  RP2040_InitCore function
 ///
 /// \param  void
 ///
@@ -50,8 +53,8 @@ void RP2040_MulticoreSync(uint32 CpuId)
 extern "C"
 void RP2040_InitCore(void)
 {
-  /* we came here from the RP2040 BootRom and SBL */
-  /* Reset core1 to start from a known state */
+  // We came here from the RP2040 BootRom and SBL.
+  // Reset core1 to start from a known state.
 
   PSM->FRCE_OFF.bit.proc1 = 1U;
 
@@ -61,7 +64,7 @@ void RP2040_InitCore(void)
 
   while((PSM->DONE.bit.proc1 != 1U));
 
-  /* Reset peripheral to start from a known state */
+  // Reset peripheral to start from a known state.
   RESETS->RESET.bit.io_bank0   = 1U;
   RESETS->RESET.bit.pads_bank0 = 1U;
 
@@ -71,7 +74,6 @@ void RP2040_InitCore(void)
   RESETS->RESET.bit.pads_bank0 = 0U;
 
   while((RESETS->RESET_DONE.bit.io_bank0 == 0U) || (RESETS->RESET_DONE.bit.pads_bank0 == 0U));
-
 }
 
 //-----------------------------------------------------------------------------------------
@@ -86,69 +88,69 @@ boolean RP2040_StartCore1(void)
 {
   extern uint32 __INTVECT_Core1[2];
 
-  /* Flush the mailbox */
+  // Flush the mailbox.
   while(SIO->FIFO_ST.bit.VLD == 1UL)
   {
-    (void)SIO->FIFO_RD;
+    (void) SIO->FIFO_RD;
   }
 
-  /* Send 0 to wakeup the core 1 */
+  // Send 0 to wake up core 1.
   SIO->FIFO_WR = 0;
-  __asm("SEV");
+  asm volatile("sev");
 
   while(SIO->FIFO_ST.bit.VLD != 1UL);
 
   if(SIO->FIFO_RD != 0U)
   {
-    return(FALSE);
+    return FALSE;
   }
 
-  /* Send 1 to synchronize with Core 1*/
+  // Send 1 to synchronize with core 1.
   SIO->FIFO_WR = 1;
-  __asm("SEV");
+  asm volatile("sev");
 
   while(SIO->FIFO_ST.bit.VLD != 1UL);
 
   if(SIO->FIFO_RD != 1U)
   {
-    return(FALSE);
+    return FALSE;
   }
 
-  /* Send the VTOR address */
-  SIO->FIFO_WR = (uint32)(&__INTVECT_Core1[0]);
-  __asm("SEV");
+  // Send the VTOR address for core 1.
+  SIO->FIFO_WR = (uint32) (&__INTVECT_Core1[0U]);
+  asm volatile("sev");
 
   while(SIO->FIFO_ST.bit.VLD != 1UL);
 
-  if(SIO->FIFO_RD != (uint32)(&__INTVECT_Core1[0]))
+  if(SIO->FIFO_RD != (uint32) (&__INTVECT_Core1[0U]))
   {
-    return(FALSE);
+    return FALSE;
   }
 
-  /* Send the stack pointer value */
-  SIO->FIFO_WR = (uint32)__INTVECT_Core1[0];
-  __asm("SEV");
+  // Send the stack pointer value for core 1.
+  SIO->FIFO_WR = (uint32) __INTVECT_Core1[0U];
+  asm volatile("sev");
 
   while(SIO->FIFO_ST.bit.VLD != 1UL);
 
-  if(SIO->FIFO_RD != (uint32)__INTVECT_Core1[0])
+  if(SIO->FIFO_RD != (uint32) __INTVECT_Core1[0U])
   {
-    return(FALSE);
+    return FALSE;
   }
 
-  /* Send the reset handler */
-  SIO->FIFO_WR = (uint32)__INTVECT_Core1[1];
-  __asm("SEV");
+  // Send the reset handler for core 1.
+  SIO->FIFO_WR = (uint32) __INTVECT_Core1[1U];
+  asm volatile("sev");
 
   while(SIO->FIFO_ST.bit.VLD != 1UL);
 
-  if(SIO->FIFO_RD != (uint32)__INTVECT_Core1[1])
+  if(SIO->FIFO_RD != (uint32) __INTVECT_Core1[1U])
   {
-    return(FALSE);
+    return FALSE;
   }
 
-  /* Clear the stiky bits of the FIFO_ST on core 0 */
-  SIO->FIFO_ST.reg = 0xFFu;
+  // Clear the stiky bits of the FIFO_ST on core 0.
+  SIO->FIFO_ST.reg = 0xFFU;
 
-  return(TRUE);
+  return TRUE;
 }
