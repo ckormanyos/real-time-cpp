@@ -20,10 +20,10 @@ namespace crt
 
 extern "C" int main(void) __attribute__((used));
 
-extern "C" void __my_startup(void) __attribute__((used, noinline));
-extern "C" void __main      (void) __attribute__((used, noinline));
-extern "C" void __main_core0(void) __attribute__((used, noinline));
-extern "C" void __main_core1(void) __attribute__((used, noinline));
+extern "C" void __my_startup(void) __attribute__((section(".startup"), used, noinline));
+extern "C" void __main      (void) __attribute__((section(".startup"), used, noinline));
+extern "C" void __main_core0(void) __attribute__((section(".startup"), used, noinline));
+extern "C" void __main_core1(void) __attribute__((section(".startup"), used, noinline));
 
 void __my_startup(void)
 {
@@ -44,13 +44,15 @@ void __my_startup(void)
   crt::init_ctors();
   mcal::wdg::secure::trigger();
 
-  // Jump to __main_core0, which subsequently starts up core1
-  // (and never return).
+  // Jump to __main, which calls __main_core0, the main
+  // function of core 0. The main function of core 0
+  // itself then subsequently starts up core 1 which
+  // is launched in __main_core1. Bot of these core 0/1
+  // subroutines will never return.
 
-  asm volatile("ldr r3, =__main");
-  asm volatile("blx r3");
+  __main();
 
-  // Catch an unexpected return from main.
+  // Catch an unexpected return from __main().
   for(;;)
   {
     // Replace with a loud error if desired.
@@ -70,7 +72,7 @@ extern "C"
     ::RP2040_MulticoreSync(SIO->CPUID);
 
     // Execute an endless loop on core 0.
-    for(;;) { ; }
+    for(;;) { mcal::cpu::nop(); }
 
     // This point is never reached.
   }
@@ -92,9 +94,10 @@ extern "C"
     else
     {
       // Loop forever in case of error.
-      while(1)
+      for(;;)
       {
-        mcal::cpu::nop();
+        // Replace with a loud error if desired.
+        mcal::wdg::secure::trigger();
       }
     }
   }

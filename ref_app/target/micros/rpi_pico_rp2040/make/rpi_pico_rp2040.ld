@@ -12,19 +12,12 @@ INPUT(libc.a libm.a libgcc.a)
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-/******************************************************************************************
- Globals
-******************************************************************************************/
-__STACK_SIZE_CORE0 = 2K;
-__STACK_SIZE_CORE1 = 2K;
-
-
 MEMORY
 {
   SBL(rx)   : ORIGIN = 0x10000000, LENGTH = 0x200
   VEC(rx)   : ORIGIN = 0x10000200, LENGTH = 0x200
   ROM(rx)   : ORIGIN = 0x10000400, LENGTH = 2M - 0x400
-  RAM(rwx)  : ORIGIN = 0x20000000, LENGTH = 264K
+  RAM(rwx)  : ORIGIN = 0x20000000, LENGTH = 264K - 4K - 4K
 }
 
 SECTIONS
@@ -135,18 +128,17 @@ SECTIONS
   PROVIDE(end = .);
   PROVIDE(_fini = .);
 
-  /* stack definition */
-  .stack_core0 :
-  {
-    . = ALIGN(MAX(__STACK_SIZE_CORE0 , .), 8);
-    PROVIDE(__CORE0_STACK_TOP = .) ;
-  } > RAM
-
-  .stack_core1 :
-  {
-    . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 8);
-    PROVIDE(__CORE1_STACK_TOP = .) ;
-  } > RAM
-
   _rom_data_begin = LOADADDR(.data);
+
+  /* stack definitions */
+
+  . = 0x20041FF8;
+  . = ALIGN(8);
+
+    PROVIDE(__CORE0_STACK_TOP = .) ;
+
+  . = 0x20040FF8;
+  . = ALIGN(8);
+
+    PROVIDE(__CORE1_STACK_TOP = .) ;
 }
