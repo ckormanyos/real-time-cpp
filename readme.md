@@ -627,3 +627,8 @@ Some of the code snippets demonstrate language elements not only from C++14,
 but also from C++17, 20, 23 and beyond. A compiler with C++17 support
 or even C++20, 23 support (such as GCC 13, clang 15, MSVC 14.3, or higher) can,
 therefore, be beneficial for success with *all* of the code snippets.
+
+### Licensing
+
+  - The source code written for this repo is licensed under [Boost Software License 1.0](./LICENSE_1_0.txt).
+  - A modified subset of CMSIS is temporarily included for the target `rpi_pico_rp2040`. It is licensed under the Apache Software License version 2.0. The scope of modifications by Christopher Kormanyos 2024-July-23 includes removal of significant content not needed in this project.
