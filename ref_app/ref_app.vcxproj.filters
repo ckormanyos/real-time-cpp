@@ -239,9 +239,6 @@
     <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Gpio">
       <UniqueIdentifier>{59916297-16f2-4013-9a36-e79d1949e196}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer">
-      <UniqueIdentifier>{6e830cfb-9d3d-4644-b52f-6fb3aa25ea0c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1107,9 +1104,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.cpp">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer\SysTickTimer.cpp">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2561,9 +2555,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Gpio\Gpio.h">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Gpio</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer\SysTickTimer.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\SysTickTimer</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\Std\Platform_Types.h">
       <Filter>src\mcal\rpi_pico_rp2040\Std</Filter>
