@@ -97,7 +97,6 @@ typedef enum {
 /** @} */ /* End of group Configuration_of_CMSIS */
 
 #include "core_cm0plus.h"                       /*!< ARM Cortex-M0+ processor and core peripherals                             */
-//#include "system_RP2040.h"                      /*!< RP2040 System                                                             */
 
 #ifndef __IM                                    /*!< Fallback for older CMSIS versions                                         */
   #define __IM   __I

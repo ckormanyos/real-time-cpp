@@ -11,7 +11,6 @@
 
 FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/Mcal/Clock/Clock                  \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer/SysTickTimer    \
              $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
              $(PATH_TGT)/startup/crt0                                  \
              $(PATH_TGT)/startup/crt0_init_ram                         \

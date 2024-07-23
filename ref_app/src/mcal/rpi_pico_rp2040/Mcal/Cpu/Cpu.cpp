@@ -149,7 +149,9 @@ boolean RP2040_StartCore1(void)
     return FALSE;
   }
 
-  // Clear the stiky bits of the FIFO_ST on core 0.
+  // Clear the sticky bits of the FIFO_ST on core 0.
+  // Note: Core 0 has called us to get here so these are,
+  // in fact, the FIFO_ST sticky bits on core 0.
   SIO->FIFO_ST.reg = 0xFFU;
 
   return TRUE;
