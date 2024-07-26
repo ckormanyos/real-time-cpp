@@ -91,18 +91,18 @@ The reference application supports the following targets:
 | `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
-| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0           |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |
 | `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     |
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |
-| `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0    |
+| `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0+   |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |
 | `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         |
 | `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         |
 | `stm32l152`                            | STMicroelectronics(R) STM32L152 ARM(R) Cortex(R)-M3         |
-| `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4         |
-| `stm32f429`                            | STMicroelectronics(R) STM32F429 ARM(R) Cortex(R)-M4         |
-| `stm32f446`                            | STMicroelectronics(R) STM32F446 ARM(R) Cortex(R)-M4         |
+| `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4F        |
+| `stm32f429`                            | STMicroelectronics(R) STM32F429 ARM(R) Cortex(R)-M4F        |
+| `stm32f446`                            | STMicroelectronics(R) STM32F446 ARM(R) Cortex(R)-M4F        |
 | `stm32h7a3`                            | STMicroelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7         |
 | `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |
@@ -314,18 +314,18 @@ We will now consider, for instance, building the reference application for
 one of the supported ARM(R) targets with CMake. The pattern is shown below.
 In this case, we need to identify the following make options:
 
-```
+```sh
 -DTRIPLE=avr -DTARGET=avr
 ```
 
 Switch these options to the ones intended for the `stm32f446` ARM(R)-based target being built.
 
-```
+```sh
 -DTRIPLE=arm-none-eabi -DTARGET=stm32f446
 ```
 
 Let's clarify the commands in their entirety in order to run a CMake build for `stm32f446`
-(i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(R)-M4).
+(i.e., ST Microelectronics(R) STM32F446 ARM(R) featuring Cortex(R)-M4F).
 
 ```sh
 cd real-time-cpp
@@ -389,7 +389,7 @@ The Espressif (XTENSA) NodeMCU ESP32 implementation uses
 a subset of the Espressif SDK to run the reference application
 with a single OS task exclusively on 1 of its cores.
 
-The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0 configuration
+The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
 called "target lpc11c24" toggles the LED on `port0.8`.
 
 The ARM(R) Cortex(R)-M3 configuration (called `target stm32f100`) runs on
@@ -404,13 +404,14 @@ The third ARM(R) Cortex(R)-M3 configuration (called `target stm32l152`)
 runs on the STM32L152C-DISCO board commercially available from
 ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
 
-The first ARM(R) Cortex(R)-M4 configuration (called `target stm32f407`) runs on
+The first ARM(R) Cortex(R)-M4F configuration (called `target stm32f407`) runs on
 the STM32F4DISCOVERY board commercially available from ST Microelectronics(R).
 The program toggles the blue LED on `portd.15`.
 
-Another ARM(R) Cortex(R)-M4 configuration (called `target stm32f446`) runs on
+Another ARM(R) Cortex(R)-M4F configuration (called `target stm32f446`) runs on
 the STM32F446 Nucleo-64 board commercially available from ST Microelectronics(R).
 The program toggles the green LED on `porta.5`.
+An Ozone debug file is supplied for this system for those interested.
 
 The first ARM(R) Cortex(R)-M7 configuration (called `target stm32h7a3`) runs on
 the STM32H7A3 Nucleo-144 board commercially available from ST Microelectronics(R).
@@ -443,8 +444,11 @@ running the bare-metal reference application are included in this repo.
 The program toggles the GPIO status LED  at GPIO index `0x47`.
 
 The `rpi_pico_rp2040` target configuration employs the
-RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0
-clocked at $133~\text{MHz}$.
+RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0+
+clocked at $133~\text{MHz}$. The low-level startup boots through
+core 0. Core 0 then starts up core 1 which carries out the blinky
+application while core 0 then enters an endless, idle loop.
+Ozone debug files are supplied for this system for those interested.
 
 Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
