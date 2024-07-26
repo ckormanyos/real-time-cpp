@@ -488,7 +488,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f429</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/am335x</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/bcm2835_raspi_b</NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rpi_pico_rp2040</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rpi_pico_rp2040;$(IncludePath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
@@ -850,6 +850,9 @@
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040.ld" />
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_files.gmk" />
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_flags.gmk" />
+    <None Include="target\micros\rpi_pico_rp2040\_debug\Pico_Core0.jdebug" />
+    <None Include="target\micros\rpi_pico_rp2040\_debug\Pico_Core1.jdebug" />
+    <None Include="target\micros\rpi_pico_rp2040\_debug\rp2040.svd" />
     <None Include="target\micros\rx63n\make\rx63n.ld" />
     <None Include="target\micros\rx63n\make\rx63n_files.gmk" />
     <None Include="target\micros\rx63n\make\rx63n_flags.gmk" />

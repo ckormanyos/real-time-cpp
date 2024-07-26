@@ -244,6 +244,9 @@
     <Filter Include="micros\rpi_pico_rp2040\startup">
       <UniqueIdentifier>{f9d8c7a7-3b11-4c4f-b19a-b247dae7e8df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\rpi_pico_rp2040\_debug">
+      <UniqueIdentifier>{2a5b0873-804c-44a8-87f1-c1a223a094b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -560,6 +563,15 @@
     </None>
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_flags.gmk">
       <Filter>micros\rpi_pico_rp2040\make</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico_rp2040\_debug\Pico_Core0.jdebug">
+      <Filter>micros\rpi_pico_rp2040\_debug</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico_rp2040\_debug\Pico_Core1.jdebug">
+      <Filter>micros\rpi_pico_rp2040\_debug</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico_rp2040\_debug\rp2040.svd">
+      <Filter>micros\rpi_pico_rp2040\_debug</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

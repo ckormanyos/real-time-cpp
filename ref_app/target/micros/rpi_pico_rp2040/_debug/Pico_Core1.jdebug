@@ -1,0 +1,9 @@
+void OnProjectLoad (void) {
+  Project.SetDevice ("RP2040_M0_1");
+  Project.SetHostIF ("USB", "");
+  Project.SetTargetIF ("SWD");
+  Project.SetTIFSpeed ("4MHz");
+  Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M0.svd");
+  Project.AddSvdFile ("$(ProjectDir)/rp2040.svd");
+  File.Open ("$(ProjectDir)/../../../../bin/ref_app.elf");
+}
