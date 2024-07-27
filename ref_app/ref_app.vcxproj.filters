@@ -1093,9 +1093,6 @@
     <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_cpu.cpp">
       <Filter>src\mcal\rpi_pico_rp2040</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.cpp">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">

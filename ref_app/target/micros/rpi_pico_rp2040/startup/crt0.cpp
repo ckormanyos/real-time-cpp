@@ -84,7 +84,7 @@ extern "C"
 
     // Start the core 1 and turn on the led to be sure that
     // we passed successfully the core 1 initiaization.
-    if(TRUE == ::RP2040_StartCore1())
+    if(true == ::RP2040_StartCore1())
     {
       ;
     }

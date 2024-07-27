@@ -20,26 +20,20 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include "RP2040.h"
-#include "Platform_Types.h"
+#include <RP2040.h>
+
+#include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 //=============================================================================
-// Defines
-//=============================================================================
-#define CPU_CORE0_ID   0UL
-#define CPU_CORE1_ID   1UL
-
-#define MULTICORE_SYNC_MASK  (uint32)((1UL << CPU_CORE0_ID) | (1UL << CPU_CORE1_ID))
-
-//=============================================================================
 // Functions prototype
 //=============================================================================
-void RP2040_MulticoreSync(uint32 CpuId);
-boolean RP2040_StartCore1(void);
+void RP2040_MulticoreSync(uint32_t CpuId);
+bool RP2040_StartCore1(void);
 void RP2040_InitCore(void);
 
 #ifdef __cplusplus
