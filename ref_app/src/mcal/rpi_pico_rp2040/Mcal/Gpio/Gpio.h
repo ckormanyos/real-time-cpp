@@ -20,8 +20,9 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include "RP2040.h"
-#include "Platform_Types.h"
+#include <Platform_Types.h>
+
+#include <RP2040.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,7 +31,8 @@ extern "C" {
 //=============================================================================
 // Macros
 //=============================================================================
-#define GPIO_SET_DIRECTION_OUTPUT(pin)  SIO->GPIO_OE_CLR.bit.GPIO_OE_CLR |= 1UL<<pin; SIO->GPIO_OUT_CLR.bit.GPIO_OUT_CLR |= 1UL<<pin; \
+#define GPIO_SET_DIRECTION_OUTPUT(pin)  SIO->GPIO_OE_CLR.bit.GPIO_OE_CLR |= 1UL<<pin; \
+                                        SIO->GPIO_OUT_CLR.bit.GPIO_OUT_CLR |= 1UL<<pin; \
                                         IO_BANK0->GPIO##pin##_CTRL.bit.FUNCSEL = IO_BANK0_GPIO##pin##_CTRL_FUNCSEL_sio_##pin; \
                                         SIO->GPIO_OE_SET.bit.GPIO_OE_SET |= 1UL<<pin
 

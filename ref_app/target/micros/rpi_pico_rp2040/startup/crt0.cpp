@@ -82,14 +82,11 @@ extern "C"
     // Disable interrupts on core 0.
     mcal::irq::disable_all();
 
-    // Set GPIO pin 25 to output.
-    //LED_GREEN_CFG();
-
     // Start the core 1 and turn on the led to be sure that
     // we passed successfully the core 1 initiaization.
     if(TRUE == ::RP2040_StartCore1())
     {
-      //LED_GREEN_ON();
+      ;
     }
     else
     {
@@ -111,7 +108,9 @@ extern "C"
     asm volatile("dsb");
 
     // Clear all pending interrupts on core 1.
-    NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+    // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::nvic_icpr, std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
     // Synchronize with core 0.
     ::RP2040_MulticoreSync(SIO->CPUID);

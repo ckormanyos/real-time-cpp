@@ -230,9 +230,6 @@
     <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Clock">
       <UniqueIdentifier>{abb927b4-280c-45f5-a800-4e009b15025b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis">
-      <UniqueIdentifier>{db930ee4-0e9e-4dcc-bc0c-143ebe562002}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu">
       <UniqueIdentifier>{c863a2e9-0653-4655-9547-05debdd8f6eb}</UniqueIdentifier>
     </Filter>
@@ -2534,21 +2531,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Clock\Clock.h">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Clock</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_compiler.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_gcc.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\core_cm0plus.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\cmsis_version.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cmsis\mpu_armv7.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cmsis</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.h">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
