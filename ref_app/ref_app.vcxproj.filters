@@ -227,9 +227,6 @@
     <Filter Include="src\mcal\rpi_pico_rp2040\Std">
       <UniqueIdentifier>{e16fd903-9a3e-4ebf-b6f9-5eb951f7c5f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Clock">
-      <UniqueIdentifier>{abb927b4-280c-45f5-a800-4e009b15025b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu">
       <UniqueIdentifier>{c863a2e9-0653-4655-9547-05debdd8f6eb}</UniqueIdentifier>
     </Filter>
@@ -1095,9 +1092,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_cpu.cpp">
       <Filter>src\mcal\rpi_pico_rp2040</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Clock\Clock.cpp">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Clock</Filter>
     </ClCompile>
     <ClCompile Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.cpp">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
@@ -2528,9 +2522,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_benchmark.h">
       <Filter>src\mcal\rpi_pico_rp2040</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Clock\Clock.h">
-      <Filter>src\mcal\rpi_pico_rp2040\Mcal\Clock</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico_rp2040\Mcal\Cpu\Cpu.h">
       <Filter>src\mcal\rpi_pico_rp2040\Mcal\Cpu</Filter>
