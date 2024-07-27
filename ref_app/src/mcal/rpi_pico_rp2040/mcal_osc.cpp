@@ -5,6 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
@@ -40,7 +41,7 @@ void mcal::osc::init(const config_type*)
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
                                       mcal::reg::xosc_status,
-                                      UINT32_C(31)>::bit_get()) { ; }
+                                      UINT32_C(31)>::bit_get()) { mcal::cpu::nop(); }
 
   // Release the reset of PLL_SYS
   // RESETS->RESET.bit.pll_sys = 0U;
@@ -53,7 +54,7 @@ void mcal::osc::init(const config_type*)
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
                                       mcal::reg::resets_reset_done,
-                                      UINT32_C(12)>::bit_get()) { ; }
+                                      UINT32_C(12)>::bit_get()) { mcal::cpu::nop(); }
 
   // Configure the PLL_SYS.
   // PLL_SYS->CS.bit.REFDIV = 1U;
@@ -96,7 +97,7 @@ void mcal::osc::init(const config_type*)
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
                                       mcal::reg::pll_sys_cs,
-                                      UINT32_C(31)>::bit_get()) { ; }
+                                      UINT32_C(31)>::bit_get()) { mcal::cpu::nop(); }
 
   // PLL_SYS->PWR.bit.POSTDIVPD = 0U;
   mcal::reg::reg_access_static<std::uint32_t,
@@ -133,7 +134,10 @@ void mcal::osc::init(const config_type*)
   // while(CLOCKS->CLK_SYS_SELECTED == 0UL);
   while(mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
-                                     mcal::reg::clocks_clk_sys_selected>::reg_get() == std::uint32_t { UINT8_C(0) });
+                                     mcal::reg::clocks_clk_sys_selected>::reg_get() == std::uint32_t { UINT8_C(0) })
+  {
+    mcal::cpu::nop();
+  }
 
   // Enable the clock for peripherals.
   // CLOCKS->CLK_PERI_CTRL.bit.ENABLE = 1U;
@@ -156,5 +160,5 @@ void mcal::osc::init(const config_type*)
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
                                       mcal::reg::resets_reset_done,
-                                      UINT32_C(5)>::bit_get()) { ; }
+                                      UINT32_C(5)>::bit_get()) {  mcal::cpu::nop(); }
 }

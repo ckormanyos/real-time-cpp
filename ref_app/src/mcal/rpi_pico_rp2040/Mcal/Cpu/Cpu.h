@@ -33,8 +33,7 @@ extern "C" {
 // Functions prototype
 //=============================================================================
 void RP2040_MulticoreSync(uint32_t CpuId);
-bool RP2040_StartCore1(void);
-void RP2040_InitCore(void);
+bool RP2040_StartCore1   (void);
 
 #ifdef __cplusplus
 }

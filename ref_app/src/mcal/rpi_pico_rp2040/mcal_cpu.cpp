@@ -10,6 +10,7 @@
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
+#include <mcal_reg.h>
 #include <mcal_wdg.h>
 
 //-----------------------------------------------------------------------------------------
@@ -42,16 +43,12 @@ void RP2040_MulticoreSync(uint32_t CpuId)
   while(Cpu_u32MulticoreSync != MULTICORE_SYNC_MASK);
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  RP2040_InitCore function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-extern "C"
-void RP2040_InitCore(void)
+namespace local
 {
+  void RP2040_InitCore(void);
+
+  void RP2040_InitCore(void)
+  {
   // We came here from the RP2040 BootRom and SBL.
   // Reset core1 to start from a known state.
 
@@ -64,16 +61,52 @@ void RP2040_InitCore(void)
   while((PSM->DONE.bit.proc1 != 1U));
 
   // Reset peripheral to start from a known state.
-  RESETS->RESET.bit.io_bank0   = 1U;
-  RESETS->RESET.bit.pads_bank0 = 1U;
 
-  while((RESETS->RESET_DONE.bit.io_bank0 == 1U) || (RESETS->RESET_DONE.bit.pads_bank0 == 1U));
+  // RESETS->RESET.bit.io_bank0   = 1U;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::resets_reset,
+                               UINT32_C(5)>::bit_set();
 
-  RESETS->RESET.bit.io_bank0   = 0U;
-  RESETS->RESET.bit.pads_bank0 = 0U;
+  //RESETS->RESET.bit.pads_bank0 = 1U;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::resets_reset,
+                               UINT32_C(8)>::bit_set();
 
-  while((RESETS->RESET_DONE.bit.io_bank0 == 0U) || (RESETS->RESET_DONE.bit.pads_bank0 == 0U));
-}
+  // while((RESETS->RESET_DONE.bit.io_bank0 == 1U) || (RESETS->RESET_DONE.bit.pads_bank0 == 1U));
+  while
+  (
+       mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(5)>::bit_get()
+    || mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(8)>::bit_get()
+  )
+  {
+    mcal::cpu::nop();
+  }
+
+    // RESETS->RESET.bit.io_bank0   = 0U;
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::resets_reset,
+                                 UINT32_C(5)>::bit_clr();
+
+    // RESETS->RESET.bit.pads_bank0 = 0U;
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::resets_reset,
+                                 UINT32_C(8)>::bit_clr();
+
+    // while((RESETS->RESET_DONE.bit.io_bank0 == 0U) || (RESETS->RESET_DONE.bit.pads_bank0 == 0U));
+    while
+    (
+         (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(5)>::bit_get())
+      || (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(8)>::bit_get())
+    )
+    {
+      mcal::cpu::nop();
+    }
+  }
+} // namespace local
 
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2040_StartCore1 function
@@ -158,7 +191,7 @@ bool RP2040_StartCore1(void)
 
 void mcal::cpu::init()
 {
-  ::RP2040_InitCore();
+  local::RP2040_InitCore();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);
