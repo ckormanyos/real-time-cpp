@@ -830,7 +830,7 @@
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\int_vect.cpp">
       <Filter>micros\rpi_pico_rp2040\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\SecondaryBoot.cpp">
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\secondary_boot.cpp">
       <Filter>micros\rpi_pico_rp2040\startup</Filter>
     </ClCompile>
   </ItemGroup>

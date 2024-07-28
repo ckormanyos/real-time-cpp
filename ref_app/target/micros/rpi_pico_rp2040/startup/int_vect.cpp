@@ -1,35 +1,17 @@
-﻿/******************************************************************************************
-  Filename    : IntVect.c
-  
-  Core        : ARM Cortex-M0+
-  
-  MCU         : RP2040
-    
-  Author      : Chalandi Amine
- 
-  Owner       : Chalandi Amine
-  
-  Date        : 07.02.2023
-  
-  Description : Interrupt vector tables for Raspberry Pi Pico
-  
-******************************************************************************************/
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 
-//=============================================================================
-// Types definition
-//=============================================================================
-
-extern "C"
-{
-  typedef void (*InterruptHandler)(void);
-}
+#include <array>
+#include <cstddef>
+#include <mcal_cpu.h>
 
 extern "C" void UndefinedHandler(void);
 extern "C" void UndefinedHandler(void) { for(;;); }
 
-//=============================================================================
-// Functions prototype
-//=============================================================================
 extern "C" void __my_startup(void) __attribute__((used, noinline));
 extern "C" void __main_core1(void) __attribute__((weak, alias("UndefinedHandler")));
 
@@ -71,114 +53,124 @@ extern "C" void I2C0_IRQ(void)        __attribute__((weak, alias("UndefinedHandl
 extern "C" void I2C1_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
 extern "C" void RTC_IRQ(void)         __attribute__((weak, alias("UndefinedHandler")));
 
-//=============================================================================
-// Interrupt vector table Core0
-//=============================================================================
-extern "C"
-const InterruptHandler __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[48U] =
+namespace
 {
-   (InterruptHandler)&__CORE0_STACK_TOP,
-   (InterruptHandler)&__my_startup,
-   (InterruptHandler)&NMI,
-   (InterruptHandler)&HardFault,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)&SVCall,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)&PendSV,
-   (InterruptHandler)&SysTickTimer,
-   (InterruptHandler)&TIMER_IRQ_0,
-   (InterruptHandler)&TIMER_IRQ_1,
-   (InterruptHandler)&TIMER_IRQ_2,
-   (InterruptHandler)&TIMER_IRQ_3,
-   (InterruptHandler)&PWM_IRQ_WRAP,
-   (InterruptHandler)&USBCTRL_IRQ,
-   (InterruptHandler)&XIP_IRQ,
-   (InterruptHandler)&PIO0_IRQ_0,
-   (InterruptHandler)&PIO0_IRQ_1,
-   (InterruptHandler)&PIO1_IRQ_0,
-   (InterruptHandler)&PIO1_IRQ_1,
-   (InterruptHandler)&DMA_IRQ_0,
-   (InterruptHandler)&DMA_IRQ_1,
-   (InterruptHandler)&IO_IRQ_BANK0,
-   (InterruptHandler)&IO_IRQ_QSPI,
-   (InterruptHandler)&SIO_IRQ_PROC0,
-   (InterruptHandler)&SIO_IRQ_PROC1,
-   (InterruptHandler)&CLOCKS_IRQ,
-   (InterruptHandler)&SPI0_IRQ,
-   (InterruptHandler)&SPI1_IRQ,
-   (InterruptHandler)&UART0_IRQ,
-   (InterruptHandler)&UART1_IRQ,
-   (InterruptHandler)&ADC_IRQ_FIFO,
-   (InterruptHandler)&I2C0_IRQ,
-   (InterruptHandler)&I2C1_IRQ,
-   (InterruptHandler)&RTC_IRQ,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0
- };
+  using isr_type = void(*)(void);
+
+  constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(48));
+}
+
+extern "C"
+const volatile isr_type __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[number_of_interrupts];
+
+extern "C"
+const volatile isr_type __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[number_of_interrupts];
+
+extern "C"
+const volatile isr_type __INTVECT_Core0[number_of_interrupts] =
+{
+  &__CORE0_STACK_TOP,
+  &__my_startup,
+  &NMI,
+  &HardFault,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  &SVCall,
+  nullptr,
+  nullptr,
+  &PendSV,
+  &SysTickTimer,
+  &TIMER_IRQ_0,
+  &TIMER_IRQ_1,
+  &TIMER_IRQ_2,
+  &TIMER_IRQ_3,
+  &PWM_IRQ_WRAP,
+  &USBCTRL_IRQ,
+  &XIP_IRQ,
+  &PIO0_IRQ_0,
+  &PIO0_IRQ_1,
+  &PIO1_IRQ_0,
+  &PIO1_IRQ_1,
+  &DMA_IRQ_0,
+  &DMA_IRQ_1,
+  &IO_IRQ_BANK0,
+  &IO_IRQ_QSPI,
+  &SIO_IRQ_PROC0,
+  &SIO_IRQ_PROC1,
+  &CLOCKS_IRQ,
+  &SPI0_IRQ,
+  &SPI1_IRQ,
+  &UART0_IRQ,
+  &UART1_IRQ,
+  &ADC_IRQ_FIFO,
+  &I2C0_IRQ,
+  &I2C1_IRQ,
+  &RTC_IRQ,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr
+};
 
 //=============================================================================
 // Interrupt vector table Core1
 //=============================================================================
 extern "C"
-const InterruptHandler __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[48U] =
+const volatile isr_type __INTVECT_Core1[number_of_interrupts] =
 {
-   (InterruptHandler)&__CORE1_STACK_TOP,
-   (InterruptHandler)&__main_core1,
-   (InterruptHandler)&NMI,
-   (InterruptHandler)&HardFault,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)&SVCall,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)&PendSV,
-   (InterruptHandler)&__sys_tick_handler,
-   (InterruptHandler)&TIMER_IRQ_0,
-   (InterruptHandler)&TIMER_IRQ_1,
-   (InterruptHandler)&TIMER_IRQ_2,
-   (InterruptHandler)&TIMER_IRQ_3,
-   (InterruptHandler)&PWM_IRQ_WRAP,
-   (InterruptHandler)&USBCTRL_IRQ,
-   (InterruptHandler)&XIP_IRQ,
-   (InterruptHandler)&PIO0_IRQ_0,
-   (InterruptHandler)&PIO0_IRQ_1,
-   (InterruptHandler)&PIO1_IRQ_0,
-   (InterruptHandler)&PIO1_IRQ_1,
-   (InterruptHandler)&DMA_IRQ_0,
-   (InterruptHandler)&DMA_IRQ_1,
-   (InterruptHandler)&IO_IRQ_BANK0,
-   (InterruptHandler)&IO_IRQ_QSPI,
-   (InterruptHandler)&SIO_IRQ_PROC0,
-   (InterruptHandler)&SIO_IRQ_PROC1,
-   (InterruptHandler)&CLOCKS_IRQ,
-   (InterruptHandler)&SPI0_IRQ,
-   (InterruptHandler)&SPI1_IRQ,
-   (InterruptHandler)&UART0_IRQ,
-   (InterruptHandler)&UART1_IRQ,
-   (InterruptHandler)&ADC_IRQ_FIFO,
-   (InterruptHandler)&I2C0_IRQ,
-   (InterruptHandler)&I2C1_IRQ,
-   (InterruptHandler)&RTC_IRQ,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0,
-   (InterruptHandler)0
+  &__CORE1_STACK_TOP,
+  &__main_core1,
+  &NMI,
+  &HardFault,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  &SVCall,
+  nullptr,
+  nullptr,
+  &PendSV,
+  &__sys_tick_handler,
+  &TIMER_IRQ_0,
+  &TIMER_IRQ_1,
+  &TIMER_IRQ_2,
+  &TIMER_IRQ_3,
+  &PWM_IRQ_WRAP,
+  &USBCTRL_IRQ,
+  &XIP_IRQ,
+  &PIO0_IRQ_0,
+  &PIO0_IRQ_1,
+  &PIO1_IRQ_0,
+  &PIO1_IRQ_1,
+  &DMA_IRQ_0,
+  &DMA_IRQ_1,
+  &IO_IRQ_BANK0,
+  &IO_IRQ_QSPI,
+  &SIO_IRQ_PROC0,
+  &SIO_IRQ_PROC1,
+  &CLOCKS_IRQ,
+  &SPI0_IRQ,
+  &SPI1_IRQ,
+  &UART0_IRQ,
+  &UART1_IRQ,
+  &ADC_IRQ_FIFO,
+  &I2C0_IRQ,
+  &I2C1_IRQ,
+  &RTC_IRQ,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr
 };

@@ -1,3 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally taken from:
+
 /******************************************************************************************
   Filename    : SecondaryBoot.c
   
@@ -15,8 +24,14 @@
   
 ******************************************************************************************/
 
+#include <cstddef>
+#include <cstdint>
+
 extern "C"
-const unsigned char __SBL[512] __attribute__((section(".SBL"))) =
+const volatile std::uint8_t __SBL[static_cast<std::size_t>(UINT16_C(512))] __attribute__((section(".SBL")));
+
+extern "C"
+const volatile std::uint8_t __SBL[static_cast<std::size_t>(UINT16_C(512))] =
 {
   0x00, 0xB5, 0x2F, 0x4B, 0x21, 0x20, 0x58, 0x60, 0x98, 0x68, 0x02, 0x21, 0x88, 0x43, 0x98, 0x60,
   0xD8, 0x60, 0x18, 0x61, 0x58, 0x61, 0x2B, 0x4B, 0x00, 0x21, 0x99, 0x60, 0x02, 0x21, 0x59, 0x61,
