@@ -15,4 +15,4 @@ FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_cpu_rp2040                   \
              $(PATH_TGT)/startup/crt0_init_ram                         \
              $(PATH_TGT)/startup/crt1                                  \
              $(PATH_TGT)/startup/int_vect                              \
-             $(PATH_TGT)/startup/SecondaryBoot
+             $(PATH_TGT)/startup/secondary_boot

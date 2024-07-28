@@ -953,7 +953,7 @@
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt1.cpp" />
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\int_vect.cpp" />
-    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\SecondaryBoot.cpp" />
+    <ClCompile Include="target\micros\rpi_pico_rp2040\startup\secondary_boot.cpp" />
     <ClCompile Include="target\micros\rx63n\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rx63n\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rx63n\startup\crt1.cpp" />
