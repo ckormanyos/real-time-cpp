@@ -7,10 +7,11 @@
 
 // RaspberryPi RP2040 dual-core ARM(R) Cortex(R)-M0+ startup code.
 
-#include <Cpu/Cpu.h>
-#include <Gpio/Gpio.h>
-
-#include <mcal/mcal.h>
+#include <mcal_cpu.h>
+#include <mcal_cpu_rp2040.h>
+#include <mcal_irq.h>
+#include <mcal_reg.h>
+#include <mcal_wdg.h>
 
 namespace crt
 {
@@ -69,7 +70,7 @@ extern "C"
     ::__main_core0();
 
     // Synchronize with core 1.
-    ::RP2040_MulticoreSync(SIO->CPUID);
+    mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
 
     // Execute an endless loop on core 0.
     for(;;) { mcal::cpu::nop(); }
@@ -82,14 +83,11 @@ extern "C"
     // Disable interrupts on core 0.
     mcal::irq::disable_all();
 
-    // Set GPIO pin 25 to output.
-    //LED_GREEN_CFG();
-
     // Start the core 1 and turn on the led to be sure that
     // we passed successfully the core 1 initiaization.
-    if(TRUE == ::RP2040_StartCore1())
+    if(true == mcal::cpu::rp2040::start_core1())
     {
-      //LED_GREEN_ON();
+      ;
     }
     else
     {
@@ -107,14 +105,22 @@ extern "C"
     // Core 1 is started via interrupt enabled by the BootRom.
 
     // Clear the sticky bits of the FIFO_ST on core 1.
-    SIO->FIFO_ST.reg = 0xFFu;
+
+    // SIO->FIFO_ST.reg = 0xFFu;
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::sio_fifo_st,
+                                 UINT32_C(0xFF)>::reg_set();
+
     asm volatile("dsb");
 
     // Clear all pending interrupts on core 1.
-    NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+    // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::nvic_icpr, std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
     // Synchronize with core 0.
-    ::RP2040_MulticoreSync(SIO->CPUID);
+    mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
 
     // Jump to main (and never return).
 

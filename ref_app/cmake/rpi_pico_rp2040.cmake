@@ -36,9 +36,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 14)
 
 set(TARGET_INCLUDES
-    ${PATH_APP}/mcal/${TARGET}/Mcal/Cmsis
-    ${PATH_APP}/mcal/${TARGET}/Mcal
-    ${PATH_APP}/mcal/${TARGET}/Std
     ${PATH_APP}/util/STL
 )
 
@@ -66,9 +63,8 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 
 set(FILES_TARGET
-    ${PATH_APP}/mcal/${TARGET}/Mcal/Clock/Clock
-    ${PATH_APP}/mcal/${TARGET}/Mcal/Cpu/Cpu
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
+    ${PATH_APP}/mcal/${TARGET}/mcal_cpu_rp2040
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1

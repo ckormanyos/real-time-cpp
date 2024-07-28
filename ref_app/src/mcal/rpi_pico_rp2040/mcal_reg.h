@@ -1,12 +1,12 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_REG_2010_04_10_H_
-  #define MCAL_REG_2010_04_10_H_
+#ifndef MCAL_REG_2010_04_10_H
+  #define MCAL_REG_2010_04_10_H
 
   #include <cstdint>
 
@@ -15,80 +15,73 @@
     namespace reg
     {
       // Global base addresses.
-      constexpr std::uint32_t scs_base        = UINT32_C(0xE000E000);
-
-      // Individual unit base addresses.
-      constexpr std::uint32_t sys_tick_base   = scs_base + UINT32_C(0x00000010);
-
-      // System registers.
-      constexpr std::uint32_t scb_vtor  = static_cast<std::uint32_t>(0xE000ED08UL);   // 32-bit register.
-      constexpr std::uint32_t aircr     = static_cast<std::uint32_t>(0xE000ED0CUL);   // 32-bit register. SCB application interrupt / reset control.
-
-      // Interrupt registers.
-      constexpr std::uint32_t rcc_cr    = static_cast<std::uint32_t>(0x40021000UL);   // 32-bit register.
-      constexpr std::uint32_t rcc_cfgr  = static_cast<std::uint32_t>(0x40021004UL);   // 32-bit register.
-      constexpr std::uint32_t rcc_cir   = static_cast<std::uint32_t>(0x40021008UL);   // 32-bit register.
-      constexpr std::uint32_t rcc_cfgr2 = static_cast<std::uint32_t>(0x4002102CUL);   // 32-bit register.
-
-      // System tick addresses.
-      constexpr std::uint32_t sys_tick_ctrl   = sys_tick_base + UINT32_C(0x00000000);
-      constexpr std::uint32_t sys_tick_load   = sys_tick_base + UINT32_C(0x00000004);
-      constexpr std::uint32_t sys_tick_val    = sys_tick_base + UINT32_C(0x00000008);
-      constexpr std::uint32_t sys_tick_cal    = sys_tick_base + UINT32_C(0x0000000C);
-
-      // Port registers.
-      constexpr std::uint32_t gpioa_crl = static_cast<std::uint32_t>(0x40010800UL);   // 32-bit register.
-      constexpr std::uint32_t gpioa_crh = static_cast<std::uint32_t>(0x40010804UL);   // 32-bit register.
-      constexpr std::uint32_t gpioa_idr = static_cast<std::uint32_t>(0x40010808UL);   // 32-bit register.
-      constexpr std::uint32_t gpioa_odr = static_cast<std::uint32_t>(0x4001080CUL);   // 32-bit register.
-
-      constexpr std::uint32_t gpiob_crl = static_cast<std::uint32_t>(0x40010C00UL);   // 32-bit register.
-      constexpr std::uint32_t gpiob_crh = static_cast<std::uint32_t>(0x40010C04UL);   // 32-bit register.
-      constexpr std::uint32_t gpiob_idr = static_cast<std::uint32_t>(0x40010C08UL);   // 32-bit register.
-      constexpr std::uint32_t gpiob_odr = static_cast<std::uint32_t>(0x40010C0CUL);   // 32-bit register.
-
-      constexpr std::uint32_t gpioc_crl = static_cast<std::uint32_t>(0x40011000UL);   // 32-bit register.
-      constexpr std::uint32_t gpioc_crh = static_cast<std::uint32_t>(0x40011004UL);   // 32-bit register.
-      constexpr std::uint32_t gpioc_idr = static_cast<std::uint32_t>(0x40011008UL);   // 32-bit register.
-      constexpr std::uint32_t gpioc_odr = static_cast<std::uint32_t>(0x4001100CUL);   // 32-bit register.
-
-      // Timer registers.
-      constexpr std::uint32_t tim4_cr1   = static_cast<std::uint32_t>(0x40000800UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_cr2   = static_cast<std::uint32_t>(0x40000804UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_smcr  = static_cast<std::uint32_t>(0x40000808UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_dier  = static_cast<std::uint32_t>(0x4000080CUL);  // 16-bit register.
-      constexpr std::uint32_t tim4_sr    = static_cast<std::uint32_t>(0x40000810UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_egr   = static_cast<std::uint32_t>(0x40000814UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_ccmr1 = static_cast<std::uint32_t>(0x40000818UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_ccmr2 = static_cast<std::uint32_t>(0x4000081CUL);  // 16-bit register.
-      constexpr std::uint32_t tim4_ccer  = static_cast<std::uint32_t>(0x40000820UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_cnt   = static_cast<std::uint32_t>(0x40000824UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_psc   = static_cast<std::uint32_t>(0x40000828UL);  // 16-bit register.
-      constexpr std::uint32_t tim4_arr   = static_cast<std::uint32_t>(0x4000082CUL);  // 16-bit register.
-      constexpr std::uint32_t tim4_rcr   = static_cast<std::uint32_t>(0x40000830UL);  // 16-bit register.
-
-      // Power management registers.
-      constexpr std::uint32_t rcc_apbenr  = static_cast<std::uint32_t>(0x40021014UL); // 32-bit register.
-      constexpr std::uint32_t rcc_apb2enr = static_cast<std::uint32_t>(0x40021018UL); // 32-bit register.
-      constexpr std::uint32_t rcc_apb1enr = static_cast<std::uint32_t>(0x4002101CUL); // 32-bit register.
-
-      // Watchdog registers.
-      constexpr std::uint32_t iwdg_kr     = static_cast<std::uint32_t>(0x40003000UL); // 32-bit register.
-      constexpr std::uint32_t iwdg_pr     = static_cast<std::uint32_t>(0x40003004UL); // 32-bit register.
-      constexpr std::uint32_t iwdg_rlr    = static_cast<std::uint32_t>(0x40003008UL); // 32-bit register.
-      constexpr std::uint32_t iwdg_sr     = static_cast<std::uint32_t>(0x4000300CUL); // 32-bit register.
+      constexpr std::uint32_t scs_base                  { UINT32_C(0xE000E000) };
+      constexpr std::uint32_t nvic_base                 { scs_base + UINT32_C(0x00000100) };
 
       // Interrupt control registers.
-      constexpr std::uint32_t nvic_iser   = static_cast<std::uint32_t>(0xE000E100 + 0x0000); // 32-bit registers : Interrupt set enable registers.
-      constexpr std::uint32_t nvic_icer   = static_cast<std::uint32_t>(0xE000E100 + 0x0080); // 32-bit registers : Interrupt clear enable registers.
-      constexpr std::uint32_t nvic_ispr   = static_cast<std::uint32_t>(0xE000E100 + 0x0100); // 32-bit registers : Interrupt set pending registers.
-      constexpr std::uint32_t nvic_icpr   = static_cast<std::uint32_t>(0xE000E100 + 0x0180); // 32-bit registers : Interrupt clear pending registers.
-      constexpr std::uint32_t nvic_iabr   = static_cast<std::uint32_t>(0xE000E100 + 0x0200); // 32-bit registers : Interrupt active bit registers.
-      constexpr std::uint32_t nvic_ip     = static_cast<std::uint32_t>(0xE000E100 + 0x0300); //  8-bit registers : Interrupt priority registers (each one 8 bits wide).
+      constexpr std::uint32_t nvic_iser { nvic_base + UINT32_C(0x00000000) };  // Offset: 0x000 Interrupt set enable registers.
+      constexpr std::uint32_t nvic_icer { nvic_base + UINT32_C(0x00000080) };  // Offset: 0x080 Interrupt clear enable registers.
+      constexpr std::uint32_t nvic_ispr { nvic_base + UINT32_C(0x00000100) };  // Offset: 0x100 Interrupt set pending registers.
+      constexpr std::uint32_t nvic_icpr { nvic_base + UINT32_C(0x00000180) };  // Offset: 0x180 Interrupt clear pending registers.
+      constexpr std::uint32_t nvic_ip   { nvic_base + UINT32_C(0x00000300) };  // Offset: 0x300 Interrupt priority registers (each one 8 bits wide).
+
+      // Oscillator registers.
+      constexpr std::uint32_t xosc_base                 { UINT32_C(0x40024000) };
+      constexpr std::uint32_t xosc_ctrl                 { xosc_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t xosc_status               { xosc_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t xosc_dormant              { xosc_base + UINT32_C(0x00000008) };
+      constexpr std::uint32_t xosc_startup              { xosc_base + UINT32_C(0x0000000C) };
+      constexpr std::uint32_t xosc_reserved_0           { xosc_base + UINT32_C(0x00000010) };
+      constexpr std::uint32_t xosc_reserved_1           { xosc_base + UINT32_C(0x00000014) };
+      constexpr std::uint32_t xosc_reserved_2           { xosc_base + UINT32_C(0x00000018) };
+      constexpr std::uint32_t xosc_count                { xosc_base + UINT32_C(0x0000001C) };
+
+      // Reset registers.
+      constexpr std::uint32_t resets_base               { UINT32_C(0x4000C000) };
+      constexpr std::uint32_t resets_reset              { resets_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t resets_wdsel              { resets_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t resets_reset_done         { resets_base + UINT32_C(0x00000008) };
+
+      // PLL registers.
+      constexpr std::uint32_t pll_sys_base              { UINT32_C(0x40028000) };
+      constexpr std::uint32_t pll_sys_cs                { pll_sys_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t pll_sys_pwr               { pll_sys_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t pll_sys_fbdiv_int         { pll_sys_base + UINT32_C(0x00000008) };
+      constexpr std::uint32_t pll_sys_prim              { pll_sys_base + UINT32_C(0x0000000C) };
+
+      // Clock registers.
+      constexpr std::uint32_t clocks_base               { UINT32_C(0x40008000) };
+      constexpr std::uint32_t clocks_clk_sys_ctrl       { clocks_base + UINT32_C(0x0000003C) };
+      constexpr std::uint32_t clocks_clk_sys_div        { clocks_base + UINT32_C(0x00000040) };
+      constexpr std::uint32_t clocks_clk_sys_selected   { clocks_base + UINT32_C(0x00000044) };
+      constexpr std::uint32_t clocks_clk_peri_ctrl      { clocks_base + UINT32_C(0x00000048) };
+
+      // PSM registers.
+      constexpr std::uint32_t psm_base                  { UINT32_C(0x40010000) };
+      constexpr std::uint32_t psm_frce_on               { psm_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t psm_frce_off              { psm_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t psm_wdsel                 { psm_base + UINT32_C(0x00000008) };
+      constexpr std::uint32_t psm_done                  { psm_base + UINT32_C(0x0000000C) };
+
+      // Single-instruction registers.
+      constexpr std::uint32_t sio_base                  { UINT32_C(0xD0000000) };
+      constexpr std::uint32_t sio_cpuid                 { sio_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t sio_gpio_out_set          { sio_base + UINT32_C(0x00000014) };
+      constexpr std::uint32_t sio_gpio_out_clr          { sio_base + UINT32_C(0x00000018) };
+      constexpr std::uint32_t sio_gpio_out_xor          { sio_base + UINT32_C(0x0000001C) };
+      constexpr std::uint32_t sio_gpio_oe_set           { sio_base + UINT32_C(0x00000024) };
+      constexpr std::uint32_t sio_gpio_oe_clr           { sio_base + UINT32_C(0x00000028) };
+      constexpr std::uint32_t sio_fifo_st               { sio_base + UINT32_C(0x00000050) };
+      constexpr std::uint32_t sio_fifo_wr               { sio_base + UINT32_C(0x00000054) };
+      constexpr std::uint32_t sio_fifo_rd               { sio_base + UINT32_C(0x00000058) };
+
+      // I/O-Bank registers.
+      constexpr std::uint32_t io_bank0_base             { UINT32_C(0x40014000) };
+      constexpr std::uint32_t io_bank0_status_base      { io_bank0_base + UINT32_C(0x00000000) };
     }
   }
 
   #include <mcal/mcal_reg_access_dynamic.h>
   #include <mcal/mcal_reg_access_static.h>
 
-#endif // MCAL_REG_2010_04_10_H_
+#endif // MCAL_REG_2010_04_10_H

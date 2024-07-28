@@ -570,7 +570,7 @@
     <None Include="target\micros\rpi_pico_rp2040\_debug\Pico_Core1.jdebug">
       <Filter>micros\rpi_pico_rp2040\_debug</Filter>
     </None>
-    <None Include="target\micros\rpi_pico_rp2040\_debug\rp2040.svd">
+    <None Include="target\micros\rpi_pico_rp2040\_debug\rp2040.7z">
       <Filter>micros\rpi_pico_rp2040\_debug</Filter>
     </None>
   </ItemGroup>
