@@ -81,12 +81,13 @@ template class.
 A typical range of performance classes is shown in the following table.
 The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 
-| Target         |  runtime $[ms]$ |  relative  |
-|----------------|-----------------|------------|
-| `am335x`       |  1.5            |    1.0     |
-| `stm32f446`    |  5.1            |    3.4     |
-| `wch_ch32v307` |  8.0            |    5.3     |
-| `avr`          |  420            |    280     |
+| Target             |  runtime $[ms]$ |  relative  |
+|--------------------|-----------------|------------|
+| `am335x`           |  1.5            |    1.0     |
+| `stm32f446`        |  5.1            |    3.4     |
+| `wch_ch32v307`     |  8.0            |    5.3     |
+| `rpi_pico_rp2040`  |  19             |    13      |
+| `avr`              |  420            |    280     |
 
 There are strikingly differing performance classes
 for the $8$-bit MICROCHIP(R) AVR controller of the ARDUINO
@@ -104,3 +105,7 @@ of $5.1~\text{ms}$.
 The $32$-bit RISC-V controller (having a novel _open-source_ core)
 on the `wch_ch32v307` board boasts a quite respectable
 time of $8.0~\text{ms}$.
+
+Using only one core (core 1) on the $32$-bit ARM(R) Cortex(R) M0+
+controller of the `rpi_pico_rp2040` board results in a calculation
+time of $19~\text{ms}$.
