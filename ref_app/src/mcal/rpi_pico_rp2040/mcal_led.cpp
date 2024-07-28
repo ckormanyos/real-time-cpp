@@ -5,41 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <Gpio/Gpio.h>
-
 #include <mcal_led.h>
-#include <mcal_led/mcal_led_boolean_state_base.h>
-
-namespace mcal
-{
-  namespace led
-  {
-    class led_rp2040_green : public mcal::led::led_boolean_state_base
-    {
-      public:
-        led_rp2040_green()
-        {
-          LED_GREEN_OFF();
-          LED_GREEN_CFG();
-        }
-
-      ~led_rp2040_green() override = default;
-
-        auto toggle() -> void override
-        {
-          using base_class_type = led_boolean_state_base;
-
-          LED_GREEN_TOGGLE();
-
-          base_class_type::toggle();
-        }
-    };
-  }
-}
+#include <mcal_led/mcal_led_port.h>
 
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_led_type = mcal::led::led_rp2040_green;
+  using led0_port_type = mcal::port::port_pin<UINT32_C(25)>;
+
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
 
   static led0_led_type l0;
 

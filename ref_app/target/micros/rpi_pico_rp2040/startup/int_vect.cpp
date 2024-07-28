@@ -75,7 +75,7 @@ extern "C" void RTC_IRQ(void)         __attribute__((weak, alias("UndefinedHandl
 // Interrupt vector table Core0
 //=============================================================================
 extern "C"
-const InterruptHandler __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[48] =
+const InterruptHandler __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[48U] =
 {
    (InterruptHandler)&__CORE0_STACK_TOP,
    (InterruptHandler)&__my_startup,
@@ -131,7 +131,7 @@ const InterruptHandler __attribute__((section(".intvect_c0"), aligned(128))) __I
 // Interrupt vector table Core1
 //=============================================================================
 extern "C"
-const InterruptHandler __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[48] =
+const InterruptHandler __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[48U] =
 {
    (InterruptHandler)&__CORE1_STACK_TOP,
    (InterruptHandler)&__main_core1,
