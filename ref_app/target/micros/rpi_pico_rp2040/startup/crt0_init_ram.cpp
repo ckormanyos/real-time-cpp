@@ -5,6 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#if defined(__GNUC__) && (__GNUC__ >= 12)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+#endif
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -20,18 +27,23 @@ extern "C"
 
 namespace crt
 {
-  void init_ram();
+  auto init_ram() -> void;
 }
 
-void crt::init_ram()
+auto crt::init_ram() -> void
 {
   using memory_aligned_type = std::uint32_t;
 
   // Copy the data segment initializers from ROM to RAM.
   // Note that all data segments are aligned by 4.
-  const std::size_t size_data =
-    std::size_t(  static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
-                - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin)));
+  const std::size_t size_data
+  {
+    static_cast<std::size_t>
+    (
+        static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_end))
+      - static_cast<const memory_aligned_type*>(static_cast<const void*>(&_data_begin))
+    )
+  };
 
   std::copy(static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)),
             static_cast<const memory_aligned_type*>(static_cast<const void*>(&_rom_data_begin)) + size_data,
@@ -43,3 +55,8 @@ void crt::init_ram()
             static_cast<memory_aligned_type*>(static_cast<void*>(&_bss_end)),
             static_cast<memory_aligned_type>(0U));
 }
+
+#if defined(__GNUC__) && (__GNUC__ >= 12)
+#pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
+#endif

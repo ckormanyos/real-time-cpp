@@ -15,18 +15,19 @@
 
 namespace crt
 {
-  void init_ram();
-  void init_ctors();
+  auto init_ram  () -> void;
+  auto init_ctors() -> void;
 }
 
-extern "C" int main(void) __attribute__((used));
+extern "C" auto main(void) -> int __attribute__((used));
 
-extern "C" void __my_startup(void) __attribute__((section(".startup"), used, noinline));
-extern "C" void __main      (void) __attribute__((section(".startup"), used, noinline));
-extern "C" void __main_core0(void) __attribute__((section(".startup"), used, noinline));
-extern "C" void __main_core1(void) __attribute__((section(".startup"), used, noinline));
+extern "C" auto __my_startup(void) -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main      (void) -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core0(void) -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core1(void) -> void __attribute__((section(".startup"), used, noinline));
 
-void __my_startup(void)
+extern "C"
+auto __my_startup() -> void
 {
   // Load the stack pointer.
   // The stack pointer is automatically loaded from
@@ -48,10 +49,10 @@ void __my_startup(void)
   // Jump to __main, which calls __main_core0, the main
   // function of core 0. The main function of core 0
   // itself then subsequently starts up core 1 which
-  // is launched in __main_core1. Bot of these core 0/1
+  // is launched in __main_core1. Both of these core 0/1
   // subroutines will never return.
 
-  __main();
+  ::__main();
 
   // Catch an unexpected return from __main().
   for(;;)
@@ -62,69 +63,71 @@ void __my_startup(void)
 }
 
 extern "C"
+auto __main(void) -> void
 {
-  void __main(void)
+  // Run the main function of core 0.
+  // This will subsequently start core 1.
+  ::__main_core0();
+
+  // Synchronize with core 1.
+  mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
+
+  // It is here that an actual application could
+  // be started and then executed on core 0.
+
+  // Execute an endless loop on core 0.
+  for(;;) { mcal::cpu::nop(); }
+
+  // This point is never reached.
+}
+
+extern "C"
+auto __main_core0() -> void
+{
+  // Disable interrupts on core 0.
+  mcal::irq::disable_all();
+
+  // Start core 1 and verify successful initiaization of core 1.
+  if(!mcal::cpu::rp2040::start_core1())
   {
-    // Run the main function of core 0.
-    // This will subsequently start core 1.
-    ::__main_core0();
-
-    // Synchronize with core 1.
-    mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
-
-    // Execute an endless loop on core 0.
-    for(;;) { mcal::cpu::nop(); }
-
-    // This point is never reached.
-  }
-
-  void __main_core0(void)
-  {
-    // Disable interrupts on core 0.
-    mcal::irq::disable_all();
-
-    // Start the core 1 and turn on the led to be sure that
-    // we passed successfully the core 1 initiaization.
-    if(true == mcal::cpu::rp2040::start_core1())
+    // Loop forever (on core 0) in case of error.
+    for(;;)
     {
-      ;
-    }
-    else
-    {
-      // Loop forever in case of error.
-      for(;;)
-      {
-        // Replace with a loud error if desired.
-        mcal::wdg::secure::trigger();
-      }
+      // Replace with a loud error if desired.
+      mcal::wdg::secure::trigger();
     }
   }
 
-  void __main_core1(void)
-  {
-    // Core 1 is started via interrupt enabled by the BootRom.
+  // This subroutine (running on core 0) *does* return
+  // at this point here.
+}
 
-    // Clear the sticky bits of the FIFO_ST on core 1.
+extern "C"
+auto __main_core1() -> void
+{
+  // Core 1 is started via interrupt enabled by the BootRom.
+  // But core 1 remains in an interrupt handler at this time.
 
-    // SIO->FIFO_ST.reg = 0xFFu;
-    mcal::reg::reg_access_static<std::uint32_t,
-                                 std::uint32_t,
-                                 mcal::reg::sio_fifo_st,
-                                 UINT32_C(0xFF)>::reg_set();
+  // Clear the sticky bits of the FIFO_ST on core 1.
 
-    asm volatile("dsb");
+  // SIO->FIFO_ST.reg = 0xFFu;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::sio_fifo_st,
+                               UINT32_C(0xFF)>::reg_set();
 
-    // Clear all pending interrupts on core 1.
-    // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+  asm volatile("dsb");
 
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::nvic_icpr, std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
+  // Clear all pending interrupts on core 1.
 
-    // Synchronize with core 0.
-    mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
+  // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::nvic_icpr, std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
-    // Jump to main (and never return).
+  // Synchronize with core 0.
+  mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
 
-    asm volatile("ldr r3, =main");
-    asm volatile("blx r3");
-  }
+  // Jump to main of core 1 (and never return).
+
+  asm volatile("ldr r3, =main");
+  asm volatile("blx r3");
 }

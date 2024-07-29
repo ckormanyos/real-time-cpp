@@ -9,65 +9,68 @@
 #include <cstddef>
 #include <mcal_cpu.h>
 
-extern "C" void UndefinedHandler(void);
-extern "C" void UndefinedHandler(void) { for(;;); }
+extern "C" auto UndefinedHandler() -> void;
+extern "C" auto UndefinedHandler() -> void { for(;;) { mcal::cpu::nop(); } }
 
-extern "C" void __my_startup(void) __attribute__((used, noinline));
-extern "C" void __main_core1(void) __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto __my_startup() -> void __attribute__((used, noinline));
+extern "C" auto __main_core1() -> void __attribute__((weak, alias("UndefinedHandler")));
 
-extern "C" void __sys_tick_handler(void) noexcept __attribute__((used, noinline));
+extern "C" auto __sys_tick_handler() noexcept -> void __attribute__((used, noinline));
 
-extern "C" void __CORE0_STACK_TOP(void);
-extern "C" void __CORE1_STACK_TOP(void);
+extern "C" auto __CORE0_STACK_TOP() -> void;
+extern "C" auto __CORE1_STACK_TOP() -> void;
 
 /* Default interrupts handler */
-extern "C" void NMI(void)             __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void HardFault(void)       __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SVCall(void)          __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PendSV(void)          __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SysTickTimer(void)    __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void TIMER_IRQ_0(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void TIMER_IRQ_1(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void TIMER_IRQ_2(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void TIMER_IRQ_3(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PWM_IRQ_WRAP(void)    __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void USBCTRL_IRQ(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void XIP_IRQ(void)         __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PIO0_IRQ_0(void)      __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PIO0_IRQ_1(void)      __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PIO1_IRQ_0(void)      __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void PIO1_IRQ_1(void)      __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void DMA_IRQ_0(void)       __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void DMA_IRQ_1(void)       __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void IO_IRQ_BANK0(void)    __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void IO_IRQ_QSPI(void)     __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SIO_IRQ_PROC0(void)   __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SIO_IRQ_PROC1(void)   __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void CLOCKS_IRQ(void)      __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SPI0_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void SPI1_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void UART0_IRQ(void)       __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void UART1_IRQ(void)       __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void ADC_IRQ_FIFO(void)    __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void I2C0_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void I2C1_IRQ(void)        __attribute__((weak, alias("UndefinedHandler")));
-extern "C" void RTC_IRQ(void)         __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto NMI          () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto HardFault    () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SVCall       () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PendSV       () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SysTickTimer () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto TIMER_IRQ_0  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto TIMER_IRQ_1  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto TIMER_IRQ_2  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto TIMER_IRQ_3  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PWM_IRQ_WRAP () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto USBCTRL_IRQ  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto XIP_IRQ      () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PIO0_IRQ_0   () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PIO0_IRQ_1   () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PIO1_IRQ_0   () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto PIO1_IRQ_1   () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto DMA_IRQ_0    () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto DMA_IRQ_1    () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto IO_IRQ_BANK0 () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto IO_IRQ_QSPI  () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SIO_IRQ_PROC0() -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SIO_IRQ_PROC1() -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto CLOCKS_IRQ   () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SPI0_IRQ     () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto SPI1_IRQ     () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto UART0_IRQ    () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto UART1_IRQ    () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto ADC_IRQ_FIFO () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto I2C0_IRQ     () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto I2C1_IRQ     () -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto RTC_IRQ      () -> void __attribute__((weak, alias("UndefinedHandler")));
 
-namespace
+namespace local
+{
+  constexpr std::size_t number_of_interrupts { static_cast<std::size_t>(UINT8_C(48)) };
+} // namespace local
+
+extern "C"
 {
   using isr_type = void(*)(void);
 
-  constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(48));
+  extern "C"
+  const volatile isr_type __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[local::number_of_interrupts];
+
+  extern "C"
+  const volatile isr_type __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[local::number_of_interrupts];
 }
 
 extern "C"
-const volatile isr_type __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[number_of_interrupts];
-
-extern "C"
-const volatile isr_type __attribute__((section(".intvect_c1"), aligned(128))) __INTVECT_Core1[number_of_interrupts];
-
-extern "C"
-const volatile isr_type __INTVECT_Core0[number_of_interrupts] =
+const volatile isr_type __INTVECT_Core0[local::number_of_interrupts] =
 {
   &__CORE0_STACK_TOP,
   &__my_startup,
@@ -123,7 +126,7 @@ const volatile isr_type __INTVECT_Core0[number_of_interrupts] =
 // Interrupt vector table Core1
 //=============================================================================
 extern "C"
-const volatile isr_type __INTVECT_Core1[number_of_interrupts] =
+const volatile isr_type __INTVECT_Core1[local::number_of_interrupts] =
 {
   &__CORE1_STACK_TOP,
   &__main_core1,
