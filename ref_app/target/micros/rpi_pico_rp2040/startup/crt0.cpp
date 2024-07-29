@@ -75,7 +75,7 @@ auto __main(void) -> void
   // It is here that an actual application could
   // be started and then executed on core 0.
 
-  // Execute an endless loop on core 0.
+  // Execute an endless loop on core 0 (while the application runs on core 1).
   for(;;) { mcal::cpu::nop(); }
 
   // This point is never reached.
@@ -90,7 +90,7 @@ auto __main_core0() -> void
   // Start core 1 and verify successful initiaization of core 1.
   if(!mcal::cpu::rp2040::start_core1())
   {
-    // Loop forever (on core 0) in case of error.
+    // In case of error, loop forever (on core 0).
     for(;;)
     {
       // Replace with a loud error if desired.
@@ -106,7 +106,10 @@ extern "C"
 auto __main_core1() -> void
 {
   // Core 1 is started via interrupt enabled by the BootRom.
-  // But core 1 remains in an interrupt handler at this time.
+  // But core 1 remains in an interrupt handler until core 0
+  // actually manually starts core 1 in the subroutine
+  // mcal::cpu::rp2040::start_core1(). Execution on core 1
+  // begins here.
 
   // Clear the sticky bits of the FIFO_ST on core 1.
 
@@ -126,8 +129,7 @@ auto __main_core1() -> void
   // Synchronize with core 0.
   mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
 
-  // Jump to main of core 1 (and never return).
-
+  // Jump to main on core 1 (and never return).
   asm volatile("ldr r3, =main");
   asm volatile("blx r3");
 }
