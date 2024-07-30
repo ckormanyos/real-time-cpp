@@ -21,10 +21,10 @@ namespace crt
 
 extern "C" auto main(void) -> int __attribute__((used));
 
-extern "C" auto __my_startup(void) -> void __attribute__((section(".startup"), used, noinline));
-extern "C" auto __main      (void) -> void __attribute__((section(".startup"), used, noinline));
-extern "C" auto __main_core0(void) -> void __attribute__((section(".startup"), used, noinline));
-extern "C" auto __main_core1(void) -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __my_startup() -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main      () -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core0() -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core1() -> void __attribute__((section(".startup"), used, noinline));
 
 extern "C"
 auto __my_startup() -> void
@@ -63,7 +63,7 @@ auto __my_startup() -> void
 }
 
 extern "C"
-auto __main(void) -> void
+auto __main() -> void
 {
   // Run the main function of core 0.
   // This will subsequently start core 1.

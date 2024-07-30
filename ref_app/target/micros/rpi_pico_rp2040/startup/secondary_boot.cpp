@@ -9,19 +9,19 @@
 
 /******************************************************************************************
   Filename    : SecondaryBoot.c
-  
+
   Core        : ARM Cortex-M0+
-  
+
   MCU         : RP2040
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 07.02.2023
-  
+
   Description : Secondary bootloader bytecode for Raspberry Pi Pico
-  
+
 ******************************************************************************************/
 
 #include <cstddef>
