@@ -12,21 +12,48 @@
 // See also: https://godbolt.org/z/8ahv5Ghx5
 
 #include <cstdint>
+#include <limits>
 
-#if (defined(__has_include) && (__has_include(<stdfloat>)))
-  #include <stdfloat>
-  namespace app { namespace benchmark {
-  #if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
-  using my_float_type = std::float64_t;
-  #else
-  using my_float_type = float;
-  #endif
-  } } // namespace app::benchmark
+#if defined(_MSC_VER)
+
+#include <util/STL_C++XX_stdfloat/cstdfloat>
+namespace app { namespace benchmark {
+
+using my_float_type = double;
+
+} // namespace benchmark
+} // namespace app
+
+#elif (defined(__has_include) && (__has_include(<stdfloat>)))
+
+#include <stdfloat>
+
+namespace app { namespace benchmark {
+
+#if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
+
+using my_float_type = std::float64_t;
+
 #else
-  #include <util/STL_C++XX_stdfloat/cstdfloat>
-  namespace app { namespace benchmark {
-  using my_float_type = std::floatmax_t;
-  } } // namespace app::benchmark
+
+using my_float_type = float;
+
+#endif
+
+} // namespace benchmark
+} // namespace app
+
+#else
+
+#include <util/STL_C++XX_stdfloat/cstdfloat>
+
+namespace app { namespace benchmark {
+
+using my_float_type = std::floatmax_t;
+
+} // namespace benchmark
+} // namespace app
+
 #endif
 
 #include <app/benchmark/app_benchmark_detail.h>
@@ -68,8 +95,11 @@ namespace
 
 auto app::benchmark::run_trapezoid_integral() -> bool
 {
-  static_assert((std::numeric_limits<my_float_type>::digits >= 24),
-                "Error: Incorrect my_float_type type definition");
+  #if (defined(__GNUC__) && defined(__AVR__) && (__GNUC__ < 12))
+  static_assert((std::numeric_limits<my_float_type>::digits >= 24), "Error: Incorrect my_float_type type definition");
+  #else
+  static_assert((std::numeric_limits<my_float_type>::digits >= 53), "Error: Incorrect my_float_type type definition");
+  #endif
 
   constexpr auto app_benchmark_tolerance =
     static_cast<my_float_type>
