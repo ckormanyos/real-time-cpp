@@ -12,11 +12,6 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-extern "C"
-{
-  extern std::uint32_t __INTVECT_Core1[48U];
-}
-
 namespace local {
 
 auto init_core() -> void;

@@ -11,7 +11,7 @@
 
 extern "C"
 {
-  extern std::uint32_t __INTVECT_Core1[48U];
+  extern const std::uint32_t __INTVECT_Core1[static_cast<std::size_t>(UINT8_C(2))];
 }
 
 namespace local {
@@ -47,7 +47,7 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool
 
 } // namespace local
 
-void mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId)
+auto mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId) -> void
 {
   constexpr std::uint32_t CPU_CORE0_ID { UINT32_C(0) };
   constexpr std::uint32_t CPU_CORE1_ID { UINT32_C(1) };
@@ -64,7 +64,7 @@ void mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId)
 
   static volatile std::uint32_t Cpu_u32MulticoreSync { };
 
-  Cpu_u32MulticoreSync |= (1UL << CpuId);
+  Cpu_u32MulticoreSync |= static_cast<std::uint32_t>(1UL << CpuId);
 
   while(Cpu_u32MulticoreSync != MULTICORE_SYNC_MASK)
   {
@@ -91,12 +91,12 @@ auto mcal::cpu::rp2040::start_core1() -> bool
   }
 
   // Send 0 to wake up core 1.
-  const bool result_send_zero_is_ok = local::sio_fifo_write_verify(UINT32_C(0));
+  const bool result_send_zero_is_ok = local::sio_fifo_write_verify(static_cast<std::uint32_t>(UINT32_C(0)));
 
   if(!result_send_zero_is_ok) { return false; }
 
   // Send 1 to synchronize with core 1.
-  const bool result_send_one_is_ok = local::sio_fifo_write_verify(UINT32_C(1));
+  const bool result_send_one_is_ok = local::sio_fifo_write_verify(static_cast<std::uint32_t>(UINT32_C(1)));
 
   if(!result_send_one_is_ok) { return false; }
 
@@ -106,12 +106,12 @@ auto mcal::cpu::rp2040::start_core1() -> bool
   if(!result_send_vtor_is_ok) { return false; }
 
   // Send the stack pointer value for core 1.
-  const bool result_send_sp_is_ok = local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(__INTVECT_Core1[0U]));
+  const bool result_send_sp_is_ok = local::sio_fifo_write_verify(__INTVECT_Core1[0U]);
 
   if(!result_send_sp_is_ok) { return false; }
 
   // Send the reset handler for core 1.
-  const bool result_send_rst_is_ok = local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(__INTVECT_Core1[1U]));
+  const bool result_send_rst_is_ok = local::sio_fifo_write_verify(__INTVECT_Core1[1U]);
 
   if(!result_send_rst_is_ok) { return false; }
 
