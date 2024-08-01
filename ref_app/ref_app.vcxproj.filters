@@ -2780,6 +2780,9 @@
     <None Include="cmake\rpi_pico_rp2040.cmake">
       <Filter>src\cmake</Filter>
     </None>
+    <None Include="cmake\stm32l432.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
