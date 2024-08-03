@@ -11,14 +11,12 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-#include <Mcal/Reg.h>
-
-extern "C"
-void SystemInit(void);
-
-extern "C"
-void SystemInit(void)
+namespace local
 {
+  auto cpu_init() -> void;
+
+  auto cpu_init() -> void
+  {
   /* Set coprocessor access control register CP10 and CP11 Full Access (Enable floating point unit) */
   SCB_CPACR |= (uint32_t)((uint32_t)(3UL << 20U) | (uint32_t)(3UL << 22U));
 
@@ -36,11 +34,12 @@ void SystemInit(void)
 
   /* Configure Flash prefetch, Instruction cache, Data cache and wait state (3 wait states) */
   FLASH_ACR = (uint32_t)((1UL << 9) | (1UL << 10) | (3UL << 0));
-}
+  }
+} // namespace local
 
 auto mcal::cpu::init() -> void
 {
-  ::SystemInit();
+  ::local::cpu_init();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);

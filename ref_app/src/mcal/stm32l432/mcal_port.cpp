@@ -8,20 +8,16 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 
-#include <Mcal/Reg.h>
-
-extern "C"
-void PortInit(void);
-
-extern "C"
-void PortInit(void)
-{
-  /* Initialize the ports.      */
-  /* Enable the clock for GPIOB */
-  RCC_AHB2ENR |= (1U << 1U);
-}
-
 void mcal::port::init(const config_type*)
 {
-  ::PortInit();
+  // Enable the peripheral clocks for porta, portc.
+  // 0x02 = portb
+  // ------------
+  // So we have:
+  // (portb) = (0x02).
+
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_ahb2enr,
+                               UINT32_C(0x02) >::reg_or();
 }

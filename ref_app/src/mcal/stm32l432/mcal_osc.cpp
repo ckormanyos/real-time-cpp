@@ -5,9 +5,9 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
 #include <mcal_osc.h>
-
-#include <Mcal/Reg.h>
+#include <mcal_reg.h>
 
 extern "C"
 void SetSysClock(void);
@@ -21,7 +21,7 @@ void SetSysClock(void)
   /* wait until HSI16 clock is ready */
   while (!(RCC_CR & (uint32_t)(1UL << 10UL)))
   {
-    __asm volatile("nop");
+    mcal::cpu::nop();
   }
 
   /* PWREN: Power interface clock enable */
@@ -33,7 +33,7 @@ void SetSysClock(void)
   /* Wait until main PLL is enabled */
   while (RCC_CR & (uint32_t)(1UL << 25))
   {
-    __asm volatile("nop");
+    mcal::cpu::nop();
   }
 
   /*  PLL configuration for 80MHz system clock from 16MHz HSI   */
@@ -54,7 +54,7 @@ void SetSysClock(void)
   /* Wait until main PLL is enabled */
   while (!(RCC_CR & (uint32_t)(1UL << 25)))
   {
-    __asm volatile("nop");
+    mcal::cpu::nop();
   }
 
   /* Select PLL as system clock source */
@@ -64,7 +64,7 @@ void SetSysClock(void)
   /* Wait till the main PLL is used as system clock source */
   while ((RCC_CFGR & (uint32_t)(0x0CU << 0)) != (0x0CU << 0))
   {
-    __asm volatile("nop");
+    mcal::cpu::nop();
   }
 }
 
