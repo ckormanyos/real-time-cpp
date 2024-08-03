@@ -123,7 +123,7 @@ namespace local
 void mcal::osc::init(const config_type*)
 {
   // Configure the system clock for 80MHz using the hsi-pll.
-  const auto result_system_clock_is_ok = local::set_system_clock();
+  const bool result_system_clock_is_ok { local::set_system_clock() };
 
   static_cast<void>(result_system_clock_is_ok);
 }
