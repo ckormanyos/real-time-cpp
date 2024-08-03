@@ -82,37 +82,38 @@ In this way the project exhibits a high level of portability.
 
 The reference application supports the following targets:
 
-| Target name (as used in build command) | Target Description |
-| -------------------------------------- | ------------------ |
-| `avr`             *(breadboard-able)   | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            |
-| `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |
-| `atmega4809`      *(breadboard-able)   | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           |
-| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |
-| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |
-| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |
-| `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |
-| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |
-| `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     |
-| `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |
-| `rl78`                                 | Renesas(R) RL78/G13                                         |
-| `rpi_pico_rp2040` *(breadboard-able)   | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0+   |
-| `rx63n`                                | Renesas(R) RX630/RX631                                      |
-| `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         |
-| `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4F        |
-| `stm32f429`                            | STMicroelectronics(R) STM32F429 ARM(R) Cortex(R)-M4F        |
-| `stm32f446`                            | STMicroelectronics(R) STM32F446 ARM(R) Cortex(R)-M4F        |
-| `stm32h7a3`                            | STMicroelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7         |
-| `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         |
-| `stm32l152`                            | STMicroelectronics(R) STM32L152 ARM(R) Cortex(R)-M3         |
-| `stm32l432`       *(breadboard-able)   | STMicroelectronics(R) STM32L432 ARM(R) Cortex(R)-M4F        |
-| `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |
-| `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |
-| `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |
-| `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |
-| `xtensa32`        *(breadboard-able)   | Espressif (XTENSA) NodeMCU ESP32                            |
+| Target name (as used in build command) | Target Description                                          | *(breadboard) |
+| -------------------------------------- | ----------------------------------------------------------- | ------------- |
+| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
+| `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
+| `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
+| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
+| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |               |
+| `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |               |
+| `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
+| `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
+| `nxp_imxrt1062`                        | Teensy 4.0 Board / NXP(R) iMXRT1062 ARM(R) Cortex(R)-M7     |               |
+| `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |               |
+| `rl78`                                 | Renesas(R) RL78/G13                                         |               |
+| `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0+   | X             |
+| `rx63n`                                | Renesas(R) RX630/RX631                                      |               |
+| `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         |               |
+| `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4F        |               |
+| `stm32f429`                            | STMicroelectronics(R) STM32F429 ARM(R) Cortex(R)-M4F        |               |
+| `stm32f446`                            | STMicroelectronics(R) STM32F446 ARM(R) Cortex(R)-M4F        |               |
+| `stm32h7a3`                            | STMicroelectronics(R) STM32H7A3 ARM(R) Cortex(R)-M7         |               |
+| `stm32l100c`                           | STMicroelectronics(R) STM32L100 ARM(R) Cortex(R)-M3         |               |
+| `stm32l152`                            | STMicroelectronics(R) STM32L152 ARM(R) Cortex(R)-M3         |               |
+| `stm32l432`                            | STMicroelectronics(R) STM32L432 ARM(R) Cortex(R)-M4F        | X             |
+| `v850es_fx2`                           | Renesas(R) Electronics V850es/Fx2 upd703231                 |               |
+| `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |               |
+| `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |               |
+| `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |               |
+| `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            | X             |
 
-In this table, *(breadboard-able) means the board (or certain versions of it) can be readily
-used with a common breadboard, possible needinng header-pins to be manually soldered/mounted.
+In this table, *(breadboard) means the board (or certain versions of it) can be readily
+used with a common breadboard. This may possibly need some very straightforward
+manual soldering/mounting of header-pins.
 
 ## Getting Started with the Reference Application
 
