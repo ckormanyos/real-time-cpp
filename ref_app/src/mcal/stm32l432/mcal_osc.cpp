@@ -15,35 +15,41 @@ void SetSysClock(void);
 extern "C"
 void SetSysClock(void)
 {
-  /* Set HSION (HSI16 clock enable) enable bit */
+  // Set HSION (HSI16 clock enable) enable bit.
   RCC_CR |= (uint32_t)(1UL << 8U);
 
-  /* wait until HSI16 clock is ready */
+  // Wait until HSI16 clock is ready.
   while (!(RCC_CR & (uint32_t)(1UL << 10UL)))
   {
     mcal::cpu::nop();
   }
 
-  /* PWREN: Power interface clock enable */
+  // PWREN: Power interface clock enable.
   RCC_APB1ENR1 |= (uint32_t)(1UL << 28);
 
-  /* Enable main PLL */
+  // Enable the main PLL.
   RCC_CR &= (uint32_t)(~(uint32_t)(1UL << 24));
 
-  /* Wait until main PLL is enabled */
+  // Wait until main PLL is enabled.
   while (RCC_CR & (uint32_t)(1UL << 25))
   {
     mcal::cpu::nop();
   }
 
-  /*  PLL configuration for 80MHz system clock from 16MHz HSI   */
-  /*  f(VCO clock) = 16MHz * (40 / 4) = 160MHz                  */
-  /*  f(System Clock) = f(VCO clock) / PLLR = 80MHz             */
+  // PLL configuration for 80MHz system clock from 16MHz HSI.
+  // f(VCO clock) = 16MHz * (40 / 4) = 160MHz.
+  // f(System Clock) = f(VCO clock) / PLLR = 80MHz.
 
-  RCC_PLLCFGR = (uint32_t)((2UL << 0U)    /* Set PLL source to HSI */
-                         | (3UL << 4U)    /* Set PLLM to 4         */
-                         | (40UL << 8U)   /* Set PLLN to 40        */
-                         | (0UL << 25U)); /* Set PLLR to 2         */
+  constexpr std::uint32_t
+    rcc_pllcfgr_value
+    {
+      (uint32_t) (  (2UL << 0U)   // Set PLL source to HSI.
+                  | (3UL << 4U)   // Set PLLM to 4.
+                  | (40UL << 8U)  // Set PLLN to 40.
+                  | (0UL << 25U)) // Set PLLR to 2.
+   };
+
+  RCC_PLLCFGR = rcc_pllcfgr_value;
 
   /* Enable Main PLLCLK output for the system clock */
   RCC_PLLCFGR |= (uint32_t)(1UL << 24);
