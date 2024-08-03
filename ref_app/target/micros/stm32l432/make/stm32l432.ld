@@ -15,15 +15,15 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
 /* The beginning and end (i.e., the top) of the stack */
-/* Set up a stack with a size of 4K */
+/* Set up a stack with a size of 8K */
 
-__initial_stack_pointer = 0x20002000 - 4;
+__initial_stack_pointer = 0x20010000 - 4;
 
 MEMORY
 {
   VEC(rx)  : ORIGIN = 0x08000000, LENGTH = 0x300
-  ROM(rx)  : ORIGIN = 0x08000300, LENGTH = 32K - 0x300
-  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 0x7000
+  ROM(rx)  : ORIGIN = 0x08000300, LENGTH = 256K - 0x300
+  RAM(rwx) : ORIGIN = 0x20000000, LENGTH = 62K
 }
 
 SECTIONS

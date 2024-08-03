@@ -1,12 +1,12 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014 - 2023.
+//  Copyright Christopher Kormanyos 2014 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_BENCHMARK_2014_04_16_H_
-  #define MCAL_BENCHMARK_2014_04_16_H_
+#ifndef MCAL_BENCHMARK_2014_04_16_H
+  #define MCAL_BENCHMARK_2014_04_16_H
 
   #include <cstdint>
   #include <mcal_port.h>
@@ -18,9 +18,9 @@
     {
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   mcal::reg::periph_base,
-                                   UINT32_C(8)> benchmark_port_type;
+                                   mcal::reg::gpiob_base,
+                                   UINT32_C(4)> benchmark_port_type;
     }
   }
 
-#endif // MCAL_BENCHMARK_2014_04_16_H_
+#endif // MCAL_BENCHMARK_2014_04_16_H

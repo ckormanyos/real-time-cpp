@@ -224,9 +224,6 @@
     <Filter Include="src\mcal\stm32l432">
       <UniqueIdentifier>{98c591b9-2325-4112-a69c-62feaabd4e6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\stm32l432\Mcal">
-      <UniqueIdentifier>{797c1b9b-a73b-464a-80b6-a265f408735a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2591,9 +2588,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\stm32l432\mcal_eep.h">
       <Filter>src\mcal\stm32l432</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\stm32l432\Mcal\Reg.h">
-      <Filter>src\mcal\stm32l432\Mcal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
