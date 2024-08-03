@@ -642,4 +642,5 @@ therefore, be beneficial for success with *all* of the code snippets.
 
 ### Licensing
 
-  - The source code written for this repo is licensed under [Boost Software License 1.0](./LICENSE_1_0.txt).
+  - The source code written for this repo is primarily licensed under [Boost Software License 1.0](./LICENSE_1_0.txt).
+  - Small parts of the self-written [STL](https://github.com/ckormanyos/real-time-cpp/tree/master/ref_app/src/util/STL) such as `<chrono>`, `<ratio>` and some internal traits-headers are licensed under version 3 of the [GNU General Public License](./lgpl_v3.txt).
