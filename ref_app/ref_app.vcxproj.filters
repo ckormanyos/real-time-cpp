@@ -221,6 +221,12 @@
     <Filter Include="src\mcal\rpi_pico_rp2040">
       <UniqueIdentifier>{79b28ed1-246b-4ca6-bb33-151839f7e1d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\stm32l432">
+      <UniqueIdentifier>{98c591b9-2325-4112-a69c-62feaabd4e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\stm32l432\Mcal">
+      <UniqueIdentifier>{797c1b9b-a73b-464a-80b6-a265f408735a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1083,6 +1089,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\rpi_pico_rp2040\mcal_cpu_rp2040.cpp">
       <Filter>src\mcal\rpi_pico_rp2040</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_gpt.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_irq.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_led.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_osc.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_port.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_pwm.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_spi.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_wdg.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_cpu.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\stm32l432\mcal_eep.cpp">
+      <Filter>src\mcal\stm32l432</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2514,6 +2550,51 @@
     <ClInclude Include="src\mcal\rpi_pico_rp2040\mcal_cpu_rp2040.h">
       <Filter>src\mcal\rpi_pico_rp2040</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_gpt.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_irq.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_led.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_memory_progmem.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_osc.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_port.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_pwm.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_reg.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_ser.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_spi.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_wdg.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_benchmark.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_cpu.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\mcal_eep.h">
+      <Filter>src\mcal\stm32l432</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\stm32l432\Mcal\Reg.h">
+      <Filter>src\mcal\stm32l432\Mcal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -2703,6 +2784,9 @@
       <Filter>src\util\STL</Filter>
     </None>
     <None Include="cmake\rpi_pico_rp2040.cmake">
+      <Filter>src\cmake</Filter>
+    </None>
+    <None Include="cmake\stm32l432.cmake">
       <Filter>src\cmake</Filter>
     </None>
   </ItemGroup>

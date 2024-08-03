@@ -247,6 +247,15 @@
     <Filter Include="micros\rpi_pico_rp2040\_debug">
       <UniqueIdentifier>{2a5b0873-804c-44a8-87f1-c1a223a094b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\stm32l432">
+      <UniqueIdentifier>{9dba42ff-4b1f-4930-ae75-250822d8b90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32l432\make">
+      <UniqueIdentifier>{06b40c96-3d82-48df-8335-7f038f04e8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\stm32l432\startup">
+      <UniqueIdentifier>{7d7e50db-5e14-4ecb-be6f-de57de5d7389}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -573,6 +582,15 @@
     <None Include="target\micros\rpi_pico_rp2040\_debug\rp2040.7z">
       <Filter>micros\rpi_pico_rp2040\_debug</Filter>
     </None>
+    <None Include="target\micros\stm32l432\make\stm32l432.ld">
+      <Filter>micros\stm32l432\make</Filter>
+    </None>
+    <None Include="target\micros\stm32l432\make\stm32l432_files.gmk">
+      <Filter>micros\stm32l432\make</Filter>
+    </None>
+    <None Include="target\micros\stm32l432\make\stm32l432_flags.gmk">
+      <Filter>micros\stm32l432\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -832,6 +850,18 @@
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\secondary_boot.cpp">
       <Filter>micros\rpi_pico_rp2040\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l432\startup\crt0_init_ram.cpp">
+      <Filter>micros\stm32l432\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l432\startup\crt1.cpp">
+      <Filter>micros\stm32l432\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l432\startup\int_vect.cpp">
+      <Filter>micros\stm32l432\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\stm32l432\startup\crt0.cpp">
+      <Filter>micros\stm32l432\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
