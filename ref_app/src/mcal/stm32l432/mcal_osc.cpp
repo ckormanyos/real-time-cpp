@@ -9,72 +9,121 @@
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-extern "C"
-void SetSysClock(void);
-
-extern "C"
-void SetSysClock(void)
+namespace local
 {
-  // Set HSION (HSI16 clock enable) enable bit.
-  RCC_CR |= (uint32_t)(1UL << 8U);
+  auto set_system_clock() -> bool;
 
-  // Wait until HSI16 clock is ready.
-  while (!(RCC_CR & (uint32_t)(1UL << 10UL)))
+  auto set_system_clock() -> bool
   {
-    mcal::cpu::nop();
-  }
+    // Set HSION (HSI16 clock enable) enable bit.
+    // RCC_CR |= (uint32_t)(1UL << 8U);
+    mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_cr,
+                               UINT32_C(8)>::bit_set();
 
-  // PWREN: Power interface clock enable.
-  RCC_APB1ENR1 |= (uint32_t)(1UL << 28);
 
-  // Enable the main PLL.
-  RCC_CR &= (uint32_t)(~(uint32_t)(1UL << 24));
+    // Wait until HSI16 clock is ready.
+    // while (!(RCC_CR & (uint32_t)(1UL << 10UL))) { mcal::cpu::nop(); }
+    while(!mcal::reg::reg_access_static<std::uint32_t,
+                                        std::uint32_t,
+                                        mcal::reg::rcc_cr,
+                                        UINT32_C(10)>::bit_get()) { mcal::cpu::nop(); }
 
-  // Wait until main PLL is enabled.
-  while (RCC_CR & (uint32_t)(1UL << 25))
-  {
-    mcal::cpu::nop();
-  }
+    // PWREN: Power interface clock enable.
+    // RCC_APB1ENR1 |= (uint32_t)(1UL << 28);
+    mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_apb1enr1,
+                               UINT32_C(28)>::bit_set();
 
-  // PLL configuration for 80MHz system clock from 16MHz HSI.
-  // f(VCO clock) = 16MHz * (40 / 4) = 160MHz.
-  // f(System Clock) = f(VCO clock) / PLLR = 80MHz.
+    // Enable the main PLL.
+    // RCC_CR &= (uint32_t)(~(uint32_t)(1UL << 24));
+    mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_cr,
+                               UINT32_C(24)>::bit_clr();
 
-  constexpr std::uint32_t
-    rcc_pllcfgr_value
+    // Wait until main PLL is enabled.
+    // while (RCC_CR & (uint32_t)(1UL << 25)) { mcal::cpu::nop(); }
+    while(mcal::reg::reg_access_static<std::uint32_t,
+                                       std::uint32_t,
+                                       mcal::reg::rcc_cr,
+                                       UINT32_C(25)>::bit_get()) { mcal::cpu::nop(); }
+
+    // PLL configuration for 80MHz system clock from 16MHz HSI.
+    // f(VCO clock) = 16MHz * (40 / 4) = 160MHz.
+    // f(System Clock) = f(VCO clock) / PLLR = 80MHz.
+
+    constexpr std::uint32_t
+      rcc_pllcfgr_value
+      {
+        static_cast<std::uint32_t>
+        (
+            static_cast<std::uint32_t>( 2UL <<  0U)  // Set PLL source to HSI.
+          | static_cast<std::uint32_t>( 3UL <<  4U)  // Set PLLM to 4.
+          | static_cast<std::uint32_t>(40UL <<  8U)  // Set PLLN to 40.
+          | static_cast<std::uint32_t>( 0UL << 25U)  // Set PLLR to 2.
+        )
+     };
+
+    mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::rcc_pllcfgr,
+                               rcc_pllcfgr_value>::reg_set();
+
+    // Enable Main PLLCLK output for the system clock.
+    // RCC_PLLCFGR |= (uint32_t)(1UL << 24);
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pllcfgr,
+                                 UINT32_C(24)>::bit_set();
+
+    // Enable the main PLL.
+    // RCC_CR |= (uint32_t)(1UL << 24);
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_cr,
+                                 UINT32_C(24)>::bit_set();
+
+    // Wait until main PLL is enabled.
+    //while (!(RCC_CR & (uint32_t)(1UL << 25))) { mcal::cpu::nop(); }
+    while(!mcal::reg::reg_access_static<std::uint32_t,
+                                        std::uint32_t,
+                                        mcal::reg::rcc_cr,
+                                        UINT32_C(25)>::bit_get()) { mcal::cpu::nop(); }
+
+    // Select the PLL as system clock source.
+    // RCC_CFGR &= (uint32_t)(~(3UL << 0));
+    // RCC_CFGR |= (uint32_t)(3UL << 0U);
+    mcal::reg::reg_access_static<std::uint32_t,
+                                 std::uint32_t,
+                                 mcal::reg::rcc_cfgr,
+                                 UINT32_C(3)>::template reg_msk<UINT32_C(3) << 0U>();
+
+    // Wait until the main PLL is used as system clock source.
+    // while ((RCC_CFGR & (uint32_t)(0x0CU << 0)) != (0x0CU << 0)) { mcal::cpu::nop(); }
+    while
+    (
+      static_cast<std::uint32_t>
+      (
+        mcal::reg::reg_access_static<std::uint32_t,
+                                     std::uint32_t,
+                                     mcal::reg::rcc_cfgr>::reg_get() & static_cast<std::uint32_t>(0x0CUL << 0U)
+      ) != static_cast<std::uint32_t>(0x0CUL << 0U)
+    )
     {
-      (uint32_t) (  (2UL << 0U)   // Set PLL source to HSI.
-                  | (3UL << 4U)   // Set PLLM to 4.
-                  | (40UL << 8U)  // Set PLLN to 40.
-                  | (0UL << 25U)) // Set PLLR to 2.
-   };
+      mcal::cpu::nop();
+    }
 
-  RCC_PLLCFGR = rcc_pllcfgr_value;
-
-  /* Enable Main PLLCLK output for the system clock */
-  RCC_PLLCFGR |= (uint32_t)(1UL << 24);
-
-  /* Enable main PLL */
-  RCC_CR |= (uint32_t)(1UL << 24);
-
-  /* Wait until main PLL is enabled */
-  while (!(RCC_CR & (uint32_t)(1UL << 25)))
-  {
-    mcal::cpu::nop();
+    return true;
   }
-
-  /* Select PLL as system clock source */
-  RCC_CFGR &= (uint32_t)(~(3UL << 0));
-  RCC_CFGR |= (uint32_t)(3UL << 0U);
-
-  /* Wait till the main PLL is used as system clock source */
-  while ((RCC_CFGR & (uint32_t)(0x0CU << 0)) != (0x0CU << 0))
-  {
-    mcal::cpu::nop();
-  }
-}
+} //  namespace local
 
 void mcal::osc::init(const config_type*)
 {
-  :: SetSysClock();
+  // Configure the system clock for 80MHz using the hsi-pll.
+  const auto result_system_clock_is_ok = local::set_system_clock();
+
+  static_cast<void>(result_system_clock_is_ok);
 }
