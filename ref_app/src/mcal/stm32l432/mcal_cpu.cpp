@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,75 +11,36 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
+#include <Mcal/Reg.h>
+
+extern "C"
+void SystemInit(void);
+
+extern "C"
+void SystemInit(void)
+{
+  /* Set coprocessor access control register CP10 and CP11 Full Access (Enable floating point unit) */
+  SCB_CPACR |= (uint32_t)((uint32_t)(3UL << 20U) | (uint32_t)(3UL << 22U));
+
+  /* Reset HSEON, CSSON, HSEBYP and PLLON bits */
+  RCC_CR &= (uint32_t)((~(1UL << 16)) | (~(1UL << 18))) | (~(1UL << 19)) | (~(1UL << 24));
+
+  /* Reset CFGR register */
+  RCC_CFGR = (uint32_t)0x40000000UL;
+
+  /* Reset PLLCFGR register */
+  RCC_PLLCFGR = (uint32_t)0x00001000UL;
+
+  /* Disable all interrupts */
+  RCC_CIER = (uint32_t)0x00000000UL;
+
+  /* Configure Flash prefetch, Instruction cache, Data cache and wait state (3 wait states) */
+  FLASH_ACR = (uint32_t)((1UL << 9) | (1UL << 10) | (3UL << 0));
+}
+
 auto mcal::cpu::init() -> void
 {
-  // Initialize the fpu: Enable cp10 and cp11.
-  // Note: The address of scb_cpacr is 0xE000ED88.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::scb_cpacr,
-                               static_cast<std::uint32_t>(UINT32_C(0x00F00000))>::reg_or();
-
-  // Reset the rcc clock configuration to the default reset state
-  // Set the hsion bit.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cr,
-                               static_cast<std::uint32_t>(UINT32_C(0x00000001))>::reg_or();
-
-  // Reset the rcc_cfgr register.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cfgr,
-                               static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
-
-  // Clear the hseon, the csson, and the pllon bits.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cr,
-                               static_cast<std::uint32_t>(UINT32_C(0xFEF6FFFF))>::reg_and();
-
-  // Reset the pllcfgr register.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_pllcfgr,
-                               static_cast<std::uint32_t>(UINT32_C(0x24003010))>::reg_set();
-
-  // Reset the hsebyp bit.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cr,
-                               static_cast<std::uint32_t>(UINT32_C(0xFFFBFFFF))>::reg_and();
-
-  // Disable all interrupts.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cir,
-                               static_cast<std::uint32_t>(UINT8_C(0))>::reg_set();
-
-  // Configure the flash memory.
-  // Set the wait states.
-  // Activate the flash prefetch.
-  // Activate the instruction cache.
-  // Activate the data cache.
-  constexpr auto wait_states = static_cast<std::uint32_t>(UINT8_C(5));
-
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::flash_acr,
-                               static_cast<std::uint32_t>(wait_states | static_cast<std::uint32_t>(UINT32_C(0x00000700)))>::reg_set();
-
-  // Enable the power interface clock.
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_apb1enr,
-                               static_cast<std::uint32_t>(UINT32_C(0x10000000))>::reg_or();
-
-  // Select the regulator voltage scaling output to "scale 3 mode".
-  mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::pwr_cr,
-                               static_cast<std::uint32_t>(UINT32_C(0x0000C000))>::reg_or();
+  ::SystemInit();
 
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);

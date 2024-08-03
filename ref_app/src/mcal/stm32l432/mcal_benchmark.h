@@ -18,7 +18,7 @@
     {
       typedef mcal::port::port_pin<std::uint32_t,
                                    std::uint32_t,
-                                   mcal::reg::gpioc_base,
+                                   mcal::reg::periph_base,
                                    UINT32_C(8)> benchmark_port_type;
     }
   }
