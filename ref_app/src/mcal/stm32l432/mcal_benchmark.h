@@ -16,10 +16,10 @@
   {
     namespace benchmark
     {
-      typedef mcal::port::port_pin<std::uint32_t,
-                                   std::uint32_t,
-                                   mcal::reg::gpiob_base,
-                                   UINT32_C(4)> benchmark_port_type;
+      using benchmark_port_type = mcal::port::port_pin<std::uint32_t,
+                                                       std::uint32_t,
+                                                       mcal::reg::gpiob_base,
+                                                       UINT32_C(4)>;
     }
   }
 

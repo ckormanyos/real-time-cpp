@@ -26,7 +26,7 @@
 
   namespace mcal
   {
-    void init();
+    auto init() -> void;
   }
 
 #endif // MCAL_2011_10_20_H_

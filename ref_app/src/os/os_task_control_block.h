@@ -23,10 +23,10 @@
                          const function_type func,
                          const tick_type cycle,
                          const tick_type offset)
-        : my_init (init),
-          my_func (func),
-          my_cycle(cycle),
-          my_timer(offset) { }
+        : my_init  { init },
+          my_func  { func },
+          my_cycle { cycle },
+          my_timer { offset } { }
 
       task_control_block(const task_control_block& other_tcb) = default;
 

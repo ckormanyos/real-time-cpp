@@ -7,7 +7,7 @@
 
 #include <mcal/mcal.h>
 
-void mcal::init()
+auto mcal::init() -> void
 {
   // Initialize the microcontroller abstraction layer.
 
