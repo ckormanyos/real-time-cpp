@@ -8,7 +8,7 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 
-void mcal::port::init(const config_type*)
+auto mcal::port::init(const config_type*) -> void
 {
   // Enable the peripheral clocks for porta, portc.
   // 0x02 = portb

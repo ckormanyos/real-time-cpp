@@ -15,12 +15,15 @@ namespace local
 
   auto set_system_clock() -> bool
   {
+    // See also:
+    // https://github.com/ARMmbed/mbed-os/blob/master/targets/TARGET_STM/TARGET_STM32L4/TARGET_STM32L432xC/system_clock.c
+
     // Set HSION (HSI16 clock enable) enable bit.
     // RCC_CR |= (uint32_t)(1UL << 8U);
     mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_cr,
-                               UINT32_C(8)>::bit_set();
+                                 std::uint32_t,
+                                 mcal::reg::rcc_cr,
+                                 UINT32_C(8)>::bit_set();
 
 
     // Wait until HSI16 clock is ready.
@@ -68,9 +71,9 @@ namespace local
      };
 
     mcal::reg::reg_access_static<std::uint32_t,
-                               std::uint32_t,
-                               mcal::reg::rcc_pllcfgr,
-                               rcc_pllcfgr_value>::reg_set();
+                                 std::uint32_t,
+                                 mcal::reg::rcc_pllcfgr,
+                                 rcc_pllcfgr_value>::reg_set();
 
     // Enable Main PLLCLK output for the system clock.
     // RCC_PLLCFGR |= (uint32_t)(1UL << 24);
@@ -120,7 +123,7 @@ namespace local
   }
 } //  namespace local
 
-void mcal::osc::init(const config_type*)
+auto mcal::osc::init(const config_type*) -> void
 {
   // Configure the system clock for 80MHz using the hsi-pll.
   const bool result_system_clock_is_ok { local::set_system_clock() };

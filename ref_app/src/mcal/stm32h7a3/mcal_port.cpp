@@ -8,7 +8,7 @@
 #include <mcal_port.h>
 #include <mcal_reg.h>
 
-void mcal::port::init(const config_type*)
+auto mcal::port::init(const config_type*) -> void
 {
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
