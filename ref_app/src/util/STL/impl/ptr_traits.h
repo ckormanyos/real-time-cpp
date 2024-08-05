@@ -32,6 +32,8 @@
 #ifndef PTR_TRAITS_2021_01_26_H_
   #define PTR_TRAITS_2021_01_26_H_
 
+  #include <type_traits>
+
   namespace std
   {
     template<typename...>

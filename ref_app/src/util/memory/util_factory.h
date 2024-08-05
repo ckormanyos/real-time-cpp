@@ -65,7 +65,7 @@
 
 /*
 
-// See also link at GodBolt: https://godbolt.org/z/7fjcGTbWj
+// See also link at GodBolt: https://godbolt.org/z/WrTTa8Eq9
 
 #include <util/memory/util_factory.h>
 
@@ -74,8 +74,8 @@
 class something : public util::factory_product
 {
 public:
-  something() { }
-  virtual ~something() { }
+  something() = default;
+  virtual ~something() = default;
 
 private:
   virtual void init() { }
@@ -88,7 +88,7 @@ public:
     : my_m(m),
                                       my_n(n) { }
 
-  ~another() override { }
+  ~another() override = default;
 
   auto get_m() const -> int { return my_m; }
   auto get_n() const -> int { return my_n; }

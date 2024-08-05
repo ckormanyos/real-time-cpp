@@ -40,4 +40,6 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
-                -T $(LINKER_DEFINITION_FILE)
+                -T $(LINKER_DEFINITION_FILE)                                      \
+                --specs=nano.specs                                                \
+                --specs=nosys.specs
