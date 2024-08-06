@@ -456,7 +456,8 @@ while core 0 enters an endless, idle loop.
 Ozone debug files are supplied for this system for those interested.
 Reverse engineering of the complicated (and scantly documented)
 dual-core startup originated in and have been taken from (with many thanks)
-[Chalandi/Blinky_Pico_dual_core_nosdk](https://github.com/Chalandi/Blinky_Pico_dual_core_nosdk).
+from the `Blinky_Pico_dual_core_nosdk`
+[repo](https://github.com/Chalandi/Blinky_Pico_dual_core_nosdk).
 
 Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_

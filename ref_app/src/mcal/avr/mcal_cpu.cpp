@@ -10,7 +10,7 @@
 #include <mcal_port.h>
 #include <mcal_wdg.h>
 
-void mcal::cpu::init()
+auto mcal::cpu::init() -> void
 {
   mcal::wdg::init(nullptr);
   mcal::port::init(nullptr);

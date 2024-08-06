@@ -2836,7 +2836,6 @@
     <ClInclude Include="src\util\utility\util_alignas.h" />
     <ClInclude Include="src\util\utility\util_baselexical_cast.h" />
     <ClInclude Include="src\util\utility\util_bit_mask.h" />
-    <ClInclude Include="src\util\utility\util_circular_buffer.h" />
     <ClInclude Include="src\util\utility\util_communication.h" />
     <ClInclude Include="src\util\utility\util_constexpr_algorithm_unsafe.h" />
     <ClInclude Include="src\util\utility\util_constexpr_cmath_unsafe.h" />

@@ -1,21 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
-  #define UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
+#ifndef UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H
+  #define UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H
+
+  #include <util/utility/util_utype_helper.h>
 
   #include <limits>
-  #include <util/utility/util_utype_helper.h>
 
   namespace util
   {
     template<typename unsigned_short_type,
              typename unsigned_long_type = typename util::utype_helper<static_cast<unsigned>(std::numeric_limits<unsigned_short_type>::digits * 2)>::exact_type>
-    inline unsigned_long_type make_long(unsigned_short_type lo, unsigned_short_type hi)
+    inline constexpr auto make_long(unsigned_short_type lo, unsigned_short_type hi) -> unsigned_long_type
     {
       // Ensure that the unsigned_short_type is an integer type.
       static_assert(std::numeric_limits<unsigned_short_type>::is_integer == true,
@@ -42,7 +43,7 @@
 
     template<typename unsigned_short_type,
              typename unsigned_long_type = typename util::utype_helper<static_cast<unsigned>(std::numeric_limits<unsigned_short_type>::digits * 2)>::exact_type>
-    inline unsigned_short_type lo_part(unsigned_long_type val)
+    inline constexpr auto lo_part(unsigned_long_type val) -> unsigned_short_type
     {
       // Ensure that the unsigned_short_type is an integer type.
       static_assert(std::numeric_limits<unsigned_short_type>::is_integer == true,
@@ -69,7 +70,7 @@
 
     template<typename unsigned_short_type,
              typename unsigned_long_type = typename util::utype_helper<static_cast<unsigned>(std::numeric_limits<unsigned_short_type>::digits * 2)>::exact_type>
-    inline unsigned_short_type hi_part(unsigned_long_type val)
+    inline constexpr auto hi_part(unsigned_long_type val) -> unsigned_short_type
     {
       // Ensure that the unsigned_short_type is an integer type.
       static_assert(std::numeric_limits<unsigned_short_type>::is_integer == true,
@@ -95,4 +96,4 @@
     }
   }
 
-#endif // UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H_
+#endif // UTIL_TWO_PART_DATA_MANIPULATION_2010_06_13_H

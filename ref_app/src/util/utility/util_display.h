@@ -35,7 +35,7 @@
 
     using timer_type = util::timer<std::uint32_t>;
 
-    static void blocking_delay(const typename timer_type::tick_type blocking_delay_value)
+    static auto blocking_delay(const typename timer_type::tick_type blocking_delay_value) -> void
     {
       timer_type::blocking_delay(blocking_delay_value);
     }

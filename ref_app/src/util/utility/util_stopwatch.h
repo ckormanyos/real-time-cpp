@@ -1,12 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2014.
+//  Copyright Christopher Kormanyos 2014 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_STOPWATCH_2014_01_07_H_
-  #define UTIL_STOPWATCH_2014_01_07_H_
+#ifndef UTIL_STOPWATCH_2014_01_07_H
+  #define UTIL_STOPWATCH_2014_01_07_H
+
+  #include <chrono>
 
   namespace util
   {
@@ -14,17 +16,21 @@
     class stopwatch final
     {
     public:
-      typedef typename clock_type::duration duration_type;
+      using duration_type = typename clock_type::duration;
+
+      using time_point_type = typename clock_type::time_point;
 
       stopwatch() : my_start(clock_type::now()) { }
 
-      stopwatch(typename clock_type::time_point start) : my_start(start) { }
+      explicit stopwatch(time_point_type start) : my_start(start) { }
 
       stopwatch(const stopwatch& other) : my_start(other.my_start) { }
 
-      ~stopwatch() { }
+      stopwatch(stopwatch&& other) noexcept : my_start(other.my_start) { }
 
-      stopwatch& operator=(const stopwatch& other)
+      ~stopwatch() = default;
+
+      auto operator=(const stopwatch& other) -> stopwatch&
       {
         if(this != &other)
         {
@@ -34,18 +40,25 @@
         return *this;
       }
 
-      duration_type elapsed() const
+      auto operator=(stopwatch&& other) noexcept -> stopwatch&
+      {
+        my_start = other.my_start;
+
+        return *this;
+      }
+
+      auto elapsed() const -> duration_type
       {
         return clock_type::now() - my_start;
       }
 
-      void reset()
+      auto reset() -> void
       {
         my_start = clock_type::now();
       }
 
     private:
-        typename clock_type::time_point my_start;
+      time_point_type my_start;
     };
   }
 
@@ -53,4 +66,4 @@
   //  const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(my_stopwatch.elapsed()).count();
   //  const auto elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(my_stopwatch.elapsed()).count();
 
-#endif // UTIL_STOPWATCH_2014_01_07_H_
+#endif // UTIL_STOPWATCH_2014_01_07_H
