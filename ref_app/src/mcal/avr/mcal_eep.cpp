@@ -1,25 +1,34 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018 - 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
 #include <mcal_cpu.h>
 #include <mcal_eep.h>
 #include <mcal_reg.h>
 
-namespace
+namespace local
 {
-  bool mcal_eep_is_busy()
+  auto mcal_eep_is_busy() -> bool;
+
+  auto mcal_eep_is_busy() -> bool
   {
     return (mcal::reg::reg_access_static<std::uint8_t,
                                          std::uint8_t,
                                          mcal::reg::eecr,
                                          UINT8_C(1)>::bit_get() == true);
   }
-}
+} // namespace local
 
-void mcal::eep::init(const config_type*)
+auto mcal::eep::init(const config_type*) -> void
 {
 }
 
-void mcal::eep::write(const address_type addr, const std::uint8_t data)
+auto mcal::eep::write(const address_type addr, const std::uint8_t data) -> void
 {
-  while(mcal_eep_is_busy())
+  while(local::mcal_eep_is_busy())
   {
     mcal::cpu::nop();
   }
@@ -45,9 +54,9 @@ void mcal::eep::write(const address_type addr, const std::uint8_t data)
                                UINT8_C(1)>::bit_set();
 }
 
-std::uint8_t mcal::eep::read(const address_type addr)
+auto mcal::eep::read(const address_type addr) -> std::uint8_t
 {
-  while(mcal_eep_is_busy())
+  while(local::mcal_eep_is_busy())
   {
     mcal::cpu::nop();
   }

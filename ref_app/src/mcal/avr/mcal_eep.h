@@ -1,5 +1,12 @@
-#ifndef MCAL_EEP_2018_12_15_H_
-  #define MCAL_EEP_2018_12_15_H_
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2018 - 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef MCAL_EEP_2018_12_15_H
+  #define MCAL_EEP_2018_12_15_H
 
   #include <cstdint>
 
@@ -10,11 +17,11 @@
       using config_type  = void;
       using address_type = std::uint_fast16_t;
 
-      void init(const config_type*);
+      auto init(const config_type*) -> void;
 
-      void         write(const address_type addr, const std::uint8_t data);
-      std::uint8_t read (const address_type addr);
+      auto write(const address_type addr, const std::uint8_t data)-> void;
+      auto read (const address_type addr) -> std::uint8_t;
     }
   }
 
-#endif // MCAL_EEP_2018_12_15_H_
+#endif // MCAL_EEP_2018_12_15_H

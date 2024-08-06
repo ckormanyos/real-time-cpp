@@ -1,5 +1,12 @@
-#ifndef MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H_
-  #define MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H_
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H
+  #define MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H
 
   #include <array>
   #include <cstddef>
@@ -28,7 +35,7 @@
   private:
     // The CY62158E MoBL(R)is a high performance CMOS static RAM
     // organized as 1024K words by 8 bits (i.e., 1 Mbyte).
-    static void nibble_port_pin_functions(const std::uint8_t nibble_value)
+    static auto nibble_port_pin_functions(const std::uint8_t nibble_value) -> void
     {
       switch(nibble_value)
       {
@@ -52,7 +59,7 @@
     }
 
   public:
-    memory_sram_parallel_cypress_cy62158e() : my_word16_addr_04_to_19(0U)
+    memory_sram_parallel_cypress_cy62158e()
     {
       // Initialize the parallel sram control pins.
       sram_parallel_port_pin_ce1_not_type::set_pin_high();
@@ -92,7 +99,7 @@
 
     ~memory_sram_parallel_cypress_cy62158e() = default;
 
-    void write(const std::uint32_t address_to_write, const std::uint8_t source_byte_to_write)
+    auto write(const std::uint32_t address_to_write, const std::uint8_t source_byte_to_write) -> void
     {
       // According to Document Number: 38-05684 Rev. *L:
       // To write to the device, take Chip Enables (CE1_NOT LOW and CE2
@@ -151,9 +158,9 @@
       sram_parallel_port_word08_data_type::set_direction_input();
     }
 
-    void write_n(const std::uint32_t address_to_write,
+    auto write_n(const std::uint32_t address_to_write,
                  const std::size_t   count,
-                 const std::uint8_t* source_input_to_write)
+                 const std::uint8_t* source_input_to_write) -> void
     {
       // Write n bytes, when n can be 1 but should
       // be greater than 1 for improved efficiency.
@@ -226,7 +233,7 @@
       sram_parallel_port_word08_data_type::set_direction_input();
     }
 
-    std::uint8_t read(const std::uint32_t address_to_read)
+    auto read(const std::uint32_t address_to_read) -> std::uint8_t
     {
       // According to Document Number: 38-05684 Rev. *L:
       // To read from the device, take Chip Enables (CE1_NOT LOW and CE2
@@ -280,9 +287,9 @@
       return byte_to_read;
     }
 
-    void read_n(const std::uint32_t address_to_read,
+    auto read_n(const std::uint32_t address_to_read,
                 const std::size_t   count,
-                      std::uint8_t* dest_to_store_read_data)
+                      std::uint8_t* dest_to_store_read_data) -> void
     {
       // Read n bytes, when n can be 1 but should
       // be greater than 1 for improved efficiency.
@@ -349,9 +356,9 @@
     }
 
   private:
-    std::uint16_t my_word16_addr_04_to_19;
+    std::uint16_t my_word16_addr_04_to_19 { };
   };
 
   } } } // namespace mcal::memory::sram
 
-#endif // MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H_
+#endif // MCAL_MEMORY_SRAM_PARALLEL_CYPRESS_CY62158E_2020_05_01_H

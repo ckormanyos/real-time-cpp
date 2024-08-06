@@ -1206,9 +1206,6 @@
     <ClInclude Include="src\util\memory\util_static_allocator.h">
       <Filter>src\util\memory</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\utility\util_circular_buffer.h">
-      <Filter>src\util\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\mcal\stm32f100\mcal_port.h">
       <Filter>src\mcal\stm32f100</Filter>
     </ClInclude>

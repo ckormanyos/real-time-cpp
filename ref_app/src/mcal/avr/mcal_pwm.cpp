@@ -7,6 +7,6 @@
 
 #include <mcal_pwm.h>
 
-void mcal::pwm::init(const mcal::pwm::config_type*)
+auto mcal::pwm::init(const mcal::pwm::config_type*) -> void
 {
 }

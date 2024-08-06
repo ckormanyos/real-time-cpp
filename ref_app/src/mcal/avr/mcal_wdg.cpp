@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2023.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-void mcal::wdg::init(const config_type*)
+auto mcal::wdg::init(const config_type*) -> void
 {
   // Read the MCU status register.
   volatile const std::uint8_t mcu_status_register =
@@ -44,7 +44,7 @@ void mcal::wdg::init(const config_type*)
                                std::uint8_t(0x08U) | std::uint8_t(0x07U)>::reg_set();
 }
 
-void mcal::wdg::secure::trigger()
+auto mcal::wdg::secure::trigger() -> void
 {
   asm volatile("wdr");
 }

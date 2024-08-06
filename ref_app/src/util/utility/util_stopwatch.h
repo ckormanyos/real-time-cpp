@@ -8,6 +8,8 @@
 #ifndef UTIL_STOPWATCH_2014_01_07_H
   #define UTIL_STOPWATCH_2014_01_07_H
 
+  #include <chrono>
+
   namespace util
   {
     template<typename clock_type>

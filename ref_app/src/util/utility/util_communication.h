@@ -8,12 +8,12 @@
 #ifndef UTIL_COMMUNICATION_2012_05_31_H
   #define UTIL_COMMUNICATION_2012_05_31_H
 
+  #include <util/utility/util_noncopyable.h>
+
   #include <algorithm>
   #include <array>
   #include <cstddef>
   #include <cstdint>
-
-  #include <util/utility/util_noncopyable.h>
 
   namespace util
   {

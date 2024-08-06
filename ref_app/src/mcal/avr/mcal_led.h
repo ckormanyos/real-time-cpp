@@ -14,7 +14,7 @@
   {
     namespace led
     {
-      led_base& led0();
+      auto led0() -> led_base&;
     }
   }
 
