@@ -271,6 +271,12 @@
     <Filter Include="micros\rpi_pico2_rp2350\make">
       <UniqueIdentifier>{451ca947-56ce-46cf-a4e8-036c75f8b86a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\rpi_pico2_rp2350\Appli">
+      <UniqueIdentifier>{8f7c20e8-9cec-4cf8-b3b5-48ce200d6733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rpi_pico2_rp2350\Std">
+      <UniqueIdentifier>{6be8f2e8-8491-442a-9308-13667c843931}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -902,6 +908,9 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\image_definition_block.c">
       <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.c">
+      <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
@@ -911,6 +920,9 @@
   <ItemGroup>
     <ClInclude Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_arch.h">
       <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\rpi_pico2_rp2350\Std\Platform_Types.h">
+      <Filter>micros\rpi_pico2_rp2350\Std</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

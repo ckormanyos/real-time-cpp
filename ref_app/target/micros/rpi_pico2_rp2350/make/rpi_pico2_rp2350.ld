@@ -1,144 +1,140 @@
-/*
- Copyright Christopher Kormanyos 2024.
- Distributed under the Boost Software License,
- Version 1.0. (See accompanying file LICENSE_1_0.txt
- or copy at http://www.boost.org/LICENSE_1_0.txt)
-*/
+/******************************************************************************************
+  Filename    : Memory_Map.ld
+  
+  Core        : ARM Cortex-M33 / RISC-V Hazard3
+  
+  MCU         : RP2350
+    
+  Author      : Chalandi Amine
+ 
+  Owner       : Chalandi Amine
+  
+  Date        : 04.09.2024
+  
+  Description : Linker description file for Raspberry Pi Pico 2
+  
+******************************************************************************************/
 
-/* Linker script for STM32F1xx ARM(R) Cortex(TM)-M3 MCU */
+/******************************************************************************************
+ ELF Entrypoint
+******************************************************************************************/
+ENTRY(Startup_Init)
 
-INPUT(libc.a libm.a libgcc.a)
+/******************************************************************************************
+ Globals
+******************************************************************************************/
+__STACK_SIZE_CORE0 = 2K;
+__STACK_SIZE_CORE1 = 2K;
 
-OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
-OUTPUT_ARCH(arm)
+/******************************************************************************************
+ Memory configuration
+******************************************************************************************/
 
 MEMORY
 {
-  SBL(rx)   : ORIGIN = 0x10000000, LENGTH = 0x200
-  VEC(rx)   : ORIGIN = 0x10000200, LENGTH = 0x200
-  ROM(rx)   : ORIGIN = 0x10000400, LENGTH = 2M - 0x400
-  RAM(rwx)  : ORIGIN = 0x20000000, LENGTH = 264K - 4K - 4K
+  FLASH(rx)   : ORIGIN = 0x10000000, LENGTH = 32M
+  RAM(rwx)    : ORIGIN = 0x20000000, LENGTH = 512K
 }
 
+/******************************************************************************************
+ Sections definition
+******************************************************************************************/
 SECTIONS
 {
-  /* Pico Secondary bootloader */
-  .SBL :
+  /* Program code */
+  .program : ALIGN(4)
   {
-    . = ALIGN(4);
-    PROVIDE(__SBL_BASE_ADDRESS = .);
-    *(.SBL)
-    KEEP(*(.SBL))
-  } > SBL
-
-  /* Interrupt vector table */
-  .intvect :
-  {
-    . = ALIGN(4);
+    PROVIDE(__CODE_BASE_ADDRESS = .);
     PROVIDE(__INTVECT_BASE_ADDRESS = .);
+    *(.riscv_intvect)
+    KEEP(*(.riscv_intvect))
     *(.intvect_c0)
     *(.intvect_c1)
     KEEP(*(.intvect_c0))
     KEEP(*(.intvect_c1))
-  } > VEC
-
-  /* startup */
-  .startup :
-  {
-    *(.startup)
-    . = ALIGN(0x10);
-    KEEP(*(.startup))
-  } > ROM = 0x5555
-
-  /* Program code (text), read-only data and static ctors */
-  .text :
-  {
-    _ctors_begin = .;
-    KEEP(*(SORT(.init_array.*)))
-    KEEP(*(.init_array*))
-    _ctors_end = .;
-    *(.progmem*)
-    . = ALIGN(4);
+    PROVIDE(__IMAGE_DEF_BLOCK_START_ADDRESS = .);
+    KEEP(*(.image_start_block))
     *(.text)
-    . = ALIGN(4);
-    *(.text*)
-    . = ALIGN(4);
+    *(.text.*)
+  } > FLASH
+
+  /* Read-only data (.rodata) */
+  .rodata : ALIGN(4)
+  {
+    PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
-    . = ALIGN(4);
-    *(.rodata*)
-    . = ALIGN(4);
-    *(.glue_7)
-    . = ALIGN(4);
-    *(.glue_7t)
-    . = ALIGN(4);
-  } > ROM
+  } > FLASH
 
-  .ARM.extab :
+ /* Section for constructors */
+  .ctors : ALIGN(4)
   {
+    PROVIDE(__CPPCTOR_LIST__ = .);
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array))
+    LONG(-1) ;
+    PROVIDE(__CPPCTOR_END__ = .);
     . = ALIGN(4);
-    *(.ARM.extab)
-    *(.ARM.extab*)
-    *(.gnu.linkonce.armextab.*)
-    . = ALIGN(4);
-  } > ROM
+  }  > FLASH
 
-  .exidx :
+
+  /* Section for destructors */
+  .dtors : ALIGN(4)
   {
+    PROVIDE(__CPPDTOR_LIST__ = .);
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array))
+    LONG(-1) ;
+    PROVIDE(__CPPDTOR_END__ = .);
     . = ALIGN(4);
-    PROVIDE(__exidx_start = .);
-    *(.ARM.exidx*)
-    . = ALIGN(4);
-    PROVIDE(__exidx_end = .);
-  } > ROM
+  } > FLASH
 
-  .ARM.attributes :
+  /* Runtime clear table */
+  .clear_sec : ALIGN(4)
   {
-    *(.ARM.attributes)
-  } > ROM
+    PROVIDE(__RUNTIME_CLEAR_TABLE = .) ;
+    LONG(0 + ADDR(.bss));   LONG(SIZEOF(.bss));
+    LONG(-1);                 LONG(-1);
+    . = ALIGN(4);
+  } > FLASH
 
-  . = 0x20000000;
-  . = ALIGN(4);
+  /* Runtime copy table */
+  .copy_sec : ALIGN(4)
+  {
+    PROVIDE(__RUNTIME_COPY_TABLE = .) ;
+    LONG(LOADADDR(.data));  LONG(0 + ADDR(.data));  LONG(SIZEOF(.data));
+    LONG(-1);                 LONG(-1);                  LONG(-1);
+    . = ALIGN(4);
+  } > FLASH
 
   /* The ROM-to-RAM initialized data section */
-  .data :
+  .data :  ALIGN(4)
   {
-    _data_begin = .;
+    PROVIDE(__DATA_BASE_ADDRESS = .);
     *(.data)
-    . = ALIGN(4);
-    KEEP (*(.data))
-    *(.data*)
-    . = ALIGN(4);
-    KEEP (*(.data*))
-    _data_end = .;
-  } > RAM AT > ROM
+  } > RAM  AT>FLASH
 
-  /* The uninitialized (zero-cleared) data section */
-  .bss :
+  /* The uninitialized (zero-cleared) bss section */
+  .bss : ALIGN(4)
   {
-    _bss_begin = .;
+    PROVIDE(__BSS_BASE_ADDRESS = .);
     *(.bss)
-    . = ALIGN(4);
-    KEEP (*(.bss))
-    *(.bss*)
-    . = ALIGN(4);
-    KEEP (*(.bss*))
-    _bss_end = .;
   } > RAM
 
-  PROVIDE(end = .);
-  PROVIDE(_fini = .);
+  /* stack definition */
+  .stack_core0 :
+  {
+    . = ALIGN(MAX(__STACK_SIZE_CORE0 , .), 8);
+    PROVIDE(__CORE0_STACK_TOP = .) ;
+  } > RAM
 
-  _rom_data_begin = LOADADDR(.data);
+  .stack_core1 :
+  {
+    . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 8);
+    PROVIDE(__CORE1_STACK_TOP = .) ;
+  } > RAM
 
-  /* stack definitions */
-
-  . = 0x20041FF8;
-  . = ALIGN(8);
-
-  PROVIDE(__CORE0_STACK_TOP = .) ;
-
-  . = 0x20040FF8;
-  . = ALIGN(8);
-
-  PROVIDE(__CORE1_STACK_TOP = .) ;
 }
