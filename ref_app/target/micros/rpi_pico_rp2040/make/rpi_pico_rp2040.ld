@@ -1,5 +1,5 @@
 /*
- Copyright Christopher Kormanyos 2007 - 2024.
+ Copyright Christopher Kormanyos 2024.
  Distributed under the Boost Software License,
  Version 1.0. (See accompanying file LICENSE_1_0.txt
  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -25,7 +25,7 @@ SECTIONS
   /* Pico Secondary bootloader */
   .SBL :
   {
-  . = ALIGN(4);
+    . = ALIGN(4);
     PROVIDE(__SBL_BASE_ADDRESS = .);
     *(.SBL)
     KEEP(*(.SBL))
@@ -135,10 +135,10 @@ SECTIONS
   . = 0x20041FF8;
   . = ALIGN(8);
 
-    PROVIDE(__CORE0_STACK_TOP = .) ;
+  PROVIDE(__CORE0_STACK_TOP = .) ;
 
   . = 0x20040FF8;
   . = ALIGN(8);
 
-    PROVIDE(__CORE1_STACK_TOP = .) ;
+  PROVIDE(__CORE1_STACK_TOP = .) ;
 }

@@ -1,4 +1,4 @@
-#  Copyright Christopher Kormanyos 2007 - 2024.
+#  Copyright Christopher Kormanyos 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -47,7 +47,7 @@ IMG_SUFFIX                   := uf2
 IMAGE_FILE                   := $(APP).$(IMG_SUFFIX)
 ELF2UF2                      := $(PATH_TOOLS)/rpi_pico/elf2uf2.exe
 ELF2UF2                      := $(subst /,\,$(PATH_TOOLS)/rpi_pico/elf2uf2.exe)
-RULE_SPECIAL_MAKE_IMAGE_FILE := $(ELF2UF2) -v $(subst /,\,$(APP).$(TGT_SUFFIX)) $(subst /,\,$(IMAGE_FILE))
+RULE_SPECIAL_MAKE_IMAGE_FILE := $(ELF2UF2) $(subst /,\,$(APP).$(TGT_SUFFIX)) $(subst /,\,$(IMAGE_FILE))
 else
 RULE_SPECIAL_MAKE_IMAGE_FILE :=
 endif
