@@ -109,8 +109,18 @@ void main_Core0(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-  volatile uint64_t* pMTIMECMP = (volatile uint64_t*)&(HW_PER_SIO->MTIMECMP.reg);
-  volatile uint64_t* pMTIME    = (volatile uint64_t*)&(HW_PER_SIO->MTIME.reg);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+#endif
+
+volatile uint64_t* pMTIMECMP = (volatile uint64_t*)&(HW_PER_SIO->MTIMECMP.reg);
+volatile uint64_t* pMTIME    = (volatile uint64_t*)&(HW_PER_SIO->MTIME.reg);
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 void main_Core1(void)
 {
@@ -156,14 +166,11 @@ void main_Core1(void)
 
   while(1)
   {
-#ifdef CORE_FAMILY_ARM
-    #define DELAY 15000000
     LED_GREEN_TOGGLE();
-#else
-    #define DELAY 10000000
-#endif
 
-    BlockingDelay(DELAY);
+    BlockingDelay(10000000);
+    BlockingDelay(10000000);
+    BlockingDelay(10000000);
   }
 }
 
