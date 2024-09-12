@@ -87,7 +87,7 @@ typedef union
 #define pSTK_VAL    ((volatile stStkVal* const)  (SYS_TICK_BASE_REG + 0x08))
 #define pSTK_CALIB  ((volatile stStkCalib* const)(SYS_TICK_BASE_REG + 0x0C))
 
-#define CPU_FREQ_MHZ      133U
+#define CPU_FREQ_MHZ      150U
 #define SYS_TICK_MS(x)    ((uint32)(CPU_FREQ_MHZ * x * 1000UL) - 1UL)
 #define SYS_TICK_US(x)    ((uint32)(CPU_FREQ_MHZ * x) - 1UL)
 
@@ -102,6 +102,6 @@ typedef union
 void SysTickTimer_Init(void);
 void SysTickTimer_Start(uint32 timeout);
 void SysTickTimer_Stop(void);
-
+void SysTickTimer_Reload(uint32 timeout);
 
 #endif /*__SYSTICK_TIMER_H__*/

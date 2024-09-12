@@ -8,50 +8,57 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_VERSION   = 13.2.1
+GCC_VERSION   = 13.3.1
 GCC_TARGET    = arm-none-eabi
 GCC_PREFIX    = arm-none-eabi
 
 TGT_SUFFIX    = elf
 
-TGT_ALLFLAGS  = -O0                                            \
-                -mlittle-endian                                \
-                -mlong-calls                                   \
+TGT_ALLFLAGS  = -O2                                            \
                 -mcpu=cortex-m33                               \
-                -march=armv8-m.main+fp+dsp                     \
-                -mfloat-abi=softfp                             \
                 -mthumb                                        \
+                -march=armv8-m.main+fp+dsp                     \
                 -mabi=aapcs                                    \
-                -finline-functions                             \
-                -finline-limit=64
+                -mfloat-abi=softfp                             \
+                -DCORE_FAMILY_ARM                              \
+                -MD                                            \
+                -fomit-frame-pointer                           \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)                                \
-                -DCORE_FAMILY_ARM
+                -DCORE_FAMILY_ARM                              \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
 
 TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
-                $(TGT_ALLFLAGS)
+                $(TGT_ALLFLAGS)                                \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
 
 TGT_INCLUDES  = -I$(PATH_TGT)/Startup/Core/ARM                               \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Clock                         \
-                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis/m-profile               \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cpu                           \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Gpio                          \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer                  \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal                               \
-                -I$(PATH_TGT)/Std                                            \
-                -isystem $(PATH_APP)/util/STL
+                -I$(PATH_TGT)/Std
 
-TGT_AFLAGS    =
+TGT_AFLAGS    = $(TGT_ALLFLAGS)
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
-                -Wl,--gc-sections                              \
+                $(TGT_ALLFLAGS)                                \
+                -e Startup_Init                                \
+                -Wl,--no-warn-rwx-segments                     \
+                -Wl,-z,max-page-size=4096                      \
                 -Wl,-Map,$(APP).map                            \
-                -T $(LINKER_DEFINITION_FILE)
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+               --specs=nosys.specs
+
 
 ifeq ($(TYP_OS),WIN)
 IMG_SUFFIX                   := uf2

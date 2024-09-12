@@ -23,6 +23,8 @@
 #include "Gpio.h"
 #include "SysTickTimer.h"
 
+#include <stdbool.h>
+
 //=============================================================================
 // Macros
 //=============================================================================
@@ -109,7 +111,6 @@ void main_Core0(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
@@ -122,11 +123,15 @@ volatile uint64_t* pMTIME    = (volatile uint64_t*)&(HW_PER_SIO->MTIME.reg);
 #pragma GCC diagnostic pop
 #endif
 
+extern void core_1_run_flag_set(bool);
+
 void main_Core1(void)
 {
 #ifdef DEBUG
   while(boHaltCore1);
 #endif
+
+  core_1_run_flag_set(true);
 
   /* Note: Core 1 is started with interrupt enabled by the BootRom */
 
@@ -162,28 +167,46 @@ void main_Core1(void)
   /* set next timeout (machine timer is enabled by default) */
   *pMTIMECMP = *pMTIME + 150000000ul; //1s
 
+#else
+
+  /* configure ARM systick timer */
+  SysTickTimer_Init();
+  SysTickTimer_Start(SYS_TICK_MS(100));
+
 #endif
 
   while(1)
   {
-    LED_GREEN_TOGGLE();
-
-    BlockingDelay(10000000);
-    BlockingDelay(10000000);
-    BlockingDelay(10000000);
+    __asm("nop");
   }
 }
 
 
 #ifdef CORE_FAMILY_RISC_V
-__attribute__((interrupt)) void Isr_MachineTimerInterrupt(void);
-
-void Isr_MachineTimerInterrupt(void)
-{
+  __attribute__((interrupt)) void Isr_MachineTimerInterrupt(void);
+  
+  void Isr_MachineTimerInterrupt(void)
+  {
   *pMTIMECMP = *pMTIME + 150000000ul;
+  
+    LED_GREEN_TOGGLE();
+  }
 
+#else
+
+  void SysTickTimer(void);
+
+  void SysTickTimer(void)
+  {
+    static uint32_t cpt = 0;
+
+    SysTickTimer_Reload(SYS_TICK_MS(100));
+    
+    if(++cpt >= 10ul)
+    {
   LED_GREEN_TOGGLE();
-}
-
+      cpt = 0;
+    }
+  }
 #endif
 

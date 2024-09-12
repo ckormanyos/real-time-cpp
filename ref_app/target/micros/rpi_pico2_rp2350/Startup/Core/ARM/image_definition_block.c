@@ -15,13 +15,13 @@
   
 ******************************************************************************************/
 
-#include "stdint.h"
+#include <stdint.h>
 
-const uint32_t __attribute__((section(".image_start_block"), aligned(4))) image_definition_Block[] =
+const uint32_t __attribute__((section(".image_start_block"), used, aligned(4))) image_definition_Block[] =
 {
-    0xffffded3,
-    0x10210142,
-    0x000001ff,
-    0x00000000,
-    0xab123579
+  UINT32_C(0xFFFFDED3),
+  UINT32_C(0x10210142),
+  UINT32_C(0x000001FF),
+  UINT32_C(0x00000000),
+  UINT32_C(0xAB123579)
 };

@@ -39,9 +39,6 @@ $(PATH_OBJ)/%.o : %.cpp
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):\([0-9]*\):|(\1,\2) :|' $(PATH_ERR)/$(basename $(@F)).err
-ifneq ($(findstr risc,$(GCC_TARGET)),)
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
-endif
 
 # ------------------------------------------------------------------------------
 # Rule to compile C++ source file (*.cc) to object file (*.o).
@@ -57,9 +54,6 @@ $(PATH_OBJ)/%.o : %.cc
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CXXFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|.hpp:\([0-9]*\),|.hpp(\1) :|' -e 's|.cc:\([0-9]*\),|.cc(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-ifneq ($(findstr risc,$(GCC_TARGET)),)
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
-endif
 
 # ------------------------------------------------------------------------------
 # Rule to compile C source file (*.c) to object file (*.o).
@@ -75,7 +69,6 @@ $(PATH_OBJ)/%.o : %.c
   # ...and be sure to include the path in the dependency file.
 	@-$(CC) $(CFLAGS) $(C_INCLUDES) $(DEP_FLAGS) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|.h:\([0-9]*\),|.h(\1) :|' -e 's|.c:\([0-9]*\),|.c(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 
 
 # ------------------------------------------------------------------------------
@@ -90,4 +83,3 @@ $(PATH_OBJ)/%.o : %.s
   # ...and create an assembly listing using objdump
 	@-$(CC) $(AFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
-	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst

@@ -54,7 +54,7 @@ static void Startup_InitCore(void);
 //=========================================================================================
 // extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak));
+int main(void);
 void RP2350_ClockInit(void) __attribute__((weak));
 void RP2350_InitCore(void) __attribute__((weak));
 

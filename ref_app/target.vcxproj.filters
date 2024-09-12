@@ -911,6 +911,9 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.c">
       <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_1_run.cpp">
+      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">

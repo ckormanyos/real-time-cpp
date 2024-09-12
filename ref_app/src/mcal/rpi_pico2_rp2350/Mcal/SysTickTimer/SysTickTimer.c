@@ -62,6 +62,20 @@ void SysTickTimer_Start(uint32 timeout)
 ///
 /// \return
 //-----------------------------------------------------------------------------
+void SysTickTimer_Reload(uint32 timeout)
+{
+  pSTK_LOAD->u32Register   = timeout;
+}
+
+//-----------------------------------------------------------------------------
+/// \brief
+///
+/// \descr
+///
+/// \param
+///
+/// \return
+//-----------------------------------------------------------------------------
 void SysTickTimer_Stop(void)
 {
   pSTK_CTRL->bits.u1ENABLE = 0U;
