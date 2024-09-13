@@ -224,6 +224,30 @@
     <Filter Include="src\mcal\stm32l432">
       <UniqueIdentifier>{98c591b9-2325-4112-a69c-62feaabd4e6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350">
+      <UniqueIdentifier>{34136d78-e14c-4045-8d0d-0ad16f33ec9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal">
+      <UniqueIdentifier>{2f061ca1-4483-4a8b-aaee-0ccff4b22769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Clock">
+      <UniqueIdentifier>{2cf60274-f899-454e-8fcc-690618c7ad0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis">
+      <UniqueIdentifier>{f73dba03-036f-4f98-9729-fc2d7336ff26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile">
+      <UniqueIdentifier>{4dec0385-4f5d-4129-81b5-da74716ebd79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu">
+      <UniqueIdentifier>{5f7361ff-0d9a-4223-bcef-30455fe7d1ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Gpio">
+      <UniqueIdentifier>{efd86679-8e03-4f9d-a44a-2bebc5ab607b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer">
+      <UniqueIdentifier>{5e0acfbd-219f-4b10-a237-ea58c3677e31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1116,6 +1140,15 @@
     </ClCompile>
     <ClCompile Include="src\mcal\stm32l432\mcal_eep.cpp">
       <Filter>src\mcal\stm32l432</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Clock\Clock.c">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu\Cpu.c">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.c">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2586,6 +2619,90 @@
     <ClInclude Include="src\mcal\stm32l432\mcal_eep.h">
       <Filter>src\mcal\stm32l432</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\RP2350.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Clock\Clock.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_armcc.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_armclang.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_armclang_ltm.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_clang.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_compiler.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_gcc.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_iccarm.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\cmsis_version.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\core_cm0plus.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\core_cm33.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\mpu_armv7.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\mpu_armv8.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\tz_context.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\armv8m_mpu.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\armv8m_pmu.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\armv81m_pac.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\cmsis_armclang_m.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\cmsis_clang_m.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\cmsis_gcc_m.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\cmsis_iccarm_m.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\cmsis_tiarmclang_m.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\armv7m_cachel1.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile\armv7m_mpu.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cmsis\m-profile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu\Cpu.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Gpio\Gpio.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Gpio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.h">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
@@ -2779,6 +2896,9 @@
     </None>
     <None Include="cmake\stm32l432.cmake">
       <Filter>src\cmake</Filter>
+    </None>
+    <None Include="src\mcal\rpi_pico2_rp2350\Mcal\RP2350.svd">
+      <Filter>src\mcal\rpi_pico2_rp2350\Mcal</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

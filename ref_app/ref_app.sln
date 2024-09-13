@@ -56,6 +56,7 @@ Global
 		target riscvfe310|x64 = target riscvfe310|x64
 		target rl78|x64 = target rl78|x64
 		target rpi_pico_rp2040|x64 = target rpi_pico_rp2040|x64
+		target rpi_pico2_rp2350|x64 = target rpi_pico2_rp2350|x64
 		target rx63n|x64 = target rx63n|x64
 		target stm32f100|x64 = target stm32f100|x64
 		target stm32f407|x64 = target stm32f407|x64
@@ -86,6 +87,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target riscvfe310|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rl78|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rpi_pico_rp2040|x64.ActiveCfg = Release|x64
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rpi_pico2_rp2350|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target rx63n|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f100|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target stm32f407|x64.ActiveCfg = Release|x64
@@ -122,6 +124,8 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rl78|x64.Build.0 = target rl78|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico_rp2040|x64.ActiveCfg = target rpi_pico_rp2040|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico_rp2040|x64.Build.0 = target rpi_pico_rp2040|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico2_rp2350|x64.ActiveCfg = target rpi_pico2_rp2350|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rpi_pico2_rp2350|x64.Build.0 = target rpi_pico2_rp2350|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rx63n|x64.ActiveCfg = target rx63n|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target rx63n|x64.Build.0 = target rx63n|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target stm32f100|x64.ActiveCfg = target stm32f100|x64

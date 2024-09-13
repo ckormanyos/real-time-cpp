@@ -1,0 +1,71 @@
+#  Copyright Christopher Kormanyos 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 13.3.1
+GCC_TARGET    = arm-none-eabi
+GCC_PREFIX    = arm-none-eabi
+
+TGT_SUFFIX    = elf
+
+TGT_ALLFLAGS  = -O2                                            \
+                -mcpu=cortex-m33                               \
+                -mthumb                                        \
+                -march=armv8-m.main+fp+dsp                     \
+                -mabi=aapcs                                    \
+                -mfloat-abi=softfp                             \
+                -DCORE_FAMILY_ARM                              \
+                -MD                                            \
+                -fomit-frame-pointer                           \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+
+TGT_CFLAGS    = -std=c11                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)                                \
+                -DCORE_FAMILY_ARM                              \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+
+TGT_CXXFLAGS  = -std=c++14                                     \
+                -Wno-psabi                                     \
+                $(TGT_ALLFLAGS)                                \
+                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+
+TGT_INCLUDES  = -I$(PATH_TGT)/Startup/Core/ARM                               \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Clock                         \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis/m-profile               \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cpu                           \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Gpio                          \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer                  \
+                -I$(PATH_APP)/mcal/$(TGT)/Mcal                               \
+                -I$(PATH_TGT)/Std
+
+TGT_AFLAGS    = $(TGT_ALLFLAGS)
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                $(TGT_ALLFLAGS)                                \
+                -e Startup_Init                                \
+                -Wl,--no-warn-rwx-segments                     \
+                -Wl,-z,max-page-size=4096                      \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+               --specs=nosys.specs
+
+
+ifeq ($(TYP_OS),WIN)
+IMG_SUFFIX                   := uf2
+IMAGE_FILE                   := $(APP).$(IMG_SUFFIX)
+ELF2UF2                      := $(PATH_TOOLS)/rpi_pico2/picotool/picotool.exe
+ELF2UF2                      := $(subst /,\,$(PATH_TOOLS)/rpi_pico2/picotool/picotool.exe)
+RULE_SPECIAL_MAKE_IMAGE_FILE := $(ELF2UF2) uf2 convert --quiet $(subst /,\,$(APP).$(TGT_SUFFIX)) $(subst /,\,$(IMAGE_FILE)) --family rp2350-arm-s --abs-block
+else
+RULE_SPECIAL_MAKE_IMAGE_FILE :=
+endif

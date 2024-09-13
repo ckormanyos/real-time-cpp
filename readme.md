@@ -450,7 +450,7 @@ The program toggles the GPIO status LED  at GPIO index `0x47`.
 The `rpi_pico_rp2040` target configuration employs the
 RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0+
 clocked at $133~\text{MHz}$. The low-level startup boots through
-core 0. Core 0 then starts up core 1 (via a specifiec protocol).
+core 0. Core 0 then starts up core 1 (via a specific protocol).
 Core 1 subsequently carries out the blinky application,
 while core 0 enters an endless, idle loop.
 Ozone debug files are supplied for this system for those interested.

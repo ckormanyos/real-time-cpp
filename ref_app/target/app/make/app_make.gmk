@@ -266,8 +266,8 @@ GCCFLAGS    = -g                                \
               -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
-              -ffunction-sections               \
-              -fdata-sections
+              -fdata-sections                   \
+              -ffunction-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               $(TGT_CFLAGS)                     \
@@ -283,7 +283,7 @@ CXXFLAGS    = $(GCCFLAGS)                       \
               -Wzero-as-null-pointer-constant
 
 AFLAGS      = $(GCCFLAGS)                       \
-              $(TGT_CFLAGS)                     \
+              $(TGT_CXXFLAGS)                   \
               $(TGT_AFLAGS)                     \
               -x assembler
 
