@@ -248,9 +248,6 @@
     <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer">
       <UniqueIdentifier>{5e0acfbd-219f-4b10-a237-ea58c3677e31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\USB">
-      <UniqueIdentifier>{2ba6be78-d4c7-4100-ae31-1b1e8ac645a5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1152,9 +1149,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.c">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\USB\USB.c">
-      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\USB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2708,15 +2702,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.h">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\USB\USB.h">
-      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\USB</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\USB\usb_hwreg.h">
-      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\USB</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\USB\usb_types.h">
-      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\USB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

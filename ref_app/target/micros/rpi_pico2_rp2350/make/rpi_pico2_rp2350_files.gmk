@@ -15,7 +15,6 @@ FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/Mcal/Clock/Clock                  \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
              $(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer/SysTickTimer    \
              $(PATH_TGT)/Appli/main                                    \
-             $(PATH_TGT)/Startup/Core/ARM/boot                         \
              $(PATH_TGT)/Startup/Core/ARM/core_1_run                   \
              $(PATH_TGT)/Startup/Core/ARM/image_definition_block       \
              $(PATH_TGT)/Startup/Core/ARM/IntVect                      \

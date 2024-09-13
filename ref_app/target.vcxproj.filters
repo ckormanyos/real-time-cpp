@@ -615,9 +615,6 @@
     <None Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\util.s">
       <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
     </None>
-    <None Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\boot.s">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
-    </None>
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350_files.gmk">
       <Filter>micros\rpi_pico2_rp2350\make</Filter>
     </None>

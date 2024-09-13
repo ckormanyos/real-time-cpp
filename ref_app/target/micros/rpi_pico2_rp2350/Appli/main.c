@@ -139,6 +139,11 @@ void main_Core1(void)
   HW_PER_SIO->FIFO_ST.reg = 0xFFu;
 
 #ifdef CORE_FAMILY_ARM
+
+  /*Setting EXTEXCLALL allows external exclusive operations to be used in a configuration with no MPU.
+  This is because the default memory map does not include any shareable Normal memory.*/
+  SCnSCB->ACTLR |= (1ul<<29);
+
   __asm volatile("DSB");
 
   /* Clear all pending interrupts on core 1 */

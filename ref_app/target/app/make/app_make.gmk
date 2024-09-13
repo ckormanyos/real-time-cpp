@@ -266,6 +266,7 @@ GCCFLAGS    = -g                                \
               -Wno-comment                      \
               -gdwarf-2                         \
               -fno-exceptions                   \
+              -fdata-sections                   \
               -ffunction-sections
 
 CFLAGS      = $(GCCFLAGS)                       \

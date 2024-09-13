@@ -55,7 +55,7 @@ SECTIONS
     PROVIDE(__IMAGE_DEF_BLOCK_START_ADDRESS = .);
     KEEP(*(.image_start_block))
     *(.text)
-    *(.text.*)
+    *(.text*)
   } > FLASH
 
   /* Read-only data (.rodata) */
@@ -115,6 +115,7 @@ SECTIONS
   {
     PROVIDE(__DATA_BASE_ADDRESS = .);
     *(.data)
+    *(.data*)
   } > RAM  AT>FLASH
 
   /* The uninitialized (zero-cleared) bss section */
@@ -122,6 +123,7 @@ SECTIONS
   {
     PROVIDE(__BSS_BASE_ADDRESS = .);
     *(.bss)
+    *(.bss*)
   } > RAM
 
   /* stack definition */
