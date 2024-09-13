@@ -25,7 +25,7 @@
 #define CORE_ARCH_ENABLE_INTERRUPTS()  __asm("CPSIE i")
 
 
-void arch_spin_lock(uint32* lock);
+void arch_spin_lock  (uint32* lock);
 void arch_spin_unlock(uint32* lock);
 
 #endif //__CORE_ARCH_H__
