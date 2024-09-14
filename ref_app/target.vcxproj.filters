@@ -905,7 +905,7 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\image_definition_block.c">
       <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.c">
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.cpp">
       <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_1_run.cpp">

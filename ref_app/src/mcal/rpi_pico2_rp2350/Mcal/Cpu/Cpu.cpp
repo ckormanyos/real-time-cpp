@@ -18,17 +18,18 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include "Cpu.h"
-#include "core_arch.h"
+#include <Cpu.h>
 
-#include <stdbool.h>
+#include <core_arch.h>
 
 //=============================================================================
 // Globals
 //=============================================================================
-static uint32 u32MulticoreLock  = 0;
-static volatile uint32 u32MulticoreSync = 0;
-
+namespace
+{
+           uint32 u32MulticoreLock;
+  volatile uint32 u32MulticoreSync;
+}
 
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2350_MulticoreSync function
@@ -37,6 +38,7 @@ static volatile uint32 u32MulticoreSync = 0;
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
+extern "C"
 void RP2350_MulticoreSync(uint32 CpuId)
 {
   /* aquire the multicore lock */
@@ -57,6 +59,7 @@ void RP2350_MulticoreSync(uint32 CpuId)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
+extern "C"
 void RP2350_InitCore(void)
 {
   /* we came here from the RP2350 BootRom and SBL */
@@ -88,7 +91,10 @@ void RP2350_InitCore(void)
 #endif
 }
 
-extern bool core_1_run_flag_get(void);
+extern "C"
+{
+  extern bool core_1_run_flag_get(void);
+}
 
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2350_StartCore1 function
@@ -97,6 +103,7 @@ extern bool core_1_run_flag_get(void);
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
+extern "C"
 boolean RP2350_StartCore1(void)
 {
   extern uint32 __INTVECT_Core1[2];

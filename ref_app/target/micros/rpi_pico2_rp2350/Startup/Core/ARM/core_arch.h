@@ -18,11 +18,20 @@
 #ifndef __CORE_ARCH_H__
 #define __CORE_ARCH_H__
 
-#define CORE_ARCH_SEND_EVENT_INST()  __asm("SEV")
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+#define CORE_ARCH_SEND_EVENT_INST()    __asm("SEV")
 #define CORE_ARCH_DISABLE_INTERRUPTS() __asm("CPSID i")
 #define CORE_ARCH_ENABLE_INTERRUPTS()  __asm("CPSIE i")
 
 void arch_spin_lock  (uint32* lock);
 void arch_spin_unlock(uint32* lock);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif //__CORE_ARCH_H__

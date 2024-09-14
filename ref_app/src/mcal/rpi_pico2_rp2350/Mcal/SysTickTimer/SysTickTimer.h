@@ -18,7 +18,12 @@
 #ifndef __SYSTICK_TIMER_H__
 #define __SYSTICK_TIMER_H__
 
-#include "Platform_Types.h"
+#include <Platform_Types.h>
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 //=========================================================================================
 // Types definition
@@ -103,5 +108,9 @@ void SysTickTimer_Init(void);
 void SysTickTimer_Start(uint32 timeout);
 void SysTickTimer_Stop(void);
 void SysTickTimer_Reload(uint32 timeout);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /*__SYSTICK_TIMER_H__*/

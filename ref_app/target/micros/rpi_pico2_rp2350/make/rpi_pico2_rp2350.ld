@@ -138,5 +138,4 @@ SECTIONS
     . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 8);
     PROVIDE(__CORE1_STACK_TOP = .) ;
   } > RAM
-
 }

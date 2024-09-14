@@ -1141,13 +1141,13 @@
     <ClCompile Include="src\mcal\stm32l432\mcal_eep.cpp">
       <Filter>src\mcal\stm32l432</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Clock\Clock.c">
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Clock\Clock.cpp">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Clock</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu\Cpu.c">
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu\Cpu.cpp">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cpu</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.c">
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer\SysTickTimer.cpp">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\SysTickTimer</Filter>
     </ClCompile>
   </ItemGroup>

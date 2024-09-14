@@ -15,7 +15,12 @@
   
 ******************************************************************************************/
 
-#include "SysTickTimer.h"
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#endif
+
+#include <SysTickTimer.h>
 
 //=========================================================================================
 // Functions
@@ -30,6 +35,7 @@
 ///
 /// \return
 //-----------------------------------------------------------------------------
+extern "C"
 void SysTickTimer_Init(void)
 {
   pSTK_CTRL->u32Register     = 0;
@@ -47,6 +53,7 @@ void SysTickTimer_Init(void)
 ///
 /// \return
 //-----------------------------------------------------------------------------
+extern "C"
 void SysTickTimer_Start(uint32 timeout)
 {
   pSTK_LOAD->u32Register   = timeout;
@@ -62,6 +69,7 @@ void SysTickTimer_Start(uint32 timeout)
 ///
 /// \return
 //-----------------------------------------------------------------------------
+extern "C"
 void SysTickTimer_Reload(uint32 timeout)
 {
   pSTK_LOAD->u32Register   = timeout;
@@ -76,7 +84,12 @@ void SysTickTimer_Reload(uint32 timeout)
 ///
 /// \return
 //-----------------------------------------------------------------------------
+extern "C"
 void SysTickTimer_Stop(void)
 {
   pSTK_CTRL->bits.u1ENABLE = 0U;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

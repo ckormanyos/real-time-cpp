@@ -18,12 +18,10 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include "Platform_Types.h"
-#include "Cpu.h"
-#include "Gpio.h"
-#include "SysTickTimer.h"
-
-#include <stdbool.h>
+#include <Platform_Types.h>
+#include <Cpu.h>
+#include <Gpio.h>
+#include <SysTickTimer.h>
 
 //=============================================================================
 // Macros
@@ -32,16 +30,21 @@
 //=============================================================================
 // Prototypes
 //=============================================================================
-void main_Core0(void);
-void main_Core1(void);
-void BlockingDelay(uint32 delay);
+extern "C" void main_Core0(void);
+extern "C" void main_Core1(void);
+extern "C" void BlockingDelay(uint32 delay);
+
+extern "C"
+{
+  extern void core_1_run_flag_set(bool);
+}
 
 //=============================================================================
 // Globals
 //=============================================================================
 #ifdef DEBUG
-  volatile boolean boHaltCore0 = TRUE;
-  volatile boolean boHaltCore1 = TRUE;
+volatile boolean boHaltCore0 = TRUE;
+volatile boolean boHaltCore1 = TRUE;
 #endif
 
 //-----------------------------------------------------------------------------------------
@@ -60,7 +63,7 @@ int main(void)
   RP2350_MulticoreSync((uint32_t)HW_PER_SIO->CPUID.reg);
 
   /* endless loop on the core 0 */
-  for(;;);
+  for(;;) { ; }
 
   /* never reached */
   return(0);
@@ -73,6 +76,7 @@ int main(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
+extern "C"
 void main_Core0(void)
 {
 #ifdef DEBUG
@@ -101,7 +105,6 @@ void main_Core0(void)
       __asm volatile("NOP");
     }
   }
-
 }
 
 //-----------------------------------------------------------------------------------------
@@ -111,20 +114,7 @@ void main_Core0(void)
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-#endif
-
-volatile uint64_t* pMTIMECMP = (volatile uint64_t*)&(HW_PER_SIO->MTIMECMP.reg);
-volatile uint64_t* pMTIME    = (volatile uint64_t*)&(HW_PER_SIO->MTIME.reg);
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
-
-extern void core_1_run_flag_set(bool);
-
+extern "C"
 void main_Core1(void)
 {
 #ifdef DEBUG
@@ -153,7 +143,6 @@ void main_Core1(void)
 
   /* Synchronize with core 0 */
   RP2350_MulticoreSync((uint32_t)HW_PER_SIO->CPUID.reg);
-
 
 #ifdef CORE_FAMILY_RISC_V
 
@@ -186,10 +175,13 @@ void main_Core1(void)
   }
 }
 
-
 #ifdef CORE_FAMILY_RISC_V
+
+
+  extern "C"
   __attribute__((interrupt)) void Isr_MachineTimerInterrupt(void);
-  
+
+  extern "C"
   void Isr_MachineTimerInterrupt(void)
   {
   *pMTIMECMP = *pMTIME + 150000000ul;
@@ -199,19 +191,22 @@ void main_Core1(void)
 
 #else
 
+  extern "C"
   void SysTickTimer(void);
 
+  extern "C"
   void SysTickTimer(void)
   {
     static uint32_t cpt = 0;
 
     SysTickTimer_Reload(SYS_TICK_MS(100));
-    
+
     if(++cpt >= 10ul)
     {
-  LED_GREEN_TOGGLE();
+      LED_GREEN_TOGGLE();
+
       cpt = 0;
     }
   }
-#endif
 
+#endif
