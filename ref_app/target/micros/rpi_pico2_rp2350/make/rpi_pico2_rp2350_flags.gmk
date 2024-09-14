@@ -22,19 +22,16 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mfloat-abi=softfp                             \
                 -DCORE_FAMILY_ARM                              \
                 -MD                                            \
-                -fomit-frame-pointer                           \
-                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+                -fomit-frame-pointer
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
                 $(TGT_ALLFLAGS)                                \
-                -DCORE_FAMILY_ARM                              \
-                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+                -DCORE_FAMILY_ARM
 
 TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
-                $(TGT_ALLFLAGS)                                \
-                -Wa,-adhln=$(PATH_LST)/$(basename $(@F)).lst
+                $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -I$(PATH_TGT)/Startup/Core/ARM                               \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Clock                         \
@@ -53,7 +50,6 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 $(TGT_ALLFLAGS)                                \
                 -e Startup_Init                                \
-                -Wl,--no-warn-rwx-segments                     \
                 -Wl,-z,max-page-size=4096                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)                   \
