@@ -119,10 +119,10 @@ SECTIONS
   . = 0x2007EFF8;
   . = ALIGN(8);
 
-  PROVIDE(__CORE0_STACK_TOP = .) ;
+  PROVIDE(__CORE1_STACK_TOP = .) ;
 
-  . = 0x2007DFF8;
+  . = 0x2007FFF8;
   . = ALIGN(8);
 
-  PROVIDE(__CORE1_STACK_TOP = .) ;
+  PROVIDE(__CORE0_STACK_TOP = .) ;
 }
