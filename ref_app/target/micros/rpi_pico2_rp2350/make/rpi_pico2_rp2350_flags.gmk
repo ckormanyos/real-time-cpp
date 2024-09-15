@@ -48,7 +48,7 @@ TGT_AFLAGS    = $(TGT_ALLFLAGS)
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
                 $(TGT_ALLFLAGS)                                \
-                -e Startup_Init                                \
+                -e __my_startup                                \
                 -Wl,-z,max-page-size=4096                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)                   \

@@ -132,12 +132,12 @@ SECTIONS
 
   /* stack definitions */
 
-  . = 0x20041FF8;
+  . = 0x2003DFF8;
   . = ALIGN(8);
 
   PROVIDE(__CORE0_STACK_TOP = .) ;
 
-  . = 0x20040FF8;
+  . = 0x2003CFF8;
   . = ALIGN(8);
 
   PROVIDE(__CORE1_STACK_TOP = .) ;

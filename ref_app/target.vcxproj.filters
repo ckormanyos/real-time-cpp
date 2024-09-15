@@ -896,7 +896,7 @@
     <ClCompile Include="target\micros\stm32l432\startup\crt0.cpp">
       <Filter>micros\stm32l432\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Startup.c">
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Startup.cpp">
       <Filter>micros\rpi_pico2_rp2350\Startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\IntVect.c">
@@ -909,6 +909,12 @@
       <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_1_run.cpp">
+      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\crt1.cpp">
+      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\crt0_init_ram.cpp">
       <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
     </ClCompile>
   </ItemGroup>

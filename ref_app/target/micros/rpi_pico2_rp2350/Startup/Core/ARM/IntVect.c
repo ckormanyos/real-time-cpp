@@ -28,7 +28,7 @@ void __sys_tick_handler(void) __attribute__((used, noinline));
 //=============================================================================
 // Functions prototype
 //=============================================================================
-void Startup_Init(void) __attribute__((used));
+void __my_startup(void) __attribute__((used));
 void main_Core1 (void) __attribute__((weak, alias("UndefinedHandler")));
 void __CORE0_STACK_TOP(void);
 void __CORE1_STACK_TOP(void);
@@ -90,7 +90,7 @@ void POWMAN_IRQ_TIMER_IRQn(void) __attribute__((weak, alias("UndefinedHandler"))
 const InterruptHandler __attribute__((section(".intvect_c0"), used, aligned(128))) __INTVECT_Core0[] =
 {
     (InterruptHandler)&__CORE0_STACK_TOP,
-    (InterruptHandler)&Startup_Init,
+    (InterruptHandler)&__my_startup,
     (InterruptHandler)&NMI,
     (InterruptHandler)&HardFault,
     (InterruptHandler)0,

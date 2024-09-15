@@ -17,6 +17,8 @@ FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
              $(PATH_TGT)/Appli/main                                    \
              $(PATH_TGT)/Startup/Core/ARM/core_1_run                   \
+             $(PATH_TGT)/Startup/Core/ARM/crt0_init_ram                \
+             $(PATH_TGT)/Startup/Core/ARM/crt1                         \
              $(PATH_TGT)/Startup/Core/ARM/image_definition_block       \
              $(PATH_TGT)/Startup/Core/ARM/IntVect                      \
              $(PATH_TGT)/Startup/Core/ARM/util                         \
