@@ -15,6 +15,11 @@
   
 ******************************************************************************************/
 
+INPUT(libc.a libm.a libgcc.a)
+
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+
 /******************************************************************************************
  ELF Entrypoint
 ******************************************************************************************/
@@ -44,7 +49,6 @@ SECTIONS
   /* Program code */
   .program : ALIGN(4)
   {
-    PROVIDE(__CODE_BASE_ADDRESS = .);
     PROVIDE(__INTVECT_BASE_ADDRESS = .);
     *(.riscv_intvect)
     KEEP(*(.riscv_intvect))
