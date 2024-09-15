@@ -39,7 +39,6 @@ TGT_INCLUDES  = -I$(PATH_TGT)/Startup/Core/ARM                               \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cpu                           \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Gpio                          \
-                -I$(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer                  \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal                               \
                 -I$(PATH_TGT)/Std                                            \
                 -isystem $(PATH_APP)/util/STL

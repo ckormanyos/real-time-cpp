@@ -11,9 +11,10 @@
 
 FILES_CPP :=
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/Mcal/Clock/Clock                  \
+FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
+             $(PATH_APP)/mcal/$(TGT)/mcal_wdg                          \
+             $(PATH_APP)/mcal/$(TGT)/Mcal/Clock/Clock                  \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/SysTickTimer/SysTickTimer    \
              $(PATH_TGT)/Appli/main                                    \
              $(PATH_TGT)/Startup/Core/ARM/core_1_run                   \
              $(PATH_TGT)/Startup/Core/ARM/image_definition_block       \

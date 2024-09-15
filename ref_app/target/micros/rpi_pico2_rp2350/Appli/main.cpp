@@ -19,9 +19,14 @@
 // Includes
 //=============================================================================
 #include <Platform_Types.h>
+
+#include <util/utility/util_time.h>
+
+#include <mcal_gpt.h>
+#include <mcal_irq.h>
+
 #include <Cpu.h>
 #include <Gpio.h>
-#include <SysTickTimer.h>
 
 //=============================================================================
 // Macros
@@ -38,14 +43,6 @@ extern "C"
 {
   extern void core_1_run_flag_set(bool);
 }
-
-//=============================================================================
-// Globals
-//=============================================================================
-#ifdef DEBUG
-volatile boolean boHaltCore0 = TRUE;
-volatile boolean boHaltCore1 = TRUE;
-#endif
 
 //-----------------------------------------------------------------------------------------
 /// \brief  main function
@@ -79,18 +76,11 @@ int main(void)
 extern "C"
 void main_Core0(void)
 {
-#ifdef DEBUG
-  while(boHaltCore0);
-#endif
-
-#ifdef CORE_FAMILY_ARM
   /* Disable interrupts on core 0 */
   __asm volatile("CPSID i");
-#endif
 
   /* Output disable on pin 25 */
   LED_GREEN_CFG();
-
 
   /* Start the Core 1 and turn on the led to be sure that we passed successfully the core 1 initiaization */
   if(TRUE == RP2350_StartCore1())
@@ -117,18 +107,12 @@ void main_Core0(void)
 extern "C"
 void main_Core1(void)
 {
-#ifdef DEBUG
-  while(boHaltCore1);
-#endif
-
   core_1_run_flag_set(true);
 
   /* Note: Core 1 is started with interrupt enabled by the BootRom */
 
   /* Clear the stiky bits of the FIFO_ST on core 1 */
   HW_PER_SIO->FIFO_ST.reg = 0xFFu;
-
-#ifdef CORE_FAMILY_ARM
 
   /*Setting EXTEXCLALL allows external exclusive operations to be used in a configuration with no MPU.
   This is because the default memory map does not include any shareable Normal memory.*/
@@ -139,74 +123,26 @@ void main_Core1(void)
   /* Clear all pending interrupts on core 1 */
   NVIC->ICPR[0] = (uint32)-1;
 
-#endif
-
   /* Synchronize with core 0 */
   RP2350_MulticoreSync((uint32_t)HW_PER_SIO->CPUID.reg);
 
-#ifdef CORE_FAMILY_RISC_V
-
-  /* configure the machine timer for 1Hz interrupt window */
-  #include "riscv.h"
-
-  /* enable machine timer interrupt */
-  riscv_set_csr(RVCSR_MIE_OFFSET, 0x80ul);
-
-  /* enable global interrupt */
-  riscv_set_csr(RVCSR_MSTATUS_OFFSET, 0x08ul);
-
-  /* configure machine timer to use 150 MHz */
-  HW_PER_SIO->MTIME_CTRL.bit.FULLSPEED = 1;
-
-  /* set next timeout (machine timer is enabled by default) */
-  *pMTIMECMP = *pMTIME + 150000000ul; //1s
-
-#else
-
   /* configure ARM systick timer */
-  SysTickTimer_Init();
-  SysTickTimer_Start(SYS_TICK_MS(100));
+  mcal::gpt::init(nullptr);
 
-#endif
+  mcal::irq::enable_all();
 
   while(1)
   {
-    __asm("nop");
-  }
-}
+    using local_timer_type = util::timer<std::uint32_t>;
 
-#ifdef CORE_FAMILY_RISC_V
+    constexpr local_timer_type::tick_type
+      one_second
+      {
+        local_timer_type::seconds(local_timer_type::tick_type { UINT32_C(1) })
+      };
 
+    local_timer_type::blocking_delay(one_second);
 
-  extern "C"
-  __attribute__((interrupt)) void Isr_MachineTimerInterrupt(void);
-
-  extern "C"
-  void Isr_MachineTimerInterrupt(void)
-  {
-  *pMTIMECMP = *pMTIME + 150000000ul;
-  
     LED_GREEN_TOGGLE();
   }
-
-#else
-
-  extern "C"
-  void SysTickTimer(void);
-
-  extern "C"
-  void SysTickTimer(void)
-  {
-    static uint32_t cpt = 0;
-
-    SysTickTimer_Reload(SYS_TICK_MS(100));
-
-    if(++cpt >= 10ul)
-    {
-      LED_GREEN_TOGGLE();
-
-      cpt = 0;
-    }
-  }
-
-#endif
+}

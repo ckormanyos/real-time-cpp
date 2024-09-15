@@ -23,6 +23,8 @@ typedef void (*InterruptHandler)(void);
 void UndefinedHandler(void);
 void UndefinedHandler(void) { for(;;); }
 
+void __sys_tick_handler(void) __attribute__((used, noinline));
+
 //=============================================================================
 // Functions prototype
 //=============================================================================
@@ -175,7 +177,7 @@ const InterruptHandler __attribute__((section(".intvect_c1"), used, aligned(128)
     (InterruptHandler)0,
     (InterruptHandler)0,
     (InterruptHandler)&PendSV,
-    (InterruptHandler)&SysTickTimer,
+    (InterruptHandler)&__sys_tick_handler,
     (InterruptHandler)&TIMER0_IRQ_0_IRQn,
     (InterruptHandler)&TIMER0_IRQ_1_IRQn,
     (InterruptHandler)&TIMER0_IRQ_2_IRQn,
