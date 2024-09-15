@@ -15,7 +15,7 @@ extern "C" auto UndefinedHandler() -> void { for(;;) { mcal::cpu::nop(); } }
 extern "C" auto __my_startup() -> void __attribute__((used, noinline));
 extern "C" auto __main_core1() -> void __attribute__((weak, alias("UndefinedHandler")));
 
-extern "C" auto __sys_tick_handler() noexcept -> void __attribute__((used, noinline));
+extern "C" auto __sys_tick_handler(void) -> void __attribute__((used, noinline));
 
 extern "C" auto __CORE0_STACK_TOP() -> void;
 extern "C" auto __CORE1_STACK_TOP() -> void;

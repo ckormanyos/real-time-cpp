@@ -8,7 +8,7 @@
 #include <mcal_gpt.h>
 
 extern "C"
-auto __sys_tick_handler(void) noexcept -> void
+auto __sys_tick_handler(void) -> void
 {
   using local_arm_sys_tick_type = ::mcal::gpt::arm_sys_tick_type;
   using local_value_type        = typename local_arm_sys_tick_type::value_type;
