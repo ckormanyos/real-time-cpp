@@ -14,6 +14,22 @@
   {
     namespace reg
     {
+      // Global base addresses.
+      constexpr std::uint32_t scs_base                  { UINT32_C(0xE000E000) };
+
+      // SCnSCB registers.
+      constexpr std::uint32_t scnscb_reserved0        { scs_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t scnscb_ictr             { scs_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t scnscb_actlr            { scs_base + UINT32_C(0x00000008) };
+      constexpr std::uint32_t scnscb_cppwr            { scs_base + UINT32_C(0x0000000C) };
+
+      // PSM registers.
+      constexpr std::uint32_t psm_base                  { UINT32_C(0x40018000) };
+      constexpr std::uint32_t psm_frce_on               { psm_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t psm_frce_off              { psm_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t psm_wdsel                 { psm_base + UINT32_C(0x00000008) };
+      constexpr std::uint32_t psm_done                  { psm_base + UINT32_C(0x0000000C) };
+
       // Single-instruction registers.
       constexpr std::uint32_t sio_base                  { UINT32_C(0xD0000000) };
       constexpr std::uint32_t sio_cpuid                 { sio_base + UINT32_C(0x00000000) };
@@ -33,6 +49,13 @@
       constexpr std::uint32_t pads_bank0_gpio           { UINT32_C(0x40038004) };
 
       constexpr std::uint32_t hw_per_io_bank0           { io_bank0_base };
+
+      constexpr std::uint32_t hw_per_psm_base           { UINT32_C(0x40018000) };
+
+      constexpr std::uint32_t hw_per_resets_resets_base { UINT32_C(0x40020000) };
+      constexpr std::uint32_t hw_per_resets_reset       { hw_per_resets_resets_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t hw_per_resets_wdsel       { hw_per_resets_resets_base + UINT32_C(0x00000004) };
+      constexpr std::uint32_t hw_per_resets_reset_done  { hw_per_resets_resets_base + UINT32_C(0x00000008) };
     }
   }
 
