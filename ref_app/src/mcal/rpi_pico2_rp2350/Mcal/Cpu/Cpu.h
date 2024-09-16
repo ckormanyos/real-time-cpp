@@ -20,8 +20,13 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include "RP2350.h"
-#include "Platform_Types.h"
+#include <RP2350.h>
+#include <Platform_Types.h>
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 //=============================================================================
 // Defines
@@ -34,8 +39,11 @@
 //=============================================================================
 // Functions prototype
 //=============================================================================
-void RP2350_MulticoreSync(uint32 CpuId);
-boolean RP2350_StartCore1(void);
-void RP2350_InitCore(void);
+void    RP2350_MulticoreSync(uint32 CpuId);
+boolean RP2350_StartCore1   (void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /*__RP2350_CPU_H__*/

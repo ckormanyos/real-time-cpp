@@ -26,6 +26,20 @@ extern "C" auto __main      () -> void __attribute__((section(".startup"), used,
 extern "C" auto __main_core0() -> void __attribute__((section(".startup"), used, noinline));
 extern "C" auto __main_core1() -> void __attribute__((section(".startup"), used, noinline));
 
+namespace local
+{
+  inline auto get_cpuid() -> std::uint32_t
+  {
+    const std::uint32_t
+      cpuid
+      {
+        mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get()
+      };
+
+    return cpuid;
+  }
+}
+
 extern "C"
 auto __my_startup() -> void
 {
@@ -70,7 +84,7 @@ auto __main() -> void
   ::__main_core0();
 
   // Synchronize with core 1.
-  mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
+  mcal::cpu::rp2040::multicore_sync(local::get_cpuid());
 
   // It is here that an actual application could
   // be started and then executed on core 0.
@@ -124,10 +138,13 @@ auto __main_core1() -> void
   // Clear all pending interrupts on core 1.
 
   // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::nvic_icpr, std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::nvic_icpr,
+                               std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
   // Synchronize with core 0.
-  mcal::cpu::rp2040::multicore_sync(mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get());
+  mcal::cpu::rp2040::multicore_sync(local::get_cpuid());
 
   // Jump to main on core 1 (and never return).
   asm volatile("ldr r3, =main");

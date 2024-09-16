@@ -259,23 +259,14 @@
     <Filter Include="micros\rpi_pico2_rp2350">
       <UniqueIdentifier>{6e60b74b-286f-4cd0-a99e-75ae6bb76af8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Startup">
-      <UniqueIdentifier>{66796a1a-dbfb-41d7-b5fa-0226f8a52cde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Startup\Core">
-      <UniqueIdentifier>{8c5a07af-8670-4a05-ad94-771c344e97e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Startup\Core\ARM">
-      <UniqueIdentifier>{7fd0772a-f2d2-4eb4-832f-f32f0bc0cae9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\rpi_pico2_rp2350\make">
       <UniqueIdentifier>{451ca947-56ce-46cf-a4e8-036c75f8b86a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Appli">
-      <UniqueIdentifier>{8f7c20e8-9cec-4cf8-b3b5-48ce200d6733}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\rpi_pico2_rp2350\Std">
       <UniqueIdentifier>{6be8f2e8-8491-442a-9308-13667c843931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\rpi_pico2_rp2350\startup">
+      <UniqueIdentifier>{66796a1a-dbfb-41d7-b5fa-0226f8a52cde}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -612,9 +603,6 @@
     <None Include="target\micros\stm32l432\make\stm32l432_flags.gmk">
       <Filter>micros\stm32l432\make</Filter>
     </None>
-    <None Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\util.s">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
-    </None>
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350_files.gmk">
       <Filter>micros\rpi_pico2_rp2350\make</Filter>
     </None>
@@ -623,6 +611,9 @@
     </None>
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350.ld">
       <Filter>micros\rpi_pico2_rp2350\make</Filter>
+    </None>
+    <None Include="target\micros\rpi_pico2_rp2350\startup\util.s">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -896,20 +887,23 @@
     <ClCompile Include="target\micros\stm32l432\startup\crt0.cpp">
       <Filter>micros\stm32l432\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Startup.c">
-      <Filter>micros\rpi_pico2_rp2350\Startup</Filter>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\crt0.cpp">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\IntVect.c">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\core_1_run.cpp">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\image_definition_block.c">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt0_init_ram.cpp">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.c">
-      <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt1.cpp">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_1_run.cpp">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.c">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\IntVect.c">
+      <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -918,9 +912,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="target\micros\rpi_pico2_rp2350\Startup\Core\ARM\core_arch.h">
-      <Filter>micros\rpi_pico2_rp2350\Startup\Core\ARM</Filter>
-    </ClInclude>
     <ClInclude Include="target\micros\rpi_pico2_rp2350\Std\Platform_Types.h">
       <Filter>micros\rpi_pico2_rp2350\Std</Filter>
     </ClInclude>

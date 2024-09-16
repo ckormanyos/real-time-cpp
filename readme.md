@@ -22,20 +22,6 @@
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
 </p>
 
----
-
-# :loudspeaker: **Announcement**
-
-**Make-File Unified:**
-
-The file
-[`app_make.gmk`](https://github.com/ckormanyos/real-time-cpp/blob/master/ref_app/target/app/make/app_make.gmk)
-is now used uniformly on all operating systems. The file `app_make_linux.gmk` has been removed.
-If you have been building target(s) via direct manual call to `make` with `app_make_linux.gmk`,
-simply use `app_make.gmk` now. Calls of `build.sh` (and `build.bat`) remain unchanged.
-
----
-
 This is the companion code
 for the book C.M. Kormanyos,
 [Real-Time C++](https://www.springer.com/de/book/9783662629956):
@@ -96,6 +82,7 @@ The reference application supports the following targets:
 | `riscvfe310`                           | SiFive RISC-V FE310 SoC                                     |               |
 | `rl78`                                 | Renesas(R) RL78/G13                                         |               |
 | `rpi_pico_rp2040`                      | RaspberryPi(R) Pico RP2040 with dual ARM(R) Cortex(R)-M0+   | X             |
+| `rpi_pico2_rp2350`                     | RaspberryPi(R) Pico2 RP2350 with dual ARM(R) Cortex(R)-M33  | X             |
 | `rx63n`                                | Renesas(R) RX630/RX631                                      |               |
 | `stm32f100`                            | STMicroelectronics(R) STM32F100 ARM(R) Cortex(R)-M3         | X             |
 | `stm32f407`                            | STMicroelectronics(R) STM32F407 ARM(R) Cortex(R)-M4F        |               |

@@ -5,10 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <chrono>
-#include <cstddef>
 #include <mcal_cpu.h>
 #include <mcal_gpt.h>
+
+#include <chrono>
+#include <cstddef>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
