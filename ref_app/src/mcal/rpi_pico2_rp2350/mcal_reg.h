@@ -23,9 +23,16 @@
       constexpr std::uint32_t sio_gpio_oe_set           { sio_base + UINT32_C(0x00000038) };
       constexpr std::uint32_t sio_gpio_oe_clr           { sio_base + UINT32_C(0x00000040) };
 
+      constexpr std::uint32_t hw_per_sio_base           { sio_base };
+
       // I/O-Bank registers.
       constexpr std::uint32_t io_bank0_base             { UINT32_C(0x40028000) };
       constexpr std::uint32_t io_bank0_status_base      { io_bank0_base + UINT32_C(0x00000000) };
+
+      constexpr std::uint32_t pads_bank0_base           { UINT32_C(0x40038000) };
+      constexpr std::uint32_t pads_bank0_gpio           { UINT32_C(0x40038004) };
+
+      constexpr std::uint32_t hw_per_io_bank0           { io_bank0_base };
     }
   }
 

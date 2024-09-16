@@ -239,9 +239,6 @@
     <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu">
       <UniqueIdentifier>{5f7361ff-0d9a-4223-bcef-30455fe7d1ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\rpi_pico2_rp2350\Mcal\Gpio">
-      <UniqueIdentifier>{663bb776-7f47-4142-acd6-8da02d48d8fa}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -2711,9 +2708,6 @@
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Cpu\Cpu.h">
       <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Cpu</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\rpi_pico2_rp2350\Mcal\Gpio\Gpio.h">
-      <Filter>src\mcal\rpi_pico2_rp2350\Mcal\Gpio</Filter>
     </ClInclude>
     <ClInclude Include="src\mcal\rpi_pico2_rp2350\mcal_irq.h">
       <Filter>src\mcal\rpi_pico2_rp2350</Filter>
