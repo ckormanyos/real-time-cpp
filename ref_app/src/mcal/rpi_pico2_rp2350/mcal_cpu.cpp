@@ -7,6 +7,7 @@
 
 #include <mcal_cpu.h>
 #include <mcal_osc.h>
+#include <mcal_port.h>
 #include <mcal_wdg.h>
 
 #include <RP2350.h>
@@ -52,6 +53,6 @@ void mcal::cpu::init()
   local::init_core();
 
   mcal::wdg::init(nullptr);
-  //mcal::port::init(nullptr);
+  mcal::port::init(nullptr);
   mcal::osc::init(nullptr);
 }

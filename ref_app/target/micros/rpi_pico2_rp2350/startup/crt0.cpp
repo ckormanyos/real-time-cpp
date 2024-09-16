@@ -21,18 +21,18 @@
 
 extern "C"
 {
-  extern void core_1_run_flag_set(bool);
-  extern bool core_1_run_flag_get(void);
+  extern auto core_1_run_flag_set(bool) -> void;
+  extern auto core_1_run_flag_get() -> bool;
 
-  void __my_startup(void) __attribute__((used));
-  void __main(void);
+  auto __my_startup() -> void __attribute__((used, noinline));
+  auto __main      () -> void __attribute__((used, noinline));
 
-  extern int  main        (void);
-  extern void __main_core0(void);
-  extern void __main_core1(void) __attribute__((used));
+  extern auto main        () -> int  __attribute__((used, noinline));
+  extern auto __main_core0() -> void;
+  extern auto __main_core1() -> void __attribute__((used, noinline));
 
-  extern boolean RP2350_StartCore1   (void);
-  extern void    RP2350_MulticoreSync(uint32_t CpuId);
+  extern auto RP2350_StartCore1   () -> boolean;
+  extern auto RP2350_MulticoreSync(uint32_t CpuId) -> void;
 }
 
 namespace crt
@@ -52,7 +52,7 @@ namespace local
 }
 
 extern "C"
-void __my_startup(void)
+auto __my_startup() -> void
 {
   /* Configure the system clock */
   mcal::cpu::init();
@@ -80,7 +80,7 @@ void __my_startup(void)
 }
 
 extern "C"
-void __main(void)
+auto __main() -> void
 {
   // Run the main function of core 0.
   // This will subsequently start core 1.
@@ -99,7 +99,7 @@ void __main(void)
 }
 
 extern "C"
-void __main_core0(void)
+auto __main_core0() -> void
 {
   // Disable interrupts on core 0.
   mcal::irq::disable_all();
@@ -123,7 +123,7 @@ void __main_core0(void)
 }
 
 extern "C"
-void __main_core1(void)
+auto __main_core1() -> void
 {
   // Disable interrupts on core 1.
   mcal::irq::disable_all();

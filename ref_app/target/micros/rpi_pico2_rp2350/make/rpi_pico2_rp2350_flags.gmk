@@ -20,7 +20,10 @@ TGT_ALLFLAGS  = -O2                                            \
                 -march=armv8-m.main+fp+dsp                     \
                 -mabi=aapcs                                    \
                 -mfloat-abi=hard                               \
-                -MD
+                -finline-functions                             \
+                -finline-limit=128                             \
+                -mno-unaligned-access                          \
+                -mno-long-calls
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
