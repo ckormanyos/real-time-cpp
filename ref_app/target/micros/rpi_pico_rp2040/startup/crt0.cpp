@@ -19,7 +19,7 @@ namespace crt
   auto init_ctors() -> void;
 }
 
-extern "C" auto main(void) -> int __attribute__((used));
+extern "C" auto main() -> int __attribute__((used));
 
 extern "C" auto __my_startup() -> void __attribute__((section(".startup"), used, noinline));
 extern "C" auto __main      () -> void __attribute__((section(".startup"), used, noinline));

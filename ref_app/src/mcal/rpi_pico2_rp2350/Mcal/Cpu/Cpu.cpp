@@ -65,7 +65,7 @@ void RP2350_MulticoreSync(uint32 CpuId)
 /// \return void
 //-----------------------------------------------------------------------------------------
 extern "C"
-boolean RP2350_StartCore1(void)
+boolean RP2350_StartCore1()
 {
   extern uint32 __INTVECT_Core1[2];
 

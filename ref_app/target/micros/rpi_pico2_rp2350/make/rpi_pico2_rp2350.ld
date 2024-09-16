@@ -34,6 +34,14 @@ SECTIONS
     KEEP(*(.image_start_block))
   } > VEC
 
+  /* startup */
+  .startup :
+  {
+    *(.startup)
+    . = ALIGN(0x10);
+    KEEP(*(.startup))
+  } > ROM = 0x5555
+
   /* Program code (text), read-only data and static ctors */
   .text :
   {

@@ -13,8 +13,8 @@
 extern "C" auto UndefinedHandler() -> void;
 extern "C" auto UndefinedHandler() -> void { for(;;) { mcal::cpu::nop(); } }
 
-extern "C" auto __my_startup() -> void __attribute__((used, noinline));
-extern "C" auto __main_core1() -> void __attribute__((used, noinline));
+extern "C" auto __my_startup() -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core1() -> void __attribute__((section(".startup"), used, noinline));
 
 extern "C" auto __sys_tick_handler() -> void __attribute__((used, noinline));
 
