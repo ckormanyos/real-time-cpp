@@ -13,7 +13,6 @@
 
 #include <mcal_cpu.h>
 #include <mcal_irq.h>
-#include <mcal_led.h>
 
 #include <Platform_Types.h>
 #include <RP2350.h>
@@ -23,6 +22,7 @@
 extern "C"
 {
   extern void core_1_run_flag_set(bool);
+  extern bool core_1_run_flag_get(void);
 
   void __my_startup(void) __attribute__((used));
   void __main(void);
@@ -107,14 +107,17 @@ void __main_core0(void)
   /* Start the Core 1 and turn on the led to be sure that we passed successfully the core 1 initiaization */
   if(TRUE == RP2350_StartCore1())
   {
-    mcal::led::led0().toggle();
+    while(!core_1_run_flag_get())
+    {
+      mcal::cpu::nop();
+    }
   }
   else
   {
     /* Loop forever in case of error */
     while(1)
     {
-      asm volatile("NOP");
+      mcal::cpu::nop();
     }
   }
 }

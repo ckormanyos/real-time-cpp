@@ -1010,7 +1010,6 @@
     <ClCompile Include="target\micros\rl78\startup\crt1.cpp" />
     <ClCompile Include="target\micros\rl78\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\rl78\startup\option.cpp" />
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\core_1_run.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\crt0.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt0_init_ram.cpp" />

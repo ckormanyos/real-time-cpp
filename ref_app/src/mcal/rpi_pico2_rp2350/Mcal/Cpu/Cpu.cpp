@@ -57,11 +57,6 @@ void RP2350_MulticoreSync(uint32 CpuId)
   while(u32MulticoreSync != MULTICORE_SYNC_MASK);
 }
 
-extern "C"
-{
-  extern bool core_1_run_flag_get(void);
-}
-
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2350_StartCore1 function
 ///
@@ -138,8 +133,6 @@ boolean RP2350_StartCore1(void)
 
   /* Clear the stiky bits of the FIFO_ST on core 0 */
   HW_PER_SIO->FIFO_ST.reg = 0xFFu;
-
-  while(!core_1_run_flag_get()) { ; }
 
   return(TRUE);
 }

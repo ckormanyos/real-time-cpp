@@ -262,9 +262,6 @@
     <Filter Include="micros\rpi_pico2_rp2350\make">
       <UniqueIdentifier>{451ca947-56ce-46cf-a4e8-036c75f8b86a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Appli">
-      <UniqueIdentifier>{8f7c20e8-9cec-4cf8-b3b5-48ce200d6733}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\rpi_pico2_rp2350\Std">
       <UniqueIdentifier>{6be8f2e8-8491-442a-9308-13667c843931}</UniqueIdentifier>
     </Filter>
@@ -892,9 +889,6 @@
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\crt0.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
-    </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\Appli\main.cpp">
-      <Filter>micros\rpi_pico2_rp2350\Appli</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\core_1_run.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
