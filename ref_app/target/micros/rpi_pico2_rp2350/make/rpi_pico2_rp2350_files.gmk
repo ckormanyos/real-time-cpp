@@ -11,9 +11,11 @@
 
 FILES_CPP :=
 
-FILES_TGT  = $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
+FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
+             $(PATH_APP)/mcal/$(TGT)/mcal_led                          \
+             $(PATH_APP)/mcal/$(TGT)/mcal_osc                          \
              $(PATH_APP)/mcal/$(TGT)/mcal_wdg                          \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/Clock/Clock                  \
              $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
              $(PATH_TGT)/Appli/main                                    \
              $(PATH_TGT)/Startup/Core/ARM/core_1_run                   \

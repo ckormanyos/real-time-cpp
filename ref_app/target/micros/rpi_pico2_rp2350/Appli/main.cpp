@@ -18,15 +18,14 @@
 //=============================================================================
 // Includes
 //=============================================================================
-#include <Platform_Types.h>
-
-#include <util/utility/util_time.h>
-
 #include <mcal_gpt.h>
 #include <mcal_irq.h>
+#include <mcal_led.h>
 
+#include <Platform_Types.h>
 #include <Cpu.h>
-#include <Gpio.h>
+
+#include <util/utility/util_time.h>
 
 //=============================================================================
 // Macros
@@ -79,13 +78,10 @@ void main_Core0(void)
   /* Disable interrupts on core 0 */
   __asm volatile("CPSID i");
 
-  /* Output disable on pin 25 */
-  LED_GREEN_CFG();
-
   /* Start the Core 1 and turn on the led to be sure that we passed successfully the core 1 initiaization */
   if(TRUE == RP2350_StartCore1())
   {
-    LED_GREEN_ON();
+    mcal::led::led0().toggle();
   }
   else
   {
@@ -143,6 +139,6 @@ void main_Core1(void)
 
     local_timer_type::blocking_delay(one_second);
 
-    LED_GREEN_TOGGLE();
+    mcal::led::led0().toggle();
   }
 }

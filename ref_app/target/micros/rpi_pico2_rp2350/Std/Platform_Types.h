@@ -18,6 +18,11 @@
 #ifndef __PLATFORM_TYPES_H__
 #define __PLATFORM_TYPES_H__
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
 typedef unsigned char uint8;
 typedef signed char sint8;
 typedef unsigned short uint16;
@@ -31,12 +36,27 @@ typedef void (*pFunc)(void);
 
 typedef enum
 {
-  FALSE = 0,
+  FALSE,
   TRUE
-}boolean;
+}
+boolean;
 
+#if !defined(NULL)
+#if defined(__cplusplus)
+#define NULL    0
+#else
 #define NULL    (void*)0
+#endif
+#endif
 
+#if defined(__cplusplus)
+#define NULL_PTR    nullptr
+#else
 #define NULL_PTR    (void*)0
+#endif
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

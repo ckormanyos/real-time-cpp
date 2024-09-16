@@ -11,6 +11,8 @@
 // 
 // ***************************************************************************************
 
+#include <mcal_osc.h>
+
 extern "C"
 {
   typedef struct
@@ -43,16 +45,6 @@ namespace crt
   auto init_ctors() -> void;
 }
 
-//=========================================================================================
-// macros
-//=========================================================================================
-#define __STARTUP_RUNTIME_COPYTABLE   (runtimeCopyTable_t*)(&__RUNTIME_COPY_TABLE[0])
-#define __STARTUP_RUNTIME_CLEARTABLE  (runtimeClearTable_t*)(&__RUNTIME_CLEAR_TABLE[0])
-#define __STARTUP_RUNTIME_CTORS       (unsigned long*)(&__CPPCTOR_LIST__[0])
-
-#define ENABLE_IRQ()  __asm("CPSIE i")
-#define DISABLE_IRQ() __asm("CPSID i")
-
 //-----------------------------------------------------------------------------------------
 /// \brief  __my_startup function
 ///
@@ -67,7 +59,7 @@ void __my_startup(void)
   RP2350_InitCore();
 
   /* Configure the system clock */
-  RP2350_ClockInit();
+  mcal::osc::init(nullptr);
 
   /* Initialize the RAM memory */
   crt::init_ram();
