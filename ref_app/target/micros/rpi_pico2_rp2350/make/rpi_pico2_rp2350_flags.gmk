@@ -19,15 +19,12 @@ TGT_ALLFLAGS  = -O2                                            \
                 -mthumb                                        \
                 -march=armv8-m.main+fp+dsp                     \
                 -mabi=aapcs                                    \
-                -mfloat-abi=softfp                             \
-                -DCORE_FAMILY_ARM                              \
-                -MD                                            \
-                -fomit-frame-pointer
+                -mfloat-abi=hard                               \
+                -MD
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
-                $(TGT_ALLFLAGS)                                \
-                -DCORE_FAMILY_ARM
+                $(TGT_ALLFLAGS)
 
 TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
@@ -51,7 +48,7 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)                   \
                 --specs=nano.specs                             \
-               --specs=nosys.specs
+                --specs=nosys.specs
 
 
 ifeq ($(TYP_OS),WIN)

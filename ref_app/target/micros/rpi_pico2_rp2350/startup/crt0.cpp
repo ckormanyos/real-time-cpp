@@ -147,6 +147,11 @@ void __main_core1(void)
   // Synchronize with core 0.
   RP2350_MulticoreSync(local::get_cpuid());
 
+  // Initialize the FPU: Enable CP10 and CP11.
+  //CPACR |= 0x00F00000UL;
+  HW_PER_PPB->CPACR.reg |= (std::uint32_t) 0x00F00000UL;
+  //mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_cpacr, static_cast<std::uint32_t>(UINT32_C(0x00F00000))>::reg_or();
+
   // Jump to main on core 1 (and never return).
   asm volatile("ldr r3, =main");
   asm volatile("blx r3");
