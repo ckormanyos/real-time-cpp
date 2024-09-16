@@ -38,6 +38,9 @@
       constexpr std::uint32_t sio_gpio_out_xor          { sio_base + UINT32_C(0x00000028) };
       constexpr std::uint32_t sio_gpio_oe_set           { sio_base + UINT32_C(0x00000038) };
       constexpr std::uint32_t sio_gpio_oe_clr           { sio_base + UINT32_C(0x00000040) };
+      constexpr std::uint32_t sio_fifo_st               { sio_base + UINT32_C(0x00000050) };
+      constexpr std::uint32_t sio_fifo_wr               { sio_base + UINT32_C(0x00000054) };
+      constexpr std::uint32_t sio_fifo_rd               { sio_base + UINT32_C(0x00000058) };
 
       constexpr std::uint32_t hw_per_sio_base           { sio_base };
 

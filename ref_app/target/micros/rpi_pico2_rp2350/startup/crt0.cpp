@@ -118,7 +118,7 @@ auto __main_core0() -> void
   mcal::irq::disable_all();
 
   // Start core 1 and verify successful initiaization of core 1.
-  if(FALSE == RP2350_StartCore1())
+  if(!RP2350_StartCore1())
   {
     // In case of error, loop forever (on core 0).
     for(;;)
