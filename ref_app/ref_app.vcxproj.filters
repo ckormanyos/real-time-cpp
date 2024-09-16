@@ -1150,6 +1150,9 @@
     <ClCompile Include="src\mcal\rpi_pico2_rp2350\mcal_led.cpp">
       <Filter>src\mcal\rpi_pico2_rp2350</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcal\rpi_pico2_rp2350\mcal_cpu.cpp">
+      <Filter>src\mcal\rpi_pico2_rp2350</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\math\calculus\derivative.h">

@@ -19,27 +19,6 @@
 
 /*******************************************************************************************
   \brief  
-
-  \param  
-  
-  \return 
-********************************************************************************************/
-.thumb_func
-.section ".text", "ax"
-.align 8
-.globl BlockingDelay
-.type  BlockingDelay, % function
-
-
-BlockingDelay:
-                      subs r0, r0, #1
-                      bne BlockingDelay
-                      bx lr
-
-.size BlockingDelay, .-BlockingDelay
-
-/*******************************************************************************************
-  \brief  
   
   \param  
   

@@ -41,7 +41,6 @@ extern "C"
 //=============================================================================
 void    RP2350_MulticoreSync(uint32 CpuId);
 boolean RP2350_StartCore1   (void);
-void    RP2350_InitCore     (void);
 
 #if defined(__cplusplus)
 }

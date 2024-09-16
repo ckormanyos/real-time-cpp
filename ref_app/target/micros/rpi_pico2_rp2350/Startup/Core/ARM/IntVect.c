@@ -29,7 +29,7 @@ void __sys_tick_handler(void) __attribute__((used, noinline));
 // Functions prototype
 //=============================================================================
 void __my_startup(void) __attribute__((used));
-void main_Core1 (void) __attribute__((weak, alias("UndefinedHandler")));
+void __main_core1(void) __attribute__((used));
 void __CORE0_STACK_TOP(void);
 void __CORE1_STACK_TOP(void);
 
@@ -163,7 +163,7 @@ const InterruptHandler __attribute__((section(".intvect_c0"), used, aligned(128)
 const InterruptHandler __attribute__((section(".intvect_c1"), used, aligned(128))) __INTVECT_Core1[] =
 {
     (InterruptHandler)&__CORE1_STACK_TOP,
-    (InterruptHandler)&main_Core1,
+    (InterruptHandler)&__main_core1,
     (InterruptHandler)&NMI,
     (InterruptHandler)&HardFault,
     (InterruptHandler)0,

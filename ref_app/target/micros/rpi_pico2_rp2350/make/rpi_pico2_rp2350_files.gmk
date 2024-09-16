@@ -12,6 +12,7 @@
 FILES_CPP :=
 
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu                          \
              $(PATH_APP)/mcal/$(TGT)/mcal_gpt                          \
              $(PATH_APP)/mcal/$(TGT)/mcal_led                          \
              $(PATH_APP)/mcal/$(TGT)/mcal_osc                          \
