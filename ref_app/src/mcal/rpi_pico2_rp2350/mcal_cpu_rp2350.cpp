@@ -10,33 +10,16 @@
 #include <mcal_reg.h>
 
 #include <cstddef>
-#include <cstdint>
 
 extern "C"
 {
-  auto arch_spin_lock  (std::uint32_t* lock)-> void;
-  auto arch_spin_unlock(std::uint32_t* lock)-> void;
+  auto arch_spin_lock  (std::uint32_t* lock) noexcept -> void;
+  auto arch_spin_unlock(std::uint32_t* lock) noexcept -> void;
 }
 
 namespace
 {
-           std::uint32_t u32MulticoreLock;
-  volatile std::uint32_t u32MulticoreSync;
-
   inline auto core_arch_send_event_inst() noexcept -> void { asm volatile ("sev"); }
-}
-
-void mcal::cpu::rp2350::multicore_sync(std::uint32_t CpuId)
-{
-  /* aquire the multicore lock */
-  arch_spin_lock(&u32MulticoreLock);
-
-  u32MulticoreSync |= std::uint32_t { 1UL << CpuId };
-
-  /* release the multicore lock */
-  arch_spin_unlock(&u32MulticoreLock);
-
-  while(u32MulticoreSync != MULTICORE_SYNC_MASK) { mcal::cpu::nop(); }
 }
 
 extern "C"
@@ -65,7 +48,7 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool
                                       mcal::reg::sio_fifo_st,
                                       UINT32_C(0)>::bit_get()) { mcal::cpu::nop(); }
 
-  // return (HW_PER_SIO->FIFO_RD.reg != 1U);
+  // return (HW_PER_SIO->FIFO_RD.reg != value);
 
   return
   (
@@ -76,6 +59,38 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool
 }
 
 } // namespace local
+
+auto mcal::cpu::rp2350::multicore_sync(const std::uint32_t CpuId) -> void
+{
+  constexpr std::uint32_t CPU_CORE0_ID { UINT32_C(0) };
+  constexpr std::uint32_t CPU_CORE1_ID { UINT32_C(1) };
+
+  constexpr std::uint32_t
+    MULTICORE_SYNC_MASK
+    {
+      std::uint32_t
+      {
+          std::uint32_t { (1UL << CPU_CORE0_ID) }
+        | std::uint32_t { (1UL << CPU_CORE1_ID) }
+      }
+    };
+
+  static          std::uint32_t u32MulticoreLock;
+  static volatile std::uint32_t u32MulticoreSync;
+
+  // Acquire the multicore spin-lock.
+  arch_spin_lock(&u32MulticoreLock);
+
+  u32MulticoreSync |= std::uint32_t { 1UL << CpuId };
+
+  // Release the multicore spin-lock.
+  arch_spin_unlock(&u32MulticoreLock);
+
+  while(u32MulticoreSync != MULTICORE_SYNC_MASK)
+  {
+    mcal::cpu::nop();
+  }
+}
 
 auto mcal::cpu::rp2350::start_core1() -> bool
 {
@@ -101,16 +116,18 @@ auto mcal::cpu::rp2350::start_core1() -> bool
   // Send 1 to synchronize with core 1.
   local::sio_fifo_write_verify(std::uint32_t { UINT32_C(1) });
 
-  // Send the VTOR address.
-  local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(&__INTVECT_Core1[0U]));
+  // Send the VTOR address for core 1.
+  local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(reinterpret_cast<std::uint32_t>(&__INTVECT_Core1[0U])));
 
-  // Send the stack pointer value.
-  local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(__INTVECT_Core1[0U]));
+  // Send the stack pointer value for core 1.
+  local::sio_fifo_write_verify(__INTVECT_Core1[0U]);
 
-  // Send the reset handler address.
-  local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(__INTVECT_Core1[1U]));
+  // Send the reset handler address for core 1.
+  local::sio_fifo_write_verify(__INTVECT_Core1[1U]);
 
-  // Clear the stiky bits FIFO_ST on core 0.
+  // Clear the sticky bits of the FIFO_ST on core 0.
+  // Note: Core 0 has called us to get here so these are,
+  // in fact, the FIFO_ST sticky bits on core 0.
 
   // HW_PER_SIO->FIFO_ST.reg = 0xFFu;
   mcal::reg::reg_access_static<std::uint32_t,

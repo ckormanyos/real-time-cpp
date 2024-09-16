@@ -62,11 +62,11 @@ auto mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId) -> void
       }
     };
 
-  static volatile std::uint32_t Cpu_u32MulticoreSync { };
+  static volatile std::uint32_t u32MulticoreSync;
 
-  Cpu_u32MulticoreSync |= static_cast<std::uint32_t>(1UL << CpuId);
+  u32MulticoreSync |= std::uint32_t { 1UL << CpuId };
 
-  while(Cpu_u32MulticoreSync != MULTICORE_SYNC_MASK)
+  while(u32MulticoreSync != MULTICORE_SYNC_MASK)
   {
     mcal::cpu::nop();
   }
@@ -91,29 +91,19 @@ auto mcal::cpu::rp2040::start_core1() -> bool
   }
 
   // Send 0 to wake up core 1.
-  const bool result_send_zero_is_ok = local::sio_fifo_write_verify(static_cast<std::uint32_t>(UINT32_C(0)));
-
-  if(!result_send_zero_is_ok) { return false; }
+  local::sio_fifo_write_verify(std::uint32_t { UINT32_C(0) });
 
   // Send 1 to synchronize with core 1.
-  const bool result_send_one_is_ok = local::sio_fifo_write_verify(static_cast<std::uint32_t>(UINT32_C(1)));
-
-  if(!result_send_one_is_ok) { return false; }
+  local::sio_fifo_write_verify(std::uint32_t { UINT32_C(1) });
 
   // Send the VTOR address for core 1.
-  const bool result_send_vtor_is_ok = local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(&__INTVECT_Core1[0U]));
-
-  if(!result_send_vtor_is_ok) { return false; }
+  local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(reinterpret_cast<std::uint32_t>(&__INTVECT_Core1[0U])));
 
   // Send the stack pointer value for core 1.
-  const bool result_send_sp_is_ok = local::sio_fifo_write_verify(__INTVECT_Core1[0U]);
+  local::sio_fifo_write_verify(__INTVECT_Core1[0U]);
 
-  if(!result_send_sp_is_ok) { return false; }
-
-  // Send the reset handler for core 1.
-  const bool result_send_rst_is_ok = local::sio_fifo_write_verify(__INTVECT_Core1[1U]);
-
-  if(!result_send_rst_is_ok) { return false; }
+  // Send the reset handler address for core 1.
+  local::sio_fifo_write_verify(__INTVECT_Core1[1U]);
 
   // Clear the sticky bits of the FIFO_ST on core 0.
   // Note: Core 0 has called us to get here so these are,
@@ -123,7 +113,7 @@ auto mcal::cpu::rp2040::start_core1() -> bool
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::sio_fifo_st,
-                               UINT32_C(0xFF)>::reg_set();
+                               std::uint32_t { UINT32_C(0xFF) }>::reg_set();
 
   return true;
 }
