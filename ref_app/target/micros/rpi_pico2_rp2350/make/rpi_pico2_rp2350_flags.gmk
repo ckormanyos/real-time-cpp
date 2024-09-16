@@ -33,8 +33,7 @@ TGT_CXXFLAGS  = -std=c++14                                     \
                 -Wno-psabi                                     \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_TGT)/Startup/Core/ARM                               \
-                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis/m-profile               \
+TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis/m-profile               \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cpu                           \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Gpio                          \

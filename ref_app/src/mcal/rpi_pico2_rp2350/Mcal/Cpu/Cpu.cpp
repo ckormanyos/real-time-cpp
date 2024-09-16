@@ -20,16 +20,21 @@
 //=============================================================================
 #include <Cpu.h>
 
-#include <core_arch.h>
+extern "C"
+{
+  void arch_spin_lock  (uint32* lock);
+  void arch_spin_unlock(uint32* lock);
+}
 
-//=============================================================================
-// Globals
-//=============================================================================
 namespace
 {
            uint32 u32MulticoreLock;
   volatile uint32 u32MulticoreSync;
 }
+
+#define CORE_ARCH_SEND_EVENT_INST()    __asm("SEV")
+#define CORE_ARCH_DISABLE_INTERRUPTS() __asm("CPSID i")
+#define CORE_ARCH_ENABLE_INTERRUPTS()  __asm("CPSIE i")
 
 //-----------------------------------------------------------------------------------------
 /// \brief  RP2350_MulticoreSync function
