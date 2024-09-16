@@ -12,7 +12,9 @@
 // ***************************************************************************************
 
 #include <mcal_cpu.h>
+#include <mcal_cpu_rp2350.h>
 #include <mcal_irq.h>
+#include <mcal_reg.h>
 #include <mcal_wdg.h>
 
 #include <Platform_Types.h>
@@ -37,9 +39,6 @@ extern "C"
 {
   auto core_1_run_flag_set(bool) -> void;
   auto core_1_run_flag_get() -> bool;
-
-  auto RP2350_StartCore1() -> boolean;
-  auto RP2350_MulticoreSync(std::uint32_t CpuId) -> void;
 }
 
 namespace local
@@ -100,7 +99,7 @@ auto __main() -> void
   ::__main_core0();
 
   // Synchronize with core 1.
-  RP2350_MulticoreSync(local::get_cpuid());
+  mcal::cpu::rp2350::multicore_sync(local::get_cpuid());
 
   // It is here that an actual application could
   // be started and then executed on core 0.
@@ -118,7 +117,7 @@ auto __main_core0() -> void
   mcal::irq::disable_all();
 
   // Start core 1 and verify successful initiaization of core 1.
-  if(!RP2350_StartCore1())
+  if(!mcal::cpu::rp2350::start_core1())
   {
     // In case of error, loop forever (on core 0).
     for(;;)
@@ -159,7 +158,11 @@ auto __main_core1() -> void
   // in a configuration with no MPU. This is because the default memory map
   // does not include any shareable Normal memory.
 
-  SCnSCB->ACTLR |= (1ul<<29);
+  // SCnSCB->ACTLR |= (1ul<<29);
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::scnscb_actlr,
+                               UINT32_C(29)>::bit_set();
 
   asm volatile("dsb");
 
@@ -168,7 +171,7 @@ auto __main_core1() -> void
   NVIC->ICPR[0] = (uint32_t)-1;
 
   // Synchronize with core 0.
-  RP2350_MulticoreSync(local::get_cpuid());
+  mcal::cpu::rp2350::multicore_sync(local::get_cpuid());
 
   // Initialize the FPU on Core 1: Enable CP10 and CP11.
   //CPACR |= 0x00F00000UL;

@@ -26,15 +26,7 @@ namespace
   inline auto core_arch_send_event_inst() noexcept -> void { asm volatile ("sev"); }
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  RP2350_MulticoreSync function
-///
-/// \param  CpuId : The cpu core identifier
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-extern "C"
-void RP2350_MulticoreSync(std::uint32_t CpuId)
+void mcal::cpu::rp2350::multicore_sync(std::uint32_t CpuId)
 {
   /* aquire the multicore lock */
   arch_spin_lock(&u32MulticoreLock);
@@ -85,8 +77,7 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool
 
 } // namespace local
 
-extern "C"
-auto RP2350_StartCore1() -> bool
+auto mcal::cpu::rp2350::start_core1() -> bool
 {
   // Flush the mailbox.
 
@@ -119,7 +110,8 @@ auto RP2350_StartCore1() -> bool
   // Send the reset handler address.
   local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(__INTVECT_Core1[1U]));
 
-  // Clear the stiky bits of the FIFO_ST on core 0.
+  // Clear the stiky bits FIFO_ST on core 0.
+
   // HW_PER_SIO->FIFO_ST.reg = 0xFFu;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,

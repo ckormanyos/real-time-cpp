@@ -19,11 +19,6 @@
 
   #include <cstdint>
 
-  #if defined(__cplusplus)
-  extern "C"
-  {
-  #endif
-
   //=============================================================================
   // Defines
   //=============================================================================
@@ -32,14 +27,11 @@
 
   #define MULTICORE_SYNC_MASK  (std::uint32_t)((1UL << CPU_CORE0_ID) | (1UL << CPU_CORE1_ID))
 
-  //=============================================================================
-  // Functions prototype
-  //=============================================================================
-  auto RP2350_MulticoreSync(std::uint32_t CpuId) -> void;
-  auto RP2350_StartCore1(void) -> bool;
+  namespace mcal { namespace cpu { namespace rp2350 {
 
-  #if defined(__cplusplus)
-  }
-  #endif
+  auto multicore_sync(const std::uint32_t CpuId) -> void;
+  auto start_core1() -> bool;
+
+  } } } // namespace mcal::cpu::rp2350
 
 #endif // MCAL_CPU_RP2350_2024_09_16_H
