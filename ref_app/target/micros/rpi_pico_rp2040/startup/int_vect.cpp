@@ -5,17 +5,18 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <mcal_cpu.h>
+
 #include <array>
 #include <cstddef>
-#include <mcal_cpu.h>
 
 extern "C" auto UndefinedHandler() -> void;
 extern "C" auto UndefinedHandler() -> void { for(;;) { mcal::cpu::nop(); } }
 
-extern "C" auto __my_startup() -> void __attribute__((used, noinline));
-extern "C" auto __main_core1() -> void __attribute__((weak, alias("UndefinedHandler")));
+extern "C" auto __my_startup() -> void __attribute__((section(".startup"), used, noinline));
+extern "C" auto __main_core1() -> void __attribute__((section(".startup"), used, noinline));
 
-extern "C" auto __sys_tick_handler(void) -> void __attribute__((used, noinline));
+extern "C" auto __sys_tick_handler() -> void __attribute__((used, noinline));
 
 extern "C" auto __CORE0_STACK_TOP() -> void;
 extern "C" auto __CORE1_STACK_TOP() -> void;

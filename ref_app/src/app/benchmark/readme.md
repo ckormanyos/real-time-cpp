@@ -85,6 +85,7 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 |--------------------|-----------------|------------|
 | `am335x`           |  1.5            |    1.0     |
 | `stm32f446`        |  5.1            |    3.4     |
+| `rpi_pico2_rp2350` |  6.2            |    4.1     |
 | `wch_ch32v307`     |  8.0            |    5.3     |
 | `rpi_pico_rp2040`  |  19             |    13      |
 | `avr`              |  420            |    280     |
@@ -108,4 +109,6 @@ time of $8.0~\text{ms}$.
 
 Using only one core (core 1) on the $32$-bit ARM(R) Cortex(R) M0+
 controller of the `rpi_pico_rp2040` board results in a calculation
-time of $19~\text{ms}$.
+time of $19~\text{ms}$. The next generation `rpi_pico2_rp2350`
+with ARM(R) Cortex(R) M33 cores beats the previous one
+with a time of $6.2~\text{ms}$, which is slightly more than $3~\text{ms}$ times faster.

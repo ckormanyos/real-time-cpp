@@ -6,8 +6,21 @@
 //
 
 #include <mcal_cpu.h>
-#include <mcal_cpu_rp2040.h>
+#include <mcal_cpu_rp2350.h>
 #include <mcal_reg.h>
+
+#include <cstddef>
+
+extern "C"
+{
+  auto arch_spin_lock  (std::uint32_t* lock) noexcept -> void;
+  auto arch_spin_unlock(std::uint32_t* lock) noexcept -> void;
+}
+
+namespace
+{
+  inline auto core_arch_send_event_inst() noexcept -> void { asm volatile ("sev"); }
+}
 
 extern "C"
 {
@@ -20,22 +33,22 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool;
 
 auto sio_fifo_write_verify(const std::uint32_t value) -> bool
 {
-  // SIO->FIFO_WR = value;
+  // HW_PER_SIO->FIFO_WR.reg = value;
   mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set
   (
     mcal::reg::sio_fifo_wr,
     value
   );
 
-  asm volatile("sev");
+  core_arch_send_event_inst();
 
-  // while(SIO->FIFO_ST.bit.VLD != 1UL);
+  // while(HW_PER_SIO->FIFO_ST.bit.VLD != 1UL);
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
                                       mcal::reg::sio_fifo_st,
                                       UINT32_C(0)>::bit_get()) { mcal::cpu::nop(); }
 
-  // return (SIO->FIFO_RD == value);
+  // return (HW_PER_SIO->FIFO_RD.reg != value);
 
   return
   (
@@ -47,7 +60,7 @@ auto sio_fifo_write_verify(const std::uint32_t value) -> bool
 
 } // namespace local
 
-auto mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId) -> void
+auto mcal::cpu::rp2350::multicore_sync(const std::uint32_t CpuId) -> void
 {
   constexpr std::uint32_t CPU_CORE0_ID { UINT32_C(0) };
   constexpr std::uint32_t CPU_CORE1_ID { UINT32_C(1) };
@@ -62,9 +75,16 @@ auto mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId) -> void
       }
     };
 
+  static          std::uint32_t u32MulticoreLock;
   static volatile std::uint32_t u32MulticoreSync;
 
+  // Acquire the multicore spin-lock.
+  arch_spin_lock(&u32MulticoreLock);
+
   u32MulticoreSync |= std::uint32_t { 1UL << CpuId };
+
+  // Release the multicore spin-lock.
+  arch_spin_unlock(&u32MulticoreLock);
 
   while(u32MulticoreSync != MULTICORE_SYNC_MASK)
   {
@@ -72,11 +92,11 @@ auto mcal::cpu::rp2040::multicore_sync(const std::uint32_t CpuId) -> void
   }
 }
 
-auto mcal::cpu::rp2040::start_core1() -> bool
+auto mcal::cpu::rp2350::start_core1() -> bool
 {
   // Flush the mailbox.
 
-  // while(SIO->FIFO_ST.bit.VLD == 1UL) { static_cast<void>(SIO->FIFO_RD); }
+  // while(HW_PER_SIO->FIFO_ST.bit.VLD == 1UL) { static_cast<void>(HW_PER_SIO->FIFO_RD.reg); }
   while(mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
                                      mcal::reg::sio_fifo_st,
@@ -109,7 +129,7 @@ auto mcal::cpu::rp2040::start_core1() -> bool
   // Note: Core 0 has called us to get here so these are,
   // in fact, the FIFO_ST sticky bits on core 0.
 
-  // SIO->FIFO_ST.reg = 0xFFU;
+  // HW_PER_SIO->FIFO_ST.reg = 0xFFu;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::sio_fifo_st,

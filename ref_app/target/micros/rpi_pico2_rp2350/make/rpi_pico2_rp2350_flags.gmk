@@ -20,7 +20,10 @@ TGT_ALLFLAGS  = -O2                                            \
                 -march=armv8-m.main+fp+dsp                     \
                 -mabi=aapcs                                    \
                 -mfloat-abi=hard                               \
-                -MD
+                -finline-functions                             \
+                -finline-limit=128                             \
+                -mno-unaligned-access                          \
+                -mno-long-calls
 
 TGT_CFLAGS    = -std=c11                                       \
                 -Wunsuffixed-float-constants                   \
@@ -32,8 +35,6 @@ TGT_CXXFLAGS  = -std=c++14                                     \
 
 TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis/m-profile               \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cmsis                         \
-                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Cpu                           \
-                -I$(PATH_APP)/mcal/$(TGT)/Mcal/Gpio                          \
                 -I$(PATH_APP)/mcal/$(TGT)/Mcal                               \
                 -I$(PATH_TGT)/Std                                            \
                 -isystem $(PATH_APP)/util/STL

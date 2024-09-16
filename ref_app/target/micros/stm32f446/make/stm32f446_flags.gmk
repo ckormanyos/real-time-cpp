@@ -19,7 +19,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -mcpu=cortex-m4                                                   \
                 -mtune=cortex-m4                                                  \
                 -mthumb                                                           \
-                -mfloat-abi=soft                                                  \
+                -mfloat-abi=hard                                                  \
                 -finline-functions                                                \
                 -finline-limit=128                                                \
                 -mno-unaligned-access                                             \

@@ -902,7 +902,7 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.c">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\IntVect.c">
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\int_vect.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
   </ItemGroup>

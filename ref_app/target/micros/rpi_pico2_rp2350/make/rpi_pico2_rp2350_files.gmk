@@ -10,11 +10,11 @@
 # ------------------------------------------------------------------------------
 
 FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
-             $(PATH_APP)/mcal/$(TGT)/Mcal/Cpu/Cpu                      \
+             $(PATH_APP)/mcal/$(TGT)/mcal_cpu_rp2350                   \
              $(PATH_TGT)/startup/core_1_run                            \
              $(PATH_TGT)/startup/crt0                                  \
              $(PATH_TGT)/startup/crt0_init_ram                         \
              $(PATH_TGT)/startup/crt1                                  \
              $(PATH_TGT)/startup/image_definition_block                \
-             $(PATH_TGT)/startup/IntVect                               \
+             $(PATH_TGT)/startup/int_vect                              \
              $(PATH_TGT)/startup/util
