@@ -17,7 +17,7 @@
 
 #include <stdint.h>
 
-const uint32_t __attribute__((section(".image_start_block"), used, aligned(4))) image_definition_Block[] =
+const uint32_t __attribute__((section(".image_start_block"), used, aligned(4))) image_definition_block[] =
 {
   UINT32_C(0xFFFFDED3),
   UINT32_C(0x10210142),

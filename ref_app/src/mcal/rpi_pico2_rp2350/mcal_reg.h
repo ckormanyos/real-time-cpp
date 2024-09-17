@@ -10,12 +10,18 @@
 
   #include <cstdint>
 
+  // static_assert(offsetof(PPB_Type, CPACR) == 60808, "Error in offset");
+
   namespace mcal
   {
     namespace reg
     {
       // Global base addresses.
       constexpr std::uint32_t scs_base                  { UINT32_C(0xE000E000) };
+      constexpr std::uint32_t nvic_base                 { scs_base + UINT32_C(0x00000100) };
+
+      // NVIC registers.
+      constexpr std::uint32_t nvic_icpr0                { nvic_base + UINT32_C(0x00000180) };
 
       // SCnSCB registers.
       constexpr std::uint32_t scnscb_reserved0        { scs_base + UINT32_C(0x00000000) };
@@ -54,6 +60,9 @@
       constexpr std::uint32_t hw_per_io_bank0           { io_bank0_base };
 
       constexpr std::uint32_t hw_per_psm_base           { UINT32_C(0x40018000) };
+
+      constexpr std::uint32_t hw_per_ppb_base           { UINT32_C(0xE0000000) };
+      constexpr std::uint32_t hw_per_ppb_cpacr          { hw_per_ppb_base + UINT32_C(0x0000ED88) };
 
       constexpr std::uint32_t hw_per_resets_resets_base { UINT32_C(0x40020000) };
       constexpr std::uint32_t hw_per_resets_reset       { hw_per_resets_resets_base + UINT32_C(0x00000000) };

@@ -1,24 +1,15 @@
-// ***************************************************************************************
-// Filename    : Startup.c
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Author      : Chalandi Amine
-//
-// Owner       : Chalandi Amine
-// 
-// Date        : 04.09.2024
-// 
-// Description : C/C++ Runtime Setup (Crt0)
-// 
-// ***************************************************************************************
 
 #include <mcal_cpu.h>
 #include <mcal_cpu_rp2350.h>
 #include <mcal_irq.h>
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
-
-#include <Platform_Types.h>
-#include <RP2350.h>
 
 #include <util/utility/util_time.h>
 
@@ -48,7 +39,7 @@ namespace local
     const std::uint32_t
       cpuid
       {
-        HW_PER_SIO->CPUID.reg
+        mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_cpuid>::reg_get()
       };
 
     return cpuid;
@@ -152,7 +143,11 @@ auto __main_core1() -> void
   // begins here.
 
   // Clear the sticky bits of the FIFO_ST on core 1.
-  HW_PER_SIO->FIFO_ST.reg = 0xFFu;
+  // HW_PER_SIO->FIFO_ST.reg = 0xFFu;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::sio_fifo_st,
+                               std::uint32_t { UINT32_C(0xFF) }>::reg_set();
 
   // Setting EXTEXCLALL allows external exclusive operations to be used
   // in a configuration with no MPU. This is because the default memory map
@@ -168,14 +163,22 @@ auto __main_core1() -> void
 
   // Clear all pending interrupts on core 1.
 
-  NVIC->ICPR[0] = (uint32_t)-1;
+  // NVIC->ICPR[0] = (uint32_t)-1;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::nvic_icpr0,
+                               std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
   // Synchronize with core 0.
   mcal::cpu::rp2350::multicore_sync(local::get_cpuid());
 
   // Initialize the FPU on Core 1: Enable CP10 and CP11.
-  //CPACR |= 0x00F00000UL;
-  HW_PER_PPB->CPACR.reg |= (std::uint32_t) 0x00F00000UL;
+
+  // HW_PER_PPB->CPACR.reg |= (std::uint32_t) 0x00F00000UL;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::hw_per_ppb_cpacr,
+                               std::uint32_t { UINT32_C(0x00F00000) }>::reg_or();
 
   // Jump to main on core 1 (and never return).
   asm volatile("ldr r3, =main");
