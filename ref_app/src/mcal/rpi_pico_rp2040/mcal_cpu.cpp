@@ -6,7 +6,6 @@
 //
 
 #include <mcal_cpu.h>
-#include <mcal_cpu_rp2040.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_reg.h>
@@ -49,15 +48,15 @@ auto init_core() -> void
 
   // RESETS->RESET.bit.io_bank0   = 1U;
   mcal::reg::reg_access_static<std::uint32_t,
-                                std::uint32_t,
-                                mcal::reg::resets_reset,
-                                UINT32_C(5)>::bit_set();
+                               std::uint32_t,
+                               mcal::reg::resets_reset,
+                               UINT32_C(5)>::bit_set();
 
   //RESETS->RESET.bit.pads_bank0 = 1U;
   mcal::reg::reg_access_static<std::uint32_t,
-                                std::uint32_t,
-                                mcal::reg::resets_reset,
-                                UINT32_C(8)>::bit_set();
+                               std::uint32_t,
+                               mcal::reg::resets_reset,
+                               UINT32_C(8)>::bit_set();
 
   // while((RESETS->RESET_DONE.bit.io_bank0 == 1U) || (RESETS->RESET_DONE.bit.pads_bank0 == 1U));
   while

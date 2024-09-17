@@ -200,7 +200,8 @@ void mcal::osc::init(const config_type*)
                                mcal::reg::hw_per_resets_reset,
                                std::uint32_t { UINT32_C(6) }>::bit_clr();
 
-  // Wait for reset on IO_BANK0 to be done.
+  // Wait for reset to be done.
+  // Release reset is done on IO_BANK0.
   // while(HW_PER_RESETS->RESET_DONE.bit.IO_BANK0 != 1);
   while(!mcal::reg::reg_access_static<std::uint32_t,
                                       std::uint32_t,
