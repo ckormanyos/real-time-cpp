@@ -1,0 +1,78 @@
+##############################################################################
+#  Copyright Christopher Kormanyos 2021 - 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+#
+# MIT License
+#
+# Copyright (c) 2019 Joel Winarske
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+set(APP ref_app)
+
+set(CMAKE_EXECUTABLE_SUFFIX .elf)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 14)
+
+set(TARGET_INCLUDES
+    ${PATH_APP}/util/STL
+)
+
+set(_TARGET_CFLAGS
+    -mcpu=cortex-m33
+    -mthumb
+    -march=armv8-m.main+fp+dsp
+    -mabi=aapcs
+    -mfloat-abi=hard
+    -finline-functions
+    -finline-limit=128
+    -mno-unaligned-access
+    -mno-long-calls
+)
+
+set(TARGET_AFLAGS "")
+
+set(_TARGET_LDFLAGS
+    -nostdlib
+    -nostartfiles
+    --specs=nano.specs
+    --specs=nosys.specs
+    -T ${LINKER_DEFINITION_FILE}
+)
+
+string(REPLACE ";" " " TARGET_CFLAGS "${_TARGET_CFLAGS}")
+string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
+
+
+set(FILES_TARGET
+    ${PATH_APP}/mcal/mcal_gcc_cxx_completion
+    ${PATH_APP}/mcal/${TARGET}/mcal_cpu_rp2350
+    ${PATH_TGT}/startup/core_1_run
+    ${PATH_TGT}/startup/crt0
+    ${PATH_TGT}/startup/crt0_init_ram
+    ${PATH_TGT}/startup/crt1
+    ${PATH_TGT}/startup/image_definition_block
+    ${PATH_TGT}/startup/int_vect
+    ${PATH_TGT}/startup/util
+)

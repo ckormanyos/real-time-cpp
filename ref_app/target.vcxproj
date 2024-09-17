@@ -904,7 +904,7 @@
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350.ld" />
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350_files.gmk" />
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350_flags.gmk" />
-    <None Include="target\micros\rpi_pico2_rp2350\startup\util.s" />
+    <None Include="target\micros\rpi_pico2_rp2350\startup\util.cpp" />
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040.ld" />
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_files.gmk" />
     <None Include="target\micros\rpi_pico_rp2040\make\rpi_pico_rp2040_flags.gmk" />
@@ -1014,7 +1014,7 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\Startup\crt0.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt1.cpp" />
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.c" />
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.cpp" />
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt0.cpp" />
     <ClCompile Include="target\micros\rpi_pico_rp2040\startup\crt0_init_ram.cpp" />
@@ -1075,9 +1075,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="target\micros\rpi_pico2_rp2350\Std\Platform_Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

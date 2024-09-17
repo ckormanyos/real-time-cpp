@@ -262,9 +262,6 @@
     <Filter Include="micros\rpi_pico2_rp2350\make">
       <UniqueIdentifier>{451ca947-56ce-46cf-a4e8-036c75f8b86a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\rpi_pico2_rp2350\Std">
-      <UniqueIdentifier>{6be8f2e8-8491-442a-9308-13667c843931}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\rpi_pico2_rp2350\startup">
       <UniqueIdentifier>{66796a1a-dbfb-41d7-b5fa-0226f8a52cde}</UniqueIdentifier>
     </Filter>
@@ -612,7 +609,7 @@
     <None Include="target\micros\rpi_pico2_rp2350\make\rpi_pico2_rp2350.ld">
       <Filter>micros\rpi_pico2_rp2350\make</Filter>
     </None>
-    <None Include="target\micros\rpi_pico2_rp2350\startup\util.s">
+    <None Include="target\micros\rpi_pico2_rp2350\startup\util.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </None>
   </ItemGroup>
@@ -899,7 +896,7 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\crt1.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.c">
+    <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\image_definition_block.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\int_vect.cpp">
@@ -910,10 +907,5 @@
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
       <Filter>micros\bcm2835_raspi_b\startup\SD_CARD\PiZero</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="target\micros\rpi_pico2_rp2350\Std\Platform_Types.h">
-      <Filter>micros\rpi_pico2_rp2350\Std</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
