@@ -1076,9 +1076,6 @@
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="target\micros\rpi_pico2_rp2350\Std\Platform_Types.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
