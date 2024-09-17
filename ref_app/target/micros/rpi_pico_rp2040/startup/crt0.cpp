@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -131,7 +131,7 @@ auto __main_core1() -> void
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::sio_fifo_st,
-                               UINT32_C(0xFF)>::reg_set();
+                               std::uint32_t { UINT32_C(0xFF) }>::reg_set();
 
   asm volatile("dsb");
 
