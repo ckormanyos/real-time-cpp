@@ -40,12 +40,13 @@ set(TARGET_INCLUDES
 )
 
 set(_TARGET_CFLAGS
-    -finline-functions
-    -finline-limit=32
-    -mcpu=cortex-m3
-    -mtune=cortex-m3
+    -mcpu=cortex-m33
     -mthumb
-    -mfloat-abi=soft
+    -march=armv8-m.main+fp+dsp
+    -mabi=aapcs
+    -mfloat-abi=hard
+    -finline-functions
+    -finline-limit=128
     -mno-unaligned-access
     -mno-long-calls
 )
@@ -66,10 +67,12 @@ string(REPLACE ";" " " TARGET_LDFLAGS "${_TARGET_LDFLAGS}")
 
 set(FILES_TARGET
     ${PATH_APP}/mcal/mcal_gcc_cxx_completion
-    ${PATH_APP}/mcal/${TARGET}/mcal_cpu_rp2040
+    ${PATH_APP}/mcal/${TARGET}/mcal_cpu_rp2350
+    ${PATH_TGT}/startup/core_1_run
     ${PATH_TGT}/startup/crt0
     ${PATH_TGT}/startup/crt0_init_ram
     ${PATH_TGT}/startup/crt1
+    ${PATH_TGT}/startup/image_definition_block
     ${PATH_TGT}/startup/int_vect
-    ${PATH_TGT}/startup/secondary_boot
+    ${PATH_TGT}/startup/util
 )
