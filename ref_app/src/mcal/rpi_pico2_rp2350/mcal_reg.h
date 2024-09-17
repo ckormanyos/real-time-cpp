@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,7 +19,7 @@
       constexpr std::uint32_t nvic_base                        { scs_base + UINT32_C(0x00000100) };
 
       // NVIC registers.
-      constexpr std::uint32_t nvic_icpr0                       { nvic_base + UINT32_C(0x00000180) };
+      constexpr std::uint32_t nvic_icpr                        { nvic_base + UINT32_C(0x00000180) };
 
       // SCnSCB registers.
       constexpr std::uint32_t scnscb_reserved0                 { scs_base + UINT32_C(0x00000000) };

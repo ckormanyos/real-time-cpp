@@ -5,13 +5,13 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// RaspberryPi RP2350 dual-core ARM(R) Cortex(R)-M33 startup code.
+
 #include <mcal_cpu.h>
 #include <mcal_cpu_rp2350.h>
 #include <mcal_irq.h>
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
-
-#include <util/utility/util_time.h>
 
 namespace crt
 {
@@ -163,10 +163,10 @@ auto __main_core1() -> void
 
   // Clear all pending interrupts on core 1.
 
-  // NVIC->ICPR[0] = (uint32_t)-1;
+  // NVIC->ICPR[0U] = static_cast<std::uint32_t>(UINT32_C(0xFFFFFFFF));
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::nvic_icpr0,
+                               mcal::reg::nvic_icpr,
                                std::uint32_t { UINT32_C(0xFFFFFFFF) }>::reg_set();
 
   // Synchronize with core 0.

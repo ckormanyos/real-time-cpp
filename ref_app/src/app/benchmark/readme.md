@@ -85,7 +85,7 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 |--------------------|-----------------|------------|
 | `am335x`           |  1.5            |    1.0     |
 | `stm32f446`        |  5.1            |    3.4     |
-| `rpi_pico2_rp2350` |  6.2            |    4.1     |
+| `rpi_pico2_rp2350` |  6.3            |    4.2     |
 | `wch_ch32v307`     |  8.0            |    5.3     |
 | `rpi_pico_rp2040`  |  19             |    13      |
 | `avr`              |  420            |    280     |
