@@ -55,25 +55,26 @@
       constexpr std::uint32_t hw_per_clocks_clk_peri_ctrl      { hw_per_clocks_base + UINT32_C(0x00000048) };
 
       // PSM registers.
+      constexpr std::uint32_t hw_per_psm_base                  { UINT32_C(0x40018000) };
       constexpr std::uint32_t psm_base                         { UINT32_C(0x40018000) };
       constexpr std::uint32_t psm_frce_on                      { psm_base + UINT32_C(0x00000000) };
       constexpr std::uint32_t psm_frce_off                     { psm_base + UINT32_C(0x00000004) };
       constexpr std::uint32_t psm_wdsel                        { psm_base + UINT32_C(0x00000008) };
       constexpr std::uint32_t psm_done                         { psm_base + UINT32_C(0x0000000C) };
 
+      // PPB registers.
+      constexpr std::uint32_t hw_per_ppb_base                  { UINT32_C(0xE0000000) };
+      constexpr std::uint32_t hw_per_ppb_cpacr                 { hw_per_ppb_base + UINT32_C(0x0000ED88) };
+      constexpr std::uint32_t hw_per_ppb_nsacr                 { hw_per_ppb_base + UINT32_C(0x0000ED8C) };
+
+      // I/O-Bank registers.
       constexpr std::uint32_t pads_bank0_base                  { UINT32_C(0x40038000) };
       constexpr std::uint32_t pads_bank0_gpio                  { UINT32_C(0x40038004) };
 
-      // I/O-Bank registers.
       constexpr std::uint32_t io_bank0_base                    { UINT32_C(0x40028000) };
       constexpr std::uint32_t io_bank0_status_base             { io_bank0_base + UINT32_C(0x00000000) };
 
       constexpr std::uint32_t hw_per_io_bank0                  { io_bank0_base };
-
-      constexpr std::uint32_t hw_per_psm_base                  { UINT32_C(0x40018000) };
-
-      constexpr std::uint32_t hw_per_ppb_base                  { UINT32_C(0xE0000000) };
-      constexpr std::uint32_t hw_per_ppb_cpacr                 { hw_per_ppb_base + UINT32_C(0x0000ED88) };
 
       constexpr std::uint32_t hw_per_xosc_base                 { UINT32_C(0x40048000) };
       constexpr std::uint32_t hw_per_xosc_control              { UINT32_C(0x40048000) };
