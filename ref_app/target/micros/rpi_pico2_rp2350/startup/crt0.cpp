@@ -172,13 +172,17 @@ auto __main_core1() -> void
   // Synchronize with core 0.
   mcal::cpu::rp2350::multicore_sync(local::get_cpuid());
 
-  // Initialize the FPU on Core 1: Enable CP10 and CP11.
+  // Enable the hardware FPU on Core 1.
 
-  // HW_PER_PPB->CPACR.reg |= (std::uint32_t) 0x00F00000UL;
+  mcal::reg::reg_access_static<std::uint32_t,
+                               std::uint32_t,
+                               mcal::reg::hw_per_ppb_nsacr,
+                               std::uint32_t { (1UL << 10U) | (1UL << 11U) }>::reg_or();
+
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::hw_per_ppb_cpacr,
-                               std::uint32_t { UINT32_C(0x00F00000) }>::reg_or();
+                               std::uint32_t { (3UL << 20U) | (3UL << 22U) }>::reg_or();
 
   // Jump to main on core 1 (and never return).
   asm volatile("ldr r3, =main");
