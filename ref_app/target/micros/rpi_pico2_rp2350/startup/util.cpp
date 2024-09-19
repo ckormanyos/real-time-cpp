@@ -1,14 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
+//  Copyright Amine Chalandi 2024.
 //  Copyright Christopher Kormanyos 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Originally taken from:
-//
 // ***************************************************************************************
-// Filename    : util.s
+// Filename    : util.s (now util.cpp)
 //
 // Author      : Chalandi Amine
 //
@@ -22,8 +21,8 @@
 
 #include <cstdint>
 
-extern "C" auto arch_spin_lock  (std::uint32_t*) noexcept -> void  __attribute__((naked));
-extern "C" auto arch_spin_unlock(std::uint32_t*) noexcept -> void  __attribute__((naked));
+extern "C" auto arch_spin_lock  (std::uint32_t*) noexcept -> void __attribute__((naked));
+extern "C" auto arch_spin_unlock(std::uint32_t*) noexcept -> void __attribute__((naked));
 
 extern "C"
 auto arch_spin_lock(std::uint32_t*) noexcept -> void
@@ -37,7 +36,7 @@ auto arch_spin_lock(std::uint32_t*) noexcept -> void
   asm volatile("cmp     r2, #0");              // Check if successful
   asm volatile("bne     .L_loop");             // Retry if not
   asm volatile("dmb");                         // Ensure memory ordering after acquiring the lock
-  asm volatile("bx      lr");                  // Return if successful
+  asm volatile("bx      lr");                  // Return unconditionally
 }
 
 extern "C"
@@ -46,5 +45,5 @@ auto arch_spin_unlock(std::uint32_t*) noexcept -> void
   asm volatile("dmb");                         // Ensure memory operations before unlocking
   asm volatile("mov     r1, #0");              // Clear the lock
   asm volatile("stl     r1, [r0]");            // Store with release semantics
-  asm volatile("bx      lr");                  // Return
+  asm volatile("bx      lr");                  // Return unconditionally
 }

@@ -18,7 +18,7 @@
       constexpr std::uint32_t scs_base                         { UINT32_C(0xE000E000) };
       constexpr std::uint32_t nvic_base                        { scs_base + UINT32_C(0x00000100) };
 
-      // NVIC registers.
+      // Interrupt control registers.
       constexpr std::uint32_t nvic_icpr                        { nvic_base + UINT32_C(0x00000180) };
 
       // SCnSCB registers.
@@ -62,6 +62,19 @@
       constexpr std::uint32_t psm_wdsel                        { psm_base + UINT32_C(0x00000008) };
       constexpr std::uint32_t psm_done                         { psm_base + UINT32_C(0x0000000C) };
 
+      // Single-instruction registers.
+      constexpr std::uint32_t sio_base                         { UINT32_C(0xD0000000) };
+      constexpr std::uint32_t hw_per_sio_base                  { sio_base };
+      constexpr std::uint32_t sio_cpuid                        { sio_base + UINT32_C(0x00000000) };
+      constexpr std::uint32_t sio_gpio_out_set                 { sio_base + UINT32_C(0x00000018) };
+      constexpr std::uint32_t sio_gpio_out_clr                 { sio_base + UINT32_C(0x00000020) };
+      constexpr std::uint32_t sio_gpio_out_xor                 { sio_base + UINT32_C(0x00000028) };
+      constexpr std::uint32_t sio_gpio_oe_set                  { sio_base + UINT32_C(0x00000038) };
+      constexpr std::uint32_t sio_gpio_oe_clr                  { sio_base + UINT32_C(0x00000040) };
+      constexpr std::uint32_t sio_fifo_st                      { sio_base + UINT32_C(0x00000050) };
+      constexpr std::uint32_t sio_fifo_wr                      { sio_base + UINT32_C(0x00000054) };
+      constexpr std::uint32_t sio_fifo_rd                      { sio_base + UINT32_C(0x00000058) };
+
       // PPB registers.
       constexpr std::uint32_t hw_per_ppb_base                  { UINT32_C(0xE0000000) };
       constexpr std::uint32_t hw_per_ppb_cpacr                 { hw_per_ppb_base + UINT32_C(0x0000ED88) };
@@ -83,19 +96,6 @@
       constexpr std::uint32_t hw_per_xosc_startup              { UINT32_C(0x4004800C) };
       constexpr std::uint32_t hw_per_xosc_count                { UINT32_C(0x40048010) };
 
-      // Single-instruction registers.
-      constexpr std::uint32_t sio_base                         { UINT32_C(0xD0000000) };
-      constexpr std::uint32_t sio_cpuid                        { sio_base + UINT32_C(0x00000000) };
-      constexpr std::uint32_t sio_gpio_out_set                 { sio_base + UINT32_C(0x00000018) };
-      constexpr std::uint32_t sio_gpio_out_clr                 { sio_base + UINT32_C(0x00000020) };
-      constexpr std::uint32_t sio_gpio_out_xor                 { sio_base + UINT32_C(0x00000028) };
-      constexpr std::uint32_t sio_gpio_oe_set                  { sio_base + UINT32_C(0x00000038) };
-      constexpr std::uint32_t sio_gpio_oe_clr                  { sio_base + UINT32_C(0x00000040) };
-      constexpr std::uint32_t sio_fifo_st                      { sio_base + UINT32_C(0x00000050) };
-      constexpr std::uint32_t sio_fifo_wr                      { sio_base + UINT32_C(0x00000054) };
-      constexpr std::uint32_t sio_fifo_rd                      { sio_base + UINT32_C(0x00000058) };
-
-      constexpr std::uint32_t hw_per_sio_base                  { sio_base };
     }
   }
 

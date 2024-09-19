@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,11 +19,11 @@
       constexpr std::uint32_t nvic_base                 { scs_base + UINT32_C(0x00000100) };
 
       // Interrupt control registers.
-      constexpr std::uint32_t nvic_iser { nvic_base + UINT32_C(0x00000000) };  // Offset: 0x000 Interrupt set enable registers.
-      constexpr std::uint32_t nvic_icer { nvic_base + UINT32_C(0x00000080) };  // Offset: 0x080 Interrupt clear enable registers.
-      constexpr std::uint32_t nvic_ispr { nvic_base + UINT32_C(0x00000100) };  // Offset: 0x100 Interrupt set pending registers.
-      constexpr std::uint32_t nvic_icpr { nvic_base + UINT32_C(0x00000180) };  // Offset: 0x180 Interrupt clear pending registers.
-      constexpr std::uint32_t nvic_ip   { nvic_base + UINT32_C(0x00000300) };  // Offset: 0x300 Interrupt priority registers (each one 8 bits wide).
+      constexpr std::uint32_t nvic_iser                 { nvic_base + UINT32_C(0x00000000) };  // Offset: 0x000 Interrupt set enable registers.
+      constexpr std::uint32_t nvic_icer                 { nvic_base + UINT32_C(0x00000080) };  // Offset: 0x080 Interrupt clear enable registers.
+      constexpr std::uint32_t nvic_ispr                 { nvic_base + UINT32_C(0x00000100) };  // Offset: 0x100 Interrupt set pending registers.
+      constexpr std::uint32_t nvic_icpr                 { nvic_base + UINT32_C(0x00000180) };  // Offset: 0x180 Interrupt clear pending registers.
+      constexpr std::uint32_t nvic_ip                   { nvic_base + UINT32_C(0x00000300) };  // Offset: 0x300 Interrupt priority registers (each one 8 bits wide).
 
       // Oscillator registers.
       constexpr std::uint32_t xosc_base                 { UINT32_C(0x40024000) };

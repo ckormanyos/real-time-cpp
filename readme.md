@@ -446,6 +446,13 @@ dual-core startup originated in and have been taken from (with many thanks)
 from the `Blinky_Pico_dual_core_nosdk`
 [repo](https://github.com/Chalandi/Blinky_Pico_dual_core_nosdk).
 
+The `rpi_pico2_rp2350` target configuration employs the
+RaspberryPi(R) Pico2 RP2350 with dual-core ARM(R) Cortex(R)-M33
+clocked at $150~\text{MHz}$. It has essentially the same boot
+structure as the `2040`. Similarly the dual-core startup was
+pioneered by the efforts revealed in the modernized `Blinky_Pico2_dual_core_nosdk`
+[repo](https://github.com/Chalandi/Blinky_Pico2_dual_core_nosdk).
+
 Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
 starter kit is used.
