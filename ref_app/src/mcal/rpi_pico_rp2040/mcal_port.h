@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_PORT_2012_06_27_H_
-  #define MCAL_PORT_2012_06_27_H_
+#ifndef MCAL_PORT_2012_06_27_H
+  #define MCAL_PORT_2012_06_27_H
 
   #include <mcal_reg.h>
 
@@ -32,16 +32,12 @@
       public:
         static void set_direction_output()
         {
-          // SIO->GPIO_OE_CLR.bit.GPIO_OE_CLR |= 1UL<<pin;
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_oe_clr, port_index>::bit_set();
 
-          // SIO->GPIO_OUT_CLR.bit.GPIO_OUT_CLR |= 1UL<<pin;
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_out_clr, port_index>::bit_set();
 
-          // IO_BANK0->GPIO##pin##_CTRL.bit.FUNCSEL = sio_xx;
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, addr_io_bank0_gpio_pin_ctrl, sio_xx << 0U>::template reg_msk<UINT32_C(0x1F) << 0U>();
 
-          // SIO->GPIO_OE_SET.bit.GPIO_OE_SET |= 1UL<<pin
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_oe_set, port_index>::bit_set();
         }
 
@@ -51,13 +47,11 @@
 
         static void set_pin_high()
         {
-          // SIO->GPIO_OUT_SET.bit.GPIO_OUT_SET |= 1UL<<pin
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_out_set, port_index>::bit_set();
         }
 
         static void set_pin_low()
         {
-          // SIO->GPIO_OUT_CLR.bit.GPIO_OUT_CLR |= 1UL<<pin
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_out_clr, port_index>::bit_set();
         }
 
@@ -68,11 +62,10 @@
 
         static void toggle_pin()
         {
-          // SIO->GPIO_OUT_XOR.bit.GPIO_OUT_XOR |= 1UL<<pin
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::sio_gpio_out_xor, port_index>::bit_set();
         }
       };
     }
   }
 
-#endif // MCAL_PORT_2012_06_27_H_
+#endif // MCAL_PORT_2012_06_27_H

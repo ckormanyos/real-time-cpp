@@ -29,8 +29,8 @@ extern "C" auto __main_core1() -> void __attribute__((section(".startup"), used,
 
 extern "C"
 {
-  auto core_1_run_flag_set(bool) -> void;
-  auto core_1_run_flag_get() -> bool;
+  auto core_1_run_flag_set(bool) noexcept -> void;
+  auto core_1_run_flag_get() noexcept -> bool;
 }
 
 namespace local
@@ -152,7 +152,7 @@ auto __main_core1() -> void
 
   // Setting EXTEXCLALL allows external exclusive operations to be used
   // in a configuration with no MPU. This is because the default memory map
-  // does not include any shareable Normal memory.
+  // does not include any shareable normal memory.
 
   // SCnSCB->ACTLR |= (1ul<<29);
   mcal::reg::reg_access_static<std::uint32_t,
@@ -177,12 +177,12 @@ auto __main_core1() -> void
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_ppb_nsacr,
+                               mcal::reg::ppb_nsacr,
                                std::uint32_t { (1UL << 10U) | (1UL << 11U) }>::reg_or();
 
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_ppb_cpacr,
+                               mcal::reg::ppb_cpacr,
                                std::uint32_t { (3UL << 20U) | (3UL << 22U) }>::reg_or();
 
   // Jump to main on core 1 (and never return).

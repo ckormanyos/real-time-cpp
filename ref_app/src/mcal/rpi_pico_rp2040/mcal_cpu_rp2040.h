@@ -12,7 +12,7 @@
 
   namespace mcal { namespace cpu { namespace rp2040 {
 
-  auto multicore_sync(const std::uint32_t CpuId) -> void;
+  auto multicore_sync(const std::uint32_t cpuid) -> void;
   auto start_core1() -> bool;
 
   } } } // namespace mcal::cpu::rp2040

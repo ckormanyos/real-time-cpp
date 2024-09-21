@@ -8,19 +8,19 @@
 
 /******************************************************************************************
   Filename    : image_definition_block.c
-  
+
   Core        : ARM Cortex-M33
-  
+
   MCU         : RP2350
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 29.08.2024
-  
+
   Description : Image definition block for Raspberry Pi Pico 2
-  
+
 ******************************************************************************************/
 
 #include <stdint.h>

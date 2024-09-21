@@ -7,11 +7,11 @@
 
 namespace local
 {
-  auto core_1_run_flag() -> bool&;
+  auto core_1_run_flag() noexcept -> bool&;
 
-  auto core_1_run_flag() -> bool&
+  auto core_1_run_flag() noexcept -> bool&
   {
-    static bool run_flag { false };
+    static bool run_flag { };
 
     return run_flag;
   }
@@ -19,15 +19,15 @@ namespace local
 
 extern "C"
 {
-  auto core_1_run_flag_set(bool setting) -> void;
-  auto core_1_run_flag_get(void) -> bool;
+  auto core_1_run_flag_set(bool setting) noexcept -> void;
+  auto core_1_run_flag_get() noexcept -> bool;
 
-  auto core_1_run_flag_set(bool setting) -> void
+  auto core_1_run_flag_set(bool setting) noexcept -> void
   {
     local::core_1_run_flag() = setting;
   }
 
-  auto core_1_run_flag_get(void) -> bool
+  auto core_1_run_flag_get() noexcept -> bool
   {
     const bool result { local::core_1_run_flag() };
 
