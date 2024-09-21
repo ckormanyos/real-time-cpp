@@ -526,7 +526,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/am335x</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/bcm2835_raspi_b</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rpi_pico_rp2040|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rpi_pico_rp2040;$(IncludePath)</NMakeIncludeSearchPath>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rpi_pico2_rp2350|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rpi_pico_rp2040;$(IncludePath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target rpi_pico2_rp2350|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/rpi_pico2_rp2350;$(IncludePath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target avr|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega4809|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target atmega2560|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>

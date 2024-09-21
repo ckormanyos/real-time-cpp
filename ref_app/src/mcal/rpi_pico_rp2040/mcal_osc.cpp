@@ -23,7 +23,7 @@ void mcal::osc::init(const config_type*)
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
                                mcal::reg::xosc_startup,
-                               std::uint32_t { UINT32_C(47) }>::template reg_msk<std::uint32_t { UINT32_C(0x1FFF) << 0U }>();
+                               std::uint32_t { UINT32_C(47) << 0U }>::template reg_msk<std::uint32_t { UINT32_C(0x1FFF) << 0U }>();
 
   // XOSC->CTRL.bit.FREQ_RANGE = XOSC_CTRL_FREQ_RANGE_1_15MHZ;
   mcal::reg::reg_access_static<std::uint32_t,

@@ -12,11 +12,11 @@
 // Author      : Chalandi Amine
 //
 // Owner       : Chalandi Amine
-// 
+//
 // Date        : 04.09.2024
-// 
+//
 // Description : low-level utility functions
-// 
+//
 // ***************************************************************************************
 
 #include <cstdint>

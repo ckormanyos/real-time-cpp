@@ -49,20 +49,20 @@ auto init_core() -> void
   // HW_PER_RESETS->RESET.bit.IO_BANK0   = 1U;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_resets_reset,
+                               mcal::reg::resets_reset,
                                UINT32_C(6)>::bit_set();
 
   // HW_PER_RESETS->RESET.bit.PADS_BANK0 = 1U;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_resets_reset,
+                               mcal::reg::resets_reset,
                                UINT32_C(9)>::bit_set();
 
   // while((HW_PER_RESETS->RESET_DONE.bit.IO_BANK0 == 1U) || (HW_PER_RESETS->RESET_DONE.bit.PADS_BANK0 == 1U));
   while
   (
-       mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::hw_per_resets_reset_done, UINT32_C(6)>::bit_get()
-    || mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::hw_per_resets_reset_done, UINT32_C(9)>::bit_get()
+       mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(6)>::bit_get()
+    || mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(9)>::bit_get()
   )
   {
     mcal::cpu::nop();
@@ -71,20 +71,20 @@ auto init_core() -> void
   // HW_PER_RESETS->RESET.bit.IO_BANK0   = 0U;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_resets_reset,
+                               mcal::reg::resets_reset,
                                UINT32_C(6)>::bit_clr();
 
   // HW_PER_RESETS->RESET.bit.PADS_BANK0 = 0U;
   mcal::reg::reg_access_static<std::uint32_t,
                                std::uint32_t,
-                               mcal::reg::hw_per_resets_reset,
+                               mcal::reg::resets_reset,
                                UINT32_C(9)>::bit_clr();
 
   // while((HW_PER_RESETS->RESET_DONE.bit.IO_BANK0 == 0U) || (HW_PER_RESETS->RESET_DONE.bit.PADS_BANK0 == 0U));
   while
   (
-       (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::hw_per_resets_reset_done, UINT32_C(6)>::bit_get())
-    || (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::hw_per_resets_reset_done, UINT32_C(9)>::bit_get())
+       (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(6)>::bit_get())
+    || (!mcal::reg::reg_access_static<std::uint32_t, std::uint32_t,  mcal::reg::resets_reset_done, UINT32_C(9)>::bit_get())
   )
   {
     mcal::cpu::nop();
@@ -92,7 +92,7 @@ auto init_core() -> void
 
   // Setting EXTEXCLALL allows external exclusive operations to be used
   // in a configuration with no MPU. This is because the default memory map
-  // does not include any shareable Normal memory.
+  // does not include any shareable normal memory.
 
   // SCnSCB->ACTLR |= (1ul<<29);
   mcal::reg::reg_access_static<std::uint32_t,
