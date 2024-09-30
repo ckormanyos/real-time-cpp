@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022.
+//  Copyright Christopher Kormanyos 2022 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -47,7 +47,7 @@ void mcal::cpu::init()
 
 void mcal::cpu::post_init()
 {
-  // Enable the Cache-I and Cache-D.
+  // Enable the instruction-cache and the data-cache.
   detail::enable_i_cache();
   detail::enable_d_cache();
 }
@@ -81,7 +81,9 @@ void mcal::cpu::detail::enable_d_cache()
     asm volatile("dsb");
 
     // Invalidate the data cache.
-    auto sets =
+    std::uint32_t
+      sets
+      {
       static_cast<std::uint32_t>
       (
           static_cast<std::uint32_t>
@@ -89,14 +91,15 @@ void mcal::cpu::detail::enable_d_cache()
                mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get()
             >> static_cast<unsigned>(UINT8_C(13))
           )
-        &
-          static_cast<std::uint32_t>(UINT32_C(0x7FFF))
-      );
+          & static_cast<std::uint32_t>(UINT32_C(0x7FFF))
+        )
+      };
+
     asm volatile("dsb");
 
     do
     {
-      auto ways = mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get();
+      std::uint32_t ways { mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get() };
       asm volatile("dsb");
 
       ways =
@@ -119,10 +122,11 @@ void mcal::cpu::detail::enable_d_cache()
         asm volatile("dsb");
       }
       while(ways-- != static_cast<std::uint32_t>(UINT8_C(0)));
-      asm volatile("dsb");
 
+      asm volatile("dsb");
     }
     while(sets-- != static_cast<std::uint32_t>(UINT8_C(0)));
+
     asm volatile("dsb");
 
     // Enable the data cache.
