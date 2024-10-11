@@ -17,7 +17,7 @@
 
   namespace util
   {
-    class communication_base : private util::noncopyable
+    class communication_base : private util::noncopyable // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
     public:
       virtual ~communication_base() = default;

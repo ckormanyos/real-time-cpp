@@ -40,6 +40,7 @@
     mcal::pwm::pwm_base& my_pwm;
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
 #endif // MCAL_LED_PWM_2020_04_23_H

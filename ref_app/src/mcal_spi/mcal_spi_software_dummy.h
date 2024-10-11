@@ -12,7 +12,7 @@
 
   namespace mcal { namespace spi {
 
-  class spi_software_dummy : public util::communication_buffer_depth_one_byte
+  class spi_software_dummy : public util::communication_buffer_depth_one_byte // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   private:
     using base_class_type = util::communication_buffer_depth_one_byte;

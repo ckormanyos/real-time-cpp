@@ -39,6 +39,7 @@
     const std::uint_fast8_t my_index;
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
 #endif // MCAL_LED_CONSOLE_2020_04_23_H

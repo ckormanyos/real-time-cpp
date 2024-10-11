@@ -90,7 +90,7 @@
       {
         const timer t_delay(delay);
 
-        while(!t_delay.timeout())
+        while(!t_delay.timeout()) // NOLINT(altera-id-dependent-backward-branch)
         {
           mcal::wdg::secure::trigger();
         }

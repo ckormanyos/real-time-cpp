@@ -19,10 +19,10 @@
     class task_control_block final
     {
     public:
-      task_control_block(const function_type init,
-                         const function_type func,
-                         const tick_type cycle,
-                         const tick_type offset)
+      task_control_block(const function_type init, // NOLINT(bugprone-easily-swappable-parameters)
+                         const function_type func, // NOLINT(bugprone-easily-swappable-parameters)
+                         const tick_type cycle,    // NOLINT(bugprone-easily-swappable-parameters)
+                         const tick_type offset)   // NOLINT(bugprone-easily-swappable-parameters)
         : my_init  { init },
           my_func  { func },
           my_cycle { cycle },

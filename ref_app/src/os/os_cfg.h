@@ -15,16 +15,38 @@
   #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
-  namespace sys { namespace idle { auto task_init() noexcept -> void; auto task_func() -> void; } }
+  namespace sys { namespace idle {
+
+  auto task_init() noexcept -> void; auto task_func() -> void;
+
+  } // namespace idle
+  } // namespace sys
 
   // Define symbols for the task initialization and the task function of the idle process.
   #define OS_IDLE_TASK_INIT() sys::idle::task_init()
   #define OS_IDLE_TASK_FUNC() sys::idle::task_func()
 
   // Declare all of the task initializations and the task functions.
-  namespace app { namespace led       { auto task_init() -> void; auto task_func() -> void; } }
-  namespace app { namespace benchmark { auto task_init() -> void; auto task_func() -> void; } }
-  namespace sys { namespace mon       { auto task_init() -> void; auto task_func() -> void; } }
+  namespace app { namespace led {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace led
+  } // namespace app
+
+  namespace app { namespace benchmark {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace benchmark
+  } // namespace app
+
+  namespace sys { namespace mon {
+
+  auto task_init() -> void; auto task_func() -> void;
+
+  } // namespace mon
+  } // namespace sys
 
   namespace os
   {
@@ -50,7 +72,7 @@
 
     static_assert(std::numeric_limits<os::event_type>::digits >= 16,
                   "The operating system event_type must be at least 16-bits wide.");
-  }
+  } // namespace os
 
   // Configure the operating system tasks.
 

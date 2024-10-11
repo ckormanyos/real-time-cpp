@@ -50,6 +50,7 @@
     ~pwm_console() override = default;
   };
 
-  } }
+  } // namespace pwm
+  } // namespace mcal
 
 #endif // MCAL_PWM_CONSOLE_2020_04_12_H_

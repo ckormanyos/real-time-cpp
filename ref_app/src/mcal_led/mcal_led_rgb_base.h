@@ -94,6 +94,7 @@
     }
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
 #endif // MCAL_LED_RGB_BASE_2023_07_12_H
