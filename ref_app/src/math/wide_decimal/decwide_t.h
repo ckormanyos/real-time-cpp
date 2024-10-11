@@ -709,7 +709,7 @@
 
     // Constructors from built-in floating-point types.
     template<typename FloatingPointType,
-             typename std::enable_if<std::is_floating_point<FloatingPointType>::value == true>::type const* = nullptr>
+             typename std::enable_if<std::is_floating_point<FloatingPointType>::value>::type const* = nullptr>
     decwide_t(const FloatingPointType f) : my_data     (), // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
                                            my_exp      (static_cast<exponent_type>(INT8_C(0))),
                                            my_neg      (false),

@@ -177,7 +177,7 @@
            const mcal_sram_uintptr_t Address>
   bool operator!=(const array<T, N, Address>& left, const array<T, N, Address>& right)
   {
-    return ((left == right) == false);
+    return (!(left == right));
   }
 
   template<typename T,
@@ -193,7 +193,7 @@
            const mcal_sram_uintptr_t Address>
   bool operator>=(const array<T, N, Address>& left, const array<T, N, Address>& right)
   {
-    return ((left < right) == false);
+    return (!(left < right));
   }
 
   template<typename T,
@@ -201,7 +201,7 @@
            const mcal_sram_uintptr_t Address>
   bool operator<=(const array<T, N, Address>& left, const array<T, N, Address>& right)
   {
-    return ((right < left) == false);
+    return (!(right < left));
   }
 
   template<typename T>

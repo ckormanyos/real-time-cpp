@@ -293,7 +293,7 @@
     {
       for( ; first != last; ++first)
       {
-      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+        using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
 
         *first = forward_value_type(value);
       }
@@ -321,7 +321,7 @@
     {
       while(first != last)
       {
-      using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
+        using forward_value_type = typename std::iterator_traits<forward_iterator>::value_type;
 
         *first = forward_value_type(generator());
 
@@ -338,7 +338,7 @@
     {
       for(size_type i = size_type(0); i < count; ++i)
       {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
 
         *first = output_value_type(generator());
 
@@ -367,7 +367,7 @@
     {
       for( ; first != last; ++first, ++result)
       {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
 
         *result = output_value_type(unary_function(*first));
       }
@@ -387,7 +387,7 @@
     {
       for( ; first1 != last1; ++first1, ++first2, ++result)
       {
-      using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
+        using output_value_type = typename std::iterator_traits<output_iterator>::value_type;
 
         *result = output_value_type(binary_function(*first1, *first2));
       }
@@ -425,7 +425,7 @@
     {
       while(first1 != last1)
       {
-        if(binary_function(*first1, *first2) == false)
+        if(!binary_function(*first1, *first2))
         {
           break;
         }
@@ -457,7 +457,7 @@
                 iterator_type       last,
                 unary_function_type unary_function)
     {
-      while((first != last) && (unary_function(*first) == false))
+      while((first != last) && (!unary_function(*first)))
       {
         ++first;
       }
@@ -471,7 +471,7 @@
                  iterator_type       last,
                  unary_function_type unary_function)
     {
-      while((first != last) && (unary_function(*first) == false))
+      while((first != last) && (!unary_function(*first)))
       {
         ++first;
       }
@@ -838,7 +838,7 @@
     {
       for( ; ; ++first)
       {
-        for( ; (first != last) && (unary_function(*first) == true); ++first)
+        for( ; (first != last) && unary_function(*first); ++first)
         {
           ;
         }
@@ -848,7 +848,7 @@
           break;
         }
 
-        for( ; (first != --last) && (unary_function(*last) == false); )
+        for( ; (first != --last) && (!unary_function(*last)); )
         {
           ;
         }

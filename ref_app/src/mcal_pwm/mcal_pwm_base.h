@@ -14,7 +14,7 @@
 
   namespace mcal { namespace pwm {
 
-  class pwm_base : private util::noncopyable
+  class pwm_base : private util::noncopyable // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
     using duty_type = std::uint16_t;
@@ -32,7 +32,7 @@
       : my_duty_cycle(initial_duty) { }
 
   private:
-    duty_type my_duty_cycle { };
+    duty_type my_duty_cycle { }; // NOLINT(readability-identifier-naming)
   };
 
   } // namespace pwm

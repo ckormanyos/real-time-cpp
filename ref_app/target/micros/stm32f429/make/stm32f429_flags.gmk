@@ -35,9 +35,7 @@ TGT_CXXFLAGS  = -std=c++14                                                      
                 -Wno-psabi                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -IC:/boost/modular_boost/libs/config/include                      \
-                -IC:/boost/modular_boost/libs/math/include                        \
-                -IC:/boost/modular_boost/libs/multiprecision/include
+TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 

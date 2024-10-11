@@ -17,44 +17,40 @@
 #if defined(_MSC_VER)
 
 #include <util/STL_C++XX_stdfloat/cstdfloat>
-namespace app { namespace benchmark {
-
-using my_float_type = double;
-
-} // namespace benchmark
-} // namespace app
 
 #elif (defined(__has_include) && (__has_include(<stdfloat>)))
 
 #include <stdfloat>
 
-namespace app { namespace benchmark {
-
-#if (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1))
-
-using my_float_type = std::float64_t;
-
-#else
-
-using my_float_type = float;
-
-#endif
-
-} // namespace benchmark
-} // namespace app
-
 #else
 
 #include <util/STL_C++XX_stdfloat/cstdfloat>
 
+#endif
+
+#if (defined(STDFLOAT_FLOAT64_NATIVE_TYPE) || (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1)))
+
+using local_float_type = std::float64_t;
+static_assert((std::numeric_limits<local_float_type>::digits >= 53), "Error: Incorrect my_float_type type definition");
+
+#elif (defined(STDFLOAT_FLOAT32_NATIVE_TYPE) || (defined(__STDCPP_FLOAT32_T__) && (__STDCPP_FLOAT32_T__ == 1)))
+
+using local_float_type = std::float32_t;
+static_assert((std::numeric_limits<local_float_type>::digits >= 24), "Error: Incorrect my_float_type type definition");
+
+#else
+
+using local_float_type = double;
+static_assert((std::numeric_limits<local_float_type>::digits >= 53), "Error: Incorrect my_float_type type definition");
+
+#endif
+
 namespace app { namespace benchmark {
 
-using my_float_type = std::floatmax_t;
+using my_float_type = ::local_float_type;
 
 } // namespace benchmark
 } // namespace app
-
-#endif
 
 #include <app/benchmark/app_benchmark_detail.h>
 #include <math/calculus/integral.h>
@@ -95,17 +91,10 @@ namespace
 
 auto app::benchmark::run_trapezoid_integral() -> bool
 {
-  #if (defined(__GNUC__) && defined(__AVR__) && (__GNUC__ < 12))
-  static_assert((std::numeric_limits<my_float_type>::digits >= 24), "Error: Incorrect my_float_type type definition");
-  #else
-  static_assert((std::numeric_limits<my_float_type>::digits >= 53), "Error: Incorrect my_float_type type definition");
-  #endif
-
   constexpr auto app_benchmark_tolerance =
     static_cast<my_float_type>
     (
-        std::numeric_limits<my_float_type>::epsilon()
-      * static_cast<my_float_type>(100.0L)
+      std::numeric_limits<my_float_type>::epsilon() * static_cast<my_float_type>(100.0L)
     );
 
   // Compute y = cyl_bessel_j(2, 1.23) = 0.16636938378681407351267852431513159437103348245333

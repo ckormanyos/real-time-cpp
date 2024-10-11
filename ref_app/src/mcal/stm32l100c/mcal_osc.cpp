@@ -26,7 +26,7 @@ void mcal::osc::init(const config_type*)
   while(mcal::reg::reg_access_static<std::uint32_t,
                                      std::uint32_t,
                                      mcal::reg::rcc_cr,
-                                     UINT32_C(25)>::bit_get() == true)
+                                     UINT32_C(25)>::bit_get())
   {
     mcal::cpu::nop();
   }
@@ -51,10 +51,10 @@ void mcal::osc::init(const config_type*)
 
   // Wait until the HSI is ready.
   // Read the HSIRDY bit.
-  while(mcal::reg::reg_access_static<std::uint32_t,
-                                     std::uint32_t,
-                                     mcal::reg::rcc_cr,
-                                     UINT32_C(1)>::bit_get() == false)
+  while(!mcal::reg::reg_access_static<std::uint32_t,
+                                      std::uint32_t,
+                                      mcal::reg::rcc_cr,
+                                      UINT32_C(1)>::bit_get())
   {
     mcal::cpu::nop();
   }

@@ -45,7 +45,7 @@ extern "C" void mcal_gpt_increment_tick(void)
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     gpt_is_initialized() = true;
 

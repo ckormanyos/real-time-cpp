@@ -18,7 +18,7 @@
   {
     template<typename unsigned_tick_type>
     class timer;
-  }
+  } // namespace util
 
   namespace mcal
   {
@@ -38,7 +38,7 @@
         template<typename unsigned_tick_type>
         friend class util::timer;
       };
-    }
-  }
+    } // namespace gpt
+  } // namespace mcal
 
 #endif // MCAL_GPT_2011_10_20_H

@@ -26,7 +26,7 @@
         static constexpr auto read_input_value    () noexcept -> bool { return false; }
         static constexpr auto toggle_pin          () noexcept -> void { }
       };
-    }
-  }
+    } // namespace port
+  } // namespace mcal
 
 #endif // MCAL_PORT_2012_06_27_H

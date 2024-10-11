@@ -19,10 +19,10 @@
     class task_control_block final
     {
     public:
-      task_control_block(const function_type init,
-                         const function_type func,
-                         const tick_type cycle,
-                         const tick_type offset)
+      task_control_block(const function_type init, // NOLINT(bugprone-easily-swappable-parameters)
+                         const function_type func, // NOLINT(bugprone-easily-swappable-parameters)
+                         const tick_type cycle,    // NOLINT(bugprone-easily-swappable-parameters)
+                         const tick_type offset)   // NOLINT(bugprone-easily-swappable-parameters)
         : my_init  { init },
           my_func  { func },
           my_cycle { cycle },
@@ -40,9 +40,9 @@
       auto operator=(task_control_block&&) noexcept -> task_control_block& = delete;
 
     private:
-      const function_type my_init;
-      const function_type my_func;
-      const tick_type     my_cycle;
+      const function_type my_init;  // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+      const function_type my_func;  // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+      const tick_type     my_cycle; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
             timer_type    my_timer;
             event_type    my_event { };
 
@@ -80,6 +80,6 @@
       friend auto get_event  (event_type&) -> void;
       friend auto clear_event(const event_type&) -> void;
     };
-  }
+  } // namespace os
 
 #endif // OS_TASK_CONTROL_BLOCK_2013_07_30_H

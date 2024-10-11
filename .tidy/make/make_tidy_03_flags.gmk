@@ -1,5 +1,5 @@
 ﻿# ------------------------------------------------------------------------------
-#  Copyright Christopher Kormanyos 2022.
+#  Copyright Christopher Kormanyos 2022 - 2024.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,12 +36,29 @@ C_INCLUDES  :=$(addprefix -I,$(C_INCLUDES))
 
 
 TIDY_CHECKS  = "*,                                                             \
-               -altera-struct-pack-align,                                      \
-               -altera-unroll-loops,                                           \
-               -fuchsia-*,                                                     \
-               -llvmlibc-*"
+                -cert-dcl58-cpp,                                               \
+                -cppcoreguidelines-rvalue-reference-param-not-moved,           \
+                -cppcoreguidelines-avoid-do-while,                             \
+                -llvm-header-guard,                                            \
+                -cppcoreguidelines-macro-usage,                                \
+                -hicpp-named-parameter,                                        \
+                -modernize-type-traits,                                        \
+                -modernize-use-constraints,                                    \
+                -modernize-use-trailing-return-type,                           \
+                -misc-header-include-cycle,                                    \
+                -misc-include-cleaner,                                         \
+                -misc-const-correctness,                                       \
+                -performance-avoid-endl,                                       \
+                -readability-avoid-const-params-in-decls,                       \
+                -readability-identifier-length,                                \
+                -readability-identifier-naming,                                \
+                -readability-named-parameter,                                  \
+                -readability-redundant-casting,                                \
+                -altera-struct-pack-align,                                     \
+                -altera-unroll-loops,                                          \
+                -fuchsia-*,                                                    \
+                -llvmlibc-*"
 
 TIDY_FLAGS   = --extra-arg-before=--driver-mode=g++                            \
-               --header-filter=decwide_t                                       \
                -warnings-as-errors=*                                           \
                -checks=$(TIDY_CHECKS)

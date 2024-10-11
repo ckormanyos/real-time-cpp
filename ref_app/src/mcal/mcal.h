@@ -5,8 +5,8 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_2011_10_20_H_
-  #define MCAL_2011_10_20_H_
+#ifndef MCAL_2011_10_20_H
+  #define MCAL_2011_10_20_H
 
   #include <mcal_cpu.h>
   #include <mcal_eep.h>
@@ -19,14 +19,17 @@
   #include <mcal_spi.h>
   #include <mcal_wdg.h>
 
-  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 64)
-                && (std::numeric_limits<mcal::gpt::value_type>::is_integer == true)
-                && (std::numeric_limits<mcal::gpt::value_type>::is_signed  == false),
+  #include <cstdint>
+  #include <limits>
+
+  static_assert(    (std::numeric_limits<mcal::gpt::value_type>::digits >= static_cast<int>(INT8_C(64)))
+                &&   std::numeric_limits<mcal::gpt::value_type>::is_integer
+                && (!std::numeric_limits<mcal::gpt::value_type>::is_signed),
                 "The gpt value type must be an unsigned integer type having at least 64 bits.");
 
   namespace mcal
   {
     auto init() -> void;
-  }
+  } // namespace mcal
 
-#endif // MCAL_2011_10_20_H_
+#endif // MCAL_2011_10_20_H

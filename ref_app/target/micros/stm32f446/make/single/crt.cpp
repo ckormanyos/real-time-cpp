@@ -1,9 +1,16 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2018 - 2019.
+//  Copyright Christopher Kormanyos 2018 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
+
+#if (defined(__GNUC__) && !defined(__clang__))
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow="
+#endif
 
 #include <algorithm>
 #include <array>
@@ -278,3 +285,8 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
   nullptr,                   // 0x01F8, dummy
   nullptr                    // 0x01FC, dummy
 }};
+
+#if (defined(__GNUC__) && !defined(__clang__))
+#pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
+#endif

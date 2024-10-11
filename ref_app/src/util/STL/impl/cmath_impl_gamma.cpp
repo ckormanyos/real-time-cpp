@@ -92,7 +92,7 @@ float tgammaf(float x)
   }
 
   // Check if the argument is very close to +1 or +2?
-  if(b_neg == false)
+  if(!b_neg)
   {
     using xcmath_impl::near_integer;
 
@@ -125,7 +125,7 @@ float tgammaf(float x)
   }
 
   // Return (and possibly reflect) the result.
-  if(false == b_neg)
+  if(!b_neg)
   {
     return gamma_value;
   }

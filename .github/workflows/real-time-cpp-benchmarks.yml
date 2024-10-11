@@ -189,7 +189,7 @@ jobs:
           ./bin/app_benchmark_cnl_scaled_integer.exe
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu-cnl:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -226,7 +226,7 @@ jobs:
           echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
         working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash

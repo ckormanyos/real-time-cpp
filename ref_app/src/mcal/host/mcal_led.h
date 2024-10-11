@@ -15,7 +15,7 @@
     namespace led
     {
       auto led0() -> led_base&;
-    }
-  }
+    } // namespace led
+  } // namespace mcal
 
 #endif // MCAL_LED_2010_09_14_H

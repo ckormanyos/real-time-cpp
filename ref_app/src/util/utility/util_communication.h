@@ -17,7 +17,7 @@
 
   namespace util
   {
-    class communication_base : private util::noncopyable
+    class communication_base : private util::noncopyable // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
     public:
       virtual ~communication_base() = default;
@@ -34,7 +34,7 @@
       {
         auto send_result = true;
 
-        while((first != last) && send_result)
+        while((first != last) && send_result) // NOLINT(altera-id-dependent-backward-branch)
         {
           using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
@@ -50,11 +50,11 @@
       communication_base() = default;
 
     private:
-      template<const std::size_t channel_count>
+      template<const std::size_t ChannelCount>
       friend class communication_multi_channel;
     };
 
-    class communication_buffer_depth_one_byte : public communication_base
+    class communication_buffer_depth_one_byte : public communication_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
     public:
       using buffer_type = std::uint8_t;
@@ -62,7 +62,7 @@
       ~communication_buffer_depth_one_byte() override = default;
 
     protected:
-      buffer_type recv_buffer { };
+      buffer_type recv_buffer { }; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
 
       communication_buffer_depth_one_byte() = default;
 
@@ -75,13 +75,18 @@
       }
     };
 
-    template<const std::size_t channel_count>
-    class communication_multi_channel : public communication_base
+    template<const std::size_t ChannelCount>
+    class communication_multi_channel : public communication_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
+    private:
+      static constexpr std::size_t channel_count = ChannelCount;
+
     public:
+      communication_multi_channel() = delete;
+
       explicit communication_multi_channel(communication_base** p_com_channels)
       {
-        std::copy(p_com_channels, p_com_channels + channel_count, my_com_channels.begin());
+        std::copy(p_com_channels, p_com_channels + channel_count, my_com_channels.begin()); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
       }
 
       ~communication_multi_channel() override = default;
@@ -112,13 +117,11 @@
       }
 
     private:
-      std::array<communication_base*, channel_count> my_com_channels { };
-      std::size_t         my_index { };
-
-      communication_multi_channel() = delete;
+      std::array<communication_base*, channel_count> my_com_channels { }; // NOLINT(readability-identifier-naming)
+      std::size_t my_index { }; // NOLINT(readability-identifier-naming)
 
       static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
     };
-  }
+  } // namespace util
 
 #endif // UTIL_COMMUNICATION_2012_05_31_H

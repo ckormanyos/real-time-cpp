@@ -18,7 +18,7 @@ namespace local
     return (mcal::reg::reg_access_static<std::uint8_t,
                                          std::uint8_t,
                                          mcal::reg::eecr,
-                                         UINT8_C(1)>::bit_get() == true);
+                                         UINT8_C(1)>::bit_get());
   }
 } // namespace local
 

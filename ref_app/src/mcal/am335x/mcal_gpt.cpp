@@ -63,7 +63,7 @@ void __vector_timer7()
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     mcal::reg::reg_access_static<std::uint32_t,
                                  std::uint32_t,

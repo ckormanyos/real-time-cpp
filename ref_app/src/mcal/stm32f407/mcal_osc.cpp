@@ -29,10 +29,10 @@ namespace
                                  UINT32_C(0x00010000)>::reg_or();
 
     // Wait until the hse is ready.
-    while(mcal::reg::reg_access_static<std::uint32_t,
-                                       std::uint32_t,
-                                       mcal::reg::rcc_cr,
-                                       UINT32_C(17)>::bit_get() == false)
+    while(!mcal::reg::reg_access_static<std::uint32_t,
+                                        std::uint32_t,
+                                        mcal::reg::rcc_cr,
+                                        UINT32_C(17)>::bit_get())
     {
       mcal::cpu::nop();
     }
@@ -78,10 +78,10 @@ namespace
                                    UINT32_C(0x01000000)>::reg_or();
 
       // Wait until the pll is locked.
-      while(mcal::reg::reg_access_static<std::uint32_t,
-                                         std::uint32_t,
-                                         mcal::reg::rcc_cr,
-                                         UINT32_C(25)>::bit_get() == false)
+      while(!mcal::reg::reg_access_static<std::uint32_t,
+                                          std::uint32_t,
+                                          mcal::reg::rcc_cr,
+                                          UINT32_C(25)>::bit_get())
       {
         mcal::cpu::nop();
       }

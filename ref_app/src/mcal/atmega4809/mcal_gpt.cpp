@@ -47,7 +47,7 @@ void __vector_3()
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // The system tick for the multitasking scheduler is derived
     // from the real-time counter. The numerics of setting up

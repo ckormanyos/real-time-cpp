@@ -15,7 +15,7 @@
       using config_type = void;
 
       auto init(const config_type*) -> void;
-    }
-  }
+    } // namespace osc
+  } // namespace mcal
 
 #endif // MCAL_OSC_2011_10_20_H

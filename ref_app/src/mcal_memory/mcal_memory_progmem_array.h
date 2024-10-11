@@ -103,7 +103,7 @@
   template<typename T, const mcal_progmem_uintptr_t N>
   bool operator!=(const array<T, N>& left, const array<T, N>& right)
   {
-    return ((left == right) == false);
+    return (!(left == right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
@@ -115,13 +115,13 @@
   template<typename T, const mcal_progmem_uintptr_t N>
   bool operator>=(const array<T, N>& left, const array<T, N>& right)
   {
-    return ((left < right) == false);
+    return (!(left < right));
   }
 
   template<typename T, const mcal_progmem_uintptr_t N>
   bool operator<=(const array<T, N>& left, const array<T, N>& right)
   {
-    return ((right < left) == false);
+    return (!(right < left));
   }
 
   template<typename T>

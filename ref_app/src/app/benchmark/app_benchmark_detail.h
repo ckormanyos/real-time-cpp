@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,8 +14,8 @@
   namespace app { namespace benchmark { namespace detail {
 
   template<typename NumericType>
-  auto is_close_fraction(const NumericType a,
-                         const NumericType b,
+  auto is_close_fraction(const NumericType a, // NOLINT(bugprone-easily-swappable-parameters)
+                         const NumericType b, // NOLINT(bugprone-easily-swappable-parameters)
                          const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * NumericType(100))) -> bool
   {
     using std::fabs;
@@ -27,6 +27,8 @@
     return (closeness < tol);
   }
 
-  } } } // namespace app::benchmark::detail
+  } // namespace detail
+  } // namespace benchmark
+  } // namespace app
 
 #endif // APP_BENCHMARK_DETAIL_2018_10_02_H

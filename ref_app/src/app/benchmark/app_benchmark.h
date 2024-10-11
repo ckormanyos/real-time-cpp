@@ -110,6 +110,7 @@
   #error APP_BENCHMARK_TYPE is undefined.
   #endif
 
-  } } // namespace app:::benchmark
+  } // namespace benchmark
+  } // namespace app
 
 #endif // APP_BENCHMARK_2018_10_02_H

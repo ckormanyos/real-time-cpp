@@ -74,7 +74,7 @@ namespace
 
     #if (defined(APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT) \
              && (APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT == 1))
-    static_assert(result_of_mul_is_ok == true, "Error: result_of_mul_is_ok not OK!");
+    static_assert(result_of_mul_is_ok, "Error: result_of_mul_is_ok not OK!");
     #endif
 
     return result_of_mul_is_ok;
@@ -88,7 +88,7 @@ namespace
 
     #if (defined(APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT) \
              && (APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT == 1))
-    static_assert(result_of_div_is_ok == true, "Error: result_of_div_is_ok not OK!");
+    static_assert(result_of_div_is_ok, "Error: result_of_div_is_ok not OK!");
     #endif
 
     return result_of_div_is_ok;
@@ -100,7 +100,7 @@ namespace
 
     #if (defined(APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT) \
              && (APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT == 1))
-    static_assert(result_of_mod_is_ok == true, "Error: result_of_div_is_ok not OK!");
+    static_assert(result_of_mod_is_ok, "Error: result_of_div_is_ok not OK!");
     #endif
 
     return result_of_mod_is_ok;

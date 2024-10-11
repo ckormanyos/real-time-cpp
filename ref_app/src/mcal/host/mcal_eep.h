@@ -21,7 +21,7 @@
 
       auto write(const address_type addr, const std::uint8_t data) -> void;
       auto read (const address_type addr) -> std::uint8_t;
-    }
-  }
+    } // namespace eep
+  } // namespace mcal
 
 #endif // MCAL_EEP_2018_12_15_H

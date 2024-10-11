@@ -23,23 +23,23 @@
       static constexpr auto timer_mask =
         static_cast<unsigned_tick_type>
         (
-          (UINTMAX_C(1) << (std::numeric_limits<unsigned_tick_type>::digits - 1)) - UINTMAX_C(1)
+          (UINTMAX_C(1) << static_cast<unsigned>(std::numeric_limits<unsigned_tick_type>::digits - 1)) - UINTMAX_C(1)
         );
 
     public:
       using tick_type = unsigned_tick_type;
 
       template<typename other_tick_type> static constexpr auto microseconds(other_tick_type value_microseconds) noexcept -> tick_type { return static_cast<tick_type>(value_microseconds); }
-      template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(1000UL) * microseconds(value_milliseconds); }
-      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(1000UL) * milliseconds(value_seconds     ); }
-      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      noexcept -> tick_type { return static_cast<tick_type>(  60UL) * seconds     (value_minutes     ); }
-      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours)        noexcept -> tick_type { return static_cast<tick_type>(  60UL) * minutes     (value_hours       ); }
-      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days)         noexcept -> tick_type { return static_cast<tick_type>(  24UL) * hours       (value_days        ); }
-      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks)        noexcept -> tick_type { return static_cast<tick_type>(   7UL) * days        (value_weeks       ); }
+      template<typename other_tick_type> static constexpr auto milliseconds(other_tick_type value_milliseconds) noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * microseconds(value_milliseconds); }
+      template<typename other_tick_type> static constexpr auto seconds     (other_tick_type value_seconds)      noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(1000)) * milliseconds(value_seconds     ); }
+      template<typename other_tick_type> static constexpr auto minutes     (other_tick_type value_minutes)      noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * seconds     (value_minutes     ); }
+      template<typename other_tick_type> static constexpr auto hours       (other_tick_type value_hours)        noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  60)) * minutes     (value_hours       ); }
+      template<typename other_tick_type> static constexpr auto days        (other_tick_type value_days)         noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(  24)) * hours       (value_days        ); }
+      template<typename other_tick_type> static constexpr auto weeks       (other_tick_type value_weeks)        noexcept -> tick_type { return static_cast<tick_type>(UINT16_C(   7)) * days        (value_weeks       ); }
 
       constexpr timer() = default;
 
-      constexpr timer(tick_type tick_value) : my_tick(my_now() + tick_value) { }
+      explicit constexpr timer(tick_type tick_value) : my_tick(my_now() + tick_value) { }
 
       constexpr timer(const timer& other) = default;
 
@@ -90,7 +90,7 @@
       {
         const timer t_delay(delay);
 
-        while(false == t_delay.timeout())
+        while(!t_delay.timeout()) // NOLINT(altera-id-dependent-backward-branch)
         {
           mcal::wdg::secure::trigger();
         }
@@ -104,12 +104,12 @@
         return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
       }
 
-      static_assert(std::numeric_limits<tick_type>::is_signed == false,
+      static_assert((!std::numeric_limits<tick_type>::is_signed),
                     "the timer tick_type must be unsigned");
 
       static_assert(std::numeric_limits<tick_type>::digits <= std::numeric_limits<mcal::gpt::value_type>::digits,
                     "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
     };
-  }
+  } // namespace util
 
 #endif // UTIL_TIME_2010_04_10_H
