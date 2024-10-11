@@ -23,7 +23,7 @@
       static constexpr auto timer_mask =
         static_cast<unsigned_tick_type>
         (
-          (UINTMAX_C(1) << (std::numeric_limits<unsigned_tick_type>::digits - 1)) - UINTMAX_C(1)
+          (UINTMAX_C(1) << static_cast<unsigned>(std::numeric_limits<unsigned_tick_type>::digits - 1)) - UINTMAX_C(1)
         );
 
     public:
@@ -39,7 +39,7 @@
 
       constexpr timer() = default;
 
-      constexpr timer(tick_type tick_value) : my_tick(my_now() + tick_value) { }
+      explicit constexpr timer(tick_type tick_value) : my_tick(my_now() + tick_value) { }
 
       constexpr timer(const timer& other) = default;
 
@@ -90,7 +90,7 @@
       {
         const timer t_delay(delay);
 
-        while(false == t_delay.timeout())
+        while(!t_delay.timeout())
         {
           mcal::wdg::secure::trigger();
         }

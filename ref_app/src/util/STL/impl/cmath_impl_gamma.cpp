@@ -125,7 +125,7 @@ float tgammaf(float x)
   }
 
   // Return (and possibly reflect) the result.
-  if(false == b_neg)
+  if(!b_neg)
   {
     return gamma_value;
   }

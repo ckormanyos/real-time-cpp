@@ -13,9 +13,15 @@
   {
     template<typename unsigned_tick_type>
     class timer;
-  }
+  } // namespace util
 
-  namespace sys { namespace idle { void task_func(); } }
+  namespace sys
+  {
+    namespace idle
+    {
+      void task_func();
+    } // namespace idle
+  } // namespace sys
 
   namespace mcal
   {
