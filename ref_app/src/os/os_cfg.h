@@ -8,11 +8,11 @@
 #ifndef OS_CFG_2011_10_20_H
   #define OS_CFG_2011_10_20_H
 
+  #include <util/utility/util_time.h>
+
   #include <cstddef>
   #include <cstdint>
   #include <limits>
-
-  #include <util/utility/util_time.h>
 
   // Declare the task initialization and the task function of the idle process.
   namespace sys { namespace idle {
@@ -52,7 +52,8 @@
   {
     // Enumerate the task IDs. Note that the order in this list must
     // be identical with the order of the tasks in the task list below.
-    enum class task_id_type
+
+    enum class task_id_type // NOLINT(performance-enum-size)
     {
       task_id_app_led,
       task_id_app_benchmark,
@@ -67,10 +68,10 @@
     using tick_type  = timer_type::tick_type;
     using event_type = std::uint_fast16_t;
 
-    static_assert(std::numeric_limits<os::tick_type>::digits >= 32,
+    static_assert(std::numeric_limits<os::tick_type>::digits >= static_cast<int>(INT8_C(32)),
                   "The operating system timer_type must be at least 32-bits wide.");
 
-    static_assert(std::numeric_limits<os::event_type>::digits >= 16,
+    static_assert(std::numeric_limits<os::event_type>::digits >= static_cast<int>(INT8_C(16)),
                   "The operating system event_type must be at least 16-bits wide.");
   } // namespace os
 

@@ -119,7 +119,7 @@
       };
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
-      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function);
+      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function); // NOLINT(cert-err58-cpp)
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
       std::atomic_flag watchdog<MyPeriod>::my_lock = ATOMIC_FLAG_INIT;

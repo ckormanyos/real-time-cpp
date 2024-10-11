@@ -40,9 +40,9 @@
       auto operator=(task_control_block&&) noexcept -> task_control_block& = delete;
 
     private:
-      const function_type my_init;
-      const function_type my_func;
-      const tick_type     my_cycle;
+      const function_type my_init;  // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+      const function_type my_func;  // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+      const tick_type     my_cycle; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
             timer_type    my_timer;
             event_type    my_event { };
 
@@ -80,6 +80,6 @@
       friend auto get_event  (event_type&) -> void;
       friend auto clear_event(const event_type&) -> void;
     };
-  }
+  } // namespace os
 
 #endif // OS_TASK_CONTROL_BLOCK_2013_07_30_H

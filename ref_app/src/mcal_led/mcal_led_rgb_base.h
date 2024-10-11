@@ -17,6 +17,8 @@
   class led_rgb_base : public mcal::led::led_boolean_state_base
   {
   public:
+    ~led_rgb_base() override = default;
+
     auto toggle() -> void override
     {
       using base_class_type = mcal::led::led_boolean_state_base;

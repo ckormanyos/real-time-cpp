@@ -14,10 +14,11 @@
 
   class led_boolean_state_base : public mcal::led::led_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
+  public:
+    ~led_boolean_state_base() override = default;
+
   protected:
     constexpr led_boolean_state_base() = default;
-
-    ~led_boolean_state_base() override = default;
 
     auto toggle() -> void override
     {

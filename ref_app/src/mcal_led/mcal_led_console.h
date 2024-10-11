@@ -15,11 +15,13 @@
 
   namespace mcal { namespace led {
 
-  class led_console final : public mcal::led::led_boolean_state_base
+  class led_console final : public mcal::led::led_boolean_state_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
     explicit constexpr led_console(const std::uint_fast8_t i)
       : my_index(i) { }
+
+    ~led_console() override = default;
 
     auto toggle() -> void override
     {

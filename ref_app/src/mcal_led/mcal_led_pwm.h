@@ -21,6 +21,8 @@
       my_pwm.set_duty(static_cast<std::uint16_t>(UINT8_C(0)));
     }
 
+    ~led_pwm() override = default;
+
     auto state_is_on() const -> bool override { return (my_pwm.get_duty() > static_cast<std::uint16_t>(UINT8_C(0))); }
 
     auto toggle() -> void override
