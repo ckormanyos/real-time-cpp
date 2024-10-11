@@ -8,6 +8,8 @@
 #if (defined(__GNUC__) && !defined(__clang__))
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow="
 #endif
 
 #include <algorithm>
@@ -285,5 +287,6 @@ const volatile std::array<isr_type, number_of_interrupts> __isr_vector =
 }};
 
 #if (defined(__GNUC__) && !defined(__clang__))
+#pragma GCC diagnostic pop
 #pragma GCC diagnostic pop
 #endif

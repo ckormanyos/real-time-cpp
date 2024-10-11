@@ -28,12 +28,21 @@
 
 #endif
 
-#if (defined(__GNUC__) && ((defined(__AVR__) && (__GNUC__ < 12)) || defined(__RL78__)))
-using local_float64_t = std::float32_t;
-static_assert((std::numeric_limits<local_float64_t>::digits >= 24), "Error: Incorrect my_float_type type definition");
-#else
+#if (defined(STDFLOAT_FLOAT64_NATIVE_TYPE) || (defined(__STDCPP_FLOAT64_T__) && (__STDCPP_FLOAT64_T__ == 1)))
+
 using local_float64_t = std::float64_t;
 static_assert((std::numeric_limits<local_float64_t>::digits >= 53), "Error: Incorrect my_float_type type definition");
+
+#elif (defined(STDFLOAT_FLOAT32_NATIVE_TYPE) || (defined(__STDCPP_FLOAT32_T__) && (__STDCPP_FLOAT32_T__ == 1)))
+
+using local_float64_t = std::float32_t;
+static_assert((std::numeric_limits<local_float64_t>::digits >= 24), "Error: Incorrect my_float_type type definition");
+
+#else
+
+using local_float64_t = double;
+static_assert((std::numeric_limits<local_float64_t>::digits >= 53), "Error: Incorrect my_float_type type definition");
+
 #endif
 
 namespace app { namespace benchmark {
