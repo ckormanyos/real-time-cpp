@@ -18,7 +18,7 @@
   {
     template<typename unsigned_tick_type>
     class timer;
-  }
+  } // namespace util
 
   namespace mcal
   {

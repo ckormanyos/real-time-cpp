@@ -95,6 +95,6 @@
     {
       return (!(left < right));
     }
-  }
+  } // namespace util
 
 #endif // UTIL_POINT_2008_11_22_H

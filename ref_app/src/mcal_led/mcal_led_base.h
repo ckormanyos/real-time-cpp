@@ -12,7 +12,7 @@
 
   namespace mcal { namespace led {
 
-  class led_base : private util::noncopyable
+  class led_base : private util::noncopyable // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
   {
   public:
     virtual ~led_base() = default;

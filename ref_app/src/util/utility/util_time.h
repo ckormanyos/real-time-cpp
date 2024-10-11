@@ -110,6 +110,6 @@
       static_assert(std::numeric_limits<tick_type>::digits <= std::numeric_limits<mcal::gpt::value_type>::digits,
                     "The width of the timer tick_type can not exceed the width of mcal::gpt::value_type");
     };
-  }
+  } // namespace util
 
 #endif // UTIL_TIME_2010_04_10_H

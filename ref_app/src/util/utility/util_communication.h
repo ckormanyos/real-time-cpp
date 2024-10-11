@@ -50,11 +50,11 @@
       communication_base() = default;
 
     private:
-      template<const std::size_t channel_count>
+      template<const std::size_t ChannelCount>
       friend class communication_multi_channel;
     };
 
-    class communication_buffer_depth_one_byte : public communication_base
+    class communication_buffer_depth_one_byte : public communication_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
     public:
       using buffer_type = std::uint8_t;
@@ -76,7 +76,7 @@
     };
 
     template<const std::size_t ChannelCount>
-    class communication_multi_channel : public communication_base
+    class communication_multi_channel : public communication_base // NOLINT(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
     {
     private:
       static constexpr std::size_t channel_count = ChannelCount;
@@ -122,6 +122,6 @@
 
       static_assert(channel_count > 0U, "Error channel_count must be greater than zero.");
     };
-  }
+  } // namespace util
 
 #endif // UTIL_COMMUNICATION_2012_05_31_H

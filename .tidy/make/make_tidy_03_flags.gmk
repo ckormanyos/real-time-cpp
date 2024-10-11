@@ -51,6 +51,7 @@ TIDY_CHECKS  = "*,                                                             \
                 -performance-avoid-endl,                                       \
                 -readability-avoid-const-params-in-decls,                       \
                 -readability-identifier-length,                                \
+                -readability-identifier-naming,                                \
                 -readability-named-parameter,                                  \
                 -readability-redundant-casting,                                \
                 -altera-struct-pack-align,                                     \
