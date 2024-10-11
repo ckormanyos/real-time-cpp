@@ -40,7 +40,7 @@ extern "C" void __sys_tick_handler(void)
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     const std::uint32_t systick_load_val =
       std::uint32_t(mcal::osc::get_sys_clk_rate() / mcal::config::systick_hz) & UINT32_C(0x00FFFFFF);

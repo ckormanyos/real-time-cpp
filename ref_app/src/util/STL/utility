@@ -193,13 +193,13 @@
     template<typename T1, typename T2>
     bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return ((right < left) == false);
+      return (!(right < left));
     }
 
     template<typename T1, typename T2>
     bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return ((left < right) == false);
+      return (!(left < right));
     }
 
     template<typename T1, typename T2>

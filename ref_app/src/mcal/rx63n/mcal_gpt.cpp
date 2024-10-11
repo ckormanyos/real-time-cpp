@@ -33,7 +33,7 @@ void __tmr0_ovi_irq()
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // Protection off
     // SYSTEM.PRCR.WORD = 0xA503u;

@@ -41,13 +41,17 @@ TIDY_CHECKS  = "*,                                                             \
                 -cppcoreguidelines-avoid-do-while,                             \
                 -llvm-header-guard,                                            \
                 -cppcoreguidelines-macro-usage,                                \
+                -hicpp-named-parameter,                                        \
                 -modernize-type-traits,                                        \
                 -modernize-use-constraints,                                    \
+                -modernize-use-trailing-return-type,                           \
                 -misc-header-include-cycle,                                    \
                 -misc-include-cleaner,                                         \
                 -misc-const-correctness,                                       \
                 -performance-avoid-endl,                                       \
+                -readability-avoid-const-params-in-decls                       \
                 -readability-identifier-length,                                \
+                -readability-named-parameter,                                  \
                 -readability-redundant-casting,                                \
                 -altera-struct-pack-align,                                     \
                 -altera-unroll-loops,                                          \

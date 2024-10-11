@@ -74,10 +74,10 @@ void mcal::osc::init(const config_type*)
                                mcal::reg::syscon_pdruncfg_syspll_pd_bpos>::bit_clr();
 
   // Wait for the PLL to lock.
-  while(mcal::reg::reg_access_static<std::uint32_t,
-                                     std::uint32_t,
-                                     mcal::reg::syscon_syspllstat,
-                                     UINT32_C(0)>::bit_get() == false) { mcal::cpu::nop(); }
+  while(!mcal::reg::reg_access_static<std::uint32_t,
+                                      std::uint32_t,
+                                      mcal::reg::syscon_syspllstat,
+                                      UINT32_C(0)>::bit_get()) { mcal::cpu::nop(); }
 
   // Set the AHB clock divider.
   mcal::reg::reg_access_static<std::uint32_t,

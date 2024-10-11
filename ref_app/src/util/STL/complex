@@ -1230,10 +1230,10 @@
 
       const bool __my_real_part_is_neg(__my_z.real() < 0U);
 
-      const T __my_real_part_fabs((__my_real_part_is_neg == false) ? __my_z.real() : -__my_z.real());
+      const T __my_real_part_fabs((!__my_real_part_is_neg) ? __my_z.real() : -__my_z.real());
       const T __my_sqrt_part     (sqrt((__my_real_part_fabs + abs(__my_z)) / 2U));
 
-      if(__my_real_part_is_neg == false)
+      if(!__my_real_part_is_neg)
       {
         return complex<T>(__my_sqrt_part,
                           __my_z.imag() / (__my_sqrt_part * 2U));
@@ -1242,10 +1242,10 @@
       {
         const bool __my_imag_part_is_neg(__my_z.imag() < 0U);
 
-        const T __my_imag_part_fabs((__my_imag_part_is_neg == false) ? __my_z.imag() : -__my_z.imag());
+        const T __my_imag_part_fabs((!__my_imag_part_is_neg) ? __my_z.imag() : -__my_z.imag());
 
         return complex<T>( __my_imag_part_fabs / (__my_sqrt_part * 2U),
-                         ((__my_imag_part_is_neg == false) ? __my_sqrt_part : -__my_sqrt_part));
+                         ((!__my_imag_part_is_neg) ? __my_sqrt_part : -__my_sqrt_part));
       }
     }
 

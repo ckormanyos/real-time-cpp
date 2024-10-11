@@ -36,7 +36,7 @@ static_assert((std::numeric_limits<local_float_type>::digits >= 53), "Error: Inc
 #elif (defined(STDFLOAT_FLOAT32_NATIVE_TYPE) || (defined(__STDCPP_FLOAT32_T__) && (__STDCPP_FLOAT32_T__ == 1)))
 
 using local_float_type = std::float32_t;
-static_assert((std::numeric_limits<local_float32_t>::digits >= 24), "Error: Incorrect my_float_type type definition");
+static_assert((std::numeric_limits<local_float_type>::digits >= 24), "Error: Incorrect my_float_type type definition");
 
 #else
 

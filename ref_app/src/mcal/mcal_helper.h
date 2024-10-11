@@ -46,25 +46,25 @@
 
   template<const bool has_disable_enable_interrupts>
   auto disable_all_interrupts(const bool = has_disable_enable_interrupts,
-                              const typename std::enable_if<(has_disable_enable_interrupts == true)>::type* = nullptr) noexcept -> void
+                              const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) noexcept -> void
   {
     mcal::irq::disable_all();
   }
 
   template<const bool has_disable_enable_interrupts>
   auto enable_all_interrupts(const bool = has_disable_enable_interrupts,
-                             const typename std::enable_if<(has_disable_enable_interrupts == true)>::type* = nullptr) noexcept -> void
+                             const typename std::enable_if<has_disable_enable_interrupts>::type* = nullptr) noexcept -> void
   {
     mcal::irq::enable_all();
   }
 
   template<const bool has_disable_enable_interrupts>
   auto disable_all_interrupts(const bool = has_disable_enable_interrupts,
-                              const typename std::enable_if<(has_disable_enable_interrupts == false)>::type* = nullptr) noexcept -> void { }
+                              const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) noexcept -> void { }
 
   template<const bool has_disable_enable_interrupts>
   auto enable_all_interrupts(const bool = has_disable_enable_interrupts,
-                             const typename std::enable_if<(has_disable_enable_interrupts == false)>::type* = nullptr) noexcept -> void { }
+                             const typename std::enable_if<(!has_disable_enable_interrupts)>::type* = nullptr) noexcept -> void { }
 
   } } // namespace mcal::helper
 

@@ -38,7 +38,7 @@
 
       template<typename U,
                class = decltype(xfunctional_impl::func_ref_or_moveref<T>(std::declval<U>()),
-                                std::enable_if_t<(std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value == false)>())>
+                                std::enable_if_t<(!std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value)>())>
       constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u))))
         : my_ptr(std::addressof(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u)))) { }
 

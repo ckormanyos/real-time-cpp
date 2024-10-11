@@ -1000,10 +1000,10 @@
       // and the +- sign is the same as the sign of zi.
 
       const bool real_part_is_neg(my_z.real() < T(static_cast<unsigned>(UINT8_C(0))));
-      const T    real_part_fabs  ((real_part_is_neg == false) ? my_z.real() : -my_z.real());
+      const T    real_part_fabs  ((!real_part_is_neg) ? my_z.real() : -my_z.real());
       const T    s_part          (sqrt((real_part_fabs + abs(my_z)) / static_cast<unsigned>(UINT8_C(2))));
 
-      if(real_part_is_neg == false)
+      if(!real_part_is_neg)
       {
         return complex<T, EnableType>(s_part,
                           my_z.imag() / (s_part * static_cast<unsigned>(UINT8_C(2))));
@@ -1011,10 +1011,10 @@
       else
       {
         const bool imag_part_is_neg(my_z.imag() < T(static_cast<unsigned>(UINT8_C(0))));
-        const T    imag_part_fabs  ((imag_part_is_neg == false) ? my_z.imag() : -my_z.imag());
+        const T    imag_part_fabs  ((!imag_part_is_neg) ? my_z.imag() : -my_z.imag());
 
-        return complex<T, EnableType>( imag_part_fabs / (s_part * static_cast<unsigned>(UINT8_C(2))),
-                         ((imag_part_is_neg == false) ? s_part : -s_part));
+        return complex<T, EnableType>(   imag_part_fabs / (s_part * static_cast<unsigned>(UINT8_C(2))),
+                                      ((!imag_part_is_neg) ? s_part : -s_part));
       }
     }
 

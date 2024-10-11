@@ -19,9 +19,9 @@
   #include <mcal_spi.h>
   #include <mcal_wdg.h>
 
-  static_assert(   (std::numeric_limits<mcal::gpt::value_type>::digits >= 64)
-                && (std::numeric_limits<mcal::gpt::value_type>::is_integer == true)
-                && (std::numeric_limits<mcal::gpt::value_type>::is_signed  == false),
+  static_assert(    (std::numeric_limits<mcal::gpt::value_type>::digits >= 64)
+                &&   std::numeric_limits<mcal::gpt::value_type>::is_integer
+                && (!std::numeric_limits<mcal::gpt::value_type>::is_signed),
                 "The gpt value type must be an unsigned integer type having at least 64 bits.");
 
   namespace mcal

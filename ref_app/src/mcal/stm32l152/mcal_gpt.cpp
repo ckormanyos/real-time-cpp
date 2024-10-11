@@ -41,7 +41,7 @@ extern "C" void __vector_timer4(void)
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // Set up an interrupt on timer4 for a system tick based
     // on the free-running 16-bit timer4 with a frequency of 1MHz.

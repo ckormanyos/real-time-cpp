@@ -24,11 +24,11 @@
       static constexpr unsigned bit_cnt = BitCnt;
 
       // Ensure that the data_type is an integer type.
-      static_assert(std::numeric_limits<data_type>::is_integer == true,
+      static_assert(std::numeric_limits<data_type>::is_integer,
                     "the data_type of the bit_mask template must be an integer type");
 
       // Ensure that the data_type is unsigned.
-      static_assert(std::numeric_limits<data_type>::is_signed == false,
+      static_assert((!std::numeric_limits<data_type>::is_signed),
                     "the data_type of the bit_mask template must be unsigned");
 
       // Ensure that the requested bit mask is in range.
@@ -56,11 +56,11 @@
       static constexpr unsigned bit_pos = BitPos;
 
       // Ensure that the data_type is an integer type.
-      static_assert(std::numeric_limits<data_type>::is_integer == true,
+      static_assert(std::numeric_limits<data_type>::is_integer,
                     "the data_type of the bit_mask template must be an integer type");
 
       // Ensure that the data_type is unsigned.
-      static_assert(std::numeric_limits<data_type>::is_signed == false,
+      static_assert((!std::numeric_limits<data_type>::is_signed),
                     "the data_type of the bit_mask template must be unsigned");
 
       // Ensure that the requested bit mask is in range.
@@ -81,11 +81,11 @@
       static constexpr unsigned bit_pos = BitPos;
 
       // Ensure that the data_type is an integer type.
-      static_assert(std::numeric_limits<data_type>::is_integer == true,
+      static_assert(std::numeric_limits<data_type>::is_integer,
                     "the data_type of the bit_mask template must be an integer type");
 
       // Ensure that the data_type is unsigned.
-      static_assert(std::numeric_limits<data_type>::is_signed == false,
+      static_assert((!std::numeric_limits<data_type>::is_signed),
                     "the data_type of the bit_mask template must be unsigned");
 
       // Ensure that the requested bit mask is in range.

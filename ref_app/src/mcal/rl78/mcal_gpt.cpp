@@ -33,7 +33,7 @@ void __inttm02_vect()
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // set TAU0EN to enable input clock supply.
     mcal::reg::reg_access_static<std::uint32_t,

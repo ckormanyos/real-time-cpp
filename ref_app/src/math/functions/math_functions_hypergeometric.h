@@ -26,7 +26,7 @@
     {
       template<typename T>
       auto hypergeometric_0f1(T b,
-                           T x,
+                              T x,
                               T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         // Compute the Taylor series representation of hypergeometric_0f1.
@@ -71,9 +71,9 @@
 
       template<typename T>
       auto hypergeometric_2f1(T a,
-                           T b,
-                           T c,
-                           T x,
+                              T b,
+                              T c,
+                              T x,
                               T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         // Compute the Taylor series representation of hypergeometric_2f1.
@@ -126,10 +126,10 @@
                typename iterator_a_type,
                typename iterator_b_type>
       auto hypergeometric_pfq(iterator_a_type coefficients_a_begin,
-                           iterator_a_type coefficients_a_end,
-                           iterator_b_type coefficients_b_begin,
-                           iterator_b_type coefficients_b_end,
-                           T x,
+                              iterator_a_type coefficients_a_end,
+                              iterator_b_type coefficients_b_begin,
+                              iterator_b_type coefficients_b_end,
+                              T x,
                               T tolerance = std::numeric_limits<T>::epsilon() * T(10)) -> T
       {
         const std::ptrdiff_t count_of_a_terms = std::distance(coefficients_a_begin, coefficients_a_end);
@@ -202,7 +202,7 @@
           x_pow_n_div_n_fact *= x;
           x_pow_n_div_n_fact  = static_cast<float>(x_pow_n_div_n_fact / static_cast<float>(n));
 
-          if(count_of_a_terms_is_zero == false)
+          if(!count_of_a_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {an}.
             std::for_each(an.begin(), an.end(), [](T& a) { ++a; });
@@ -213,7 +213,7 @@
             pochhammer_sequence_a *= std::accumulate(an.begin(), an.end(), my_one, std::multiplies<T>());
           }
 
-          if(count_of_b_terms_is_zero == false)
+          if(!count_of_b_terms_is_zero)
           {
             // Increment each of the pochhammer elements in {bm}.
             std::for_each(bm.begin(), bm.end(), [](T& b) { ++b; });

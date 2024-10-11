@@ -26,7 +26,7 @@ void mcal::cpu::init()
                       mcal::reg::flash_acr,
                       2U>::bit_get();
 
-  if(acc64_is_ok == false)
+  if(!acc64_is_ok)
   {
     for(;;)
     {
@@ -47,7 +47,7 @@ void mcal::cpu::init()
                       mcal::reg::flash_acr,
                       0U>::bit_get();
 
-  if(latency_is_ok == false)
+  if(!latency_is_ok)
   {
     for(;;)
     {

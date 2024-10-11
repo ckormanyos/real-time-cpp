@@ -51,7 +51,7 @@
     static const unsigned_short_type decimal_split_mask  = unsigned_value_type(decimal_split_value) - 1U;
 
     // Ensure that the underlying integer type of the fixed_point class is signed.
-    static_assert(std::numeric_limits<signed_value_type>::is_signed == true,
+    static_assert(std::numeric_limits<signed_value_type>::is_signed,
                   "the fixed point signed_value_type must be signed");
 
     // Another template kind of this class itself is a friend.

@@ -104,7 +104,7 @@
         return static_cast<tick_type>(mcal::gpt::secure::get_time_elapsed());
       }
 
-      static_assert(std::numeric_limits<tick_type>::is_signed == false,
+      static_assert((!std::numeric_limits<tick_type>::is_signed),
                     "the timer tick_type must be unsigned");
 
       static_assert(std::numeric_limits<tick_type>::digits <= std::numeric_limits<mcal::gpt::value_type>::digits,

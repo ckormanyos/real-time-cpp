@@ -81,7 +81,7 @@
     template<typename x_type, typename y_type>
     constexpr auto operator<=(const point<x_type, y_type>& left, const point<x_type, y_type>& right) -> bool
     {
-      return ((right < left) == false);
+      return (!(right < left));
     }
 
     template<typename x_type, typename y_type>
@@ -93,7 +93,7 @@
     template<typename x_type, typename y_type>
     constexpr auto operator>=(const point<x_type, y_type>& left, const point<x_type, y_type>& right) -> bool
     {
-      return ((left < right) == false);
+      return (!(left < right));
     }
   }
 

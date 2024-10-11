@@ -34,7 +34,7 @@
       {
         auto send_result = true;
 
-        while((first != last) && send_result)
+        while((first != last) && send_result) // NOLINT(altera-id-dependent-backward-branch)
         {
           using send_value_type = typename std::iterator_traits<send_iterator_type>::value_type;
 
@@ -75,9 +75,12 @@
       }
     };
 
-    template<const std::size_t channel_count>
+    template<const std::size_t ChannelCount>
     class communication_multi_channel : public communication_base
     {
+    private:
+      static constexpr std::size_t channel_count = ChannelCount;
+
     public:
       explicit communication_multi_channel(communication_base** p_com_channels)
       {
@@ -112,8 +115,8 @@
       }
 
     private:
-      std::array<communication_base*, channel_count> my_com_channels { };
-      std::size_t         my_index { };
+      std::array<communication_base*, channel_count> my_com_channels { }; // NOLINT(readability-identifier-naming)
+      std::size_t my_index { }; // NOLINT(readability-identifier-naming)
 
       communication_multi_channel() = delete;
 

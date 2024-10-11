@@ -34,7 +34,7 @@ void __vector_23()
 
 void mcal::gpt::init(const config_type*)
 {
-  if(gpt_is_initialized() == false)
+  if(!gpt_is_initialized())
   {
     // Clear the timer0 overflow flag.
     mcal::reg::reg_access_static<std::uint8_t, std::uint8_t, mcal::reg::tifr0, 0x01U>::reg_set();
