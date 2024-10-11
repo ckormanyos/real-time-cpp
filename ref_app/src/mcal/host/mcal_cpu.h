@@ -13,14 +13,18 @@
   #include <cstdint>
   #include <type_traits>
 
-  namespace mcal { namespace cpu {
+  namespace mcal
+  {
+    namespace cpu
+    {
 
-  auto init() -> void;
+      auto init() -> void;
 
-  inline auto post_init() -> void { }
+      inline auto post_init() -> void { }
 
-  inline auto nop() -> void { }
+      inline auto nop() -> void { }
 
-  } } // namespace mcal::cpu
+    } // namespace mcal
+  } // namespace cpu
 
 #endif // MCAL_CPU_2009_02_14_H

@@ -34,7 +34,7 @@
         template<typename unsigned_tick_type>
         friend class util::timer;
       };
-    }
-  }
+    } // namespace wdg
+  } // namespace mcal
 
 #endif // MCAL_WDG_2010_04_10_H

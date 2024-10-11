@@ -15,7 +15,7 @@
       using config_type = void;
 
       inline auto init(const config_type*) -> void { }
-    }
-  }
+    } // namespace ser
+  } // namespace mcal
 
 #endif // MCAL_SER_2011_10_20_H

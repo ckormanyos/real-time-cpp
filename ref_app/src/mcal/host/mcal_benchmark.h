@@ -15,7 +15,7 @@
     namespace benchmark
     {
       using benchmark_port_type = mcal::port::port_pin;
-    }
-  }
+    } // namespace benchmark
+  } // namespace mcal
 
 #endif // MCAL_BENCHMARK_2014_04_16_H

@@ -18,7 +18,7 @@
 
       inline auto enable_all () -> void { }
       inline auto disable_all() -> void { }
-    }
-  }
+    } // namespace irq
+  } // namespace mcal
 
 #endif // MCAL_IRQ_2010_04_10_H

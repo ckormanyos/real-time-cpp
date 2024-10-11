@@ -10,14 +10,18 @@
 
   #include <util/utility/util_communication.h>
 
-  namespace mcal { namespace spi {
+  namespace mcal
+  {
+    namespace spi
+    {
 
-  using config_type = void;
+      using config_type = void;
 
-  auto init(const config_type*) -> void;
+      auto init(const config_type*) -> void;
 
-  auto spi0() -> util::communication_base&;
+      auto spi0() -> util::communication_base&;
 
-  } }
+    } // namespace spi
+  } // namespace mcal
 
 #endif // MCAL_SPI_2012_05_24_H
