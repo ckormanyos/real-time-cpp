@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,18 +10,29 @@
 #include <math/checksums/crc/crc32.h>
 #include <mcal_gpt.h>
 #include <util/utility/util_time.h>
+#include <util/utility/util_two_part_data_manipulation.h>
 
-extern "C" unsigned int  my_hardware_random_device_generator(void)
+auto my_hardware_random_device_generator(void) -> unsigned int
 {
-  using timer_type = util::timer<mcal::gpt::value_type>;
+  using timer_type = util::timer<std::uint64_t>;
 
-  const timer_type::tick_type t_now = timer_type::get_mark();
+  const auto t_now = timer_type::get_mark();
 
-  const std::uint32_t pseudo_random =
-    math::checksums::crc::crc32_mpeg2( (std::uint8_t*) &t_now,
-                                      ((std::uint8_t*) &t_now) + sizeof(timer_type::tick_type));
+  const auto pseudo_random1 =
+    math::checksums::crc::crc32_mpeg2
+    (
+      reinterpret_cast<const std::uint8_t*>(&t_now),
+      reinterpret_cast<const std::uint8_t*>(&t_now) + sizeof(std::uint32_t)
+    );
 
-  return static_cast<unsigned int>(pseudo_random);
+  const auto pseudo_random2 =
+    math::checksums::crc::crc32_mpeg2
+    (
+      reinterpret_cast<const std::uint8_t*>(&t_now) + sizeof(std::uint32_t),
+      reinterpret_cast<const std::uint8_t*>(&t_now) + sizeof(std::uint64_t)
+    );
+
+  return static_cast<unsigned int>(util::make_long(pseudo_random1, pseudo_random2));
 }
 
 extern "C" unsigned char my_hardware_random_device_entropy(void)

@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2022.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,6 +14,45 @@
 
   #if defined(__GNUC__) && defined(__AVR__)
   #include <math.h>
+
+  #if !defined(_HUGE_ENUF)
+    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+  #endif
+
+  #if !defined(INFINITY)
+  #define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
+  #endif
+
+  #if !defined(HUGE_VAL)
+  #define HUGE_VAL   ((double)INFINITY)
+  #endif
+
+  #if !defined(HUGE_VALF)
+  #define HUGE_VALF  ((float)INFINITY)
+  #endif
+
+  #if !defined(HUGE_VALL)
+  #define HUGE_VALL  ((long double)INFINITY)
+  #endif
+
+  #if !defined(NAN)
+  #define NAN        (-(float)(INFINITY * 0.0F))
+  #endif
+
+  #define _DENORM    (-2)
+  #define _FINITE    (-1)
+  #define _INFCODE   1
+  #define _NANCODE   2
+
+  #define FP_INFINITE  _INFCODE
+  #define FP_NAN       _NANCODE
+  #define FP_NORMAL    _FINITE
+  #define FP_SUBNORMAL _DENORM
+  #define FP_ZERO      0
+
+  #define _C2          1  // 0 if not 2's complement
+  #define FP_ILOGB0   (-0x7fffffff - _C2)
+  #define FP_ILOGBNAN 0x7fffffff
 
   static_assert(__SIZEOF_LONG_DOUBLE__ >= __SIZEOF_DOUBLE__,
                 "Error: Configuration error regarding 64-bit double/long-double for AVR");
@@ -388,7 +427,7 @@
     inline int           ilogb   (float x)                       { return ::ilogbf(x); }
     inline int           ilogb   (double x)                      { return ::ilogb (x); }
     inline int           ilogb   (long double x)                 { return ::ilogbl(x); }
-    #if defined(__GNUC__)
+    #if (defined(__GNUC__) && !defined(__clang__))
     inline bool          isnan   (float x)                       { return __builtin_isnanf(x); }
     inline bool          isnan   (double x)                      { return __builtin_isnan (x); }
     inline bool          isnan   (long double x)                 { return __builtin_isnanl(x); }

@@ -9,7 +9,12 @@
 
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_WIDE_INTEGER))
 
-#if (defined(__GNUC__) && defined(__AVR__) && (__GNUC__ < 10))
+// Optionally and manually change the zero in (#if 0) to one
+// in order to force run-time evaluation. If left as #if 0,
+// then the wide-integer calculations will be constexpr
+// and performed at compile-time.
+
+#if 0
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST const             // NOLINT(cppcoreguidelines-macro-usage)
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT 0 // NOLINT(cppcoreguidelines-macro-usage)
 #else

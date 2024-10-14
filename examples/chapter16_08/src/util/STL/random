@@ -1689,12 +1689,12 @@ template<typename UnsignedIntegralType,
 
     static constexpr result_type(min)() noexcept
     {
-      return result_type(0U);
+      return static_cast<result_type>(UINT8_C(0));
     }
 
     static constexpr result_type(max)() noexcept
     {
-      return (result_type) std::uintmax_t(INTMAX_C(-1));
+      return static_cast<result_type>(static_cast<std::uintmax_t>(INTMAX_C(-1)));
     }
 
     // Not conformant with the standard return type of double.
@@ -1702,12 +1702,12 @@ template<typename UnsignedIntegralType,
     {
       const unsigned char e = my_hardware_random_device_entropy();
 
-      return ((e > 32U) ? 32.0F : float(e));
+      return ((e > static_cast<unsigned char>(UINT8_C(32))) ? 32.0F : float(e));
     }
 
     result_type operator()()
     {
-      return my_hardware_random_device_generator();
+      return static_cast<result_type>(my_hardware_random_device_generator());
     }
 
     random_device(const random_device&) = delete;

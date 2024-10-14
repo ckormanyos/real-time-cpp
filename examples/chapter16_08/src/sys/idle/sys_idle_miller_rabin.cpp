@@ -5,8 +5,6 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <random>
-
 #include <math/wide_integer/miller_rabin/miller_rabin_state.h>
 #include <mcal_benchmark.h>
 #include <mcal_math_independent_test_system.h>
@@ -16,6 +14,9 @@
 #include <util/utility/util_baselexical_cast.h>
 #include <util/utility/util_narrow_cast.h>
 #include <util/utility/util_time.h>
+
+#include <array>
+#include <random>
 
 namespace
 {

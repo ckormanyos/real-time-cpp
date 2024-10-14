@@ -404,7 +404,7 @@
       using local_size_type = typename local_array_type::size_type;
 
       return ((n < static_cast<std::uint32_t>(std::tuple_size<local_array_type>::value))
-               ? local_p10_table[static_cast<local_size_type>(n)]
+               ? local_p10_table[static_cast<local_size_type>(n)] // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                : local_p10_table.back()); // LCOV_EXCL_LINE
     }
   }
@@ -630,7 +630,7 @@
     auto operator[](const size_type i) const -> typename base_class_type::const_reference { return base_class_type::operator[](static_cast<typename base_class_type::size_type>(i)); }
   };
 
-  enum class os_float_field_type
+  enum class os_float_field_type // NOLINT(performance-enum-size)
   {
     scientific,
     fixed,

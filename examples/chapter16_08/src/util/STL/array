@@ -123,7 +123,7 @@
     template<typename T, size_t N>
     STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator!=(const array<T, N>& left, const array<T, N>& right)
     {
-      return ((left == right) == false);
+      return (!(left == right));
     }
 
     template<typename T, size_t N>
@@ -135,13 +135,13 @@
     template<typename T, size_t N>
     STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator>=(const array<T, N>& left, const array<T, N>& right)
     {
-      return ((left < right) == false);
+      return (!(left < right));
     }
 
     template<typename T, size_t N>
     STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator<=(const array<T, N>& left, const array<T, N>& right)
     {
-      return ((right < left) == false);
+      return (!(right < left));
     }
 
     template<typename T, size_t N >

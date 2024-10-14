@@ -132,8 +132,7 @@ GCCFLAGS    = $(TGT_CFLAGS)                     \
               -gdwarf-2                         \
               -fno-exceptions                   \
               -ffunction-sections               \
-              -fdata-sections                   \
-              -flto
+              -fdata-sections
 
 CFLAGS      = $(GCCFLAGS)                       \
               -Wunsuffixed-float-constants      \
@@ -161,9 +160,8 @@ AFLAGS      = $(GCCFLAGS)                       \
 LDFLAGS     = $(GCCFLAGS)                       \
               $(TGT_LDFLAGS)                    \
               -x none                           \
-              -flto                             \
-              -Wl,--gc-sections                 \
-              -Wl,-Map,$(APP).map
+              -Wl,-Map,$(APP).map               \
+              -Wl,--print-memory-usage
 
 # ------------------------------------------------------------------------------
 # Main-Dependencies (app: all)
