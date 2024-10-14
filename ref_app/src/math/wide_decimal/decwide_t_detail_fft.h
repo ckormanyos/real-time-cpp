@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2023.                 //
+//  Copyright Christopher Kormanyos 2013 - 2024.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -34,13 +34,13 @@
   constexpr auto template_half() -> float_type { return static_cast<float_type>(static_cast<float_type>(1) / 2); }
 
   template<>
-  constexpr auto template_one<float>() -> float { return static_cast<float>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<float>() -> float { return static_cast<float>(1.0L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
-  constexpr auto template_one<double>() -> double { return static_cast<double>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<double>() -> double { return static_cast<double>(1.0L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
-  constexpr auto template_one<long double>() -> long double { return static_cast<long double>(1.0F); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+  constexpr auto template_one<long double>() -> long double { return static_cast<long double>(1.0L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
   template<>
   constexpr auto template_half<float>() -> float { return static_cast<float>(0.5L); } // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

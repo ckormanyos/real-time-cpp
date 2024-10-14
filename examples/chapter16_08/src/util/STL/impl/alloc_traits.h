@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //  Copyright Christopher Kormanyos 2021 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
@@ -33,6 +33,9 @@
   #define ALLOC_TRAITS_2021_01_26_H_
 
   #include <impl/ptr_traits.h>
+
+  #include <utility>
+
 
   namespace std
   {

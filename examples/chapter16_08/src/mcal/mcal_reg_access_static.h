@@ -8,6 +8,11 @@
 #ifndef MCAL_REG_ACCESS_STATIC_2010_12_01_H_
   #define MCAL_REG_ACCESS_STATIC_2010_12_01_H_
 
+  #if defined(__GNUC__) && (__GNUC__ >= 12)
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Warray-bounds"
+  #endif
+
   namespace mcal
   {
     namespace reg
@@ -41,5 +46,9 @@
       };
     }
   }
+
+  #if defined(__GNUC__) && (__GNUC__ >= 12)
+  #pragma GCC diagnostic pop
+  #endif
 
 #endif // MCAL_REG_ACCESS_STATIC_2010_12_01_H_

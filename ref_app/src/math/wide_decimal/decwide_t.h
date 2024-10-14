@@ -590,7 +590,7 @@
     // In particular, support for NaN is already being
     // partially used through the specialization of limits.
     // When starting, maybe begin with FP-class NaN.
-    enum class fpclass_type
+    enum class fpclass_type // NOLINT(performance-enum-size)
     {
       decwide_t_finite
     };
@@ -993,12 +993,12 @@
         else
         {
           std::copy(my_data.cbegin(),
-                    my_data.cend() - static_cast<std::ptrdiff_t>(-ofs),
-                    my_n_data_for_add_sub.begin() + static_cast<std::ptrdiff_t>(-ofs));
+                    my_data.cend() + static_cast<std::ptrdiff_t>(ofs), // LCOV_EXCL_LINE
+                    my_n_data_for_add_sub.begin() - static_cast<std::ptrdiff_t>(ofs));
 
           // LCOV_EXCL_START
           std::fill(my_n_data_for_add_sub.begin(),
-                    my_n_data_for_add_sub.begin() + static_cast<std::ptrdiff_t>(-ofs),
+                    my_n_data_for_add_sub.begin() - static_cast<std::ptrdiff_t>(ofs),
                     static_cast<limb_type>(UINT8_C(0)));
           // LCOV_EXCL_STOP
 
@@ -2700,7 +2700,7 @@
         && (i  <  static_cast<std::uint_fast32_t>(std::tuple_size<local_tmp_array_type>::value))
       )
       {
-        tmp[static_cast<std::size_t>(i)] =
+        tmp[static_cast<std::size_t>(i)] = // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
           static_cast<limb_type>(uu % static_cast<unsigned long long>(decwide_t_elem_mask)); // NOLINT(google-runtime-int)
 
         uu = static_cast<unsigned long long>(uu / static_cast<unsigned long long>(decwide_t_elem_mask)); // NOLINT(google-runtime-int)
@@ -3376,7 +3376,7 @@
 
       // Get a possible +/- sign and remove it.
 
-      if((pos = str.find('-')) != std::string::npos)
+      if((pos = str.find('-')) != std::string::npos) // NOLINT(bugprone-assignment-in-if-condition)
       {
         my_neg = true;
 
@@ -3387,7 +3387,7 @@
         my_neg = false;
       }
 
-      if((pos = str.find('+')) != std::string::npos)
+      if((pos = str.find('+')) != std::string::npos) // NOLINT(bugprone-assignment-in-if-condition)
       {
         str.erase(pos, static_cast<std::uint_fast32_t>(UINT8_C(1)));
       }
@@ -4382,9 +4382,10 @@
     using local_flags_type = std::ios::fmtflags;
 
     // Assess the format flags.
-    // Obtain the showpos flag.
-    const auto my_showpos   = (static_cast<local_flags_type>(ostrm_flags & std::ios::showpos)   != static_cast<local_flags_type>(UINT8_C(0)));
-    const auto my_uppercase = (static_cast<local_flags_type>(ostrm_flags & std::ios::uppercase) != static_cast<local_flags_type>(UINT8_C(0)));
+
+    // Obtain the showpos and uppercase flags.
+    const bool my_showpos   { static_cast<local_flags_type>(ostrm_flags & std::ios::showpos)   == static_cast<local_flags_type>(std::ios::showpos) };
+    const bool my_uppercase { static_cast<local_flags_type>(ostrm_flags & std::ios::uppercase) == static_cast<local_flags_type>(std::ios::uppercase) };
 
     using std::ilogb;
 
@@ -4394,9 +4395,9 @@
     // Determine the kind of output format requested (scientific, fixed, none).
     detail::os_float_field_type my_float_field { };
 
-    if     ((ostrm_flags & std::ios::scientific) != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::scientific; }
-    else if((ostrm_flags & std::ios::fixed)      != static_cast<local_flags_type>(UINT8_C(0))) { my_float_field = detail::os_float_field_type::fixed; }
-    else                                                                                       { my_float_field = detail::os_float_field_type::none; }
+    if     (static_cast<local_flags_type>(ostrm_flags & std::ios::scientific) == static_cast<local_flags_type>(std::ios::scientific)) { my_float_field = detail::os_float_field_type::scientific; }
+    else if(static_cast<local_flags_type>(ostrm_flags & std::ios::fixed)      == static_cast<local_flags_type>(std::ios::fixed))      { my_float_field = detail::os_float_field_type::fixed; }
+    else                                                                                                                              { my_float_field = detail::os_float_field_type::none; }
 
     // Get the output stream's precision and limit it to max_digits10.
     // Erroneous negative precision (theoretically impossible) will be
@@ -4404,16 +4405,19 @@
     // at zero.
     const auto prec_default = static_cast<std::streamsize>(INT8_C(6));
 
-    auto os_precision =
-      static_cast<std::uint_fast32_t>
-      (
-        ((ostrm_precision <= static_cast<std::streamsize>(0))
-          ? ((my_float_field != detail::os_float_field_type::scientific) ? static_cast<std::uint_fast32_t>(prec_default) : static_cast<std::uint_fast32_t>(UINT8_C(0)))
-          : static_cast<std::uint_fast32_t>(ostrm_precision))
-      );
+    std::uint_fast32_t
+      os_precision
+      {
+        static_cast<std::uint_fast32_t>
+        (
+          ((ostrm_precision <= static_cast<std::streamsize>(0))
+            ? ((my_float_field != detail::os_float_field_type::scientific) ? static_cast<std::uint_fast32_t>(prec_default) : static_cast<std::uint_fast32_t>(UINT8_C(0)))
+            : static_cast<std::uint_fast32_t>(ostrm_precision))
+        )
+      };
 
-    auto use_scientific = false;
-    auto use_fixed      = false;
+    bool use_scientific { false };
+    bool use_fixed      { false };
 
     if     (my_float_field == detail::os_float_field_type::scientific) { use_scientific = true; }
     else if(my_float_field == detail::os_float_field_type::fixed)      { use_fixed      = true; }
@@ -4500,7 +4504,11 @@
     get_output_string(x, str, the_exp, number_of_digits10_i_want);
 
     // Obtain additional format information.
-    const auto my_showpoint = ((ostrm_flags & std::ios::showpoint) != static_cast<local_flags_type>(UINT8_C(0)));
+    const bool
+      my_showpoint
+      {
+        static_cast<local_flags_type>(ostrm_flags & std::ios::showpoint) == static_cast<local_flags_type>(std::ios::showpoint)
+      };
 
     // Write the output string in the desired format.
     if     (my_float_field == detail::os_float_field_type::scientific) { wr_string_scientific(str, the_exp, os_precision, my_showpoint, my_uppercase); }
@@ -4529,10 +4537,11 @@
       const auto n_fill = static_cast<std::uint_fast32_t>(my_width - str.length());
 
       // Left-justify is the exception, std::right and std::internal justify right.
-      const auto my_left =
-      (
-        static_cast<local_flags_type>(ostrm_flags & std::ios::left) != static_cast<local_flags_type>(static_cast<unsigned>(UINT8_C(0)))
-      );
+      const bool
+        my_left
+        {
+          static_cast<local_flags_type>(ostrm_flags & std::ios::left) == static_cast<local_flags_type>(std::ios::left)
+        };
 
       // Justify left or right and insert the fill characters.
       str.insert((my_left ? str.end() : str.begin()), static_cast<std::size_t>(n_fill), ostrm_fill);

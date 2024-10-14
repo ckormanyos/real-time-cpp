@@ -47,8 +47,8 @@ else
     TOOL_PREFIX="$2"
 fi
 
-CFLAGS="-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -Os -fno-exceptions -gdwarf-2 -finline-functions -ffunction-sections -fdata-sections -flto"
-CPPFLAGS="-std=c++11 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32"
+CFLAGS="-Wall -Wextra -Wpedantic -mmcu=atmega328p -fsigned-char -Os -fno-exceptions -gdwarf-2 -finline-functions -ffunction-sections -fdata-sections -flto"
+CPPFLAGS="-std=c++14 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32"
 CINCLUDES="-Isrc/mcal/avr -Isrc/util/STL -Isrc"
 CDEFINES="-DWIDE_INTEGER_NAMESPACE=ckormanyos"
 

@@ -50,6 +50,7 @@
   #include <string>
   #endif
   #include <type_traits>
+  #include <utility>
 
   #if (defined(__clang__) && (__clang_major__ <= 9))
   #define WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE struct // NOLINT(cppcoreguidelines-macro-usage)
@@ -228,7 +229,9 @@
     {
       using local_destination_value_type = typename iterator_detail::iterator_traits<DestinationIterator>::value_type;
 
-      *first++ = static_cast<local_destination_value_type>(val);
+      *first = static_cast<local_destination_value_type>(val);
+
+      ++first;
     }
   }
 
@@ -256,9 +259,11 @@
       using local_destination_value_type = typename iterator_detail::iterator_traits<DestinationIterator>::value_type;
       #if (defined(__GNUC__) && (__GNUC__ > 9))
       #pragma GCC diagnostic ignored "-Wstringop-overflow"
+      #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
       #endif
       *dest++ = static_cast<local_destination_value_type>(*first++);
       #if (defined(__GNUC__) && (__GNUC__ > 9))
+      #pragma GCC diagnostic pop
       #pragma GCC diagnostic pop
       #endif
     }
@@ -282,16 +287,7 @@
   }
 
   template<typename T>
-  constexpr auto swap_unsafe(T& left, T& right) -> void
-  {
-    auto tmp = static_cast<T&&>(left);
-
-    left  = static_cast<T&&>(right);
-    right = static_cast<T&&>(tmp);
-  }
-
-  template<typename T>
-  constexpr auto swap_unsafe(T&& left, T&& right) -> void
+  constexpr auto swap_unsafe(T& left, T& right) noexcept -> void
   {
     auto tmp = static_cast<T&&>(left);
 
@@ -302,12 +298,14 @@
   template<typename InputIt, typename UnaryPredicate>
   constexpr auto find_if_unsafe(InputIt first, InputIt last, UnaryPredicate p) -> InputIt
   {
-    for( ; first != last; ++first)
+    while(first != last)
     {
       if(p(*first))
       {
         return first;
       }
+
+      ++first;
     }
 
     return last; // LCOV_EXCL_LINE
@@ -385,12 +383,15 @@
   template<class InputIt1, class InputIt2>
   constexpr auto equal_unsafe(InputIt1 first1, InputIt1 last1, InputIt2 first2) -> bool
   {
-    for( ; first1 != last1; ++first1, ++first2)
+    while(first1 != last1)
     {
       if(!(*first1 == *first2))
       {
         return false;
       }
+
+      ++first1;
+      ++first2;
     }
 
     return true;
@@ -399,7 +400,7 @@
   template<class InputIt1, class InputIt2>
   constexpr auto lexicographical_compare_unsafe(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -> bool
   {
-    for( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2)
+    while((first1 != last1) && (first2 != last2))
     {
       if(*first1 < *first2)
       {
@@ -410,28 +411,31 @@
       {
         return false;
       }
+
+      ++first1;
+      ++first2;
     }
 
     return ((first1 == last1) && (first2 != last2));
   }
 
-  template<typename IteratorType>
-  constexpr auto iter_swap_unsafe(IteratorType a, IteratorType b) -> void
+  template<typename Iterator1, typename Iterator2>
+  constexpr auto iter_swap_unsafe(Iterator1 a, Iterator2 b) -> void
   {
-    // Non-standard behavior:
-    // The (dereferenced) left/right value-types are the same.
+    using local_value_type = typename iterator_detail::iterator_traits<Iterator1>::value_type;
 
-    using local_value_type = typename iterator_detail::iterator_traits<IteratorType>::value_type;
-
-    swap_unsafe(static_cast<local_value_type&&>(*a), static_cast<local_value_type&&>(*b));
+    swap_unsafe(static_cast<local_value_type&>(*a), static_cast<local_value_type&>(*b));
   }
 
   template<class ForwardIt1, class ForwardIt2>
   constexpr auto swap_ranges_unsafe(ForwardIt1 first1, ForwardIt1 last1, ForwardIt2 first2) -> ForwardIt2
   {
-    for( ; first1 != last1; ++first1, ++first2)
+    while(first1 != last1)
     {
       iter_swap_unsafe(first1, first2);
+
+      ++first1;
+      ++first2;
     }
 
     return first2;
@@ -994,10 +998,10 @@
       {
         const size_type my_count = min_unsafe(lhs.size(), rhs.size());
 
-        b_result= std::lexicographical_compare(lhs.cbegin(),
-                                               lhs.cbegin() + my_count,
-                                               rhs.cbegin(),
-                                               rhs.cbegin() + my_count);
+        b_result = lexicographical_compare_unsafe(lhs.cbegin(),
+                                                  lhs.cbegin() + my_count,
+                                                  rhs.cbegin(),
+                                                  rhs.cbegin() + my_count);
       }
     }
 
@@ -1451,22 +1455,22 @@
            const bool IsSigned>
   constexpr auto rootk(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& m, const std::uint_fast8_t k) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>; // NOLINT(readability-avoid-const-params-in-decls)
 
-  template<typename OtherUnsignedIntegralTypeP,
+  template<typename OtherIntegralTypeP,
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  constexpr auto pow(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b, const OtherUnsignedIntegralTypeP& p) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+  constexpr auto pow(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b, const OtherIntegralTypeP& p) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
-  template<typename OtherUnsignedIntegralTypeP,
-           typename OtherUnsignedIntegralTypeM,
+  template<typename OtherIntegralTypeP,
+           typename OtherIntegralTypeM,
            const size_t Width2,
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
   constexpr auto powm(const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& b,
-                      const OtherUnsignedIntegralTypeP&    p,
-                      const OtherUnsignedIntegralTypeM&    m) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
+                      const OtherIntegralTypeP& p,
+                      const OtherIntegralTypeM& m) -> uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
   template<const size_t Width2,
            typename LimbType,
@@ -1646,7 +1650,7 @@
              typename LimbType,
              typename AllocatorType,
              const bool IsSigned>
-    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<::math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>;
+    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<::math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>; // NOLINT(cert-dcl58-cpp)
     #endif
   } // namespace std
 
@@ -2501,7 +2505,7 @@
     {
       if(this == &other)
       {
-        const uintwide_t self(other);
+        const uintwide_t self(other); // NOLINT(performance-unnecessary-copy-initialization)
 
         // Unary addition function.
         const auto carry = eval_add_n(values.begin(), // LCOV_EXCL_LINE
@@ -2937,13 +2941,19 @@
                                                                                            std::allocator<void>,
                                                                                            AllocatorType>>::template rebind_alloc<limb_type>>>;
 
-        string_storage_oct_type str_temp; // LCOV_EXCL_LINE
+        static_assert(string_storage_oct_type::static_size() > unsigned_fast_type { UINT8_C(1) },
+                      "Error: String storage length must be greater than one");
 
-        auto pos = // LCOV_EXCL_LINE
-          static_cast<unsigned_fast_type>
-          (
-            str_temp.size() - static_cast<size_t>(UINT8_C(1)) // LCOV_EXCL_LINE
-          );
+        string_storage_oct_type str_temp { }; // LCOV_EXCL_LINE
+
+        signed_fast_type
+          pos
+          {
+            static_cast<signed_fast_type>
+            (
+              string_storage_oct_type::static_size() - static_cast<size_t>(UINT8_C(1)) // LCOV_EXCL_LINE
+            )
+          };
 
         if(t.is_zero())
         {
@@ -2951,7 +2961,7 @@
         }
         else
         {
-          while(!t.is_zero()) // NOLINT(altera-id-dependent-backward-branch)
+          while(!t.is_zero() && (pos > signed_fast_type { UINT8_C(0) })) // NOLINT(altera-id-dependent-backward-branch)
           {
             auto c = static_cast<char>(*t.values.cbegin() & mask);
 
@@ -2963,19 +2973,19 @@
           }
         }
 
-        if(show_base)
+        if(show_base && (pos > signed_fast_type { UINT8_C(0) }))
         {
           str_temp[static_cast<typename string_storage_oct_type::size_type>(--pos)] = '0';
         }
 
-        if(show_pos)
+        if(show_pos && (pos > signed_fast_type { UINT8_C(0) }))
         {
           str_temp[static_cast<typename string_storage_oct_type::size_type>(--pos)] = '+';
         }
 
         if(field_width != static_cast<unsigned_fast_type>(UINT8_C(0)))
         {
-          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1))));
+          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)))); // LCOV_EXCL_LINE
 
           while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - static_cast<size_t>(UINT8_C(1))) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
@@ -3009,9 +3019,19 @@
                                                                                            std::allocator<void>,
                                                                                            AllocatorType>>::template rebind_alloc<limb_type>>>;
 
-        string_storage_dec_type str_temp;
+        static_assert(string_storage_dec_type::static_size() > unsigned_fast_type { UINT8_C(1) },
+                      "Error: String storage length must be greater than one");
 
-        auto pos = static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)));
+        string_storage_dec_type str_temp { }; // LCOV_EXCL_LINE
+
+        signed_fast_type
+          pos
+          {
+            static_cast<signed_fast_type>
+            (
+              string_storage_dec_type::static_size() - static_cast<size_t>(UINT8_C(1)) // LCOV_EXCL_LINE
+            )
+          };
 
         if(t.is_zero())
         {
@@ -3019,7 +3039,7 @@
         }
         else
         {
-          while(!t.is_zero())
+          while(!t.is_zero() && (pos > signed_fast_type { UINT8_C(0) }))
           {
             const uintwide_t tmp(t);
 
@@ -3037,18 +3057,21 @@
           }
         }
 
-        if(show_pos && (!str_has_neg_sign))
+        if(pos > signed_fast_type { UINT8_C(0) })
         {
-          str_temp[static_cast<typename string_storage_dec_type::size_type>(--pos)] = '+';
-        }
-        else if(str_has_neg_sign)
-        {
-          str_temp[static_cast<typename string_storage_dec_type::size_type>(--pos)] = '-';
+          if(show_pos && (!str_has_neg_sign))
+          {
+            str_temp[static_cast<typename string_storage_dec_type::size_type>(--pos)] = '+';
+          }
+          else if(str_has_neg_sign)
+          {
+            str_temp[static_cast<typename string_storage_dec_type::size_type>(--pos)] = '-';
+          }
         }
 
         if(field_width != static_cast<unsigned_fast_type>(UINT8_C(0)))
         {
-          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1))));
+          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)))); // LCOV_EXCL_LINE
 
           while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - static_cast<size_t>(UINT8_C(1))) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
@@ -3075,9 +3098,19 @@
                                                                                            std::allocator<void>,
                                                                                            AllocatorType>>::template rebind_alloc<limb_type>>>;
 
-        string_storage_hex_type str_temp;
+        static_assert(string_storage_hex_type::static_size() > unsigned_fast_type { UINT8_C(1) },
+                      "Error: String storage length must be greater than one");
 
-        auto pos = static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)));
+        string_storage_hex_type str_temp { }; // LCOV_EXCL_LINE
+
+        signed_fast_type
+          pos
+          {
+            static_cast<signed_fast_type>
+            (
+              string_storage_hex_type::static_size() - static_cast<size_t>(UINT8_C(1)) // LCOV_EXCL_LINE
+            )
+          };
 
         if(t.is_zero())
         {
@@ -3093,24 +3126,24 @@
               is_uppercase
             );
 
-          pos -= dst;
+          pos -= static_cast<signed_fast_type>(dst);
         }
 
-        if(show_base)
+        if(show_base && (pos > signed_fast_type { UINT8_C(1) }))
         {
           str_temp[static_cast<typename string_storage_hex_type::size_type>(--pos)] = (is_uppercase ? 'X' : 'x');
 
           str_temp[static_cast<typename string_storage_hex_type::size_type>(--pos)] = '0';
         }
 
-        if(show_pos)
+        if(show_pos && (pos > signed_fast_type { UINT8_C(0) }))
         {
           str_temp[static_cast<typename string_storage_hex_type::size_type>(--pos)] = '+';
         }
 
         if(field_width != static_cast<unsigned_fast_type>(UINT8_C(0)))
         {
-          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1))));
+          field_width = (detail::min_unsafe)(field_width, static_cast<unsigned_fast_type>(str_temp.size() - static_cast<size_t>(UINT8_C(1)))); // LCOV_EXCL_LINE
 
           while(static_cast<signed_fast_type>(pos) > static_cast<signed_fast_type>((str_temp.size() - static_cast<size_t>(UINT8_C(1))) - field_width)) // NOLINT(altera-id-dependent-backward-branch)
           {
@@ -3702,8 +3735,8 @@
                                                                                                          std::allocator<void>,
                                                                                                          AllocatorType>>::template rebind_alloc<limb_type>>>;
 
-      result_array_type  result;
-      storage_array_type t;
+      result_array_type  result { };
+      storage_array_type t { };
 
       eval_multiply_kara_n_by_n_to_2n(result.begin(),
                                       u.values.cbegin(),
@@ -5363,7 +5396,7 @@
       {
         ++(*it);
       }
-      while((*it++ == static_cast<limb_type>(UINT8_C(0))) && (it != values.end())); // NOLINT(altera-id-dependent-backward-branch)
+      while((*it++ == static_cast<limb_type>(UINT8_C(0))) && (it != values.end())); // NOLINT(altera-id-dependent-backward-branch,bugprone-inc-dec-in-conditions)
     }
 
     constexpr auto predecrement() -> void
@@ -5376,7 +5409,7 @@
       {
         --(*it);
       }
-      while((*it++ == (std::numeric_limits<limb_type>::max)()) && (it != values.end())); // NOLINT(altera-id-dependent-backward-branch)
+      while((*it++ == (std::numeric_limits<limb_type>::max)()) && (it != values.end())); // NOLINT(altera-id-dependent-backward-branch,bugprone-inc-dec-in-conditions)
     }
   };
 
@@ -5520,7 +5553,7 @@
              typename LimbType,
              typename AllocatorType,
              const bool IsSigned>
-    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<::math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>>
+    WIDE_INTEGER_NUM_LIMITS_CLASS_TYPE numeric_limits<::math::wide_integer::uintwide_t<Width2, LimbType, AllocatorType, IsSigned>> // NOLINT(cert-dcl58-cpp)
       : public ::math::wide_integer::numeric_limits_uintwide_t_base<Width2, LimbType, AllocatorType, IsSigned> { };
     #endif
   } // namespace std
@@ -5718,7 +5751,7 @@
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
-      string_storage_oct_type str_result; // LCOV_EXCL_LINE
+      string_storage_oct_type str_result { }; // LCOV_EXCL_LINE
 
       str_result.fill('\0');
 
@@ -5741,7 +5774,7 @@
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
-      string_storage_dec_type str_result;
+      string_storage_dec_type str_result { };
 
       str_result.fill('\0');
 
@@ -5764,7 +5797,7 @@
 
       // TBD: There is redundant storage of this kind both here
       // in this subroutine as well as in the wr_string method.
-      string_storage_hex_type str_result;
+      string_storage_hex_type str_result { };
 
       str_result.fill('\0');
 
@@ -6079,10 +6112,10 @@
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
     using local_value_type        = typename local_wide_integer_type::representation_type::value_type;
 
-    auto bpos   = static_cast<unsigned_fast_type>(UINT8_C(0));
-    auto offset = static_cast<unsigned_fast_type>(x.crepresentation().size() - 1U);
+    unsigned_fast_type bpos   { static_cast<unsigned_fast_type>(UINT8_C(0)) };
+    std::uint32_t      offset { static_cast<std::uint32_t>(x.crepresentation().size() - 1U) };
 
-    for(auto ri = x.crepresentation().crbegin(); ri != x.crepresentation().crend(); ++ri, --offset) // NOLINT(altera-id-dependent-backward-branch)
+    for(auto ri { x.crepresentation().crbegin() }; ri != x.crepresentation().crend(); ++ri, --offset) // NOLINT(altera-id-dependent-backward-branch)
     {
       const auto vr = static_cast<local_value_type>(*ri & (std::numeric_limits<local_value_type>::max)());
 
@@ -6094,7 +6127,7 @@
               detail::msb_helper(*ri)
             + static_cast<unsigned_fast_type>
               (
-                static_cast<unsigned_fast_type>(std::numeric_limits<local_value_type>::digits) * offset
+                static_cast<unsigned_fast_type>(std::numeric_limits<local_value_type>::digits) * static_cast<unsigned_fast_type>(offset)
               )
           );
 
@@ -6724,20 +6757,18 @@
     struct param_type
     {
     public:
-      explicit constexpr
-        param_type
-        (
-          const result_type& p_a = (std::numeric_limits<result_type>::min)(), // NOLINT(modernize-pass-by-value)
-          const result_type& p_b = (std::numeric_limits<result_type>::max)()  // NOLINT(modernize-pass-by-value)
-        ) : param_a(p_a),
-            param_b(p_b) { }
+      constexpr param_type() { } // NOLINT(hicpp-use-equals-default,modernize-use-equals-default)
+
+      explicit constexpr param_type(const result_type& p_a, const result_type& p_b)  // NOLINT(modernize-pass-by-value)
+          : param_a { p_a },
+            param_b { p_b } { }
 
       constexpr param_type(const param_type& other) : param_a(other.param_a),
-                                                                   param_b(other.param_b) { }
+                                                      param_b(other.param_b) { }
 
       constexpr param_type(param_type&& other) noexcept
-        : param_a(static_cast<result_type&&>(other.param_a)),
-          param_b(static_cast<result_type&&>(other.param_b)) { }
+        : param_a(std::move(static_cast<result_type&&>(other.param_a))),
+          param_b(std::move(static_cast<result_type&&>(other.param_b))) { }
 
       ~param_type() = default;
 
@@ -6754,8 +6785,8 @@
 
       constexpr auto operator=(param_type&& other) noexcept -> param_type&
       {
-        param_a = other.param_a;
-        param_b = other.param_b;
+        param_a = std::move(static_cast<result_type&&>(other.param_a));
+        param_b = std::move(static_cast<result_type&&>(other.param_b));
 
         return *this;
       }
@@ -6767,21 +6798,17 @@
       constexpr auto set_b(const result_type& p_b) -> void { param_b = p_b; }
 
     private:
-      result_type param_a; // NOLINT(readability-identifier-naming)
-      result_type param_b; // NOLINT(readability-identifier-naming)
+      result_type param_a { (std::numeric_limits<result_type>::min)() }; // NOLINT(readability-identifier-naming)
+      result_type param_b { (std::numeric_limits<result_type>::max)() }; // NOLINT(readability-identifier-naming)
 
-      friend constexpr auto operator==(const param_type& lhs,
-                                              const param_type& rhs) -> bool
+      friend constexpr auto operator==(const param_type& lhs, const param_type& rhs) -> bool
       {
-        return (   (lhs.param_a == rhs.param_a)
-                && (lhs.param_b == rhs.param_b));
+        return ((lhs.param_a == rhs.param_a) && (lhs.param_b == rhs.param_b));
       }
 
-      friend constexpr auto operator!=(const param_type& lhs,
-                                              const param_type& rhs) -> bool
+      friend constexpr auto operator!=(const param_type& lhs, const param_type& rhs) -> bool
       {
-        return (   (lhs.param_a != rhs.param_a)
-                || (lhs.param_b != rhs.param_b));
+        return (   (lhs.param_a != rhs.param_a) || (lhs.param_b != rhs.param_b));
       }
     };
 
@@ -7123,66 +7150,57 @@
       }
     }
 
-    const unsigned_fast_type k = lsb(nm1);
+    const unsigned_fast_type k { lsb(nm1) };
 
-    const local_wide_integer_type q = nm1 >> k;
+    const local_wide_integer_type q { nm1 >> k };
 
     using local_param_type = typename DistributionType::param_type;
 
     const local_param_type params(local_wide_integer_type(2U), np - 2U);
 
-    auto is_probably_prime = true;
+    local_wide_integer_type x { };
+    local_wide_integer_type y { };
 
-    auto i = static_cast<unsigned_fast_type>(UINT8_C(0));
+    // Assume the test will pass, even though it usually does not pass.
+    bool result { true };
 
-    auto x = local_wide_integer_type { };
-    auto y = local_wide_integer_type { };
+    // Loop over the trials to perform the primality testing.
 
-    // Execute the random trials.
-    do
+    for(std::size_t idx { 0U }; ((idx < number_of_trials) && result); ++idx) // NOLINT(altera-id-dependent-backward-branch)
     {
       x = distribution(generator, params);
       y = powm(x, q, np);
 
-      auto j = static_cast<unsigned_fast_type>(UINT8_C(0));
+      std::size_t jdx { 0U };
 
-      while(y != nm1) // NOLINT(altera-id-dependent-backward-branch)
+      // Continue while y is not nm1, and while y is not 1,
+      // and while the result is true.
+
+      while((y != nm1) && (y != 1U) && result) // NOLINT(altera-id-dependent-backward-branch)
       {
-        const local_limb_type y0(y);
+        ++jdx;
 
-        if((y0 == static_cast<local_limb_type>(UINT8_C(1))) && (y == 1U))
+        if (std::size_t { jdx } == k)
         {
-          if(j != static_cast<unsigned_fast_type>(UINT8_C(0)))
-          {
-            is_probably_prime = false;
-          }
-          else
-          {
-            break;
-          }
+          // Mark failure if max iterations reached.
+          result = false;
         }
         else
         {
-          ++j;
-
-          if(j == k)
-          {
-            is_probably_prime = false;
-          }
-          else
-          {
-            y = powm(y, 2U, np);
-          }
+          // Continue with the next value of y.
+          y = powm(y, 2, np);
         }
       }
 
-      ++i;
+      // Check for (y == 1) after the loop.
+      if((y == 1U) && (jdx != std::size_t { 0U }))
+      {
+        // Mark failure if (y == 1) and (jdx != 0).
+        result = false;
+      }
     }
-    while((i < number_of_trials) && is_probably_prime);
 
-    // The prime candidate is probably prime in the sense
-    // of the very high probability resulting from Miller-Rabin.
-    return is_probably_prime;
+    return result;
   }
 
   #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
@@ -7420,7 +7438,7 @@
 
     using local_size_type = typename string_storage_dec_type::size_type;
 
-    string_storage_dec_type str_temp; // LCOV_EXCL_LINE
+    string_storage_dec_type str_temp { }; // LCOV_EXCL_LINE
 
     str_temp.fill(local_wide_integer_type::my_fill_char());
 
