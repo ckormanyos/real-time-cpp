@@ -9,7 +9,7 @@
 
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL))
 
-// See also: https://godbolt.org/z/8ahv5Ghx5
+// See also: https://godbolt.org/z/6cexnsW9Y
 
 #include <cstdint>
 #include <limits>

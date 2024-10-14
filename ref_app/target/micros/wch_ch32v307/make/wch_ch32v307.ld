@@ -25,12 +25,12 @@ __ROM_START_ADDRESS = 0x00000000;
 
 MEMORY
 {
-  BOOT(rx)    : ORIGIN = 0x00000000,            LENGTH = 0x100
-  VEC(rx)     : ORIGIN = 0x00000100,            LENGTH = 0x300
+  BOOT(rx)    : ORIGIN = 0x00000000,                 LENGTH = 0x100
+  VEC(rx)     : ORIGIN = 0x00000100,                 LENGTH = 0x300
   ROM(rx)     : ORIGIN = 0x00000400,                 LENGTH = 256K - 0x400
   SRAM(rwx)   : ORIGIN = __RAM_START_ADDRESS,        LENGTH = 32K
   RAM(rwx)    : ORIGIN = __RAM_START_ADDRESS + 32K,  LENGTH = __RAM_SIZE - 32K
-  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS, LENGTH = __STACK_SIZE
+  STACK(rw)   : ORIGIN = __STACK_START_ADDRESS,      LENGTH = __STACK_SIZE
 }
 
 SECTIONS

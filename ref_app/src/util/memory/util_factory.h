@@ -86,7 +86,7 @@ class another : public util::factory_product
 public:
   explicit another(const int m = 0, const int n = 0)
     : my_m(m),
-                                      my_n(n) { }
+      my_n(n) { }
 
   ~another() override = default;
 

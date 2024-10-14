@@ -44,11 +44,11 @@ namespace local
       {
         static_cast<std::uint32_t>
         (
-               static_cast<std::uint32_t>(1UL << 16U)
-             | static_cast<std::uint32_t>(1UL << 18U)
-             | static_cast<std::uint32_t>(1UL << 19U)
-             | static_cast<std::uint32_t>(1UL << 24U)
-         )
+            static_cast<std::uint32_t>(1UL << 16U)
+          | static_cast<std::uint32_t>(1UL << 18U)
+          | static_cast<std::uint32_t>(1UL << 19U)
+          | static_cast<std::uint32_t>(1UL << 24U)
+        )
       };
 
     mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rcc_cr, rcc_cr_not_value>::reg_not();

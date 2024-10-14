@@ -84,13 +84,13 @@ void mcal::cpu::detail::enable_d_cache()
     std::uint32_t
       sets
       {
-      static_cast<std::uint32_t>
-      (
-          static_cast<std::uint32_t>
-          (
-               mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get()
-            >> static_cast<unsigned>(UINT8_C(13))
-          )
+        static_cast<std::uint32_t>
+        (
+            static_cast<std::uint32_t>
+            (
+                 mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::scb_ccsidr>::reg_get()
+              >> static_cast<unsigned>(UINT8_C(13))
+            )
           & static_cast<std::uint32_t>(UINT32_C(0x7FFF))
         )
       };
