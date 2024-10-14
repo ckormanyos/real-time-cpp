@@ -6,7 +6,7 @@
         <img src="https://github.com/ckormanyos/real-time-cpp/actions/workflows/real-time-cpp-benchmarks.yml/badge.svg" alt="Build Benchmarks"></a>
     <a href="https://github.com/ckormanyos/real-time-cpp/blob/master/LICENSE_1_0.txt">
         <img src="https://img.shields.io/badge/license-BSL%201.0-blue.svg" alt="Boost Software License 1.0"></a>
-    <a href="https://godbolt.org/z/8ahv5Ghx5" alt="godbolt">
+    <a href="https://godbolt.org/z/6cexnsW9Y" alt="godbolt">
         <img src="https://img.shields.io/badge/try%20it%20on-godbolt-green" /></a>
 </p>
 
@@ -33,7 +33,7 @@ The benchmark timing will be reflected on microcontroller's corresponding
 benchmark port pin (the definition of which can be found in its target-specific MCAL).
 
 Individual benchmarks can also be run standalone on any C++ platform.
-In the following [short link](https://godbolt.org/z/j4aM9vzr9)
+In the following [short link](https://godbolt.org/z/6cexnsW9Y)
 to [godbolt](https://godbolt.org), for instance, we have adapted the
 `APP_BENCHMARK_TYPE_TRAPEZOID_INTEGRAL` benchmark for standalone use.
 The `main()` subroutine in the benchmark source files is activated
@@ -110,6 +110,7 @@ time of $8.0~\text{ms}$.
 Using only one core (core 1) on the $32$-bit ARM(R) Cortex(R) M0+
 controller of the `rpi_pico_rp2040` board results in a calculation
 time of $19~\text{ms}$. The next generation `rpi_pico2_rp2350`
-with ARM(R) Cortex(R) M33 cores beats the previous one
-with a time of $6.3~\text{ms}$, which is slightly more than $3~\text{ms}$ times faster
+with dual ARM(R) Cortex(R) M33 cores definitively improves on this
+(still using only core 1) with a time of $6.3~\text{ms}$.
+This is slightly more than $3~\text{ms}$ times faster
 than its predecessor.

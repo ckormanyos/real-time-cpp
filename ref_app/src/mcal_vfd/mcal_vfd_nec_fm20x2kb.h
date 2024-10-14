@@ -84,7 +84,7 @@
     }
 
     auto write(const char* pstr,
-                       const std::uint_fast8_t length,
+               const std::uint_fast8_t length,
                const std::uint_fast8_t line_index) -> bool override
     {
       static_cast<void>(line_index);

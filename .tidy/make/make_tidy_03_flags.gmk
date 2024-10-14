@@ -49,7 +49,7 @@ TIDY_CHECKS  = "*,                                                             \
                 -misc-include-cleaner,                                         \
                 -misc-const-correctness,                                       \
                 -performance-avoid-endl,                                       \
-                -readability-avoid-const-params-in-decls,                       \
+                -readability-avoid-const-params-in-decls,                      \
                 -readability-identifier-length,                                \
                 -readability-identifier-naming,                                \
                 -readability-named-parameter,                                  \
