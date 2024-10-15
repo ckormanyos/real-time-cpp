@@ -22,8 +22,6 @@ namespace
 extern "C"
 uint8_t mcal_memory_sram_read_byte(const mcal_sram_uintptr_t src_addr)
 {
-  const mcal_sram_uintptr_t pool_index = src_addr / mcal_sram_physical_pool_size_value;
-
   const uintptr_t physical_src_addr =   mcal_memory_sram_physical_pool()
                                       + (src_addr % mcal_sram_physical_pool_size_value);
 
@@ -76,8 +74,6 @@ uint64_t mcal_memory_sram_read_qword(const mcal_sram_uintptr_t src_addr)
 extern "C"
 void mcal_memory_sram_write_byte(const uint8_t src_value, const mcal_sram_uintptr_t dest_addr)
 {
-  const mcal_sram_uintptr_t pool_index = dest_addr / mcal_sram_physical_pool_size_value;
-
   const uintptr_t physical_dest_addr =   mcal_memory_sram_physical_pool()
                                       + (dest_addr % mcal_sram_physical_pool_size_value);
 
