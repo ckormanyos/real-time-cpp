@@ -88,7 +88,7 @@ jobs:
           fetch-depth: '0'
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.2
+          toolset: 14.4
       - name: target-msvc-examples
         run: |
           cd ${{ matrix.example }}
@@ -116,7 +116,7 @@ jobs:
           git submodule update --init libs/multiprecision
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.2
+          toolset: 14.4
       - name: bootstrap-boost
         working-directory: ${{ runner.workspace }}/boost-root
         run: |
@@ -124,7 +124,7 @@ jobs:
           ./b2 headers
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.2
+          toolset: 14.4
       - name: target-msvc-example16_08
         shell: cmd
         working-directory: ./
