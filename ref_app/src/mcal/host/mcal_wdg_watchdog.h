@@ -70,8 +70,8 @@
         timer_type  my_timer { my_period };
         const std::thread my_thread;
 
-        static watchdog         my_watchdog;
-        static std::atomic_flag my_lock;
+        static watchdog         my_watchdog; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+        static std::atomic_flag my_lock;     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
         auto get_watchdog_timeout() const -> bool
         {
@@ -119,10 +119,10 @@
       };
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
-      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function); // NOLINT(cert-err58-cpp)
+      watchdog<MyPeriod> watchdog<MyPeriod>::my_watchdog(thread_function); // NOLINT(cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
       template<const typename watchdog_base::base_timer_type::tick_type MyPeriod>
-      std::atomic_flag watchdog<MyPeriod>::my_lock = ATOMIC_FLAG_INIT;
+      std::atomic_flag watchdog<MyPeriod>::my_lock = ATOMIC_FLAG_INIT; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
     } // namespace wdg
   } // namespace mcal
 

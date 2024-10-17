@@ -88,7 +88,7 @@
 
       static auto blocking_delay(const tick_type& delay) -> void
       {
-        const timer t_delay(delay);
+        const timer t_delay { delay }; // NOLINT(altera-id-dependent-backward-branch)
 
         while(!t_delay.timeout()) // NOLINT(altera-id-dependent-backward-branch)
         {

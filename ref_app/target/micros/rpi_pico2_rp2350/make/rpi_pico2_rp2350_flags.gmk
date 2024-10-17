@@ -52,7 +52,7 @@ ifeq ($(TYP_OS),WIN)
 IMG_SUFFIX                   := uf2
 IMAGE_FILE                   := $(APP).$(IMG_SUFFIX)
 ELF2UF2                      := $(PATH_TOOLS)/rpi_pico2/picotool/picotool.exe
-ELF2UF2                      := $(subst /,\,$(PATH_TOOLS)/rpi_pico2/picotool/picotool.exe)
+ELF2UF2                      := $(subst /,\,$(ELF2UF2))
 RULE_SPECIAL_MAKE_IMAGE_FILE := $(ELF2UF2) uf2 convert --quiet $(subst /,\,$(APP).$(TGT_SUFFIX)) $(subst /,\,$(IMAGE_FILE)) --family rp2350-arm-s --abs-block
 else
 RULE_SPECIAL_MAKE_IMAGE_FILE :=
