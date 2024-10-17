@@ -70,8 +70,8 @@
         timer_type  my_timer { my_period };
         const std::thread my_thread;
 
-        static watchdog         my_watchdog;
-        static std::atomic_flag my_lock;
+        static watchdog         my_watchdog; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+        static std::atomic_flag my_lock;     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
         auto get_watchdog_timeout() const -> bool
         {

@@ -32,7 +32,7 @@
       template<typename send_iterator_type>
       auto send_n(send_iterator_type first, send_iterator_type last) noexcept -> bool
       {
-        auto send_result = true;
+        bool send_result { true }; // NOLINT(altera-id-dependent-backward-branch)
 
         while((first != last) && send_result) // NOLINT(altera-id-dependent-backward-branch)
         {

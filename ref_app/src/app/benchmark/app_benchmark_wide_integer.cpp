@@ -14,7 +14,7 @@
 // then the wide-integer calculations will be constexpr
 // and performed at compile-time.
 
-#if 0
+#if 1
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_OR_CONST const             // NOLINT(cppcoreguidelines-macro-usage)
 #define APP_BENCHMARK_WIDE_INTEGER_CONSTEXPR_IS_COMPILE_TIME_CONSTANT 0 // NOLINT(cppcoreguidelines-macro-usage)
 #else
