@@ -82,15 +82,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++14 ]
+        standard: [ c++20, c++23 ]
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
       - name: update-tools
-        run: sudo apt install gcc-avr avr-libc
+        run: |
+          wget --no-check-certificate https://github.com/ckormanyos/avr-gcc-build/releases/download/v14.1.0/gcc-14.1.0-avr.tar.gz
+          tar -xzf gcc-14.1.0-avr.tar.gz -C ${{ runner.workspace }}
       - name: benchmark_builds-avr
-        run: ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
+        run: |
+          PATH="${{ runner.workspace }}/gcc-14.1.0-avr/bin:$PATH"
+          ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-stm32f446:
     runs-on: ubuntu-latest
