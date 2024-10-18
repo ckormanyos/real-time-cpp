@@ -82,7 +82,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++23 ]
+        standard: [ c++20, c++23 ]
     steps:
       - uses: actions/checkout@v4
         with:
