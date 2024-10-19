@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 
 ifneq ($(MAKE),make)
-GCC_VERSION   = 11.2.0
+GCC_VERSION   = 14.2.0
 endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
