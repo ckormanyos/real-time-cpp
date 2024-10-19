@@ -89,11 +89,11 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://github.com/ckormanyos/avr-gcc-build/releases/download/v14.1.0/gcc-14.1.0-avr.tar.gz
-          tar -xzf gcc-14.1.0-avr.tar.gz -C ${{ runner.workspace }}
+          wget --no-check-certificate https://github.com/ckormanyos/avr-gcc-build/releases/download/v14.2.0/gcc-14.2.0-avr.tar.gz
+          tar -xzf gcc-14.2.0-avr.tar.gz -C ${{ runner.workspace }}
       - name: benchmark_builds-avr
         run: |
-          PATH="${{ runner.workspace }}/gcc-14.1.0-avr/bin:$PATH"
+          PATH="${{ runner.workspace }}/gcc-14.2.0-avr/bin:$PATH"
           ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-stm32f446:
