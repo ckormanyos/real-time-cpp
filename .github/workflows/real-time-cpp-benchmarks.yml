@@ -41,6 +41,9 @@ jobs:
       - name: clone-cppalliance-decimal
         run: |
           git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
+      - name: clone-cppalliance-crypt
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
         working-directory: ./
       - name: benchmark_gcc-clang
         run: ./target/build/test_app_benchmarks.sh ${{ matrix.compiler }} ${{ matrix.standard }}
@@ -104,7 +107,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        standard: [ c++14, c++17, c++2a ]
+        standard: [ c++14, c++20 ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -125,6 +128,9 @@ jobs:
       - name: clone-cppalliance-decimal
         run: |
           git clone -b develop --depth 1 https://github.com/cppalliance/decimal.git ../cppalliance-decimal-root
+      - name: clone-cppalliance-crypt
+        run: |
+          git clone -b develop --depth 1 https://github.com/cppalliance/crypt.git ../cppalliance-crypt-root
         working-directory: ./
       - name: benchmark_builds-stm32f446
         run: ./target/build/test_app_benchmarks_stm32f446.sh ${{ matrix.standard }}
