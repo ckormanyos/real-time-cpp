@@ -122,7 +122,7 @@ auto app::benchmark::task_func() -> void
 
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER))
 
-  const bool result_is_ok = app::benchmark::run_non_boost_crypt_hasher();
+  const bool result_is_ok = app::benchmark::run_boost_crypt_hasher();
 
   #endif
 

@@ -25,7 +25,7 @@
 
 #include <boost/crypt/hash/sha512.hpp>
 
-auto app::benchmark::run_non_boost_crypt_hasher() -> bool
+auto app::benchmark::run_boost_crypt_hasher() -> bool
 {
   // "abc"
   const std::array<std::uint8_t, 3U> message =
@@ -77,7 +77,7 @@ extern "C"
 
     for(unsigned i = 0U; i < 64U; ++i)
     {
-      result_is_ok &= app::benchmark::run_crc();
+      result_is_ok &= app::benchmark::run_boost_crypt_hasher();
     }
 
     app_benchmark_standalone_result =

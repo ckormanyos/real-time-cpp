@@ -109,7 +109,7 @@
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL))
   auto run_non_std_decimal() -> bool;
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER))
-  auto run_non_boost_crypt_hasher() -> bool;
+  auto run_boost_crypt_hasher() -> bool;
   #else
   #error APP_BENCHMARK_TYPE is undefined.
   #endif
