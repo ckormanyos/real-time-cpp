@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\benchmark\app_benchmark.cpp" />
+    <ClCompile Include="src\app\benchmark\app_benchmark_boost_crypt_hasher.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cbrt_tgamma.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_math_cyl_bessel_j.cpp" />
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_multiprecision_cbrt.cpp" />

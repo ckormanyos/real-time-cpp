@@ -125,7 +125,7 @@
           )
         );
 
-      const auto sys_tick_value = my_sys_tick_value;
+      const value_type sys_tick_value { my_sys_tick_value };
 
       // Do the second read of the sys-tick counter and the sys-tick
       // value. Handle reverse counting for sys-tick counter, which is
@@ -143,13 +143,16 @@
 
       // Perform the consistency check.
 
-      const auto sys_tick_consistent_value =
-        static_cast<std::uint64_t>
-        (
-          ((sys_tick_counter_2 >= sys_tick_counter_1)
-            ? static_cast<std::uint64_t>(static_cast<std::uint64_t>(   sys_tick_value) | sys_tick_counter_1)
-            : static_cast<std::uint64_t>(static_cast<std::uint64_t>(my_sys_tick_value) | sys_tick_counter_2))
-        );
+      const std::uint64_t
+        sys_tick_consistent_value
+        {
+          static_cast<std::uint64_t>
+          (
+            ((sys_tick_counter_2 >= sys_tick_counter_1)
+              ? static_cast<std::uint64_t>(static_cast<std::uint64_t>(   sys_tick_value) | sys_tick_counter_1)
+              : static_cast<std::uint64_t>(static_cast<std::uint64_t>(my_sys_tick_value) | sys_tick_counter_2))
+          )
+        };
 
       // Perform scaling and include a rounding correction.
       return

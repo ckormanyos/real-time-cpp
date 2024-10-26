@@ -31,6 +31,7 @@
   #define APP_BENCHMARK_TYPE_ECC_GENERIC_ECC                    20
   #define APP_BENCHMARK_TYPE_NON_STD_DECIMAL                    21
   #define APP_BENCHMARK_TYPE_PI_AGM_100                         22
+  #define APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER                 23
 
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_COMPLEX
@@ -55,6 +56,7 @@
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_ECC_GENERIC_ECC
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NON_STD_DECIMAL
   //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_PI_AGM_100
+  //#define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER
 
   #if !defined(APP_BENCHMARK_TYPE)
   #define APP_BENCHMARK_TYPE   APP_BENCHMARK_TYPE_NONE
@@ -106,6 +108,8 @@
   auto run_ecc_generic_ecc() -> bool;
   #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_NON_STD_DECIMAL))
   auto run_non_std_decimal() -> bool;
+  #elif (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_CRYPT_HASHER))
+  auto run_boost_crypt_hasher() -> bool;
   #else
   #error APP_BENCHMARK_TYPE is undefined.
   #endif
