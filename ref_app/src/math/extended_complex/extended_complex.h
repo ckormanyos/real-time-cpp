@@ -66,33 +66,33 @@
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<typename T, typename EnableType = void> auto operator+(const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator-(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>&) -> complex<T, EnableType>;
 
     // Global add, sub, mul, div operators.
-    template<typename T, typename EnableType = void> auto operator+(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator-(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator*(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator/(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
 
-    template<typename T, typename EnableType = void> auto operator+(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator-(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator*(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator/(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
 
-    template<typename T, typename EnableType = void> auto operator+(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator-(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator*(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto operator/(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
 
     // Equality and inequality operators.
-    template<typename T, typename EnableType = void> auto operator==(const complex<T, EnableType>&, const complex<T, EnableType>&) -> bool;
-    template<typename T, typename EnableType = void> auto operator==(const complex<T, EnableType>&, const T&) -> bool;
-    template<typename T, typename EnableType = void> auto operator==(const T&, const complex<T, EnableType>&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const complex<T, EnableType>&, const complex<T, EnableType>&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const complex<T, EnableType>&, const T&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const T&, const complex<T, EnableType>&) -> bool;
 
-    template<typename T, typename EnableType = void> auto operator!=(const complex<T, EnableType>&, const complex<T, EnableType>&) -> bool;
-    template<typename T, typename EnableType = void> auto operator!=(const complex<T, EnableType>&, const T&) -> bool;
-    template<typename T, typename EnableType = void> auto operator!=(const T&, const complex<T, EnableType>&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const complex<T, EnableType>&, const complex<T, EnableType>&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const complex<T, EnableType>&, const T&) -> bool;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const T&, const complex<T, EnableType>&) -> bool;
 
     #if !defined(EXTENDED_COMPLEX_DISABLE_IOSTREAM)
 
@@ -108,46 +108,46 @@
     // Value operations for extended_complex::complex<T, EnableType>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.7.
 
-    template<typename T, typename EnableType = void> auto real (const complex<T, EnableType>&) -> T;
-    template<typename T, typename EnableType = void> auto imag (const complex<T, EnableType>&) -> T;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto real (const complex<T, EnableType>&) -> T;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto imag (const complex<T, EnableType>&) -> T;
 
-    template<typename T, typename EnableType = void> auto abs  (const complex<T, EnableType>&) -> T;
-    template<typename T, typename EnableType = void> auto arg  (const complex<T, EnableType>&) -> T;
-    template<typename T, typename EnableType = void> auto norm (const complex<T, EnableType>&) -> T;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto abs  (const complex<T, EnableType>&) -> T;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto arg  (const complex<T, EnableType>&) -> T;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto norm (const complex<T, EnableType>&) -> T;
 
 
-    template<typename T, typename EnableType = void> auto conj (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto proj (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto polar(const T&, const T& = T(static_cast<unsigned>(UINT8_C(0)))) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto conj (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto proj (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto polar(const T&, const T& = T(static_cast<unsigned>(UINT8_C(0)))) -> complex<T, EnableType>;
 
     // Elementary transcendental functions for extended_complex::complex<T, EnableType>.
     // Similar to ISO/IEC 14882:2011 Sect. 26.4.8.
 
-    template<typename T, typename EnableType = void> auto acos (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto asin (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto atan (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto asinh(const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto acosh(const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto atanh(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto acos (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto asin (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto atan (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto asinh(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto acosh(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto atanh(const complex<T, EnableType>&) -> complex<T, EnableType>;
 
-    template<typename T, typename EnableType = void> auto cos  (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto cosh (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto exp  (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto log  (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto log10(const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto cos  (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto cosh (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto exp  (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto log  (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto log10(const complex<T, EnableType>&) -> complex<T, EnableType>;
 
     template<typename T,
              typename IntegralType,
-             typename EnableType = void>             auto pow  (const complex<T, EnableType>&, IntegralType) -> typename std::enable_if_t<std::is_integral<IntegralType>::value, complex<T, EnableType>>;
-    template<typename T, typename EnableType = void> auto pow  (const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto pow  (const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto pow  (const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+             typename EnableType = void>             EXTENDED_COMPLEX_CONSTEXPR auto pow  (const complex<T, EnableType>&, IntegralType) -> typename std::enable_if_t<std::is_integral<IntegralType>::value, complex<T, EnableType>>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto pow  (const complex<T, EnableType>&, const T&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto pow  (const complex<T, EnableType>&, const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto pow  (const T&, const complex<T, EnableType>&) -> complex<T, EnableType>;
 
-    template<typename T, typename EnableType = void> auto sin  (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto sinh (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto sqrt (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto tan  (const complex<T, EnableType>&) -> complex<T, EnableType>;
-    template<typename T, typename EnableType = void> auto tanh (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto sin  (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto sinh (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto sqrt (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto tan  (const complex<T, EnableType>&) -> complex<T, EnableType>;
+    template<typename T, typename EnableType = void> EXTENDED_COMPLEX_CONSTEXPR auto tanh (const complex<T, EnableType>&) -> complex<T, EnableType>;
 
     // Class template extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.2.
@@ -158,21 +158,21 @@
     public:
       typedef T value_type;
 
-      complex(const value_type& my_x = value_type(),
-              const value_type& my_y = value_type()) : my_re(my_x),
-                                                       my_im(my_y) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(const value_type& my_x = value_type(),
+                                         const value_type& my_y = value_type()) : my_re(my_x),
+                                                                                  my_im(my_y) { }
 
-      complex(const complex& other) : my_re(other.real()),
-                                      my_im(other.imag()) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(const complex& other) : my_re(other.real()),
+                                                                 my_im(other.imag()) { }
 
-      complex(complex&& other) noexcept : my_re(std::move(static_cast<value_type&&>(other.my_re))),
-                                          my_im(std::move(static_cast<value_type&&>(other.my_im))) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(complex&& other) noexcept : my_re(std::move(static_cast<value_type&&>(other.my_re))),
+                                                                     my_im(std::move(static_cast<value_type&&>(other.my_im))) { }
 
       template<typename X>
-      complex(const complex<X>& my_z) : my_re(static_cast<value_type>(my_z.real())),
-                                        my_im(static_cast<value_type>(my_z.imag())) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<X>& my_z) : my_re(static_cast<value_type>(my_z.real())),
+                                                                   my_im(static_cast<value_type>(my_z.imag())) { }
 
-      complex& operator=(const complex& other)
+      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const complex& other)
       {
         if(this != &other)
         {
@@ -183,7 +183,7 @@
         return *this;
       }
 
-      complex& operator=(complex&& other) noexcept
+      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(complex&& other) noexcept
       {
         my_re = std::move(static_cast<value_type&&>(other.my_re));
         my_im = std::move(static_cast<value_type&&>(other.my_im));
@@ -192,7 +192,7 @@
       }
 
       template<typename X>
-      complex& operator=(const complex<X>& other)
+      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const complex<X>& other)
       {
         my_re = static_cast<value_type>(other.my_re);
         my_im = static_cast<value_type>(other.my_im);
@@ -200,7 +200,7 @@
         return *this;
       }
 
-      complex& operator=(const value_type& other_x)
+      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const value_type& other_x)
       {
         my_re = other_x;
         my_im = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
@@ -208,27 +208,27 @@
         return *this;
       }
 
-      auto real() const -> value_type { return my_re; }
-      auto imag() const -> value_type { return my_im; } // LCOV_EXCL_LINE (Bogus missed line from lcov)
+      EXTENDED_COMPLEX_CONSTEXPR auto real() const -> value_type { return my_re; }
+      EXTENDED_COMPLEX_CONSTEXPR auto imag() const -> value_type { return my_im; } // LCOV_EXCL_LINE (Bogus missed line from lcov)
 
-      auto real(const value_type& my_x) -> void { my_re = my_x; }
-      auto imag(const value_type& my_y) -> void { my_im = my_y; }
+      EXTENDED_COMPLEX_CONSTEXPR auto real(const value_type& my_x) -> void { my_re = my_x; }
+      EXTENDED_COMPLEX_CONSTEXPR auto imag(const value_type& my_y) -> void { my_im = my_y; }
 
-      auto operator+=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator+=(const value_type& my_x) -> complex&
       {
         my_re += my_x;
 
         return *this;
       }
 
-      auto operator-=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator-=(const value_type& my_x) -> complex&
       {
         my_re -= my_x;
 
         return *this;
       }
 
-      auto operator*=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const value_type& my_x) -> complex&
       {
         my_re *= my_x;
         my_im *= my_x;
@@ -236,7 +236,7 @@
         return *this;
       }
 
-      auto operator/=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator/=(const value_type& my_x) -> complex&
       {
         my_re /= my_x;
         my_im /= my_x;
@@ -245,7 +245,7 @@
       }
 
       template<typename X>
-      auto operator+=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator+=(const complex<X>& my_z) -> complex&
       {
         my_re += static_cast<value_type>(my_z.my_re);
         my_im += static_cast<value_type>(my_z.my_im);
@@ -254,7 +254,7 @@
       }
 
       template<typename X>
-      auto operator-=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator-=(const complex<X>& my_z) -> complex&
       {
         if(this == &my_z)
         {
@@ -271,7 +271,7 @@
       }
 
       template<typename X>
-      auto operator*=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const complex<X>& my_z) -> complex&
       {
         const value_type tmp_re(my_re);
 
@@ -290,7 +290,7 @@
       }
 
       template<typename X>
-      auto operator/=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator/=(const complex<X>& my_z) -> complex&
       {
         if(this == &my_z)
         {
@@ -368,7 +368,7 @@
         return *this;
       }
 
-      auto operator=(complex&& other) noexcept -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(complex&& other) noexcept -> complex&
       {
         my_re = std::move(static_cast<value_type&&>(other.my_re));
         my_im = std::move(static_cast<value_type&&>(other.my_im));
@@ -376,7 +376,7 @@
         return *this;
       }
 
-      auto operator=(const value_type& other_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(const value_type& other_x) -> complex&
       {
         my_re = other_x;
         my_im = static_cast<value_type>(0.0L);
@@ -386,7 +386,7 @@
 
       template<typename OtherFloatingPointType,
                typename OtherFloatingPointEnableType = typename std::enable_if_t<std::is_floating_point<OtherFloatingPointType>::value && (sizeof(OtherFloatingPointType) != sizeof(value_type)), void>>
-      auto operator=(const complex<OtherFloatingPointType>& other) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(const complex<OtherFloatingPointType>& other) -> complex&
       {
         my_re = other.my_re;
         my_im = other.my_im;
@@ -397,24 +397,24 @@
       EXTENDED_COMPLEX_CONSTEXPR value_type real() const { return my_re; }
       EXTENDED_COMPLEX_CONSTEXPR value_type imag() const { return my_im; }
 
-      auto real(const value_type& my_x) -> void { my_re = my_x; }
-      auto imag(const value_type& my_y) -> void { my_im = my_y; }
+      EXTENDED_COMPLEX_CONSTEXPR auto real(const value_type& my_x) -> void { my_re = my_x; }
+      EXTENDED_COMPLEX_CONSTEXPR auto imag(const value_type& my_y) -> void { my_im = my_y; }
 
-      auto operator+=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator+=(const value_type& my_x) -> complex&
       {
         my_re += my_x;
 
         return *this;
       }
 
-      auto operator-=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator-=(const value_type& my_x) -> complex&
       {
         my_re -= my_x;
 
         return *this;
       }
 
-      auto operator*=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const value_type& my_x) -> complex&
       {
         my_re *= my_x;
         my_im *= my_x;
@@ -422,7 +422,7 @@
         return *this;
       }
 
-      auto operator/=(const value_type& my_x) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator/=(const value_type& my_x) -> complex&
       {
         my_re /= my_x;
         my_im /= my_x;
@@ -431,7 +431,7 @@
       }
 
       template<typename X>
-      auto operator+=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator+=(const complex<X>& my_z) -> complex&
       {
         my_re += static_cast<value_type>(my_z.my_re);
         my_im += static_cast<value_type>(my_z.my_im);
@@ -440,7 +440,7 @@
       }
 
       template<typename X>
-      auto operator-=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator-=(const complex<X>& my_z) -> complex&
       {
         my_re -= static_cast<value_type>(my_z.my_re);
         my_im -= static_cast<value_type>(my_z.my_im);
@@ -449,7 +449,7 @@
       }
 
       template<typename X>
-      auto operator*=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const complex<X>& my_z) -> complex&
       {
         const value_type tmp_re(my_re);
 
@@ -468,7 +468,7 @@
       }
 
       template<typename X>
-      auto operator/=(const complex<X>& my_z) -> complex&
+      EXTENDED_COMPLEX_CONSTEXPR auto operator/=(const complex<X>& my_z) -> complex&
       {
         if(this == &my_z)
         {
@@ -515,20 +515,20 @@
     // See also ISO/IEC 14882:2011 Sect. 26.4.6.
 
     // Unary +/- operators.
-    template<typename T, typename EnableType> auto operator+(const complex<T, EnableType>& my_u) -> complex<T, EnableType> { return my_u; }
-    template<typename T, typename EnableType> auto operator-(const complex<T, EnableType>& my_u) -> complex<T, EnableType> { return complex<T, EnableType>(-my_u.real(), -my_u.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>& my_u) -> complex<T, EnableType> { return my_u; }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>& my_u) -> complex<T, EnableType> { return complex<T, EnableType>(-my_u.real(), -my_u.imag()); }
 
     // Global add, sub, mul, div operators.
-    template<typename T, typename EnableType> auto operator+(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
-    template<typename T, typename EnableType> auto operator-(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() + my_v.real(), my_u.imag() + my_v.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() - my_v.real(), my_u.imag() - my_v.imag()); }
 
-    template<typename T, typename EnableType> auto operator*(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
     {
       return complex<T, EnableType>((my_u.real() * my_v.real()) - (my_u.imag() * my_v.imag()),
                                     (my_u.real() * my_v.imag()) + (my_u.imag() * my_v.real()));
     }
 
-    template<typename T, typename EnableType> auto operator/(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
     {
       using std::fabs;
 
@@ -558,16 +558,16 @@
       }
     }
 
-    template<typename T, typename EnableType> auto operator+(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() + my_v, my_u.imag()); }
-    template<typename T, typename EnableType> auto operator-(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() - my_v, my_u.imag()); }
-    template<typename T, typename EnableType> auto operator*(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() * my_v, my_u.imag() * my_v); }
-    template<typename T, typename EnableType> auto operator/(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() / my_v, my_u.imag() / my_v); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() + my_v, my_u.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() - my_v, my_u.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() * my_v, my_u.imag() * my_v); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const complex<T, EnableType>& my_u, const T& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u.real() / my_v, my_u.imag() / my_v); }
 
-    template<typename T, typename EnableType> auto operator+(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u + my_v.real(), my_v.imag()); }
-    template<typename T, typename EnableType> auto operator-(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u - my_v.real(), -my_v.imag()); }
-    template<typename T, typename EnableType> auto operator*(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u * my_v.real(), my_u * my_v.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator+(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u + my_v.real(), my_v.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator-(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u - my_v.real(), -my_v.imag()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator*(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType> { return complex<T, EnableType>(my_u * my_v.real(), my_u * my_v.imag()); }
 
-    template<typename T, typename EnableType> auto operator/(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator/(const T& my_u, const complex<T, EnableType>& my_v) -> complex<T, EnableType>
     {
       using std::fabs;
 
@@ -598,13 +598,13 @@
     }
 
     // Equality and inequality operators.
-    template<typename T, typename EnableType> auto operator==(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
-    template<typename T, typename EnableType> auto operator==(const complex<T, EnableType>& my_u, const T&                      my_v) -> bool { return ((my_u.real() == my_v)        && (my_u.imag() == T(0))); }
-    template<typename T, typename EnableType> auto operator==(const T&                      my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u == my_v.real())        && (my_v.imag() == T(0))); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u.real() == my_v.real()) && (my_u.imag() == my_v.imag())); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const complex<T, EnableType>& my_u, const T&                      my_v) -> bool { return ((my_u.real() == my_v)        && (my_u.imag() == T(0))); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator==(const T&                      my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u == my_v.real())        && (my_v.imag() == T(0))); }
 
-    template<typename T, typename EnableType> auto operator!=(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
-    template<typename T, typename EnableType> auto operator!=(const complex<T, EnableType>& my_u, const T&                      my_v) -> bool { return ((my_u.real() != my_v)        || (my_u.imag() != T(0))); }
-    template<typename T, typename EnableType> auto operator!=(const T&                      my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u != my_v.real())        || (my_v.imag() != T(0))); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const complex<T, EnableType>& my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u.real() != my_v.real()) || (my_u.imag() != my_v.imag())); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const complex<T, EnableType>& my_u, const T&                      my_v) -> bool { return ((my_u.real() != my_v)        || (my_u.imag() != T(0))); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto operator!=(const T&                      my_u, const complex<T, EnableType>& my_v) -> bool { return ((my_u != my_v.real())        || (my_v.imag() != T(0))); }
 
     #if !defined(EXTENDED_COMPLEX_DISABLE_IOSTREAM)
 
@@ -784,13 +784,13 @@
     // Value operations for extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.7.
 
-    template<typename T, typename EnableType> auto real(const complex<T, EnableType>& my_z) -> T { return my_z.real(); }
-    template<typename T, typename EnableType> auto imag(const complex<T, EnableType>& my_z) -> T { return my_z.imag(); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto real(const complex<T, EnableType>& my_z) -> T { return my_z.real(); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto imag(const complex<T, EnableType>& my_z) -> T { return my_z.imag(); }
 
-    template<typename T, typename EnableType> auto abs (const complex<T, EnableType>& my_z) -> T { using std::sqrt;  return sqrt(norm(my_z)); }
-    template<typename T, typename EnableType> auto arg (const complex<T, EnableType>& my_z) -> T { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto abs (const complex<T, EnableType>& my_z) -> T { using std::sqrt;  return sqrt(norm(my_z)); }
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto arg (const complex<T, EnableType>& my_z) -> T { using std::atan2; return atan2(my_z.imag(), my_z.real()); }
 
-    template<typename T, typename EnableType> auto norm(const complex<T, EnableType>& my_z) -> T
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto norm(const complex<T, EnableType>& my_z) -> T
     {
       using std::fabs;
 
@@ -808,12 +808,12 @@
       }
     }
 
-    template<typename T, typename EnableType> auto conj(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto conj(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       return { -my_z.imag(), my_z.real() };
     }
 
-    template<typename T, typename EnableType> auto proj(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto proj(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       const T denominator_half { (norm(my_z) + T(static_cast<unsigned>(UINT8_C(1)))) / static_cast<unsigned>(UINT8_C(2)) };
 
@@ -824,7 +824,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto polar(const T& my_rho, const T& my_theta) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto polar(const T& my_rho, const T& my_theta) -> complex<T, EnableType>
     {
       using std::cos;
       using std::sin;
@@ -839,19 +839,19 @@
     // Elementary transcendental functions for extended_complex::complex<T, EnableType>.
     // See also ISO/IEC 14882:2011 Sect. 26.4.8.
 
-    template<typename T, typename EnableType> auto acos(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto acos(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::asin;
 
       return T(asin(T(static_cast<unsigned>(UINT8_C(1))))) - asin(my_z);
     }
 
-    template<typename T, typename EnableType> auto asin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto asin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       return -conj(log(conj(my_z) + sqrt(T(static_cast<unsigned>(UINT8_C(1))) - (my_z * my_z))));
     }
 
-    template<typename T, typename EnableType> auto atan(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto atan(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       const complex<T, EnableType> z_conj { conj(my_z) };
 
@@ -864,7 +864,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto acosh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto acosh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       const complex<T, EnableType> zp { my_z.real() + T(static_cast<unsigned>(UINT8_C(1))), my_z.imag() };
       const complex<T, EnableType> zm { my_z.real() - T(static_cast<unsigned>(UINT8_C(1))), my_z.imag() };
@@ -872,17 +872,14 @@
       return log(my_z + (zp * sqrt(zm / zp)));
     }
 
-    template<typename T, typename EnableType> auto asinh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto asinh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       return log(my_z + sqrt(T(static_cast<unsigned>(UINT8_C(1))) + (my_z * my_z)));
     }
 
-    template<typename T, typename EnableType> auto atanh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto atanh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
-      const complex<T, EnableType> result
-      {
-        log(T(static_cast<unsigned>(UINT8_C(1))) + my_z) - log(T(static_cast<unsigned>(UINT8_C(1))) - my_z)
-      };
+      const complex<T, EnableType> result { log(T(static_cast<unsigned>(UINT8_C(1))) + my_z) - log(T(static_cast<unsigned>(UINT8_C(1))) - my_z) };
 
       return
       {
@@ -891,7 +888,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto cos(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto cos(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::cos;
       using std::exp;
@@ -910,7 +907,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto cosh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto cosh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::cos;
       using std::exp;
@@ -929,7 +926,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto exp(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto exp(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::cos;
       using std::exp;
@@ -944,7 +941,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto log(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto log(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::atan2;
       using std::log;
@@ -956,7 +953,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto log10(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto log10(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::log;
 
@@ -964,7 +961,7 @@
     }
 
     template<typename T, typename IntegralType, typename EnableType>
-    auto pow(const complex<T, EnableType>& my_z, IntegralType my_pn) -> typename std::enable_if_t<std::is_integral<IntegralType>::value, complex<T, EnableType>>
+    EXTENDED_COMPLEX_CONSTEXPR auto pow(const complex<T, EnableType>& my_z, IntegralType my_pn) -> typename std::enable_if_t<std::is_integral<IntegralType>::value, complex<T, EnableType>>
     {
       if     (my_pn <  static_cast<int>(INT8_C(0))) { return  T(static_cast<unsigned>(UINT8_C(1))) / pow(my_z, -my_pn); }
       else if(my_pn == static_cast<int>(INT8_C(0))) { return  complex<T, EnableType>(T(static_cast<unsigned>(UINT8_C(1)))); }
@@ -1006,24 +1003,24 @@
       }
     }
 
-    template<typename T, typename EnableType> auto pow(const complex<T, EnableType>& my_z, const T& my_a) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto pow(const complex<T, EnableType>& my_z, const T& my_a) -> complex<T, EnableType>
     {
       return exp(my_a * log(my_z));
     }
 
-    template<typename T, typename EnableType> auto pow(const complex<T, EnableType>& my_z, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto pow(const complex<T, EnableType>& my_z, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
     {
       return exp(my_a * log(my_z));
     }
 
-    template<typename T, typename EnableType> auto pow(const T& my_z, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto pow(const T& my_z, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
     {
       using std::log;
 
       return exp(my_a * log(my_z));
     }
 
-    template<typename T, typename EnableType> auto sin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto sin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::cos;
       using std::exp;
@@ -1042,7 +1039,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto sinh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto sinh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::cos;
       using std::exp;
@@ -1061,7 +1058,7 @@
       };
     }
 
-    template<typename T, typename EnableType> auto sqrt(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto sqrt(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
       using std::abs;
       using std::sqrt;
@@ -1097,18 +1094,42 @@
       }
     }
 
-    template<typename T, typename EnableType> auto tan(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto tan(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
-      // TODO ckormanyos: Can this be refactored/simplified?
+      using std::cos;
+      using std::exp;
+      using std::sin;
 
-      return sin(my_z) / cos(my_z);
+      const T exp_imag     { exp(my_z.imag()) };
+      const T exp_imag_inv { T(static_cast<unsigned>(UINT8_C(1))) / exp_imag };
+
+      const T cosh_imag2 { exp_imag + exp_imag_inv };
+      const T sinh_imag2 { exp_imag - exp_imag_inv };
+
+      const T cos_real { cos(my_z.real()) };
+      const T sin_real { sin(my_z.real()) };
+
+      return   complex<T, EnableType>(sin_real * cosh_imag2,  cos_real * sinh_imag2)
+             / complex<T, EnableType>(cos_real * cosh_imag2, -sin_real * sinh_imag2);
     }
 
-    template<typename T, typename EnableType> auto tanh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto tanh(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
     {
-      // TODO ckormanyos: Can this be refactored/simplified?
+      using std::cos;
+      using std::exp;
+      using std::sin;
 
-      return sinh(my_z) / cosh(my_z);
+      const T exp_real     { exp(my_z.real()) };
+      const T exp_real_inv { T(static_cast<unsigned>(UINT8_C(1))) / exp_real };
+
+      const T cosh_real2 { exp_real + exp_real_inv };
+      const T sinh_real2 { exp_real - exp_real_inv };
+
+      const T cos_imag { cos(my_z.imag()) };
+      const T sin_imag { sin(my_z.imag()) };
+
+      return   complex<T, EnableType>(cos_imag * sinh_real2, sin_imag * cosh_real2)
+             / complex<T, EnableType>(cos_imag * cosh_real2, sin_imag * sinh_real2);
     }
   } // namespace extended_complex
 
