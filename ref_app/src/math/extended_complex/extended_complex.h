@@ -442,8 +442,16 @@
       template<typename X>
       EXTENDED_COMPLEX_CONSTEXPR auto operator-=(const complex<X>& my_z) -> complex&
       {
-        my_re -= static_cast<value_type>(my_z.my_re);
-        my_im -= static_cast<value_type>(my_z.my_im);
+        if(this == &my_z)
+        {
+          my_re = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
+          my_im = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
+        }
+        else
+        {
+          my_re -= static_cast<value_type>(my_z.my_re);
+          my_im -= static_cast<value_type>(my_z.my_im);
+        }
 
         return *this;
       }
@@ -843,7 +851,7 @@
     {
       using std::asin;
 
-      return T(asin(T(static_cast<unsigned>(UINT8_C(1))))) - asin(my_z);
+      return asin(T(static_cast<unsigned>(UINT8_C(1)))) - asin(my_z);
     }
 
     template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto asin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
@@ -1013,11 +1021,11 @@
       return exp(my_a * log(my_z));
     }
 
-    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto pow(const T& my_z, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
+    template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto pow(const T& my_x, const complex<T, EnableType>& my_a) -> complex<T, EnableType>
     {
       using std::log;
 
-      return exp(my_a * log(my_z));
+      return exp(my_a * log(my_x));
     }
 
     template<typename T, typename EnableType> EXTENDED_COMPLEX_CONSTEXPR auto sin(const complex<T, EnableType>& my_z) -> complex<T, EnableType>
