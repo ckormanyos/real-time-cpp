@@ -55,6 +55,6 @@ int main()
 #endif
 
 complex_type x_val { static_cast<local_floating_point_type>(1.23L), static_cast<local_floating_point_type>(3.45L) };
-complex_type y_val;
+complex_type y_val { };
 
 #endif // APP_BENCHMARK_TYPE_COMPLEX
