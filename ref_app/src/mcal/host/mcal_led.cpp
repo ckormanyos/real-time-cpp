@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 
 auto mcal::led::led0() -> mcal::led::led_base&
 {
-  static mcal::led::led_console local_led0(static_cast<std::uint_fast8_t>(UINT8_C(0)));
+  static mcal::led::led_console local_led0;
 
   return local_led0;
 }
