@@ -866,7 +866,7 @@
     <None Include="target\build\build.sh" />
     <None Include="target\build\test_app_benchmarks.sh" />
     <None Include="target\build\test_app_benchmarks_avr.sh" />
-    <None Include="target\build\test_app_benchmarks_emulator.py" />
+    <None Include="target\build\test_app_benchmarks_emulator.gdb" />
     <None Include="target\build\test_app_benchmarks_riscv.sh" />
     <None Include="target\build\test_app_benchmarks_stm32f446.sh" />
     <None Include="target\micros\am335x\make\am335x.ld" />
