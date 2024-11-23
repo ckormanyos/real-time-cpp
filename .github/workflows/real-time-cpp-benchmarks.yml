@@ -218,7 +218,7 @@ jobs:
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
-          PATH="${{ runner.workspace }}/qemu_arm_sample/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
           echo 'Query arm-none-eabi-g++ version'
           echo
           arm-none-eabi-g++ -v
@@ -230,14 +230,14 @@ jobs:
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          PATH="${{ runner.workspace }}/qemu_arm_sample/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
           qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
           sleep 2
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
           sleep 2
-          PATH="${{ runner.workspace }}/qemu_arm_sample/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
           echo 'Run test on target'
           echo
           arm-none-eabi-gdb ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_crc.txt
