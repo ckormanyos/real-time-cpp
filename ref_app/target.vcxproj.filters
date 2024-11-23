@@ -516,9 +516,6 @@
     <None Include="target\micros\v850es_fx2\startup\errno.s">
       <Filter>micros\v850es_fx2\startup</Filter>
     </None>
-    <None Include="target\build\test_app_benchmarks_emulator.py">
-      <Filter>build</Filter>
-    </None>
     <None Include="target\micros\stm32h7a3\make\stm32h7a3_files.gmk">
       <Filter>micros\stm32h7a3\make</Filter>
     </None>
@@ -611,6 +608,9 @@
     </None>
     <None Include="target\micros\rpi_pico2_rp2350\startup\util.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
+    </None>
+    <None Include="target\build\test_app_benchmarks_emulator.gdb">
+      <Filter>build</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

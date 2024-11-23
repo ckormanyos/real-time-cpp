@@ -198,45 +198,8 @@ jobs:
           ls -la ./bin/app_benchmark_cnl_scaled_integer.exe
           ./bin/app_benchmark_cnl_scaled_integer.exe
         working-directory: ./ref_app/
-  benchmark_single-stm32f429-qemu-cnl:
-    runs-on: ubuntu-22.04
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
-      - name: update-tools
-        run: |
-          sudo apt install libncurses5 libpython2.7
-          mkdir -p emu_env && cd emu_env
-          wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          tar -xf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v7.1.0-1/xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
-          tar -xzf xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
-        working-directory: ./ref_app/
-      - name: benchmark_single-stm32f429-qemu-cnl
-        run: |
-          git clone -b main --depth 1 https://github.com/johnmcfarlane/cnl.git ../cnl-root
-          mkdir -p bin
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=128 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -I../cnl-root/include -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CNL_SCALED_INTEGER -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_cnl_scaled_integer.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_cnl_scaled_integer.map -T ./target/micros/stm32f429/make/stm32f429.ld -o ./bin/app_benchmark_cnl_scaled_integer.elf
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-objcopy ./bin/app_benchmark_cnl_scaled_integer.elf -O ihex ./bin/app_benchmark_cnl_scaled_integer.hex
-          ls -la ./bin/app_benchmark_cnl_scaled_integer.elf ./bin/app_benchmark_cnl_scaled_integer.hex ./bin/app_benchmark_cnl_scaled_integer.map
-        working-directory: ./ref_app/
-      - name: emulate-target stm32f429
-        run: |
-          ./emu_env/xpack-qemu-arm-7.1.0-1/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
-        working-directory: ./ref_app/
-      - name: run-test-on-target
-        run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_cnl_scaled_integer.elf -x ./target/build/test_app_benchmarks_emulator.py
-          qemu_result=$?
-          echo "qemu_result" "$qemu_result"
-          echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
-        working-directory: ./ref_app/
   benchmark_single-stm32f429-qemu:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
@@ -246,28 +209,40 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncurses5 libpython2.7
+          sudo apt install libncursesw5
           mkdir -p emu_env && cd emu_env
-          wget --no-check-certificate https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          tar -xf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v7.1.0-1/xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
-          tar -xzf xpack-qemu-arm-7.1.0-1-linux-x64.tar.gz
+          wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          tar -xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          wget --no-check-certificate https://github.com/xpack-dev-tools/qemu-arm-xpack/releases/download/v8.2.6-1/xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
+          tar -xzf xpack-qemu-arm-8.2.6-1-linux-x64.tar.gz
         working-directory: ./ref_app/
       - name: build benchmark_single-stm32f429
         run: |
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          echo 'Query arm-none-eabi-g++ version'
+          echo
+          arm-none-eabi-g++ -v
+          echo
           mkdir -p bin
-          emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++ -std=c++20 -Wall -Wextra -pedantic -O0 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_crc.elf
-          emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
+          arm-none-eabi-g++ -std=c++20 -Werror -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -O2 -g -gdwarf-2 -ffunction-sections -fdata-sections -x c++ -fno-rtti -fno-use-cxa-atexit -fno-exceptions -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32 -mcpu=cortex-m4 -mtune=cortex-m4 -mthumb -mfloat-abi=soft -mno-unaligned-access -mno-long-calls -I./src/mcal/stm32f429 -I./src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./src/app/benchmark/app_benchmark_crc.cpp ./target/micros/stm32f429/make/single/crt.cpp -nostartfiles -nostdlib -Wl,--gc-sections -Wl,-Map,./bin/app_benchmark_crc.map -T ./target/micros/stm32f429/make/stm32f429.ld --specs=nano.specs --specs=nosys.specs -o ./bin/app_benchmark_crc.elf
+          arm-none-eabi-objcopy ./bin/app_benchmark_crc.elf -O ihex ./bin/app_benchmark_crc.hex
           ls -la ./bin/app_benchmark_crc.elf ./bin/app_benchmark_crc.hex ./bin/app_benchmark_crc.map
         working-directory: ./ref_app/
       - name: emulate-target stm32f429
         run: |
-          ./emu_env/xpack-qemu-arm-7.1.0-1/bin/qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/xpack-qemu-arm-8.2.6-1/bin:$PATH"
+          qemu-system-gnuarmeclipse --verbose --mcu STM32F429ZI --nographic --gdb tcp::9999 -d unimp,guest_errors &
+          sleep 2
         working-directory: ./ref_app/
       - name: run-test-on-target
         run: |
-          ./emu_env/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb-py ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.py
-          qemu_result=$?
-          echo "qemu_result" "$qemu_result"
-          echo "qemu_result" "$qemu_result" | grep 'qemu_result 0'
+          sleep 2
+          PATH="${{ runner.workspace }}/real-time-cpp/ref_app/emu_env/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:$PATH"
+          echo 'Run test on target'
+          echo
+          arm-none-eabi-gdb ./bin/app_benchmark_crc.elf -x ./target/build/test_app_benchmarks_emulator.gdb > ./app_benchmark_crc.txt
+          cat ./app_benchmark_crc.txt
+          echo
+          echo 'We will now grep for the right answer...'
+          grep 'value 0xF00DCAFE' ./app_benchmark_crc.txt
         working-directory: ./ref_app/

@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ python, cpp ]
+        language: [ cpp ]
 
     steps:
       - name: Checkout
@@ -38,10 +38,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-        if: ${{ matrix.language == 'python' }}
 
       - name: Build cpp
         if: ${{ matrix.language == 'cpp' }}
