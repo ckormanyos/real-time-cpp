@@ -8,9 +8,9 @@
 #ifndef MCAL_LED_RGB_BASE_2023_07_12_H
   #define MCAL_LED_RGB_BASE_2023_07_12_H
 
-  #include <cstdint>
-
   #include <mcal_led/mcal_led_boolean_state_base.h>
+
+  #include <cstdint>
 
   namespace mcal { namespace led {
 

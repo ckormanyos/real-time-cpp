@@ -8,10 +8,10 @@
 #ifndef MCAL_LED_CONSOLE_2020_04_23_H
   #define MCAL_LED_CONSOLE_2020_04_23_H
 
+  #include <mcal_led/mcal_led_boolean_state_base.h>
+
   #include <cstdint>
   #include <iostream>
-
-  #include <mcal_led/mcal_led_boolean_state_base.h>
 
   namespace mcal { namespace led {
 
