@@ -156,23 +156,25 @@
     class complex
     {
     public:
-      typedef T value_type;
+      using value_type = T;
 
       EXTENDED_COMPLEX_CONSTEXPR complex(const value_type& my_x = value_type(),
                                          const value_type& my_y = value_type()) : my_re(my_x),
                                                                                   my_im(my_y) { }
 
-      EXTENDED_COMPLEX_CONSTEXPR complex(const complex& other) : my_re(other.real()),
-                                                                 my_im(other.imag()) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(const complex& other) : my_re(other.my_re),
+                                                                 my_im(other.my_im) { }
 
-      EXTENDED_COMPLEX_CONSTEXPR complex(complex&& other) noexcept : my_re(std::move(static_cast<value_type&&>(other.my_re))),
-                                                                     my_im(std::move(static_cast<value_type&&>(other.my_im))) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(complex&& other) noexcept
+        : my_re(std::move(static_cast<value_type&&>(other.my_re))),
+          my_im(std::move(static_cast<value_type&&>(other.my_im))) { }
 
       template<typename X>
-      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<X>& my_z) : my_re(static_cast<value_type>(my_z.real())),
-                                                                   my_im(static_cast<value_type>(my_z.imag())) { }
+      EXTENDED_COMPLEX_CONSTEXPR complex(const complex<X>& my_z)
+        : my_re(static_cast<value_type>(my_z.my_re)),
+          my_im(static_cast<value_type>(my_z.my_im)) { }
 
-      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const complex& other)
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(const complex& other) -> complex&
       {
         if(this != &other)
         {
@@ -183,7 +185,7 @@
         return *this;
       }
 
-      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(complex&& other) noexcept
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(complex&& other) noexcept -> complex&
       {
         my_re = std::move(static_cast<value_type&&>(other.my_re));
         my_im = std::move(static_cast<value_type&&>(other.my_im));
@@ -192,7 +194,7 @@
       }
 
       template<typename X>
-      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const complex<X>& other)
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(const complex<X>& other) -> complex&
       {
         my_re = static_cast<value_type>(other.my_re);
         my_im = static_cast<value_type>(other.my_im);
@@ -200,10 +202,18 @@
         return *this;
       }
 
-      EXTENDED_COMPLEX_CONSTEXPR complex& operator=(const value_type& other_x)
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(const value_type& other_x) -> complex&
       {
         my_re = other_x;
-        my_im = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
+        imag(static_cast<value_type>(static_cast<unsigned>(UINT8_C(0))));
+
+        return *this;
+      }
+
+      EXTENDED_COMPLEX_CONSTEXPR auto operator=(value_type&& other_x) noexcept -> complex&
+      {
+        my_re = std::move(other_x);
+        imag(static_cast<value_type>(static_cast<unsigned>(UINT8_C(0))));
 
         return *this;
       }
@@ -213,6 +223,9 @@
 
       EXTENDED_COMPLEX_CONSTEXPR auto real(const value_type& my_x) -> void { my_re = my_x; }
       EXTENDED_COMPLEX_CONSTEXPR auto imag(const value_type& my_y) -> void { my_im = my_y; }
+
+      EXTENDED_COMPLEX_CONSTEXPR auto real(value_type&& my_x) noexcept -> void { my_re = std::move(my_x); }
+      EXTENDED_COMPLEX_CONSTEXPR auto imag(value_type&& my_y) noexcept -> void { my_im = std::move(my_y); }
 
       EXTENDED_COMPLEX_CONSTEXPR auto operator+=(const value_type& my_x) -> complex&
       {
@@ -258,8 +271,8 @@
       {
         if(this == &my_z)
         {
-          my_re = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
-          my_im = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
+          real(static_cast<value_type>(static_cast<unsigned>(UINT8_C(0))));
+          imag(static_cast<value_type>(static_cast<unsigned>(UINT8_C(0))));
         }
         else
         {
@@ -273,17 +286,17 @@
       template<typename X>
       EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const complex<X>& my_z) -> complex&
       {
-        const value_type tmp_re(my_re);
+        const value_type tmp_re { my_re };
 
         if(this == &my_z)
         {
-          my_re = (tmp_re * tmp_re) - (my_im * my_im);
-          my_im = (tmp_re * my_im) * 2U;
+          real((tmp_re * tmp_re) - (my_im * my_im));
+          imag((tmp_re * my_im) * 2U);
         }
         else
         {
-          my_re = (tmp_re * my_z.my_re) - (my_im * my_z.my_im);
-          my_im = (tmp_re * my_z.my_im) + (my_im * my_z.my_re);
+          real((tmp_re * my_z.my_re) - (my_im * my_z.my_im));
+          imag((tmp_re * my_z.my_im) + (my_im * my_z.my_re));
         }
 
         return *this;
@@ -294,32 +307,32 @@
       {
         if(this == &my_z)
         {
-          my_re = static_cast<value_type>(static_cast<unsigned>(UINT8_C(1)));
-          my_im = static_cast<value_type>(static_cast<unsigned>(UINT8_C(0)));
+          real(static_cast<value_type>(static_cast<unsigned>(UINT8_C(1))));
+          imag(static_cast<value_type>(static_cast<unsigned>(UINT8_C(0))));
         }
         else
         {
-          if(fabs(my_z.real()) < fabs(my_z.imag()))
+          if(fabs(my_z.my_re) < fabs(my_z.my_im))
           {
-            const value_type my_c_over_d = my_z.real() / my_z.imag();
+            const value_type my_c_over_d { my_z.my_re / my_z.my_im };
 
-            const value_type my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
+            const value_type my_denominator { (my_z.my_re * my_c_over_d) + my_z.my_im };
 
-            const value_type my_tmp_re(my_re);
+            const value_type my_tmp_re { my_re };
 
-            my_re = ((my_tmp_re * my_c_over_d) + my_im)     / my_denominator;
-            my_im = ((my_im     * my_c_over_d) - my_tmp_re) / my_denominator;
+           real(((my_tmp_re * my_c_over_d) + my_im)     / my_denominator);
+           imag(((my_im     * my_c_over_d) - my_tmp_re) / my_denominator);
           }
           else
           {
-            const value_type my_d_over_c = my_z.imag() / my_z.real();
+            const value_type my_d_over_c { my_z.my_im / my_z.my_re };
 
-            const value_type my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
+            const value_type my_denominator { (my_z.my_im * my_d_over_c) + my_z.my_re };
 
-            const value_type my_tmp_re(my_re);
+            const value_type my_tmp_re { my_re };
 
-            my_re = (( my_im     * my_d_over_c) + my_tmp_re) / my_denominator;
-            my_im = ((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator;
+            real((( my_im     * my_d_over_c) + my_tmp_re) / my_denominator);
+            imag(((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator);
           }
         }
 
@@ -394,8 +407,8 @@
         return *this;
       }
 
-      EXTENDED_COMPLEX_CONSTEXPR value_type real() const { return my_re; }
-      EXTENDED_COMPLEX_CONSTEXPR value_type imag() const { return my_im; }
+      EXTENDED_COMPLEX_CONSTEXPR auto real() const -> value_type { return my_re; }
+      EXTENDED_COMPLEX_CONSTEXPR auto imag() const -> value_type { return my_im; }
 
       EXTENDED_COMPLEX_CONSTEXPR auto real(const value_type& my_x) -> void { my_re = my_x; }
       EXTENDED_COMPLEX_CONSTEXPR auto imag(const value_type& my_y) -> void { my_im = my_y; }
@@ -459,7 +472,7 @@
       template<typename X>
       EXTENDED_COMPLEX_CONSTEXPR auto operator*=(const complex<X>& my_z) -> complex&
       {
-        const value_type tmp_re(my_re);
+        const value_type tmp_re { my_re };
 
         if(this == &my_z)
         {
@@ -489,22 +502,22 @@
 
           if(fabs(my_z.real()) < fabs(my_z.imag()))
           {
-            const value_type my_c_over_d = my_z.real() / my_z.imag();
+            const value_type my_c_over_d { my_z.real() / my_z.imag() };
 
-            const value_type my_denominator = (my_z.real() * my_c_over_d) + my_z.imag();
+            const value_type my_denominator { (my_z.real() * my_c_over_d) + my_z.imag() };
 
-            const value_type my_tmp_re(my_re);
+            const value_type my_tmp_re { my_re };
 
             real(((my_tmp_re * my_c_over_d) + my_im)     / my_denominator);
             imag(((my_im     * my_c_over_d) - my_tmp_re) / my_denominator);
           }
           else
           {
-            const value_type my_d_over_c = my_z.imag() / my_z.real();
+            const value_type my_d_over_c { my_z.imag() / my_z.real() };
 
-            const value_type my_denominator = (my_z.imag() * my_d_over_c) + my_z.real();
+            const value_type my_denominator { (my_z.imag() * my_d_over_c) + my_z.real() };
 
-            const value_type my_tmp_re(my_re);
+            const value_type my_tmp_re { my_re };
 
             real((( my_im     * my_d_over_c) + my_tmp_re) / my_denominator);
             imag(((-my_tmp_re * my_d_over_c) + my_im)     / my_denominator);
