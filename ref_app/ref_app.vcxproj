@@ -2861,6 +2861,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\mcal_lcd\mcal_lcd_base.h" />
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_buffered_instance.h" />
     <ClInclude Include="src\mcal_lcd\mcal_lcd_console.h" />
     <ClInclude Include="src\mcal_lcd\mcal_lcd_generic_st7066.h" />
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,10 +8,10 @@
 #ifndef MCAL_LCD_CONSOLE_2020_06_10_H // NOLINT(llvm-header-guard)
   #define MCAL_LCD_CONSOLE_2020_06_10_H
 
+  #include <mcal_lcd/mcal_lcd_base.h>
+
   #include <iostream>
   #include <string>
-
-  #include <mcal_lcd/mcal_lcd_base.h>
 
   #if(__cplusplus >= 201703L)
   namespace mcal::lcd {
@@ -26,9 +26,9 @@
 
     ~lcd_console() override = default;
 
-    auto write(const char*             pstr,
-                     std::uint_fast8_t length, // NOLINT(bugprone-easily-swappable-parameters)
-                     std::uint_fast8_t line_index) -> bool override
+    auto write(const char* pstr,
+               const std::size_t length, // NOLINT(bugprone-easily-swappable-parameters)
+               const std::uint_fast8_t line_index) -> bool override
     {
       static_cast<void>(line_index);
 

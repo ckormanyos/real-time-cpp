@@ -2670,6 +2670,9 @@
     <ClInclude Include="src\mcal\rpi_pico2_rp2350\mcal_cpu_rp2350.h">
       <Filter>src\mcal\rpi_pico2_rp2350</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_lcd\mcal_lcd_buffered_instance.h">
+      <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">
