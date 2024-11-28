@@ -8,14 +8,13 @@
 #ifndef MCAL_LCD_GENERIC_ST7066_2020_05_07_H // NOLINT(llvm-header-guard)
   #define MCAL_LCD_GENERIC_ST7066_2020_05_07_H
 
-  #include <algorithm>
-  #include <cstdint>
-  #include <cstring>
-
   #include <mcal_lcd/mcal_lcd_base.h>
   #include <mcal_wdg.h>
 
   #include <util/utility/util_time.h>
+
+  #include <algorithm>
+  #include <cstring>
 
   #if(__cplusplus >= 201703L)
   namespace mcal::lcd {
@@ -80,9 +79,9 @@
       return write_clear_lines_is_ok;
     }
 
-    auto write(const char*             pstr,
-                     std::uint_fast8_t length,
-                     std::uint_fast8_t line_index) -> bool override
+    auto write(const char* pstr,
+               const std::size_t length,
+               const std::uint_fast8_t line_index) -> bool override
     {
       std::uint_fast8_t char_index = 0U;
 
@@ -93,13 +92,13 @@
         // Write the line at line_index.
         for( ; char_index < (std::min)(lcd_line_width, length); ++char_index)
         {
-          write(std::uint8_t(pstr[char_index]));
+          write(std::uint8_t { pstr[char_index] });
         }
       }
 
       for( ; char_index < lcd_line_width; ++char_index)
       {
-        write(std::uint8_t(char(' ')));
+        write(std::uint8_t { ' ' });
       }
 
       return true;

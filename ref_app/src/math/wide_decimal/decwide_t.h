@@ -61,6 +61,10 @@
   namespace std { using ::lround; }
   #endif
 
+  #if (defined(__GNUC__) && (defined(__arm__) || defined(__AVR__)))
+  namespace std { using ::strtold; }
+  #endif
+
   WIDE_DECIMAL_NAMESPACE_BEGIN
 
   #if(__cplusplus >= 201703L)
