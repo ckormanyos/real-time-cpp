@@ -24,6 +24,10 @@
   //#define WIDE_DECIMAL_DISABLE_USE_STD_FUNCTION
   //#define WIDE_DECIMAL_NAMESPACE=something_unique // (best if done on the command line)
 
+  #include <math/wide_decimal/decwide_t_detail_ops.h>
+
+  #include <util/utility/util_baselexical_cast.h>
+
   #include <cmath>
   #include <cstddef>
   #include <cstdlib>
@@ -40,10 +44,6 @@
   #if (!defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING) && !defined(WIDE_DECIMAL_DISABLE_IOSTREAM))
   #include <string>
   #endif
-
-  #include <math/wide_decimal/decwide_t_detail_ops.h>
-
-  #include <util/utility/util_baselexical_cast.h>
 
   #if !defined(WIDE_DECIMAL_NAMESPACE_BEGIN)
   #error WIDE_DECIMAL_NAMESPACE_BEGIN is not defined. Ensure that <decwide_t_detail_namespace.h> is properly included.
