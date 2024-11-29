@@ -17,12 +17,12 @@
 #ifndef DECWIDE_T_DETAIL_OPS_2021_04_12_H // NOLINT(llvm-header-guard)
   #define DECWIDE_T_DETAIL_OPS_2021_04_12_H
 
+  #include <math/wide_decimal/decwide_t_detail.h>
+  #include <math/wide_decimal/decwide_t_detail_fft.h>
+
   #include <cstdint>
   #include <iterator>
   #include <type_traits>
-
-  #include <math/wide_decimal/decwide_t_detail.h>
-  #include <math/wide_decimal/decwide_t_detail_fft.h>
 
   WIDE_DECIMAL_NAMESPACE_BEGIN
 

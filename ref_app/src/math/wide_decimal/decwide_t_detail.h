@@ -14,15 +14,17 @@
 #ifndef DECWIDE_T_DETAIL_2020_10_26_H // NOLINT(llvm-header-guard)
   #define DECWIDE_T_DETAIL_2020_10_26_H
 
-  #include <algorithm>
-  #include <array>
-  #include <cstdint>
-  #include <initializer_list>
-  #include <memory>
+  #include <math/wide_decimal/decwide_t_detail_namespace.h>
 
   #include <util/utility/util_dynamic_array.h>
 
-  #include <math/wide_decimal/decwide_t_detail_namespace.h>
+  #include <algorithm>
+  #include <array>
+  #include <cmath>
+  #include <cstdint>
+  #include <initializer_list>
+  #include <limits>
+  #include <memory>
 
   #if defined(_MSC_VER)
     #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
