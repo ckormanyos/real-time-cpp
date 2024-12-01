@@ -277,8 +277,10 @@
   #if !defined(WIDE_DECIMAL_DISABLE_IOSTREAM)
   template<typename char_type, typename traits_type,
            const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> auto operator<<(std::basic_ostream<char_type, traits_type>& os, const decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>& f) -> std::basic_ostream<char_type, traits_type>&;
+  #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
   template<typename char_type, typename traits_type,
            const std::int32_t ParamDigitsBaseTen, typename LimbType, typename AllocatorType, typename InternalFloatType, typename ExponentType, typename FftFloatType> auto operator>>(std::basic_istream<char_type, traits_type>& is,       decwide_t<ParamDigitsBaseTen, LimbType, AllocatorType, InternalFloatType, ExponentType, FftFloatType>& f) -> std::basic_istream<char_type, traits_type>&;
+  #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
   #endif // !WIDE_DECIMAL_DISABLE_IOSTREAM
 
   // Global unary operators of decwide_t reference.
@@ -4188,6 +4190,7 @@
       return (os << str);
     }
 
+    #if !defined(WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING)
     template<typename char_type, typename traits_type>
     friend auto operator>>(std::basic_istream<char_type, traits_type>& is, decwide_t& f) -> std::basic_istream<char_type, traits_type>&
     {
@@ -4199,6 +4202,8 @@
 
       return is;
     }
+    #endif // !WIDE_DECIMAL_DISABLE_CONSTRUCT_FROM_STRING
+
     #endif // !WIDE_DECIMAL_DISABLE_IOSTREAM
 
     friend inline auto fabs(const decwide_t& x) -> decwide_t
