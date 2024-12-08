@@ -209,7 +209,11 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          sudo apt install libncursesw5
+          sudo apt update
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          sudo apt install ./libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libncursesw5_6.3-2ubuntu0.1_amd64.deb
+          sudo apt install ./libncursesw5_6.3-2ubuntu0.1_amd64.deb
           mkdir -p emu_env && cd emu_env
           wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
           tar -xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
