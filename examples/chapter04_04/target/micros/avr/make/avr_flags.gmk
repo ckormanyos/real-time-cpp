@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 
 ifneq ($(MAKE),make)
-GCC_VERSION   = 13.2.0
+GCC_VERSION   = 14.2.0
 endif
 GCC_TARGET    = avr
 GCC_PREFIX    = avr
@@ -24,7 +24,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -finline-limit=32                                                 \
                 -fsigned-char
 
-ifeq ($(GCC_VERSION),13.2.0)
+ifeq ($(GCC_VERSION),14.2.0)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
                 -mdouble=32                                                       \
                 -mlong-double=64

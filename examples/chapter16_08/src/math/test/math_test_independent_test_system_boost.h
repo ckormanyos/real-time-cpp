@@ -18,38 +18,45 @@
 
   namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
+  template<const unsigned Width2>
   class independent_test_system_boost : public math::test::independent_test_system_base
   {
   private:
-    using uint128_t = boost::multiprecision::uint128_t;
+    static constexpr unsigned boost_uint_digits { Width2 };
+
+    using boost_uint_backend_type =
+      boost::multiprecision::cpp_int_backend<boost_uint_digits,
+                                             boost_uint_digits,
+                                             boost::multiprecision::unsigned_magnitude>;
+
+    using boost_uint_type = boost::multiprecision::number<boost_uint_backend_type, boost::multiprecision::et_off>;
+
+    using random_engine_type = std::mt19937_64;
 
   public:
-    independent_test_system_boost() noexcept
-      : my_gen       (std::clock()),
-        my_seed_count(0U) { }
+    independent_test_system_boost() noexcept = default;
 
-    virtual ~independent_test_system_boost() noexcept { }
+    ~independent_test_system_boost() noexcept override { }
 
-    virtual bool is_prime(const char* const pstr_prime_candidate) const override
+    auto is_prime(const char* const pstr_prime_candidate) const -> bool override
     {
-      const uint128_t p(std::string("0x") + pstr_prime_candidate);
+      const boost_uint_type p { std::string("0x") + pstr_prime_candidate };
 
-      const bool is_prime_says_boost_miller_rabin =
-        boost::multiprecision::miller_rabin_test(p, 25, my_gen);
+      const bool is_prime_says_boost_miller_rabin = boost::multiprecision::miller_rabin_test(p, 25, my_gen);
 
       ++my_seed_count;
 
       if((my_seed_count % 0x1000U) == 0U)
       {
-        my_gen.seed(std::clock());
+        my_gen.seed(static_cast<typename random_engine_type::result_type>(std::clock()));
       }
 
       return is_prime_says_boost_miller_rabin;
     }
 
   private:
-    mutable std::mt19937  my_gen;
-    mutable std::uint32_t my_seed_count;
+    mutable random_engine_type my_gen        { static_cast<typename random_engine_type::result_type>(std::clock()) };
+    mutable std::uint32_t      my_seed_count { };
   };
 
   } // namespace test

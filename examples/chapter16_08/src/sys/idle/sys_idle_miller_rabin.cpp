@@ -1,10 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2022.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <math/wide_integer/miller_rabin/miller_rabin_digits.h>
 #include <math/wide_integer/miller_rabin/miller_rabin_state.h>
 #include <mcal_benchmark.h>
 #include <mcal_math_independent_test_system.h>
@@ -20,7 +21,7 @@
 
 namespace
 {
-  using sys_idle_miller_rabin_uint_type           = WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<WIDE_INTEGER_NAMESPACE::math::wide_integer::size_t(128U), std::uint16_t>;
+  using sys_idle_miller_rabin_uint_type           = WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<WIDE_INTEGER_NAMESPACE::math::wide_integer::size_t { WIDE_INTEGER_NAMESPACE::math::wide_integer::miller_rabin_digits }, std::uint32_t>;
 
   using sys_idle_miller_rabin_random_engine1_type = mcal::random::default_random_engine;
   using sys_idle_miller_rabin_random_engine2_type = std::minstd_rand;
@@ -30,8 +31,8 @@ namespace
                                                                                                                    sys_idle_miller_rabin_uint_type::my_width2,
                                                                                                                    typename sys_idle_miller_rabin_uint_type::limb_type>;
 
-  constexpr std::uint_fast8_t sys_idle_miller_rabin_prime_width_base16
-                                                  = util::narrow_cast<std::uint_fast8_t>(std::numeric_limits<sys_idle_miller_rabin_uint_type>::digits / 4);
+  constexpr std::uint_fast16_t sys_idle_miller_rabin_prime_width_base16
+                                                  = util::narrow_cast<std::uint_fast16_t>(std::numeric_limits<sys_idle_miller_rabin_uint_type>::digits / 4);
 
   using sys_idle_miller_rabin_gen1_result_type    = typename sys_idle_miller_rabin_miller_rabin_type::generator1_type::result_type;
 

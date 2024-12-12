@@ -12,15 +12,15 @@
 
   namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
-  class independent_test_system_base : private util::noncopyable
+  class independent_test_system_base : private ::util::noncopyable
   {
   public:
-    virtual ~independent_test_system_base() noexcept { }
+    virtual ~independent_test_system_base() noexcept = default;
 
     virtual bool is_prime(const char* const pstr_prime_candidate) const = 0;
 
   protected:
-    independent_test_system_base() noexcept { }
+    independent_test_system_base() noexcept = default;
   };
 
   } // namespace test
