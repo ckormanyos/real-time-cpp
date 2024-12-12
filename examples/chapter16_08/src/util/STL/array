@@ -41,8 +41,8 @@
 
       static STL_LOCAL_CONSTEXPR size_type static_size = N;
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS iterator begin() { return elems; }
-      STL_LOCAL_CONSTEXPR_ALGORITHMS iterator end  () { return elems + N; }
+      STL_LOCAL_CONSTEXPR iterator begin() { return elems; }
+      STL_LOCAL_CONSTEXPR iterator end  () { return elems + N; }
 
       STL_LOCAL_CONSTEXPR const_iterator begin() const { return elems; }
       STL_LOCAL_CONSTEXPR const_iterator end  () const { return elems + N; }
@@ -50,8 +50,8 @@
       STL_LOCAL_CONSTEXPR const_iterator cbegin() const { return elems; }
       STL_LOCAL_CONSTEXPR const_iterator cend  () const { return elems + N; }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reverse_iterator rbegin() { return reverse_iterator(elems + N); }
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reverse_iterator rend  () { return reverse_iterator(elems); }
+      STL_LOCAL_CONSTEXPR reverse_iterator rbegin() { return reverse_iterator(elems + N); }
+      STL_LOCAL_CONSTEXPR reverse_iterator rend  () { return reverse_iterator(elems); }
 
       STL_LOCAL_CONSTEXPR const_reverse_iterator rbegin() const { return const_reverse_iterator(elems + N); }
       STL_LOCAL_CONSTEXPR const_reverse_iterator rend  () const { return const_reverse_iterator(elems); }
@@ -59,54 +59,54 @@
       STL_LOCAL_CONSTEXPR const_reverse_iterator crbegin() const { return const_reverse_iterator(elems + N); }
       STL_LOCAL_CONSTEXPR const_reverse_iterator crend  () const { return const_reverse_iterator(elems); }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reference       operator[](const size_type i)       { return elems[i]; }
-      STL_LOCAL_CONSTEXPR            const_reference operator[](const size_type i) const { return elems[i]; }
+      STL_LOCAL_CONSTEXPR reference       operator[](const size_type i)       { return elems[i]; }
+      STL_LOCAL_CONSTEXPR const_reference operator[](const size_type i) const { return elems[i]; }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reference       at(const size_type i)       { return elems[i]; }
-      STL_LOCAL_CONSTEXPR            const_reference at(const size_type i) const { return elems[i]; }
+      STL_LOCAL_CONSTEXPR reference       at(const size_type i)       { return elems[i]; }
+      STL_LOCAL_CONSTEXPR const_reference at(const size_type i) const { return elems[i]; }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reference       front()       { return elems[0U]; }
-      STL_LOCAL_CONSTEXPR            const_reference front() const { return elems[0U]; }
+      STL_LOCAL_CONSTEXPR reference       front()       { return elems[0U]; }
+      STL_LOCAL_CONSTEXPR const_reference front() const { return elems[0U]; }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS reference       back()       { return elems[N - 1U]; }
-      STL_LOCAL_CONSTEXPR            const_reference back() const { return elems[N - 1U]; }
+      STL_LOCAL_CONSTEXPR reference       back()       { return elems[N - 1U]; }
+      STL_LOCAL_CONSTEXPR const_reference back() const { return elems[N - 1U]; }
 
       static STL_LOCAL_CONSTEXPR size_type size()     { return N; }
       static STL_LOCAL_CONSTEXPR bool empty()         { return false; }
       static STL_LOCAL_CONSTEXPR size_type max_size() { return N; }
 
       template<typename T2>
-      STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(array<T2, N>& y)
+      STL_LOCAL_CONSTEXPR void swap(array<T2, N>& y)
       {
         std::swap_ranges(begin(), end(), y.begin());
       }
 
-      STL_LOCAL_CONSTEXPR            const_pointer data() const { return elems; }
-      STL_LOCAL_CONSTEXPR_ALGORITHMS pointer       data()       { return elems; }
+      STL_LOCAL_CONSTEXPR const_pointer data() const { return elems; }
+      STL_LOCAL_CONSTEXPR pointer       data()       { return elems; }
 
       pointer c_array() { return elems; }
 
       template<typename T2>
-      STL_LOCAL_CONSTEXPR_ALGORITHMS array& operator=(const array<T2, N>& y)
+      STL_LOCAL_CONSTEXPR array& operator=(const array<T2, N>& y)
       {
         std::copy(y.begin(), y.end(), begin());
 
         return *this;
       }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS void assign(const value_type& value)
+      STL_LOCAL_CONSTEXPR void assign(const value_type& value)
       {
         std::fill_n(elems, N, value);
       }
 
-      STL_LOCAL_CONSTEXPR_ALGORITHMS void fill(const value_type& value)
+      STL_LOCAL_CONSTEXPR void fill(const value_type& value)
       {
         std::fill_n(elems, N, value);
       }
     };
 
     template<typename T, size_t N>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator==(const array<T, N>& left, const array<T, N>& right)
+    STL_LOCAL_CONSTEXPR bool operator==(const array<T, N>& left, const array<T, N>& right)
     {
       return std::equal(left.begin(), left.end(), right.begin());
     }
@@ -121,31 +121,31 @@
     }
 
     template<typename T, size_t N>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator!=(const array<T, N>& left, const array<T, N>& right)
+    STL_LOCAL_CONSTEXPR bool operator!=(const array<T, N>& left, const array<T, N>& right)
     {
       return (!(left == right));
     }
 
     template<typename T, size_t N>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator>(const array<T, N>& left, const array<T, N>& right)
+    STL_LOCAL_CONSTEXPR bool operator>(const array<T, N>& left, const array<T, N>& right)
     {
       return (right < left);
     }
 
     template<typename T, size_t N>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator>=(const array<T, N>& left, const array<T, N>& right)
+    STL_LOCAL_CONSTEXPR bool operator>=(const array<T, N>& left, const array<T, N>& right)
     {
       return (!(left < right));
     }
 
     template<typename T, size_t N>
-    STL_LOCAL_CONSTEXPR_ALGORITHMS bool operator<=(const array<T, N>& left, const array<T, N>& right)
+    STL_LOCAL_CONSTEXPR bool operator<=(const array<T, N>& left, const array<T, N>& right)
     {
       return (!(right < left));
     }
 
     template<typename T, size_t N >
-    STL_LOCAL_CONSTEXPR_ALGORITHMS void swap(array<T, N>& x, array<T, N>& y)
+    STL_LOCAL_CONSTEXPR void swap(array<T, N>& x, array<T, N>& y)
     {
       swap_ranges(x.begin(), x.end(), y.begin());
     }

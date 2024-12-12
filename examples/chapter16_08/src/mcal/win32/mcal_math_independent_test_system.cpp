@@ -12,6 +12,7 @@
 #include <math/test/math_test_independent_test_system_mathlink.h>
 #else
 #include <math/test/math_test_independent_test_system_boost.h>
+#include <math/wide_integer/miller_rabin/miller_rabin_digits.h>
 #endif
 
 #if defined(MCAL_MATH_USE_INDEPENDENT_TEST_SYSTEM_MATHLINK)
@@ -28,7 +29,7 @@ WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_base& mcal::math::in
   #if defined(MCAL_MATH_USE_INDEPENDENT_TEST_SYSTEM_MATHLINK)
   using test_system_type = WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_mathlink<independent_test_system_mathlink_location>;
   #else
-  using test_system_type = WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_boost;
+  using test_system_type = WIDE_INTEGER_NAMESPACE::math::test::independent_test_system_boost<WIDE_INTEGER_NAMESPACE::math::wide_integer::miller_rabin_digits>;
   #endif
 
   static test_system_type ts0;

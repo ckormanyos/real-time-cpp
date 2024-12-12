@@ -304,7 +304,7 @@
     inline float       atan2   (float y, float x)                   { return __BUILTIN_ATAN2F(y, x); }
     inline double      atan2   (double y, double x)                 { return __BUILTIN_ATAN2 (y, x); }
     inline long double atan2   (long double y, long double x)       { return __BUILTIN_ATAN2L(y, x); }
-    inline float       expf    (float x)                            { return __BUILTIN_EXPF  (x); }
+    inline float       exp     (float x)                            { return __BUILTIN_EXPF  (x); }
     inline double      exp     (double x)                           { return __BUILTIN_EXP   (x); }
     inline long double exp     (long double x)                      { return __BUILTIN_EXPL  (x); }
     inline float       pow     (float x, float a)                   { return __BUILTIN_POWF  (x, a); }
