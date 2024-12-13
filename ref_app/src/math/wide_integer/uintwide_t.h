@@ -7133,6 +7133,19 @@
 
     const auto nm1 = static_cast<local_wide_integer_type>(np - static_cast<unsigned>(UINT8_C(1)));
 
+    auto
+      isone
+      {
+        [](const local_wide_integer_type& t1)
+        {
+          return
+          (
+               (static_cast<local_limb_type>(t1) == local_limb_type { UINT8_C(1) })
+            && (t1 == unsigned { UINT8_C(1) })
+          );
+        }
+      };
+
     // Since we have already excluded all small factors
     // up to and including 227, n is greater than 227.
 
@@ -7140,47 +7153,56 @@
       // Perform a single Fermat test which will
       // exclude many non-prime candidates.
 
-      const local_wide_integer_type fn = powm(local_wide_integer_type(static_cast<local_limb_type>(228U)), nm1, np);
+      const local_wide_integer_type fn { powm(local_wide_integer_type(static_cast<local_limb_type>(228U)), nm1, np) };
 
-      const auto fn0 = static_cast<local_limb_type>(fn);
-
-      if((fn0 != static_cast<local_limb_type>(UINT8_C(1))) && (fn != 1U))
+      if(!isone(fn))
       {
         return false;
       }
     }
 
-    const unsigned_fast_type k { lsb(nm1) };
+    const unsigned k { static_cast<unsigned>(lsb(nm1)) };
 
     const local_wide_integer_type q { nm1 >> k };
 
     using local_param_type = typename DistributionType::param_type;
 
-    const local_param_type params(local_wide_integer_type(2U), np - 2U);
+    const local_param_type
+      params
+      {
+        local_wide_integer_type { unsigned { UINT8_C(2) } },
+        np - unsigned { UINT8_C(2) }
+      };
 
-    local_wide_integer_type x { };
-    local_wide_integer_type y { };
+    local_wide_integer_type x;
+    local_wide_integer_type y;
 
     // Assume the test will pass, even though it usually does not pass.
     bool result { true };
 
     // Loop over the trials to perform the primality testing.
 
-    for(std::size_t idx { 0U }; ((idx < number_of_trials) && result); ++idx) // NOLINT(altera-id-dependent-backward-branch)
+    std::size_t idx { UINT8_C(0) };
+
+    do
     {
       x = distribution(generator, params);
       y = powm(x, q, np);
 
-      std::size_t jdx { 0U };
+      using local_double_width_type = typename local_wide_integer_type::double_width_type;
+
+      const local_double_width_type np_dbl { np };
+
+      std::size_t jdx { UINT8_C(0) };
 
       // Continue while y is not nm1, and while y is not 1,
       // and while the result is true.
 
-      while((y != nm1) && (y != 1U) && result) // NOLINT(altera-id-dependent-backward-branch)
+      while((y != nm1) && (!isone(y)) && result) // NOLINT(altera-id-dependent-backward-branch)
       {
         ++jdx;
 
-        if (std::size_t { jdx } == k)
+        if(jdx == static_cast<std::size_t>(k))
         {
           // Mark failure if max iterations reached.
           result = false;
@@ -7188,17 +7210,29 @@
         else
         {
           // Continue with the next value of y.
-          y = powm(y, 2, np);
+
+          // Manually calculate:
+          //   y = powm(y, 2, np);
+
+          local_double_width_type yd { y };
+
+          yd *= yd;
+          yd %= np_dbl;
+
+          y = local_wide_integer_type { yd };
         }
       }
 
       // Check for (y == 1) after the loop.
-      if((y == 1U) && (jdx != std::size_t { 0U }))
+      if(isone(y) && (jdx != std::size_t { UINT8_C(0) }))
       {
         // Mark failure if (y == 1) and (jdx != 0).
         result = false;
       }
+
+      ++idx;
     }
+    while((idx < number_of_trials) && result);
 
     return result;
   }

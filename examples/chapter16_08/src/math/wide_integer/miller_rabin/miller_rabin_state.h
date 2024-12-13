@@ -219,6 +219,18 @@
     typename base_class_type::wide_integer_type my_y    { };
     miller_rabin_powm_type                      my_powm { };
 
+    static auto isone(const typename base_class_type::wide_integer_type t1) -> bool
+    {
+      using local_wide_integer_type = typename base_class_type::wide_integer_type;
+      using local_limb_type         = typename local_wide_integer_type::limb_type;
+
+      return
+      (
+           (static_cast<local_limb_type>(t1) == local_limb_type { UINT8_C(1) })
+        && (t1 == unsigned { UINT8_C(1) })
+      );
+    }
+
     auto calculate() -> void
     {
       switch(my_calculate_state)
@@ -313,10 +325,7 @@
 
             my_powm.get_result(fn);
 
-            using local_limb_type = typename local_wide_integer_type::limb_type;
-
-            if(   (static_cast<local_limb_type>(fn) != local_limb_type { UINT8_C(1) })
-               && (fn != unsigned { UINT8_C(1) }))
+            if(!isone(fn))
             {
               base_class_type::my_n_trial_is_probably_prime = false;
 
@@ -412,10 +421,7 @@
       }
       else
       {
-        using local_limb_type = typename base_class_type::limb_type;
-
-        if(   (static_cast<local_limb_type>(my_y) == local_limb_type { UINT8_C(1) })
-           && (my_y == unsigned { UINT8_C(1) }))
+        if(isone(my_y))
         {
           if(my_j != unsigned { UINT8_C(0) })
           {
