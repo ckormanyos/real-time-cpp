@@ -221,7 +221,10 @@
     <ClCompile Include="src\os\FreeRTOS\Source\tasks.c" />
     <ClCompile Include="src\os\FreeRTOS\Source\timers.c" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
-    <ClCompile Include="src\util\STD_LIBC\memory.c" />
+    <ClCompile Include="src\util\STD_LIBC\memory.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\util\STL\impl\avr\avr_hardware_random_device.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
