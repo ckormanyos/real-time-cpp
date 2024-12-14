@@ -15,6 +15,7 @@
 namespace
 {
   using app_led_timer_type = util::timer<std::uint32_t>;
+  using app_led_tick_type  = typename app_led_timer_type::tick_type;
 
   app_led_timer_type app_led_timer_background;
   app_led_timer_type app_led_timer_toggle_led0;
@@ -34,7 +35,7 @@ void app_led_task_background(void*)
       mcal::cpu::nop();
     }
 
-    app_led_timer_background.start_interval(app_led_timer_type::milliseconds(50U));
+    app_led_timer_background.start_interval(app_led_timer_type::milliseconds(app_led_tick_type { UINT8_C(50) }));
 
     mcal::led::led1().toggle();
   }
@@ -43,7 +44,7 @@ void app_led_task_background(void*)
 extern "C"
 void app_led_task_toggle_led0(void*)
 {
-  // This application task is intended to yield every 70ms. It has higher
+  // This application task is intended to yield every 125ms. It has higher
   // priority than the background task. This task will, in fact, preemptively
   // interrupt the lower-priority background task.
 
@@ -53,7 +54,7 @@ void app_led_task_toggle_led0(void*)
 
     if(app_led_timer_toggle_led0.timeout())
     {
-      app_led_timer_toggle_led0.start_interval(app_led_timer_type::seconds(1U));
+      app_led_timer_toggle_led0.start_interval(app_led_timer_type::seconds(app_led_tick_type { UINT8_C(1) }));
 
       mcal::led::led0().toggle();
     }

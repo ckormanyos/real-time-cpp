@@ -14,7 +14,7 @@ namespace
   // Setup the task static resources including the
   // task control block structures and task stacks.
   OS_TASK_STATIC_RESOURCES(app_led_task_background,  512U);
-  OS_TASK_STATIC_RESOURCES(app_led_task_toggle_led0, 128U);
+  OS_TASK_STATIC_RESOURCES(app_led_task_toggle_led0,  32U);
 }
 
 #if defined(__AVR__)
