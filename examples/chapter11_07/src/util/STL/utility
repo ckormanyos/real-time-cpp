@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2023.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -10,6 +10,7 @@
 
   #include <cstddef>
   #include <tuple>
+  #include <type_traits>
 
   // Implement some of <utility> for compilers that do not yet support it.
 
@@ -18,16 +19,22 @@
     // Forward declaration of std::identity, which is implemented in <functional>.
     template<typename T>
     struct identity;
+
+    template<typename T>
+    constexpr T&& forward(remove_reference_t<T>& arg) STL_LOCAL_NOEXCEPT
+    {
+      return static_cast<T&&>(arg);
+    }
+
+    template<typename T>
+    constexpr T&& forward(remove_reference_t<T>&& arg) STL_LOCAL_NOEXCEPT
+    {
+      return static_cast<T&&>(arg);
+    }
   }
 
   namespace std
   {
-    template <typename T>
-    T&& forward(typename identity<T>::type& param)
-    {
-      return static_cast<T&&>(param);
-    }
-
     template<typename T1,
              typename T2>
     class pair
@@ -47,10 +54,32 @@
       pair(const pair& other) : first (other.first),
                                 second(other.second) { }
 
+      pair(pair&& other) noexcept : first (other.first),
+                                    second(other.second) { }
+
       template<typename other_type1,
                typename other_type2>
       pair(const pair<other_type1, other_type2>& p) : first (T1(p.first)),
                                                       second(T2(p.second)) { }
+
+      pair& operator=(const pair& other)
+      {
+        if(*this != &other)
+        {
+          first  = other.first;
+          second = other.second;
+        }
+
+        return *this;
+      }
+
+      pair& operator=(pair&& other) noexcept
+      {
+        first  = other.first;
+        second = other.second;
+
+        return *this;
+      }
     };
   }
 
@@ -164,13 +193,13 @@
     template<typename T1, typename T2>
     bool operator<=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return ((right < left) == false);
+      return (!(right < left));
     }
 
     template<typename T1, typename T2>
     bool operator>=(const std::pair<T1, T2>& left, const std::pair<T1, T2>& right)
     {
-      return ((left < right) == false);
+      return (!(left < right));
     }
 
     template<typename T1, typename T2>

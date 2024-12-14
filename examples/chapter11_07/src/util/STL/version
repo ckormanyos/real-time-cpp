@@ -1,0 +1,16 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef VERSION_2024_06_29
+  #define VERSION_2024_06_29
+
+  // Implement some of <version> for compilers that do not yet support it.
+  // In this particular case, simply include the standard ISO header.
+
+  #include <iso646.h>
+
+#endif // VERSION_2024_06_29

@@ -1,72 +1,81 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2013.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_FACTORY_2012_02_19_H_
-  #define UTIL_FACTORY_2012_02_19_H_
+#ifndef UTIL_FACTORY_2012_02_19_H
+  #define UTIL_FACTORY_2012_02_19_H
 
+  #include <cstddef>
+  #include <cstdint>
   #include <memory>
-
-  #include <util/utility/util_noncopyable.h>
 
   namespace util
   {
-    class factory_product : private util::noncopyable
+    class factory_product
     {
     public:
       virtual ~factory_product() { }
 
-      virtual void init() = 0;
+      virtual auto init() -> void = 0;
 
     protected:
       factory_product() { }
     };
 
     template<typename T,
-             typename alloc = std::allocator<T>>
+             typename AllocatorType = std::allocator<T>>
     class factory
     {
     public:
-      typedef T     value_type;
-      typedef T*    pointer_type;
-      typedef alloc allocator_type;
+      using value_type     = T;
+      using pointer_type   = T*;
+      using allocator_type = AllocatorType;
 
-      static pointer_type make()
+      static auto make() -> pointer_type
       {
         pointer_type p = new(allocate()) value_type();
+
         static_cast<factory_product*>(p)->init();
+
         return p;
       }
 
       template<typename... parameters>
-      static pointer_type make(parameters... params)
+      static auto make(parameters... params) -> pointer_type
       {
         pointer_type p = new(allocate()) value_type(params...);
+
         static_cast<factory_product*>(p)->init();
+
         return p;
       }
 
     private:
-      static void* allocate()
+      static auto allocate() -> void*
       {
-        return allocator_type().allocate(1U, nullptr);
+        return allocator_type().allocate( std::size_t { UINT8_C(1) } );
       }
     };
   }
 
-#endif // UTIL_FACTORY_2012_02_19_H_
+#endif // UTIL_FACTORY_2012_02_19_H
 
 /*
+
+// See also link at GodBolt: https://godbolt.org/z/WrTTa8Eq9
+
 #include <util/memory/util_factory.h>
+
+#include <iostream>
 
 class something : public util::factory_product
 {
 public:
-  something() { }
-  virtual ~something() { }
+  something() = default;
+  virtual ~something() = default;
 
 private:
   virtual void init() { }
@@ -75,18 +84,31 @@ private:
 class another : public util::factory_product
 {
 public:
-  another(const int m, const int n) : my_m(m),
-                                      my_n(n) { }
+  explicit another(const int m = 0, const int n = 0)
+    : my_m(m),
+      my_n(n) { }
 
-  virtual ~another() { }
+  ~another() override = default;
+
+  auto get_m() const -> int { return my_m; }
+  auto get_n() const -> int { return my_n; }
 
 private:
-  const int my_m;
-  const int my_n;
+  const int my_m { };
+  const int my_n { };
 
-  virtual void init() { }
+  auto init() -> void override { }
 };
 
-something* p_something = util::factory<something>::make();
-another*   p_another   = util::factory<another  >::make(123, 456);
+auto main() -> int
+{
+  something* p_something = util::factory<something>::make();
+  another*   p_another   = util::factory<another  >::make(123, 456);
+
+  std::cout << p_another->get_n() << '\n';
+  std::cout << p_another->get_m() << std::endl;
+
+  delete p_something;
+  delete p_another;
+}
 */

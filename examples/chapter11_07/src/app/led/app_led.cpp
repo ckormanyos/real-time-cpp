@@ -1,11 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
 #include <app/led/app_led.h>
+#include <mcal_cpu.h>
 #include <mcal_led.h>
 #include <mcal_wdg.h>
 #include <os/os_task.h>
@@ -30,7 +31,7 @@ void app_led_task_background(void*)
   {
     while((!app_led_timer_background.timeout()))
     {
-      ;
+      mcal::cpu::nop();
     }
 
     app_led_timer_background.start_interval(app_led_timer_type::milliseconds(50U));
@@ -57,6 +58,6 @@ void app_led_task_toggle_led0(void*)
       mcal::led::led0().toggle();
     }
 
-    OS_TASK_WAIT_YIELD(OS_TASK_MSEC(70U));
+    OS_TASK_WAIT_YIELD(OS_TASK_MSEC(125U));
   }
 }

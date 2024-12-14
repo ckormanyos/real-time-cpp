@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2017.
+//  Copyright Christopher Kormanyos 2007 - 2021.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -31,7 +31,7 @@
       // The static allocator's buffer type.
       struct buffer_type
       {
-        static constexpr size_type size = 16U;
+        static constexpr size_type size = 640U;
 
         std::uint8_t data[size];
 

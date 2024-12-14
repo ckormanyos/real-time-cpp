@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// \author (c) Marco Paland (info@paland.com)
+// \author (c) Marco Paland (info (AT) paland.com)
 //             2014-2016, PALANDesign Hannover, Germany
 //
 // \license The MIT License (MIT)
@@ -98,7 +98,7 @@
 // void swdm::set_line(bool value) const
 // {
 //   set the state of the according swdm line/pin to value (true = high/idle, false = low)
-//   if you don't use an open collector driver, you MUST config the pin as input for high/idle levels
+//   if you don't use an open collector driver, you MUST configure the pin as input for high/idle levels
 //   and before setting the line to false/low it must be configured as an output.
 // }
 //
@@ -128,12 +128,41 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef UTIL_SWDM_2016_04_11_H_
-#define UTIL_SWDM_2016_04_11_H_
+#ifndef UTIL_SWDM_2016_04_11_H
+#define UTIL_SWDM_2016_04_11_H
+
+#if defined(__has_include)
+  #if(__has_include(<mcal_debug_monitor.h>))
+  #include <mcal_debug_monitor.h>
+
+  #define UTIL_SWDM_HAS_USER_DEFINED_PORT
+  #endif
+#endif
+
+#include <util/utility/util_noncopyable.h>
 
 #include <cstdint>
-#include <mcal_debug_monitor.h>
-#include <util/utility/util_noncopyable.h>
+
+#if !defined(UTIL_SWDM_HAS_USER_DEFINED_PORT)
+class dummy_port
+{
+  public:
+    static constexpr auto set_direction_output() noexcept -> void { }
+    static constexpr auto set_direction_input () noexcept -> void { }
+    static constexpr auto set_pin_high        () noexcept -> void { }
+    static constexpr auto set_pin_low         () noexcept -> void { }
+    static constexpr auto read_input_value    () noexcept -> bool { return false; }
+    static constexpr auto toggle_pin          () noexcept -> void { }
+};
+
+namespace mcal { namespace debug {
+
+using debug_monitor_port_type = dummy_port;
+
+} // namespace debug
+} // namespace mcal
+
+#endif
 
 // Defines the oversampling rate
 // The effective baud rate is the service_tick_rate / SWD_OVERSAMPLING_COUNT
@@ -699,8 +728,8 @@ private:
   }
 
 private:
-  static const std::uint_fast8_t request_sync_field  = UINT8_C(0x55);    // Request sync field
-  static const std::uint_fast8_t response_sync_field = UINT8_C(0xAA);    // Response sync field
+  static constexpr std::uint_fast8_t request_sync_field  = UINT8_C(0x55);    // Request sync field
+  static constexpr std::uint_fast8_t response_sync_field = UINT8_C(0xAA);    // Response sync field
 
   typedef enum enum_state_type
   {
@@ -744,4 +773,4 @@ private:
 
 } // namespace util
 
-#endif // UTIL_SWDM_2016_04_11_H_
+#endif // UTIL_SWDM_2016_04_11_H

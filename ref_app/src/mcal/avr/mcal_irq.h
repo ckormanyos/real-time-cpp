@@ -12,7 +12,7 @@
   {
     namespace irq
     {
-      typedef void config_type;
+      using config_type = void;
 
       auto init(const config_type*) -> void;
 

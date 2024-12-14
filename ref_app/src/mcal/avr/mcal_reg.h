@@ -44,6 +44,21 @@
       constexpr std::uint8_t ddre   { 0x0DU + sfr_offset };
       constexpr std::uint8_t porte  { 0x0EU + sfr_offset };
 
+      // Timer register values
+      constexpr std::uint8_t cs10   = 0U;
+      constexpr std::uint8_t cs11   = 1U;
+      constexpr std::uint8_t cs12   = 2U;
+      constexpr std::uint8_t wgm12  = 3U;
+      constexpr std::uint8_t toie1  = 0U;
+      constexpr std::uint8_t ocie0a = 1U;
+      constexpr std::uint8_t ocie0b = 2U;
+      constexpr std::uint8_t toie0  = 0U;
+      constexpr std::uint8_t ocie1a = 1U;
+      constexpr std::uint8_t ocie1b = 2U;
+      constexpr std::uint8_t toie2  = 0U;
+      constexpr std::uint8_t ocie2a = 1U;
+      constexpr std::uint8_t ocie2b = 2U;
+
       // Timer registers
       constexpr std::uint8_t tifr0  { 0x15U + sfr_offset };
       constexpr std::uint8_t tccr0a { 0x24U + sfr_offset };

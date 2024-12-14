@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2013 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,9 +9,7 @@
   #define TYPE_TRAITS_2013_09_01_
 
   #include <cstddef>
-
-  #include <impl/stl_local_constexpr.h>
-  #include <impl/stl_local_noexcept.h>
+  #include <cstdint>
 
   // Implement some of <type_traits> for compilers that do not yet support it.
 
@@ -23,11 +21,11 @@
     {
       typedef the_value_type value_type;
 
-      static STL_LOCAL_CONSTEXPR value_type value = the_value;
+      static constexpr value_type value = the_value;
 
       typedef integral_constant type;
 
-      STL_LOCAL_CONSTEXPR operator value_type() const STL_LOCAL_NOEXCEPT
+      constexpr operator value_type() const
       {
         return value;
       }
@@ -93,6 +91,11 @@
       typedef false_type type;
     };
 
+    template<const bool boolean_value,
+             typename true_type,
+             typename false_type>
+    using conditional_t = typename conditional<boolean_value, true_type, false_type>::type;
+
     template<typename the_value_type1,
              typename the_value_type2>
     struct is_same : false_type { };
@@ -138,6 +141,12 @@
     template<typename T, std::size_t N>
                          struct is_array<T[N]>    : std::true_type  {};
 
+    template<typename T> struct is_reference      : std::false_type { };
+    template<typename T> struct is_reference<T&>  : std::true_type  { };
+    template<typename T> struct is_reference<T&&> : std::true_type  { };
+
+    template<typename T> struct is_function       : std::integral_constant<bool, !std::is_const<const T>::value && !std::is_reference<T>::value> { };
+
     template<typename T> using remove_cv_t       = typename remove_cv<T>::type;
     template<typename T> using remove_const_t    = typename remove_const<T>::type;
     template<typename T> using remove_volatile_t = typename remove_volatile<T>::type;
@@ -153,6 +162,39 @@
 
     template<typename T>
     using remove_cvref_t = typename remove_cvref<T>::type;
+
+    template<typename T>
+    constexpr remove_reference_t<T>&& move(T&& arg)
+    {
+      return static_cast<remove_reference_t<T>&&>(arg);
+    }
+  }
+
+  namespace std
+  {
+    template<typename T>
+    struct make_unsigned
+    {
+      using type = typename std::conditional<(sizeof(T) > 4U), std::uint64_t,
+                   typename std::conditional<(sizeof(T) > 2U), std::uint32_t,
+                   typename std::conditional<(sizeof(T) > 1U), std::uint16_t,
+                                                               std::uint8_t>::type>::type>::type;
+    };
+
+    template<typename T>
+    struct make_signed
+    {
+      using type = typename std::conditional<(sizeof(T) > 4U), std::int64_t,
+                   typename std::conditional<(sizeof(T) > 2U), std::int32_t,
+                   typename std::conditional<(sizeof(T) > 1U), std::int16_t,
+                                                               std::int8_t>::type>::type>::type;
+    };
+
+    template<typename T>
+    using make_unsigned_t = typename std::make_unsigned<T>::type;
+
+    template<typename T>
+    using make_signed_t = typename std::make_signed<T>::type;
   }
 
   namespace traits_helper
@@ -178,20 +220,37 @@
 
   namespace traits_helper
   {
-    template <class T>
+    template <typename T>
     struct type_identity { using type = T; };
 
-    template <class T>
+    template <typename T>
     auto try_add_lvalue_reference(int) -> type_identity<T&>;
 
-    template <class T>
+    template <typename T>
     auto try_add_lvalue_reference(...) -> type_identity<T>;
 
-    template <class T>
+    template <typename T>
     auto try_add_rvalue_reference(int) -> type_identity<T&&>;
 
-    template <class T>
+    template <typename T>
     auto try_add_rvalue_reference(...) -> type_identity<T>;
+
+    template <typename T>
+    std::integral_constant<bool, !__is_union(T)> test(int T::*);
+
+    template <typename>
+    std::false_type test(...);
+
+    template <typename B>
+    std::true_type  test_pre_ptr_convertible(const volatile B*);
+    template <typename>
+    std::false_type test_pre_ptr_convertible(const volatile void*);
+
+    template <typename, typename>
+    auto test_pre_is_base_of(...) -> std::true_type;
+    template <typename B, typename D>
+    auto test_pre_is_base_of(int) ->
+        decltype(test_pre_ptr_convertible<B>(static_cast<D*>(nullptr)));
   }
 
   namespace std
@@ -204,6 +263,242 @@
 
     template<typename T>
     typename std::add_rvalue_reference<T>::type declval();
+
+    template <typename T>
+    struct is_class : decltype(traits_helper::test<T>(nullptr)) { };
+
+    template <typename Base, typename Derived>
+    struct is_base_of : std::integral_constant<bool,
+                                               std::is_class<Base>::value && std::is_class<Derived>::value &&
+                                               decltype(traits_helper::test_pre_is_base_of<Base, Derived>(0))::value> { };
+
+    template<typename T>
+    struct remove_extent { typedef T type; };
+
+    template<typename T>
+    struct remove_extent<T[]> { typedef T type; };
+
+    template<typename T, std::size_t N>
+    struct remove_extent<T[N]> { typedef T type; };
+
+    template< class T >
+    struct decay
+    {
+    private:
+      typedef typename std::remove_reference<T>::type U;
+
+    public:
+      typedef typename std::conditional<std::is_array<U>::value,
+                                        typename std::remove_extent<U>::type*,
+                                        typename std::conditional<std::is_function<U>::value,
+                                                                  typename std::add_pointer<U>::type,
+                                                                  typename std::remove_cv<U>::type>::type>::type type;
+    };
+
+    template <typename...>
+    using void_t = void; 
+
+    // primary template (used for zero types)
+    template <typename...>
+    struct common_type { };
+
+    // 1 type
+    template <typename T>
+    struct common_type<T> : common_type<T, T> {};
+
+    // 2 types
+    template <typename T1, typename T2>
+    using cond_t = decltype(false ? std::declval<T1>() : std::declval<T2>());
+
+    template <typename T1, typename T2, typename=void>
+    struct common_type_2_impl {};
+
+    template <typename T1, typename T2>
+    struct common_type_2_impl<T1, T2, void_t<cond_t<T1, T2>>>
+    {
+      using type = typename std::decay<cond_t<T1, T2>>::type;
+    };
+
+    template <typename T1, typename T2>
+    struct common_type<T1, T2> : common_type_2_impl<typename std::decay<T1>::type,
+                                                    typename std::decay<T2>::type> { };
+
+    // 3 or more types
+    template <class AlwaysVoid, class T1, class T2, class...R>
+    struct common_type_multi_impl { };
+
+    template <class T1, class T2, class...R>
+    struct common_type_multi_impl<void_t<typename common_type<T1, T2>::type>, T1, T2, R...>
+      : common_type<typename common_type<T1, T2>::type, R...> { };
+
+    template <class T1, class T2, class... R>
+    struct common_type<T1, T2, R...> : common_type_multi_impl<void, T1, T2, R...> {};
+  }
+
+  #if(__cplusplus >= 201703L)
+  // C++17 and later
+  namespace std
+  {
+    template<typename T, typename U>
+    inline constexpr bool is_same_v = is_same<T, U>::value;
+
+    template<typename T>
+    inline constexpr bool is_integral_v = is_integral<T>::value;
+
+    template<typename T>
+    inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
+
+    template< class Base, class Derived >
+    inline constexpr bool is_base_of_v = is_base_of<Base, Derived>::value;
+  }
+  #endif
+
+  #if(__cplusplus > 202002L)
+  // C++20 and later
+  namespace std
+  {
+    template<typename T>
+    struct type_identity
+    {
+      using type = T;
+    };
+
+    template<typename T>
+    using type_identity_t = typename type_identity<T>::type;
+  }
+  #endif
+
+  namespace traits_helper
+  {
+    template<class T>
+    auto test_returnable(int) ->
+      decltype
+      (
+        void(static_cast<T(*)()>(nullptr)), std::true_type { }
+      );
+
+    template<class>
+    auto test_returnable(...) -> std::false_type;
+
+    template<class From, class To>
+    auto test_implicitly_convertible(int) ->
+      decltype
+      (
+        void(std::declval<void(&)(To)>()(std::declval<From>())), std::true_type { }
+      );
+
+    template<class, class>
+    auto test_implicitly_convertible(...) -> std::false_type;
+
+    typedef char yes_type;
+
+    struct no_type
+    {
+      char padding[8];
+    };
+
+    struct is_constructible_imp
+    {
+      template<typename T, typename ...TheArgs, typename = decltype(T(std::declval<TheArgs>()...))>
+      static traits_helper::yes_type test(int);
+      template<typename, typename...>
+      static traits_helper::no_type test(...);
+
+      template<typename T, typename Arg, typename = decltype(::new T(std::declval<Arg>()))>
+      static traits_helper::yes_type test1(int);
+      template<typename, typename>
+      static traits_helper::no_type test1(...);
+
+      template <typename T>
+      static traits_helper::yes_type ref_test(T);
+      template <typename T>
+      static traits_helper::no_type ref_test(...);
+    };
+
+    template <unsigned N>
+    struct ok_tag { double d; char c[N]; };
+
+    template <class T>
+    ok_tag<sizeof(T)> check_is_complete(int);
+
+    template <class T>
+    char check_is_complete(...);
+
+    struct is_default_constructible_imp
+    {
+      template<typename _Tp, typename = decltype(_Tp())>
+      static traits_helper::yes_type test(int);
+
+      template<typename>
+      static traits_helper::no_type test(...);
+    };
+
+    struct is_destructible_imp
+    {
+      template<typename T, typename = decltype(std::declval<T&>().~T())>
+      static traits_helper::yes_type test(int);
+      template<typename>
+      static traits_helper::no_type test(...);
+    };
+  }
+
+  namespace std
+  {
+   template <class T> struct is_complete
+      : public std::integral_constant<bool,
+                                      std::is_function<    typename std::remove_reference<T>::type>::value
+                                                       || (sizeof(traits_helper::check_is_complete<T>(0)) != sizeof(char))> { };
+
+    template <class T> struct is_destructible
+      : public std::integral_constant<bool, sizeof(traits_helper::is_destructible_imp::test<T>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "Arguments to is_destructible must be complete types");
+    };
+
+    template <class T> struct is_default_constructible
+      : public integral_constant<bool, sizeof(traits_helper::is_default_constructible_imp::test<T>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "Arguments to is_default_constructible must be complete types");
+    };
+
+    template <class T, std::size_t N> struct is_default_constructible<T[N]> : public is_default_constructible<T>{};
+    template <class T> struct is_default_constructible<T[]> : public is_default_constructible<T>{};
+    template <class T> struct is_default_constructible<T&> : public integral_constant<bool, false>{};
+
+    template <class T> struct is_default_constructible<T&&> : public integral_constant<bool, false>{};
+
+    template <> struct is_default_constructible<void> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void const> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void volatile> : public integral_constant<bool, false>{};
+    template <> struct is_default_constructible<void const volatile> : public integral_constant<bool, false>{};
+
+    template<class From, class To>
+    struct is_convertible
+      : std::integral_constant<bool,
+                                   (   decltype(traits_helper::test_returnable<To>(0))::value
+                                    && decltype(traits_helper::test_implicitly_convertible<From, To>(0))::value)
+                                || (std::is_void<From>::value && std::is_void<To>::value)> { };
+
+    template <class T, class ...Args> struct is_constructible
+      : public std::integral_constant<bool, sizeof(traits_helper::is_constructible_imp::test<T, Args...>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "The target type must be complete in order to test for constructibility");
+    };
+
+    template <class T, class Arg> struct is_constructible<T, Arg> : public integral_constant<bool, std::is_destructible<T>::value && sizeof(traits_helper::is_constructible_imp::test1<T, Arg>(0)) == sizeof(traits_helper::yes_type)>
+    {
+      static_assert(std::is_complete<T>::value, "The target type must be complete in order to test for constructibility");
+    };
+
+    template <class Ref, class Arg> struct is_constructible<Ref&,  Arg> : public integral_constant<bool, sizeof(traits_helper::is_constructible_imp::ref_test<Ref&> (std::declval<Arg>())) == sizeof(traits_helper::yes_type)> { };
+    template <class Ref, class Arg> struct is_constructible<Ref&&, Arg> : public integral_constant<bool, sizeof(traits_helper::is_constructible_imp::ref_test<Ref&&>(std::declval<Arg>())) == sizeof(traits_helper::yes_type)> { };
+
+    template <> struct is_constructible<void>                : public false_type { };
+    template <> struct is_constructible<void const>          : public false_type { };
+    template <> struct is_constructible<void const volatile> : public false_type { };
+    template <> struct is_constructible<void volatile>       : public false_type { };
+
+    template <class T> struct is_constructible<T> : public is_default_constructible<T> { };
   }
 
 #endif // TYPE_TRAITS_2013_09_01_
