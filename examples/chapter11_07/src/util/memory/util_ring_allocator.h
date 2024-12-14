@@ -1,26 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2017.
+//  Copyright Christopher Kormanyos 2007 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef UTIL_RING_ALLOCATOR_2010_02_23_H_
-  #define UTIL_RING_ALLOCATOR_2010_02_23_H_
+#ifndef UTIL_RING_ALLOCATOR_2010_02_23_H
+  #define UTIL_RING_ALLOCATOR_2010_02_23_H
+
+  #include <util/utility/util_alignas.h>
 
   #include <cstddef>
   #include <cstdint>
   #include <memory>
-
-  #include <util/utility/util_alignas.h>
 
   namespace util
   {
     class ring_allocator_base
     {
     public:
-      typedef std::size_t    size_type;
-      typedef std::ptrdiff_t difference_type;
+      using size_type       = std::size_t;
+      using difference_type = std::ptrdiff_t;
 
       virtual ~ring_allocator_base() = default;
 
@@ -32,7 +32,7 @@
       // The ring allocator's buffer type.
       struct buffer_type
       {
-        static constexpr size_type size = 16U;
+        static constexpr size_type size = 64U;
 
         std::uint8_t data[size];
 
@@ -41,7 +41,7 @@
 
       // The ring allocator's memory allocation.
       template<const std::uint_fast8_t buffer_alignment>
-      static void* do_allocate(size_type chunk_size)
+      static auto do_allocate(size_type chunk_size) -> void*
       {
         ALIGNAS(16) static buffer_type buffer;
 
@@ -80,14 +80,14 @@
     };
 
     // Global comparison operators (required by the standard).
-    inline bool operator==(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept
+    inline auto operator==(const ring_allocator_base&,
+                           const ring_allocator_base&) noexcept -> bool
     {
       return true;
     }
 
-    inline bool operator!=(const ring_allocator_base&,
-                           const ring_allocator_base&) noexcept
+    inline auto operator!=(const ring_allocator_base&,
+                           const ring_allocator_base&) noexcept -> bool
     {
       return false;
     }
@@ -100,9 +100,9 @@
     class ring_allocator<void, buffer_alignment> : public ring_allocator_base
     {
     public:
-      typedef void              value_type;
-      typedef value_type*       pointer;
-      typedef const value_type* const_pointer;
+      using value_type    = void;
+      using pointer       = value_type*;
+      using const_pointer = const value_type*;
 
       template<typename U>
       struct rebind
@@ -119,11 +119,11 @@
       static_assert(sizeof(T) <= buffer_type::size,
                     "The size of the allocation object can not exceed the buffer size.");
 
-      typedef T                 value_type;
-      typedef value_type*       pointer;
-      typedef const value_type* const_pointer;
-      typedef value_type&       reference;
-      typedef const value_type& const_reference;
+      using value_type      = T;
+      using pointer         = value_type*;
+      using const_pointer   = const value_type*;
+      using reference       = value_type&;
+      using const_reference = const value_type&;
 
       ring_allocator() noexcept = default;
 
@@ -138,16 +138,16 @@
         using other = ring_allocator<U, buffer_alignment>;
       };
 
-      size_type max_size() const noexcept
+      auto max_size() const noexcept -> size_type
       {
         return buffer_type::size / sizeof(value_type);
       }
 
-            pointer address(      reference x) const { return &x; }
-      const_pointer address(const_reference x) const { return &x; }
+      auto address(      reference x) const ->       pointer { return &x; }
+      auto address(const_reference x) const -> const_pointer { return &x; }
 
-      pointer allocate(size_type count,
-                       typename ring_allocator<void, buffer_alignment>::const_pointer = nullptr)
+      auto allocate(size_type count,
+                    typename ring_allocator<void, buffer_alignment>::const_pointer = nullptr) -> pointer
       {
         const size_type chunk_size = count * sizeof(value_type);
 
@@ -156,15 +156,15 @@
         return static_cast<pointer>(p);
       }
 
-      void construct(pointer p, const value_type& x) noexcept
+      auto construct(pointer p, const value_type& x) noexcept -> void
       {
         new(static_cast<void*>(p)) value_type(x);
       }
 
-      void destroy(pointer p) noexcept { p->~value_type(); }
+      auto destroy(pointer p) noexcept -> void { p->~value_type(); }
 
-      void deallocate(pointer, size_type) noexcept { }
+      auto deallocate(pointer, size_type) noexcept -> void { }
     };
   }
 
-#endif // UTIL_RING_ALLOCATOR_2010_02_23_H_
+#endif // UTIL_RING_ALLOCATOR_2010_02_23_H

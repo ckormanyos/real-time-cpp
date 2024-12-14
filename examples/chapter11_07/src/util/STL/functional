@@ -1,5 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2020.
+﻿///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2007 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,6 +14,16 @@
 
   namespace std
   {
+    template <typename T>
+    struct hash
+    {
+        // Since the underlying type is a std::uint64_t we will rely on its hash function from the STL
+        auto operator()(const T&) const noexcept -> std::size_t
+        {
+          return std::size_t { };
+        }
+    };
+
     namespace xfunctional_impl
     {
       template <typename T> constexpr T& func_ref_or_moveref(T& t) noexcept { return t; }
@@ -28,7 +38,7 @@
 
       template<typename U,
                class = decltype(xfunctional_impl::func_ref_or_moveref<T>(std::declval<U>()),
-                                std::enable_if_t<(std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value == false)>())>
+                                std::enable_if_t<(!std::is_same<reference_wrapper, std::remove_cvref_t<U>>::value)>())>
       constexpr reference_wrapper(U&& u) noexcept(noexcept(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u))))
         : my_ptr(std::addressof(xfunctional_impl::func_ref_or_moveref<T>(std::forward<U>(u)))) { }
 
@@ -56,7 +66,7 @@
     template<typename T>
     struct identity
     {
-      typedef T type;
+      using type = T;
     };
 
     template<typename argument1,

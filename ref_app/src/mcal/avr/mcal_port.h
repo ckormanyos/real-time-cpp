@@ -8,9 +8,9 @@
 #ifndef MCAL_PORT_2012_06_27_H
   #define MCAL_PORT_2012_06_27_H
 
-  #include <cstdint>
-
   #include <mcal_reg.h>
+
+  #include <cstdint>
 
   auto mcal_port_pin_expander_set_direction_output(const uint8_t bpos) -> void;
   auto mcal_port_pin_expander_set_direction_input (const uint8_t bpos) -> void;

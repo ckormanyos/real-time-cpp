@@ -9,8 +9,8 @@
 # File list of the avr files in the project
 # ------------------------------------------------------------------------------
 
-FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                  \
-             $(PATH_TGT)/startup/crt0                                  \
-             $(PATH_TGT)/startup/crt0_init_ram                         \
-             $(PATH_TGT)/startup/crt1                                  \
+FILES_TGT  = $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                \
+             $(PATH_TGT)/startup/crt0                                                \
+             $(PATH_TGT)/startup/crt0_init_ram                                       \
+             $(PATH_TGT)/startup/crt1                                                \
              $(PATH_TGT)/startup/int_vect

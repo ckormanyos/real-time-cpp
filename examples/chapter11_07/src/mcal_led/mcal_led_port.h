@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2013 - 2020.
+//  Copyright Christopher Kormanyos 2013 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MCAL_LED_PORT_2020_04_23_H_
-  #define MCAL_LED_PORT_2020_04_23_H_
+#ifndef MCAL_LED_PORT_2020_04_23_H
+  #define MCAL_LED_PORT_2020_04_23_H
 
   #include <mcal_led/mcal_led_boolean_state_base.h>
   #include <mcal_port.h>
@@ -23,17 +23,19 @@
       port_type::set_direction_output();
     }
 
-    virtual ~led_port() = default;
+    ~led_port() override = default;
 
-  private:
-    virtual void toggle()
+    auto toggle() -> void override
     {
-      led_boolean_state_base::toggle();
+      using base_class_type = led_boolean_state_base;
 
       port_type::toggle_pin();
+
+      base_class_type::toggle();
     }
   };
 
-  } } // namespace mcal::led
+  } // namespace led
+  } // namespace mcal
 
-#endif // MCAL_LED_PORT_2020_04_23_H_
+#endif // MCAL_LED_PORT_2020_04_23_H
