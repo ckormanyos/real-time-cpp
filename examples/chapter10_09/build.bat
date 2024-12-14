@@ -28,7 +28,7 @@
 @set TOOL_PREFIX=%2
 
 @set CFLAGS=-Wall -Wextra -pedantic -marm -march=armv6zk -mtune=arm1176jzf-s -mfpu=vfpv2 -mfloat-abi=hard -finline-functions -finline-limit=32 -O2 -fno-exceptions -gdwarf-2 -ffunction-sections -fdata-sections
-@set CPPFLAGS=-std=c++11 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
+@set CPPFLAGS=-std=c++14 -fno-rtti -fstrict-enums -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs
 @set AFLAGS=
 @set CINCLUDES=-Isrc/util/STL -Isrc/mcal/bcm2835_raspi_b -Isrc
 

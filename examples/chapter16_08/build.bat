@@ -28,7 +28,7 @@
 @set TOOL_PREFIX=%2
 
 @set CFLAGS=-Wall -Wextra -pedantic -mmcu=atmega328p -fsigned-char -Os -fno-exceptions -gdwarf-2 -finline-functions -ffunction-sections -fdata-sections -flto
-@set CPPFLAGS=-std=c++11 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32
+@set CPPFLAGS=-std=c++14 -fno-rtti -fno-use-cxa-atexit -fno-use-cxa-get-exception-ptr -fno-nonansi-builtins -fno-threadsafe-statics -fno-enforce-eh-specs -ftemplate-depth=32
 @set CINCLUDES=-Isrc/util/STL -Isrc/mcal/avr -Isrc
 @set CDEFINES="-DWIDE_INTEGER_NAMESPACE=ckormanyos"
 
