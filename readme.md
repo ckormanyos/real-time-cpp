@@ -370,6 +370,11 @@ called `target avr` runs
 on a classic ARDUINO(R) compatible board.
 The program toggles the yellow LED on `portb.5`.
 
+The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
+called `target atmega2560` runs
+on the ARDUINO(R) MEGA compatible board.
+The program toggles the orange LED on `portb.7`.
+
 The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
 on an ARDUINO(R) EVERY compatible board clocked
