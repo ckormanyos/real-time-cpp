@@ -377,10 +377,10 @@ The program toggles the orange LED on `portb.7`.
 At the moment, the environment and build for this
 target is set up for $64~\text{kByte}$ program code.
 If the fully available $128~\text{kByte}$ code space
-needs to be used, then adaptions to the compiler,
-linker, startup-code and interrupt-vector table
-will be necessary. For this potential adaption, see also
-(issue 593)[https://github.com/ckormanyos/real-time-cpp/issues/593].
+needs to be used, then adaptions to the compiler switches,
+linker file, startup-code and interrupt-vector table
+will likely be necessary. For this potential adaption, see also
+[issue 593](https://github.com/ckormanyos/real-time-cpp/issues/593).
 
 The MICROCHIP(R) [former ATMEL(R)] ATmega4809 configuration
 called `target atmega4809` runs
