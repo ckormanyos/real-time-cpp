@@ -375,7 +375,7 @@ called `target atmega2560` runs
 on the ARDUINO(R) MEGA compatible board.
 The program toggles the orange LED on `portb.7`.
 At the moment, the environment and build for this
-target is set up for $64~\text{kByte}$ program code.
+target are set up for $64~\text{kByte}$ program code.
 If the fully available $128~\text{kByte}$ code space
 needs to be used, then adaptions to the compiler switches,
 linker file, startup-code and interrupt-vector table
