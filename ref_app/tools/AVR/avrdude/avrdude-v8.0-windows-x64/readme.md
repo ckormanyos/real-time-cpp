@@ -14,7 +14,7 @@ open source USB driver-options are available.
 
 Get a modern version of `avrdude` for `Win*` such as `avrdude-v8.0-windows-x64.zip` which can
 be found within `avrdude`'s release, such as
-[avrdude-v8.0](https://github.com/avrdudes/avrdude/releases/download/v8.0).
+[avrdude-v8.0](https://github.com/avrdudes/avrdude/releases).
 Of course, occasional newer releases may also become available.
 
 Using commands or command files, we can program the ARDUINO UNO with the ATMEGA328P chip
