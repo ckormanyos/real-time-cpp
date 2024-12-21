@@ -1,16 +1,18 @@
-# Programming with avrdude
+# Programming the ARDUINO with `avrdude`
 
-In this section, we consider the flash file `ref_app.hex` which, after
+In this section, we will program the ARDUINO boards with `avrdude`.
+
+Consider the flash file `ref_app.hex` which, after
 building the reference application `ref_app`, will be found in the `bin` directory.
 These instructions are for modern `Win*`.
 
-The device being used is the AVR-SIP mkII, which is an older USB-based
+The programming device being used is the AVR-SIP mkII, which is an older USB-based
 programmer.
 
 ## Getting Started
 
 Get a modern version of `avrdude` for `Win*` such as `avrdude-v8.0-windows-x64.zip` which can
-be found at the avrdude releases such as
+be found within `avrdude`'s release, such as
 [avrdude-v8.0](https://github.com/avrdudes/avrdude/releases/download/v8.0/avrdude-v8.0-windows-x64.zip).
 Of course, occasional newer releases may also become available.
 
