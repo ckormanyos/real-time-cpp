@@ -6,8 +6,9 @@ Consider the flash file `ref_app.hex` which, after
 building the reference application `ref_app`, will be found in the `bin` directory.
 These instructions are for modern `Win*`.
 
-The programming device being used is the AVR-SIP mkII, which is an older USB-based
-programmer.
+The programming device being used is the AVRISP mkII, which is an older USB-based
+programmer. Drivers can be installed along with with ATMEL(R) Studio or alternative
+open source USB driver-options are available.
 
 ## Getting Started
 
