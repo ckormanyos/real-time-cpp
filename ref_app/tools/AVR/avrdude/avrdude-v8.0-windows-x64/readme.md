@@ -9,8 +9,10 @@ programmer.
 
 ## Getting Started
 
-Get a modern version of `avrdude` for `Win*` such as can be found here:
-[avrdude-v8.0-windows-x64.zip](https://github.com/avrdudes/avrdude/releases/download/v8.0/avrdude-v8.0-windows-x64.zip).
+Get a modern version of `avrdude` for `Win*` such as `avrdude-v8.0-windows-x64.zip` which can
+be found at the avrdude releases such as
+[avrdude-v8.0](https://github.com/avrdudes/avrdude/releases/download/v8.0/avrdude-v8.0-windows-x64.zip).
+Of course, occasional newer releases may also become available.
 
 Using commands or command files, we can program the ARDUINO UNO with the ATMEGA328P chip
 or the ARDUINO MEGA 2560 with the ATMEGA2560 chip.
