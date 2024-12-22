@@ -14,7 +14,7 @@
 
 extern "C" void __my_startup       () __attribute__((section(".startup"), used, noinline));
 extern "C" void __vector_unused_irq() __attribute__((signal, used, externally_visible));
-#if (defined(configUSE_PREEMPTION) && (configUSE_PREEMPTION == 1))
+#if (configUSE_PREEMPTION == 1)
 extern "C" void __vector_11        () __attribute__((signal, used, externally_visible, naked));
 #else
 extern "C" void __vector_11        () __attribute__((signal, used, externally_visible));
@@ -22,15 +22,9 @@ extern "C" void __vector_11        () __attribute__((signal, used, externally_vi
 extern "C" void __vector_16        () __attribute__((signal, used, externally_visible));
 
 extern "C"
-void __vector_unused_irq()
-{
-  for(;;)
-  {
-    mcal::cpu::nop();
-  }
-}
+void __vector_unused_irq() { for(;;) { mcal::cpu::nop(); } }
 
-namespace
+namespace local
 {
   typedef struct isr_type
   {
@@ -40,13 +34,13 @@ namespace
     const function_type func;                             // The interrupt service routine.
   }
   isr_type;
-}
+} // namespace local
 
 extern "C"
-const volatile std::array<isr_type, std::size_t { UINT8_C(26) }> __isr_vector __attribute__((section(".isr_vector")));
+const volatile std::array<local::isr_type, std::size_t { UINT8_C(26) }> __isr_vector __attribute__((section(".isr_vector")));
 
 extern "C"
-const volatile std::array<isr_type, std::size_t { UINT8_C(26) }> __isr_vector =
+const volatile std::array<local::isr_type, std::size_t { UINT8_C(26) }> __isr_vector =
 {{
                                               // addr.  nr. interrupt source
   { { 0x0C, 0x94 }, __my_startup },           // 0x00,  0,  reset

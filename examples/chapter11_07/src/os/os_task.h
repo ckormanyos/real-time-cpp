@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 2021.
+//  Copyright Christopher Kormanyos 2020 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef OS_TASK_2020_10_08_H_
-  #define OS_TASK_2020_10_08_H_
+#ifndef OS_TASK_2020_10_08_H
+  #define OS_TASK_2020_10_08_H
 
   #include <FreeRTOS.h>
   #include <task.h>
@@ -30,4 +30,4 @@
 
   #define OS_TASK_WAIT_YIELD(x) vTaskDelay((x))
 
-#endif // OS_TASK_2020_10_08_H_
+#endif // OS_TASK_2020_10_08_H

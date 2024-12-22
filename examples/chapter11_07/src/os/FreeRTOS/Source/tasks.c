@@ -24,10 +24,6 @@
  *
  */
 
-/* Standard includes. */
-#include <stdlib.h>
-#include <string.h>
-
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
@@ -35,9 +31,13 @@
 
 /* FreeRTOS includes. */
 #include <FreeRTOS.h>
+#include <stack_macros.h>
 #include <task.h>
 #include <timers.h>
-#include <stack_macros.h>
+
+/* Standard includes. */
+#include <string.h>
+#include <stdlib.h>
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined

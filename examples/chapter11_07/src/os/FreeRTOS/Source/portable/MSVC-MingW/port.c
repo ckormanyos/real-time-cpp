@@ -25,16 +25,16 @@
  * 1 tab == 4 spaces!
  */
 
-/* Standard includes. */
-#include <stdio.h>
-#include <intrin.h>
-
 /* Scheduler includes. */
-#include "FreeRTOS.h"
-#include "task.h"
+#include <FreeRTOS.h>
+#include <task.h>
+
+/* Standard includes. */
+#include <intrin.h>
+#include <stdio.h>
 
 #ifdef __GNUC__
-  #include "mmsystem.h"
+  #include <mmsystem.h>
 #else
   #pragma comment(lib, "winmm.lib")
 #endif
