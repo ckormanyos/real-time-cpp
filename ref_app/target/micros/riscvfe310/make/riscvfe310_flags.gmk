@@ -8,10 +8,10 @@
 # compiler flags for the target architecture
 # ------------------------------------------------------------------------------
 
-GCC_TARGET   := riscv32-unknown-elf
-GCC_PREFIX   := riscv32-unknown-elf
+GCC_TARGET   := riscv-none-elf
+GCC_PREFIX   := riscv-none-elf
 
-GCC_VERSION  := 13.2.0
+GCC_VERSION  := 14.2.0
 
 TGT_SUFFIX    = elf
 
