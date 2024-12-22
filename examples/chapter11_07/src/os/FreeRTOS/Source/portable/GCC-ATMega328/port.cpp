@@ -40,16 +40,15 @@ Changes from Christopher Kormanyos 2020-10-07
   + Clean up spaces, tabs and alignment of typing.
   + OS tick uses timer1 compare-match-a to generate
     a tick interrupt at 100Hz (every 10ms).
-  + Use an undecorated ISR handle name (__vector_11).
+  + Use an undecorated ISR handle named (__vector_11).
   + Use C++ register template access to setup the timer.
 */
 
-#include <cstdlib>
-
 #include <FreeRTOS.h>
+#include <mcal_reg.h>
 #include <task.h>
 
-#include <mcal_reg.h>
+#include <cstdlib>
 
 /*--------------------------------------------------------------------
  * Implementation of functions defined in portable.h for the AVR port.
@@ -356,7 +355,7 @@ void vPortYieldFromTick(void)
   asm volatile ( "ret" );
 }
 
-#if defined(configUSE_PREEMPTION) && (configUSE_PREEMPTION == 1)
+#if (configUSE_PREEMPTION == 1)
 
 extern "C"
 void __vector_11(void) __attribute__((signal, used, externally_visible, naked));

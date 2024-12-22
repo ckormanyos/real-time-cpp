@@ -24,9 +24,6 @@
  *
  */
 
-#include <stdlib.h>
-#include <string.h>
-
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
@@ -35,6 +32,9 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
+
+#include <string.h>
+#include <stdlib.h>
 
 #if ( configUSE_CO_ROUTINES == 1 )
     #include "croutine.h"
@@ -81,7 +81,7 @@ typedef struct SemaphoreData
 #define queueSEMAPHORE_QUEUE_ITEM_LENGTH    ( ( UBaseType_t ) 0 )
 #define queueMUTEX_GIVE_BLOCK_TIME          ( ( TickType_t ) 0U )
 
-#if ( configUSE_PREEMPTION == 0 )
+#if (defined(configUSE_PREEMPTION) && (configUSE_PREEMPTION == 0))
 
 /* If the cooperative scheduler is being used then a yield should not be
  * performed just because a higher priority task has been woken. */
