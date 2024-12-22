@@ -225,7 +225,7 @@ jobs:
         working-directory: ./
       - name: target-riscv-${{ matrix.suite }}
         run: |
-          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64/bin:$PATH"
+          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/

@@ -155,7 +155,7 @@ jobs:
         working-directory: ./
       - name: benchmark_builds-riscv
         run: |
-          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64/bin:$PATH"
+          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
           ./target/build/test_app_benchmarks_riscv.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_single-stm32f446:
