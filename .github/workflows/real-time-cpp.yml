@@ -220,12 +220,12 @@ jobs:
           fetch-depth: '0'
       - name: update-tools
         run: |
-          wget --no-check-certificate https://buildbot.embecosm.com/job/riscv32-gcc-ubuntu2204-release/10/artifact/riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz
-          tar -xzf riscv32-embecosm-ubuntu2204-gcc13.2.0.tar.gz -C ${{ runner.workspace }}
+          wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz
+          tar -xzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C ${{ runner.workspace }}
         working-directory: ./
-      - name: target-riscvfe310-${{ matrix.suite }}
+      - name: target-riscv-${{ matrix.suite }}
         run: |
-          PATH="${{ runner.workspace }}/riscv32-embecosm-ubuntu2204-gcc13.2.0/bin:$PATH"
+          PATH="${{ runner.workspace }}/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
