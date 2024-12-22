@@ -7,8 +7,8 @@ building the reference application `ref_app`, will be found in the `bin` directo
 These instructions are for modern `Win*`.
 
 The programming device being used is the AVRISP mkII, which is an older USB-based
-programmer. Drivers can be installed along with with ATMEL(R) Studio or alternative
-open source USB driver-options are available.
+programmer. Drivers can be installed along with with ATMEL(R) Studio.
+Also alternative open source USB driver-options are available.
 
 ## Getting Started
 
