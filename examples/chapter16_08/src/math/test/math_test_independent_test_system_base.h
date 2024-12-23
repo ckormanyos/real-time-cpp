@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2022.
+//  Copyright Christopher Kormanyos 2019 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H_
-  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H_
+#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H
+  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H
 
   #include <util/utility/util_noncopyable.h>
 
@@ -17,7 +17,7 @@
   public:
     virtual ~independent_test_system_base() noexcept = default;
 
-    virtual bool is_prime(const char* const pstr_prime_candidate) const = 0;
+    virtual auto is_prime(const char* const pstr_prime_candidate) const -> bool = 0;
 
   protected:
     independent_test_system_base() noexcept = default;
@@ -27,4 +27,4 @@
   } // namespace math
   } // namespace WIDE_INTEGER_NAMESPACE
 
-#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H_
+#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_BASE_2020_07_16_H

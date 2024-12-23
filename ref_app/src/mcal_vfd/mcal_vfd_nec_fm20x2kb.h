@@ -31,6 +31,8 @@
     explicit vacuum_fluorescent_display_nec_fm20x2kb(util::communication_base& ser)
       : my_serial(ser) { }
 
+    vacuum_fluorescent_display_nec_fm20x2kb() = delete;
+
     ~vacuum_fluorescent_display_nec_fm20x2kb() override = default;
 
     auto init() -> bool override
