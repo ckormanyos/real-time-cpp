@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2022.
+//  Copyright Christopher Kormanyos 2019 - 2024.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H_
-  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H_
+#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H
+  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H
 
   #include <array>
   #include <string>
@@ -40,7 +40,7 @@
 
   namespace detail {
 
-  inline constexpr char* strcpy_unsafe(char* dst, const char* src)
+  inline constexpr auto strcpy_unsafe(char* dst, const char* src) -> char*
   {
     // Use a local implementation of string copy.
     while((*dst++ = *src++) != char('\0')) { ; }
@@ -48,7 +48,7 @@
     return dst;
   }
 
-  inline constexpr std::uint_fast32_t strlen_unsafe(const char* pstr)
+  inline constexpr auto strlen_unsafe(const char* pstr) -> std::uint_fast32_t
   {
     // Use a local implementation of string length.
     std::uint_fast32_t u = 0U;
@@ -65,13 +65,12 @@
   } // namespace detail
 
   template<const char* PtrStrLocationMathLinkKernel = nullptr>
-  class independent_test_system_mathlink
-    : public math::test::independent_test_system_base
+  class independent_test_system_mathlink : public math::test::independent_test_system_base
   {
   private:
-    static constexpr int RETURNPKT = 3;
+    static constexpr int RETURNPKT { 3 };
 
-    static constexpr int return_packet_id() { return RETURNPKT; }
+    static constexpr auto return_packet_id() noexcept -> int { return RETURNPKT; }
 
   public:
     // This is the computer_algebra_system_mathlink class.
@@ -89,7 +88,7 @@
       static_cast<void>(close_is_ok);
     }
 
-    virtual bool is_prime(const char* const pstr_prime_candidate) const override
+    auto is_prime(const char* const pstr_prime_candidate) const -> bool override
     {
       // Test with, for eample,
       // PrimeQ[FromDigits["A6BAC43FEE73E832401B1E32417BD0AF",16]]
@@ -101,14 +100,14 @@
       return (send_command(str_cmd, &str_rsp) && (str_rsp == "True"));
     }
 
-    static constexpr bool get_valid() noexcept { return my_valid; }
+    static constexpr auto get_valid() noexcept -> bool { return my_valid; }
 
   private:
     static bool   my_valid;
     static WSENV  env_ptr;
     static WSLINK lnk_ptr;
 
-    static bool send_command(const std::string& str_cmd, std::string* str_rsp)
+    static auto send_command(const std::string& str_cmd, std::string* str_rsp) -> bool
     {
       const bool suppress_output = (str_rsp == nullptr);
 
@@ -162,17 +161,17 @@
       return result_is_ok;
     }
 
-    static constexpr WSENV&  global_env_ptr() noexcept { return env_ptr; }
-    static constexpr WSLINK& global_lnk_ptr() noexcept { return lnk_ptr; }
+    static constexpr auto global_env_ptr() noexcept -> WSENV&  { return env_ptr; }
+    static constexpr auto global_lnk_ptr() noexcept -> WSLINK& { return lnk_ptr; }
 
-    static int  next_packet ()                                 noexcept { return  ::WSNextPacket (global_lnk_ptr()); }
-    static int  new_packet  ()                                 noexcept { return  ::WSNewPacket  (global_lnk_ptr()); }
-    static bool put_function(const std::string& str, int argc) noexcept { return (::WSPutFunction(global_lnk_ptr(), str.c_str(), argc) != 0); }
-    static bool put_string  (const std::string& str)           noexcept { return (::WSPutString  (global_lnk_ptr(), str.c_str()) != 0); }
-    static bool end_packet  ()                                 noexcept { return (::WSEndPacket  (global_lnk_ptr()) != 0); }
-    static int  error       ()                                 noexcept { return  ::WSError      (global_lnk_ptr()); }
+    static auto next_packet ()                                 noexcept -> int  { return  ::WSNextPacket (global_lnk_ptr()); }
+    static auto new_packet  ()                                 noexcept -> int  { return  ::WSNewPacket  (global_lnk_ptr()); }
+    static auto put_function(const std::string& str, int argc) noexcept -> bool { return (::WSPutFunction(global_lnk_ptr(), str.c_str(), argc) != 0); }
+    static auto put_string  (const std::string& str)           noexcept -> bool { return (::WSPutString  (global_lnk_ptr(), str.c_str()) != 0); }
+    static auto end_packet  ()                                 noexcept -> bool { return (::WSEndPacket  (global_lnk_ptr()) != 0); }
+    static auto error       ()                                 noexcept -> int  { return  ::WSError      (global_lnk_ptr()); }
 
-    static bool get_string(std::string* str_rsp)
+    static auto get_string(std::string* str_rsp) -> bool
     {
       const char* s = nullptr;
 
@@ -190,13 +189,13 @@
       return get_string_is_ok;
     }
 
-    static constexpr bool is_open() noexcept
+    static constexpr auto is_open() noexcept -> bool
     {
       return (   (global_env_ptr() != nullptr)
               && (global_lnk_ptr() != nullptr));
     }
 
-    static bool open(const char* str_location_math_kernel_user = PtrStrLocationMathLinkKernel) noexcept
+    static auto open(const char* str_location_math_kernel_user = PtrStrLocationMathLinkKernel) noexcept -> bool
     {
       // Initialize the mathlink kernel.
       global_env_ptr() = ::WSInitialize(nullptr);
@@ -212,8 +211,10 @@
 
         // TBD: What about supporting non-Win* platforms like *nix?
 
-        constexpr char str_location_math_kernel_default[] =
-          "\"C:\\Program Files\\Wolfram Research\\Mathematica\\12.0\\MathKernel.exe\"";
+        constexpr char str_location_math_kernel_default[]
+        {
+          "\"C:\\Program Files\\Wolfram Research\\Mathematica\\14.0\\MathKernel.exe\""
+        };
 
         // Create a list of constant arguments for opening the mathlink kernel.
         using const_args_strings_type = std::array<std::string, 5U>;
@@ -258,7 +259,7 @@
       return is_open();
     }
 
-    static bool close() noexcept
+    static auto close() noexcept -> bool
     {
       const bool close_is_ok = is_open();
 
@@ -280,12 +281,12 @@
     }
   };
 
-  template<const char* PtrStrLocationMathLinkKernel> bool   math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::my_valid = false;
-  template<const char* PtrStrLocationMathLinkKernel> WSENV  math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::env_ptr  = nullptr;
-  template<const char* PtrStrLocationMathLinkKernel> WSLINK math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::lnk_ptr  = nullptr;
+  template<const char* PtrStrLocationMathLinkKernel> bool   math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::my_valid { false };
+  template<const char* PtrStrLocationMathLinkKernel> WSENV  math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::env_ptr  { nullptr };
+  template<const char* PtrStrLocationMathLinkKernel> WSLINK math::test::independent_test_system_mathlink<PtrStrLocationMathLinkKernel>::lnk_ptr  { nullptr };
 
   } // namespace test
   } // namespace math
   } // namespace WIDE_INTEGER_NAMESPACE
 
-#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H_
+#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_MATHLINK_2019_12_29_H

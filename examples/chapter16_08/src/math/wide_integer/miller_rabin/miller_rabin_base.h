@@ -89,38 +89,74 @@
       {
         const limb_type lo_limb = my_n_trial.crepresentation().front();
 
-        const std::uint8_t lo_bit = std::uint8_t(std::uint8_t(lo_limb) & 1U);
+        const std::uint8_t
+          lo_bit
+          {
+            static_cast<std::uint8_t>
+            (
+              static_cast<std::uint8_t>(lo_limb) & std::uint8_t { UINT8_C(1) }
+            )
+          };
 
         // Remove all even candidates since they are non-prime.
-        if(lo_bit != 0U)
+        if(lo_bit != std::uint8_t { UINT8_C(0) })
         {
-          const std::uint8_t lo_digit10 = std::uint8_t(my_n_trial % std::uint8_t(10U));
+          const std::uint8_t
+            lo_digit10
+            {
+              static_cast<std::uint8_t>(my_n_trial % std::uint8_t { UINT8_C(10) })
+            };
 
           // Continue by removing candidates having trailing digit 5.
           // The result is all candidates have trailing digit 1,3,7,9
-          if(lo_digit10 != 5U)
+
+          if(lo_digit10 != std::uint8_t { UINT8_C(5) })
           {
             // Now remove candidates having digital root 3, 6 or 9
             // because these are divisible by 3 and thus non-prime.
 
             // To compute the digital root of n dr(n), use
             // dr(n) = 1 + (n - 1) % 9.
-            wide_integer_type n_minus_one(my_n_trial);
+            wide_integer_type n_minus_one { my_n_trial };
 
             --n_minus_one;
 
-            const std::uint8_t dr =
-              std::uint8_t(UINT8_C(1) + (std::uint8_t(n_minus_one % std::uint8_t(9U))));
+            const std::uint8_t
+              digital_root
+              {
+                static_cast<std::uint8_t>
+                (
+                    std::uint8_t { UINT8_C(1) }
+                  + static_cast<std::uint8_t>(n_minus_one % std::uint8_t { UINT8_C(9) })
+                )
+              };
 
-            if((dr != UINT8_C(3)) && (dr != UINT8_C(6)) && (dr != UINT8_C(9)))
+            const bool
+              has_digital_root_of_3_6_or_9
+              {
+                   (digital_root == std::uint8_t { UINT8_C(3) })
+                || (digital_root == std::uint8_t { UINT8_C(6) })
+                || (digital_root == std::uint8_t { UINT8_C(9) })
+              };
+
+            if(!has_digital_root_of_3_6_or_9)
             {
+              // We have found a viable prime candidate. Use this prime
+              // candidate to start a new Miller-Rabin primality test.
+
               set_n_is_ok = true;
+
+              // Reset the prime-search variables.
 
               my_n_trial_is_probably_prime = false;
               my_n                         = my_n_trial;
               my_n_is_probably_prime       = false;
 
-              my_n_total_mul_10 += 10U;
+              my_n_total_mul_10 =
+                static_cast<std::uint64_t>
+                (
+                  my_n_total_mul_10 + std::uint_fast8_t { UINT8_C(10) }
+                );
             }
           }
         }

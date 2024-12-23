@@ -287,8 +287,8 @@
     <ClInclude Include="src\mcal\host\mcal_wdg.h" />
     <ClInclude Include="src\mcal\host\mcal_wdg_watchdog.h" />
     <ClInclude Include="src\mcal\mcal.h" />
-    <ClInclude Include="src\mcal\mcal_reg_access_template.h" />
-    <ClInclude Include="src\mcal\mcal_reg_dynamic_access_template.h" />
+    <ClInclude Include="src\mcal\mcal_reg_access_dynamic.h" />
+    <ClInclude Include="src\mcal\mcal_reg_access_static.h" />
     <ClInclude Include="src\mcal_led\mcal_led_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_boolean_state_base.h" />
     <ClInclude Include="src\mcal_led\mcal_led_console.h" />
