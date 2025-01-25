@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,7 +28,7 @@ extern "C" int main(void)
 
   // Configure and create the OS tasks.
   OS_TASK_CREATE(app_led_task_background,  nullptr, 1U);
-  OS_TASK_CREATE(app_led_task_toggle_led0, nullptr, 2U);
+  OS_TASK_CREATE(app_led_task_toggle_led0, nullptr, 3U);
 
   // Start the OS scheduler (and never return).
   OS_TASK_START_SCHEDULER();
