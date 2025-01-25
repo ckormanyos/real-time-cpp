@@ -55,12 +55,12 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(SolutionDir)src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(SolutionDir)src/util/STL_C++XX_stdfloat;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src/mcal/host;$(SolutionDir)src/os/FreeRTOS/Source/include/cfg/WIN32-MSVC-Static-Allocation-Only;$(SolutionDir)src/os/FreeRTOS/Source/portable/MSVC-MingW;$(SolutionDir)src/os/FreeRTOS/Source/include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>

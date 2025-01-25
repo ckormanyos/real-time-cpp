@@ -496,10 +496,10 @@ the performance and the performance class of the microcontroller.
 For more information, see the detailed information
 on the [benchmarks](./ref_app/src/app/benchmark) pages.
 
-## All Bare-Metal
+## All-Bare-Metal
 
-Projects in this repo are programmed _OS-less_ in naked,
-bare-metal mode making use of self-written startup code.
+Projects in this repo are programmed _OS-less_ in pure
+all-bare-metal mode making use of self-written startup code.
 No external libraries other than native C++ and its own
 standard libraries are used.
 
