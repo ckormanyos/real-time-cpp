@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -24,14 +24,32 @@ namespace
 extern "C"
 void app_led_task_background(void*)
 {
-  // This background task runs perpetually without pause, break or yield.
-  // This task has lowest priority and will be interrupted by the task
-  // having higher priority.
+  // This background task runs perpetually without pause, break or yield
+  // (unless running on _MSC_VER, where there is a yield for task break).
+
+  // This task has lowest priority and will be interrupted by any other
+  // task having higher priority, such as the LED 1/2 Hz toggle task
+  // (i.e., app_led_timer_toggle_led0).
 
   for(;;)
   {
     while((!app_led_timer_background.timeout()))
     {
+      #if defined(_MSC_VER)
+      {
+        #if defined(__AVR__)
+        #error This code sequence is not intended fof __AVR__;
+        #endif
+
+        static unsigned prescaler { };
+
+        if(unsigned { ++prescaler % unsigned { UINT8_C(8) } } == unsigned { UINT8_C(0) })
+        {
+          OS_TASK_WAIT_YIELD(OS_TASK_MSEC(TickType_t { UINT8_C(3) }));
+        }
+      }
+      #endif
+
       mcal::cpu::nop();
     }
 
