@@ -219,7 +219,6 @@
     <ClCompile Include="src\os\FreeRTOS\Source\portable\MSVC-MingW\port.c" />
     <ClCompile Include="src\os\FreeRTOS\Source\queue.c" />
     <ClCompile Include="src\os\FreeRTOS\Source\tasks.c" />
-    <ClCompile Include="src\os\FreeRTOS\Source\timers.c" />
     <ClCompile Include="src\sys\start\sys_start.cpp" />
     <ClCompile Include="src\util\STD_LIBC\memory.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

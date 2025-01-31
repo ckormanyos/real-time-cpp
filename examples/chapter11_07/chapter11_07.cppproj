@@ -361,9 +361,6 @@
     <Compile Include="src\os\FreeRTOS\Source\tasks.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\os\FreeRTOS\Source\timers.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\os\os_task.h">
       <SubType>compile</SubType>
     </Compile>

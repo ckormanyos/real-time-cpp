@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright Christopher Kormanyos 2014 - 2020.
+# Copyright Christopher Kormanyos 2014 - 2025.
 # Distributed under the Boost Software License,
 # Version 1.0. (See accompanying file LICENSE_1_0.txt
 # or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -103,9 +103,6 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-t
 echo "Compile  : tasks.c to bin/tasks.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/tasks.c -o bin/tasks.o
 
-echo "Compile  : timers.c to bin/timers.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/timers.c -o bin/timers.o
-
 echo "Compile  : application.c to bin/application.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/application/application.c -o bin/application.o
 
@@ -128,7 +125,7 @@ echo "Compile  : int_vect.cpp to bin/int_vect.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c++ $CFLAGS $CPPFLAGS $CINCLUDES -c target/micros/avr/startup/int_vect.cpp -o bin/int_vect.o
 
 echo "Link     : objects to bin/chapter11_07.elf"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter11_07.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/event_groups.o bin/list.o bin/queue.o bin/tasks.o bin/timers.o bin/application.o bin/port.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter11_07.elf
+$TOOL_PATH/$TOOL_PREFIX-g++ -x none -mrelax -nostartfiles $CFLAGS $CPPFLAGS $CINCLUDES -Wl,--gc-sections -Wl,-Ttarget/micros/avr/make/avr.ld,-Map,bin/chapter11_07.map bin/app_led.o bin/mcal.o bin/mcal_gcc_cxx_completion.o bin/mcal_cpu.o bin/mcal_gpt.o bin/mcal_irq.o bin/mcal_led.o bin/mcal_osc.o bin/mcal_port.o bin/mcal_wdg.o bin/event_groups.o bin/list.o bin/queue.o bin/tasks.o bin/application.o bin/port.o bin/sys_start.o bin/crt0.o bin/crt0_init_ram.o bin/crt1.o bin/int_vect.o -o bin/chapter11_07.elf
 
 echo
 echo "Extract  : executable hex file : from bin/chapter11_07.elf"

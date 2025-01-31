@@ -159,9 +159,6 @@
     <ClCompile Include="src\os\FreeRTOS\Source\tasks.c">
       <Filter>src\os\FreeRTOS\Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\os\FreeRTOS\Source\timers.c">
-      <Filter>src\os\FreeRTOS\Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\os\FreeRTOS\Source\portable\MSVC-MingW\port.c">
       <Filter>src\os\FreeRTOS\Source\portable\MSVC-MingW</Filter>
     </ClCompile>
