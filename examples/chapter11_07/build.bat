@@ -1,6 +1,6 @@
 
 @rem
-@rem Copyright Christopher Kormanyos 2014 - 2021.
+@rem Copyright Christopher Kormanyos 2014 - 2025.
 @rem Distributed under the Boost Software License,
 @rem Version 1.0. (See accompanying file LICENSE_1_0.txt
 @rem or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -84,10 +84,7 @@
 @echo.Compile  : tasks.c to bin/tasks.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c %CFLAGS% -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast %CINCLUDES% -c src/os/FreeRTOS/Source/tasks.c -o bin/tasks.o
 
-@echo.Compile  : timers.c to bin/timers.o
-@%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c %CFLAGS% -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast %CINCLUDES% -c src/os/FreeRTOS/Source/timers.c -o bin/timers.o
-
-@echo.Compile  : timers.c to bin/timers.o
+@echo.Compile  : application.c to bin/application.o
 @%TOOL_PATH%\%TOOL_PREFIX%-g++ -x c %CFLAGS% -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast %CINCLUDES% -c src/os/FreeRTOS/Source/application/application.c -o bin/application.o
 
 @echo.Compile  : port.cpp to bin/port.o

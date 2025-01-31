@@ -103,9 +103,6 @@ $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-t
 echo "Compile  : tasks.c to bin/tasks.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/tasks.c -o bin/tasks.o
 
-echo "Compile  : timers.c to bin/timers.o"
-$TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/timers.c -o bin/timers.o
-
 echo "Compile  : application.c to bin/application.o"
 $TOOL_PATH/$TOOL_PREFIX-g++ -x c $CFLAGS -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast $CINCLUDES -c src/os/FreeRTOS/Source/application/application.c -o bin/application.o
 
