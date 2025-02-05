@@ -17,10 +17,11 @@ by the higher priority application task. The background task
 toggles a second LED on `portd.3` every $50~\text{ms}$
 resulting in a frequency of approximately $10~\text{Hz}$.
 
-These days there are numerous choices available when selecting OS-es
-and/or multitasking schedulers for embedded systems. The selection
-includes a variety of either commercially available, free-ware or self-written options.
-In this particular expression of Example Chapter11_07, we select
+These days there are numerous choices available when selecting
+OS-es and/or multitasking schedulers for embedded systems.
+Choices include a variety of either commercially available,
+free-ware or even self-written options. In this particular
+expression of Example Chapter11_07, we select
 [FreeRTOS](https://www.freertos.org).
 
 The task setup, initialization and task functions
@@ -101,7 +102,7 @@ The OS tick uses `compare-match-a` from `timer1` to generate
 a tick interrupt at $100~\text{Hz}$ (i.e., approximately every $10~\text{ms}$)
 using an undecorated ISR handle named `__vector_11`.
 
-If using the simulated host (such as `_MSC_VER` or GCC on `x86_64`),
+When using the simulated host (such as `_MSC_VER` or GCC on `x86_64`),
 FreeRTOS is not used, but rather the C++ `<thread>` and `<chrono>` libraries
 are used for simulated task scheduling. The `<thread>` library
 does not use adjustable priorities in this case, but the thread scheduler
