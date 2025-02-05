@@ -100,6 +100,9 @@
     <Filter Include="src\math\checksums\crc">
       <UniqueIdentifier>{b584eda9-37f6-4508-86cd-73f8a70a246c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_doc">
+      <UniqueIdentifier>{ff14b2e1-f38c-4081-8657-97e5320e1911}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mcal\mcal.cpp">
@@ -570,6 +573,9 @@
     </None>
     <None Include="src\util\STL\cstdint">
       <Filter>src\util\STL</Filter>
+    </None>
+    <None Include="readme.md">
+      <Filter>_doc</Filter>
     </None>
   </ItemGroup>
 </Project>

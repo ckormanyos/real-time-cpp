@@ -52,11 +52,12 @@ void app_led_task_toggle_led0(void*)
   // this task is, in fact, intended to preemptively interrupt
   // the lower-priority background task.
 
-  // If using the host (such as _MSC_VER or GCC on x86_64),
-  // FreeRTOS is not used, but rather the C++ <thread> library
-  // is used for simulated task scheduling. These do not have
-  // priorities, but the thread scheduler supports preemptive
-  // scheduling and emulates the desired timing quite well.
+  // If using the simulated host (such as _MSC_VER or GCC on x86_64),
+  // FreeRTOS is not used, but rather the C++ <thread> and <chrono>
+  // libraries are used for simulated task scheduling. The <thread>
+  // library does not use adjustable priorities in this case, but the
+  // thread scheduler supports preemptive scheduling and emulates
+  // the desired timing quite well.
 
   for(;;)
   {
