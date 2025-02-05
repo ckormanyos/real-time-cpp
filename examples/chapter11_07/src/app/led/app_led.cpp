@@ -25,8 +25,6 @@ extern "C"
 void app_led_task_background(void*)
 {
   // This background task runs perpetually without pause, break or yield
-  // (unless running on _MSC_VER, where there is a yield for task break).
-
   // This task has lowest priority and will be interrupted by any other
   // task having higher priority, such as the LED 1/2 Hz toggle task
   // (i.e., app_led_timer_toggle_led0).
@@ -35,25 +33,12 @@ void app_led_task_background(void*)
   {
     while((!app_led_timer_background.timeout()))
     {
-      #if defined(_MSC_VER)
-      {
-        #if defined(__AVR__)
-        #error This code sequence is not intended fof __AVR__;
-        #endif
-
-        static unsigned prescaler { };
-
-        if(unsigned { ++prescaler % unsigned { UINT8_C(8) } } == unsigned { UINT8_C(0) })
-        {
-          OS_TASK_WAIT_YIELD(OS_TASK_MSEC(TickType_t { UINT8_C(3) }));
-        }
-      }
-      #endif
-
       mcal::cpu::nop();
     }
 
     app_led_timer_background.start_interval(app_led_timer_type::milliseconds(app_led_tick_type { UINT8_C(50) }));
+
+    // Toggle led1 every 50ms.
 
     mcal::led::led1().toggle();
   }
@@ -62,13 +47,22 @@ void app_led_task_background(void*)
 extern "C"
 void app_led_task_toggle_led0(void*)
 {
-  // This application task is intended to yield every 125ms. It has higher
-  // priority than the background task. This task will, in fact, preemptively
-  // interrupt the lower-priority background task.
+  // When using FreeRTOS, this task has higher priority than
+  // the background task. Due to its higher task-priority,
+  // this task is, in fact, intended to preemptively interrupt
+  // the lower-priority background task.
+
+  // If using the host (such as _MSC_VER or GCC on x86_64),
+  // FreeRTOS is not used, but rather the C++ <thread> library
+  // is used for simulated task scheduling. These do not have
+  // priorities, but the thread scheduler supports preemptive
+  // scheduling and emulates the desired timing quite well.
 
   for(;;)
   {
     mcal::wdg::secure::trigger();
+
+    // Toggle led0 every 1s.
 
     if(app_led_timer_toggle_led0.timeout())
     {
@@ -77,6 +71,8 @@ void app_led_task_toggle_led0(void*)
       mcal::led::led0().toggle();
     }
 
-    OS_TASK_WAIT_YIELD(OS_TASK_MSEC(125U));
+    // This application task is programmed to yield every 125ms.
+
+    OS_TASK_WAIT_YIELD(TickType_t { UINT8_C(125) });
   }
 }

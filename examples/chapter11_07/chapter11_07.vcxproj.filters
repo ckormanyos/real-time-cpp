@@ -446,6 +446,9 @@
     <ClInclude Include="src\mcal\mcal_reg_access_static.h">
       <Filter>src\mcal</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_rgb_base.h">
+      <Filter>src\mcal_led</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL_C++XX_stdfloat\cstdfloat">

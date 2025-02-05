@@ -277,6 +277,9 @@
     <Compile Include="src\mcal_led\mcal_led_pwm.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\mcal_led\mcal_led_rgb_base.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mcal_memory\mcal_memory_const_address_ptr.h">
       <SubType>compile</SubType>
     </Compile>
