@@ -2,7 +2,8 @@ echo off
 
 set AVRDUDE=.\avrdude.exe
 
-set HEX=../../../../bin/ref_app.hex
+set HEX=../../../../../examples/chapter11_07/bin/chapter11_07.hex
+
 
 rem Erase the chip.
 echo "Erase the chip."
