@@ -87,9 +87,6 @@ void vListInsertEnd( List_t * const pxList,
 {
     ListItem_t * const pxIndex = pxList->pxIndex;
 
-    /* Only effective when configASSERT() is also defined, these tests may catch
-     * the list data structures being overwritten in memory.  They will not catch
-     * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
     listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
 
@@ -118,12 +115,6 @@ void vListInsert( List_t * const pxList,
     ListItem_t * pxIterator;
     const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
 
-    /* Only effective when configASSERT() is also defined, these tests may catch
-     * the list data structures being overwritten in memory.  They will not catch
-     * data errors caused by incorrect configuration or use of FreeRTOS. */
-    listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
-
     /* Insert the new list item into the list, sorted in xItemValue order.
      *
      * If the list already contains a list item with the same item value then the
@@ -141,8 +132,7 @@ void vListInsert( List_t * const pxList,
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
         *  listed below.  In addition see https://www.FreeRTOS.org/FAQHelp.html for
-        *  more tips, and ensure configASSERT() is defined!
-        *  https://www.FreeRTOS.org/a00110.html#configASSERT
+        *  more tips.
         *
         *   1) Stack overflow -
         *      see https://www.FreeRTOS.org/Stacks-and-stack-overflow-checking.html

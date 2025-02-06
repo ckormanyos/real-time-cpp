@@ -227,9 +227,8 @@ typedef enum
  */
 #define taskENABLE_INTERRUPTS()            portENABLE_INTERRUPTS()
 
-/* Definitions returned by xTaskGetSchedulerState().  taskSCHEDULER_SUSPENDED is
- * 0 to generate more optimal code when configASSERT() is defined as the constant
- * is used in assert() statements. */
+/* Definitions returned by xTaskGetSchedulerState().
+*/
 #define taskSCHEDULER_SUSPENDED      ( ( BaseType_t ) 0 )
 #define taskSCHEDULER_NOT_STARTED    ( ( BaseType_t ) 1 )
 #define taskSCHEDULER_RUNNING        ( ( BaseType_t ) 2 )
@@ -321,7 +320,6 @@ typedef enum
  *   // an automatic stack variable it might no longer exist, or at least have been corrupted, by the time
  *   // the new task attempts to access it.
  *   xTaskCreate( vTaskCode, "NAME", STACK_SIZE, &ucParameterToPass, tskIDLE_PRIORITY, &xHandle );
- *   configASSERT( xHandle );
  *
  *   // Use the handle to delete the task.
  *   if( xHandle != NULL )
@@ -418,7 +416,6 @@ typedef enum
  *  {
  *      // The parameter value is expected to be 1 as 1 is passed in the
  *      // pvParameters value in the call to xTaskCreateStatic().
- *      configASSERT( ( uint32_t ) pvParameters == 1UL );
  *
  *      for( ;; )
  *      {
@@ -822,9 +819,6 @@ eTaskState eTaskGetState( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
  *
  *  // Obtain the handle of a task from its name.
  *  xHandle = xTaskGetHandle( "Task_Name" );
- *
- *  // Check the handle is not NULL.
- *  configASSERT( xHandle );
  *
  *  // Use the handle to obtain further information about the task.
  *  vTaskGetInfo( xHandle,

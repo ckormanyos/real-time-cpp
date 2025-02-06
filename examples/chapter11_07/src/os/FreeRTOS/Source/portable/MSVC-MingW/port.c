@@ -177,8 +177,6 @@ static DWORD WINAPI prvSimulatedPeripheralTimer( LPVOID lpParameter )
       Sleep( portTICK_PERIOD_MS );
     }
 
-    configASSERT( xPortRunning );
-
     /* Can't proceed if in a critical section as pvInterruptEventMutex won't
     be available. */
     WaitForSingleObject( pvInterruptEventMutex, INFINITE );
@@ -190,7 +188,6 @@ static DWORD WINAPI prvSimulatedPeripheralTimer( LPVOID lpParameter )
     handler thread.  Must be outside of a critical section to get here so
     the handler thread can execute immediately pvInterruptEventMutex is
     released. */
-    configASSERT( ulCriticalNesting == 0UL );
     SetEvent( pvInterruptEvent );
 
     /* Give back the mutex so the simulated interrupt handler unblocks
@@ -247,7 +244,7 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 
   /* Create the thread itself. */
   pxThreadState->pvThread = CreateThread( NULL, xStackSize, ( LPTHREAD_START_ROUTINE ) pxCode, pvParameters, CREATE_SUSPENDED | STACK_SIZE_PARAM_IS_A_RESERVATION, NULL );
-  configASSERT( pxThreadState->pvThread ); /* See comment where TerminateThread() is called. */
+
   SetThreadAffinityMask( pxThreadState->pvThread, 0x01 );
   SetThreadPriorityBoost( pxThreadState->pvThread, TRUE );
   SetThreadPriority( pxThreadState->pvThread, portTASK_THREAD_PRIORITY );
@@ -363,7 +360,6 @@ static uint32_t prvProcessTickInterrupt( void )
   uint32_t ulSwitchRequired;
 
   /* Process the tick itself. */
-  configASSERT( xPortRunning );
   ulSwitchRequired = ( uint32_t ) xTaskIncrementTick();
 
   return ulSwitchRequired;
@@ -471,7 +467,6 @@ static void prvProcessSimulatedInterrupts( void )
 
         /* pxThreadState->pvThread can be NULL if the task deleted
         itself - but a deleted task should never be resumed here. */
-        configASSERT( pxThreadState->pvThread != NULL );
         ResumeThread( pxThreadState->pvThread );
       }
     }
@@ -496,7 +491,6 @@ void vPortDeleteThread( void *pvTaskToDelete )
   ThreadState_t *pxThreadState;
   uint32_t ulErrorCode;
 
-  /* Remove compiler warnings if configASSERT() is not defined. */
   ( void ) ulErrorCode;
 
   /* Find the handle of the thread being deleted. */
@@ -515,10 +509,8 @@ void vPortDeleteThread( void *pvTaskToDelete )
     tasks (rather than deleting themselves) as the task stacks will not be
     freed. */
     ulErrorCode = TerminateThread( pxThreadState->pvThread, 0 );
-    configASSERT( ulErrorCode );
 
     ulErrorCode = CloseHandle( pxThreadState->pvThread );
-    configASSERT( ulErrorCode );
 
     ReleaseMutex( pvInterruptEventMutex );
   }
@@ -531,7 +523,6 @@ void vPortCloseRunningThread( void *pvTaskToDelete, volatile BaseType_t *pxPendY
   void *pvThread;
   uint32_t ulErrorCode;
 
-  /* Remove compiler warnings if configASSERT() is not defined. */
   ( void ) ulErrorCode;
 
   /* Find the handle of the thread being deleted. */
@@ -554,7 +545,6 @@ void vPortCloseRunningThread( void *pvTaskToDelete, volatile BaseType_t *pxPendY
 
   /* Close the thread. */
   ulErrorCode = CloseHandle( pvThread );
-  configASSERT( ulErrorCode );
 
   /* This is called from a critical section, which must be exited before the
   thread stops. */
@@ -574,8 +564,6 @@ void vPortEndScheduler( void )
 void vPortGenerateSimulatedInterrupt( uint32_t ulInterruptNumber )
 {
   ThreadState_t *pxThreadState = ( ThreadState_t *) *( ( size_t * ) pxCurrentTCB );
-
-  configASSERT( xPortRunning );
 
   if( ( ulInterruptNumber < portMAX_INTERRUPTS ) && ( pvInterruptEventMutex != NULL ) )
   {
@@ -663,8 +651,6 @@ void vPortExitCritical( void )
       {
         ThreadState_t *pxThreadState = ( ThreadState_t *) *( ( size_t * ) pxCurrentTCB );
 
-        configASSERT( xPortRunning );
-
         /* The interrupt won't actually executed until
         pvInterruptEventMutex is released as it waits on both
         pvInterruptEventMutex and pvInterruptEvent.
@@ -692,7 +678,6 @@ void vPortExitCritical( void )
   {
     if( lMutexNeedsReleasing == pdTRUE )
     {
-      configASSERT( xPortRunning );
       ReleaseMutex( pvInterruptEventMutex );
     }
   }

@@ -138,7 +138,6 @@
         /* Find the highest priority queue that contains ready tasks. */      \
         while( listLIST_IS_EMPTY( &( pxReadyTasksLists[ uxTopPriority ] ) ) ) \
         {                                                                     \
-            configASSERT( uxTopPriority );                                    \
             --uxTopPriority;                                                  \
         }                                                                     \
                                                                               \
@@ -173,7 +172,6 @@
                                                                                                 \
         /* Find the highest priority list that contains ready tasks. */                         \
         portGET_HIGHEST_PRIORITY( uxTopPriority, uxTopReadyPriority );                          \
-        configASSERT( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ uxTopPriority ] ) ) > 0 ); \
         listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &( pxReadyTasksLists[ uxTopPriority ] ) );   \
     } /* taskSELECT_HIGHEST_PRIORITY_TASK() */
 
@@ -201,8 +199,6 @@
         List_t * pxTemp;                                                          \
                                                                                   \
         /* The delayed tasks list should be empty when the lists are switched. */ \
-        configASSERT( ( listLIST_IS_EMPTY( pxDelayedTaskList ) ) );               \
-                                                                                  \
         pxTemp = pxDelayedTaskList;                                               \
         pxDelayedTaskList = pxOverflowDelayedTaskList;                            \
         pxOverflowDelayedTaskList = pxTemp;                                       \
@@ -572,20 +568,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB ) PRIVILEGED_FUNCTION;
         TCB_t * pxNewTCB;
         TaskHandle_t xReturn;
 
-        configASSERT( puxStackBuffer != NULL );
-        configASSERT( pxTaskBuffer != NULL );
-
-        #if ( configASSERT_DEFINED == 1 )
-            {
-                /* Sanity check that the size of the structure used to declare a
-                 * variable of type StaticTask_t equals the size of the real task
-                 * structure. */
-                volatile size_t xSize = sizeof( StaticTask_t );
-                configASSERT( xSize == sizeof( TCB_t ) );
-                ( void ) xSize; /* Prevent lint warning when configASSERT() is not used. */
-            }
-        #endif /* configASSERT_DEFINED */
-
         if( ( pxTaskBuffer != NULL ) && ( puxStackBuffer != NULL ) )
         {
             /* The memory used for the task's TCB and stack are passed into this
@@ -737,9 +719,6 @@ static void prvInitialiseNewTask( TaskFunction_t pxTaskCode,
             pxTopOfStack = &( pxNewTCB->pxStack[ ulStackDepth - ( uint32_t ) 1 ] );
             pxTopOfStack = ( StackType_t * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) & ( ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) ) ); /*lint !e923 !e9033 !e9078 MISRA exception.  Avoiding casts between pointers and integers is not practical.  Size differences accounted for using portPOINTER_SIZE_TYPE type.  Checked by assert(). */
 
-            /* Check the alignment of the calculated top of stack is correct. */
-            configASSERT( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack & ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) == 0UL ) );
-
             #if ( configRECORD_STACK_HIGH_ADDRESS == 1 )
                 {
                     /* Also record the stack's high address, which may assist
@@ -751,9 +730,6 @@ static void prvInitialiseNewTask( TaskFunction_t pxTaskCode,
     #else /* portSTACK_GROWTH */
         {
             pxTopOfStack = pxNewTCB->pxStack;
-
-            /* Check the alignment of the stack buffer is correct. */
-            configASSERT( ( ( ( portPOINTER_SIZE_TYPE ) pxNewTCB->pxStack & ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) == 0UL ) );
 
             /* The other extreme of the stack space is required if stack checking is
              * performed. */
@@ -1079,7 +1055,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         {
             if( pxTCB == pxCurrentTCB )
             {
-                configASSERT( uxSchedulerSuspended == 0 );
                 portYIELD_WITHIN_API();
             }
             else
@@ -1099,10 +1074,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
     {
         TickType_t xTimeToWake;
         BaseType_t xAlreadyYielded, xShouldDelay = pdFALSE;
-
-        configASSERT( pxPreviousWakeTime );
-        configASSERT( ( xTimeIncrement > 0U ) );
-        configASSERT( uxSchedulerSuspended == 0 );
 
         vTaskSuspendAll();
         {
@@ -1186,7 +1157,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         /* A delay time of zero just forces a reschedule. */
         if( xTicksToDelay > ( TickType_t ) 0U )
         {
-            configASSERT( uxSchedulerSuspended == 0 );
             vTaskSuspendAll();
             {
                 traceTASK_DELAY();
@@ -1229,8 +1199,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         eTaskState eReturn;
         List_t const * pxStateList, * pxDelayedList, * pxOverflowedDelayedList;
         const TCB_t * const pxTCB = xTask;
-
-        configASSERT( pxTCB );
 
         if( pxTCB == pxCurrentTCB )
         {
@@ -1352,12 +1320,8 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
          * maximum  system call (or maximum API call) interrupt priority.
          * Interrupts that are  above the maximum system call priority are keep
          * permanently enabled, even when the RTOS kernel is in a critical section,
-         * but cannot make any calls to FreeRTOS API functions.  If configASSERT()
-         * is defined in FreeRTOSConfig.h then
-         * portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-         * failure if a FreeRTOS API function is called from an interrupt that has
-         * been assigned a priority above the configured maximum system call
-         * priority.  Only FreeRTOS functions that end in FromISR can be called
+         * but cannot make any calls to FreeRTOS API functions.
+         * Only FreeRTOS functions that end in FromISR can be called
          * from interrupts  that have been assigned a priority at or (logically)
          * below the maximum system call interrupt priority.  FreeRTOS maintains a
          * separate interrupt safe API to ensure interrupt entry is as fast and as
@@ -1389,8 +1353,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         TCB_t * pxTCB;
         UBaseType_t uxCurrentBasePriority, uxPriorityUsedOnEntry;
         BaseType_t xYieldRequired = pdFALSE;
-
-        configASSERT( ( uxNewPriority < configMAX_PRIORITIES ) );
 
         /* Ensure the new priority is valid. */
         if( uxNewPriority >= ( UBaseType_t ) configMAX_PRIORITIES )
@@ -1622,7 +1584,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
             if( xSchedulerRunning != pdFALSE )
             {
                 /* The current task has just been suspended. */
-                configASSERT( uxSchedulerSuspended == 0 );
                 portYIELD_WITHIN_API();
             }
             else
@@ -1664,7 +1625,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
          * section. */
 
         /* It does not make sense to check if the calling task is suspended. */
-        configASSERT( xTask );
 
         /* Is the task being resumed actually in the suspended list? */
         if( listIS_CONTAINED_WITHIN( &xSuspendedTaskList, &( pxTCB->xStateListItem ) ) != pdFALSE )
@@ -1706,7 +1666,6 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         TCB_t * const pxTCB = xTaskToResume;
 
         /* It does not make sense to resume the calling task. */
-        configASSERT( xTaskToResume );
 
         /* The parameter cannot be NULL as it is impossible to resume the
          * currently executing task. */
@@ -1761,18 +1720,12 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         TCB_t * const pxTCB = xTaskToResume;
         UBaseType_t uxSavedInterruptStatus;
 
-        configASSERT( xTaskToResume );
-
         /* RTOS ports that support interrupt nesting have the concept of a
          * maximum  system call (or maximum API call) interrupt priority.
          * Interrupts that are  above the maximum system call priority are keep
          * permanently enabled, even when the RTOS kernel is in a critical section,
-         * but cannot make any calls to FreeRTOS API functions.  If configASSERT()
-         * is defined in FreeRTOSConfig.h then
-         * portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-         * failure if a FreeRTOS API function is called from an interrupt that has
-         * been assigned a priority above the configured maximum system call
-         * priority.  Only FreeRTOS functions that end in FromISR can be called
+         * but cannot make any calls to FreeRTOS API functions.
+         * Only FreeRTOS functions that end in FromISR can be called
          * from interrupts  that have been assigned a priority at or (logically)
          * below the maximum system call interrupt priority.  FreeRTOS maintains a
          * separate interrupt safe API to ensure interrupt entry is as fast and as
@@ -1940,7 +1893,7 @@ void vTaskStartScheduler( void )
         /* This line will only be reached if the kernel could not be started,
          * because there was not enough FreeRTOS heap to create the idle task
          * or the timer task. */
-        configASSERT( xReturn != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY );
+        ;
     }
 
     /* Prevent compiler warnings if INCLUDE_xTaskGetIdleTaskHandle is set to 0,
@@ -2051,7 +2004,6 @@ BaseType_t xTaskResumeAll( void )
 
     /* If uxSchedulerSuspended is zero then this function does not match a
      * previous call to vTaskSuspendAll(). */
-    configASSERT( uxSchedulerSuspended );
 
     /* It is possible that an ISR caused a task to be removed from an event
      * list while the scheduler was suspended.  If this was the case then the
@@ -2179,10 +2131,7 @@ TickType_t xTaskGetTickCountFromISR( void )
      * system call (or maximum API call) interrupt priority.  Interrupts that are
      * above the maximum system call priority are kept permanently enabled, even
      * when the RTOS kernel is in a critical section, but cannot make any calls to
-     * FreeRTOS API functions.  If configASSERT() is defined in FreeRTOSConfig.h
-     * then portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-     * failure if a FreeRTOS API function is called from an interrupt that has been
-     * assigned a priority above the configured maximum system call priority.
+     * FreeRTOS API functions.
      * Only FreeRTOS functions that end in FromISR can be called from interrupts
      * that have been assigned a priority at or (logically) below the maximum
      * system call  interrupt priority.  FreeRTOS maintains a separate interrupt
@@ -2216,7 +2165,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) /*lint !e971 Unqualified char 
     /* If null is passed in here then the name of the calling task is being
      * queried. */
     pxTCB = prvGetTCBFromHandle( xTaskToQuery );
-    configASSERT( pxTCB );
+
     return &( pxTCB->pcTaskName[ 0 ] );
 }
 /*-----------------------------------------------------------*/
@@ -2298,7 +2247,6 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) /*lint !e971 Unqualified char 
         TCB_t * pxTCB;
 
         /* Task names will be truncated to configMAX_TASK_NAME_LEN - 1 bytes. */
-        configASSERT( strlen( pcNameToQuery ) < configMAX_TASK_NAME_LEN );
 
         vTaskSuspendAll();
         {
@@ -2435,7 +2383,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) /*lint !e971 Unqualified char 
     {
         /* If xTaskGetIdleTaskHandle() is called before the scheduler has been
          * started, then xIdleTaskHandle will be NULL. */
-        configASSERT( ( xIdleTaskHandle != NULL ) );
+
         return xIdleTaskHandle;
     }
 
@@ -2453,7 +2401,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) /*lint !e971 Unqualified char 
         /* Correct the tick count value after a period during which the tick
          * was suppressed.  Note this does *not* call the tick hook function for
          * each stepped tick. */
-        configASSERT( ( xTickCount + xTicksToJump ) <= xNextTaskUnblockTime );
+
         xTickCount += xTicksToJump;
         traceINCREASE_TICK_COUNT( xTicksToJump );
     }
@@ -2467,7 +2415,6 @@ BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp )
 
     /* Must not be called with the scheduler suspended as the implementation
      * relies on xPendedTicks being wound down to 0 in xTaskResumeAll(). */
-    configASSERT( uxSchedulerSuspended == 0 );
 
     /* Use xPendedTicks to mimic xTicksToCatchUp number of ticks occurring when
      * the scheduler is suspended so the ticks are executed in xTaskResumeAll(). */
@@ -2485,8 +2432,6 @@ BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp )
     {
         TCB_t * pxTCB = xTask;
         BaseType_t xReturn;
-
-        configASSERT( pxTCB );
 
         vTaskSuspendAll();
         {
@@ -2923,8 +2868,6 @@ void vTaskSwitchContext( void )
 void vTaskPlaceOnEventList( List_t * const pxEventList,
                             const TickType_t xTicksToWait )
 {
-    configASSERT( pxEventList );
-
     /* THIS FUNCTION MUST BE CALLED WITH EITHER INTERRUPTS DISABLED OR THE
      * SCHEDULER SUSPENDED AND THE QUEUE BEING ACCESSED LOCKED. */
 
@@ -2942,11 +2885,8 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
                                      const TickType_t xItemValue,
                                      const TickType_t xTicksToWait )
 {
-    configASSERT( pxEventList );
-
     /* THIS FUNCTION MUST BE CALLED WITH THE SCHEDULER SUSPENDED.  It is used by
      * the event groups implementation. */
-    configASSERT( uxSchedulerSuspended != 0 );
 
     /* Store the item value in the event list item.  It is safe to access the
      * event list item here as interrupts won't access the event list item of a
@@ -2970,8 +2910,6 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
                                           TickType_t xTicksToWait,
                                           const BaseType_t xWaitIndefinitely )
     {
-        configASSERT( pxEventList );
-
         /* This function should not be called by application code hence the
          * 'Restricted' in its name.  It is not part of the public API.  It is
          * designed for use by kernel code, and has special calling requirements -
@@ -3018,7 +2956,7 @@ BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList )
      * This function assumes that a check has already been made to ensure that
      * pxEventList is not empty. */
     pxUnblockedTCB = listGET_OWNER_OF_HEAD_ENTRY( pxEventList ); /*lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is known to be fine as the type of the pointer stored and retrieved is the same. */
-    configASSERT( pxUnblockedTCB );
+
     ( void ) uxListRemove( &( pxUnblockedTCB->xEventListItem ) );
 
     if( uxSchedulerSuspended == ( UBaseType_t ) pdFALSE )
@@ -3074,7 +3012,6 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
 
     /* THIS FUNCTION MUST BE CALLED WITH THE SCHEDULER SUSPENDED.  It is used by
      * the event flags implementation. */
-    configASSERT( uxSchedulerSuspended != pdFALSE );
 
     /* Store the new item value in the event list. */
     listSET_LIST_ITEM_VALUE( pxEventListItem, xItemValue | taskEVENT_LIST_ITEM_VALUE_IN_USE );
@@ -3082,7 +3019,7 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
     /* Remove the event list form the event flag.  Interrupts do not access
      * event flags. */
     pxUnblockedTCB = listGET_LIST_ITEM_OWNER( pxEventListItem ); /*lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is known to be fine as the type of the pointer stored and retrieved is the same. */
-    configASSERT( pxUnblockedTCB );
+
     ( void ) uxListRemove( pxEventListItem );
 
     #if ( configUSE_TICKLESS_IDLE != 0 )
@@ -3118,7 +3055,6 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
 
 void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut )
 {
-    configASSERT( pxTimeOut );
     taskENTER_CRITICAL();
     {
         pxTimeOut->xOverflowCount = xNumOfOverflows;
@@ -3140,9 +3076,6 @@ BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
                                  TickType_t * const pxTicksToWait )
 {
     BaseType_t xReturn;
-
-    configASSERT( pxTimeOut );
-    configASSERT( pxTicksToWait );
 
     taskENTER_CRITICAL();
     {
@@ -3343,7 +3276,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
                         /* Now the scheduler is suspended, the expected idle
                          * time can be sampled again, and this time its value can
                          * be used. */
-                        configASSERT( xNextTaskUnblockTime >= xTickCount );
+
                         xExpectedIdleTime = prvGetExpectedIdleTime();
 
                         /* Define the following macro to set xExpectedIdleTime to 0
@@ -3433,7 +3366,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
         if( xIndex < configNUM_THREAD_LOCAL_STORAGE_POINTERS )
         {
             pxTCB = prvGetTCBFromHandle( xTaskToSet );
-            configASSERT( pxTCB != NULL );
+
             pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pvValue;
         }
     }
@@ -3916,8 +3849,6 @@ static void prvResetNextTaskUnblockTime( void )
              * If the mutex is held by a task then it cannot be given from an
              * interrupt, and if a mutex is given by the holding task then it must
              * be the running state task. */
-            configASSERT( pxTCB == pxCurrentTCB );
-            configASSERT( pxTCB->uxMutexesHeld );
             ( pxTCB->uxMutexesHeld )--;
 
             /* Has the holder of the mutex inherited the priority of another
@@ -3996,7 +3927,6 @@ static void prvResetNextTaskUnblockTime( void )
         {
             /* If pxMutexHolder is not NULL then the holder must hold at least
              * one mutex. */
-            configASSERT( pxTCB->uxMutexesHeld );
 
             /* Determine the priority to which the priority of the task that
              * holds the mutex should be set.  This will be the greater of the
@@ -4023,7 +3953,6 @@ static void prvResetNextTaskUnblockTime( void )
                     /* If a task has timed out because it already holds the
                      * mutex it was trying to obtain then it cannot of inherited
                      * its own priority. */
-                    configASSERT( pxTCB != pxCurrentTCB );
 
                     /* Disinherit the priority, remembering the previous
                      * priority to facilitate determining the subject task's
@@ -4449,8 +4378,6 @@ TickType_t uxTaskResetEventItemValue( void )
     {
         uint32_t ulReturn;
 
-        configASSERT( uxIndexToWait < configTASK_NOTIFICATION_ARRAY_ENTRIES );
-
         taskENTER_CRITICAL();
         {
             /* Only block if the notification count is not already non-zero. */
@@ -4522,8 +4449,6 @@ TickType_t uxTaskResetEventItemValue( void )
                                        TickType_t xTicksToWait )
     {
         BaseType_t xReturn;
-
-        configASSERT( uxIndexToWait < configTASK_NOTIFICATION_ARRAY_ENTRIES );
 
         taskENTER_CRITICAL();
         {
@@ -4611,8 +4536,6 @@ TickType_t uxTaskResetEventItemValue( void )
         BaseType_t xReturn = pdPASS;
         uint8_t ucOriginalNotifyState;
 
-        configASSERT( uxIndexToNotify < configTASK_NOTIFICATION_ARRAY_ENTRIES );
-        configASSERT( xTaskToNotify );
         pxTCB = xTaskToNotify;
 
         taskENTER_CRITICAL();
@@ -4665,7 +4588,6 @@ TickType_t uxTaskResetEventItemValue( void )
                     /* Should not get here if all enums are handled.
                      * Artificially force an assert by testing a value the
                      * compiler can't assume is const. */
-                    configASSERT( xTickCount == ( TickType_t ) 0 );
 
                     break;
             }
@@ -4680,7 +4602,6 @@ TickType_t uxTaskResetEventItemValue( void )
                 prvAddTaskToReadyList( pxTCB );
 
                 /* The task should not have been on an event list. */
-                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
 
                 #if ( configUSE_TICKLESS_IDLE != 0 )
                     {
@@ -4736,19 +4657,12 @@ TickType_t uxTaskResetEventItemValue( void )
         BaseType_t xReturn = pdPASS;
         UBaseType_t uxSavedInterruptStatus;
 
-        configASSERT( xTaskToNotify );
-        configASSERT( uxIndexToNotify < configTASK_NOTIFICATION_ARRAY_ENTRIES );
-
         /* RTOS ports that support interrupt nesting have the concept of a
          * maximum  system call (or maximum API call) interrupt priority.
          * Interrupts that are  above the maximum system call priority are keep
          * permanently enabled, even when the RTOS kernel is in a critical section,
-         * but cannot make any calls to FreeRTOS API functions.  If configASSERT()
-         * is defined in FreeRTOSConfig.h then
-         * portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-         * failure if a FreeRTOS API function is called from an interrupt that has
-         * been assigned a priority above the configured maximum system call
-         * priority.  Only FreeRTOS functions that end in FromISR can be called
+         * but cannot make any calls to FreeRTOS API functions.
+         * Only FreeRTOS functions that end in FromISR can be called
          * from interrupts  that have been assigned a priority at or (logically)
          * below the maximum system call interrupt priority.  FreeRTOS maintains a
          * separate interrupt safe API to ensure interrupt entry is as fast and as
@@ -4808,7 +4722,6 @@ TickType_t uxTaskResetEventItemValue( void )
                     /* Should not get here if all enums are handled.
                      * Artificially force an assert by testing a value the
                      * compiler can't assume is const. */
-                    configASSERT( xTickCount == ( TickType_t ) 0 );
                     break;
             }
 
@@ -4819,7 +4732,6 @@ TickType_t uxTaskResetEventItemValue( void )
             if( ucOriginalNotifyState == taskWAITING_NOTIFICATION )
             {
                 /* The task should not have been on an event list. */
-                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
 
                 if( uxSchedulerSuspended == ( UBaseType_t ) pdFALSE )
                 {
@@ -4871,19 +4783,12 @@ TickType_t uxTaskResetEventItemValue( void )
         uint8_t ucOriginalNotifyState;
         UBaseType_t uxSavedInterruptStatus;
 
-        configASSERT( xTaskToNotify );
-        configASSERT( uxIndexToNotify < configTASK_NOTIFICATION_ARRAY_ENTRIES );
-
         /* RTOS ports that support interrupt nesting have the concept of a
          * maximum  system call (or maximum API call) interrupt priority.
          * Interrupts that are  above the maximum system call priority are keep
          * permanently enabled, even when the RTOS kernel is in a critical section,
-         * but cannot make any calls to FreeRTOS API functions.  If configASSERT()
-         * is defined in FreeRTOSConfig.h then
-         * portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-         * failure if a FreeRTOS API function is called from an interrupt that has
-         * been assigned a priority above the configured maximum system call
-         * priority.  Only FreeRTOS functions that end in FromISR can be called
+         * but cannot make any calls to FreeRTOS API functions.
+         * Only FreeRTOS functions that end in FromISR can be called
          * from interrupts  that have been assigned a priority at or (logically)
          * below the maximum system call interrupt priority.  FreeRTOS maintains a
          * separate interrupt safe API to ensure interrupt entry is as fast and as
@@ -4910,7 +4815,6 @@ TickType_t uxTaskResetEventItemValue( void )
             if( ucOriginalNotifyState == taskWAITING_NOTIFICATION )
             {
                 /* The task should not have been on an event list. */
-                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
 
                 if( uxSchedulerSuspended == ( UBaseType_t ) pdFALSE )
                 {
@@ -4957,8 +4861,6 @@ TickType_t uxTaskResetEventItemValue( void )
     {
         TCB_t * pxTCB;
         BaseType_t xReturn;
-
-        configASSERT( uxIndexToClear < configTASK_NOTIFICATION_ARRAY_ENTRIES );
 
         /* If null is passed in here then it is the calling task that is having
          * its notification state cleared. */

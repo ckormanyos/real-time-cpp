@@ -98,13 +98,15 @@ The port for the ATmega328P target can be found in
 This OS-portable part has been modified for this example
 via changes including switching from a C to a C++ file,
 cleaning up spaces, tabs and alignment of typing.
+In addition, some configuration macros and config checks
+have been removed simplification purposes.
 The OS tick uses `compare-match-a` from `timer1` to generate
 a tick interrupt at $100~\text{Hz}$ (i.e., approximately every $10~\text{ms}$)
 using an undecorated ISR handle named `__vector_11`.
 
 When using the simulated host (such as `_MSC_VER` or GCC on `x86_64`),
 FreeRTOS is not used, but rather the C++ `<thread>` and `<chrono>` libraries
-are used for simulated task scheduling. The `<thread>` library
+are used for task timing and scheduling. The `<thread>` library
 does not use adjustable priorities in this case, but the thread scheduler
 supports preemptive scheduling and emulates the desired timing quite well.
 
