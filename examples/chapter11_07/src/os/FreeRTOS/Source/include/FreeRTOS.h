@@ -219,25 +219,6 @@
     #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
 #endif
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
-
-/* configPRECONDITION should be defined as configASSERT.
- * The CBMC proofs need a way to track assumptions and assertions.
- * A configPRECONDITION statement should express an implicit invariant or
- * assumption made.  A configASSERT statement should express an invariant that must
- * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
-
 #ifndef portMEMORY_BARRIER
     #define portMEMORY_BARRIER()
 #endif

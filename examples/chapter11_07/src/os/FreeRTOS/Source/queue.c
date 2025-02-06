@@ -266,8 +266,6 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
 {
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
-
     taskENTER_CRITICAL();
     {
         pxQueue->u.xQueue.pcTail = pxQueue->pcHead + ( pxQueue->uxLength * pxQueue->uxItemSize ); /*lint !e9016 Pointer arithmetic allowed on char types, especially when it assists conveying intent. */
@@ -325,27 +323,11 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
     {
         Queue_t * pxNewQueue;
 
-        configASSERT( uxQueueLength > ( UBaseType_t ) 0 );
-
         /* The StaticQueue_t structure and the queue storage area must be
          * supplied. */
-        configASSERT( pxStaticQueue != NULL );
 
         /* A queue storage area should be provided if the item size is not 0, and
          * should not be provided if the item size is 0. */
-        configASSERT( !( ( pucQueueStorage != NULL ) && ( uxItemSize == 0 ) ) );
-        configASSERT( !( ( pucQueueStorage == NULL ) && ( uxItemSize != 0 ) ) );
-
-        #if ( configASSERT_DEFINED == 1 )
-            {
-                /* Sanity check that the size of the structure used to declare a
-                 * variable of type StaticQueue_t or StaticSemaphore_t equals the size of
-                 * the real queue and semaphore structures. */
-                volatile size_t xSize = sizeof( StaticQueue_t );
-                configASSERT( xSize == sizeof( Queue_t ) );
-                ( void ) xSize; /* Keeps lint quiet when configASSERT() is not defined. */
-            }
-        #endif /* configASSERT_DEFINED */
 
         /* The address of a statically allocated queue was passed in, use it.
          * The address of a statically allocated storage area was also passed in
@@ -387,15 +369,10 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
         size_t xQueueSizeInBytes;
         uint8_t * pucQueueStorage;
 
-        configASSERT( uxQueueLength > ( UBaseType_t ) 0 );
-
         /* Allocate enough space to hold the maximum number of items that
          * can be in the queue at any time.  It is valid for uxItemSize to be
          * zero in the case the queue is used as a semaphore. */
         xQueueSizeInBytes = ( size_t ) ( uxQueueLength * uxItemSize ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
-
-        /* Check for multiplication overflow. */
-        configASSERT( ( uxItemSize == 0 ) || ( uxQueueLength == ( xQueueSizeInBytes / uxItemSize ) ) );
 
         /* Allocate the queue and storage area.  Justification for MISRA
          * deviation as follows:  pvPortMalloc() always ensures returned memory
@@ -588,8 +565,6 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
     {
         TaskHandle_t pxReturn;
 
-        configASSERT( xSemaphore );
-
         /* Mutexes cannot be used in interrupt service routines, so the mutex
          * holder should not change in an ISR, and therefore a critical section is
          * not required here. */
@@ -614,8 +589,6 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
     {
         BaseType_t xReturn;
         Queue_t * const pxMutex = ( Queue_t * ) xMutex;
-
-        configASSERT( pxMutex );
 
         /* If this is the task that holds the mutex then xMutexHolder will not
          * change outside of this task.  If this task does not hold the mutex then
@@ -671,8 +644,6 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
         BaseType_t xReturn;
         Queue_t * const pxMutex = ( Queue_t * ) xMutex;
 
-        configASSERT( pxMutex );
-
         /* Comments regarding mutual exclusion as per those within
          * xQueueGiveMutexRecursive(). */
 
@@ -714,9 +685,6 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
     {
         QueueHandle_t xHandle;
 
-        configASSERT( uxMaxCount != 0 );
-        configASSERT( uxInitialCount <= uxMaxCount );
-
         xHandle = xQueueGenericCreateStatic( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
         if( xHandle != NULL )
@@ -742,9 +710,6 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
                                                  const UBaseType_t uxInitialCount )
     {
         QueueHandle_t xHandle;
-
-        configASSERT( uxMaxCount != 0 );
-        configASSERT( uxInitialCount <= uxMaxCount );
 
         xHandle = xQueueGenericCreate( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
@@ -773,15 +738,6 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
     BaseType_t xEntryTimeSet = pdFALSE, xYieldRequired;
     TimeOut_t xTimeOut;
     Queue_t * const pxQueue = xQueue;
-
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
-        {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
-        }
-    #endif
 
     /*lint -save -e904 This function relaxes the coding standard somewhat to
      * allow return statements within the function itself.  This is done in the
@@ -986,18 +942,11 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
     UBaseType_t uxSavedInterruptStatus;
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
-
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
      * above the maximum system call priority are kept permanently enabled, even
      * when the RTOS kernel is in a critical section, but cannot make any calls to
-     * FreeRTOS API functions.  If configASSERT() is defined in FreeRTOSConfig.h
-     * then portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-     * failure if a FreeRTOS API function is called from an interrupt that has been
-     * assigned a priority above the configured maximum system call priority.
+     * FreeRTOS API functions.
      * Only FreeRTOS functions that end in FromISR can be called from interrupts
      * that have been assigned a priority at or (logically) below the maximum
      * system call interrupt priority.  FreeRTOS maintains a separate interrupt
@@ -1125,7 +1074,6 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                configASSERT( cTxLock != queueINT8_MAX );
 
                 pxQueue->cTxLock = ( int8_t ) ( cTxLock + 1 );
             }
@@ -1157,25 +1105,18 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
      * not (i.e. has a task with a higher priority than us been woken by this
      * post). */
 
-    configASSERT( pxQueue );
-
     /* xQueueGenericSendFromISR() should be used instead of xQueueGiveFromISR()
      * if the item size is not 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
 
     /* Normally a mutex would not be given from an interrupt, especially if
      * there is a mutex holder, as priority inheritance makes no sense for an
      * interrupts, only tasks. */
-    configASSERT( !( ( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX ) && ( pxQueue->u.xSemaphore.xMutexHolder != NULL ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
      * above the maximum system call priority are kept permanently enabled, even
      * when the RTOS kernel is in a critical section, but cannot make any calls to
-     * FreeRTOS API functions.  If configASSERT() is defined in FreeRTOSConfig.h
-     * then portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-     * failure if a FreeRTOS API function is called from an interrupt that has been
-     * assigned a priority above the configured maximum system call priority.
+     * FreeRTOS API functions.
      * Only FreeRTOS functions that end in FromISR can be called from interrupts
      * that have been assigned a priority at or (logically) below the maximum
      * system call interrupt priority.  FreeRTOS maintains a separate interrupt
@@ -1293,7 +1234,6 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                configASSERT( cTxLock != queueINT8_MAX );
 
                 pxQueue->cTxLock = ( int8_t ) ( cTxLock + 1 );
             }
@@ -1319,20 +1259,6 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
     BaseType_t xEntryTimeSet = pdFALSE;
     TimeOut_t xTimeOut;
     Queue_t * const pxQueue = xQueue;
-
-    /* Check the pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
-
-    /* The buffer into which data is received can only be NULL if the data size
-     * is zero (so no data is copied into the buffer). */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
-
-    /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
-        {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
-        }
-    #endif
 
     /*lint -save -e904  This function relaxes the coding standard somewhat to
      * allow return statements within the function itself.  This is done in the
@@ -1466,20 +1392,6 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
         BaseType_t xInheritanceOccurred = pdFALSE;
     #endif
 
-    /* Check the queue pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
-
-    /* Check this really is a semaphore, in which case the item size will be
-     * 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
-
-    /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
-        {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
-        }
-    #endif
-
     /*lint -save -e904 This function relaxes the coding standard somewhat to allow return
      * statements within the function itself.  This is done in the interest
      * of execution time efficiency. */
@@ -1544,11 +1456,6 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
                     /* For inheritance to have occurred there must have been an
                      * initial timeout, and an adjusted timeout cannot become 0, as
                      * if it were 0 the function would have exited. */
-                    #if ( configUSE_MUTEXES == 1 )
-                        {
-                            configASSERT( xInheritanceOccurred == pdFALSE );
-                        }
-                    #endif /* configUSE_MUTEXES */
 
                     /* The semaphore count was 0 and no block time is specified
                      * (or the block time has expired) so exit now. */
@@ -1682,20 +1589,6 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
     TimeOut_t xTimeOut;
     int8_t * pcOriginalReadPosition;
     Queue_t * const pxQueue = xQueue;
-
-    /* Check the pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
-
-    /* The buffer into which data is received can only be NULL if the data size
-     * is zero (so no data is copied into the buffer. */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
-
-    /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
-        {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
-        }
-    #endif
 
     /*lint -save -e904  This function relaxes the coding standard somewhat to
      * allow return statements within the function itself.  This is done in the
@@ -1833,17 +1726,11 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
     UBaseType_t uxSavedInterruptStatus;
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
      * above the maximum system call priority are kept permanently enabled, even
      * when the RTOS kernel is in a critical section, but cannot make any calls to
-     * FreeRTOS API functions.  If configASSERT() is defined in FreeRTOSConfig.h
-     * then portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-     * failure if a FreeRTOS API function is called from an interrupt that has been
-     * assigned a priority above the configured maximum system call priority.
+     * FreeRTOS API functions.
      * Only FreeRTOS functions that end in FromISR can be called from interrupts
      * that have been assigned a priority at or (logically) below the maximum
      * system call interrupt priority.  FreeRTOS maintains a separate interrupt
@@ -1901,7 +1788,6 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was removed while it was locked. */
-                configASSERT( cRxLock != queueINT8_MAX );
 
                 pxQueue->cRxLock = ( int8_t ) ( cRxLock + 1 );
             }
@@ -1928,18 +1814,11 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
     int8_t * pcOriginalReadPosition;
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( pxQueue->uxItemSize != 0 ); /* Can't peek a semaphore. */
-
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
      * above the maximum system call priority are kept permanently enabled, even
      * when the RTOS kernel is in a critical section, but cannot make any calls to
-     * FreeRTOS API functions.  If configASSERT() is defined in FreeRTOSConfig.h
-     * then portASSERT_IF_INTERRUPT_PRIORITY_INVALID() will result in an assertion
-     * failure if a FreeRTOS API function is called from an interrupt that has been
-     * assigned a priority above the configured maximum system call priority.
+     * FreeRTOS API functions.
      * Only FreeRTOS functions that end in FromISR can be called from interrupts
      * that have been assigned a priority at or (logically) below the maximum
      * system call interrupt priority.  FreeRTOS maintains a separate interrupt
@@ -1979,8 +1858,6 @@ UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue )
 {
     UBaseType_t uxReturn;
 
-    configASSERT( xQueue );
-
     taskENTER_CRITICAL();
     {
         uxReturn = ( ( Queue_t * ) xQueue )->uxMessagesWaiting;
@@ -1995,8 +1872,6 @@ UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue )
 {
     UBaseType_t uxReturn;
     Queue_t * const pxQueue = xQueue;
-
-    configASSERT( pxQueue );
 
     taskENTER_CRITICAL();
     {
@@ -2013,7 +1888,6 @@ UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue )
     UBaseType_t uxReturn;
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
     uxReturn = pxQueue->uxMessagesWaiting;
 
     return uxReturn;
@@ -2024,7 +1898,6 @@ void vQueueDelete( QueueHandle_t xQueue )
 {
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
     traceQUEUE_DELETE( pxQueue );
 
     #if ( configQUEUE_REGISTRY_SIZE > 0 )
@@ -2370,8 +2243,6 @@ BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue )
     BaseType_t xReturn;
     Queue_t * const pxQueue = xQueue;
 
-    configASSERT( pxQueue );
-
     if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
     {
         xReturn = pdTRUE;
@@ -2410,8 +2281,6 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
 {
     BaseType_t xReturn;
     Queue_t * const pxQueue = xQueue;
-
-    configASSERT( pxQueue );
 
     if( pxQueue->uxMessagesWaiting == pxQueue->uxLength )
     {
@@ -2964,9 +2833,6 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
 
         /* This function must be called form a critical section. */
 
-        configASSERT( pxQueueSetContainer );
-        configASSERT( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength );
-
         if( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength )
         {
             const int8_t cTxLock = pxQueueSetContainer->cTxLock;
@@ -2997,8 +2863,6 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
             }
             else
             {
-                configASSERT( cTxLock != queueINT8_MAX );
-
                 pxQueueSetContainer->cTxLock = ( int8_t ) ( cTxLock + 1 );
             }
         }

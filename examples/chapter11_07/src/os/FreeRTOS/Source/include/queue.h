@@ -520,10 +520,7 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * QueueHandle_t xQueue;
  * uint32_t ulVarToSend, ulValReceived;
  *
- *  // Create a queue to hold one uint32_t value.  It is strongly
- *  // recommended *not* to use xQueueOverwrite() on queues that can
- *  // contain more than one value, and doing so will trigger an assertion
- *  // if configASSERT() is defined.
+ *  // Create a queue to hold one uint32_t value.
  *  xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
  *
  *  // Write the value 10 to the queue using xQueueOverwrite().
@@ -1123,10 +1120,7 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * void vFunction( void *pvParameters )
  * {
- *  // Create a queue to hold one uint32_t value.  It is strongly
- *  // recommended *not* to use xQueueOverwriteFromISR() on queues that can
- *  // contain more than one value, and doing so will trigger an assertion
- *  // if configASSERT() is defined.
+ *  // Create a queue to hold one uint32_t value.
  *  xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
  * }
  *
