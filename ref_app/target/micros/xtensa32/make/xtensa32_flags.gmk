@@ -82,6 +82,7 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -T esp32.rom.libgcc.ld                                            \
                 -T esp32.rom.spiram_incompatible_fns.ld                           \
                 -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -Wl,--start-group                                                 \
                 $(SDK_LIBS)                                                       \
                 -Wl,--end-group                                                   \
