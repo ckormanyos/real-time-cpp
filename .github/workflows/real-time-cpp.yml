@@ -229,6 +229,30 @@ jobs:
           ./target/build/build.sh ${{ matrix.suite }} rebuild
           ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
         working-directory: ./ref_app/
+  target-xtensa32:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ xtensa32 ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: update-tools
+        run: |
+          wget --no-check-certificate https://github.com/espressif/crosstool-NG/releases/download/esp-14.2.0_20241119/xtensa-esp-elf-14.2.0_20241119-x86_64-linux-gnu.tar.gz
+          tar -xzf xtensa-esp-elf-14.2.0_20241119-x86_64-linux-gnu.tar.gz -C ${{ runner.workspace }}
+        working-directory: ./
+      - name: target-xtensa32-${{ matrix.suite }}
+        run: |
+          PATH="${{ runner.workspace }}/xtensa-esp-elf/bin:$PATH"
+          ./target/build/build.sh ${{ matrix.suite }} rebuild
+          ls -la ./bin/ref_app.elf ./bin/ref_app.hex ./bin/ref_app.map ./bin/ref_app.s19
+        working-directory: ./ref_app/
   target-x86_64:
     runs-on: ubuntu-latest
     steps:

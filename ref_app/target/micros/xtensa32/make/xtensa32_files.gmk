@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2018 - 2024.
+#  Copyright Christopher Kormanyos 2018 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,4 +12,5 @@
 FILES_TGT       = $(PATH_APP)/mcal/$(TGT)/from_sdk/esp32-hal-gpio                                      \
                   $(PATH_APP)/util/STL/impl/cmath_impl_gamma                                           \
                   $(PATH_APP)/util/STL/impl/cmath_impl_hyperbolic                                      \
-                  $(PATH_TGT)/startup/app_main
+                  $(PATH_TGT)/startup/app_main                                                         \
+                  $(PATH_TGT)/startup/esp_stubs

@@ -1072,6 +1072,8 @@
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\crt1.cpp" />
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp" />
+    <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
+    <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />

@@ -1,5 +1,5 @@
 #
-#  Copyright Christopher Kormanyos 2018 - 2024.
+#  Copyright Christopher Kormanyos 2018 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -45,21 +45,20 @@ TGT_ALLFLAGS  = -Os                                                             
                 $(FLAGS_SDK)                                                      \
                 $(DEFINES_SDK)
 
-TGT_CFLAGS    = -std=gnu99                                                        \
+TGT_CFLAGS    = -std=gnu11                                                        \
                 -nostdlib                                                         \
                 -Wno-unsuffixed-float-constants                                   \
                 -Wno-old-style-declaration                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++14                                                        \
+TGT_CXXFLAGS  = -std=c++20                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
-SDK_LIBS      = -lapp_update                    \
-                -lbootloader_support            \
+SDK_LIBS      = -lbootloader_support            \
                 -lcoexist                       \
                 -ldriver                        \
                 -lefuse                         \
@@ -68,13 +67,10 @@ SDK_LIBS      = -lapp_update                    \
                 -lfreertos                      \
                 -lhal                           \
                 -lheap                          \
-                -llog                           \
                 -lnewlib                        \
                 -lpthread                       \
                 -lsoc                           \
-                -lspi_flash                     \
-                -lvfs                           \
-                -lxtensa-debug-module
+                -lvfs
 
 TGT_LDFLAGS   = -nostdlib                                                         \
                 -L$(PATH_TGT_MAKE)/from_sdk/lib                                   \
@@ -86,11 +82,17 @@ TGT_LDFLAGS   = -nostdlib                                                       
                 -T esp32.rom.libgcc.ld                                            \
                 -T esp32.rom.spiram_incompatible_fns.ld                           \
                 -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
                 -Wl,--start-group                                                 \
                 $(SDK_LIBS)                                                       \
                 -Wl,--end-group                                                   \
                 -Wl,-EL
 
+
+RULE_SPECIAL_MAKE_IMAGE_FILE :=
+
+
+ifeq ($(TYP_OS),WIN)
 
 # copy "C:\\Program Files (x86)\\Arduino\\hardware\\espressif\\esp32\\tools\\partitions\\default.csv" "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943\\partitions.csv"
 # C:\Program Files (x86)\Arduino\hardware\espressif\esp32\tools\gen_esp32part.exe -q "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943/partitions.csv" "C:\\Users\\User\\AppData\\Local\\Temp\\arduino_build_946943/Blink.ino.partitions.bin"
@@ -112,7 +114,7 @@ ESP32_ESP_TOOL_FLAGS_IMAG      = --chip esp32                         \
                                  $(APP).elf
 
 ESP32_ESP_TOOL_FLAGS_PROG      = --chip esp32                         \
-                                 --port COM6                          \
+                                 --port COM3                          \
                                  --baud 115200                        \
                                  --before default_reset               \
                                  --after hard_reset write_flash       \
@@ -127,7 +129,7 @@ ESP32_ESP_TOOL_FLAGS_PROG      = --chip esp32                         \
 
 # TBD: ESP tool commands use WinDOS commands. Are there *nix equivalents?
 
-RULE_SPECIAL_MAKE_IMAGE_FILE   =    $(subst /,\,$(ESP32_ESP_TOOL)) $(ESP32_ESP_TOOL_FLAGS_IMAG)                                 \
+RULE_SPECIAL_MAKE_IMAGE_FILE  :=    $(subst /,\,$(ESP32_ESP_TOOL)) $(ESP32_ESP_TOOL_FLAGS_IMAG)                                 \
                                  && $(subst /,\,$(ESP32_GEN_PART)) -q $(subst /,\,$(PATH_TGT)/startup/partitions.csv) $(APP).partitions.bin
 
 ESP32_ESP_TOOL_CMD_COPY_PART1  = copy /Y $(subst /,\,$(ESP32_GEN_PART))                          $(subst /,\,$(CURDIR)/bin) > 2 > NUL
@@ -142,3 +144,5 @@ RULE_SPECIAL_MAKE_FLASH_BATCH :=    $(ESP32_ESP_TOOL_CMD_COPY_PART1)   \
                                  && $(ESP32_ESP_TOOL_CMD_COPY_PART3)   \
                                  && $(ESP32_ESP_TOOL_CMD_COPY_PART4)   \
                                  && $(ESP32_ESP_TOOL_CMD_ECHO)
+
+endif
