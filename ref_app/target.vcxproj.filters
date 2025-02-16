@@ -902,6 +902,12 @@
     <ClCompile Include="target\micros\rpi_pico2_rp2350\startup\int_vect.cpp">
       <Filter>micros\rpi_pico2_rp2350\startup</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp">
+      <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
