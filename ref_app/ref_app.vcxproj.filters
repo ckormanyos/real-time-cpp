@@ -796,7 +796,7 @@
     <ClCompile Include="src\mcal\bcm2835_raspi_b\mcal_cpu_detail.cpp">
       <Filter>src\mcal\bcm2835_raspi_b</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.c">
+    <ClCompile Include="src\mcal\xtensa32\from_sdk\esp32-hal-gpio.cpp">
       <Filter>src\mcal\xtensa32\from_sdk</Filter>
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_wide_decimal.cpp">

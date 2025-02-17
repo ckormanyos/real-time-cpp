@@ -42,6 +42,18 @@ extern "C"
 
   int esp_ota_get_app_elf_sha256(char*, ::std::size_t);
 
+  using esp_err_t = int;
+
+  esp_err_t esp_coex_adapter_register(void*);
+
+  esp_err_t coex_pre_init();
+
+  void __attribute__((noreturn)) __assert_func(const char*, int, const char*, const char*);
+
+  int fprintf(void*, const char* format, ... );
+
+  int snprintf(char*, std::size_t, const char*, ... );
+
   ::std::uint32_t esp_log_timestamp() { return UINT32_C(0); }
 
   void esp_log_level_set(const char*, esp_log_level_t) { }
@@ -57,4 +69,12 @@ extern "C"
   void eri_write(int, ::std::uint32_t) { }
 
   int esp_ota_get_app_elf_sha256(char*, ::std::size_t) { return -1; }
+
+  esp_err_t esp_coex_adapter_register(void*) { return -1; }
+
+  esp_err_t coex_pre_init() { return -1; }
+
+  void __attribute__((noreturn)) __assert_func(const char*, int, const char*, const char*) { for(;;) { ; } }
+
+  int snprintf(char*, std::size_t, const char*, ... ) { return -1; }
 }

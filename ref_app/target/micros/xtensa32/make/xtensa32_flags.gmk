@@ -51,7 +51,7 @@ TGT_CFLAGS    = -std=gnu11                                                      
                 -Wno-old-style-declaration                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_CXXFLAGS  = -std=c++20                                                        \
+TGT_CXXFLAGS  = -std=c++23                                                        \
                 $(TGT_ALLFLAGS)
 
 TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
@@ -59,7 +59,6 @@ TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
 TGT_AFLAGS    =
 
 SDK_LIBS      = -lbootloader_support            \
-                -lcoexist                       \
                 -ldriver                        \
                 -lefuse                         \
                 -lesp_ringbuf                   \
