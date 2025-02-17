@@ -388,12 +388,17 @@ on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at $20~\text{MHz}$.
 The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
-The Espressif (XTENSA) NodeMCU ESP32 implementation uses
-a subset of the Espressif SDK to run the reference application
-with a single OS task exclusively on 1 of its cores.
+The Espressif (`target xtensa32`) port for NodeMCU ESP32
+uses a subset of the
+[Espressif SDK](https://github.com/espressif/esp-idf)
+to run the reference application.
+This somewhat unconventional implementation configures
+$1$ single OS task running exclusively on $1$ CPU core only.
+Additional reductions in code/memory size(s) have been accomplished
+via selective stubbing of library functions.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
-called "target lpc11c24" toggles the LED on `port0.8`.
+called `target lpc11c24` toggles the LED on `port0.8`.
 
 The ARM(R) Cortex(R)-M3 configuration (called `target stm32f100`) runs on
 the STM32VL-DISCOVERY board commercially available from ST Microelectronics(R).
@@ -465,7 +470,7 @@ structure as the `2040`. Similarly the dual-core startup was
 pioneered by the efforts revealed in the modernized `Blinky_Pico2_dual_core_nosdk`
 [repo](https://github.com/Chalandi/Blinky_Pico2_dual_core_nosdk).
 
-Target `v850es_fx2` uses a classic Renesas(R) V850es/Fx2 core.
+The `target v850es_fx2` implementation uses a classic Renesas(R) V850es/Fx2 core.
 The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
 starter kit is used.
 

@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 
-typedef volatile struct gpio_dev_t
+typedef struct gpio_dev_t
 {
     uint32_t bt_select;                             /*NA*/
     uint32_t out;                                   /*GPIO0~31 output value*/

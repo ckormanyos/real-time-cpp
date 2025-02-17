@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2021.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -172,6 +172,7 @@ static const esp32_gpioMux_t esp32_gpioMux[GPIO_PIN_COUNT] =
   {0x10, 3, 3, -1}
 };
 
+extern "C"
 void pinMode(const uint8_t pin, const uint8_t mode)
 {
   if(!digitalPinIsValid(pin))
@@ -302,6 +303,7 @@ void pinMode(const uint8_t pin, const uint8_t mode)
   //unlock gpio
 }
 
+extern "C"
 void digitalWrite(const uint8_t pin, const uint8_t val)
 {
   if(val)
@@ -328,6 +330,7 @@ void digitalWrite(const uint8_t pin, const uint8_t val)
   }
 }
 
+extern "C"
 int digitalRead(const uint8_t pin)
 {
   int result;

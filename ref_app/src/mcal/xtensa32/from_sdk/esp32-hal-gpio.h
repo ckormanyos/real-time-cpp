@@ -53,16 +53,6 @@
   #define FUNCTION_6        0xA0
   #define ANALOG            0xC0
 
-  //Interrupt Modes
-  //#define DISABLED  0x00
-  //#define RISING    0x01
-  //#define FALLING   0x02
-  //#define CHANGE    0x03
-  //#define ONLOW     0x04
-  //#define ONHIGH    0x05
-  //#define ONLOW_WE  0x0C
-  //#define ONHIGH_WE 0x0D
-
   void pinMode     (const uint8_t pin, const uint8_t mode);
   void digitalWrite(const uint8_t pin, const uint8_t val);
   int  digitalRead (const uint8_t pin);
