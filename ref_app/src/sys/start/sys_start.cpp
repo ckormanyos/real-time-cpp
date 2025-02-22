@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,7 +9,7 @@
 #include <os/os.h>
 
 #if (defined(__GNUC__) || defined(__clang__))
-#if defined(__XTENSA__)
+#if (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
 extern "C"
 __attribute__((used)) auto app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #else
@@ -18,7 +18,7 @@ __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-att
 #endif
 #endif
 
-#if defined(__GNUC__) && defined(__XTENSA__)
+#if defined(__GNUC__) && (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
 auto app_main_loop(void) -> int
 #else
 auto main() -> int
@@ -31,7 +31,7 @@ auto main() -> int
   // Handle an unexpected return from main() in the startup code.
   os::start_os();
 
-  #if defined(__GNUC__) && defined(__XTENSA__)
+  #if defined(__GNUC__) && (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
   return 0;
   #endif
 }

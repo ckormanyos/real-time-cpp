@@ -227,6 +227,9 @@
     <Filter Include="src\mcal\rpi_pico2_rp2350">
       <UniqueIdentifier>{34136d78-e14c-4045-8d0d-0ad16f33ec9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa_esp32_s3">
+      <UniqueIdentifier>{66987aaa-84ee-4911-aa5c-efd3108b55f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1155,6 +1158,36 @@
     </ClCompile>
     <ClCompile Include="src\app\benchmark\app_benchmark_boost_crypt_hasher.cpp">
       <Filter>src\app\benchmark</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_cpu.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_eep.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_gpt.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_irq.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_led.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_osc.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_port.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_pwm.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_spi.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_wdg.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2672,6 +2705,51 @@
     </ClInclude>
     <ClInclude Include="src\mcal_lcd\mcal_lcd_buffered_instance.h">
       <Filter>src\mcal_lcd</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_cpu.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_eep.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_gpt.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_irq.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_led.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_memory_progmem.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_osc.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_port.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_pwm.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_reg.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_ser.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_spi.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_wdg.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3\mcal_benchmark.h">
+      <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal_led\mcal_led_dummy.h">
+      <Filter>src\mcal_led</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
