@@ -274,6 +274,18 @@
     <Filter Include="micros\xtensa_esp32_s3\startup">
       <UniqueIdentifier>{994eddc5-98b8-4dc2-90a0-063c58d87ca5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk">
+      <UniqueIdentifier>{93e83c04-3422-4379-aa96-ff361f0a1182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk\Startup">
+      <UniqueIdentifier>{a6fbc775-11bf-4616-9222-dfc71407f4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk\Appli">
+      <UniqueIdentifier>{64e7d897-2eba-43b0-9f5e-0f8c00f2f243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\make\from_no_sdk">
+      <UniqueIdentifier>{a879067c-46c2-422e-95fd-d14bca6182f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -630,6 +642,15 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk">
       <Filter>micros\xtensa_esp32_s3\make</Filter>
     </None>
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\from_no_sdk\Memory_Map.ld">
+      <Filter>micros\xtensa_esp32_s3\make\from_no_sdk</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -926,8 +947,14 @@
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp">
       <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\startup.c">
-      <Filter>micros\xtensa_esp32_s3\startup</Filter>
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVect.c">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.c">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Appli\main.c">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Appli</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

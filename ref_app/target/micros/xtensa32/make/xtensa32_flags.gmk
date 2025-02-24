@@ -61,7 +61,6 @@ TGT_AFLAGS    =
 SDK_LIBS      = -lbootloader_support            \
                 -ldriver                        \
                 -lefuse                         \
-                -lesp_ringbuf                   \
                 -lesp32                         \
                 -lfreertos                      \
                 -lhal                           \

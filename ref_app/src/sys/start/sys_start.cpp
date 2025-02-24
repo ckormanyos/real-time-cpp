@@ -9,7 +9,7 @@
 #include <os/os.h>
 
 #if (defined(__GNUC__) || defined(__clang__))
-#if (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
+#if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
 extern "C"
 __attribute__((used)) auto app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #else
@@ -18,7 +18,7 @@ __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-att
 #endif
 #endif
 
-#if defined(__GNUC__) && (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
+#if defined(__GNUC__) && (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
 auto app_main_loop(void) -> int
 #else
 auto main() -> int
@@ -31,7 +31,7 @@ auto main() -> int
   // Handle an unexpected return from main() in the startup code.
   os::start_os();
 
-  #if defined(__GNUC__) && (defined(__XTENSA__) && !defined(__MY_XTENSA_S3__))
+  #if defined(__GNUC__) && (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
   return 0;
   #endif
 }

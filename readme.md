@@ -401,7 +401,7 @@ via selective stubbing of library functions.
 The Espressif (`target xtensa_esp32_s3`) port for NodeMCU ESP32-S3
 features a bare-metal startup _without_ using any of the SDK.
 The bare-metal startup was taken from the work of
-[TBD: chalandi](https://github.com/Chalandi).
+[Chalandi/Baremetal_esp32s3_nosdk](https://github.com/Chalandi/Baremetal_esp32s3_nosdk).
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
 called `target lpc11c24` toggles the LED on `port0.8`.

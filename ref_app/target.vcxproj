@@ -1002,9 +1002,12 @@
     <None Include="target\micros\xtensa32\startup\boot_app0.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.csv" />
+    <None Include="target\micros\xtensa_esp32_s3\make\from_no_sdk\Memory_Map.ld" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3.ld" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_files.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
@@ -1105,7 +1108,9 @@
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\startup.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Appli\main.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVect.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
