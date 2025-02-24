@@ -46,7 +46,7 @@ TGT_ALLFLAGS  = -O2                                                             
                 -DCONFIG_IDF_TARGET_ESP32S3
 
 
-TGT_CFLAGS    = -std=c11                                                          \
+TGT_CFLAGS    = -std=c23                                                          \
                 -nostdlib                                                         \
                 $(TGT_ALLFLAGS)
 
@@ -61,10 +61,14 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -nostdlib                                                         \
+                -e _start                                                         \
                 -L$(PATH_TGT_MAKE)/from_no_sdk                                    \
                 -T Memory_Map.ld                                                  \
                 -Wl,--gc-sections                                                 \
-                -Wl,-Map,$(APP).map
+                -Wl,-Map,$(APP).map                                               \
+                -z,max-page-size=4096                                             \
+                --specs=nano.specs                                                \
+                --specs=nosys.specs
 
 
 RULE_SPECIAL_MAKE_IMAGE_FILE :=
@@ -92,7 +96,7 @@ ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32s3                              
 
 
 
-RULE_SPECIAL_MAKE_IMAGE_FILE     :=    $(ECHO) +++ generate: $(basename $(APP).$(TGT_SUFFIX)).bin                         \
+RULE_SPECIAL_MAKE_IMAGE_FILE     :=    $(ECHO) +++ generate image file: $(basename $(APP).$(TGT_SUFFIX)).bin                         \
                                     && $(subst /,\,$(ESP32S3_ESP_TOOL)) $(subst /,\,$(ESP32S3_ESP_TOOL_FLAGS_IMAG))
 
 

@@ -26,13 +26,17 @@
 
 #include <esp32s3.h>
 
-#include <stdint.h>
+#include <cstdint>
 
-void Mcu_StartCore1(void);
-void _start(void);
-void Mcu_ClockInit(void);
-void Mcu_InitCore(void);
+extern "C"
+{
+  void Mcu_StartCore1(void);
+  void _start(void);
+  void Mcu_ClockInit(void);
+  void Mcu_InitCore(void);
+}
 
+extern "C"
 void Mcu_StartCore1(void)
 {
   // Unstall core 1.
@@ -57,6 +61,7 @@ void Mcu_StartCore1(void)
   SYSTEM->CORE_1_CONTROL_1.reg = (uint32_t) &_start;
 }
 
+extern "C"
 void Mcu_ClockInit(void)
 {
   extern void mcal_osc_init();
@@ -64,6 +69,7 @@ void Mcu_ClockInit(void)
   mcal_osc_init();
 }
 
+extern "C"
 void Mcu_InitCore(void)
 {
   // Disable the super watchdog.

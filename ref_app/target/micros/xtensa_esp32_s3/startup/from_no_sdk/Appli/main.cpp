@@ -22,16 +22,20 @@
 #define CORE1_LED  (1ul << 6)
 #define APB_FREQ_MHZ  80000000
 
-void main(void);
-void main_c1(void);
-void blink_led(void);
+extern "C"
+{
+  int main(void);
+  void main_c1(void);
+  void blink_led(void);
 
-extern void Mcu_StartCore1(void);
-extern uint32_t get_core_id(void);
-extern void enable_irq(uint32_t mask);
-extern void set_cpu_private_timer1(uint32_t ticks);
+  extern void Mcu_StartCore1(void);
+  extern uint32_t get_core_id(void);
+  extern void enable_irq(uint32_t mask);
+  extern void set_cpu_private_timer1(uint32_t ticks);
+}
 
-void main(void)
+extern "C"
+int main(void)
 {
   GPIO->OUT.reg |= CORE0_LED;
 
@@ -46,6 +50,7 @@ void main(void)
   for(;;);
 }
 
+extern "C"
 void main_c1(void)
 {
   GPIO->OUT.reg |= CORE1_LED;
@@ -59,6 +64,7 @@ void main_c1(void)
   for(;;);
 }
 
+extern "C"
 void blink_led(void)
 {
   /* reload the private timer1 */

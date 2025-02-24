@@ -950,7 +950,7 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.c">
       <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Appli\main.c">
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Appli\main.cpp">
       <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Appli</Filter>
     </ClCompile>
   </ItemGroup>
