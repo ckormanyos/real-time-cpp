@@ -1,3 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 // ***************************************************************************************
 // Filename    : Startup.c
 //
@@ -10,22 +19,27 @@
 // Description : C/C++ Runtime Setup (Crt0)
 // 
 // ***************************************************************************************
+
 #include <stdint.h>
+
 //=========================================================================================
 // types definitions
 //=========================================================================================
+
 typedef struct
 {
   unsigned long  sourceAddr;  /* Source Address (section in ROM memory) */
   unsigned long  targetAddr;  /* Target Address (section in RAM memory) */
   unsigned long  size;        /* length of section (bytes) */
-} runtimeCopyTable_t;
+}
+runtimeCopyTable_t;
 
 typedef struct
 {
   unsigned long  Addr;  /* source Address (section in RAM memory) */
   unsigned long  size;  /* length of section (bytes) */
-} runtimeClearTable_t;
+}
+runtimeClearTable_t;
 
 //=========================================================================================
 // linker variables

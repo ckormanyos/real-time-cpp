@@ -6,21 +6,25 @@
 //
 
 #include <mcal_osc.h>
+#include <mcal_reg.h>
 
-namespace
+extern "C"
 {
-  auto dummy_system_clock() -> bool;
+  void mcal_osc_init();
 
-  auto dummy_system_clock() -> bool
+  void mcal_osc_init()
   {
-    return true;
+    mcal::osc::init(nullptr);
   }
 }
 
 void mcal::osc::init(const config_type*)
 {
-  // Configure the system clock for 168MHz using the hse-pll.
-  const auto result_system_clock_is_ok = dummy_system_clock();
+  // Set the core clock to 240 MHz and APB clock to 80 MHz.
 
-  static_cast<void>(result_system_clock_is_ok);
+  // SYSTEM->CPU_PERI_CLK_EN.reg = 7;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::cpu_peri_clk_en, static_cast<std::uint32_t>(UINT8_C(7))>::reg_set();
+
+  //SYSTEM->SYSCLK_CONF.reg = 0x401;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::sysclk_conf, static_cast<std::uint32_t>(UINT16_C(0x401))>::reg_set();
 }

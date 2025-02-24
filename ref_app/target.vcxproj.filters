@@ -947,9 +947,6 @@
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp">
       <Filter>micros\xtensa32\startup</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVect.c">
-      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.c">
       <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
     </ClCompile>

@@ -1,41 +1,38 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : Mcu.c
-  
+
   Core        : Xtensa LX7
-  
+
   MCU         : ESP32-S3
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 22.02.2025
-  
+
   Description : Mcu basic functions for ESP32-S3
-  
+
 ******************************************************************************************/
 
-//=============================================================================
-// Includes
-//=============================================================================
-#include "esp32s3.h"
-#include "stdint.h"
+#include <esp32s3.h>
 
-//=============================================================================
-// Prototypes
-//=============================================================================
+#include <stdint.h>
+
 void Mcu_StartCore1(void);
 void _start(void);
 void Mcu_ClockInit(void);
 void Mcu_InitCore(void);
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
 void Mcu_StartCore1(void)
 {
   // Unstall core 1.
@@ -60,43 +57,29 @@ void Mcu_StartCore1(void)
   SYSTEM->CORE_1_CONTROL_1.reg = (uint32_t) &_start;
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
 void Mcu_ClockInit(void)
 {
-   /* set the core clock to 240 MHz and APB clock to 80 MHz*/
-   SYSTEM->CPU_PERI_CLK_EN.reg = 7;
-   SYSTEM->SYSCLK_CONF.reg     = 0x401;
+  extern void mcal_osc_init();
+
+  mcal_osc_init();
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief  
-///
-/// \param  
-///
-/// \return 
-//-----------------------------------------------------------------------------------------
 void Mcu_InitCore(void)
 {
-  /* disable the super watchdog */
+  // Disable the super watchdog.
   RTC_CNTL->SWD_WPROTECT.reg = 0x8F1D312A;
   RTC_CNTL->WDTCONFIG1.reg = 0;
   RTC_CNTL->SWD_CONF.reg = (1ul << 30);
   RTC_CNTL->SWD_WPROTECT.reg = 0;
-  
-  /* disable Timer Group 0 WDT */
-  TIMG0->WDTWPROTECT.reg = 0x50d83aa1;
+
+  // Disable Timer Group 0 WDT.
+  TIMG0->WDTWPROTECT.reg = 0x50D83AA1;
   TIMG0->WDTCONFIG0.reg  = 0;
   TIMG0->WDTWPROTECT.reg = 0;
 
-  /* set all gpio as output low */
+  // Set all gpio to output low.
   GPIO->ENABLE_W1TS.reg = 0xFFFFFFFF;
   GPIO->ENABLE1_W1TS.reg = 0xFFFFFFFF;
   GPIO->OUT.reg   = 0;
-  GPIO->OUT1.reg  = 0; 
+  GPIO->OUT1.reg  = 0;
 }

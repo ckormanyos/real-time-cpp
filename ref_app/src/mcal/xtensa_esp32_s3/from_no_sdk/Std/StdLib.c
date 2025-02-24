@@ -1,36 +1,33 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : StdLib.c
-  
+
   Core        : Xtensa LX7
-  
+
   MCU         : ESP32-S3
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 22.02.2025
-  
+
   Description : Handwritten StdLib functions
-  
+
 ******************************************************************************************/
 
-//=============================================================================
-// Includes
-//=============================================================================
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 void* memset(void* str, int c, size_t n)
 {
   uint8_t *ptr = (uint8_t *)str;
@@ -71,15 +68,6 @@ void* memset(void* str, int c, size_t n)
   return str;
 }
 
-//-----------------------------------------------------------------------------
-/// \brief
-///
-/// \descr
-///
-/// \param
-///
-/// \return
-//-----------------------------------------------------------------------------
 void* memcpy (void* dest, const void * src, size_t n)
 {
   uint8_t *d = (uint8_t *)dest;

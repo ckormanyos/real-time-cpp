@@ -1,18 +1,27 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : Platform_Types.h
-  
+
   Core        : ARM Cortex-M33 / RISC-V Hazard3
-  
+
   MCU         : RP2350
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 04.09.2024
-  
+
   Description : Platform types header file
-  
+
 ******************************************************************************************/
 
 #ifndef __PLATFORM_TYPES_H__
@@ -38,7 +47,8 @@ typedef signed long long sint64;
   {
     FALSE = 0,
     TRUE
-  }boolean;
+  }
+  boolean;
 #endif
 
 #ifndef NULL
