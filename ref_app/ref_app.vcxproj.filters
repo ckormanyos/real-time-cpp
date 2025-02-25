@@ -2766,12 +2766,6 @@
     <ClInclude Include="src\mcal_led\mcal_led_dummy.h">
       <Filter>src\mcal_led</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Std\Platform_Types.h">
-      <Filter>src\mcal\xtensa_esp32_s3\from_no_sdk\Std</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Mcal\esp32s3.h">
-      <Filter>src\mcal\xtensa_esp32_s3\from_no_sdk\Mcal</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\STL\algorithm">

@@ -14,6 +14,8 @@ FILES_CPP      :=
 FILES_TGT      := $(PATH_APP)/mcal/$(TGT)/mcal_osc                                        \
                   $(PATH_APP)/mcal/$(TGT)/from_no_sdk/Mcal/Mcu                            \
                   $(PATH_APP)/mcal/$(TGT)/from_no_sdk/Std/StdLib                          \
+                  $(PATH_APP)/mcal/$(TGT)/mcal_port                                       \
+                  $(PATH_APP)/mcal/$(TGT)/mcal_wdg                                        \
                   $(PATH_TGT)/startup/from_no_sdk/Appli/main                              \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/boot                            \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/IntVectTable                    \

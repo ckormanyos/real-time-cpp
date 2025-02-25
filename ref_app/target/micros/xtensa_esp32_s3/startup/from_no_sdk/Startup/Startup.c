@@ -20,6 +20,10 @@
 // 
 // ***************************************************************************************
 
+extern void mcal_osc_init();
+extern void mcal_port_init();
+extern void mcal_wdg_init();
+
 #include <stdint.h>
 
 //=========================================================================================
@@ -59,12 +63,10 @@ extern unsigned long __CPPCTOR_LIST__[];
 // function prototype
 //=========================================================================================
 void Startup_Init(void) __attribute__((used));
+
 static void Startup_InitRam(void);
 static void Startup_InitCtors(void);
-static void Startup_RunApplication(void);
-static void Startup_Unexpected_Exit(void);
-static void Startup_InitSystemClock(void);
-static void Startup_InitCore(void);
+
 //=========================================================================================
 // extern function prototype
 //=========================================================================================
@@ -85,11 +87,9 @@ void Mcu_InitCore(void) __attribute__((weak));
 //-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
-  // Initialize the CPU Core.
-  Startup_InitCore();
-
-  // Configure the system clock.
-  Startup_InitSystemClock();
+  mcal_wdg_init();
+  mcal_port_init();
+  mcal_osc_init();
 
   // Initialize the RAM memory.
   Startup_InitRam();
@@ -98,17 +98,22 @@ void Startup_Init(void)
   Startup_InitCtors();
 
   // Start the application.
-  Startup_RunApplication();
+
+  // Check the weak function.
+  if((unsigned int) main != 0)
+  {
+    // Call the main function.
+
+    (void) main();
+  }
+
+  // Catch unexpected exit from main or if main does not exist.
+  for(;;)
+  {
+    ;
+  }
 }
 
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitRam function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitRam(void)
 {
   unsigned long ClearTableIdx = 0;
@@ -145,13 +150,6 @@ static void Startup_InitRam(void)
   #endif
 }
 
-//-----------------------------------------------------------------------------------------
-/// \brief Startup_InitCtors function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
 static void Startup_InitCtors(void)
 {
   unsigned long CtorIdx = 0U;
@@ -160,60 +158,4 @@ static void Startup_InitCtors(void)
   {
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_RunApplication(void)
-{
-  // Check the weak function.
-  if((unsigned int) main != 0)
-  {
-    // Call the main function.
-    (void) main();
-  }
-
-  // Catch unexpected exit from main or if main does not exist.
-  Startup_Unexpected_Exit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Unexpected_Exit function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_Unexpected_Exit(void)
-{
-  for(;;) { ; }
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitSystemClock function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_InitSystemClock(void)
-{
-  Mcu_ClockInit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitCore function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-void Startup_InitCore(void)
-{
-  Mcu_InitCore();
 }

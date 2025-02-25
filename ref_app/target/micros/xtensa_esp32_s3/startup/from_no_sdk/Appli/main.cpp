@@ -1,3 +1,12 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
+
 /******************************************************************************************
   Filename    : main.c
 
@@ -15,29 +24,34 @@
 
 ******************************************************************************************/
 
-#include <Platform_Types.h>
-#include <esp32s3.h>
+#include <mcal_reg.h>
 
-#define CORE0_LED  (1ul << 7)
-#define CORE1_LED  (1ul << 6)
-#define APB_FREQ_MHZ  80000000
+#include <cstdint>
+
+namespace local
+{
+  constexpr std::uint32_t core0_led    { UINT32_C(7) };
+  constexpr std::uint32_t core1_led    { UINT32_C(6) };
+  constexpr std::uint32_t apb_freq_mhz { UINT32_C(80000000) };
+} // namespace local
 
 extern "C"
 {
-  int main(void);
-  void main_c1(void);
-  void blink_led(void);
+  int  main();
+  void main_c1();
+  void blink_led();
 
-  extern void Mcu_StartCore1(void);
-  extern uint32_t get_core_id(void);
-  extern void enable_irq(uint32_t mask);
-  extern void set_cpu_private_timer1(uint32_t ticks);
+  extern void     Mcu_StartCore1();
+  extern uint32_t get_core_id();
+  extern void     enable_irq(uint32_t mask);
+  extern void     set_cpu_private_timer1(uint32_t ticks);
 }
 
 extern "C"
 int main(void)
 {
-  GPIO->OUT.reg |= CORE0_LED;
+  // GPIO->OUT.reg |= CORE0_LED;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core0_led>::bit_set();
 
   /* enable all interrupts on core 0 */
   enable_irq((uint32_t)-1);
@@ -45,7 +59,7 @@ int main(void)
   Mcu_StartCore1();
 
   /* set the private cpu timer1 for core 0 */
-  set_cpu_private_timer1(APB_FREQ_MHZ);
+  set_cpu_private_timer1(local::apb_freq_mhz);
 
   for(;;);
 }
@@ -53,13 +67,14 @@ int main(void)
 extern "C"
 void main_c1(void)
 {
-  GPIO->OUT.reg |= CORE1_LED;
+  // GPIO->OUT.reg |= CORE1_LED;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core1_led>::bit_set();
 
-  /* enable all interrupts on core 1 */
+  // Enable all interrupts on core 1.
   enable_irq((uint32_t)-1);
 
-  /* set the private cpu timer1 for core 1 */
-  set_cpu_private_timer1(APB_FREQ_MHZ);
+  // Set the private cpu timer1 for core 1.
+  set_cpu_private_timer1(local::apb_freq_mhz);
 
   for(;;);
 }
@@ -67,16 +82,18 @@ void main_c1(void)
 extern "C"
 void blink_led(void)
 {
-  /* reload the private timer1 */
-  set_cpu_private_timer1(APB_FREQ_MHZ);
-  
-  /* toggle the leds */
-  if(get_core_id())
+  // Reload the private timer1 for the running core.
+  set_cpu_private_timer1(local::apb_freq_mhz);
+
+  // Toggle the leds.
+  if(get_core_id() != std::uint32_t { UINT8_C(0) })
   {
-    GPIO->OUT.reg ^= CORE1_LED;
+    // GPIO->OUT.reg ^= CORE1_LED;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core1_led>::bit_not();
   }
   else
   {
-    GPIO->OUT.reg ^= CORE0_LED;
+    // GPIO->OUT.reg ^= CORE0_LED;
+    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core0_led>::bit_not();
   }
 }

@@ -93,9 +93,6 @@ _start:
 .align 4
 .globl get_core_id
 
-.equ  core0_id, 0xcdcd
-.equ  core1_id, 0xabab
-
 get_core_id:
   rsr.prid a2
   movi a8, core1_id
