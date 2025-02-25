@@ -237,7 +237,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [ xtensa32 ]
+        suite: [ xtensa32, xtensa_esp32_s3 ]
     steps:
       - uses: actions/checkout@v4
         with:

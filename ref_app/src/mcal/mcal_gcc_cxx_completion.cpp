@@ -135,8 +135,9 @@ extern "C"
   #endif
 
   // Provide some patched data values.
-  const char*  const __env[1U]       = { nullptr };
-  const char** const environ         = { nullptr };
+  const char*  const __env[1U] = { nullptr };
+
+  char** environ { nullptr };
 
   #if (defined(__GNUC__) && defined(__v850__))
   #else

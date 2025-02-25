@@ -53,9 +53,7 @@ TGT_CFLAGS    = -std=c23                                                        
 TGT_CXXFLAGS  = -std=c++23                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  = -I$(PATH_APP)/mcal/$(TGT)/from_no_sdk/Mcal                        \
-                -I$(PATH_APP)/mcal/$(TGT)/from_no_sdk/Std                         \
-                -isystem $(PATH_APP)/util/STL
+TGT_INCLUDES  =
 
 TGT_AFLAGS    =
 
