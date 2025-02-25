@@ -230,15 +230,6 @@
     <Filter Include="src\mcal\xtensa_esp32_s3">
       <UniqueIdentifier>{66987aaa-84ee-4911-aa5c-efd3108b55f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\mcal\xtensa_esp32_s3\from_no_sdk">
-      <UniqueIdentifier>{ef041788-66df-4790-bf56-97c5a8ac4e61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Mcal">
-      <UniqueIdentifier>{852d86d7-3c41-4944-b417-b4c565cf09a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Std">
-      <UniqueIdentifier>{796eeb1f-60f8-474a-947e-eafccaeb350e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1197,12 +1188,6 @@
     </ClCompile>
     <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_wdg.cpp">
       <Filter>src\mcal\xtensa_esp32_s3</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Std\StdLib.cpp">
-      <Filter>src\mcal\xtensa_esp32_s3\from_no_sdk\Std</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mcal\xtensa_esp32_s3\from_no_sdk\Mcal\Mcu.cpp">
-      <Filter>src\mcal\xtensa_esp32_s3\from_no_sdk\Mcal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

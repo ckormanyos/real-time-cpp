@@ -20,11 +20,11 @@
 // 
 // ***************************************************************************************
 
-extern void mcal_osc_init();
-extern void mcal_port_init();
-extern void mcal_wdg_init();
+#include <mcal_cpu.h>
 
-#include <stdint.h>
+#include <cstdint>
+
+extern "C" {
 
 //=========================================================================================
 // types definitions
@@ -87,9 +87,7 @@ void Mcu_InitCore(void) __attribute__((weak));
 //-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
-  mcal_wdg_init();
-  mcal_port_init();
-  mcal_osc_init();
+  mcal::cpu::init();
 
   // Initialize the RAM memory.
   Startup_InitRam();
@@ -159,3 +157,5 @@ static void Startup_InitCtors(void)
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
 }
+
+} // extern "C"

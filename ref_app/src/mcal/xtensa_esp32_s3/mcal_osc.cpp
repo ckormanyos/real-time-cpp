@@ -8,16 +8,6 @@
 #include <mcal_osc.h>
 #include <mcal_reg.h>
 
-extern "C"
-{
-  void mcal_osc_init();
-
-  void mcal_osc_init()
-  {
-    mcal::osc::init(nullptr);
-  }
-}
-
 void mcal::osc::init(const config_type*)
 {
   // Set the core clock to 240 MHz and APB clock to 80 MHz.
