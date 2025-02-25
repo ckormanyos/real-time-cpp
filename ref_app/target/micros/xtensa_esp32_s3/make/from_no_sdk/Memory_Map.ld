@@ -71,20 +71,6 @@ SECTIONS
     . = ALIGN(4);
   }  > D_SRAM
 
-
-  /* Section for destructors */
-  .dtors : ALIGN(4)
-  {
-    PROVIDE(__CPPDTOR_LIST__ = .);
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    KEEP (*(SORT(.fini_array.*)))
-    KEEP (*(.fini_array))
-    LONG(-1) ;
-    PROVIDE(__CPPDTOR_END__ = .);
-    . = ALIGN(4);
-  } > D_SRAM
-
   /* Runtime clear table */
   .clear_sec : ALIGN(4)
   {

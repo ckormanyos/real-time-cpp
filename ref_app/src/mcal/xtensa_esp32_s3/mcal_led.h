@@ -15,6 +15,7 @@
     namespace led
     {
       led_base& led0();
+      led_base& led1();
     }
   }
 

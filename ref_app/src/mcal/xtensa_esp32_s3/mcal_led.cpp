@@ -6,16 +6,26 @@
 //
 
 #include <mcal_led.h>
-#include <mcal_led/mcal_led_dummy.h>
+#include <mcal_led/mcal_led_port.h>
 
 mcal::led::led_base& mcal::led::led0()
 {
-  // The user LED on the stm32f446 Nucleo-64 board:
-  // - porta.5: green
+  using led0_port_type = mcal::port::port_pin<UINT32_C(7)>;
 
-  using led0_led_type = mcal::led::led_dummy;
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
 
-  static led0_led_type l0;
+  static led0_led_type the_led_00;
 
-  return l0;
+  return the_led_00;
+}
+
+mcal::led::led_base& mcal::led::led1()
+{
+  using led1_port_type = mcal::port::port_pin<UINT32_C(6)>;
+
+  using led1_led_type = mcal::led::led_port<led1_port_type>;
+
+  static led1_led_type the_led_01;
+
+  return the_led_01;
 }

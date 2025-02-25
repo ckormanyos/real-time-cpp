@@ -15,17 +15,22 @@
     namespace port
     {
       typedef void config_type;
+
       void init(const config_type*);
 
-      template<typename addr_type,
-               typename reg_type,
-               const addr_type port,
-               const reg_type bpos>
+      template<const std::uint32_t bpos>
       class port_pin
       {
+      private:
+        static constexpr std::uint32_t bit_pos { bpos };
+
       public:
         static void set_direction_output()
         {
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out,          bit_pos>::bit_clr();
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out1,         bit_pos>::bit_clr();
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable_w1ts,  bit_pos>::bit_set();
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable1_w1ts, bit_pos>::bit_set();
         }
 
         static void set_direction_input()
@@ -34,10 +39,12 @@
 
         static void set_pin_high()
         {
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_set();
         }
 
         static void set_pin_low()
         {
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_clr();
         }
 
         static bool read_input_value()
@@ -47,11 +54,8 @@
 
         static void toggle_pin()
         {
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_not();
         }
-
-      private:
-        static constexpr addr_type port_dummy_0x00 { addr_type(port + 0x00UL) };
-        static constexpr addr_type port_dummy_0x04 { addr_type(port + 0x04UL) };
       };
     }
   }

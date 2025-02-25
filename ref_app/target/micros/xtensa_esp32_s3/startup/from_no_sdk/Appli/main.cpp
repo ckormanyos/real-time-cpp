@@ -24,16 +24,9 @@
 
 ******************************************************************************************/
 
-#include <mcal_reg.h>
+#include <mcal_led.h>
 
 #include <cstdint>
-
-namespace local
-{
-  constexpr std::uint32_t core0_led    { UINT32_C(7) };
-  constexpr std::uint32_t core1_led    { UINT32_C(6) };
-  constexpr std::uint32_t apb_freq_mhz { UINT32_C(80000000) };
-} // namespace local
 
 extern "C"
 {
@@ -47,53 +40,59 @@ extern "C"
   extern void     set_cpu_private_timer1(uint32_t ticks);
 }
 
+namespace local
+{
+  constexpr std::uint32_t tim1_reload { static_cast<std::uint32_t>(80000000ULL - 1ULL) };
+} // namespace local
+
 extern "C"
 int main(void)
 {
   // GPIO->OUT.reg |= CORE0_LED;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core0_led>::bit_set();
+  mcal::led::led0().toggle();
 
-  /* enable all interrupts on core 0 */
-  enable_irq((uint32_t)-1);
-
+  // Use core 0 to start core 1.
   Mcu_StartCore1();
 
-  /* set the private cpu timer1 for core 0 */
-  set_cpu_private_timer1(local::apb_freq_mhz);
+  // Set the private cpu timer1 for core 0.
+  set_cpu_private_timer1(local::tim1_reload);
+
+  // Enable all interrupts on core 0.
+  enable_irq(static_cast<std::uint32_t>(-1L));
 
   for(;;);
 }
 
 extern "C"
-void main_c1(void)
+void main_c1()
 {
   // GPIO->OUT.reg |= CORE1_LED;
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core1_led>::bit_set();
-
-  // Enable all interrupts on core 1.
-  enable_irq((uint32_t)-1);
+  mcal::led::led1().toggle();
 
   // Set the private cpu timer1 for core 1.
-  set_cpu_private_timer1(local::apb_freq_mhz);
+  set_cpu_private_timer1(local::tim1_reload);
+
+  // Enable all interrupts on core 1.
+  enable_irq(static_cast<std::uint32_t>(-1L));
 
   for(;;);
 }
 
 extern "C"
-void blink_led(void)
+void blink_led()
 {
   // Reload the private timer1 for the running core.
-  set_cpu_private_timer1(local::apb_freq_mhz);
+  set_cpu_private_timer1(local::tim1_reload);
 
   // Toggle the leds.
   if(get_core_id() != std::uint32_t { UINT8_C(0) })
   {
     // GPIO->OUT.reg ^= CORE1_LED;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core1_led>::bit_not();
+    mcal::led::led1().toggle();
   }
   else
   {
     // GPIO->OUT.reg ^= CORE0_LED;
-    mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, local::core0_led>::bit_not();
+    mcal::led::led0().toggle();
   }
 }
