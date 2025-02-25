@@ -27,6 +27,7 @@
 #include <mcal_led.h>
 
 #include <cstdint>
+#include <limits>
 
 extern "C"
 {
@@ -58,9 +59,9 @@ int main(void)
   set_cpu_private_timer1(local::tim1_reload);
 
   // Enable all interrupts on core 0.
-  enable_irq(static_cast<std::uint32_t>(-1L));
+  enable_irq((std::numeric_limits<std::uint32_t>::max)());
 
-  for(;;);
+  for(;;) { ; }
 }
 
 extern "C"
@@ -73,9 +74,9 @@ void main_c1()
   set_cpu_private_timer1(local::tim1_reload);
 
   // Enable all interrupts on core 1.
-  enable_irq(static_cast<std::uint32_t>(-1L));
+  enable_irq((std::numeric_limits<std::uint32_t>::max)());
 
-  for(;;);
+  for(;;) { ; }
 }
 
 extern "C"
@@ -84,15 +85,8 @@ void blink_led()
   // Reload the private timer1 for the running core.
   set_cpu_private_timer1(local::tim1_reload);
 
-  // Toggle the leds.
-  if(get_core_id() != std::uint32_t { UINT8_C(0) })
-  {
-    // GPIO->OUT.reg ^= CORE1_LED;
-    mcal::led::led1().toggle();
-  }
-  else
-  {
-    // GPIO->OUT.reg ^= CORE0_LED;
-    mcal::led::led0().toggle();
-  }
+  const bool is_not_core0 { (get_core_id() != std::uint32_t { UINT8_C(0) }) };
+
+  // Toggle the LEDs.
+  (is_not_core0 ? mcal::led::led1().toggle() : mcal::led::led0().toggle());
 }
