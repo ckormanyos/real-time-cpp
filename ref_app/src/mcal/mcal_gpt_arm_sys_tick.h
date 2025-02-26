@@ -12,7 +12,7 @@
   #include <limits>
 
   #if defined(__GNUC__)
-  extern "C" auto __sys_tick_handler(void) -> void __attribute__((used, noinline));
+  extern "C" auto __sys_tick_handler() -> void __attribute__((used, noinline));
   #endif
 
   namespace mcal { namespace gpt {
@@ -168,7 +168,7 @@
     }
 
     #if defined(__GNUC__)
-    friend auto ::__sys_tick_handler(void) -> void;
+    friend auto ::__sys_tick_handler() -> void;
     #endif
   };
 

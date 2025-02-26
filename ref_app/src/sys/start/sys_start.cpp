@@ -11,7 +11,7 @@
 #if (defined(__GNUC__) || defined(__clang__))
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
 extern "C"
-__attribute__((used)) auto app_main_loop(void) -> int; // NOLINT(clang-diagnostic-ignored-attributes)
+__attribute__((used)) auto app_main_loop() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
 #else
 extern "C"
 __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
@@ -19,7 +19,7 @@ __attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-att
 #endif
 
 #if defined(__GNUC__) && (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
-auto app_main_loop(void) -> int
+auto app_main_loop() -> int
 #else
 auto main() -> int
 #endif

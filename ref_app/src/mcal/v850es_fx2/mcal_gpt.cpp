@@ -32,13 +32,13 @@ using UINT8  = std::uint8_t;
 using UINT32 = std::uint32_t;
 using UINT64 = std::uint64_t;
 
-UINT64 GetTick64_at_xxMHz(void);
+UINT64 GetTick64_at_xxMHz();
 
 } } // namespace mcal::gpt
 
-extern "C" void mcal_gpt_increment_tick(void);
+extern "C" void mcal_gpt_increment_tick();
 
-extern "C" void mcal_gpt_increment_tick(void)
+extern "C" void mcal_gpt_increment_tick()
 {
   mcal_gpt_system_tick += UINT32_C(0x10000);
 }
@@ -70,7 +70,7 @@ mcal::gpt::value_type mcal::gpt::secure::get_time_elapsed()
                                : mcal::gpt::value_type(0U));
 }
 
-mcal::gpt::UINT64 mcal::gpt::GetTick64_at_xxMHz(void)
+mcal::gpt::UINT64 mcal::gpt::GetTick64_at_xxMHz()
 {
   // Return the system tick using a multiple read to ensure data consistency.
 

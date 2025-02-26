@@ -30,9 +30,9 @@ namespace
   }
 }
 
-extern "C" void __sys_tick_handler(void) __attribute__((interrupt));
+extern "C" void __sys_tick_handler() __attribute__((interrupt));
 
-extern "C" void __sys_tick_handler(void)
+extern "C" void __sys_tick_handler()
 {
   // Update 64-bit counter with microsecond count.
   mcal_gpt_system_tick += mcal::config::systick_inc;

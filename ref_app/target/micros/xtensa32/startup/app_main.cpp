@@ -34,10 +34,10 @@ extern "C"
   using BaseType_t     = int;
   using UBaseType_t    = unsigned int;
 
-  extern int app_main_loop(void) __attribute__((used));
+  extern int app_main_loop() __attribute__((used));
   void app_main_loop_wrapper(void*);
 
-  void app_main(void);
+  void app_main();
 
   extern BaseType_t xTaskCreatePinnedToCore(      TaskFunction_t       pvTaskCode,
                                             const char*          const pcName,
@@ -55,7 +55,7 @@ extern "C" void app_main_loop_wrapper(void*)
   static_cast<void>(nm);
 }
 
-extern "C" void app_main(void)
+extern "C" void app_main()
 {
   // The subroutine app_main() is called from the Espressif SDK framework.
   // From the perspective of this particular implementation, this is the

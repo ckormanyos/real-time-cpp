@@ -5,10 +5,10 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-extern "C" void unhandled_exception(void) __attribute__((interrupt_handler, used, noinline));
+extern "C" void unhandled_exception() __attribute__((interrupt_handler, used, noinline));
 
 extern "C"
-void unhandled_exception(void)
+void unhandled_exception()
 {
   for(;;)
   {

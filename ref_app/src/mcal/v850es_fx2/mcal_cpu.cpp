@@ -10,10 +10,10 @@
 #include <mcal_port.h>
 #include <mcal_wdg.h>
 
-extern "C" void mcal_cpu_init(void);
+extern "C" void mcal_cpu_init();
 
 extern "C"
-void mcal_cpu_init(void)
+void mcal_cpu_init()
 {
   mcal::cpu::init();
 }

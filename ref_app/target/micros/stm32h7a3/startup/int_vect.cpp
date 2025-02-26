@@ -35,7 +35,7 @@ extern "C" void __pend_sv_handler    () noexcept { for(;;) { mcal::cpu::nop(); }
 
 namespace
 {
-  typedef void(*isr_type)(void);
+  typedef void(*isr_type)();
 
   constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(128) + UINT8_C(48));
 }

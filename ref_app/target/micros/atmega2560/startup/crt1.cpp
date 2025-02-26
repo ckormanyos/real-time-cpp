@@ -14,7 +14,7 @@ extern "C"
 {
   struct constructor_function_type
   {
-    using pointer = void(*)(void);
+    using pointer = void(*)();
 
     using size_type =
       util::utype_helper<sizeof(pointer) * 8U>::exact_type;

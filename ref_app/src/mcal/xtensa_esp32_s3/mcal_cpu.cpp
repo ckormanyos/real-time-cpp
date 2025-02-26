@@ -18,7 +18,7 @@ extern "C"
 }
 
 extern "C"
-void Mcu_StartCore1(void)
+void Mcu_StartCore1()
 {
   // Unstall core 1.
 

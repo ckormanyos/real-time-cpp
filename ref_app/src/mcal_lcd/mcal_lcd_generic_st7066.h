@@ -44,7 +44,7 @@
 
     ~lcd_generic_st7066() override = default;
 
-    auto init(void) -> bool override
+    auto init() -> bool override
     {
       port_pin_rs__type::set_pin_low();
       port_pin_rw__type::set_pin_low();

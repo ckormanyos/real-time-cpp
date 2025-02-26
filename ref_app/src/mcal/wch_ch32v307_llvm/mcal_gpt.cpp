@@ -28,8 +28,8 @@ namespace local
 {
   auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type;
 
-  auto read_lo = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cntl>::reg_get(); };
-  auto read_hi = [](void) -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cnth>::reg_get(); };
+  auto read_lo = []() -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cntl>::reg_get(); };
+  auto read_hi = []() -> std::uint32_t { return mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::r32_stk_cnth>::reg_get(); };
 
   auto get_consistent_microsecond_tick() noexcept -> mcal::gpt::value_type
   {

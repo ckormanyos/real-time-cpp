@@ -27,9 +27,9 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup(void) __attribute__((used, noinline));
+extern "C" void __my_startup() __attribute__((used, noinline));
 
-void __my_startup(void)
+void __my_startup()
 {
   // Load the stack pointer.
   // The stack pointer is automatically loaded from
@@ -112,31 +112,31 @@ void crt::init_ctors()
 
 extern "C" void __initial_stack_pointer();
 
-extern "C" void __vector_unused_irq  (void) __attribute__((used, noinline));
-extern "C" void __nmi_handler        (void) __attribute__((used, noinline));
-extern "C" void __hard_fault_handler (void) __attribute__((used, noinline));
-extern "C" void __mem_manage_handler (void) __attribute__((used, noinline));
-extern "C" void __bus_fault_handler  (void) __attribute__((used, noinline));
-extern "C" void __usage_fault_handler(void) __attribute__((used, noinline));
-extern "C" void __svc_handler        (void) __attribute__((used, noinline));
-extern "C" void __debug_mon_handler  (void) __attribute__((used, noinline));
-extern "C" void __pend_sv_handler    (void) __attribute__((used, noinline));
-extern "C" void __sys_tick_handler   (void) __attribute__((used, noinline));
+extern "C" void __vector_unused_irq  () __attribute__((used, noinline));
+extern "C" void __nmi_handler        () __attribute__((used, noinline));
+extern "C" void __hard_fault_handler () __attribute__((used, noinline));
+extern "C" void __mem_manage_handler () __attribute__((used, noinline));
+extern "C" void __bus_fault_handler  () __attribute__((used, noinline));
+extern "C" void __usage_fault_handler() __attribute__((used, noinline));
+extern "C" void __svc_handler        () __attribute__((used, noinline));
+extern "C" void __debug_mon_handler  () __attribute__((used, noinline));
+extern "C" void __pend_sv_handler    () __attribute__((used, noinline));
+extern "C" void __sys_tick_handler   () __attribute__((used, noinline));
 
-extern "C" void __vector_unused_irq  (void) { for(;;) { ; } }
-extern "C" void __nmi_handler        (void) { for(;;) { ; } }
-extern "C" void __hard_fault_handler (void) { for(;;) { ; } }
-extern "C" void __mem_manage_handler (void) { for(;;) { ; } }
-extern "C" void __bus_fault_handler  (void) { for(;;) { ; } }
-extern "C" void __usage_fault_handler(void) { for(;;) { ; } }
-extern "C" void __svc_handler        (void) { for(;;) { ; } }
-extern "C" void __debug_mon_handler  (void) { for(;;) { ; } }
-extern "C" void __pend_sv_handler    (void) { for(;;) { ; } }
-extern "C" void __sys_tick_handler   (void) { ; }
+extern "C" void __vector_unused_irq  () { for(;;) { ; } }
+extern "C" void __nmi_handler        () { for(;;) { ; } }
+extern "C" void __hard_fault_handler () { for(;;) { ; } }
+extern "C" void __mem_manage_handler () { for(;;) { ; } }
+extern "C" void __bus_fault_handler  () { for(;;) { ; } }
+extern "C" void __usage_fault_handler() { for(;;) { ; } }
+extern "C" void __svc_handler        () { for(;;) { ; } }
+extern "C" void __debug_mon_handler  () { for(;;) { ; } }
+extern "C" void __pend_sv_handler    () { for(;;) { ; } }
+extern "C" void __sys_tick_handler   () { ; }
 
 namespace
 {
-  typedef void(*isr_type)(void);
+  typedef void(*isr_type)();
 
   constexpr std::size_t number_of_interrupts = 128U;
 }

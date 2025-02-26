@@ -14,7 +14,7 @@ extern "C"
 {
   struct ctor_type
   {
-    using function_type = void(*)(void);
+    using function_type = void(*)();
 
     using function_pointer_as_uint_type =
       util::utype_helper<sizeof(function_type) * 8U>::exact_type;

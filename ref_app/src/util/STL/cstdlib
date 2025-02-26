@@ -31,8 +31,8 @@
 
   extern "C"
   {
-    void        abort (void);
-    int         atexit(void(*)(void)) noexcept;
+    void        abort ();
+    int         atexit(void(*)()) noexcept;
     void        exit  (int);
     float       strtof(const char* str, char** str_end);
     double      strtod(const char* str, char** str_end);

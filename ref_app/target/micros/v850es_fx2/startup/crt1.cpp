@@ -25,10 +25,10 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void crt_init_ctors(void);
+extern "C" void crt_init_ctors();
 
 extern "C"
-void crt_init_ctors(void)
+void crt_init_ctors()
 {
   crt::init_ctors();
 }

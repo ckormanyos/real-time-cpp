@@ -17,9 +17,9 @@ namespace crt
   void init_ctors();
 }
 
-extern "C" void __my_startup(void) __attribute__((used, noinline));
-extern "C" void mcal_cpu_init(void);
-extern "C" void crt_init_ctors(void);
+extern "C" void __my_startup() __attribute__((used, noinline));
+extern "C" void mcal_cpu_init();
+extern "C" void crt_init_ctors();
 
 void __my_startup()
 {

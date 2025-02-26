@@ -68,7 +68,7 @@
       // for instance,.the boot loader.
       for(std::uint32_t ra = UINT32_C(0); ra < UINT32_C(0x02000000); ra += UINT32_C(0x00100000))
       {
-        (void) set_mmu_section(ra, ra, UINT32_C(0x0000));
+        static_cast<void>(set_mmu_section(ra, ra, UINT32_C(0x0000)));
       }
 
       // See Table 6.2. TEX field, and C and B bit encodings used in page table formats
@@ -76,12 +76,12 @@
 
       // Cache both instructions as well as data
       // in the first 2 MB of SDRAM.
-      (void) set_mmu_section(UINT32_C(0x00000000), UINT32_C(0x00000000), std::uint32_t(0x0000UL | 8UL | 4UL));
-      (void) set_mmu_section(UINT32_C(0x00100000), UINT32_C(0x00100000), std::uint32_t(0x0000UL | 8UL | 4UL));
+      static_cast<void>(set_mmu_section(UINT32_C(0x00000000), UINT32_C(0x00000000), std::uint32_t(0x0000UL | 8UL | 4UL)));
+      static_cast<void>(set_mmu_section(UINT32_C(0x00100000), UINT32_C(0x00100000), std::uint32_t(0x0000UL | 8UL | 4UL)));
 
       // Do not cache any peripherals.
-      (void) set_mmu_section(mcal::reg::io_base,   mcal::reg::io_base,   UINT32_C(0x0000));
-      (void) set_mmu_section(mcal::reg::gpio_base, mcal::reg::gpio_base, UINT32_C(0x0000));
+      static_cast<void>(set_mmu_section(mcal::reg::io_base,   mcal::reg::io_base,   UINT32_C(0x0000)));
+      static_cast<void>(set_mmu_section(mcal::reg::gpio_base, mcal::reg::gpio_base, UINT32_C(0x0000)));
     }
 
     static void enable_mmu()

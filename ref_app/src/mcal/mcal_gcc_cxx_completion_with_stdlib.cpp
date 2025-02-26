@@ -10,10 +10,10 @@
 extern "C"
 {
   // Patched functions.
-  void        __cxa_pure_virtual  (void);
+  void        __cxa_pure_virtual  ();
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
 
-  void        __cxa_pure_virtual  (void)                              { }
+  void        __cxa_pure_virtual  ()                                  { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
 }
 

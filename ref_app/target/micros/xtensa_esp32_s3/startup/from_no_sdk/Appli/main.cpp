@@ -47,7 +47,7 @@ namespace local
 } // namespace local
 
 extern "C"
-int main(void)
+int main()
 {
   // GPIO->OUT.reg |= CORE0_LED;
   mcal::led::led0().toggle();

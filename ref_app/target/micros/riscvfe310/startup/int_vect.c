@@ -28,76 +28,76 @@ __asm(".option arch, +zicsr");
 
 #include <stdint.h>
 
-typedef void (*InterruptHandler)(void);
+typedef void (*InterruptHandler)();
 
-static void UndefinedHandler(void);
-void DirectModeInterruptHandler(void) __attribute__ ((interrupt ("machine")));
-void Isr_MachineExternalInterrupt(void);
+static void UndefinedHandler();
+void DirectModeInterruptHandler() __attribute__ ((interrupt ("machine")));
+void Isr_MachineExternalInterrupt();
 
-void Isr_InstructionAddressMisaligned (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_InstructionAccessFault       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_IllegalInstruction           (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_Breakpoint                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_LoadAddressMisaligned        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_LoadAccessFault              (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_StoreAddressMisaligned       (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_StoreAccessFault             (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EnvironmentCallFromUmode     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_EnvironmentCallFromMmode     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_MachineSoftwareInterrupt     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_MachineTimerInterrupt        (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_WATCHDOG_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_RTC_IRQn                     (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART0_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_UART1_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_QSPI0_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_QSPI1_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_QSPI2_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO0_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO1_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO2_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO3_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO4_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO5_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO6_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO7_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO8_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO9_IRQn                   (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO10_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO11_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO12_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO13_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO14_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO15_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO16_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO17_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO18_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO19_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO20_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO21_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO22_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO23_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO24_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO25_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO26_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO27_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO28_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO29_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO30_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_GPIO31_IRQn                  (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM0CMP0_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM0CMP1_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM0CMP2_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM0CMP3_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM1CMP0_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM1CMP1_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM1CMP2_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM1CMP3_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM2CMP0_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM2CMP1_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM2CMP2_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_PWM2CMP3_IRQn                (void) __attribute__((weak, alias("UndefinedHandler")));
-void Isr_I2C0_IRQn                    (void) __attribute__((weak, alias("UndefinedHandler")));
+void Isr_InstructionAddressMisaligned () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_InstructionAccessFault       () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_IllegalInstruction           () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_Breakpoint                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_LoadAddressMisaligned        () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_LoadAccessFault              () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_StoreAddressMisaligned       () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_StoreAccessFault             () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_EnvironmentCallFromUmode     () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_EnvironmentCallFromMmode     () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_MachineSoftwareInterrupt     () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_MachineTimerInterrupt        () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_WATCHDOG_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_RTC_IRQn                     () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_UART0_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_UART1_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_QSPI0_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_QSPI1_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_QSPI2_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO0_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO1_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO2_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO3_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO4_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO5_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO6_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO7_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO8_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO9_IRQn                   () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO10_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO11_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO12_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO13_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO14_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO15_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO16_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO17_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO18_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO19_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO20_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO21_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO22_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO23_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO24_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO25_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO26_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO27_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO28_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO29_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO30_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_GPIO31_IRQn                  () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM0CMP0_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM0CMP1_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM0CMP2_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM0CMP3_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM1CMP0_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM1CMP1_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM1CMP2_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM1CMP3_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM2CMP0_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM2CMP1_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM2CMP2_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_PWM2CMP3_IRQn                () __attribute__((weak, alias("UndefinedHandler")));
+void Isr_I2C0_IRQn                    () __attribute__((weak, alias("UndefinedHandler")));
 
 #if __riscv_xlen==32
 typedef uint32_t uint_xlen_t;
@@ -111,7 +111,7 @@ typedef uint64_t uint_csr64_t;
 #error "Unknown XLEN"
 #endif
 
-static inline uint_xlen_t csr_read_mcause(void)
+static inline uint_xlen_t csr_read_mcause()
 {
   uint_xlen_t value;
 
@@ -227,7 +227,7 @@ const InterruptHandler __attribute__((section(".intvect"), aligned(64), used)) I
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-static void UndefinedHandler(void)
+static void UndefinedHandler()
 {
   for(;;);
 }
@@ -239,7 +239,7 @@ static void UndefinedHandler(void)
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-void DirectModeInterruptHandler(void)
+void DirectModeInterruptHandler()
 {
   /* get the exception cause number */
   const uint32_t mcause = csr_read_mcause();
@@ -260,7 +260,7 @@ void DirectModeInterruptHandler(void)
 ///
 /// \return 
 //-----------------------------------------------------------------------------------------
-void Isr_MachineExternalInterrupt(void)
+void Isr_MachineExternalInterrupt()
 {
   /* get the PLIC pending interrupt ID */
   #define PLIC_BASE  UINT32_C(0x0C000000)

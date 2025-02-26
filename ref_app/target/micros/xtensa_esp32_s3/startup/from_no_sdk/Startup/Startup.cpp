@@ -48,8 +48,9 @@ runtimeClearTable_t;
 //=========================================================================================
 // linker variables
 //=========================================================================================
-extern const runtimeCopyTable_t __RUNTIME_COPY_TABLE[];
+extern const runtimeCopyTable_t  __RUNTIME_COPY_TABLE [];
 extern const runtimeClearTable_t __RUNTIME_CLEAR_TABLE[];
+
 extern unsigned long __CPPCTOR_LIST__[];
 
 //=========================================================================================
@@ -62,17 +63,17 @@ extern unsigned long __CPPCTOR_LIST__[];
 //=========================================================================================
 // function prototype
 //=========================================================================================
-void Startup_Init(void) __attribute__((used));
+void Startup_Init() __attribute__((used));
 
-static void Startup_InitRam(void);
-static void Startup_InitCtors(void);
+static void Startup_InitRam();
+static void Startup_InitCtors();
 
 //=========================================================================================
 // extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak));
-void Mcu_ClockInit(void) __attribute__((weak));
-void Mcu_InitCore(void) __attribute__((weak));
+int main() __attribute__((weak));
+void Mcu_ClockInit() __attribute__((weak));
+void Mcu_InitCore() __attribute__((weak));
 
 //=========================================================================================
 // macros
@@ -85,7 +86,7 @@ void Mcu_InitCore(void) __attribute__((weak));
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-void Startup_Init(void)
+void Startup_Init()
 {
   mcal::cpu::init();
 
@@ -102,7 +103,7 @@ void Startup_Init(void)
   {
     // Call the main function.
 
-    (void) main();
+    static_cast<void>(main());
   }
 
   // Catch unexpected exit from main or if main does not exist.
@@ -112,7 +113,7 @@ void Startup_Init(void)
   }
 }
 
-static void Startup_InitRam(void)
+static void Startup_InitRam()
 {
   unsigned long ClearTableIdx = 0;
 
@@ -148,13 +149,13 @@ static void Startup_InitRam(void)
   #endif
 }
 
-static void Startup_InitCtors(void)
+static void Startup_InitCtors()
 {
   unsigned long CtorIdx = 0U;
 
   while((__STARTUP_RUNTIME_CTORS)[CtorIdx] != ((unsigned long)-1))
   {
-    ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
+    ((void (*)())((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
 }
 
