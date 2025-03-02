@@ -8,10 +8,16 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-  #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
-extern "C" __attribute__((used)) auto app_main_loop() -> int;
+#if defined(_MSC_VER)
+#define ATTRIBUTE(a)
 #else
-extern "C" __attribute__((used)) auto main() -> int;
+#define ATTRIBUTE(a) __attribute__((a))
+#endif
+
+#if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
+extern "C" ATTRIBUTE(used) auto app_main_loop() -> int;
+#else
+extern "C" ATTRIBUTE(used) auto main() -> int;
 #endif
 
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))

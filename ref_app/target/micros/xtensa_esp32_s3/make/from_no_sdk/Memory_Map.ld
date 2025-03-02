@@ -20,6 +20,8 @@
 ******************************************************************************************/
 ENTRY(_start)
 
+INPUT(libc.a libm.a libgcc.a)
+
 /******************************************************************************************
  Globals
 ******************************************************************************************/
@@ -43,10 +45,21 @@ SECTIONS
 {
   .program : ALIGN(4)
   {
+    . = ALIGN(4);
     *(.vector*)
-    *(.literal .literal.*)
+    . = ALIGN(4);
+    *(.literal)
+    . = ALIGN(4);
+    *(.literal*)
+    . = ALIGN(4);
     *(.text)
-    *(.text*)
+    . = ALIGN(4);
+    *(.progmem*)
+    . = ALIGN(4);
+    *(.glue_7)
+    . = ALIGN(4);
+    *(.glue_7t)
+    . = ALIGN(4);
   } > I_SRAM
 
   /* Read-only data (.rodata) (note: esp32-s3 has not data access path on I_SRAM, rodata must be move to D_SRAM) */
@@ -54,8 +67,12 @@ SECTIONS
   {
     PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
+    . = ALIGN(4);
+    *(.rodata*)
+    . = ALIGN(4);
     PROVIDE(__INTVECT_BASE_ADDRESS = .);
     *(.intvect_core*)
+    . = ALIGN(4);
   } > D_SRAM
 
  /* Section for constructors */
