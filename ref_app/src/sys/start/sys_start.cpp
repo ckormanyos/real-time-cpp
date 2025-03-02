@@ -8,17 +8,13 @@
 #include <mcal/mcal.h>
 #include <os/os.h>
 
-#if (defined(__GNUC__) || defined(__clang__))
-#if defined(__XTENSA__)
-extern "C"
-__attribute__((used)) auto app_main_loop() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
+  #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
+extern "C" __attribute__((used)) auto app_main_loop() -> int;
 #else
-extern "C"
-__attribute__((used)) auto main() -> int; // NOLINT(clang-diagnostic-ignored-attributes)
-#endif
+extern "C" __attribute__((used)) auto main() -> int;
 #endif
 
-#if defined(__GNUC__) && defined(__XTENSA__)
+#if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
 auto app_main_loop() -> int
 #else
 auto main() -> int
@@ -31,7 +27,7 @@ auto main() -> int
   // Handle an unexpected return from main() in the startup code.
   os::start_os();
 
-  #if (defined(__GNUC__) && defined(__XTENSA__))
+  #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
   return 0;
   #endif
 }

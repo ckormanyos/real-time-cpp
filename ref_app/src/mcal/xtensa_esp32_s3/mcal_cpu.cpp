@@ -6,6 +6,9 @@
 //
 
 #include <mcal_cpu.h>
+#include <mcal_gpt.h>
+#include <mcal_irq.h>
+#include <mcal_led.h>
 #include <mcal_osc.h>
 #include <mcal_port.h>
 #include <mcal_reg.h>
@@ -13,8 +16,11 @@
 
 extern "C"
 {
-  void Mcu_StartCore1();
-  void _start();
+  auto main_c1() -> void;
+  auto Mcu_StartCore1() -> void;
+
+  extern auto set_cpu_private_timer1(uint32_t) -> void;
+  extern auto _start() -> void;
 }
 
 extern "C"
@@ -63,6 +69,30 @@ void Mcu_StartCore1()
 
     mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::system::core_1_control_1, start_addr);
   }
+}
+
+extern "C"
+void main_c1()
+{
+  // Set the private cpu timer1 for core 1.
+  set_cpu_private_timer1(mcal::gpt::timer1_reload());
+
+  // Enable all interrupts on core 1.
+  mcal::irq::init(nullptr);
+
+  // GPIO->OUT.reg |= CORE1_LED;
+  mcal::led::led1().toggle();
+
+  for(;;) { mcal::cpu::nop(); }
+}
+
+auto mcal::cpu::post_init() noexcept -> void
+{
+  // Set the private cpu timer1 for core 0.
+  set_cpu_private_timer1(mcal::gpt::timer1_reload());
+
+  // Use core 0 to start core 1.
+  Mcu_StartCore1();
 }
 
 auto mcal::cpu::init() -> void

@@ -17,7 +17,7 @@
 
   auto init() -> void;
 
-  inline auto post_init() noexcept -> void { }
+  auto post_init() noexcept -> void;
 
   inline auto nop() noexcept -> void { asm volatile("nop"); }
 
