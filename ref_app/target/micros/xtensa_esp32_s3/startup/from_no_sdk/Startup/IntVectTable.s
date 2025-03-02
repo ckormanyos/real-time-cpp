@@ -86,7 +86,7 @@
 ********************************************************************************************/
 .section  .vector,"ax"
 
-.extern blink_led
+.extern __system_tick_handler
 
 .global _vector_table
 .type _vector_table, @function
@@ -140,7 +140,7 @@ _vector_table:
 
 irq6_timer1:
   SaveCpuContext
-  call0 blink_led
+  call0 __system_tick_handler
   RestoreCpuContext
   rfi 3
 

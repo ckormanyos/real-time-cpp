@@ -9,15 +9,7 @@
 # File list of the xtensa32 esspressif ESP32 files in the project
 # ------------------------------------------------------------------------------
 
-FILES_CPP      :=
-
 FILES_TGT      := $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_cpu                                        \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                        \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_led                                        \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_osc                                        \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_port                                       \
-                  $(PATH_APP)/mcal/$(TGT)/mcal_wdg                                        \
                   $(PATH_TGT)/startup/from_no_sdk/Appli/main                              \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/boot                            \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/IntVectTable                    \
