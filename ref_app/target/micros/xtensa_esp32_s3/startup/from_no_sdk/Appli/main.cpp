@@ -24,7 +24,10 @@
 
 ******************************************************************************************/
 
+#include <mcal_gpt.h>
 #include <mcal_led.h>
+
+#include <util/utility/util_time.h>
 
 #include <cstdint>
 #include <limits>
@@ -43,8 +46,11 @@ extern "C"
 
 namespace local
 {
-  constexpr std::uint32_t tim1_reload { static_cast<std::uint32_t>(80000000ULL - 1ULL) };
+  static constexpr std::uint32_t timer1_max    { UINT32_C(80000000) };
+  static constexpr std::uint32_t timer1_reload { timer1_max - UINT32_C(1) };
 } // namespace local
+
+volatile std::uint64_t system_tick;
 
 extern "C"
 int main()
@@ -52,16 +58,30 @@ int main()
   // GPIO->OUT.reg |= CORE0_LED;
   mcal::led::led0().toggle();
 
-  // Use core 0 to start core 1.
-  Mcu_StartCore1();
-
   // Set the private cpu timer1 for core 0.
-  set_cpu_private_timer1(local::tim1_reload);
+  set_cpu_private_timer1(local::timer1_reload);
 
   // Enable all interrupts on core 0.
   enable_irq((std::numeric_limits<std::uint32_t>::max)());
 
-  for(;;) { ; }
+  mcal::gpt::init(nullptr);
+
+  using timer_type = util::timer<std::uint32_t>;
+
+  timer_type led_timer(timer_type::seconds(1U));
+
+  // Use core 0 to start core 1.
+  Mcu_StartCore1();
+
+  for(;;)
+  {
+    if(led_timer.timeout())
+    {
+      mcal::led::led0().toggle();
+
+      led_timer.start_interval(timer_type::seconds(1U));
+    }
+  }
 }
 
 extern "C"
@@ -71,22 +91,23 @@ void main_c1()
   mcal::led::led1().toggle();
 
   // Set the private cpu timer1 for core 1.
-  set_cpu_private_timer1(local::tim1_reload);
+  set_cpu_private_timer1(local::timer1_reload);
 
   // Enable all interrupts on core 1.
   enable_irq((std::numeric_limits<std::uint32_t>::max)());
 
-  for(;;) { ; }
+  for(;;) { asm volatile("nop"); }
 }
 
-extern "C"
-void blink_led()
+extern "C" void blink_led()
 {
   // Reload the private timer1 for the running core.
-  set_cpu_private_timer1(local::tim1_reload);
+  set_cpu_private_timer1(local::timer1_reload);
 
   const bool is_not_core0 { (get_core_id() != std::uint32_t { UINT8_C(0) }) };
 
-  // Toggle the LEDs.
-  (is_not_core0 ? mcal::led::led1().toggle() : mcal::led::led0().toggle());
+  // Toggle the LED (on core1) or increment the 64-bit system tick (on core0).
+
+  if(is_not_core0) { mcal::led::led1().toggle(); }
+  else             { system_tick += local::timer1_max; }
 }

@@ -31,7 +31,6 @@
 
       struct secure final
       {
-      private:
         static auto get_time_elapsed() -> value_type;
 
         friend auto std::chrono::high_resolution_clock::now() noexcept -> std::chrono::high_resolution_clock::time_point;

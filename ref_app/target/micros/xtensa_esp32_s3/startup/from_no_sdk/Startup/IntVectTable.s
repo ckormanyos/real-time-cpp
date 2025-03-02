@@ -32,6 +32,58 @@
   
   \return 
 ********************************************************************************************/
+.macro SaveCpuContext
+    addi sp, sp, -4*15
+    s32i.n a0,  sp, 0*4
+    s32i.n a2,  sp, 1*4
+    s32i.n a3,  sp, 2*4
+    s32i.n a4,  sp, 3*4
+    s32i.n a5,  sp, 4*4
+    s32i.n a6,  sp, 5*4
+    s32i.n a7,  sp, 6*4
+    s32i.n a8,  sp, 7*4
+    s32i.n a9,  sp, 8*4
+    s32i.n a10,  sp, 9*4
+    s32i.n a11,  sp, 10*4
+    s32i.n a12,  sp, 11*4
+    s32i.n a13,  sp, 12*4
+    s32i.n a14,  sp, 13*4
+    s32i.n a15,  sp, 14*4
+.endm
+
+/*******************************************************************************************
+  \brief  
+  
+  \param  
+  
+  \return 
+********************************************************************************************/
+.macro RestoreCpuContext
+    l32i.n a0,  sp, 0*4
+    l32i.n a2,  sp, 1*4
+    l32i.n a3,  sp, 2*4
+    l32i.n a4,  sp, 3*4
+    l32i.n a5,  sp, 4*4
+    l32i.n a6,  sp, 5*4
+    l32i.n a7,  sp, 6*4
+    l32i.n a8,  sp, 7*4
+    l32i.n a9,  sp, 8*4
+    l32i.n a10,  sp, 9*4
+    l32i.n a11,  sp, 10*4
+    l32i.n a12,  sp, 11*4
+    l32i.n a13,  sp, 12*4
+    l32i.n a14,  sp, 13*4
+    l32i.n a15,  sp, 14*4
+    addi sp, sp, 4*15
+.endm
+
+/*******************************************************************************************
+  \brief  
+  
+  \param  
+  
+  \return 
+********************************************************************************************/
 .section  .vector,"ax"
 
 .extern blink_led
@@ -87,11 +139,9 @@ _vector_table:
     j .
 
 irq6_timer1:
-  addi sp, sp, -4
-  s32i.n a0,  sp, 0
+  SaveCpuContext
   call0 blink_led
-  l32i.n a0,  sp, 0
-  addi sp, sp, 4
+  RestoreCpuContext
   rfi 3
 
 
@@ -136,6 +186,25 @@ set_cpu_private_timer1:
   ret
 
 .size set_cpu_private_timer1, .-set_cpu_private_timer1
+
+/*******************************************************************************************
+  \brief  
+  
+  \param  
+  
+  \return 
+********************************************************************************************/
+.section  .text,"ax"
+.type get_cpu_private_timer1, @function
+.align 4
+.global get_cpu_private_timer1
+
+get_cpu_private_timer1:
+  rsr a2, ccount
+  esync
+  ret
+
+.size get_cpu_private_timer1, .-get_cpu_private_timer1
 
   // software interrupt
   //movi a10, 0x80;
