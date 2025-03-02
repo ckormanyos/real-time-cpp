@@ -96,6 +96,7 @@ The reference application supports the following targets:
 | `wch_ch32v307`                         | WCH CH32v307 RISC-V board                                   |               |
 | `wch_ch32v307_llvm`                    | WCH CH32v307 RISC-V board (but using an LLVM toolchain)     |               |
 | `x86_64-w64-mingw32`                   | PC on `Win*`/`mingw64` via GNU/GCC x86_x64 compiler         |               |
+| `xtensa_esp32_s3`                      | Espressif (XTENSA) NodeMCU ESP32-S3                         | X             |
 | `xtensa32`                             | Espressif (XTENSA) NodeMCU ESP32                            | X             |
 
 In this table, *(breadboard) means the board (or certain versions of it) can be readily
@@ -396,6 +397,11 @@ This somewhat unconventional implementation configures
 $1$ single OS task running exclusively on $1$ CPU core only.
 Additional reductions in code/memory size(s) have been accomplished
 via selective stubbing of library functions.
+
+The Espressif (`target xtensa_esp32_s3`) port for NodeMCU ESP32-S3
+features a bare-metal startup _without_ using any of the SDK.
+The bare-metal startup was taken from the work of
+[Chalandi/Baremetal_esp32s3_nosdk](https://github.com/Chalandi/Baremetal_esp32s3_nosdk).
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
 called `target lpc11c24` toggles the LED on `port0.8`.

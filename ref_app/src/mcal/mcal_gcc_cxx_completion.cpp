@@ -88,9 +88,9 @@ extern "C"
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
-  void        abort               (void)                    __attribute__((noreturn));
-  int         atexit              (void (*)(void));
-  int         at_quick_exit       (void (*)(void));
+  void        abort               ()                        __attribute__((noreturn));
+  int         atexit              (void (*)());
+  int         at_quick_exit       (void (*)());
   void        _Exit               (int)                     __attribute__((noreturn));
   void        exit                (int)                     __attribute__((noreturn));
   void        quick_exit          (int)                     __attribute__((noreturn));
@@ -103,14 +103,14 @@ extern "C"
   int         _write              (int, char*, int);
   int         _fstat              (int, void*);
   const void* _sbrk               (int);
-  int         _getpid             (void);
+  int         _getpid             ();
   int         _kill               (int, int);
-  void        __cxa_pure_virtual  (void);
+  void        __cxa_pure_virtual  ();
   char*       __cxa_demangle      (const char*, char*, size_t*, int*);
 
   // Implementations of patched functions.
 
-  void        abort               (void)                              { for(;;) { mcal::cpu::nop(); } }
+  void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
   int         atexit              (void (*)())                        { return 0; }
   int         at_quick_exit       (void (*)())                        { return 0; }
   void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
@@ -125,9 +125,9 @@ extern "C"
   int         _write              (int, char*, int)                   { return  0; }
   int         _fstat              (int, void*)                        { return  0; }
   const void* _sbrk               (int)                               { return  nullptr; }
-  int         _getpid             (void)                              { return  1; }
+  int         _getpid             ()                                  { return  1; }
   int         _kill               (int, int)                          { return -1; }
-  void        __cxa_pure_virtual  (void)                              { }
+  void        __cxa_pure_virtual  ()                                  { }
   char*       __cxa_demangle      (const char*, char*, size_t*, int*) { return nullptr; }
 
   #if defined(environ)
@@ -135,13 +135,14 @@ extern "C"
   #endif
 
   // Provide some patched data values.
-  const char*  const __env[1U]       = { nullptr };
-  const char** const environ         = { nullptr };
+  const char*  const __env[1U] = { nullptr };
+
+  char** environ { nullptr };
 
   #if (defined(__GNUC__) && defined(__v850__))
   #else
-  extern int* __errno(void);
-  int* __errno(void) { return nullptr; }
+  extern int* __errno();
+  int* __errno() { return nullptr; }
   #endif
 
   std::uint8_t __fdlib_version;

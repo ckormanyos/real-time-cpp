@@ -1,0 +1,108 @@
+#
+#  Copyright Christopher Kormanyos 2018 - 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_VERSION   = 14.2.0
+GCC_TARGET    = xtensa-esp32-elf
+GCC_PREFIX    = xtensa-esp32s3-elf
+
+TGT_SUFFIX    = elf
+
+WARN_FLAGS   := -Wall                                                             \
+                -Wpointer-arith                                                   \
+                -Wno-maybe-uninitialized                                          \
+                -Wno-unused-function                                              \
+                -Wno-unused-but-set-variable                                      \
+                -Wno-unused-variable                                              \
+                -Wno-deprecated-declarations                                      \
+                -Wno-unused-parameter                                             \
+                -Wno-unused-but-set-parameter                                     \
+                -Wno-missing-field-initializers                                   \
+                -Wno-sign-compare
+
+
+WARN_FLAGS   += -Wno-main
+
+
+TGT_ALLFLAGS  = -O2                                                               \
+                -mabi=call0                                                       \
+                -mno-text-section-literals                                        \
+                -mstrict-align                                                    \
+                -mlongcalls                                                       \
+                -fomit-frame-pointer                                              \
+                -fstrict-volatile-bitfields                                       \
+                -fno-jump-tables                                                  \
+                -fno-tree-switch-conversion                                       \
+                -fno-stack-protector                                              \
+                -nostdlib                                                         \
+                -gdwarf-4                                                         \
+                -DCONFIG_IDF_TARGET_ESP32S3
+
+
+TGT_CFLAGS    = -std=c23                                                          \
+                -nostdlib                                                         \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++23                                                        \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  =
+
+TGT_AFLAGS    =
+
+TGT_LDFLAGS   = -nostartfiles                                                     \
+                -nostdlib                                                         \
+                -e _start                                                         \
+                -L$(PATH_TGT_MAKE)/from_no_sdk                                    \
+                -T Memory_Map.ld                                                  \
+                -Wl,--gc-sections                                                 \
+                -Wl,-Map,$(APP).map                                               \
+                -z,max-page-size=4096                                             \
+                --specs=nano.specs                                                \
+                --specs=nosys.specs
+
+
+RULE_SPECIAL_MAKE_IMAGE_FILE :=
+
+ifeq ($(TYP_OS),WIN)
+
+ESP32S3_ESP_TOOL             := $(PATH_TOOLS)/espressif/esp32/tools/esptool-v4.8.1-win64/esptool-win64/esptool.exe
+
+ESP32S3_ESP_TOOL_FLAGS_IMAG  := --chip esp32s3                                \
+                                elf2image                                     \
+                                --flash_mode dio                              \
+                                --flash_freq 80m                              \
+                                --flash_size 2MB                              \
+                                --min-rev-full 0                              \
+                                --max-rev-full 99                             \
+                                -o $(basename $(APP).$(TGT_SUFFIX)).bin       \
+                                $(APP).$(TGT_SUFFIX)
+
+ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32s3                                \
+                                    write_flash                                   \
+                                    --flash_mode dio                              \
+                                    --flash_freq 80m                              \
+                                    --flash_size 2MB 0                            \
+                                    $(notdir $(APP)).bin
+
+
+
+RULE_SPECIAL_MAKE_IMAGE_FILE     :=    $(ECHO) +++ generate image file: $(basename $(APP).$(TGT_SUFFIX)).bin                         \
+                                    && $(subst /,\,$(ESP32S3_ESP_TOOL)) $(subst /,\,$(ESP32S3_ESP_TOOL_FLAGS_IMAG))
+
+
+ESP32S3_ESP_TOOL_CMD_COPY_PART2  := copy /Y $(subst /,\\,$(ESP32S3_ESP_TOOL)) $(subst /,\,$(CURDIR)/bin) > 2 > NUL
+ESP32S3_ESP_TOOL_CMD_ECHO        := $(ECHO) esptool.exe $(subst /,\,$(ESP32S3_ESP_TOOL_FLAGS_PROG)) > $(subst /,\,$(CURDIR)/bin/flash.bat)
+
+
+RULE_SPECIAL_MAKE_FLASH_BATCH    :=    $(ESP32S3_ESP_TOOL_CMD_COPY_PART2)         \
+                                    && $(ESP32S3_ESP_TOOL_CMD_ECHO)
+
+endif

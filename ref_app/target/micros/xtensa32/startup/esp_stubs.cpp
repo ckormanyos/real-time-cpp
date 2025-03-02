@@ -12,9 +12,18 @@ extern "C"
 {
   typedef enum esp_log_level_t
   {
-    dummy
+    dummy_esp_log_level
   }
   esp_log_level_t;
+
+  typedef enum uart_port_t
+  {
+    dummy_uart_port
+  }
+  uart_port_t;
+
+  typedef unsigned long TickType_t;
+  typedef long BaseType_t;
 
   ::std::uint32_t esp_log_timestamp();
   void esp_log_level_set(const char*, esp_log_level_t);
@@ -48,11 +57,19 @@ extern "C"
 
   esp_err_t coex_pre_init();
 
-  void __attribute__((noreturn)) __assert_func(const char*, int, const char*, const char*);
+  esp_err_t uart_flush_input(uart_port_t) __attribute__((weak));
+
+  void __assert_func(const char*, int, const char*, const char*) __attribute__((noreturn));
 
   int fprintf(void*, const char* format, ... );
 
   int snprintf(char*, std::size_t, const char*, ... );
+
+  void vRingbufferReturnItem(void*, void*);
+
+  void* xRingbufferReceive(void*, size_t*, TickType_t);
+
+  BaseType_t xRingbufferSend(void*, const void*, size_t, TickType_t);
 
   ::std::uint32_t esp_log_timestamp() { return UINT32_C(0); }
 
@@ -74,7 +91,15 @@ extern "C"
 
   esp_err_t coex_pre_init() { return -1; }
 
-  void __attribute__((noreturn)) __assert_func(const char*, int, const char*, const char*) { for(;;) { ; } }
+  esp_err_t uart_flush_input(uart_port_t) { return -1; }
+
+  void __assert_func(const char*, int, const char*, const char*) { for(;;) { ; } }
 
   int snprintf(char*, std::size_t, const char*, ... ) { return -1; }
+
+  void vRingbufferReturnItem(void*, void*) { }
+
+  void* xRingbufferReceive(void*, size_t*, TickType_t) { return nullptr; }
+
+  BaseType_t xRingbufferSend(void*, const void*, size_t, TickType_t) { return -1L; }
 }

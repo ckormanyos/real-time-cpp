@@ -80,7 +80,7 @@ namespace local
 
 extern "C"
 {
-  using isr_type = void(*)(void);
+  using isr_type = void(*)();
 
   extern "C"
   const volatile isr_type __attribute__((section(".intvect_c0"), aligned(128))) __INTVECT_Core0[local::number_of_interrupts];

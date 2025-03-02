@@ -18,10 +18,10 @@ namespace crt
 
 extern "C"
 {
-  void __my_startup(void) __attribute__ ((section(".startup")));
+  void __my_startup() __attribute__ ((section(".startup")));
 }
 
-void __my_startup(void)
+void __my_startup()
 {
   // Setup the stack pointer.
   asm volatile("la sp, __initial_stack_pointer");

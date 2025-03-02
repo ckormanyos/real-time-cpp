@@ -5,11 +5,11 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-extern void mcal_gpt_increment_tick(void);
+extern void mcal_gpt_increment_tick();
 
-void IntQ0OV(void) __attribute__((interrupt_handler, used, noinline));
+void IntQ0OV() __attribute__((interrupt_handler, used, noinline));
 
-void IntQ0OV(void)
+void IntQ0OV()
 {
   mcal_gpt_increment_tick();
 }

@@ -185,10 +185,10 @@ auto app::benchmark::run_ecc_generic_ecc() -> bool
 }
 
 extern "C"
-auto my_hardware_random_device_generator(void) -> unsigned int;
+auto my_hardware_random_device_generator() -> unsigned int;
 
 extern "C"
-auto my_hardware_random_device_generator(void) -> unsigned int
+auto my_hardware_random_device_generator() -> unsigned int
 {
   using timer_type = util::timer<std::uint64_t>;
 

@@ -12,7 +12,7 @@ extern "C"
 {
   struct ctor_type
   {
-    using function_type = void(*)(void);
+    using function_type = void(*)();
   };
 
   extern ctor_type::function_type _ctors_end;

@@ -34,12 +34,6 @@
     <Filter Include="micros\am335x">
       <UniqueIdentifier>{9b8f3b1f-73a5-4635-92f1-d96e7a0dc318}</UniqueIdentifier>
     </Filter>
-    <Filter Include="micros\am335x\make">
-      <UniqueIdentifier>{a2bf7b3d-0b77-4ed2-9531-d7b905d99449}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="micros\am335x\startup">
-      <UniqueIdentifier>{5448ad0f-89af-4486-b7b5-acbbd7097fc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="micros\stm32f407">
       <UniqueIdentifier>{929c88f9-9c63-4561-b552-640c83475ef2}</UniqueIdentifier>
     </Filter>
@@ -264,6 +258,33 @@
     </Filter>
     <Filter Include="micros\rpi_pico2_rp2350\startup">
       <UniqueIdentifier>{66796a1a-dbfb-41d7-b5fa-0226f8a52cde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3">
+      <UniqueIdentifier>{dbc80c5f-ffc1-4735-9e11-e6136ec6770b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am335x\make">
+      <UniqueIdentifier>{a2bf7b3d-0b77-4ed2-9531-d7b905d99449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\am335x\startup">
+      <UniqueIdentifier>{5448ad0f-89af-4486-b7b5-acbbd7097fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\make">
+      <UniqueIdentifier>{7b4a24d2-d401-4559-a527-12ff9d3c5c48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup">
+      <UniqueIdentifier>{994eddc5-98b8-4dc2-90a0-063c58d87ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk">
+      <UniqueIdentifier>{93e83c04-3422-4379-aa96-ff361f0a1182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk\Startup">
+      <UniqueIdentifier>{a6fbc775-11bf-4616-9222-dfc71407f4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\make\from_no_sdk">
+      <UniqueIdentifier>{a879067c-46c2-422e-95fd-d14bca6182f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3\startup\from_no_sdk\Std">
+      <UniqueIdentifier>{bb3630a3-8596-4a16-86a5-b33a7f4eaf52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -612,6 +633,24 @@
     <None Include="target\build\test_app_benchmarks_emulator.gdb">
       <Filter>build</Filter>
     </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3.ld">
+      <Filter>micros\xtensa_esp32_s3\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_files.gmk">
+      <Filter>micros\xtensa_esp32_s3\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk">
+      <Filter>micros\xtensa_esp32_s3\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\from_no_sdk\Memory_Map.ld">
+      <Filter>micros\xtensa_esp32_s3\make\from_no_sdk</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">
@@ -907,6 +946,12 @@
     </ClCompile>
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp">
       <Filter>micros\xtensa32\startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.cpp">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\StdLib.cpp">
+      <Filter>micros\xtensa_esp32_s3\startup\from_no_sdk\Std</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

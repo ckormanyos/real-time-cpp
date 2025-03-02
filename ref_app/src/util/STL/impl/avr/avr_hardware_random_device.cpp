@@ -12,7 +12,7 @@
 #include <util/utility/util_time.h>
 #include <util/utility/util_two_part_data_manipulation.h>
 
-auto my_hardware_random_device_generator(void) -> unsigned int
+auto my_hardware_random_device_generator() -> unsigned int
 {
   using timer_type = util::timer<std::uint64_t>;
 
@@ -35,7 +35,7 @@ auto my_hardware_random_device_generator(void) -> unsigned int
   return static_cast<unsigned int>(util::make_long(pseudo_random1, pseudo_random2));
 }
 
-extern "C" unsigned char my_hardware_random_device_entropy(void)
+extern "C" unsigned char my_hardware_random_device_entropy()
 {
   return 1U;
 }

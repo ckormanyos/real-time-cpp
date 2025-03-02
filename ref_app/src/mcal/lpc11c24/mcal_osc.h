@@ -19,12 +19,12 @@
       typedef void config_type;
       void init(const config_type*);
 
-      std::uint32_t get_sys_clk_rate(void);
-      std::uint32_t get_sys_pllout_clk_rate(void);
+      std::uint32_t get_sys_clk_rate();
+      std::uint32_t get_sys_pllout_clk_rate();
 
       void set_wdt_osc(std::uint32_t freqsel, std::uint32_t divsel);
       void set_wdt_clk_src(std::uint32_t src, std::uint32_t div);
-      std::uint32_t get_wdt_osc_rate(void);
+      std::uint32_t get_wdt_osc_rate();
 
       // Main Clock Source Select.
       constexpr std::uint32_t syscon_mainclksel_irc    = UINT32_C(0);

@@ -68,10 +68,10 @@ extern "C"
 {
   extern volatile std::uint32_t app_benchmark_standalone_result;
 
-  auto app_benchmark_run_standalone       (void) -> bool;
-  auto app_benchmark_get_standalone_result(void) -> bool;
+  auto app_benchmark_run_standalone       () -> bool;
+  auto app_benchmark_get_standalone_result() -> bool;
 
-  auto app_benchmark_run_standalone(void) -> bool
+  auto app_benchmark_run_standalone() -> bool
   {
     auto result_is_ok = true;
 
@@ -89,7 +89,7 @@ extern "C"
     return result_is_ok;
   }
 
-  auto app_benchmark_get_standalone_result(void) -> bool
+  auto app_benchmark_get_standalone_result() -> bool
   {
     volatile auto result_is_ok =
       (app_benchmark_standalone_result == static_cast<std::uint32_t>(UINT32_C(0xF00DCAFE)));

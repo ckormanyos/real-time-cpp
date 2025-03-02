@@ -13,7 +13,7 @@
 
 namespace
 {
-  using isr_type = void(*)(void);
+  using isr_type = void(*)();
 
   constexpr auto number_of_interrupts = static_cast<std::size_t>(UINT8_C(104));
   constexpr auto number_of_exceptions = static_cast<std::size_t>(UINT8_C( 12));
@@ -21,8 +21,8 @@ namespace
 
 extern "C"
 {
-  void UndefinedHandler(void);
-  void Isr_HardFault   (void);
+  void UndefinedHandler();
+  void Isr_HardFault   ();
 }
 
 extern "C"
@@ -162,12 +162,12 @@ const volatile std::array<isr_type, number_of_exceptions> ExceptionVectorTable =
 
 extern "C"
 {
-  void UndefinedHandler(void)
+  void UndefinedHandler()
   {
     for(;;) { mcal::cpu::nop(); }
   }
 
-  void Isr_HardFault(void)
+  void Isr_HardFault()
   {
     for(;;) { mcal::cpu::nop(); }
   }

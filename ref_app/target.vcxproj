@@ -101,6 +101,10 @@
       <Configuration>target xtensa32</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="target xtensa_esp32_s3|x64">
+      <Configuration>target xtensa_esp32_s3</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{30CE370B-40F3-4BCD-8986-64AAFF8971BD}</ProjectGuid>
@@ -219,6 +223,12 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -357,6 +367,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -395,6 +408,7 @@
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">target\build\build.bat xtensa32</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">target\build\build.bat xtensa_esp32_s3</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">target\build\build.bat stm32f429</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x</NMakeBuildCommandLine>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">target\build\build.bat bcm2835_raspi_b</NMakeBuildCommandLine>
@@ -420,6 +434,7 @@
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">target\build\build.bat xtensa32 rebuild</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">target\build\build.bat xtensa_esp32_s3 rebuild</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">target\build\build.bat stm32f429 rebuild
 </NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x rebuild</NMakeReBuildCommandLine>
@@ -446,6 +461,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">target\build\build.bat nxp_imxrt1062 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">target\build\build.bat stm32h7a3 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">target\build\build.bat xtensa32 clean_all</NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">target\build\build.bat xtensa_esp32_s3 clean_all</NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">target\build\build.bat stm32f429 clean_all
 </NMakeCleanCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">target\build\build.bat am335x clean_all</NMakeCleanCommandLine>
@@ -472,6 +488,7 @@
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(SolutionDir)bin\ref_app.hex</NMakeOutput>
@@ -497,6 +514,8 @@
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">ESP_PLATFORM; MBEDTLS_CONFIG_FILE="mbedtls/esp_config.h"; HAVE_CONFIG_H; GCC_NOT_5_2_0=1; WITH_POSIX; F_CPU=240000000L; ARDUINO=10813; ARDUINO_ESP32_DEV; ARDUINO_ARCH_ESP32; ARDUINO_BOARD="ESP32_DEV"; ARDUINO_VARIANT="esp32"; ESP32; CORE_DEBUG_LEVEL=0</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">
+    </NMakePreprocessorDefinitions>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'" />
@@ -522,6 +541,7 @@
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f446</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f446</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'">$(ProjectDir)/src/util/STL_C++XX_stdfloat; $(ProjectDir)/src/util/STL; $(ProjectDir)/src; $(ProjectDir)/src/mcal/xtensa32;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">$(ProjectDir)/src/util/STL_C++XX_stdfloat; $(ProjectDir)/src/util/STL; $(ProjectDir)/src; $(ProjectDir)/src/mcal/xtensa_esp32_s3;</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">$(SolutionDir)src\util\STL_C++XX_stdfloat;$(SolutionDir)src\util\STL;$(SolutionDir)/src;$(SolutionDir)/src/mcal/stm32f429</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/am335x</NMakeIncludeSearchPath>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'">$(SolutionDir)/src;$(SolutionDir)/src/mcal/bcm2835_raspi_b</NMakeIncludeSearchPath>
@@ -547,6 +567,7 @@
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'" />
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'" />
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'" />
@@ -572,6 +593,7 @@
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'" />
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'" />
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'" />
@@ -597,6 +619,7 @@
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target nxp_imxrt1062|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32h7a3|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target xtensa32|x64'" />
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target am335x|x64'" />
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='target bcm2835_raspi_b|x64'" />
@@ -823,6 +846,11 @@
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target xtensa_esp32_s3|x64'">
+    <BuildLog>
+      <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='target stm32f429|x64'">
     <BuildLog>
       <Path>$(SolutionDir)tmp\log\ref_app.log</Path>
@@ -974,6 +1002,12 @@
     <None Include="target\micros\xtensa32\startup\boot_app0.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.bin" />
     <None Include="target\micros\xtensa32\startup\partitions.csv" />
+    <None Include="target\micros\xtensa_esp32_s3\make\from_no_sdk\Memory_Map.ld" />
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3.ld" />
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_files.gmk" />
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
@@ -1074,6 +1108,8 @@
     <ClCompile Include="target\micros\wch_ch32v307_llvm\startup\int_vect.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\app_main.cpp" />
     <ClCompile Include="target\micros\xtensa32\startup\esp_stubs.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\Startup.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\StdLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
