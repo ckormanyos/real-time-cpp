@@ -87,7 +87,7 @@ TGT_GCC := $(GCC_PREFIX)-gcc
 endif
 
 $(PATH_OBJ)/%.o : %.S
-	@$(ECHO) +++ assemble (using GCC for esp32s3): $< to $@
+	@$(ECHO) +++ assemble for esp32s3: $< to $@
   # Assemble the source file,
   # ...and reformat (using sed) any possible error/warning messages
   #    for the VisualStudio(R) output window,
