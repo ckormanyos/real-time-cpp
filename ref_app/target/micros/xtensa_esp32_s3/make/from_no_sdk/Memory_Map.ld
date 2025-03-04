@@ -25,8 +25,8 @@ INPUT(libc.a libm.a libgcc.a)
 /******************************************************************************************
  Globals
 ******************************************************************************************/
-__STACK_SIZE_CORE0 = 2K;
-__STACK_SIZE_CORE1 = 2K;
+__STACK_SIZE_CORE0 = 4K;
+__STACK_SIZE_CORE1 = 4K;
 
 /******************************************************************************************
  Memory configuration
@@ -53,6 +53,8 @@ SECTIONS
     *(.literal*)
     . = ALIGN(4);
     *(.text)
+    . = ALIGN(4);
+    *(.text*)
     . = ALIGN(4);
     *(.progmem*)
     . = ALIGN(4);
@@ -136,5 +138,4 @@ SECTIONS
     . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 16);
     PROVIDE(__CORE1_STACK_TOP = .) ;
   } > D_SRAM
-
 }
