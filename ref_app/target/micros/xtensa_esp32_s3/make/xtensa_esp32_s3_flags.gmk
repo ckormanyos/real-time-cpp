@@ -30,6 +30,12 @@ WARN_FLAGS   := -Wall                                                           
 
 WARN_FLAGS   += -Wno-main
 
+DEFS_IEEE754_SF := -D__XTENSA_CALL0_ABI__     \
+                   -DXCHAL_HAVE_FP=1          \
+                   -DXCHAL_HAVE_FP_DIV=1      \
+                   -DXCHAL_HAVE_FP_SQRT=1     \
+                   -DL_divsf3                 \
+                   -DL_sqrtf
 
 TGT_ALLFLAGS  = -O2                                                               \
                 -mabi=call0                                                       \
@@ -68,6 +74,27 @@ TGT_LDFLAGS   = -nostartfiles                                                   
                 --specs=nano.specs                                                \
                 --specs=nosys.specs
 
+
+# ------------------------------------------------------------------------------
+# Rule to assemble source file (*.S) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+ifeq ($(TYP_OS),WIN)
+TGT_GCC := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-gcc.exe
+TGT_GCC := $(subst /,\,$(TGT_GCC))
+else
+TGT_GCC := $(GCC_PREFIX)-gcc
+endif
+
+$(PATH_OBJ)/%.o : %.S
+	@$(ECHO) +++ assemble for esp32s3: $< to $@
+  # Assemble the source file,
+  # ...and reformat (using sed) any possible error/warning messages
+  #    for the VisualStudio(R) output window,
+  # ...and create an assembly listing using objdump
+	@-$(TGT_GCC) -O2 -fno-reorder-blocks-and-partition -fno-reorder-functions -mabi=call0 -mno-text-section-literals -mstrict-align -mlongcalls -fomit-frame-pointer -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -fno-stack-protector -DI_KNOW_WHAT_I_AM_DOING $(DEFS_IEEE754_SF) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 
 RULE_SPECIAL_MAKE_IMAGE_FILE :=
 

@@ -1008,6 +1008,7 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s" />
     <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\ieee754-sf.S" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
@@ -1113,6 +1114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\core-isa.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
