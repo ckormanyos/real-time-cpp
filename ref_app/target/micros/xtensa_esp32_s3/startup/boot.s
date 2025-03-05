@@ -37,7 +37,7 @@
 .align 4
 .extern __CORE0_STACK_TOP
 .extern __CORE1_STACK_TOP
-.extern Startup_Init
+.extern __my_startup
 .extern main_c1
 .globl _start
 
@@ -68,7 +68,7 @@ _start:
   movi a1, __CORE0_STACK_TOP
 
   /* setup the C/C++ runtime environment */
-  j  Startup_Init
+  j  __my_startup
   j .
 
 .L_boot_core1:
