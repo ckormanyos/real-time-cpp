@@ -68,18 +68,17 @@ TGT_CFLAGS    = -std=c23                                                        
 TGT_CXXFLAGS  = -std=c++23                                                        \
                 $(TGT_ALLFLAGS)
 
-TGT_INCLUDES  =
+TGT_INCLUDES  =  -isystem $(PATH_APP)/util/STL
 
 TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -nostdlib                                                         \
                 -e _start                                                         \
-                -L$(PATH_TGT_MAKE)/from_no_sdk                                    \
-                -L$(PATH_TGT)/startup/from_no_sdk/Std/lib_call0_abi               \
-                -T Memory_Map.ld                                                  \
+                -L$(PATH_TGT)/startup/Std/lib_call0_abi                           \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
+                -T $(LINKER_DEFINITION_FILE)                                      \
                 -z,max-page-size=4096                                             \
                 --specs=nano.specs                                                \
                 --specs=nosys.specs
