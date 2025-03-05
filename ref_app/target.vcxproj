@@ -1009,6 +1009,7 @@
     <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\boot.s" />
     <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Startup\IntVectTable.s" />
     <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\ieee754-sf.S" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\from_no_sdk\Std\lib1funcs.S" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />

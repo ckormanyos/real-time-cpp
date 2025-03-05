@@ -31,11 +31,24 @@ WARN_FLAGS   := -Wall                                                           
 WARN_FLAGS   += -Wno-main
 
 DEFS_IEEE754_SF := -D__XTENSA_CALL0_ABI__     \
-                   -DXCHAL_HAVE_FP=1          \
-                   -DXCHAL_HAVE_FP_DIV=1      \
-                   -DXCHAL_HAVE_FP_SQRT=1     \
+                   -D__XTENSA_EB__            \
                    -DL_divsf3                 \
-                   -DL_sqrtf
+                   -DL_negsf2                 \
+                   -DL_addsubsf3              \
+                   -DL_mulsf3                 \
+                   -DL_cmpsf2                 \
+                   -DL_fixsfsi                \
+                   -DL_fixsfdi                \
+                   -DL_fixunssfsi             \
+                   -DL_fixunssfdi             \
+                   -DL_floatsisf              \
+                   -DL_floatdisf              \
+                   -DL_sqrtf                  \
+                   -DL_recipsf2               \
+                   -DL_rsqrtsf2
+
+
+
 
 TGT_ALLFLAGS  = -O2                                                               \
                 -mabi=call0                                                       \
@@ -67,6 +80,7 @@ TGT_LDFLAGS   = -nostartfiles                                                   
                 -nostdlib                                                         \
                 -e _start                                                         \
                 -L$(PATH_TGT_MAKE)/from_no_sdk                                    \
+                -L$(PATH_TGT)/startup/from_no_sdk/Std/lib_call0_abi               \
                 -T Memory_Map.ld                                                  \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
