@@ -138,14 +138,30 @@ _vector_table:
   InvalidExceptionVector:
     j .
 
+  .org _vector_table + 0x404
+  AlignmentDummy:
+    nop
+    nop
+
+.size _vector_table, .-_vector_table
+
+/*******************************************************************************************
+  \brief  
+  
+  \param  
+  
+  \return 
+********************************************************************************************/
+.section  .text,"ax"
+.type irq6_timer1, @function
+.align 4
 irq6_timer1:
   SaveCpuContext
   call0 __system_tick_handler
   RestoreCpuContext
   rfi 3
 
-
-.size _vector_table, .-_vector_table
+.size irq6_timer1, .-irq6_timer1
 
 /*******************************************************************************************
   \brief  

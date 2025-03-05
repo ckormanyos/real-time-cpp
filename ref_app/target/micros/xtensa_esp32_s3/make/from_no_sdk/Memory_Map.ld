@@ -126,6 +126,9 @@ SECTIONS
     *(.bss*)
   } > D_SRAM
 
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
+
   /* stack definition */
   .stack_core0 :
   {
