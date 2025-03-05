@@ -30,12 +30,21 @@ WARN_FLAGS   := -Wall                                                           
 
 WARN_FLAGS   += -Wno-main
 
-DEFS_IEEE754_SF := -D__XTENSA_CALL0_ABI__     \
-                   -DXCHAL_HAVE_FP=1          \
-                   -DXCHAL_HAVE_FP_DIV=1      \
-                   -DXCHAL_HAVE_FP_SQRT=1     \
-                   -DL_divsf3                 \
-                   -DL_sqrtf
+DEFS_IEEE754_SF := -DL_divsf3                 \
+                   -DL_negsf2                 \
+                   -DL_addsubsf3              \
+                   -DL_mulsf3                 \
+                   -DL_cmpsf2                 \
+                   -DL_fixsfsi                \
+                   -DL_fixsfdi                \
+                   -DL_fixunssfsi             \
+                   -DL_fixunssfdi             \
+                   -DL_floatsisf              \
+                   -DL_floatdisf              \
+                   -DL_sqrtf                  \
+                   -DL_recipsf2               \
+                   -DL_rsqrtsf2
+
 
 TGT_ALLFLAGS  = -O2                                                               \
                 -mabi=call0                                                       \
@@ -67,6 +76,7 @@ TGT_LDFLAGS   = -nostartfiles                                                   
                 -nostdlib                                                         \
                 -e _start                                                         \
                 -L$(PATH_TGT_MAKE)/from_no_sdk                                    \
+                -L$(PATH_TGT)/startup/from_no_sdk/Std/lib_call0_abi               \
                 -T Memory_Map.ld                                                  \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
@@ -96,6 +106,11 @@ $(PATH_OBJ)/%.o : %.S
 	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
 	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
 
+
+# ------------------------------------------------------------------------------
+# Image file and flash batch file.
+# ------------------------------------------------------------------------------
+
 RULE_SPECIAL_MAKE_IMAGE_FILE :=
 
 ifeq ($(TYP_OS),WIN)
@@ -118,7 +133,6 @@ ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32s3                              
                                     --flash_freq 80m                              \
                                     --flash_size 2MB 0                            \
                                     $(notdir $(APP)).bin
-
 
 
 RULE_SPECIAL_MAKE_IMAGE_FILE     :=    $(ECHO) +++ generate image file: $(basename $(APP).$(TGT_SUFFIX)).bin                         \

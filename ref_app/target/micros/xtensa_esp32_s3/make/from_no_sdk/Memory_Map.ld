@@ -20,7 +20,7 @@
 ******************************************************************************************/
 ENTRY(_start)
 
-INPUT(libc.a libm.a libgcc.a)
+INPUT(libgcc_call0_abi.a libc_call0_abi.a libg_call0_abi.a libm_call0_abi.a)
 
 /******************************************************************************************
  Globals
@@ -125,6 +125,9 @@ SECTIONS
     *(.bss)
     *(.bss*)
   } > D_SRAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
 
   /* stack definition */
   .stack_core0 :
