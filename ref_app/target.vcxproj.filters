@@ -648,6 +648,9 @@
     <None Include="target\micros\xtensa_esp32_s3\startup\Std\lib1funcs.S">
       <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
     </None>
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags_extra.gmk">
+      <Filter>micros\xtensa_esp32_s3\make</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Target\Micros\AVR\Startup\int_vect.cpp">

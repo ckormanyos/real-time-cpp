@@ -1,0 +1,80 @@
+#
+#  Copyright Christopher Kormanyos 2025.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# extra compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+MOST_O2_FLAGS   :=
+MOST_O2_FLAGS   += -falign-functions
+MOST_O2_FLAGS   += -falign-jumps
+MOST_O2_FLAGS   += -falign-labels
+MOST_O2_FLAGS   += -falign-loops
+MOST_O2_FLAGS   += -fcaller-saves
+MOST_O2_FLAGS   += -fcode-hoisting
+MOST_O2_FLAGS   += -fcrossjumping
+MOST_O2_FLAGS   += -fcse-follow-jumps
+MOST_O2_FLAGS   += -fcse-skip-blocks
+MOST_O2_FLAGS   += -fdelete-null-pointer-checks
+MOST_O2_FLAGS   += -fdevirtualize
+MOST_O2_FLAGS   += -fdevirtualize-speculatively
+MOST_O2_FLAGS   += -fexpensive-optimizations
+MOST_O2_FLAGS   += -ffinite-loops
+MOST_O2_FLAGS   += -fgcse
+MOST_O2_FLAGS   += -fgcse-lm
+MOST_O2_FLAGS   += -fhoist-adjacent-loads
+MOST_O2_FLAGS   += -finline-functions
+MOST_O2_FLAGS   += -finline-small-functions
+MOST_O2_FLAGS   += -findirect-inlining
+MOST_O2_FLAGS   += -fipa-bit-cp
+MOST_O2_FLAGS   += -fipa-cp
+MOST_O2_FLAGS   += -fipa-icf
+MOST_O2_FLAGS   += -fipa-ra
+MOST_O2_FLAGS   += -fipa-sra
+MOST_O2_FLAGS   += -fipa-vrp
+MOST_O2_FLAGS   += -fisolate-erroneous-paths-dereference
+MOST_O2_FLAGS   += -flra-remat
+MOST_O2_FLAGS   += -foptimize-sibling-calls
+MOST_O2_FLAGS   += -foptimize-strlen
+MOST_O2_FLAGS   += -fpartial-inlining
+MOST_O2_FLAGS   += -fpeephole2
+MOST_O2_FLAGS   += -freorder-blocks-algorithm=stc
+MOST_O2_FLAGS   += -freorder-blocks-and-partition
+MOST_O2_FLAGS   += -freorder-functions
+MOST_O2_FLAGS   += -frerun-cse-after-loop
+MOST_O2_FLAGS   += -fschedule-insns
+MOST_O2_FLAGS   += -fschedule-insns2
+MOST_O2_FLAGS   += -fsched-interblock
+MOST_O2_FLAGS   += -fsched-spec
+MOST_O2_FLAGS   += -fstore-merging
+MOST_O2_FLAGS   += -fstrict-aliasing
+MOST_O2_FLAGS   += -fthread-jumps
+MOST_O2_FLAGS   += -ftree-builtin-call-dce
+MOST_O2_FLAGS   += -ftree-loop-vectorize
+MOST_O2_FLAGS   += -ftree-pre
+MOST_O2_FLAGS   += -ftree-slp-vectorize
+MOST_O2_FLAGS   += -ftree-switch-conversion
+MOST_O2_FLAGS   += -ftree-tail-merge
+MOST_O2_FLAGS   += -ftree-vrp
+MOST_O2_FLAGS   += -fvect-cost-model=very-cheap
+
+
+DEFS_IEEE754_SF :=
+DEFS_IEEE754_SF += -DL_divsf3
+DEFS_IEEE754_SF += -DL_negsf2
+DEFS_IEEE754_SF += -DL_addsubsf3
+DEFS_IEEE754_SF += -DL_mulsf3
+DEFS_IEEE754_SF += -DL_cmpsf2
+DEFS_IEEE754_SF += -DL_fixsfsi
+DEFS_IEEE754_SF += -DL_fixsfdi
+DEFS_IEEE754_SF += -DL_fixunssfsi
+DEFS_IEEE754_SF += -DL_fixunssfdi
+DEFS_IEEE754_SF += -DL_floatsisf
+DEFS_IEEE754_SF += -DL_floatdisf
+DEFS_IEEE754_SF += -DL_sqrtf
+DEFS_IEEE754_SF += -DL_recipsf2
+DEFS_IEEE754_SF += -DL_rsqrtsf2
