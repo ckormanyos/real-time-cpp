@@ -87,6 +87,7 @@ The benchmark used is a ${\sim}100$ decimal digit AGM $\pi$ calculation.
 | `stm32f446`        |  5.1            |    3.4     |
 | `rpi_pico2_rp2350` |  6.3            |    4.2     |
 | `wch_ch32v307`     |  8.0            |    5.3     |
+| `xtensa_esp32_s3`  |  9.1            |    6.1     |
 | `rpi_pico_rp2040`  |  19             |    13      |
 | `avr`              |  420            |    280     |
 
@@ -106,6 +107,10 @@ of $5.1~\text{ms}$.
 The $32$-bit RISC-V controller (having a novel _open-source_ core)
 on the `wch_ch32v307` board boasts a quite respectable
 time of $8.0~\text{ms}$.
+
+Running on only one core (core 0) of the $32$-bit
+controller of the `xtensa_esp32_s3` board results in
+a runtime of $9.1~\text{ms}$ for the calculation.
 
 Using only one core (core 1) on the $32$-bit ARM(R) Cortex(R) M0+
 controller of the `rpi_pico_rp2040` board results in a calculation
