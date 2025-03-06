@@ -1005,6 +1005,7 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3.ld" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_files.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk" />
+    <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags_extra.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\startup\boot.s" />
     <None Include="target\micros\xtensa_esp32_s3\startup\IntVectTable.s" />
     <None Include="target\micros\xtensa_esp32_s3\startup\Std\ieee754-sf.S" />
