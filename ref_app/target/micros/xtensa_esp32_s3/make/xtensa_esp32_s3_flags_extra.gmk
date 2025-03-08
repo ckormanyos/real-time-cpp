@@ -62,6 +62,9 @@ MOST_O2_FLAGS   += -ftree-tail-merge
 MOST_O2_FLAGS   += -ftree-vrp
 MOST_O2_FLAGS   += -fvect-cost-model=very-cheap
 
+SOME_O3_FLAGS   :=
+SOME_O3_FLAGS   += -fgcse-after-reload
+SOME_O3_FLAGS   += -fipa-cp-clone
 
 DEFS_IEEE754_SF :=
 DEFS_IEEE754_SF += -DL_divsf3

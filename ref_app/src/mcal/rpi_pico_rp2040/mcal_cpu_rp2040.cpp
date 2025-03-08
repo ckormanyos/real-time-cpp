@@ -94,26 +94,26 @@ auto mcal::cpu::rp2040::start_core1() -> bool
                                      mcal::reg::sio_fifo_st,
                                      UINT32_C(0)>::bit_get());
 
-  // Send 0 to wake up core 1.
+  // Send 0 to wake up core1.
   local::sio_fifo_write_verify(std::uint32_t { UINT32_C(0) });
 
-  // Send 1 to synchronize with core 1.
+  // Send 1 to synchronize with core1.
   local::sio_fifo_write_verify(std::uint32_t { UINT32_C(1) });
 
   static_assert(sizeof(std::uint32_t) == sizeof(std::uintptr_t), "Error: Pointer/address size mismatch");
 
-  // Send the VTOR address for core 1.
+  // Send the VTOR address for core1.
   local::sio_fifo_write_verify(reinterpret_cast<std::uint32_t>(&__INTVECT_Core1[0U]));
 
-  // Send the stack pointer value for core 1.
+  // Send the stack pointer value for core1.
   local::sio_fifo_write_verify(__INTVECT_Core1[0U]);
 
-  // Send the reset handler address for core 1.
+  // Send the reset handler address for core1.
   local::sio_fifo_write_verify(__INTVECT_Core1[1U]);
 
-  // Clear the sticky bits of the FIFO_ST on core 0.
-  // Note: Core 0 has called us to get here so these are,
-  // in fact, the FIFO_ST sticky bits on core 0.
+  // Clear the sticky bits of the FIFO_ST on core0.
+  // Note: core0 has called us to get here so these are,
+  // in fact, the FIFO_ST sticky bits on core0.
 
   // SIO->FIFO_ST.reg = 0xFFU;
   mcal::reg::reg_access_static<std::uint32_t,
