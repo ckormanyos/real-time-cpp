@@ -34,6 +34,7 @@ include $(PATH_TGT_MAKE)/$(TGT)_flags_extra.gmk
 
 TGT_ALLFLAGS  = -O1                                                               \
                 $(MOST_O2_FLAGS)                                                  \
+                $(SOME_O3_FLAGS)                                                  \
                 -mabi=call0                                                       \
                 -mno-text-section-literals                                        \
                 -mstrict-align                                                    \

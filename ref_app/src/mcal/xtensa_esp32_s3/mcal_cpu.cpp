@@ -26,7 +26,9 @@ extern "C"
 extern "C"
 void Mcu_StartCore1()
 {
-  // Unstall core 1.
+  // Note: This subroutine is called from core0.
+
+  // Firstly we need to unstall core1.
 
   // RTC_CNTL->OPTIONS0.bit.SW_STALL_APPCPU_C0            = 0;
   // RTC_CNTL->SW_CPU_STALL.bit.SW_STALL_APPCPU_C1        = 0;
@@ -43,41 +45,52 @@ void Mcu_StartCore1()
 
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::core_1_control_0, static_cast<std::uint32_t>(UINT8_C(0))>::bit_clr();
 
-  // Enable the clock for core 1.
+  // Enable the clock for core1.
 
   // SYSTEM->CORE_1_CONTROL_0.bit.CONTROL_CORE_1_CLKGATE_EN = 1;
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::core_1_control_0, static_cast<std::uint32_t>(UINT8_C(1))>::bit_set();
 
-  // Reset core 1.
+  // Reset core1.
 
   // SYSTEM->CORE_1_CONTROL_0.bit.CONTROL_CORE_1_RESETING   = 1;
   // SYSTEM->CORE_1_CONTROL_0.bit.CONTROL_CORE_1_RESETING   = 0;
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::core_1_control_0, static_cast<std::uint32_t>(UINT8_C(2))>::bit_set();
   mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::system::core_1_control_0, static_cast<std::uint32_t>(UINT8_C(2))>::bit_clr();
 
-  // Note: In ESP32-S3, when the reset of the core1 is released,
-  // the core1 starts executing the bootROM code and it gets stuck
-  // in a trap waiting for the entry address to be received
-  // from core0. This is can be achieved by writing the core1 entry
-  // address to the register SYSTEM_CORE_1_CONTROL_1_REG from core0.
+  // Note: In ESP32-S3 when the reset of core1 is released,
+  // then core1 starts executing the bootROM code. Core1
+  // subsequently gets stuck in a trap. It is waiting for
+  // the entry address to be received from core0.
 
-  // Set the core1 entry address.
+  // The send/receive transaction of the entry address is
+  // carried out via core0 deliberately writing the core1
+  // entry address in the SYSTEM_CORE_1_CONTROL_1_REG register.
 
-  // SYSTEM->CORE_1_CONTROL_1.reg = (uint32_t) &_start;
   {
-    const std::uint32_t start_addr { reinterpret_cast<std::uint32_t>(&_start) };
+    // Set the core1 entry address.
 
-    mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>::reg_set(mcal::reg::system::core_1_control_1, start_addr);
+    using mcal_reg_access_dynamic_type = mcal::reg::reg_access_dynamic<std::uint32_t, std::uint32_t>;
+
+    // SYSTEM->CORE_1_CONTROL_1.reg = (uint32_t) &_start;
+
+    mcal_reg_access_dynamic_type::reg_set
+    (
+      mcal::reg::system::core_1_control_1,
+      static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&_start))
+    );
   }
 }
 
 extern "C"
 void main_c1()
 {
-  // Set the private cpu timer1 for core 1.
+  // Note: This subroutine executes in core1. It has been called
+  // by the core1 branch of the subroutine _start().
+
+  // Set the private cpu timer1 for core1.
   set_cpu_private_timer1(mcal::gpt::timer1_reload());
 
-  // Enable all interrupts on core 1.
+  // Enable all interrupts on core1.
   mcal::irq::init(nullptr);
 
   // GPIO->OUT.reg |= CORE1_LED;
@@ -88,10 +101,12 @@ void main_c1()
 
 auto mcal::cpu::post_init() noexcept -> void
 {
-  // Set the private cpu timer1 for core 0.
+  // Note: This subroutine is called from core0.
+
+  // Set the private cpu timer1 for core0.
   set_cpu_private_timer1(mcal::gpt::timer1_reload());
 
-  // Use core 0 to start core 1.
+  // Use core0 to start core1.
   Mcu_StartCore1();
 }
 
