@@ -209,49 +209,4 @@ void* memcpy (void* dest, const void* src, size_t n)
   return dest;
 }
 
-void* memmove (void* dest, const void* src, size_t n)
-{
-  uint8_t* from = (uint8_t*) src;
-  uint8_t* to   = (uint8_t*) dest;
-
-  if(from == to || n == 0)
-  {
-    return dest;
-  }
-
-  if(to > from && (ptrdiff_t) (to - from) < (ptrdiff_t) n)
-  {
-    // to overlaps with from
-    //  <from......>
-    //         <to........>
-    // copy in reverse, to avoid overwriting from
-
-    for(ptrdiff_t i = (ptrdiff_t) (n - 1); i >= 0; --i)
-    {
-      to[i] = from[i];
-    }
-
-    return dest;
-  }
-
-  if(from > to && (ptrdiff_t) (from - to) < (ptrdiff_t) n)
-  {
-    // to overlaps with from
-    //        <from......>
-    //  <to........>
-    // copy forwards, to avoid overwriting from
-
-    for(size_t i = 0U; i < n; ++i)
-    {
-      to[i] = from[i];
-    }
-
-    return dest;
-  }
-
-  memcpy(dest, src, n);
-
-  return dest;
-}
-
 } // extern "C"

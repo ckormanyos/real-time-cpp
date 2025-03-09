@@ -24,7 +24,7 @@ extern "C"
 }
 
 extern "C"
-void Mcu_StartCore1()
+auto Mcu_StartCore1() -> void
 {
   // Note: This subroutine is called from core0.
 
@@ -65,6 +65,8 @@ void Mcu_StartCore1()
   // The send/receive transaction of the entry address is
   // carried out via core0 deliberately writing the core1
   // entry address in the SYSTEM_CORE_1_CONTROL_1_REG register.
+  // When this is achieved and done, core1 exits the trap
+  // and progresses forward.
 
   {
     // Set the core1 entry address.
@@ -82,7 +84,7 @@ void Mcu_StartCore1()
 }
 
 extern "C"
-void main_c1()
+auto main_c1() -> void
 {
   // Note: This subroutine executes in core1. It has been called
   // by the core1 branch of the subroutine _start().

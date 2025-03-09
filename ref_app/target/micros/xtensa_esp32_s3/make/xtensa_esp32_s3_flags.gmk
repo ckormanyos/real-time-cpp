@@ -46,7 +46,8 @@ TGT_ALLFLAGS  = -O1                                                             
                 -fno-stack-protector                                              \
                 -nostdlib                                                         \
                 -gdwarf-4                                                         \
-                -DCONFIG_IDF_TARGET_ESP32S3
+                -DCONFIG_IDF_TARGET_ESP32S3                                       \
+                -DI_KNOW_WHAT_I_AM_DOING
 
 
 TGT_CFLAGS    = -std=c23                                                          \
@@ -67,7 +68,6 @@ TGT_LDFLAGS   = -nostartfiles                                                   
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)                                      \
-                -z,max-page-size=4096                                             \
                 --specs=nano.specs                                                \
                 --specs=nosys.specs
 

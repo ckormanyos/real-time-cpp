@@ -1,23 +1,28 @@
+/*
+ Copyright Christopher Kormanyos 2025.
+ Distributed under the Boost Software License,
+ Version 1.0. (See accompanying file LICENSE_1_0.txt
+ or copy at http://www.boost.org/LICENSE_1_0.txt)
+*/
+
+/* Originally from: */
 /******************************************************************************************
   Filename    : Memory_Map.ld
-  
+
   Core        : Xtensa LX7
-  
+
   MCU         : ESP32-S3
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 16.02.2025
-  
+
   Description : Linker description file script for ESP32-S3
-  
+
 ******************************************************************************************/
 
-/******************************************************************************************
- ELF Entrypoint
-******************************************************************************************/
 ENTRY(_start)
 
 INPUT(libgcc_call0_abi.a libc_call0_abi.a libg_call0_abi.a libm_call0_abi.a)
@@ -70,7 +75,7 @@ SECTIONS
     . = ALIGN(4);
   } > D_SRAM
 
- /* Section for constructors */
+  /* Section for constructors */
   .ctors : ALIGN(4)
   {
     _ctors_begin = .;
