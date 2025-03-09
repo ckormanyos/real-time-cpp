@@ -42,3 +42,25 @@ TGT_LDFLAGS   = -nostdlib                                      \
                 $(TGT_ALLFLAGS)                                \
                 --specs=nano.specs                             \
                 --specs=nosys.specs
+
+
+# ------------------------------------------------------------------------------
+# Rule to assemble source file (*.S) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+ifeq ($(TYP_OS),WIN)
+TGT_GCC := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-gcc.exe
+TGT_GCC := $(subst /,\,$(TGT_GCC))
+else
+TGT_GCC := $(GCC_PREFIX)-gcc
+endif
+
+$(PATH_OBJ)/%.o : %.S
+	@$(ECHO) +++ assemble for esp32s3 riscv cop: $< to $@
+  # Assemble the source file,
+  # ...and reformat (using sed) any possible error/warning messages
+  #    for the VisualStudio(R) output window,
+  # ...and create an assembly listing using objdump
+	@-$(CC) $(TGT_ALLFLAGS) $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst

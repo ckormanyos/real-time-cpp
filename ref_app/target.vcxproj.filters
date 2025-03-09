@@ -283,6 +283,18 @@
     <Filter Include="micros\xtensa_esp32_s3_riscv_cop">
       <UniqueIdentifier>{d85fd616-0c1e-4254-bcba-6cf308b63dff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa_esp32_s3_riscv_cop\make">
+      <UniqueIdentifier>{884fecba-24b2-4059-8063-3a7c56c0cadf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3_riscv_cop\startup">
+      <UniqueIdentifier>{a71738e7-0c88-4bb9-a1bd-3a5ffd125490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk">
+      <UniqueIdentifier>{bb1fed00-c4cd-4e52-833d-16cf0f69bc10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup">
+      <UniqueIdentifier>{66ae9aa3-915d-4366-9492-87cdb30add93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">
@@ -654,14 +666,20 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags_extra.gmk">
       <Filter>micros\xtensa_esp32_s3\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_flags.gmk">
-      <Filter>micros\xtensa_esp32_s3_riscv_cop</Filter>
-    </None>
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop.ld">
-      <Filter>micros\xtensa_esp32_s3_riscv_cop</Filter>
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\make</Filter>
     </None>
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_files.gmk">
-      <Filter>micros\xtensa_esp32_s3_riscv_cop</Filter>
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_flags.gmk">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\make</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\boot.S">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup</Filter>
+    </None>
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\IntVectTable.S">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -971,6 +989,9 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp">
       <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
     </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\Startup.c">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt">
@@ -980,6 +1001,9 @@
   <ItemGroup>
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h">
       <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\custom_ops.h">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
