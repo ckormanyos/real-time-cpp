@@ -636,10 +636,10 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk">
       <Filter>micros\xtensa_esp32_s3\make</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_s3\startup\boot.s">
+    <None Include="target\micros\xtensa_esp32_s3\startup\boot.S">
       <Filter>micros\xtensa_esp32_s3\startup</Filter>
     </None>
-    <None Include="target\micros\xtensa_esp32_s3\startup\IntVectTable.s">
+    <None Include="target\micros\xtensa_esp32_s3\startup\IntVectTable.S">
       <Filter>micros\xtensa_esp32_s3\startup</Filter>
     </None>
     <None Include="target\micros\xtensa_esp32_s3\startup\Std\ieee754-sf.S">
