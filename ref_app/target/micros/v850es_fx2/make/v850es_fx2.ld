@@ -1,3 +1,10 @@
+/*
+ Copyright Christopher Kormanyos 2014 - 2025.
+ Distributed under the Boost Software License,
+ Version 1.0. (See accompanying file LICENSE_1_0.txt
+ or copy at http://www.boost.org/LICENSE_1_0.txt)
+*/
+
 /* Linker script for NEC V850 FX2 upD70F3231 */
 
 INPUT(libc.a libg.a libm.a libgcc.a)
