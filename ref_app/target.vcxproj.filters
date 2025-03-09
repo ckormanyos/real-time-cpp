@@ -280,6 +280,9 @@
     <Filter Include="micros\xtensa_esp32_s3\startup\Std\lib_call0_abi">
       <UniqueIdentifier>{72fe792d-0dc8-46d7-bb65-4dab74184cf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="micros\xtensa_esp32_s3_riscv_cop">
+      <UniqueIdentifier>{d85fd616-0c1e-4254-bcba-6cf308b63dff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="target\app\make\app_files.gmk">

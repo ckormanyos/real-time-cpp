@@ -114,6 +114,7 @@ ESP32S3_ESP_TOOL_FLAGS_IMAG  := --chip esp32s3                                \
                                 -o $(basename $(APP).$(TGT_SUFFIX)).bin       \
                                 $(APP).$(TGT_SUFFIX)
 
+
 ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32s3                                \
                                     write_flash                                   \
                                     --flash_mode dio                              \

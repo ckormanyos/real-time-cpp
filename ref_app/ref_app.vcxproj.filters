@@ -230,6 +230,9 @@
     <Filter Include="src\mcal\xtensa_esp32_s3">
       <UniqueIdentifier>{66987aaa-84ee-4911-aa5c-efd3108b55f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa_esp32_s3_riscv_cop">
+      <UniqueIdentifier>{fb4f50c3-b34c-4150-ae05-342dc3721eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
