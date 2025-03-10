@@ -31,7 +31,7 @@
 
   \return
 ********************************************************************************************/
-.section .text
+.section .startup,"ax"
 .type _start, @function
 .align 4
 .extern __CORE0_STACK_TOP

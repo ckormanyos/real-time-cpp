@@ -63,7 +63,6 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -nostdlib                                                         \
-                -e _start                                                         \
                 -L$(PATH_TGT)/startup/Std/lib_call0_abi                           \
                 -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \

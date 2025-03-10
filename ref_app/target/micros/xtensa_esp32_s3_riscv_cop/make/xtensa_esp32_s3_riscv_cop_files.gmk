@@ -9,7 +9,10 @@
 # File list of the ESP32-S3 RISC-V coprocessor files in the project
 # ------------------------------------------------------------------------------
 
+FILES_CPP      :=
+
 FILES_TGT      := $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                \
+                  $(PATH_TGT)/startup/from_no_sdk/Appli/main                              \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/boot                            \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/IntVectTable                    \
                   $(PATH_TGT)/startup/from_no_sdk/Startup/Startup

@@ -54,6 +54,8 @@ SECTIONS
     . = ALIGN(4);
     *(.vector*)
     . = ALIGN(4);
+    *(.startup*)
+    . = ALIGN(4);
     *(.literal)
     . = ALIGN(4);
     *(.literal*)
