@@ -12,7 +12,6 @@
 FILES_CPP      :=
 
 FILES_TGT      := $(PATH_TGT)/startup/from_no_sdk/Code/Appli/main                         \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Mcal/Mcu                           \
                   $(PATH_TGT)/startup/from_no_sdk/Code/Startup/boot                       \
                   $(PATH_TGT)/startup/from_no_sdk/Code/Startup/IntVectTable               \
                   $(PATH_TGT)/startup/from_no_sdk/Code/Startup/Startup

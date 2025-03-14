@@ -1149,7 +1149,6 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt1.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Appli\main.c" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Mcal\Mcu.c" />
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\Startup.c" />
   </ItemGroup>
   <ItemGroup>

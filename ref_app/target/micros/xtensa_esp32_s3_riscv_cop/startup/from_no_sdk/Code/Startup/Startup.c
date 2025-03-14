@@ -45,21 +45,13 @@ extern unsigned long __CPPCTOR_LIST__[];
 #define __STARTUP_RUNTIME_CTORS       (unsigned long*)(&__CPPCTOR_LIST__[0])
 
 //=========================================================================================
-// function prototype
+// function prototypes
 //=========================================================================================
 void Startup_Init(void) __attribute__((used));
 static void Startup_InitRam(void);
 static void Startup_InitCtors(void);
-static void Startup_RunApplication(void);
-static void Startup_Unexpected_Exit(void);
-static void Startup_InitSystemClock(void);
-static void Startup_InitCore(void);
-//=========================================================================================
-// extern function prototype
-//=========================================================================================
-extern int main(void) __attribute__((used, noinline));
-extern void Mcu_ClockInit(void);
-extern void Mcu_InitCore(void);
+
+extern void main(void);
 
 //=========================================================================================
 // macros
@@ -74,12 +66,6 @@ extern void Mcu_InitCore(void);
 //-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
-  /* Initialize the CPU Core */
-  Startup_InitCore();
-
-  /* Configure the system clock */
-  Startup_InitSystemClock();
-
   /* Initialize the RAM memory */
   Startup_InitRam();
 
@@ -87,7 +73,10 @@ void Startup_Init(void)
   Startup_InitCtors();
 
   /* Start the application */
-  Startup_RunApplication();
+  main();
+
+  /* Catch unexpected exit from main or if main does not exist */
+  for(;;) { ; }
 }
 
 
@@ -148,44 +137,4 @@ static void Startup_InitCtors(void)
   {
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_RunApplication(void)
-{
-  /* Check the weak function */
-  (void)main();
-
-  /* Catch unexpected exit from main or if main does not exist */
-  for(;;);
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitSystemClock function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_InitSystemClock(void)
-{
-  Mcu_ClockInit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitCore function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-void Startup_InitCore(void)
-{
-  Mcu_InitCore();
 }

@@ -52,9 +52,7 @@
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-int main() __attribute__((used, noinline));
-
-int main()
+void main()
 {
   /* configure GPIO17 and GPIO18 as output low */
   RTC_IO_RTC_PAD18_REG |= (1ul << 19);
@@ -68,12 +66,6 @@ int main()
   for(;;)
   {
      TOGGLE_GPIO17();
-
-     for(uint32_t i=0; i< 0xC0000; ++i)
-     {
-       __asm("nop");
-     }
+     for(uint32_t i=0; i< 0x100000; i++);
   }
-
-  return 0;
 }
