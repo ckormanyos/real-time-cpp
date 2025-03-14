@@ -16,6 +16,7 @@ GCC_PREFIX    = xtensa-esp32s3-elf
 TGT_SUFFIX    = elf
 
 WARN_FLAGS   := -Wall                                                             \
+                -Wextra                                                           \
                 -Wpointer-arith                                                   \
                 -Wno-maybe-uninitialized                                          \
                 -Wno-unused-function                                              \
@@ -64,7 +65,6 @@ TGT_AFLAGS    =
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -nostdlib                                                         \
                 -L$(PATH_TGT)/startup/Std/lib_call0_abi                           \
-                -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)                                      \
                 --specs=nano.specs                                                \

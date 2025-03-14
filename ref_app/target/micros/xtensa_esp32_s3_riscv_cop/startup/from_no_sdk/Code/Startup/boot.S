@@ -15,8 +15,6 @@
 
 ******************************************************************************************/
 
-#include "custom_ops.h"
-
 /*******************************************************************************************
   \brief  
   
@@ -34,9 +32,6 @@
 _start:
   /* setup the stack pointer */
   la sp, __STACK_TOP
-
-  /* enable interrupts */
-  picorv32_maskirq_insn(zero, zero)
 
   /* setup C/C++ runtime environment */
   j  Startup_Init

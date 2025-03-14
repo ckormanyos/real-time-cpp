@@ -126,6 +126,8 @@ SECTIONS
     PROVIDE(__CORE1_STACK_TOP = .) ;
   } > D_SRAM
 
+  . = 0x50000000;
+
   .ulp :
   {
     *(.coprocessor*)

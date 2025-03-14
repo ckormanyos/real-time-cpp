@@ -10,7 +10,10 @@
 // Description : C/C++ Runtime Setup (Crt0)
 // 
 // ***************************************************************************************
+
+#include <stddef.h>
 #include <stdint.h>
+
 //=========================================================================================
 // types definitions
 //=========================================================================================
@@ -54,9 +57,9 @@ static void Startup_InitCore(void);
 //=========================================================================================
 // extern function prototype
 //=========================================================================================
-int main(void) __attribute__((weak));
-void Mcu_ClockInit(void) __attribute__((weak));
-void Mcu_InitCore(void) __attribute__((weak));
+extern int main(void);
+extern void Mcu_ClockInit(void);
+extern void Mcu_InitCore(void);
 
 //=========================================================================================
 // macros
@@ -71,12 +74,9 @@ void Mcu_InitCore(void) __attribute__((weak));
 //-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
-  /* Initialize the CPU Core */
-  Startup_InitCore();
+  Mcu_InitCore();
 
-  /* Configure the system clock */
-  Startup_InitSystemClock();
-
+  Mcu_ClockInit();
   /* Initialize the RAM memory */
   Startup_InitRam();
 
@@ -84,7 +84,13 @@ void Startup_Init(void)
   Startup_InitCtors();
 
   /* Start the application */
-  Startup_RunApplication();
+
+  (void) main();
+
+  for(;;)
+  {
+    __asm("nop");
+  }
 }
 
 
@@ -145,59 +151,4 @@ static void Startup_InitCtors(void)
   {
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_RunApplication function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_RunApplication(void)
-{
-  /* Check the weak function */
-  if(main)
-    (void)main();
-
-  /* Catch unexpected exit from main or if main does not exist */
-  Startup_Unexpected_Exit(); 
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_Unexpected_Exit function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_Unexpected_Exit(void)
-{
-  for(;;);
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitSystemClock function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-static void Startup_InitSystemClock(void)
-{
-  if(Mcu_ClockInit)
-    Mcu_ClockInit();
-}
-
-//-----------------------------------------------------------------------------------------
-/// \brief  Startup_InitCore function
-///
-/// \param  void
-///
-/// \return void
-//-----------------------------------------------------------------------------------------
-void Startup_InitCore(void)
-{
-  if(Mcu_InitCore)
-    Mcu_InitCore();
 }

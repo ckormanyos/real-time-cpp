@@ -1034,14 +1034,16 @@
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\make\xtensa_esp32_s3_flags_extra.gmk" />
     <None Include="target\micros\xtensa_esp32_s3\startup\boot.S" />
+    <None Include="target\micros\xtensa_esp32_s3\startup\coprocessor_binary.S" />
     <None Include="target\micros\xtensa_esp32_s3\startup\IntVectTable.S" />
     <None Include="target\micros\xtensa_esp32_s3\startup\Std\ieee754-sf.S" />
     <None Include="target\micros\xtensa_esp32_s3\startup\Std\lib1funcs.S" />
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop.ld" />
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_files.gmk" />
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_flags.gmk" />
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\boot.S" />
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\IntVectTable.S" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\boot.S" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\IntVectTable.S" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Scripts\bin2asm.py" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
@@ -1146,15 +1148,15 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt1.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Appli\main.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\Startup.c" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Appli\main.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Mcal\Mcu.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\Startup.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="target\micros\xtensa_esp32_s3\startup\Std\core-isa.h" />
-    <ClInclude Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Startup\custom_ops.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="target\micros\xtensa_esp32_s3\startup\Std\lib_call0_abi\libc_call0_abi.a" />
