@@ -35,10 +35,6 @@
 
         static void set_direction_input()
         {
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable_w1ts,  bit_pos>::bit_clr();
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable1_w1ts, bit_pos>::bit_clr();
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out,          bit_pos>::bit_clr();
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out1,         bit_pos>::bit_clr();
         }
 
         static void set_pin_high()

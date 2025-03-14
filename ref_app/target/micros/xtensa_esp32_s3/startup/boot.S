@@ -4,25 +4,24 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-
-// Originally from:
 ******************************************************************************************/
 
+/* Originally from: */
 /******************************************************************************************
   Filename    : boot.S
-  
+
   Core        : Xtensa LX7
-  
+
   MCU         : ESP32-S3
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 22.02.2025
-  
+
   Description : low-level startup code for ESP32-S3
-  
+
 ******************************************************************************************/
 
 /*******************************************************************************************
@@ -32,7 +31,7 @@
 
   \return
 ********************************************************************************************/
-.section .text
+.section .startup,"ax"
 .type _start, @function
 .align 4
 .extern __CORE0_STACK_TOP

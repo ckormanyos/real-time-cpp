@@ -26,11 +26,11 @@
 ******************************************************************************************/
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .macro SaveCpuContext
     addi sp, sp, -4*15
@@ -52,11 +52,11 @@
 .endm
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .macro RestoreCpuContext
     l32i.n a0,  sp, 0*4
@@ -78,11 +78,11 @@
 .endm
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .vector,"ax"
 
@@ -140,17 +140,17 @@ _vector_table:
 
   .org _vector_table + 0x404
   AlignmentDummy:
-    nop
-    nop
+    nop  // 2-byte op
+    nop  // 2-byte op
 
 .size _vector_table, .-_vector_table
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .text,"ax"
 .type irq6_timer1, @function
@@ -164,11 +164,11 @@ irq6_timer1:
 .size irq6_timer1, .-irq6_timer1
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .text,"ax"
 .type enable_irq, @function
@@ -182,11 +182,11 @@ enable_irq:
 .size enable_irq, .-enable_irq
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .text,"ax"
 .type set_cpu_private_timer1, @function
@@ -204,11 +204,11 @@ set_cpu_private_timer1:
 .size set_cpu_private_timer1, .-set_cpu_private_timer1
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .text,"ax"
 .type get_cpu_private_timer1, @function
@@ -222,18 +222,12 @@ get_cpu_private_timer1:
 
 .size get_cpu_private_timer1, .-get_cpu_private_timer1
 
-  // software interrupt
-  //movi a10, 0x80;
-  //wsr.intset a10
-  
-  //RSIL --> read and set prio level
-
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section  .vector,"ax"
 .global _dummy_vector_table
@@ -247,8 +241,8 @@ _dummy_vector_table:
   j .    // 3-byte op
   nop    // 2-byte op
   .endr
-  nop      // 2-byte op
-  nop      // 2-byte op
+  nop    // 2-byte op
+  nop    // 2-byte op
   .endr
 
 .size _dummy_vector_table, .-_dummy_vector_table

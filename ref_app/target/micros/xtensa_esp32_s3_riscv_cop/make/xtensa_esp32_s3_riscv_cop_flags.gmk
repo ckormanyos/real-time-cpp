@@ -1,0 +1,111 @@
+#  Copyright Christopher Kormanyos 2022 - 2024.
+#  Distributed under the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt
+#  or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+# ------------------------------------------------------------------------------
+# compiler flags for the target architecture
+# ------------------------------------------------------------------------------
+
+GCC_TARGET   := riscv-none-elf
+GCC_PREFIX   := riscv-none-elf
+
+GCC_VERSION  := 14.2.0
+
+TGT_SUFFIX    = elf
+
+WARN_FLAGS   := -Wall                                                             \
+                -Wextra                                                           \
+                -Wconversion                                                      \
+                -Wsign-conversion                                                 \
+                -Wunused-parameter                                                \
+                -Wuninitialized                                                   \
+                -Wmissing-declarations                                            \
+                -Wshadow                                                          \
+                -Wunreachable-code                                                \
+                -Wmissing-include-dirs                                            \
+                -Wpointer-arith                                                   \
+                -Wno-maybe-uninitialized                                          \
+                -Wno-unused-function                                              \
+                -Wno-unused-but-set-variable                                      \
+                -Wno-unused-variable                                              \
+                -Wno-deprecated-declarations                                      \
+                -Wno-unused-parameter                                             \
+                -Wno-unused-but-set-parameter                                     \
+                -Wno-missing-field-initializers                                   \
+                -Wno-sign-compare                                                 \
+                -Wno-main
+
+
+TGT_ALLFLAGS  = -O2                                            \
+                -fno-reorder-blocks-and-partition              \
+                -fno-reorder-functions                         \
+                -march=rv32imc                                 \
+                -mabi=ilp32                                    \
+                -msmall-data-limit=0                           \
+                -falign-functions=4                            \
+                -fomit-frame-pointer                           \
+                -DI_KNOW_WHAT_I_AM_DOING                       \
+                -ffreestanding
+
+
+TGT_CFLAGS    = -std=c11                                       \
+                -Wunsuffixed-float-constants                   \
+                $(TGT_ALLFLAGS)
+
+TGT_CXXFLAGS  = -std=c++23                                     \
+                $(TGT_ALLFLAGS)
+
+TGT_INCLUDES  = -isystem $(PATH_APP)/util/STL
+
+TGT_AFLAGS    =  $(TGT_ALLFLAGS)
+
+TGT_LDFLAGS   = -nostdlib                                      \
+                -nostartfiles                                  \
+                -fno-lto                                       \
+                -e _start                                      \
+                -Wl,-Map,$(APP).map                            \
+                -T $(LINKER_DEFINITION_FILE)                   \
+                $(TGT_ALLFLAGS)
+
+
+# ------------------------------------------------------------------------------
+# Rule to assemble source file (*.S) to object file (*.o).
+# ------------------------------------------------------------------------------
+
+ifeq ($(TYP_OS),WIN)
+TGT_GCC := $(PATH_TOOLS_CC)/$(GCC_PREFIX)-gcc.exe
+TGT_GCC := $(subst /,\,$(TGT_GCC))
+else
+TGT_GCC := $(GCC_PREFIX)-gcc
+endif
+
+
+$(PATH_OBJ)/%.o : %.S
+	@$(ECHO) +++ assemble for esp32s3 riscv cop: $< to $@
+  # Assemble the source file,
+  # ...and reformat (using sed) any possible error/warning messages
+  #    for the VisualStudio(R) output window,
+  # ...and create an assembly listing using objdump
+	@-$(TGT_GCC) -mno-save-restore -static -O2 -fno-reorder-blocks-and-partition -fno-reorder-functions -march=rv32imc -mabi=ilp32 -msmall-data-limit=0 -falign-functions=4 -fomit-frame-pointer -DI_KNOW_WHAT_I_AM_DOING $(C_INCLUDES) $< -c -o $(PATH_OBJ)/$(basename $(@F)).o 2> $(PATH_ERR)/$(basename $(@F)).err
+	@-$(SED) -e 's|:\([0-9]*\):|(\1) :|' $(PATH_ERR)/$(basename $(@F)).err
+	@-$(OBJDUMP) -S $(PATH_OBJ)/$(basename $(@F)).o > $(PATH_LST)/$(basename $(@F)).lst
+
+
+# ------------------------------------------------------------------------------
+# Image file
+# ------------------------------------------------------------------------------
+
+ifeq ($(TYP_OS),WIN)
+OBJCOPY   := $(PATH_TOOLS_CC)\$(GCC_PREFIX)-objcopy.exe
+else
+OBJCOPY   := $(GCC_PREFIX)-objcopy
+endif
+
+PYTHON := python
+
+RULE_SPECIAL_MAKE_IMAGE_FILE_PART01 := $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
+RULE_SPECIAL_MAKE_IMAGE_FILE_PART02 := $(PYTHON) $(PATH_TGT)/startup/from_no_sdk/Scripts/bin2asm.py -i $(APP).bin -o $(PATH_BIN)/coprocessor_binary.S -s ".coprocessor" -l 16 -g coprocessor_bin
+
+RULE_SPECIAL_MAKE_IMAGE_FILE        := $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART01) && $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART02)

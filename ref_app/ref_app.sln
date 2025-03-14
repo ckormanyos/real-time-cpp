@@ -70,6 +70,7 @@ Global
 		target wch_ch32v307_llvm|x64 = target wch_ch32v307_llvm|x64
 		target wch_ch32v307|x64 = target wch_ch32v307|x64
 		target x86_64-w64-mingw32|x64 = target x86_64-w64-mingw32|x64
+		target xtensa_esp32_s3_riscv_cop|x64 = target xtensa_esp32_s3_riscv_cop|x64
 		target xtensa_esp32_s3|x64 = target xtensa_esp32_s3|x64
 		target xtensa32|x64 = target xtensa32|x64
 	EndGlobalSection
@@ -102,6 +103,7 @@ Global
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target wch_ch32v307_llvm|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target wch_ch32v307|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target x86_64-w64-mingw32|x64.ActiveCfg = Release|x64
+		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa_esp32_s3_riscv_cop|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa_esp32_s3|x64.ActiveCfg = Release|x64
 		{C8B59726-9319-45C3-8F11-F9F388FB6A2C}.target xtensa32|x64.ActiveCfg = Release|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.Debug|x64.ActiveCfg = target avr|x64
@@ -154,6 +156,8 @@ Global
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target wch_ch32v307|x64.Build.0 = target wch_ch32v307|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target x86_64-w64-mingw32|x64.ActiveCfg = target x86_64-w64-mingw32|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target x86_64-w64-mingw32|x64.Build.0 = target x86_64-w64-mingw32|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target xtensa_esp32_s3_riscv_cop|x64.ActiveCfg = target xtensa_esp32_s3_riscv_cop|x64
+		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target xtensa_esp32_s3_riscv_cop|x64.Build.0 = target xtensa_esp32_s3_riscv_cop|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target xtensa_esp32_s3|x64.ActiveCfg = target xtensa_esp32_s3|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target xtensa_esp32_s3|x64.Build.0 = target xtensa_esp32_s3|x64
 		{30CE370B-40F3-4BCD-8986-64AAFF8971BD}.target xtensa32|x64.ActiveCfg = target xtensa32|x64

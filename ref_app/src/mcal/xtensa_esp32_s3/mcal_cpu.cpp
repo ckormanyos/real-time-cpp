@@ -14,10 +14,13 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
+#include <esp32s3.h>
+
 extern "C"
 {
   auto main_c1() -> void;
   auto Mcu_StartCore1() -> void;
+  auto Mcu_StartCoProcessorRiscV() -> void;
 
   extern auto set_cpu_private_timer1(uint32_t) -> void;
   extern auto _start() -> void;
@@ -84,6 +87,19 @@ auto Mcu_StartCore1() -> void
 }
 
 extern "C"
+auto Mcu_StartCoProcessorRiscV() -> void
+{
+  RTC_CNTL->COCPU_CTRL.bit.COCPU_SHUT_RESET_EN     = 1;
+  RTC_CNTL->ULP_CP_TIMER.reg                       = 0;
+  RTC_CNTL->COCPU_CTRL.bit.COCPU_CLK_FO            = 1;
+  RTC_CNTL->COCPU_CTRL.bit.COCPU_DONE_FORCE        = 1;
+  RTC_CNTL->COCPU_CTRL.bit.COCPU_CLKGATE_EN        = 1;
+  RTC_CNTL->COCPU_CTRL.bit.COCPU_SEL               = 0;
+  RTC_CNTL->ULP_CP_CTRL.bit.ULP_CP_FORCE_START_TOP = 0;
+  RTC_CNTL->ULP_CP_TIMER.bit.ULP_CP_SLP_TIMER_EN   = 1;
+}
+
+extern "C"
 auto main_c1() -> void
 {
   // Note: This subroutine executes in core1. It has been called
@@ -107,6 +123,9 @@ auto mcal::cpu::post_init() noexcept -> void
 
   // Set the private cpu timer1 for core0.
   set_cpu_private_timer1(mcal::gpt::timer1_reload());
+
+  // Use core0 to start the RISC-V core.
+  Mcu_StartCoProcessorRiscV();
 
   // Use core0 to start core1.
   Mcu_StartCore1();

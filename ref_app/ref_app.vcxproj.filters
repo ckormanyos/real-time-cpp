@@ -230,6 +230,9 @@
     <Filter Include="src\mcal\xtensa_esp32_s3">
       <UniqueIdentifier>{66987aaa-84ee-4911-aa5c-efd3108b55f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mcal\xtensa_esp32_s3_riscv_cop">
+      <UniqueIdentifier>{fb4f50c3-b34c-4150-ae05-342dc3721eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\led\app_led.cpp">
@@ -1188,6 +1191,36 @@
     </ClCompile>
     <ClCompile Include="src\mcal\xtensa_esp32_s3\mcal_wdg.cpp">
       <Filter>src\mcal\xtensa_esp32_s3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_gpt.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_irq.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_led.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_osc.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_port.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_pwm.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_spi.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_wdg.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_cpu.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_eep.cpp">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2750,6 +2783,48 @@
     </ClInclude>
     <ClInclude Include="src\mcal_led\mcal_led_dummy.h">
       <Filter>src\mcal_led</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_gpt.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_irq.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_led.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_memory_progmem.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_osc.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_port.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_pwm.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_reg.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_ser.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_spi.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_wdg.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_benchmark.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_cpu.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcal\xtensa_esp32_s3_riscv_cop\mcal_eep.h">
+      <Filter>src\mcal\xtensa_esp32_s3_riscv_cop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

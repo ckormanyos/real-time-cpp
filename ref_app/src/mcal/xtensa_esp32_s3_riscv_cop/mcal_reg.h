@@ -96,23 +96,6 @@
         constexpr std::uint32_t swd_wprotect                                   { rtc_cntl_base + UINT32_C(0x000000B8) };
         constexpr std::uint32_t sw_cpu_stall                                   { rtc_cntl_base + UINT32_C(0x000000BC) };
         constexpr std::uint32_t store4                                         { rtc_cntl_base + UINT32_C(0x000000C0) };
-        constexpr std::uint32_t store5                                         { rtc_cntl_base + UINT32_C(0x000000C4) };
-        constexpr std::uint32_t store6                                         { rtc_cntl_base + UINT32_C(0x000000C8) };
-        constexpr std::uint32_t store7                                         { rtc_cntl_base + UINT32_C(0x000000CC) };
-        constexpr std::uint32_t low_power_st                                   { rtc_cntl_base + UINT32_C(0x000000D0) };
-        constexpr std::uint32_t diag0                                          { rtc_cntl_base + UINT32_C(0x000000D4) };
-        constexpr std::uint32_t pad_hold                                       { rtc_cntl_base + UINT32_C(0x000000D8) };
-        constexpr std::uint32_t dig_pad_hold                                   { rtc_cntl_base + UINT32_C(0x000000DC) };
-        constexpr std::uint32_t ext_wakeup1                                    { rtc_cntl_base + UINT32_C(0x000000E0) };
-        constexpr std::uint32_t ext_wakeup1_status                             { rtc_cntl_base + UINT32_C(0x000000E4) };
-        constexpr std::uint32_t brown_out                                      { rtc_cntl_base + UINT32_C(0x000000E8) };
-        constexpr std::uint32_t time_low1                                      { rtc_cntl_base + UINT32_C(0x000000EC) };
-        constexpr std::uint32_t time_high1                                     { rtc_cntl_base + UINT32_C(0x000000F0) };
-        constexpr std::uint32_t xtal32k_clk_factor                             { rtc_cntl_base + UINT32_C(0x000000F4) };
-        constexpr std::uint32_t xtal32k_conf                                   { rtc_cntl_base + UINT32_C(0x000000F8) };
-        constexpr std::uint32_t ulp_cp_timer                                   { rtc_cntl_base + UINT32_C(0x000000FC) };
-        constexpr std::uint32_t ulp_cp_ctrl                                    { rtc_cntl_base + UINT32_C(0x00000100) };
-        constexpr std::uint32_t cocpu_ctrl                                     { rtc_cntl_base + UINT32_C(0x00000104) };
       } // namespace rtc_cntl
 
       namespace timg0

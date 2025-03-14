@@ -16,6 +16,7 @@ GCC_PREFIX    = xtensa-esp32s3-elf
 TGT_SUFFIX    = elf
 
 WARN_FLAGS   := -Wall                                                             \
+                -Wextra                                                           \
                 -Wpointer-arith                                                   \
                 -Wno-maybe-uninitialized                                          \
                 -Wno-unused-function                                              \
@@ -63,9 +64,7 @@ TGT_AFLAGS    =
 
 TGT_LDFLAGS   = -nostartfiles                                                     \
                 -nostdlib                                                         \
-                -e _start                                                         \
                 -L$(PATH_TGT)/startup/Std/lib_call0_abi                           \
-                -Wl,--gc-sections                                                 \
                 -Wl,-Map,$(APP).map                                               \
                 -T $(LINKER_DEFINITION_FILE)                                      \
                 --specs=nano.specs                                                \
@@ -113,6 +112,7 @@ ESP32S3_ESP_TOOL_FLAGS_IMAG  := --chip esp32s3                                \
                                 --max-rev-full 99                             \
                                 -o $(basename $(APP).$(TGT_SUFFIX)).bin       \
                                 $(APP).$(TGT_SUFFIX)
+
 
 ESP32S3_ESP_TOOL_FLAGS_PROG      := --chip esp32s3                                \
                                     write_flash                                   \

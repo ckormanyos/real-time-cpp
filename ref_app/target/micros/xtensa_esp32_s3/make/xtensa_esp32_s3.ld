@@ -39,8 +39,9 @@ __STACK_SIZE_CORE1 = 4K;
 
 MEMORY
 {
-  D_SRAM(rwx) : ORIGIN = 0x3FC88000, LENGTH = 480K
-  I_SRAM(rw)  : ORIGIN = 0x40370000, LENGTH = 448K
+  D_SRAM(rwx)   : ORIGIN = 0x3FC88000, LENGTH = 480K
+  I_SRAM(rw)    : ORIGIN = 0x40370000, LENGTH = 448K
+  ULP_SRAM(rwx) : ORIGIN = 0x50000000, LENGTH = 8K
 }
 
 /******************************************************************************************
@@ -52,6 +53,8 @@ SECTIONS
   {
     . = ALIGN(4);
     *(.vector*)
+    . = ALIGN(4);
+    *(.startup*)
     . = ALIGN(4);
     *(.literal)
     . = ALIGN(4);
@@ -122,4 +125,11 @@ SECTIONS
     . = ALIGN(MAX(__STACK_SIZE_CORE1 , .), 16);
     PROVIDE(__CORE1_STACK_TOP = .) ;
   } > D_SRAM
+
+  . = 0x50000000;
+
+  .ulp :
+  {
+    *(.coprocessor*)
+  } > ULP_SRAM
 }
