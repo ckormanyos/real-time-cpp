@@ -123,11 +123,11 @@ auto mcal::cpu::post_init() noexcept -> void
   // Set the private cpu timer1 for core0.
   set_cpu_private_timer1(mcal::gpt::timer1_reload());
 
-  // Use core0 to start the RISC-V core.
-  Mcu_StartCoProcessorRiscV();
-
   // Use core0 to start core1.
   Mcu_StartCore1();
+
+  // Use core0 to start the RISC-V core.
+  Mcu_StartCoProcessorRiscV();
 }
 
 auto mcal::cpu::init() -> void
