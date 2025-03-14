@@ -408,9 +408,7 @@ Blinky runs in the standard `ref_app`
 on core0 toggling `port7` while an endless timer loop on core1
 toggles `port6`. The LED ports togle in near unison at $\frac{1}{2}~\text{Hz}$.
 Self-procured LEDs and resistors need to be fitted in order to observe
-blinky on this particular board. The RISC-V coprocessor
-toggles `port17` at a randomly selected frequency
-of approximately $\frac{2}{3}~\text{Hz}$.
+blinky on this particular board.
 
 The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
 called `target lpc11c24` toggles the LED on `port0.8`.
