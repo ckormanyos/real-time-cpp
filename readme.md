@@ -402,7 +402,7 @@ The Espressif (`target xtensa_esp32_s3`) port for NodeMCU ESP32-S3
 features a bare-metal startup _without_ using any of the SDK.
 The bare-metal startup was taken from the work of
 [Chalandi/Baremetal_esp32s3_nosdk](https://github.com/Chalandi/Baremetal_esp32s3_nosdk).
-The dual-core system first boots core0 which subsequently
+The multicore system first boots core0 which subsequently
 starts up core1 and also starts up the RISCV coprocessor core.
 Blinky runs in the standard `ref_app`
 on core0 toggling `port7` while an endless timer loop on core1
