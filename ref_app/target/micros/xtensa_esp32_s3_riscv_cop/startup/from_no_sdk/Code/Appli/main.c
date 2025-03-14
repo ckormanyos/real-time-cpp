@@ -1,32 +1,24 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
-// Originally from:
 /******************************************************************************************
   Filename    : main.c
-
+  
   Core        : RISC-V
-
+  
   MCU         : ESP32-S3
-
+    
   Author      : Chalandi Amine
-
+ 
   Owner       : Chalandi Amine
-
+  
   Date        : 22.02.2025
-
+  
   Description : Application main function for ULP-RISC-V Co-processor
-
+  
 ******************************************************************************************/
 
 //=============================================================================
 // Includes
 //=============================================================================
-#include <cstdint>
+#include<stdint.h>
 
 //=============================================================================
 // Prototypes
@@ -49,6 +41,7 @@
 //=============================================================================
 // Macros
 //=============================================================================
+#define TOGGLE_GPIO18()       RTC_GPIO_OUT_REG ^= (1ul << (10 + 18))
 #define TOGGLE_GPIO17()       RTC_GPIO_OUT_REG ^= (1ul << (10 + 17))
 
 
@@ -59,9 +52,8 @@
 ///
 /// \return void
 //-----------------------------------------------------------------------------------------
-extern "C" int main() __attribute__((used, noinline));
+int main() __attribute__((used, noinline));
 
-extern "C"
 int main()
 {
   /* configure GPIO17 and GPIO18 as output low */
@@ -75,11 +67,13 @@ int main()
 
   for(;;)
   {
-    for(uint32_t i = 0; i < 0xC0000; i++)
-    {
-      __asm("nop");
-    }
+     TOGGLE_GPIO17();
 
-    TOGGLE_GPIO17();
+     for(uint32_t i=0; i< 0xC0000; ++i)
+     {
+       __asm("nop");
+     }
   }
+
+  return 0;
 }

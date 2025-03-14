@@ -1,10 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2025.
-//  Distributed under the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt
-//  or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
 // ***************************************************************************************
 // Filename    : Startup.c
 //
@@ -64,7 +57,7 @@ static void Startup_InitCore(void);
 //=========================================================================================
 // extern function prototype
 //=========================================================================================
-extern int main(void);
+extern int main(void) __attribute__((used, noinline));
 extern void Mcu_ClockInit(void);
 extern void Mcu_InitCore(void);
 
@@ -81,9 +74,12 @@ extern void Mcu_InitCore(void);
 //-----------------------------------------------------------------------------------------
 void Startup_Init(void)
 {
-  Mcu_InitCore();
+  /* Initialize the CPU Core */
+  Startup_InitCore();
 
-  Mcu_ClockInit();
+  /* Configure the system clock */
+  Startup_InitSystemClock();
+
   /* Initialize the RAM memory */
   Startup_InitRam();
 
@@ -91,13 +87,7 @@ void Startup_Init(void)
   Startup_InitCtors();
 
   /* Start the application */
-
-  (void) main();
-
-  for(;;)
-  {
-    __asm("nop");
-  }
+  Startup_RunApplication();
 }
 
 
@@ -158,4 +148,44 @@ static void Startup_InitCtors(void)
   {
     ((void (*)(void))((__STARTUP_RUNTIME_CTORS)[CtorIdx++]))();
   }
+}
+
+//-----------------------------------------------------------------------------------------
+/// \brief  Startup_RunApplication function
+///
+/// \param  void
+///
+/// \return void
+//-----------------------------------------------------------------------------------------
+static void Startup_RunApplication(void)
+{
+  /* Check the weak function */
+  (void)main();
+
+  /* Catch unexpected exit from main or if main does not exist */
+  for(;;);
+}
+
+//-----------------------------------------------------------------------------------------
+/// \brief  Startup_InitSystemClock function
+///
+/// \param  void
+///
+/// \return void
+//-----------------------------------------------------------------------------------------
+static void Startup_InitSystemClock(void)
+{
+  Mcu_ClockInit();
+}
+
+//-----------------------------------------------------------------------------------------
+/// \brief  Startup_InitCore function
+///
+/// \param  void
+///
+/// \return void
+//-----------------------------------------------------------------------------------------
+void Startup_InitCore(void)
+{
+  Mcu_InitCore();
 }
