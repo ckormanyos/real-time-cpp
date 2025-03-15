@@ -27,7 +27,7 @@
 #include <mcal_led.h>
 #include <mcal_port.h>
 
-extern "C" void main();
+extern "C" auto main() -> int;
 
 namespace mcal
 {
@@ -44,25 +44,47 @@ namespace
 {
   volatile std::uint32_t main_counter { };
 
-  auto delay() -> void
+  auto delay(const std::uint32_t loop_count) -> void
   {
-    constexpr std::uint32_t loop_count{ UINT32_C(0x00060000) };
-
-    for (std::uint32_t loop{ UINT32_C(0) }; loop < loop_count; ++loop)
+    for (std::uint32_t loop { UINT32_C(0) }; loop < loop_count; ++loop)
     {
       main_counter = std::uint32_t { main_counter + UINT8_C(1) };
     }
   }
 }
 
-extern "C" void main()
+extern "C" auto main() -> int
 {
   mcal::init();
 
+  unsigned prescaler { UINT8_C(0) };
+  unsigned cycle     { UINT8_C(0) };
+
   for(;;)
   {
-     mcal::led::led0().toggle();
+    switch(unsigned { cycle % unsigned { UINT8_C(16) } })
+    {
+      case unsigned { UINT8_C( 0) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); break;
+      case unsigned { UINT8_C( 1) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); break;
+      case unsigned { UINT8_C( 2) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(56) }); break;
+      case unsigned { UINT8_C( 3) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(58) }); break;
+      case unsigned { UINT8_C( 4) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); break;
+      case unsigned { UINT8_C( 5) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(61) }); break;
+      case unsigned { UINT8_C( 6) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(62) }); break;
+      case unsigned { UINT8_C( 7) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(63) }); break;
+      case unsigned { UINT8_C( 8) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); break;
+      case unsigned { UINT8_C( 9) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); break;
+      case unsigned { UINT8_C(10) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); break;
+      case unsigned { UINT8_C(11) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); break;
+      case unsigned { UINT8_C(12) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); break;
+      case unsigned { UINT8_C(13) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); break;
+      case unsigned { UINT8_C(14) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); break;
+      case unsigned { UINT8_C(15) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); break;
+    }
 
-     delay();
+    if(unsigned { ++prescaler % unsigned { UINT8_C(1024) } } == unsigned { UINT8_C(0) })
+    {
+      ++cycle;
+    }
   }
 }
