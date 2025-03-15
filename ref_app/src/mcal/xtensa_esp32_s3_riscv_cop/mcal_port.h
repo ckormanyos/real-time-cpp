@@ -29,12 +29,11 @@
       public:
         static auto set_direction_output() -> void
         {
-          //RTC_IO_RTC_PAD17_REG |= (1ul << 19);
-          //RTC_GPIO_PIN17_REG    = 0;
-          //RTC_GPIO_ENABLE_REG  |= (1ul << (10 + 17));
-
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, io_rtc_padxx_reg, UINT32_C(19)>::bit_set();
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, gpio_pinxx_reg, UINT32_C(0)>::reg_set();
+
+          // Set the pin to output low.
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_out_reg,    std::uint32_t { UINT32_C(10) + bpos }>::bit_clr();
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_enable_reg, std::uint32_t { UINT32_C(10) + bpos }>::bit_set();
         }
 
@@ -49,7 +48,7 @@
 
         static auto set_pin_low() -> void
         {
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_out_reg, std::uint32_t { UINT32_C(10) + bpos }>::bit_set();
+          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_out_reg, std::uint32_t { UINT32_C(10) + bpos }>::bit_clr();
         }
 
         static auto read_input_value() -> bool

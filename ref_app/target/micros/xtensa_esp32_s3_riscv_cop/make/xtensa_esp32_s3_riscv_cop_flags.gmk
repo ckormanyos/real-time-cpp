@@ -107,5 +107,8 @@ PYTHON := python
 
 RULE_SPECIAL_MAKE_IMAGE_FILE_PART01 := $(OBJCOPY) $(APP).$(TGT_SUFFIX) -O binary $(APP).bin
 RULE_SPECIAL_MAKE_IMAGE_FILE_PART02 := $(PYTHON) $(PATH_TGT)/startup/from_no_sdk/Scripts/bin2asm.py -i $(APP).bin -o $(PATH_BIN)/coprocessor_binary.S -s ".coprocessor" -l 16 -g coprocessor_bin
+RULE_SPECIAL_MAKE_IMAGE_FILE_PART03 := $(PYTHON) $(PATH_TGT)/startup/from_no_sdk/Scripts/bin2asm.py -i $(APP).bin -o $(PATH_TGT)/../xtensa_esp32_s3/startup/coprocessor_binary.S -s ".coprocessor" -l 16 -g coprocessor_bin
 
-RULE_SPECIAL_MAKE_IMAGE_FILE        := $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART01) && $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART02)
+RULE_SPECIAL_MAKE_IMAGE_FILE        :=    $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART01) \
+                                       && $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART02) \
+                                       && $(RULE_SPECIAL_MAKE_IMAGE_FILE_PART03)
