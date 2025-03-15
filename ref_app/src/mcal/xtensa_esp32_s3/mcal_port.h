@@ -25,7 +25,7 @@
         static constexpr std::uint32_t bit_pos { bpos };
 
       public:
-        static void set_direction_output()
+        static auto set_direction_output() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out,          bit_pos>::bit_clr();
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out1,         bit_pos>::bit_clr();
@@ -33,7 +33,7 @@
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable1_w1ts, bit_pos>::bit_set();
         }
 
-        static void set_direction_input()
+        static auto set_direction_input() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable_w1ts,  bit_pos>::bit_clr();
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::enable1_w1ts, bit_pos>::bit_clr();
@@ -41,22 +41,22 @@
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out1,         bit_pos>::bit_clr();
         }
 
-        static void set_pin_high()
+        static auto set_pin_high() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_set();
         }
 
-        static void set_pin_low()
+        static auto set_pin_low() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_clr();
         }
 
-        static bool read_input_value()
+        static auto read_input_value() -> bool
         {
           return false;
         }
 
-        static void toggle_pin()
+        static auto toggle_pin() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::out, bit_pos>::bit_not();
         }

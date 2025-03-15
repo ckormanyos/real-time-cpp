@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+// Originally from:
 // ***************************************************************************************
 // Filename    : Startup.c
 //
@@ -75,7 +83,7 @@ void Startup_Init(void)
   /* Start the application */
   main();
 
-  /* Catch unexpected exit from main or if main does not exist */
+  /* Catch unexpected exit from main. */
   for(;;) { ; }
 }
 
@@ -90,7 +98,6 @@ void Startup_Init(void)
 static void Startup_InitRam(void)
 {
   unsigned long ClearTableIdx = 0;
-  //unsigned long CopyTableIdx  = 0;
 
   /* Clear Table */
 
@@ -104,8 +111,9 @@ static void Startup_InitRam(void)
     ClearTableIdx++;
   }
 
-  /* Copy Table (ESP32-S3 does not need to intialize it as we get copied to SRAM by the bootROM) */
-#if 0
+  unsigned long CopyTableIdx  = 0;
+
+  /* Copy Table */
   while((__STARTUP_RUNTIME_COPYTABLE)[CopyTableIdx].sourceAddr != (unsigned long)-1 &&
         (__STARTUP_RUNTIME_COPYTABLE)[CopyTableIdx].targetAddr != (unsigned long)-1 &&
         (__STARTUP_RUNTIME_COPYTABLE)[CopyTableIdx].size       != (unsigned long)-1
@@ -119,7 +127,6 @@ static void Startup_InitRam(void)
 
     CopyTableIdx++;
   }
-#endif
 }
 
 //-----------------------------------------------------------------------------------------
