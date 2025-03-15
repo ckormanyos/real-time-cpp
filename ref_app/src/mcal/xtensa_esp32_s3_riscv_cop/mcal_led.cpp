@@ -6,11 +6,13 @@
 //
 
 #include <mcal_led.h>
-#include <mcal_led/mcal_led_dummy.h>
+#include <mcal_led/mcal_led_port.h>
 
 mcal::led::led_base& mcal::led::led0()
 {
-  using led0_led_type = mcal::led::led_dummy;
+  using led0_port_type = mcal::port::port_pin<UINT32_C(17)>;
+
+  using led0_led_type = mcal::led::led_port<led0_port_type>;
 
   static led0_led_type the_led_00;
 

@@ -23,31 +23,29 @@
   
 ******************************************************************************************/
 
+#include <mcal_gpt.h>
+#include <mcal_led.h>
 #include <mcal_port.h>
 
-#include <cstdint>
-
-extern "C"
-void main();
-
-extern "C"
-void main()
+namespace
 {
-  // Set all GPIO out registers to low.
-  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_out_reg, UINT32_C(0)>::reg_set();
+  volatile std::uint32_t main_counter { };
+}
 
-  // Configure GPIO17 as output low.
-  using port_pin_type = mcal::port::port_pin<UINT32_C(17)>;
+extern "C" void main();
 
-  port_pin_type::set_direction_output();
+extern "C" void main()
+{
+  mcal::port::init(nullptr);
+  mcal::gpt::init(nullptr);
 
   for(;;)
   {
-     port_pin_type::toggle_pin();
+     mcal::led::led0().toggle();
 
-     for(uint32_t i=0; i< 0xC0000; i++)
+     for(std::uint32_t loop { UINT32_C(0) }; loop < std::uint32_t { UINT32_C(0x00060000) }; ++loop)
      {
-       asm volatile("nop");
+       main_counter = std::uint32_t { main_counter + UINT8_C(1) };
      }
   }
 }
