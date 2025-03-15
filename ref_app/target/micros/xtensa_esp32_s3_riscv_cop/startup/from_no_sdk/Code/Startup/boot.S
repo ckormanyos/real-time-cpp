@@ -24,17 +24,17 @@
 ******************************************************************************************/
 
 /*******************************************************************************************
-  \brief  
-  
-  \param  
-  
-  \return 
+  \brief
+
+  \param
+
+  \return
 ********************************************************************************************/
 .section .boot
 .type _start, @function
 .align 4
 .extern __STACK_TOP
-.extern Startup_Init
+.extern __my_startup
 .globl _start
 
 _start:
@@ -42,6 +42,6 @@ _start:
   la sp, __STACK_TOP
 
   /* setup C/C++ runtime environment */
-  j  Startup_Init
+  j  __my_startup
 
 .size _start, .-_start

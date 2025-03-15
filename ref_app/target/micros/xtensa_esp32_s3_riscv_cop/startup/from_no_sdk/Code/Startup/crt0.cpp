@@ -19,10 +19,10 @@ extern "C"
 {
   extern auto main() -> int;
 
-  void Startup_Init() __attribute__((used, noinline));
+  void __my_startup() __attribute__((used, noinline));
 }
 
-void Startup_Init()
+void __my_startup()
 {
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.

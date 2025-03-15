@@ -30,7 +30,6 @@
         static auto set_direction_output() -> void
         {
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, io_rtc_padxx_reg, UINT32_C(19)>::bit_set();
-          mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, gpio_pinxx_reg, UINT32_C(0)>::reg_set();
 
           // Set the pin to output low.
           mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::gpio::rtc_gpio_out_reg,    std::uint32_t { UINT32_C(10) + bpos }>::bit_clr();

@@ -60,9 +60,6 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata*)
     . = ALIGN(4);
-    PROVIDE(__INTVECT_BASE_ADDRESS = .);
-    *(.intvect_core*)
-    . = ALIGN(4);
   } > D_SRAM
 
  /* Section for constructors */
