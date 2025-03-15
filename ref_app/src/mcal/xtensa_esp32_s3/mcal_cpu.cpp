@@ -14,8 +14,6 @@
 #include <mcal_reg.h>
 #include <mcal_wdg.h>
 
-#include <esp32s3.h>
-
 extern "C"
 {
   auto main_c1() -> void;
@@ -89,14 +87,27 @@ auto Mcu_StartCore1() -> void
 extern "C"
 auto Mcu_StartCoProcessorRiscV() -> void
 {
-  RTC_CNTL->COCPU_CTRL.bit.COCPU_SHUT_RESET_EN     = 1;
-  RTC_CNTL->ULP_CP_TIMER.reg                       = 0;
-  RTC_CNTL->COCPU_CTRL.bit.COCPU_CLK_FO            = 1;
-  RTC_CNTL->COCPU_CTRL.bit.COCPU_DONE_FORCE        = 1;
-  RTC_CNTL->COCPU_CTRL.bit.COCPU_CLKGATE_EN        = 1;
-  RTC_CNTL->COCPU_CTRL.bit.COCPU_SEL               = 0;
-  RTC_CNTL->ULP_CP_CTRL.bit.ULP_CP_FORCE_START_TOP = 0;
-  RTC_CNTL->ULP_CP_TIMER.bit.ULP_CP_SLP_TIMER_EN   = 1;
+  // RTC_CNTL->COCPU_CTRL.bit.COCPU_SHUT_RESET_EN     = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::cocpu_ctrl, std::uint32_t { UINT8_C(22) }>::bit_set();
+
+  // RTC_CNTL->ULP_CP_TIMER.reg                       = 0;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::ulp_cp_timer, std::uint32_t { UINT8_C(0) }>::reg_set();
+
+  // RTC_CNTL->COCPU_CTRL.bit.COCPU_CLK_FO            = 1;
+  // RTC_CNTL->COCPU_CTRL.bit.COCPU_DONE_FORCE        = 1;
+  // RTC_CNTL->COCPU_CTRL.bit.COCPU_CLKGATE_EN        = 1;
+  // RTC_CNTL->COCPU_CTRL.bit.COCPU_SEL               = 0;
+
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::cocpu_ctrl, std::uint32_t { UINT8_C( 0) }>::bit_set();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::cocpu_ctrl, std::uint32_t { UINT8_C(24) }>::bit_set();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::cocpu_ctrl, std::uint32_t { UINT8_C(27) }>::bit_set();
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::cocpu_ctrl, std::uint32_t { UINT8_C(23) }>::bit_clr();
+
+  // RTC_CNTL->ULP_CP_CTRL.bit.ULP_CP_FORCE_START_TOP = 0;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::ulp_cp_ctrl, std::uint32_t { UINT8_C(30) }>::bit_clr();
+
+  // RTC_CNTL->ULP_CP_TIMER.bit.ULP_CP_SLP_TIMER_EN   = 1;
+  mcal::reg::reg_access_static<std::uint32_t, std::uint32_t, mcal::reg::rtc_cntl::ulp_cp_timer, std::uint32_t { UINT8_C(31) }>::bit_set();
 }
 
 extern "C"
