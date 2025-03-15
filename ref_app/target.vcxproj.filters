@@ -1004,11 +1004,17 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp">
       <Filter>micros\xtensa_esp32_s3\startup\Std</Filter>
     </ClCompile>
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\Startup.c">
-      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup</Filter>
-    </ClCompile>
     <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Appli\main.cpp">
       <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Appli</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt1.cpp">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt0.cpp">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt0_init_ram.cpp">
+      <Filter>micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

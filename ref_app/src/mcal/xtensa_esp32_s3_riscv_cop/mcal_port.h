@@ -14,9 +14,9 @@
   {
     namespace port
     {
-      typedef void config_type;
+      using config_type = void;
 
-      inline auto init(const config_type*) -> void { }
+      auto init(const config_type*) -> void;
 
       template<const std::uint32_t bpos>
       class port_pin

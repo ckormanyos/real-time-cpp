@@ -1,3 +1,11 @@
+/*
+ Copyright Christopher Kormanyos 2025.
+ Distributed under the Boost Software License,
+ Version 1.0. (See accompanying file LICENSE_1_0.txt
+ or copy at http://www.boost.org/LICENSE_1_0.txt)
+*/
+
+/* Originally from: */
 /******************************************************************************************
   Filename    : coprocessor.ld
   
@@ -15,9 +23,6 @@
   
 ******************************************************************************************/
 
-/******************************************************************************************
- ELF Entrypoint
-******************************************************************************************/
 ENTRY(_start)
 
 /******************************************************************************************
@@ -51,74 +56,49 @@ SECTIONS
   /* Read-only data (.rodata) (note: esp32-s3 has not data access path on I_SRAM, rodata must be move to D_SRAM) */
   .rodata : ALIGN(4)
   {
-    PROVIDE(__RODATA_BASE_ADDRESS = .);
     *(.rodata)
+    . = ALIGN(4);
+    *(.rodata*)
+    . = ALIGN(4);
     PROVIDE(__INTVECT_BASE_ADDRESS = .);
     *(.intvect_core*)
+    . = ALIGN(4);
   } > D_SRAM
 
  /* Section for constructors */
   .ctors : ALIGN(4)
   {
-    PROVIDE(__CPPCTOR_LIST__ = .);
+    _ctors_begin = .;
     KEEP (*(SORT(.ctors.*)))
     KEEP (*(.ctors))
     KEEP (*(SORT(.init_array.*)))
     KEEP (*(.init_array))
-    LONG(-1) ;
-    PROVIDE(__CPPCTOR_END__ = .);
+    _ctors_end = .;
     . = ALIGN(4);
   }  > D_SRAM
-
-
-  /* Section for destructors */
-  .dtors : ALIGN(4)
-  {
-    PROVIDE(__CPPDTOR_LIST__ = .);
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    KEEP (*(SORT(.fini_array.*)))
-    KEEP (*(.fini_array))
-    LONG(-1) ;
-    PROVIDE(__CPPDTOR_END__ = .);
-    . = ALIGN(4);
-  } > D_SRAM
-
-  /* Runtime clear table */
-  .clear_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_CLEAR_TABLE = .) ;
-    LONG(0 + ADDR(.bss));   LONG(SIZEOF(.bss));
-    LONG(-1);                 LONG(-1);
-    . = ALIGN(4);
-  } > D_SRAM
-
-  /* Runtime copy table (note: note needed on esp32-s3 bootROM copied the data from flash to SRAM) */
-#if 0
-  .copy_sec : ALIGN(4)
-  {
-    PROVIDE(__RUNTIME_COPY_TABLE = .) ;
-    LONG(LOADADDR(.data));  LONG(0 + ADDR(.data));  LONG(SIZEOF(.data));
-    LONG(-1);                 LONG(-1);                  LONG(-1);
-    . = ALIGN(4);
-  } > D_SRAM
-#endif
 
   /* The ROM-to-RAM initialized data section */
   .data :  ALIGN(4)
   {
-    PROVIDE(__DATA_BASE_ADDRESS = .);
+    _data_begin = .;
     *(.data)
     *(.data*)
+    _data_end = .;
   } > D_SRAM
 
   /* The uninitialized (zero-cleared) bss section */
   .bss : ALIGN(4)
   {
-    PROVIDE(__BSS_BASE_ADDRESS = .);
+    _bss_begin = .;
     *(.bss)
     *(.bss*)
+    _bss_end = .;
   } > D_SRAM
+
+  PROVIDE(end = .);
+  PROVIDE(_fini = .);
+
+  _rom_data_begin = LOADADDR(.data);
 
   /* stack definition */
   .stack :
