@@ -27,25 +27,42 @@
 #include <mcal_led.h>
 #include <mcal_port.h>
 
+extern "C" void main();
+
+namespace mcal
+{
+  auto init() -> void;
+
+  auto init() -> void
+  {
+    mcal::port::init(nullptr);
+    mcal::gpt::init(nullptr);
+  }
+}
+
 namespace
 {
   volatile std::uint32_t main_counter { };
-}
 
-extern "C" void main();
+  auto delay() -> void
+  {
+    constexpr std::uint32_t loop_count{ UINT32_C(0x00060000) };
+
+    for (std::uint32_t loop{ UINT32_C(0) }; loop < loop_count; ++loop)
+    {
+      main_counter = std::uint32_t { main_counter + UINT8_C(1) };
+    }
+  }
+}
 
 extern "C" void main()
 {
-  mcal::port::init(nullptr);
-  mcal::gpt::init(nullptr);
+  mcal::init();
 
   for(;;)
   {
      mcal::led::led0().toggle();
 
-     for(std::uint32_t loop { UINT32_C(0) }; loop < std::uint32_t { UINT32_C(0x00060000) }; ++loop)
-     {
-       main_counter = std::uint32_t { main_counter + UINT8_C(1) };
-     }
+     delay();
   }
 }
