@@ -5,22 +5,22 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Originally from (but strongly mdofied from):
+// Originally from (but strongly modified from):
 /******************************************************************************************
   Filename    : main.c
-  
+
   Core        : RISC-V
-  
+
   MCU         : ESP32-S3
-    
+
   Author      : Chalandi Amine
- 
+
   Owner       : Chalandi Amine
-  
+
   Date        : 22.02.2025
-  
+
   Description : Application main function for ULP-RISC-V Co-processor
-  
+
 ******************************************************************************************/
 
 #include <mcal_gpt.h>
@@ -46,7 +46,7 @@ namespace
 {
   using pwm_port_type = mcal::port::port_pin<UINT32_C(17)>;
 
-  using pwm_type = mcal::pwm::pwm_port<pwm_port_type, mcal::pwm::pwm_base::duty_type { UINT8_C(256) }>;
+  using pwm_type = mcal::pwm::pwm_port<pwm_port_type, mcal::pwm::pwm_base::duty_type { UINT16_C(256) }>;
 
   using duty_type = typename pwm_type::duty_type;
 
@@ -77,6 +77,8 @@ namespace
 extern "C" auto main() -> int
 {
   mcal::init();
+
+  static_cast<void>(my_pwm.init());
 
   unsigned prescaler { UINT8_C(0) };
 
