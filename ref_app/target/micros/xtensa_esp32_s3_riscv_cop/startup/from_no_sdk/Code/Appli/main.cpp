@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Originally from:
+// Originally from (but strongly mdofied from):
 /******************************************************************************************
   Filename    : main.c
   
@@ -24,8 +24,10 @@
 ******************************************************************************************/
 
 #include <mcal_gpt.h>
-#include <mcal_led.h>
 #include <mcal_port.h>
+#include <mcal_pwm/mcal_pwm_port.h>
+
+#include <array>
 
 extern "C" auto main() -> int;
 
@@ -42,15 +44,34 @@ namespace mcal
 
 namespace
 {
-  volatile std::uint32_t main_counter { };
+  using pwm_port_type = mcal::port::port_pin<UINT32_C(17)>;
 
-  auto delay(const std::uint32_t loop_count) -> void
-  {
-    for (std::uint32_t loop { UINT32_C(0) }; loop < loop_count; ++loop)
+  using pwm_type = mcal::pwm::pwm_port<pwm_port_type, mcal::pwm::pwm_base::duty_type { UINT8_C(256) }>;
+
+  using duty_type = typename pwm_type::duty_type;
+
+  pwm_type my_pwm { };
+
+  using duty_array_type = std::array<duty_type, std::size_t { UINT8_C(64) }>;
+
+  constexpr duty_array_type
+    duty_table
     {
-      main_counter = std::uint32_t { main_counter + UINT8_C(1) };
-    }
-  }
+        1U,   2U,   3U,   4U,   5U,   6U,   7U,   8U,
+        9U,  10U,  11U,  12U,  13U,  14U,  15U,  16U,
+       17U,  18U,  19U,  20U,  21U,  22U,  23U,  24U,
+       25U,  26U,  27U,  28U,  29U,  30U,  31U,  32U,
+       33U,  34U,  36U,  38U,  40U,  42U,  44U,  46U,
+       48U,  50U,  52U,  54U,  56U,  58U,  60U,  62U,
+       64U,  68U,  72U,  76U,  80U,  84U,  88U,  96U,
+      112U, 128U, 144U, 160U, 176U, 192U, 224U, 256U
+    };
+
+  static_assert
+  (
+    duty_table.back() <= pwm_type::get_resolution(),
+    "Error: Max PWM duty cycle can not exceed the PWM resolution"
+  );
 }
 
 extern "C" auto main() -> int
@@ -58,33 +79,22 @@ extern "C" auto main() -> int
   mcal::init();
 
   unsigned prescaler { UINT8_C(0) };
-  unsigned cycle     { UINT8_C(0) };
 
   for(;;)
   {
-    switch(unsigned { cycle % unsigned { UINT8_C(16) } })
+    const unsigned
+      duty_index
+      {
+        unsigned { prescaler % static_cast<unsigned>(std::tuple_size<duty_array_type>::value) }
+      };
+
+    my_pwm.set_duty(duty_table[duty_index]);
+
+    for(unsigned srv_idx { UINT8_C(0) }; srv_idx < unsigned { UINT16_C(16411) }; ++srv_idx)
     {
-      case unsigned { UINT8_C( 0) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); break;
-      case unsigned { UINT8_C( 1) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); break;
-      case unsigned { UINT8_C( 2) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(56) }); break;
-      case unsigned { UINT8_C( 3) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(58) }); break;
-      case unsigned { UINT8_C( 4) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); break;
-      case unsigned { UINT8_C( 5) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(61) }); break;
-      case unsigned { UINT8_C( 6) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(62) }); break;
-      case unsigned { UINT8_C( 7) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(63) }); break;
-      case unsigned { UINT8_C( 8) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); break;
-      case unsigned { UINT8_C( 9) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); break;
-      case unsigned { UINT8_C(10) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); break;
-      case unsigned { UINT8_C(11) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); break;
-      case unsigned { UINT8_C(12) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 6) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 4) }); break;
-      case unsigned { UINT8_C(13) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 8) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 3) }); break;
-      case unsigned { UINT8_C(14) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(32) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 2) }); break;
-      case unsigned { UINT8_C(15) }: mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C(60) }); mcal::led::led0().toggle(); delay(std::uint32_t { UINT8_C( 1) }); break;
+      my_pwm.service();
     }
 
-    if(unsigned { ++prescaler % unsigned { UINT8_C(1024) } } == unsigned { UINT8_C(0) })
-    {
-      ++cycle;
-    }
+    ++prescaler;
   }
 }
