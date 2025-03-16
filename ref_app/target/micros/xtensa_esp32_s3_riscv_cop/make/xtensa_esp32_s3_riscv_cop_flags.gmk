@@ -1,4 +1,4 @@
-#  Copyright Christopher Kormanyos 2022 - 2024.
+#  Copyright Christopher Kormanyos 2022 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,15 +26,6 @@ WARN_FLAGS   := -Wall                                                           
                 -Wunreachable-code                                                \
                 -Wmissing-include-dirs                                            \
                 -Wpointer-arith                                                   \
-                -Wno-maybe-uninitialized                                          \
-                -Wno-unused-function                                              \
-                -Wno-unused-but-set-variable                                      \
-                -Wno-unused-variable                                              \
-                -Wno-deprecated-declarations                                      \
-                -Wno-unused-parameter                                             \
-                -Wno-unused-but-set-parameter                                     \
-                -Wno-missing-field-initializers                                   \
-                -Wno-sign-compare                                                 \
                 -Wno-main
 
 
@@ -63,10 +54,12 @@ TGT_AFLAGS    =  $(TGT_ALLFLAGS)
 
 TGT_LDFLAGS   = -nostdlib                                      \
                 -nostartfiles                                  \
-                -fno-lto                                       \
+                -flto                                          \
                 -e _start                                      \
                 -Wl,-Map,$(APP).map                            \
                 -T $(LINKER_DEFINITION_FILE)                   \
+                --specs=nano.specs                             \
+                --specs=nosys.specs                            \
                 $(TGT_ALLFLAGS)
 
 
