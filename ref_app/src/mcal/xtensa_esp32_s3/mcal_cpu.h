@@ -11,7 +11,6 @@
   #define MY_PROGMEM
 
   #include <cstdint>
-  #include <type_traits>
 
   namespace mcal { namespace cpu {
 

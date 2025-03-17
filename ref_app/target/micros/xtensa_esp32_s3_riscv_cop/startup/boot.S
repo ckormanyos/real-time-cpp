@@ -42,6 +42,6 @@ _start:
   la sp, __STACK_TOP
 
   /* setup C/C++ runtime environment */
-  j  __my_startup
+  j __my_startup
 
 .size _start, .-_start

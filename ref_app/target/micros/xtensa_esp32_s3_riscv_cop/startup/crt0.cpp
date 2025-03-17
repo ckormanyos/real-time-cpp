@@ -8,6 +8,7 @@
 // Generic code.
 
 #include <mcal_cpu.h>
+#include <mcal_wdg.h>
 
 namespace crt
 {
@@ -17,13 +18,21 @@ namespace crt
 
 extern "C"
 {
-  extern auto main() -> int;
+  asm(".extern main");
 
   void __my_startup() __attribute__((used, noinline));
 }
 
 void __my_startup()
 {
+  // Load the stack pointer.
+  // The stack pointer has already been loaded
+  // in the subroutine _start in the file boot.S.
+  // So we do nothing here.
+
+  // Chip init: Watchdog, port, and oscillator.
+  mcal::cpu::init();
+
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
   crt::init_ram();
@@ -32,12 +41,12 @@ void __my_startup()
   crt::init_ctors();
 
   // Jump to main (and never return).
-  static_cast<void>(main());
+  asm volatile("j main");
 
   // Catch an unexpected return from main.
   for(;;)
   {
     // Replace with a loud error if desired.
-    mcal::cpu::nop();
+    mcal::wdg::secure::trigger();
   }
 }

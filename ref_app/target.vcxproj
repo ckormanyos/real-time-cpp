@@ -1041,9 +1041,9 @@
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop.ld" />
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_files.gmk" />
     <None Include="target\micros\xtensa_esp32_s3_riscv_cop\make\xtensa_esp32_s3_riscv_cop_flags.gmk" />
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\boot.S" />
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\IntVectTable.S" />
-    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Scripts\bin2asm.py" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\boot.S" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\IntVectTable.S" />
+    <None Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\Scripts\bin2asm.py" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="target\micros\am335x\startup\crt0.cpp" />
@@ -1148,10 +1148,10 @@
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt0_init_ram.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\crt1.cpp" />
     <ClCompile Include="target\micros\xtensa_esp32_s3\startup\Std\StdLib.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Appli\main.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt0.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt0_init_ram.cpp" />
-    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\from_no_sdk\Code\Startup\crt1.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\crt0.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\crt0_init_ram.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\crt1.cpp" />
+    <ClCompile Include="target\micros\xtensa_esp32_s3_riscv_cop\startup\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="target\micros\bcm2835_raspi_b\startup\SD_CARD\PiZero\config.txt" />
