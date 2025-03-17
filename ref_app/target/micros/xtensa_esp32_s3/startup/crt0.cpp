@@ -17,6 +17,8 @@ namespace crt
 
 extern "C"
 {
+  asm(".extern main");
+
   extern auto main() -> int;
 
   void __my_startup() __attribute__((used, noinline));
@@ -42,7 +44,7 @@ void __my_startup()
   mcal::wdg::secure::trigger();
 
   // Jump to main (and never return).
-  static_cast<void>(main());
+  asm volatile("j main");
 
   // Catch an unexpected return from main.
   for(;;)

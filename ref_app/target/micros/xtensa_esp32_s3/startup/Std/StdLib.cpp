@@ -23,6 +23,7 @@
 
 ******************************************************************************************/
 
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 
@@ -32,13 +33,15 @@ typedef   signed long long DItype  __attribute__((mode (DI)));
 typedef unsigned long long UDItype __attribute__((mode (DI)));
 typedef unsigned int       USItype __attribute__((mode (SI)));
 
-extern int __builtin_clzll(long long unsigned int);
+extern int __builtin_clzll(unsigned long long);
 
 #define DWtype  DItype
 #define UDWtype UDItype
 #define UWtype  USItype
 
+UDWtype __udivdi3    (UDWtype n, UDWtype d);
 UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp);
+UDWtype __umoddi3    (UDWtype u, UDWtype v);
 
 UDWtype __udivdi3 (UDWtype n, UDWtype d)
 {
@@ -69,8 +72,8 @@ UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp)
 
   if (y <= r)
   {
-    lz1 = __builtin_clzll (d);
-    lz2 = __builtin_clzll (n);
+    lz1 = static_cast<USItype>(__builtin_clzll(static_cast<unsigned long long>(d)));
+    lz2 = static_cast<USItype>(__builtin_clzll(static_cast<unsigned long long>(n)));
 
     k = lz1 - lz2;
     y = (y << k);
@@ -128,39 +131,48 @@ UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp)
   return q;
 }
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+#endif
+
 void* memset(void* str, int c, size_t n)
 {
-  uint8_t *ptr = (uint8_t*) str;
-  uint32_t value = (uint8_t) c;
+  std::uint8_t* ptr { reinterpret_cast<std::uint8_t*>(str) };
+
+  const std::uint8_t uc { static_cast<std::uint8_t>(c) };
+
+  std::uint32_t value = static_cast<std::uint32_t>(uc);
 
   // Set value to repeat the byte across a 32-bit word.
-  value |= value << 8;
-  value |= value << 16;
+  value |= value << unsigned { UINT8_C( 8) };
+  value |= value << unsigned { UINT8_C(16) };
 
   // Align to the next 32-bit boundary.
-  while (((uintptr_t)ptr & 3) && n > 0)
+  while (   (static_cast<unsigned>(reinterpret_cast<std::uintptr_t>(ptr) & unsigned { UINT8_C(3) }) != 0U)
+         && (n > std::size_t { UINT8_C(0) }))
   {
-    *ptr++ = (uint8_t) c;
+    *ptr++ = uc;
 
     --n;
   }
 
   // Set memory in 32-bit chunks.
-  uint32_t* ptr32 = (uint32_t*) ptr;
+  std::uint32_t* ptr32 { reinterpret_cast<std::uint32_t*>(ptr) };
 
-  while (n >= 4)
+  while (n >= std::size_t { UINT8_C(4) })
   {
     *ptr32++ = value;
 
-    n -= 4;
+    n -= std::size_t { UINT8_C(4) };
   }
 
   // Handle any remaining bytes.
-  ptr = (uint8_t*) ptr32;
+  ptr = reinterpret_cast<std::uint8_t*>(ptr32);
 
-  while (n > 0)
+  while (n > std::size_t { UINT8_C(0) })
   {
-    *ptr++ = (uint8_t) c;
+    *ptr++ = uc;
 
     --n;
   }
@@ -170,8 +182,8 @@ void* memset(void* str, int c, size_t n)
 
 void* memcpy (void* dest, const void* src, size_t n)
 {
-  uint8_t *d = (uint8_t*) dest;
-  const uint8_t* s = (const uint8_t*) src;
+        std::uint8_t* d { reinterpret_cast<std::uint8_t*>(dest) };
+  const std::uint8_t* s { reinterpret_cast<const uint8_t*>(src) };
 
   // Align destination to the next 32-bit boundary.
   while (((uintptr_t) d & 3) && n > 0)
@@ -183,8 +195,8 @@ void* memcpy (void* dest, const void* src, size_t n)
 
   // Copy memory in 32-bit chunks.
 
-  uint32_t *d32 = (uint32_t*) d;
-  const uint32_t* s32 = (const uint32_t*) s;
+        std::uint32_t* d32 { reinterpret_cast<std::uint32_t*>(d) };
+  const std::uint32_t* s32 { reinterpret_cast<const uint32_t*>(s) };
 
   while (n >= 4)
   {
@@ -195,8 +207,8 @@ void* memcpy (void* dest, const void* src, size_t n)
 
   // Handle any remaining bytes.
 
-  d = (uint8_t*) d32;
-  s = (const uint8_t*) s32;
+  d = reinterpret_cast<std::uint8_t*>(d32);
+  s = reinterpret_cast<const uint8_t*>(s32);
 
   while (n > 0)
   {
@@ -207,5 +219,9 @@ void* memcpy (void* dest, const void* src, size_t n)
 
   return dest;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 } // extern "C"
