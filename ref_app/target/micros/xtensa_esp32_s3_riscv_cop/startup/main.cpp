@@ -31,17 +31,6 @@
 
 extern "C" auto main() -> int;
 
-namespace mcal
-{
-  auto init() -> void;
-
-  auto init() -> void
-  {
-    mcal::port::init(nullptr);
-    mcal::gpt::init(nullptr);
-  }
-}
-
 namespace
 {
   using pwm_port_type = mcal::port::port_pin<UINT32_C(17)>;
@@ -76,7 +65,7 @@ namespace
 
 extern "C" auto main() -> int
 {
-  mcal::init();
+  mcal::gpt::init(nullptr);
 
   static_cast<void>(my_pwm.init());
 

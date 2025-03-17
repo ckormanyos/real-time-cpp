@@ -6,11 +6,13 @@
 //
 
 #include <mcal_cpu.h>
-
-auto mcal::cpu::post_init() noexcept -> void
-{
-}
+#include <mcal_osc.h>
+#include <mcal_port.h>
+#include <mcal_wdg.h>
 
 auto mcal::cpu::init() -> void
 {
+  mcal::wdg::init(nullptr);
+  mcal::port::init(nullptr);
+  mcal::osc::init(nullptr);
 }

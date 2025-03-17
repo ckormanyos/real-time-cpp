@@ -11,13 +11,12 @@
   #define MY_PROGMEM
 
   #include <cstdint>
-  #include <type_traits>
 
   namespace mcal { namespace cpu {
 
   auto init() -> void;
 
-  auto post_init() noexcept -> void;
+  inline auto post_init() noexcept -> void { }
 
   inline auto nop() noexcept -> void { asm volatile("nop"); }
 

@@ -12,11 +12,14 @@
 FILES_CPP      :=
 
 FILES_TGT      := $(PATH_APP)/mcal/mcal_gcc_cxx_completion                                \
+                  $(PATH_APP)/mcal/$(TGT)/mcal_cpu                                        \
                   $(PATH_APP)/mcal/$(TGT)/mcal_gpt                                        \
+                  $(PATH_APP)/mcal/$(TGT)/mcal_osc                                        \
                   $(PATH_APP)/mcal/$(TGT)/mcal_port                                       \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Appli/main                         \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Startup/boot                       \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Startup/IntVectTable               \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Startup/crt0                       \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Startup/crt0_init_ram              \
-                  $(PATH_TGT)/startup/from_no_sdk/Code/Startup/crt1
+                  $(PATH_APP)/mcal/$(TGT)/mcal_wdg                                        \
+                  $(PATH_TGT)/startup/main                                                \
+                  $(PATH_TGT)/startup/boot                                                \
+                  $(PATH_TGT)/startup/IntVectTable                                        \
+                  $(PATH_TGT)/startup/crt0                                                \
+                  $(PATH_TGT)/startup/crt0_init_ram                                       \
+                  $(PATH_TGT)/startup/crt1

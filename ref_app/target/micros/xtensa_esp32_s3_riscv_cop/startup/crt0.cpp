@@ -24,6 +24,8 @@ extern "C"
 
 void __my_startup()
 {
+  mcal::cpu::init();
+
   // Initialize statics from ROM to RAM.
   // Zero-clear default-initialized static RAM.
   crt::init_ram();
