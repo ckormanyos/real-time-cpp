@@ -67,10 +67,10 @@ SOME_O3_FLAGS   += -fgcse-after-reload
 SOME_O3_FLAGS   += -fipa-cp-clone
 
 DEFS_IEEE754_SF :=
+DEFS_IEEE754_SF += -D__XTENSA_CALL0_ABI__=1
 DEFS_IEEE754_SF += -DL_divsf3
 DEFS_IEEE754_SF += -DL_negsf2
 DEFS_IEEE754_SF += -DL_addsubsf3
-DEFS_IEEE754_SF += -DL_mulsf3
 DEFS_IEEE754_SF += -DL_cmpsf2
 DEFS_IEEE754_SF += -DL_fixsfsi
 DEFS_IEEE754_SF += -DL_fixsfdi
@@ -81,3 +81,21 @@ DEFS_IEEE754_SF += -DL_floatdisf
 DEFS_IEEE754_SF += -DL_sqrtf
 DEFS_IEEE754_SF += -DL_recipsf2
 DEFS_IEEE754_SF += -DL_rsqrtsf2
+
+DEFS_LIB1FUNCS  :=
+DEFS_LIB1FUNCS  += -DL_ctzsi2
+DEFS_LIB1FUNCS  += -DL_mulsi3
+DEFS_LIB1FUNCS  += -DL_umulsidi3
+DEFS_LIB1FUNCS  += -DL_clz
+DEFS_LIB1FUNCS  += -DL_clrsbsi2
+DEFS_LIB1FUNCS  += -DL_clzsi2
+DEFS_LIB1FUNCS  += -DL_ffssi2
+DEFS_LIB1FUNCS  += -DL_udivsi3
+DEFS_LIB1FUNCS  += -DL_divsi3
+DEFS_LIB1FUNCS  += -DL_umodsi3
+DEFS_LIB1FUNCS  += -DL_modsi3
+DEFS_LIB1FUNCS  += -DL_ashldi3
+DEFS_LIB1FUNCS  += -DL_ashrdi3
+DEFS_LIB1FUNCS  += -DL_lshrdi3
+DEFS_LIB1FUNCS  += -DL_bswapsi2
+DEFS_LIB1FUNCS  += -DL_bswapdi2

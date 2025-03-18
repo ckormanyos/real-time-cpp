@@ -1,3 +1,6 @@
+
+// Originally from:
+
 /* IEEE-754 single-precision functions for Xtensa
    Copyright (C) 2006-2025 Free Software Foundation, Inc.
    Contributed by Bob Wilson (bwilson@tensilica.com) at Tensilica.
@@ -36,18 +39,6 @@
 #define yh a5
 #define yl a4
 #endif
-
-#ifdef __XTENSA_CALL0_ABI__ /* added by Chalandi for CALL0 adaptation */
-
-.macro leaf_entry _sp, _frame_size
-
-.endm
-
-.macro leaf_return
-  ret
-.endm
-
-#endif /*__XTENSA_CALL0_ABI__*/
 
 /*  Warning!  The branch displacements for some Xtensa branch instructions
     are quite small, and this code has been carefully laid out to keep

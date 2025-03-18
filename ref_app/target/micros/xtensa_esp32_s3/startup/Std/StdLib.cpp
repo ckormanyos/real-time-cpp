@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Originally from:
+// Originally from (but strongly modified from):
 /******************************************************************************************
   Filename    : StdLib.c
 
@@ -19,7 +19,7 @@
 
   Date        : 22.02.2025
 
-  Description : Handwritten StdLib functions
+  Description : Hand-written StdLib functions
 
 ******************************************************************************************/
 
@@ -186,7 +186,8 @@ void* memcpy (void* dest, const void* src, size_t n)
   const std::uint8_t* s { reinterpret_cast<const uint8_t*>(src) };
 
   // Align destination to the next 32-bit boundary.
-  while (((uintptr_t) d & 3) && n > 0)
+  while (   (static_cast<unsigned>(reinterpret_cast<std::uintptr_t>(d) & unsigned { UINT8_C(3) }) != 0U)
+         && (n > std::size_t { UINT8_C(0) }))
   {
     *d++ = *s++;
 
@@ -198,11 +199,11 @@ void* memcpy (void* dest, const void* src, size_t n)
         std::uint32_t* d32 { reinterpret_cast<std::uint32_t*>(d) };
   const std::uint32_t* s32 { reinterpret_cast<const uint32_t*>(s) };
 
-  while (n >= 4)
+  while (n >= std::size_t { UINT8_C(4) })
   {
     *d32++ = *s32++;
 
-    n -= 4;
+    n -= std::size_t { UINT8_C(4) };
   }
 
   // Handle any remaining bytes.
@@ -210,7 +211,7 @@ void* memcpy (void* dest, const void* src, size_t n)
   d = reinterpret_cast<std::uint8_t*>(d32);
   s = reinterpret_cast<const uint8_t*>(s32);
 
-  while (n > 0)
+  while (n > std::size_t { UINT8_C(0) })
   {
     *d++ = *s++;
 
