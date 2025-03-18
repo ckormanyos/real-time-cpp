@@ -5,7 +5,7 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Originally from:
+// Originally from (but strongly modified from):
 /******************************************************************************************
   Filename    : StdLib.c
 
@@ -19,7 +19,7 @@
 
   Date        : 22.02.2025
 
-  Description : Handwritten StdLib functions
+  Description : Hand-written StdLib functions
 
 ******************************************************************************************/
 

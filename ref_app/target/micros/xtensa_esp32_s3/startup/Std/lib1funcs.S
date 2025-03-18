@@ -1,3 +1,6 @@
+
+// Originally from:
+
 /* Assembly functions for the Xtensa version of libgcc1.
    Copyright (C) 2001-2025 Free Software Foundation, Inc.
    Contributed by Bob Wilson (bwilson@tensilica.com) at Tensilica.
@@ -30,6 +33,18 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 .section .note.GNU-stack,"",%progbits
 .previous
 #endif
+
+#ifdef __XTENSA_CALL0_ABI__ /* added by Chalandi for CALL0 adaptation */
+
+.macro leaf_entry _sp, _frame_size
+
+.endm
+
+.macro leaf_return
+  ret
+.endm
+
+#endif /*__XTENSA_CALL0_ABI__*/
 
 /* Define macros for the ABS and ADDX* instructions to handle cases
    where they are not included in the Xtensa processor configuration.  */
@@ -412,7 +427,7 @@ __umulsidi3:
   .endm
 
 #ifdef L_clz
-  .section .rodata
+  .section .text
   .align  4
   .global  __nsau_data
   .type  __nsau_data, @object
