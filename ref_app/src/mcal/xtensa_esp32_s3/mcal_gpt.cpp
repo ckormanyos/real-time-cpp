@@ -54,14 +54,14 @@ namespace
 extern "C" void __system_tick_handler()
 {
   // Reload the private timer1 for the running core.
-  set_cpu_private_timer1(mcal::gpt::timer1_reload());
+  set_cpu_private_timer1(mcal::gpt::detail::timer1_reload());
 
   const bool is_not_core0 { (get_core_id() != std::uint32_t { UINT8_C(0) }) };
 
   // Toggle the LED (on core1) or increment the 64-bit system tick (on core0).
 
   if(is_not_core0) { mcal::led::led1().toggle(); }
-  else             { system_tick += mcal::gpt::timer1_max(); }
+  else             { system_tick += mcal::gpt::detail::timer1_max(); }
 }
 
 auto mcal::gpt::init(const config_type*) -> void
@@ -79,7 +79,7 @@ auto mcal::gpt::secure::get_time_elapsed() -> mcal::gpt::value_type
 
   if(gpt_is_initialized())
   {
-    constexpr std::uint32_t mhz_value { (mcal::gpt::timer1_max() / UINT32_C(1000000)) };
+    constexpr std::uint32_t mhz_value { (mcal::gpt::detail::timer1_max() / UINT32_C(1000000)) };
 
     result = get_consistent_tick() / mhz_value;
   }

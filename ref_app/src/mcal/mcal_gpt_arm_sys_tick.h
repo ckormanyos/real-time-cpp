@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2022 - 2024.
+//  Copyright Christopher Kormanyos 2022 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,7 @@
 #ifndef MCAL_GPT_ARM_SYS_TICK_2022_11_30_H
   #define MCAL_GPT_ARM_SYS_TICK_2022_11_30_H
 
+  #include <cstddef>
   #include <cstdint>
   #include <limits>
 
@@ -48,10 +49,10 @@
 
   template<const std::uint32_t SysTickMHz,
            typename ValueType = std::uint64_t>
-  class arm_sys_tick : private arm_sys_tick_base<SysTickMHz, ValueType, std::uint32_t, std::uint32_t>
+  class arm_sys_tick : private arm_sys_tick_base<SysTickMHz, ValueType, std::uintptr_t, std::uint32_t>
   {
   private:
-    using base_class_type = arm_sys_tick_base<SysTickMHz, ValueType, std::uint32_t, std::uint32_t>;
+    using base_class_type = arm_sys_tick_base<SysTickMHz, ValueType, std::uintptr_t, std::uint32_t>;
 
     using register_address_type = typename base_class_type::register_address_type;
     using register_value_type   = typename base_class_type::register_value_type;
@@ -112,8 +113,8 @@
       // Return the system tick using a multiple read to ensure data consistency.
 
       // Do the first read of the sys-tick counter and the sys-tick
-      // value. Handle reverse counting for sys-tick counter, which is
-      // counting down.
+      // value. Also handle reverse counting for the sys-tick counter,
+      // since this timer counts down.
 
       const auto sys_tick_counter_1 =
         static_cast<register_value_type>
@@ -128,8 +129,8 @@
       const value_type sys_tick_value { my_sys_tick_value };
 
       // Do the second read of the sys-tick counter and the sys-tick
-      // value. Handle reverse counting for sys-tick counter, which is
-      // counting down.
+      // value. Also handle reverse counting for the sys-tick counter,
+      // since this timer counts down.
 
       const auto sys_tick_counter_2 =
         static_cast<register_value_type>

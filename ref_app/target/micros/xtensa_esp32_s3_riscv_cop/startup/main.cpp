@@ -81,7 +81,10 @@ extern "C" auto main() -> int
 
     my_pwm.set_duty(duty_table[duty_index]);
 
-    for(unsigned srv_idx { UINT8_C(0) }; srv_idx < unsigned { UINT16_C(16411) }; ++srv_idx)
+    // Table[Prime[n], {n, 1900, 1905, 1}]
+    // {16381, 16411, 16417, 16421, 16427, 16433}
+
+    for(unsigned srv_idx { UINT8_C(0) }; srv_idx < unsigned { UINT16_C(16'411) }; ++srv_idx)
     {
       my_pwm.service();
     }
