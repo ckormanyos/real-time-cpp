@@ -11,8 +11,6 @@
   #include <chrono>
   #include <cstdint>
 
-  #include <mcal/mcal_gpt_arm_sys_tick.h>
-
   // Forward declaration of the util::timer template class.
   namespace util
   {
@@ -24,15 +22,6 @@
   {
     namespace gpt
     {
-      namespace detail
-      {
-        constexpr inline auto timer1_max   () noexcept -> std::uint32_t { return UINT32_C(80000000); }
-        constexpr inline auto timer1_reload() noexcept -> std::uint32_t { return timer1_max() - UINT32_C(1); }
-      }
-
-      using detail::timer1_max;
-      using detail::timer1_reload;
-
       using config_type = void;
       using value_type  = std::uint64_t;
 

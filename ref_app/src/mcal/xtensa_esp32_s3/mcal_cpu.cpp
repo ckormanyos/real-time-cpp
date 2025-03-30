@@ -117,7 +117,7 @@ auto main_c1() -> void
   // by the core1 branch of the subroutine _start().
 
   // Set the private cpu timer1 for core1.
-  set_cpu_private_timer1(mcal::gpt::timer1_reload());
+  set_cpu_private_timer1(mcal::gpt::detail::timer1_reload());
 
   // Enable all interrupts on core1.
   mcal::irq::init(nullptr);
@@ -133,7 +133,7 @@ auto mcal::cpu::post_init() noexcept -> void
   // Note: This subroutine is called from core0.
 
   // Set the private cpu timer1 for core0.
-  set_cpu_private_timer1(mcal::gpt::timer1_reload());
+  set_cpu_private_timer1(mcal::gpt::detail::timer1_reload());
 
   // Use core0 to start the RISC-V core.
   Mcu_StartCoProcessorRiscV();
