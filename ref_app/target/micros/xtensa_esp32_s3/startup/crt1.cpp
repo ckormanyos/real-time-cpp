@@ -21,16 +21,16 @@ extern "C"
 
 namespace crt
 {
-  void init_ctors();
+  auto init_ctors() -> void;
 }
 
-void crt::init_ctors()
+auto crt::init_ctors() -> void
 {
   using local_const_reverse_iterator = std::reverse_iterator<const ctor_type::function_type*>;
 
   std::for_each(local_const_reverse_iterator(&_ctors_end),
                 local_const_reverse_iterator(&_ctors_begin),
-                [](const ctor_type::function_type pf)
+                [](const ctor_type::function_type& pf)
                 {
                   pf();
                 });

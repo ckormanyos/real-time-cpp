@@ -29,26 +29,26 @@
 
 extern "C" {
 
-typedef   signed long long DItype  __attribute__((mode (DI)));
-typedef unsigned long long UDItype __attribute__((mode (DI)));
-typedef unsigned int       USItype __attribute__((mode (SI)));
+using DItype  =   signed long long;
+using UDItype = unsigned long long;
+using USItype = unsigned int;
 
-extern int __builtin_clzll(unsigned long long);
+extern auto __builtin_clzll(unsigned long long) -> int;
 
-#define DWtype  DItype
-#define UDWtype UDItype
-#define UWtype  USItype
+using DWtype  = DItype;
+using UDWtype = UDItype;
+using UWtype  = USItype;
 
-UDWtype __udivdi3    (UDWtype n, UDWtype d);
-UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp);
-UDWtype __umoddi3    (UDWtype u, UDWtype v);
+auto __udivdi3    (UDWtype n, UDWtype d)              -> UDWtype;
+auto __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp) -> UDWtype;
+auto __umoddi3    (UDWtype u, UDWtype v)              -> UDWtype;
 
-UDWtype __udivdi3 (UDWtype n, UDWtype d)
+auto __udivdi3 (UDWtype n, UDWtype d) -> UDWtype
 {
   return __udivmoddi4 (n, d, (UDWtype *) 0);
 }
 
-UDWtype __umoddi3 (UDWtype u, UDWtype v)
+auto __umoddi3 (UDWtype u, UDWtype v) -> UDWtype
 {
   UDWtype w;
 
@@ -57,7 +57,7 @@ UDWtype __umoddi3 (UDWtype u, UDWtype v)
   return w;
 }
 
-UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp)
+auto __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp) -> UDWtype
 {
   UDWtype q = 0, r = n, y = d;
   UWtype lz1, lz2, i, k;
@@ -136,7 +136,7 @@ UDWtype __udivmoddi4 (UDWtype n, UDWtype d, UDWtype *rp)
 #pragma GCC diagnostic ignored "-Wcast-align"
 #endif
 
-void* memset(void* str, int c, size_t n)
+auto memset(void* str, int c, size_t n) -> void*
 {
   std::uint8_t* ptr { reinterpret_cast<std::uint8_t*>(str) };
 
@@ -180,7 +180,7 @@ void* memset(void* str, int c, size_t n)
   return str;
 }
 
-void* memcpy (void* dest, const void* src, size_t n)
+auto memcpy (void* dest, const void* src, size_t n) -> void*
 {
         std::uint8_t* d { reinterpret_cast<std::uint8_t*>(dest) };
   const std::uint8_t* s { reinterpret_cast<const uint8_t*>(src) };

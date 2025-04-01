@@ -27,10 +27,10 @@ extern "C"
 
 namespace crt
 {
-  void init_ram();
+  auto init_ram() -> void;
 }
 
-void crt::init_ram()
+auto crt::init_ram() -> void
 {
   using memory_aligned_type = std::uint32_t;
 

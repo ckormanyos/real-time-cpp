@@ -5,14 +5,14 @@
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Generic Cortex-M startup code.
+// Startup code.
 
 #include <mcal/mcal.h>
 
 namespace crt
 {
-  void init_ram();
-  void init_ctors();
+  auto init_ram() -> void;
+  auto init_ctors() -> void;
 }
 
 extern "C"
@@ -21,10 +21,10 @@ extern "C"
 
   extern auto main() -> int;
 
-  void __my_startup() __attribute__((used, noinline));
+  auto __my_startup() -> void __attribute__((used, noinline));
 }
 
-void __my_startup()
+auto __my_startup() -> void
 {
   // Load the stack pointer.
   // The stack pointer is automatically loaded from
