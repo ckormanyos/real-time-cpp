@@ -66,15 +66,15 @@ In this way the project exhibits a high level of portability.
 
 ## Supported Targets in the Reference Application
 
-The reference application supports the following targets:
+The reference application supports the following targets (in alpha-numeric order):
 
 | Target name (as used in build command) | Target Description                                          | *(breadboard) |
 | -------------------------------------- | ----------------------------------------------------------- | ------------- |
-| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
+| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
-| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
-| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |               |
+| `avr` (as used in the book)            | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
+| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   | X             |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |               |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
@@ -359,17 +359,23 @@ any additional libraries for these projects
 (other than those that are ordinarily installed
 during the standard installation of ATMEL Studio).
 
-## Target Details
+## Details on Selected Target
 
 Target details including startup code and linker definition files can
 be found in the [ref_app/target](./ref_app/target) directory
 and its subdirectories. There are individual subdirectories for
 each supported target microcontroller system.
 
-The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
-called `target avr` runs
-on a classic ARDUINO(R) compatible board.
-The program toggles the yellow LED on `portb.5`.
+The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
+board (black edition). For the white edition, the CPU clock needs to be reduced
+from $900~\text{MHz}$ to something like $600~\text{MHz}$. This project creates a bare-metal program
+for the BeagleBone that runs independently from any kind of `*nix` distro on
+the board. Our program is designed to boot the BeagleBone from a raw binary file
+called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
+special boot header comprised of two 32-bit integers. The program is loaded
+from SD-card into RAM memory and subsequently executed. When switching on
+the BeagleBone black, the boot button (S2) must be pressed while powering
+up the board. The program toggles the first user LED (LED1 on `port1.21`).
 
 The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target atmega2560` runs
@@ -389,14 +395,93 @@ on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at $20~\text{MHz}$.
 The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
-The Espressif (`target xtensa32`) port for NodeMCU ESP32
-uses a subset of the
-[Espressif SDK](https://github.com/espressif/esp-idf)
-to run the reference application.
-This somewhat unconventional implementation configures
-$1$ single OS task running exclusively on $1$ CPU core only.
-Additional reductions in code/memory size(s) have been accomplished
-via selective stubbing of library functions.
+The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
+called `target avr` (as used in the book) runs
+on a classic ARDUINO(R) compatible board.
+The program toggles the yellow LED on `portb.5`.
+
+The ARM(R) 1176-JZF-S configuration (called `target bcm2835_raspi_b`) runs on the
+RaspberryPi(R) Zero (PiZero) single core controller.
+This project creates a bare-metal program for the PiZero.
+This program runs independently from any kind of `*nix` distro on the board.
+Our program is designed to boot the PiZero from a raw binary file.
+The raw binary file is called _kernel.img_ and it is stored on a FAT32 SDHC
+microcard. The program _objcopy_ can be used to extract raw binary
+from a ELF-file using the output flags `-O binary`.
+The kernel.img file is stored on the SD card together with
+three other files: bootcode.bin, start.elf and (an optional)
+config.txt, all described on internet. A complete set of
+[PiZero boot contents for an SD card](./ref_app/target/micros/bcm2835_raspi_b/startup/SD_CARD/PiZero)
+running the bare-metal reference application are included in this repo.
+The program toggles the GPIO status LED  at GPIO index `0x47`.
+
+The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
+called `target lpc11c24` toggles the LED on `port0.8`.
+
+Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
+The orange user-LED is toggled.
+
+The `riscvfe310` target utilizes the SiFive RISC-V FE310 SoC
+on Spark Fun's commercially available _Red_ _Thing_ _Plus_ Board.
+The blue LED on port `GPIO0.5` is toggled.
+
+The `rpi_pico_rp2040` target configuration employs the
+RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0+
+clocked at $133~\text{MHz}$. The low-level startup boots through
+core0 which then starts up core1 via specific protocol.
+Core1 carries out the blinky application while core0 enters an endless,
+idle loop. Ozone debug files are supplied for this system
+for those interested. Reverse engineering of the complicated
+and scantly documented dual-core startup originated in
+and have been taken (with many thanks) from the
+[`Chalandi/Blinky_Pico_dual_core_nosdk`](https://github.com/Chalandi/Blinky_Pico_dual_core_nosdk).
+repository.
+
+The `rpi_pico2_rp2350` target configuration employs the
+RaspberryPi(R) Pico2 RP2350 with dual-core ARM(R) Cortex(R)-M33
+clocked at $150~\text{MHz}$. It has essentially the same boot
+structure as the `2040`. Similarly the dual-core startup was
+pioneered by the efforts revealed in the modernized
+[`Chalandi/Blinky_Pico2_dual_core_nosdk`](https://github.com/Chalandi/Blinky_Pico2_dual_core_nosdk).
+repository.
+
+The ARM(R) Cortex(R)-M3 configuration (called `target stm32f100`) runs on
+the STM32VL-DISCOVERY board commercially available from ST Microelectronics(R).
+The program toggles the blue LED on `portc.8`.
+
+The first ARM(R) Cortex(R)-M4F configuration (called `target stm32f407`) runs on
+the STM32F4-DISCOVERY board commercially available from ST Microelectronics(R).
+The program toggles the blue LED on `portd.15`.
+
+Another ARM(R) Cortex(R)-M4F configuration (called `target stm32f446`) runs on
+the STM32F446-NUCLEO-64 board commercially available from ST Microelectronics(R).
+The program toggles the green LED on `porta.5`.
+An Ozone debug file is supplied for this system for those interested.
+
+The first ARM(R) Cortex(R)-M7 configuration (called `target stm32h7a3`) runs on
+the STM32H7A3-NUCLEO-144 board commercially available from ST Microelectronics(R).
+The program toggles the green LED on `portb.0`.
+
+The second ARM(R) Cortex(R)-M3 configuration (called `target stm32l100c`)
+runs on the STM32L100-DISCOVERY board commercially available from
+ST Microelectronics(R). The program toggles the blue LED on `portc.8`.
+
+The third ARM(R) Cortex(R)-M3 configuration (called `target stm32l152`)
+runs on the STM32L152C-DISCOVERY board commercially available from
+ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
+
+The `target v850es_fx2` implementation uses a classic Renesas(R) V850es/Fx2 core.
+The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
+starter kit is used.
+
+The adaption for `wch_ch32v307` runs on the WCH CH32v307 board.
+It uses the RISC-V CH32v307 microcontroller from
+Nanjing Qinheng Microelectronics Co., Ltd.
+The blue LED1 manually connected to port `GPIOC.0`
+via wire-connection provides the blinky toggle.
+The similar adaption `wch_ch32v307_llvm` is essentially
+the same except it uses an LLVM RISC-V toolchain
+instead of GCC RISC-V.
 
 The Espressif (`target xtensa_esp32_s3`) port for NodeMCU ESP32-S3
 features a bare-metal startup _without_ using any of the SDK.
@@ -415,98 +500,14 @@ Self-procured LEDs and resistors need to be fitted externally
 on the port pins in order to observe blinking and dimming
 on this particular board.
 
-The NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+ configuration
-called `target lpc11c24` toggles the LED on `port0.8`.
-
-The ARM(R) Cortex(R)-M3 configuration (called `target stm32f100`) runs on
-the STM32VL-DISCOVERY board commercially available from ST Microelectronics(R).
-The program toggles the blue LED on `portc.8`.
-
-The second ARM(R) Cortex(R)-M3 configuration (called `target stm32l100c`)
-runs on the STM32L100-DISCOVERY board commercially available from
-ST Microelectronics(R). The program toggles the blue LED on `portc.8`.
-
-The third ARM(R) Cortex(R)-M3 configuration (called `target stm32l152`)
-runs on the STM32L152C-DISCOVERY board commercially available from
-ST Microelectronics(R). The program toggles the blue LED on `portb.6`.
-
-The first ARM(R) Cortex(R)-M4F configuration (called `target stm32f407`) runs on
-the STM32F4-DISCOVERY board commercially available from ST Microelectronics(R).
-The program toggles the blue LED on `portd.15`.
-
-Another ARM(R) Cortex(R)-M4F configuration (called `target stm32f446`) runs on
-the STM32F446-NUCLEO-64 board commercially available from ST Microelectronics(R).
-The program toggles the green LED on `porta.5`.
-An Ozone debug file is supplied for this system for those interested.
-
-The first ARM(R) Cortex(R)-M7 configuration (called `target stm32h7a3`) runs on
-the STM32H7A3-NUCLEO-144 board commercially available from ST Microelectronics(R).
-The program toggles the green LED on `portb.0`.
-
-The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
-board (black edition). For the white edition, the CPU clock needs to be reduced
-from $900~\text{MHz}$ to something like $600~\text{MHz}$. This project creates a bare-metal program
-for the BeagleBone that runs independently from any kind of `*nix` distro on
-the board. Our program is designed to boot the BeagleBone from a raw binary file
-called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
-special boot header comprised of two 32-bit integers. The program is loaded
-from SD-card into RAM memory and subsequently executed. When switching on
-the BeagleBone black, the boot button (S2) must be pressed while powering
-up the board. The program toggles the first user LED (LED1 on `port1.21`).
-
-The ARM(R) 1176-JZF-S configuration (called `target bcm2835_raspi_b`) runs on the
-RaspberryPi(R) Zero (PiZero) single core controller.
-This project creates a bare-metal program for the PiZero.
-This program runs independently from any kind of `*nix` distro on the board.
-Our program is designed to boot the PiZero from a raw binary file.
-The raw binary file is called _kernel.img_ and it is stored on a FAT32 SDHC
-microcard. The program _objcopy_ can be used to extract raw binary
-from a ELF-file using the output flags `-O binary`.
-The kernel.img file is stored on the SD card together with
-three other files: bootcode.bin, start.elf and (an optional)
-config.txt, all described on internet. A complete set of
-[PiZero boot contents for an SD card](./ref_app/target/micros/bcm2835_raspi_b/startup/SD_CARD/PiZero)
-running the bare-metal reference application are included in this repo.
-The program toggles the GPIO status LED  at GPIO index `0x47`.
-
-The `rpi_pico_rp2040` target configuration employs the
-RaspberryPi(R) Pico RP2040 with dual-core ARM(R) Cortex(R)-M0+
-clocked at $133~\text{MHz}$. The low-level startup boots through
-core0. Core0 then starts up core1 (via a specific protocol).
-Core1 subsequently carries out the blinky application,
-while core0 enters an endless, idle loop.
-Ozone debug files are supplied for this system for those interested.
-Reverse engineering of the complicated (and scantly documented)
-dual-core startup originated in and have been taken from (with many thanks)
-from the `Blinky_Pico_dual_core_nosdk`
-[repo](https://github.com/Chalandi/Blinky_Pico_dual_core_nosdk).
-
-The `rpi_pico2_rp2350` target configuration employs the
-RaspberryPi(R) Pico2 RP2350 with dual-core ARM(R) Cortex(R)-M33
-clocked at $150~\text{MHz}$. It has essentially the same boot
-structure as the `2040`. Similarly the dual-core startup was
-pioneered by the efforts revealed in the modernized `Blinky_Pico2_dual_core_nosdk`
-[repo](https://github.com/Chalandi/Blinky_Pico2_dual_core_nosdk).
-
-The `target v850es_fx2` implementation uses a classic Renesas(R) V850es/Fx2 core.
-The upd703231 microcontroller derivative on an F-Line _Drive_ _It_
-starter kit is used.
-
-The `riscvfe310` target utilizes the SiFive RISC-V FE310 SoC
-on Spark Fun's commercially available _Red_ _Thing_ _Plus_ Board.
-The blue LED on port `GPIO0.5` is toggled.
-
-The adaption for `wch_ch32v307` runs on the WCH CH32v307 board.
-It uses the RISC-V CH32v307 microcontroller from
-Nanjing Qinheng Microelectronics Co., Ltd.
-The blue LED1 manually connected to port `GPIOC.0`
-via wire-connection provides the blinky toggle.
-The similar adaption `wch_ch32v307_llvm` is essentially
-the same except it uses an LLVM RISC-V toolchain
-instead of GCC RISC-V.
-
-Target `nxp_imxrt1062` runs on the Teensy 4.0 board from Spark Fun.
-The orange user-LED is toggled.
+The Espressif (`target xtensa32`) port for NodeMCU ESP32
+uses a subset of the
+[Espressif SDK](https://github.com/espressif/esp-idf)
+to run the reference application.
+This somewhat unconventional implementation configures
+$1$ single OS task running exclusively on $1$ CPU core only.
+Additional reductions in code/memory size(s) have been accomplished
+via selective stubbing of library functions.
 
 For other compatible boards, feel free contact me directly or submit
 an issue requesting support for your desired target system.

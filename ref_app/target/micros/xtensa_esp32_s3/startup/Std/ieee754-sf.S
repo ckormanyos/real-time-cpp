@@ -1,5 +1,12 @@
+/******************************************************************************************
+//  Copyright Christopher Kormanyos 2025.
+//  Distributed under the Boost Software License,
+//  Version 1.0. (See accompanying file LICENSE_1_0.txt
+//  or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+******************************************************************************************/
 
-// Originally from:
+// Originally from (but slightly modified from):
 
 /* IEEE-754 single-precision functions for Xtensa
    Copyright (C) 2006-2025 Free Software Foundation, Inc.
@@ -272,7 +279,8 @@ __addsf3:
 
   /* Subtraction */
 __subsf3_aux:
-  
+.align 4
+
   /* Handle NaNs and Infinities.  (This code is placed before the
      start of the function just to keep it in range of the limited
      branch displacements.)  */
@@ -438,7 +446,7 @@ __subsf3:
   movi  a2, 0
   leaf_return
 
-.Lsub_borrow:  
+.Lsub_borrow:
   /* The subtraction has underflowed into the exponent field, so the
      value needs to be renormalized.  Shift the mantissa left as
      needed to remove any leading zeros and adjust the exponent
@@ -502,12 +510,12 @@ __subsf3:
 
 #ifdef L_mulsf3
 
-  /* Multiplication */
+/* Multiplication */
 #if !XCHAL_HAVE_MUL16 && !XCHAL_HAVE_MUL32 && !XCHAL_HAVE_MAC16
 #define XCHAL_NO_MUL 1
 #endif
 
-  .literal_position
+.literal_position
 __mulsf3_aux:
 
   /* Handle unusual cases (zeros, subnormals, NaNs and Infinities).
