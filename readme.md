@@ -135,7 +135,7 @@ To get started with the reference application on `*nix`
   - This shell script calls GNU make with parameters `avr rebuild` which subsequently rebuilds the entire solution for `target avr`.
   - If you're missing AVR GCC tools and need to get them on `*nix`, run `sudo apt install gcc-avr avr-libc`.
 
-### Example build on `*nix` for `target avr`
+### Example Build on `*nix` for `target avr`
 
 We will now exemplify how to build the reference application on a command shell
 in `*nix` for `target avr`. This target system includes essentially
@@ -157,7 +157,7 @@ cd ref_app
 ./target/build/build.sh avr rebuild
 ```
 
-### Example build on `*nix` for `target stm32f446`
+### Example Build on `*nix` for `target stm32f446`
 
 We will now exemplify how to build the reference application on a command shell
 in `*nix` for an ARM(R) target. Consider, for example, the build variant
@@ -179,7 +179,7 @@ cd ref_app
 ./target/build/build.sh stm32f446 rebuild
 ```
 
-### Example build on MacOS for `target stm32f446`
+### Example Build on MacOS for `target stm32f446`
 
 We will now exemplify how to build the reference application in a command shell
 in MacOS for an ARM(R) target. Consider, for example, the build variant
@@ -359,7 +359,7 @@ any additional libraries for these projects
 (other than those that are ordinarily installed
 during the standard installation of ATMEL Studio).
 
-## Details on Selected Target
+## Details on Selected Targets
 
 Target details including startup code and linker definition files can
 be found in the [ref_app/target](./ref_app/target) directory
