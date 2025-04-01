@@ -66,15 +66,15 @@ In this way the project exhibits a high level of portability.
 
 ## Supported Targets in the Reference Application
 
-The reference application supports the following targets:
+The reference application supports the following targets (in alpha-numeric order):
 
 | Target name (as used in build command) | Target Description                                          | *(breadboard) |
 | -------------------------------------- | ----------------------------------------------------------- | ------------- |
-| `avr`                                  | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
+| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
 | `atmega2560`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega2560            |               |
 | `atmega4809`                           | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmegax4809           | X             |
-| `am335x`                               | BeagleBone with Texas Instruments(R) AM335x ARM(R) A8       |               |
-| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   |               |
+| `avr` (as used in the book)            | MICROCHIP(R) [former ATMEL(R)] AVR(R) ATmega328P            | X             |
+| `bcm2835_raspi_b`                      | RaspberryPi(R) Zero with ARM1176-JZFS(TM)                   | X             |
 | `Debug`/`Release`                      | PC on `Win*` via MSVC x64 compiler `Debug`/`Release`        |               |
 | `host`                                 | PC/Workstation on `Win*`/`mingw64`/`*nix` via host compiler |               |
 | `lpc11c24`                             | NXP(R) OM13093 LPC11C24 board ARM(R) Cortex(R)-M0+          |               |
@@ -366,10 +366,16 @@ be found in the [ref_app/target](./ref_app/target) directory
 and its subdirectories. There are individual subdirectories for
 each supported target microcontroller system.
 
-The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
-called `target avr` runs
-on a classic ARDUINO(R) compatible board.
-The program toggles the yellow LED on `portb.5`.
+The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
+board (black edition). For the white edition, the CPU clock needs to be reduced
+from $900~\text{MHz}$ to something like $600~\text{MHz}$. This project creates a bare-metal program
+for the BeagleBone that runs independently from any kind of `*nix` distro on
+the board. Our program is designed to boot the BeagleBone from a raw binary file
+called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
+special boot header comprised of two 32-bit integers. The program is loaded
+from SD-card into RAM memory and subsequently executed. When switching on
+the BeagleBone black, the boot button (S2) must be pressed while powering
+up the board. The program toggles the first user LED (LED1 on `port1.21`).
 
 The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
 called `target atmega2560` runs
@@ -389,16 +395,10 @@ on an ARDUINO(R) EVERY compatible board clocked
 with the internal resonator at $20~\text{MHz}$.
 The program toggles the yellow LED on `porte.2` (i.e., `D5`).
 
-The ARM(R) A8 configuration (called `target am335x`) runs on the BeagleBone
-board (black edition). For the white edition, the CPU clock needs to be reduced
-from $900~\text{MHz}$ to something like $600~\text{MHz}$. This project creates a bare-metal program
-for the BeagleBone that runs independently from any kind of `*nix` distro on
-the board. Our program is designed to boot the BeagleBone from a raw binary file
-called _MLO_ stored on a FAT32 SDHC microcard. The binary file includes a
-special boot header comprised of two 32-bit integers. The program is loaded
-from SD-card into RAM memory and subsequently executed. When switching on
-the BeagleBone black, the boot button (S2) must be pressed while powering
-up the board. The program toggles the first user LED (LED1 on `port1.21`).
+The MICROCHIP(R) [former ATMEL(R)] AVR(R) configuration
+called `target avr` (as used in the book) runs
+on a classic ARDUINO(R) compatible board.
+The program toggles the yellow LED on `portb.5`.
 
 The ARM(R) 1176-JZF-S configuration (called `target bcm2835_raspi_b`) runs on the
 RaspberryPi(R) Zero (PiZero) single core controller.
