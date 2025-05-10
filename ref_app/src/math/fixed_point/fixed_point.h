@@ -23,16 +23,15 @@
     #include <ostream>
   #endif
 
-  namespace math { namespace fixed {
+  #if(__cplusplus >= 201703L)
+  namespace math::fixed {
+  #else
+  namespace math { namespace fixed { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   // Forward declaration of the fixed_point template class.
   template<typename integer_type>
   class fixed_point;
-
-  } // namespace fixed
-  } // namespace math
-
-  namespace math { namespace fixed {
 
   namespace detail {
 
@@ -957,8 +956,12 @@
     #endif // !FIXED_POINT_DISABLE_IOSTREAM
   };
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::fixed
+  #else
   } // namespace fixed
   } // namespace math
+  #endif
 
   // Define the four scalable fixed_point types.
   typedef math::fixed::fixed_point<std::int8_t>  fixed_point_3pt4;
@@ -975,7 +978,11 @@
     template<> class numeric_limits<fixed_point_31pt32> : public fixed_point_31pt32::my_numeric_limits { };
   }
 
-  namespace math { namespace fixed {
+  #if(__cplusplus >= 201703L)
+  namespace math::fixed {
+  #else
+  namespace math { namespace fixed { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   // Include a few more global sample fixed_point functions.
   template<typename fixed_point_type>
@@ -994,7 +1001,11 @@
     return sqrt<fixed_point_type>((x * x) + (y * y));
   }
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::fixed
+  #else
   } // namespace fixed
   } // namespace math
+  #endif
 
 #endif // FIXED_POINT_2011_02_22_H

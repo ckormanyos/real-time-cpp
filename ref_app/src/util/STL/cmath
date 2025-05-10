@@ -235,47 +235,6 @@
     double      atanh (double x);
     long double atanhl(long double x);
 
-    int fpclassifyf(float x);
-    int fpclassify (double x);
-
-    static inline int fpclassifyl(long double x)
-    {
-      #if defined(__GNUC__)
-      #pragma GCC diagnostic push
-      #pragma GCC diagnostic ignored "-Wfloat-equal"
-      #endif
-
-      if((::__BUILTIN_ISNANL)(x) != 0)
-      {
-        return FP_NAN;
-      }
-      else if((::__BUILTIN_ISINFL)(x) != 0.0L)
-      {
-        return FP_INFINITE;
-      }
-      else if((::__BUILTIN_FABSL)(x) == 0.0L)
-      {
-        return FP_ZERO;
-      }
-      else
-      {
-        const bool
-          is_subnormal
-          {
-            (
-                 ((::__BUILTIN_FABSL)(x) > 0.0L)
-              && ((::__BUILTIN_FABSL)(x) < (std::numeric_limits<long double>::min)())
-            )
-          };
-
-        return (is_subnormal ? FP_SUBNORMAL : FP_NORMAL);
-      }
-
-      #if defined(__GNUC__)
-      #pragma GCC diagnostic pop
-      #endif
-    }
-
     //int isfinitef(float x);
     int isfinitel(long double x);
     int ilogbf(float x);
@@ -296,18 +255,57 @@
     inline bool        isfinite  (float x)                            { return ::isfinitef(x) == 1; }
     inline bool        isfinite  (double x)                           { return ::isfinite (x) == 1; }
     inline bool        isfinite  (long double x)                      { return ::isfinitel(x) == 1; }
-    inline int         ilogb     (float x)                            { return ::ilogbf  (x); }
-    inline int         ilogb     (double x)                           { return ::ilogb   (x); }
-    inline int         ilogb     (long double x)                      { return ::ilogbl  (x); }
-    inline int         fpclassify(float x)                            { return ::fpclassifyf(x); }
-    inline int         fpclassify(double x)                           { return ::fpclassify (x); }
-    inline int         fpclassify(long double x)                      { return ::fpclassifyl(x); }
     inline bool        isnan     (float x)                            { return __BUILTIN_ISNANF (x) == 1; }
     inline bool        isnan     (double x)                           { return __BUILTIN_ISNAN  (x) == 1; }
     inline bool        isnan     (long double x)                      { return __BUILTIN_ISNANL (x) == 1; }
     inline float       fabs      (float x)                            { return __BUILTIN_FABSF (x); }
     inline double      fabs      (double x)                           { return __BUILTIN_FABS  (x); }
     inline long double fabs      (long double x)                      { return __BUILTIN_FABSL (x); }
+
+    inline int fpclassify(double x)
+    {
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wfloat-equal"
+      #endif
+
+      if((isnan)(x) != 0)
+      {
+        return FP_NAN;
+      }
+      else if((isinf)(x) != 0.0)
+      {
+        return FP_INFINITE;
+      }
+      else if((fabs)(x) == 0.0)
+      {
+        return FP_ZERO;
+      }
+      else
+      {
+        const bool
+          is_subnormal
+          {
+            (
+                 ((fabs)(x) > 0.0)
+              && ((fabs)(x) < (std::numeric_limits<double>::min)())
+            )
+          };
+
+        return (is_subnormal ? FP_SUBNORMAL : FP_NORMAL);
+      }
+
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic pop
+      #endif
+    }
+
+    inline int fpclassify(float x)       { return fpclassify(static_cast<double>(x)); }
+    inline int fpclassify(long double x) { return fpclassify(static_cast<double>(x)); }
+
+    inline int         ilogb     (float x)                            { return ::ilogbf  (x); }
+    inline int         ilogb     (double x)                           { return ::ilogb   (x); }
+    inline int         ilogb     (long double x)                      { return ::ilogbl  (x); }
     inline float       fmod      (float x, float y)                   { return __BUILTIN_FMODF (x, y); }
     inline double      fmod      (double x, double y)                 { return __BUILTIN_FMOD  (x, y); }
     inline long double fmod      (long double x, long double y)       { return __BUILTIN_FMODL (x, y); }
@@ -419,8 +417,6 @@
     long double ceill      (long double x);
     float       frexpf     (float x, int* p);
     long double frexpl     (long double x, int* p);
-    int         fpclassifyf(float x);
-    int         fpclassifyl(long double x);
     float       ldexpf     (float x, int p);
     long double ldexpl     (long double x, int p);
     long        lroundf    (float x);
@@ -585,9 +581,6 @@
     inline     float         frexp     (float       x, int* p)         { return ::frexpf(x, p); }
     extern "C" double        frexp     (double      x, int* p);
     inline     long double   frexp     (long double x, int* p)         { return ::frexpl(x, p); }
-    inline     int           fpclassify(float       x)                 { return ::fpclassifyf (x); }
-    extern "C" int           fpclassify(double      x);
-    inline     int           fpclassify(long double x)                 { return ::fpclassifyl (x); }
     inline     float         ldexp     (float       x, int p)          { return ::ldexpf(x, p); }
     extern "C" double        ldexp     (double      x, int p);
     inline     long double   ldexp     (long double x, int p)          { return ::ldexpl (x, p); }
@@ -658,7 +651,7 @@
     inline     float         lgamma    (float       x)                 { return ::lgammaf(x); }
     extern "C" double        lgamma    (double      x);
     inline     long double   lgamma    (long double x)                 { return ::lgammal(x); }
-    #if __cplusplus > 201703L
+    #if (defined(__cplusplus) && (__cplusplus > 201703L))
     inline     float         lerp      (float a, float b, float t)     { return a + (t * (b - a)); }
     inline     double        lerp      (double a, double b, double t)  { return a + (t * (b - a)); }
     inline     long double   lerp      (long double a, long double b, long double t)
@@ -668,15 +661,77 @@
   }
   #endif
 
+  #if !defined(FP_INFINITE)
+  #define FP_INFINITE 1
+  #endif
+  #if !defined(FP_NAN)
+  #define FP_NAN 2
+  #endif
+  #if !defined(FP_NORMAL)
+  #define FP_NORMAL (-1)
+  #endif
+  #if !defined(FP_SUBNORMAL)
+  #define FP_SUBNORMAL (-2)
+  #endif
+  #if !defined(FP_ZERO)
+  #define FP_ZERO 0
+  #endif
+
   namespace std
   {
     using ::isfinite;
     using ::ilogb;
+
+    inline bool isinf(double x) { return ((x == std::numeric_limits<double>::infinity()) || (-x == std::numeric_limits<double>::infinity())); }
+    inline bool isinf(float x) { return isinf(static_cast<double>(x)); }
+    inline bool isinf(long double x) { return isinf(static_cast<double>(x)); }
+
     using ::isnan;
     using ::abs;
     using ::fabs;
     using ::fmod;
-    using ::fpclassify;
+
+    inline int fpclassify(double x)
+    {
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wfloat-equal"
+      #endif
+
+      if((isnan)(x) != 0)
+      {
+        return FP_NAN;
+      }
+      else if((isinf)(x) != 0.0)
+      {
+        return FP_INFINITE;
+      }
+      else if((fabs)(x) == 0.0)
+      {
+        return FP_ZERO;
+      }
+      else
+      {
+        const bool
+          is_subnormal
+          {
+            (
+                 ((fabs)(x) > 0.0)
+              && ((fabs)(x) < (std::numeric_limits<double>::min)())
+            )
+          };
+
+        return (is_subnormal ? FP_SUBNORMAL : FP_NORMAL);
+      }
+
+      #if defined(__GNUC__)
+      #pragma GCC diagnostic pop
+      #endif
+    }
+
+    inline int fpclassify(float x)       { return fpclassify(static_cast<double>(x)); }
+    inline int fpclassify(long double x) { return fpclassify(static_cast<double>(x)); }
+
     using ::modf;
     using ::floor;
     using ::ceil;
@@ -706,22 +761,6 @@
     using ::lgamma;
   } // namespace std
 
-  #endif
-
-  #if !defined(FP_INFINITE)
-  #define FP_INFINITE 1
-  #endif
-  #if !defined(FP_NAN)
-  #define FP_NAN 2
-  #endif
-  #if !defined(FP_NORMAL)
-  #define FP_NORMAL (-1)
-  #endif
-  #if !defined(FP_SUBNORMAL)
-  #define FP_SUBNORMAL (-2)
-  #endif
-  #if !defined(FP_ZERO)
-  #define FP_ZERO 0
   #endif
 
 #endif // CMATH_2010_02_23_
