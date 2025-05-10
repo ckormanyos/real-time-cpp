@@ -36,11 +36,6 @@ extern "C"
 
 #include <app/benchmark/app_benchmark_detail.h>
 
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wall"
-#endif
-
 //#define APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA_EXCLUDES_TGAMMA
 
 #if !defined(BOOST_MATH_STANDALONE)
@@ -153,9 +148,5 @@ int main()
 my_float_type cyj;
 unsigned      xn = static_cast<unsigned>(UINT8_C(1));
 my_float_type v  = static_cast<my_float_type>(BOOST_FLOATMAX_C(1.23));
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CYL_BESSEL_J

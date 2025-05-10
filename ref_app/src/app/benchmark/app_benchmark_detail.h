@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,15 +14,31 @@
   namespace app { namespace benchmark { namespace detail {
 
   template<typename NumericType>
-  auto is_close_fraction(const NumericType a, // NOLINT(bugprone-easily-swappable-parameters)
-                         const NumericType b, // NOLINT(bugprone-easily-swappable-parameters)
-                         const NumericType tol = NumericType(std::numeric_limits<NumericType>::epsilon() * NumericType(100))) -> bool
+  constexpr auto default_tol() noexcept -> NumericType
+  {
+    return NumericType { std::numeric_limits<NumericType>::epsilon() * NumericType(100) };
+  }
+
+  template<typename NumericType>
+  constexpr auto is_close_fraction(const NumericType a, // NOLINT(bugprone-easily-swappable-parameters)
+                                   const NumericType b, // NOLINT(bugprone-easily-swappable-parameters)
+                                   const NumericType tol = default_tol<NumericType>()) noexcept -> bool
   {
     using std::fabs;
+    using std::fpclassify;
 
-    const NumericType ratio     = fabs(NumericType((NumericType(1) * a) / b));
+    NumericType closeness { };
 
-    const NumericType closeness = fabs(NumericType(1 - ratio));
+    if(fpclassify(b) == FP_ZERO)
+    {
+      closeness = fabs(a - b);
+    }
+    else
+    {
+      const NumericType ratio = a / b;
+
+      closeness = NumericType { fabs(NumericType { 1 - ratio }) };
+    }
 
     return (closeness < tol);
   }
