@@ -9,6 +9,7 @@
   #define APP_BENCHMARK_DETAIL_2018_10_02_H
 
   #include <cmath>
+  #include <cstdint>
   #include <limits>
 
   namespace app { namespace benchmark { namespace detail {
