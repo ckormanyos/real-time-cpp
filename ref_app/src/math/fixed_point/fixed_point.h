@@ -1,15 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef FIXED_POINT_2011_02_22_H_
-  #define FIXED_POINT_2011_02_22_H_
+#ifndef FIXED_POINT_2011_02_22_H
+  #define FIXED_POINT_2011_02_22_H
 
   #define FIXED_POINT_DISABLE_IOSTREAM
 
+  #include <util/utility/util_nothing.h>
+  #include <util/utility/util_utype_helper.h>
+
+  #include <cmath>
   #include <cstddef>
   #include <cstdint>
   #include <limits>
@@ -18,9 +22,6 @@
     #include <istream>
     #include <ostream>
   #endif
-
-  #include <util/utility/util_nothing.h>
-  #include <util/utility/util_utype_helper.h>
 
   // Utility structure to help with the epsilon limits for fixed_point.
   // These special numbers represent the smallest value for a decimal part
@@ -972,4 +973,4 @@
     return sqrt<fixed_point_type>((x * x) + (y * y));
   }
 
-#endif // FIXED_POINT_2011_02_22_H_
+#endif // FIXED_POINT_2011_02_22_H

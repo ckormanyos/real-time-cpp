@@ -26,7 +26,7 @@ TGT_ALLFLAGS  = -O2                                                             
 
 ifeq ($(TYP_OS),WIN)
 TGT_ALLFLAGS := $(TGT_ALLFLAGS)                                                   \
-                -mdouble=32                                                       \
+                -mdouble=64                                                       \
                 -mlong-double=64
 endif
 
