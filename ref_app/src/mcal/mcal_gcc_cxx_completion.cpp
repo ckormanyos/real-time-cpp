@@ -89,7 +89,7 @@ extern "C"
   // and objects.
 
   void        abort               ()                        __attribute__((noreturn));
-  int         atexit              (void (*)());
+  int         atexit              (void (*)()) noexcept;
   int         at_quick_exit       (void (*)());
   void        _Exit               (int)                     __attribute__((noreturn));
   void        exit                (int)                     __attribute__((noreturn));
@@ -111,7 +111,7 @@ extern "C"
   // Implementations of patched functions.
 
   void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)())                        { return 0; }
+  int         atexit              (void (*)()) noexcept               { return 0; }
   int         at_quick_exit       (void (*)())                        { return 0; }
   void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }

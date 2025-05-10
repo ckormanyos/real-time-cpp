@@ -1,15 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2018.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef FIXED_POINT_2011_02_22_H_
-  #define FIXED_POINT_2011_02_22_H_
+#ifndef FIXED_POINT_2011_02_22_H
+  #define FIXED_POINT_2011_02_22_H
 
   #define FIXED_POINT_DISABLE_IOSTREAM
 
+  #include <util/utility/util_nothing.h>
+  #include <util/utility/util_utype_helper.h>
+
+  #include <cmath>
   #include <cstddef>
   #include <cstdint>
   #include <limits>
@@ -19,8 +23,17 @@
     #include <ostream>
   #endif
 
-  #include <util/utility/util_nothing.h>
-  #include <util/utility/util_utype_helper.h>
+  #if(__cplusplus >= 201703L)
+  namespace math::fixed {
+  #else
+  namespace math { namespace fixed { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
+
+  // Forward declaration of the fixed_point template class.
+  template<typename integer_type>
+  class fixed_point;
+
+  namespace detail {
 
   // Utility structure to help with the epsilon limits for fixed_point.
   // These special numbers represent the smallest value for a decimal part
@@ -31,9 +44,7 @@
   template<>                  struct epsilon_helper<16U> { static const std::size_t epsilon_value = std::size_t(7U); };
   template<>                  struct epsilon_helper<32U> { static const std::size_t epsilon_value = std::size_t(44U); };
 
-  // Forward declaration of the fixed_point template class.
-  template<typename integer_type>
-  class fixed_point;
+  } // namespace detail
 
   // The scalable fixed_point template class.
   template<typename integer_type>
@@ -321,7 +332,7 @@
     static fixed_point value_max         () { return fixed_point(internal(), signed_value_type((unsigned_value_type(-1LL) - 1U) / 2U)); }
     static fixed_point value_min         () { return fixed_point(internal(), signed_value_type(2L)); }
     static fixed_point value_half        () { return fixed_point(internal(), signed_value_type(1ULL << (decimal_split - 1U))); }
-    static fixed_point value_eps         () { return fixed_point(internal(), signed_value_type(epsilon_helper<decimal_split>::epsilon_value)); }
+    static fixed_point value_eps         () { return fixed_point(internal(), signed_value_type(detail::epsilon_helper<decimal_split>::epsilon_value)); }
     static fixed_point value_pi          () { return fixed_point(internal(), signed_value_type(0x3243f6A88ULL >> (32U - decimal_split))); }
     static fixed_point value_pi_half     () { return fixed_point(internal(), signed_value_type(0x1921FB544ULL >> (32U - decimal_split))); }
     static fixed_point value_two_over_pi () { return fixed_point(internal(), signed_value_type(0x0A2F98370ULL >> (32U - decimal_split))); }
@@ -544,6 +555,11 @@
     template<typename other_signed_type> friend inline bool operator> (const fixed_point<other_signed_type>& b, const fixed_point& a) { return (std::int_least8_t(-a.cmp(b)) >  std::int_least8_t(0)); }
 
     // Include a few global sample fixed_point functions.
+    friend inline int fpclassify(const fixed_point& x)
+    {
+      return (x.data == signed_value_type(0) ? FP_ZERO : FP_NORMAL);
+    }
+
     friend inline fixed_point fabs(const fixed_point& x)
     {
       return fixed_point(internal(), (x.data < signed_value_type(0) ? -x.data : x.data));
@@ -940,11 +956,18 @@
     #endif // !FIXED_POINT_DISABLE_IOSTREAM
   };
 
+  #if(__cplusplus >= 201703L)
+  } // namespace math::fixed
+  #else
+  } // namespace fixed
+  } // namespace math
+  #endif
+
   // Define the four scalable fixed_point types.
-  typedef fixed_point<std::int8_t>  fixed_point_3pt4;
-  typedef fixed_point<std::int16_t> fixed_point_7pt8;
-  typedef fixed_point<std::int32_t> fixed_point_15pt16;
-  typedef fixed_point<std::int64_t> fixed_point_31pt32;
+  typedef math::fixed::fixed_point<std::int8_t>  fixed_point_3pt4;
+  typedef math::fixed::fixed_point<std::int16_t> fixed_point_7pt8;
+  typedef math::fixed::fixed_point<std::int32_t> fixed_point_15pt16;
+  typedef math::fixed::fixed_point<std::int64_t> fixed_point_31pt32;
 
   namespace std
   {
@@ -954,6 +977,12 @@
     template<> class numeric_limits<fixed_point_15pt16> : public fixed_point_15pt16::my_numeric_limits { };
     template<> class numeric_limits<fixed_point_31pt32> : public fixed_point_31pt32::my_numeric_limits { };
   }
+
+  #if(__cplusplus >= 201703L)
+  namespace math::fixed {
+  #else
+  namespace math { namespace fixed { // NOLINT(modernize-concat-nested-namespaces)
+  #endif
 
   // Include a few more global sample fixed_point functions.
   template<typename fixed_point_type>
@@ -972,4 +1001,11 @@
     return sqrt<fixed_point_type>((x * x) + (y * y));
   }
 
-#endif // FIXED_POINT_2011_02_22_H_
+  #if(__cplusplus >= 201703L)
+  } // namespace math::fixed
+  #else
+  } // namespace fixed
+  } // namespace math
+  #endif
+
+#endif // FIXED_POINT_2011_02_22_H
