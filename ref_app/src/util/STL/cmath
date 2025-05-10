@@ -13,7 +13,8 @@
 
   // Implement most of <cmath> for compilers that do not yet support it.
 
-  #if defined(__GNUC__) && defined(__AVR__)
+  #if (defined(__GNUC__) && defined(__AVR__))
+
   #include <math.h>
 
   #if !defined(_HUGE_ENUF)
@@ -480,9 +481,6 @@
     inline int           ilogb     (float x)                       { return ::ilogbf(x); }
     inline int           ilogb     (double x)                      { return ::ilogb (x); }
     inline int           ilogb     (long double x)                 { return ::ilogbl(x); }
-    inline int           fpclassify(float x)                       { return ::fpclassifyf(x); }
-    inline int           fpclassify(double x)                      { return ::fpclassify (x); }
-    inline int           fpclassify(long double x)                 { return ::fpclassifyl(x); }
     #if (defined(__GNUC__) && !defined(__clang__))
     inline bool          isnan     (float x)                       { return __builtin_isnanf(x); }
     inline bool          isnan     (double x)                      { return __builtin_isnan (x); }

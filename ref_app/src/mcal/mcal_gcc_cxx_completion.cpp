@@ -9,12 +9,17 @@
 #include <mcal_gpt.h>
 
 #include <chrono>
+#include <cmath>
 #include <cstddef>
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
+
+int isinf(double);
 
 // Implement std::chrono::high_resolution_clock::now()
 // for the standard library's high-resolution clock.
@@ -84,12 +89,14 @@ extern "C"
 {
   // Declarations of patched functions.
 
+  int fpclassifyf(float);
+
   // Provide stubbed copies of certain functions declared in <stdlib.h> and <cstdlib>.
   // Also provide stubbed copies of certain empirically found library functions
   // and objects.
 
   void        abort               ()                        __attribute__((noreturn));
-  int         atexit              (void (*)());
+  int         atexit              (void (*)()) noexcept;
   int         at_quick_exit       (void (*)());
   void        _Exit               (int)                     __attribute__((noreturn));
   void        exit                (int)                     __attribute__((noreturn));
@@ -110,8 +117,37 @@ extern "C"
 
   // Implementations of patched functions.
 
+  int fpclassifyf(float x)
+  {
+    if((::isnanf)(x) != 0)
+    {
+      return FP_NAN;
+    }
+    else if((::__builtin_isinf)(static_cast<double>(x)) != 0.0)
+    {
+      return FP_INFINITE;
+    }
+    else if((::fabsf)(x) == 0.0F)
+    {
+      return FP_ZERO;
+    }
+    else
+    {
+      const bool
+        is_subnormal
+        {
+          (
+               ((::fabsf)(x) > 0.0F)
+            && ((::fabsf)(x) < (std::numeric_limits<float>::min)())
+          )
+        };
+
+      return (is_subnormal ? FP_SUBNORMAL : FP_NORMAL);
+    }
+  }
+
   void        abort               ()                                  { for(;;) { mcal::cpu::nop(); } }
-  int         atexit              (void (*)())                        { return 0; }
+  int         atexit              (void (*)()) noexcept               { return 0; }
   int         at_quick_exit       (void (*)())                        { return 0; }
   void        _Exit               (int)                               { for(;;) { mcal::cpu::nop(); } }
   void        exit                (int)                               { for(;;) { mcal::cpu::nop(); } }
@@ -161,5 +197,6 @@ namespace std
 }
 
 #if defined(__GNUC__)
+#pragma GCC diagnostic pop
 #pragma GCC diagnostic pop
 #endif
