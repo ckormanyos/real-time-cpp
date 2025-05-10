@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2024.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -52,10 +52,10 @@ void* operator new(std::size_t size)
   volatile static std::uint8_t* get_ptr = buffer;
 
   // Get the newly allocated pointer.
-  volatile std::uint8_t* p = get_ptr;
+  volatile std::uint8_t* p { get_ptr };
 
   // Does this allocation overflow the top of the buffer?
-  const bool is_overflow = ((get_ptr + size) >= (buffer + sizeof(buffer)));
+  const bool is_overflow { ((get_ptr + size) >= (buffer + sizeof(buffer))) };
 
   // Increment the pointer for next time.
   // But only do this if the buffer does *not* overflow.

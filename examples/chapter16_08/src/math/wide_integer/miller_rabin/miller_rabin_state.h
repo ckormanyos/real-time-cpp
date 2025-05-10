@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2022.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MILLER_RABIN_STATE_2020_05_31_H
-  #define MILLER_RABIN_STATE_2020_05_31_H
+#ifndef MILLER_RABIN_STATE_2020_05_31_H_
+  #define MILLER_RABIN_STATE_2020_05_31_H_
 
   #include <math/wide_integer/miller_rabin/miller_rabin_base.h>
 
@@ -24,44 +24,40 @@
     using local_limb_type         = typename local_normal_width_type::limb_type;
 
   public:
-    miller_rabin_powm_state() = default;
+    miller_rabin_powm_state() : my_done(false),
+                                my_y   (),
+                                my_p   (),
+                                my_m   () { }
 
     ~miller_rabin_powm_state() = default;
 
-    auto init(const local_normal_width_type& b,
+    void init(const local_normal_width_type& b,
               const local_normal_width_type& p,
-              const local_normal_width_type& m) -> void
+              const local_normal_width_type& m)
     {
       my_done = false;
-      my_y    = local_double_width_type { b };
-      my_x    = local_double_width_type { unsigned { UINT8_C(1) } };
+      my_y    = local_double_width_type(b);
+      my_x    = local_double_width_type(1U);
       my_p    = p;
       my_m    = m;
 
-      if(   (static_cast<local_limb_type>(my_p) == local_limb_type { UINT8_C(0) })
-         && (my_p == unsigned { UINT8_C(0) }))
+      if((local_limb_type(my_p) == 0U) && (my_p == 0U))
       {
-        my_x =
-        (
-          (my_m != unsigned { UINT8_C(1) })
-            ? typename local_double_width_type::limb_type(1U)
-            : typename local_double_width_type::limb_type(0U)
-        );
+        my_x = ((my_m != 1U) ? typename local_double_width_type::limb_type(1U)
+                             : typename local_double_width_type::limb_type(0U));
 
         my_done = true;
       }
-      else if(   (static_cast<local_limb_type>(my_p) == local_limb_type { UINT8_C(1) })
-              && (my_p == unsigned { UINT8_C(1) }))
+      else if((local_limb_type(my_p) == 1U) && (my_p == 1U))
       {
         my_x = local_double_width_type(b) % local_double_width_type(m);
 
         my_done = true;
       }
-      else if(   (static_cast<local_limb_type>(my_p) == local_limb_type { UINT8_C(2) })
-              && (my_p == unsigned { UINT8_C(2) }))
+      else if((local_limb_type(my_p) == 2U) && (my_p == 2U))
       {
         my_y *= my_y;
-        my_y %= local_double_width_type { my_m };
+        my_y %= local_double_width_type(my_m);
 
         my_x = my_y;
 
@@ -69,17 +65,17 @@
       }
     }
 
-    auto get_done() const -> bool
+    bool get_done() const
     {
       return my_done;
     }
 
-    auto get_result(local_normal_width_type& result) -> void
+    void get_result(local_normal_width_type& result)
     {
       result = local_normal_width_type(my_x);
     }
 
-    auto calculate() -> void
+    void calculate()
     {
       // Calculate (b ^ p) % m.
 
@@ -108,11 +104,11 @@
     }
 
   private:
-    bool                    my_done { };
-    local_double_width_type my_y    { };
-    local_double_width_type my_x    { };
-    local_normal_width_type my_p    { };
-    local_normal_width_type my_m    { };
+    bool                    my_done;
+    local_double_width_type my_y;
+    local_double_width_type my_x;
+    local_normal_width_type my_p;
+    local_normal_width_type my_m;
   };
 
   template<typename Generator1Type,
@@ -159,16 +155,21 @@
       calculate_state_done,
     };
 
+
   public:
     constexpr miller_rabin_state(const typename base_class_type::generator1_type::result_type seed1 = typename base_class_type::generator1_type::result_type(),
                                  const typename base_class_type::generator2_type::result_type seed2 = typename base_class_type::generator2_type::result_type())
       : base_class_type(seed1, seed2),
         my_search_state   (search_state_type::search_state_set_n),
-        my_calculate_state(calculate_state_type::calculate_state_done) { }
+        my_calculate_state(calculate_state_type::calculate_state_done),
+        my_i              (0U),
+        my_j              (0U),
+        my_y              (),
+        my_powm           () { }
 
-    ~miller_rabin_state() override = default;
+    virtual ~miller_rabin_state() = default;
 
-    auto search() -> bool override
+    virtual bool search()
     {
       bool search_is_done = false;
 
@@ -214,24 +215,12 @@
   private:
     search_state_type                           my_search_state;
     calculate_state_type                        my_calculate_state;
-    std::uint_fast32_t                          my_i    { };
-    std::uint_fast32_t                          my_j    { };
-    typename base_class_type::wide_integer_type my_y    { };
-    miller_rabin_powm_type                      my_powm { };
+    std::uint_fast32_t                          my_i;
+    std::uint_fast32_t                          my_j;
+    typename base_class_type::wide_integer_type my_y;
+    miller_rabin_powm_type                      my_powm;
 
-    static auto isone(const typename base_class_type::wide_integer_type t1) -> bool
-    {
-      using local_wide_integer_type = typename base_class_type::wide_integer_type;
-      using local_limb_type         = typename local_wide_integer_type::limb_type;
-
-      return
-      (
-           (static_cast<local_limb_type>(t1) == local_limb_type { UINT8_C(1) })
-        && (t1 == unsigned { UINT8_C(1) })
-      );
-    }
-
-    auto calculate() -> void
+    void calculate()
     {
       switch(my_calculate_state)
       {
@@ -298,7 +287,6 @@
           else
           {
             base_class_type::my_n_m1 = base_class_type::my_n_trial;
-
             --base_class_type::my_n_m1;
 
             my_powm.init(typename base_class_type::wide_integer_type(typename base_class_type::limb_type(228U)),
@@ -319,13 +307,13 @@
           }
           else
           {
-            using local_wide_integer_type = typename base_class_type::wide_integer_type;
-
-            local_wide_integer_type fn;
+            typename base_class_type::wide_integer_type fn;
 
             my_powm.get_result(fn);
 
-            if(!isone(fn))
+            const typename base_class_type::limb_type fn0 = static_cast<typename base_class_type::limb_type>(fn);
+
+            if((fn0 != 1U) && (fn != 1U))
             {
               base_class_type::my_n_trial_is_probably_prime = false;
 
@@ -344,7 +332,7 @@
           // Prepare the random trials.
           base_class_type::prepare_random_trials();
 
-          my_i = unsigned { UINT8_C(0) };
+          my_i = 0U;
 
           my_calculate_state = calculate_state_type::calculate_state_next_powm_for_random_trials;
 
@@ -364,7 +352,7 @@
 
         case calculate_state_type::calculate_state_next_y_for_random_trials:
 
-          if(!my_powm.get_done())
+          if(my_powm.get_done() == false)
           {
             my_powm.calculate();
           }
@@ -386,7 +374,7 @@
 
             if(trials_are_finished)
             {
-              if(!base_class_type::my_n_trial_is_probably_prime)
+              if(base_class_type::my_n_trial_is_probably_prime == false)
               {
                 my_calculate_state = calculate_state_type::calculate_state_done;
               }
@@ -411,51 +399,48 @@
       }
     }
 
-    auto execute_one_trial() -> bool override
+    virtual bool execute_one_trial()
     {
-      bool result = false;
+      // TBD: Reduce the number of return points in this subroutine.
 
       if(my_y == base_class_type::my_n_m1)
       {
-        result = true;
+        return true;
+      }
+
+      const typename base_class_type::limb_type y0(my_y);
+
+      if((y0 == 1U) && (my_y == 1U))
+      {
+        if(my_j != 0U)
+        {
+          base_class_type::my_n_trial_is_probably_prime = false;
+        }
+
+        return true;
+      }
+
+      ++my_j;
+
+      if(my_j == base_class_type::my_k)
+      {
+        base_class_type::my_n_trial_is_probably_prime = false;
+
+        return true;
       }
       else
       {
-        if(isone(my_y))
-        {
-          if(my_j != unsigned { UINT8_C(0) })
-          {
-            base_class_type::my_n_trial_is_probably_prime = false;
-          }
+        using local_double_width_type = typename base_class_type::wide_integer_type::double_width_type;
 
-          result = true;
-        }
-        else
-        {
-          ++my_j;
+        local_double_width_type yd(my_y);
 
-          if(my_j == base_class_type::my_k)
-          {
-            base_class_type::my_n_trial_is_probably_prime = false;
+        yd *= yd;
+        yd %= local_double_width_type(base_class_type::my_n_trial);
 
-            result = true;
-          }
-          else
-          {
-            using local_wide_integer_type = typename base_class_type::wide_integer_type;
-            using local_double_width_type = typename local_wide_integer_type::double_width_type;
-
-            local_double_width_type yd { my_y };
-
-            yd *= yd;
-            yd %= local_double_width_type { base_class_type::my_n_trial };
-
-            my_y = local_wide_integer_type { yd };
-          }
-        }
+        my_y = typename base_class_type::wide_integer_type(yd);
       }
 
-      return result;
+      return false;
     }
   };
 
@@ -464,4 +449,4 @@
 
   WIDE_INTEGER_NAMESPACE_END
 
-#endif // MILLER_RABIN_STATE_2020_05_31_H
+#endif // MILLER_RABIN_STATE_2020_05_31_H_
