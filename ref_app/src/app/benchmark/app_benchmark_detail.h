@@ -16,7 +16,7 @@
   template<typename NumericType>
   constexpr auto default_tol() noexcept -> NumericType
   {
-    return NumericType { std::numeric_limits<NumericType>::epsilon() * NumericType(100) };
+    return NumericType { std::numeric_limits<NumericType>::epsilon() * static_cast<NumericType>(UINT8_C(100)) }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
   }
 
   template<typename NumericType>
@@ -35,7 +35,7 @@
     }
     else
     {
-      const NumericType ratio = a / b;
+      const NumericType ratio { a / b };
 
       closeness = NumericType { fabs(NumericType { 1 - ratio }) };
     }
