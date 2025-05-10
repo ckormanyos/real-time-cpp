@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2024.
+//  Copyright Christopher Kormanyos 2021 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,11 +9,6 @@
 #include <app/benchmark/app_benchmark_detail.h>
 
 #if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT))
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wall"
-#endif
 
 //#define APP_BENCHMARK_TYPE_BOOST_BOOST_MULTIPRECISION_CBRT_USE_BIN_FLOAT
 
@@ -64,28 +59,32 @@ auto app::benchmark::run_boost_multiprecision_cbrt() -> bool
   using big_float_type =
     boost::multiprecision::number<big_float_backend_type, boost::multiprecision::et_off>;
 
-  // Compute a square root.
   static const big_float_type
     big_float_arg
     {
       big_float_type(UINT32_C(123456)) / 100U
     };
 
-  using std::cbrt;
-  using boost::math::cbrt;
-
-  const big_float_type big_float_result = cbrt(big_float_arg);
-
   // N[(123456/100)^(1/3), 111]
   // 10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465
   static const big_float_type
-    control
+    big_float_ctrl
     {
       "10.7276369432283170454869317373527647801772956394047834686224956433128028534945259441672192774907629718402457465"
     };
 
+  using std::cbrt;
+  using boost::math::cbrt;
+
+  // Compute the cube root value.
+  const big_float_type big_float_result { cbrt(big_float_arg) };
+
   // Compare the calculated result with the known control value.
-  const bool app_benchmark_result_is_ok = detail::is_close_fraction(big_float_result, control);
+  const bool
+    app_benchmark_result_is_ok
+    {
+      detail::is_close_fraction(big_float_result, big_float_ctrl)
+    };
 
   return app_benchmark_result_is_ok;
 }
@@ -105,10 +104,6 @@ int main()
   return (result_is_ok ? 0 : -1);
 }
 
-#endif
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
 #endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MULTIPRECISION_CBRT

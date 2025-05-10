@@ -1,11 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 - 2024.
+//  Copyright Christopher Kormanyos 2020 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <math/wide_integer/miller_rabin/miller_rabin_digits.h>
 #include <math/wide_integer/miller_rabin/miller_rabin_state.h>
 #include <mcal_benchmark.h>
 #include <mcal_math_independent_test_system.h>
@@ -21,7 +20,7 @@
 
 namespace
 {
-  using sys_idle_miller_rabin_uint_type           = WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<WIDE_INTEGER_NAMESPACE::math::wide_integer::size_t { WIDE_INTEGER_NAMESPACE::math::wide_integer::miller_rabin_digits }, std::uint32_t>;
+  using sys_idle_miller_rabin_uint_type           = WIDE_INTEGER_NAMESPACE::math::wide_integer::uintwide_t<static_cast<WIDE_INTEGER_NAMESPACE::math::wide_integer::size_t>(WIDE_INTEGER_NAMESPACE::math::wide_integer::miller_rabin_digits), std::uint16_t>;
 
   using sys_idle_miller_rabin_random_engine1_type = mcal::random::default_random_engine;
   using sys_idle_miller_rabin_random_engine2_type = std::minstd_rand;

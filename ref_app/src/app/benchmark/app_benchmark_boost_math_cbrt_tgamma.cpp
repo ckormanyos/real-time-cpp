@@ -1,22 +1,17 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2021 - 2024.
+//  Copyright Christopher Kormanyos 2021 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <array>
-#include <cstdint>
-
 #include <app/benchmark/app_benchmark.h>
 #include <app/benchmark/app_benchmark_detail.h>
 
-#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA))
+#include <array>
+#include <cstdint>
 
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wall"
-#endif
+#if (defined(APP_BENCHMARK_TYPE) && (APP_BENCHMARK_TYPE == APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA))
 
 #if !defined(BOOST_MATH_STANDALONE)
 #define BOOST_MATH_STANDALONE
@@ -112,9 +107,5 @@ int main()
 
 my_float_type cb;
 my_float_type x = my_float_type(BOOST_FLOATMAX_C(4.56)) / boost::math::constants::pi<my_float_type>();
-
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
 
 #endif // APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA

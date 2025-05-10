@@ -12,8 +12,8 @@
 #include <math/test/math_test_independent_test_system_mathlink.h>
 #else
 #include <math/test/math_test_independent_test_system_boost.h>
-#include <math/wide_integer/miller_rabin/miller_rabin_digits.h>
 #endif
+#include <math/wide_integer/miller_rabin/miller_rabin_digits.h>
 
 #if defined(MCAL_MATH_USE_INDEPENDENT_TEST_SYSTEM_MATHLINK)
 namespace

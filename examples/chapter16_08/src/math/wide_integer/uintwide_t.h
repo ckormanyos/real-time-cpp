@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 1999 - 2024.                 //
+//  Copyright Christopher Kormanyos 1999 - 2025.                 //
 //  Distributed under the Boost Software License,                //
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt          //
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)             //
@@ -59,7 +59,7 @@
   #endif
 
   #if (defined(_MSC_VER) && (!defined(__GNUC__) && !defined(__clang__)))
-    #if (_MSC_VER >= 1900) && defined(_HAS_CXX20) && (_HAS_CXX20 != 0)
+    #if ((_MSC_VER >= 1900) && (defined(_HAS_CXX20) && (_HAS_CXX20 != 0)))
       #define WIDE_INTEGER_NODISCARD [[nodiscard]]     // NOLINT(cppcoreguidelines-macro-usage)
     #else
       #define WIDE_INTEGER_NODISCARD
@@ -97,11 +97,11 @@
 
   namespace iterator_detail {
 
-  class input_iterator_tag {};
-  class output_iterator_tag {};
-  class forward_iterator_tag : public input_iterator_tag {};
-  class bidirectional_iterator_tag : public forward_iterator_tag {};
-  class random_access_iterator_tag : public bidirectional_iterator_tag {};
+  class input_iterator_tag { };
+  class output_iterator_tag { };
+  class forward_iterator_tag : public input_iterator_tag { };
+  class bidirectional_iterator_tag : public forward_iterator_tag { };
+  class random_access_iterator_tag : public bidirectional_iterator_tag { };
 
   template<typename iterator_type>
   class iterator_traits
@@ -118,7 +118,7 @@
   class iterator_traits<T*>
   {
   public:
-    using difference_type   = std::ptrdiff_t;
+    using difference_type   = ::std::ptrdiff_t;
     using value_type        = T;
     using pointer           = value_type*;
     using reference         = value_type&;
@@ -129,7 +129,7 @@
   class iterator_traits<const T*>
   {
   public:
-    using difference_type   = std::ptrdiff_t;
+    using difference_type   = ::std::ptrdiff_t;
     using value_type        = T;
     using pointer           = const value_type*;
     using reference         = const value_type&;
@@ -138,7 +138,7 @@
 
   template<typename my_category,
            typename my_value_type,
-           typename my_difference_type = std::ptrdiff_t,
+           typename my_difference_type = ::std::ptrdiff_t,
            typename my_pointer_type    = my_value_type*,
            typename my_reference_type  = my_value_type&>
   struct my_iterator
@@ -166,7 +166,7 @@
     using reference         = typename iterator_traits<iterator_type>::reference;
     using iterator_category = typename iterator_traits<iterator_type>::iterator_category;
 
-    constexpr reverse_iterator() = default;
+    constexpr reverse_iterator() { } // NOLINT(hicpp-use-equals-default,modernize-use-equals-default)
 
     explicit constexpr reverse_iterator(iterator_type x) : current(x) { }
 
@@ -218,7 +218,7 @@
   // Forward declaration of:
   // Use a local, constexpr, unsafe implementation of the abs-function.
   template<typename ArithmeticType>
-  constexpr auto abs_unsafe(ArithmeticType val) -> ArithmeticType;
+  constexpr auto abs_unsafe(const ArithmeticType& val) -> ArithmeticType;
 
   // Use a local, constexpr, unsafe implementation of the fill-function.
   template<typename DestinationIterator,
@@ -261,7 +261,9 @@
       #pragma GCC diagnostic ignored "-Wstringop-overflow"
       #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
       #endif
+
       *dest++ = static_cast<local_destination_value_type>(*first++);
+
       #if (defined(__GNUC__) && (__GNUC__ > 9))
       #pragma GCC diagnostic pop
       #pragma GCC diagnostic pop
@@ -289,10 +291,10 @@
   template<typename T>
   constexpr auto swap_unsafe(T& left, T& right) noexcept -> void
   {
-    auto tmp = static_cast<T&&>(left);
+    T tmp { std::move(static_cast<T&&>(left)) };
 
-    left  = static_cast<T&&>(right);
-    right = static_cast<T&&>(tmp);
+    left  = std::move(static_cast<T&&>(right));
+    right = std::move(static_cast<T&&>(tmp));
   }
 
   template<typename InputIt, typename UnaryPredicate>
@@ -385,13 +387,10 @@
   {
     while(first1 != last1)
     {
-      if(!(*first1 == *first2))
+      if(!(*first1++ == *first2++))
       {
         return false;
       }
-
-      ++first1;
-      ++first2;
     }
 
     return true;
@@ -402,7 +401,7 @@
   {
     while((first1 != last1) && (first2 != last2))
     {
-      if(*first1 < *first2)
+      if(*first1++ < *first2++)
       {
         return true;
       }
@@ -411,9 +410,6 @@
       {
         return false;
       }
-
-      ++first1;
-      ++first2;
     }
 
     return ((first1 == last1) && (first2 != last2));
@@ -447,9 +443,9 @@
   {
     using local_unsigned_integral_type = UnsignedIntegralType;
 
-    auto yy_val = static_cast<local_unsigned_integral_type>(UINT8_C(0));
+    local_unsigned_integral_type yy_val { local_unsigned_integral_type { UINT8_C(0) } };
 
-    auto nn_val = static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits);
+    unsigned nn_val { static_cast<unsigned>(std::numeric_limits<local_unsigned_integral_type>::digits) };
 
     auto cc_val = // NOLINT(altera-id-dependent-backward-branch)
       static_cast<unsigned>
@@ -509,9 +505,9 @@
     if(v == static_cast<local_unsigned_integral_type>(UINT8_C(0))) { return u; }
 
     // Shift the greatest power of 2 dividing both u and v.
-    const auto trz = static_cast<unsigned>(ctz_unsafe(u));
+    const unsigned trz { static_cast<unsigned>(ctz_unsafe(u)) };
 
-    const auto shift_amount = (detail::min_unsafe)(trz, ctz_unsafe(v));
+    const unsigned shift_amount { detail::min_unsafe(trz, ctz_unsafe(v)) };
 
     v >>= shift_amount;
     u >>= trz;
@@ -536,13 +532,13 @@
 
   namespace array_detail {
 
-  template<typename T, std::size_t N>
+  template<typename T, ::std::size_t N>
   class array
   {
   public:
     // Standard container-local type definitions.
-    using size_type              = std::size_t;
-    using difference_type        = std::ptrdiff_t;
+    using size_type              = ::std::size_t;
+    using difference_type        = ::std::ptrdiff_t;
     using value_type             = T;
     using pointer                = T*;
     using const_pointer          = const T*;
@@ -669,15 +665,15 @@
   template<typename T>
   class tuple_size;
 
-  template<typename T, typename std::size_t N>
+  template<typename T, typename ::std::size_t N>
   class tuple_size<array<T, N>> : public std::integral_constant<std::size_t, N> { };
 
-  template<const std::size_t N, typename T>
+  template<const ::std::size_t N, typename T>
   class tuple_element;
 
-  template<const std::size_t I,
+  template<const ::std::size_t I,
             typename T,
-            const std::size_t N>
+            const ::std::size_t N>
   class tuple_element<I, array<T, N> >
   {
     static_assert(I < N, "Sorry, tuple_element index is out of bounds.");
@@ -704,9 +700,9 @@
   namespace util {
 
   template<typename ValueType,
-           typename AllocatorType = std::allocator<ValueType>,
-           typename SizeType      = std::size_t,
-           typename DiffType      = std::ptrdiff_t>
+           typename AllocatorType = ::std::allocator<ValueType>,
+           typename SizeType      = ::std::size_t,
+           typename DiffType      = ::std::ptrdiff_t>
   class dynamic_array;
 
   template<typename ValueType,
@@ -738,9 +734,9 @@
     // Constructors.
     constexpr dynamic_array() = delete;
 
-    explicit constexpr dynamic_array(      size_type       count_in,
-                                                        const_reference value_in = value_type(),
-                                                  const allocator_type& alloc_in = allocator_type())
+    explicit constexpr dynamic_array(size_type count_in,
+                                     const_reference value_in = value_type(),
+                                     const allocator_type& alloc_in = allocator_type())
       : elem_count(count_in)
     {
       if(elem_count > static_cast<size_type>(UINT8_C(0)))
@@ -779,8 +775,8 @@
 
     template<typename input_iterator>
     constexpr dynamic_array(input_iterator first,
-                                         input_iterator last,
-                                         const allocator_type& alloc_in = allocator_type())
+                            input_iterator last,
+                            const allocator_type& alloc_in = allocator_type())
       : elem_count(static_cast<size_type>(last - first))
     {
       allocator_type my_alloc(alloc_in);
@@ -799,7 +795,7 @@
     }
 
     constexpr dynamic_array(std::initializer_list<value_type> lst,
-                                         const allocator_type& alloc_in = allocator_type())
+                            const allocator_type& alloc_in = allocator_type())
       : elem_count(lst.size())
     {
       allocator_type my_alloc(alloc_in);
@@ -818,7 +814,7 @@
 
     // Move constructor.
     constexpr dynamic_array(dynamic_array&& other) noexcept : elem_count(other.elem_count),
-                                                                           elems     (other.elems)
+                                                              elems     (other.elems)
     {
       other.elem_count = static_cast<size_type>(UINT8_C(0));
       other.elems      = nullptr;
@@ -943,10 +939,10 @@
 
     constexpr auto swap(dynamic_array&& other) noexcept -> void
     {
-      const auto tmp = std::move(*this);
+      dynamic_array tmp { std::move(*this) };
 
-      *this = std::move(other);
-      other = std::move(tmp);
+      *this = std::move(static_cast<dynamic_array&&>(other));
+      other = std::move(static_cast<dynamic_array&&>(tmp));
     }
 
   private:
@@ -972,7 +968,7 @@
 
   template<typename ValueType, typename AllocatorType>
   constexpr auto operator<(const dynamic_array<ValueType, AllocatorType>& lhs,
-                                        const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
+                           const dynamic_array<ValueType, AllocatorType>& rhs) -> bool
   {
     using size_type = typename dynamic_array<ValueType, AllocatorType>::size_type;
 
@@ -1106,8 +1102,8 @@
   using size_t    = std::uint32_t;
   using ptrdiff_t = std::int32_t;
 
-  static_assert((  (std::numeric_limits<size_t>::digits        >= std::numeric_limits<std::uint16_t>::digits)
-                && (std::numeric_limits<ptrdiff_t>::digits + 1 >= std::numeric_limits<std::uint16_t>::digits)),
+  static_assert((   (std::numeric_limits<size_t>::digits        >= std::numeric_limits<std::uint16_t>::digits)
+                 && (std::numeric_limits<ptrdiff_t>::digits + 1 >= std::numeric_limits<std::uint16_t>::digits)),
                 "Error: size type and pointer difference type must be at least 16 bits in width (or wider)");
 
   template<const size_t Width2> struct verify_power_of_two // NOLINT(altera-struct-pack-align)
@@ -2090,7 +2086,7 @@
     template<const size_t OtherWidth2,
              typename OtherLimbType,
              typename OtherAllocatorType,
-             const bool OtherIsSigned>
+             const bool RePhraseIsSigned>
     friend class uintwide_t;
 
     // Class-local type definitions.
@@ -2109,11 +2105,11 @@
     static_assert(((sizeof(limb_type) * 2U) == sizeof(double_limb_type)),
                    "Error: Please check the characteristics of the template parameters UnsignedShortType and UnsignedLargeType");
     #else
-    static_assert((    ( std::numeric_limits<limb_type>::is_integer)
-                   &&  ( std::numeric_limits<double_limb_type>::is_integer)
-                   &&  (!std::numeric_limits<limb_type>::is_signed)
-                   &&  (!std::numeric_limits<double_limb_type>::is_signed)
-                   &&  ((sizeof(limb_type) * 2U) == sizeof(double_limb_type))),
+    static_assert((   ( std::numeric_limits<limb_type>::is_integer)
+                   && ( std::numeric_limits<double_limb_type>::is_integer)
+                   && (!std::numeric_limits<limb_type>::is_signed)
+                   && (!std::numeric_limits<double_limb_type>::is_signed)
+                   && ((sizeof(limb_type) * 2U) == sizeof(double_limb_type))),
                    "Error: Please check the characteristics of the template parameters UnsignedShortType and UnsignedLargeType");
     #endif
 
@@ -2308,19 +2304,19 @@
     #endif
 
     // Copy-like constructor from the other signed-ness type.
-    template<const bool OtherIsSigned,
-             std::enable_if_t<(OtherIsSigned != IsSigned)> const* = nullptr>
-    constexpr uintwide_t(const uintwide_t<Width2, LimbType, AllocatorType, OtherIsSigned>& other) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    template<const bool RePhraseIsSigned,
+             std::enable_if_t<(RePhraseIsSigned != IsSigned)> const* = nullptr>
+    constexpr uintwide_t(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
       : values(other.values) { }
 
     // Copy-like constructor from the another type having width that is wider
     // (but has the same limb type) and possibly a different signed-ness.
     template<const size_t OtherWidth2,
-             const bool OtherIsSigned,
+             const bool RePhraseIsSigned,
              std::enable_if_t<(Width2 < OtherWidth2)> const* = nullptr>
-    explicit constexpr uintwide_t(const uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>& v)
+    explicit constexpr uintwide_t(const uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>& v)
     {
-      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>;
+      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>;
 
       const auto v_is_neg = (other_wide_integer_type::is_neg(v));
 
@@ -2347,11 +2343,11 @@
     // Copy-like constructor from the another type having width that is less wide
     // (but has the same limb type) and possibly a different signed-ness.
     template<const size_t OtherWidth2,
-             const bool OtherIsSigned,
+             const bool RePhraseIsSigned,
              std::enable_if_t<(Width2 > OtherWidth2)> const* = nullptr>
-    explicit constexpr uintwide_t(const uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>& v)
+    explicit constexpr uintwide_t(const uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>& v)
     {
-      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>;
+      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>;
 
       constexpr auto sz = static_cast<size_t>(other_wide_integer_type::number_of_limbs);
 
@@ -2397,18 +2393,18 @@
 
     // Move-like constructor from the other signed-ness type.
     // This constructor is non-explicit because it is a trivial conversion.
-    template<const bool OtherIsSigned,
-             std::enable_if_t<(IsSigned != OtherIsSigned)> const* = nullptr>
-    constexpr uintwide_t(uintwide_t<Width2, LimbType, AllocatorType, OtherIsSigned>&& other) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+    template<const bool RePhraseIsSigned,
+             std::enable_if_t<(IsSigned != RePhraseIsSigned)> const* = nullptr>
+    constexpr uintwide_t(uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>&& other) // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
       : values(static_cast<representation_type&&>(other.values)) { }
 
     // Assignment operator.
     constexpr auto operator=(const uintwide_t&) -> uintwide_t& = default; // LCOV_EXCL_LINE
 
     // Assignment operator from the other signed-ness type.
-    template<const bool OtherIsSigned,
-             std::enable_if_t<(OtherIsSigned != IsSigned)> const* = nullptr>
-    constexpr auto operator=(const uintwide_t<Width2, LimbType, AllocatorType, OtherIsSigned>& other) -> uintwide_t&
+    template<const bool RePhraseIsSigned,
+             std::enable_if_t<(RePhraseIsSigned != IsSigned)> const* = nullptr>
+    constexpr auto operator=(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& other) -> uintwide_t&
     {
       values = other.values;
 
@@ -2419,9 +2415,9 @@
     constexpr auto operator=(uintwide_t&& other) noexcept -> uintwide_t& = default; // LCOV_EXCL_LINE
 
     // Trivial move assignment operator from the other signed-ness type.
-    template<const bool OtherIsSigned,
-             std::enable_if_t<(IsSigned != OtherIsSigned)> const* = nullptr>
-    constexpr auto operator=(uintwide_t<Width2, LimbType, AllocatorType, OtherIsSigned>&& other) -> uintwide_t&
+    template<const bool RePhraseIsSigned,
+             std::enable_if_t<(IsSigned != RePhraseIsSigned)> const* = nullptr>
+    constexpr auto operator=(uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>&& other) -> uintwide_t&
     {
       values = static_cast<representation_type&&>(other.values);
 
@@ -2454,12 +2450,12 @@
     // Cast operator that casts to a uintwide_t possibly having a different width
     // and/or possibly having a different signed-ness, but having the same limb type.
     template<const size_t OtherWidth2,
-             const bool OtherIsSigned>
-    constexpr operator uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>() const // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
+             const bool RePhraseIsSigned>
+    constexpr operator uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>() const // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
     {
       const auto this_is_neg = is_neg(*this);
 
-      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, OtherIsSigned>;
+      using other_wide_integer_type = uintwide_t<OtherWidth2, LimbType, AllocatorType, RePhraseIsSigned>;
 
       constexpr auto sz =
         static_cast<size_t>
@@ -2862,8 +2858,8 @@
     constexpr auto operator>=(const uintwide_t& other) const -> bool { return (compare(other) >= static_cast<std::int_fast8_t>( 0)); }
 
     // Helper functions for supporting std::numeric_limits<>.
-    template<const bool OtherIsSigned>
-    static constexpr auto limits_helper_max() -> std::enable_if_t<(!OtherIsSigned), uintwide_t>
+    template<const bool RePhraseIsSigned>
+    static constexpr auto limits_helper_max() -> std::enable_if_t<(!RePhraseIsSigned), uintwide_t>
     {
       uintwide_t result_max { };
 
@@ -2872,8 +2868,8 @@
       return result_max;
     }
 
-    template<const bool OtherIsSigned>
-    static constexpr auto limits_helper_max() -> std::enable_if_t<OtherIsSigned, uintwide_t>
+    template<const bool RePhraseIsSigned>
+    static constexpr auto limits_helper_max() -> std::enable_if_t<RePhraseIsSigned, uintwide_t>
     {
       uintwide_t result_max { };
 
@@ -2890,14 +2886,14 @@
       return result_max;
     }
 
-    template<const bool OtherIsSigned>
-    static constexpr auto limits_helper_min() -> std::enable_if_t<(!OtherIsSigned), uintwide_t>
+    template<const bool RePhraseIsSigned>
+    static constexpr auto limits_helper_min() -> std::enable_if_t<(!RePhraseIsSigned), uintwide_t>
     {
       return uintwide_t { };
     }
 
-    template<const bool OtherIsSigned>
-    static constexpr auto limits_helper_min() -> std::enable_if_t<OtherIsSigned, uintwide_t>
+    template<const bool RePhraseIsSigned>
+    static constexpr auto limits_helper_min() -> std::enable_if_t<RePhraseIsSigned, uintwide_t>
     {
       uintwide_t result_min { };
 
@@ -3223,15 +3219,15 @@
       auto hi_part        = static_cast<limb_type>(UINT8_C(0));
 
       {
-        auto ri =
-          static_cast<reverse_iterator>
-          (
+        reverse_iterator
+          ri
+          {
             detail::advance_and_point
             (
               values.begin(),
               static_cast<size_t>(number_of_limbs - static_cast<size_t>(u_offset))
             )
-          );
+          };
 
         for( ; ri != values.rend(); ++ri) // NOLINT(altera-id-dependent-backward-branch)
         {
@@ -3262,10 +3258,21 @@
           static_cast<double_limb_type>
           (
              static_cast<double_limb_type>(*values.cbegin())
-           + static_cast<double_limb_type>(static_cast<double_limb_type>(long_numerator - static_cast<double_limb_type>(static_cast<double_limb_type>(short_denominator) * hi_part)) << static_cast<unsigned>(std::numeric_limits<limb_type>::digits))
+           + static_cast<double_limb_type>
+             (
+                  static_cast<double_limb_type>
+                  (
+                    long_numerator - static_cast<double_limb_type>(static_cast<double_limb_type>(short_denominator) * hi_part)
+                  )
+               << static_cast<unsigned>(std::numeric_limits<limb_type>::digits)
+             )
           );
 
-        *remainder = static_cast<limb_type>(long_numerator >> static_cast<unsigned>(std::numeric_limits<limb_type>::digits));
+        *remainder =
+          static_cast<limb_type>
+          (
+            long_numerator >> static_cast<unsigned>(std::numeric_limits<limb_type>::digits)
+          );
       }
     }
 
@@ -3289,11 +3296,9 @@
     }
 
     template<const bool RePhraseIsSigned = IsSigned>
-    static constexpr auto is_neg(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& a,
-                                 std::enable_if_t<RePhraseIsSigned, int>* p_nullparam = nullptr) -> bool
+    static constexpr auto is_neg(const uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>& a, // NOLINT(hicpp-named-parameter,readability-named-parameter)
+                                 std::enable_if_t<RePhraseIsSigned, int>* = nullptr) -> bool             // NOLINT(hicpp-named-parameter,readability-named-parameter)
     {
-      static_cast<void>(p_nullparam);
-
       return (static_cast<std::uint_fast8_t>(static_cast<std::uint_fast8_t>(a.values.back() >> static_cast<size_t>(std::numeric_limits<typename uintwide_t<Width2, LimbType, AllocatorType, RePhraseIsSigned>::limb_type>::digits - 1)) & 1U) != 0U);
     }
 
@@ -3470,10 +3475,10 @@
     template<const size_t OtherWidth2,
              typename OtherLimbType,
              typename OtherAllocatorType,
-             const bool OtherIsSigned>
+             const bool RePhraseIsSigned>
     friend constexpr auto from_chars(const char* first, // NOLINT(readability-redundant-declaration)
                                      const char* last,
-                                     uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, OtherIsSigned>& x,
+                                     uintwide_t<OtherWidth2, OtherLimbType, OtherAllocatorType, RePhraseIsSigned>& x,
                                      int base) -> std::from_chars_result;
     #endif
 
@@ -4963,7 +4968,7 @@
 
           for(auto t = static_cast<double_limb_type>(u_j_j1 - static_cast<double_limb_type>(q_hat * static_cast<double_limb_type>(vv_at_vj0)));
                      ;
-                       --q_hat, t = static_cast<double_limb_type>(t + vv_at_vj0))
+                   t = static_cast<double_limb_type>(t + vv_at_vj0), --q_hat)
           {
             if(   (detail::make_hi<limb_type>(t) != static_cast<limb_type>(UINT8_C(0)))
                || (   static_cast<double_limb_type>(static_cast<double_limb_type>(vv_at_vj0_minus_one) * q_hat)
@@ -5516,7 +5521,7 @@
 
     static constexpr auto (max) () -> local_wide_integer_type { return local_wide_integer_type::template limits_helper_max<IsSigned>(); }
     static constexpr auto (min) () -> local_wide_integer_type { return local_wide_integer_type::template limits_helper_min<IsSigned>(); }
-    static constexpr auto lowest() -> local_wide_integer_type { return local_wide_integer_type::template limits_helper_min<IsSigned>(); }
+    static constexpr auto lowest() -> local_wide_integer_type { return (min)(); }
   };
 
   template<class T>
@@ -6608,7 +6613,7 @@
 
   // Use a local, constexpr, unsafe implementation of the abs-function.
   template<typename ArithmeticType>
-  constexpr auto abs_unsafe(ArithmeticType val) -> ArithmeticType
+  constexpr auto abs_unsafe(const ArithmeticType& val) -> ArithmeticType
   {
     if(val > static_cast<int>(INT8_C(0)))
     {
@@ -6616,7 +6621,7 @@
     }
     else // NOLINT(llvm-else-after-return,readability-else-after-return)
     {
-      ArithmeticType val_unsigned = std::move(val);
+      ArithmeticType val_unsigned { val };
 
       val_unsigned.negate();
 
@@ -6869,8 +6874,8 @@
 
     template<typename GeneratorType,
              const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
-    constexpr auto operator()(      GeneratorType& input_generator,
-                                           const param_type&    input_params) -> result_type
+    constexpr auto operator()(GeneratorType& input_generator,
+                              const param_type& input_params) -> result_type
     {
       return
         generate<GeneratorType, GeneratorResultBits>
@@ -6885,8 +6890,8 @@
 
     template<typename GeneratorType,
              const int GeneratorResultBits = std::numeric_limits<typename GeneratorType::result_type>::digits>
-    constexpr auto generate(      GeneratorType& input_generator,
-                                         const param_type&    input_params) const -> result_type
+    constexpr auto generate(GeneratorType& input_generator,
+                            const param_type& input_params) const -> result_type
     {
       // Generate random numbers r, where a <= r <= b.
 
@@ -6994,7 +6999,7 @@
     // This Miller-Rabin primality test is loosely based on
     // an adaptation of some code from Boost.Multiprecision.
     // The Boost.Multiprecision code can be found here:
-    // https://www.boost.org/doc/libs/1_76_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
+    // https://www.boost.org/doc/libs/1_87_0/libs/multiprecision/doc/html/boost_multiprecision/tut/primetest.html
 
     // Note: Some comments in this subroutine use the Wolfram Language(TM).
     // These can be exercised at the web links to WolframAlpha(R) provided
@@ -7131,10 +7136,10 @@
       }
     }
 
-    const auto nm1 = static_cast<local_wide_integer_type>(np - static_cast<unsigned>(UINT8_C(1)));
+    const local_wide_integer_type nm1 { np - static_cast<unsigned>(UINT8_C(1)) };
 
     auto
-      isone
+      local_functor_isone
       {
         [](const local_wide_integer_type& t1)
         {
@@ -7155,7 +7160,7 @@
 
       const local_wide_integer_type fn { powm(local_wide_integer_type(static_cast<local_limb_type>(228U)), nm1, np) };
 
-      if(!isone(fn))
+      if(!local_functor_isone(fn))
       {
         return false;
       }
@@ -7174,45 +7179,39 @@
         np - unsigned { UINT8_C(2) }
       };
 
-    local_wide_integer_type x;
-    local_wide_integer_type y;
-
     // Assume the test will pass, even though it usually does not pass.
-    bool result { true };
+    bool result_candidate_is_prime { true };
+
+    ::std::size_t idx { UINT8_C(0) };
+
+    using local_double_width_type = typename local_wide_integer_type::double_width_type;
+
+    const local_double_width_type np_dbl { np };
 
     // Loop over the trials to perform the primality testing.
-
-    std::size_t idx { UINT8_C(0) };
-
     do
     {
-      x = distribution(generator, params);
-      y = powm(x, q, np);
+      local_wide_integer_type y { powm(distribution(generator, params), q, np) };
 
-      using local_double_width_type = typename local_wide_integer_type::double_width_type;
-
-      const local_double_width_type np_dbl { np };
-
-      std::size_t jdx { UINT8_C(0) };
+      ::std::size_t jdx { UINT8_C(0) };
 
       // Continue while y is not nm1, and while y is not 1,
       // and while the result is true.
 
-      while((y != nm1) && (!isone(y)) && result) // NOLINT(altera-id-dependent-backward-branch)
+      while((y != nm1) && (!local_functor_isone(y)) && result_candidate_is_prime) // NOLINT(altera-id-dependent-backward-branch)
       {
         ++jdx;
 
         if(jdx == static_cast<std::size_t>(k))
         {
           // Mark failure if max iterations reached.
-          result = false;
+          result_candidate_is_prime = false;
         }
         else
         {
           // Continue with the next value of y.
 
-          // Manually calculate:
-          //   y = powm(y, 2, np);
+          // Manually calculate: y = powm(y, 2, np);
 
           local_double_width_type yd { y };
 
@@ -7224,17 +7223,17 @@
       }
 
       // Check for (y == 1) after the loop.
-      if(isone(y) && (jdx != std::size_t { UINT8_C(0) }))
+      if(local_functor_isone(y) && (jdx != ::std::size_t { UINT8_C(0) }))
       {
         // Mark failure if (y == 1) and (jdx != 0).
-        result = false;
+        result_candidate_is_prime = false;
       }
 
       ++idx;
     }
-    while((idx < number_of_trials) && result);
+    while((idx < number_of_trials) && result_candidate_is_prime);
 
-    return result;
+    return result_candidate_is_prime;
   }
 
   #if (defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L))
@@ -7242,11 +7241,10 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  constexpr
-  auto to_chars(char* first,
-                char* last,
-                const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
-                int base) -> std::to_chars_result
+  constexpr auto to_chars(char* first,
+                          char* last,
+                          const uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
+                          int base) -> std::to_chars_result
   {
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
@@ -7406,11 +7404,10 @@
            typename LimbType,
            typename AllocatorType,
            const bool IsSigned>
-  constexpr
-  auto from_chars(const char* first,
-                  const char* last,
-                  uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
-                  int base) -> std::from_chars_result
+  constexpr auto from_chars(const char* first,
+                            const char* last,
+                            uintwide_t<Width2, LimbType, AllocatorType, IsSigned>& x,
+                            int base) -> std::from_chars_result
   {
     using local_wide_integer_type = uintwide_t<Width2, LimbType, AllocatorType, IsSigned>;
 
@@ -7550,7 +7547,7 @@
     const auto chunk_is_whole =
       (chunk_size == static_cast<unsigned>(std::numeric_limits<local_result_value_type>::digits));
 
-    std::size_t input_distance { };
+    ::std::size_t input_distance { };
 
     {
       local_input_iterator_type non_const_first = first;
@@ -7663,7 +7660,7 @@
     static_assert(std::numeric_limits<local_result_value_type>::digits != std::numeric_limits<local_input_value_type>::digits,
                   "Error: Erroneous match for input element width and result uintwide_t limb width");
 
-    std::size_t input_distance { };
+    ::std::size_t input_distance { };
 
     {
       local_input_iterator_type non_const_first = first;
