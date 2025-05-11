@@ -250,30 +250,6 @@
 
   namespace std
   {
-    namespace cmath_detail {
-
-    __attribute__((always_inline)) static inline int isfinitef_impl(float my_x)
-    {
-      unsigned char my_exp { };
-
-      asm volatile
-      (
-        "mov    %0, %C1"  "\n\t"
-        "lsl    %0"       "\n\t"
-        "mov    %0, %D1"  "\n\t"
-        "rol    %0"
-        : "=&r" (my_exp)
-        : "r" (my_x)
-      );
-
-      return ((my_exp != static_cast<unsigned char>(0xFFU)) ? 1 : 0);
-    }
-
-    } // namespace cmath_detail
-
-    inline bool        isfinite  (float x)                            { return (::std::cmath_detail::isfinitef_impl(x) == 1); }
-    inline bool        isfinite  (double x)                           { return (::std::cmath_detail::isfinitef_impl(static_cast<float>(x)) == 1); }
-    inline bool        isfinite  (long double x)                      { return (::std::cmath_detail::isfinitef_impl(static_cast<float>(x)) == 1); }
     inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) == 1); }
     inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) == 1); }
     inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) == 1); }
@@ -292,6 +268,10 @@
     inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
     inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
     inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
+
+    inline bool isfinite(float x)       { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(double x)      { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(long double x) { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
 
     namespace cmath_detail {
 
