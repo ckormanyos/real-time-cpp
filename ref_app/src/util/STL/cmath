@@ -56,7 +56,7 @@
   #define FP_ILOGB0   (-0x7fffffff - _C2)
   #define FP_ILOGBNAN 0x7fffffff
 
-  static_assert(__SIZEOF_LONG_DOUBLE__ >= __SIZEOF_DOUBLE__,
+  static_assert((__SIZEOF_LONG_DOUBLE__ > 0) && (__SIZEOF_LONG_DOUBLE__ >= __SIZEOF_DOUBLE__),
                 "Error: Configuration error regarding 64-bit double/long-double for AVR");
 
   #if(__SIZEOF_DOUBLE__ == 4)
@@ -221,38 +221,40 @@
   #error Error: sizeof(double) is unknown or not standard for AVR.
   #endif
 
+  #if defined(__cplusplus)
   extern "C"
   {
+  #endif
     float       asinhf(float x);
     double      asinh (double x);
     long double asinhl(long double x);
-
     float       acoshf(float x);
     double      acosh (double x);
     long double acoshl(long double x);
-
     float       atanhf(float x);
     double      atanh (double x);
     long double atanhl(long double x);
-
-    int ilogbf(float x);
-    int ilogb (double x);
-    int ilogbl(long double x);
-
+    int         ilogbf(float x);
+    int         ilogb (double x);
+    int         ilogbl(long double x);
     float       tgammaf(float x);
     double      tgamma (double x);
     long double tgammal(long double x);
-
     float       lgammaf(float x);
     double      lgamma (double x);
     long double lgammal(long double x);
+  #if defined(__cplusplus)
   }
+  #endif
 
   namespace std
   {
     inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) == 1); }
     inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) == 1); }
     inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) == 1); }
+    inline float       abs       (float x)                            { return __BUILTIN_FABSF (x); }
+    inline double      abs       (double x)                           { return __BUILTIN_FABS  (x); }
+    inline long double abs       (long double x)                      { return __BUILTIN_FABSL (x); }
     inline float       fabs      (float x)                            { return __BUILTIN_FABSF (x); }
     inline double      fabs      (double x)                           { return __BUILTIN_FABS  (x); }
     inline long double fabs      (long double x)                      { return __BUILTIN_FABSL (x); }
@@ -268,10 +270,6 @@
     inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
     inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
     inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
-
-    inline bool isfinite(float x)       { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
-    inline bool isfinite(double x)      { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
-    inline bool isfinite(long double x) { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
 
     namespace cmath_detail {
 
@@ -317,6 +315,10 @@
     }
 
     } // namespace cmath_detail
+
+    inline bool isfinite(float x)       { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(double x)      { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(long double x) { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
 
     inline int fpclassify(float x)       { return ::std::cmath_detail::fpclassify_impl(x); }
     inline int fpclassify(double x)      { return ::std::cmath_detail::fpclassify_impl(x); }
@@ -418,6 +420,10 @@
   {
   #endif
     // These are (most of) the functions from <math.h> having C-linkage.
+    int         isinff     (float);
+    int         isinfl     (long double);
+    int         isnanf     (float);
+    int         isnanl     (long double);
     int         isfinitef  (float);
     int         isfinitel  (long double);
     int         ilogbf     (float);
@@ -490,9 +496,6 @@
   extern "C++"
   {
   #endif
-    inline bool          isfinite  (float x)                       { return (::isfinitef(x) == 1); }
-    inline bool          isfinite  (double x)                      { return (::isfinite (x) == 1); }
-    inline bool          isfinite  (long double x)                 { return (::isfinitel(x) == 1); }
     inline int           ilogb     (float x)                       { return ::ilogbf(x); }
     inline int           ilogb     (double x)                      { return ::ilogb (x); }
     inline int           ilogb     (long double x)                 { return ::ilogbl(x); }
@@ -576,85 +579,91 @@
     inline double        tanh      (double      x)                 { return __builtin_tanh  (x); }
     inline long double   tanh      (long double x)                 { return __builtin_tanhl (x); }
     #else
-    inline     bool          isnan     (float x)                       { return ::isnanf(x); }
+    inline     bool          isnan     (float x)                       { return (::isnanf)(x); }
                bool          isnan     (double x);
-    inline     bool          isnan     (long double x)                 { return ::isnanl(x); }
-    inline     float         abs       (float       x)                 { return ::fabsf (x); }
+    inline     bool          isnan     (long double x)                 { return (::isnanl)(x); }
+    inline     bool          isinf     (float x)                       { return (::isnanf)(x); }
+               bool          isinf     (double x);
+    inline     bool          isinf     (long double x)                 { return (::isnanl)(x); }
+    inline     float         abs       (float       x)                 { return ::fabsf(x); }
     extern "C" double        abs       (double      x);
-    inline     long double   abs       (long double x)                 { return ::fabsl (x); }
-    inline     float         fabs      (float       x)                 { return ::fabsf (x); }
+    inline     long double   abs       (long double x)                 { return ::fabsl(x); }
+    inline     float         fabs      (float       x)                 { return ::fabsf(x); }
     extern "C" double        fabs      (double      x);
-    inline     long double   fabs      (long double x)                 { return ::fabsl (x); }
+    inline     long double   fabs      (long double x)                 { return ::fabsl(x); }
     inline     float         fmod      (float       x, float       y)  { return ::fmodf(x, y); }
     extern "C" double        fmod      (double      x, double      y);
     inline     long double   fmod      (long double x, long double y)  { return ::fmodl(x, y); }
-    inline     float         modf      (float       x, float*       p) { return ::modff (x, p); }
+    inline     float         modf      (float       x, float*       p) { return ::modff(x, p); }
     extern "C" double        modf      (double      x, double*      p);
-    inline     long double   modf      (long double x, long double* p) { return ::modfl (x, p); }
+    inline     long double   modf      (long double x, long double* p) { return ::modfl(x, p); }
     inline     float         floor     (float       x)                 { return ::floorf(x); }
     extern "C" double        floor     (double      x);
     inline     long double   floor     (long double x)                 { return ::floorl(x); }
-    inline     float         ceil      (float       x)                 { return ::ceilf (x); }
+    inline     float         ceil      (float       x)                 { return ::ceilf(x); }
     extern "C" double        ceil      (double      x);
-    inline     long double   ceil      (long double x)                 { return ::ceill (x); }
+    inline     long double   ceil      (long double x)                 { return ::ceill(x); }
     inline     float         frexp     (float       x, int* p)         { return ::frexpf(x, p); }
     extern "C" double        frexp     (double      x, int* p);
     inline     long double   frexp     (long double x, int* p)         { return ::frexpl(x, p); }
     inline     float         ldexp     (float       x, int p)          { return ::ldexpf(x, p); }
     extern "C" double        ldexp     (double      x, int p);
-    inline     long double   ldexp     (long double x, int p)          { return ::ldexpl (x, p); }
+    inline     long double   ldexp     (long double x, int p)          { return ::ldexpl(x, p); }
     inline     long          lround    (float       x)                 { return ::lroundf(x); }
     extern "C" long          lround    (double      x);
     inline     long          lround    (long double x)                 { return ::lroundl(x); }
-    inline     float         sqrt      (float       x)                 { return ::sqrtf (x); }
+    inline     float         sqrt      (float       x)                 { return ::sqrtf(x); }
     extern "C" double        sqrt      (double      x);
-    inline     long double   sqrt      (long double x)                 { return ::sqrtl (x); }
-    inline     float         cbrt      (float       x)                 { return ::cbrtf (x); }
+    inline     long double   sqrt      (long double x)                 { return ::sqrtl(x); }
+    inline     float         cbrt      (float       x)                 { return ::cbrtf(x); }
     extern "C" double        cbrt      (double      x);
-    inline     long double   cbrt      (long double x)                 { return ::cbrtl (x); }
-    inline     float         sin       (float       x)                 { return ::sinf  (x); }
+    inline     long double   cbrt      (long double x)                 { return ::cbrtl(x); }
+    inline     float         sin       (float       x)                 { return ::sinf(x); }
     extern "C" double        sin       (double      x);
-    inline     long double   sin       (long double x)                 { return ::sinl  (x); }
-    inline     float         cos       (float       x)                 { return ::cosf  (x); }
+    inline     long double   sin       (long double x)                 { return ::sinl(x); }
+    inline     float         cos       (float       x)                 { return ::cosf(x); }
     extern "C" double        cos       (double      x);
-    inline     long double   cos       (long double x)                 { return ::cosl  (x); }
-    inline     float         tan       (float       x)                 { return ::tanf  (x); }
+    inline     long double   cos       (long double x)                 { return ::cosl(x); }
+    inline     float         tan       (float       x)                 { return ::tanf(x); }
     extern "C" double        tan       (double      x);
-    inline     long double   tan       (long double x)                 { return ::tanl  (x); }
-    inline     float         asin      (float       x)                 { return ::asinf (x); }
+    inline     long double   tan       (long double x)                 { return ::tanl(x); }
+    inline     float         asin      (float       x)                 { return ::asinf(x); }
     extern "C" double        asin      (double      x);
-    inline     long double   asin      (long double x)                 { return ::asinl (x); }
-    inline     float         acos      (float       x)                 { return ::acosf (x); }
+    inline     long double   asin      (long double x)                 { return ::asinl(x); }
+    inline     float         acos      (float       x)                 { return ::acosf(x); }
     extern "C" double        acos      (double      x);
-    inline     long double   acos      (long double x)                 { return ::acosl (x); }
-    inline     float         atan      (float       x)                 { return ::atanf (x); }
+    inline     long double   acos      (long double x)                 { return ::acosl(x); }
+    inline     float         atan      (float       x)                 { return ::atanf(x); }
     extern "C" double        atan      (double      x);
-    inline     long double   atan      (long double x)                 { return ::atanl (x); }
+    inline     long double   atan      (long double x)                 { return ::atanl(x); }
     inline     float         atan2     (float       y, float       x)  { return ::atan2f(y, x); }
     extern "C" double        atan2     (double      y, double      x);
     inline     long double   atan2     (long double y, long double x)  { return ::atan2l(y, x); }
-    inline     float         exp       (float       x)                 { return ::expf  (x); }
+    inline     float         exp       (float       x)                 { return ::expf(x); }
     extern "C" double        exp       (double      x);
-    inline     long double   exp       (long double x)                 { return ::expl  (x); }
-    inline     float         pow       (float       x, float       a)  { return ::powf  (x, a); }
+    inline     long double   exp       (long double x)                 { return ::expl(x); }
+    inline     float         pow       (float       x, float       a)  { return ::powf(x, a); }
     extern "C" double        pow       (double      x, double      a);
-    inline     long double   pow       (long double x, long double a)  { return ::powl  (x, a); }
-    inline     float         log       (float       x)                 { return ::logf  (x); }
+    inline     long double   pow       (long double x, long double a)  { return ::powl(x, a); }
+    inline     float         log       (float       x)                 { return ::logf(x); }
     extern "C" double        log       (double      x);
-    inline     long double   log       (long double x)                 { return ::logl  (x); }
+    inline     long double   log       (long double x)                 { return ::logl(x); }
     inline     float         log10     (float       x)                 { return ::log10f(x); }
     extern "C" double        log10     (double      x);
     inline     long double   log10     (long double x)                 { return ::log10l(x); }
-    inline     float         sinh      (float       x)                 { return ::sinhf (x); }
+    inline     float         sinh      (float       x)                 { return ::sinhf(x); }
     extern "C" double        sinh      (double      x);
-    inline     long double   sinh      (long double x)                 { return ::sinhl (x); }
-    inline     float         cosh      (float       x)                 { return ::coshf (x); }
+    inline     long double   sinh      (long double x)                 { return ::sinhl(x); }
+    inline     float         cosh      (float       x)                 { return ::coshf(x); }
     extern "C" double        cosh      (double      x);
-    inline     long double   cosh      (long double x)                 { return ::coshl (x); }
-    inline     float         tanh      (float       x)                 { return ::tanhf (x); }
+    inline     long double   cosh      (long double x)                 { return ::coshl(x); }
+    inline     float         tanh      (float       x)                 { return ::tanhf(x); }
     extern "C" double        tanh      (double      x);
-    inline     long double   tanh      (long double x)                 { return ::tanhl (x); }
+    inline     long double   tanh      (long double x)                 { return ::tanhl(x); }
     #endif
+    inline     bool          isfinite  (float x)                       { return ((!(::isinff)(x)) && (!(::isnanf)(x))); }
+    extern "C" bool          isfinite  (double x);
+    inline     bool          isfinite  (long double x)                 { return ((!(::isinfl)(x)) && (!(::isnanl)(x))); }
     inline     float         asinh     (float       x)                 { return ::asinhf(x); }
     extern "C" double        asinh     (double      x);
     inline     long double   asinh     (long double x)                 { return ::asinhl(x); }
@@ -671,10 +680,9 @@
     extern "C" double        lgamma    (double      x);
     inline     long double   lgamma    (long double x)                 { return ::lgammal(x); }
     #if (defined(__cplusplus) && (__cplusplus > 201703L))
-    inline     float         lerp      (float a, float b, float t)     { return a + (t * (b - a)); }
-    inline     double        lerp      (double a, double b, double t)  { return a + (t * (b - a)); }
-    inline     long double   lerp      (long double a, long double b, long double t)
-                                                                       { return a + (t * (b - a)); }
+    inline     float         lerp      (float a, float b, float t)                   { return a + (t * (b - a)); }
+    inline     double        lerp      (double a, double b, double t)                { return a + (t * (b - a)); }
+    inline     long double   lerp      (long double a, long double b, long double t) { return a + (t * (b - a)); }
     #endif
   #if defined(__cplusplus)
   }
