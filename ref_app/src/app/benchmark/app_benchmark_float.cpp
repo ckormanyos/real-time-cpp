@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2010 - 2020.
+//  Copyright Christopher Kormanyos 2010 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,39 +17,43 @@
 
 namespace
 {
-  constexpr float app_benchmark_tolerance = 1.0E-5F * 20.0F;
+  constexpr float app_benchmark_tolerance { 1.0E-5F * 20.0F };
 }
 
 bool app::benchmark::run_float()
 {
   static std::uint_fast8_t app_benchmark_index;
 
-  bool app_benchmark_result_is_ok = true;
+  bool app_benchmark_result_is_ok { true };
 
-  if(app_benchmark_index == 0U)
+  if(app_benchmark_index == std::uint_fast8_t { UINT8_C(0) })
   {
     // Test the value of a Bessel function.
     // Here is a control value from Wolfram Alpha.
     // N[BesselJ[11/9, EulerGamma], 40]
     // 0.1890533651853886085356717332711858771597
 
-    constexpr float v = 11.0F / 9.0F;
+    constexpr float v { 11.0F / 9.0F };
 
     const float app_benchmark_result_bessel =
       math::functions::cyl_bessel_j(v, math::constants::euler<float>());
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(0.1890533652F,
-                                                            app_benchmark_result_bessel,
-                                                            app_benchmark_tolerance);
+    app_benchmark_result_is_ok =
+    (
+         app_benchmark_result_is_ok
+      && detail::is_close_fraction(0.1890533652F,
+                                   app_benchmark_result_bessel,
+                                   app_benchmark_tolerance)
+    );
   }
-  else if(app_benchmark_index == 1U)
+  else if(app_benchmark_index == std::uint_fast8_t { UINT8_C(1) })
   {
     // Test the value of a hypergeometric function.
     // Here is a control value from Wolfram Alpha.
     // N[HypergeometricPFQ[3/{7, 8, 9, 10}, 7/{13, 14, 15, 16, 17}, Log[2]], 40]
     // 1.583596313998374915091256357139915173598
 
-    constexpr std::array<float, 4U> ap =
+    constexpr std::array<float, std::size_t { UINT8_C(4) }> ap =
     {{
       3.0F /  7.0F,
       3.0F /  8.0F,
@@ -57,7 +61,7 @@ bool app::benchmark::run_float()
       3.0F / 10.0F
     }};
 
-    constexpr std::array<float, 5U> bq =
+    constexpr std::array<float, std::size_t { UINT8_C(5) }> bq =
     {{
       7.0F / 13.0F,
       7.0F / 14.0F,
@@ -73,32 +77,41 @@ bool app::benchmark::run_float()
                                           bq.cend(),
                                           math::constants::ln_two<float>());
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(1.5835963140F,
-                                                            app_benchmark_result_hypergeometric,
-                                                            app_benchmark_tolerance);
+    app_benchmark_result_is_ok =
+    (
+         app_benchmark_result_is_ok
+      && detail::is_close_fraction(1.5835963140F,
+                                   app_benchmark_result_hypergeometric,
+                                   app_benchmark_tolerance)
+    );
   }
-  else if(app_benchmark_index == 2U)
+  else if(app_benchmark_index == std::uint_fast8_t { UINT8_C(2) })
   {
     // Test the value of a Legendre function of the first kind.
     // Here is a control value from Wolfram Alpha.
     // N[LegendreP[1/11, 14/19, 2/7], 40]
     // 0.2937838815278435137954432141091105343408
-    constexpr float v =  1.0F / 11.0F;
-    constexpr float u = 14.0F / 19.0F;
-    constexpr float x =  2.0F /  7.0F;
+
+    constexpr float v {  1.0F / 11.0F };
+    constexpr float u { 14.0F / 19.0F };
+    constexpr float x {  2.0F /  7.0F };
 
     const float app_benchmark_result_legendre = math::functions::legendre_p(v, u, x);
 
-    app_benchmark_result_is_ok &= detail::is_close_fraction(0.2937838815F,
-                                                            app_benchmark_result_legendre,
-                                                            app_benchmark_tolerance);
+    app_benchmark_result_is_ok =
+    (
+         app_benchmark_result_is_ok
+      && detail::is_close_fraction(0.2937838815F,
+                                   app_benchmark_result_legendre,
+                                   app_benchmark_tolerance)
+    );
   }
 
   ++app_benchmark_index;
 
-  if(app_benchmark_index == 3U)
+  if(app_benchmark_index == std::uint_fast8_t { UINT8_C(3) })
   {
-    app_benchmark_index = 0U;
+    app_benchmark_index = std::uint_fast8_t { UINT8_C(0) };
   }
 
   return app_benchmark_result_is_ok;
