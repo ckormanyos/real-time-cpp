@@ -235,8 +235,6 @@
     double      atanh (double x);
     long double atanhl(long double x);
 
-    //int isfinitef(float x);
-    int isfinitel(long double x);
     int ilogbf(float x);
     int ilogb (double x);
     int ilogbl(long double x);
@@ -252,32 +250,50 @@
 
   namespace std
   {
-    inline bool        isfinite  (float x)                            { return ::isfinitef(x) == 1; }
-    inline bool        isfinite  (double x)                           { return ::isfinite (x) == 1; }
-    inline bool        isfinite  (long double x)                      { return ::isfinitel(x) == 1; }
-    inline bool        isnan     (float x)                            { return __BUILTIN_ISNANF (x) == 1; }
-    inline bool        isnan     (double x)                           { return __BUILTIN_ISNAN  (x) == 1; }
-    inline bool        isnan     (long double x)                      { return __BUILTIN_ISNANL (x) == 1; }
+    inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) == 1); }
+    inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) == 1); }
+    inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) == 1); }
     inline float       fabs      (float x)                            { return __BUILTIN_FABSF (x); }
     inline double      fabs      (double x)                           { return __BUILTIN_FABS  (x); }
     inline long double fabs      (long double x)                      { return __BUILTIN_FABSL (x); }
 
-    inline int fpclassify(double x)
+    namespace cmath_detail {
+
+    __attribute__((always_inline)) static inline bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
+
+    } // namespace cmath_detail
+
+    inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
+
+    inline bool isfinite(float x)       { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(double x)      { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+    inline bool isfinite(long double x) { return ((!(::std::isinf)(x)) && (!(::std::isnan)(x))); }
+
+    namespace cmath_detail {
+
+    template<typename FloatType>
+    inline int fpclassify_impl(FloatType x)
     {
       #if defined(__GNUC__)
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wfloat-equal"
       #endif
 
-      if((isnan)(x) != 0)
+      using float_type = FloatType;
+
+      if((::std::isnan)(x))
       {
         return FP_NAN;
       }
-      else if((isinf)(x) != 0.0)
+      else if((::std::isinf)(x))
       {
         return FP_INFINITE;
       }
-      else if((fabs)(x) == 0.0)
+      else if((::std::fabs)(x) == static_cast<float_type>(0.0L))
       {
         return FP_ZERO;
       }
@@ -287,8 +303,8 @@
           is_subnormal
           {
             (
-                 ((fabs)(x) > 0.0)
-              && ((fabs)(x) < (std::numeric_limits<double>::min)())
+                 ((::std::fabs)(x) > static_cast<float_type>(0.0L))
+              && ((::std::fabs)(x) < (std::numeric_limits<float_type>::min)())
             )
           };
 
@@ -300,8 +316,11 @@
       #endif
     }
 
-    inline int fpclassify(float x)       { return fpclassify(static_cast<double>(x)); }
-    inline int fpclassify(long double x) { return fpclassify(static_cast<double>(x)); }
+    } // namespace cmath_detail
+
+    inline int fpclassify(float x)       { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(double x)      { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(long double x) { return ::std::cmath_detail::fpclassify_impl(x); }
 
     inline int         ilogb     (float x)                            { return ::ilogbf  (x); }
     inline int         ilogb     (double x)                           { return ::ilogb   (x); }
@@ -682,31 +701,52 @@
     using ::isfinite;
     using ::ilogb;
 
-    inline bool isinf(double x) { return ((x == std::numeric_limits<double>::infinity()) || (-x == std::numeric_limits<double>::infinity())); }
-    inline bool isinf(float x) { return isinf(static_cast<double>(x)); }
-    inline bool isinf(long double x) { return isinf(static_cast<double>(x)); }
+    namespace cmath_detail {
+
+    template<typename FloatType>
+    inline bool isinf_impl(FloatType x)
+    {
+      using float_type = FloatType;
+
+      return
+      (
+           ( x == std::numeric_limits<float_type>::infinity())
+        || (-x == std::numeric_limits<float_type>::infinity())
+      );
+    }
+
+    } // namespace cmath_detail
+
+    inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
 
     using ::isnan;
     using ::abs;
     using ::fabs;
     using ::fmod;
 
-    inline int fpclassify(double x)
+    namespace cmath_detail {
+
+    template<typename FloatType>
+    inline int fpclassify_impl(FloatType x)
     {
       #if defined(__GNUC__)
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wfloat-equal"
       #endif
 
-      if((isnan)(x) != 0)
+      using float_type = FloatType;
+
+      if((::std::isnan)(x))
       {
         return FP_NAN;
       }
-      else if((isinf)(x) != 0.0)
+      else if((::std::isinf)(x))
       {
         return FP_INFINITE;
       }
-      else if((fabs)(x) == 0.0)
+      else if((::std::fabs)(x) == static_cast<float_type>(0.0L))
       {
         return FP_ZERO;
       }
@@ -716,8 +756,8 @@
           is_subnormal
           {
             (
-                 ((fabs)(x) > 0.0)
-              && ((fabs)(x) < (std::numeric_limits<double>::min)())
+                 ((::std::fabs)(x) > static_cast<float_type>(0.0L))
+              && ((::std::fabs)(x) < (std::numeric_limits<float_type>::min)())
             )
           };
 
@@ -729,8 +769,11 @@
       #endif
     }
 
-    inline int fpclassify(float x)       { return fpclassify(static_cast<double>(x)); }
-    inline int fpclassify(long double x) { return fpclassify(static_cast<double>(x)); }
+    } // namespace cmath_detail
+
+    inline int fpclassify(float x)       { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(double x)      { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(long double x) { return ::std::cmath_detail::fpclassify_impl(x); }
 
     using ::modf;
     using ::floor;

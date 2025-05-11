@@ -28,20 +28,33 @@
     using std::fabs;
     using std::fpclassify;
 
-    NumericType closeness { };
+    using numeric_type = NumericType;
 
-    if(fpclassify(b) == FP_ZERO)
+    const int fpc_a { fpclassify(a) };
+    const int fpc_b { fpclassify(b) };
+
+    bool result_is_ok { };
+
+    if(fpc_b == FP_ZERO)
     {
-      closeness = fabs(a - b);
+      const numeric_type closeness { (fpc_a == FP_ZERO) ? numeric_type { 0 } : fabs(a - b) };
+
+      result_is_ok = (closeness < tol);
+    }
+    else if((fpc_a != FP_NORMAL) || (fpc_b != FP_NORMAL))
+    {
+      result_is_ok = false;
     }
     else
     {
-      const NumericType ratio { a / b };
+      const numeric_type ratio { a / b };
 
-      closeness = NumericType { fabs(NumericType { 1 - ratio }) };
+      const numeric_type closeness { fabs(numeric_type { 1 - ratio }) };
+
+      result_is_ok = (closeness < tol);
     }
 
-    return (closeness < tol);
+    return result_is_ok;
   }
 
   } // namespace detail

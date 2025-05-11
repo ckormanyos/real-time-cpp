@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2019 - 2024.
+//  Copyright Christopher Kormanyos 2019 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -81,7 +81,7 @@
       my_valid = ((is_open() == false) ? open() : is_open());
     }
 
-    virtual ~independent_test_system_mathlink() noexcept
+    ~independent_test_system_mathlink() noexcept override
     {
       const volatile bool close_is_ok = close();
 

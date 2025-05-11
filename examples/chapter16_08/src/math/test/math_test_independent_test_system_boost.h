@@ -1,20 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2020 -2024.
+//  Copyright Christopher Kormanyos 2020 -2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H_
-  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H_
-
-  #include <ctime>
-  #include <random>
+#ifndef MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H
+  #define MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H
 
   #include <boost/multiprecision/cpp_int.hpp>
   #include <boost/multiprecision/miller_rabin.hpp>
 
   #include <math/test/math_test_independent_test_system_base.h>
+
+  #include <ctime>
+  #include <random>
 
   namespace WIDE_INTEGER_NAMESPACE { namespace math { namespace test {
 
@@ -46,7 +46,7 @@
 
       ++my_seed_count;
 
-      if((my_seed_count % 0x1000U) == 0U)
+      if(static_cast<std::uint32_t>(my_seed_count % 0x1000U) == std::uint32_t { UINT8_C(0) })
       {
         my_gen.seed(static_cast<typename random_engine_type::result_type>(std::clock()));
       }
@@ -63,4 +63,4 @@
   } // namespace math
   } // namespace WIDE_INTEGER_NAMESPACE
 
-#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H_
+#endif // MATH_TEST_INDEPENDENT_TEST_SYSTEM_BOOST_2020_10_10_H
