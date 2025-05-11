@@ -235,10 +235,6 @@
     double      atanh (double x);
     long double atanhl(long double x);
 
-    int isfinitef(float x);
-    int isfinite (double x);
-    int isfinitel(long double x);
-
     int ilogbf(float x);
     int ilogb (double x);
     int ilogbl(long double x);
@@ -254,9 +250,30 @@
 
   namespace std
   {
-    inline bool        isfinite  (float x)                            { return (::isfinitef(x) == 1); }
-    inline bool        isfinite  (double x)                           { return (::isfinite (x) == 1); }
-    inline bool        isfinite  (long double x)                      { return (::isfinitel(x) == 1); }
+    namespace cmath_detail {
+
+    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ int isfinitef_impl(float my_x)
+    {
+      unsigned char my_exp { };
+
+      asm volatile
+      (
+        "mov    %0, %C1"  "\n\t"
+        "lsl    %0"       "\n\t"
+        "mov    %0, %D1"  "\n\t"
+        "rol    %0"
+        : "=&r" (my_exp)
+        : "r" (my_x)
+      );
+
+      return ((my_exp != static_cast<unsigned char>(0xFFU)) ? 1 : 0);
+    }
+
+    } // namespace cmath_detail
+
+    inline bool        isfinite  (float x)                            { return (::std::cmath_detail::isfinitef_impl(x) == 1); }
+    inline bool        isfinite  (double x)                           { return (::std::cmath_detail::isfinitef_impl(static_cast<float>(x)) == 1); }
+    inline bool        isfinite  (long double x)                      { return (::std::cmath_detail::isfinitef_impl(static_cast<float>(x)) == 1); }
     inline bool        isnan     (float x)                            { return (__BUILTIN_ISNANF(x) == 1); }
     inline bool        isnan     (double x)                           { return (__BUILTIN_ISNAN (x) == 1); }
     inline bool        isnan     (long double x)                      { return (__BUILTIN_ISNANL(x) == 1); }
@@ -266,15 +283,15 @@
 
     namespace cmath_detail {
 
-    inline bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
-    inline bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
-    inline bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
+    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
+    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
+    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
 
     } // namespace cmath_detail
 
-    inline bool isinf(float x)       { return cmath_detail::isinf_impl(x); }
-    inline bool isinf(double x)      { return cmath_detail::isinf_impl(x); }
-    inline bool isinf(long double x) { return cmath_detail::isinf_impl(x); }
+    inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
 
     namespace cmath_detail {
 
@@ -321,9 +338,9 @@
 
     } // namespace cmath_detail
 
-    inline int fpclassify(float x)       { return cmath_detail::fpclassify_impl(x); }
-    inline int fpclassify(double x)      { return cmath_detail::fpclassify_impl(x); }
-    inline int fpclassify(long double x) { return cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(float x)       { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(double x)      { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(long double x) { return ::std::cmath_detail::fpclassify_impl(x); }
 
     inline int         ilogb     (float x)                            { return ::ilogbf  (x); }
     inline int         ilogb     (double x)                           { return ::ilogb   (x); }
@@ -720,9 +737,9 @@
 
     } // namespace cmath_detail
 
-    inline bool isinf(float x)       { return cmath_detail::isinf_impl(x); }
-    inline bool isinf(double x)      { return cmath_detail::isinf_impl(x); }
-    inline bool isinf(long double x) { return cmath_detail::isinf_impl(x); }
+    inline bool isinf(float x)       { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(double x)      { return ::std::cmath_detail::isinf_impl(x); }
+    inline bool isinf(long double x) { return ::std::cmath_detail::isinf_impl(x); }
 
     using ::isnan;
     using ::abs;
@@ -774,9 +791,9 @@
 
     } // namespace cmath_detail
 
-    inline int fpclassify(float x)       { return cmath_detail::fpclassify_impl(x); }
-    inline int fpclassify(double x)      { return cmath_detail::fpclassify_impl(x); }
-    inline int fpclassify(long double x) { return cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(float x)       { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(double x)      { return ::std::cmath_detail::fpclassify_impl(x); }
+    inline int fpclassify(long double x) { return ::std::cmath_detail::fpclassify_impl(x); }
 
     using ::modf;
     using ::floor;
