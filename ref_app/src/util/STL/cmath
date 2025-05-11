@@ -252,7 +252,7 @@
   {
     namespace cmath_detail {
 
-    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ int isfinitef_impl(float my_x)
+    __attribute__((always_inline)) static inline int isfinitef_impl(float my_x)
     {
       unsigned char my_exp { };
 
@@ -283,9 +283,9 @@
 
     namespace cmath_detail {
 
-    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
-    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
-    __ATTR_CONST__ static __ATTR_ALWAYS_INLINE__ bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(float x)       { return (__BUILTIN_ISINFF(x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(double x)      { return (__BUILTIN_ISINF (x) == 1); }
+    __attribute__((always_inline)) static inline bool isinf_impl(long double x) { return (__BUILTIN_ISINFL(x) == 1); }
 
     } // namespace cmath_detail
 
