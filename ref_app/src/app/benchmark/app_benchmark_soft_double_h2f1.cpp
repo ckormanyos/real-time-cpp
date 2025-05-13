@@ -210,7 +210,7 @@ auto app::benchmark::run_soft_double_h2f1() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-int main()
+auto main() -> int
 {
   // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_CRC -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_crc.cpp -o ./ref_app/bin/app_benchmark_crc.exe
 

@@ -29,7 +29,7 @@
 
 #include <array>
 
-extern "C" auto main() -> int;
+auto main() -> int;
 
 namespace
 {
@@ -63,7 +63,7 @@ namespace
   );
 }
 
-extern "C" auto main() -> int
+auto main() -> int
 {
   mcal::gpt::init(nullptr);
 
