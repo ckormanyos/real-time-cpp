@@ -17,7 +17,7 @@
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
 extern "C" ATTRIBUTE(used) auto app_main_loop() -> int;
 #else
-extern "C" ATTRIBUTE(used) auto main() -> int;
+ATTRIBUTE(used) auto main() -> int;
 #endif
 
 #if (defined(__XTENSA__) && !defined(CONFIG_IDF_TARGET_ESP32S3))
@@ -29,7 +29,7 @@ auto main() -> int
   // Initialize the microcontroller abstraction layer.
   mcal::init();
 
-  // Start the multitasking scheduler. (This does not return.)
+  // Start the multitasking scheduler. This does not return.
   // Handle an unexpected return from main() in the startup code.
   os::start_os();
 

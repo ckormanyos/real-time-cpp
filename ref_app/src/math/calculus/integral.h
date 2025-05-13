@@ -1,65 +1,68 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Copyright Christopher Kormanyos 2007 - 2021.
+//  Copyright Christopher Kormanyos 2007 - 2025.
 //  Distributed under the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt
 //  or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef INTEGRAL_2012_01_09_H_
-  #define INTEGRAL_2012_01_09_H_
+#ifndef INTEGRAL_2012_01_09_H
+ #define INTEGRAL_2012_01_09_H
 
-  #include <cmath>
+ #include <cmath>
 
-  namespace math
-  {
-    template<typename real_value_type,
-             typename real_function_type>
-    real_value_type integral(const real_value_type& a,
-                             const real_value_type& b,
-                             const real_value_type& tol,
-                             real_function_type real_function)
-    {
-      std::uint_fast32_t n2(1);
+ namespace math
+ {
+   // Compute the numerical integral of a real function from a to b
+   // using a recursive trapezoid rule.
 
-      real_value_type step = ((b - a) / 2U);
+   template<typename real_value_type,
+            typename real_function_type>
+   real_value_type integral(const real_value_type& a,
+                            const real_value_type& b,
+                            const real_value_type& tol,
+                            real_function_type real_function)
+   {
+     std::uint_fast32_t n2 { UINT8_C(1) };
 
-      real_value_type result = (real_function(a) + real_function(b)) * step;
+     real_value_type step { (b - a) / 2U };
 
-      const std::uint_fast8_t k_max = UINT8_C(32);
+     real_value_type result { (real_function(a) + real_function(b)) * step };
 
-      for(std::uint_fast8_t k = UINT8_C(0); k < k_max; ++k)
-      {
-        real_value_type sum(0);
+     constexpr std::uint_fast8_t k_max { UINT8_C(32) };
 
-        for(std::uint_fast32_t j(0U); j < n2; ++j)
-        {
-          const std::uint_fast32_t two_j_plus_one = (j * UINT32_C(2)) + UINT32_C(1);
+     for(std::uint_fast8_t k = UINT8_C(0); k < k_max; ++k)
+     {
+       real_value_type sum { 0 };
 
-          sum += real_function(a + real_value_type(step * real_value_type(two_j_plus_one)));
-        }
+       for(std::uint_fast32_t j { std::uint_fast32_t { UINT8_C(0) } }; j < n2; ++j)
+       {
+         const std::uint_fast32_t two_j_plus_one { (j * UINT32_C(2)) + UINT32_C(1) };
 
-        const real_value_type tmp = result;
+         sum += real_function(a + real_value_type(step * two_j_plus_one));
+       }
 
-        result = (result / 2U) + (step * sum);
+       const real_value_type tmp { result };
 
-        using std::fabs;
+       result = (result / 2U) + (step * sum);
 
-        const real_value_type ratio = fabs(tmp / result);
+       const real_value_type ratio { tmp / result };
 
-        const real_value_type delta = fabs(ratio - 1U);
+       using std::fabs;
 
-        if((k > UINT8_C(1)) && (delta < tol))
-        {
-          break;
-        }
+       const real_value_type delta = fabs(ratio - 1U);
 
-        n2 *= 2U;
+       if((k > std::uint_fast8_t { UINT8_C(1) }) && (delta < tol))
+       {
+         break;
+       }
 
-        step /= 2U;
-      }
+       n2 *= 2U;
 
-      return result;
-    }
-  }
+       step /= 2U;
+     }
 
-#endif // INTEGRAL_2012_01_09_H_
+     return result;
+   }
+ }
+
+#endif // INTEGRAL_2012_01_09_H
