@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright Christopher Kormanyos 2020 - 2024.
+#  Copyright Christopher Kormanyos 2020 - 2025.
 #  Distributed under the Boost Software License,
 #  Version 1.0. (See accompanying file LICENSE_1_0.txt
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@ else
     STD=c++14
 fi
 
-wflags="-Wextra -pedantic -Wmain -Wundef -Wsign-conversion -Wunused-parameter -Wuninitialized -Wmissing-declarations -Wshadow -Wunreachable-code -Wswitch-default -Wswitch-enum -Wcast-align -Wmissing-include-dirs -Winit-self -Wfloat-equal -Wdouble-promotion -Wno-psabi"
+wflags="-Wextra -Wpedantic -Wmain -Wundef -Wsign-conversion -Wunused-parameter -Wuninitialized -Wmissing-declarations -Wshadow -Wunreachable-code -Wswitch-default -Wswitch-enum -Wcast-align -Wmissing-include-dirs -Winit-self -Wfloat-equal -Wdouble-promotion -Wno-psabi"
 
 mkdir -p bin
 
