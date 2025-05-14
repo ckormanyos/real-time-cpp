@@ -96,7 +96,16 @@ jobs:
           tar -xzf gcc-15.1.0-avr.tar.gz -C ${{ runner.workspace }}
       - name: benchmark_builds-avr
         run: |
+          echo
+          echo 'Add avr-g++ path'
+          echo
           PATH="${{ runner.workspace }}/gcc-15.1.0-avr/bin:$PATH"
+          echo 'Query avr-g++ version'
+          echo
+          avr-g++ -v
+          echo
+          echo 'Build avr benchmarks'
+          echo
           ./target/build/test_app_benchmarks_avr.sh ${{ matrix.standard }}
         working-directory: ./ref_app/
   benchmark_builds-stm32f446:
