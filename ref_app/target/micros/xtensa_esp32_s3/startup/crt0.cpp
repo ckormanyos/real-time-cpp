@@ -19,8 +19,6 @@ extern "C"
 {
   asm(".extern main");
 
-  extern auto main() -> int;
-
   auto __my_startup() -> void __attribute__((used, noinline));
 }
 

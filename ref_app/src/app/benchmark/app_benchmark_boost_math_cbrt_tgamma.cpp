@@ -89,7 +89,7 @@ auto app::benchmark::run_boost_math_cbrt_tgamma() -> bool
 }
 
 #if defined(APP_BENCHMARK_STANDALONE_MAIN)
-int main()
+auto main() -> int
 {
   // g++ -Wall -O3 -march=native -I./ref_app/src/mcal/host -I./ref_app/src -DAPP_BENCHMARK_TYPE=APP_BENCHMARK_TYPE_BOOST_MATH_CBRT_TGAMMA -DAPP_BENCHMARK_STANDALONE_MAIN ./ref_app/src/app/benchmark/app_benchmark_boost_math_cbrt_tgamma.cpp -o ./ref_app/bin/app_benchmark_boost_math_cbrt_tgamma.exe
 
